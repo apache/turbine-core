@@ -56,13 +56,15 @@ package org.apache.turbine.util.template;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.ecs.ConcreteElement;
+
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.util.RunData;
 
 /**
  * Returns output of a Screen module.  An instance of this is
- * placed in the Velocity context by the VelcityDirectLayout.  This
+ * placed in the Velocity context by the VelocityDirectLayout.  This
  * allows the screen to be executed only at rendering.
  * Here's how it's used in a template:
  *

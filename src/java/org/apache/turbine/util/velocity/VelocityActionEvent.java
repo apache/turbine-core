@@ -55,12 +55,14 @@ package org.apache.turbine.util.velocity;
  */
 
 import java.lang.reflect.Method;
+
 import java.util.Enumeration;
 
 import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
+
 import org.apache.velocity.context.Context;
 
 /**
@@ -163,7 +165,7 @@ public abstract class VelocityActionEvent extends ActionEvent
         }
         catch (NoSuchMethodException nsme)
         {
-            // Attempt to execut things the old way..
+            // Attempt to execute things the old way..
             super.executeEvents(data);
         }
     }
