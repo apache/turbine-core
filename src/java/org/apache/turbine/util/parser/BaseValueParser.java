@@ -93,7 +93,7 @@ import org.apache.turbine.util.pool.RecyclableSupport;
 /**
  * BaseValueParser is a base class for classes that need to parse
  * name/value Parameters, for example GET/POST data or Cookies
- * (DefaultParameterParser and DefaultCookieParser)
+ * (DefaultParameterParser and DefaultCookieParser).
  *
  * <p>It can also be used standalone, for an example see DataStreamParser.
  *
