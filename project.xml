@@ -391,6 +391,14 @@
       </properties>
     </dependency>
     <dependency>
+      <id>commons-fileupload</id>
+      <version>1.0-dev</version>
+      <url>http://jakarta.apache.org/commons/fileupload/index.html</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>
+    <dependency>
       <id>commons-email</id>
       <version>0.1-dev</version>
       <url>http://jakarta.apache.org/commons/sandbox/email</url>
