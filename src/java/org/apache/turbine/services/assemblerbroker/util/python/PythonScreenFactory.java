@@ -62,7 +62,6 @@ import org.apache.turbine.util.*;
 import org.apache.turbine.modules.*;
 import org.apache.turbine.modules.screens.*;
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.util.assemblerbroker.*;
 
 // JPython Classes
 import org.python.util.PythonInterpreter;
