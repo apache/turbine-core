@@ -56,11 +56,13 @@ package org.apache.turbine.services.avaloncomponent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.fulcrum.mimetype.MimeTypeService;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 
-import tutorial.Hello;
+import tutorial.HelloComponent;
+
 
 
 
@@ -89,7 +91,7 @@ public class MerlinComponentServiceTest extends BaseTestCase
 	 * Merlin tutorial.  Currently pulling from http://jakarta.apache.org/turbine/repo/merlin
 	 * @throws Exception
 	 */
-	public void testMerlinWithHelloComponent() throws Exception
+	public void testMerlinWithMimetype() throws Exception
 	{
 
 		TurbineConfig tc =
@@ -99,10 +101,10 @@ public class MerlinComponentServiceTest extends BaseTestCase
 		{
 			tc.initialize();
 
-			Hello hello = (Hello) getService().lookup("/fulcrum/hello"); // just to test
-			assertNotNull(hello);
+			MimeTypeService mimetypeservice = (MimeTypeService) getService().lookup("/fulcrum/mimetype"); // just to test
+			assertNotNull(mimetypeservice);
             
-			getService().release(hello);
+			getService().release(mimetypeservice);
 
  
 		}

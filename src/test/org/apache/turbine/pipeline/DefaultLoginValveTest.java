@@ -150,11 +150,13 @@ public class DefaultLoginValveTest extends BaseTestCase
         runData.setAction(TurbineConstants.ACTION_LOGIN_DEFAULT);
         
         Pipeline pipeline = new TurbinePipeline();
+        PipelineData pipelineData = new DefaultPipelineData();
+        pipelineData.put(RunData.class,runData);
 
         DefaultLoginValve valve = new DefaultLoginValve();
         pipeline.addValve(valve);
 
-        pipeline.invoke(runData);
+        pipeline.invoke(pipelineData);
         User user = runData.getUser();
         assertNotNull(user);
         assertEquals("username",user.getName());

@@ -124,7 +124,7 @@ public interface Pipeline
      *
      * @exception IOException an input/output error occurred.
      */
-    public void invoke(RunData data)
+    public void invoke(PipelineData data)
         throws TurbineException, IOException;
 
     /**

@@ -90,18 +90,19 @@ public class DefaultACLCreationValve
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke(RunData data, ValveContext context)
+    public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
         try
         { 
+            RunData runData = (RunData)pipelineData.get(RunData.class);
             // Put the Access Control List into the RunData object, so
             // it is easily available to modules.  It is also placed
             // into the session for serialization.  Modules can null
             // out the ACL to force it to be rebuilt based on more
             // information.
             ActionLoader.getInstance().exec(
-                    data, Turbine.getConfiguration().getString(ACTION_ACCESS_CONTROLLER_KEY,
+                    runData, Turbine.getConfiguration().getString(ACTION_ACCESS_CONTROLLER_KEY,
                             ACTION_ACCESS_CONTROLLER_DEFAULT));
         }
         catch (Exception e)
@@ -110,6 +111,6 @@ public class DefaultACLCreationValve
         }
 
         // Pass control to the next Valve in the Pipeline
-        context.invokeNext(data);
+        context.invokeNext(pipelineData);
     }
 }

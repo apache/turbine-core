@@ -198,7 +198,7 @@ public class TurbinePipeline
     /**
      * @see org.apache.turbine.Pipeline#invoke(RunData)
      */
-    public void invoke(RunData data)
+    public void invoke(PipelineData data)
         throws TurbineException, IOException
     {
         // Initialize the per-thread state for this thread
@@ -211,7 +211,7 @@ public class TurbinePipeline
     /**
      * @see org.apache.turbine.ValveContext#invokeNext(RunData)
      */
-    public void invokeNext(RunData data)
+    public void invokeNext(PipelineData data)
         throws TurbineException, IOException
     {
         // Identify the current subscript for the current request thread

@@ -78,9 +78,10 @@ public class DetermineActionValve
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke( RunData data, ValveContext context )
+    public void invoke( PipelineData pipelineData, ValveContext context )
         throws IOException, TurbineException
     {
+        RunData data = (RunData)pipelineData.get(RunData.class);
         if ( ! data.hasAction() )
         {
             String action = 
@@ -104,6 +105,6 @@ public class DetermineActionValve
         }
 
         // Pass control to the next Valve in the Pipeline
-        context.invokeNext( data );
+        context.invokeNext( pipelineData );
     }
 }

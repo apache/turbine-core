@@ -154,12 +154,14 @@ public class ExecutePageValveTest extends BaseTestCase
         runData.setUser(tu);
 
         Pipeline pipeline = new TurbinePipeline();
+        PipelineData pipelineData = new DefaultPipelineData();
+        pipelineData.put(RunData.class,runData);
 
         ExecutePageValve valve = new ExecutePageValve();
         pipeline.addValve(valve);
 
         int numberOfCalls = VelocityActionDoesNothing.getNumberOfCalls();
-        pipeline.invoke(runData);
+        pipeline.invoke(pipelineData);
         assertEquals("Assert action was called",numberOfCalls +1,VelocityActionDoesNothing.getNumberOfCalls());
         User user = runData.getUser();
         assertNotNull(user);

@@ -145,14 +145,15 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
         request.setupAddParameter(URIConstants.CGI_ACTION_PARAM,"TestAction");
         
         
-        RunData runData = getRunData(request,response,config);
+        PipelineData pipelineData = getPipelineData(request,response,config);
         
         Pipeline pipeline = new TurbinePipeline();
 
         DefaultSessionTimeoutValve valve = new DefaultSessionTimeoutValve();
         pipeline.addValve(valve);
 
-        pipeline.invoke(runData);
+        pipeline.invoke(pipelineData);
+        RunData runData = (RunData)pipelineData.get(RunData.class);
         assertEquals(0,runData.getSession().getMaxInactiveInterval());
 
 
@@ -165,14 +166,15 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
     {
         
         Turbine.getConfiguration().setProperty(TurbineConstants.SESSION_TIMEOUT_KEY,"3600");
-        RunData runData = getRunData(request,response,config);
+        PipelineData pipelineData = getPipelineData(request,response,config);
         
         Pipeline pipeline = new TurbinePipeline();
 
         DefaultSessionTimeoutValve valve = new DefaultSessionTimeoutValve();
         pipeline.addValve(valve);
 
-        pipeline.invoke(runData);
+        pipeline.invoke(pipelineData);
+        RunData runData = (RunData)pipelineData.get(RunData.class);
         assertEquals(3600,runData.getSession().getMaxInactiveInterval());
 
 

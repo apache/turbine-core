@@ -3,7 +3,7 @@ package org.apache.turbine.pipeline;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,59 +54,20 @@ package org.apache.turbine.pipeline;
  * <http://www.apache.org/>.
  */
 
-import java.io.IOException;
-
-import org.apache.commons.configuration.Configuration;
-import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.TurbineException;
-
 /**
- * Implements the action portion of the "Turbine classic" processing
- * pipeline (from the Turbine 2.x series).
+ * <p>A <b>PipelineData</b> is a holder for data being passed from one
+ * Valve to the next.  
+ * The detailed contract for a Valve is included in the description of
+ * the <code>invoke()</code> method below.</p>
  *
- * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
- * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
- * @version $Id$
+ * <b>HISTORICAL NOTE</b>:  The "PipelineData" name was assigned to this
+ * holder as it functions similarily to the RunData object, but without
+ * the additional methods
+ *
+ * @author <a href="mailto:epugh@opensourceconnections.com">Eric Pugh</a>
  */
-public class DefaultSessionTimeoutValve
-    extends AbstractValve
-    implements TurbineConstants
+public interface PipelineData
 {
-    protected int timeout;
-
-    /**
-     * Here we can setup objects that are thread safe and can be
-     * reused, so we get the timeout from the configuration..
-     */
-    public DefaultSessionTimeoutValve()
-        throws Exception
-    {
-        Configuration cfg = Turbine.getConfiguration();
-
-        // Get the session timeout.
-    	
-    	timeout = cfg.getInt(SESSION_TIMEOUT_KEY,
-        	        SESSION_TIMEOUT_DEFAULT);
-
-    }
-
-    /**
-     * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
-     */
-    public void invoke(PipelineData data, ValveContext context)
-        throws IOException, TurbineException
-    {
-        RunData runData = (RunData)data.get(RunData.class);
-        // If the session is new take this opportunity to
-        // set the session timeout if specified in TR.properties
-        if (runData.getSession().isNew() && timeout != SESSION_TIMEOUT_DEFAULT)
-        {
-            runData.getSession().setMaxInactiveInterval(timeout);
-        }
-
-        // Pass control to the next Valve in the Pipeline
-        context.invokeNext(data);
-    }
+    public void put(Object name, Object value);
+    public Object get(Object name);
 }

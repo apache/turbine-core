@@ -123,7 +123,7 @@ public interface Valve
      * @exception IOException Thrown by a subsequent Valve.
      * @exception TurbineException Thrown by a subsequent Valve.
      */
-    public void invoke(RunData data, ValveContext context)
+    public void invoke(PipelineData data, ValveContext context)
         throws IOException, TurbineException;
 
     /**
