@@ -113,8 +113,8 @@ public class TurbineUser extends SecurityObject implements User
     public TurbineUser()
     {
         createDate = new Date();
-        tempStorage = new Hashtable(10);
-        permStorage = new Hashtable(10);
+        setTempStorage(new Hashtable(10));
+        setPermStorage(new Hashtable(10));
         setHasLoggedIn(Boolean.FALSE);
     }
 
@@ -202,11 +202,11 @@ public class TurbineUser extends SecurityObject implements User
      * Get an object from permanent storage.
      *
      * @param name The object's name.
-     * @return An Object with the given name.
+     * @return An Object with the given name, or null if not found.
      */
     public Object getPerm(String name)
     {
-        return permStorage.get(name);
+        return getPerm(name,null);
     }
 
     /**
@@ -238,18 +238,22 @@ public class TurbineUser extends SecurityObject implements User
      */
     public Hashtable getPermStorage()
     {
+        if(this.permStorage==null){
+            this.permStorage = new Hashtable(10);
+        }
         return this.permStorage;
     }
 
     /**
-     * Get an object from temporary storage.
+     * Get an object from temporary storage; return null if the
+     * object can't be found.
      *
      * @param name The object's name.
      * @return An Object with the given name.
      */
     public Object getTemp(String name)
     {
-        return tempStorage.get(name);
+        return getTemp(name,null);
     }
 
     /**
@@ -262,20 +266,15 @@ public class TurbineUser extends SecurityObject implements User
      */
     public Object getTemp(String name, Object def)
     {
-        Object val;
         try
         {
-            val = tempStorage.get(name);
-            if(val == null)
-            {
-                val = def;
-            }
+            Object val = tempStorage.get(name);
+            return (val == null ? def : val);
         }
         catch(Exception e)
         {
-            val = def;
+            return def;
         }
-        return val;
     }
 
     /**
@@ -460,11 +459,11 @@ public class TurbineUser extends SecurityObject implements User
      *
      * @param permStorage A Hashtable.
      */
-    public void setPermStorage(Hashtable permStorage)
+    public void setPermStorage(Hashtable newPermStorage)
     {
-        if (permStorage != null)
+        if (newPermStorage != null)
         {
-            this.permStorage = permStorage;
+            this.permStorage = newPermStorage;
         }
     }
 
@@ -476,6 +475,9 @@ public class TurbineUser extends SecurityObject implements User
      */
     public Hashtable getTempStorage()
     {
+        if (tempStorage == null){
+            tempStorage = new Hashtable(10);
+        }
         return this.tempStorage;
     }
 
@@ -485,11 +487,11 @@ public class TurbineUser extends SecurityObject implements User
      *
      * @param storage A Hashtable.
      */
-    public void setTempStorage(Hashtable storage)
+    public void setTempStorage(Hashtable newTempStorage)
     {
-        if (tempStorage != null)
+        if (newTempStorage != null)
         {
-            this.tempStorage = tempStorage;
+            this.tempStorage = newTempStorage;
         }
     }
 
