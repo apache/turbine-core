@@ -65,18 +65,16 @@ package org.apache.turbine.util.pool;
  */
 public class BoundedBuffer
 {
-    /**
-     * The default capacity.
-     */
+    /** The default capacity. */
     public static final int DEFAULT_CAPACITY = 1024;
 
-    protected final Object[] array_;      // the elements
+    protected final Object[] buffer;      // the elements
 
-    protected int takePtr_ = 0;            // circular indices
-    protected int putPtr_ = 0;
+    protected int takePtr = 0;            // circular indices
+    protected int putPtr = 0;
 
-    protected int usedSlots_ = 0;          // length
-    protected int emptySlots_;             // capacity - length
+    protected int usedSlots = 0;          // length
+    protected int emptySlots;             // capacity - length
 
     /**
      * Creates a buffer with the given capacity.
@@ -89,11 +87,12 @@ public class BoundedBuffer
     {
         if (capacity <= 0)
         {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    "Bounded Buffer must have capacity > 0!");
         }
 
-        array_ = new Object[capacity];
-        emptySlots_ = capacity;
+        buffer = new Object[capacity];
+        emptySlots = capacity;
     }
 
     /**
@@ -113,7 +112,7 @@ public class BoundedBuffer
      */
     public synchronized int size()
     {
-        return usedSlots_;
+        return usedSlots;
     }
 
     /**
@@ -123,7 +122,7 @@ public class BoundedBuffer
      */
     public int capacity()
     {
-        return array_.length;
+        return buffer.length;
     }
 
     /**
@@ -133,10 +132,8 @@ public class BoundedBuffer
      */
     public synchronized Object peek()
     {
-        if (usedSlots_ > 0)
-            return array_[takePtr_];
-        else
-            return null;
+        return (usedSlots > 0)
+                ? buffer[takePtr] : null;
     }
 
     /**
@@ -148,19 +145,25 @@ public class BoundedBuffer
     public synchronized boolean offer(Object x)
     {
         if (x == null)
-            throw new IllegalArgumentException();
-
-        if (emptySlots_ > 0)
         {
-            --emptySlots_;
-            array_[putPtr_] = x;
-            if (++putPtr_ >= array_.length)
-                putPtr_ = 0;
-            usedSlots_++;
+            throw new IllegalArgumentException("Bounded Buffer cannot store a null object");
+        }
+
+        if (emptySlots > 0)
+        {
+            --emptySlots;
+            buffer[putPtr] = x;
+            if (++putPtr >= buffer.length)
+            {
+                putPtr = 0;
+            }
+            usedSlots++;
             return true;
         }
         else
+        {
             return false;
+        }
     }
 
     /**
@@ -170,17 +173,21 @@ public class BoundedBuffer
      */
     public synchronized Object poll()
     {
-        if (usedSlots_ > 0)
+        if (usedSlots > 0)
         {
-            --usedSlots_;
-            Object old = array_[takePtr_];
-            array_[takePtr_] = null;
-            if (++takePtr_ >= array_.length)
-                takePtr_ = 0;
-            emptySlots_++;
+            --usedSlots;
+            Object old = buffer[takePtr];
+            buffer[takePtr] = null;
+            if (++takePtr >= buffer.length)
+            {
+                takePtr = 0;
+            }
+            emptySlots++;
             return old;
         }
         else
+        {
             return null;
+        }
     }
 }
