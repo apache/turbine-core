@@ -3,7 +3,7 @@
   <pomVersion>3</pomVersion>
   <id>maven-turbine-plugin</id>
   <name>Maven Turbine Plugin</name>
-  <currentVersion>2.3-dev</currentVersion>
+  <currentVersion>2.4-dev</currentVersion>
   <shortDescription>
     Maven Turbine Plugin
   </shortDescription>
@@ -44,6 +44,15 @@
         <role>Java Developer</role>
       </roles>
     </developer>
+    <developer>
+      <name>Eric Pugh</name>
+      <id>epugh</id>
+      <email>epugh@upstate.com</email>
+      <organization>upstate.com</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>    
   </developers>
 
   <dependencies/>
