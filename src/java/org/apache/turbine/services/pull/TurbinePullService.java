@@ -387,10 +387,15 @@ public class TurbinePullService
     /**
      * Return the Context which contains all global tools that
      * are to be used in conjunction with the Turbine
-     * Pull Model.
+     * Pull Model. The tools are refreshed every time the
+     * global Context is pulled.
      */
     public Context getGlobalContext()
     {
+        if (refreshToolsPerRequest)
+        {
+            refreshGlobalTools();
+        }
         return globalContext;
     }
 
@@ -419,7 +424,7 @@ public class TurbinePullService
         //
         User user = data.getUser();
 
-        // Note: Session tools are cuurently lost after the login action
+        // Note: Session tools are currently lost after the login action
         // because the anonymous user is replaced the the real user object.
         // We should either store the session pull tools in the session or
         // make Turbine.loginAction() copy the session pull tools into the
@@ -694,6 +699,7 @@ public class TurbinePullService
      * ApplicationTool interface because we
      * know those types of tools have a refresh
      * method.
+     * @deprecated Will be made private after 2.3
      */
     public void refreshGlobalTools()
     {
@@ -708,6 +714,7 @@ public class TurbinePullService
     /**
      * Should we refresh the ToolBox on
      * a per request basis.
+     * @deprecated No longer needed as Pull and Velocity Service are now more separate.
      */
     public boolean refreshToolsPerRequest()
     {

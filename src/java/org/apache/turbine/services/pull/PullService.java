@@ -168,6 +168,7 @@ public interface PullService
 
     /**
      * Refresh the global tools .
+     * @deprecated No longer needed as Pull and Velocity Service are now more separate.
      */
     void refreshGlobalTools();
 
@@ -176,6 +177,7 @@ public interface PullService
      * on each request. For development purposes.
      *
      * @return true if we should refresh the tools on every request.
+     * @deprecated No longer needed as Pull and Velocity Service are now more separate.
      */
     boolean refreshToolsPerRequest();
 

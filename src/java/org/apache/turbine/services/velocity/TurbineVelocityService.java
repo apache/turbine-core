@@ -138,12 +138,6 @@ public class TurbineVelocityService
     /** Is the pullModelActive? */
     private boolean pullModelActive = false;
 
-    /**
-     * Should we refresh the tools on a per request basis? (This is
-     * useful for development)
-     */
-    private boolean refreshToolsPerRequest = false;
-
     /** Shall we catch Velocity Errors and report them in the log file? */
     private boolean catchErrors = true;
 
@@ -175,7 +169,6 @@ public class TurbineVelocityService
 
                 pullService = TurbinePull.getService();
 
-                refreshToolsPerRequest = pullService.refreshToolsPerRequest();
                 log.debug("Activated Pull Tools");
             }
 
@@ -210,10 +203,6 @@ public class TurbineVelocityService
 
     /**
      * Create a Context object that also contains the globalContext.
-     * Refreshes all the global tools in the context. We can't move
-     * this into getContext(RunData data) or even the PullService
-     * itself, because we would lose some of the refresh events which
-     * should happen every time a context is pulled.
      *
      * @return A Context object.
      */
@@ -225,15 +214,6 @@ public class TurbineVelocityService
         Context ctx = new VelocityContext(globalContext);
         addEventCartridge(ctx);
 
-        //
-        // We have only one context per request (that is the nature
-        // of the context...) So this is the right place to refresh
-        // the global tools.
-        //
-        if (pullModelActive && refreshToolsPerRequest)
-        {
-            pullService.refreshGlobalTools();
-        }
         return ctx;
     }
 
