@@ -63,7 +63,7 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.TurbineRuntimeException;
 import org.apache.turbine.util.ValueParser;
-import org.apache.turbine.util.upload.FileItem;
+import org.apache.commons.fileupload.FileItem;
 
 /**
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>

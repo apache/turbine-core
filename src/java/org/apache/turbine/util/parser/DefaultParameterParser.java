@@ -3,7 +3,7 @@ package org.apache.turbine.util.parser;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001-2002 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,7 +65,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.pool.Recyclable;
-import org.apache.turbine.util.upload.FileItem;
+import org.apache.commons.fileupload.FileItem;
 import org.apache.turbine.services.upload.TurbineUpload;
 
 /**

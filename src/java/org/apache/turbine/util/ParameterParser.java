@@ -55,7 +55,7 @@ package org.apache.turbine.util;
  */
 
 import javax.servlet.http.HttpServletRequest;
-import org.apache.turbine.util.upload.FileItem;
+import org.apache.commons.fileupload.FileItem;
 
 /**
  * ParameterParser is an interface to a utility to handle parsing and
