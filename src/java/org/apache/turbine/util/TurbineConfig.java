@@ -70,6 +70,8 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.stratum.lifecycle.Initializable;
 import org.apache.stratum.lifecycle.Disposable;
 import org.apache.turbine.Turbine;
@@ -109,6 +111,19 @@ public class TurbineConfig
                Initializable,
                Disposable
 {
+    /**
+     * Servlet initialization parameter name for the path to
+     * Turbine.properties file used by Turbine
+     */
+    public static final String PROPERTIES_PATH_KEY = "properties";
+
+    /**
+     * Default value of TurbineResources.properties file path
+     * (<code>/WEB-INF/conf/TurbineResources.properties</code>).
+     */
+    public static final String PROPERTIES_PATH_DEFAULT =
+        "/WEB-INF/conf/TurbineResources.properties";
+
     /** Enables output of debug messages (compile time option). */
     private final static boolean DEBUG = false;
 
@@ -123,6 +138,9 @@ public class TurbineConfig
 
     /** The Turbine servlet instance used for initialization. */
     private Turbine turbine;
+
+    /** Logging */
+    private Log log = LogFactory.getLog(this.getClass());
 
     /**
      * Constructs a new TurbineConfig.
@@ -165,7 +183,7 @@ public class TurbineConfig
     public TurbineConfig(String path, String properties)
     {
         this(path, new HashMap(1));
-        initParams.put(TurbineServices.PROPERTIES_PATH_KEY, properties);
+        initParams.put(PROPERTIES_PATH_KEY, properties);
     }
 
     /**
@@ -183,7 +201,7 @@ public class TurbineConfig
         }
         catch (Exception e)
         {
-            Log.error("TurbineConfig: Initialization failed", e);
+            log.error("TurbineConfig: Initialization failed", e);
         }
     }
 
@@ -231,11 +249,18 @@ public class TurbineConfig
     public String getRealPath(String path)
     {
         File f = new File(root, path);
-        if (DEBUG)
+        if(log.isDebugEnabled())
         {
-            System.err.println("TurbineConfig.getRealPath: path '" + path +
-                               "' translated to '" + f.getPath() + "' " +
-                               (f.exists() ? "" : "not ") + "found");
+          StringBuffer sb = new StringBuffer();
+
+          sb.append("TurbineConfig.getRealPath: path '");
+          sb.append(path);
+          sb.append("' translated to '");
+          sb.append(f.getPath());
+          sb.append("' ");
+          sb.append(f.exists() ? "" : "not ");
+          sb.append("found");
+          log.debug(sb.toString());
         }
         return (f.exists() ? f.getPath() : null);
     }
@@ -325,14 +350,11 @@ public class TurbineConfig
      *
      * @param e an Exception.
      * @param m a message.
-     * @deprecated As of Java Servlet API 2.1, use
-     *     #log(String message, Throwable throwable) instead.
+     * @deprecated
      */
     public void log(Exception e, String m)
     {
-        // cannot use Turbine logging yet.
-        System.err.println(m);
-        e.printStackTrace();
+        log.info(m, e);
     }
 
     /**
@@ -342,8 +364,7 @@ public class TurbineConfig
      */
     public void log(String m)
     {
-        // cannot use Turbine logging yet.
-        System.out.println(m);
+        log.info(m);
     }
 
     /**
@@ -354,9 +375,7 @@ public class TurbineConfig
      */
     public void log(String m, Throwable t)
     {
-        // cannot use Turbine logging yet.
-        System.err.println(m);
-        t.printStackTrace();
+        log.info(m, t);
     }
 
     /**
