@@ -55,7 +55,9 @@ package org.apache.turbine.modules.actions;
  */
 
 import org.apache.turbine.modules.Action;
+
 import org.apache.turbine.services.security.TurbineSecurity;
+
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.security.AccessControlList;
 
@@ -91,7 +93,8 @@ import org.apache.turbine.util.security.AccessControlList;
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
  * @version $Id$
  */
-public class AccessController extends Action
+public class AccessController 
+    extends Action
 {
     /**
      * If there is a user and the user is logged in, doPerform will
@@ -107,9 +110,8 @@ public class AccessController extends Action
     public void doPerform(RunData data)
             throws Exception
     {
-        if (data.getUser() != null
-//             && data.getUser().getName().length() > 0
-                && data.getUser().hasLoggedIn())
+        if (!TurbineSecurity.isAnonymousUser(data.getUser())
+            && data.getUser().hasLoggedIn())
         {
             AccessControlList acl = (AccessControlList)
                     data.getSession().getValue(AccessControlList.SESSION_KEY);
