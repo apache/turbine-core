@@ -57,6 +57,7 @@ package org.apache.turbine.services.intake.validator;
 /**
  * Validator api.
  *
+ * @deprecated Use the Fulcrum Intake component instead.
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @version $Id$
  */

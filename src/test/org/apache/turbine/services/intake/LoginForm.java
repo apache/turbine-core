@@ -1,5 +1,3 @@
-package org.apache.turbine.services.intake.validator;
-
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -53,35 +51,32 @@ package org.apache.turbine.services.intake.validator;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
+package org.apache.turbine.services.intake;
 
 /**
- * A constraint has a name and a value and an optional message.
- * The name/value pair will have meaning to a Validator and the
- * message will serve as an error message in the event the Validator
- * determines the constraint is violated.
- * example:
- * name="maxLength"
- * value="255"
- * message="Value cannot be longer than 255 characters."
+ * Test form for Intake
  *
- * @deprecated Use the Fulcrum Intake component instead.
- * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:epugh@upstate.com">epugh@upstate.com</a>
  * @version $Id$
  */
-public interface Constraint
+public class LoginForm
 {
+
+    private String username;
     /**
-     * Get the name of the constraint.
+     * @return
      */
-    String getName();
+    public String getUsername()
+    {
+        return username;
+    }
 
     /**
-     * Get the value of the constraint.
+     * @param username
      */
-    String getValue();
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
 
-    /**
-     * Get the error message.
-     */
-    String getMessage();
 }

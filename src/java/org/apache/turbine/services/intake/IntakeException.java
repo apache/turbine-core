@@ -59,6 +59,7 @@ import org.apache.turbine.util.TurbineException;
 /**
  * Base exception thrown by the Intake service.
  *
+ * @deprecated Use the Fulcrum Intake component instead.
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */

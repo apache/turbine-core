@@ -84,6 +84,7 @@ import org.apache.commons.lang.StringUtils;
  * <li>0</li>
  * </ul>
  *
+ * @deprecated Use the Fulcrum Intake component instead.
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
  * @author <a href="mailto:jh@byteaction.de">J&uuml;rgen Hoffmann</a>

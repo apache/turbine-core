@@ -398,13 +398,32 @@
       <url>http://jakarta.apache.org/avalon/</url>
     </dependency>
     <dependency>
-      <id>fulcrum-localization</id>
+      <groupId>fulcrum</groupId>
+      <artifactId>fulcrum-localization</artifactId>
       <version>1.0-alpha-3</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/</url>
+      <url>http://jakarta.apache.org/turbine/fulcrum/localization</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
     </dependency>    
+    <dependency>
+      <groupId>fulcrum</groupId>
+      <artifactId>fulcrum-intake</artifactId>
+      <version>1.0-alpha-1</version>
+      <url>http://jakarta.apache.org/turbine/fulcrum/intake</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>    
+    <dependency>
+      <groupId>fulcrum</groupId>
+      <artifactId>fulcrum-factory</artifactId>
+      <version>1.0-alpha-1</version>
+      <url>http://jakarta.apache.org/turbine/fulcrum/factory</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>     
     <dependency>
       <id>jaf:activation</id>
       <version>1.0.2</version>
@@ -538,6 +557,7 @@
     <report>maven-linkcheck-plugin</report>
     -->
     <report>maven-tasklist-plugin</report>
+    <report>maven-jcoverage-plugin</report>
 
   </reports>
 

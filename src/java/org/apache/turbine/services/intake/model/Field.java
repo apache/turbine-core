@@ -63,9 +63,9 @@ import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.fulcrum.localization.Localization;
 
 import org.apache.turbine.om.Retrievable;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.TurbineIntake;
 import org.apache.turbine.services.intake.validator.DefaultValidator;
@@ -74,8 +74,7 @@ import org.apache.turbine.services.intake.validator.ValidationException;
 import org.apache.turbine.services.intake.validator.Validator;
 import org.apache.turbine.services.intake.xmlmodel.Rule;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
-import org.apache.turbine.services.localization.Localization;
-import org.apache.turbine.services.localization.LocalizationService;
+
 import org.apache.turbine.util.SystemError;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.parser.ValueParser;
@@ -83,6 +82,7 @@ import org.apache.turbine.util.parser.ValueParser;
 /**
  * Base class for Intake generated input processing classes.
  *
+ * @deprecated Use the Fulcrum Intake component instead.
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:dlr@finemaltcoding.com>Daniel Rall</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
@@ -358,8 +358,8 @@ public abstract class Field
 
         // If the parser is for a HTTP request, use the request it's
         // associated with to grok the locale.
-        if (TurbineServices.getInstance()
-                .isRegistered(LocalizationService.SERVICE_NAME))
+        
+        if (Localization.isInitialized())
         {
             if (pp instanceof ParameterParser)
             {

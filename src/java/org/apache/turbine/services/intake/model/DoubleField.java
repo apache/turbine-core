@@ -63,6 +63,7 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
 /**
  * Creates Double Field objects.
  *
+ * @deprecated Use the Fulcrum Intake component instead.
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$

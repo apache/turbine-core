@@ -96,6 +96,7 @@ import org.apache.turbine.services.intake.xmlmodel.XmlGroup;
  * This service provides access to input processing objects based
  * on an XML specification.
  *
+ * @deprecated Use the Fulcrum Intake component instead.
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
