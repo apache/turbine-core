@@ -56,8 +56,12 @@ package org.apache.turbine.services.logging;
 
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.Properties;
+
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.resources.ResourceService;
+import org.apache.turbine.util.Log;
+import org.apache.stratum.configuration.Configuration;
 
 /**
  * Small helper class that encapsulates the logging configuration 
@@ -103,6 +107,52 @@ public class PropertiesLoggingConfig implements LoggingConfig
     public void setInitResource (Object props)
     {
         this.props = (ResourceService) props;
+    }
+
+    /** 
+     * returns all properties in a properties object - used by log4j
+     * initialization
+     **/
+    public Properties getFacilityProperties(String facilityName)
+    {
+        // Extract the log4j values out of the configuration and
+        // place them in a Properties object so that we can
+        // use the log4j PropertyConfigurator.
+        Properties p = new Properties();
+
+        Configuration facilityConfiguration =
+            props.getConfiguration(facilityName);
+        Iterator i = facilityConfiguration.getKeys();
+        while (i.hasNext())
+        {
+            String key = (String) i.next();
+
+            // We have to deal with ExtendedProperties way
+            // of dealing with "," in properties which is to
+            // make them separate values. Log4j category
+            // properties contain commas so we must stick them
+            // back together for log4j.
+            String[] values = facilityConfiguration.getStringArray(key);
+
+            String value = null;
+            if (values.length == 1)
+            {
+                value = values[0];
+            }
+            else if (values.length > 1)
+            {
+                StringBuffer valueSB = new StringBuffer();
+                for (int j=0; j<values.length-1; j++)
+                {
+                    valueSB.append(values[j]).append(",");
+                }
+                value = valueSB.append(values[values.length-1]).toString();
+            }
+
+            p.put(key, value);
+        }
+
+        return p;
     }
 
     public void init()

@@ -55,6 +55,7 @@ package org.apache.turbine.services.logging;
  */
 
 import java.util.Vector;
+import java.util.Properties;
 import org.apache.turbine.services.InitializationException;
 
 /**
@@ -81,6 +82,12 @@ public interface LoggingConfig
     public static final int DEFAULT_BACKUP_FILES = 1;
 
     public abstract void setInitResource(Object props);
+
+    /**
+     * returns all properties in a properties object - used by log4j
+     * initialization
+     **/
+    public abstract Properties getFacilityProperties(String facilityName);
 
     public abstract void init() throws InitializationException;
 
