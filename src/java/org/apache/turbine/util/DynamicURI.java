@@ -664,7 +664,7 @@ public class DynamicURI
                         if (ParserUtils.convertAndTrim(name)
                                 .equals((String) tmp[0]))
                         {
-                            this.pathInfo.remove(tmp);
+                            iter.remove();
                         }
                     }
                     if (hasPathInfo && this.pathInfo.size() == 0)
@@ -680,7 +680,7 @@ public class DynamicURI
                         if (ParserUtils.convertAndTrim(name)
                                 .equals((String) tmp[0]))
                         {
-                            this.queryData.remove(tmp);
+                            iter.remove();
                         }
                     }
                     if (hasQueryData && this.queryData.size() == 0)
