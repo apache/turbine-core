@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Turbine"
+        href="http://jakarta.apache.org/turbine/">
+
+  <title>Turbine</title>
+
+  <body>
+    <links>
+      <item name="Turbine"                 href="http://jakarta.apache.org/turbine/"/>
+      <item name="Turbine-2"               href="http://jakarta.apache.org/turbine/turbine-2/"/>
+      <item name="Turbine-3"               href="http://jakarta.apache.org/turbine/turbine-3/"/>
+      <item name="Torque"                  href="http://jakarta.apache.org/turbine/torque/"/>
+      <item name="Fulcrum"                 href="http://jakarta.apache.org/turbine/fulcrum/"/>
+      <item name="TDK"                     href="http://jakarta.apache.org/turbine/tdk/"/>
+      <item name="Maven"                   href="http://jakarta.apache.org/turbine/maven/"/>
+      <item name="JCS"                     href="http://jakarta.apache.org/turbine/jcs/"/>
+    </links>
+
+    <menu name="Essentials">
+      <item name="Overview"              href="/index.html"/>
+      <item name="Features"              href="/features.html"/>
+      <item name="Specification"         href="/fsd.html"/>
+      <item name="Getting Started"       href="/getting-started.html"/>
+      <item name="Changes"               href="/changes.html"/>
+    </menu>
+
+    <menu name="Documentation">
+      <item name="Core Schema"           href="/turbine-schema.html"/>
+      <item name="J2EE Integration"      href="/j2ee-integration.html"/>
+      <item name="Model 2+1"             href="/model2+1.html"/>
+      <item name="Pull MVC Model"        href="/pullmodel.html"/>
+      <item name="Services"              href="/services/index.html">
+        <item name="Assembler Broker Service" href="/services/assemblerbroker-service.html"/>
+        <item name="Cache Service"       href="/services/cache-service.html"/>
+        <item name="Castor Service"      href="/services/castor-service.html"/>
+        <item name="Component Service"   href="/services/component-service.html"/>
+        <item name="DB Service (deprecated)" href="/services/db-service.html"/>
+        <item name="Factory Service"     href="/services/factory-service.html"/>
+        <item name="FreeMarker Service"  href="/services/freemarker-service.html"/>
+        <item name="Intake Service"      href="/services/intake-service.html"/>
+        <item name="JSP Service"         href="/services/jsp-service.html"/>
+        <item name="Localization Service" href="/services/localization-service.html"/>
+        <item name="Logging Service"     href="/services/logging-service.html"/>
+        <item name="MimeType Service"    href="/services/mimetype-service.html"/>
+        <item name="Naming Service"      href="/services/naming-service.html"/>
+        <item name="Pool Service"        href="/services/pool-service.html"/>
+        <item name="Pull Service"        href="/services/pull-service.html"/>
+        <item name="Resources Service"   href="/services/resources-service.html"/>
+        <item name="RunData Service"     href="/services/rundata-service.html"/>
+        <item name="Scheduler Service"   href="/services/scheduler-service.html"/>
+        <item name="Security Service"    href="/services/security-service.html"/>
+        <item name="Servlet Service"     href="/services/servlet-service.html"/>
+        <item name="Template Service"    href="/services/template-service.html"/>
+        <item name="Unique ID Service"   href="/services/uniqueid-service.html"/>
+        <item name="Upload Service"      href="/services/upload-service.html"/>
+        <item name="Velocity Service"    href="/services/velocity-service.html"/>
+        <item name="WebMacro Service"    href="/services/webmacro-service.html"/>
+        <item name="XML-RPC Service"     href="/services/xmlrpc-service.html"/>
+        <item name="XSLT Service"        href="/services/xslt-service.html"/>
+      </item>
+      <item name="Howtos"                href="/howto/index.html"/>
+    </menu>
+
+    <menu name="Development">
+      <item name="Project Map"           href="/project-map.html"/>
+      <item name="Proposals"             href="/proposals.html"/>
+      <item name="Todo"                  href="/todo.html"/>
+    </menu>
+
+  </body>
+</project>

@@ -28,7 +28,7 @@ solve the same problems over and over again.
 
 <p>
 <strong>All of these features have been made possible thanks to the over
-30 developers (and growing all the time!) who have <a href="contributors.html">
+30 developers (and growing all the time!) who have <a href="team-list.html">
 contributed</a> to Turbine over the last 2+ years.</strong>
 </p>
 
@@ -42,9 +42,6 @@ contributed</a> to Turbine over the last 2+ years.</strong>
         SelectorBox class for building &lt;select> boxes</li>
     <li>
         Single Entry Point Servlet model for optimal security and control</li>
-    <li>
-        Singleton based Database Connection Pool (JDBC) with built in support
-        for all of the major databases</li>
     <li>
         ParameterParsing for GET/POST/PATH_INFO</li>
     <li>
@@ -99,7 +96,7 @@ contributed</a> to Turbine over the last 2+ years.</strong>
         Integration with JavaMail and Velocity/WebMacro to allow you to send
         processed Velocity templates as email!</li>
     <li>
-        Built using Ant</li>
+        Built using Maven</li>
     <li>
         Initial application development WAR archive creation tool using Ant</li>
     <li>

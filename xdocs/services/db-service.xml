@@ -11,6 +11,8 @@
 <section name="DB Service">
 
 <p>
+<b>This service is deprecated. It is just a facade for Torque.</b>
+<br/>
 'DB Service' includes two services:
 <ul>
   <li>PoolBrokerService - provides database connection pooling</li>

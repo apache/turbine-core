@@ -34,7 +34,6 @@ Development Kit Howto</a> for more information.
 </section>
 
 <section name="Code Organization">
-
 <p>
 Turbine can be used in three different ways depending on what you need.
 You can choose to only use one way or choose to use all three. It is up
@@ -105,13 +104,11 @@ you to easily send template based email using WebMacro or Velocity as
 well as many other commonly used web application tools.
 </li>
 </ul>
-
 </section>
 
 <section name="Standalone Usage">
-
 <p>
-Turbine can be easily used on its own. In order to do so, all you need 
+Turbine can be easily used on its own. In order to do so, all you need
 to do is something like this before you attempt to make a call to Turbine
 based code:
 </p>
@@ -129,25 +126,6 @@ You do not even have to worry about hanging on to the TurbineConfig
 object. For more information, please see the javadoc for the
 TurbineConfig object.
 </p>
-
-</section>
-
-<section name="Generating the Turbine Javadocs">
-<p>
-To generate the Javadocs for Turbine check out Turbine from CVS,
-cd to the 'build' directory and execute the <strong>javadocs</strong> target:
-
-</p>
-
-<source>
-cd jakarta-turbine/build
-ant javadocs
-</source>
-
-<p>
-The javadocs will be generated in the ../docs/apidocs directory.
-</p>
-
 </section>
 
 <section name="Further Questions and Comments">
@@ -157,7 +135,5 @@ href="http://jakarta.apache.org/site/mail.html">Turbine Mailing list</a>.
 </p>
 </section>
 
-
 </body>
 </document>
-

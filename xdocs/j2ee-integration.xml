@@ -98,7 +98,7 @@ from using it).
     <td>
 <p>
 Turbine provides support for using and working with XML. Again, nothing
-preventing you from using XML within Turbine or even sending XML out 
+preventing you from using XML within Turbine or even sending XML out
 of Turbine.
 </p>
     </td>
@@ -109,7 +109,8 @@ of Turbine.
 <p>
 Turbine provides good support for working with JDBC through the <a
 href="http://share.whichever.com/village/">Village API</a>, the <a
-href="howto/torque-howto.html">Torque Object Relational Tool</a> and its connection
+href="http://jakarta.apache.org/turbine/torque/user-guide.html">
+Torque Object Relational Tool</a> and its connection
 pooling facilities. The connection pool is not yet fully J2EE
 "compatible" in that it does not support DataSources. However, at some
 point we may choose to implement that. Note, again, Turbine does not
@@ -170,10 +171,10 @@ to provide it. That's why we created SecurityService in a cooperative effort.
 <p>
 On the other hand, you don't need to write any code to use declarative
 container managed security. You can restrict access to the Turbine
-servlet with the usual web.xml magic. If you wish to use programmatic 
+servlet with the usual web.xml magic. If you wish to use programmatic
 container managed security code, there is relatively very little code to write.
 You need to create your own SecureScreens (probably extending VelocityScreen)
-and SecureActions that contained code that calls the <code>HttpServletRequest 
+and SecureActions that contained code that calls the <code>HttpServletRequest
 getUserPrincipal</code> and <code>isUserInRole</code> methods.
 above.
 </p>
