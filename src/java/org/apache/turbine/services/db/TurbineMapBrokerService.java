@@ -60,8 +60,7 @@ import java.util.Map;
 import org.apache.turbine.services.BaseService;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.db.AutoIncrementIdGenerator;
-import org.apache.turbine.util.db.SequenceIdGenerator;
+import org.apache.turbine.util.db.IDGeneratorFactory;
 import org.apache.turbine.util.db.IDBroker;
 import org.apache.turbine.util.db.adapter.DB;
 import org.apache.turbine.util.db.adapter.DBFactory;
@@ -169,10 +168,12 @@ public class TurbineMapBrokerService extends BaseService
                     {
                         DB db = DBFactory.create(
                             getDatabaseProperty(name, "driver") );
-                        map.addIdGenerator(TableMap.AUTOINCREMENT,
-                                       new AutoIncrementIdGenerator(db) );
-                        map.addIdGenerator(TableMap.SEQUENCE,
-                                       new SequenceIdGenerator(db) );
+                        for (int i = 0; i < IDGeneratorFactory.ID_GENERATOR_METHODS.length;
+                             i++)
+                        {
+                            map.addIdGenerator(IDGeneratorFactory.ID_GENERATOR_METHODS[i],
+                                               IDGeneratorFactory.create(db));
+                        }
                     }
                     catch (java.lang.InstantiationException e)
                     {

@@ -65,6 +65,7 @@ import org.apache.turbine.util.Log;
  * <a href="http://www.pgsql.org">http://www.pgsql.org</a>
  *
  * @author <a href="mailto:hakan42@gmx.de">Hakan Tandogan</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
 public class DBPostgres
@@ -122,20 +123,22 @@ public class DBPostgres
     }
 
     /**
-     * Returns the last auto-increment key.  Databases like MySQL
-     * which support this feature will return a result, others will
-     * return null.
-     *
-     * @return The most recently inserted database key.
+     * @see org.apache.turbine.util.db.adapter.DB#getIDMethodType()
      */
-    public String getIdSqlForAutoIncrement(Object obj)
+    public String getIDMethodType()
     {
-	     StringBuffer sb = new StringBuffer();
-		  sb.append("select currval(\'");
-		  sb.append((String)obj);
-		  sb.append("\')");
-        // Log.info(sb.toString());
-        return sb.toString();
+         return AUTO_INCREMENT;
+    }
+ 
+    /**
+     * @param name The name of the field (should be of type
+     * <code>String</code>).
+     * @return SQL to retreive the next database key.
+     * @see org.apache.turbine.util.db.adapter.DB#getIDMethodSQL()
+     */
+    public String getIDMethodSQL(Object name)
+    {
+        return ("select currval('" + name + "')");
     }
 
     /**

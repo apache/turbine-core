@@ -68,6 +68,7 @@ import java.sql.Statement;
  * not function.  For connection pooling, everything works.</I>
  *
  * @author <a href="mailto:ekkerbj@netscape.net">Jeff Brekke</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
 public class DBSybase
@@ -113,27 +114,23 @@ public class DBSybase
     }
 
     /**
-     * The last value applied to an identity column for a session is available
-     * in the @@identity global variable.  @@identity retains its value until
-     * the session inserts another row into a table with an identity column.
-     *
-     * @return The last id generated for the table in the current session.
+     * @see org.apache.torque.adapter.DB#getIDMethodType()
      */
-    public String getIdSqlForAutoIncrement(Object obj)
+    public String getIDMethodType()
     {
-        return "select @@identity";
+        return AUTO_INCREMENT;
     }
 
     /**
-     * Returns the last auto-increment key.  Databases like Oracle
-     * which support this feature will return a result, others will
-     * return null.
+     * Returns the last value from an identity column (available on a
+     * per-session basis from the global variable
+     * <code>@@identity</code>).
      *
-     * @return null.
+     * @see org.apache.torque.adapter.DB#getIDMethodSQL(Object obj)
      */
-    public String getSequenceSql(Object obj)
+    public String getIDMethodSQL(Object unused)
     {
-        return null;
+        return "select @@identity";
     }
 
     /**

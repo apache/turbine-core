@@ -60,6 +60,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import javax.sql.ConnectionPoolDataSource;
+import org.apache.turbine.util.db.map.IDMethod;
 
 /**
  * <code>DB</code> defines the interface for a Turbine database
@@ -100,9 +101,10 @@ import javax.sql.ConnectionPoolDataSource;
  *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
-public abstract class DB implements Serializable
+public abstract class DB implements Serializable, IDMethod
 {
     /** The database user name. */
     protected String DB_USER;
@@ -230,23 +232,39 @@ public abstract class DB implements Serializable
     public abstract char getStringDelimiter();
 
     /**
-     * Returns the last auto-increment key.  Databases like MySQL
-     * which support this feature will return a result, others will
-     * return null.
-     *
-     * @param obj The string information for generating a key.
-     * @return The most recently inserted database key.
+     * Returns the constant from the {@link
+     * org.apache.torque.adapter.IDMethod} interface denoting which
+     * type of primary key generation method this type of RDBMS uses.
      */
-    public abstract String getIdSqlForAutoIncrement(Object obj);
+    public abstract String getIDMethodType();
 
     /**
-     * Returns the last auto-increment key.  Databases like Oracle
-     * which support this feature will return a result, others will
-     * return null.
+     * Returns SQL used to get the most recently inserted primary key.
+     * Databases which have no support for this return
+     * <code>null</code>.
      *
+     * @param obj Information used for key generation.
      * @return The most recently inserted database key.
      */
-    public abstract String getSequenceSql(Object obj);
+    public abstract String getIDMethodSQL(Object obj);
+
+    /**
+     * @see #getIDMethodSQL(Object obj)
+     * @deprecated Use getIDMethodSQL(Object) instead.
+     */
+    public String getIdSqlForAutoIncrement(Object obj)
+    {
+        return getIDMethodSQL(obj);
+    }
+
+    /**
+     * @see #getIDMethodSQL(Object obj)
+     * @deprecated Use getIDMethodSQL(Object) instead.
+     */
+    public String getSequenceSql(Object obj)
+    {
+        return getIDMethodSQL(obj);
+    }
 
     /**
      * Locks the specified table.

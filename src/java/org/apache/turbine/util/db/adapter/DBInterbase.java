@@ -63,6 +63,7 @@ import java.sql.Statement;
  * This code should be used for an Interbase database pool.
  *
  * @author <a href="mailto:frank@opticode.co.za">Frank Conradie</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
 public class DBInterbase
@@ -115,25 +116,17 @@ public class DBInterbase
     }
 
     /**
-     * Returns the last auto-increment key.  Databases like MySQL
-     * which support this feature will return a result, others will
-     * return null.
-     *
-     * @return null.
+     * @see org.apache.torque.adapter.DB#getIDMethodType()
      */
-    public String getIdSqlForAutoIncrement(Object obj)
+    public String getIDMethodType()
     {
-        return null;
+        return NO_ID_METHOD;
     }
 
     /**
-     * Returns the last auto-increment key.  Databases like Oracle
-     * which support this feature will return a result, others will
-     * return null.
-     *
-     * @return null.
+     * @see org.apache.torque.adapter.DB#getIDMethodSQL(Object obj)
      */
-    public String getSequenceSql(Object obj)
+    public String getIDMethodSQL(Object obj)
     {
         return null;
     }

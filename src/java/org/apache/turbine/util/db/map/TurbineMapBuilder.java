@@ -66,6 +66,7 @@ import org.apache.turbine.services.db.TurbineDB;
  * defined within the TurbineResources.properties file.
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
 public class TurbineMapBuilder implements MapBuilder
@@ -888,7 +889,7 @@ public class TurbineMapBuilder implements MapBuilder
 
         // Add User columns.
         tMap = dbMap.getTable(getTableUser());
-        tMap.setPrimaryKeyMethod(TableMap.IDBROKERTABLE);
+        tMap.setPrimaryKeyMethod(TableMap.ID_BROKER);
         tMap.setPrimaryKeyMethodInfo(tMap.getName());
         tMap.addPrimaryKey(getUserId(), integer);
         tMap.addColumn(getUsername(), string);
@@ -904,7 +905,7 @@ public class TurbineMapBuilder implements MapBuilder
         
         // Add Group columns.
         tMap = dbMap.getTable(getTableGroup());
-        tMap.setPrimaryKeyMethod(TableMap.IDBROKERTABLE);
+        tMap.setPrimaryKeyMethod(TableMap.ID_BROKER);
         tMap.setPrimaryKeyMethodInfo(tMap.getName());
         tMap.addPrimaryKey(getGroupId(), integer);
         tMap.addColumn(getGroupName(), string);
@@ -912,7 +913,7 @@ public class TurbineMapBuilder implements MapBuilder
 
         // Add Role columns.
         tMap = dbMap.getTable(getTableRole());
-        tMap.setPrimaryKeyMethod(TableMap.IDBROKERTABLE);
+        tMap.setPrimaryKeyMethod(TableMap.ID_BROKER);
         tMap.setPrimaryKeyMethodInfo(tMap.getName());
         tMap.addPrimaryKey(getRoleId(), integer);
         tMap.addColumn(getRoleName(), string);
@@ -920,7 +921,7 @@ public class TurbineMapBuilder implements MapBuilder
 
         // Add Permission columns.
         tMap = dbMap.getTable(getTablePermission());
-        tMap.setPrimaryKeyMethod(TableMap.IDBROKERTABLE);
+        tMap.setPrimaryKeyMethod(TableMap.ID_BROKER);
         tMap.setPrimaryKeyMethodInfo(tMap.getName());
         tMap.addPrimaryKey(getPermissionId(), integer);
         tMap.addColumn(getPermissionName(), string);
@@ -954,7 +955,7 @@ public class TurbineMapBuilder implements MapBuilder
 
          // Add Jobentry columns.
         tMap = dbMap.getTable(getTableJobentry());
-        tMap.setPrimaryKeyMethod(TableMap.IDBROKERTABLE);
+        tMap.setPrimaryKeyMethod(TableMap.ID_BROKER);
         tMap.setPrimaryKeyMethodInfo(tMap.getName());
         tMap.addPrimaryKey(getJobId(), integer);
         tMap.addColumn(getSecond(), integer);        

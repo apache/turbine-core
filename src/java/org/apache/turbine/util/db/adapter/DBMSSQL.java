@@ -67,9 +67,16 @@ import java.sql.Statement;
  *   http://www.inetsoftware.de/
  *
  * @author <a href="mailto:gonzalo.diethelm@sonda.com">Gonzalo Diethelm</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
 public class DBMSSQL
     extends DBSybase
 {
+    /**
+     * Empty constructor.
+     */
+    protected DBMSSQL()
+    {
+    }
 }

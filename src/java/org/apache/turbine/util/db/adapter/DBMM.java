@@ -71,6 +71,7 @@ import java.sql.Statement;
  *
  * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
 public class DBMM
@@ -116,27 +117,23 @@ public class DBMM
     }
 
     /**
+     * @see org.apache.torque.adapter.DB#getIDMethodType()
+     */
+    public String getIDMethodType()
+    {
+        return AUTO_INCREMENT;
+    }
+
+    /**
      * Returns the SQL to get the database key of the last row
      * inserted, which in this case is <code>SELECT
      * LAST_INSERT_ID()</code>.
      *
-     * @return SQL to get the key of the last row inserted.
+     * @see org.apache.torque.adapter.DB#getIDMethodSQL(Object obj)
      */
-    public String getIdSqlForAutoIncrement(Object obj)
+    public String getIDMethodSQL(Object obj)
     {
         return "SELECT LAST_INSERT_ID()";
-    }
-
-    /**
-     * Returns the last auto-increment key.  Databases like Oracle
-     * which support this feature will return a result, others will
-     * return null.
-     *
-     * @return null.
-     */
-    public String getSequenceSql(Object obj)
-    {
-        return null;
     }
 
     /**

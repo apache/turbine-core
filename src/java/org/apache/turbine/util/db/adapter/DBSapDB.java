@@ -67,6 +67,7 @@ import java.sql.Statement;
  * <a href="http://www.sapdb.org">http://www.sapdb.org</a>
  *
  * @author <a href="mailto:dave.polito@planetcad.com">Dave Polito</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
 public class DBSapDB
@@ -112,36 +113,29 @@ public class DBSapDB
     }
 
     /**
-     * Returns the SQL to get the database key of the last row
-     * inserted.
-     * SapDB doesn't have this, so it returns null.
-     *
-     * @return null.
+     * @see org.apache.torque.adapter.DB#getIDMethodType()
      */
-    public String getIdSqlForAutoIncrement(Object obj)
+    public String getIDMethodType()
     {
-        return null;
+        return SEQUENCE;
     }
 
     /**
-     * Returns the next key from a sequence.  Databases like SapDB
-     * which support this feature will return a result, others will
-     * return null.
+     * Returns the next key from a sequence.  Uses the following
+     * implementation:
      *
-     * SapDB does this by returning
+     * <blockquote><code><pre>
+     * select sequenceName.nextval from dual
+     * </pre></code></blockquote>
      *
-     *   select sequenceName.nextval from dual
-     *
-     * @param sequenceName, An object of type String
-     * @return The next database key.
+     * @param sequenceName The name of the sequence (should be of type
+     * <code>String</code>).
+     * @return SQL to retreive the next database key.
+     * @see org.apache.torque.adapter.DB#getIDMethodSQL()
      */
-    public String getSequenceSql(Object sequenceName)
+    public String getIDMethodSQL(Object sequenceName)
     {
-        return new StringBuffer()
-               .append("select ")
-               .append((String)sequenceName)
-               .append(".nextval from dual")
-               .toString();
+        return ("select " + sequenceName + ".nextval from dual");
     }
 
     /**
