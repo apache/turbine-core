@@ -113,6 +113,7 @@ import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
  * @author <a href="mailto:sean@informage.ent">Sean Legassick</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a> 
  * @version $Id$
  */
 public class TurbineVelocityService
@@ -448,12 +449,9 @@ public class TurbineVelocityService
 
         if (encoding != null)
         {
-            Velocity.mergeTemplate(filename, encoding, context, writer);
+          encoding = DEFAULT_CHAR_SET;
         }
-        else
-        {
-            Velocity.mergeTemplate(filename, context, writer);
-        }
+		Velocity.mergeTemplate(filename, encoding, context, writer);
     }
 
     /**
