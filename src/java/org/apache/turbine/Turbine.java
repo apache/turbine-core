@@ -149,7 +149,13 @@ public class Turbine
      * will operate.
      */
     private static String applicationRoot;
-    
+
+    /**
+     * instance of turbine services
+     */
+    private TurbineServices services =
+            (TurbineServices) TurbineServices.getInstance();
+
     /**
      * Server information. This information needs to
      * be made available to processes that do not have
@@ -201,9 +207,6 @@ public class Turbine
                 // a running Turbine application.
                 createRuntimeDirectories();
                 
-                // Initalize TurbineServices and init bootstrap services
-                TurbineServices services =
-                    (TurbineServices) TurbineServices.getInstance();
 
                 // Initialize essential services (Resources & Logging)
                 services.initPrimaryServices(config);
@@ -218,15 +221,15 @@ public class Turbine
                 
                 // Initialize other services that require early init
                 services.initServices(config, false);
+
+                log ("Turbine: init() Ready to Rumble!");
             }
             catch ( Exception e )
             {
                 // save the exception to complain loudly later :-)
                 initFailure = e;
                 log ("Turbine: init() failed: " + StringUtils.stackTrace(e));
-                return;
             }
-            log ("Turbine: init() Ready to Rumble!");
         }
     }
 
@@ -780,5 +783,27 @@ public class Turbine
         }
         
         return applicationRoot + "/" + path;
-    }        
+    }
+
+    /**
+     * logs message using turbine's logging facility
+     * @param msg   message to be logged
+     */
+    public void log(String msg)
+    {
+        services.notice(msg);
+    }
+
+    /**
+     * Writes an explanatory message and a stack trace
+     * for a given <code>Throwable</code> exception
+     * @param message 		the message
+     * @param t			the error
+     */
+
+    public void log(String message, Throwable t)
+    {
+        services.notice(message);
+        services.error(t);
+    }
 }
