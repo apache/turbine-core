@@ -3,7 +3,7 @@ package org.apache.turbine;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,13 +25,13 @@ package org.apache.turbine;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -58,11 +58,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
 import java.util.Enumeration;
+import java.util.Vector;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.stratum.configuration.Configuration;
+import org.apache.stratum.configuration.PropertiesConfiguration;
+import org.apache.stratum.lifecycle.Configurable;
+import org.apache.stratum.lifecycle.Initializable;
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.PageLoader;
 import org.apache.turbine.modules.actions.sessionvalidator.SessionValidator;
@@ -75,6 +80,7 @@ import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.logging.LoggingService;
+import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.template.TurbineTemplate;
 
 /**
@@ -109,9 +115,10 @@ import org.apache.turbine.services.template.TurbineTemplate;
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
+ * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
  * @version $Id$
  */
-public class Turbine 
+public class Turbine
     extends HttpServlet
     implements TurbineConstants
 {
@@ -172,7 +179,7 @@ public class Turbine
     private static String serverScheme;
     private static String serverPort;
     private static String contextPath;
-    
+
     /**
      * This init method will load the default resources from a
      * properties file.
@@ -203,34 +210,37 @@ public class Turbine
                 // to be developed from CVS. This feature will carry over
                 // into 3.0.
                 applicationRoot = config.getInitParameter(APPLICATION_ROOT);
-                
+
                 if (applicationRoot == null || applicationRoot.equals("webContext"))
                 {
                     applicationRoot = config.getServletContext().getRealPath("");
-                }                    
-                
+                }
+
                 // Set the webapp root. The applicationRoot and the
                 // webappRoot will be the same when the application is
                 // deployed, but during development they may have
                 // different values.
                 webappRoot = config.getServletContext().getRealPath("");
-                
+
                 // Create any directories that need to be setup for
                 // a running Turbine application.
                 createRuntimeDirectories();
-                
+
                 // Initialize essential services (Resources & Logging)
                 services.initPrimaryServices(config);
-                
+
                 // Now that TurbineResources is setup, we want to insert
                 // the applicationRoot and webappRoot into the resources
                 // so that ${applicationRoot} and ${webappRoot} can be
                 // use in the TRP.
                 TurbineResources.setProperty(APPLICATION_ROOT, applicationRoot);
                 TurbineResources.setProperty(WEBAPP_ROOT, webappRoot);
-                
+
                 // Initialize other services that require early init
                 services.initServices(config, false);
+
+                // Initialize subsystems like torque and fulcrum
+                loadSubsystems();
 
                 log ("Turbine: init() Ready to Rumble!");
             }
@@ -248,13 +258,12 @@ public class Turbine
      * runtime. Right now this includes:
      *
      * i) directories for logging
-     *
      */
     private static void createRuntimeDirectories()
     {
         // Create the logging directory
         File logDir = new File(webappRoot + "/logs");
-        
+
         if (logDir.exists() == false)
         {
             if(logDir.mkdirs() == false)
@@ -281,12 +290,12 @@ public class Turbine
                     serverName = data.getRequest().getServerName();
                     serverPort = Integer.toString(data.getRequest().getServerPort());
                     serverScheme = data.getRequest().getScheme();
-                    
+
                     // Store the context path for tools like ContentURI and
                     // the UIManager that use webapp context path information
                     // for constructing URLs.
                     contextPath = data.getRequest().getContextPath();
-                    
+
                     log("Turbine: Starting HTTP initialization of services");
                     TurbineServices.getInstance().initServices(data);
                     log("Turbine: Completed HTTP initialization of services");
@@ -389,8 +398,8 @@ public class Turbine
                 .getInstance().getInstance(TurbineResources.getString(
                     "action.sessionvalidator"));
 
-            // if this is the redirected stage of the initial request, 
-            // check that the session is now not new. 
+            // if this is the redirected stage of the initial request,
+            // check that the session is now not new.
             // If it is not, then redirect back to the
             // original URL (i.e. remove the "redirected" pathinfo)
             if (data.getParameters()
@@ -447,7 +456,7 @@ public class Turbine
                         duri.addPathInfo((String)key, (String)value );
                     }
 
-                    // add a dummy bit of path info to fool browser into 
+                    // add a dummy bit of path info to fool browser into
                     // thinking this is a new URL
                     if (!data.getParameters()
                         .containsKey(REDIRECTED_PATHINFO_NAME))
@@ -455,15 +464,15 @@ public class Turbine
                         duri.addPathInfo(REDIRECTED_PATHINFO_NAME, "true");
                     }
 
-                    // as the session is new take this opportunity to 
+                    // as the session is new take this opportunity to
                     // set the session timeout if specified in TR.properties
-                    int timeout = 
+                    int timeout =
                         TurbineResources.getInt("session.timeout", -1);
-                    
+
                     if (timeout != -1)
                     {
                         data.getSession().setMaxInactiveInterval(timeout);
-                    }                        
+                    }
 
                     data.getResponse().sendRedirect( duri.toString() );
                     return;
@@ -542,9 +551,9 @@ public class Turbine
             // security purposes.  You should really never need more
             // than just the default page.  If you do, add logic to
             // DefaultPage to do what you want.
-            
+
             String defaultPage = TurbineTemplate.getDefaultPageName(data);
-            
+
             if (defaultPage == null)
             {
                 /*
@@ -561,7 +570,7 @@ public class Turbine
                 defaultPage = TurbineResources.getString(
                     "page.default", "DefaultPage");
             }
-            
+
             PageLoader.getInstance().exec(data, defaultPage);
 
             // If a module has set data.acl = null, remove acl from
@@ -708,7 +717,7 @@ public class Turbine
 
             PageLoader.getInstance()
                 .exec(data,
-                      TurbineResources.getString("page.default", 
+                      TurbineResources.getString("page.default",
                       "DefaultPage"));
 
             data.getResponse().setContentType( data.getContentType() );
@@ -775,8 +784,8 @@ public class Turbine
     public static String getApplicationRoot()
     {
         return applicationRoot;
-    }        
-    
+    }
+
     /**
      * Used to get the real path of configuration and resource
      * information. This can be used by an app being
@@ -791,7 +800,7 @@ public class Turbine
         {
             path = path.substring(1);
         }
-        
+
         return applicationRoot + "/" + path;
     }
 
@@ -815,5 +824,50 @@ public class Turbine
     {
         services.notice(message);
         services.error(t);
+    }
+
+    /**
+     * load subsystems like torque and fulcrum.
+     */
+    private void loadSubsystems()
+    {
+        // name of the subsystem
+        String sysName;
+        // name of the class to load
+        String sysClassName;
+        // name of the config file used to configure the subsystem
+        String sysConfig;
+
+        // get name of all subsystems to be loaded
+        Vector systems = TurbineResources.getVector("subsystem.name");
+
+        for (int i = 0; i < systems.size(); i++)
+        {
+            try
+            {
+                sysName = (String) systems.get(i);
+                sysClassName = TurbineResources.getString("subsystem."
+                        + sysName + ".classname");
+                sysConfig = TurbineServlet.getRealPath(
+                        TurbineResources.getString("subsystem."+ sysName
+                        + ".config"));
+
+                Log.notice("loading subsystem " + sysName + " - class: "
+                        + sysClassName + " with config: " + sysConfig);
+
+                Object sys = Class.forName(sysClassName).newInstance();
+
+                // configure subsystem using the defined config file
+                ((Configurable) sys).configure( (Configuration)
+                        new PropertiesConfiguration(sysConfig));
+
+                // initialize subsystem
+                ((Initializable) sys).initialize();
+            }
+            catch (Exception ex)
+            {
+                Log.error(sysName + " could not be initialized!", ex);
+            }
+        }
     }
 }
