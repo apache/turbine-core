@@ -135,7 +135,7 @@ public class DBSecurityService
         if (!TurbineSecurity.accountExists(user))
         {
             throw new UnknownEntityException("The account '"
-                    + user.getUserName() + "' does not exist");
+                    + user.getName() + "' does not exist");
         }
         try
         {
@@ -176,7 +176,7 @@ public class DBSecurityService
         catch (Exception e)
         {
             throw new DataBackendException("Failed to build ACL for user '"
-                    + user.getUserName() + "'", e);
+                    + user.getName() + "'", e);
         }
         finally
         {
@@ -236,7 +236,7 @@ public class DBSecurityService
         if (!userExists)
         {
             throw new UnknownEntityException("Unknown user '"
-                    + user.getUserName() + "'");
+                    + user.getName() + "'");
         }
         if (!groupExists)
         {
@@ -297,7 +297,7 @@ public class DBSecurityService
         if (!userExists)
         {
             throw new UnknownEntityException("Unknown user '"
-                    + user.getUserName() + "'");
+                    + user.getName() + "'");
         }
         if (!groupExists)
         {
@@ -347,7 +347,7 @@ public class DBSecurityService
             unlockExclusive();
         }
         throw new UnknownEntityException("Unknown user '"
-                + user.getUserName() + "'");
+                + user.getName() + "'");
     }
 
     /**

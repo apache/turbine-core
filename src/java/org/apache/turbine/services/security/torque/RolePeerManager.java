@@ -347,7 +347,7 @@ public class RolePeerManager
         Criteria criteria = new Criteria();
 
         criteria.add(UserPeerManager.getNameColumn(),
-                     user.getUserName());
+                     user.getName());
 
         criteria.add(TurbineUserGroupRolePeer.GROUP_ID,
                      ((Persistent) group).getPrimaryKey());

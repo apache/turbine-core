@@ -217,7 +217,7 @@ public class TorqueUser
      */
     public String getName()
     {
-        return getUserName();
+        return UserPeerManager.getName(getPersistentObj());
     }
 
     /**
@@ -264,10 +264,11 @@ public class TorqueUser
      * Returns the name of this user.
      *
      * @return The name of the user.
+     * @deprecated Use getName() instead.
      */
     public String getUserName()
     {
-        return UserPeerManager.getUserName(getPersistentObj());
+        return getName();
     }
 
     /**

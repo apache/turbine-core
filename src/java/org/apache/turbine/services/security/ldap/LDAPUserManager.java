@@ -123,7 +123,7 @@ public class LDAPUserManager implements UserManager
      */
     public boolean accountExists(User user) throws DataBackendException
     {
-        return accountExists(user.getUserName());
+        return accountExists(user.getName());
     }
 
     /**
@@ -171,7 +171,7 @@ public class LDAPUserManager implements UserManager
              * Define the search.
              */
             String userBaseSearch = LDAPSecurityConstants.getBaseSearch();
-            String filter = LDAPSecurityConstants.getUserNameAttribute();
+            String filter = LDAPSecurityConstants.getNameAttribute();
 
             filter = "(" + filter + "=" + username + ")";
 
@@ -253,7 +253,7 @@ public class LDAPUserManager implements UserManager
             DirContext ctx = bindAsAdmin();
 
             String userBaseSearch = LDAPSecurityConstants.getBaseSearch();
-            String filter = LDAPSecurityConstants.getUserNameAttribute();
+            String filter = LDAPSecurityConstants.getNameAttribute();
 
             filter = "(" + filter + "=*)";
 
@@ -325,7 +325,7 @@ public class LDAPUserManager implements UserManager
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '"
-                    + user.getUserName() + "' does not exist");
+                    + user.getName() + "' does not exist");
         }
 
         try
@@ -363,7 +363,7 @@ public class LDAPUserManager implements UserManager
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                    user.getUserName() + "' does not exist");
+                    user.getName() + "' does not exist");
         }
     }
 
@@ -461,7 +461,7 @@ public class LDAPUserManager implements UserManager
         if (accountExists(user))
         {
             throw new EntityExistsException("The account '"
-                    + user.getUserName() + "' already exist");
+                    + user.getName() + "' already exist");
         }
 
         try
@@ -493,7 +493,7 @@ public class LDAPUserManager implements UserManager
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '"
-                    + user.getUserName() + "' does not exist");
+                    + user.getName() + "' does not exist");
         }
 
         try

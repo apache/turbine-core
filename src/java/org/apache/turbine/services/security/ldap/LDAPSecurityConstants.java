@@ -259,9 +259,19 @@ public class LDAPSecurityConstants
      * Get the value of the Username Attribute.
      * @return the value of the property.
      */
-    public static String getUserNameAttribute()
+    public static String getNameAttribute()
     {
         return getProperty(LDAP_USER_USERNAME_KEY, LDAP_USER_USERNAME_DEFAULT);
+    }
+
+    /**
+     * Get the value of the Username Attribute.
+     * @return the value of the property.
+     * @deprecated Use getNameAttribute()
+     */
+    public static String getUserNameAttribute()
+    {
+        return getNameAttribute();
     }
 
     /**
