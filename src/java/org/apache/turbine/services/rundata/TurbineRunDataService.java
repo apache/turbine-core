@@ -91,17 +91,6 @@ public class TurbineRunDataService
     extends TurbineBaseService
     implements RunDataService
 {
-    /** @deprecated Use RunDataService.RUN_DATA_KEY */
-    public static final String RUN_DATA =
-        RunDataService.RUN_DATA_KEY;
-
-    /** @deprecated Use RunDataService.PARAMETER_PARSER_KEY */
-    public static final String PARAMETER_PARSER =
-        RunDataService.PARAMETER_PARSER_KEY;
-
-    /** @deprecated Use RunDataService.COOKIE_PARSER_KEY */
-    public static final String COOKIE_PARSER =
-        RunDataService.COOKIE_PARSER_KEY;
 
     /** The default implementation of the RunData object*/
     private static final String DEFAULT_RUN_DATA =

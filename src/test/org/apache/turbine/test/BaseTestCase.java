@@ -57,8 +57,6 @@ package org.apache.turbine.test;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -71,7 +69,6 @@ import junit.framework.TestCase;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.pipeline.DefaultPipelineData;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.rundata.RunDataService;
@@ -123,14 +120,8 @@ public abstract class BaseTestCase
         return runData;
     }
     protected PipelineData getPipelineData(HttpServletRequest request,HttpServletResponse response,ServletConfig config) throws Exception {
-       PipelineData pipelineData = new DefaultPipelineData();
        RunData runData = getRunData(request,response,config);
-       Map runDataMap = new HashMap();
-       runDataMap.put(RunData.class, runData);
-       // put the data into the pipeline
-       pipelineData.put(RunData.class, runDataMap);            
-       //pipelineData.put(RunData.class,runData);
-       return pipelineData;
+       return runData;
     }
     
     

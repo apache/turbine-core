@@ -54,7 +54,6 @@ package org.apache.turbine.services.pull.tools;
  * <http://www.apache.org/>.
  */
 
-import java.util.Map;
 
 import org.apache.commons.configuration.Configuration;
 
@@ -145,8 +144,7 @@ public class ContentTool
         if (data instanceof PipelineData)
         {
             PipelineData pipelineData = (PipelineData) data;
-            Map runDataMap = (Map) pipelineData.get(RunData.class);
-            RunData runData = (RunData)runDataMap.get(RunData.class);
+            RunData runData = (RunData)pipelineData;
             dataURI = new DataURI(runData);
         }
         else

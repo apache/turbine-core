@@ -61,7 +61,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletConfig;
 
@@ -301,8 +300,8 @@ public class TurbineVelocityService
      */
     public Context getContext(PipelineData pipelineData)
     {
-        Map runDataMap = (Map)pipelineData.get(RunData.class);
-        RunData data = (RunData)runDataMap.get(RunData.class);
+        //Map runDataMap = (Map)pipelineData.get(RunData.class);
+        RunData data = (RunData)pipelineData;
         // Attempt to get it from the data first.  If it doesn't
         // exist, create it and then stuff it into the data.
         Context context = (Context)

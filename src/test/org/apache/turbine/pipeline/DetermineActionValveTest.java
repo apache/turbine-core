@@ -54,8 +54,6 @@ package org.apache.turbine.pipeline;
  * <http://www.apache.org/>.
  */
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Vector;
 
 import javax.servlet.ServletConfig;
@@ -144,14 +142,8 @@ public class DetermineActionValveTest extends BaseTestCase
     {
         RunData runData = getRunData(request,response,config);
         
-        //URIConstants.CGI_ACTION_PARAM
         Pipeline pipeline = new TurbinePipeline();
-        PipelineData pipelineData = new DefaultPipelineData();
-        Map runDataMap = new HashMap();
-        runDataMap.put(RunData.class, runData);
-        // put the data into the pipeline
-        pipelineData.put(RunData.class, runDataMap);            
-        //pipelineData.put(RunData.class,runData);
+        PipelineData pipelineData = runData;
 
         DetermineActionValve valve = new DetermineActionValve();
         pipeline.addValve(valve);

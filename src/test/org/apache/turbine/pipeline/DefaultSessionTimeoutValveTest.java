@@ -54,7 +54,6 @@ package org.apache.turbine.pipeline;
  * <http://www.apache.org/>.
  */
 
-import java.util.Map;
 import java.util.Vector;
 
 import javax.servlet.ServletConfig;
@@ -155,8 +154,8 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
         pipeline.addValve(valve);
 
         pipeline.invoke(pipelineData);
-        Map runDataMap = (Map) pipelineData.get(RunData.class);
-        RunData runData = (RunData)runDataMap.get(RunData.class);
+
+        RunData runData = (RunData)pipelineData;
         assertEquals(0,runData.getSession().getMaxInactiveInterval());
 
 
@@ -177,8 +176,8 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
         pipeline.addValve(valve);
 
         pipeline.invoke(pipelineData);
-        Map runDataMap = (Map) pipelineData.get(RunData.class);
-        RunData runData = (RunData)runDataMap.get(RunData.class);
+        RunData runData = (RunData)pipelineData;
+
         assertEquals(3600,runData.getSession().getMaxInactiveInterval());
 
 

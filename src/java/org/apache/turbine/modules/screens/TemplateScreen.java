@@ -268,8 +268,9 @@ public abstract class TemplateScreen
      */
     public static void setTemplate(PipelineData pipelineData, String template)
     {
-        Map runDataMap = (Map) pipelineData.get(RunData.class);
-        RunData data = (RunData)runDataMap.get(RunData.class);
+        //Map runDataMap = (Map) pipelineData.get(RunData.class);
+        //RunData data = (RunData)runDataMap.get(RunData.class);
+        RunData data = (RunData)pipelineData;
         setTemplate(data, template);
     }
     
