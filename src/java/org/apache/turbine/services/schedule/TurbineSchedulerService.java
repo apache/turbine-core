@@ -119,23 +119,19 @@ public class TurbineSchedulerService
             scheduleQueue = new JobQueue();
             mainLoop = new MainLoop();
 
-            if (isEnabled())
+            // Load all from cold storage.
+            List jobs = JobEntryPeer.doSelect(new Criteria());
+
+            if (jobs != null && jobs.size() > 0)
             {
-
-                // Load all from cold storage.
-                List jobs = JobEntryPeer.doSelect(new Criteria());
-
-                if (jobs != null && jobs.size() > 0)
+                Iterator it = jobs.iterator();
+                while (it.hasNext())
                 {
-                    Iterator it = jobs.iterator();
-                    while (it.hasNext())
-                    {
-                        ((JobEntry) it.next()).calcRunTime();
-                    }
-                    scheduleQueue.batchLoad(jobs);
-
-                    restart();
+                    ((JobEntry) it.next()).calcRunTime();
                 }
+                scheduleQueue.batchLoad(jobs);
+
+                restart();
             }
 
             setInit(true);
