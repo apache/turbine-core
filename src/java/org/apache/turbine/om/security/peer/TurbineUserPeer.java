@@ -469,7 +469,7 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
      * @param criteria Object containing data that is used to create
      *        the SELECT statement.
      * @param dbConn
-     * @return Vector containing TurbineUser objects.
+     * @return List containing TurbineUser objects.
      * @exception TorqueException a generic exception.
      */
     public static List doSelect(Criteria criteria, Connection dbConn)
@@ -486,7 +486,7 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
             criteria.addAscendingOrderByColumn(LAST_NAME);
         }
 
-        // BasePeer returns a Vector of Record (Village) objects.  The
+        // BasePeer returns a List of Record (Village) objects.  The
         // array order follows the order columns were placed in the
         // Select clause.
         List rows = BasePeer.doSelect(criteria, dbConn);
