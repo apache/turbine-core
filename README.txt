@@ -27,4 +27,8 @@ run the unit tests, and build the jar.  Some other useful goals:
 
 maven site:generate   - generate the site documention
 
+As of Turbine 2.3, you must also have the Torque plugin for mAVEN installed to
+build Turbine.  Information on how to install the plugin is available
+at http://db.apache.org/torque/maven-howto.html.
+
 -The Turbine Team
