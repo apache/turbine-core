@@ -34,7 +34,6 @@
     </menu>
 
     <menu name="Development">
-      <item name="DB Adapters"           href="/db-adapters.html"/>
       <item name="Project Map"           href="/project-map.html"/>
       <item name="Proposals"             href="/proposals.html"/>
       <item name="Todo"                  href="/todo.html"/>
