@@ -53,6 +53,9 @@ Changes between Turbine 2.1 and 2.2b1.
       Improved datatype mappings for mysql, oracle, postgresql, sapdb
     </li>
     <li>
+      adding support for DB2 on AS400 (patch by Sweaver@rippe.com).
+    </li>
+    <li>
       adding support for secure connections in the xmlrpc service.
     </li>
     <li>
@@ -81,6 +84,9 @@ Changes between Turbine 2.1 and 2.2b1.
       added VelocityDirectLayout/Screen to make it possible to embed 
       servlet/JSP outputs into a Velocity template used within Turbine.
       (patch by raphael.luta@networks.groupvu.com)
+    </li>
+    <li>
+      added an easy to use localization pull tool.
     </li>
     <li>
       Javadocs improvements.
