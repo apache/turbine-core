@@ -57,6 +57,7 @@ package org.apache.turbine.util.velocity;
 import javax.mail.MessagingException;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -295,8 +296,8 @@ public class VelocityEmail extends SimpleEmail
         // If the caller desires word-wrapping, do it here
         if (wordWrap > 0)
         {
-            body = org.apache.turbine.util.StringUtils.wrapText(body,
-                    System.getProperty("line.separator"), wordWrap);
+            body = WordUtils.wrap(body,wordWrap,
+                    System.getProperty("line.separator"),true);
         }
 
         setMsg(body);
