@@ -333,7 +333,7 @@ public class TurbineURI
         setAction(action);
         if(StringUtils.isNotEmpty(event))
         {
-            add(PATH_INFO, CGI_EVENT_PREFIX + event, event);
+            add(PATH_INFO, EVENT_PREFIX + event, event);
         }
     }
 

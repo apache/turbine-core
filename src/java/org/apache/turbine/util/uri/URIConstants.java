@@ -95,12 +95,12 @@ public interface URIConstants
     /** CGI parameter for action name */
     String CGI_ACTION_PARAM = "action";
 
-    /** prefix for event names */
-    String CGI_EVENT_PREFIX = "eventSubmit_";
-
     /** CGI parameter for screen name */
     String CGI_SCREEN_PARAM = "screen";
 
     /** CGI parameter for template name */
     String CGI_TEMPLATE_PARAM = "template";
+
+    /** prefix for event names */
+    String EVENT_PREFIX = "eventSubmit_";
 }
