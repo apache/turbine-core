@@ -60,6 +60,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import java.util.Properties;
+import java.util.Enumeration;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -118,7 +119,7 @@ import org.apache.turbine.util.uri.URIConstants;
  *
  * <ul>
  * <li><code>resources</code> the implementation of
- * {@link org.apache.turbine.services.resources.ResourceService} to be used</li>
+ * {@link org.apache.turbine.services.resources.TurbineResources} to be used</li>
  * <li><code>properties</code> the path to TurbineResources.properties file
  * used by the default implementation of <code>ResourceService</code>, relative
  * to the application root.</li>
@@ -142,8 +143,8 @@ import org.apache.turbine.util.uri.URIConstants;
  * @version $Id$
  */
 public class Turbine
-    extends HttpServlet
-    implements TurbineConstants
+        extends HttpServlet
+        implements TurbineConstants
 {
     /**
      * Name of path info parameter used to indicate the redirected stage of
@@ -151,9 +152,7 @@ public class Turbine
      */
     public static final String REDIRECTED_PATHINFO_NAME = "redirected";
 
-    /**
-     * The base directory key
-     */
+    /** The base directory key */
     public static final String BASEDIR_KEY = "basedir";
 
     /**
@@ -163,34 +162,27 @@ public class Turbine
      */
     private static boolean firstInit = true;
 
-    /**
-     * Whether init succeeded or not.
-     */
+    /** Whether init succeeded or not. */
     private static Throwable initFailure = null;
 
     /**
-     * Should initialization activities be performed during doGet()
-     * execution?
+     * Should initialization activities be performed during doGet() execution?
      */
     private static boolean firstDoGet = true;
 
-    /** Keep all the properties of the web server in a convenient data structure */
+    /**
+     * Keep all the properties of the web server in a convenient data
+     * structure
+     */
     private static ServerData serverData = null;
 
-    /**
-     * The base from which the Turbine application
-     * will operate.
-     */
+    /** The base from which the Turbine application will operate. */
     private static String applicationRoot;
 
-    /**
-     * Servlet config for this Turbine webapp.
-     */
+    /** Servlet config for this Turbine webapp. */
     private static ServletConfig servletConfig;
 
-    /**
-     * Servlet context for this Turbine webapp.
-     */
+    /** Servlet context for this Turbine webapp. */
     private static ServletContext servletContext;
 
     /**
@@ -217,8 +209,7 @@ public class Turbine
      *
      * @exception ServletException a servlet exception.
      */
-    public final void init()
-        throws ServletException
+    public final void init() throws ServletException
     {
         synchronized (this.getClass())
         {
@@ -255,10 +246,9 @@ public class Turbine
         }
     }
 
-    private void configure(ServletConfig config,
-                           ServletContext context,
+    private void configure(ServletConfig config, ServletContext context,
                            String propsFile)
-        throws Exception
+            throws Exception
     {
 
         // Set the application root. This defaults to the webapp
@@ -420,9 +410,7 @@ public class Turbine
      * found.
      */
     protected static final String findInitParameter(ServletContext context,
-                                                    ServletConfig config,
-                                                    String name,
-                                                    String defaultValue)
+            ServletConfig config, String name, String defaultValue)
     {
         String path = null;
 
@@ -486,7 +474,6 @@ public class Turbine
      * Return the current configuration with all keys included
      *
      * @return a Configuration Object
-     *
      */
     public static Configuration getConfiguration()
     {
@@ -561,11 +548,8 @@ public class Turbine
         {
             log.error("ServerData Information requested from Turbine before first request!");
             // Will be overwritten once the first request is run;
-            serverData = new ServerData(null,
-                                        URIConstants.HTTP_PORT,
-                                        URIConstants.HTTP,
-                                        null,
-                                        null);
+            serverData = new ServerData(null, URIConstants.HTTP_PORT,
+                    URIConstants.HTTP, null, null);
         }
         return serverData;
     }
@@ -573,11 +557,11 @@ public class Turbine
     /**
      * Set the servlet config for this turbine webapp.
      *
-     * @param s New servlet config
+     * @param config New servlet config
      */
-    public static void setTurbineServletConfig(ServletConfig s)
+    public static void setTurbineServletConfig(ServletConfig config)
     {
-        servletConfig = s;
+        servletConfig = config;
     }
 
     /**
@@ -593,11 +577,11 @@ public class Turbine
     /**
      * Set the servlet context for this turbine webapp.
      *
-     * @param s New servlet context.
+     * @param context New servlet context.
      */
-    public static void setTurbineServletContext(ServletContext s)
+    public static void setTurbineServletContext(ServletContext context)
     {
-        servletContext = s;
+        servletContext = context;
     }
 
     /**
@@ -709,9 +693,8 @@ public class Turbine
             // TurbineResources.properties...screen.homepage; or, you
             // can specify your own SessionValidator action.
             ActionLoader.getInstance().exec(
-              data,
-              configuration.getString(ACTION_SESSION_VALIDATOR_KEY,
-                                      ACTION_SESSION_VALIDATOR_DEFAULT));
+                    data, configuration.getString(ACTION_SESSION_VALIDATOR_KEY,
+                        ACTION_SESSION_VALIDATOR_DEFAULT));
 
             // Put the Access Control List into the RunData object, so
             // it is easily available to modules.  It is also placed
@@ -719,9 +702,8 @@ public class Turbine
             // out the ACL to force it to be rebuilt based on more
             // information.
             ActionLoader.getInstance().exec(
-              data,
-              configuration.getString(ACTION_ACCESS_CONTROLLER_KEY,
-                                      ACTION_ACCESS_CONTROLLER_DEFAULT));
+                    data, configuration.getString(ACTION_ACCESS_CONTROLLER_KEY,
+                        ACTION_ACCESS_CONTROLLER_DEFAULT));
 
             // Start the execution phase. DefaultPage will execute the
             // appropriate action as well as get the Layout from the
@@ -751,7 +733,7 @@ public class Turbine
                  * most cases.
                  */
                 defaultPage = configuration.getString(PAGE_DEFAULT_KEY,
-                                                      PAGE_DEFAULT_DEFAULT);
+                        PAGE_DEFAULT_DEFAULT);
             }
 
             PageLoader.getInstance().exec(data, defaultPage);
@@ -762,8 +744,8 @@ public class Turbine
             {
                 try
                 {
-                    data.getSession().removeValue(
-                        AccessControlList.SESSION_KEY);
+                    data.getSession().removeAttribute(
+                            AccessControlList.SESSION_KEY);
                 }
                 catch (IllegalStateException ignored)
                 {
@@ -804,8 +786,8 @@ public class Turbine
                     {
                         // Modules can override these.
                         data.getResponse().setLocale(data.getLocale());
-                        data.getResponse()
-                            .setContentType(data.getContentType());
+                        data.getResponse().setContentType(
+                                data.getContentType());
 
                         // Set the status code.
                         data.getResponse().setStatus(data.getStatusCode());
@@ -847,7 +829,7 @@ public class Turbine
      * @exception ServletException a servlet exception.
      */
     public final void doPost(HttpServletRequest req, HttpServletResponse res)
-        throws IOException, ServletException
+            throws IOException, ServletException
     {
         doGet(req, res);
     }
@@ -865,7 +847,7 @@ public class Turbine
      * @throws Exception A problem while logging in occured.
      */
     private void loginAction(RunData data)
-        throws Exception
+            throws Exception
     {
         // If a User is logging in, we should refresh the
         // session here.  Invalidating session and starting a
@@ -879,13 +861,11 @@ public class Turbine
         // only keys stored in the session are "turbine.user"
         // and "turbine.acl".
 
-        String[] names = data.getSession().getValueNames();
-        if (names != null)
+        for( Enumeration enum = data.getSession().getAttributeNames();
+                enum.hasMoreElements(); )
         {
-            for (int i = 0; i < names.length; i++)
-            {
-                data.getSession().removeValue(names[i]);
-            }
+            String attributeName = (String) enum.nextElement();
+            data.getSession().removeAttribute(attributeName);
         }
         ActionLoader.getInstance().exec(data, data.getAction());
         cleanupTemplateContext(data);
@@ -904,7 +884,7 @@ public class Turbine
      * @throws Exception A problem while logging out occured.
      */
     private void logoutAction(RunData data)
-        throws Exception
+            throws Exception
     {
         ActionLoader.getInstance().exec(data, data.getAction());
         cleanupTemplateContext(data);
@@ -919,7 +899,7 @@ public class Turbine
      * @throws Exception A problem while cleaning out the Template Context occured.
      */
     private void cleanupTemplateContext(RunData data)
-        throws Exception
+            throws Exception
     {
         // This is Velocity specific and shouldn't be done here.
         // But this is a band aid until we get real listeners
@@ -954,8 +934,7 @@ public class Turbine
      * @param res Servlet response.
      * @param t The exception to report.
      */
-    private final void handleException(RunData data,
-                                       HttpServletResponse res,
+    private final void handleException(RunData data, HttpServletResponse res,
                                        Throwable t)
     {
         // make sure that the stack trace makes it the log
@@ -970,22 +949,22 @@ public class Turbine
 
             // setup the screen
             data.setScreen(configuration.getString(SCREEN_ERROR_KEY,
-                                                   SCREEN_ERROR_DEFAULT));
+                    SCREEN_ERROR_DEFAULT));
 
             // do more screen setup for template execution if needed
             if (data.getTemplateInfo() != null)
             {
                 data.getTemplateInfo()
-                    .setScreenTemplate(configuration.getString(TEMPLATE_ERROR_KEY,
-                                                               TEMPLATE_ERROR_VM));
+                    .setScreenTemplate(configuration.getString(
+                            TEMPLATE_ERROR_KEY, TEMPLATE_ERROR_VM));
             }
 
             // Make sure to not execute an action.
             data.setAction("");
 
             PageLoader.getInstance().exec(data,
-                                          configuration.getString(PAGE_DEFAULT_KEY,
-                                                                  PAGE_DEFAULT_DEFAULT));
+                    configuration.getString(PAGE_DEFAULT_KEY,
+                            PAGE_DEFAULT_DEFAULT));
 
             data.getResponse().setContentType(data.getContentType());
             data.getResponse().setStatus(data.getStatusCode());
@@ -1010,7 +989,7 @@ public class Turbine
             try
             {
                 data.getOut().print("java.lang.NoSuchFieldError: "
-                                    + "Please recompile all of your source code.");
+                        + "Please recompile all of your source code.");
             }
             catch (IOException ignored)
             {
