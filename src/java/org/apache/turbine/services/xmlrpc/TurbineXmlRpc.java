@@ -90,8 +90,7 @@ public abstract class TurbineXmlRpc
      * @param methodName A String with the method name.
      * @param params A Vector with the parameters.
      * @return An Object.
-     * @exception XmlRpcException.
-     * @exception IOException.
+     * @exception TurbineException
      */
     public static Object executeRpc(URL url, String methodName, Vector params)
         throws TurbineException
@@ -108,8 +107,7 @@ public abstract class TurbineXmlRpc
      * @param methodName A String with the method name.
      * @param params A Vector with the parameters.
      * @return An Object.
-     * @exception XmlRpcException.
-     * @exception IOException.
+     * @exception TurbineException
      */
     public static Object executeAuthenticatedRpc(URL url, String username,
                             String password,String methodName, Vector params)
@@ -125,12 +123,8 @@ public abstract class TurbineXmlRpc
      * @param handlerName The name under which we want
      * to register the service
      * @param handler The handler object
-     * @exception XmlRpcException.
-     * @exception IOException.
      */
     public static void registerHandler(String handlerName, Object handler)
-        throws XmlRpcException,
-               IOException
     {
         getService().registerHandler(handlerName, handler);
     }
@@ -140,12 +134,8 @@ public abstract class TurbineXmlRpc
      * the XmlRpc Server part.
      *
      * @param handler The handler object
-     * @exception XmlRpcException.
-     * @exception IOException.
      */
     public static void registerHandler(Object handler)
-        throws XmlRpcException,
-               IOException
     {
         getService().registerHandler(handler);
     }
@@ -208,7 +198,7 @@ public abstract class TurbineXmlRpc
                             String sourceFileName,
                             String destinationLocationProperty,
                             String destinationFileName)
-                            throws Exception
+                            throws TurbineException
     {
         getService().send(serverURL,
                           sourceLocationProperty,
@@ -236,7 +226,7 @@ public abstract class TurbineXmlRpc
                             String sourceFileName,
                             String destinationLocationProperty,
                             String destinationFileName)
-                            throws Exception
+                            throws TurbineException
     {
         getService().send(serverURL,
                           username,
@@ -261,7 +251,7 @@ public abstract class TurbineXmlRpc
                            String sourceFileName,
                            String destinationLocationProperty,
                            String destinationFileName)
-                           throws Exception
+                           throws TurbineException
     {
         getService().get(serverURL,
                          sourceLocationProperty,
@@ -289,7 +279,7 @@ public abstract class TurbineXmlRpc
                            String sourceFileName,
                            String destinationLocationProperty,
                            String destinationFileName)
-                           throws Exception
+                           throws TurbineException
     {
         getService().get(serverURL,
                          username,
@@ -311,7 +301,7 @@ public abstract class TurbineXmlRpc
     public static void remove(String serverURL,
                               String sourceLocationProperty,
                               String sourceFileName)
-                              throws Exception
+                              throws TurbineException
     {
         getService().remove(serverURL,
                             sourceLocationProperty,
@@ -333,7 +323,7 @@ public abstract class TurbineXmlRpc
                               String password,
                               String sourceLocationProperty,
                               String sourceFileName)
-                              throws Exception
+                              throws TurbineException
     {
         getService().remove(serverURL,
                             username,
