@@ -31,6 +31,9 @@
       Make the default encoding for incoming requests configureable. This allows you to post
       forms from UTF-8 or other encodings into Turbine. 
     </action>
+    <action type="update" dev="seade">
+      Update DateFormatter to use DateFormatUtils from commons lang.
+    </action>
   </release>
 
   <release version="2.3.1" date="2004-10-29">
