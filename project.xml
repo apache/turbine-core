@@ -526,8 +526,8 @@
     </dependency>
     <dependency>
       <id>village</id>
-      <version>2.0-dev-20021111</version>
-      <url>http://share.whichever.com/index.php?SCREEN=village</url>
+        <version>2.0-dev-20030625</version>
+       <url>http://share.whichever.com/index.php?SCREEN=village</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
