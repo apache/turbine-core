@@ -111,6 +111,8 @@ public abstract class BaseTemplateEngineService
     }
 
     /**
+     * Initialize the Template Engine Service.
+     *
      * Note engine file extension associations.  First attempts to
      * pull a list of custom extensions from the property file value
      * keyed by <code>template.extension</code>.  If none are defined,
@@ -125,10 +127,10 @@ public abstract class BaseTemplateEngineService
     {
         Configuration config = getConfiguration();
 
-        /*
-         * Should modify the configuration class to take defaults
-         * here, should have to do this.
-         */
+        //
+        // Should modify the configuration class to take defaults
+        // here, should have to do this.
+        //
         String[] fileExtensionAssociations =
                 config.getStringArray(TEMPLATE_EXTENSIONS);
 
