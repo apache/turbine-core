@@ -55,8 +55,11 @@ package org.apache.turbine.util;
  */
 
 import java.io.UnsupportedEncodingException;
+
 import java.math.BigDecimal;
+
 import java.text.DateFormat;
+
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Set;
@@ -65,7 +68,6 @@ import org.apache.turbine.util.parser.ParserUtils;
 
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.StringKey;
-
 
 /**
  * ValueParser is a base interface for classes that need to parse
@@ -92,28 +94,28 @@ public interface ValueParser
      *
      * @deprecated Use ParserUtils.URL_CASE_FOLDING_KEY
      */
-    static final String URL_CASE_FOLDING = ParserUtils.URL_CASE_FOLDING_KEY;
+    String URL_CASE_FOLDING = ParserUtils.URL_CASE_FOLDING_KEY;
 
     /**
      * No Case folding.
      *
      * @deprecated Use ParserUtils.URL_CASE_FOLDING_NONE_VALUE
      */
-    static final String URL_CASE_FOLDING_NONE = ParserUtils.URL_CASE_FOLDING_NONE_VALUE;
+    String URL_CASE_FOLDING_NONE = ParserUtils.URL_CASE_FOLDING_NONE_VALUE;
 
     /**
      * Fold Keys to lower case.
      *
      * @deprecated Use ParserUtils.URL_CASE_FOLDING_LOWER_VALUE
      */
-    static final String URL_CASE_FOLDING_LOWER = ParserUtils.URL_CASE_FOLDING_LOWER_VALUE;
+    String URL_CASE_FOLDING_LOWER = ParserUtils.URL_CASE_FOLDING_LOWER_VALUE;
 
     /**
      * Fold Keys to upper case.
      *
      * @deprecated Use ParserUtils.URL_CASE_FOLDING_UPPER_VALUE
      */
-    static final String URL_CASE_FOLDING_UPPER = ParserUtils.URL_CASE_FOLDING_UPPER_VALUE;
+    String URL_CASE_FOLDING_UPPER = ParserUtils.URL_CASE_FOLDING_UPPER_VALUE;
 
     /**
      * Clear all name/value pairs out of this object.
@@ -181,7 +183,7 @@ public interface ValueParser
     void add(String name, String value);
 
     /**
-     * Add a String parameters.  If there are any Strings already
+     * Add a String parameter.  If there are any Strings already
      * associated with the name, append to the array.  This is used
      * for handling parameters from mulitipart POST requests.
      *
@@ -189,6 +191,16 @@ public interface ValueParser
      * @param value A String with the value.
      */
     void append(String name, String value);
+
+    /**
+     * Add an array of Strings for a key. This
+     * is simply adding all the elements in the
+     * array one by one.
+     *
+     * @param name A String with the name.
+     * @param value A String Array.
+     */
+    void add(String name, String [] value);
 
     /**
      * Removes the named parameter from the contained hashtable. Wraps to the

@@ -277,6 +277,22 @@ public class BaseValueParser
     }
 
     /**
+     * Add an array of Strings for a key. This
+     * is simply adding all the elements in the
+     * array one by one.
+     *
+     * @param name A String with the name.
+     * @param value A String Array.
+     */
+    public void add(String name, String [] value)
+    {
+        for (int i = 0 ; i < value.length; i++)
+        {
+            add(name, value[i]);
+        }
+    }
+
+    /**
      * Add a String parameters.  If there are any Strings already
      * associated with the name, append to the array.  This is used
      * for handling parameters from mulitipart POST requests.
