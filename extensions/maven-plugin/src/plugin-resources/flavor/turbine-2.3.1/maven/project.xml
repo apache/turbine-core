@@ -341,7 +341,7 @@
     <dependency>
       <groupId>commons-configuration</groupId>
       <artifactId>commons-configuration</artifactId>
-      <version>1.0-rc2</version>
+      <version>1.0</version>
       <url>http://jakarta.apache.org/commons/configuration/index.html</url>
       <properties>
         <war.bundle>true</war.bundle>
