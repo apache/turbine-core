@@ -45,7 +45,7 @@
     <dependency>
       <groupId>turbine</groupId>
       <artifactId>turbine</artifactId>
-      <version>2.3.1-rc2</version>
+      <version>2.3.1</version>
       <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
@@ -237,7 +237,7 @@
     <dependency>
       <groupId>torque</groupId>
       <artifactId>torque</artifactId>
-      <version>3.1</version>
+      <version>3.1.1</version>
       <url>http://db.apache.org/torque/</url>
       <type>jar</type>
       <properties>
@@ -284,7 +284,7 @@
     <dependency>
       <groupId>commons-dbcp</groupId>
       <artifactId>commons-dbcp</artifactId>
-      <version>1.1</version>
+      <version>1.2.1</version>
       <url>http://jakarta.apache.org/commons/</url>
       <properties>
         <war.bundle>true</war.bundle>
@@ -381,7 +381,7 @@
     <dependency>
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>
-      <version>1.1</version>
+      <version>1.2</version>
       <url>http://jakarta.apache.org/commons/pool/</url>
       <properties>
         <war.bundle>true</war.bundle>
@@ -467,6 +467,13 @@
         <war.bundle>true</war.bundle>
       </properties>
       <type>jar</type>
+    </dependency>
+
+    <dependency>
+      <groupId>torque</groupId>
+      <artifactId>maven-torque-plugin</artifactId>
+      <version>3.1.1</version>
+      <type>plugin</type>
     </dependency>
 
   </dependencies>
