@@ -72,11 +72,11 @@ import org.apache.velocity.context.Context;
  * this class will first attempt to execute one of your doMethod's
  * with a constructor like this:
  *
- * <p>doEvent(RunData data, Context context)
+ * <p><code>doEvent(RunData data, Context context)</code></p>
  *
  * <p>It gets the context from the TemplateInfo.getTemplateContext()
  * method. If it can't find a method like that, then it will try to
- * execute the method without the Context in it.
+ * execute the method without the Context in it.</p>
  *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>

@@ -70,14 +70,14 @@ import org.apache.turbine.util.RunData;
  * Utility class to help check for proper authorization when using
  * template screens.  Sample usages:
  *
- * <p><code>
+ * <p><pre><code>
  * TemplateSecurityCheck secCheck = new TemplateSecurityCheck( data );
  * secCheck.setMessage( "Sorry, you do not have permission to " +
  *                      "access this area." );
  * secCheck.setFailTemplate("login.wm");
  * if ( !secCheck.hasRole("ADMIN") )
  *     return;
- * </code>
+ * </pre></code>
  *
  * @author <a href="mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>

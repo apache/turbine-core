@@ -83,7 +83,7 @@ import org.apache.velocity.context.Context;
  *
  * <p>Setup your context:
  *
- * <p>context.put ("VelocityEmail", new VelocityEmail() );
+ * <p><code>context.put ("VelocityEmail", new VelocityEmail() );</code>
  *
  * <p>Then, in your template:
  *
