@@ -56,6 +56,7 @@ package org.apache.turbine.services.intake;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -63,7 +64,9 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+
 import java.lang.reflect.Method;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -71,13 +74,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
+
 import javax.servlet.ServletConfig;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.commons.pool.KeyedObjectPool;
 import org.apache.commons.pool.KeyedPoolableObjectFactory;
 import org.apache.commons.pool.impl.StackKeyedObjectPool;
+
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -85,7 +91,6 @@ import org.apache.turbine.services.intake.model.Group;
 import org.apache.turbine.services.intake.transform.XmlToAppData;
 import org.apache.turbine.services.intake.xmlmodel.AppData;
 import org.apache.turbine.services.intake.xmlmodel.XmlGroup;
-import org.apache.turbine.util.ServletUtils;
 
 /**
  * This service provides access to input processing objects based
@@ -121,10 +126,6 @@ public class TurbineIntakeService
     /** Used for logging */
     private static Log log = LogFactory.getLog(TurbineIntakeService.class);
 
-    // a couple integers for a switch statement
-    private static final int GETTER = 0;
-    private static final int SETTER = 1;
-
     /**
      * Constructor. All Components need a public no argument constructor
      * to be a legal Component.
@@ -156,7 +157,7 @@ public class TurbineIntakeService
 
         if (!serialDataPath.equalsIgnoreCase("none"))
         {
-            serialDataPath = ServletUtils.expandRelative(config, serialDataPath);
+            serialDataPath = Turbine.getRealPath(serialDataPath);
         }
         else
         {
@@ -189,7 +190,7 @@ public class TurbineIntakeService
         for (Iterator it = xmlPathes.iterator(); it.hasNext();)
         {
             // Files are webapp.root relative
-            String xmlPath = ServletUtils.expandRelative(config, (String) it.next());
+            String xmlPath = Turbine.getRealPath((String) it.next());
             File xmlFile = new File(xmlPath);
 
             log.debug("Path for XML File: " + xmlFile);
@@ -283,7 +284,7 @@ public class TurbineIntakeService
                     {
                         StringBuffer qualifiedName = new StringBuffer();
                         qualifiedName.append(groupPrefix)
-                                .append(":")
+                                .append(':')
                                 .append(groupName);
 
                         // Add the fully qualified group name. Do _not_ check for
@@ -679,22 +680,50 @@ public class TurbineIntakeService
             throws ClassNotFoundException, IntrospectionException
     {
         Map settersForClassName = (Map) setterMap.get(className);
+
+        if (settersForClassName == null)
+        {
+            throw new IntrospectionException("No setter Map for " + className + " available!");
+        }
+
         Method setter = (Method) settersForClassName.get(propName);
 
         if (setter == null)
         {
-            PropertyDescriptor pd = null;
+            PropertyDescriptor pd =
+                    new PropertyDescriptor(propName,
+                            Class.forName(className));
             synchronized (setterMap)
             {
-                pd = new PropertyDescriptor(propName,
-                        Class.forName(className));
                 setter = pd.getWriteMethod();
-                ((Map) setterMap.get(className)).put(propName, setter);
+                settersForClassName.put(propName, setter);
                 if (setter == null)
                 {
                     log.error("Intake: setter for '" + propName
                             + "' in class '" + className
                             + "' could not be found.");
+                }
+            }
+            // we have already completed the reflection on the getter, so
+            // save it so we do not have to repeat
+            synchronized (getterMap)
+            {
+                Map gettersForClassName = (Map) getterMap.get(className);
+
+                if (gettersForClassName != null)
+                {
+                    try
+                    {
+                        Method getter = pd.getReadMethod();
+                        if (getter != null)
+                        {
+                            gettersForClassName.put(propName, getter);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        // Do nothing
+                    }
                 }
             }
         }
@@ -714,6 +743,12 @@ public class TurbineIntakeService
             throws ClassNotFoundException, IntrospectionException
     {
         Map gettersForClassName = (Map) getterMap.get(className);
+
+        if (gettersForClassName == null)
+        {
+            throw new IntrospectionException("No getter Map for " + className + " available!");
+        }
+
         Method getter = (Method) gettersForClassName.get(propName);
 
         if (getter == null)
@@ -724,12 +759,34 @@ public class TurbineIntakeService
                 pd = new PropertyDescriptor(propName,
                         Class.forName(className));
                 getter = pd.getReadMethod();
-                ((Map) getterMap.get(className)).put(propName, getter);
+                gettersForClassName.put(propName, getter);
                 if (getter == null)
                 {
                     log.error("Intake: getter for '" + propName
                             + "' in class '" + className
                             + "' could not be found.");
+                }
+            }
+            // we have already completed the reflection on the setter, so
+            // save it so we do not have to repeat
+            synchronized (setterMap)
+            {
+                Map settersForClassName = (Map) getterMap.get(className);
+
+                if (settersForClassName != null)
+                {
+                    try
+                    {
+                        Method setter = pd.getWriteMethod();
+                        if (setter != null)
+                        {
+                            settersForClassName.put(propName, setter);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        // Do nothing
+                    }
                 }
             }
         }
