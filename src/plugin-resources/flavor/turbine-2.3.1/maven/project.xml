@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- 
+/*
+ * Copyright 2001-2004 The Apache Software Foundation.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ -->
+
+<!-- =================================================================== -->
+<!--                                                                     -->
+<!--  Maven project.xml Datei                                            -->
+<!--                                                                     -->
+<!-- $Id$ -->
+<!--                                                                     -->
+<!-- =================================================================== -->
+
+<project>
+  <pomVersion>3</pomVersion>
+  <name>@TURBINE_APP_NAME@</name>
+  <id>@TURBINE_APP_NAME@</id>
+  <groupId>@TURBINE_APP_NAME@</groupId>
+  <currentVersion>1.0-dev</currentVersion>
+  <shortDescription>Turbine Skeleton application</shortDescription>
+  <description/>
+  <organization/>
+  <inceptionYear>2003</inceptionYear>
+  <package>@TURBINE_APP_PACKAGE@</package>
+  <releases/>
+  <developers/>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>turbine</groupId>
+      <artifactId>turbine</artifactId>
+      <version>2.3.1-rc2</version>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+
+    <!-- ============================================================ -->
+    <!-- =                                                          = -->
+    <!-- = JDBC Drivers                                             = -->
+    <!-- =                                                          = -->
+    <!-- ============================================================ -->
+
+    <dependency>
+      <groupId>postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>7.3-jdbc3</version>
+      <url>http://www.postgresql.org/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>2.0.14-bin</version>
+      <url>http://www.mysql.org/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+
+    <!-- ============================================================ -->
+    <!-- =                                                          = -->
+    <!-- = Turbine Dependencies                                     = -->
+    <!-- =                                                          = -->
+    <!-- ============================================================ -->
+
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.1</version>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>commons-email</groupId>
+      <artifactId>commons-email</artifactId>
+      <version>20030310.165926</version>
+      <url>http://jakarta.apache.org/commons/sandbox/email</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <version>1.0</version>
+      <url>http://jakarta.apache.org/commons/fileupload/index.html</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>cryptix</groupId>
+      <artifactId>cryptix</artifactId>
+      <version>3.2.0</version>
+      <url>http://www.cryptix.org/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>dom4j</groupId>
+      <artifactId>dom4j</artifactId>
+      <version>1.4</version>
+      <url>http://www.dom4j.org/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>ecs</groupId>
+      <artifactId>ecs</artifactId>
+      <version>1.4.2</version>
+      <url>http://jakarta.apache.org/ecs/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>excalibur-component</groupId>
+      <artifactId>excalibur-component</artifactId>
+      <version>1.1</version>
+      <url>http://jakarta.apache.org/avalon/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>excalibur-instrument</groupId>
+      <artifactId>excalibur-instrument</artifactId>
+      <version>1.0</version>
+      <url>http://jakarta.apache.org/avalon/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>excalibur-logger</groupId>
+      <artifactId>excalibur-logger</artifactId>
+      <version>1.0.1</version>
+      <url>http://jakarta.apache.org/avalon/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>excalibur-pool</groupId>
+      <artifactId>excalibur-pool</artifactId>
+      <version>1.2</version>
+      <url>http://jakarta.apache.org/avalon/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>jaf</groupId>
+      <artifactId>activation</artifactId>
+      <version>1.0.2</version>
+      <url>http://java.sun.com/products/javabeans/glasgow/jaf.html</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>javamail</groupId>
+      <artifactId>javamail</artifactId>
+      <version>1.3.1</version>
+      <url>http://java.sun.com/products/javamail/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <!-- ORO must be loaded before Jython, as Jython includes some ORO -->
+    <!-- classes which cause the Maven JXR plug-in to fail. -->
+    <dependency>
+      <groupId>oro</groupId>
+      <artifactId>oro</artifactId>
+      <version>2.0.7</version>
+      <url>http://jakarta.apache.org/oro/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>jython</groupId>
+      <artifactId>jython</artifactId>
+      <version>2.1</version>
+      <url>http://www.jython.org/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>servletapi</groupId>
+      <artifactId>servletapi</artifactId>
+      <version>2.3</version>
+      <url>http://java.sun.com/products/servlet/</url>
+    </dependency>
+    <dependency>
+      <groupId>torque</groupId>
+      <artifactId>torque</artifactId>
+      <version>3.1</version>
+      <url>http://db.apache.org/torque/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>1.3.1</version>
+      <url>http://jakarta.apache.org/velocity/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>xalan</groupId>
+      <artifactId>xalan</artifactId>
+      <version>2.5.1</version>
+      <url>http://xml.apache.org/xalan-j/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>xmlrpc</groupId>
+      <artifactId>xmlrpc</artifactId>
+      <version>1.2-b1</version>
+      <url>http://xml.apache.org/xmlrpc/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+
+    <!-- ============================================================ -->
+    <!-- =                                                          = -->
+    <!-- = Torque Dependencies                                      = -->
+    <!-- =                                                          = -->
+    <!-- ============================================================ -->
+
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+      <version>1.1</version>
+      <url>http://jakarta.apache.org/commons/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>jcs</groupId>
+      <artifactId>jcs</artifactId>
+      <version>20030822.182132</version>
+      <url>http://jakarta.apache.org/turbine/jcs/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+
+    <!-- ============================================================ -->
+    <!-- =                                                          = -->
+    <!-- = Common Dependencies                                      = -->
+    <!-- =                                                          = -->
+    <!-- ============================================================ -->
+
+    <dependency>
+      <groupId>avalon-framework</groupId>
+      <artifactId>avalon-framework</artifactId>
+      <version>4.1.4</version>
+      <url>http://jakarta.apache.org/avalon/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.6.1</version>
+      <url>http://jakarta.apache.org/commons/beanutils.html</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.0</version>
+      <url>http://jakarta.apache.org/commons/collections.html</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>commons-configuration</groupId>
+      <artifactId>commons-configuration</artifactId>
+      <version>1.0-rc2</version>
+      <url>http://jakarta.apache.org/commons/configuration/index.html</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>commons-digester</groupId>
+      <artifactId>commons-digester</artifactId>
+      <version>1.5</version>
+      <url>http://jakarta.apache.org/commons/digester/index.html</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.0</version>
+      <url>http://jakarta.apache.org/commons/lang.html</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.4</version>
+      <url>http://jakarta.apache.org/commons/logging.html</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>commons-pool</groupId>
+      <artifactId>commons-pool</artifactId>
+      <version>1.1</version>
+      <url>http://jakarta.apache.org/commons/pool/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>jdbc</groupId>
+      <artifactId>jdbc</artifactId>
+      <version>2.0</version>
+      <url>http://java.sun.com/products/jdbc/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>jndi</groupId>
+      <artifactId>jndi</artifactId>
+      <version>1.2.1</version>
+      <url>http://java.sun.com/products/jndi/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.8</version>
+      <url>http://jakarta.apache.org/log4j/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>logkit</groupId>
+      <artifactId>logkit</artifactId>
+      <version>1.0.1</version>
+      <url>http://jakarta.apache.org/avalon/logkit/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>stratum</groupId>
+      <artifactId>stratum</artifactId>
+      <version>1.0-b5</version>
+      <url>http://jakarta.apache.org/turbine/stratum/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>village</groupId>
+      <artifactId>village</artifactId>
+      <version>2.0-dev-20030825</version>
+      <url>http://share.whichever.com/index.php?SCREEN=village</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
+      <version>2.4.0</version>
+      <url>http://xml.apache.org/xerces2-j/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
+      <version>1.0.b2</version>
+      <url>http://xml.apache.org/commons/</url>
+      <properties>
+        <war.bundle>true</war.bundle>
+      </properties>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <!-- This setting is important. The source tree will be merged -->
+    <!-- with the generated OM classes "on the fly" and copied to  -->
+    <!-- this directory. Then all java classes are compiled to     -->
+    <!-- class files. Do not change this lightly!                  -->
+    <sourceDirectory>@TURBINE_PLUGIN_SRC_COMPILE@</sourceDirectory>
+
+    <!-- Unit test classes -->
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <unitTest>
+      <includes>
+        <include>**/Test*.java</include>
+      </includes>
+    </unitTest>
+
+    <resources>
+      <includes>
+        <include>**/*.properties</include>
+      </includes>
+    </resources>
+
+  </build>
+</project>
