@@ -57,6 +57,9 @@ package org.apache.turbine.services.intake.validator;
 import java.text.ParseException;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Validator for boolean field types.<br><br>
  *
@@ -88,6 +91,9 @@ import java.util.Map;
 public class BooleanValidator
         extends DefaultValidator
 {
+    /** Logging */
+    private static Log log = LogFactory.getClass(BooleanValidator.class);
+
     /** String values which would evaluate to Boolean.TRUE */
     private static String[] trueValues = {"TRUE","T","YES","Y","1"};
 
@@ -146,15 +152,20 @@ public class BooleanValidator
             throws ParseException
     {
         Boolean result = null;
-        for (int cnt = 0; cnt < trueValues.length; cnt++)
+
+        for (int cnt = 0; 
+             cnt < Math.max(trueValues.length, falseValues.length); cnt++)
         {
-            if (stringValue.equalsIgnoreCase(trueValues[cnt]))
+            // Short-cut evaluation or bust!
+            if ((cnt < trueValues.length) && 
+                    stringValue.equalsIgnoreCase(trueValues[cnt]))
             {
                 result = Boolean.TRUE;
                 break;
             }
 
-            if (stringValue.equalsIgnoreCase(falseValues[cnt]))
+            if ((cnt < falseValues.length) && 
+                    stringValue.equalsIgnoreCase(falseValues[cnt]))
             {
                 result = Boolean.FALSE;
                 break;
