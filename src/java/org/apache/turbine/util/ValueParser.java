@@ -85,6 +85,7 @@ import org.apache.torque.om.StringKey;
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public interface ValueParser
@@ -795,6 +796,7 @@ public interface ValueParser
      *
      * @param name A String with the name.
      * @return An NumberKey.
+     * @deprecated no replacement
      */
     NumberKey getNumberKey(String name);
 
@@ -804,6 +806,7 @@ public interface ValueParser
      *
      * @param name A String with the name.
      * @return An StringKey.
+     * @deprecated no replacement
      */
     StringKey getStringKey(String name);
 

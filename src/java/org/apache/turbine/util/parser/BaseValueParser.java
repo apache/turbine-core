@@ -119,6 +119,7 @@ import org.apache.turbine.util.pool.RecyclableSupport;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class BaseValueParser
@@ -1599,6 +1600,7 @@ public class BaseValueParser
      *
      * @param name A String with the name.
      * @return A NumberKey, or <code>null</code> if unparsable.
+     * @deprecated no replacement
      */
     public NumberKey getNumberKey(String name)
     {
@@ -1625,6 +1627,7 @@ public class BaseValueParser
      *
      * @param name A String with the name.
      * @return A StringKey, or <code>null</code> if unparsable.
+     * @deprecated no replacement
      */
     public StringKey getStringKey(String name)
     {
