@@ -85,10 +85,8 @@ public class TurbineAccessControlList implements AccessControlList
     /** The sets of permissions that the user has in different groups */
     private Map permissionSets;
 
-    public static java.lang.String SESSION_KEY = "turbine.AccessControlList";
-
     /**
-     * Constructs a new AccessControlList.
+     * Constructs a new TurbineAccessControlList.
      *
      * This class follows 'immutable' pattern - it's objects can't be modified
      * once they are created. This means that the permissions the users have are
@@ -96,13 +94,13 @@ public class TurbineAccessControlList implements AccessControlList
      * changes made to the security settings in that time are not reflected
      * in the state of this object. If you need to reset an user's permissions
      * you need to invalidate his session. <br>
-     * The objects that constructs an AccessControlList must supply hashtables 
+     * The objects that constructs an TurbineAccessControlList must supply hashtables 
      * of role/permission sets keyed with group objects. <br>
      *
      * @param roleSets a hashtable containing RoleSet objects keyed with Group objects
      * @param permissionSets a hashtable containing PermissionSet objects keyed with Group objects
      */
-    public AccessControlList( Map roleSets, Map permissionSets )
+    public TurbineAccessControlList( Map roleSets, Map permissionSets )
     {
         this.roleSets = roleSets;
         this.permissionSets = permissionSets;
