@@ -142,10 +142,13 @@
 
 <p>
 We really need and appreciate any contributions you can give. This
-includes documentation help, source code and feedback. Discussion about
-changes should come in the form of source code and/or very detailed and
-well thought out constructive feedback. The <a href="todo.html">TODO</a>
-document has details and hints as to areas that still need work.
+includes documentation help, source code and feedback. Discussion
+about changes should come in the form of source code and/or very
+detailed and well thought out constructive feedback. The <a
+href="how-to-help.html">How To Help</a> document has details and hints
+how to get engaged with Turbine Development. We also have a <a
+href="todo.html">To Do</a> document that describes work to do with
+the current Turbine code.
 </p>
 
 <ul>
