@@ -33,10 +33,18 @@
   <goal name="turbine:setup" description="Setup a new Turbine web application"
     prereqs="turbine:init">
 
-    <u:available file="setup.properties">
-      <u:properties file="setup.properties"/>
-      <echo>Loaded Setup Properties from file</echo>
+    <!--  Load the setup file. You can redefine its name with the 
+          turbine.setup.properties property 
+    -->
+    <j:if test="${empty(context.getVariable('turbine.setup.properties'))}">
+      <j:set var="turbine.setup.properties" value="setup.properties"/>
+    </j:if>
+    <u:available file="${turbine.setup.properties}">
+        <u:properties file="${turbine.setup.properties}" />
     </u:available>
+
+    <echo>Package:        ${turbine.app.package}
+    </echo>
 
     <attainGoal name="turbine:check-setup-environment"/>
 
@@ -48,14 +56,25 @@
     <filter token="TURBINE_APP_OM_SECURITY_NAME" value="${turbine.app.om.security.name}"/>
     <filter token="TURBINE_APP_OM_SECURITY_PACKAGE" value="${turbine.app.om.security.package}"/>
     <filter token="TURBINE_APP_SUBDIR"         value="${turbine.app.subdir}"/>
-    <filter token="TURBINE_APP_INPLACE"        value="${turbine.app.inplace}"/>
-    <filter token="TURBINE_APP_INPLACE_DIR"    value="${turbine.app.inplace.dir}"/>
+    <filter token="TURBINE_APP_PLUGIN_MODE"    value="${turbine.app.plugin.mode}"/>
+    <filter token="TURBINE_APP_PLUGIN_DIR"     value="${turbine.app.plugin.dir}"/>
 
-    <filter token="TURBINE_PLUGIN_SRC_JAVA"      value="${turbine.plugin.src.java}"/>
-    <filter token="TURBINE_PLUGIN_SRC_TEST"  value="${turbine.plugin.src.test}"/>
+    <filter token="TURBINE_PLUGIN_BASE_DIR"    value="${turbine.plugin.base.dir}"/>
+    <filter token="TURBINE_PLUGIN_SRC_IMAGES"  value="${turbine.plugin.src.images}"/>
+    <filter token="TURBINE_PLUGIN_SRC_PAGES"   value="${turbine.plugin.src.pages}"/>
+    <filter token="TURBINE_PLUGIN_SRC_RESOURCES"  value="${turbine.plugin.src.resources}"/>
     <filter token="TURBINE_PLUGIN_SRC_SCHEMA"  value="${turbine.plugin.src.schema}"/>
+    <filter token="TURBINE_PLUGIN_SRC_SCRIPTS" value="${turbine.plugin.src.scripts}"/>
+    <filter token="TURBINE_PLUGIN_SRC_STYLE"   value="${turbine.plugin.src.style}"/>
     <filter token="TURBINE_PLUGIN_SRC_TEMPLATES" value="${turbine.plugin.src.templates}"/>
-    <filter token="TURBINE_PLUGIN_SRC_CONF"  value="${turbine.plugin.src.conf}"/>
+    <filter token="TURBINE_PLUGIN_SRC_WEBINF"  value="${turbine.plugin.src.webinf}"/>
+
+    <filter token="TURBINE_PLUGIN_SRC_CONF"    value="${turbine.plugin.src.conf}"/>
+    <filter token="TURBINE_PLUGIN_SRC_JAVA"    value="${turbine.plugin.src.java}"/>
+    <filter token="TURBINE_PLUGIN_SRC_TEST"    value="${turbine.plugin.src.test}"/>
+
+    <filter token="TURBINE_PLUGIN_TARGET_LIB"  value="${turbine.plugin.target.lib}"/>
+    <filter token="MAVEN_BUILD_DEST"           value="${maven.build.dest}"/>
 
     <filter token="TORQUE_DATABASE"            value="${torque.database}"/>
     <filter token="TORQUE_DATABASE_DRIVER"     value="${torque.database.driver}"/>
@@ -67,57 +86,54 @@
     <filter token="MAVEN_APPSERVER_NAME"       value="${maven.appserver.name}"/>
     <filter token="MAVEN_APPSERVER_HOME"       value="${maven.appserver.home}"/>
 
-    <u:replace var="appDir" oldChar="." newChar="/" value="${turbine.app.package}"/>
+    <filter token="MAVEN_WAR_WEBXML"           value="${maven.war.webxml}"/>
 
-    <j:set var="subDir" value="${turbine.app.subdir}"/>
-    <j:set var="baseDir" value="${turbine.app.name}"/>
-    <j:if test="${subDir.equalsIgnoreCase('false')}">
-      <j:set var="baseDir" value="."/>
-    </j:if>
+    <u:replace var="appDir" oldChar="." newChar="/" value="${turbine.app.package}"/>
 
     <echo>Building Turbine Skeleton for ${turbine.app.name} application
           Flavor:         ${turbine.app.flavor}
           Package:        ${turbine.app.package}
           Database:       ${turbine.app.database}
-          Base Directory: ${baseDir} (${turbine.app.subdir})
+          Root Directory: ${turbine.plugin.root.dir} 
+          Base Directory: ${turbine.plugin.base.dir}
+          web.xml:        ${maven.war.webxml}
     </echo>
 
     <!-- Make directories -->
-    <mkdir dir="${baseDir}/${turbine.plugin.src.conf}"/>
-    <mkdir dir="${baseDir}/${turbine.plugin.src.java}"/>
-    <mkdir dir="${baseDir}/${turbine.plugin.src.schema}"/>
-    <mkdir dir="${baseDir}/${turbine.plugin.src.templates}/layouts"/>
-    <mkdir dir="${baseDir}/${turbine.plugin.src.templates}/macros"/>
-    <mkdir dir="${baseDir}/${turbine.plugin.src.templates}/screens"/>
-    <mkdir dir="${baseDir}/${turbine.plugin.src.templates}/navigations"/>
-    <mkdir dir="${baseDir}/${turbine.plugin.src.test}"/>
-    <mkdir dir="${baseDir}/src/scripts"/>
-    <mkdir dir="${baseDir}/src/style"/>
-    <mkdir dir="${baseDir}/src/images"/>
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.conf}"/>
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.java}"/>
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.schema}"/>
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.templates}/layouts"/>
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.templates}/macros"/>
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.templates}/screens"/>
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.templates}/navigations"/>
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.test}"/>
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.scripts}"/>
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.style}"/>
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.images}"/>
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.pages}"/>
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.resources}"/>
 
-    <mkdir dir="${baseDir}/${turbine.plugin.src.java}/${appDir}" />
-    <mkdir dir="${baseDir}/${turbine.plugin.src.java}/${appDir}/modules/actions" />
-    <mkdir dir="${baseDir}/${turbine.plugin.src.java}/${appDir}/modules/screens" />
-    <mkdir dir="${baseDir}/${turbine.plugin.src.java}/${appDir}/modules/layouts" />
-    <mkdir dir="${baseDir}/${turbine.plugin.src.java}/${appDir}/modules/navigations" />
-    <mkdir dir="${baseDir}/${turbine.plugin.src.java}/${appDir}/modules/pages" />
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.java}/${appDir}" />
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.java}/${appDir}/modules/actions" />
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.java}/${appDir}/modules/screens" />
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.java}/${appDir}/modules/layouts" />
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.java}/${appDir}/modules/navigations" />
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.java}/${appDir}/modules/pages" />
 
-    <!-- ========== Copy base files into application root ========== -->
+    <!-- ========== Copy build control files into application root ========== -->
 
-    <meta:copyTurbineDir todir="${baseDir}" filtering="true"
+    <meta:copyTurbineDir todir="${turbine.plugin.root.dir}" filtering="true"
                                 flavor="${turbine.app.flavor}"
-                                frompath="${plugin.resources}/maven"
-                                include="**/*"
-                                exclude="setup.properties"/>
+                                frompath="maven"
+                                include="**/*"/>
 
     <!-- Try to rebuild the setup.properties file. 
          If it already exists, don't clobber it!
     -->
-    <u:available file="${plugin.resources}/maven/common">
-      <ant:copy todir="${baseDir}" filtering="true" overwrite="false">
-        <ant:fileset dir="${plugin.resources}/maven/common">
-          <include name="setup.properties"/>
-        </ant:fileset>
+    <u:available file="${plugin.resources}/setup">
+      <ant:copy todir="${turbine.plugin.root.dir}" filtering="true" overwrite="false">
+        <ant:fileset dir="${plugin.resources}/setup"/>
       </ant:copy>
     </u:available>
 
@@ -127,61 +143,66 @@
          replaced when the files are copied inside the application.
     -->
 
-    <meta:copyTurbineDir todir="${baseDir}/${turbine.plugin.src.schema}" filtering="false"
+    <meta:copyTurbineDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.schema}" filtering="false"
                                 flavor="${turbine.app.flavor}"
-                                frompath="${plugin.resources}/schema"
+                                frompath="schema"
                                 include="**/*"
                                 exclude="**/application*"/>
 
-    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-schema.xml" filtering="false"
+    <meta:copyTurbineFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.schema}/${turbine.app.name}-schema.xml" filtering="false"
                                 flavor="${turbine.app.flavor}"
-                                frompath="${plugin.resources}/schema" fromfile="application-schema.xml" />
+                                fromfile="schema/application-schema.xml" />
 
-    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.dtd" filtering="true"
+    <meta:copyTurbineFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.dtd" filtering="true"
                                 flavor="${turbine.app.flavor}"
-                                frompath="${plugin.resources}/schema" fromfile="application-data.dtd" />
+                                fromfile="schema/application-data.dtd" />
 
-    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.xml" filtering="true"
+    <meta:copyTurbineFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.xml" filtering="true"
                                 flavor="${turbine.app.flavor}"
-                                frompath="${plugin.resources}/schema" fromfile="application-data.xml" />
+                                fromfile="schema/application-data.xml" />
 
     <!-- ========== Copy template files ========== -->
 
-    <meta:copyTurbineDir todir="${baseDir}/${turbine.plugin.src.templates}" filtering="true"
+    <meta:copyTurbineDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.templates}" filtering="true"
                                 flavor="${turbine.app.flavor}"
-                                frompath="${plugin.resources}/templates"
+                                frompath="templates"
                                 include="**/*"
                                 exclude="**/application*"/>
 
-    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.templates}/macros/${turbine.app.name}Macros.vm" filtering="true"
+    <meta:copyTurbineFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.templates}/macros/${turbine.app.name}Macros.vm" filtering="true"
                                 flavor="${turbine.app.flavor}"
-                                frompath="${plugin.resources}/templates/macros" fromfile="applicationMacros.vm" />
+                                fromfile="templates/macros/applicationMacros.vm" />
 
     <!-- ========== Copy Turbine configuration files ========== -->
 
-    <meta:copyTurbineDir todir="${baseDir}/${turbine.plugin.src.conf}" filtering="true"
+    <meta:copyTurbineDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.conf}" filtering="true"
                                 flavor="${turbine.app.flavor}"
-                                frompath="${plugin.resources}/conf"
+                                frompath="conf"
                                 include="**/*"
                                 exclude="**/application*"/>
 
-    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.conf}/${turbine.app.name}-web.xml" filtering="true"
+    <meta:copyTurbineFile tofile="${turbine.plugin.root.dir}/${maven.war.webxml}" filtering="true"
                                 flavor="${turbine.app.flavor}"
-                                frompath="${plugin.resources}/conf" fromfile="application-web.xml" />
+                                fromfile="conf/application-web.xml" />
 
-    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.conf}/${turbine.app.name}.properties" filtering="true"
+    <meta:copyTurbineFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.conf}/${turbine.app.name}.properties" filtering="true"
                                 flavor="${turbine.app.flavor}"
-                                frompath="${plugin.resources}/conf" fromfile="application.properties" />
+                                fromfile="conf/application.properties" />
 
-    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.conf}/${turbine.app.name}-intake.xml" filtering="true"
+    <meta:copyTurbineFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.conf}/${turbine.app.name}-intake.xml" filtering="true"
                                 flavor="${turbine.app.flavor}"
-                                frompath="${plugin.resources}/conf" fromfile="application-intake.xml" />
+                                fromfile="conf/application-intake.xml" />
 
     <!-- ========== Copy other files into application tree ========== -->
 
-    <meta:copyTurbineDir todir="${baseDir}/src/images" filtering="false"
+    <meta:copyTurbineDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.images}" filtering="false"
                                 flavor="${turbine.app.flavor}"
-                                frompath="${plugin.resources}/images"
+                                frompath="images"
+                                include="**/*" />
+
+    <meta:copyTurbineDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.pages}" filtering="true"
+                                flavor="${turbine.app.flavor}"
+                                frompath="pages"
                                 include="**/*" />
 
   </goal>
@@ -235,8 +256,13 @@
     <war warfile="${maven.build.dir}/${pom.artifactId}.war"
          webxml="${maven.war.webxml}">
 
+      <!-- we include classes and libs explicitly with the lib and classes tag below.
+           The web.xml file is defined by the webxml attribute above 
+      -->
+
       <fileset dir="${webapp.build}">
         <exclude name="WEB-INF/lib/**"/>
+        <exclude name="WEB-INF/classes/**"/>
         <exclude name="WEB-INF/web.xml"/>
       </fileset>
 
@@ -287,7 +313,7 @@
   <!-- ======================================================================== -->
   <goal name="turbine:deploy"
     description="Deploys the Application into a local web container for testing"
-    prereqs="turbine:check-runtime-environment">
+    prereqs="turbine:init, turbine:check-runtime-environment">
 
     <echo>Located Application Server at ${maven.appserver.home} (${maven.appserver.name})</echo>
 
@@ -295,7 +321,16 @@
 
     <delete file="${maven.build.dir}/${pom.artifactId}.war" />
 
-    <echo>Installing to Appserver Directory: ${turbine.target.dir}, Inplace: ${turbine.app.inplace}</echo>
+    <j:set var="turbine.target.dir" 
+             value="${maven.appserver.home}/webapps/${pom.name}" />
+
+    <!-- FIXME -->
+    <j:if test="${context.getVariable('turbine.app.plugin.mode').equalsIgnoreCase('inplace')}">
+      <j:set var="turbine.target.dir" value="${turbine.app.plugin.dir}"/>
+    </j:if>
+    <!-- FIXME -->
+
+    <echo>Installing to Appserver Directory: ${turbine.target.dir}, Inplace: ${turbine.app.plugin.mode}</echo>
 
     <mkdir dir="${turbine.target.dir}/WEB-INF/lib" />
     <mkdir dir="${turbine.target.dir}/WEB-INF/conf" />
@@ -304,7 +339,7 @@
     <mkdir dir="${turbine.target.dir}/templates" />
 
     <j:forEach var="dep" items="${pom.dependencies}">
-      <j:if test="${dep.getProperty('war.bundle')=='true'}">
+      <j:if test="${dep.getProperty('war.bundle').equalsIgnoreCase('true')}">
         <copy todir="${turbine.target.dir}/WEB-INF/lib"
           file="${maven.repo.local}/${dep.getArtifactDirectory()}/jars/${dep.getArtifact()}"/>
       </j:if>  
@@ -320,22 +355,6 @@
       <fileset dir="${maven.build.dest}"/>
     </copy>
 
-    <copy todir="${turbine.target.dir}/templates">
-      <fileset dir="${turbine.plugin.src.templates}"/>
-    </copy>
-
-    <copy todir="${turbine.target.dir}/scripts">
-      <fileset dir="src/scripts"/>
-    </copy>
-
-    <copy todir="${turbine.target.dir}/style">
-      <fileset dir="src/style"/>
-    </copy>
-
-    <copy todir="${turbine.target.dir}/images">
-      <fileset dir="src/images"/>
-    </copy>
-
     <copy todir="${turbine.target.dir}/WEB-INF/conf" flatten="true" includeEmptyDirs="no">
      <fileset dir="${turbine.plugin.src.conf}">
         <exclude name="${pom.name}-web.xml"/>
@@ -344,11 +363,61 @@
 
     <copy file="${maven.war.webxml}"
       tofile="${turbine.target.dir}/WEB-INF/web.xml"/>
+
+    <copy todir="${turbine.target.dir}/images">
+      <fileset dir="${turbine.plugin.src.images}"/>
+    </copy>
+
+    <copy todir="${turbine.target.dir}">
+      <fileset dir="${turbine.plugin.src.pages}"/>
+    </copy>
+
+    <copy todir="${turbine.target.dir}/resources">
+      <fileset dir="${turbine.plugin.src.resources}"/>
+    </copy>
+
+    <copy todir="${turbine.target.dir}/scripts">
+      <fileset dir="${turbine.plugin.src.scripts}"/>
+    </copy>
+
+    <copy todir="${turbine.target.dir}/style">
+      <fileset dir="${turbine.plugin.src.style}"/>
+    </copy>
+
+    <copy todir="${turbine.target.dir}/templates">
+      <fileset dir="${turbine.plugin.src.templates}"/>
+    </copy>
+
   </goal>
   <!-- ======================================================================== -->
   <!-- turbine:deploy                                                           -->
   <!-- ======================================================================== -->
   
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- turbine:install-libs                                                     -->
+  <!--                                                                          -->
+  <!-- This moves the source tree around and calls the torque:om goal if        -->
+  <!-- nececssary to merge all the source files before compilation.             -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:install-libs"
+    description="updates the libraries for an inplace application"
+    prereqs="turbine:init, turbine:check-runtime-environment">
+
+    <j:if test="${!empty(context.getVariable('turbine.plugin.target.lib'))}">
+      <j:forEach var="dep" items="${pom.dependencies}">
+        <j:if test="${dep.getProperty('war.bundle').equalsIgnoreCase('true')}">
+          <copy todir="${turbine.plugin.target.lib}"
+                file="${maven.repo.local}/${dep.getArtifactDirectory()}/jars/${dep.getArtifact()}"/>
+        </j:if>  
+      </j:forEach>            
+    </j:if>
+  </goal>
+  <!-- ======================================================================== -->
+  <!-- turbine:install-libs                                                     -->
+  <!-- ======================================================================== -->
+
 <!-- ======================================================================== -->
 <!--                                                                          -->
 <!-- Callback goals for use from the application maven.xml file. These goals  -->
@@ -364,14 +433,14 @@
   <!-- Cleanup inplace generated artifacts.                                     -->
   <!--                                                                          -->
   <!-- ======================================================================== -->     
-   <goal name="turbine:clean-clean"
-    prereqs="turbine:check-runtime-environment">
-
-    <j:if test="${context.getVariable('turbine.app.inplace') != null and context.getVariable('turbine.app.inplace').equalsIgnoreCase('true')}">
-      <ant:delete dir="${turbine.target.dir}/WEB-INF/lib"/>
-      <ant:delete dir="${turbine.target.dir}/WEB-INF/classes"/>
-    </j:if>
-   </goal>    
+  <goal name="turbine:clean-clean">
+    <j:choose>
+      <j:when test="${pluginMode.equalsIgnoreCase('inplace')}">
+        <ant:delete dir="${turbine.app.plugin.dir}/WEB-INF/lib"/>
+        <ant:delete dir="${turbine.app.plugin.dir}/WEB-INF/classes"/>
+      </j:when>
+    </j:choose>
+  </goal>    
   <!-- ======================================================================== -->
   <!-- clean                                                                    -->
   <!-- ======================================================================== -->
@@ -468,31 +537,53 @@
     <j:set var="webapp.build.classes" value="target/${pom.name}/WEB-INF/classes"/>
     <j:set var="webapp.build.webinf" value="target/${pom.name}/WEB-INF"/>
 
-   <mkdir dir="${turbine.plugin.src.templates}"/>
-   <copy todir="${webapp.build}/templates" includeEmptyDirs="no">
-     <fileset dir="${turbine.plugin.src.templates}"/>
-   </copy>
-
-   <mkdir dir="${webapp.build}/scripts"/>
-   <copy todir="${webapp.build}/scripts" includeEmptyDirs="no">
-     <fileset dir="src/scripts"/>
-   </copy>
-
-   <mkdir dir="${webapp.build}/style"/>
-   <copy todir="${webapp.build}/style" includeEmptyDirs="no">
-     <fileset dir="src/style"/>
-   </copy>
-
-   <mkdir dir="${webapp.build}/images"/>
-   <copy todir="${webapp.build}/images" includeEmptyDirs="no">
-     <fileset dir="src/images"/>
-   </copy>
-
    <copy todir="${webapp.build.webinf}/conf" flatten="true" includeEmptyDirs="no">
      <fileset dir="${turbine.plugin.src.conf}">
        <exclude name="**/${pom.name}-web.xml"/>
      </fileset>
    </copy>
+
+   <u:available file="${turbine.plugin.src.images}">
+     <mkdir dir="${webapp.build}/images"/>
+     <copy todir="${webapp.build}/images" includeEmptyDirs="no">
+       <fileset dir="${turbine.plugin.src.images}"/>
+     </copy>
+   </u:available>
+
+   <u:available file="${turbine.plugin.src.pages}">
+     <copy todir="${webapp.build}" includeEmptyDirs="no">
+       <fileset dir="${turbine.plugin.src.pages}"/>
+     </copy>
+   </u:available>
+
+   <u:available file="${turbine.plugin.src.resources}">
+     <mkdir dir="${webapp.build}/resources"/>
+     <copy todir="${webapp.build}/resources" includeEmptyDirs="no">
+       <fileset dir="${turbine.plugin.src.resources}"/>
+     </copy>
+   </u:available>
+
+   <u:available file="${turbine.plugin.src.scripts}">
+     <mkdir dir="${webapp.build}/scripts"/>
+     <copy todir="${webapp.build}/scripts" includeEmptyDirs="no">
+       <fileset dir="${turbine.plugin.src.scripts}"/>
+     </copy>
+   </u:available>
+
+   <u:available file="${turbine.plugin.src.style}">
+     <mkdir dir="${webapp.build}/style"/>
+     <copy todir="${webapp.build}/style" includeEmptyDirs="no">
+       <fileset dir="${turbine.plugin.src.style}"/>
+     </copy>
+   </u:available>
+
+   <u:available file="${turbine.plugin.src.templates}">
+     <mkdir dir="${webapp.build}/templates"/>
+     <copy todir="${webapp.build}/templates" includeEmptyDirs="no">
+       <fileset dir="${turbine.plugin.src.templates}"/>
+     </copy>
+   </u:available>
+
   </goal>
   <!-- ======================================================================== -->
   <!-- war:webapp                                                               -->
@@ -531,32 +622,32 @@
 
       <define:tag name="copyTurbineFile">
 
-        <u:available file="${frompath}/common/${fromfile}">
+        <u:available file="${plugin.resources}/flavor/common/${fromfile}">
           <ant:copy tofile="${tofile}" filtering="${filtering}" overwrite="true"
-            file="${frompath}/common/${fromfile}"/>
+            file="${plugin.resources}/flavor/common/${fromfile}"/>
         </u:available>
     
-        <u:available file="${frompath}/${flavor}/${fromfile}">
+        <u:available file="${plugin.resources}/flavor/${flavor}/${fromfile}">
           <ant:copy tofile="${tofile}" filtering="${filtering}" overwrite="true"
-            file="${frompath}/${flavor}/${fromfile}"/>
+            file="${plugin.resources}/flavor/${flavor}/${fromfile}"/>
         </u:available>
 
       </define:tag>
 
       <define:tag name="copyTurbineDir">
 
-        <u:available file="${frompath}/common">
+        <u:available file="${plugin.resources}/flavor/common/${frompath}">
           <ant:copy todir="${todir}" filtering="${filtering}" overwrite="true" >
-            <ant:fileset dir="${frompath}/common">
+            <ant:fileset dir="${plugin.resources}/flavor/common/${frompath}">
               <include name="${include}"/>
               <exclude name="${exclude}"/>
             </ant:fileset>
           </ant:copy>
         </u:available>
 
-        <u:available file="${frompath}/${flavor}">
+        <u:available file="${plugin.resources}/flavor/${flavor}/${frompath}">
           <ant:copy todir="${todir}" filtering="${filtering}" overwrite="true" >
-            <ant:fileset dir="${frompath}/${flavor}">
+            <ant:fileset dir="${plugin.resources}/flavor/${flavor}/${frompath}">
               <include name="${include}"/>
               <exclude name="${exclude}"/>
             </ant:fileset>
@@ -564,8 +655,25 @@
         </u:available>
 
       </define:tag>
-    </define:taglib>
 
+      <!--  Can you actually believe _this_ maven stupidity? Obviously property
+            files loaded by the core are subject to some magic that changes the
+            embedded variables to their values. 
+
+            Emulate this by some heavy maven magic. Gee, is there actually _any_
+            documentation on this?
+      -->
+      <define:tag name="evalProperty">
+        <j:invokeStatic var="_result" method="decomposeExpression"
+            className="org.apache.maven.jelly.JellyUtils">
+          <j:arg type="java.lang.String" value="${value}" />
+          <j:arg type="org.apache.commons.jelly.JellyContext" value="${context}"/>
+        </j:invokeStatic>
+        <j:set var="_propname" value="${name}"/>
+        <j:set var="${_propname}" scope="parent">${_result}</j:set>
+      </define:tag>
+
+    </define:taglib>
   </goal>
 
   <!-- ======================================================================== -->
@@ -577,40 +685,39 @@
   <!-- ======================================================================== -->
   <goal name="turbine:check-runtime-environment"
     prereqs="turbine:init">
-    <j:if test="${context.getVariable('maven.appserver.name') == null || context.getVariable('maven.appserver.name') == ''}">
-      <meta:requiredPropertyMissing propname="maven.appserver.name" />
-    </j:if>
-    <j:if test="${context.getVariable('torque.database') == null || context.getVariable('torque.database') == ''}">
-      <meta:requiredPropertyMissing propname="torque.database" />
-    </j:if>
 
-    <j:choose>
-      <j:when test="${context.getVariable('turbine.app.inplace') != null and context.getVariable('turbine.app.inplace').equalsIgnoreCase('true')}">
-        <j:if test="${context.getVariable('turbine.app.inplace.dir') == null || context.getVariable('turbine.app.inplace.dir') == ''}">
-          <meta:requiredPropertyMissing propname="turbine.app.inplace.dir" />
-        </j:if>
-        <ant:property name="turbine.target.dir" value="${turbine.app.inplace.dir}" />
-      </j:when>
-      <j:otherwise>
-        <j:if test="${context.getVariable('maven.appserver.home') == null || context.getVariable('maven.appserver.home') == ''}">
-          <meta:requiredPropertyMissing propname="maven.appserver.home" />
-        </j:if>
-        <ant:property name="turbine.target.dir" value="${maven.appserver.home}/webapps/${pom.name}" />
-      </j:otherwise>
-    </j:choose>
+   <j:if test="${empty(context.getVariable('maven.appserver.name'))}">
+     <meta:requiredPropertyMissing propname="maven.appserver.name" />
+   </j:if>
+   <j:if test="${empty(context.getVariable('torque.database'))}">
+     <meta:requiredPropertyMissing propname="torque.database" />
+   </j:if>
 
-    <echo>Turbine Target Directory is ${turbine.target.dir}</echo>
+   <j:set var="pluginMode" value="${turbine.app.plugin.mode}"/>
+
+   <j:choose>
+     <j:when test="${pluginMode.equalsIgnoreCase('normal')}">
+       <j:if test="${empty(context.getVariable('maven.appserver.home'))}">
+         <meta:requiredPropertyMissing propname="maven.appserver.home" />
+       </j:if>
+     </j:when>
+     <j:when test="${pluginMode.equalsIgnoreCase('inplace')}">
+       <j:if test="${empty(context.getVariable('turbine.app.plugin.dir'))}">
+         <meta:requiredPropertyMissing propname="turbine.app.plugin.dir" />
+       </j:if>
+     </j:when>
+   </j:choose>
   </goal>
 
   <goal name="turbine:check-setup-environment"
     prereqs="turbine:init, turbine:check-runtime-environment">
-    <j:if test="${context.getVariable('turbine.app.name') == ''}">
+    <j:if test="${empty(context.getVariable('turbine.app.name'))}">
       <meta:requiredPropertyMissing propname="turbine.app.name" />
     </j:if>
 
     <ant:condition property="flavorExists">
     <or>
-      <ant:available type="dir" file="${plugin.resources}/maven/${turbine.app.flavor}" />
+      <ant:available type="dir" file="${plugin.resources}/flavor/${turbine.app.flavor}/maven" />
     </or>
     </ant:condition>    
 
@@ -621,12 +728,76 @@
 --------------------------------------------------------------------------
 
  The requested flavor ${turbine.app.flavor} was not found in the
- current version ($plugin.version) of M.E.T.A.
+ current version (${plugin.version}) of M.E.T.A.
 
 --------------------------------------------------------------------------
         </fail>
     </j:if>
 
+    <j:set var="pluginMode" value="${turbine.app.plugin.mode}"/>
+    <j:set var="pluginProperties" value="${plugin.resources}/mode/${pluginMode}.properties"/>
+    <j:choose>
+      <j:when test="${pluginMode.equalsIgnoreCase('normal')}">
+        <j:set var="webXmlName" value="${turbine.app.name}-web.xml" />
+      </j:when>
+      <j:when test="${pluginMode.equalsIgnoreCase('inplace')}">
+        <j:set var="webXmlName" value="web.xml" />
+      </j:when>
+      <j:when test="${pluginMode.equalsIgnoreCase('eclipse')}"/>
+      <j:otherwise>
+        <fail>
+--------------------------------------------------------------------------
+| Mode not found Error                                                   |
+--------------------------------------------------------------------------
+
+ The requested mode ${turbine.app.plugin.mode} was not found in the
+ current version (${plugin.version}) of M.E.T.A.
+
+--------------------------------------------------------------------------
+        </fail>
+      </j:otherwise>
+    </j:choose>
+
+    <!-- 
+         Location of the base files (maven.xml, project.properties) is turbine.app.root.dir.
+         This is valid only for the turbine:setup; when running the runtime targets, this is
+         always the current ('.') directory
+ 
+         Location of the file tree is turbine.app.base.dir, relative to turbine.app.root.dir
+    -->
+         
+    <j:choose>
+      <j:when test="${context.getVariable('turbine.app.subdir').equalsIgnoreCase('false')}">
+        <ant:property name="turbine.plugin.root.dir" value="."/>
+      </j:when>
+       <j:otherwise>
+         <ant:property name="turbine.plugin.root.dir" value="${turbine.app.name}"/>
+       </j:otherwise>
+    </j:choose>
+ 
+    <j:choose>
+      <j:when test="${pluginMode.equalsIgnoreCase('inplace')}">
+        <ant:property name="turbine.plugin.base.dir" value="${turbine.app.plugin.dir}"/>
+      </j:when>
+       <j:otherwise>
+         <ant:property name="turbine.plugin.base.dir" value="."/>
+       </j:otherwise>
+    </j:choose>
+
+    <u:available file="${pluginProperties}">
+      <echo>Loading Mode Properties from ${pluginProperties}</echo>
+      <u:properties file="${pluginProperties}" var="_properties"/>
+      <j:forEach var="_property" items="${_properties.keys()}">
+         <j:set var="_propname" value="${_property}"/>
+         <j:set var="_propval" value="${context.getVariable(_propname)}"/>
+
+         <j:if test="${_propval == null || _propname == 'maven.build.dest'}">
+           <meta:evalProperty name="${_propname}" value="${_properties.getProperty(_property)}" />
+         </j:if>
+      </j:forEach>
+    </u:available>
+
+    <j:set var="maven.war.webxml" value="${turbine.plugin.webxml.dir}/${webXmlName}" />
   </goal>
   <!-- ======================================================================== -->
   <!-- turbine:check-environment                                                -->
