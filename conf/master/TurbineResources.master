@@ -1016,13 +1016,13 @@ url.case.folding=lower
 # -------------------------------------------------------------------
 
 subsystem.name = torque
-#subsystem.name = fulcrum
+subsystem.name = fulcrum
 
 subsystem.torque.classname = org.apache.torque.Torque
 subsystem.torque.config = /WEB-INF/conf/Torque.properties
 
-#subsystem.fulcrum.classname = org.apache.fulcrum.TurbineServices
-#subsystem.fulcrum.config = /WEB-INF/conf/Fulcrum.properties
+subsystem.fulcrum.classname = org.apache.fulcrum.Fulcrum
+subsystem.fulcrum.config = /WEB-INF/conf/Fulcrum.properties
 
 # -------------------------------------------------------------------
 #
