@@ -54,10 +54,16 @@ package org.apache.turbine.util.template;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
-import org.apache.turbine.services.resources.TurbineResources;
+
+import org.apache.turbine.services.security.TurbineSecurity;
+
 import org.apache.turbine.services.template.TurbineTemplate;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -74,6 +80,7 @@ import org.apache.turbine.util.RunData;
  * </code>
  *
  * @author <a href="mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TemplateSecurityCheck
@@ -114,7 +121,8 @@ public class TemplateSecurityCheck
      * @return Whether the user has the role.
      * @exception Exception Trouble validating.
      */
-    public boolean hasRole(Role role) throws Exception
+    public boolean hasRole(Role role)
+        throws Exception
     {
         if (!checkLogin())
         {
@@ -128,10 +136,8 @@ public class TemplateSecurityCheck
             data.setMessage(getMessage());
             return false;
         }
-        else
-        {
-            return true;
-        }
+
+        return true;
     }
 
     /**
@@ -141,19 +147,19 @@ public class TemplateSecurityCheck
      * @return Whether the user has the permission.
      * @exception Exception Trouble validating.
      */
-    public boolean hasPermission(Permission permission) throws Exception
+    public boolean hasPermission(Permission permission)
+        throws Exception
     {
+        boolean value = true;
         if (data.getACL() == null || !data.getACL().hasPermission(permission))
         {
             data.setScreen(getFailScreen());
             data.getTemplateInfo().setScreenTemplate(getFailTemplate());
             data.setMessage(getMessage());
-            return false;
+            value = false;
         }
-        else
-        {
-            return true;
-        }
+
+        return value;
     }
 
     /**
@@ -162,20 +168,22 @@ public class TemplateSecurityCheck
      * @return True if user has logged in.
      * @exception Exception, a generic exception.
      */
-    public boolean checkLogin() throws Exception
+    public boolean checkLogin()
+        throws Exception
     {
-        boolean value = false;
+        boolean value = true;
 
-        if (data.getUser() != null && !data.getUser().hasLoggedIn())
+        // Do it like the AccessController
+        if (!TurbineSecurity.isAnonymousUser(data.getUser())
+            && !data.getUser().hasLoggedIn())
         {
-            data.setMessage(TurbineResources.getString("login.message"));
+            data.setMessage(Turbine.getConfiguration()
+                .getString(TurbineConstants.LOGIN_MESSAGE));
+
             data.getTemplateInfo().setScreenTemplate(getFailTemplate());
             value = false;
         }
-        else
-        {
-            value = true;
-        }
+
         return value;
     }
 
