@@ -23,7 +23,7 @@
 
 <p>
   Torque is currently deployed in two forms: a stand-alone version and a version
-  that is bundled with the <a href="tdk-howto.html">Turbine Developer's Kit</a>.
+  that is bundled with the Turbine Developer's Kit.
   Both versions are identical in function, but have slightly different 
   configurations. 
 </p>
