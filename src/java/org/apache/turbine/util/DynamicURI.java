@@ -580,7 +580,18 @@ public class DynamicURI
      */
     public String getScriptName()
     {
-        String result = getServerData().getServerName();
+        String result = getServerData().getScriptName();
+        return (StringUtils.isEmpty(result) ? "" : result);
+    }
+
+    /**
+     * Gets the context path
+     *
+     * @return A String with the servlet context path
+     */
+    public String getContextPath()
+    {
+        String result = getServerData().getContextPath();
         return (StringUtils.isEmpty(result) ? "" : result);
     }
 
@@ -860,6 +871,18 @@ public class DynamicURI
     }
 
     /**
+     * Sets the context path
+     *
+     * @param contextPath A String with the servlet context path
+     * @return A DynamicURI (self).
+     */
+    public DynamicURI setContextPath(String contextPath)
+    {
+        getServerData().setContextPath(contextPath);
+        return this;
+    }
+
+    /**
      * Sets the reference  (#ref).
      *
      * @param reference A String containing the reference.
@@ -964,13 +987,16 @@ public class DynamicURI
         output.append(getServerScheme());
         output.append("://");
         output.append(getServerName());
-        if ((getServerScheme().equals(HTTP) && getServerPort() != 80)
-                || (getServerScheme().equals(HTTPS) && getServerPort() != 443)
+        if ((getServerScheme().equals(URIConstants.HTTP)
+                    && getServerPort() != 80)
+                || (getServerScheme().equals(URIConstants.HTTPS)
+                    && getServerPort() != 443)
         )
         {
             output.append(":");
             output.append(getServerPort());
         }
+        output.append(getContextPath());
         output.append(getScriptName());
         if (this.hasPathInfo)
         {
@@ -1031,6 +1057,8 @@ public class DynamicURI
             output.append(":");
             output.append(data.getServerPort());
         }
+
+        output.append(data.getServerData().getContextPath());
 
         output.append(data.getServerData().getScriptName());
 
