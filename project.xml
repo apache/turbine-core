@@ -389,7 +389,7 @@
     </dependency>
     <dependency>
       <id>ecs</id>
-      <version>1.4.1</version>
+      <version>1.4.2</version>
       <url>http://jakarta.apache.org/ecs/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
