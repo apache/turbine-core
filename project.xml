@@ -524,7 +524,7 @@
     </dependency>
     <dependency>
       <id>torque</id>
-      <version>3.1-alpha2</version>
+      <version>3.1-rc</version>
       <url>http://db.apache.org/torque/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
@@ -540,7 +540,7 @@
     </dependency>
     <dependency>
       <id>village</id>
-      <version>2.0-dev-20030625</version>
+      <version>2.0-dev-20030825</version>
       <url>http://share.whichever.com/index.php?SCREEN=village</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
