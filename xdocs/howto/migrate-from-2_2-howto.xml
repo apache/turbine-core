@@ -258,7 +258,7 @@ org.apache.turbine.services.pull.tools.TemplateLinkWithSlash
     Security Service</a> for information on extending TurbineUser in Turbine
     2.3 - this is now much easier than it was in previous releases.  You
     may also want to refer to 
-    <a href="http://nagoya.apache.org/eyebrowse/ReadMsg?listName=turbine-dev@jakarta.apache.org&amp;msgNo=15077">
+    <a href="http://mail-archives.apache.org/eyebrowse/ReadMsg?listName=turbine-dev@jakarta.apache.org&amp;msgNo=15077">
     this message from the mail archive</a> - the quoted text from Henning is 
     great and Wei points to a couple of additional messages that may also 
     prove useful.
