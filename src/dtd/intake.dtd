@@ -163,7 +163,7 @@ Used in:        group
   displaySize CDATA #IMPLIED
   type ( boolean | BigDecimal | int  | float | FileItem
        | String | DateString  | StringKey | NumberKey
-       | ComboKey | double ) "String"
+       | ComboKey | double | short | long ) "String"
   multiValued ( true | false ) "false"
   mapToObject CDATA #IMPLIED
   mapToProperty CDATA #IMPLIED
