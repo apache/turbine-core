@@ -58,6 +58,8 @@ import org.apache.ecs.HtmlColor;
 import org.apache.ecs.html.Link;
 import org.apache.ecs.html.Meta;
 import org.apache.ecs.html.Title;
+import org.apache.ecs.html.Style;
+import org.apache.ecs.html.Script;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
 
@@ -176,6 +178,46 @@ public class TemplatePageAttributes
     {
         data.getPage().getHead().addElement(new Link()
                 .setRel("stylesheet").setType("text/css").setHref(url));
+        return this;
+    }
+
+    /**
+     * Adds a LINK to a CSS stylesheet to the HEAD of the page, allowing the
+     * media type to be specified.
+     *
+     * @param url The value for the <code>href</code> attribute.
+     * @param media The value for the <code>media</code> attribute.
+     * @return a <code>TemplatePageAttributes</code> (self).
+     */
+    public TemplatePageAttributes setStyleSheet(String url, String media)
+    {
+        data.getPage().getHead().addElement(new Link().setRel("stylesheet")
+                .setType("text/css").setMedia(media).setHref(url));
+        return this;
+    }
+
+    /**
+     * Adds a STYLE element to the HEAD of the page with the provided content.
+     *
+     * @param styleText The contents of the <code>style</code> tag.
+     * @return a <code>TemplatePageAttributes</code> (self).
+     */
+    public TemplatePageAttributes setStyle(String styleText)
+    {
+        data.getPage().getHead().addElement(new Style("text/css", styleText));
+        return this;
+    }
+
+    /**
+     * Adds a LINK to a javascript file to the HEAD of the page.
+     *
+     * @param url A String.
+     * @return A TemplatePageAttributesEx (self).
+     */
+    public TemplatePageAttributes setScript(String url)
+    {
+        data.getPage().getHead().addElement(new Script().setSrc(url)
+                .setType("text/javascript").setLanguage("JavaScript"));
         return this;
     }
 
