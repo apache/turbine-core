@@ -128,6 +128,13 @@ Changes between Turbine 2.3 and 2.4.
        DateFormatter now allows for a differnet date format to be provided
        via <em>tool.dateTool.format</em> in TurbineResources.properties.
     </li>
+    <li>
+       DirectResponseLayout is provided to allow direct writing to 
+       ServletOutputStream when VelocityOnlyLayout is the default.  To use it
+       you need to add <em>data.declareDirectResponse();</em> and then 
+       <em>data.setLayout("DirectResponseLayout");</em> to your action class.
+       Thanks to Peter Courcoux for the code.
+    </li>
   </ul>
 </p>
 </subsection>
