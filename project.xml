@@ -8,6 +8,9 @@
   <inceptionYear>2000</inceptionYear>
   <package>org.apache.turbine</package>
 
+  <!-- Gump integration. -->
+  <gumpRepositoryId>jakarta</gumpRepositoryId>
+
   <shortDescription>
     A servlet based framework.
   </shortDescription>
