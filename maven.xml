@@ -16,7 +16,6 @@
 
   </postGoal>
 
-  <!-- This goal will be comments out until it is working properly.
   <preGoal name="java:compile">
 
     <copy todir="target/src">
@@ -25,8 +24,7 @@
 
     <j:set var="torque.project" value="scheduler"/>
     <j:set var="torque.schema.om.includes" value="scheduler-schema.xml"/>
-    <j:set var="torque.targetPackage" value="test"/>
-    <j:set var="targetPackage" value="test"/>
+    <j:set var="torque.targetPackage" value="${scheduler.package}"/>
     <filter token="DATABASE_DEFAULT" value="${scheduler.database.name}"/>
     <filter token="EXTRA_USER_COLUMNS" value="${scheduler.extra.user.columns}"/>
     <copy
@@ -36,6 +34,5 @@
     <attainGoal name="torque:om"/>
 
   </preGoal>
-  -->
 
 </project>
