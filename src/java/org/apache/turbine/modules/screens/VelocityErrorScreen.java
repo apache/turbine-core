@@ -54,9 +54,11 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.RunData;
+
 import org.apache.velocity.context.Context;
 
 /**
@@ -64,9 +66,11 @@ import org.apache.velocity.context.Context;
  * error template defined in template.error.
  *
  * @author <a href="mailto:gonzalo.diethelm@sonda.com">Gonzalo Diethelm</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class VelocityErrorScreen extends VelocityScreen
+public class VelocityErrorScreen
+    extends VelocityScreen
 {
     /**
      * Implement this to add information to the context.
@@ -81,8 +85,11 @@ public class VelocityErrorScreen extends VelocityScreen
         context.put("processingException",
                 data.getStackTraceException().toString());
         context.put("stackTrace", data.getStackTrace());
-        String errorTemplate = TurbineResources.getString(
-                TurbineConstants.TEMPLATE_ERROR_KEY, "error.vm");
+
+        String errorTemplate = Turbine.getConfiguration()
+            .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
+                       TurbineConstants.TEMPLATE_ERROR_VM);
+
         setTemplate(data, errorTemplate);
     }
 }

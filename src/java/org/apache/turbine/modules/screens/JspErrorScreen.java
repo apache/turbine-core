@@ -54,28 +54,32 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
-// Turbine
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
 
-import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
 
 /**
  * Directs errors at the Jsp error template defined in template.error.
  *
  * @author <a href="mailto:ingo@raleigh.ibm.com">Ingo Schuster</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class JspErrorScreen extends BaseJspScreen
+public class JspErrorScreen
+    extends BaseJspScreen
 {
     /**
      * @param data Turbine information.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     protected void doBuildTemplate(RunData data)
-            throws Exception
+        throws Exception
     {
-        String errorTemplate = TurbineResources.getString("template.error",
-                "/error.jsp");
+        String errorTemplate = Turbine.getConfiguration()
+            .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
+                       TurbineConstants.TEMPLATE_ERROR_JSP);
+        
         setTemplate(data, errorTemplate);
     }
 }

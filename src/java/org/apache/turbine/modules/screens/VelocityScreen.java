@@ -54,13 +54,22 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.lang.exception.ExceptionUtils;
+
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
-import org.apache.turbine.services.resources.TurbineResources;
+
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.services.template.TurbineTemplate;
+
 import org.apache.turbine.services.velocity.TurbineVelocity;
+
 import org.apache.turbine.util.RunData;
+
 import org.apache.velocity.context.Context;
 
 /**
@@ -74,9 +83,11 @@ import org.apache.velocity.context.Context;
  * class and override the doBuildTemplate() method.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class VelocityScreen extends TemplateScreen
+public class VelocityScreen
+    extends TemplateScreen
 {
     /**
      * Velocity Screens extending this class should overide this
@@ -114,7 +125,8 @@ public class VelocityScreen extends TemplateScreen
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
-    public ConcreteElement buildTemplate(RunData data) throws Exception
+    public ConcreteElement buildTemplate(RunData data)
+        throws Exception
     {
         StringElement output = null;
         String screenData = null;
@@ -153,10 +165,13 @@ public class VelocityScreen extends TemplateScreen
             // If there is an error, build a $processingException and
             // attempt to call the error.vm template in the screens
             // directory.
-            context.put("processingException", e.toString());
-            context.put("stackTrace", ExceptionUtils.getStackTrace(e));
-            templateName = TurbineResources.getString(
-                    "template.error", "/error.vm");
+            context.put ("processingException", e.toString());
+            context.put ("stackTrace", ExceptionUtils.getStackTrace(e));
+
+            templateName = Turbine.getConfiguration()
+                .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
+                           TurbineConstants.TEMPLATE_ERROR_VM);
+
             if ((templateName.length() > 0) &&
                     (templateName.charAt(0) != '/'))
             {

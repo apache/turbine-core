@@ -54,12 +54,16 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
-// Turbine/ECS Imports
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.apache.ecs.ConcreteElement;
+
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
+
 import org.apache.turbine.services.template.TurbineTemplate;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -75,16 +79,21 @@ import org.apache.turbine.util.RunData;
  * going on there (it is quite simple really).
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public abstract class TemplateScreen extends Screen
+public abstract class TemplateScreen
+    extends Screen
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TemplateScreen.class);
+
     /**
      * This method should be overidden by subclasses that wish to add
      * specific business logic.
      *
      * @param data Turbine information.
-     * @exception Exception, a generic exception.
+     * @exception Exception A generic exception.
      */
     protected abstract void doBuildTemplate(RunData data)
             throws Exception;
@@ -96,7 +105,7 @@ public abstract class TemplateScreen extends Screen
      *
      * @param data Turbine information.
      * @return A ConcreteElement.
-     * @exception Exception, a generic exception.
+     * @exception Exception A generic exception.
      */
     public abstract ConcreteElement buildTemplate(RunData data)
             throws Exception;
@@ -117,7 +126,7 @@ public abstract class TemplateScreen extends Screen
      *
      * @param data Turbine information.
      * @return A ConcreteElement.
-     * @exception Exception, a generic exception.
+     * @exception Exception A generic exception.
      */
     protected ConcreteElement doBuild(RunData data)
             throws Exception
@@ -182,11 +191,12 @@ public abstract class TemplateScreen extends Screen
      * @param data Turbine information.
      * @param screen Name of screen to redirect to.
      * @param template Name of template.
-     * @exception Exception, a generic exception.
+     * @exception Exception A generic exception.
      */
     public void doRedirect(RunData data, String screen, String template)
             throws Exception
     {
+        log.debug("doRedirect(data, " + screen + ", " + template + ")");
         setTemplate(data, template);
         ScreenLoader.getInstance().exec(data, screen);
     }
@@ -207,7 +217,7 @@ public abstract class TemplateScreen extends Screen
      *
      * @param data Turbine information.
      * @param template Name of template.
-     * @exception Exception, a generic exception.
+     * @exception Exception A generic exception.
      */
     public void doRedirect(RunData data, String template)
             throws Exception
