@@ -72,6 +72,7 @@ import org.apache.turbine.services.factory.FactoryService;
  * Algorithms (provided in Turbine.Services.properties) or tries to get them via
  * the normal java mechanisms if this fails.
  *
+ * @deprecated Use the Fulcrum Crypto component instead.
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  *

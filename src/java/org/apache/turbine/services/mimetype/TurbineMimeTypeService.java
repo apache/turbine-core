@@ -84,7 +84,8 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * the current class jar. The default mapping file is defined
  * with the charset.file property. In addition, the service maintains
  * a set of most common mappings.
- *
+ * 
+ * @deprecated Use the Fulcrum Mimetype component instead.
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
