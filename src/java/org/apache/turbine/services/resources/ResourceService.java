@@ -258,7 +258,7 @@ public interface ResourceService extends Service
     public Vector getVector(String name,Vector def);
 
     /**
-     * The purpose of this method is to extract a subset of configuraton
+     * The purpose of this method is to extract a subset of configuration
      * resources sharing a common name prefix.
      *
      * @param prefix the common name prefix
@@ -267,7 +267,7 @@ public interface ResourceService extends Service
     public ResourceService getResources(String prefix);
 
     /**
-     * The purpose of this method is to extract a subset configuraton
+     * The purpose of this method is to extract a subset configuration
      * sharing a common name prefix.
      *
      * @param prefix the common name prefix

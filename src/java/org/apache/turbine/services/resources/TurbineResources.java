@@ -341,7 +341,7 @@ public abstract class TurbineResources
     }
 
     /**
-     * The purpose of this method is to extract a subset of configuraton
+     * The purpose of this method is to extract a subset of configuration
      * resources sharing a common name prefix.
      *
      * @param prefix the common name prefix
@@ -353,7 +353,7 @@ public abstract class TurbineResources
     }
 
     /**
-     * Get the configuraton.
+     * Get the configuration.
      *
      * @return configuration.
      */
@@ -363,7 +363,7 @@ public abstract class TurbineResources
     }
 
     /**
-     * The purpose of this method is to extract a subset configuraton
+     * The purpose of this method is to extract a subset configuration
      * sharing a common name prefix.
      *
      * @param prefix the common name prefix

@@ -120,9 +120,9 @@ public class TurbineUniqueIdService
     }
 
     /**
-     * <p> Returs an identifer of this Turbine instance that is unique
+     * <p> Returns an identifier of this Turbine instance that is unique
      * both on the server and worldwide.  This identifier is computed
-     * as an MD5 sum of the URL (including schema, addres, port if
+     * as an MD5 sum of the URL (including schema, address, port if
      * different that 80/443 respecively, context and servlet name).
      * There is an overwhelming probalility that this id will be
      * different that all other Turbine instances online.
