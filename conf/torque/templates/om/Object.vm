@@ -519,6 +519,10 @@ public abstract class $basePrefix$table.JavaName $extendsBaseClass
      * Otherwise if this $table.JavaName is new, it will return
      * an empty collection; or if this $table.JavaName has previously
      * been saved, it will retrieve related ${relCol} from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in ${table.JavaName}.
      */
     protected Vector get${relCol}Join${relCol2}(Criteria criteria) 
         throws Exception
@@ -584,6 +588,10 @@ public abstract class $basePrefix$table.JavaName $extendsBaseClass
      * Otherwise if this $table.JavaName is new, it will return
      * an empty collection; or if this $table.JavaName has previously
      * been saved, it will retrieve related ${relCol} from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in ${table.JavaName}.
      */
     protected Vector get${relCol}JoinAllExcept${table.JavaName}(Criteria criteria) 
         throws Exception
