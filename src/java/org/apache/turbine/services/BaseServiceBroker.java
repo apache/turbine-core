@@ -230,7 +230,7 @@ public abstract class BaseServiceBroker
      * Shuts down a <code>Service</code>.
      *
      * This method is used to release resources allocated by a
-     * Service, and return it to its initial (uninitailized) state.
+     * Service, and return it to its initial (uninitialized) state.
      *
      * @param name The name of the <code>Service</code> to be uninitialized.
      */
@@ -245,7 +245,7 @@ public abstract class BaseServiceBroker
 
     /**
      * Shuts down all Turbine services, releasing allocated resources and
-     * returning them to their initial (uninitailized) state.
+     * returning them to their initial (uninitialized) state.
      */
     public void shutdownServices( )
     {
