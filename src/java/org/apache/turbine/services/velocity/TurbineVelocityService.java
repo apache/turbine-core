@@ -193,6 +193,7 @@ public class TurbineVelocityService
 
             setInit(true);
         }
+
         catch (Exception e)
         {
             log.error("Error: ", e);
@@ -501,7 +502,7 @@ public class TurbineVelocityService
         throws TurbineException
     {
         String err = "Error rendering Velocity template: " + filename;
-        log.error(err + ": " + e.getMessage());
+        log.error(err, e);
         throw new TurbineException(err, e);
     }
 
