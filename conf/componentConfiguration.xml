@@ -1,0 +1,14 @@
+<!-- ======================================================================== -->
+<!--                                                                          -->
+<!--  Component Configuration for Avalon Components                           -->
+<!--                                                                          -->
+<!-- $Id$ -->
+<!--                                                                          -->
+<!-- ======================================================================== -->
+
+<componentConfig>
+    <!-- Torque Component -->
+    <torque>
+       <configfile>/WEB-INF/conf/Torque.properties</configfile>
+    </torque>
+</componentConfig>

@@ -1,0 +1,15 @@
+<!-- ======================================================================== -->
+<!--                                                                          -->
+<!--  Role Configuration for Avalon Components                                -->
+<!--                                                                          -->
+<!-- $Id$ -->
+<!--                                                                          -->
+<!-- ======================================================================== -->
+
+<role-list>
+    <!-- Torque Component Role Configuration -->
+    <role name="org.apache.torque.avalon.TorqueComponent"
+          shorthand="torque"
+          default-class="org.apache.torque.avalon.Torque" />
+</role-list>
+
