@@ -77,6 +77,7 @@ import org.apache.oro.text.regex.Perl5Matcher;
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:jh@byteaction.de">J&uuml;rgen Hoffmann</a>
  * @version $Id$
  */
 public class StringValidator
@@ -171,21 +172,24 @@ public class StringValidator
     {
         super.assertValidity(testValue);
 
-        /** perl5 matcher */
-        Perl5Matcher patternMatcher = new Perl5Matcher();
-
-        if (maskPattern != null)
+        if ((required) || ((testValue != null) && (testValue.length() > 0)))
         {
-            boolean patternMatch =
-                    patternMatcher.matches(testValue, maskPattern);
-
-            log.debug("Trying to match " + testValue
-                    + " to pattern " + maskString);
-
-            if (!patternMatch)
+            if (maskPattern != null)
             {
-                errorMessage = maskMessage;
-                throw new ValidationException(maskMessage);
+                /** perl5 matcher */
+                Perl5Matcher patternMatcher = new Perl5Matcher();
+            
+                boolean patternMatch =
+                        patternMatcher.matches(testValue, maskPattern);
+
+                log.debug("Trying to match " + testValue
+                        + " to pattern " + maskString);
+
+                if (!patternMatch)
+                {
+                    errorMessage = maskMessage;
+                    throw new ValidationException(maskMessage);
+                }
             }
         }
     }

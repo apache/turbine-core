@@ -83,6 +83,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:jh@byteaction.de">J&uuml;rgen Hoffmann</a>
  * @version $Id$
  */
 public class BooleanValidator
@@ -126,13 +127,16 @@ public class BooleanValidator
     {
         super.assertValidity(testValue);
 
-        try
+        if ((required) || ((testValue != null) && (testValue.length() > 0)))
         {
-            parse(testValue);
-        }
-        catch (ParseException e)
-        {
-            throw new ValidationException(e.getMessage());
+            try
+            {
+                parse(testValue);
+            }
+            catch (ParseException e)
+            {
+                throw new ValidationException(e.getMessage());
+            }
         }
     }
 

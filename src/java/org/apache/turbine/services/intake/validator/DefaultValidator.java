@@ -195,8 +195,7 @@ abstract public class DefaultValidator
     public void assertValidity(String testValue)
             throws ValidationException
     {
-        if ((!required && minLength == 0)
-                && (testValue == null || testValue.length() == 0))
+        if (!required && (testValue == null || testValue.length() == 0))
         {
             return;
         }

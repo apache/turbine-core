@@ -72,6 +72,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:jh@byteaction.de">J&uuml;rgen Hoffmann</a>
  * @version $Id$
  */
 public class IntegerValidator
@@ -144,26 +145,29 @@ public class IntegerValidator
     {
         super.assertValidity(testValue);
 
-        int i = 0;
-        try
+        if ((required) || ((testValue != null) && (testValue.length() > 0)))
         {
-            i = Integer.parseInt(testValue);
-        }
-        catch (RuntimeException e)
-        {
-            errorMessage = invalidNumberMessage;
-            throw new ValidationException(invalidNumberMessage);
-        }
-
-        if (i < minValue)
-        {
-            errorMessage = minValueMessage;
-
-        }
-        if (i > maxValue)
-        {
-            errorMessage = maxValueMessage;
-            throw new ValidationException(maxValueMessage);
+            int i = 0;
+            try
+            {
+                i = Integer.parseInt(testValue);
+            }
+            catch (RuntimeException e)
+            {
+                errorMessage = invalidNumberMessage;
+                throw new ValidationException(invalidNumberMessage);
+            }
+            
+            if (i < minValue)
+            {
+                errorMessage = minValueMessage;
+                throw new ValidationException(minValueMessage);
+            }
+            if (i > maxValue)
+            {
+                errorMessage = maxValueMessage;
+                throw new ValidationException(maxValueMessage);
+            }
         }
     }
 

@@ -72,6 +72,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:jh@byteaction.de">J&uuml;rgen Hoffmann</a>
  * @version $Id$
  */
 public class ShortValidator
@@ -144,26 +145,29 @@ public class ShortValidator
     {
         super.assertValidity(testValue);
 
-        short s = 0;
-        try
+        if ((required) || ((testValue != null) && (testValue.length() > 0)))
         {
-            s = Short.parseShort(testValue);
-        }
-        catch (RuntimeException e)
-        {
-            errorMessage = invalidNumberMessage;
-            throw new ValidationException(invalidNumberMessage);
-        }
-
-        if (s < minValue)
-        {
-            errorMessage = minValueMessage;
-            throw new ValidationException(minValueMessage);
-        }
-        if (s > maxValue)
-        {
-            errorMessage = maxValueMessage;
-            throw new ValidationException(maxValueMessage);
+            short s = 0;
+            try
+            {
+                s = Short.parseShort(testValue);
+            }
+            catch (RuntimeException e)
+            {
+                errorMessage = invalidNumberMessage;
+                throw new ValidationException(invalidNumberMessage);
+            }
+            
+            if (s < minValue)
+            {
+                errorMessage = minValueMessage;
+                throw new ValidationException(minValueMessage);
+            }
+            if (s > maxValue)
+            {
+                errorMessage = maxValueMessage;
+                throw new ValidationException(maxValueMessage);
+            }
         }
     }
 
