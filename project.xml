@@ -515,6 +515,14 @@
       <url>http://www.junit.org</url>
     </dependency>
     <dependency>
+      <id>oro</id>
+      <version>2.0.7</version>
+      <url>http://jakarta.apache.org/oro/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>
+    <dependency>
       <id>jython</id>
       <version>2.1</version>
       <url>http://www.jython.org/</url>
@@ -531,14 +539,6 @@
       <id>logkit</id>
       <version>1.0.1</version>
       <url>http://jakarta.apache.org/avalon/logkit/</url>
-      <properties>
-        <war.bundle.jar>true</war.bundle.jar>
-      </properties>
-    </dependency>
-    <dependency>
-      <id>oro</id>
-      <version>2.0.7</version>
-      <url>http://jakarta.apache.org/oro/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
