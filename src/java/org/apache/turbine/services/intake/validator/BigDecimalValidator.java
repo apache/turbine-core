@@ -54,17 +54,18 @@ package org.apache.turbine.services.intake.validator;
  * <http://www.apache.org/>.
  */
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
- * Validates Integers with the following constraints in addition to those
+ * Validates BigDecimals with the following constraints in addition to those
  * listed in NumberValidator and DefaultValidator.
  *
  * <table>
  * <tr><th>Name</th><th>Valid Values</th><th>Default Value</th></tr>
- * <tr><td>minValue</td><td>greater than Integer.MIN_VALUE</td>
+ * <tr><td>minValue</td><td>greater than BigDecimal minValue</td>
  * <td>&nbsp;</td></tr>
- * <tr><td>maxValue</td><td>less than Integer.MAX_VALUE</td>
+ * <tr><td>maxValue</td><td>less than BigDecimal maxValue</td>
  * <td>&nbsp;</td></tr>
  * <tr><td>invalidNumberMessage</td><td>Some text</td>
  * <td>Entry was not a valid number</td></tr>
@@ -74,14 +75,11 @@ import java.util.Map;
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
  * @version $Id$
  */
-public class IntegerValidator
+public class BigDecimalValidator
         extends NumberValidator
 {
-    /* Init the minValue to that for a Integer */
-    private int minValue = Integer.MIN_VALUE;
-
-    /* Init the maxValue to that for a Integer */
-    private int maxValue = Integer.MAX_VALUE;
+    private BigDecimal minValue = null;
+    private BigDecimal maxValue = null;
 
     /**
      * Constructor to use when initialising Object
@@ -89,17 +87,17 @@ public class IntegerValidator
      * @param paramMap
      * @throws InvalidMaskException
      */
-    public IntegerValidator(Map paramMap)
+    public BigDecimalValidator(Map paramMap)
             throws InvalidMaskException
     {
-        invalidNumberMessage = "Entry was not a valid Integer";
+        invalidNumberMessage = "Entry was not a valid BigDecimal";
         init(paramMap);
     }
 
     /**
      * Default Constructor
      */
-    public IntegerValidator()
+    public BigDecimalValidator()
     {
     }
 
@@ -118,7 +116,7 @@ public class IntegerValidator
         if (constraint != null)
         {
             String param = constraint.getValue();
-            minValue = Integer.parseInt(param);
+            minValue = new BigDecimal(param);
             minValueMessage = constraint.getMessage();
         }
 
@@ -126,7 +124,7 @@ public class IntegerValidator
         if (constraint != null)
         {
             String param = constraint.getValue();
-            maxValue = Integer.parseInt(param);
+            maxValue = new BigDecimal(param);
             maxValueMessage = constraint.getMessage();
         }
     }
@@ -144,10 +142,10 @@ public class IntegerValidator
     {
         super.assertValidity(testValue);
 
-        int i = 0;
+        BigDecimal bd = null;
         try
         {
-            i = Integer.parseInt(testValue);
+            bd = new BigDecimal(testValue);
         }
         catch (RuntimeException e)
         {
@@ -155,12 +153,12 @@ public class IntegerValidator
             throw new ValidationException(invalidNumberMessage);
         }
 
-        if (i < minValue)
+        if (minValue != null && bd.compareTo(minValue) < 0)
         {
             errorMessage = minValueMessage;
-
+            throw new ValidationException(minValueMessage);
         }
-        if (i > maxValue)
+        if (maxValue != null && bd.compareTo(maxValue) > 0)
         {
             errorMessage = maxValueMessage;
             throw new ValidationException(maxValueMessage);
@@ -177,7 +175,7 @@ public class IntegerValidator
      *
      * @return value of minValue.
      */
-    public int getMinValue()
+    public BigDecimal getMinValue()
     {
         return minValue;
     }
@@ -187,7 +185,7 @@ public class IntegerValidator
      *
      * @param minValue  Value to assign to minValue.
      */
-    public void setMinValue(int minValue)
+    public void setMinValue(BigDecimal minValue)
     {
         this.minValue = minValue;
     }
@@ -197,7 +195,7 @@ public class IntegerValidator
      *
      * @return value of maxValue.
      */
-    public int getMaxValue()
+    public BigDecimal getMaxValue()
     {
         return maxValue;
     }
@@ -207,7 +205,7 @@ public class IntegerValidator
      *
      * @param maxValue  Value to assign to maxValue.
      */
-    public void setMaxValue(int maxValue)
+    public void setMaxValue(BigDecimal maxValue)
     {
         this.maxValue = maxValue;
     }
