@@ -136,7 +136,7 @@ public class BaseInitable
     /**
      * Returns an Initable to uninitialized state.
      *
-     * Calls setInit(flase) to mark that we are no longer in initialized
+     * Calls setInit(false) to mark that we are no longer in initialized
      * state.
      */
     public void shutdown()
