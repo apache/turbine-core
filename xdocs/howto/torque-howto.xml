@@ -92,14 +92,15 @@ torque/
 </section>
 
 <section name="Configuring Torque">
-
-<strong>build.properties</strong>
-
 <p>
-  Here is a list of all the properties currently supported by Torque:
+  You'll have to modify the following two files to configure Torque.
+  The first is a list of all the properties currently supported by
+  Torque:
 </p>
 
+<subsection name="build.properties">
 <table>
+<tr><th>Property</th><th>Description</th></tr>
 <tr>
     <td>project</td>
     <td>The name of your Turbine project. The project name is reflected in the
@@ -170,11 +171,10 @@ torque/
     </td>
 </tr>
 <tr>
-    <td><strong>You should not have to edit any properties below here!</strong></td>
-    <td></td>
+    <td colspan="2"><strong>You should not have to edit any properties below here!</strong></td>
 </tr>
 <tr>
-    <td>configDir</td>
+    <td colspan="1">configDir</td>
     <td>The directory Torque looks in for the <em>build.properties</em> file.</td>
 </tr>
 <tr>
@@ -202,8 +202,9 @@ torque/
     <td>Directory where Torque looks for XML database schemas.</td>
 </tr>
 </table>
+</subsection>
 
-<strong>project-schema.xml</strong>
+<subsection name="project-schema.xml">
 <p>
 This is an example of what the XML database schema might look like. This
 particular example is a snippet of the database used for Turbines role-based
@@ -255,6 +256,7 @@ user system:
 Please refer to <a href="torque-schema-ref.html">Torque Schema Reference</a>
 to find out more about the the different elements and attributes.
 </p>
+</subsection>
 
 <!--
 
