@@ -57,14 +57,13 @@ package org.apache.turbine.modules.screens;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.ecs.ConcreteElement;
 
-import org.apache.turbine.services.TurbineServices;
-
-import org.apache.turbine.services.jsp.JspService;
-
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.services.jsp.TurbineJsp;
 import org.apache.turbine.services.template.TurbineTemplate;
-
 import org.apache.turbine.util.RunData;
 
 /**
@@ -76,10 +75,14 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class BaseJspScreen extends TemplateScreen
+public class BaseJspScreen
+        extends TemplateScreen
 {
     /** Logging */
     private static Log log = LogFactory.getLog(BaseJspScreen.class);
+
+    /** The prefix for lookup up screen pages */
+    private String prefix = TurbineConstants.SCREEN_PREFIX + "/";
 
     /**
      * Method that sets up beans and forward the request to the JSP.
@@ -91,33 +94,21 @@ public class BaseJspScreen extends TemplateScreen
     public ConcreteElement buildTemplate(RunData data)
             throws Exception
     {
-        // set up any data in beans, etc
-        doBuildTemplate(data);
-
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
         // get the name of the JSP we want to use
         String templateName
             = TurbineTemplate.getScreenTemplateName(screenTemplate);
 
         // The Template Service could not find the Screen
-        if (templateName == null)
+        if (StringUtils.isEmpty(templateName))
         {
             log.error("Screen " + screenTemplate + " not found!");
             throw new Exception("Could not find screen for " + screenTemplate);
         }
 
-        // Template service adds the leading slash, but make it sure.
-        if ((templateName.length() > 0) &&
-                (templateName.charAt(0) != '/'))
-        {
-            templateName = '/' + templateName;
-        }
-
         // let service know whether we are using a layout
-        JspService jsp = (JspService)
-                TurbineServices.getInstance().getService(JspService.SERVICE_NAME);
-        jsp.handleRequest(data, "/screens" + templateName,
-                getLayout(data) == null);
+        TurbineJsp.handleRequest(data, prefix + templateName,
+                                 getLayout(data) == null);
 
         return null;
     }
@@ -128,7 +119,8 @@ public class BaseJspScreen extends TemplateScreen
      * @param data, the Rundata object
      * @exception Exception, a generic exception.
      */
-    protected void doBuildTemplate(RunData data) throws Exception
+    protected void doBuildTemplate(RunData data)
+        throws Exception
     {
     }
 }

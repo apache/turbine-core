@@ -76,15 +76,11 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 /**
- * Base Velocity Screen.  The buildTemplate() assumes the template
- * parameter has been set in the RunData object.  This provides the
- * ability to execute several templates from one Screen.
- *
+ * VelocityDirectScreen is a screen class which returns its output
+ * directly to the output stream. It can be used if buffering an
+ * output screen isn't possible or the result doesn't fit in the
+ * memory.
  * <p>
- *
- * If you need more specific behavior in your application, extend this
- * class and override the doBuildTemplate() method.
- *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
@@ -94,6 +90,9 @@ public class VelocityDirectScreen
 {
     /** Logging */
     private static Log log = LogFactory.getLog(VelocityDirectScreen.class);
+
+    /** The prefix for lookup up screen pages */
+    private String prefix = TurbineConstants.SCREEN_PREFIX + "/";
 
     /**
      * This builds the Velocity template.
@@ -105,8 +104,6 @@ public class VelocityDirectScreen
     public ConcreteElement buildTemplate(RunData data)
         throws Exception
     {
-        StringElement output = new StringElement();
-        String screenData = null;
         Context context = TurbineVelocity.getContext(data);
 
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
@@ -114,63 +111,36 @@ public class VelocityDirectScreen
             = TurbineTemplate.getScreenTemplateName(screenTemplate);
 
         // The Template Service could not find the Screen
-        if (templateName == null)
+        if (StringUtils.isEmpty(templateName))
         {
             log.error("Screen " + screenTemplate + " not found!");
             throw new Exception("Could not find screen for " + screenTemplate);
         }
-        // Template service adds the leading slash, but make it sure.
-        if ((templateName.length() > 0) &&
-                (templateName.charAt(0) != '/'))
-        {
-            templateName = '/' + templateName;
-        }
 
         try
         {
-            // if a layout has been defined return the results, otherwise
-            // send the results directly to the output stream.
-            if (getLayout(data) == null)
-            {
-                TurbineVelocity.handleRequest(context,
-                        "screens" + templateName,
-                        data.getResponse().getOutputStream());
-            }
-            else
-            {
-                TurbineVelocity.handleRequest(context,
-                        "screens" + templateName,
-                        data.getOut());
-            }
+            TurbineVelocity.handleRequest(context,
+                                          prefix + templateName,
+                                          data.getOut());
+
         }
         catch (Exception e)
         {
             // If there is an error, build a $processingException and
             // attempt to call the error.vm template in the screens
             // directory.
-            context.put ("processingException", e.toString());
-            context.put ("stackTrace", ExceptionUtils.getStackTrace(e));
+            context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
+            context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
 
             templateName = Turbine.getConfiguration()
                 .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
                            TurbineConstants.TEMPLATE_ERROR_VM);
 
-            if ((templateName.length() > 0) &&
-                (templateName.charAt(0) != '/'))
-            {
-                templateName = '/' + templateName;
-            }
             TurbineVelocity.handleRequest(context,
-                    "screens" + templateName,
+                    prefix + templateName,
                     data.getOut());
         }
 
-        // package the response in an ECS element
-        if (screenData != null)
-        {
-            output.setFilterState(false);
-            output.addElement(screenData);
-        }
-        return output;
+        return null;
     }
 }
