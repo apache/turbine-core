@@ -262,6 +262,10 @@ Changes between Turbine 2.2 and 2.3-dev.
         Turbine now uses commons-fileupload.  The org.apache.turbine.util.upload
         package has been deprecated.
     </li>
+    <li>
+        The Pull Service got a new scope: authorized tools. These are like Session Tools but only
+        available after the user logged in.
+    </li>
   </ul>
 </p>
 </subsection>
@@ -293,6 +297,7 @@ Changes between Turbine 2.2 and 2.3-dev.
   </ul>
 </p>
 </subsection>
+
 </section>
 
 <section name="Turbine 2.2 (= 2.2-rc2)">
