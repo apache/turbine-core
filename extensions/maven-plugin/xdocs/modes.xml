@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
@@ -19,7 +19,7 @@
 	
 <document>
   <properties>
-    <title>Maven Environment for Turbine Applications (M.E.T.A.)</title>
+    <title>Mode reference</title>
     <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
   </properties>
 
@@ -38,7 +38,7 @@ The following modes are currently supported:
 container by running the <a href="goals.html#turbine_deploy">turbine:deploy</a> goal.</li>
 <li><b>inplace</b> - The source code and the class files are kept together . Your web container will access
 the files in the development location and no explicit deployment to the container is necessary.
-This mode is similar to developing with the old <a href="http://jakarta.apache.org/turbine/tdk/">Turbine Development Kit</a>.</li>
+This mode is similar to developing with the deprecated <a href="http://jakarta.apache.org/turbine/tdk/">Turbine Development Kit</a>.</li>
 </ul>
 
 </p>
@@ -115,7 +115,14 @@ directory layout</a>.
 This mode is suitable when moving from the <a
 href="http://jakarta.apache.org/turbine/tdk/">Turbine Development
 Kit</a> to M.E.T.A. or when you can customize your web container to
-access your development location. Its tree layout is directly usable as a web application.
+access your development location. Its tree layout is directly usable
+as a web application.
+</p>
+
+<p>
+An application that has been set up with this mode can be loaded into
+an IDE, e.g. <a href="http://www.eclipse.org/">Eclipse</a>. Please
+refer to the <a href="ide.html">IDE Reference</a> on how to do this.
 </p>
 
 <source><![CDATA[

@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
@@ -21,9 +21,18 @@
 
   <properties>
     <title>Changes</title>
+    <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
   </properties>
 
   <body>
+    <release version="1.2" date="2004-10-31">
+     <action dev="henning" type="add">
+       Add IDE (Eclipse) Howto.
+     </action>
+     <action dev="henning" type="update">
+       Bring 2.3.1 flavor in line with Turbine and Torque release.
+     </action>
+    </release>
     <release version="1.2-rc1" date="2004-08-23">
      <action dev="henning" type="add">
        Add a personality for the upcoming Turbine 2.3.1 release.
