@@ -53,8 +53,8 @@
     <filter token="TURBINE_APP_OM_SECURITY_NAME" value="${turbine.app.om.security.name}"/>
     <filter token="TURBINE_APP_OM_SECURITY_PACKAGE" value="${turbine.app.om.security.package}"/>
     <filter token="TURBINE_APP_SUBDIR"         value="${turbine.app.subdir}"/>
-    <filter token="TURBINE_APP_PLUGIN_MODE"    value="${turbine.app.plugin.mode}"/>
-    <filter token="TURBINE_APP_PLUGIN_DIR"     value="${turbine.app.plugin.dir}"/>
+    <filter token="TURBINE_PLUGIN_MODE"        value="${turbine.plugin.mode}"/>
+    <filter token="TURBINE_PLUGIN_INPLACE_DIR" value="${turbine.plugin.inplace.dir}"/>
 
     <filter token="TURBINE_PLUGIN_BASE_DIR"    value="${turbine.plugin.base.dir}"/>
     <filter token="TURBINE_PLUGIN_SRC_IMAGES"  value="${turbine.plugin.src.images}"/>
@@ -322,12 +322,12 @@
              value="${maven.appserver.home}/webapps/${pom.name}" />
 
     <!-- FIXME -->
-    <j:if test="${context.getVariable('turbine.app.plugin.mode').equalsIgnoreCase('inplace')}">
-      <j:set var="turbine.target.dir" value="${turbine.app.plugin.dir}"/>
+    <j:if test="${context.getVariable('turbine.plugin.mode').equalsIgnoreCase('inplace')}">
+      <j:set var="turbine.target.dir" value="${turbine.plugin.inplace.dir}"/>
     </j:if>
     <!-- FIXME -->
 
-    <echo>Installing to Appserver Directory: ${turbine.target.dir}, Inplace: ${turbine.app.plugin.mode}</echo>
+    <echo>Installing to Appserver Directory: ${turbine.target.dir}, Inplace: ${turbine.plugin.mode}</echo>
 
     <mkdir dir="${turbine.target.dir}/WEB-INF/lib" />
     <mkdir dir="${turbine.target.dir}/WEB-INF/conf" />
@@ -433,8 +433,8 @@
   <goal name="turbine:clean-clean">
     <j:choose>
       <j:when test="${pluginMode.equalsIgnoreCase('inplace')}">
-        <ant:delete dir="${turbine.app.plugin.dir}/WEB-INF/lib"/>
-        <ant:delete dir="${turbine.app.plugin.dir}/WEB-INF/classes"/>
+        <ant:delete dir="${turbine.plugin.inplace.dir}/WEB-INF/lib"/>
+        <ant:delete dir="${turbine.plugin.inplace.dir}/WEB-INF/classes"/>
       </j:when>
     </j:choose>
   </goal>    
@@ -690,7 +690,7 @@
      <meta:requiredPropertyMissing propname="torque.database" />
    </j:if>
 
-   <j:set var="pluginMode" value="${turbine.app.plugin.mode}"/>
+   <j:set var="pluginMode" value="${turbine.plugin.mode}"/>
 
    <j:choose>
      <j:when test="${pluginMode.equalsIgnoreCase('normal')}">
@@ -699,8 +699,8 @@
        </j:if>
      </j:when>
      <j:when test="${pluginMode.equalsIgnoreCase('inplace')}">
-       <j:if test="${empty(context.getVariable('turbine.app.plugin.dir'))}">
-         <meta:requiredPropertyMissing propname="turbine.app.plugin.dir" />
+       <j:if test="${empty(context.getVariable('turbine.plugin.inplace.dir'))}">
+         <meta:requiredPropertyMissing propname="turbine.plugin.inplace.dir" />
        </j:if>
      </j:when>
    </j:choose>
@@ -718,7 +718,7 @@
     </or>
     </ant:condition>    
 
-    <j:if test="${context.getVariable('flavorExists') != 'true'}">
+    <j:if test="${flavorExists != 'true'}">
         <fail>
 --------------------------------------------------------------------------
 | Flavor not found Error                                                 |
@@ -731,7 +731,7 @@
         </fail>
     </j:if>
 
-    <j:set var="pluginMode" value="${turbine.app.plugin.mode}"/>
+    <j:set var="pluginMode" value="${turbine.plugin.mode}" />
     <j:set var="pluginProperties" value="${plugin.resources}/mode/${pluginMode}.properties"/>
     <j:choose>
       <j:when test="${pluginMode.equalsIgnoreCase('normal')}">
@@ -747,7 +747,7 @@
 | Mode not found Error                                                   |
 --------------------------------------------------------------------------
 
- The requested mode ${turbine.app.plugin.mode} was not found in the
+ The requested mode ${turbine.plugin.mode} was not found in the
  current version (${plugin.currentVersion}) of M.E.T.A.
 
 --------------------------------------------------------------------------
@@ -774,7 +774,7 @@
  
     <j:choose>
       <j:when test="${pluginMode.equalsIgnoreCase('inplace')}">
-        <ant:property name="turbine.plugin.base.dir" value="${turbine.app.plugin.dir}"/>
+        <ant:property name="turbine.plugin.base.dir" value="${turbine.plugin.inplace.dir}"/>
       </j:when>
        <j:otherwise>
          <ant:property name="turbine.plugin.base.dir" value="."/>
