@@ -34,8 +34,8 @@ No current items.
 <subsection name="Blue Skying for future Turbine releases">
 <p>
   <ul>
-    <li>Move forward to a component based architecture (avalonization)</li>
-    <li>"Steal" the pipeline from the Turbine 3 code base</li>
+    <li>Move forward to a component based architecture (avalonization)  (partly done!)</li>
+    <li>"Steal" the pipeline from the Turbine 3 code base  (done!  epugh)</li>
     <li>Decouple the code base into core, components and toolbox</li>
   </ul>
 </p>

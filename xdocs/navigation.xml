@@ -21,7 +21,8 @@
     </menu>
     <menu name="Extensions">
       <item name="Maven Plugin"            href="/maven-turbine-plugin/index.html"/>
-      <item name="Torque Impl of Services" href="/turbine-torque-impl/index.html"/>    
+      <item name="Torque Impl of Services" href="/turbine-torque-impl/index.html"/>  
+      <item name="Related Projects" href="/related-projects.html"/>    
     </menu>
     <menu name="Documentation">
       <item name="Changes"               href="/changes.html"/>
