@@ -111,20 +111,25 @@ public class LocalizationTool implements ApplicationTool
      */
     public String get(String key)
     {
-        if (bundle == null)
-        {
-            // Cache bundle for use during current request.
-            bundle = Localization.getBundle(bundleName, locale);
-        }
-
         try
         {
-            return bundle.getString(key);
+            return Localization.getString(getBundleName(null), getLocale(), key);
         }
         catch (MissingResourceException noKey)
         {
+            Log.error(noKey);
             return null;
         }
+    }
+
+    /**
+     * Gets the current locale.
+     *
+     * @return The locale currently in use.
+     */
+    public Locale getLocale()
+    {
+        return locale;
     }
 
     /**
