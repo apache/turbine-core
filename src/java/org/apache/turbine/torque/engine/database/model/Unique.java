@@ -94,6 +94,15 @@ public class Unique
     }
 
     /**
+     * Get the name of the unique index
+     */
+    public String getIndexName()
+    {
+        return indexName;
+    }
+
+
+    /**
      * Returns the Name of the table the foreign key is in
      */
     public String getTableName()
@@ -153,5 +162,13 @@ public class Unique
                 .append("\"/>\n");
         result.append(" </unique>\n");
         return result.toString();
+    }
+
+    /**
+     * Imports a column from an XML specification
+     */
+    public void loadFromXML (Attributes attrib)
+    {
+        indexName = attrib.getValue("name");
     }
 }
