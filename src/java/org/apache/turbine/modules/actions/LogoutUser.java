@@ -58,16 +58,12 @@ import org.apache.commons.configuration.Configuration;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.modules.Action;
-
 import org.apache.turbine.om.security.User;
-
 import org.apache.turbine.services.security.TurbineSecurity;
-
 import org.apache.turbine.util.RunData;
-
 import org.apache.turbine.util.security.AccessControlList;
+import org.apache.turbine.util.security.TurbineSecurityException;
 
 /**
  * This action removes a user from the session. It makes sure to save
@@ -78,7 +74,7 @@ import org.apache.turbine.util.security.AccessControlList;
  * @version $Id$
  */
 public class LogoutUser
-    extends Action
+        extends Action
 {
     /**
      * Clears the RunData user object back to an anonymous status not
@@ -95,10 +91,11 @@ public class LogoutUser
      * for a logged out (read not-logged-in) user.
      *
      * @param data Turbine information.
-     * @exception Exception a generic exception.
+     * @exception TurbineSecurityException a problem occured in the security
+     *            service.
      */
     public void doPerform(RunData data)
-            throws Exception
+            throws TurbineSecurityException
     {
         User user = data.getUser();
 
@@ -129,7 +126,7 @@ public class LogoutUser
         // In the event that the current screen or related navigations
         // require acl info, we cannot wait for Turbine to handle
         // regenerating acl.
-        data.getSession().removeValue(AccessControlList.SESSION_KEY);
+        data.getSession().removeAttribute(AccessControlList.SESSION_KEY);
 
         // If this action name is the value of action.logout then we are
         // being run before the session validator, so we don't need to
@@ -138,7 +135,7 @@ public class LogoutUser
         // - it is recommended that action.logout is set to "LogoutUser" and
         // that the session validator does handle setting the screen/template
         // for a logged out (read not-logged-in) user.
-        if (!conf.getString(TurbineConstants.ACTION_LOGOUT_KEY, 
+        if (!conf.getString(TurbineConstants.ACTION_LOGOUT_KEY,
                             TurbineConstants.ACTION_LOGOUT_DEFAULT)
             .equals(TurbineConstants.ACTION_LOGOUT_DEFAULT))
         {
