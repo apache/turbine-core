@@ -11,16 +11,33 @@
 <section name="Scheduler Service">
 
 <p>
-The Scheduler is modeled after Unix Cron. The Scheduler runs as a background
-process that executes timed scheduled tasks independently of HTTP requests.
-Tasks are stored in the database in the TURBINE_SCHEDULED_JOB table and once
-entered in the database are loaded automatically when Turbine initializes.
+    The Scheduler is modeled after Unix Cron. The Scheduler runs as a background
+    process that executes timed scheduled tasks independently of HTTP requests.
+    Tasks are stored in the database in the TURBINE_SCHEDULED_JOB table and once
+    entered in the database are loaded automatically when Turbine initializes.
 </p>
 
 <p>
-For the Scheduler to load classes that extend the ScheduledJob Class,
-the scheduler needs to be enabled via the TurbineResources.properties
-file, where the directive scheduler.enabled needs to be set to true.
+    For the Scheduler to load classes that extend the ScheduledJob Class,
+    the scheduler needs to be enabled via the TurbineResources.properties
+    file, where the directive services.SchedulerService.enabled needs to be
+    set to true.
+</p>
+
+<p>
+    The Scheduler Service should be accessed in one of two ways.
+    <ul>
+        <li>
+            org.apache.turbine.services.schedule.TurbineScheduler - This class
+            provides static methods to access the scheduler service.  This is the
+            preferred method of access from within java code.
+        </li>
+        <li>
+            org.apache.turbine.services.schedule.SchedulerTool - This is a pull
+            tool for providing access to the scheduler service from within a
+            Velocity template.
+        </li>
+    </ul>
 </p>
 
 </section>
@@ -29,7 +46,7 @@ file, where the directive scheduler.enabled needs to be set to true.
 
 <source><![CDATA[
 # -------------------------------------------------------------------
-# 
+#
 #  S E R V I C E S
 #
 # -------------------------------------------------------------------
@@ -50,13 +67,43 @@ services.SchedulerService.classname=org.apache.turbine.services.schedule.Turbine
 # -------------------------------------------------------------------
 
 #
-# Set enabled to true to start the scheduler.
+# Set enabled to true to start the scheduler.  The scheduler can be
+# stopped and started after Turbine has been intialized.  See the
+# javadocs for org.apache.turbine.services.schedule.TurbineScheduler
+# for the methods calls.
 #
 # Default = false
 #
-scheduler.enabled=true
+
+services.SchedulerService.enabled=false
+
+# Determines if the scheduler service should be initialized early.  This
+# Should always be set to true!!!!
+
+services.SchedulerService.earlyInit=true
+
+# -------------------------------------------------------------------
+#
+#  P U L L  S E R V I C E
+#
+# -------------------------------------------------------------------
+# These are the properties for the Pull Service, the service
+# that works in conjuction with the Turbine Pull Model API.
+# -------------------------------------------------------------------
+
+# This is a tool that allows access to the scheduler service.
+tool.request.scheduler=org.apache.turbine.services.SchedulerTool
 
 ]]></source>
+
+<p>
+    Jobs are stored and retrieved from the database using Torque
+    generated objects.  The objects are based on the definition
+    stored in <code>scheduler-schema.xml</code>.  If you want to
+    add additional fields to track more information about your
+    scheduled tasks, you can modify this file to do so.  You will
+    need to rebuild Turbine using MAven after making your modifications.
+</p>
 
 </section>
 
@@ -79,11 +126,15 @@ import java.util.Date;
 //Turbine
 import org.apache.turbine.modules.ScheduledJob;
 import org.apache.turbine.services.schedule.JobEntry;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
 public class SimpleScheduledTask extends ScheduledJob
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(SimpleScheduledTask.class);
+
     private int taskcount = 0;
 
     /**
@@ -103,7 +154,7 @@ public class SimpleScheduledTask extends ScheduledJob
      */
     public void run( JobEntry job ) throws Exception
     {
-        Log.note("Scheduled job " + job.getId() + " : " +
+        log.note("Scheduled job " + job.getJobId() + " : " +
                  "task: " + job.getTask() +
                  " ran @: " +
                  new Date(System.currentTimeMillis()).toString() +
@@ -201,11 +252,11 @@ package com.mycompany.modules.actions;
 //Turbine
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.services.schedule.JobEntry;
-import org.apache.turbine.services.schedule.ScheduleService;
+import org.apache.turbine.services.schedule.TurbineScheduler;
 import org.apache.turbine.modules.actions.VelocityAction;
 
 
-public class SchedulerStart extends VelocityAction
+public class AddScheduledTask extends VelocityAction
 {
 
      public void doPerform(RunData data) throws Exception
@@ -222,11 +273,6 @@ public class SchedulerStart extends VelocityAction
 
         try
         {
-            //access the service singleton
-            ScheduleService ss = (ScheduleService)TurbineServices
-                        .getInstance()
-                        .getService(ScheduleService.SERVICE_NAME);
-
             //create a new JobEntry with the time constraints from
             //the template as the arguments
             JobEntry je =  new JobEntry(second,minute,hour,weekday,dom,task);
@@ -235,18 +281,20 @@ public class SchedulerStart extends VelocityAction
             je.setEmail(email);
 
             //add the job to the queue
-            ss.addJob(je);
+            TurbineScheduler.addJob(je);
 
             //set the Message
-            data.setMessage("Task " + task + "started successfully");
+            data.setMessage("Task " + task + " added successfully");
         }
         catch (Exception e)
         {
             //set the Message
-            data.setMessage("Task " + task + " failed to start!");
+            data.setMessage("Task " + task + " could not be added!");
         }
 
-        setTemplate(schedule,SchedulerStatus.vm);
+        // Note: The template "SchedulerStatus.vm" is not part of Turbine.
+        // It is only here as an example how you might implement this action.
+        setTemplate(schedule,"SchedulerStatus.vm");
 
      }
 }
@@ -254,20 +302,37 @@ public class SchedulerStart extends VelocityAction
 ]]></source>
 
 <p>
-The SchedulerStart Action class initializes the Scheduler for that Task.
-The TurbineSchedulerService object exposes other methods that allow the
-Scheduler process to be monitored, such as getJob(int oid),
-removeJob(JobEntry je), updateJob(JobEntry je), listJobs(). As well as
-methods which allow the Scheduler thread to be accessed.
+    The AddScheduledTask action class adds the task to the job queue.  The job
+    will also be written to database so that it will be automatically loaded
+    the next time that Turbine starts.
+</p>
+<p>
+    The AddScheduledTask action class is really only part of what you would need
+    to implement in order to control the job scheduler from a web interface.  It
+    is given as a VERY simple example of how you might implement such functionality.
+    In a more complete implementation, you would have templates to create/edit a scheduled
+    task, display all tasks, and control the scheduler.  You would also have action(s)
+    to enable/disable the scheduler and add/update/remove scheduled tasks.
+</p>
+<p>
+    The TurbineScheduler class exposes methods that allow the
+    Scheduler process to be monitored and controlled, such as getJob(int oid),
+    removeJob(JobEntry je), updateJob(JobEntry je), listJobs(), startScheduler(),
+    stopScheduler(), and others.  See the javadocs on this class for more details.
+</p>
+<p>
+    There is also a pull tool for use with the scheduler service (assuming the pull service
+    is enabled).  This tool allows you to get basic information from the scheduler service
+    for use in a Velocity template.  It provides methods such as getJob(jobId), listJobs(),
+    isEnabled(), and others.  See the javadocs for more details.
 </p>
 
-
 <p>
-The Scheduler Service uses a seperate thread for each Task it runs to ensure
-that every job runs on time. It's the programmer's responsibility to ensure
-that proper precautions to handle issues such as synchronization and long
-running jobs. As always, check through the relevant Javadocs and source code
-for more details on the Scheduler Service.
+    The Scheduler Service uses a seperate thread for each Task it runs to ensure
+    that every job runs on time. It's the programmer's responsibility to ensure
+    that proper precautions to handle issues such as synchronization and long
+    running jobs. As always, check through the relevant Javadocs and source code
+    for more details on the Scheduler Service.
 </p>
 
 </section>
