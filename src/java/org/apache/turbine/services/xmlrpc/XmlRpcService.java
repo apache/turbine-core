@@ -54,14 +54,12 @@ package org.apache.turbine.services.xmlrpc;
  * <http://www.apache.org/>.
  */
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Vector;
 
 import org.apache.turbine.services.Service;
 import org.apache.turbine.util.TurbineException;
-import org.apache.xmlrpc.XmlRpcException;
 
 /**
  * The interface an XmlRpcService implements.

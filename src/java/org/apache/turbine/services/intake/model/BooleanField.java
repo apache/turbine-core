@@ -135,7 +135,7 @@ public class BooleanField
     {
         Boolean result = null;
 
-        if( validator != null && validator instanceof BooleanValidator )
+        if (validator != null && validator instanceof BooleanValidator)
         {
             BooleanValidator bValidator = (BooleanValidator) validator;
             try

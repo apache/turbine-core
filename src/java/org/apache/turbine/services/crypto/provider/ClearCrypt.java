@@ -59,17 +59,17 @@ import org.apache.turbine.services.crypto.CryptoAlgorithm;
 /**
  * This is a dummy for "cleartext" encryption. It goes through
  * the notions of the CryptoAlgorithm interface but actually does
- * nothing. It can be used as a replacement for the "encrypt = no" 
+ * nothing. It can be used as a replacement for the "encrypt = no"
  * setting in TurbineResources.
  *
- * Can be used as the default crypto algorithm 
+ * Can be used as the default crypto algorithm
  *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 
-public class ClearCrypt 
-    implements CryptoAlgorithm
+public class ClearCrypt
+        implements CryptoAlgorithm
 {
     /**
      * C'tor
@@ -116,10 +116,10 @@ public class ClearCrypt
      */
 
     public String encrypt(String value)
-        throws Exception
+            throws Exception
     {
         /*
-         * Ultra-clever implementation. ;-) 
+         * Ultra-clever implementation. ;-)
          */
 
         return value;

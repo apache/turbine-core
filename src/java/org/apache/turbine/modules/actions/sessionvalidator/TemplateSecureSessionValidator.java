@@ -55,9 +55,7 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  */
 
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.util.RunData;
 
 /**
@@ -114,14 +112,14 @@ public class TemplateSecureSessionValidator extends SessionValidator
             if (data.getMessage() == null)
             {
                 data.setMessage(TurbineResources.getString(
-                    TurbineConstants.LOGIN_MESSAGE));
+                        TurbineConstants.LOGIN_MESSAGE));
             }
 
             /*
              * Set the screen template to the login page.
              */
             data.getTemplateInfo().setScreenTemplate(
-                TurbineResources.getString(TurbineConstants.TEMPLATE_LOGIN));
+                    TurbineResources.getString(TurbineConstants.TEMPLATE_LOGIN));
 
             /*
              * We're not doing any actions buddy! (except action.login which
@@ -134,10 +132,10 @@ public class TemplateSecureSessionValidator extends SessionValidator
          * Make sure we have some way to return a response.
          */
         if (!data.hasScreen() &&
-              data.getTemplateInfo().getScreenTemplate() == null)
+                data.getTemplateInfo().getScreenTemplate() == null)
         {
             String template = TurbineResources.getString(
-                TurbineConstants.TEMPLATE_HOMEPAGE);
+                    TurbineConstants.TEMPLATE_HOMEPAGE);
 
             if (template != null)
             {
@@ -146,7 +144,7 @@ public class TemplateSecureSessionValidator extends SessionValidator
             else
             {
                 data.setScreen(TurbineResources.getString(
-                    TurbineConstants.SCREEN_HOMEPAGE));
+                        TurbineConstants.SCREEN_HOMEPAGE));
             }
         }
 
@@ -162,26 +160,26 @@ public class TemplateSecureSessionValidator extends SessionValidator
              * See comments in screens.error.InvalidState.
              */
             if (data.getParameters().getInt("_session_access_counter") <
-                 (((Integer)data.getUser().getTemp("_session_access_counter"))
-                 .intValue() - 1))
+                    (((Integer) data.getUser().getTemp("_session_access_counter"))
+                    .intValue() - 1))
             {
                 if (data.getTemplateInfo().getScreenTemplate() != null)
                 {
                     data.getUser().setTemp("prev_template",
-                        data.getTemplateInfo().getScreenTemplate());
+                            data.getTemplateInfo().getScreenTemplate());
                     data.getTemplateInfo().setScreenTemplate(
-                        TurbineResources.getString(
-                            TurbineConstants.TEMPLATE_INVALID_STATE));
+                            TurbineResources.getString(
+                                    TurbineConstants.TEMPLATE_INVALID_STATE));
                 }
                 else
                 {
                     data.getUser().setTemp("prev_screen",
-                        data.getScreen().replace('/', ','));
+                            data.getScreen().replace('/', ','));
                     data.setScreen(TurbineResources.getString(
-                        TurbineConstants.SCREEN_INVALID_STATE));
+                            TurbineConstants.SCREEN_INVALID_STATE));
                 }
                 data.getUser()
-                    .setTemp("prev_parameters", data.getParameters());
+                        .setTemp("prev_parameters", data.getParameters());
                 data.setAction("");
             }
         }

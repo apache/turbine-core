@@ -25,13 +25,13 @@ package org.apache.turbine.services.factory;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -59,10 +59,10 @@ import org.apache.turbine.util.TurbineException;
 /**
  * Factory is an interface for object factories. Object factories
  * can be registered to the Factory Service to support customized
- * functionality during instantiation of specific classes that 
+ * functionality during instantiation of specific classes that
  * the service itself cannot provide. Examples include
  * instantiation of XML parsers and secure sockets requiring
- * provider specific initializations before instantiation. 
+ * provider specific initializations before instantiation.
  *
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
@@ -77,7 +77,7 @@ public interface Factory
      * @throws TurbineException if initialization fails.
      */
     void init(String className)
-        throws TurbineException;
+            throws TurbineException;
 
     /**
      * Gets an instance of a class.
@@ -86,20 +86,20 @@ public interface Factory
      * @throws TurbineException if instantiation fails.
      */
     Object getInstance()
-        throws TurbineException;
+            throws TurbineException;
 
     /**
      * Gets an instance of a class using a specified class loader.
-     * 
+     *
      * <p>Class loaders are supported only if the isLoaderSupported
-     * method returns true. Otherwise the loader parameter is ignored. 
+     * method returns true. Otherwise the loader parameter is ignored.
      *
      * @param loader the class loader.
      * @return the instance.
      * @throws TurbineException if instantiation fails.
      */
     Object getInstance(ClassLoader loader)
-        throws TurbineException;
+            throws TurbineException;
 
     /**
      * Gets an instance of a named class.
@@ -113,15 +113,15 @@ public interface Factory
      */
     Object getInstance(Object[] params,
                        String[] signature)
-        throws TurbineException;
+            throws TurbineException;
 
     /**
      * Gets an instance of a named class using a specified class loader.
      * Parameters for its constructor are given as an array of objects,
      * primitive types must be wrapped with a corresponding class.
-     * 
+     *
      * <p>Class loaders are supported only if the isLoaderSupported
-     * method returns true. Otherwise the loader parameter is ignored. 
+     * method returns true. Otherwise the loader parameter is ignored.
      *
      * @param loader the class loader.
      * @param params an array containing the parameters of the constructor.
@@ -132,12 +132,12 @@ public interface Factory
     Object getInstance(ClassLoader loader,
                        Object[] params,
                        String[] signature)
-        throws TurbineException;
+            throws TurbineException;
 
     /**
      * Tests if this object factory supports specified class loaders.
-     * 
-     * @return true if class loaders are supported, false otherwise. 
+     *
+     * @return true if class loaders are supported, false otherwise.
      */
     boolean isLoaderSupported();
 }

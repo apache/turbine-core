@@ -55,13 +55,11 @@ package org.apache.turbine.modules.pages;
  */
 
 // Turbine Classes
+
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
-
-// Velocity Stuff
 import org.apache.velocity.context.Context;
-
 
 /**
  * Extends TemplatePage to set the template Context.
@@ -83,7 +81,7 @@ public class VelocityPage extends TemplatePage
     {
         Context context = TurbineVelocity.getContext(data);
         data.getTemplateInfo()
-            .setTemplateContext(VelocityService.CONTEXT, context);
+                .setTemplateContext(VelocityService.CONTEXT, context);
     }
 
     /**

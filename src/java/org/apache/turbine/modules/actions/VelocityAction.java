@@ -79,7 +79,7 @@ public abstract class VelocityAction extends VelocityActionEvent
      * @exception Exception, a generic exception.
      */
     public void doPerform(RunData data)
-        throws Exception
+            throws Exception
     {
         doPerform(data, getContext(data));
     }
@@ -94,7 +94,7 @@ public abstract class VelocityAction extends VelocityActionEvent
      */
     public abstract void doPerform(RunData data,
                                    Context context)
-        throws Exception;
+            throws Exception;
 
     /**
      * Sets up the context and then calls super.perform(); thus,
@@ -105,7 +105,7 @@ public abstract class VelocityAction extends VelocityActionEvent
      * @exception Exception, a generic exception.
      */
     protected void perform(RunData data)
-        throws Exception
+            throws Exception
     {
         super.perform(data);
     }

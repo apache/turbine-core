@@ -100,7 +100,7 @@ public abstract class TurbineMimeTypes
     public static String getContentType(String ext,
                                         String def)
     {
-        return getService().getContentType(ext,def);
+        return getService().getContentType(ext, def);
     }
 
     /**
@@ -135,7 +135,7 @@ public abstract class TurbineMimeTypes
     public static MimeType getMimeContentType(String ext,
                                               String def)
     {
-        return getService().getMimeContentType(ext,def);
+        return getService().getMimeContentType(ext, def);
     }
 
     /**
@@ -182,7 +182,7 @@ public abstract class TurbineMimeTypes
     public static String getCharSet(Locale locale,
                                     String variant)
     {
-        return getService().getCharSet(locale,variant);
+        return getService().getCharSet(locale, variant);
     }
 
     /**
@@ -206,7 +206,7 @@ public abstract class TurbineMimeTypes
     public static String getCharSet(String key,
                                     String def)
     {
-        return getService().getCharSet(key,def);
+        return getService().getCharSet(key, def);
     }
 
     /**
@@ -217,6 +217,6 @@ public abstract class TurbineMimeTypes
     protected static MimeTypeService getService()
     {
         return (MimeTypeService) TurbineServices.
-            getInstance().getService(MimeTypeService.SERVICE_NAME);
+                getInstance().getService(MimeTypeService.SERVICE_NAME);
     }
 }

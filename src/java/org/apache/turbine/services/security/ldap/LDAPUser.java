@@ -58,19 +58,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.Hashtable;
-import javax.servlet.http.HttpSessionBindingEvent;
-import javax.naming.directory.Attributes;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.BasicAttributes;
-import javax.naming.directory.BasicAttribute;
 import javax.naming.NamingException;
-import org.apache.torque.om.BaseObject;
-import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.security.TurbineSecurity;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.BasicAttributes;
+import javax.servlet.http.HttpSessionBindingEvent;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.torque.om.BaseObject;
 import org.apache.torque.om.StringKey;
-
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.security.TurbineSecurity;
 
 /**
  * LDAPUser implements User and provides access to a user who accesses the
@@ -124,7 +124,7 @@ public class LDAPUser extends BaseObject implements User
      * @throws NamingException if there was an error with JNDI.
      */
     public void setLDAPAttributes(Attributes attribs)
-        throws NamingException
+            throws NamingException
     {
 
         Attribute attr;
@@ -205,7 +205,7 @@ public class LDAPUser extends BaseObject implements User
      * @return The JNDI attributes of the user.
      */
     public Attributes getLDAPAttributes()
-        throws NamingException
+            throws NamingException
     {
         Attributes attribs = new BasicAttributes();
         String attrName;
@@ -555,7 +555,7 @@ public class LDAPUser extends BaseObject implements User
         tmp = (String) getPerm(User.USERNAME);
         if (tmp != null && tmp.length() == 0)
         {
-                tmp = null;
+            tmp = null;
         }
         return tmp;
     }
@@ -899,7 +899,7 @@ public class LDAPUser extends BaseObject implements User
         catch (Exception e)
         {
             log.error("BaseUser.valueUnbobund(): "
-                + e.getMessage());
+                    + e.getMessage());
             log.error(e);
 
             // To prevent messages being lost in case the logging system
@@ -936,7 +936,7 @@ public class LDAPUser extends BaseObject implements User
      * @throws Exception if it cannot be saved
      */
     public void save()
-        throws Exception
+            throws Exception
     {
         if (TurbineSecurity.accountExists(this))
         {

@@ -74,5 +74,5 @@ public interface InitableByConstraintMap
      * @exception InvalidMaskException one of the mask rules is invalid
      */
     void init(Map inputParameters)
-        throws InvalidMaskException;
+            throws InvalidMaskException;
 }

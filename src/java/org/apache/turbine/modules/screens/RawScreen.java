@@ -55,12 +55,10 @@ package org.apache.turbine.modules.screens;
  */
 
 // Turbine stuff.
+
+import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.util.RunData;
-
-// ECS Classes
-import org.apache.ecs.ConcreteElement;
-
 
 /**
  * Base class for writing Screens that output binary data.  This class
@@ -88,7 +86,7 @@ public abstract class RawScreen extends Screen
      * @exception Exception, a generic exception.
      */
     protected final ConcreteElement doBuild(RunData data)
-        throws Exception
+            throws Exception
     {
         data.getResponse().setContentType(getContentType(data));
         data.declareDirectResponse();
@@ -114,7 +112,7 @@ public abstract class RawScreen extends Screen
      * @exception Exception, a generic exception.
      */
     protected abstract void doOutput(RunData data)
-        throws Exception;
+            throws Exception;
 
     /**
      * The layout must be set to null.

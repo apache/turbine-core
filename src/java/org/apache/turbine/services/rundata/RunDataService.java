@@ -58,9 +58,9 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.turbine.services.Service;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.services.Service;
 
 /**
  * The RunData Service provides the implementations for RunData and
@@ -96,7 +96,7 @@ public interface RunDataService extends Service
     RunData getRunData(HttpServletRequest req,
                        HttpServletResponse res,
                        ServletConfig config)
-        throws TurbineException;
+            throws TurbineException;
 
     /**
      * Gets a RunData object from a specific configuration.
@@ -112,7 +112,7 @@ public interface RunDataService extends Service
                        HttpServletRequest req,
                        HttpServletResponse res,
                        ServletConfig config)
-        throws TurbineException;
+            throws TurbineException;
 
     /**
      * Puts the used RunData object back to the factory for recycling.

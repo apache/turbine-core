@@ -55,6 +55,7 @@ package org.apache.turbine.services.upload;
  */
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.turbine.services.Service;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.TurbineException;
@@ -71,7 +72,7 @@ import org.apache.turbine.util.TurbineException;
  * @version $Id$
  */
 public interface UploadService
-    extends Service
+        extends Service
 {
     /**
      * HTTP header.
@@ -102,7 +103,7 @@ public interface UploadService
      * HTTP header.
      */
     static final String MULTIPART_FORM_DATA =
-        MULTIPART + '/' + FORM_DATA;
+            MULTIPART + '/' + FORM_DATA;
 
     /**
      * HTTP header.
@@ -128,7 +129,7 @@ public interface UploadService
      * org.apache.turbine.util.ParameterParser}.  Otherwise, an {@link
      * org.apache.turbine.modules.Action} may decide to to parse the
      * request by calling {@link #parseRequest(HttpServletRequest,
-     * ParameterParser, String) parseRequest} manually.
+            * ParameterParser, String) parseRequest} manually.
      */
     static final Boolean AUTOMATIC_DEFAULT = Boolean.FALSE;
 
@@ -193,10 +194,10 @@ public interface UploadService
      * @exception TurbineException if there are problems reading/parsing
      * the request or storing files.
      */
-    void parseRequest( HttpServletRequest req,
-                       ParameterParser params,
-                       String path )
-        throws TurbineException;
+    void parseRequest(HttpServletRequest req,
+                      ParameterParser params,
+                      String path)
+            throws TurbineException;
 
     /**
      * <p> Retrieves the value of <code>size.max</code> property of the

@@ -82,25 +82,25 @@ public interface CryptoAlgorithm
     void setSeed(String salt);
 
     /**
-     * Performs the actual encryption. 
+     * Performs the actual encryption.
      *
      * @param value       The value to be encrypted
      *
      * @return The encrypted value
      *
-     * @throws Exception various errors from the underlying ciphers. 
+     * @throws Exception various errors from the underlying ciphers.
      *                   The caller should catch them and report accordingly.
      *
      */
 
     String encrypt(String value)
-        throws Exception;
+            throws Exception;
 
     /**
      * Algorithms that perform multiple ciphers get told
      * with setCipher, which cipher to use. This should be
      * called before any other method call.
-     * 
+     *
      * If called after any call to encrypt or setSeed, the
      * CryptoAlgorithm may choose to ignore this or to reset
      * and use the new cipher.

@@ -65,7 +65,7 @@ import java.util.ArrayList;
  * @version $Id$
  */
 public class MimeType
-    implements Cloneable
+        implements Cloneable
 {
     /**
      * A list of well known MIME types.
@@ -87,42 +87,43 @@ public class MimeType
     public static MimeType IMAGE_GIF;
     public static MimeType IMAGE_JPEG;
     public static MimeType IMAGE_WBMP;
+
     static
     {
         TEXT_HTML =
-            new MimeType("text/html");
+                new MimeType("text/html");
         TEXT_WML =
-            new MimeType("text/vnd.wap.wml");
+                new MimeType("text/vnd.wap.wml");
         TEXT_HDML =
-            new MimeType("text/x-hdml");
+                new MimeType("text/x-hdml");
         TEXT_CHTML =
-            new MimeType("text/x-chtml");
+                new MimeType("text/x-chtml");
         TEXT_PLAIN =
-            new MimeType("text/plain");
-        MULTIPART	=
-            new MimeType("multipart/*");
-        MULTIPART_FORM_DATA	=
-            new MimeType("multipart/form-data");
+                new MimeType("text/plain");
+        MULTIPART =
+                new MimeType("multipart/*");
+        MULTIPART_FORM_DATA =
+                new MimeType("multipart/form-data");
         APPLICATION_POSTSCRIPT =
-            new MimeType("application/postscript");
+                new MimeType("application/postscript");
         APPLICATION_OCTET_STREAM =
-            new MimeType("application/octet-stream");
+                new MimeType("application/octet-stream");
         APPLICATION_X_JAVA_AGENT =
-            new MimeType("application/x-java-agent");
+                new MimeType("application/x-java-agent");
         APPLICATION_X_WWW_FORM_URLENCODED =
-            new MimeType("application/x-www-form-urlencoded");
+                new MimeType("application/x-www-form-urlencoded");
         MESSAGE_HTTP =
-            new MimeType("message/http");
+                new MimeType("message/http");
         TEXT_CSS =
-            new MimeType("text/css");
+                new MimeType("text/css");
         TEXT =
-            new MimeType("text/*");
+                new MimeType("text/*");
         IMAGE_GIF =
-            new MimeType("image/gif");
+                new MimeType("image/gif");
         IMAGE_JPEG =
-            new MimeType("image/jpeg");
+                new MimeType("image/jpeg");
         IMAGE_WBMP =
-            new MimeType("image/vnd.wap.wbmp");
+                new MimeType("image/vnd.wap.wbmp");
     }
 
     /**
@@ -161,12 +162,11 @@ public class MimeType
     /**
      * Constructs a new MIME type by parsing a specification string.
      *
-     * @parameter spec a string representing a MIME type.
-     * @throws IllegalArgument for parsing errors.
+     * @param spec a string representing a MIME type.
      */
     public MimeType(String spec)
     {
-        this(spec,true);
+        this(spec, true);
     }
 
     /**
@@ -185,12 +185,12 @@ public class MimeType
 
         // Skip leading/trailing blanks.
         while ((start < length) &&
-               Character.isWhitespace(spec.charAt(start)))
+                Character.isWhitespace(spec.charAt(start)))
         {
             start++;
         }
         while ((length > start) &&
-               Character.isWhitespace(spec.charAt(length - 1)))
+                Character.isWhitespace(spec.charAt(length - 1)))
         {
             length--;
         }
@@ -198,23 +198,24 @@ public class MimeType
         // Get the type.
         StringBuffer sb = new StringBuffer();
         while ((start < length) &&
-               ((look = spec.charAt(start)) != '/'))
+                ((look = spec.charAt(start)) != '/'))
         {
             sb.append((char) look);
             start++;
         }
         if (look != '/')
+        {
             throw new IllegalArgumentException(
-                "Syntax error in MIME type " + spec);
-
+                    "Syntax error in MIME type " + spec);
+        }
         mimeType = sb.toString();
 
         // Get the subtype.
         start++;
         sb.setLength(0);
         while ((start < length) &&
-               ((look = spec.charAt(start)) != ';') &&
-               !Character.isWhitespace(look))
+                ((look = spec.charAt(start)) != ';') &&
+                !Character.isWhitespace(look))
         {
             sb.append((char) look);
             start++;
@@ -225,16 +226,17 @@ public class MimeType
         {
             // Get parameters, if any.
             while ((start < length) &&
-                   Character.isWhitespace(spec.charAt(start)))
+                    Character.isWhitespace(spec.charAt(start)))
             {
                 start++;
             }
             if (start < length)
             {
                 if (spec.charAt(start) != ';')
+                {
                     throw new IllegalArgumentException(
-                        "Syntax error in MIME type parameters " + spec);
-
+                            "Syntax error in MIME type parameters " + spec);
+                }
                 start++;
                 ArrayList na = new ArrayList(4);
                 ArrayList va = new ArrayList(4);
@@ -242,33 +244,34 @@ public class MimeType
                 {
                     // Get the name.
                     while ((start < length) &&
-                           Character.isWhitespace(spec.charAt(start)))
+                            Character.isWhitespace(spec.charAt(start)))
                     {
                         start++;
                     }
                     sb.setLength(0);
                     while ((start < length) &&
-                           ((look=spec.charAt(start)) != '=') &&
-                           !Character.isWhitespace(look))
+                            ((look = spec.charAt(start)) != '=') &&
+                            !Character.isWhitespace(look))
                     {
                         sb.append(Character.toLowerCase((char) look));
-                        start++ ;
+                        start++;
                     }
                     String name = sb.toString();
 
                     // Get the value.
                     while ((start < length) &&
-                           Character.isWhitespace(spec.charAt(start)))
+                            Character.isWhitespace(spec.charAt(start)))
                     {
                         start++;
                     }
                     if (spec.charAt(start) != '=')
+                    {
                         throw new IllegalArgumentException(
-                            "Syntax error in MIME type parameters " + spec);
-
-                    start++ ;
+                                "Syntax error in MIME type parameters " + spec);
+                    }
+                    start++;
                     while ((start < length) &&
-                           Character.isWhitespace(spec.charAt(start)))
+                            Character.isWhitespace(spec.charAt(start)))
                     {
                         start++;
                     }
@@ -280,15 +283,15 @@ public class MimeType
                         delim = '"';
                     }
                     while ((start < length) &&
-                           ((look = spec.charAt(start)) != delim) &&
-                           ((delim == '"') ||
+                            ((look = spec.charAt(start)) != delim) &&
+                            ((delim == '"') ||
                             !Character.isWhitespace(look)))
                     {
                         sb.append((char) look);
                         start++;
                     }
                     while ((start < length) &&
-                           (spec.charAt(start) != ';'))
+                            (spec.charAt(start) != ';'))
                     {
                         start++;
                     }
@@ -314,7 +317,7 @@ public class MimeType
     public MimeType(String type,
                     String subtype)
     {
-        this(type,subtype,null,null);
+        this(type, subtype, null, null);
     }
 
     /**
@@ -332,12 +335,13 @@ public class MimeType
                     String values[])
     {
         if ((type == null) ||
-            (subtype == null))
+                (subtype == null))
+        {
             throw new NullPointerException("MIME type or subtype missing");
-
+        }
         mimeType = type.trim();
         mimeSubtype = subtype.trim();
-        parameterNames  = names;
+        parameterNames = names;
         parameterValues = values;
     }
 
@@ -356,7 +360,7 @@ public class MimeType
     public int match(MimeType other)
     {
         if (mimeType.equals("*") ||
-            other.mimeType.equals("*"))
+                other.mimeType.equals("*"))
         {
             return MATCH_TYPE;
         }
@@ -365,7 +369,7 @@ public class MimeType
             return NO_MATCH;
         }
         else if (mimeSubtype.equals("*") ||
-                 other.mimeSubtype.equals("*"))
+                other.mimeSubtype.equals("*"))
         {
             return MATCH_SUBTYPE;
         }
@@ -452,7 +456,7 @@ public class MimeType
                 }
             }
         }
-        return null ;
+        return null;
     }
 
     /**
@@ -464,19 +468,19 @@ public class MimeType
     public synchronized void setParameter(String param,
                                           String value)
     {
-      if (parameterNames != null)
-      {
-          for (int i = 0; i < parameterNames.length; i++)
-          {
-              if (parameterNames[i].equalsIgnoreCase(param))
-              {
-                  parameterValues[i] = value;
-                  mimeTypeString = null;
-                  return;
-              }
-          }
-      }
-      addParameter(param,value);
+        if (parameterNames != null)
+        {
+            for (int i = 0; i < parameterNames.length; i++)
+            {
+                if (parameterNames[i].equalsIgnoreCase(param))
+                {
+                    parameterValues[i] = value;
+                    mimeTypeString = null;
+                    return;
+                }
+            }
+        }
+        addParameter(param, value);
     }
 
     /**
@@ -488,7 +492,7 @@ public class MimeType
     public void addParameter(String param,
                              String value)
     {
-        addParameters(new String[]{ param },new String[]{ value });
+        addParameters(new String[]{param}, new String[]{value});
     }
 
     /**
@@ -502,18 +506,18 @@ public class MimeType
                                            String[] values)
     {
         if ((params == null) ||
-            (values == null) ||
-            (params.length != values.length))
+                (values == null) ||
+                (params.length != values.length))
             throw new IllegalArgumentException("Incorrect MIME type parameters");
 
         if (parameterNames != null)
         {
             String[] na = new String[parameterNames.length + params.length];
             String[] va = new String[parameterValues.length + values.length];
-            System.arraycopy(parameterNames,0,na,0,parameterNames.length);
-            System.arraycopy(params,0,na,parameterNames.length,params.length);
-            System.arraycopy(parameterValues,0,va,0,parameterValues.length);
-            System.arraycopy(values,0,va,parameterValues.length,values.length);
+            System.arraycopy(parameterNames, 0, na, 0, parameterNames.length);
+            System.arraycopy(params, 0, na, parameterNames.length, params.length);
+            System.arraycopy(parameterValues, 0, va, 0, parameterValues.length);
+            System.arraycopy(values, 0, va, parameterValues.length, values.length);
             parameterNames = na;
             parameterValues = va;
         }

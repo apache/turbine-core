@@ -56,16 +56,16 @@ package org.apache.turbine.services.pull.util;
 
 import java.io.FileInputStream;
 import java.util.Properties;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.services.pull.TurbinePull;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.ContentURI;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
-
 
 /**
  * UIManager.java
@@ -122,7 +122,6 @@ public class UIManager implements ApplicationTool
      */
     private static final String IMAGES_DIRECTORY = "/images";
 
-
     /**
      * Property tag for the skin that is to be
      * used for the web application.
@@ -141,7 +140,7 @@ public class UIManager implements ApplicationTool
      * Attribute name of skinName value in User's temp hashmap.
      */
     private static final String SKIN_ATTRIBUTE =
-        "org.apache.turbine.services.pull.util.UIManager.skin";
+            "org.apache.turbine.services.pull.util.UIManager.skin";
 
     /**
      * The actual skin being used for the webapp.
@@ -206,7 +205,7 @@ public class UIManager implements ApplicationTool
         }
 
         skinsDirectory =
-            TurbinePull.getAbsolutePathToResourcesDirectory() + SKINS_DIRECTORY;
+                TurbinePull.getAbsolutePathToResourcesDirectory() + SKINS_DIRECTORY;
 
         loadSkin();
     }
@@ -262,12 +261,12 @@ public class UIManager implements ApplicationTool
         StringBuffer sb = new StringBuffer();
 
         sb.append(resourcesDirectory).
-           append(SKINS_DIRECTORY).
-           append("/").
-           append(getSkin()).
-           append(IMAGES_DIRECTORY).
-           append("/").
-           append(imageId);
+                append(SKINS_DIRECTORY).
+                append("/").
+                append(getSkin()).
+                append(IMAGES_DIRECTORY).
+                append("/").
+                append(imageId);
 
         return cu.getURI(sb.toString());
     }
@@ -283,18 +282,18 @@ public class UIManager implements ApplicationTool
         StringBuffer sb = new StringBuffer();
 
         sb.append(TurbineServlet.getServerScheme()).
-           append("://").
-           append(TurbineServlet.getServerName()).
-           append(":").
-           append(TurbineServlet.getServerPort()).
-           append(TurbineServlet.getContextPath()).
-           append(resourcesDirectory).
-           append(SKINS_DIRECTORY).
-           append("/").
-           append(getSkin()).
-           append(IMAGES_DIRECTORY).
-           append("/").
-           append(imageId);
+                append("://").
+                append(TurbineServlet.getServerName()).
+                append(":").
+                append(TurbineServlet.getServerPort()).
+                append(TurbineServlet.getContextPath()).
+                append(resourcesDirectory).
+                append(SKINS_DIRECTORY).
+                append("/").
+                append(getSkin()).
+                append(IMAGES_DIRECTORY).
+                append("/").
+                append(imageId);
 
         return sb.toString();
     }
@@ -319,11 +318,11 @@ public class UIManager implements ApplicationTool
         StringBuffer sb = new StringBuffer();
 
         sb.append(resourcesDirectory).
-           append(SKINS_DIRECTORY).
-           append("/").
-           append(getSkin()).
-           append("/").
-           append(SKIN_CSS_FILE);
+                append(SKINS_DIRECTORY).
+                append("/").
+                append(getSkin()).
+                append("/").
+                append(SKIN_CSS_FILE);
 
         return cu.getURI(sb.toString());
     }
@@ -339,18 +338,18 @@ public class UIManager implements ApplicationTool
         StringBuffer sb = new StringBuffer();
 
         sb.append(TurbineServlet.getServerScheme()).
-           append("://").
-           append(TurbineServlet.getServerName()).
-           append(":").
-           append(TurbineServlet.getServerPort()).
-           append(TurbineServlet.getContextPath()).
-           append("/").
-           append(resourcesDirectory).
-           append(SKINS_DIRECTORY).
-           append("/").
-           append(getSkin()).
-           append("/").
-           append(SKIN_CSS_FILE);
+                append("://").
+                append(TurbineServlet.getServerName()).
+                append(":").
+                append(TurbineServlet.getServerPort()).
+                append(TurbineServlet.getContextPath()).
+                append("/").
+                append(resourcesDirectory).
+                append(SKINS_DIRECTORY).
+                append("/").
+                append(getSkin()).
+                append("/").
+                append(SKIN_CSS_FILE);
 
         return sb.toString();
     }
@@ -367,7 +366,7 @@ public class UIManager implements ApplicationTool
         try
         {
             FileInputStream is = new FileInputStream(
-                skinsDirectory + "/" + getSkin() + "/" + SKIN_PROPS_FILE);
+                    skinsDirectory + "/" + getSkin() + "/" + SKIN_PROPS_FILE);
 
             skinProperties.load(is);
         }

@@ -57,9 +57,7 @@ package org.apache.turbine.modules;
 import java.util.Hashtable;
 
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.util.RunData;
 
 /**
@@ -85,9 +83,9 @@ public abstract class GenericLoader extends Hashtable
      */
     public GenericLoader()
     {
-        super ();
+        super();
         isCaching = TurbineResources
-            .getBoolean(TurbineConstants.MODULE_CACHE, true);
+                .getBoolean(TurbineConstants.MODULE_CACHE, true);
     }
 
     /**
@@ -95,9 +93,9 @@ public abstract class GenericLoader extends Hashtable
      */
     public GenericLoader(int i)
     {
-        super (i);
+        super(i);
         isCaching = TurbineResources
-            .getBoolean(TurbineConstants.MODULE_CACHE, true);
+                .getBoolean(TurbineConstants.MODULE_CACHE, true);
     }
 
     /**
@@ -117,7 +115,7 @@ public abstract class GenericLoader extends Hashtable
      * @exception Exception a generic exception.
      */
     public abstract void exec(RunData data, String name)
-        throws Exception;
+            throws Exception;
 
     /**
      * Commented out.

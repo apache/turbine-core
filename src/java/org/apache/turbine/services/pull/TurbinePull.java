@@ -25,13 +25,13 @@ package org.apache.turbine.services.pull;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,15 +54,14 @@ package org.apache.turbine.services.pull;
  * <http://www.apache.org/>.
  */
 
-import org.apache.velocity.context.Context;
-
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
 
 /**
  * This is a Facade class for PullService.
  *
- * This class provides static methods that call related methods of the 
+ * This class provides static methods that call related methods of the
  * implementation of the PullService used by the System, according to
  * the settings in TurbineResources.
  *
@@ -73,17 +72,17 @@ import org.apache.turbine.util.RunData;
 public abstract class TurbinePull
 {
     /**
-     * Utility method for accessing the service 
+     * Utility method for accessing the service
      * implementation
      *
      * @return a PullService implementation instance
      */
     protected static PullService getService()
     {
-        return (PullService)TurbineServices
-            .getInstance().getService(PullService.SERVICE_NAME);
+        return (PullService) TurbineServices
+                .getInstance().getService(PullService.SERVICE_NAME);
     }
-    
+
     /**
      * Get the ToolBox that was created by
      * Pull Service during early initialization. This
@@ -110,7 +109,7 @@ public abstract class TurbinePull
     public static final boolean isRegistered()
     {
         return TurbineServices.getInstance()
-            .isRegistered(PullService.SERVICE_NAME);
+                .isRegistered(PullService.SERVICE_NAME);
     }
 
     /**
@@ -144,7 +143,7 @@ public abstract class TurbinePull
     {
         getService().populateContext(context, data);
     }
-    
+
     /**
      * Refresh the global tools. This is necessary
      * for development work where tools depend
@@ -181,17 +180,17 @@ public abstract class TurbinePull
     {
         getService().releaseTools(context);
     }
-    
+
     /**
-     * Helper method that allows you to easily get a tool 
-     * from a Context. Essentially, it just does the cast 
+     * Helper method that allows you to easily get a tool
+     * from a Context. Essentially, it just does the cast
      * to an Application tool for you.
      *
      * @param context a Velocity Context to get tools from
      * @param name the name of the tool to get
      * @return ApplicationTool null if no tool could be found
      */
-    public static ApplicationTool getTool(Context context, 
+    public static ApplicationTool getTool(Context context,
                                           String name)
     {
         try

@@ -188,7 +188,7 @@ public class TurbineXmlRpcService
             XmlRpc.setDriver(saxParserClass);
 
             // Check if there are any handlers to register at startup
-            for(Iterator keys = getConfiguration().getKeys("handler"); keys.hasNext();)
+            for (Iterator keys = getConfiguration().getKeys("handler"); keys.hasNext();)
             {
                 String handler = (String) keys.next();
                 String handlerName = handler.substring(handler.indexOf(".") + 1);
@@ -220,7 +220,7 @@ public class TurbineXmlRpcService
                  */
                 Vector acceptedClients = getConfiguration().getVector("acceptClient");
 
-                for(int i = 0; i < acceptedClients.size(); i++)
+                for (int i = 0; i < acceptedClients.size(); i++)
                 {
                     String acceptClient = (String) acceptedClients.get(i);
 
@@ -239,7 +239,7 @@ public class TurbineXmlRpcService
                  */
                 Vector deniedClients = getConfiguration().getVector("denyClient");
 
-                for(int i = 0; i < deniedClients.size(); i++)
+                for (int i = 0; i < deniedClients.size(); i++)
                 {
                     String denyClient = (String) deniedClients.get(i);
 
@@ -300,7 +300,7 @@ public class TurbineXmlRpcService
      */
     private void setSystemPropertiesFromConfiguration(Configuration configuration)
     {
-        for(Iterator i = configuration.getKeys(); i.hasNext();)
+        for (Iterator i = configuration.getKeys(); i.hasNext();)
         {
             String key = (String) i.next();
             String value = configuration.getString(key);

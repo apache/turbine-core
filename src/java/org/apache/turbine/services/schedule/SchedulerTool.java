@@ -78,7 +78,7 @@ public class SchedulerTool implements ApplicationTool
      */
     public void init(Object data)
     {
-        if(!TurbineServices.getInstance().isRegistered(ScheduleService.SERVICE_NAME))
+        if (!TurbineServices.getInstance().isRegistered(ScheduleService.SERVICE_NAME))
         {
             log.error("You can not use the SchedulerTool unless you enable the Scheduler Service!!!!");
         }
@@ -123,7 +123,7 @@ public class SchedulerTool implements ApplicationTool
         {
             je = TurbineScheduler.getJob(Integer.parseInt(jobId));
         }
-        catch(TurbineException e)
+        catch (TurbineException e)
         {
             log.error("Could not retreive job id #" + jobId, e);
         }

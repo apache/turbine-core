@@ -122,7 +122,6 @@ public class BooleanValidator
         super(paramMap);
     }
 
-
     /**
      * Determine whether a testValue meets the criteria specified
      * in the constraints defined for this validator
@@ -150,36 +149,35 @@ public class BooleanValidator
      * @param stringValue the value to parse
      * @return a <code>Boolean</a> object
      */
-    public Boolean parse( String stringValue )
+    public Boolean parse(String stringValue)
             throws ParseException
     {
         Boolean result = null;
-        for( Iterator iter = trueValues.iterator(); iter.hasNext() && result == null; )
+        for (Iterator iter = trueValues.iterator(); iter.hasNext() && result == null;)
         {
             String trueValue = (String) iter.next();
-            if( trueValue.equalsIgnoreCase( stringValue))
+            if (trueValue.equalsIgnoreCase(stringValue))
             {
                 result = Boolean.TRUE;
             }
         }
 
-        for( Iterator iter = falseValues.iterator(); iter.hasNext() && result == null; )
+        for (Iterator iter = falseValues.iterator(); iter.hasNext() && result == null;)
         {
             String falseValue = (String) iter.next();
-            if( falseValue.equalsIgnoreCase( stringValue))
+            if (falseValue.equalsIgnoreCase(stringValue))
             {
                 result = Boolean.FALSE;
             }
         }
 
-        if( result == null )
+        if (result == null)
         {
-            throw new ParseException( stringValue +
+            throw new ParseException(stringValue +
                     " could not be converted to a Boolean", 0);
         }
 
         return result;
     }
-
 
 }

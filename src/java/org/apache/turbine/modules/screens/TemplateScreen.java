@@ -55,12 +55,12 @@ package org.apache.turbine.modules.screens;
  */
 
 // Turbine/ECS Imports
+
 import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.services.template.TurbineTemplate;
-
+import org.apache.turbine.util.RunData;
 
 /**
  * Template Screen.
@@ -86,8 +86,8 @@ public abstract class TemplateScreen extends Screen
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    protected abstract void doBuildTemplate( RunData data )
-        throws Exception;
+    protected abstract void doBuildTemplate(RunData data)
+            throws Exception;
 
     /**
      * This method should be implemented by Base template classes.  It
@@ -98,15 +98,15 @@ public abstract class TemplateScreen extends Screen
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
-    public abstract ConcreteElement buildTemplate( RunData data )
-        throws Exception;
+    public abstract ConcreteElement buildTemplate(RunData data)
+            throws Exception;
 
     /**
      * This method can be overridden to write code that executes when
      * the template has been built (called from a finally clause, so
      * executes regardless of whether an exception is thrown or not)
      */
-    protected void doPostBuildTemplate( RunData data )
+    protected void doPostBuildTemplate(RunData data)
     {
         // empty
     }
@@ -119,8 +119,8 @@ public abstract class TemplateScreen extends Screen
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
-    protected ConcreteElement doBuild( RunData data )
-        throws Exception
+    protected ConcreteElement doBuild(RunData data)
+            throws Exception
     {
         ConcreteElement out = null;
 
@@ -156,10 +156,10 @@ public abstract class TemplateScreen extends Screen
             // We have do call getScreenTemplate because of the path
             // separator.
             data.getTemplateInfo().setLayoutTemplate(
-                TurbineTemplate.getLayoutTemplateName(
-                    data.getTemplateInfo().getScreenTemplate()));
+                    TurbineTemplate.getLayoutTemplateName(
+                            data.getTemplateInfo().getScreenTemplate()));
         }
-        catch( Exception e )
+        catch (Exception e)
         {
             // Nothing to do.
         }
@@ -184,11 +184,11 @@ public abstract class TemplateScreen extends Screen
      * @param template Name of template.
      * @exception Exception, a generic exception.
      */
-    public void doRedirect(RunData data, String screen, String template )
-        throws Exception
+    public void doRedirect(RunData data, String screen, String template)
+            throws Exception
     {
         setTemplate(data, template);
-        ScreenLoader.getInstance().exec(data,screen);
+        ScreenLoader.getInstance().exec(data, screen);
     }
 
     /**
@@ -209,9 +209,9 @@ public abstract class TemplateScreen extends Screen
      * @param template Name of template.
      * @exception Exception, a generic exception.
      */
-     public void doRedirect(RunData data, String template)
-        throws Exception
+    public void doRedirect(RunData data, String template)
+            throws Exception
     {
-        doRedirect (data, TurbineTemplate.getScreenName(template), template );
+        doRedirect(data, TurbineTemplate.getScreenName(template), template);
     }
 }

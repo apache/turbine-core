@@ -182,7 +182,7 @@ public class Group
         }
 
         // Change the mapToObjectFields values to Field[]
-        for(Iterator keys = mapToObjectFields.keySet().iterator();keys.hasNext();)
+        for (Iterator keys = mapToObjectFields.keySet().iterator(); keys.hasNext();)
         {
             Object key = keys.next();
             List tmpFields = (List) mapToObjectFields.get(key);

@@ -55,13 +55,11 @@ package org.apache.turbine.modules.navigations;
  */
 
 // ECS Classes
+
 import org.apache.ecs.ConcreteElement;
-
-// Turbine Classes
-import org.apache.turbine.services.jsp.JspService;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.jsp.JspService;
 import org.apache.turbine.util.RunData;
-
 
 /**
  * Base JSP navigation that should be subclassed by Navigation that want to
@@ -77,17 +75,17 @@ public class BaseJspNavigation extends TemplateNavigation
      * @param RunData
      * @return null - the JSP sends the information
      */
-    public ConcreteElement buildTemplate( RunData data ) throws Exception
+    public ConcreteElement buildTemplate(RunData data) throws Exception
     {
         // set up any data in beans, etc
-        doBuildTemplate( data );
+        doBuildTemplate(data);
 
         // get the name of the JSP we want to use
         String templateName = data.getTemplateInfo().getNavigationTemplate();
 
         // navigations are used by a layout
         JspService jsp = (JspService)
-            TurbineServices.getInstance().getService(JspService.SERVICE_NAME);
+                TurbineServices.getInstance().getService(JspService.SERVICE_NAME);
         jsp.handleRequest(data, "/navigations/" + templateName);
 
         return null;

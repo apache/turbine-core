@@ -56,8 +56,8 @@ package org.apache.turbine.services.intake.validator;
 
 import java.util.Map;
 
-import org.apache.turbine.services.intake.IntakeException;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.turbine.services.intake.IntakeException;
 
 /**
  * A validator that will compare a testValue against the following

@@ -56,17 +56,17 @@ package org.apache.turbine.services.localization;
 
 import java.util.Hashtable;
 import java.util.Locale;
-import java.util.ResourceBundle;
 import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * <p>This class is the single point of access to all localization
@@ -96,8 +96,8 @@ import org.apache.commons.lang.StringUtils;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  */
 public class TurbineLocalizationService
-    extends TurbineBaseService
-    implements LocalizationService
+        extends TurbineBaseService
+        implements LocalizationService
 {
     /** Logging */
     private static Log log = LogFactory.getLog(LocalizationTool.class);
@@ -138,21 +138,20 @@ public class TurbineLocalizationService
      * Called the first time the Service is used.
      */
     public void init()
-        throws InitializationException
+            throws InitializationException
     {
         initBundleNames(null);
 
         Locale jvmDefault = Locale.getDefault();
         defaultLanguage = TurbineResources
-            .getString("locale.default.language",
-                       jvmDefault.getLanguage()).trim();
+                .getString("locale.default.language",
+                        jvmDefault.getLanguage()).trim();
         defaultCountry = TurbineResources
-            .getString("locale.default.country",
-                       jvmDefault.getCountry()).trim();
+                .getString("locale.default.country",
+                        jvmDefault.getCountry()).trim();
         defaultLocale = new Locale(defaultLanguage, defaultCountry);
         setInit(true);
     }
-
 
     /**
      * Initialize list of default bundle names.
@@ -162,7 +161,7 @@ public class TurbineLocalizationService
     protected void initBundleNames(String[] ignored)
     {
         bundleNames =
-            TurbineResources.getStringArray("locale.default.bundles");
+                TurbineResources.getStringArray("locale.default.bundles");
         String name = TurbineResources.getString("locale.default.bundle");
 
         if (name != null && name.length() > 0)
@@ -170,7 +169,7 @@ public class TurbineLocalizationService
             // Using old-style single bundle name property.
             if (bundleNames == null || bundleNames.length <= 0)
             {
-                bundleNames = new String[] { name };
+                bundleNames = new String[]{name};
             }
             else
             {
@@ -307,22 +306,22 @@ public class TurbineLocalizationService
             locale = getLocale((String) null);
         }
 
-        if ( bundles.containsKey(bundleName) )
+        if (bundles.containsKey(bundleName))
         {
-            Hashtable locales = (Hashtable)bundles.get(bundleName);
+            Hashtable locales = (Hashtable) bundles.get(bundleName);
 
-            if ( locales.containsKey(locale) )
+            if (locales.containsKey(locale))
             {
-                return (ResourceBundle)locales.get(locale);
+                return (ResourceBundle) locales.get(locale);
             }
             else
             {
                 // Try to create a ResourceBundle for this Locale.
                 ResourceBundle rb = ResourceBundle.getBundle(bundleName,
-                                                             locale);
+                        locale);
 
                 // Cache the ResourceBundle in memory.
-                locales.put( rb.getLocale(), rb );
+                locales.put(rb.getLocale(), rb);
 
                 return rb;
             }
@@ -331,18 +330,18 @@ public class TurbineLocalizationService
         {
             // Try to create a ResourceBundle for this Locale.
             ResourceBundle rb = ResourceBundle.getBundle(bundleName,
-                                                         locale);
+                    locale);
 
             // Cache the ResourceBundle in memory.
             Hashtable ht = new Hashtable();
-            ht.put( locale, rb );
+            ht.put(locale, rb);
 
             // Can't call getLocale(), because that is jdk2.  This
             // needs to be changed back, since the above approach
             // caches extra Locale and Bundle objects.
             // ht.put( rb.getLocale(), rb );
 
-            bundles.put( bundleName, ht );
+            bundles.put(bundleName, ht);
 
             return rb;
         }
@@ -366,7 +365,7 @@ public class TurbineLocalizationService
             {
                 if (bundleNames.length <= 0)
                 {
-                    bundleNames = new String[] { defaultBundle };
+                    bundleNames = new String[]{defaultBundle};
                 }
             }
         }
@@ -397,7 +396,6 @@ public class TurbineLocalizationService
         // Couldn't parse locale.
         return defaultLocale;
     }
-
 
     /**
      * @exception MissingResourceException Specified key cannot be matched.
@@ -442,9 +440,9 @@ public class TurbineLocalizationService
         {
             String loc = locale.toString();
             log.debug(LocalizationService.SERVICE_NAME +
-                           " noticed missing resource: " +
-                           "bundleName=" + bundleName + ", locale=" + loc +
-                           ", key=" + key);
+                    " noticed missing resource: " +
+                    "bundleName=" + bundleName + ", locale=" + loc +
+                    ", key=" + key);
             // Text not found in requested or default bundles.
             throw new MissingResourceException(bundleName, loc, key);
         }

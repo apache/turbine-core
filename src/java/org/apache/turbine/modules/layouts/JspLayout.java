@@ -55,12 +55,11 @@ package org.apache.turbine.modules.layouts;
  */
 
 import org.apache.turbine.modules.Layout;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.jsp.JspService;
 import org.apache.turbine.services.jsp.util.JspNavigation;
 import org.apache.turbine.services.jsp.util.JspScreenPlaceholder;
-
+import org.apache.turbine.util.RunData;
 
 /**
  * This Layout module allows JSP templates to be used as layouts. Since
@@ -91,7 +90,7 @@ public class JspLayout extends Layout
         String templateName = data.getTemplateInfo().getLayoutTemplate();
         // Finally, generate the layout template and output to the response
         JspService jsp = (JspService) TurbineServices.getInstance()
-            .getService(JspService.SERVICE_NAME);
+                .getService(JspService.SERVICE_NAME);
         jsp.handleRequest(data, "/layouts" + templateName, true);
     }
 }

@@ -60,12 +60,11 @@ import java.io.ObjectOutputStream;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
+
+import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.resources.TurbineResources;
-
-import org.apache.commons.configuration.Configuration;
-
 
 /**
  * This Service functions as a Global Cache.  A global cache is a good
@@ -98,9 +97,9 @@ import org.apache.commons.configuration.Configuration;
  * @version $Id$
  */
 public class TurbineGlobalCacheService
-    extends TurbineBaseService
-    implements GlobalCacheService,
-               Runnable
+        extends TurbineBaseService
+        implements GlobalCacheService,
+        Runnable
 {
     /**
      * Initial size of hash table
@@ -125,7 +124,7 @@ public class TurbineGlobalCacheService
      * Default = 5 seconds
      */
     public static final long DEFAULT_CACHE_CHECK_FREQUENCY =
-      TurbineResources.getLong("cache.check.frequency", 5000 ); // 5 seconds
+            TurbineResources.getLong("cache.check.frequency", 5000); // 5 seconds
 
     /** The cache. **/
     private Hashtable cache = null;
@@ -144,27 +143,34 @@ public class TurbineGlobalCacheService
      * Called the first time the Service is used.
      */
     public void init()
-    throws InitializationException {
+            throws InitializationException
+    {
         int cacheInitialSize = DEFAULT_INITIAL_CACHE_SIZE;
         Configuration conf = getConfiguration();
-        if (conf != null) {
-            try {
+        if (conf != null)
+        {
+            try
+            {
                 cacheInitialSize = conf.getInt(INITIAL_CACHE_SIZE, DEFAULT_INITIAL_CACHE_SIZE);
-                if (cacheInitialSize <= 0) {
+                if (cacheInitialSize <= 0)
+                {
                     throw new IllegalArgumentException(INITIAL_CACHE_SIZE + " must be >0");
                 }
                 cacheCheckFrequency = conf.getLong(CACHE_CHECK_FREQUENCY, DEFAULT_CACHE_CHECK_FREQUENCY);
-                if (cacheCheckFrequency <= 0) {
+                if (cacheCheckFrequency <= 0)
+                {
                     throw new IllegalArgumentException(CACHE_CHECK_FREQUENCY + " must be >0");
                 }
             }
-            catch (Exception x) {
+            catch (Exception x)
+            {
                 throw new InitializationException(
-                "Failed to initialize TurbineGlobalCacheService",x);
+                        "Failed to initialize TurbineGlobalCacheService", x);
             }
         }
 
-        try {
+        try
+        {
             cache = new Hashtable(cacheInitialSize);
 
             // Start housekeeping thread.
@@ -177,9 +183,10 @@ public class TurbineGlobalCacheService
             housekeeping.start();
             setInit(true);
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             throw new InitializationException(
-            "TurbineGlobalCacheService failed to initialize", e);
+                    "TurbineGlobalCacheService failed to initialize", e);
         }
     }
 
@@ -193,7 +200,7 @@ public class TurbineGlobalCacheService
      * not in the cache or it has expired.
      */
     public CachedObject getObject(String id)
-        throws ObjectExpiredException
+            throws ObjectExpiredException
     {
         CachedObject obj = null;
         boolean stale = false;
@@ -206,18 +213,22 @@ public class TurbineGlobalCacheService
             throw new ObjectExpiredException();
         }
 
-        if (obj.isStale()) {
-            if (obj instanceof RefreshableCachedObject) {
+        if (obj.isStale())
+        {
+            if (obj instanceof RefreshableCachedObject)
+            {
                 RefreshableCachedObject rco = (RefreshableCachedObject) obj;
                 if (rco.isUntouched())
-                    // Do not refresh an object that has exceeded TimeToLive
+                // Do not refresh an object that has exceeded TimeToLive
                     throw new ObjectExpiredException();
                 // Refresh Object
                 rco.refresh();
                 if (rco.isStale())
-                    // Object is Expired.
+                // Object is Expired.
                     throw new ObjectExpiredException();
-            } else {
+            }
+            else
+            {
                 // Expired.
                 throw new ObjectExpiredException();
             }
@@ -244,11 +255,11 @@ public class TurbineGlobalCacheService
     {
         // If the cache already contains the key, remove it and add
         // the fresh one.
-        if ( cache.containsKey(id) )
+        if (cache.containsKey(id))
         {
             cache.remove(id);
         }
-        cache.put(id,o);
+        cache.put(id, o);
     }
 
     /**
@@ -267,7 +278,7 @@ public class TurbineGlobalCacheService
      */
     public void run()
     {
-        while(true)
+        while (true)
         {
             // Sleep for amount of time set in cacheCheckFrequency -
             // default = 5 seconds.
@@ -275,7 +286,7 @@ public class TurbineGlobalCacheService
             {
                 Thread.sleep(cacheCheckFrequency);
             }
-            catch(InterruptedException exc)
+            catch (InterruptedException exc)
             {
             }
 
@@ -293,32 +304,32 @@ public class TurbineGlobalCacheService
         // change the Hashtable while enumerating over it.
         synchronized (this)
         {
-            for ( Enumeration e = cache.keys(); e.hasMoreElements(); )
+            for (Enumeration e = cache.keys(); e.hasMoreElements();)
             {
                 String key = (String) e.nextElement();
                 CachedObject co = (CachedObject) cache.get(key);
                 if (co instanceof RefreshableCachedObject)
                 {
-                    RefreshableCachedObject rco = (RefreshableCachedObject)co;
+                    RefreshableCachedObject rco = (RefreshableCachedObject) co;
                     if (rco.isUntouched())
                         cache.remove(key);
                     else if (rco.isStale())
-                        // Do refreshing outside of sync block so as not
-                        // to prolong holding the lock on this object
+                    // Do refreshing outside of sync block so as not
+                    // to prolong holding the lock on this object
                         refreshThese.addElement(key);
                 }
-                else if ( co.isStale() )
+                else if (co.isStale())
                 {
                     cache.remove(key);
                 }
             }
         }
 
-        for ( Enumeration e = refreshThese.elements(); e.hasMoreElements(); )
+        for (Enumeration e = refreshThese.elements(); e.hasMoreElements();)
         {
-            String key = (String)e.nextElement();
-            CachedObject co = (CachedObject)cache.get(key);
-            RefreshableCachedObject rco = (RefreshableCachedObject)co;
+            String key = (String) e.nextElement();
+            CachedObject co = (CachedObject) cache.get(key);
+            RefreshableCachedObject rco = (RefreshableCachedObject) co;
             rco.refresh();
         }
     }
@@ -339,7 +350,7 @@ public class TurbineGlobalCacheService
      * @return int representing current cache size in number of bytes
      */
     public int getCacheSize()
-        throws IOException
+            throws IOException
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(baos);
@@ -357,14 +368,17 @@ public class TurbineGlobalCacheService
     /**
      * Flush the cache of all objects.
      */
-    public void flushCache() {
+    public void flushCache()
+    {
 
-        synchronized (this) {
-            for ( Enumeration e = cache.keys(); e.hasMoreElements(); ) {
+        synchronized (this)
+        {
+            for (Enumeration e = cache.keys(); e.hasMoreElements();)
+            {
                 String key = (String) e.nextElement();
                 CachedObject co = (CachedObject) cache.get(key);
                 cache.remove(key);
             }
         }
     }
- }
+}

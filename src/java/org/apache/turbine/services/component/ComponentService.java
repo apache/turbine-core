@@ -63,8 +63,8 @@ import org.apache.turbine.services.Service;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public interface ComponentService 
-    extends Service
+public interface ComponentService
+        extends Service
 {
     /** The publically visible name of the service */
     String SERVICE_NAME = "ComponentService";

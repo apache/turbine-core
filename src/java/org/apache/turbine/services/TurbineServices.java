@@ -67,8 +67,8 @@ package org.apache.turbine.services;
  * @version $Id$
  */
 public class TurbineServices
-    extends BaseServiceBroker
-    implements ServiceManager
+        extends BaseServiceBroker
+        implements ServiceManager
 {
     /** The single instance of this class. */
     private static ServiceManager instance = new TurbineServices();

@@ -25,13 +25,13 @@ package org.apache.turbine.services.naming;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,6 +55,7 @@ package org.apache.turbine.services.naming;
  */
 
 import javax.naming.Context;
+
 import org.apache.turbine.services.Service;
 
 /**
@@ -64,7 +65,7 @@ import org.apache.turbine.services.Service;
  * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
  * @version $Id$
  */
-public interface NamingService extends Service 
+public interface NamingService extends Service
 {
     static final String SERVICE_NAME = "NamingService";
 

@@ -113,7 +113,7 @@ public class DefaultBottomNavigation extends Navigation
                         new Font().setColor(HtmlColor.green).setSize(2).addElement(txt)))
                 .addElement(form);
 
-        if(DEBUG && data.getUser() != null)
+        if (DEBUG && data.getUser() != null)
         {
             TD perm = new TD().setVAlign(AlignType.TOP);
             TD temp = new TD().setVAlign(AlignType.TOP);
@@ -124,14 +124,14 @@ public class DefaultBottomNavigation extends Navigation
 
             perm.addElement("Perm values:").addElement(new BR());
             temp.addElement("Temp values:").addElement(new BR());
-            while(ePerm.hasMoreElements())
+            while (ePerm.hasMoreElements())
             {
                 String key = (String) ePerm.nextElement();
                 String value = data.getUser().getPerm(key).toString();
                 perm.addElement(key + "=" + value)
                         .addElement(new BR());
             }
-            while(eTemp.hasMoreElements())
+            while (eTemp.hasMoreElements())
             {
                 String key = (String) eTemp.nextElement();
                 String value = data.getUser().getTemp(key).toString();
@@ -143,23 +143,23 @@ public class DefaultBottomNavigation extends Navigation
                     .addElement(new TR()
                     .addElement(perm).addElement(temp)));
         }
-        if(DEBUG)
+        if (DEBUG)
         {
             // If there are GET/POST/PATH_INFO variables put them into
             // a <PRE></PRE> tag so that they can be displayed on the
             // page. This is of course only for example purposes.
             PRE pre = new PRE();
             Enumeration keys = data.getParameters().keys();
-            while(keys.hasMoreElements())
+            while (keys.hasMoreElements())
             {
                 String key = (String) keys.nextElement();
                 String[] values = data.getParameters().getStrings(key);
-                if(values.length == 1)
+                if (values.length == 1)
                     pre.addElement(key + " = " + values[0] + "\n");
                 else
                 {
                     pre.addElement(key + " = ");
-                    for(int i = 0; i < values.length; i++)
+                    for (int i = 0; i < values.length; i++)
                         pre.addElement(values[i] + " ");
                     pre.addElement("\n");
                 }
@@ -172,7 +172,7 @@ public class DefaultBottomNavigation extends Navigation
             Hashtable varDebug = data.getVarDebug();
             keys = varDebug.keys();
             boolean hasValues2 = false;
-            while(keys.hasMoreElements())
+            while (keys.hasMoreElements())
             {
                 String key = (String) keys.nextElement();
                 String value = varDebug.get(key).toString();
@@ -182,18 +182,18 @@ public class DefaultBottomNavigation extends Navigation
                 table2.addElement(tr);
                 hasValues2 = true;
             }
-            if(hasValues2)
+            if (hasValues2)
             {
                 body.addElement(new H4().addElement("Debugging Data:"));
                 body.addElement(table2);
             }
         }
 
-        if(DEBUG && data.getACL() != null)
+        if (DEBUG && data.getACL() != null)
         {
             // Print out user's permissions.
             PRE pre = new PRE();
-            for(Iterator rs = data.getACL().getRoles().elements(); rs.hasNext();)
+            for (Iterator rs = data.getACL().getRoles().elements(); rs.hasNext();)
             {
                 String roleName = ((Role) rs.next()).getName();
                 pre.addElement(roleName + "\n");
@@ -205,7 +205,7 @@ public class DefaultBottomNavigation extends Navigation
                     .addElement(pre);
 
             pre = new PRE();
-            for(Iterator ps = data.getACL().getPermissions().elements(); ps.hasNext();)
+            for (Iterator ps = data.getACL().getPermissions().elements(); ps.hasNext();)
             {
                 String permissionName = ((Permission) ps.next()).getName();
                 pre.addElement(permissionName + "\n");

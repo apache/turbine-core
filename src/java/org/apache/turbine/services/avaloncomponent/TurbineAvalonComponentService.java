@@ -109,7 +109,7 @@ public class TurbineAvalonComponentService
 
             setInit(true);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             log.error("Component Service failed: ", e);
             throw new InitializationException("ComponentService failed: ", e);

@@ -55,6 +55,7 @@ package org.apache.turbine.services.db;
  */
 
 import java.sql.Connection;
+
 import org.apache.torque.Torque;
 import org.apache.torque.adapter.DB;
 import org.apache.torque.map.DatabaseMap;

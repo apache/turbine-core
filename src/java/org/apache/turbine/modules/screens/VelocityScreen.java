@@ -54,18 +54,13 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
-
 import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.services.template.TurbineTemplate;
-
 import org.apache.turbine.services.velocity.TurbineVelocity;
-
 import org.apache.turbine.util.RunData;
-import org.apache.commons.lang.exception.ExceptionUtils;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -93,8 +88,8 @@ public class VelocityScreen extends TemplateScreen
      * @exception Exception, a generic exception.
      */
     protected void doBuildTemplate(RunData data,
-                                    Context context)
-        throws Exception
+                                   Context context)
+            throws Exception
     {
     }
 
@@ -107,7 +102,7 @@ public class VelocityScreen extends TemplateScreen
      * @exception Exception, a generic exception.
      */
     protected void doBuildTemplate(RunData data)
-        throws Exception
+            throws Exception
     {
         doBuildTemplate(data, TurbineVelocity.getContext(data));
     }
@@ -128,11 +123,11 @@ public class VelocityScreen extends TemplateScreen
         // This will already be properly set and will not be null
         // because of TemplateSessionValidator.
         String templateName = TurbineTemplate.getScreenTemplateName(
-            data.getTemplateInfo().getScreenTemplate());
+                data.getTemplateInfo().getScreenTemplate());
 
         // Template service adds the leading slash, but make it sure.
         if ((templateName.length() > 0) &&
-            (templateName.charAt(0) != '/'))
+                (templateName.charAt(0) != '/'))
         {
             templateName = '/' + templateName;
         }
@@ -144,13 +139,13 @@ public class VelocityScreen extends TemplateScreen
             if (getLayout(data) == null)
             {
                 TurbineVelocity.handleRequest(context,
-                    "screens" + templateName,
-                    data.getResponse().getOutputStream());
+                        "screens" + templateName,
+                        data.getResponse().getOutputStream());
             }
             else
             {
                 screenData = TurbineVelocity
-                    .handleRequest(context,"screens" + templateName);
+                        .handleRequest(context, "screens" + templateName);
             }
         }
         catch (Exception e)
@@ -158,17 +153,17 @@ public class VelocityScreen extends TemplateScreen
             // If there is an error, build a $processingException and
             // attempt to call the error.vm template in the screens
             // directory.
-            context.put ("processingException", e.toString());
-            context.put ("stackTrace", ExceptionUtils.getStackTrace(e));
+            context.put("processingException", e.toString());
+            context.put("stackTrace", ExceptionUtils.getStackTrace(e));
             templateName = TurbineResources.getString(
-                "template.error", "/error.vm");
+                    "template.error", "/error.vm");
             if ((templateName.length() > 0) &&
-                (templateName.charAt(0) != '/'))
+                    (templateName.charAt(0) != '/'))
             {
                 templateName = '/' + templateName;
             }
             screenData = TurbineVelocity.handleRequest(
-                context, "screens" + templateName);
+                    context, "screens" + templateName);
         }
 
         // package the response in an ECS element
@@ -180,6 +175,7 @@ public class VelocityScreen extends TemplateScreen
         }
         return output;
     }
+
     /**
      * Return the Context needed by Velocity.
      *

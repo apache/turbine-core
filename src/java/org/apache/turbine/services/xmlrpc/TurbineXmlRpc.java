@@ -54,11 +54,10 @@ package org.apache.turbine.services.xmlrpc;
  * <http://www.apache.org/>.
  */
 
-import org.apache.xmlrpc.XmlRpcException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Vector;
+
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.TurbineException;
 
@@ -78,10 +77,9 @@ public abstract class TurbineXmlRpc
      */
     public static XmlRpcService getService()
     {
-        return (XmlRpcService)TurbineServices.getInstance()
-            .getService(XmlRpcService.SERVICE_NAME);
+        return (XmlRpcService) TurbineServices.getInstance()
+                .getService(XmlRpcService.SERVICE_NAME);
     }
-
 
     /**
      * Execute a remote procedure call.
@@ -93,7 +91,7 @@ public abstract class TurbineXmlRpc
      * @exception TurbineException
      */
     public static Object executeRpc(URL url, String methodName, Vector params)
-        throws TurbineException
+            throws TurbineException
     {
         return getService().executeRpc(url, methodName, params);
     }
@@ -110,11 +108,11 @@ public abstract class TurbineXmlRpc
      * @exception TurbineException
      */
     public static Object executeAuthenticatedRpc(URL url, String username,
-                            String password,String methodName, Vector params)
-        throws TurbineException
+                                                 String password, String methodName, Vector params)
+            throws TurbineException
     {
         return getService().executeAuthenticatedRpc(url, username, password,
-                                                     methodName, params);
+                methodName, params);
     }
 
     /**
@@ -198,13 +196,13 @@ public abstract class TurbineXmlRpc
                             String sourceFileName,
                             String destinationLocationProperty,
                             String destinationFileName)
-                            throws TurbineException
+            throws TurbineException
     {
         getService().send(serverURL,
-                          sourceLocationProperty,
-                          sourceFileName,
-                          destinationLocationProperty,
-                          destinationFileName);
+                sourceLocationProperty,
+                sourceFileName,
+                destinationLocationProperty,
+                destinationFileName);
     }
 
     /**
@@ -226,15 +224,15 @@ public abstract class TurbineXmlRpc
                             String sourceFileName,
                             String destinationLocationProperty,
                             String destinationFileName)
-                            throws TurbineException
+            throws TurbineException
     {
         getService().send(serverURL,
-                          username,
-                          password,
-                          sourceLocationProperty,
-                          sourceFileName,
-                          destinationLocationProperty,
-                          destinationFileName);
+                username,
+                password,
+                sourceLocationProperty,
+                sourceFileName,
+                destinationLocationProperty,
+                destinationFileName);
     }
 
     /**
@@ -251,13 +249,13 @@ public abstract class TurbineXmlRpc
                            String sourceFileName,
                            String destinationLocationProperty,
                            String destinationFileName)
-                           throws TurbineException
+            throws TurbineException
     {
         getService().get(serverURL,
-                         sourceLocationProperty,
-                         sourceFileName,
-                         destinationLocationProperty,
-                         destinationFileName);
+                sourceLocationProperty,
+                sourceFileName,
+                destinationLocationProperty,
+                destinationFileName);
     }
 
     /**
@@ -279,15 +277,15 @@ public abstract class TurbineXmlRpc
                            String sourceFileName,
                            String destinationLocationProperty,
                            String destinationFileName)
-                           throws TurbineException
+            throws TurbineException
     {
         getService().get(serverURL,
-                         username,
-                         password,
-                         sourceLocationProperty,
-                         sourceFileName,
-                         destinationLocationProperty,
-                         destinationFileName);
+                username,
+                password,
+                sourceLocationProperty,
+                sourceFileName,
+                destinationLocationProperty,
+                destinationFileName);
     }
 
     /**
@@ -301,11 +299,11 @@ public abstract class TurbineXmlRpc
     public static void remove(String serverURL,
                               String sourceLocationProperty,
                               String sourceFileName)
-                              throws TurbineException
+            throws TurbineException
     {
         getService().remove(serverURL,
-                            sourceLocationProperty,
-                            sourceFileName);
+                sourceLocationProperty,
+                sourceFileName);
     }
 
     /**
@@ -323,13 +321,13 @@ public abstract class TurbineXmlRpc
                               String password,
                               String sourceLocationProperty,
                               String sourceFileName)
-                              throws TurbineException
+            throws TurbineException
     {
         getService().remove(serverURL,
-                            username,
-                            password,
-                            sourceLocationProperty,
-                            sourceFileName);
+                username,
+                password,
+                sourceLocationProperty,
+                sourceFileName);
     }
 
     /**

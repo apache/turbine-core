@@ -59,6 +59,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
@@ -80,7 +81,7 @@ import org.apache.turbine.util.ServletUtils;
  * @version $Id$
  */
 public class TurbineServletService
-    extends TurbineBaseService implements ServletService
+        extends TurbineBaseService implements ServletService
 {
     /** Logging */
     private static Log log = LogFactory.getLog(TurbineServletService.class);
@@ -104,8 +105,8 @@ public class TurbineServletService
         }
         catch (Exception e)
         {
-            log.error ("Cannot initialize TurbineServletService.");
-            log.error (e);
+            log.error("Cannot initialize TurbineServletService.");
+            log.error(e);
         }
         setInit(true);
     }

@@ -25,13 +25,13 @@ package org.apache.turbine.services.servlet;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -58,11 +58,12 @@ import java.io.InputStream;
 import java.net.URL;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+
 import org.apache.turbine.services.TurbineServices;
 
 /**
  * Simple static accessor to the EngineContextService
- * 
+ *
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
  * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
  * @author <a href="mailto:ekkerbj@netscape.net">Jeff Brekke</a>
@@ -72,15 +73,15 @@ import org.apache.turbine.services.TurbineServices;
 public class TurbineServlet
 {
     /**
-     * Utility method for accessing the service 
+     * Utility method for accessing the service
      * implementation
      *
      * @return a ServletService implementation instance
      */
     protected static ServletService getService()
     {
-        return (ServletService)TurbineServices
-            .getInstance().getService(ServletService.SERVICE_NAME);
+        return (ServletService) TurbineServices
+                .getInstance().getService(ServletService.SERVICE_NAME);
     }
 
     /**
@@ -90,11 +91,11 @@ public class TurbineServlet
      * @param uri the URI to resolve as an URL
      * @return an URL object or null is the uri is malformed or can't be resolved
      */
-    public static URL getResource( String uri )
+    public static URL getResource(String uri)
     {
         return getService().getResource(uri);
     }
-    
+
     /**
      * Same as getResource except that it returns an InputStream
      *
@@ -102,20 +103,20 @@ public class TurbineServlet
      * @param uri the URI to resolve
      * @return an InputStream on the URI content or null
      */
-    public static InputStream getResourceAsStream( String uri ) 
+    public static InputStream getResourceAsStream(String uri)
     {
         return getService().getResourceAsStream(uri);
     }
-    
+
     /**
-     * Returns the complete filesystem path for a 
+     * Returns the complete filesystem path for a
      * given URI
      *
      * @see javax.servlet.ServletContext#getRealPath
      * @param uri the URI to resolve
      * @return the full system path of this URI
      */
-    public static String getRealPath( String path )
+    public static String getRealPath(String path)
     {
         return getService().getRealPath(path);
     }

@@ -58,15 +58,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
-
 import javax.mail.internet.MimeUtility;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
@@ -148,7 +146,7 @@ public class FileHandler
          * with the name fileName.
          */
         return writeFileContents(fileContents, targetLocationProperty,
-                                 fileName);
+                fileName);
     }
 
     /**
@@ -199,7 +197,7 @@ public class FileHandler
         File tmpF = new File(".");
 
         String file = TurbineServlet.getRealPath(
-            TurbineResources.getString(targetLocationProperty) +
+                TurbineResources.getString(targetLocationProperty) +
                 tmpF.separator + fileName);
 
         StringWriter sw = null;
@@ -214,15 +212,15 @@ public class FileHandler
             sw = new StringWriter();
 
             reader = new BufferedReader(
-                new InputStreamReader(
-                    new FileInputStream(file)));
+                    new InputStreamReader(
+                            new FileInputStream(file)));
 
             char buf[] = new char[1024];
             int len = 0;
 
             while ((len = reader.read(buf, 0, 1024)) != -1)
             {
-                sw.write( buf, 0, len );
+                sw.write(buf, 0, len);
             }
 
             return MimeUtility.encodeText(sw.toString(), "UTF-8", "B");
@@ -230,7 +228,7 @@ public class FileHandler
         catch (IOException ioe)
         {
             log.error("[FileHandler] Unable to encode the contents " +
-                "of the request file.", ioe);
+                    "of the request file.", ioe);
 
             return null;
         }
@@ -263,9 +261,9 @@ public class FileHandler
          * service to map the target location in the webapp space.
          */
         File targetLocation = new File(
-            TurbineServlet.getRealPath(
-                TurbineResources.getString(
-                    targetLocationProperty)));
+                TurbineServlet.getRealPath(
+                        TurbineResources.getString(
+                                targetLocationProperty)));
 
         if (targetLocation.exists() == false)
         {
@@ -277,15 +275,15 @@ public class FileHandler
             if (targetLocation.mkdirs() == false)
             {
                 log.error("[FileHandler] Could not create target location: " +
-                    targetLocation + ". Cannot transfer file from client.");
+                        targetLocation + ". Cannot transfer file from client.");
 
                 return false;
             }
             else
             {
                 log.info("[FileHandler] Creating target location:" +
-                 targetLocation +
-                 " in order to complete file transfer from client.");
+                        targetLocation +
+                        " in order to complete file transfer from client.");
             }
         }
 
@@ -297,7 +295,7 @@ public class FileHandler
              * to the target location.
              */
             fileWriter = new FileWriter(
-                targetLocation + "/" + fileName);
+                    targetLocation + "/" + fileName);
 
             /*
              * It is assumed that the file has been encoded
@@ -311,7 +309,7 @@ public class FileHandler
         catch (IOException ioe)
         {
             log.error("[FileHandler] Could not write the decoded file " +
-                "contents to disk for the following reason.", ioe);
+                    "contents to disk for the following reason.", ioe);
 
             return false;
         }
@@ -346,9 +344,9 @@ public class FileHandler
          * service to map the target location in the webapp space.
          */
         File sourceFile = new File(
-           TurbineServlet.getRealPath(
-               TurbineResources.getString(sourceLocationProperty) +
-                    "/" + sourceFileName));
+                TurbineServlet.getRealPath(
+                        TurbineResources.getString(sourceLocationProperty) +
+                "/" + sourceFileName));
 
         if (sourceFile.exists())
         {

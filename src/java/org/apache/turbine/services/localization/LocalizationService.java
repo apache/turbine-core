@@ -25,13 +25,13 @@ package org.apache.turbine.services.localization;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -69,7 +69,7 @@ import org.apache.turbine.services.Service;
  * @version $Id$
  */
 public interface LocalizationService
-    extends Service
+        extends Service
 {
     /**
      * The name of this service.
@@ -121,7 +121,7 @@ public interface LocalizationService
      * <code>Accept-Language</code> of.
      * @return A localized ResourceBundle.
      */
-    ResourceBundle getBundle (HttpServletRequest req);
+    ResourceBundle getBundle(HttpServletRequest req);
 
     /**
      * Convenience method to get a ResourceBundle based on name and
@@ -172,7 +172,6 @@ public interface LocalizationService
      * @param defaultBundle Name of default bundle.
      */
     void setBundle(String defaultBundle);
-
 
     /**
      * Tries very hard to return a value, looking first in the

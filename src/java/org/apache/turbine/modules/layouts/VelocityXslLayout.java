@@ -55,6 +55,7 @@ package org.apache.turbine.modules.layouts;
  */
 
 import java.io.StringReader;
+
 import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.ScreenLoader;
@@ -99,7 +100,7 @@ public class VelocityXslLayout extends Layout
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.
         ConcreteElement results = ScreenLoader.getInstance()
-            .eval(data, data.getScreen());
+                .eval(data, data.getScreen());
 
         if (results != null)
         {
@@ -119,11 +120,11 @@ public class VelocityXslLayout extends Layout
 
         // Now, generate the layout template.
         String temp = TurbineVelocity.handleRequest(context,
-            "layouts" + templateName);
+                "layouts" + templateName);
 
         // Finally we do a transformation and send the result
         // back to the browser
-        TurbineXSLT.transform (data.getTemplateInfo().getScreenTemplate(),
-            new StringReader(temp), data.getOut());
+        TurbineXSLT.transform(data.getTemplateInfo().getScreenTemplate(),
+                new StringReader(temp), data.getOut());
     }
 }

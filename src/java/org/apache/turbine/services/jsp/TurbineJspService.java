@@ -59,6 +59,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.jsp.util.JspLink;
@@ -67,7 +68,6 @@ import org.apache.turbine.services.template.BaseTemplateEngineService;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
-
 
 /**
  * This is a Service that can process JSP templates from within a Turbine
@@ -78,7 +78,7 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  */
 public class TurbineJspService extends BaseTemplateEngineService
-    implements JspService
+        implements JspService
 {
     /** The base path[s] prepended to filenames given in arguments */
     private String[] templatePaths;
@@ -98,7 +98,7 @@ public class TurbineJspService extends BaseTemplateEngineService
      *         stage
      */
     public void init()
-        throws InitializationException
+            throws InitializationException
     {
         try
         {
@@ -109,7 +109,7 @@ public class TurbineJspService extends BaseTemplateEngineService
         catch (Exception e)
         {
             throw new InitializationException(
-                "TurbineJspService failed to initialize", e);
+                    "TurbineJspService failed to initialize", e);
         }
     }
 
@@ -157,7 +157,7 @@ public class TurbineJspService extends BaseTemplateEngineService
      *         wrapped into a TurbineException and rethrown.
      */
     public void handleRequest(RunData data, String filename)
-        throws TurbineException
+            throws TurbineException
     {
         handleRequest(data, filename, false);
     }
@@ -172,7 +172,7 @@ public class TurbineJspService extends BaseTemplateEngineService
      *         wrapped into a TurbineException and rethrown.
      */
     public void handleRequest(RunData data, String filename, boolean isForward)
-        throws TurbineException
+            throws TurbineException
     {
         /** template name with relative path */
         String relativeTemplateName = getRelativeTemplateName(filename);
@@ -180,12 +180,12 @@ public class TurbineJspService extends BaseTemplateEngineService
         if (relativeTemplateName == null)
         {
             throw new TurbineException(
-            "Template " + filename + " not found in template paths");
+                    "Template " + filename + " not found in template paths");
         }
 
         // get the RequestDispatcher for the JSP
         RequestDispatcher dispatcher = data.getServletContext()
-        .getRequestDispatcher(relativeTemplateName);
+                .getRequestDispatcher(relativeTemplateName);
 
         try
         {
@@ -218,7 +218,7 @@ public class TurbineJspService extends BaseTemplateEngineService
             // pass the exception to the caller according to the general
             // contract for tamplating services in Turbine
             throw new TurbineException(
-                "Error encountered processing a template:" + filename, e);
+                    "Error encountered processing a template:" + filename, e);
         }
     }
 
@@ -275,6 +275,7 @@ public class TurbineJspService extends BaseTemplateEngineService
     {
         return TurbineTemplate.templateExists(template, templatePaths);
     }
+
     /**
      * Searchs for a template in the default.template path[s] and
      * returns the template name with a relative path which is

@@ -58,9 +58,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.om.Retrievable;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.intake.IntakeException;
@@ -83,6 +83,7 @@ import org.apache.turbine.util.ValueParser;
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:dlr@finemaltcoding.com>Daniel Rall</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public abstract class Field
@@ -125,7 +126,10 @@ public abstract class Field
     /** Is this field always required?  This is only set through the XML file */
     protected boolean alwaysRequired;
 
-    /** Value of the field if an error occurs while getting the value from the mapped object */
+    /**
+     * Value of the field if an error occurs while getting
+     * the value from the mapped object
+     */
     protected Object onError;
 
     /** Default value of the field */
@@ -196,61 +200,72 @@ public abstract class Field
         {
             setDefaultValue(field.getDefaultValue());
         }
-        catch(RuntimeException e)
+        catch (RuntimeException e)
         {
             log.error("Could not set default value of " +
-                    this.getDisplayName() + " to " + field.getDefaultValue(), e);
+                    this.getDisplayName() + " to "
+                    + field.getDefaultValue(), e);
         }
         String validatorClassName = field.getValidator();
-        if(validatorClassName == null && field.getRules().size() > 0)
+        if (validatorClassName == null && field.getRules().size() > 0)
         {
             validatorClassName = getDefaultValidator();
         }
-        else if(validatorClassName != null && validatorClassName.indexOf('.') == -1)
+        else if (validatorClassName != null
+                && validatorClassName.indexOf('.') == -1)
         {
             validatorClassName = "org.apache.turbine.services.intake.validator."
                     + validatorClassName;
         }
 
-        if(validatorClassName != null)
+        if (validatorClassName != null)
         {
             try
             {
-                validator = (Validator) Class.forName(validatorClassName).newInstance();
+                validator = (Validator)
+                        Class.forName(validatorClassName).newInstance();
             }
-            catch(InstantiationException e)
+            catch (InstantiationException e)
             {
-                throw new IntakeException("Could not create new instance of Validator(" + validatorClassName + ")", e);
+                throw new IntakeException(
+                        "Could not create new instance of Validator("
+                        + validatorClassName + ")", e);
             }
-            catch(IllegalAccessException e)
+            catch (IllegalAccessException e)
             {
-                throw new IntakeException("Could not create new instance of Validator(" + validatorClassName + ")", e);
+                throw new IntakeException(
+                        "Could not create new instance of Validator("
+                        + validatorClassName + ")", e);
             }
-            catch(ClassNotFoundException e)
+            catch (ClassNotFoundException e)
             {
-                throw new IntakeException("Could not load Validator class(" + validatorClassName + ")", e);
+                throw new IntakeException(
+                        "Could not load Validator class("
+                        + validatorClassName + ")", e);
             }
             // this should always be true for now
             // (until bean property initialization is implemented)
-            if(validator instanceof InitableByConstraintMap)
+            if (validator instanceof InitableByConstraintMap)
             {
                 ((InitableByConstraintMap) validator).init(field.getRuleMap());
             }
             else
             {
-                throw new SystemError("All Validation objects must be subclasses of InitableByConstraintMap");
+                throw new SystemError(
+                        "All Validation objects must be subclasses of "
+                        + "InitableByConstraintMap");
             }
         }
 
         // field may have been declared as always required in the xml spec
         Rule reqRule = (Rule) field.getRuleMap().get("required");
-        if(reqRule != null)
+        if (reqRule != null)
         {
             alwaysRequired = new Boolean(reqRule.getValue()).booleanValue();
         }
 
         Rule maxLengthRule = (Rule) field.getRuleMap().get("maxLength");
-        if(maxLengthRule != null)
+        if (maxLengthRule != null)
         {
             maxSize = maxLengthRule.getValue();
         }
@@ -260,27 +275,32 @@ public abstract class Field
         String propName = field.getMapToProperty();
         Method tmpGetter = null;
         Method tmpSetter = null;
-        if(mapToObject != null && mapToObject.length() != 0 && propName != null && propName.length() != 0)
+        if (mapToObject != null && mapToObject.length() != 0
+                && propName != null && propName.length() != 0)
         {
             try
             {
                 tmpGetter = TurbineIntake.getFieldGetter(mapToObject, propName);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                log.error("IntakeService could not map the getter for field " + this.getDisplayName() +
-                        " in group " + this.group.getIntakeGroupName() + " to the property " +
-                        propName + " in object " + mapToObject, e);
+                log.error("IntakeService could not map the getter for field "
+                        + this.getDisplayName() + " in group "
+                        + this.group.getIntakeGroupName()
+                        + " to the property " + propName + " in object "
+                        + mapToObject, e);
             }
             try
             {
                 tmpSetter = TurbineIntake.getFieldSetter(mapToObject, propName);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                log.error("IntakeService could not map the setter for field " + this.getDisplayName() +
-                        " in group " + this.group.getIntakeGroupName() + " to the property " +
-                        propName + " in object " + mapToObject, e);
+                log.error("IntakeService could not map the setter for field "
+                        + this.getDisplayName() + " in group "
+                        + this.group.getIntakeGroupName()
+                        + " to the property " + propName + " in object "
+                        + mapToObject, e);
             }
         }
         getter = tmpGetter;
@@ -309,10 +329,10 @@ public abstract class Field
 
         // If the parser is for a HTTP request, use the request it's
         // associated with to grok the locale.
-        if(TurbineServices.getInstance()
+        if (TurbineServices.getInstance()
                 .isRegistered(LocalizationService.SERVICE_NAME))
         {
-            if(pp instanceof ParameterParser)
+            if (pp instanceof ParameterParser)
             {
                 this.locale = Localization.getLocale
                         (((ParameterParser) pp).getRequest());
@@ -323,12 +343,12 @@ public abstract class Field
             }
         }
 
-        if(pp.containsKey(getKey()))
+        if (pp.containsKey(getKey()))
         {
             setFlag = true;
             validate();
         }
-        else if(pp.containsKey(getValueIfAbsent()) &&
+        else if (pp.containsKey(getValueIfAbsent()) &&
                 pp.getString(getValueIfAbsent()) != null)
         {
             pp.add(getKey(), pp.getString(getValueIfAbsent()));
@@ -351,7 +371,7 @@ public abstract class Field
      */
     public Field init(Retrievable obj)
     {
-        if(!initialized)
+        if (!initialized)
         {
             validFlag = true;
         }
@@ -420,7 +440,7 @@ public abstract class Field
     public void setRequired(boolean v, String message)
     {
         this.required = v;
-        if(v && !setFlag)
+        if (v && !setFlag)
         {
             validFlag = false;
             this.message = message;
@@ -557,29 +577,29 @@ public abstract class Field
      */
     protected boolean validate()
     {
-        if(isMultiValued)
+        if (isMultiValued)
         {
             stringValues = parser.getStrings(getKey());
 
-            if(validator != null)
+            if (validator != null)
             {
                 // set the test value as a String[] which might be replaced by
                 // the correct type if the input is valid.
                 setTestValue(parser.getStrings(getKey()));
-                for(int i = 0; i < stringValues.length; i++)
+                for (int i = 0; i < stringValues.length; i++)
                 {
                     try
                     {
                         validator.assertValidity(stringValues[i]);
                     }
-                    catch(ValidationException ve)
+                    catch (ValidationException ve)
                     {
                         setMessage(ve.getMessage());
                     }
                 }
             }
 
-            if(validFlag)
+            if (validFlag)
             {
                 doSetValue();
             }
@@ -588,7 +608,7 @@ public abstract class Field
         else
         {
             stringValue = parser.getString(getKey());
-            if(validator != null)
+            if (validator != null)
             {
                 // set the test value as a String which might be replaced by
                 // the correct type if the input is valid.
@@ -599,7 +619,7 @@ public abstract class Field
                     validator.assertValidity(stringValue);
                     doSetValue();
                 }
-                catch(ValidationException ve)
+                catch (ValidationException ve)
                 {
                     setMessage(ve.getMessage());
                 }
@@ -654,9 +674,9 @@ public abstract class Field
      */
     public Object getInitialValue() throws IntakeException
     {
-        if(validValue == null)
+        if (validValue == null)
         {
-            if(retrievable != null)
+            if (retrievable != null)
             {
                 getProperty(retrievable);
             }
@@ -705,18 +725,18 @@ public abstract class Field
         {
             val = getInitialValue();
         }
-        catch(IntakeException e)
+        catch (IntakeException e)
         {
             log.error("Could not get intial value of " + this.getDisplayName() +
                     " in group " + this.group.getIntakeGroupName(), e);
         }
 
-        if(getTestValue() != null)
+        if (getTestValue() != null)
         {
             val = getTestValue();
         }
 
-        if(val == null)
+        if (val == null)
         {
             val = onError;
         }
@@ -733,11 +753,11 @@ public abstract class Field
     {
         String res = EMPTY;
 
-        if(stringValue != null)
+        if (stringValue != null)
         {
             res = stringValue;
         }
-        else if(getValue() != null)
+        else if (getValue() != null)
         {
             res = getValue().toString();
         }
@@ -757,17 +777,20 @@ public abstract class Field
         {
             validValue = getter.invoke(obj, null);
         }
-        catch(IllegalAccessException e)
+        catch (IllegalAccessException e)
         {
-            throwSetGetException("getter", obj, this.getDisplayName(), this.group.getIntakeGroupName(), e);
+            throwSetGetException("getter", obj, this.getDisplayName(),
+                    this.group.getIntakeGroupName(), e);
         }
-        catch(IllegalArgumentException e)
+        catch (IllegalArgumentException e)
         {
-            throwSetGetException("getter", obj, this.getDisplayName(), this.group.getIntakeGroupName(), e);
+            throwSetGetException("getter", obj, this.getDisplayName(),
+                    this.group.getIntakeGroupName(), e);
         }
-        catch(InvocationTargetException e)
+        catch (InvocationTargetException e)
         {
-            throwSetGetException("getter", obj, this.getDisplayName(), this.group.getIntakeGroupName(), e);
+            throwSetGetException("getter", obj, this.getDisplayName(),
+                    this.group.getIntakeGroupName(), e);
         }
     }
 
@@ -788,36 +811,39 @@ public abstract class Field
      */
     public void setProperty(Object obj) throws IntakeException
     {
-        if(!isValid())
+        if (!isValid())
         {
             throw new IntakeException(
                     "Attempted to assign an invalid input.");
         }
-        if(isSet())
+        if (isSet())
         {
             valArray[0] = getTestValue();
             try
             {
                 setter.invoke(obj, valArray);
             }
-            catch(IllegalAccessException e)
+            catch (IllegalAccessException e)
             {
-                throwSetGetException("setter", obj, this.getDisplayName(), this.group.getIntakeGroupName(), e);
+                throwSetGetException("setter", obj, this.getDisplayName(),
+                        this.group.getIntakeGroupName(), e);
             }
-            catch(IllegalArgumentException e)
+            catch (IllegalArgumentException e)
             {
-                throwSetGetException("setter", obj, this.getDisplayName(), this.group.getIntakeGroupName(), e);
+                throwSetGetException("setter", obj, this.getDisplayName(),
+                        this.group.getIntakeGroupName(), e);
             }
-            catch(InvocationTargetException e)
+            catch (InvocationTargetException e)
             {
-                throwSetGetException("setter", obj, this.getDisplayName(), this.group.getIntakeGroupName(), e);
+                throwSetGetException("setter", obj, this.getDisplayName(),
+                        this.group.getIntakeGroupName(), e);
             }
         }
     }
 
     /**
-     * Used to throw an IntakeException when an error occurs execuing the get/set method
-     * of the mapped persistent object.
+     * Used to throw an IntakeException when an error occurs execuing the
+     * get/set method of the mapped persistent object.
      *
      * @param type Type of method. (setter/getter)
      * @param fieldName Name of the field
@@ -825,11 +851,14 @@ public abstract class Field
      * @param e Exception that was thrown
      * @throws IntakeException New exception with formatted message
      */
-    private void throwSetGetException(String type, Object obj, String fieldName, String groupName, Exception e)
+    private void throwSetGetException(String type, Object obj,
+                                      String fieldName, String groupName,
+                                      Exception e)
             throws IntakeException
     {
-        throw new IntakeException("Could not execute " + type + " method for " +
-                fieldName + " in group " + groupName + " on " + obj.getClass().getName(), e);
+        throw new IntakeException("Could not execute " + type
+                + " method for " + fieldName + " in group " + groupName
+                + " on " + obj.getClass().getName(), e);
 
     }
 

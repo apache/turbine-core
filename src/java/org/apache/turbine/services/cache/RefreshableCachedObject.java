@@ -25,13 +25,13 @@ package org.apache.turbine.services.cache;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -70,7 +70,7 @@ package org.apache.turbine.services.cache;
  * @version $Id$
  */
 public class RefreshableCachedObject
-    extends CachedObject
+        extends CachedObject
 {
 
     /**
@@ -83,7 +83,7 @@ public class RefreshableCachedObject
      * The last time the Object was accessed from the cache.
      */
     private long lastAccess;
-    
+
     /**
      * Constructor; sets the object to expire in the default time (30
      * minutes).
@@ -111,10 +111,16 @@ public class RefreshableCachedObject
     }
 
     /** sets the timeToLive member (in milliseconds) */
-    public synchronized void setTTL(long l) { timeToLive = l; }
+    public synchronized void setTTL(long l)
+    {
+        timeToLive = l;
+    }
 
     /** gets the timeToLive member (in milliseconds) */
-    public synchronized long getTTL() { return timeToLive; }
+    public synchronized long getTTL()
+    {
+        return timeToLive;
+    }
 
     /**
      * Sets the last acccess time to the current time.
@@ -125,7 +131,7 @@ public class RefreshableCachedObject
     }
 
     /**
-     * Returns true if the object hasn't been touched  
+     * Returns true if the object hasn't been touched
      * in the previous TTL period.
      */
     public synchronized boolean isUntouched()
@@ -144,7 +150,7 @@ public class RefreshableCachedObject
      */
     public void refresh()
     {
-        Refreshable r = (Refreshable)getContents();
+        Refreshable r = (Refreshable) getContents();
         synchronized (this)
         {
             created = System.currentTimeMillis();

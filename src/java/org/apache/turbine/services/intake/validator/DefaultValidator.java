@@ -55,6 +55,7 @@ package org.apache.turbine.services.intake.validator;
  */
 
 import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.oro.text.regex.MalformedPatternException;

@@ -82,8 +82,13 @@ public class IntakeTool
     /** Used for logging */
     private static Log log = LogFactory.getLog(IntakeTool.class);
 
+    /** Constant for default key */
     public static final String DEFAULT_KEY = "_0";
+
+    /** Groups from intake.xml */
     private HashMap groups;
+
+    /** ValueParser instance */
     private ValueParser pp;
 
     HashMap declaredGroups = new HashMap();
@@ -100,7 +105,7 @@ public class IntakeTool
     {
         String[] groupNames = TurbineIntake.getGroupNames();
         int groupCount = 0;
-        if(groupNames != null)
+        if (groupNames != null)
         {
             groupCount = groupNames.length;
         }
@@ -145,7 +150,8 @@ public class IntakeTool
 
                 if (foundGroups != null)
                 {
-                    for (Iterator iter = foundGroups.iterator();iter.hasNext();)
+                    for (Iterator iter = foundGroups.iterator();
+                         iter.hasNext();)
                     {
                         Group group = (Group) iter.next();
                         groups.put(group.getObjectKey(), group);
@@ -161,7 +167,7 @@ public class IntakeTool
 
     public void addGroupsToParameters(ValueParser vp)
     {
-        for(Iterator i = groups.values().iterator();i.hasNext();)
+        for (Iterator i = groups.values().iterator(); i.hasNext();)
         {
             Group group = (Group) i.next();
             if (!declaredGroups.containsKey(group.getIntakeGroupName()))
@@ -186,7 +192,7 @@ public class IntakeTool
     public String declareGroups()
     {
         allGroupsSB.setLength(0);
-        for(Iterator i = groups.values().iterator();i.hasNext();)
+        for (Iterator i = groups.values().iterator(); i.hasNext();)
         {
             declareGroup((Group) i.next(), allGroupsSB);
         }
@@ -224,7 +230,7 @@ public class IntakeTool
     public void newForm()
     {
         declaredGroups.clear();
-        for(Iterator i = groups.values().iterator();i.hasNext();)
+        for (Iterator i = groups.values().iterator(); i.hasNext();)
         {
             ((Group) i.next()).resetDeclared();
         }
@@ -372,7 +378,7 @@ public class IntakeTool
     public boolean isAllValid()
     {
         boolean allValid = true;
-        for(Iterator iter = groups.values().iterator();iter.hasNext();)
+        for (Iterator iter = groups.values().iterator(); iter.hasNext();)
         {
             Group group = (Group) iter.next();
             allValid &= group.isAllValid();
@@ -423,7 +429,8 @@ public class IntakeTool
         }
         catch (TurbineException se)
         {
-            log.error("Tried to release unknown group " + group.getIntakeGroupName());
+            log.error("Tried to release unknown group "
+                    + group.getIntakeGroupName());
         }
     }
 
@@ -478,7 +485,7 @@ public class IntakeTool
      */
     public void dispose()
     {
-        for(Iterator iter = groups.values().iterator();iter.hasNext();)
+        for (Iterator iter = groups.values().iterator(); iter.hasNext();)
         {
             Group g = (Group) iter.next();
 
@@ -488,7 +495,8 @@ public class IntakeTool
             }
             catch (TurbineException se)
             {
-                log.error("Tried to release unknown group " + g.getIntakeGroupName());
+                log.error("Tried to release unknown group "
+                        + g.getIntakeGroupName());
             }
         }
 

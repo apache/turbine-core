@@ -25,13 +25,13 @@ package org.apache.turbine.services.servlet;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,14 +54,15 @@ package org.apache.turbine.services.servlet;
  * <http://www.apache.org/>.
  */
 
-import java.net.URL;
 import java.io.InputStream;
+import java.net.URL;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+
 import org.apache.turbine.services.Service;
 
 /**
- * <p>This interface exposes methods of the runner context in order 
+ * <p>This interface exposes methods of the runner context in order
  * resolve or get access to external resources</p>
  *
  * @author <a href="mailto:ekkerbj@netscape.net">Jeff Brekke</a>
@@ -75,7 +76,7 @@ public interface ServletService extends Service
      * The service identifier
      */
     String SERVICE_NAME = "ServletService";
-    
+
     /**
      * Returns an URL object for a given URI string.
      *
@@ -83,25 +84,25 @@ public interface ServletService extends Service
      * @return an URL object or null is the uri is malformed or
      * can't be resolved
      */
-    URL getResource( String uri );
-    
+    URL getResource(String uri);
+
     /**
      * Same as getResource except that it returns an InputStream
      *
      * @param uri the URI to resolve
      * @return an InputStream on the URI content or null
      */
-    InputStream getResourceAsStream( String uri );
-    
+    InputStream getResourceAsStream(String uri);
+
     /**
-     * Returns the complete filesystem path for a 
+     * Returns the complete filesystem path for a
      * given URI
      *
      * @param uri the URI to resolve
      * @return the full system path of this URI
      */
-    String getRealPath( String uri );
-    
+    String getRealPath(String uri);
+
     /**
      * Returns the servlet config used by this
      * Turbine web application.
@@ -126,7 +127,7 @@ public interface ServletService extends Service
      * @return String
      */
     String getServerScheme();
-    
+
     /**
      * Returns the server name that this
      * Turbine application is running
@@ -135,7 +136,7 @@ public interface ServletService extends Service
      * @return String
      */
     String getServerName();
-    
+
     /**
      * Returns the port that this Turbine
      * application is running through
@@ -144,7 +145,7 @@ public interface ServletService extends Service
      * @return String
      */
     String getServerPort();
-    
+
     /**
      * Returns the context path for this
      * Turbine application.

@@ -54,11 +54,11 @@ package org.apache.turbine.services.jsp.util;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.modules.NavigationLoader;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -103,21 +103,23 @@ public class JspNavigation
         String module = null;
         try
         {
-            module = ((TemplateService)TurbineServices.getInstance().getService(
-                TemplateService.SERVICE_NAME)).getNavigationName(template);
+            module = ((TemplateService) TurbineServices.getInstance().getService(
+                    TemplateService.SERVICE_NAME)).getNavigationName(template);
             NavigationLoader.getInstance().exec(data, module);
         }
         catch (Exception e)
         {
             String message = "Error processing navigation template:" +
-                template + " using module: " + module;
+                    template + " using module: " + module;
             log.error(message, e);
             try
             {
                 data.getOut().print("Error processing navigation template: "
-                    + template + " using module: " + module);
+                        + template + " using module: " + module);
             }
-            catch(java.io.IOException ioe) {}
+            catch (java.io.IOException ioe)
+            {
+            }
         }
     }
 }

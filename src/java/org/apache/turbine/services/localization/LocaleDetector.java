@@ -56,6 +56,7 @@ package org.apache.turbine.services.localization;
 
 import java.util.Locale;
 import java.util.StringTokenizer;
+
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
 
@@ -83,9 +84,9 @@ public class LocaleDetector
     public static Locale getLocale(RunData data)
     {
         String header = data.getRequest().getHeader("Accept-Language");
-        if ( header == null || header.length() == 0 )
+        if (header == null || header.length() == 0)
             return null;
-        return getLocale( header );
+        return getLocale(header);
     }
 
     /**
@@ -100,12 +101,12 @@ public class LocaleDetector
         Locale locale = null;
 
         // return a "default" locale
-        if ( languageHeader == null ||
-             languageHeader.trim().equals("") )
+        if (languageHeader == null ||
+                languageHeader.trim().equals(""))
         {
             return new Locale(
-                TurbineResources.getString("locale.default.language", "en"),
-                TurbineResources.getString("locale.default.country", "US"));
+                    TurbineResources.getString("locale.default.language", "en"),
+                    TurbineResources.getString("locale.default.country", "US"));
         }
 
         // The HTTP Accept-Header is something like
@@ -134,7 +135,7 @@ public class LocaleDetector
         int semi, dash;
 
         // Cut off any q-value that comes after a semicolon.
-        if ( (semi=language.indexOf(';')) != -1 )
+        if ((semi = language.indexOf(';')) != -1)
         {
             language = language.substring(0, semi);
         }
@@ -143,7 +144,7 @@ public class LocaleDetector
 
         // Create a Locale from the language.  A dash may separate the
         // language from the country.
-        if ( (dash=language.indexOf('-')) == -1 )
+        if ((dash = language.indexOf('-')) == -1)
         {
             // No dash means no country.
             locale = new Locale(language, "");
@@ -151,7 +152,7 @@ public class LocaleDetector
         else
         {
             locale = new Locale(language.substring(0, dash),
-                                language.substring(dash+1));
+                    language.substring(dash + 1));
         }
 
         return locale;

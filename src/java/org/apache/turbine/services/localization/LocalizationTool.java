@@ -57,9 +57,10 @@ package org.apache.turbine.services.localization;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-import org.apache.turbine.services.pull.ApplicationTool;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -161,7 +162,7 @@ public class LocalizationTool implements ApplicationTool
         {
             // Pull necessary information out of RunData while we have
             // a reference to it.
-            locale = Localization.getLocale( ((RunData) data).getRequest() );
+            locale = Localization.getLocale(((RunData) data).getRequest());
             bundleName = getBundleName(data);
         }
     }

@@ -55,12 +55,12 @@ package org.apache.turbine.modules.screens;
  */
 
 // Turbine/Village/ECS Imports
+
 import org.apache.ecs.ConcreteElement;
-import org.apache.turbine.services.jsp.JspService;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.jsp.JspService;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
-
 
 /**
  * Base JSP Screen that should be subclassed by screens that want to
@@ -79,28 +79,28 @@ public class BaseJspScreen extends TemplateScreen
      * @return null - the JSP sends the information.
      * @exception Exception, a generic exception.
      */
-    public ConcreteElement buildTemplate( RunData data )
-        throws Exception
+    public ConcreteElement buildTemplate(RunData data)
+            throws Exception
     {
         // set up any data in beans, etc
         doBuildTemplate(data);
 
         // get the name of the JSP we want to use
         String templateName = TurbineTemplate.getScreenTemplateName(
-            data.getTemplateInfo().getScreenTemplate() );
+                data.getTemplateInfo().getScreenTemplate());
 
         // Template service adds the leading slash, but make it sure.
         if ((templateName.length() > 0) &&
-            (templateName.charAt(0) != '/'))
+                (templateName.charAt(0) != '/'))
         {
             templateName = '/' + templateName;
         }
 
         // let service know whether we are using a layout
         JspService jsp = (JspService)
-            TurbineServices.getInstance().getService(JspService.SERVICE_NAME);
-        jsp.handleRequest(data, "/screens" + templateName, 
-                          getLayout(data) == null);
+                TurbineServices.getInstance().getService(JspService.SERVICE_NAME);
+        jsp.handleRequest(data, "/screens" + templateName,
+                getLayout(data) == null);
 
         return null;
     }

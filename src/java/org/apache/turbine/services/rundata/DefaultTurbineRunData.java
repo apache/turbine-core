@@ -64,6 +64,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.ecs.Document;
 import org.apache.ecs.Element;
 import org.apache.ecs.StringElement;
@@ -103,9 +104,9 @@ import org.apache.turbine.util.template.TemplateInfo;
  * @version $Id$
  */
 public class DefaultTurbineRunData
-    extends RecyclableSupport
-    implements TurbineRunData,
-               Recyclable
+        extends RecyclableSupport
+        implements TurbineRunData,
+        Recyclable
 {
     /**
      * The default locale.
@@ -323,7 +324,7 @@ public class DefaultTurbineRunData
         {
             return (User) session.getValue(User.SESSION_KEY);
         }
-        catch ( ClassCastException e )
+        catch (ClassCastException e)
         {
             return null;
         }
@@ -341,13 +342,12 @@ public class DefaultTurbineRunData
         {
             session.removeValue(User.SESSION_KEY);
         }
-        catch ( Exception e )
+        catch (Exception e)
         {
             return false;
         }
         return true;
     }
-
 
     /**
      * Gets the default locale defined by properties named
@@ -365,11 +365,11 @@ public class DefaultTurbineRunData
             if (lang != null)
             {
                 defaultLocale = country != null ?
-                    new Locale(lang,country) : new Locale(lang,"");
+                        new Locale(lang, country) : new Locale(lang, "");
             }
             else if (country != null)
             {
-                defaultLocale = new Locale("",country);
+                defaultLocale = new Locale("", country);
             }
             else
             {
@@ -393,7 +393,7 @@ public class DefaultTurbineRunData
         {
             /* Get the default charset and cache it in a static variable. */
             defaultCharSet = TurbineResources.
-                getString("locale.default.charset");
+                    getString("locale.default.charset");
             defaultCharSetChecked = true;
         }
 
@@ -407,7 +407,7 @@ public class DefaultTurbineRunData
                 locale = getDefaultLocale();
             }
             if ((locale != null) &&
-                !locale.equals(Locale.US))
+                    !locale.equals(Locale.US))
             {
                 charset = TurbineMimeTypes.getCharSet(locale);
             }
@@ -488,7 +488,7 @@ public class DefaultTurbineRunData
     {
         // Parse the parameters first, if not yet done.
         if ((this.parameters != null) &&
-            (this.parameters.getRequest() != this.req))
+                (this.parameters.getRequest() != this.req))
         {
             this.parameters.setRequest(this.req);
         }
@@ -504,7 +504,7 @@ public class DefaultTurbineRunData
     {
         // Parse the cookies first, if not yet done.
         if ((this.cookies != null) &&
-            (this.cookies.getRunData() != this))
+                (this.cookies.getRunData() != this))
         {
             this.cookies.setRunData(this);
         }
@@ -601,7 +601,7 @@ public class DefaultTurbineRunData
     public Document getPage()
     {
         pageSet = true;
-        if ( this.page == null )
+        if (this.page == null)
             this.page = new Document();
         return this.page;
     }
@@ -613,9 +613,9 @@ public class DefaultTurbineRunData
      */
     public boolean hasAction()
     {
-        return ( this.action != null &&
-                 this.action.length() > 0 &&
-                 !this.action.equalsIgnoreCase("null") );
+        return (this.action != null &&
+                this.action.length() > 0 &&
+                !this.action.equalsIgnoreCase("null"));
     }
 
     /**
@@ -635,7 +635,7 @@ public class DefaultTurbineRunData
      *
      * @param action a atring.
      */
-    public void setAction (String action )
+    public void setAction(String action)
     {
         this.action = action;
     }
@@ -655,7 +655,7 @@ public class DefaultTurbineRunData
 
     public String getLayout()
     {
-        if ( this.layout == null )
+        if (this.layout == null)
         {
             /*
              * This will return something if the template
@@ -678,7 +678,7 @@ public class DefaultTurbineRunData
      *
      * @param layout a string.
      */
-    public void setLayout ( String layout )
+    public void setLayout(String layout)
     {
         this.layout = layout;
     }
@@ -715,8 +715,8 @@ public class DefaultTurbineRunData
      */
     public boolean hasScreen()
     {
-        return ( this.screen != null &&
-                 this.screen.length() > 0 );
+        return (this.screen != null &&
+                this.screen.length() > 0);
     }
 
     /**
@@ -734,7 +734,7 @@ public class DefaultTurbineRunData
      *
      * @param screen a string.
      */
-    public void setScreen (String screen )
+    public void setScreen(String screen)
     {
         this.screen = screen;
     }
@@ -790,9 +790,9 @@ public class DefaultTurbineRunData
      */
     public TemplateInfo getTemplateInfo()
     {
-        if ( templateInfo == null )
+        if (templateInfo == null)
         {
-            templateInfo = new TemplateInfo( this );
+            templateInfo = new TemplateInfo(this);
         }
         return templateInfo;
     }
@@ -804,8 +804,8 @@ public class DefaultTurbineRunData
      */
     public boolean hasMessage()
     {
-        return ( this.message != null &&
-                 this.message.toString().length() > 0 );
+        return (this.message != null &&
+                this.message.toString().length() > 0);
     }
 
     /**
@@ -824,7 +824,7 @@ public class DefaultTurbineRunData
      *
      * @param msg a string.
      */
-    public void setMessage (String msg )
+    public void setMessage(String msg)
     {
         this.message = new StringElement(msg);
     }
@@ -856,7 +856,7 @@ public class DefaultTurbineRunData
      *
      * @param msg an element.
      */
-    public void setMessage (Element msg )
+    public void setMessage(Element msg)
     {
         this.message = new StringElement(msg);
     }
@@ -871,7 +871,7 @@ public class DefaultTurbineRunData
     {
         if (msg != null)
         {
-            if ( message != null )
+            if (message != null)
             {
                 message.addElement(msg);
             }
@@ -885,7 +885,7 @@ public class DefaultTurbineRunData
     /**
      * Unsets the message for the request.
      */
-    public void unsetMessage ( )
+    public void unsetMessage()
     {
         this.message = null;
     }
@@ -910,7 +910,7 @@ public class DefaultTurbineRunData
      *
      * @param msgs A FormMessages.
      */
-    public void setMessages (FormMessages msgs)
+    public void setMessages(FormMessages msgs)
     {
         this.messages = msgs;
     }
@@ -930,7 +930,7 @@ public class DefaultTurbineRunData
      *
      * @param title a string.
      */
-    public void setTitle (String title )
+    public void setTitle(String title)
     {
         this.title = title;
     }
@@ -943,7 +943,7 @@ public class DefaultTurbineRunData
     public boolean userExists()
     {
         user = getUserFromSession();
-        return ( user != null );
+        return (user != null);
     }
 
     /**
@@ -1006,10 +1006,10 @@ public class DefaultTurbineRunData
      * @throws IOException.
      */
     public PrintWriter getOut()
-        throws IOException
+            throws IOException
     {
         // Check to see if null first.
-        if ( this.out == null )
+        if (this.out == null)
             setOut(res.getWriter());
         pageSet = false;
         outSet = true;
@@ -1199,9 +1199,9 @@ public class DefaultTurbineRunData
      *
      * @param err a system error.
      */
-    public void setSystemError (SystemError err)
+    public void setSystemError(SystemError err)
     {
-        this.errors.addElement( err );
+        this.errors.addElement(err);
     }
 
     /**
@@ -1211,7 +1211,7 @@ public class DefaultTurbineRunData
      */
     public Hashtable getJNDIContexts()
     {
-        if ( jndiContexts == null )
+        if (jndiContexts == null)
             jndiContexts = new Hashtable();
         return jndiContexts;
     }
@@ -1293,7 +1293,7 @@ public class DefaultTurbineRunData
      */
     public String getRemoteAddr()
     {
-        if ( this.remoteAddr == null )
+        if (this.remoteAddr == null)
         {
             this.remoteAddr = this.getRequest().getRemoteAddr();
         }
@@ -1308,7 +1308,7 @@ public class DefaultTurbineRunData
      */
     public String getRemoteHost()
     {
-        if ( this.remoteHost == null )
+        if (this.remoteHost == null)
         {
             this.remoteHost = this.getRequest().getRemoteHost();
         }
@@ -1323,9 +1323,9 @@ public class DefaultTurbineRunData
      */
     public String getUserAgent()
     {
-        if ( this.userAgent == null )
+        if (this.userAgent == null)
         {
-            this.userAgent = this.getRequest().getHeader( "User-Agent" );
+            this.userAgent = this.getRequest().getHeader("User-Agent");
         }
 
         return this.userAgent;
@@ -1339,7 +1339,7 @@ public class DefaultTurbineRunData
     {
         user = getUserFromSession();
 
-        if ( user != null )
+        if (user != null)
         {
             user.setLastAccessDate();
             user.incrementAccessCounter();
@@ -1352,7 +1352,7 @@ public class DefaultTurbineRunData
      */
     public void save()
     {
-        session.putValue(User.SESSION_KEY, (Object) user );
+        session.putValue(User.SESSION_KEY, (Object) user);
     }
 
     /**

@@ -60,6 +60,7 @@ import java.util.Iterator;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -82,8 +83,8 @@ import org.apache.turbine.util.TurbineException;
  * @version $Id$
  */
 public class TurbineRunDataService
-    extends TurbineBaseService
-    implements RunDataService
+        extends TurbineBaseService
+        implements RunDataService
 {
     /**
      * The property for the implemention of RunData.
@@ -104,11 +105,11 @@ public class TurbineRunDataService
      * The default implementations.
      */
     private static final String DEFAULT_RUN_DATA =
-        "org.apache.turbine.services.rundata.DefaultTurbineRunData";
+            "org.apache.turbine.services.rundata.DefaultTurbineRunData";
     private static final String DEFAULT_PARAMETER_PARSER =
-        "org.apache.turbine.util.parser.DefaultParameterParser";
+            "org.apache.turbine.util.parser.DefaultParameterParser";
     private static final String DEFAULT_COOKIE_PARSER =
-        "org.apache.turbine.util.parser.DefaultCookieParser";
+            "org.apache.turbine.util.parser.DefaultCookieParser";
 
     /**
      * The map of configurations.
@@ -129,7 +130,7 @@ public class TurbineRunDataService
         try
         {
             getContextPath =
-                HttpServletRequest.class.getDeclaredMethod("getContextPath",null);
+                    HttpServletRequest.class.getDeclaredMethod("getContextPath", null);
         }
         catch (NoSuchMethodException x)
         {
@@ -144,7 +145,7 @@ public class TurbineRunDataService
      * @throws InitializationException if initialization fails.
      */
     public void init()
-        throws InitializationException
+            throws InitializationException
     {
         // Create a default configuration.
         String[] def = new String[]
@@ -153,7 +154,7 @@ public class TurbineRunDataService
             DEFAULT_PARAMETER_PARSER,
             DEFAULT_COOKIE_PARSER
         };
-        configurations.put(DEFAULT_CONFIG,def.clone());
+        configurations.put(DEFAULT_CONFIG, def.clone());
 
         // Check other configurations.
         Configuration conf = getConfiguration();
@@ -174,14 +175,14 @@ public class TurbineRunDataService
                 for (int j = 0; j < plist.length; j++)
                 {
                     if (key.endsWith(plist[j]) &&
-                        (key.length() > (plist[j].length() + 1)))
+                            (key.length() > (plist[j].length() + 1)))
                     {
-                        key = key.substring(0,key.length() - plist[j].length() - 1);
+                        key = key.substring(0, key.length() - plist[j].length() - 1);
                         config = (String[]) configurations.get(key);
                         if (config == null)
                         {
                             config = (String[]) def.clone();
-                            configurations.put(key,config);
+                            configurations.put(key, config);
                         }
                         config[j] = value;
                         break;
@@ -204,9 +205,9 @@ public class TurbineRunDataService
     public RunData getRunData(HttpServletRequest req,
                               HttpServletResponse res,
                               ServletConfig config)
-        throws TurbineException
+            throws TurbineException
     {
-        return getRunData(DEFAULT_CONFIG,req,res,config);
+        return getRunData(DEFAULT_CONFIG, req, res, config);
     }
 
     /**
@@ -224,8 +225,8 @@ public class TurbineRunDataService
                               HttpServletRequest req,
                               HttpServletResponse res,
                               ServletConfig config)
-        throws TurbineException,
-               IllegalArgumentException
+            throws TurbineException,
+            IllegalArgumentException
     {
         // The RunData object caches all the information that is needed for
         // the execution lifetime of a single request. A RunData object
@@ -234,11 +235,11 @@ public class TurbineRunDataService
         // object, it is not necessary to perform syncronization for
         // the data within this object.
         if ((req == null) ||
-            (res == null) ||
-            (config == null) )
+                (res == null) ||
+                (config == null))
         {
             throw new IllegalArgumentException(
-                "RunDataFactory fatal error: HttpServletRequest, HttpServletResponse or ServletConfig was null.");
+                    "RunDataFactory fatal error: HttpServletRequest, HttpServletResponse or ServletConfig was null.");
         }
 
         // Get the specified configuration.
@@ -250,7 +251,7 @@ public class TurbineRunDataService
 
         // Use the Pool Service for recycling the implementing objects.
         PoolService pool = (PoolService)
-            TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
+                TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
 
         TurbineRunData data;
         try
@@ -261,7 +262,7 @@ public class TurbineRunDataService
         }
         catch (ClassCastException x)
         {
-            throw new TurbineException("RunData configuration '" + key + "' is illegal",x);
+            throw new TurbineException("RunData configuration '" + key + "' is illegal", x);
         }
 
         // Set the request and response.
@@ -279,7 +280,7 @@ public class TurbineRunDataService
         try
         {
             contextPath = getContextPath != null ?
-                (String) getContextPath.invoke(req,null) : "";
+                    (String) getContextPath.invoke(req, null) : "";
         }
         catch (Exception x)
         {
@@ -287,10 +288,10 @@ public class TurbineRunDataService
         }
         String scriptName = contextPath + req.getServletPath();
         data.setServerData(new ServerData(req.getServerName(),
-                                          req.getServerPort(),
-                                          req.getScheme(),
-                                          scriptName,
-                                          contextPath));
+                req.getServerPort(),
+                req.getScheme(),
+                scriptName,
+                contextPath));
 
         return (RunData) data;
     }
@@ -306,7 +307,7 @@ public class TurbineRunDataService
         if (data instanceof TurbineRunData)
         {
             PoolService pool = (PoolService)
-                TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
+                    TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
             pool.putInstance(((TurbineRunData) data).getParameterParser());
             pool.putInstance(((TurbineRunData) data).getCookieParser());
             return pool.putInstance(data);

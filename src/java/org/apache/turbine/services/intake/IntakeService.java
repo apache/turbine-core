@@ -119,7 +119,7 @@ public interface IntakeService
      * @throws IntakeException if recycling fails.
      */
     Group getGroup(String groupName)
-        throws IntakeException;
+            throws IntakeException;
 
     /**
      * Puts a group back to the pool.
@@ -128,7 +128,7 @@ public interface IntakeService
      * @throws IntakeException The passed group name does not exist.
      */
     void releaseGroup(Group instance)
-        throws IntakeException;
+            throws IntakeException;
 
     /**
      * Gets the current size of the pool for a named group.
@@ -138,7 +138,7 @@ public interface IntakeService
      * @throws IntakeException The passed group name does not exist.
      */
     int getSize(String groupName)
-        throws IntakeException;
+            throws IntakeException;
 
     /**
      * Names of all the defined groups.
@@ -173,7 +173,7 @@ public interface IntakeService
      * @throws IntrospectionException
      */
     Method getFieldSetter(String className, String propName)
-        throws ClassNotFoundException, IntrospectionException;
+            throws ClassNotFoundException, IntrospectionException;
 
     /**
      * Gets the Method that can be used to get a property value.
@@ -185,7 +185,7 @@ public interface IntakeService
      * @throws IntrospectionException
      */
     Method getFieldGetter(String className, String propName)
-        throws ClassNotFoundException, IntrospectionException;
+            throws ClassNotFoundException, IntrospectionException;
 }
 
 

@@ -56,7 +56,9 @@ package org.apache.turbine.services.xslt;
 
 import java.io.Reader;
 import java.io.Writer;
+
 import org.apache.turbine.services.TurbineServices;
+
 import org.w3c.dom.Node;
 
 /**
@@ -75,31 +77,30 @@ public class TurbineXSLT
     protected static XSLTService getService()
     {
         return (XSLTService) TurbineServices
-            .getInstance().getService(XSLTService.SERVICE_NAME);
+                .getInstance().getService(XSLTService.SERVICE_NAME);
     }
 
     public static void transform(String xslName, Reader in, Writer out)
-        throws Exception
+            throws Exception
     {
-        getService().transform(xslName,in,out);
+        getService().transform(xslName, in, out);
     }
 
     public static String transform(String xslName, Reader in)
-        throws Exception
+            throws Exception
     {
-        return getService().transform(xslName,in);
+        return getService().transform(xslName, in);
     }
 
     public void transform(String xslName, Node in, Writer out)
-        throws Exception
+            throws Exception
     {
-        getService().transform(xslName,in,out);
+        getService().transform(xslName, in, out);
     }
 
-
     public String transform(String xslName, Node in)
-        throws Exception
+            throws Exception
     {
-        return getService().transform(xslName,in);
+        return getService().transform(xslName, in);
     }
 }

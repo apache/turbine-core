@@ -58,14 +58,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 
-import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.mimetype.util.CharSetMap;
 import org.apache.turbine.services.mimetype.util.MimeType;
 import org.apache.turbine.services.mimetype.util.MimeTypeMap;
-import org.apache.turbine.services.mimetype.util.CharSetMap;
-import org.apache.commons.configuration.Configuration;
-
+import org.apache.turbine.services.servlet.TurbineServlet;
 
 /**
  * The MimeType Service maintains mappings between MIME types and
@@ -88,8 +87,8 @@ import org.apache.commons.configuration.Configuration;
  * @version $Id$
  */
 public class TurbineMimeTypeService
-    extends TurbineBaseService
-    implements MimeTypeService
+        extends TurbineBaseService
+        implements MimeTypeService
 {
     /**
      * The MIME type file property.
@@ -124,7 +123,7 @@ public class TurbineMimeTypeService
      * @throws InitializationException if initialization fails.
      */
     public void init()
-        throws InitializationException
+            throws InitializationException
     {
         String path = null;
         Configuration conf = getConfiguration();
@@ -144,7 +143,7 @@ public class TurbineMimeTypeService
             }
             catch (IOException x)
             {
-                throw new InitializationException(path,x);
+                throw new InitializationException(path, x);
             }
         }
         else
@@ -168,7 +167,7 @@ public class TurbineMimeTypeService
             }
             catch (IOException x)
             {
-                throw new InitializationException(path,x);
+                throw new InitializationException(path, x);
             }
         }
         else
@@ -222,7 +221,7 @@ public class TurbineMimeTypeService
     public String getContentType(String ext,
                                  String def)
     {
-        return mimeTypeMap.getContentType(ext,def);
+        return mimeTypeMap.getContentType(ext, def);
     }
 
     /**
@@ -257,14 +256,14 @@ public class TurbineMimeTypeService
     public MimeType getMimeContentType(String ext,
                                        String def)
     {
-        return mimeTypeMap.getMimeContentType(ext,def);
+        return mimeTypeMap.getMimeContentType(ext, def);
     }
 
     /**
      * Gets the default file name extension for a MIME type.
      * Note that the mappers are called in the reverse order.
      *
-     * @param mime the MIME type as a string.
+     * @param type the MIME type as a string.
      * @return the file name extension or null.
      */
     public String getDefaultExtension(String type)
@@ -293,7 +292,7 @@ public class TurbineMimeTypeService
     public void setCharSet(String key,
                            String charset)
     {
-        charSetMap.setCharSet(key,charset);
+        charSetMap.setCharSet(key, charset);
     }
 
     /**
@@ -328,7 +327,7 @@ public class TurbineMimeTypeService
     public String getCharSet(Locale locale,
                              String variant)
     {
-        return charSetMap.getCharSet(locale,variant);
+        return charSetMap.getCharSet(locale, variant);
     }
 
     /**
@@ -352,6 +351,6 @@ public class TurbineMimeTypeService
     public String getCharSet(String key,
                              String def)
     {
-        return charSetMap.getCharSet(key,def);
+        return charSetMap.getCharSet(key, def);
     }
 }

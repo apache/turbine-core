@@ -55,16 +55,14 @@ package org.apache.turbine.modules.navigations;
  */
 
 // Turbine Classes
-import org.apache.turbine.modules.Navigation;
-import org.apache.turbine.util.RunData;
 
-// ECS Classes
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.HtmlColor;
 import org.apache.ecs.html.B;
 import org.apache.ecs.html.Font;
 import org.apache.ecs.html.HR;
-
+import org.apache.turbine.modules.Navigation;
+import org.apache.turbine.util.RunData;
 
 /**
  * This is a sample navigation module.
@@ -76,8 +74,8 @@ import org.apache.ecs.html.HR;
 public class DefaultTopNavigation extends Navigation
 {
     private static final boolean DEBUG = false;
-    private static String txt = 
-        "Turbine - A Servlet Framework for building Secure Dynamic Websites.";
+    private static String txt =
+            "Turbine - A Servlet Framework for building Secure Dynamic Websites.";
 
     /**
      * Build the Navigation.
@@ -86,14 +84,14 @@ public class DefaultTopNavigation extends Navigation
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
-    public ConcreteElement doBuild( RunData data )
-        throws Exception
+    public ConcreteElement doBuild(RunData data)
+            throws Exception
     {
         data.getPage().getBody()
-            .addElement(new B().addElement(
-               new Font().setColor(HtmlColor.green).setSize(2)
-                   .addElement(txt))
-            .addElement(new HR().setSize(1).setNoShade(true)));
+                .addElement(new B().addElement(
+                        new Font().setColor(HtmlColor.green).setSize(2)
+                .addElement(txt))
+                .addElement(new HR().setSize(1).setNoShade(true)));
 
         return null;
     }

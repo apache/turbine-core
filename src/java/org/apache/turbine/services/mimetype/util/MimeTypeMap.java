@@ -55,8 +55,8 @@ package org.apache.turbine.services.mimetype.util;
  */
 
 import java.io.File;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * This class maintains a set of mappers defining mappings
@@ -77,7 +77,7 @@ public class MimeTypeMap
      * The default MIME type when nothing else is applicable.
      */
     public static final MimeType DEFAULT_MIMETYPE =
-        MimeType.APPLICATION_OCTET_STREAM;
+            MimeType.APPLICATION_OCTET_STREAM;
 
     /**
      * The default MIME type as a string.
@@ -117,24 +117,25 @@ public class MimeTypeMap
      * A common MIME type mapper.
      */
     private static MimeTypeMapper commonMapper = new MimeTypeMapper();
+
     static
     {
         commonMapper.setContentType(
-            MimeType.TEXT_HTML.toString() + " " + EXT_HTML + " " + EXT_HTM);
+                MimeType.TEXT_HTML.toString() + " " + EXT_HTML + " " + EXT_HTM);
         commonMapper.setContentType(
-            MimeType.TEXT_WML.toString() + " " + EXT_WML);
+                MimeType.TEXT_WML.toString() + " " + EXT_WML);
         commonMapper.setContentType(
-            MimeType.TEXT_HDML.toString() + " " + EXT_HDML + " " + EXT_HDM);
+                MimeType.TEXT_HDML.toString() + " " + EXT_HDML + " " + EXT_HDM);
         commonMapper.setContentType(
-            MimeType.TEXT_CHTML.toString() + " " + EXT_CHTML);
+                MimeType.TEXT_CHTML.toString() + " " + EXT_CHTML);
         commonMapper.setContentType(
-            MimeType.TEXT_PLAIN.toString() + " " + EXT_TEXT);
+                MimeType.TEXT_PLAIN.toString() + " " + EXT_TEXT);
         commonMapper.setContentType(
-            MimeType.IMAGE_GIF.toString() + " " + EXT_GIF);
+                MimeType.IMAGE_GIF.toString() + " " + EXT_GIF);
         commonMapper.setContentType(
-            MimeType.IMAGE_JPEG.toString() + " " + EXT_JPEG + " " + EXT_JPG);
+                MimeType.IMAGE_JPEG.toString() + " " + EXT_JPEG + " " + EXT_JPG);
         commonMapper.setContentType(
-            MimeType.IMAGE_WBMP.toString() + " " + EXT_WBMP);
+                MimeType.IMAGE_WBMP.toString() + " " + EXT_WBMP);
     }
 
     /**
@@ -150,7 +151,7 @@ public class MimeTypeMap
      * @throws IOException for an incorrect file.
      */
     protected static MimeTypeMapper loadPath(String path)
-        throws IOException
+            throws IOException
     {
         return new MimeTypeMapper(path);
     }
@@ -205,7 +206,7 @@ public class MimeTypeMap
         {
             // Check whether the system directory contains mappings.
             path = System.getProperty("java.home") +
-                File.separator + "lib" + File.separator + MIMETYPE_RESOURCE;
+                    File.separator + "lib" + File.separator + MIMETYPE_RESOURCE;
             mappers[MAP_SYS] = loadPath(path);
         }
         catch (Exception x)
@@ -226,7 +227,7 @@ public class MimeTypeMap
      * @throws IOException for an incorrect stream.
      */
     public MimeTypeMap(InputStream input)
-        throws IOException
+            throws IOException
     {
         this();
         mappers[MAP_PROG] = new MimeTypeMapper(input);
@@ -239,7 +240,7 @@ public class MimeTypeMap
      * @throws IOException for an incorrect input file.
      */
     public MimeTypeMap(File file)
-        throws IOException
+            throws IOException
     {
         this();
         mappers[MAP_PROG] = new MimeTypeMapper(file);
@@ -252,7 +253,7 @@ public class MimeTypeMap
      * @throws IOException for an incorrect input file.
      */
     public MimeTypeMap(String path)
-        throws IOException
+            throws IOException
     {
         this();
         mappers[MAP_PROG] = new MimeTypeMapper(path);
@@ -296,7 +297,7 @@ public class MimeTypeMap
         {
             String ext = name.substring(i + 1);
             return ext.length() > 0 ?
-                getContentType(ext,DEFAULT_TYPE) : DEFAULT_TYPE;
+                    getContentType(ext, DEFAULT_TYPE) : DEFAULT_TYPE;
         }
         else
         {
@@ -385,7 +386,7 @@ public class MimeTypeMap
     {
         try
         {
-            return new MimeType(getContentType(ext,def));
+            return new MimeType(getContentType(ext, def));
         }
         catch (Exception x)
         {
@@ -407,7 +408,7 @@ public class MimeTypeMap
         int i = type.indexOf(';');
         if (i >= 0)
         {
-            type = type.substring(0,i);
+            type = type.substring(0, i);
         }
         type = type.trim();
         for (i = mappers.length - 1; i >= 0; i--)

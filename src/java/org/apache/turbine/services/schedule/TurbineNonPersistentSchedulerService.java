@@ -136,15 +136,15 @@ public class TurbineNonPersistentSchedulerService
             Vector jobs = new Vector();
             // If there are scheduler.jobs defined then set up a job vector
             // for the scheduleQueue
-            if(!jobProps.isEmpty())
+            if (!jobProps.isEmpty())
             {
-                for(int i = 0; i < jobProps.size(); i++)
+                for (int i = 0; i < jobProps.size(); i++)
                 {
                     String jobName = (String) jobProps.elementAt(i);
                     String jobPrefix = "scheduler.job." + jobName;
 
                     String jobId = getConfiguration().getString(jobPrefix + ".ID", null);
-                    if(StringUtils.isEmpty(jobId))
+                    if (StringUtils.isEmpty(jobId))
                     {
                         throw new Exception(
                                 "There is an error in the TurbineResources.properties file. \n"
@@ -170,10 +170,10 @@ public class TurbineNonPersistentSchedulerService
                 }
             }
 
-            if(jobs != null && jobs.size() > 0)
+            if (jobs != null && jobs.size() > 0)
             {
                 scheduleQueue.batchLoad(jobs);
-                if(getConfiguration().getBoolean("enabled", true))
+                if (getConfiguration().getBoolean("enabled", true))
                 {
                     restart();
                 }
@@ -181,7 +181,7 @@ public class TurbineNonPersistentSchedulerService
 
             setInit(true);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             String errorMessage = "Could not initialize the scheduler service";
             log.error(errorMessage, e);
@@ -242,7 +242,7 @@ public class TurbineNonPersistentSchedulerService
         // Remove from the queue.
         scheduleQueue.remove(je);
 
-        if(isEnabled())
+        if (isEnabled())
         {
             restart();
         }
@@ -263,12 +263,12 @@ public class TurbineNonPersistentSchedulerService
 
             // Update the queue.
             scheduleQueue.modify(je);
-            if(isEnabled())
+            if (isEnabled())
             {
                 restart();
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             String errorMessage = "Problem updating Scheduled Job: " + je.getTask();
             log.error(errorMessage, e);

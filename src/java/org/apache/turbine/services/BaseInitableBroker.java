@@ -129,14 +129,14 @@ public abstract class BaseInitableBroker
             throws InitializationException
     {
         // make sure that only one thread calls this method recursively
-        synchronized(stack)
+        synchronized (stack)
         {
             int pos = stack.search(className);
             if (pos != -1)
             {
                 StringBuffer msg = new StringBuffer().append(className)
                         .append(" couldn't be initialized because of circular depency chain:\n");
-                for(int i = pos; i > 0; i--)
+                for (int i = pos; i > 0; i--)
                 {
                     msg.append((String) stack.elementAt(stack.size() - i - 1) + "->");
                 }
@@ -213,7 +213,7 @@ public abstract class BaseInitableBroker
             initable = getInitableInstance(className);
             if (!initable.getInit())
             {
-                synchronized(initable.getClass())
+                synchronized (initable.getClass())
                 {
                     if (!initable.getInit())
                     {

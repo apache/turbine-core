@@ -218,7 +218,7 @@ public class DateStringValidator
 
         // if the date still has not been parsed at this point, throw
         // a ParseException.
-        if( date == null )
+        if (date == null)
         {
             throw new ParseException("Could not parse the date", 0);
         }

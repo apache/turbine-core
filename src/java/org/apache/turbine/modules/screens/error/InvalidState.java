@@ -56,11 +56,8 @@ package org.apache.turbine.modules.screens.error;
 
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.ElementContainer;
-
 import org.apache.ecs.html.A;
-
 import org.apache.turbine.modules.Screen;
-
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
@@ -88,26 +85,26 @@ public class InvalidState extends Screen
      * @exception Exception, a generic exception.
      */
     public ConcreteElement doBuild(RunData data)
-        throws Exception
+            throws Exception
     {
         ElementContainer body = new ElementContainer();
         ElementContainer message = new ElementContainer();
 
         StringBuffer sb = new StringBuffer();
         sb.append("<b>There has been an error.</b>")
-            .append("<p>")
-            .append("- If you used the browser \"Back\" or \"Reload\"")
-            .append(" buttons please use the navigation buttons we provide")
-            .append(" within the screen.")
-            .append("<p>")
-            .append("Please click ");
+                .append("<p>")
+                .append("- If you used the browser \"Back\" or \"Reload\"")
+                .append(" buttons please use the navigation buttons we provide")
+                .append(" within the screen.")
+                .append("<p>")
+                .append("Please click ");
 
         message.addElement(sb.toString());
-        ParameterParser pp; 
-        pp = (ParameterParser)data.getUser().getTemp("prev_parameters");
+        ParameterParser pp;
+        pp = (ParameterParser) data.getUser().getTemp("prev_parameters");
         pp.remove("_session_access_counter");
         message.addElement(new A().setHref(
-            new DynamicURI(data,(String)data.getUser().getTemp("prev_screen"))
+                new DynamicURI(data, (String) data.getUser().getTemp("prev_screen"))
                 .addPathInfo(pp).toString()).addElement("here"));
         message.addElement(" to return the the screen you were working on.");
 

@@ -252,7 +252,7 @@ public class TurbinePullService extends TurbineBaseService
              */
             initPull();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             throw new InitializationException(
                     "TurbinePullService failed to initialize", e);
@@ -295,7 +295,7 @@ public class TurbinePullService extends TurbineBaseService
          * Log the fact that the application tool box will
          * be refreshed on a per request basis.
          */
-        if(refreshToolsPerRequest)
+        if (refreshToolsPerRequest)
             log.info("Pull Model tools will "
                     + "be refreshed on a per request basis.");
 
@@ -349,12 +349,12 @@ public class TurbinePullService extends TurbineBaseService
          * There might not be any tools for this prefix
          * so return an empty list.
          */
-        if(toolResources == null)
+        if (toolResources == null)
         {
             return classes;
         }
 
-        for(Iterator it = toolResources.getKeys(); it.hasNext();)
+        for (Iterator it = toolResources.getKeys(); it.hasNext();)
         {
             String toolName = (String) it.next();
             String toolClassName = toolResources.getString(toolName);
@@ -374,7 +374,7 @@ public class TurbinePullService extends TurbineBaseService
                 log.info("Instantiated tool class " + toolClassName
                         + " to add to the context as '$" + toolName + "'");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.error("Cannot find tool class " + toolClassName
                         + ", please check the name of the class.", e);
@@ -412,11 +412,11 @@ public class TurbinePullService extends TurbineBaseService
         // boolean parameter indicates whether get/setPerm is to be used
         // rather than get/setTemp)
         User user = data.getUser();
-        if(user != null)
+        if (user != null)
         {
             populateWithSessionTools(sessionTools, context, user, false);
 
-            if(user.hasLoggedIn())
+            if (user.hasLoggedIn())
             {
                 populateWithSessionTools(persistentTools, context, user, true);
             }
@@ -430,13 +430,13 @@ public class TurbinePullService extends TurbineBaseService
      */
     private void populateWithGlobalTools(Context context)
     {
-        for(Iterator it = globalTools.iterator(); it.hasNext();)
+        for (Iterator it = globalTools.iterator(); it.hasNext();)
         {
             ToolData toolData = (ToolData) it.next();
             try
             {
                 Object tool = toolData.toolClass.newInstance();
-                if(tool instanceof ApplicationTool)
+                if (tool instanceof ApplicationTool)
                 {
                     // global tools are init'd with a null data parameter
                     ((ApplicationTool) tool).init(null);
@@ -444,7 +444,7 @@ public class TurbinePullService extends TurbineBaseService
                 // put the tool in the context
                 context.put(toolData.toolName, tool);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.error(
                         "Could not instantiate tool " + toolData.toolClassName
@@ -466,13 +466,13 @@ public class TurbinePullService extends TurbineBaseService
                 TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
 
         // Iterate the tools
-        for(Iterator it = requestTools.iterator(); it.hasNext();)
+        for (Iterator it = requestTools.iterator(); it.hasNext();)
         {
             ToolData toolData = (ToolData) it.next();
             try
             {
                 Object tool = pool.getInstance(toolData.toolClass);
-                if(tool instanceof ApplicationTool)
+                if (tool instanceof ApplicationTool)
                 {
                     // request tools are init'd with a RunData object
                     ((ApplicationTool) tool).init(data);
@@ -480,7 +480,7 @@ public class TurbinePullService extends TurbineBaseService
                 // put the tool in the context
                 context.put(toolData.toolName, tool);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.error(
                         "Could not instantiate tool " + toolData.toolClassName
@@ -508,14 +508,14 @@ public class TurbinePullService extends TurbineBaseService
                 TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
 
         // Iterate the tools
-        for(Iterator it = tools.iterator(); it.hasNext();)
+        for (Iterator it = tools.iterator(); it.hasNext();)
         {
             ToolData toolData = (ToolData) it.next();
             try
             {
                 // ensure that tool is created only once for a user
                 // by synchronizing against the user object
-                synchronized(user)
+                synchronized (user)
                 {
                     // first try and fetch the tool from the user's
                     // hashtable
@@ -523,18 +523,18 @@ public class TurbinePullService extends TurbineBaseService
                             ? user.getPerm(toolData.toolClassName)
                             : user.getTemp(toolData.toolClassName);
 
-                    if(tool == null)
+                    if (tool == null)
                     {
                         // if not there, an instance must be fetched from
                         // the pool
                         tool = pool.getInstance(toolData.toolClass);
-                        if(tool instanceof ApplicationTool)
+                        if (tool instanceof ApplicationTool)
                         {
                             // session tools are init'd with the User object
                             ((ApplicationTool) tool).init(user);
                         }
                         // store the newly created tool in the user's hashtable
-                        if(usePerm)
+                        if (usePerm)
                         {
                             user.setPerm(toolData.toolClassName, tool);
                         }
@@ -543,7 +543,7 @@ public class TurbinePullService extends TurbineBaseService
                             user.setTemp(toolData.toolClassName, tool);
                         }
                     }
-                    else if(refreshToolsPerRequest
+                    else if (refreshToolsPerRequest
                             && tool instanceof ApplicationTool)
                     {
                         ((ApplicationTool) tool).refresh();
@@ -552,7 +552,7 @@ public class TurbinePullService extends TurbineBaseService
                     context.put(toolData.toolName, tool);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.error(
                         "Could not instantiate tool " + toolData.toolClassName
@@ -588,11 +588,11 @@ public class TurbinePullService extends TurbineBaseService
      */
     public void refreshGlobalTools()
     {
-        for(Iterator i = globalTools.iterator(); i.hasNext();)
+        for (Iterator i = globalTools.iterator(); i.hasNext();)
         {
             ToolData toolData = (ToolData) i.next();
             Object tool = globalContext.get(toolData.toolName);
-            if(tool instanceof ApplicationTool)
+            if (tool instanceof ApplicationTool)
                 ((ApplicationTool) tool).refresh();
         }
     }
@@ -633,12 +633,12 @@ public class TurbinePullService extends TurbineBaseService
      */
     private void releaseTools(Context context, PoolService pool, List tools)
     {
-        for(Iterator it = tools.iterator(); it.hasNext();)
+        for (Iterator it = tools.iterator(); it.hasNext();)
         {
             ToolData toolData = (ToolData) it.next();
             Object tool = context.remove(toolData.toolName);
 
-            if(tool != null)
+            if (tool != null)
             {
                 pool.putInstance(tool);
             }

@@ -54,10 +54,10 @@ package org.apache.turbine.services.crypto.provider;
  * <http://www.apache.org/>.
  */
 
-import javax.mail.internet.MimeUtility;
-import java.security.MessageDigest;
-import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.security.MessageDigest;
+import javax.mail.internet.MimeUtility;
 
 import org.apache.turbine.services.crypto.CryptoAlgorithm;
 
@@ -72,15 +72,15 @@ import org.apache.turbine.services.crypto.CryptoAlgorithm;
  * your databases, use this provider. It is bug-compatible.
  *
  * DO NOT USE THIS PROVIDER FOR ANY NEW APPLICATION!
- * 
+ *
  * Nevertheless it can be used as the default crypto algorithm .
  *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 
-public class OldJavaCrypt 
-    implements CryptoAlgorithm
+public class OldJavaCrypt
+        implements CryptoAlgorithm
 {
 
     /** The default cipher */
@@ -88,7 +88,6 @@ public class OldJavaCrypt
 
     /** The cipher to use for encryption */
     private String cipher = null;
-
 
     /**
      * C'tor
@@ -141,7 +140,7 @@ public class OldJavaCrypt
      */
 
     public String encrypt(String value)
-        throws Exception
+            throws Exception
     {
         MessageDigest md = MessageDigest.getInstance(cipher);
 
@@ -149,8 +148,8 @@ public class OldJavaCrypt
         // default encoding. Thanks to SGawin for spotting this.
 
         byte[] digest = md.digest(value.getBytes("UTF-8"));
-        ByteArrayOutputStream bas = 
-            new ByteArrayOutputStream(digest.length + digest.length / 3 + 1);
+        ByteArrayOutputStream bas =
+                new ByteArrayOutputStream(digest.length + digest.length / 3 + 1);
         OutputStream encodedStream = MimeUtility.encode(bas, "base64");
         encodedStream.write(digest);
         return bas.toString();

@@ -55,14 +55,12 @@ package org.apache.turbine.modules.navigations;
  */
 
 // Turbine/Village/ECS Imports
+
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.services.velocity.TurbineVelocity;
-
-// Velocity Stuff
+import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
-
 
 /**
  * VelocityNavigation.  This screen relies on the VelocityPage
@@ -86,9 +84,9 @@ public class VelocityNavigation extends TemplateNavigation
      * @param context Context for web pages.
      * @exception Exception, a generic exception.
      */
-    protected void doBuildTemplate( RunData data,
-                                    Context context )
-        throws Exception
+    protected void doBuildTemplate(RunData data,
+                                   Context context)
+            throws Exception
     {
     }
 
@@ -100,10 +98,10 @@ public class VelocityNavigation extends TemplateNavigation
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    protected void doBuildTemplate( RunData data )
-        throws Exception
+    protected void doBuildTemplate(RunData data)
+            throws Exception
     {
-        doBuildTemplate( data, TurbineVelocity.getContext(data) );
+        doBuildTemplate(data, TurbineVelocity.getContext(data));
     }
 
     /**
@@ -113,10 +111,10 @@ public class VelocityNavigation extends TemplateNavigation
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
-    public ConcreteElement buildTemplate( RunData data )
-        throws Exception
+    public ConcreteElement buildTemplate(RunData data)
+            throws Exception
     {
-        Context context = TurbineVelocity.getContext( data );
+        Context context = TurbineVelocity.getContext(data);
 
         String templateName = data.getTemplateInfo().getNavigationTemplate();
 
@@ -125,12 +123,12 @@ public class VelocityNavigation extends TemplateNavigation
 
         // Usually adds the leading slash, but make it sure.
         if ((templateName.length() > 0) &&
-            (templateName.charAt(0) != '/'))
+                (templateName.charAt(0) != '/'))
         {
             templateName = '/' + templateName;
         }
-        output.addElement( TurbineVelocity
-            .handleRequest(context,"navigations" + templateName) );
+        output.addElement(TurbineVelocity
+                .handleRequest(context, "navigations" + templateName));
         return output;
     }
 

@@ -25,13 +25,13 @@ package org.apache.turbine.modules.actions;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,7 +55,6 @@ package org.apache.turbine.modules.actions;
  */
 
 import org.apache.turbine.util.RunData;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -83,8 +82,8 @@ public abstract class VelocitySecureAction extends VelocityAction
      * @param context Context for web pages.
      * @exception Exception, a generic exception.
      */
-    public abstract void doPerform( RunData data, Context context )
-        throws Exception;
+    public abstract void doPerform(RunData data, Context context)
+            throws Exception;
 
     /**
      * This method overrides the method in WebMacroSiteAction to
@@ -93,9 +92,9 @@ public abstract class VelocitySecureAction extends VelocityAction
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    protected void perform( RunData data ) throws Exception
+    protected void perform(RunData data) throws Exception
     {
-        if ( isAuthorized( data ) )
+        if (isAuthorized(data))
         {
             super.perform(data);
         }
@@ -111,6 +110,6 @@ public abstract class VelocitySecureAction extends VelocityAction
      * @return True if the user is authorized to access the screen.
      * @exception Exception, a generic exception.
      */
-    protected abstract boolean isAuthorized( RunData data )
-        throws Exception;
+    protected abstract boolean isAuthorized(RunData data)
+            throws Exception;
 }

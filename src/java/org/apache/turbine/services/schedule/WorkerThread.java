@@ -93,28 +93,28 @@ public class WorkerThread
      */
     public void run()
     {
-        if(je == null || je.isActive())
+        if (je == null || je.isActive())
         {
             return;
         }
 
         try
         {
-            if(!je.isActive())
+            if (!je.isActive())
             {
                 je.setActive(true);
                 logStateChange("started");
                 ScheduledJobLoader.getInstance().exec(je, je.getTask());
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             log.error("Error in WorkerThread for sheduled job #" +
                     je.getPrimaryKey() + ", task: " + je.getTask(), e);
         }
         finally
         {
-            if(je.isActive())
+            if (je.isActive())
             {
                 je.setActive(false);
                 logStateChange("completed");
