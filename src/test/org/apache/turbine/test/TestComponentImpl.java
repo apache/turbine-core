@@ -57,6 +57,9 @@ package org.apache.turbine.test;
 import org.apache.avalon.framework.logger.AbstractLogEnabled;
 import org.apache.avalon.framework.activity.Initializable;
 import org.apache.avalon.framework.activity.Disposable;
+import org.apache.avalon.framework.context.Contextualizable;
+import org.apache.avalon.framework.context.Context;
+import org.apache.avalon.framework.context.ContextException;
 
 /**
  * Implementation of the test component.
@@ -66,8 +69,9 @@ import org.apache.avalon.framework.activity.Disposable;
  */
 public class TestComponentImpl
         extends AbstractLogEnabled
-        implements Initializable, Disposable, TestComponent
+        implements Initializable, Disposable, TestComponent, Contextualizable
 {
+    private String appRoot;
 
     public void initialize() throws Exception
     {
@@ -79,7 +83,13 @@ public class TestComponentImpl
 
     public void test()
     {
-        this.setupLogger(this, "TestComponent");
-        this.getLogger().debug("test");
+        setupLogger(this, "TestComponent");
+        getLogger().debug("test");
+        getLogger().debug("ComponentAppRoot = "+appRoot);
+    }
+
+    public void contextualize(Context context) throws ContextException
+    {
+        appRoot = (String) context.get("ComponentAppRoot");
     }
 }
