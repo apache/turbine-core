@@ -151,6 +151,9 @@ Changes between Turbine 2.3 and 2.3.1.
    	   HttpUtils.httpDateFormat had the year set as 'yyyyy', should be 'yyyy' therefore
    	   setting expiry dates failed.
   	 </li>
+  	 <li>
+  	   TTWS60: HtmlPageAttributes setBackground sets the incorrect key name.
+  	 </li>
   </ul>
 </p>
 </subsection>
