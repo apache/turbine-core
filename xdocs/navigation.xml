@@ -17,6 +17,7 @@
       <item name="Features"              href="/features.html"/>
       <item name="Specification"         href="/fsd.html"/>
       <item name="Getting Started"       href="/getting-started.html"/>
+      <item name="Maven Plugin"          href="/maven-turbine-plugin/index.html"/>
     </menu>
 
     <menu name="Documentation">
