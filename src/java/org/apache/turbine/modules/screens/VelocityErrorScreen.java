@@ -55,6 +55,7 @@ package org.apache.turbine.modules.screens;
  */
 
 // Turbine
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.services.resources.TurbineResources;
 
@@ -84,8 +85,8 @@ public class VelocityErrorScreen extends VelocityScreen
         context.put("processingException",
                     data.getStackTraceException().toString());
         context.put("stackTrace", data.getStackTrace());
-        String errorTemplate = TurbineResources.getString("template.error",
-                                                          "/error.vm");
+        String errorTemplate = TurbineResources.getString(TurbineConstants.TEMPLATE_ERROR,
+                                                          "error.vm");
         setTemplate(data, errorTemplate);
     }
 }
