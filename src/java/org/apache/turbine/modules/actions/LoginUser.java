@@ -91,7 +91,7 @@ public class LoginUser
     public static final String CGI_USERNAME = "username";
 
     /** CGI Parameter for the password */
-    public static final String CGI_PASSWORD = "username";
+    public static final String CGI_PASSWORD = "password";
 
 
     /** Logging */
