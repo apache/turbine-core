@@ -406,7 +406,9 @@ public class IntakeTool
         {
             throw new IntakeException("Intake.get: key == null");
         }
-        return ((PullHelper) get(groupName)).setKey(key);
+
+        PullHelper ph = get(groupName);
+        return (ph == null) ? null : ph.setKey(key);
     }
 
     /**
@@ -416,7 +418,17 @@ public class IntakeTool
     public Group get(String groupName, String key, boolean create)
             throws IntakeException
     {
-        return ((PullHelper) get(groupName)).setKey(key, create);
+        if (groupName == null)
+        {
+            throw new IntakeException("Intake.get: groupName == null");
+        }
+        if (key == null)
+        {
+            throw new IntakeException("Intake.get: key == null");
+        }
+
+        PullHelper ph = get(groupName);
+        return (ph == null) ? null : ph.setKey(key, create);
     }
 
     /**
