@@ -54,25 +54,27 @@ package org.apache.turbine.services.jsp;
  * <http://www.apache.org/>.
  */
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.configuration.Configuration;
 
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
-
 import org.apache.turbine.services.jsp.util.JspLink;
-
 import org.apache.turbine.services.servlet.TurbineServlet;
-
 import org.apache.turbine.services.template.BaseTemplateEngineService;
 import org.apache.turbine.services.template.TurbineTemplate;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -83,10 +85,11 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  */
 public class TurbineJspService
-    extends BaseTemplateEngineService
-    implements JspService
+        extends BaseTemplateEngineService
+        implements JspService
 {
     /** The base path[s] prepended to filenames given in arguments */
     private String[] templatePaths;
@@ -97,6 +100,9 @@ public class TurbineJspService
     /** The buffer size for the output stream. */
     private int bufferSize;
 
+    /** Logging */
+    private static Log log = LogFactory.getLog(TurbineJspService.class);
+
     /**
      * Load all configured components and initialize them. This is
      * a zero parameter variant which queries the Turbine Servlet
@@ -106,18 +112,18 @@ public class TurbineJspService
      *         stage
      */
     public void init()
-            throws InitializationException
+        throws InitializationException
     {
         try
         {
             initJsp();
-            registerConfiguration("jsp");
+            registerConfiguration(JspService.JSP_EXTENSION);
             setInit(true);
         }
         catch (Exception e)
         {
             throw new InitializationException(
-                    "TurbineJspService failed to initialize", e);
+                "TurbineJspService failed to initialize", e);
         }
     }
 
@@ -167,7 +173,7 @@ public class TurbineJspService
      *         wrapped into a TurbineException and rethrown.
      */
     public void handleRequest(RunData data, String templateName)
-            throws TurbineException
+        throws TurbineException
     {
         handleRequest(data, templateName, false);
     }
@@ -182,20 +188,20 @@ public class TurbineJspService
      *         wrapped into a TurbineException and rethrown.
      */
     public void handleRequest(RunData data, String templateName, boolean isForward)
-            throws TurbineException
+        throws TurbineException
     {
         /** template name with relative path */
         String relativeTemplateName = getRelativeTemplateName(templateName);
 
-        if (relativeTemplateName == null)
+        if (StringUtils.isEmpty(relativeTemplateName))
         {
             throw new TurbineException(
-                    "Template " + templateName + " not found in template paths");
+                "Template " + templateName + " not found in template paths");
         }
 
         // get the RequestDispatcher for the JSP
         RequestDispatcher dispatcher = data.getServletContext()
-                .getRequestDispatcher(relativeTemplateName);
+            .getRequestDispatcher(relativeTemplateName);
 
         try
         {
@@ -218,7 +224,7 @@ public class TurbineJspService
             try
             {
                 data.getOut().print("Error encountered processing a template: "
-                        + templateName);
+                    + templateName);
                 e.printStackTrace(data.getOut());
             }
             catch (IOException ignored)
@@ -228,7 +234,7 @@ public class TurbineJspService
             // pass the exception to the caller according to the general
             // contract for tamplating services in Turbine
             throw new TurbineException(
-                    "Error encountered processing a template: " + templateName, e);
+                "Error encountered processing a template: " + templateName, e);
         }
     }
 
@@ -241,50 +247,54 @@ public class TurbineJspService
         ServletContext context = TurbineServlet.getServletContext();
         Configuration config = getConfiguration();
 
-        /*
-         * Use the turbine template service to translate
-         * the template paths.
-         */
-        templatePaths = TurbineTemplate.translateTemplatePaths(
-                config.getStringArray("templates"));
+        // Set relative paths from config.
+        // Needed for javax.servlet.RequestDispatcher
+        relativeTemplatePaths = config.getStringArray(TEMPLATE_PATH_KEY);
 
-        /*
-         * Set relative paths from config.
-         * Needed for javax.servlet.RequestDispatcher
-         */
-        relativeTemplatePaths = config.getStringArray("templates");
-
-        /*
-         * Make sure that the relative paths begin with /
-         */
-        for (int i = 0; i < relativeTemplatePaths.length; i++)
+        // Use Turbine Servlet to translate the template paths.
+        templatePaths = new String [relativeTemplatePaths.length];
+        for (int i=0; i < relativeTemplatePaths.length; i++)
         {
-            if (!relativeTemplatePaths[i].startsWith("/"))
-            {
-                relativeTemplatePaths[i] = "/" + relativeTemplatePaths[i];
-            }
+            relativeTemplatePaths[i] = warnAbsolute(relativeTemplatePaths[i]);
+
+            templatePaths[i] = Turbine.getRealPath(relativeTemplatePaths[i]);
         }
 
-        bufferSize = config.getInt("buffer.size", 8192);
-
-        /*
-         * Register with the template service.
-         */
-        registerConfiguration("jsp");
+        bufferSize = config.getInt(JspService.BUFFER_SIZE_KEY,
+            JspService.BUFFER_SIZE_DEFAULT);
     }
 
     /**
-     * Determine whether a given template exists. This service
-     * currently only supports file base template hierarchies
-     * so we will use the utility methods provided by
-     * the template service to do the searching.
+     * Determine whether a given template is available on the
+     * configured template pathes.
      *
-     * @param template
-     * @return boolean
+     * @param template The name of the requested Template
+     * @return True if the template is available.
      */
     public boolean templateExists(String template)
     {
-        return TurbineTemplate.templateExists(template, templatePaths);
+        for (int i = 0; i < templatePaths.length; i++)
+        {
+            if (templateExists(templatePaths[i], template))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Determine whether a given template exists on the supplied
+     * template path. This service ATM only supports file based
+     * templates so it simply checks for file existence.
+     *
+     * @param path The absolute (file system) template path
+     * @param template The name of the requested Template
+     * @return True if the template is available.
+     */
+    private boolean templateExists(String path, String template)
+    {
+        return new File(path, template).exists();
     }
 
     /**
@@ -296,27 +306,37 @@ public class TurbineJspService
      * @param template
      * @return String
      */
-
     public String getRelativeTemplateName(String template)
     {
-        /*
-         * A dummy String[] object used to pass a String to
-         * TurbineTemplate.templateExists
-         */
-        String[] testTemplatePath = new String[1];
+        template = warnAbsolute(template);
 
-        /**
-         * Find which template path the template is in
-         */
-        for (int i = 0; i < relativeTemplatePaths.length; i++)
+        // Find which template path the template is in
+        // We have a 1:1 match between relative and absolute
+        // pathes so we can use the index for translation.
+        for (int i = 0; i < templatePaths.length; i++)
         {
-            testTemplatePath[0] = TurbineServlet.getRealPath(
-                    relativeTemplatePaths[i]);
-            if (TurbineTemplate.templateExists(template, testTemplatePath))
+            if (templateExists(templatePaths[i], template))
             {
-                return relativeTemplatePaths[i] + template;
+                return relativeTemplatePaths[i] + "/" + template;
             }
         }
         return null;
+    }
+
+    /**
+     * Warn if a template name or path starts with "/".
+     *
+     * @param template The template to test
+     * @return The template name with a leading / stripped off
+     */
+    private String warnAbsolute(String template)
+    {
+        if (template.startsWith("/"))
+        {
+            log.warn("Template " + template
+                + " has a leading /, which is wrong!");
+            return template.substring(1);
+        }
+        return template;
     }
 }
