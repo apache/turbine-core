@@ -58,7 +58,6 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.services.Service;
 
 /**
@@ -133,25 +132,6 @@ public interface LocalizationService
      * @return A localized ResourceBundle.
      */
     public ResourceBundle getBundle(String bundleName, HttpServletRequest req);
-
-    /**
-     * Convenience method to get a ResourceBundle based on HTTP
-     * Accept-Language header in RunData.
-     *
-     * @param data Turbine information.
-     * @return A localized ResourceBundle.
-     */
-    public ResourceBundle getBundle(RunData data);
-
-    /**
-     * Convenience method to get a ResourceBundle based on name and
-     * HTTP Accept-Language header in RunData.
-     *
-     * @param bundleName Name of bundle.
-     * @param data Turbine information.
-     * @return A localized ResourceBundle.
-     */
-    public ResourceBundle getBundle(String bundleName, RunData data);
 
     /**
      * Convenience method to get a ResourceBundle based on name and
