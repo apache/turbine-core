@@ -747,8 +747,7 @@ public class TurbineTemplateService
             TemplateEngineService.DEFAULT_SCREEN_TEMPLATE
         };
 
-        String [] mapperSeparator = 
-                new String [] { ".", ".", ".", ".", "/", "/" };
+        char [] mapperSeparator = new char [] { '.', '.', '.', '.', '/', '/' };
 
         Loader [] mapperLoader = new Loader [] { 
             null,

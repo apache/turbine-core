@@ -117,7 +117,7 @@ public class TemplateClassMapper
     public TemplateClassMapper(boolean useCache,
         int cacheSize,
         String defaultProperty,
-        String separator,
+        char separator,
         Loader loader)
     {
         super(useCache, cacheSize, defaultProperty, separator);
@@ -179,7 +179,7 @@ public class TemplateClassMapper
 
         for(;;)
         {
-            String pkg = StringUtils.join(components.iterator(), separator);
+            String pkg = StringUtils.join(components.iterator(), String.valueOf(separator));
             StringBuffer testName = new StringBuffer();
 
             log.debug("classPackage is now: " + pkg);

@@ -84,7 +84,7 @@ public class TemplateDirectMapper
      * @param defaultProperty The name of the default property to pull from the TemplateEngine
      * @param separator The separator for this Mapper.
      */
-    public TemplateDirectMapper(String defaultProperty, String separator)
+    public TemplateDirectMapper(String defaultProperty, char separator)
     {
         // Never cache, cacheSize isn't used.
         super(false, 0, defaultProperty, separator);
@@ -111,6 +111,6 @@ public class TemplateDirectMapper
         components[components.length -1] = className;
 
         // Class names are always separated by "."
-        return StringUtils.join(components, separator);
+        return StringUtils.join(components, String.valueOf(separator));
     }
 }

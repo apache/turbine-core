@@ -94,7 +94,7 @@ public class TemplateScreenMapper
     public TemplateScreenMapper(boolean useCache,
         int cacheSize,
         String defaultProperty,
-        String separator,
+        char separator,
         String prefix)
     {
         super(useCache, cacheSize, defaultProperty, separator, prefix);
@@ -115,7 +115,7 @@ public class TemplateScreenMapper
         TemplateEngineService tes =
             TurbineTemplate.getTemplateEngineService(components[components.length - 1]);
 
-        String templatePackage = StringUtils.join(components, separator);
+        String templatePackage = StringUtils.join(components, String.valueOf(separator));
 
         // But the Templating service must look for the name with prefix
         StringBuffer testPath = new StringBuffer();

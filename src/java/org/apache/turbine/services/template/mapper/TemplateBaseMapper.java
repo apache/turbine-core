@@ -85,7 +85,7 @@ public abstract class TemplateBaseMapper
     protected String defaultProperty;
 
     /** The separator used to concatenate the result parts for this mapper. */
-    protected String separator;
+    protected char separator;
 
     // Note: You might _not_ use TurbineTemplate.<xxx> in the C'tor and the init method.
     // The service isn't configured yet and if you do, the Broker will try to reinit the
@@ -108,7 +108,7 @@ public abstract class TemplateBaseMapper
      * @param defaultProperty The name of the default property to pull from the TemplateEngine
      * @param separator The separator for this mapper.
      */
-    public TemplateBaseMapper(boolean useCache, int cacheSize, String defaultProperty, String separator)
+    public TemplateBaseMapper(boolean useCache, int cacheSize, String defaultProperty, char separator)
     {
         setCacheSize(cacheSize);
         setUseCache(useCache);
@@ -174,7 +174,7 @@ public abstract class TemplateBaseMapper
      * Get the Separator value.
      * @return the Separator value.
      */
-    public String getSeparator()
+    public char getSeparator()
     {
         return separator;
     }
@@ -183,7 +183,7 @@ public abstract class TemplateBaseMapper
      * Set the Separator value.
      * @param separator The new Separator value.
      */
-    public void setSeparator(String separator)
+    public void setSeparator(char separator)
     {
         this.separator = separator;
     }
