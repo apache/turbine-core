@@ -13,5 +13,10 @@
         name="org.apache.fulcrum.mimetype.MimeTypeService"
         shorthand="mimetype"
         default-class="org.apache.fulcrum.mimetype.DefaultMimeTypeService"/>        
+        
+    <role
+        name="org.apache.fulcrum.crypto.CryptoService"
+        shorthand="crypto"
+        default-class="org.apache.fulcrum.crypto.DefaultCryptoService"/>        
 </role-list>
 
