@@ -56,12 +56,15 @@ package org.apache.turbine.services.schedule;
 
 import java.util.Iterator;
 import java.util.List;
+
 import javax.servlet.ServletConfig;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.torque.TorqueException;
 import org.apache.torque.util.Criteria;
+
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.TurbineException;
@@ -126,10 +129,9 @@ public class TurbineSchedulerService
                     ((JobEntry) it.next()).calcRunTime();
                 }
                 scheduleQueue.batchLoad(jobs);
-                if (getConfiguration().getBoolean("enabled", true))
-                {
-                    restart();
-                }
+
+                setEnabled(getConfiguration().getBoolean("enabled", true));
+                restart();
             }
 
             setInit(true);
@@ -225,10 +227,7 @@ public class TurbineSchedulerService
             scheduleQueue.remove(je);
 
             // restart the scheduler
-            if (enabled)
-            {
-                restart();
-            }
+            restart();
         }
         catch (Exception e)
         {
@@ -263,10 +262,7 @@ public class TurbineSchedulerService
 
             je.save();
 
-            if (enabled)
-            {
-                restart();
-            }
+            restart();
         }
         catch (Exception e)
         {
@@ -287,6 +283,17 @@ public class TurbineSchedulerService
     }
 
     /**
+     * Sets the enabled status of the scheduler
+     *
+     * @param enabled
+     *
+     */
+    protected void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
+    }
+
+    /**
      * Determines if the scheduler service is currently enabled.
      *
      * @return Status of the scheduler service.
@@ -299,15 +306,16 @@ public class TurbineSchedulerService
     /**
      * Starts or restarts the scheduler if not already running.
      */
-    public void startScheduler()
+    public synchronized void startScheduler()
     {
+        setEnabled(true);
         restart();
     }
 
     /**
      * Stops the scheduler if it is currently running.
      */
-    public void stopScheduler()
+    public synchronized void stopScheduler()
     {
         log.info("Stopping job scheduler");
         Thread thread = getThread();
@@ -346,24 +354,26 @@ public class TurbineSchedulerService
      */
     public synchronized void restart()
     {
-        log.info("Starting job scheduler");
-        enabled = true;
-        if (thread == null)
+        if (enabled)
         {
-            // Create the the housekeeping thread of the scheduler. It will wait
-            // for the time when the next task needs to be started, and then
-            // launch a worker thread to execute the task.
-            thread = new Thread(mainLoop, ScheduleService.SERVICE_NAME);
-            // Indicate that this is a system thread. JVM will quit only when there
-            // are no more enabled user threads. Settings threads spawned internally
-            // by Turbine as daemons allows commandline applications using Turbine
-            // to terminate in an orderly manner.
-            thread.setDaemon(true);
-            thread.start();
-        }
-        else
-        {
-            notify();
+            log.info("Starting job scheduler");
+            if (thread == null)
+            {
+                // Create the the housekeeping thread of the scheduler. It will wait
+                // for the time when the next task needs to be started, and then
+                // launch a worker thread to execute the task.
+                thread = new Thread(mainLoop, ScheduleService.SERVICE_NAME);
+                // Indicate that this is a system thread. JVM will quit only when there
+                // are no more enabled user threads. Settings threads spawned internally
+                // by Turbine as daemons allows commandline applications using Turbine
+                // to terminate in an orderly manner.
+                thread.setDaemon(true);
+                thread.start();
+            }
+            else
+            {
+                notify();
+            }
         }
     }
 
