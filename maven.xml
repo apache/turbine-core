@@ -13,7 +13,7 @@
   xmlns:m="maven"
   xmlns:u="jelly:util"
   xmlns:maven="jelly:maven"
-  default="java:jar">
+  default="jar:jar">
 
   <!-- ================================================================== -->
   <!-- C O M P I L E   P R E - G O A L                                    -->
