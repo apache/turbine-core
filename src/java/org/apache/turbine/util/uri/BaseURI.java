@@ -512,14 +512,13 @@ public abstract class BaseURI
      */
     protected String encodeResponse(String uri)
     {
-        String res = null;
+        String res = uri;
 
         HttpServletResponse response = getResponse();
 
         if(response == null)
         {
             log.debug("No Response Object!");
-            res = uri;
         }
         else
         {
@@ -539,7 +538,6 @@ public abstract class BaseURI
             {
                 log.error("response" + response + ", uri: " + uri);
                 log.error("While trying to encode the URI: ", e);
-                res = uri;
             }
         }
 
