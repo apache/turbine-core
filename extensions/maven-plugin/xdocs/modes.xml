@@ -45,7 +45,7 @@ This mode is similar to developing with the old <a href="http://jakarta.apache.o
 
 <subsection name="Selecting a Development Mode">
 <p>
-  The development mode is selected by providing the <a href="proprties.html#turbine_plugin_mode">turbine.plugin.mode</a> property in either
+  The development mode is selected by providing the <a href="properties.html#turbine_plugin_mode">turbine.plugin.mode</a> property in either
 the <a href="config.html#setup_properties">setup.properties</a> file or on the maven command line when using <a href="using_meta.html#Ad_hoc_setup">Ad Hoc setup</a>.
 </p>
 

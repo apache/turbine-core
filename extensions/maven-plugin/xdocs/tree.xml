@@ -99,7 +99,7 @@ subdirectory in the root of your application.</td>
 <td>XML source files for Torque</td>
 <td>This directory contains the definition files for generating the
 peer and object classes for Torque and also DTD and data files to
-populate the tables. See the <a href="default-schema.html">Default
+populate the tables. See the <a href="schema.html">Default
 schema files description</a> for details.</td>
 </tr>
 
