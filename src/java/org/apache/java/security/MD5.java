@@ -65,6 +65,7 @@ package org.apache.java.security;
  *
  * @author <a href="mailto:stefano@apache.org">Stefano Mazzocchi</a>
  * @version $Id$
+ * @deprecated Use the java.security package.
  */
 public final class MD5
     extends MessageDigest
