@@ -9,3 +9,4 @@ velocity.log*
 .externalToolBuilders
 logs
 junit*.properties
+turbine-pom-snapshot-version
