@@ -124,7 +124,7 @@ public abstract class Field
     protected final Method setter;
 
     /** Error message set on the field if required and not set by parser */
-    protected final String ifRequiredMessage;
+    protected String ifRequiredMessage;
 
     /** Does this field accept multiple values? */
     protected final boolean isMultiValued;
@@ -290,6 +290,7 @@ public abstract class Field
         if (reqRule != null)
         {
             alwaysRequired = new Boolean(reqRule.getValue()).booleanValue();
+            ifRequiredMessage = reqRule.getMessage();
         }
 
         Rule maxLengthRule = (Rule) field.getRuleMap().get("maxLength");
@@ -333,7 +334,6 @@ public abstract class Field
         }
         getter = tmpGetter;
         setter = tmpSetter;
-        ifRequiredMessage = field.getIfRequiredMessage();
 
         valArray = new Object[1];
     }
@@ -371,7 +371,8 @@ public abstract class Field
             }
         }
 
-        if (pp.containsKey(getKey()))
+        if (pp.containsKey(getKey()) 
+                &&  StringUtils.isNotEmpty(pp.getString(getKey())))
         {
             if (isDebugEnabled)
             {
