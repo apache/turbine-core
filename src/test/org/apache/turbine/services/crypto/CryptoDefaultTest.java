@@ -46,19 +46,21 @@ package org.apache.turbine.services.crypto;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.commons.configuration.BaseConfiguration;
-import org.apache.commons.configuration.Configuration;
 import org.apache.fulcrum.crypto.CryptoAlgorithm;
 import org.apache.fulcrum.crypto.CryptoService;
-
-import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
-import org.apache.turbine.services.factory.FactoryService;
-import org.apache.turbine.services.factory.TurbineFactoryService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 
+/**
+ * Verifies the Fulcrum Crypto Service works properly in Turbine.
+ * <br>
+ *
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @version $Id$
+ */
 public class CryptoDefaultTest extends BaseTestCase
 {
     private static final String preDefinedInput = "Oeltanks";
