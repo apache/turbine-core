@@ -511,10 +511,9 @@ public class Turbine
 
             // If a module has set data.acl = null, remove acl from
             // the session.
-            if ( data.getACL() == null )
+            if ( data.getACL() == null && data.getSession().isValid() )
             {
-                data.getSession().removeValue(
-                    AccessControlList.SESSION_KEY);
+                data.getSession().removeValue(AccessControlList.SESSION_KEY);
             }
 
             // handle a redirect request
