@@ -54,9 +54,14 @@ package org.apache.turbine.modules.layouts;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.StringReader;
 
 import org.apache.ecs.ConcreteElement;
+
+import org.apache.turbine.TurbineConstants;
 
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.ScreenLoader;
@@ -83,58 +88,71 @@ import org.apache.velocity.context.Context;
  * default.xsl stylesheet is executed.  If default.xsl does not exist
  * the XML is merely echoed.
  * <br><br>
- * Since dynamic content is supposed to be primarily
- * located in screens and navigations there should be relatively few reasons
- * to subclass this Layout.
+ * Since dynamic content is supposed to be primarily located in
+ * screens and navigations there should be relatively few reasons to
+ * subclass this Layout.
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class VelocityXslLayout extends Layout
 {
-    /**
-     * Method called by LayoutLoader.
-     *
-     * @param data RunData
-     * @throws Exception generic exception
-     */
-    public void doBuild(RunData data) throws Exception
-    {
-        data.getResponse().setContentType("text/html");
+    /** Logging */
+    private static Log log = LogFactory.getLog(VelocityXslLayout.class);
 
+    /** The prefix for lookup up layout pages */
+    private String prefix = TurbineConstants.LAYOUT_PREFIX + "/";
+
+    /**
+     * Build the layout.  Also sets the ContentType and Locale headers
+     * of the HttpServletResponse object.
+     *
+     * @param data Turbine information.
+     * @exception Exception a generic exception.
+     */
+    public void doBuild(RunData data)
+        throws Exception
+    {
+        // Get the context needed by Velocity.
         Context context = (Context) data.getTemplateInfo()
             .getTemplateContext(VelocityService.CONTEXT);
 
-        String returnValue = "";
+        data.getResponse().setContentType("text/html");
+
+        String screenName = data.getScreen();
+
+        log.debug("Loading Screen " + screenName);
 
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.
-        ConcreteElement results = ScreenLoader.getInstance()
-                .eval(data, data.getScreen());
+        ConcreteElement results =
+            ScreenLoader.getInstance().eval(data, screenName);
 
-        if (results != null)
-        {
-            returnValue = results.toString();
-        }
+        String returnValue = (results == null) ? "" : results.toString();
 
         // variable for the screen in the layout template
-        context.put("screen_placeholder", returnValue);
+        context.put(TurbineConstants.SCREEN_PLACEHOLDER, returnValue);
 
         // variable to reference the navigation screen in the layout template
-        context.put("navigation", new TemplateNavigation(data));
+        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER, 
+                    new TemplateNavigation(data));
 
-        // Grab the layout template set in the WebMacroSitePage.
+        // Grab the layout template set in the VelocityPage.
         // If null, then use the default layout template
         // (done by the TemplateInfo object)
         String templateName = data.getTemplateInfo().getLayoutTemplate();
 
+        log.debug("Now trying to render layout " + templateName);
+
         // Now, generate the layout template.
         String temp = TurbineVelocity.handleRequest(context,
-                "layouts" + templateName);
+                prefix + templateName);
 
         // Finally we do a transformation and send the result
         // back to the browser
-        TurbineXSLT.transform(data.getTemplateInfo().getScreenTemplate(),
+        TurbineXSLT.transform(
+            data.getTemplateInfo().getScreenTemplate(),
                 new StringReader(temp), data.getOut());
     }
 }
