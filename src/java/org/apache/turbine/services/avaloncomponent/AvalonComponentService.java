@@ -63,6 +63,7 @@ import org.apache.turbine.services.Service;
  * This service allows access to avalon components.
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface AvalonComponentService
@@ -71,11 +72,23 @@ public interface AvalonComponentService
     /** The publically visible name of the service */
     String SERVICE_NAME = "AvalonComponentService";
 
+    /** Where we write the Avalon Logger messages */
+    String AVALON_LOG_CATEGORY = "avalon";
+
     /** property specifing file name of the component config file */
-    String COMPONENT_CONFIG = "componentConfiguration";
+    String COMPONENT_CONFIG_KEY = "componentConfiguration";
+
+    /** property specifing file name of the component config file */
+    String COMPONENT_CONFIG_VALUE = "/WEB-INF/conf/componentConfiguration.xml";
 
     /** property specifing file name of the component role file */
-    String COMPONENT_ROLE = "componentRoles";
+    String COMPONENT_ROLE_KEY = "componentRoles";
+
+    /** property specifing file name of the component role file */
+    String COMPONENT_ROLE_VALUE = "/WEB-INF/conf/roleConfiguration.xml";
+
+    /** property for the Components to look up */
+    String COMPONENT_LOOKUP_KEY = "lookup";
 
     /** Key used in the context for defining the application root */
     String COMPONENT_APP_ROOT = "componentAppRoot";
