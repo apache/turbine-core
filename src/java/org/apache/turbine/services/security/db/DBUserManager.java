@@ -55,20 +55,22 @@ package org.apache.turbine.services.security.db;
  */
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Hashtable;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.BaseObject;
+import org.apache.torque.om.ObjectKey;
 import org.apache.torque.om.Persistent;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.om.security.peer.TurbineUserPeer;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.services.security.UserManager;
+import org.apache.turbine.util.db.map.TurbineMapBuilder;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
 import org.apache.turbine.util.security.PasswordMismatchException;
@@ -93,7 +95,7 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * @version $Id$
  */
 public class DBUserManager
-    implements UserManager
+        implements UserManager
 {
     /** Logging */
     private static Log log = LogFactory.getLog(DBUserManager.class);
@@ -109,7 +111,7 @@ public class DBUserManager
      *         the data backend.
      */
     public boolean accountExists(User user)
-        throws DataBackendException
+            throws DataBackendException
     {
         return accountExists(user.getUserName());
     }
@@ -125,7 +127,7 @@ public class DBUserManager
      *         the data backend.
      */
     public boolean accountExists(String userName)
-        throws DataBackendException
+            throws DataBackendException
     {
         Criteria criteria = new Criteria();
         criteria.add(TurbineUserPeer.USERNAME, userName);
@@ -134,15 +136,15 @@ public class DBUserManager
         {
             users = TurbineUserPeer.doSelect(criteria);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new DataBackendException(
-                "Failed to check account's presence", e);
+                    "Failed to check account's presence", e);
         }
-        if (users.size() > 1)
+        if(users.size() > 1)
         {
             throw new DataBackendException(
-                "Multiple Users with same username '" + userName + "'");
+                    "Multiple Users with same username '" + userName + "'");
         }
         return (users.size() == 1);
     }
@@ -159,7 +161,7 @@ public class DBUserManager
      *            storage.
      */
     public User retrieve(String userName)
-        throws UnknownEntityException, DataBackendException
+            throws UnknownEntityException, DataBackendException
     {
         Criteria criteria = new Criteria();
         criteria.add(TurbineUserPeer.USERNAME, userName);
@@ -168,17 +170,17 @@ public class DBUserManager
         {
             users = TurbineUserPeer.doSelect(criteria);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new DataBackendException("Failed to retrieve user '" +
-                                           userName + "'", e);
+                    userName + "'", e);
         }
-        if (users.size() > 1)
+        if(users.size() > 1)
         {
             throw new DataBackendException(
-                "Multiple Users with same username '" + userName + "'");
+                    "Multiple Users with same username '" + userName + "'");
         }
-        if (users.size() == 1)
+        if(users.size() == 1)
         {
             return (User) users.get(0);
         }
@@ -200,21 +202,21 @@ public class DBUserManager
      *         storage.
      */
     public User[] retrieve(Criteria criteria)
-        throws DataBackendException
+            throws DataBackendException
     {
         Iterator keys = criteria.keySet().iterator();
-        while (keys.hasNext())
+        while(keys.hasNext())
         {
             String key = (String) keys.next();
 
             // set the table name for all attached criterion
             Criteria.Criterion[] criterion = criteria
-                .getCriterion(key).getAttachedCriterion();
+                    .getCriterion(key).getAttachedCriterion();
 
-            for (int i = 0; i < criterion.length; i++)
+            for(int i = 0; i < criterion.length; i++)
             {
                 String table = criterion[i].getTable();
-                if (table == null || "".equals(table))
+                if(table == null || "".equals(table))
                 {
                     criterion[i].setTable(TurbineUserPeer.getTableName());
                 }
@@ -225,7 +227,7 @@ public class DBUserManager
         {
             users = TurbineUserPeer.doSelect(criteria);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new DataBackendException("Failed to retrieve users", e);
         }
@@ -249,8 +251,8 @@ public class DBUserManager
      *            storage.
      */
     public User retrieve(String userName, String password)
-        throws PasswordMismatchException, UnknownEntityException,
-               DataBackendException
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException
     {
         User user = retrieve(userName);
         authenticate(user, password);
@@ -268,12 +270,12 @@ public class DBUserManager
      *            storage.
      */
     public void store(User user)
-        throws UnknownEntityException, DataBackendException
+            throws UnknownEntityException, DataBackendException
     {
-        if (!accountExists(user))
+        if(!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                                             user.getUserName() + "' does not exist");
+                    user.getUserName() + "' does not exist");
         }
 
         Criteria criteria = TurbineUserPeer.buildCriteria(user);
@@ -281,7 +283,7 @@ public class DBUserManager
         {
             TurbineUserPeer.doUpdate(criteria);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new DataBackendException("Failed to save user object", e);
         }
@@ -299,10 +301,10 @@ public class DBUserManager
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public void saveOnSessionUnbind( User user )
-        throws UnknownEntityException, DataBackendException
+    public void saveOnSessionUnbind(User user)
+            throws UnknownEntityException, DataBackendException
     {
-        if( !user.hasLoggedIn() )
+        if(!user.hasLoggedIn())
         {
             return;
         }
@@ -310,10 +312,10 @@ public class DBUserManager
         if(!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                user.getUserName() + "' does not exist");
+                    user.getUserName() + "' does not exist");
         }
         Criteria crit = new Criteria();
-        if (!((Persistent) user).isNew())
+        if(!((Persistent) user).isNew())
         {
             crit.add(TurbineUserPeer.USER_ID, ((Persistent) user).getPrimaryKey());
         }
@@ -324,9 +326,9 @@ public class DBUserManager
         // The OBJECT_DATA column only stores data not mapped to a column.  We must
         // remove all of the extra data and serialize the rest.  Access Counter
         // is not mapped to a column so it will be serialized into OBJECT_DATA.
-        for (int i = 1; i < TurbineUserPeer.columnNames.length; i++)
+        for(int i = 1; i < TurbineUserPeer.columnNames.length; i++)
         {
-            if (permStorage.containsKey(TurbineUserPeer.columnNames[i]))
+            if(permStorage.containsKey(TurbineUserPeer.columnNames[i]))
             {
                 permStorage.remove(TurbineUserPeer.columnNames[i]);
             }
@@ -359,13 +361,13 @@ public class DBUserManager
      *            storage.
      */
     public void authenticate(User user, String password)
-        throws PasswordMismatchException, UnknownEntityException,
-               DataBackendException
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException
     {
-        if (!accountExists(user))
+        if(!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                                             user.getUserName() + "' does not exist");
+                    user.getUserName() + "' does not exist");
         }
 
         // log.debug("Supplied Pass: " + password);
@@ -377,7 +379,7 @@ public class DBUserManager
          * into the checkPassword routine
          */
 
-        if (!TurbineSecurity.checkPassword(password, user.getPassword()))
+        if(!TurbineSecurity.checkPassword(password, user.getPassword()))
         {
             throw new PasswordMismatchException("The passwords do not match");
         }
@@ -399,20 +401,20 @@ public class DBUserManager
      */
     public void changePassword(User user, String oldPassword,
                                String newPassword)
-        throws PasswordMismatchException, UnknownEntityException,
-               DataBackendException
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException
     {
-        if (!accountExists(user))
+        if(!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                                             user.getUserName() + "' does not exist");
+                    user.getUserName() + "' does not exist");
         }
 
-        if (!TurbineSecurity.checkPassword(oldPassword, user.getPassword()))
+        if(!TurbineSecurity.checkPassword(oldPassword, user.getPassword()))
         {
             throw new PasswordMismatchException(
-                "The supplied old password for '" + user.getUserName() +
-                "' was incorrect");
+                    "The supplied old password for '" + user.getUserName() +
+                    "' was incorrect");
         }
         user.setPassword(TurbineSecurity.encryptPassword(newPassword));
         // save the changes in the database imediately, to prevent the password
@@ -437,12 +439,12 @@ public class DBUserManager
      *            storage.
      */
     public void forcePassword(User user, String password)
-        throws UnknownEntityException, DataBackendException
+            throws UnknownEntityException, DataBackendException
     {
-        if (!accountExists(user))
+        if(!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                                             user.getUserName() + "' does not exist");
+                    user.getUserName() + "' does not exist");
         }
         user.setPassword(TurbineSecurity.encryptPassword(password));
         // save the changes in the database immediately, to prevent the
@@ -461,30 +463,37 @@ public class DBUserManager
      * @throws EntityExistsException if the user account already exists.
      */
     public void createAccount(User user, String initialPassword)
-        throws EntityExistsException, DataBackendException
+            throws EntityExistsException, DataBackendException
     {
         if(StringUtils.isEmpty(user.getUserName()))
         {
             throw new DataBackendException("Could not create "
-                                           + "an user with empty name!");
+                    + "an user with empty name!");
         }
 
-        if (accountExists(user))
+        if(accountExists(user))
         {
             throw new EntityExistsException("The account '" +
-                                            user.getUserName() + "' already exists");
+                    user.getUserName() + "' already exists");
         }
         user.setPassword(TurbineSecurity.encryptPassword(initialPassword));
 
         Criteria criteria = TurbineUserPeer.buildCriteria(user);
         try
         {
-            TurbineUserPeer.doInsert(criteria);
+            // perform the insert to the database
+            ObjectKey pk = TurbineUserPeer.doInsert(criteria);
+
+            // update the user object with the primary key
+            TurbineMapBuilder mapbuilder = (TurbineMapBuilder)
+                    TurbineUserPeer.getMapBuilder("org.apache.turbine.util.db.map.TurbineMapBuilder");
+            user.setPerm(mapbuilder.getUserId(), pk);
+            ((BaseObject) user).setPrimaryKey(pk);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new DataBackendException("Failed to create account '" +
-                                           user.getUserName() + "'", e);
+                    user.getUserName() + "'", e);
         }
     }
 
@@ -497,12 +506,12 @@ public class DBUserManager
      * @throws UnknownEntityException if the user account is not present.
      */
     public void removeAccount(User user)
-        throws UnknownEntityException, DataBackendException
+            throws UnknownEntityException, DataBackendException
     {
-        if (!accountExists(user))
+        if(!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                                             user.getUserName() + "' does not exist");
+                    user.getUserName() + "' does not exist");
         }
         Criteria criteria = new Criteria();
         criteria.add(TurbineUserPeer.USERNAME, user.getUserName());
@@ -510,10 +519,10 @@ public class DBUserManager
         {
             TurbineUserPeer.doDelete(criteria);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new DataBackendException("Failed to remove account '" +
-                                           user.getUserName() + "'", e);
+                    user.getUserName() + "'", e);
         }
     }
 }
