@@ -87,6 +87,10 @@ import org.apache.velocity.context.Context;
  */
 public abstract class VelocityActionEvent extends ActionEvent
 {
+    /** Constant needed for Reflection */
+    private static final Class [] methodParams
+            = new Class [] { RunData.class, Context.class };
+
     /**
      * You need to implement this in your classes that extend this
      * class.
@@ -157,26 +161,18 @@ public abstract class VelocityActionEvent extends ActionEvent
 
         try
         {
-            // The arguments to the method to find.
-            Class[] classes = new Class[2];
-            classes[0] = RunData.class;
-            classes[1] = Context.class;
-
-            // The arguments to pass to the method to execute.
-            Object[] args = new Object[2];
-
-            Method method = getClass().getMethod(theButton, classes);
-            args[0] = data;
-            args[1] = context;
+            Method method = getClass().getMethod(theButton, methodParams);
+            Object[] methodArgs = new Object[] { data, context };
 
             log.debug("Invoking " + method);
 
-            method.invoke(this, args);
+            method.invoke(this, methodArgs);
         }
         catch (NoSuchMethodException nsme)
         {
             // Attempt to execute things the old way..
-            log.debug("Couldn't locate the Event ( " + theButton + "), running executeEvents() in "
+            log.debug("Couldn't locate the Event ( " + theButton 
+                    + "), running executeEvents() in "
                     + super.getClass().getName());
             super.executeEvents(data);
         }

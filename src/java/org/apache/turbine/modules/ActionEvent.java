@@ -117,6 +117,10 @@ public abstract class ActionEvent extends Action
     /** Logging */
     protected Log log = LogFactory.getLog(this.getClass());
 
+    /** Constant needed for Reflection */
+    private static final Class [] methodParams
+            = new Class [] { RunData.class };
+
     /**
      * You need to implement this in your classes that extend this class.
      *
@@ -213,11 +217,10 @@ public abstract class ActionEvent extends Action
             throw new NoSuchMethodException("ActionEvent: The button was null");
         }
 
-        Class[] classes = new Class[]{RunData.class};
-        Method method = getClass().getMethod(theButton, classes);
-        Object[] args = new Object[]{data};
+        Method method = getClass().getMethod(theButton, methodParams);
+        Object[] methodArgs = new Object[] { data };
 
-        method.invoke(this, args);
+        method.invoke(this, methodArgs);
     }
 
     /**
