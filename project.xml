@@ -258,10 +258,10 @@
     </dependency>
 
     <dependency>
-      <name>jpython</name>
+      <name>jython</name>
       <type>required</type>
-      <version>2.0</version>
-      <jar>jpython-2.0.jar</jar>
+      <version>2.1</version>
+      <jar>jython-2.1.jar</jar>
     </dependency>
 
     <!-- *********************************** -->
