@@ -255,22 +255,21 @@ public abstract class ActionEvent extends Action
      */
     protected final String formatString(String input)
     {
-        String tmp = null;
+        String tmp = input;
         
         if (StringUtils.isNotEmpty(input))
         {
             tmp = input.toLowerCase();
             
             // Chop off suffixes (for image type)
-            tmp = (tmp.endsWith(".x") || tmp.endsWith(".y"))
-                    ? tmp.substring(0, tmp.length() - 2)
-                    : tmp;
+            input = (tmp.endsWith(".x") || tmp.endsWith(".y"))
+                    ? input.substring(0, input.length() - 2)
+                    : input;
             
             if (ParserUtils.getUrlFolding() 
                     != ParserUtils.URL_CASE_FOLDING_NONE)
             {
-                
-                tmp = tmp.substring(BUTTON_LENGTH + METHOD_NAME_LENGTH);
+                tmp = input.toLowerCase().substring(BUTTON_LENGTH + METHOD_NAME_LENGTH);
                 tmp = METHOD_NAME_PREFIX + StringUtils.capitalise(tmp);
             }
             else
