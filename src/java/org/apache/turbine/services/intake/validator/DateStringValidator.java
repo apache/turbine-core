@@ -57,10 +57,13 @@ package org.apache.turbine.services.intake.validator;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 import org.apache.turbine.services.intake.IntakeException;
 
@@ -133,7 +136,7 @@ public class DateStringValidator
             constraint = (Constraint) paramMap.get("format" + (++i));
         }
 
-        if (dateFormatMessage == null || dateFormatMessage.equals(""))
+        if (StringUtils.isEmpty(dateFormatMessage))
         {
             dateFormatMessage = DEFAULT_DATE_MESSAGE;
         }
@@ -268,7 +271,7 @@ public class DateStringValidator
      */
     public void setDateFormatMessage(String message)
     {
-        if (message != null && !message.equals(""))
+        if (StringUtils.isNotEmpty(message))
         {
             dateFormatMessage = message;
         }
