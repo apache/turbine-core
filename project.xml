@@ -493,7 +493,7 @@
     </dependency>
     <dependency>
       <id>commons-configuration</id>
-      <version>1.0-rc1</version>
+      <version>1.0</version>
       <url>http://jakarta.apache.org/commons/configuration/</url>
     </dependency>
     <dependency>
@@ -657,7 +657,8 @@
       </properties>
     </dependency>       
     <dependency>
-      <id>jaf:activation</id>
+      <groupId>activation</groupId>
+      <artifactId>activation</artifactId>
       <version>1.0.2</version>
       <url>http://java.sun.com/products/javabeans/glasgow/jaf.html</url>
     </dependency>
