@@ -66,9 +66,18 @@ public interface ApplicationTool
      * Initialize the application tool. The data parameter holds a different
      * type depending on how the tool is being instantiated:
      * <ul>
-     * <li>For global tools data will be null
-     * <li>For request tools data will be of type RunData
-     * <li>For session and persistent tools data will be of type User
+     * <li>For global tools data will be null</li>
+     * <li>For request tools data will be of type RunData</li>
+     * <li>For session and authorized tools data will be of type User</li>
+     * </ul>
+     * <p>
+     * It is possible that session scope tools will be initialized with a null
+     * <code>User</code> object.  This happens when the first request on a
+     * session happens to the be login action.
+     * <p>
+     * If your session tool depends on having a <code>User</code> object, you
+     * should look at implementing the {@link RunDataApplicationTool} interface
+     * instead.
      *
      * @param data initialization data
      */
