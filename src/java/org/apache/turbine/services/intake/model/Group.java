@@ -390,8 +390,14 @@ public class Group
     public void setProperties(Object obj) throws IntakeException
     {
         Class cls = obj.getClass();
+
         while (cls != null)
         {
+            if (isDebugEnabled)
+            {
+                log.debug("setProperties(" + cls.getName() + ")");
+            }
+
             Field[] flds = (Field[]) mapToObjectFields.get(cls.getName());
             if (flds != null)
             {
@@ -403,6 +409,7 @@ public class Group
 
             cls = cls.getSuperclass();
         }
+        log.debug("setProperties() finished");
     }
 
     /**
