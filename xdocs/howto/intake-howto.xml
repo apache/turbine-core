@@ -4,6 +4,7 @@
     <properties>
         <title>"Simple" Intake How-to for Turbine 2.1</title>
         <author email="dantest@yorku.ca">Daniel Kha</author>
+        <author email="seade@backstagetech.com.au">Scott Eade</author>
     </properties>
 
     <body>
@@ -27,9 +28,14 @@
                         submission.</li>
                 </ol>
             </p>
+            <p>
+                Some additional information concerning removing Intake group
+                information from the request is included at the bottom of this
+                document.
+            </p>
         </section>
 
-        <section name="Step 1: Create your turbine template with a form"> 
+        <section name="Step 1: Create your turbine template with a form">
             <p>
                 The first thing to do is the create the form in your template
                 (e.g. a velocity template file, a .vm file).  Just create the
@@ -48,7 +54,7 @@
                 template for a "login form":
             </p>
             <source><![CDATA[
-#set($loginGroup = $intake.LoginGroup.Default) 
+#set($loginGroup = $intake.LoginGroup.Default)
             ]]></source>
             <p/>
             <p>
@@ -138,7 +144,7 @@ $intake.declareGroups()
             </subsection>
         </section>
 
-        <section name="Step 2: Create the intake.xml file"> 
+        <section name="Step 2: Create the intake.xml file">
             <p>
                 The intake.xml file specifies the validation rules required to
                 be satisfied in order for the form to be accepted.  The file has
@@ -331,7 +337,7 @@ $intake.declareGroups()
             </subsection>
         </section>
 
-        <section name="Step 3: Create a business object to represent the intake group we are working with (this is optional)."> 
+        <section name="Step 3: Create a business object to represent the intake group we are working with (this is optional).">
             <p>
                 The business object is basically a Java class that has get and
                 set methods for each of the object's fields, and these get and
@@ -345,7 +351,7 @@ $intake.declareGroups()
             <p>
                 The business object also has to implement the
                 org.apache.turbine.om.Retrievable interface.  The Retrievable
-                was designed to work with a database so the methods 
+                was designed to work with a database so the methods
                 get/setQueryKey doesn't make much sense if your business object
                 isn't based on a database model.  For my use, I just force the
                 key to be "_0" which is the default key used by Intake (as of
@@ -382,7 +388,7 @@ Group group = intake.get("LoginGroup", key);
             <p/>
         </section>
 
-        <section name="Step 4: Create the Turbine Action to handle the form submission."> 
+        <section name="Step 4: Create the Turbine Action to handle the form submission.">
             <p>
                 Depending on the method you use, the code in the action will
                 need to obtain the corresponding group object from intake.  The
@@ -484,6 +490,44 @@ public void doLogin(RunData data, Context context)
 }
             ]]></source>
             <p/>
+        </section>
+        <section name="Removing Intake information from the request">
+            <p>
+                Intake data is retained in the request in order to allow for the
+                possibility that it will be re-presented to the user on the next
+                page. Normally this is desirable behaviour - there may have been
+                an error in the data so you want to redisplay it. There is a
+                possibility however that you might want to reuse the same group
+                on either the same or a different page after fully processing
+                the data; in this case it may be undesirable to redisplay the
+                previously entered data. The prime example of this is where a
+                page includes a repeating group of records and provides an
+                opportunity to add a further record using the default group,
+                returning to the same page after each record is added.  In this
+                situation you will find that the default group needs to be
+                removed from the request, otherwise the data entered on the
+                previous page will be redisplayed.
+            </p>
+            <p>
+                Intake allows for this by providing a way of removing the data
+                that is no longer appropriate to display.  Simply:
+            </p>
+            <source><![CDATA[
+intake.remove(group);
+            ]]></source>
+            <p/>
+            <p>
+                ... where "intake" is a reference to your IntakeTool and "group"
+                is a reference to the group you wish to remove from the
+                request.  You would do this after the new record had been
+                validated and added to the database.
+            </p>
+            <p>
+                It will be rare that you actually need to do this - it is
+                required only in situations where the same group is used on
+                subsequent pages after the data has been fully processed (it
+                should be pretty obvious when this is the case).
+            </p>
         </section>
     </body>
 </document>
