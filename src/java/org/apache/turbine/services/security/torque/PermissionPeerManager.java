@@ -150,8 +150,7 @@ public class PermissionPeerManager
 
             permissionObject = getPersistenceClass();
 
-            permissionObjectName =
-                (String) conf.getString(PERMISSION_CLASS_KEY,
+            permissionObjectName = conf.getString(PERMISSION_CLASS_KEY,
                                         permissionObject.getName());
 
             // Maybe the user set a new value...
@@ -162,29 +161,24 @@ public class PermissionPeerManager
              * which saves us much time and hassle if it fails...
              */
 
-            nameColumn =
-                (String) persistentPeerClass.getField(
-                    (String) conf.getString(PERMISSION_NAME_COLUMN_KEY,
-                                            PERMISSION_NAME_COLUMN_DEFAULT)
-                   ).get(null);
+            nameColumn = (String) persistentPeerClass.getField(
+                    conf.getString(PERMISSION_NAME_COLUMN_KEY,
+                                   PERMISSION_NAME_COLUMN_DEFAULT)
+                    ).get(null);
 
-            idColumn =
-                (String) persistentPeerClass.getField(
-                    (String) conf.getString(PERMISSION_ID_COLUMN_KEY,
-                                            PERMISSION_ID_COLUMN_DEFAULT)
-                   ).get(null);
+            idColumn = (String) persistentPeerClass.getField(
+                    conf.getString(PERMISSION_ID_COLUMN_KEY,
+                                   PERMISSION_ID_COLUMN_DEFAULT)
+                    ).get(null);
 
-
-            namePropDesc =
-                new PropertyDescriptor(
-                    (String) conf.getString(PERMISSION_NAME_PROPERTY_KEY,
-                                            PERMISSION_NAME_PROPERTY_DEFAULT),
+            namePropDesc = new PropertyDescriptor(
+                    conf.getString(PERMISSION_NAME_PROPERTY_KEY,
+                                   PERMISSION_NAME_PROPERTY_DEFAULT),
                     permissionObject);
 
-            idPropDesc =
-                new PropertyDescriptor(
-                    (String) conf.getString(PERMISSION_ID_PROPERTY_KEY,
-                                            PERMISSION_ID_PROPERTY_DEFAULT),
+            idPropDesc = new PropertyDescriptor(
+                    conf.getString(PERMISSION_ID_PROPERTY_KEY,
+                                   PERMISSION_ID_PROPERTY_DEFAULT),
                     permissionObject);
         }
         catch (Exception e)

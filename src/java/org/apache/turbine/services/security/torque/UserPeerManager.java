@@ -192,9 +192,8 @@ public class UserPeerManager
 
             userObject = getPersistenceClass();
 
-            userObjectName = (String) conf
-                .getString(USER_CLASS_KEY,
-                           userObject.getName());
+            userObjectName = conf.getString(USER_CLASS_KEY,
+                    userObject.getName());
 
             // Maybe the user set a new value...
             userObject = Class.forName(userObjectName);
@@ -205,111 +204,111 @@ public class UserPeerManager
              */
 
             nameColumn = (String) userPeerClass.getField(
-                (String) conf.getString(USER_NAME_COLUMN_KEY,
-                                        USER_NAME_COLUMN_DEFAULT)
+                conf.getString(USER_NAME_COLUMN_KEY,
+                               USER_NAME_COLUMN_DEFAULT)
                 ).get(null);
 
             idColumn = (String) userPeerClass.getField(
-                (String) conf.getString(USER_ID_COLUMN_KEY,
-                                        USER_ID_COLUMN_DEFAULT)
+                conf.getString(USER_ID_COLUMN_KEY,
+                               USER_ID_COLUMN_DEFAULT)
                 ).get(null);
 
             passwordColumn = (String) userPeerClass.getField(
-                (String) conf.getString(USER_PASSWORD_COLUMN_KEY,
-                                        USER_PASSWORD_COLUMN_DEFAULT)
+                conf.getString(USER_PASSWORD_COLUMN_KEY,
+                               USER_PASSWORD_COLUMN_DEFAULT)
                 ).get(null);
 
             firstNameColumn  = (String) userPeerClass.getField(
-                (String) conf.getString(USER_FIRST_NAME_COLUMN_KEY,
-                                        USER_FIRST_NAME_COLUMN_DEFAULT)
+                conf.getString(USER_FIRST_NAME_COLUMN_KEY,
+                               USER_FIRST_NAME_COLUMN_DEFAULT)
                 ).get(null);
 
             lastNameColumn = (String) userPeerClass.getField(
-                (String) conf.getString(USER_LAST_NAME_COLUMN_KEY,
-                                        USER_LAST_NAME_COLUMN_DEFAULT)
+                conf.getString(USER_LAST_NAME_COLUMN_KEY,
+                               USER_LAST_NAME_COLUMN_DEFAULT)
                 ).get(null);
 
             emailColumn = (String) userPeerClass.getField(
-                (String) conf.getString(USER_EMAIL_COLUMN_KEY,
-                                        USER_EMAIL_COLUMN_DEFAULT)
+                conf.getString(USER_EMAIL_COLUMN_KEY,
+                               USER_EMAIL_COLUMN_DEFAULT)
                 ).get(null);
 
             confirmColumn    = (String) userPeerClass.getField(
-                (String) conf.getString(USER_CONFIRM_COLUMN_KEY,
-                                        USER_CONFIRM_COLUMN_DEFAULT)
+                conf.getString(USER_CONFIRM_COLUMN_KEY,
+                               USER_CONFIRM_COLUMN_DEFAULT)
                 ).get(null);
 
             createDateColumn = (String) userPeerClass.getField(
-                (String) conf.getString(USER_CREATE_COLUMN_KEY,
-                                        USER_CREATE_COLUMN_DEFAULT)
+                conf.getString(USER_CREATE_COLUMN_KEY,
+                               USER_CREATE_COLUMN_DEFAULT)
                 ).get(null);
 
             lastLoginColumn = (String) userPeerClass.getField(
-                (String) conf.getString(USER_LAST_LOGIN_COLUMN_KEY,
-                                        USER_LAST_LOGIN_COLUMN_DEFAULT)
+                conf.getString(USER_LAST_LOGIN_COLUMN_KEY,
+                               USER_LAST_LOGIN_COLUMN_DEFAULT)
                 ).get(null);
 
             objectdataColumn = (String) userPeerClass.getField(
-                (String) conf.getString(USER_OBJECTDATA_COLUMN_KEY,
-                                        USER_OBJECTDATA_COLUMN_DEFAULT)
+                conf.getString(USER_OBJECTDATA_COLUMN_KEY,
+                               USER_OBJECTDATA_COLUMN_DEFAULT)
                 ).get(null);
 
             namePropDesc =
-                new PropertyDescriptor((String) conf.getString(
+                new PropertyDescriptor(conf.getString(
                                            USER_NAME_PROPERTY_KEY,
                                            USER_NAME_PROPERTY_DEFAULT),
                                        userObject);
 
             idPropDesc =
-                new PropertyDescriptor((String) conf.getString(
+                new PropertyDescriptor(conf.getString(
                                            USER_ID_PROPERTY_KEY,
                                            USER_ID_PROPERTY_DEFAULT),
                                        userObject);
 
             passwordPropDesc =
-                new PropertyDescriptor((String) conf.getString(
+                new PropertyDescriptor(conf.getString(
                                            USER_PASSWORD_PROPERTY_KEY,
                                            USER_PASSWORD_PROPERTY_DEFAULT),
                                        userObject);
 
             firstNamePropDesc =
-                new PropertyDescriptor((String) conf.getString(
+                new PropertyDescriptor(conf.getString(
                                            USER_FIRST_NAME_PROPERTY_KEY,
                                            USER_FIRST_NAME_PROPERTY_DEFAULT),
                                        userObject);
 
             lastNamePropDesc   =
-                new PropertyDescriptor((String) conf.getString(
+                new PropertyDescriptor(conf.getString(
                                            USER_LAST_NAME_PROPERTY_KEY,
                                            USER_LAST_NAME_PROPERTY_DEFAULT),
                                        userObject);
 
             emailPropDesc =
-                new PropertyDescriptor((String) conf.getString(
+                new PropertyDescriptor(conf.getString(
                                            USER_EMAIL_PROPERTY_KEY,
                                            USER_EMAIL_PROPERTY_DEFAULT),
                                        userObject);
 
             confirmPropDesc =
-                new PropertyDescriptor((String) conf.getString(
+                new PropertyDescriptor(conf.getString(
                                            USER_CONFIRM_PROPERTY_KEY,
                                            USER_CONFIRM_PROPERTY_DEFAULT),
                                        userObject);
 
             createDatePropDesc =
-                new PropertyDescriptor((String) conf.getString(
+                new PropertyDescriptor(conf.getString(
                                            USER_CREATE_PROPERTY_KEY,
                                            USER_CREATE_PROPERTY_DEFAULT),
                                        userObject);
 
             lastLoginPropDesc  =
-                new PropertyDescriptor((String) conf.getString(
+                new PropertyDescriptor(conf.getString(
                                            USER_LAST_LOGIN_PROPERTY_KEY,
                                            USER_LAST_LOGIN_PROPERTY_DEFAULT),
                                        userObject);
 
             objectdataPropDesc =
-                new PropertyDescriptor((String) conf.getString(
+                new PropertyDescriptor(conf.getString(
                                            USER_OBJECTDATA_PROPERTY_KEY,
                                            USER_OBJECTDATA_PROPERTY_DEFAULT),
                                        userObject);
@@ -1522,7 +1521,7 @@ public class UserPeerManager
             Class userWrapperClass = TurbineSecurity.getUserClass();
 
             Class [] clazz = new Class [] { Persistent.class };
-            Object [] params = new Object [] { (Persistent)p };
+            Object [] params = new Object [] { p };
 
             u = (User) userWrapperClass
                 .getConstructor(clazz)
