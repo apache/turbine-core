@@ -54,7 +54,15 @@ package org.apache.turbine.services.assemblerbroker.util.java;
  * <http://www.apache.org/>.
  */
 
+import java.util.Iterator;
 import java.util.Vector;
+
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.GenericLoader;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
@@ -66,17 +74,24 @@ import org.apache.turbine.util.ObjectUtils;
  * the module packages defined in the TurbineResource.properties.
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public abstract class JavaBaseFactory implements AssemblerFactory
+public abstract class JavaBaseFactory
+    implements AssemblerFactory
 {
-    /** A vector of packages */
+    /** A vector of packages. */
     private static Vector packages =
-        TurbineResources.getVector("module.packages");
+        TurbineResources.getVector(TurbineConstants.MODULE_PACKAGES);
+
+    /** Logging */
+    private static Log log = LogFactory.getLog(JavaBaseFactory.class);
+
 
     static
     {
         ObjectUtils.addOnce(packages, GenericLoader.getBasePackage());
+        log.debug("Added the following packages: " + packages);
     }
 
     /**
@@ -89,49 +104,83 @@ public abstract class JavaBaseFactory implements AssemblerFactory
     public Assembler getAssembler(String packageName, String name)
     {
         Assembler assembler = null;
+        
+        log.debug("Class Fragment is " + name);
 
-        for (int i = 0; i < packages.size(); i++)
+        if (StringUtils.isNotEmpty(name))
         {
-            String className = ((String) packages.elementAt(i) + "."
-                    + packageName + "." + name);
-            try
+            int dotIndex = name.lastIndexOf('.');
+
+            if (dotIndex > 0)
             {
-                Class servClass = Class.forName(className);
-                assembler = (Assembler) servClass.newInstance();
-                return assembler;
+                //
+                // Convert Foo.Bar.Baz ---> foo.bar.Baz
+                StringBuffer nameBuffer = new StringBuffer();
+                nameBuffer.append(name.substring(0, dotIndex).toLowerCase());
+                nameBuffer.append('.');
+                nameBuffer.append(name.substring(dotIndex + 1));
+                name = nameBuffer.toString();
             }
-            catch (ClassNotFoundException cnfe)
+
+            log.debug("Class Fragment now " + name);
+
+            for (Iterator it = packages.iterator(); it.hasNext();)
             {
-                // Do this so we loop through all the packages.
+                StringBuffer className = new StringBuffer();
+            
+                className.append(it.next());
+                className.append('.');
+                className.append(packageName);
+                className.append('.');
+                className.append(name);
+            
+                log.debug("Trying " + className);
+
+                try
+                {
+                    Class servClass = Class.forName(className.toString());
+                    assembler = (Assembler) servClass.newInstance();
+                    break; // for()
+                }
+                catch (ClassNotFoundException cnfe)
+                {
+                    // Do this so we loop through all the packages.
+                    log.debug(className + ": Not found");
+                }
+                catch (NoClassDefFoundError ncdfe)
+                {
+                    // Do this so we loop through all the packages.
+                    log.debug(className + ": No Class Definition found");
+                }
+                catch (ClassCastException cce)
+                {
+                    // This means trouble!
+                    // Alternatively we can throw this exception so
+                    // that it will appear on the client browser
+                    log.error(cce);
+                    break; // for()
+                }
+                catch (InstantiationException ine)
+                {
+                    // This means trouble!
+                    // Alternatively we can throw this exception so
+                    // that it will appear on the client browser
+                    log.error(ine);
+                    break; // for()
+                }
+                catch (IllegalAccessException ilae)
+                {
+                    // This means trouble!
+                    // Alternatively we can throw this exception so
+                    // that it will appear on the client browser
+                    log.error(ilae);
+                    break; // for()
+                }
+                // With ClassCastException, InstantiationException we hit big problems
             }
-            catch (NoClassDefFoundError ncdfe)
-            {
-                // Do this so we loop through all the packages.
-            }
-            catch (ClassCastException cce)
-            {
-                // This means trouble!
-                // Alternatively we can throw this exception so
-                // that it will appear on the client browser
-                return null;
-            }
-            catch (InstantiationException ine)
-            {
-                // This means trouble!
-                // Alternatively we can throw this exception so
-                // that it will appear on the client browser
-                return null;
-            }
-            catch (IllegalAccessException ilae)
-            {
-                // This means trouble!
-                // Alternatively we can throw this exception so
-                // that it will appear on the client browser
-                return null;
-            }
-            // With ClassCastException, InstantiationException
-            // we hit big problems
         }
+        log.debug("Returning: " + assembler);
+
         return assembler;
     }
 }
