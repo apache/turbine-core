@@ -387,6 +387,7 @@ public class FileItem implements DataSource
             fileName = instanceName + "_upload_" + fileName + ".tmp";
             fileName = path + "/" + fileName;
             item.storeLocation = new File(fileName);
+            item.storeLocation.deleteOnExit();
         }
         else
         {
@@ -409,17 +410,17 @@ public class FileItem implements DataSource
     {
         if (inMemory())
         {
-            FileWriter writer = null;
+            FileOutputStream fout = null;
             try
             {
-                writer = new FileWriter(file);
-                writer.write(getString());
+                fout = new FileOutputStream(file);
+                fout.write(get());
             }
             finally
             {
-                if (writer != null)
+                if (fout != null)
                 {
-                    writer.close();
+                    fout.close();
                 }
             }
         }
