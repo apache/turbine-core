@@ -99,7 +99,7 @@ public class LogoutUser
     {
         User user = data.getUser();
 
-        if (user != null)
+        if (!TurbineSecurity.isAnonymousUser(user))
         {
             // Make sure that the user has really logged in...
             if (!user.hasLoggedIn())
