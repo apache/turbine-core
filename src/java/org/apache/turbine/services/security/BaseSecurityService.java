@@ -115,15 +115,6 @@ public abstract class BaseSecurityService
 {
     // management of Groups/Role/Permissions
 
-    /** Holds a list of all groups in the systems, for speeding up the access */
-    private GroupSet allGroups = null;
-
-    /** Holds a list of all roles in the systems, for speeding up the access */
-    private RoleSet allRoles = null;
-
-    /** Holds a list of all permissions in the systems, for speeding up the access */
-    private PermissionSet allPermissions = null;
-
     /** The number of threads concurrently reading security information */
     private int readerCount = 0;
 
@@ -1102,17 +1093,7 @@ public abstract class BaseSecurityService
     public GroupSet getAllGroups()
             throws DataBackendException
     {
-        if (allGroups == null)
-        {
-            synchronized (this)
-            {
-                if (allGroups == null)
-                {
-                    allGroups = getGroups(new Criteria());
-                }
-            }
-        }
-        return allGroups;
+        return getGroups(new Criteria());
     }
 
     /**
@@ -1125,17 +1106,7 @@ public abstract class BaseSecurityService
     public RoleSet getAllRoles()
             throws DataBackendException
     {
-        if (allRoles == null)
-        {
-            synchronized (this)
-            {
-                if (allRoles == null)
-                {
-                    allRoles = getRoles(new Criteria());
-                }
-            }
-        }
-        return allRoles;
+        return getRoles(new Criteria());
     }
 
     /**
@@ -1148,17 +1119,7 @@ public abstract class BaseSecurityService
     public PermissionSet getAllPermissions()
             throws DataBackendException
     {
-        if (allPermissions == null)
-        {
-            synchronized (this)
-            {
-                if (allPermissions == null)
-                {
-                    allPermissions = getPermissions(new Criteria());
-                }
-            }
-        }
-        return allPermissions;
+        return getPermissions(new Criteria());
     }
 
     /**
