@@ -110,7 +110,7 @@ public class AccessController extends Action
         throws Exception
     {
         if ( data.getUser() != null 
-             && data.getUser().getName().length > 0
+             && data.getUser().getName().length() > 0
              && data.getUser().hasLoggedIn() )
         {
             AccessControlList acl = (AccessControlList)
