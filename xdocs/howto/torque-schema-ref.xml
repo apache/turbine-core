@@ -71,12 +71,12 @@ Some of the following examples are taken from the project-schema.xml document in
         </ul>
     </p>
     </subsection>
-    <subsection name="Attribute: defaultJavaNameMethod">
+    <subsection name="Attribute: defaultJavaNamingMethod">
     <p>
     This attribute determines how table or column names, from the
     name attribute of the table or column element, are converted to a
     Java class or method name respectively when creating the OM java
-    objects. defaultJavaNameMethod can contain 3 different values:
+    objects. defaultJavaNamingMethod can contain 3 different values:
         <ul>
 	    <li>nochange - Indicates no change is performed.</li>
 	    <li>underscore - Underscores are removed, First letter is
