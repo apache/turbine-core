@@ -54,90 +54,49 @@ package org.apache.turbine.services;
  * <http://www.apache.org/>.
  */
 
-import java.util.Properties;
 import org.apache.commons.configuration.Configuration;
 
-
 /**
- * Classes that implement this interface can act as a broker for
+ * Classes that implement this interface can act as a manager for
  * <code>Service</code> classes.
  *
- * Functionality that <code>ServiceBroker</code> provides in addition
- * to <code>InitableBroker</code> functionality includes:
+ * Functionality that <code>ServiceManager</code> provides in addition
+ * to <code>ServiceBroker</code> functionality includes configuration
+ * of the manager.
  *
- * <ul>
- *
- * <li>Maintaining service name to class name mapping, allowing
- * plugable service implementations.</li>
- *
- * <li>Providing <code>Services</code> with <code>Properties</code>
- * based on a system wide configuration mechanism.</li>
- *
- * </ul>
- *
- * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
- * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
- * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public interface ServiceBroker
+public interface ServiceManager extends ServiceBroker
 {
     /**
-     * Determines whether a service is registered in the configured
-     * <code>TurbineResources.properties</code>.
-     *
-     * @param serviceName The name of the service whose existance to check.
-     * @return Registration predicate for the desired services.
+     * Initialize this service manager.
      */
-    boolean isRegistered(String serviceName);
+    public void init() throws InitializationException;
 
     /**
-     * Performs early initialization of specified service.
+     * Get the configuration for this service manager.
      *
-     * @param name The name of the service.
-     * @param data An Object to use for initialization activities.
-     * @exception InitializationException, if the service is unknown
-     * or can't be initialized.
+     * @return Manager configuration.
      */
-    void initService(String name)
-        throws InitializationException;
+    public Configuration getConfiguration();
 
     /**
-     * Shutdowns a Service.
+     * Set the configuration object for the services broker.
+     * This is the configuration that contains information
+     * about all services in the care of this service
+     * manager.
      *
-     * This method is used to release resources allocated by a
-     * Service, and return it to initial (uninitailized) state.
-     *
-     * @param name The name of the Service to be uninitialized.
+     * @param configuration Manager configuration.
      */
-    void shutdownService(String name);
+    public void setConfiguration(Configuration configuration);
 
     /**
-     * Shutdowns all Services.
+     * Set the application root.
      *
-     * This method is used to release resources allocated by
-     * Services, and return them to initial (uninitialized) state.
+     * @param String application root
      */
-    void shutdownServices();
-
-    /**
-     * Returns an instance of requested Service.
-     *
-     * @param name The name of the Service requested.
-     * @return An instance of requested Service.
-     * @exception InstantiationException, if the service is unknown or
-     * can't be initialized.
-     */
-    Service getService(String name)
-        throws InstantiationException;
-
-    /**
-     * Returns the configuration of a specific service. Services
-     * use this method to retrieve their configuration.
-     *
-     * @param name The name of the service.
-     * @return Configuration of the requested service.
-     */
-    Configuration getConfiguration(String name);
+    public void setApplicationRoot(String applicationRoot);
 }

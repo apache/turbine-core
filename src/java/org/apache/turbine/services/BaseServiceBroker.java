@@ -54,54 +54,228 @@ package org.apache.turbine.services;
  * <http://www.apache.org/>.
  */
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.PrintWriter;
+
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
+import java.util.Stack;
+
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
-import org.apache.turbine.util.StringUtils;
 
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
- * A generic implementation of a <code>ServiceBroker</code>.
- *
- * Functionality that <code>ServiceBroker</code> provides in addition
- * to <code>InitableBroker</code> functionality includes:
+ * A generic implementation of a <code>ServiceBroker</code> which
+ * provides:
  *
  * <ul>
- *
  * <li>Maintaining service name to class name mapping, allowing
  * plugable service implementations.</li>
- *
- * <li>Providing <code>Services</code> with <code>Properties</code>
- * based on system wide configuration mechanism.</li>
- *
+ * <li>Providing <code>Services</code> with a configuration based on
+ * system wide configuration mechanism.</li>
  * </ul>
  *
  * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class BaseServiceBroker
-    extends BaseInitableBroker
     implements ServiceBroker
 {
-    /** Mapping of Service names to class names. */
-    //protected Hashtable mapping = new Hashtable();
+    /**
+     * Mapping of Service names to class names.
+     */
     protected Configuration mapping = (Configuration) new BaseConfiguration();
 
-    /** A repository of Service instances. */
+    /**
+     * A repository of Service instances.
+     */
     protected Hashtable services = new Hashtable();
 
     /**
-     * Default constructor of InitableBroker.
+     * Configuration for the services broker.
+     * The configuration should be set by the application
+     * in which the services framework is running.
+     */
+    protected Configuration configuration;
+
+    /**
+     * A prefix for <code>Service</code> properties in
+     * TurbineResource.properties.
+     */
+    public static final String SERVICE_PREFIX = "services.";
+
+    /**
+     * A <code>Service</code> property determining its implementing
+     * class name .
+     */
+    public static final String CLASSNAME_SUFFIX = ".classname";
+
+    /**
+     * These are objects that the parent application
+     * can provide so that application specific
+     * services have a mechanism to retrieve specialized
+     * information. For example, in Turbine there are services
+     * that require the RunData object: these services can
+     * retrieve the RunData object that Turbine has placed
+     * in the service manager. This alleviates us of
+     * the requirement of having init(Object) all
+     * together.
+     */
+    protected Hashtable serviceObjects = new Hashtable();
+
+    /** Logging */
+    private Log log = LogFactory.getLog(this.getClass());
+
+    /**
+     * Application root path as set by the
+     * parent application.
+     */
+    protected String applicationRoot;
+
+    /**
+     * Default constructor, protected as to only be useable by subclasses.
      *
      * This constructor does nothing.
      */
     protected BaseServiceBroker()
     {
+    }
+
+    /**
+     * Set the configuration object for the services broker.
+     * This is the configuration that contains information
+     * about all services in the care of this service
+     * manager.
+     *
+     * @param configuration Broker configuration.
+     */
+    public void setConfiguration(Configuration configuration)
+    {
+        this.configuration = configuration;
+    }
+
+    /**
+     * Get the configuration for this service manager.
+     *
+     * @return Broker configuration.
+     */
+    public Configuration getConfiguration()
+    {
+        return configuration;
+    }
+
+    /**
+     * Initialize this service manager.
+     */
+    public void init() throws InitializationException
+    {
+        // Check:
+        //
+        // 1. The configuration has been set.
+        // 2. Make sure the application root has been set.
+
+        // FIXME: Make some service framework exceptions to throw in
+        // the event these requirements aren't satisfied.
+
+        // Create the mapping between service names
+        // and their classes.
+        initMapping();
+
+        // Start services that have their 'earlyInit'
+        // property set to 'true'.
+        initServices(false);
+    }
+
+    /**
+     * Set an application specific service object
+     * that can be used by application specific
+     * services.
+     *
+     * @param String name of service object
+     * @param Object value of service object
+     */
+    public void setServiceObject(String name, Object value)
+    {
+        serviceObjects.put(name, value);
+    }
+
+    /**
+     * Get an application specific service object.
+     *
+     * @return Object application specific service object
+     */
+    public Object getServiceObject(String name)
+    {
+        return serviceObjects.get(name);
+    }
+
+    /**
+     * Creates a mapping between Service names and class names.
+     *
+     * The mapping is built according to settings present in
+     * TurbineResources.properties.  The entries should have the
+     * following form:
+     *
+     * <pre>
+     * services.MyService.classname=com.mycompany.MyServiceImpl
+     * services.MyOtherService.classname=com.mycompany.MyOtherServiceImpl
+     * </pre>
+     *
+     * <br>
+     *
+     * Generic ServiceBroker provides no Services.
+     */
+    protected void initMapping()
+    {
+        /*
+         * These keys returned in an order that corresponds
+         * to the order the services are listed in
+         * the TR.props.
+         *
+         * When the mapping is created we use a Configuration
+         * object to ensure that the we retain the order
+         * in which the order the keys are returned.
+         *
+         * There's no point in retrieving an ordered set
+         * of keys if they aren't kept in order :-)
+         */
+        Iterator keys = configuration.getKeys();
+
+        while(keys.hasNext())
+        {
+            String key = (String)keys.next();
+            String [] keyParts = StringUtils.split(key, ".");
+
+            if ((keyParts.length == 3) 
+                && (keyParts[0] + ".").equals(SERVICE_PREFIX) 
+                && ("." + keyParts[2]).equals(CLASSNAME_SUFFIX))
+            {
+                String serviceKey = keyParts[1];
+                log.info("Added Mapping for Service: " + serviceKey);
+
+                if (! mapping.containsKey(serviceKey))
+                {
+                    mapping.setProperty(serviceKey,
+                                        configuration.getString(key));
+                }
+            }
+        }
     }
 
     /**
@@ -117,6 +291,28 @@ public abstract class BaseServiceBroker
     }
 
     /**
+     * Returns an Iterator over all known service names.
+     *
+     * @return An Iterator of service names.
+     */
+    public Iterator getServiceNames()
+    {
+        return mapping.getKeys();
+    }
+
+    /**
+     * Returns an Iterator over all known service names beginning with
+     * the provided prefix.
+     *
+     * @param prefix The prefix against which to test.
+     * @return An Iterator of service names which match the prefix.
+     */
+    public Iterator getServiceNames(String prefix)
+    {
+        return mapping.getKeys(prefix);
+    }
+
+    /**
      * Performs early initialization of specified service.
      *
      * @param name The name of the service (generally the
@@ -126,120 +322,130 @@ public abstract class BaseServiceBroker
      * @exception InitializationException Initialization of this
      * service was not successful.
      */
-    public void initService( String name, Object data )
+    public synchronized void initService(String name)
         throws InitializationException
     {
-        String className = mapping.getString(name);
-        if (StringUtils.isEmpty(className))
+        // Calling getServiceInstance(name) assures that the Service
+        // implementation has its name and broker reference set before
+        // initialization.
+        Service instance = getServiceInstance(name);
+
+        if (!instance.getInit())
         {
-            throw new InitializationException(
-                "ServiceBroker: initialization of unknown service " +
-                name + " requested.");
+            // this call might result in an indirect recursion
+            instance.init();
         }
-        initClass(className, data);
     }
 
     /**
      * Performs early initialization of all services.  Failed early
      * initialization of a Service may be non-fatal to the system,
-     * thuss the exceptions are logged and then discarded.
-     *
-     * @param data An Object to use for initialization activities.
+     * thus any exceptions are logged and the initialization process
+     * continues.
      */
-    public void initServices( Object data )
+    public void initServices()
     {
         try
         {
-            initServices(data, false);
+            initServices(false);
         }
-        catch(InstantiationException notThrown)
+        catch (InstantiationException notThrown)
         {
         }
-        catch(InitializationException notThrown)
+        catch (InitializationException notThrown)
         {
         }
     }
 
     /**
-     * Performs early initiailzation of all services. You can decide
-     * to handle failed initizalizations if you wish, but then
+     * Performs early initialization of all services. You can decide
+     * to handle failed initializations if you wish, but then
      * after one service fails, the other will not have the chance
      * to initialize.
      *
-     * @param data An Object to use for initialization activities.
      * @param report <code>true</code> if you want exceptions thrown.
      */
-    public void initServices( Object data, boolean report )
+    public void initServices(boolean report)
         throws InstantiationException, InitializationException
     {
-        notice("Initializing all services using: " +
-                data.getClass().getName());
-        Iterator names = mapping.getKeys();
-        // throw exceptions
-        if(report)
+        Iterator names = getServiceNames();
+        if (report)
         {
-            while(names.hasNext())
+            // Throw exceptions
+            while (names.hasNext())
             {
-                doInitService(data, (String)names.next());
+                doInitService((String) names.next());
             }
         }
-        // eat exceptions
         else
         {
-            while(names.hasNext())
+            // Eat exceptions
+            while (names.hasNext())
             {
                 try
                 {
-                    doInitService(data, (String)names.next());
+                    doInitService((String) names.next());
                 }
                 // In case of an exception, file an error message; the
                 // system may be still functional, though.
-                catch(InstantiationException e)
+                catch (InstantiationException e)
                 {
-                    error(e);
+                    log.error(e);
                 }
-                catch(InitializationException e)
+                catch (InitializationException e)
                 {
-                    error(e);
+                    log.error(e);
                 }
             }
         }
-        notice("Finished initializing all services!");
+        log.info("Finished initializing all services!");
     }
 
     /**
-     * Internal utility method for use in initServices()
+     * Internal utility method for use in {@link #initServices(boolean)}
      * to prevent duplication of code.
      */
-    private void doInitService(Object data, String name)
+    private void doInitService(String name)
         throws InstantiationException, InitializationException
     {
-        notice("Start Initializing service (early): " + name);
-
-        // Make sure the service has it's name and broker
-        // reference set before initialization.
-        getServiceInstance(name);
-
-        // Perform early initialization.
-        initClass(mapping.getString(name), data);
-
-        notice("Finish Initializing service (early): " + name);
+        // Only start up services that have their earlyInit flag set.
+        if (getConfiguration(name).getBoolean("earlyInit", false))
+        {
+            log.info("Start Initializing service (early): " + name);
+            initService(name);
+            log.info("Finish Initializing service (early): " + name);
+        }
     }
 
     /**
-     * Shuts down a <code>Service</code>.
+     * Shuts down a <code>Service</code>, releasing resources
+     * allocated by an <code>Service</code>, and returns it to its
+     * initial (uninitialized) state.
      *
-     * This method is used to release resources allocated by a
-     * Service, and return it to its initial (uninitialized) state.
-     *
-     * @param name The name of the <code>Service</code> to be uninitialized.
+     * @param name The name of the <code>Service</code> to be
+     * uninitialized.
      */
-    public void shutdownService( String name )
+    public synchronized void shutdownService(String name)
     {
-        String className = mapping.getString(name);
-        if (className != null)
+        try
         {
-            shutdownClass(className);
+            Service service = getServiceInstance(name);
+            if (service != null && service.getInit())
+            {
+                service.shutdown();
+                if (service.getInit() && service instanceof BaseService)
+                {
+                    // BaseService::shutdown() does this by default,
+                    // but could've been overriden poorly.
+                    ((BaseService) service).setInit(false);
+                }
+            }
+        }
+        catch (InstantiationException e)
+        {
+            // Assuming harmless -- log the error and continue.
+            log.error("Shutdown of a nonexistent Service '"
+                      + name + "' was requested", e);
         }
     }
 
@@ -247,11 +453,11 @@ public abstract class BaseServiceBroker
      * Shuts down all Turbine services, releasing allocated resources and
      * returning them to their initial (uninitialized) state.
      */
-    public void shutdownServices( )
+    public void shutdownServices()
     {
-        notice("Shutting down all services!");
+        log.info("Shutting down all services!");
 
-        Iterator serviceNames = mapping.getKeys();
+        Iterator serviceNames = getServiceNames();
         String serviceName = null;
 
         /*
@@ -265,7 +471,7 @@ public abstract class BaseServiceBroker
 
         while (serviceNames.hasNext())
         {
-            serviceName = (String)serviceNames.next();
+            serviceName = (String) serviceNames.next();
             reverseServicesList.add(0, serviceName);
         }
 
@@ -273,8 +479,8 @@ public abstract class BaseServiceBroker
 
         while (serviceNames.hasNext())
         {
-            serviceName = (String)serviceNames.next();
-            notice("Shutting down service: " + serviceName);
+            serviceName = (String) serviceNames.next();
+            log.info("Shutting down service: " + serviceName);
             shutdownService(serviceName);
         }
     }
@@ -287,26 +493,26 @@ public abstract class BaseServiceBroker
      * @exception InstantiationException, if the service is unknown or
      * can't be initialized.
      */
-    public Service getService( String name )
+    public Service getService(String name)
         throws InstantiationException
     {
         Service service;
         try
         {
             service = getServiceInstance(name);
-            if(!service.getInit())
+            if (!service.getInit())
             {
-                synchronized(service.getClass())
+                synchronized (service.getClass())
                 {
-                    if(!service.getInit())
+                    if (!service.getInit())
                     {
-                        notice("Start Initializing service (late): " + name);
+                        log.info("Start Initializing service (late): " + name);
                         service.init();
-                        notice("Finish Initializing service (late): " + name);
+                        log.info("Finish Initializing service (late): " + name);
                     }
                 }
             }
-            if(!service.getInit())
+            if (!service.getInit())
             {
                 // this exception will be caught & rethrown by this very method.
                 // getInit() returning false indicates some initialization issue,
@@ -317,10 +523,10 @@ public abstract class BaseServiceBroker
             }
             return service;
         }
-        catch( InitializationException e )
+        catch (InitializationException e)
         {
             throw new InstantiationException("Service " + name +
-                " failed to initialize", e);
+                                             " failed to initialize", e);
         }
     }
 
@@ -338,33 +544,76 @@ public abstract class BaseServiceBroker
      * instances.
      *
      * @param name The name of the service requested.
-     * @exception InstantiationException, if the service is unknown or
+     * @exception InstantiationException The service is unknown or
      * can't be initialized.
      */
-    protected Service getServiceInstance( String name )
+    protected Service getServiceInstance(String name)
         throws InstantiationException
     {
-        Service service = (Service)services.get(name);
+        Service service = (Service) services.get(name);
 
-        if(service == null)
+        if (service == null)
         {
             String className = mapping.getString(name);
-            if(className == null)
+            if (StringUtils.isEmpty(className))
             {
                 throw new InstantiationException(
                     "ServiceBroker: unknown service " + name + " requested");
             }
             try
             {
-                service = (Service)getInitableInstance(className);
+                service = (Service) services.get(className);
+
+                if (service == null)
+                {
+                    try
+                    {
+                        service = (Service) Class.forName(className).newInstance();
+                    }
+                    // those two errors must be passed to the VM
+                    catch (ThreadDeath t)
+                    {
+                        throw t;
+                    }
+                    catch (OutOfMemoryError t)
+                    {
+                        throw t;
+                    }
+                    catch (Throwable t)
+                    {
+                        // Used to indicate error condition.
+                        String msg = null;
+
+                        if (t instanceof NoClassDefFoundError)
+                        {
+                            msg = "A class referenced by " + className +
+                                " is unavailable. Check your jars and classes.";
+                        }
+                        else if (t instanceof ClassNotFoundException)
+                        {
+                            msg = "Class " + className +
+                                " is unavailable. Check your jars and classes.";
+                        }
+                        else if (t instanceof ClassCastException)
+                        {
+                            msg = "Class " + className +
+                                " doesn't implement the Service interface";
+                        }
+                        else
+                        {
+                            msg = "Failed to instantiate " + className;
+                        }
+
+                        throw new InstantiationException(msg, t);
+                    }
+                }
             }
-            catch(ClassCastException e)
+            catch (ClassCastException e)
             {
-                throw new InstantiationException(
-                    "ServiceBroker: class " + className +
-                    " does not implement Service interface.", e);
+                throw new InstantiationException("ServiceBroker: Class "
+                    + className + " does not implement Service interface.", e);
             }
-            catch(InstantiationException e)
+            catch (InstantiationException e)
             {
                 throw new InstantiationException(
                     "Failed to instantiate service " + name, e);
@@ -378,28 +627,34 @@ public abstract class BaseServiceBroker
     }
 
     /**
-     * Returns the properites of a specific service.
-     *
-     * Generic ServiceBroker returns empty set of Properties.
+     * Returns the configuration for the specified service.
      *
      * @param name The name of the service.
-     * @return Properties of requested Service.
+     * @return Configuration of requested Service.
      */
-    public Properties getProperties( String name )
+    public Configuration getConfiguration(String name)
     {
-        return new Properties();
+        return configuration.subset(SERVICE_PREFIX + name);
     }
 
     /**
-     * Returns the Configuration of a specific service.
+     * Set the application root.
      *
-     * Generic ServiceBroker returns empty Configuration
-     *
-     * @param name The name of the service.
-     * @return Properties of requested Service.
+     * @param String application root
      */
-    public Configuration getConfiguration( String name )
+    public void setApplicationRoot(String applicationRoot)
     {
-        return (Configuration) new BaseConfiguration();
+        this.applicationRoot = applicationRoot;
+    }
+
+    /**
+     * Get the application root as set by
+     * the parent application.
+     *
+     * @return String application root
+     */
+    public String getApplicationRoot()
+    {
+        return applicationRoot;
     }
 }
