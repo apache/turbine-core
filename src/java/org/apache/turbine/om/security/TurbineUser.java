@@ -54,9 +54,6 @@ package org.apache.turbine.om.security;
  * <http://www.apache.org/>.
  */
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
-
 import java.sql.Connection;
 
 import java.util.Date;
@@ -661,14 +658,6 @@ public class TurbineUser extends SecurityObject implements User
         catch (Exception e)
         {
             log.error("TurbineUser.valueUnbound(): " + e.getMessage(), e);
-
-            // To prevent messages being lost in case the logging system
-            // goes away before sessions get unbound on servlet container
-            // shutdown, print the stacktrace to the container's console.
-            ByteArrayOutputStream ostr = new ByteArrayOutputStream();
-            e.printStackTrace(new PrintWriter(ostr, true));
-            String stackTrace = ostr.toString();
-            System.out.println(stackTrace);
         }
     }
 
