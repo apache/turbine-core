@@ -143,7 +143,7 @@ public class VelocityOnlyLayout
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.
         ConcreteElement results =
-            ScreenLoader.getInstance().eval(data, screenName);
+            ScreenLoader.getInstance().eval(pipelineData, screenName);
 
         String returnValue = (results == null) ? "" : results.toString();
 
