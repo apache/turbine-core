@@ -50,7 +50,7 @@ services.VelocityService.default.screen=VelocityScreen
 services.VelocityService.default.layout = VelocityECSLayout
 services.VelocityService.default.navigation=VelocityNavigation
 services.VelocityService.default.error.screen = VelocityErrorScreen
-services.VelocityService.default.layout.template = /Default.vm
+services.VelocityService.default.layout.template = Default.vm
 
 #
 # Set this to true to catch Velocity Errors and display them in the log file
