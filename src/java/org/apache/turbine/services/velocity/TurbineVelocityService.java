@@ -120,6 +120,11 @@ public class TurbineVelocityService extends BaseTemplateEngineService
     private static final String DEFAULT_CHAR_SET = "ISO-8859-1";
 
     /**
+     * The prefix used for URIs which are of type <code>absolute</code>.
+     */
+    private static final String ABSOLUTE_PREFIX = "file://";
+
+    /**
      * The context used to the store the context
      * containing the global application tools.
      */
@@ -600,6 +605,11 @@ public class TurbineVelocityService extends BaseTemplateEngineService
                         }
                         path = "jar:file:" +
                             TurbineServlet.getRealPath(path) + entry;
+                    }
+                    else if (path.startsWith(ABSOLUTE_PREFIX))
+                    {
+                        path = path.substring (ABSOLUTE_PREFIX.length(),
+                                               path.length());
                     }
                     else if (!path.startsWith("jar:"))
                     {
