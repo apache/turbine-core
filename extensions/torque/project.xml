@@ -36,9 +36,9 @@
   
 
   <repository>
-    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2/src/torque</connection>
-    <developerConnection>scm:cvs:ext:${maven.username}@cvs.apache.org:/home/cvs:jakarta-turbine-2/src/torque</developerConnection>
-    <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2/src/torque</url>
+    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2/extensions/torque</connection>
+    <developerConnection>scm:cvs:ext:${maven.username}@cvs.apache.org:/home/cvs:jakarta-turbine-2/extensions/torque</developerConnection>
+    <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2.4/extensions/torque</url>
   </repository>
 
 
