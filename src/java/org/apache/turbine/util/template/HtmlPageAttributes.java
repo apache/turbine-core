@@ -57,7 +57,7 @@ package org.apache.turbine.util.template;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -139,13 +139,13 @@ public class HtmlPageAttributes
     private Map bodyAttributes = new HashMap();
 
     /** Script references */
-    private List scripts = new Vector();
+    private List scripts = new ArrayList();
 
     /** Stylesheet references */
-    private List styleSheets = new Vector();
+    private List styleSheets = new ArrayList();
 
     /** Inline styles */
-    private List styles = new Vector();
+    private List styles = new ArrayList();
 
     /** Meta tags for the HEAD */
     private Map metaTags = new HashMap();
