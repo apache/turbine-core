@@ -58,7 +58,8 @@ import java.util.Vector;
 
 import java.net.URL;
 
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.xmlrpc.TurbineXmlRpc;
 
 /**
@@ -69,6 +70,9 @@ import org.apache.turbine.services.xmlrpc.TurbineXmlRpc;
  */
 public class FileTransfer
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(FileTransfer.class);
+
     /**
      * Method to allow a client to send a file to a server.
      *
@@ -112,7 +116,7 @@ public class FileTransfer
         }
         catch (Exception e)
         {
-            Log.error("Error sending file to server:", e);
+            log.error("Error sending file to server:", e);
             throw new Exception(e.toString());
         }
     }
@@ -169,7 +173,7 @@ public class FileTransfer
         }
         catch (Exception e)
         {
-            Log.error("Error sending file to server:", e);
+            log.error("Error sending file to server:", e);
             throw new Exception(e.toString());
         }
     }
@@ -218,7 +222,7 @@ public class FileTransfer
         }
         catch (Exception e)
         {
-            Log.error("Error getting file from server:", e);
+            log.error("Error getting file from server:", e);
             throw new Exception(e.toString());
         }
     }
@@ -276,7 +280,7 @@ public class FileTransfer
         }
         catch (Exception e)
         {
-            Log.error("Error getting file from server:", e);
+            log.error("Error getting file from server:", e);
             throw new Exception(e.toString());
         }
     }
@@ -313,7 +317,7 @@ public class FileTransfer
         }
         catch (Exception e)
         {
-            Log.error("Error removing file from server:", e);
+            log.error("Error removing file from server:", e);
             throw new Exception(e.toString());
         }
     }
@@ -358,7 +362,7 @@ public class FileTransfer
         }
         catch (Exception e)
         {
-            Log.error("Error removing file from server:", e);
+            log.error("Error removing file from server:", e);
             throw new Exception(e.toString());
         }
     }

@@ -25,13 +25,13 @@ package org.apache.turbine.services.xmlrpc.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -64,7 +64,8 @@ import java.io.StringWriter;
 
 import javax.mail.internet.MimeUtility;
 
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.servlet.TurbineServlet;
@@ -98,8 +99,11 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  */
 public class FileHandler
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(FileHandler.class);
+
     /**
-     * Default Constructor 
+     * Default Constructor
      */
     public FileHandler()
     {
@@ -127,13 +131,13 @@ public class FileHandler
      *
      * @param fileName: Name to give the file created to store
      *    the contents.
-     * 
+     *
      * @param targetLocationProperty: storage location of this file
-     *    is controlled by this property that is specified in 
+     *    is controlled by this property that is specified in
      *    the TR.props file or an included properties file.
      */
-    public boolean send(String fileContents, 
-                        String targetLocationProperty, 
+    public boolean send(String fileContents,
+                        String targetLocationProperty,
                         String fileName)
     {
         /*
@@ -143,10 +147,10 @@ public class FileHandler
          * the directory in which to place the fileContents
          * with the name fileName.
          */
-        return writeFileContents(fileContents, targetLocationProperty, 
+        return writeFileContents(fileContents, targetLocationProperty,
                                  fileName);
     }
-    
+
     /**
      * The client has indicated that it would like
      * to get a file from the server.
@@ -164,9 +168,9 @@ public class FileHandler
      *
      * @param fileName: Name to give the file created to store
      *    the contents.
-     * 
+     *
      * @param targetLocationProperty: storage location of this file
-     *    is controlled by this property that is specified in 
+     *    is controlled by this property that is specified in
      *    the TR.props file or an included properties file.
      *
      * @return the file contents encoded with base64.
@@ -181,7 +185,7 @@ public class FileHandler
          */
         return readFileContents(targetLocationProperty, fileName);
     }
-    
+
     /**
      * Return the content of file encoded for transfer
      *
@@ -194,7 +198,7 @@ public class FileHandler
         File tmpF = new File(".");
 
         String file = TurbineServlet.getRealPath(
-            TurbineResources.getString(targetLocationProperty) + 
+            TurbineResources.getString(targetLocationProperty) +
                 tmpF.separator + fileName);
 
         StringWriter sw = null;
@@ -205,28 +209,28 @@ public class FileHandler
              * This little routine was borrowed from the
              * velocity ContentResource class.
              */
-            
-            sw = new StringWriter();    
+
+            sw = new StringWriter();
 
             reader = new BufferedReader(
                 new InputStreamReader(
                     new FileInputStream(file)));
-            
+
             char buf[] = new char[1024];
             int len = 0;
-            
+
             while ((len = reader.read(buf, 0, 1024)) != -1)
             {
                 sw.write( buf, 0, len );
             }
-            
+
             return MimeUtility.encodeText(sw.toString(), "UTF-8", "B");
         }
         catch (IOException ioe)
         {
-            Log.error("[FileHandler] Unable to encode the contents " +
+            log.error("[FileHandler] Unable to encode the contents " +
                 "of the request file.", ioe);
-            
+
             return null;
         }
         finally
@@ -268,22 +272,22 @@ public class FileHandler
              * If the target location doesn't exist then
              * attempt to create the target location and any
              * necessary parent directories as well.
-             */            
+             */
             if (targetLocation.mkdirs() == false)
             {
-                Log.error("[FileHandler] Could not create target location: " + 
+                log.error("[FileHandler] Could not create target location: " +
                     targetLocation + ". Cannot transfer file from client.");
-                    
+
                 return false;
             }
             else
             {
-                Log.info("[FileHandler] Creating target location:" + 
+                log.info("[FileHandler] Creating target location:" +
                  targetLocation +
                  " in order to complete file transfer from client.");
             }
-        }            
-        
+        }
+
         FileWriter fileWriter = null;
         try
         {
@@ -293,21 +297,21 @@ public class FileHandler
              */
             fileWriter = new FileWriter(
                 targetLocation + "/" + fileName);
-            
+
             /*
              * It is assumed that the file has been encoded
              * and therefore must be decoded before the
              * contents of the file are stored to disk.
-             */            
+             */
             fileWriter.write(MimeUtility.decodeText(fileContents));
 
             return true;
         }
         catch (IOException ioe)
         {
-            Log.error("[FileHandler] Could not write the decoded file " +
+            log.error("[FileHandler] Could not write the decoded file " +
                 "contents to disk for the following reason.", ioe);
-                
+
             return false;
         }
         finally
@@ -329,7 +333,6 @@ public class FileHandler
      * Method to allow a client to remove a file from
      * the server
      *
-     * @param serverURL
      * @param sourceLocationProperty
      * @param sourceFileName
      */
@@ -351,4 +354,4 @@ public class FileHandler
             sourceFile.delete();
         }
     }
-}    
+}

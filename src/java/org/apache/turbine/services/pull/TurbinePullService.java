@@ -64,7 +64,8 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.pool.PoolService;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
@@ -144,6 +145,9 @@ import org.apache.velocity.context.Context;
 public class TurbinePullService extends TurbineBaseService
     implements PullService
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TurbinePullService.class);
+
     /**
      * This is the container for the global web application
      * tools that are used in conjunction with the
@@ -291,7 +295,7 @@ public class TurbinePullService extends TurbineBaseService
          * be refreshed on a per request basis.
          */
         if (refreshToolsPerRequest)
-            Log.info("Pull Model tools will "
+            log.info("Pull Model tools will "
                     + "be refreshed on a per request basis.");
 
         /*
@@ -367,12 +371,12 @@ public class TurbinePullService extends TurbineBaseService
                  */
                 classes.add(new ToolData(toolName, toolClassName, toolClass));
 
-                Log.info("Instantiated tool class " + toolClassName
+                log.info("Instantiated tool class " + toolClassName
                         + " to add to the context as '$"  + toolName + "'");
             }
             catch (Exception e)
             {
-                Log.error("Cannot find tool class " + toolClassName
+                log.error("Cannot find tool class " + toolClassName
                         + ", please check the name of the class.", e);
             }
         }
@@ -443,7 +447,7 @@ public class TurbinePullService extends TurbineBaseService
             }
             catch (Exception e)
             {
-                Log.error(
+                log.error(
                         "Could not instantiate tool " + toolData.toolClassName
                         + " to add to the context", e);
             }
@@ -480,7 +484,7 @@ public class TurbinePullService extends TurbineBaseService
             }
             catch (Exception e)
             {
-                Log.error(
+                log.error(
                         "Could not instantiate tool " + toolData.toolClassName
                         + " to add to the context", e);
             }
@@ -495,7 +499,7 @@ public class TurbinePullService extends TurbineBaseService
      * @param context The context to populate.
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
-     * @param userPerm Whether to retrieve the tools from the
+     * @param usePerm Whether to retrieve the tools from the
      * permanent storage (as opposed to the temporary storage).
      */
     private void populateWithSessionTools(List tools, Context context,
@@ -553,7 +557,7 @@ public class TurbinePullService extends TurbineBaseService
             }
             catch (Exception e)
             {
-                Log.error(
+                log.error(
                         "Could not instantiate tool " + toolData.toolClassName
                         + " to add to the context", e);
             }

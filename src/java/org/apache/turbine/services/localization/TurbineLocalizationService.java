@@ -25,13 +25,13 @@ package org.apache.turbine.services.localization;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -64,7 +64,8 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.StringUtils;
 
 /**
@@ -73,7 +74,7 @@ import org.apache.turbine.util.StringUtils;
  * Locales.</p>
  *
  * <p>Usage example:</p>
- * 
+ *
  * <blockquote><code><pre>
  * LocalizationService ls = (LocalizationService) TurbineServices
  *     .getInstance().getService(LocalizationService.SERVICE_NAME);
@@ -98,6 +99,9 @@ public class TurbineLocalizationService
     extends TurbineBaseService
     implements LocalizationService
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(LocalizationTool.class);
+
     /**
      * The ResourceBundles in this service.
      * Key=bundle name
@@ -153,7 +157,7 @@ public class TurbineLocalizationService
     /**
      * Initialize list of default bundle names.
      *
-     * @param names Ignored.
+     * @param ignored Ignored.
      */
     protected void initBundleNames(String[] ignored)
     {
@@ -437,7 +441,7 @@ public class TurbineLocalizationService
         if (value == null)
         {
             String loc = locale.toString();
-            Log.debug(LocalizationService.SERVICE_NAME +
+            log.debug(LocalizationService.SERVICE_NAME +
                            " noticed missing resource: " +
                            "bundleName=" + bundleName + ", locale=" + loc +
                            ", key=" + key);

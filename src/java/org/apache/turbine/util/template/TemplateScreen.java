@@ -25,13 +25,13 @@ package org.apache.turbine.util.template;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -58,7 +58,8 @@ import org.apache.ecs.ConcreteElement;
 
 import org.apache.turbine.modules.ScreenLoader;
 
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -82,6 +83,9 @@ import org.apache.turbine.util.RunData;
  */
 public class TemplateScreen
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TemplateScreen.class);
+
     /* The RunData object. */
     private RunData data;
 
@@ -120,18 +124,18 @@ public class TemplateScreen
     public String toString()
     {
         String returnValue="";
-        
+
         try
         {
             ConcreteElement results = ScreenLoader.getInstance()
                 .eval(data, this.screen);
-            
+
             if (results != null)
                 returnValue = results.toString();
         }
         catch (Exception e)
         {
-            Log.error(e);
+            log.error(e);
         }
 
         return returnValue;

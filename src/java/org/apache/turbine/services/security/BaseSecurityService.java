@@ -67,7 +67,8 @@ import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
 import org.apache.turbine.util.security.GroupSet;
@@ -97,6 +98,9 @@ import org.apache.turbine.util.security.UnknownEntityException;
 public abstract class BaseSecurityService
     extends TurbineBaseService implements SecurityService
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(BaseSecurityService.class);
+
     // management of Groups/Role/Permissions
 
     /** Holds a list of all groups in the systems, for speeding up the access */
@@ -162,8 +166,8 @@ public abstract class BaseSecurityService
             }
             catch (Exception e)
             {
-                Log.error("Unable to encrypt password." + e.getMessage());
-                Log.error(e);
+                log.error("Unable to encrypt password." + e.getMessage());
+                log.error(e);
 
                 return null;
             }
@@ -181,7 +185,7 @@ public abstract class BaseSecurityService
      *
      * @throws InitializationException Something went wrong in the init
      *         stage
-     */ 
+     */
     public void init()
         throws InitializationException
     {
@@ -293,7 +297,7 @@ public abstract class BaseSecurityService
      *
      * The login name is used for looking up the account.
      *
-     * @param usename The name of the user to be checked.
+     * @param username The name of the user to be checked.
      * @return true if the specified account exists
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
@@ -538,8 +542,8 @@ public abstract class BaseSecurityService
                     }
                     catch (DataBackendException e)
                     {
-                        Log.error("Failed to retrieve global group object");
-                        Log.error(e);
+                        log.error("Failed to retrieve global group object");
+                        log.error(e);
                     }
                 }
             }

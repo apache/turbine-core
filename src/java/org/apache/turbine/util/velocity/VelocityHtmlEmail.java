@@ -58,8 +58,8 @@ import java.net.URL;
 import java.util.Hashtable;
 import javax.mail.MessagingException;
 import org.apache.turbine.services.velocity.TurbineVelocity;
-import org.apache.turbine.services.velocity.VelocityService;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.mail.HtmlEmail;
 import org.apache.velocity.context.Context;
@@ -104,6 +104,9 @@ import org.apache.velocity.context.Context;
  */
 public class VelocityHtmlEmail extends HtmlEmail
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(VelocityHtmlEmail.class);
+
     /**
      * The html template to process, relative to VM's template
      * directory.
@@ -250,7 +253,7 @@ public class VelocityHtmlEmail extends HtmlEmail
         }
         catch (Exception e)
         {
-            Log.error("cannot embed " + surl + ": ", e);
+            log.error("cannot embed " + surl + ": ", e);
         }
         return cid;
     }

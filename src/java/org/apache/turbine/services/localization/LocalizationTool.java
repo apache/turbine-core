@@ -58,7 +58,8 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import org.apache.turbine.services.pull.ApplicationTool;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -70,6 +71,9 @@ import org.apache.turbine.util.RunData;
  */
 public class LocalizationTool implements ApplicationTool
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(LocalizationTool.class);
+
     /**
      * The language and country information parsed from the request's
      * <code>Accept-Language</code> header.  Reset on each request.
@@ -115,7 +119,7 @@ public class LocalizationTool implements ApplicationTool
         }
         catch (MissingResourceException noKey)
         {
-            Log.error(noKey);
+            log.error(noKey);
             return null;
         }
     }

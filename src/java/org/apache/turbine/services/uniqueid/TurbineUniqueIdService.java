@@ -25,13 +25,13 @@ package org.apache.turbine.services.uniqueid;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,7 +55,8 @@ package org.apache.turbine.services.uniqueid;
  */
 
 import org.apache.turbine.Turbine;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.GenerateUniqueId;
 import org.apache.turbine.services.TurbineBaseService;
@@ -72,6 +73,9 @@ public class TurbineUniqueIdService
     extends TurbineBaseService
     implements UniqueIdService
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TurbineUniqueIdService.class);
+
     /** The identifier of this instance of turbine. */
     protected static String turbineId = "UNKNOWN";
 
@@ -113,8 +117,8 @@ public class TurbineUniqueIdService
         MD5 md5 = new MD5();
         turbineId = Bytes.toString(md5.digest(url.toString().getBytes()));
 
-        Log.info("This is Turbine instance running at: " + url);
-        Log.info("The instance id is #" + turbineId);
+        log.info("This is Turbine instance running at: " + url);
+        log.info("The instance id is #" + turbineId);
         setInit(true);
     }
 
@@ -123,7 +127,7 @@ public class TurbineUniqueIdService
      */
     public void shutdown()
     {
-        Log.info("Turbine instance running at " + turbineURL + " shutting down.");
+        log.info("Turbine instance running at " + turbineURL + " shutting down.");
     }
 
     /**

@@ -53,9 +53,7 @@ package org.apache.turbine.services.security.ldap;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-import java.util.Properties;
 import java.util.Hashtable;
-import java.util.StringTokenizer;
 import java.util.Vector;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -67,11 +65,8 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.security.UserManager;
 import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.services.security.ldap.util.ParseExceptionMessage;
-import org.apache.turbine.util.Log;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
 import org.apache.turbine.util.security.PasswordMismatchException;
@@ -119,7 +114,7 @@ public class LDAPUserManager implements UserManager
       * Check wether a specified user's account exists.
       * The login name is used for looking up the account.
       *
-      * @param usename The name of the user to be checked.
+      * @param username The name of the user to be checked.
       * @return true if the specified account exists
       * @throws DataBackendException Error accessing the data backend.
       */
@@ -335,7 +330,8 @@ public class LDAPUserManager implements UserManager
       * Change the password for an User.
       *
       * @param user an User to change password for.
-      * @param password the new password.
+      * @param newPassword the new password.
+      * @param oldPassword the old password.
       * @exception PasswordMismatchException if the supplied password was
       *            incorrect.
       * @exception UnknownEntityException if the user's account does not
@@ -417,8 +413,8 @@ public class LDAPUserManager implements UserManager
     /**
      * Creates an initial context.
      *
-     * @param ldap admin username supplied in TRP.
-     * @param ldap admin password supplied in TRP
+     * @param username admin username supplied in TRP.
+     * @param password admin password supplied in TRP
      * @throws NamingException when an error occurs with the named server.
      */
     public static DirContext bind(String username, String password)

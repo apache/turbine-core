@@ -62,7 +62,8 @@ import javax.servlet.ServletContext;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.ServletUtils;
 
 /**
@@ -82,6 +83,9 @@ import org.apache.turbine.util.ServletUtils;
 public class TurbineServletService
     extends TurbineBaseService implements ServletService
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TurbineServletService.class);
+
     private ServletContext servletContext = null;
     private ServletConfig servletConfig = null;
 
@@ -92,7 +96,7 @@ public class TurbineServletService
      *
      * @throws InitializationException Something went wrong in the init
      *         stage
-     */ 
+     */
     public void init()
         throws InitializationException
     {
@@ -103,24 +107,23 @@ public class TurbineServletService
     /**
      * Called during Turbine.init()
      *
-     * @param config A ServletConfig.
+     * @param servletConfig A ServletConfig.
      *
-     * @throws InitializationException Something went wrong when starting up.
      * @deprecated use init() instead.
      */
-    public void init( ServletConfig servletConfig )
+    public void init(ServletConfig servletConfig)
     {
         try
         {
             this.servletConfig = servletConfig;
             this.servletContext = servletConfig.getServletContext();
 
-            Log.debug("[TurbineServletService] Initializing with ServletConfig");
+            log.debug("[TurbineServletService] Initializing with ServletConfig");
         }
         catch (Exception e)
         {
-            Log.error ( "Cannot initialize TurbineServletService." );
-            Log.error (e);
+            log.error ("Cannot initialize TurbineServletService.");
+            log.error (e);
         }
         setInit(true);
     }
@@ -277,8 +280,7 @@ public class TurbineServletService
      * It will return null if the text is empty or the config object
      * is null.
      *
-     * @param config The ServletConfig.
-     * @param text The String containing a path or path list.
+     * @param path The String containing a path or path list.
      * @return A String with the expanded path or path list.
      */
     public String expandRelative( String path )

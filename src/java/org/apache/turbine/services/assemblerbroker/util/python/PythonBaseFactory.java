@@ -25,13 +25,13 @@ package org.apache.turbine.services.assemblerbroker.util.python;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -68,7 +68,8 @@ import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
 
 import org.apache.turbine.services.resources.TurbineResources;
 
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 
 // JPython Classes
 import org.python.core.Py;
@@ -86,6 +87,8 @@ import org.python.util.PythonInterpreter;
 public abstract class PythonBaseFactory implements AssemblerFactory
 {
 
+    /** Logging */
+    private static Log log = LogFactory.getLog(PythonBaseFactory.class);
 
     public Assembler getAssembler( String subDirectory, String name ) throws Exception
     {
@@ -96,13 +99,13 @@ public abstract class PythonBaseFactory implements AssemblerFactory
         String confName = null;
 
 
-        Log.info ("Screen name for JPython " + name);
+        log.info ("Screen name for JPython " + name);
 
         try
         {
             String path = TurbineResources.getString (
-                TurbineServices.SERVICE_PREFIX 
-                + AssemblerBrokerService.SERVICE_NAME 
+                TurbineServices.SERVICE_PREFIX
+                + AssemblerBrokerService.SERVICE_NAME
                 + ".python.path") + "/";
             confName = path + "conf.py";
             fName = path + subDirectory + "/" + name.toLowerCase() + ".py";
@@ -164,8 +167,8 @@ public abstract class PythonBaseFactory implements AssemblerFactory
                 // We log the error here because this code is not widely tested yet.
                 // After we tested the code on a range of platforms this won't be
                 // usefull anymore.
-                Log.error ("PYTHON SCRIPT SCREEN LOADER ERROR:");
-                Log.error (e.toString());
+                log.error ("PYTHON SCRIPT SCREEN LOADER ERROR:");
+                log.error (e.toString());
                 // Let the error fall through like the normal way.
                 throw e;
             }

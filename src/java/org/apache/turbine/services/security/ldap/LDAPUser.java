@@ -58,7 +58,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.Hashtable;
-import java.util.Properties;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.Attribute;
@@ -66,9 +65,8 @@ import javax.naming.NamingException;
 import org.apache.torque.om.BaseObject;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.util.Log;
-import org.apache.torque.om.ObjectKey;
-import org.apache.torque.om.NumberKey;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.StringKey;
 
 /**
@@ -83,6 +81,9 @@ import org.apache.torque.om.StringKey;
  */
 public class LDAPUser extends BaseObject implements User
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(LDAPUser.class);
+
     /* A few attributes common to a User. */
     private java.util.Date createDate = null;
     private java.util.Date lastAccessDate = null;
@@ -133,7 +134,7 @@ public class LDAPUser extends BaseObject implements User
                 }
                 catch(Exception ex)
                 {
-                    Log.error("Exception caught:",ex);
+                    log.error("Exception caught:",ex);
                 }
             }
         }
@@ -150,7 +151,7 @@ public class LDAPUser extends BaseObject implements User
         }
         else
         {
-            Log.error("There is no LDAP attribute for the username.");
+            log.error("There is no LDAP attribute for the username.");
         }
 
         // Set the Firstname.
@@ -177,15 +178,15 @@ public class LDAPUser extends BaseObject implements User
 
         // Set the E-Mail
         attrName = LDAPSecurityConstants.getEmailAttribute();
-        Log.debug("emailattr = "+attrName);
+        log.debug("emailattr = "+attrName);
         if (attrName != null)
         {
             attr = attribs.get(attrName);
             if (attr != null && attr.get() != null)
             {
-                Log.debug("attr.get() = "+attr.get().toString());
+                log.debug("attr.get() = "+attr.get().toString());
                 setEmail(attr.get().toString());
-                Log.debug("getEmail = "+getEmail());
+                log.debug("getEmail = "+getEmail());
             }
         }
     }
@@ -200,10 +201,10 @@ public class LDAPUser extends BaseObject implements User
         String filterAttribute = LDAPSecurityConstants.getUserNameAttribute();
         String userBaseSearch  = LDAPSecurityConstants.getBaseSearch();
         String userName = getUserName();
-        Log.debug("userName ="+userName);
+        log.debug("userName ="+userName);
 
         String dn = filterAttribute + "=" + userName + "," + userBaseSearch;
-        Log.debug("dn ="+dn);
+        log.debug("dn ="+dn);
         return dn;
      }
 
@@ -279,7 +280,7 @@ public class LDAPUser extends BaseObject implements User
       */
     public String getEmail()
     {
-        Log.debug("start getEmail()");
+        log.debug("start getEmail()");
         String tmp = null;
         try
         {
@@ -290,7 +291,7 @@ public class LDAPUser extends BaseObject implements User
         catch (Exception e)
         {
         }
-        Log.debug("email = "+tmp);
+        log.debug("email = "+tmp);
         return tmp;
     }
 
@@ -507,7 +508,6 @@ public class LDAPUser extends BaseObject implements User
       * in the system by checking the <code>CONFIRM_VALUE</code>
       * column to see if it is equal to <code>CONFIRM_DATA</code>.
       *
-      * @param user The User object.
       * @return True if the user has been confirmed.
       */
     public boolean isConfirmed()
@@ -598,7 +598,7 @@ public class LDAPUser extends BaseObject implements User
      */
     public void setEmail(String email)
     {
-        Log.debug("setEmail("+email+")");
+        log.debug("setEmail("+email+")");
         setPerm(User.EMAIL, email);
     }
 
@@ -747,7 +747,7 @@ public class LDAPUser extends BaseObject implements User
     /**
       * Updates the last login date in the database.
       *
-      * @exception Exception, a generic exception.
+      * @exception Exception a generic exception.
       */
     public void updateLastLogin() throws Exception
     {
@@ -782,9 +782,9 @@ public class LDAPUser extends BaseObject implements User
         }
         catch (Exception e)
         {
-            org.apache.turbine.util.Log.error("BaseUser.valueUnbobund(): "+
+            log.error("BaseUser.valueUnbobund(): "+
                     e.getMessage());
-            org.apache.turbine.util.Log.error(e);
+            log.error(e);
 
             // To prevent messages being lost in case the logging system
             // goes away before sessions get unbound on servlet container

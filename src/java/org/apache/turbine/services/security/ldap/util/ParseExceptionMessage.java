@@ -25,13 +25,13 @@ package org.apache.turbine.services.security.ldap.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -56,7 +56,8 @@ package org.apache.turbine.services.security.ldap.util;
 
 import java.util.StringTokenizer;
 
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * A utility class used to parse the erno out of the message string
@@ -68,17 +69,20 @@ import org.apache.turbine.util.Log;
  */
 public class ParseExceptionMessage
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(ParseExceptionMessage.class);
+
     /**
      * Extract the errno from the err msg
      *
-     * @param String msg  usually derived from error.getMessage()
+     * @param msg  usually derived from error.getMessage()
      *
      * Exception that occur at this level should be handled by the calling
      *  class
      */
     public static String findErrno(String msg)
     {
-        Log.info("original erro msg: " + msg);
+        log.info("original erro msg: " + msg);
         StringTokenizer sT = new StringTokenizer(msg, ",");
         String temp = sT.nextToken();
         sT = new StringTokenizer(temp, ":");

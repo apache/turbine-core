@@ -57,10 +57,8 @@ package org.apache.turbine.services.security.ldap;
 import java.util.Hashtable;
 import java.util.Vector;
 import java.util.Iterator;
-import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.AuthenticationException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.DirContext;
@@ -83,7 +81,8 @@ import org.apache.turbine.util.security.GroupSet;
 import org.apache.turbine.util.security.PermissionSet;
 import org.apache.turbine.util.security.RoleSet;
 import org.apache.turbine.util.security.UnknownEntityException;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * An implementation of SecurityService that uses LDAP as a backend.
@@ -98,6 +97,9 @@ import org.apache.turbine.util.Log;
  */
 public class LDAPSecurityService extends BaseSecurityService
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(LDAPSecurityService.class);
+
     /*
      * -----------------------------------------------------------------------
      *  C R E A T I O N  O F  A C C E S S  C O N T R O L  L I S T
@@ -209,13 +211,13 @@ public class LDAPSecurityService extends BaseSecurityService
                 }
                 else
                 {
-                    Log.error("Role doesn't have a name");
+                    log.error("Role doesn't have a name");
                 }
             }
         }
         catch (NamingException ex)
         {
-            Log.error("NamingException caught",ex);
+            log.error("NamingException caught",ex);
             throw new DataBackendException(
                 "The LDAP server specified is unavailable",ex);
         }
@@ -232,9 +234,9 @@ public class LDAPSecurityService extends BaseSecurityService
     /**
      * Grant an User a Role in a Group.
      *
-     * @param User the user.
-     * @param Group the group.
-     * @param Role the role.
+     * @param user the user.
+     * @param group the group.
+     * @param role the role.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if user account, group or role is not present.
      */
@@ -246,9 +248,9 @@ public class LDAPSecurityService extends BaseSecurityService
     /**
       * Revoke a Role in a Group from an User.
       *
-      * @param User the user.
-      * @param Group the group.
-      * @param Role the role.
+      * @param user the user.
+      * @param group the group.
+      * @param role the role.
       * @throws DataBackendException if there was an error accessing the data backend.
       * @throws UnknownEntityException if user account, group or role is not present.
       */
@@ -308,7 +310,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * create a new Role in the system though. Use addRole for that.
      * <strong>Not implemented</strong>
      *
-     * @param groupName The name of the Group to be retrieved.
+     * @param roleName The name of the Group to be retrieved.
      */
     public Role getNewRole(String roleName)
     {
@@ -331,7 +333,7 @@ public class LDAPSecurityService extends BaseSecurityService
     /**
      * Retrieve a set of Groups that meet the specified Criteria.
      *
-     * @param a Criteria of Group selection.
+     * @param criteria Criteria of Group selection.
      * @return a set of Groups that meet the specified Criteria.
      */
     public GroupSet getGroups(Criteria criteria)
@@ -367,7 +369,7 @@ public class LDAPSecurityService extends BaseSecurityService
         }
         catch (NamingException ex)
         {
-            Log.error("NamingException caught",ex);
+            log.error("NamingException caught",ex);
             throw new DataBackendException(
                 "The LDAP server specified is unavailable",ex);
         }
@@ -377,7 +379,7 @@ public class LDAPSecurityService extends BaseSecurityService
     /**
       * Retrieve a set of Roles that meet the specified Criteria.
       *
-      * @param a Criteria of Roles selection.
+      * @param criteria Criteria of Roles selection.
       * @return a set of Roles that meet the specified Criteria.
       */
     public RoleSet getRoles(Criteria criteria) throws DataBackendException
@@ -409,13 +411,13 @@ public class LDAPSecurityService extends BaseSecurityService
                 }
                 else
                 {
-                    Log.error("Role doesn't have a name");
+                    log.error("Role doesn't have a name");
                 }
             }
         }
         catch (NamingException ex)
         {
-            Log.error("NamingException caught",ex);
+            log.error("NamingException caught",ex);
             throw new DataBackendException(
                 "The LDAP server specified is unavailable",ex);
         }
@@ -426,7 +428,7 @@ public class LDAPSecurityService extends BaseSecurityService
     /**
       * Retrieve a set of Permissions that meet the specified Criteria.
       *
-      * @param a Criteria of Permissions selection.
+      * @param criteria Criteria of Permissions selection.
       * @return a set of Permissions that meet the specified Criteria.
       */
     public PermissionSet getPermissions(Criteria criteria)
@@ -465,7 +467,7 @@ public class LDAPSecurityService extends BaseSecurityService
         }
         catch (NamingException ex)
         {
-            Log.error("NamingException caught",ex);
+            log.error("NamingException caught",ex);
             throw new DataBackendException(
                 "The LDAP server specified is unavailable",ex);
         }
@@ -518,7 +520,7 @@ public class LDAPSecurityService extends BaseSecurityService
         }
         catch (NamingException ex)
         {
-            Log.error("NamingException caught",ex);
+            log.error("NamingException caught",ex);
             throw new DataBackendException(
                 "The LDAP server specified is unavailable",ex);
         }
@@ -611,7 +613,7 @@ public class LDAPSecurityService extends BaseSecurityService
     /**
       * Removes a Group from the system.
       *
-      * @param the object describing group to be removed.
+      * @param group object describing group to be removed.
       * @throws DataBackendException if there was an error accessing the data backend.
       * @throws UnknownEntityException if the group does not exist.
       */
@@ -623,7 +625,7 @@ public class LDAPSecurityService extends BaseSecurityService
     /**
       * Removes a Role from the system.
       *
-      * @param the object describing role to be removed.
+      * @param role object describing role to be removed.
       * @throws DataBackendException if there was an error accessing the data backend.
       * @throws UnknownEntityException if the role does not exist.
       */
@@ -635,7 +637,7 @@ public class LDAPSecurityService extends BaseSecurityService
     /**
       * Removes a Permission from the system.
       *
-      * @param the object describing permission to be removed.
+      * @param permission object describing permission to be removed.
       * @throws DataBackendException if there was an error accessing the data backend.
       * @throws UnknownEntityException if the permission does not exist.
       */
@@ -647,7 +649,7 @@ public class LDAPSecurityService extends BaseSecurityService
     /**
       * Renames an existing Group.
       *
-      * @param the object describing the group to be renamed.
+      * @param group object describing the group to be renamed.
       * @param name the new name for the group.
       * @throws DataBackendException if there was an error accessing the data backend.
       * @throws UnknownEntityException if the group does not exist.
@@ -660,7 +662,7 @@ public class LDAPSecurityService extends BaseSecurityService
     /**
       * Renames an existing Role.
       *
-      * @param the object describing the role to be renamed.
+      * @param role object describing the role to be renamed.
       * @param name the new name for the role.
       * @throws DataBackendException if there was an error accessing the data backend.
       * @throws UnknownEntityException if the role does not exist.
@@ -673,7 +675,7 @@ public class LDAPSecurityService extends BaseSecurityService
     /**
       * Renames an existing Permission.
       *
-      * @param the object describing the permission to be renamed.
+      * @param permission object describing the permission to be renamed.
       * @param name the new name for the permission.
       * @throws DataBackendException if there was an error accessing the data backend.
       * @throws UnknownEntityException if the permission does not exist.

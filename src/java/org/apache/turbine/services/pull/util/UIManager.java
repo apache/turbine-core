@@ -62,7 +62,8 @@ import org.apache.turbine.services.pull.TurbinePull;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.ContentURI;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
 
 
@@ -106,6 +107,9 @@ import org.apache.turbine.util.RunData;
  */
 public class UIManager implements ApplicationTool
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(UIManager.class);
+
     /**
      * The location of the skins within the application
      * resources directory.
@@ -187,17 +191,17 @@ public class UIManager implements ApplicationTool
 
         if (data == null)
         {
-            Log.debug("UI Manager scope is global");
+            log.debug("UI Manager scope is global");
             setSkin();
         }
         else if (data instanceof RunData)
         {
-            Log.debug("UI Manager scope is request");
+            log.debug("UI Manager scope is request");
             setSkin((RunData) data);
         }
         else if (data instanceof User)
         {
-            Log.debug("UI Manager scope is session");
+            log.debug("UI Manager scope is session");
             setSkin((User) data);
         }
 
@@ -216,7 +220,7 @@ public class UIManager implements ApplicationTool
      */
     public void refresh()
     {
-        Log.debug("Refreshing UI manager");
+        log.debug("Refreshing UI manager");
 
         loadSkin();
     }
@@ -369,7 +373,7 @@ public class UIManager implements ApplicationTool
         }
         catch (Exception e)
         {
-            Log.error("Cannot load skin: " + skinName);
+            log.error("Cannot load skin: " + skinName);
         }
     }
 

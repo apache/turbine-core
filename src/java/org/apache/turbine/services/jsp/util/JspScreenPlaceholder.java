@@ -57,7 +57,8 @@ package org.apache.turbine.services.jsp.util;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -75,13 +76,16 @@ import org.apache.turbine.util.RunData;
  */
 public class JspScreenPlaceholder
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(JspNavigation.class);
+
     /* The RunData object */
     private RunData data;
 
     /**
      * Constructor
      *
-     * @param RunData
+     * @param data
      */
     public JspScreenPlaceholder(RunData data)
     {
@@ -90,8 +94,6 @@ public class JspScreenPlaceholder
 
     /**
      * builds the output of the navigation template
-     * @param String the name of the navigation template
-     * @return String
      */
     public void exec()
     {
@@ -108,7 +110,7 @@ public class JspScreenPlaceholder
         {
             String message = "Error processing navigation template:" +
                 template + " using module: " + module;
-            Log.error(message, e);
+            log.error(message, e);
             try
             {
                 data.getOut().print("Error processing navigation template: "

@@ -63,7 +63,8 @@ import javax.naming.InitialContext;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -76,6 +77,9 @@ import org.apache.turbine.util.RunData;
  */
 public class TurbineNamingService extends TurbineBaseService implements NamingService
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TurbineNamingService.class);
+
     /**
      * A global HashTable of Property objects which are initialised using
      * parameters from the ResourcesFile
@@ -127,7 +131,7 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
         }
         catch (Exception e)
         {
-            Log.error("Failed to initialize JDNI contexts!", e);
+            log.error("Failed to initialize JDNI contexts!", e);
 
             throw new InitializationException(
                 "Failed to initialize JDNI contexts!");
@@ -163,7 +167,7 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
         }
         catch (Exception e)
         {
-            Log.error("Failed to initialize JDNI contexts!",e);
+            log.error("Failed to initialize JDNI contexts!",e);
 
             throw new InitializationException(
                 "Failed to initialize JDNI contexts!");

@@ -64,6 +64,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.parser.BaseValueParser;
 
 /**
@@ -91,11 +93,14 @@ import org.apache.turbine.util.parser.BaseValueParser;
  */
 public abstract class DataStreamParser implements Iterator
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(DataStreamParser.class);
+
     /**
      * Conditional compilation flag.
      */
     private static final boolean DEBUG = false;
-    
+
     /**
      * The constant for empty fields
      */
@@ -125,7 +130,7 @@ public abstract class DataStreamParser implements Iterator
      * The character encoding of the input
      */
     private String          characterEncoding;
-    
+
     /**
      * The fieldseperator, which can be almost any char
      */
@@ -167,17 +172,17 @@ public abstract class DataStreamParser implements Iterator
      * Initialize the StreamTokenizer instance used to read the lines
      * from the input reader. This must be implemented in subclasses to
      * set up other tokenizing properties.
-     * 
+     *
      * @param tokenizer the tokenizer to adjust
      */
-    protected void initTokenizer(StreamTokenizer tokenizer) 
+    protected void initTokenizer(StreamTokenizer tokenizer)
     {
         // set all numeric characters as ordinary characters
         // (switches off number parsing)
         tokenizer.ordinaryChars('0', '9');
         tokenizer.ordinaryChars('-', '-');
         tokenizer.ordinaryChars('.', '.');
-        
+
         // leave out the comma sign (,), we need it for empty fields
 
         tokenizer.wordChars(' ', Integer.MAX_VALUE);
@@ -188,18 +193,18 @@ public abstract class DataStreamParser implements Iterator
         // and finally say that end of line is significant
         tokenizer.eolIsSignificant(true);
     }
-    
+
     /**
      * This method must be called to setup the field seperator
      * @param fieldSeparator the char which separates the fields
      */
-    public void setFieldSeparator(char fieldSeparator) 
+    public void setFieldSeparator(char fieldSeparator)
     {
         this.fieldSeparator = fieldSeparator;
         // make this field also an ordinary char by default.
         tokenizer.ordinaryChar(fieldSeparator);
     }
-        
+
 
     /**
      * Set the list of column names explicitly.
@@ -213,7 +218,7 @@ public abstract class DataStreamParser implements Iterator
 
     /**
      * Read the list of column names from the input reader using the
-     * tokenizer. If fieldNames are empty, we use the current fieldNumber 
+     * tokenizer. If fieldNames are empty, we use the current fieldNumber
      * + the EMPTYFIELDNAME to make one up.
      *
      * @exception IOException an IOException occurred.
@@ -230,18 +235,18 @@ public abstract class DataStreamParser implements Iterator
         while (tokenizer.ttype == tokenizer.TT_WORD || tokenizer.ttype == tokenizer.TT_EOL
                || tokenizer.ttype == '"' || tokenizer.ttype == fieldSeparator)
         {
-            if (tokenizer.ttype !=  fieldSeparator && tokenizer.ttype != tokenizer.TT_EOL) 
+            if (tokenizer.ttype !=  fieldSeparator && tokenizer.ttype != tokenizer.TT_EOL)
             {
                 columnNames.add(tokenizer.sval);
                 fieldCounter++;
             }
-            else if (tokenizer.ttype == fieldSeparator && lastTtype == fieldSeparator) 
+            else if (tokenizer.ttype == fieldSeparator && lastTtype == fieldSeparator)
             {
                 // we have an empty field name
                 columnNames.add(EMPTYFIELDNAME+fieldCounter);
                 fieldCounter++;
             }
-            else if (lastTtype == fieldSeparator && tokenizer.ttype == tokenizer.TT_EOL) 
+            else if (lastTtype == fieldSeparator && tokenizer.ttype == tokenizer.TT_EOL)
             {
                 columnNames.add(EMPTYFIELDNAME+fieldCounter);
                 break;
@@ -315,12 +320,12 @@ public abstract class DataStreamParser implements Iterator
                 {
                     if (DEBUG)
                     {
-                        Log.debug("DataStreamParser.nextRow(): " +
+                        log.debug("DataStreamParser.nextRow(): " +
                             colname + "=" + colval);
                     }
                     lineValues.add(colname, colval);
                  }
-                 else if (tokenizer.ttype == fieldSeparator && lastTtype != fieldSeparator) 
+                 else if (tokenizer.ttype == fieldSeparator && lastTtype != fieldSeparator)
                  {
                     lastTtype = tokenizer.ttype;
                     tokenizer.nextToken();
@@ -355,7 +360,7 @@ public abstract class DataStreamParser implements Iterator
         }
         catch (IOException e)
         {
-            Log.error("IOException in CSVParser.hasNext", e);
+            log.error("IOException in CSVParser.hasNext", e);
         }
 
         return hasNext;
@@ -379,7 +384,7 @@ public abstract class DataStreamParser implements Iterator
         }
         catch (IOException e)
         {
-            Log.error("IOException in CSVParser.next", e);
+            log.error("IOException in CSVParser.next", e);
             throw new NoSuchElementException();
         }
 

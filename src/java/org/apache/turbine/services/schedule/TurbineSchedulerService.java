@@ -57,6 +57,8 @@ package org.apache.turbine.services.schedule;
 import java.util.List;
 import java.util.Vector;
 import javax.servlet.ServletConfig;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
@@ -73,6 +75,9 @@ public class TurbineSchedulerService
     extends TurbineBaseService
     implements ScheduleService
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TurbineSchedulerService.class);
+
     /**
      * The queue.
      */
@@ -104,7 +109,7 @@ public class TurbineSchedulerService
      *
      * @throws InitializationException Something went wrong in the init
      *         stage
-     */ 
+     */
     public void init()
         throws InitializationException
     {
@@ -146,7 +151,7 @@ public class TurbineSchedulerService
             }
             else
             {
-                org.apache.turbine.util.Log.info ("TurbineSchedulerService was not started " +
+                log.info ("TurbineSchedulerService was not started " +
                 "because scheduler.enabled is not 'true' in the TurbineResources.properties file.");
             }
         }
@@ -174,7 +179,7 @@ public class TurbineSchedulerService
      *
      * @param oid The int id for the job.
      * @return A JobEntry.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public JobEntry getJob(int oid)
         throws Exception
@@ -187,7 +192,7 @@ public class TurbineSchedulerService
      * Add a new job to the queue.
      *
      * @param je A JobEntry with the job to add.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public void addJob(JobEntry je)
         throws Exception
@@ -200,7 +205,7 @@ public class TurbineSchedulerService
         catch(Exception e)
         {
             // Log problems.
-            org.apache.turbine.util.Log.error ( "Problem saving new Scheduled Job: " + e);
+            log.error ( "Problem saving new Scheduled Job: " + e);
         }
         // Add to the queue.
         scheduleQueue.add(je);
@@ -211,7 +216,7 @@ public class TurbineSchedulerService
      * Remove a job from the queue.
      *
      * @param je A JobEntry with the job to remove.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public void removeJob(JobEntry je)
         throws Exception
@@ -227,7 +232,7 @@ public class TurbineSchedulerService
         catch(Exception ouch)
         {
             // Log problem.
-            org.apache.turbine.util.Log.error ( "Problem removing Scheduled Job: " + ouch);
+            log.error ( "Problem removing Scheduled Job: " + ouch);
         }
 
         // Remove from the queue.
@@ -239,7 +244,7 @@ public class TurbineSchedulerService
      * Modify a Job.
      *
      * @param je A JobEntry with the job to modify
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public void updateJob(JobEntry je)
         throws Exception
@@ -252,7 +257,7 @@ public class TurbineSchedulerService
         catch(Exception e)
         {
             // Log problems.
-            org.apache.turbine.util.Log.error ( "Problem updating Scheduled Job: " + e);
+            log.error ( "Problem updating Scheduled Job: " + e);
         }
         // Update the queue.
        scheduleQueue.modify(je);
@@ -321,7 +326,7 @@ public class TurbineSchedulerService
      *  interrupted.
      *
      * @return A JobEntry.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     private synchronized JobEntry nextJob()
         throws Exception
@@ -400,7 +405,7 @@ public class TurbineSchedulerService
             catch(Exception e)
             {
                 // Log error.
-                org.apache.turbine.util.Log.error ( "Error running a Scheduled Job: " + e);
+                log.error ( "Error running a Scheduled Job: " + e);
             }
             finally
             {

@@ -25,13 +25,13 @@ package org.apache.turbine.services.component;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -63,7 +63,8 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
@@ -73,7 +74,7 @@ import org.apache.stratum.component.ComponentLoader;
 import org.apache.stratum.lifecycle.Disposable;
 
 /**
- * An implementation of ComponentService which loads all the 
+ * An implementation of ComponentService which loads all the
  * components given in the TurbineResources.properties File
  *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
@@ -81,10 +82,13 @@ import org.apache.stratum.lifecycle.Disposable;
  */
 
 
-public class TurbineComponentService 
+public class TurbineComponentService
     extends TurbineBaseService
     implements ComponentService
 {
+
+    /** Logging */
+    private static Log log = LogFactory.getLog(TurbineComponentService.class);
 
     /** Extension used for Configuration files. */
     private static String CONFIG = "config";
@@ -105,7 +109,7 @@ public class TurbineComponentService
      *
      * @throws InitializationException Something went wrong in the init
      *         stage
-     */ 
+     */
     public void init()
         throws InitializationException
     {
@@ -122,13 +126,13 @@ public class TurbineComponentService
      * @throws InitializationException Something went wrong when starting up.
      * @deprecated use init() instead.
      */
-    public void init(ServletConfig config) 
+    public void init(ServletConfig config)
         throws InitializationException
     {
         Configuration loaderConf = new BaseConfiguration();
 
         String [] names = getConfiguration().getStringArray(NAME);
-        
+
         for (int i = 0; i < names.length; i++)
         {
             String key = names[i];
@@ -145,17 +149,17 @@ public class TurbineComponentService
 
                 if (subKey.equals(CONFIG))
                 {
-                    Log.debug("Fixing up " + subVal);
-                    subVal = 
+                    log.debug("Fixing up " + subVal);
+                    subVal =
                         config.getServletContext().getRealPath((String) subVal);
-                    Log.debug("Now: " + subVal);
+                    log.debug("Now: " + subVal);
                 }
-                
+
                 loaderConf.addProperty(subProperty + "." + subKey,
                                        subVal);
             }
 
-            Log.info("Added " + key + " as a component");
+            log.info("Added " + key + " as a component");
         }
 
         try
@@ -166,7 +170,7 @@ public class TurbineComponentService
         }
         catch (Exception e)
         {
-            Log.error("Component Service failed: ", e);
+            log.error("Component Service failed: ", e);
             throw new InitializationException("ComponentService failed: ", e);
         }
     }
@@ -176,7 +180,7 @@ public class TurbineComponentService
      * implement this interface
      *
      */
-    
+
     public void shutdown()
     {
         if (components != null)
@@ -185,12 +189,12 @@ public class TurbineComponentService
             {
                 if (components[i] instanceof Disposable)
                 {
-                    Log.debug("Disposing a " + components[i].getClass().getName() + " object");
+                    log.debug("Disposing a " + components[i].getClass().getName() + " object");
                     ((Disposable) components[i]).dispose();
                 }
                 else
                 {
-                    Log.debug("Not disposing " + components[i].getClass().getName() + ", not a Disposable Object");
+                    log.debug("Not disposing " + components[i].getClass().getName() + ", not a Disposable Object");
                 }
             }
         }

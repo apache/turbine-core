@@ -56,6 +56,8 @@ package org.apache.turbine.services.schedule;
 
 import java.util.Vector;
 import javax.servlet.ServletConfig;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.ObjectKey;
 import org.apache.turbine.Turbine;
@@ -97,10 +99,13 @@ import org.apache.turbine.services.resources.TurbineResources;
 public class TurbineNonPersistentSchedulerService
     extends TurbineSchedulerService
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TurbineNonPersistentSchedulerService.class);
+
     /**
      * Constructor.
      *
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public TurbineNonPersistentSchedulerService()
         throws Exception
@@ -115,7 +120,7 @@ public class TurbineNonPersistentSchedulerService
      *
      * @throws InitializationException Something went wrong in the init
      *         stage
-     */ 
+     */
     public void init()
         throws InitializationException
     {
@@ -142,7 +147,7 @@ public class TurbineNonPersistentSchedulerService
 
         try
         {
-            org.apache.turbine.util.Log.info ( "TurbineNonPersistentSchedulerService init()....starting!");
+            log.info ( "TurbineNonPersistentSchedulerService init()....starting!");
 
             scheduleQueue = new JobQueue();
             mainLoop = new MainLoop();
@@ -189,11 +194,11 @@ public class TurbineNonPersistentSchedulerService
             }
 
             setInit(true);
-            org.apache.turbine.util.Log.info ( "TurbineNonPersistentSchedulerService init()....finished!");
+            log.info ( "TurbineNonPersistentSchedulerService init()....finished!");
         }
         catch (Exception e)
         {
-            org.apache.turbine.util.Log.error ( "Cannot initialize TurbineNonPersistentSchedulerService!: " + e );
+            log.error ( "Cannot initialize TurbineNonPersistentSchedulerService!: " + e );
         }
     }
 
@@ -202,7 +207,7 @@ public class TurbineNonPersistentSchedulerService
      *
      * @param oid The int id for the job.
      * @return A JobEntry.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public JobEntry getJob(int oid)
         throws Exception
@@ -221,7 +226,7 @@ public class TurbineNonPersistentSchedulerService
      * Add a new job to the queue.
      *
      * @param je A JobEntry with the job to add.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public void addJob(JobEntry je)
         throws Exception
@@ -235,7 +240,7 @@ public class TurbineNonPersistentSchedulerService
      * Remove a job from the queue.
      *
      * @param je A JobEntry with the job to remove.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public void removeJob(JobEntry je)
         throws Exception
@@ -249,7 +254,7 @@ public class TurbineNonPersistentSchedulerService
      * Modify a Job.
      *
      * @param je A JobEntry with the job to modify
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public void updateJob(JobEntry je)
         throws Exception
@@ -261,7 +266,7 @@ public class TurbineNonPersistentSchedulerService
         catch(Exception e)
         {
             // Log problems.
-            org.apache.turbine.util.Log.error ( "Problem updating Scheduled Job: " + e);
+            log.error ( "Problem updating Scheduled Job: " + e);
         }
         // Update the queue.
        scheduleQueue.modify(je);

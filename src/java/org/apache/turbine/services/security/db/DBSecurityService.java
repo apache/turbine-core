@@ -78,7 +78,8 @@ import org.apache.turbine.om.security.peer.UserGroupRolePeer;
 import org.apache.turbine.om.security.peer.UserPeer;
 import org.apache.turbine.services.security.BaseSecurityService;
 import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
@@ -96,6 +97,9 @@ import org.apache.turbine.util.security.UnknownEntityException;
  */
 public class DBSecurityService extends BaseSecurityService
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(DBSecurityService.class);
+
     /**
      * The key within services's properties for user implementation
      * classname (user.class)  - Leandro
@@ -185,9 +189,9 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Grant an User a Role in a Group.
      *
-     * @param User the user.
-     * @param Group the group.
-     * @param Role the role.
+     * @param user the user.
+     * @param group the group.
+     * @param role the role.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if user account, group or role is not present.
      */
@@ -242,9 +246,9 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Revoke a Role in a Group from an User.
      *
-     * @param User the user.
-     * @param Group the group.
-     * @param Role the role.
+     * @param user the user.
+     * @param group the group.
+     * @param role the role.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if user account, group or role is not present.
      */
@@ -485,7 +489,7 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Retrieve a set of Groups that meet the specified Criteria.
      *
-     * @param a Criteria of Group selection.
+     * @param criteria Criteria of Group selection.
      * @return a set of Groups that meet the specified Criteria.
      */
     public GroupSet getGroups( Criteria criteria )
@@ -513,7 +517,7 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Retrieve a set of Roles that meet the specified Criteria.
      *
-     * @param a Criteria of Roles selection.
+     * @param criteria Criteria of Roles selection.
      * @return a set of Roles that meet the specified Criteria.
      */
     public RoleSet getRoles( Criteria criteria )
@@ -541,7 +545,7 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Retrieve a set of Permissions that meet the specified Criteria.
      *
-     * @param a Criteria of Permissions selection.
+     * @param criteria Criteria of Permissions selection.
      * @return a set of Permissions that meet the specified Criteria.
      */
     public PermissionSet getPermissions(Criteria criteria)
@@ -877,7 +881,7 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Removes a Group from the system.
      *
-     * @param the object describing group to be removed.
+     * @param group object describing group to be removed.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the group does not exist.
      */
@@ -899,8 +903,8 @@ public class DBSecurityService extends BaseSecurityService
         }
         catch(Exception e)
         {
-            Log.error("Failed to delete a Group");
-            Log.error(e);
+            log.error("Failed to delete a Group");
+            log.error(e);
             throw new DataBackendException("removeGroup(Group) failed", e);
         }
         finally
@@ -913,7 +917,7 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Removes a Role from the system.
      *
-     * @param the object describing role to be removed.
+     * @param role object describing role to be removed.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the role does not exist.
      */
@@ -949,7 +953,7 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Removes a Permission from the system.
      *
-     * @param the object describing permission to be removed.
+     * @param permission object describing permission to be removed.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the permission does not exist.
      */
@@ -984,7 +988,7 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Renames an existing Group.
      *
-     * @param the object describing the group to be renamed.
+     * @param group object describing the group to be renamed.
      * @param name the new name for the group.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the group does not exist.
@@ -1019,7 +1023,7 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Renames an existing Role.
      *
-     * @param the object describing the role to be renamed.
+     * @param role object describing the role to be renamed.
      * @param name the new name for the role.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the role does not exist.
@@ -1054,7 +1058,7 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Renames an existing Permission.
      *
-     * @param the object describing the permission to be renamed.
+     * @param permission object describing the permission to be renamed.
      * @param name the new name for the permission.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the permission does not exist.
@@ -1144,7 +1148,7 @@ public class DBSecurityService extends BaseSecurityService
      * @return true if the group exists in the system, false otherwise
      * @throws DataBackendException when more than one Group with
      *         the same name exists.
-     * @throws Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected boolean checkExists(Group group)
         throws DataBackendException, Exception
@@ -1159,7 +1163,7 @@ public class DBSecurityService extends BaseSecurityService
      * @return true if the role exists in the system, false otherwise
      * @throws DataBackendException when more than one Role with
      *         the same name exists.
-     * @throws Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected boolean checkExists(Role role)
         throws DataBackendException, Exception
@@ -1174,7 +1178,7 @@ public class DBSecurityService extends BaseSecurityService
      * @return true if the permission exists in the system, false otherwise
      * @throws DataBackendException when more than one Permission with
      *         the same name exists.
-     * @throws Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected boolean checkExists(Permission permission)
         throws DataBackendException, Exception

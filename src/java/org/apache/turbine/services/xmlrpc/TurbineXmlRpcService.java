@@ -60,7 +60,6 @@ import org.apache.xmlrpc.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcServer;
 import org.apache.xmlrpc.secure.SecureWebServer;
-import org.apache.xmlrpc.secure.SecurityTool;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -75,7 +74,8 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.xmlrpc.util.FileTransfer;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.TurbineException;
 
 
@@ -105,6 +105,9 @@ public class TurbineXmlRpcService
     extends TurbineBaseService
     implements XmlRpcService
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TurbineXmlRpcService.class);
+
     /**
      * Whether a version of Apache's XML-RPC library greater than 1.1
      * is available.
@@ -136,7 +139,7 @@ public class TurbineXmlRpcService
      *
      * @throws InitializationException Something went wrong in the init
      *         stage
-     */ 
+     */
     public void init()
         throws InitializationException
     {
@@ -212,7 +215,7 @@ public class TurbineXmlRpcService
             if (stateOfParanoia)
             {
                 webserver.setParanoid(stateOfParanoia);
-                Log.info(XmlRpcService.SERVICE_NAME +
+                log.info(XmlRpcService.SERVICE_NAME +
                          ": Operating in a state of paranoia");
 
                 /*
@@ -235,7 +238,7 @@ public class TurbineXmlRpcService
                     if (acceptClient != null && ! acceptClient.equals(""))
                     {
                         webserver.acceptClient(acceptClient);
-                        Log.info(XmlRpcService.SERVICE_NAME +
+                        log.info(XmlRpcService.SERVICE_NAME +
                                  ": Accepting client -> " + acceptClient);
                     }
                 }
@@ -254,7 +257,7 @@ public class TurbineXmlRpcService
                     if (denyClient != null && ! denyClient.equals(""))
                     {
                         webserver.denyClient(denyClient);
-                        Log.info(XmlRpcService.SERVICE_NAME +
+                        log.info(XmlRpcService.SERVICE_NAME +
                                  ": Denying client -> " + denyClient);
                     }
                 }
@@ -272,7 +275,7 @@ public class TurbineXmlRpcService
                 // XmlRpcRequest does not exist in versions 1.1 and lower.
                 // Assume that our WebServer was already started.
             }
-            Log.debug(XmlRpcService.SERVICE_NAME + ": Using " +
+            log.debug(XmlRpcService.SERVICE_NAME + ": Using " +
                       "Apache XML-RPC version " +
                       (isModernVersion ?
                        "greater than 1.1" : "1.1 or lower"));
@@ -301,8 +304,8 @@ public class TurbineXmlRpcService
         {
             String key = (String) i.next();
             String value = configuration.getString(key);
-            
-            Log.debug("JSSE option: " + key + " => " + value);
+
+            log.debug("JSSE option: " + key + " => " + value);
 
             System.setProperty(key, value);
         }
@@ -327,8 +330,8 @@ public class TurbineXmlRpcService
      *
      * @param handlerName The name the handler is registered under.
      * @param handler The handler to use.
-     * @exception XmlRpcException.
-     * @exception IOException.
+     * @exception XmlRpcException
+     * @exception IOException
      */
     public void registerHandler(String handlerName,
                                 Object handler)
@@ -443,8 +446,7 @@ public class TurbineXmlRpcService
      * @param methodName A String with the method name.
      * @param params A Vector with the parameters.
      * @return An Object.
-     * @exception XmlRpcException.
-     * @exception IOException.
+     * @exception TurbineException
      */
     public Object executeRpc(URL url,
                              String methodName,
@@ -709,7 +711,7 @@ public class TurbineXmlRpcService
             {
                 // It's remotely possible we're leaving an open listener
                 // socket around.
-                Log.warn(XmlRpcService.SERVICE_NAME +
+                log.warn(XmlRpcService.SERVICE_NAME +
                          "It's possible the xmlrpc server was not " +
                          "shutdown: " + notShutdown.getMessage());
             }

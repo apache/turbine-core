@@ -57,7 +57,8 @@ package org.apache.turbine.util.parser;
 import javax.servlet.http.Cookie;
 import org.apache.turbine.util.CookieParser;
 import org.apache.turbine.util.DynamicURI;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.pool.Recyclable;
 
@@ -91,6 +92,9 @@ import org.apache.turbine.util.pool.Recyclable;
 public class DefaultCookieParser extends BaseValueParser
         implements CookieParser, Recyclable
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(DefaultCookieParser.class);
+
     /**
      * The run data to parse.
      */
@@ -148,13 +152,13 @@ public class DefaultCookieParser extends BaseValueParser
 
         Cookie[] cookies = data.getRequest().getCookies();
 
-        Log.debug("Number of Cookies " + cookies.length);
+        log.debug("Number of Cookies " + cookies.length);
 
         for (int i = 0; i < cookies.length; i++)
         {
             String name = convert(cookies[i].getName());
             String value = cookies[i].getValue();
-            Log.debug("Adding " + name + "=" + value);
+            log.debug("Adding " + name + "=" + value);
             add(name,value);
         }
 

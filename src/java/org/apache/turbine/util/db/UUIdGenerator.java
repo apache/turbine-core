@@ -59,7 +59,8 @@ import java.io.OutputStream;
 import java.util.StringTokenizer;
 import javax.mail.internet.MimeUtility;
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -90,6 +91,9 @@ import org.apache.turbine.util.TurbineException;
  */
 public class UUIdGenerator
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(UUIdGenerator.class);
+
     private static final String errorString = "uuid.address property in " +
         "TurbineResources.properties should be a valid IP\n " +
         "e.g. 18.2.3.100, or an ethernet address e.g. " +
@@ -107,7 +111,7 @@ public class UUIdGenerator
         String addr = TurbineResources.getString("uuid.address");
         if (addr == null)
         {
-            Log.info("UUIdGenerator is using a random number as the " +
+            log.info("UUIdGenerator is using a random number as the " +
                      "base for id's.  This is not the best method for many " +
                      "purposes, but may be adequate in some circumstances." +
                      " Consider using an IP or ethernet (MAC) address if " +

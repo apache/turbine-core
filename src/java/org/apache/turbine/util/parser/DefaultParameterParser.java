@@ -60,7 +60,8 @@ import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.pool.Recyclable;
@@ -96,6 +97,9 @@ public class DefaultParameterParser
     implements ParameterParser,
                Recyclable
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(DefaultParameterParser.class);
+
     /**
      * The servlet request to parse.
      */
@@ -189,7 +193,7 @@ public class DefaultParameterParser
             }
             catch (TurbineException e)
             {
-                Log.error(new TurbineException("File upload failed", e));
+                log.error(new TurbineException("File upload failed", e));
             }
         }
 

@@ -58,7 +58,8 @@ import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.modules.NavigationLoader;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -77,6 +78,9 @@ import org.apache.turbine.util.RunData;
  */
 public class TemplateNavigation
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TemplateNavigation.class);
+
     /* The RunData object. */
     private RunData data;
 
@@ -130,7 +134,7 @@ public class TemplateNavigation
         {
             String message = ("Error processing navigation template:"
                     + this.template + " using module: " + module);
-            Log.error(message, e);
+            log.error(message, e);
             returnValue = message;
         }
         return returnValue;

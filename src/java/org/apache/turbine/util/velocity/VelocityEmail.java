@@ -55,7 +55,8 @@ package org.apache.turbine.util.velocity;
  */
 
 import org.apache.turbine.services.velocity.TurbineVelocity;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.StringUtils;
 import org.apache.turbine.util.mail.SimpleEmail;
 import org.apache.velocity.context.Context;
@@ -125,6 +126,9 @@ import org.apache.velocity.context.Context;
  */
 public class VelocityEmail
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(VelocityEmail.class);
+
     /** The to name field. */
     private String toName = null;
 
@@ -301,7 +305,7 @@ public class VelocityEmail
         }
         catch (Exception e)
         {
-            Log.error ("VelocityEmail error", e);
+            log.error ("VelocityEmail error", e);
         }
         return "";
     }
