@@ -25,13 +25,13 @@ package org.apache.turbine.services.db;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -53,7 +53,7 @@ package org.apache.turbine.services.db;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
- 
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -66,7 +66,8 @@ import org.apache.turbine.util.db.adapter.DB;
 import org.apache.turbine.util.db.adapter.DBFactory;
 import org.apache.turbine.util.db.map.DatabaseMap;
 import org.apache.turbine.util.db.map.TableMap;
-import org.apache.velocity.runtime.configuration.Configuration;
+import org.apache.stratum.configuration.Configuration;
+
 
 /**
  * Turbine's default implmentation of {@link MapBrokerService}.
@@ -80,15 +81,15 @@ import org.apache.velocity.runtime.configuration.Configuration;
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
-public class TurbineMapBrokerService extends BaseService 
+public class TurbineMapBrokerService extends BaseService
     implements MapBrokerService
 {
     /** The global cache of database maps */
     private Map dbMaps;
-    
+
     /** Default database map */
     private String defaultMap;
-    
+
     /**
      * Initializes the service.
      */
@@ -96,24 +97,24 @@ public class TurbineMapBrokerService extends BaseService
     {
         dbMaps = (Map)new HashMap();
         Configuration configuration = getConfiguration();
-        
+
         // Get the value for the default map, but if there
         // isn't a value than fall back to the standard
         // "default" value.
         defaultMap = configuration.getString(DEFAULT_MAP, DEFAULT);
-        
+
         // indicate that the service initialized correctly
         setInit(true);
     }
-    
+
     /**
      * Return the default map.
      */
     public String getDefaultMap()
     {
         return defaultMap;
-    }        
-    
+    }
+
     /**
      * Shuts down the service.
      *
@@ -122,7 +123,7 @@ public class TurbineMapBrokerService extends BaseService
      */
     public void shutdown()
     {
-        Iterator maps = dbMaps.values().iterator(); 
+        Iterator maps = dbMaps.values().iterator();
         while ( maps.hasNext() )
         {
             DatabaseMap map = (DatabaseMap) maps.next();
@@ -138,7 +139,7 @@ public class TurbineMapBrokerService extends BaseService
      * Returns the default database map information.
      *
      * @return A DatabaseMap.
-     * @throws TurbineException Any exceptions caught during procssing will be 
+     * @throws TurbineException Any exceptions caught during procssing will be
      *         rethrown wrapped into a TurbineException.
      */
     public DatabaseMap getDatabaseMap()
@@ -146,7 +147,7 @@ public class TurbineMapBrokerService extends BaseService
     {
         return getDatabaseMap(defaultMap);
     }
-    
+
     /**
      * Returns the database map information. Name relates to the name
      * of the connection pool to associate with the map.
@@ -154,7 +155,7 @@ public class TurbineMapBrokerService extends BaseService
      * @param name The name of the <code>DatabaseMap</code> to
      * retrieve.
      * @return The named <code>DatabaseMap</code>.
-     * @throws TurbineException Any exceptions caught during procssing will be 
+     * @throws TurbineException Any exceptions caught during procssing will be
      *         rethrown wrapped into a TurbineException.
      */
     public DatabaseMap getDatabaseMap(String name)
@@ -178,7 +179,7 @@ public class TurbineMapBrokerService extends BaseService
                 {
                     // Still not there.  Create and add.
                     map = new DatabaseMap(name);
-       
+
                     // Add info about IDBroker's table.
                     setupIdTable(map);
                     // setup other id generators
@@ -227,7 +228,7 @@ public class TurbineMapBrokerService extends BaseService
      * Setup IDBroker's table information within given database map.
      *
      * This method should be called on all new database map to ensure that
-     * IDBroker functionality is available in all databases userd by the 
+     * IDBroker functionality is available in all databases userd by the
      * application.
      *
      * @param map the DataBaseMap to setup.

@@ -64,7 +64,8 @@ import javax.servlet.ServletConfig;
 import org.apache.turbine.services.logging.LoggingService;
 import org.apache.turbine.services.resources.ResourceService;
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.velocity.runtime.configuration.Configuration;
+import org.apache.stratum.configuration.Configuration;
+
 
 /**
  * This is a singleton utility class that acts as a Services broker.
@@ -167,7 +168,7 @@ public class TurbineServices
     public void initPrimaryServices(ServletConfig config)
         throws InstantiationException, InitializationException
     {
-        // Resurce service must start as the very first
+        // Resource service must start as the very first
         String resourcesClass = config.getInitParameter(RESOURCES_CLASS_KEY);
 
         try
@@ -176,33 +177,31 @@ public class TurbineServices
             {
                 resourcesClass = RESOURCES_CLASS_DEFAULT;
             }
-            mapping.put(ResourceService.SERVICE_NAME, resourcesClass);
-            initService (ResourceService.SERVICE_NAME, config);
+            mapping.setProperty(ResourceService.SERVICE_NAME, resourcesClass);
+            initService(ResourceService.SERVICE_NAME, config);
 
-
-            // Now logging can be initailzed
+            // Now logging can be initialized
             String loggingClass = config.getInitParameter(LOGGING_CLASS_KEY);
             if (loggingClass == null)
             {
                 loggingClass = LOGGING_CLASS_DEFAULT;
             }
-            mapping.put(LoggingService.SERVICE_NAME, loggingClass);
+            mapping.setProperty(LoggingService.SERVICE_NAME, loggingClass);
             try
             {
-                initService (LoggingService.SERVICE_NAME, config);
+                initService(LoggingService.SERVICE_NAME, config);
                 logger = getLogger();
             }
             catch (InitializationException e)
             {
-                mapping.remove(LoggingService.SERVICE_NAME);
+                mapping.clearProperty(LoggingService.SERVICE_NAME);
                 throw e;
             }
             catch (InstantiationException e)
             {
-                mapping.remove(LoggingService.SERVICE_NAME);
+                mapping.clearProperty(LoggingService.SERVICE_NAME);
                 throw e;
             }
-
         }
         finally
         {
@@ -245,7 +244,7 @@ public class TurbineServices
     {
         int pref = SERVICE_PREFIX.length();
         int suff = CLASSNAME_SUFFIX.length();
-        
+
         /*
          * These keys returned in an order that corresponds
          * to the order the services are listed in
@@ -266,7 +265,7 @@ public class TurbineServices
             {
                 String serviceKey = key.substring(pref, key.length() - suff);
                 notice ("Added Mapping for Service: " + serviceKey);
-                
+
                 if (! mapping.containsKey(serviceKey))
                     mapping.setProperty(serviceKey, TurbineResources.getString(key));
             }
@@ -410,7 +409,7 @@ public class TurbineServices
                 System.out.println("(!) ERROR: " + t.getMessage());
             }
             else
-            {  
+            {
                 logger.error("", t);
             }
         }

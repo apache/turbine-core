@@ -3,7 +3,7 @@ package org.apache.turbine.services.resources;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,13 +25,13 @@ package org.apache.turbine.services.resources;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -70,7 +70,11 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.ServletUtils;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
-import org.apache.velocity.runtime.configuration.Configuration;
+import org.apache.stratum.configuration.BaseConfiguration;
+import org.apache.stratum.configuration.Configuration;
+import org.apache.stratum.configuration.ConfigurationConverter;
+import org.apache.stratum.configuration.PropertiesConfiguration;
+
 
 /**
  * <p>This implementation of the <code>resourcesService</code> relies
@@ -95,7 +99,7 @@ import org.apache.velocity.runtime.configuration.Configuration;
  * @author <a href="mailto:jvanzyl@periapt.com@">Jason van Zyl</a>
  * @version $Id$
  */
-public class TurbineResourceService 
+public class TurbineResourceService
     extends TurbineBaseService
     implements ResourceService
 {
@@ -137,12 +141,12 @@ public class TurbineResourceService
      *
      * @param config a ServletConfig object
      */
-    public void init(ServletConfig config) 
+    public void init(ServletConfig config)
         throws InitializationException
     {
         String props = config.getInitParameter(TurbineServices.PROPERTIES_PATH_KEY);
-        
-        if(props == null) 
+
+        if(props == null)
         {
             props = TurbineServices.PROPERTIES_PATH_DEFAULT;
         }
@@ -156,10 +160,10 @@ public class TurbineResourceService
         // shouldn't since WAR files are the future anyways.
         //props = ServletUtils.expandRelative(config, props);
         props = Turbine.getRealPath(props);
-        
+
         try
         {
-            init(new Configuration(props));
+            init((Configuration) new PropertiesConfiguration(props));
         }
         catch (IOException e)
         {
@@ -178,11 +182,11 @@ public class TurbineResourceService
     public static void setPropertiesFileName(String propertiesFileName)
         throws TurbineException
     {
-        Configuration mappings = new Configuration();
-        
+        Configuration mappings = (Configuration) new BaseConfiguration();
+
         mappings.setProperty(ResourceService.SERVICE_NAME,
             TurbineResourceService.class.getName());
-        
+
         TurbineServices services = (TurbineServices) TurbineServices.getInstance();
         services.initMapping(mappings);
         services.initServices(new TurbineConfig(".", propertiesFileName), true);
@@ -200,11 +204,11 @@ public class TurbineResourceService
     public static void setProperties(Properties properties)
         throws TurbineException
     {
-        Configuration mappings = new Configuration();
-        
+        Configuration mappings = (Configuration) new BaseConfiguration();
+
         mappings.setProperty(ResourceService.SERVICE_NAME,
             TurbineResourceService.class.getName());
-        
+
         TurbineServices services = (TurbineServices) TurbineServices.getInstance();
         services.initMapping(mappings);
         services.initServices(properties, true);
@@ -226,8 +230,8 @@ public class TurbineResourceService
         if (base == null)
         {
             return null;
-        }            
-        
+        }
+
         //Get the full ResourceService (we could be in a subset instance)
         ResourceService top = TurbineResources.getService();
 
@@ -236,21 +240,21 @@ public class TurbineResourceService
         int prec = 0-END_TOKEN.length();
         String variable = null;
         StringBuffer result = new StringBuffer();
-        
+
         // FIXME: we should probably allow the escaping of the start token
         while ( ((begin=base.indexOf(START_TOKEN,prec+END_TOKEN.length()))>-1)
-                && ((end=base.indexOf(END_TOKEN,begin))>-1) ) 
+                && ((end=base.indexOf(END_TOKEN,begin))>-1) )
         {
             result.append(base.substring(prec+END_TOKEN.length(),begin));
             variable = base.substring(begin+START_TOKEN.length(),end);
-            if (top.getString(variable)!=null) 
+            if (top.getString(variable)!=null)
             {
                 result.append(top.getString(variable));
             }
             prec=end;
         }
         result.append(base.substring(prec+END_TOKEN.length(),base.length()));
-        
+
         return result.toString();
     }
 
@@ -287,7 +291,8 @@ public class TurbineResourceService
      */
     private void init(Properties props)
     {
-        Configuration configuration = Configuration.convertProperties(props);
+        Configuration configuration = ConfigurationConverter
+                .getConfiguration(props);
         init(configuration);
     }
 
@@ -312,8 +317,7 @@ public class TurbineResourceService
      * @param def The default value of the resource.
      * @return The value of the named resource as a boolean.
      */
-    public boolean getBoolean(String name,
-                                     boolean def)
+    public boolean getBoolean(String name, boolean def)
     {
         return getConfiguration().getBoolean(name, def);
     }
@@ -338,8 +342,7 @@ public class TurbineResourceService
      * @param def The default value of the resource.
      * @return The value of the named resource as a double.
      */
-    public double getDouble(String name,
-                                   double def)
+    public double getDouble(String name, double def)
     {
         return getConfiguration().getDouble(name, def);
     }
@@ -364,26 +367,17 @@ public class TurbineResourceService
      * @param def The default value of the resource.
      * @return The value of the resource as a float.
      */
-    public float getFloat(String name,
-                                 float def)
+    public float getFloat(String name, float def)
     {
         return getConfiguration().getFloat(name, def);
     }
 
     /**
      * The purpose of this method is to get the configuration resource
-     * with the given name as an Integer.
-     *
-     * @param name The resource name.
-     * @return The value of the resource as an Integer.
-     */
-    
-    /**
-     * The purpose of this method is to get the configuration resource
      * with the given name as an integer.
      *
      * @param name The resource name.
-     * @return The value of the resource as an integer.
+     * @return The value of the resource as an int.
      */
     public int getInt(String name)
     {
@@ -398,8 +392,7 @@ public class TurbineResourceService
      * @param def The default value of the resource.
      * @return The value of the resource as an integer.
      */
-    public int getInt(String name,
-                             int def)
+    public int getInt(String name, int def)
     {
         return getConfiguration().getInt(name, def);
     }
@@ -448,8 +441,7 @@ public class TurbineResourceService
      * @param def The default value of the resource.
      * @return The value of the resource as a long.
      */
-    public long getLong(String name,
-                               long def)
+    public long getLong(String name, long def)
     {
         return getConfiguration().getLong(name, def);
     }
@@ -474,8 +466,7 @@ public class TurbineResourceService
      * @param def The default value of the resource.
      * @return The value of the resource as a string.
      */
-    public String getString(String name,
-                            String def)
+    public String getString(String name, String def)
     {
         return interpolate(getConfiguration().getString(name, def));
     }
@@ -491,14 +482,14 @@ public class TurbineResourceService
     {
         String[] std = getConfiguration().getStringArray(name);
 
-        if (std != null) 
+        if (std != null)
         {
-            for(int i=0; i<std.length; i++) 
+            for(int i=0; i<std.length; i++)
             {
                 std[i]=interpolate(std[i]);
             }
         }
-        
+
         return std;
     }
 
@@ -512,18 +503,18 @@ public class TurbineResourceService
     public Vector getVector(String name)
     {
         Vector std = getConfiguration().getVector(name);
-        
-        if (std != null) 
+
+        if (std != null)
         {
             Vector newstd = new Vector();
             Enumeration en = std.elements();
-            while (en.hasMoreElements()) 
+            while (en.hasMoreElements())
             {
                 newstd.addElement(interpolate((String)en.nextElement()));
             }
             std = newstd;
         }
-        
+
         return std;
     }
 
@@ -535,17 +526,16 @@ public class TurbineResourceService
      * @param def The default value of the resource.
      * @return The value of the resource as a vector.
      */
-    public Vector getVector(String name,
-                            Vector def)
+    public Vector getVector(String name, Vector def)
     {
-        Vector std = getVector(name); 
-        if (std == null) 
+        Vector std = getVector(name);
+        if (std == null)
         {
-            if (def != null) 
+            if (def != null)
             {
                 std = new Vector();
                 Enumeration en = def.elements();
-                while (en.hasMoreElements()) 
+                while (en.hasMoreElements())
                 {
                     std.addElement(interpolate((String)en.nextElement()));
                 }
@@ -566,12 +556,12 @@ public class TurbineResourceService
     public ResourceService getResources(String prefix)
     {
         Configuration config = getConfiguration().subset(prefix);
-        
+
         if (config == null)
         {
             return null;
         }
-        
+
         TurbineResourceService res = new TurbineResourceService();
         res.init(config);
         return (ResourceService)res;
@@ -588,12 +578,12 @@ public class TurbineResourceService
     public Configuration getConfiguration(String prefix)
     {
         Configuration config = getConfiguration().subset(prefix);
-        
+
         if (config == null)
         {
             return null;
         }
-        
+
         return config;
     }
 }

@@ -25,13 +25,13 @@ package org.apache.turbine.services.db;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -63,7 +63,8 @@ import org.apache.turbine.util.Log;
 import org.apache.turbine.util.db.adapter.DB;
 import org.apache.turbine.util.db.pool.ConnectionPool;
 import org.apache.turbine.util.db.pool.DBConnection;
-import org.apache.velocity.runtime.configuration.Configuration;
+import org.apache.stratum.configuration.Configuration;
+
 
 /**
  * Turbine's default implementation of {@link PoolBrokerService}.
@@ -100,14 +101,14 @@ public class TurbinePoolBrokerService extends BaseService
     public void init()
     {
         pools = (Map) new HashMap();
-        
+
         Configuration configuration = getConfiguration();
-        
+
         // Get the value for the default pool, but if there
         // isn't a value than fall back to the standard
         // "default" value.
         defaultPool = configuration.getString(DEFAULT_POOL, DEFAULT);
-        
+
         // Create monitor thread
         Monitor monitor = new Monitor();
         // Indicate that this is a system thread. JVM will quit only when there
@@ -127,7 +128,7 @@ public class TurbinePoolBrokerService extends BaseService
     public String getDefaultDB()
     {
         return defaultPool;
-    }        
+    }
 
     /**
      * Release the database connections for all pools on service shutdown.
@@ -229,7 +230,7 @@ public class TurbinePoolBrokerService extends BaseService
     }
 
     /**
-     * Release a connection back to the database pool.  <code>null</code> 
+     * Release a connection back to the database pool.  <code>null</code>
      * references are ignored.
      *
      * @throws TurbineException Any exceptions caught during processing will be
@@ -270,9 +271,9 @@ public class TurbinePoolBrokerService extends BaseService
     {
         /**
          * Added so that the configuration file can define maxConnections &
-         * expiryTime for each database pool that is defined in the 
+         * expiryTime for each database pool that is defined in the
          * TurbineResources.properties
-         * Was defined as: database.expiryTime=3600000 
+         * Was defined as: database.expiryTime=3600000
          * If you need per database, it is
          * now database.helpdesk.expiryTime=3600000
          */
@@ -286,7 +287,7 @@ public class TurbinePoolBrokerService extends BaseService
                      TurbineResources.getLong(
                          getProperty(name, "expiryTime"), 3600000));
     }
-    
+
     /**
      * This thread-safe method registers a new pool using the given parameters.
      *
@@ -318,10 +319,10 @@ public class TurbinePoolBrokerService extends BaseService
                 {
                     // Still not there.  Create and add.
                     ConnectionPool pool =
-                        new ConnectionPool(driver, 
-                                           url, 
-                                           username, 
-                                           password, 
+                        new ConnectionPool(driver,
+                                           url,
+                                           username,
+                                           password,
                                            maxCons,expiryTime);
                     pools.put( name, pool );
                 }

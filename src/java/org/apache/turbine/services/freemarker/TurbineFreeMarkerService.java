@@ -69,12 +69,13 @@ import org.apache.turbine.services.*;
 import org.apache.turbine.services.resources.*;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
+import org.apache.stratum.configuration.Configuration;
+
 import org.apache.ecs.StringElement;
 
 // FreeMarker Stuff
 import freemarker.template.*;
 
-import org.apache.velocity.runtime.configuration.Configuration;
 
 /*
  * This is a Service that can process FreeMarker templates from within

@@ -25,13 +25,13 @@ package org.apache.turbine.services;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,7 +55,8 @@ package org.apache.turbine.services;
  */
 
 import java.util.Properties;
-import org.apache.velocity.runtime.configuration.Configuration;
+import org.apache.stratum.configuration.Configuration;
+
 
 /**
  * Classes that implement this interface can act as a broker for
@@ -123,7 +124,7 @@ public interface ServiceBroker
     /**
      * Shutdowns all Services.
      *
-     * This method is used to release resources allocated by 
+     * This method is used to release resources allocated by
      * Services, and return them to initial (uninitailized) state.
      */
     public void shutdownServices( );

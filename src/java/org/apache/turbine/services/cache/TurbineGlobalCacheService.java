@@ -25,13 +25,13 @@ package org.apache.turbine.services.cache;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -63,7 +63,9 @@ import java.util.Vector;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.velocity.runtime.configuration.Configuration;
+
+import org.apache.stratum.configuration.Configuration;
+
 
 /**
  * This Service functions as a Global Cache.  A global cache is a good
@@ -85,9 +87,9 @@ import org.apache.velocity.runtime.configuration.Configuration;
  *
  * <dl>
  * <dt>classname</dt><dd>the classname of this service</dd>
- * <dt>cache.initial.size/dt><dd>Initial size of hash table use to store cached 
+ * <dt>cache.initial.size/dt><dd>Initial size of hash table use to store cached
  objects.  If this property is not present, the default value is 20</dd>
- * <dt>cache.check.frequency</dt><dd>Cache check frequency in Millis (1000 
+ * <dt>cache.check.frequency</dt><dd>Cache check frequency in Millis (1000
  Millis = 1 second).  If this property is not present, the default value is 5000</dd>
  * </dl>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
@@ -122,7 +124,7 @@ public class TurbineGlobalCacheService
      * Value must be > 0.
      * Default = 5 seconds
      */
-    public static final long DEFAULT_CACHE_CHECK_FREQUENCY = 
+    public static final long DEFAULT_CACHE_CHECK_FREQUENCY =
       TurbineResources.getLong("cache.check.frequency", 5000 ); // 5 seconds
 
     /** The cache. **/
@@ -130,7 +132,7 @@ public class TurbineGlobalCacheService
 
     /** cacheCheckFrequency (default - 5 seconds) */
     private long cacheCheckFrequency = DEFAULT_CACHE_CHECK_FREQUENCY;
-    
+
     /**
      * Constructor.
      */
@@ -161,10 +163,10 @@ public class TurbineGlobalCacheService
                 "Failed to initialize TurbineGlobalCacheService",x);
             }
         }
-        
+
         try {
             cache = new Hashtable(cacheInitialSize);
-            
+
             // Start housekeeping thread.
             Thread housekeeping = new Thread(this);
             // Indicate that this is a system thread. JVM will quit only when there
@@ -351,12 +353,12 @@ public class TurbineGlobalCacheService
         int objectsize = baos.toByteArray().length - 4;
         return objectsize;
     }
-    
+
     /**
      * Flush the cache of all objects.
      */
     public void flushCache() {
-        
+
         synchronized (this) {
             for ( Enumeration e = cache.keys(); e.hasMoreElements(); ) {
                 String key = (String) e.nextElement();

@@ -68,7 +68,6 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
-import org.apache.velocity.runtime.configuration.Configuration;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.util.ContentURI;
@@ -86,6 +85,10 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
+
+import org.apache.stratum.configuration.Configuration;
+import org.apache.stratum.configuration.ConfigurationConverter;
+
 
 /**
  * This is a Service that can process Velocity templates from within a
@@ -129,7 +132,7 @@ public class TurbineVelocityService extends BaseTemplateEngineService
      * The prefix used for URIs which are of type <code>absolute</code>.
      */
     private static final String ABSOLUTE_PREFIX = "file://";
-    
+
     /**
      * The context used to the store the context
      * containing the global application tools.
@@ -540,7 +543,7 @@ public class TurbineVelocityService extends BaseTemplateEngineService
          */
         String path = Turbine.getRealPath
             (configuration.getString(Velocity.RUNTIME_LOG, null));
-            
+
         if (StringUtils.isValid(path))
         {
             configuration.setProperty(Velocity.RUNTIME_LOG, path);
@@ -549,7 +552,7 @@ public class TurbineVelocityService extends BaseTemplateEngineService
         {
             String msg = VelocityService.SERVICE_NAME + " runtime log file " +
                 "is misconfigured: '" + path + "' is not a valid log file";
-            
+
             if (TurbineServlet.getServletConfig() instanceof TurbineConfig)
             {
                 msg += ": TurbineConfig users must use a path relative to " +
@@ -631,7 +634,8 @@ public class TurbineVelocityService extends BaseTemplateEngineService
         }
         try
         {
-            Velocity.setConfiguration(configuration);
+            Velocity.setExtendedProperties(ConfigurationConverter
+                    .getExtendedProperties(configuration));
             Velocity.init();
         }
         catch(Exception e)

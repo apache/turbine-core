@@ -59,7 +59,7 @@ import org.apache.turbine.services.ServiceBroker;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.Log;
-import org.apache.velocity.runtime.configuration.Configuration;
+import org.apache.stratum.configuration.Configuration;
 import org.webmacro.Broker;
 import org.webmacro.NotFoundException;
 import org.webmacro.Template;
