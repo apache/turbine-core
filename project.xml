@@ -392,7 +392,7 @@
     </dependency>
     <dependency>
       <id>commons-configuration</id>
-      <version>SNAPSHOT</version>
+      <version>20030311.152757</version>
       <url>http://jakarta.apache.org/commons/sandbox/configuration/index.html</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
@@ -408,7 +408,7 @@
     </dependency>
     <dependency>
       <id>commons-email</id>
-      <version>0.1-dev</version>
+      <version>20030310.165926</version>
       <url>http://jakarta.apache.org/commons/sandbox/email</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
@@ -568,7 +568,7 @@
     </dependency>
     <dependency>
       <id>torque</id>
-      <version>SNAPSHOT</version>
+      <version>20030310.174947</version>
       <url>http://db.apache.org/torque/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
@@ -636,7 +636,7 @@
     <integrationUnitTest/>
     <aspectSourceDirectory/>
   </build>
-  
+
   <reports>
     <report>maven-jdepend-plugin</report>
     <report>maven-checkstyle-plugin</report>
@@ -648,7 +648,7 @@
     <report>maven-junit-report-plugin</report>
     <report>maven-linkcheck-plugin</report>
     <report>maven-tasklist-plugin</report>
-   
+
   </reports>
 
 </project>
