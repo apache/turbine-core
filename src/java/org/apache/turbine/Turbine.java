@@ -263,6 +263,12 @@ public class Turbine
     private void configure(ServletConfig config, ServletContext context)
             throws Exception
     {
+        //
+        // Set up Commons Logging to use the Log4J Logging
+        //
+        System.getProperties().setProperty(LogFactory.class.getName(),
+                                           Log4jFactory.class.getName());
+
         // Set the application root. This defaults to the webapp
         // context if not otherwise set. This is to allow 2.1 apps
         // to be developed from CVS. This feature will carry over
@@ -346,6 +352,7 @@ public class Turbine
             confStyle = "Properties";
         }
 
+
         //
         // Set up logging as soon as possible
         //
@@ -353,8 +360,6 @@ public class Turbine
                                                    LOG4J_CONFIG_FILE_DEFAULT);
 
         log4jFile = getRealPath(log4jFile);
-
-        log.debug("Loading Log4J configuration from " + log4jFile);
 
         //
         // Load the config file above into a Properties object and
@@ -367,6 +372,10 @@ public class Turbine
             p.setProperty(APPLICATION_ROOT_KEY, getApplicationRoot());
             PropertyConfigurator.configure(p);
 
+            //
+            // Rebuild our log object with a configured commons-logging
+            log = LogFactory.getLog(this.getClass());
+
             log.info("Configured log4j from " + log4jFile);
         }
         catch (FileNotFoundException fnf)
@@ -375,13 +384,6 @@ public class Turbine
                                + log4jFile + ": ");
             fnf.printStackTrace();
         }
-
-        //
-        // Set up Commons Logging to use the Log4J Logging
-        //
-        System.getProperties().setProperty(LogFactory.class.getName(),
-                                           Log4jFactory.class.getName());
-
 
         // Now report our successful configuration to the world
         log.info("Loaded configuration  (" + confStyle + ") from " + confFile + " (" + confPath + ")");
