@@ -386,6 +386,13 @@ public interface SecurityService
     UserManager getUserManager();
 
     /**
+     * Configure a new user Manager.
+     *
+     * @param userManager An UserManager object
+     */
+    void setUserManager(UserManager userManager);
+
+    /**
      * Check whether a specified user's account exists.
      *
      * The login name is used for looking up the account.
