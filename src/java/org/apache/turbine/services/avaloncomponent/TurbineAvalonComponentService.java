@@ -180,7 +180,7 @@ public class TurbineAvalonComponentService
         this.manager.enableLogging(
                 lm.getLoggerForCategory("org.apache.turbine.services"));
         DefaultContext context = new DefaultContext();
-        context.put(AvalonComponentService.APP_ROOT, Turbine.getRealPath("/"));
+        context.put(AvalonComponentService.COMPONENT_APP_ROOT, Turbine.getRealPath("/"));
         this.manager.contextualize(context);
         this.manager.setRoleManager(roles);
         this.manager.configure(sysConfig);
