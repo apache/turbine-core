@@ -71,7 +71,7 @@
         <fileset dir="${build.dest}">
           <include name="**/*Test.class"/>
           <exclude name="**/*ServletTest.class"/>
-    
+          <exclude name="**/BaseValueParserTest.class"/>
           <exclude name="**/FileHandlerTest.class"/>
           <exclude name="**/TurbineCacheTest.class"/>
         </fileset>
@@ -131,7 +131,7 @@
         <fileset dir="${build.dest}">
           <include name="**/*ServletTest.class"/>
 	  <include name="**/TurbineCacheTest.class"/> 
-          
+          <include name="**/BaseValueParserTest.class"/>
           <!-- NEEDS TO BE FIXED -->
           <exclude name="**/FileHandlerTest.class"/>
         </fileset>
@@ -242,7 +242,7 @@
       
       <lib dir="${build.dir}/rttest/lib"/>
       
-      <!-- We want to test Turbine's core classes -->
+      <!-- We want to test Turbine core classes -->
       <classes dir="${build.dest}"/>
 
       <fileset dir="${webapp.dir}">
