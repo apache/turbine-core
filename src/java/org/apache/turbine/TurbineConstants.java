@@ -295,4 +295,23 @@ public interface TurbineConstants
 
     /** Key for loading the UUID Generator with a constant value */
     String UUID_ADDRESS_KEY = "uuid.address";
+
+    /** Context Key for the screen placeholder in the various velocity layouts */
+    String SCREEN_PLACEHOLDER = "screen_placeholder";
+
+    /** Context Key for the navigation object placeholder in the various velocity layouts */
+    String NAVIGATION_PLACEHOLDER = "navigation";
+
+    /** Prefix for layout related classes and templates */
+    String LAYOUT_PREFIX = "layouts";
+
+    /** Prefix for screen related classes and templates */
+    String SCREEN_PREFIX = "screens";
+
+    /** Prefix for navigation related classes and templates */
+    String NAVIGATION_PREFIX = "navigations";
+
+    /** Prefix for action related classes and templates */
+    String ACTION_PREFIX = "actions";
+
 }
