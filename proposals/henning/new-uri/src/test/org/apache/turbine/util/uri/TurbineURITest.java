@@ -60,11 +60,10 @@ import junit.framework.TestSuite;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 
-import org.apache.fulcrum.ServiceManager;
-import org.apache.fulcrum.TurbineServices;
-import org.apache.fulcrum.util.parser.ParserUtils;
-
+import org.apache.turbine.services.ServiceManager;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.ServerData;
+import org.apache.turbine.util.parser.ParserUtils;
 
 /**
  * Testing of the TurbineURI class
