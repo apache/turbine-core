@@ -131,7 +131,7 @@ public interface UploadService
      * request by calling {@link #parseRequest(HttpServletRequest,
             * ParameterParser, String) parseRequest} manually.
      */
-    static final Boolean AUTOMATIC_DEFAULT = Boolean.FALSE;
+    static final String AUTOMATIC_DEFAULT = "false";
 
     /**
      * The request parameter name for overriding 'repository' property
@@ -222,4 +222,13 @@ public interface UploadService
      * @return The repository.
      */
     String getRepository();
+
+    /**
+     * <p> Retrieves the value of 'automatic' property of {@link
+     * UploadService}.
+     *
+     * @return The value of 'automatic' property of {@link
+     * UploadService}.
+     */
+    boolean getAutomatic();
 }
