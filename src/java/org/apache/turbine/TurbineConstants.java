@@ -65,11 +65,6 @@ package org.apache.turbine;
 public interface TurbineConstants
 {
     /**
-     * The logging facility which captures output from Peers.
-     */
-    String SQL_LOG_FACILITY = "sql";
-
-    /**
      * The logging facility which captures output from the SchedulerService.
      */
     String SCHEDULER_LOG_FACILITY = "scheduler";
@@ -114,64 +109,13 @@ public interface TurbineConstants
      * The size of the actions cache if module caching is on.
      */
     String SCHEDULED_JOB_CACHE_SIZE = 
-      "scheduledjob.cache.size";
+        "scheduledjob.cache.size";
 
     /**
      * The packages where Turbine will look for modules.
      * This is effectively Turbine's classpath.
      */
     String MODULE_PACKAGES = "module.packages";
-
-    /**
-     * JDBC database driver.
-     */
-    String DB_DRIVER = "database.default.driver";
-
-    /**
-     * JDBC database URL.
-     */
-    String DB_URL = "database.default.url";
-
-    /**
-     * JDBC username.
-     */
-    String DB_USERNAME = "database.default.username";
-
-    /**
-     * JDBC password.
-     */
-    String DB_PASSWORD = "database.default.password";
-
-    /**
-     * Maximum number of connections to pool.
-     */
-    String DB_MAXCONNECTIONS = "database.maxConnections";
-
-    /**
-     * Expiry time of database connections.
-     */
-    String DB_EXPIRYTIME = "database.expiryTime";
-
-    /**
-     * How long a connection request will wait before giving up.
-     */
-    String DB_CONNECTION_WAIT_TIMEOUT = "database.connectionWaitTimeout";
-
-    /**
-     * How often the PoolBrokerServer logs the status of the pool.
-     */
-    String DB_CONNECTION_LOG_INTERVAL = "database.logInterval";
-
-    /**
-     * Database adaptor.
-     */
-    String DB_ADAPTOR = "database.adaptor";
-
-    /**
-     * Indicates that the id broker will generate more ids
-     * if the demand is high.
-     */
-    String DB_IDBROKER_CLEVERQUANTITY = "database.idbroker.cleverquantity";
 
     /**
      * Home page template.

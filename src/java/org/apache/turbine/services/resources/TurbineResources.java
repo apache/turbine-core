@@ -84,19 +84,11 @@ public abstract class TurbineResources
     public static final String SCREEN_CACHE_SIZE_KEY = "screen.cache.size";
     public static final String USER_CLASS_KEY = "user.class";
     public static final String MAX_FILE_SIZE_KEY = "max.file.size.bytes";
-    public static final String DB_DRIVER_KEY = "database.default.driver";
-    public static final String DB_URL_KEY = "database.default.url";
-    public static final String DB_USERNAME_KEY = "database.default.username";
-    public static final String DB_PASSWORD_KEY = "database.default.password";
-    public static final String DB_MAXCONNECTIONS_KEY = "database.maxConnections";
-    public static final String DB_EXPIRYTIME_KEY = "database.expiryTime";
     public static final String FILE_SERVER = "file.server";
     public static final String LOGIN_MESSAGE = "login.message";
     public static final String LOGIN_ERROR = "login.error";
     public static final String LOGIN_MESSAGE_NOSCREEN = "login.message.noscreen";
     public static final String LOGOUT_MESSAGE = "logout.message";
-    public static final String DB_IDBROKER_CLEVERQUANTITY = "database.idbroker.cleverquantity";
-    public static final String DB_IDBROKER_PREFETCH = "database.idbroker.prefetch";
 
     /**
      * Utility method for accessing the service
