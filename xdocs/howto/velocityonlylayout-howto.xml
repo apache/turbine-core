@@ -63,7 +63,7 @@ services.VelocityService?.default.layout = VelocityOnlyLayout
   	<li>$page.setStyle(styleText) has been replaced with 
   	    $page.addStyle(styleText)</li>
   	<li>$page.setStyleSheet?(url,media) has been replaced with 
-  	    $page.addStyleSheet?(url,media)</li>
+  	    $page.addStyleSheet?(url,media,title,type)</li>
   </ul>
 </p>
 <p>
