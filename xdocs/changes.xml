@@ -154,6 +154,9 @@ Changes between Turbine 2.2 and 2.3-dev.
 <p>
   <ul>
     <li>
+      TTWS25: Removed deprecated call to TurbineDB
+    </li>
+    <li>
       TRQD10: Extending Turbine User How-to for T2.2
     </li>
     <li>
