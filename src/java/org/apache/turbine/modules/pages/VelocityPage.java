@@ -54,11 +54,11 @@ package org.apache.turbine.modules.pages;
  * <http://www.apache.org/>.
  */
 
-// Turbine Classes
-
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.services.velocity.VelocityService;
+
 import org.apache.turbine.util.RunData;
+
 import org.apache.velocity.context.Context;
 
 /**
@@ -66,9 +66,11 @@ import org.apache.velocity.context.Context;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class VelocityPage extends TemplatePage
+public class VelocityPage
+    extends TemplatePage
 {
     /**
      * Stuffs the Context into the RunData so that it is available to
@@ -77,18 +79,20 @@ public class VelocityPage extends TemplatePage
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    protected void doBuildBeforeAction(RunData data) throws Exception
+    protected void doBuildBeforeAction(RunData data)
+        throws Exception
     {
         Context context = TurbineVelocity.getContext(data);
         data.getTemplateInfo()
-                .setTemplateContext(VelocityService.CONTEXT, context);
+            .setTemplateContext(VelocityService.CONTEXT, context);
     }
 
     /**
      * Allows the VelocityService to peform post-request actions.
      * (releases the (non-global) tools in the context for reuse later)
      */
-    protected void doPostBuild(RunData data) throws Exception
+    protected void doPostBuild(RunData data)
+        throws Exception
     {
         Context context = TurbineVelocity.getContext(data);
         TurbineVelocity.requestFinished(context);

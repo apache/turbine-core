@@ -54,10 +54,13 @@ package org.apache.turbine.modules.pages;
  * <http://www.apache.org/>.
  */
 
-// Turbine Classes
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.services.template.TurbineTemplate;
+
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * When building sites using templates, Screens need only be defined
@@ -107,10 +110,15 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class TemplatePage extends DefaultPage
+public class TemplatePage
+    extends DefaultPage
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TemplatePage.class);
+
     /**
      * Works with TemplateService to set up default templates and
      * corresponding class modules.
@@ -118,28 +126,21 @@ public class TemplatePage extends DefaultPage
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    protected void doBuildAfterAction(RunData data) throws Exception
+    protected void doBuildAfterAction(RunData data)
+        throws Exception
     {
-        /*
-         * Either template or screen should be guaranteed by
-         * the SessionValidator
-         * It is occasionally better to specify the screen instead of template
-         * in cases where multiple Screens map to one template.  The template
-         * is hardcoded into the Screen in this instance.  In this case this
-         * action is skipped.
-         */
+        // The Template Service at this point must fetch the Screen class
+        // to match a given template. If the Screen class has already been
+        // set by an action, skip this, because the user has the already
+        // specified the Screen class he wants to use.
         if (!data.hasScreen())
         {
-            /*
-             * This is effectively getting the "template" parameter
-             * from the parameter parser in rundata. This is coming
-             * from the request for a template.
-             */
+            // This is effectively getting the "template" parameter
+            // from the parameter parser in rundata. This is coming
+            // from the request for a template.
             String template = data.getTemplateInfo().getScreenTemplate();
-
-            /*
-             * Get the layout template and the correct Screen.
-             */
+            
+            // Get the layout template and the correct Screen.
             String layoutTemplate =
                     TurbineTemplate.getLayoutTemplateName(template);
             data.getTemplateInfo().setLayoutTemplate(layoutTemplate);
@@ -148,10 +149,10 @@ public class TemplatePage extends DefaultPage
 
             if (screen == null)
             {
-                throw new Exception("Screen could not be determined. \n" +
-                        "No matches were found by TemplateService and the \n" +
-                        "services.TemplateService.default.screen property\n" +
-                        "was not set.");
+                String errMsg = "Couldn't map Template " 
+                    + template + " to any Screen class!";
+                log.error(errMsg);
+                throw new TurbineException(errMsg);
             }
             data.setScreen(screen);
         }

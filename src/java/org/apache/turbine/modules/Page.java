@@ -54,17 +54,17 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
-// Turbine Utility Classes
-
 import org.apache.turbine.util.RunData;
 
 /**
- * This is an interface that defines what a Page module is.
+ * This is the base class that defines what a Page module is.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public abstract class Page extends Assembler
+public abstract class Page
+    extends Assembler
 {
     /**
      * A subclass must override this method to build itself.
@@ -75,7 +75,7 @@ public abstract class Page extends Assembler
      * @exception Exception a generic exception.
      */
     protected abstract void doBuild(RunData data)
-            throws Exception;
+        throws Exception;
 
     /**
      * Subclasses can override this method to add additional
@@ -86,7 +86,7 @@ public abstract class Page extends Assembler
      * @exception Exception a generic exception.
      */
     protected void build(RunData data)
-            throws Exception
+        throws Exception
     {
         doBuild(data);
     }
