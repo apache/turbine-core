@@ -74,6 +74,9 @@ import org.apache.turbine.util.parser.DefaultParameterParser;
  * @author <a href="mailto:burton@relativity.yi.org">Kevin A. Burton</a>
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @version $Id$
+ * @deprecated This factory tries to be the RunData Service if no RunData Service is
+ * configured. RunData Service is now mandatory for Turbine so use it directly without
+ * this factory.
  */
 public class RunDataFactory
 {
@@ -96,15 +99,13 @@ public class RunDataFactory
             throws TurbineException,
             IllegalArgumentException
     {
-        /*
-         * NOTE: getRunData( HttpServletRequest req,
-         * HttpServletResponse res ) has been deprecated 3-3-2000.
-         * Wait a couple months (before Turbine 1.0) and remove this
-         * method.  Also don't allow null for req, res, or config as
-         * these are now required by Turbine.  Uncomment the below as
-         * this should include the necessary functionality when we are
-         * ready.
-         */
+        // NOTE: getRunData( HttpServletRequest req,
+        // HttpServletResponse res ) has been deprecated 3-3-2000.
+        // Wait a couple months (before Turbine 1.0) and remove this
+        // method.  Also don't allow null for req, res, or config as
+        // these are now required by Turbine.  Uncomment the below as
+        // this should include the necessary functionality when we are
+        // ready.
         if (req == null ||
                 res == null ||
                 config == null)

@@ -91,14 +91,18 @@ import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 
 import org.apache.turbine.services.component.ComponentService;
 
+import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.template.TurbineTemplate;
+
+import org.apache.turbine.services.rundata.RunDataService;
+import org.apache.turbine.services.rundata.TurbineRunDataFacade;
 
 import org.apache.turbine.services.velocity.VelocityService;
 
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.RunDataFactory;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
+import org.apache.turbine.util.TurbineException;
 
 import org.apache.turbine.util.security.AccessControlList;
 
@@ -198,6 +202,12 @@ public class Turbine
     /** Our internal configuration object */
     private static Configuration configuration = null;
 
+    /** A reference to the Template Service */
+    private TemplateService templateService = null;
+
+    /** A reference to the RunData Service */
+    private RunDataService rundataService = null;
+
     /** Logging class from commons.logging */
     private static Log log = LogFactory.getLog(Turbine.class);
 
@@ -234,6 +244,15 @@ public class Turbine
                                       TurbineConfig.PROPERTIES_PATH_DEFAULT);
 
                 configure(config, context, trProps);
+
+                templateService = TurbineTemplate.getService();
+                rundataService = TurbineRunDataFacade.getService();
+
+                if (rundataService == null)
+                {
+                    throw new TurbineException("No RunData Service configured!");
+                }
+
             }
             catch (Exception e)
             {
@@ -633,7 +652,7 @@ public class Turbine
 
             // Get general RunData here...
             // Perform turbine specific initialization below.
-            data = RunDataFactory.getRunData(req, res, getServletConfig());
+            data = rundataService.getRunData(req, res, getServletConfig());
 
             // If this is the first invocation, perform some
             // initialization.  Certain services need RunData to initialize
@@ -717,7 +736,8 @@ public class Turbine
             // than just the default page.  If you do, add logic to
             // DefaultPage to do what you want.
 
-            String defaultPage = TurbineTemplate.getDefaultPageName(data);
+            String defaultPage = (templateService == null) 
+                ? null :templateService.getDefaultPageName(data);
 
             if (defaultPage == null)
             {
@@ -816,7 +836,7 @@ public class Turbine
         finally
         {
             // Return the used RunData to the factory for recycling.
-            RunDataFactory.putRunData(data);
+            rundataService.putRunData(data);
         }
     }
 
