@@ -56,16 +56,11 @@ package org.apache.turbine;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import java.util.*;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineXmlConfig;
-import org.apache.commons.collections.IteratorUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.configuration.BaseConfiguration;
 
 /**
  * Tests that the ConfigurationFactory and regular old properties methods both work.

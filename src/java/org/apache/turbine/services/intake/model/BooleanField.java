@@ -57,9 +57,6 @@ package org.apache.turbine.services.intake.model;
 import java.text.ParseException;
 
 import org.apache.commons.lang.StringUtils;
-
-import org.apache.commons.logging.Log;
-
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.BooleanValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
