@@ -106,4 +106,9 @@ public interface GlobalCacheService
      * @return int The current number of objects in the cache.
      */
     public int getNumberOfObjects();
+
+    /**
+     * Flush the cache of all objects.
+     */
+    public void flushCache();
 }

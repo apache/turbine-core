@@ -63,6 +63,7 @@ import java.util.Vector;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.resources.TurbineResources;
+import org.apache.velocity.runtime.configuration.Configuration;
 
 /**
  * This Service functions as a Global Cache.  A global cache is a good
@@ -74,6 +75,21 @@ import org.apache.turbine.services.resources.TurbineResources;
  * information in the Global Cache and decrease the overhead of
  * hitting the database everytime you need State information.
  *
+ * The following properties are needed to configure this service:<br>
+ *
+ * <code><pre>
+ * services.GlobalCacheService.classname=org.apache.turbine.services.cache.TurbineGlobalCacheService
+ * services.GlobalCacheService.cache.initial.size=20
+ * services.GlobalCacheService.cache.check.frequency=5000
+ * </pre></code>
+ *
+ * <dl>
+ * <dt>classname</dt><dd>the classname of this service</dd>
+ * <dt>cache.initial.size/dt><dd>Initial size of hash table use to store cached 
+ objects.  If this property is not present, the default value is 20</dd>
+ * <dt>cache.check.frequency</dt><dd>Cache check frequency in Millis (1000 
+ Millis = 1 second).  If this property is not present, the default value is 5000</dd>
+ * </dl>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
  * @author <a href="mailto:john@zenplex.com">John Thorhauer</a>
@@ -84,13 +100,37 @@ public class TurbineGlobalCacheService
     implements GlobalCacheService,
                Runnable
 {
+    /**
+     * Initial size of hash table
+     * Value must be > 0.
+     * Default = 20
+     */
+    public static final int DEFAULT_INITIAL_CACHE_SIZE = 20;
+
+    /**
+     * The property for the InitalCacheSize
+     */
+    public static final String INITIAL_CACHE_SIZE = "cache.initial.size";
+
+    /**
+     * The property for the Cache check frequency
+     */
+    public static final String CACHE_CHECK_FREQUENCY = "cache.check.frequency";
+
+    /**
+     * Cache check frequency in Millis (1000 Millis = 1 second).
+     * Value must be > 0.
+     * Default = 5 seconds
+     */
+    public static final long DEFAULT_CACHE_CHECK_FREQUENCY = 
+      TurbineResources.getLong("cache.check.frequency", 5000 ); // 5 seconds
+
     /** The cache. **/
     private Hashtable cache = null;
 
     /** cacheCheckFrequency (default - 5 seconds) */
-    private long cacheCheckFrequency =
-        TurbineResources.getLong("cache.check.frequency", 5000);
-
+    private long cacheCheckFrequency = DEFAULT_CACHE_CHECK_FREQUENCY;
+    
     /**
      * Constructor.
      */
@@ -102,12 +142,29 @@ public class TurbineGlobalCacheService
      * Called the first time the Service is used.
      */
     public void init()
-        throws InitializationException
-    {
-        try
-        {
-            cache = new Hashtable(20);
-
+    throws InitializationException {
+        int cacheInitialSize = DEFAULT_INITIAL_CACHE_SIZE;
+        Configuration conf = getConfiguration();
+        if (conf != null) {
+            try {
+                cacheInitialSize = conf.getInt(INITIAL_CACHE_SIZE, DEFAULT_INITIAL_CACHE_SIZE);
+                if (cacheInitialSize <= 0) {
+                    throw new IllegalArgumentException(INITIAL_CACHE_SIZE + " must be >0");
+                }
+                cacheCheckFrequency = conf.getLong(CACHE_CHECK_FREQUENCY, DEFAULT_CACHE_CHECK_FREQUENCY);
+                if (cacheCheckFrequency <= 0) {
+                    throw new IllegalArgumentException(CACHE_CHECK_FREQUENCY + " must be >0");
+                }
+            }
+            catch (Exception x) {
+                throw new InitializationException(
+                "Failed to initialize TurbineGlobalCacheService",x);
+            }
+        }
+        
+        try {
+            cache = new Hashtable(cacheInitialSize);
+            
             // Start housekeeping thread.
             Thread housekeeping = new Thread(this);
             // Indicate that this is a system thread. JVM will quit only when there
@@ -116,22 +173,21 @@ public class TurbineGlobalCacheService
             // to terminate in an orderly manner.
             housekeeping.setDaemon(true);
             housekeeping.start();
-
             setInit(true);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             throw new InitializationException(
-                "TurbineGlobalCacheService failed to initialize", e);
+            "TurbineGlobalCacheService failed to initialize", e);
         }
     }
 
     /**
-     * Returns an item from the cache.
+     * Returns an item from the cache.  RefreshableCachedObject will be
+     * refreshed if it is expired not untouched.
      *
      * @param id The key of the stored object.
      * @return The object from the cache.
-     * @exception ObjectExpiredException, when either the object is
+     * @exception ObjectExpiredException when either the object is
      * not in the cache or it has expired.
      */
     public CachedObject getObject(String id)
@@ -148,10 +204,21 @@ public class TurbineGlobalCacheService
             throw new ObjectExpiredException();
         }
 
-        if (obj.isStale())
-        {
-            // Expired.
-            throw new ObjectExpiredException();
+        if (obj.isStale()) {
+            if (obj instanceof RefreshableCachedObject) {
+                RefreshableCachedObject rco = (RefreshableCachedObject) obj;
+                if (rco.isUntouched())
+                    // Do not refresh an object that has exceeded TimeToLive
+                    throw new ObjectExpiredException();
+                // Refresh Object
+                rco.refresh();
+                if (rco.isStale())
+                    // Object is Expired.
+                    throw new ObjectExpiredException();
+            } else {
+                // Expired.
+                throw new ObjectExpiredException();
+            }
         }
 
         if (obj instanceof RefreshableCachedObject)
@@ -284,4 +351,18 @@ public class TurbineGlobalCacheService
         int objectsize = baos.toByteArray().length - 4;
         return objectsize;
     }
-}
+    
+    /**
+     * Flush the cache of all objects.
+     */
+    public void flushCache() {
+        
+        synchronized (this) {
+            for ( Enumeration e = cache.keys(); e.hasMoreElements(); ) {
+                String key = (String) e.nextElement();
+                CachedObject co = (CachedObject) cache.get(key);
+                cache.remove(key);
+            }
+        }
+    }
+ }
