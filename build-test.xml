@@ -30,7 +30,7 @@
     name="compile"
     description="==> compiles the test source code">
     
-    <ant antfile="build.xml" target="compile"/>
+    <ant antfile="build-legacy.xml" target="compile"/>
 
     <copy todir="${build.src}/org">
       <fileset dir="${test.dir}/org"/>
@@ -85,8 +85,9 @@
 
   <target 
     name="test-servlet"
-    depends="compile,prepare-tests-tomcat-40"
     description="--> runs turbine servlet tests">
+
+    <fail message="The integration unit tests only work with the maven controlled build."/>
 
     <taskdef 
       name="RunServerTests" 
