@@ -221,10 +221,22 @@ public abstract class ActionEvent extends Action
             throw new NoSuchMethodException("ActionEvent: The button was null");
         }
 
-        Method method = getClass().getMethod(theButton, methodParams);
-        Object[] methodArgs = new Object[] { data };
+        Method method = null
 
-        method.invoke(this, methodArgs);
+        try
+        {
+            method = getClass().getMethod(theButton, methodParams);
+            Object[] methodArgs = new Object[] { data };
+
+            log.debug("Invoking " + method);
+
+            method.invoke(this, methodArgs);
+        }
+        catch (InvocationTargetException ite)
+        {
+            Throwable t = ite.getTargetException();
+            log.error("Invokation of " + method , t);
+        }
     }
 
     /**
