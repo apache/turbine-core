@@ -76,6 +76,7 @@ import javax.servlet.http.HttpSessionListener;
  *
  * @since 2.3
  * @version $Id$
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @see javax.servlet.http.HttpSessionListener
  */
 public class SessionListener
