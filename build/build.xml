@@ -238,8 +238,8 @@
             private="true"
             version="true"
             use="true"
-            windowtitle="${Name} ${version} API"
-            doctitle="${Name} ${version} API"
+            windowtitle="${name} ${version} API"
+            doctitle="${name} ${version} API"
             bottom="Copyright &amp;copy; ${year} Apache Software Foundation. All Rights Reserved."
         >
             <classpath refid="classpath"/>
