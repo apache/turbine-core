@@ -225,7 +225,7 @@ public class TurbineVelocityService
      */
     public Context getContext()
     {
-        Context ctx = new VelocityContext();
+        Context ctx = new VelocityContext(globalContext);
 
         //
         // We have only one context per request (that is the nature
