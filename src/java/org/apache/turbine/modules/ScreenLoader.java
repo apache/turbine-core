@@ -195,7 +195,7 @@ public class ScreenLoader
         if (cache() && this.containsKey(name))
         {
             screen = (Screen) this.get(name);
-            log.debug("Found " + name + " in the cache!");
+            log.debug("Found Screen " + name + " in the cache!");
         }
         else
         {
@@ -206,8 +206,8 @@ public class ScreenLoader
                 if (ab != null)
                 {
                     // Attempt to load the screen
-                    screen = 
-                        (Screen) ab.getAssembler(AssemblerBrokerService.SCREEN_TYPE, name);
+                    screen = (Screen) ab.getAssembler(
+                        AssemblerBrokerService.SCREEN_TYPE, name);
                 }
             }
             catch (ClassCastException cce)

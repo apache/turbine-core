@@ -56,6 +56,9 @@ package org.apache.turbine.modules;
 
 import java.util.Vector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.ecs.ConcreteElement;
 
 import org.apache.turbine.Turbine;
@@ -80,11 +83,19 @@ public class NavigationLoader
     extends GenericLoader
     implements Loader
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(NavigationLoader.class);
+
     /** The single instance of this class. */
     private static NavigationLoader instance =
         new NavigationLoader(Turbine.getConfiguration()
                          .getInt(TurbineConstants.NAVIGATION_CACHE_SIZE_KEY, 
                                  TurbineConstants.NAVIGATION_CACHE_SIZE_DEFAULT));
+
+    /** The Assembler Broker Service */
+    private static AssemblerBrokerService ab = 
+        (AssemblerBrokerService) TurbineServices.getInstance()
+        .getService(AssemblerBrokerService.SERVICE_NAME);
 
     /**
      * These ctor's are private to force clients to use getInstance()
@@ -166,11 +177,11 @@ public class NavigationLoader
     }
 
     /**
-     * Pulls out an instance of the object by name.  Name is just the
-     * single name of the object.
+     * Pulls out an instance of the Navigation by name.  Name is just the
+     * single name of the Navigation.
      *
-     * @param name Name of object instance.
-     * @return A Layout with the specified name, or null.
+     * @param name Name of requested Navigation
+     * @return A Navigation with the specified name, or null.
      * @exception Exception a generic exception.
      */
     public Navigation getInstance(String name)
@@ -178,22 +189,24 @@ public class NavigationLoader
     {
         Navigation navigation = null;
 
+        // Check if the navigation is already in the cache
         if (cache() && this.containsKey(name))
         {
             navigation = (Navigation) this.get(name);
+            log.debug("Found Navigation " + name + " in the cache!");
         }
         else
         {
-            // We get the broker service
-            AssemblerBrokerService ab =
-                    (AssemblerBrokerService) TurbineServices.getInstance()
-                    .getService(AssemblerBrokerService.SERVICE_NAME);
+            log.debug("Loading Navigation " + name + " from the Assembler Broker");
 
             try
             {
-                // Attempt to load the screen
-                navigation = (Navigation) ab.getAssembler(
+                if (ab != null)
+                {
+                    // Attempt to load the navigation
+                    navigation = (Navigation) ab.getAssembler(
                         AssemblerBrokerService.NAVIGATION_TYPE, name);
+                }
             }
             catch (ClassCastException cce)
             {
@@ -207,8 +220,8 @@ public class NavigationLoader
             {
                 // If we did not find a screen we should try and give
                 // the user a reason for that...
-                // FIX ME: The AssemblerFactories should each add it's own
-                //         string here...
+                // FIX ME: The AssemblerFactories should each add it's
+                // own string here...
                 Vector packages = Turbine.getConfiguration()
                     .getVector(TurbineConstants.MODULE_PACKAGES);
 
@@ -216,9 +229,9 @@ public class NavigationLoader
                         GenericLoader.getBasePackage());
 
                 throw new ClassNotFoundException(
-                        "\n\n\tRequested Navigation not found: " + name + "\n" +
-                        "\tTurbine looked in the following modules.packages " +
-                        "path: \n\t" + packages.toString() + "\n");
+                        "\n\n\tRequested Navigation not found: " + name + 
+                        "\n\tTurbine looked in the following " +
+                        "modules.packages path: \n\t" + packages.toString() + "\n");
             }
             else if (cache())
             {
