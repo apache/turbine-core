@@ -3,7 +3,7 @@
   
   <name>jakarta-turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.2-b1</currentVersion>
+  <currentVersion>2.2-b2-dev</currentVersion>
   <organization>Apache Software Foundation</organization>
   <inceptionYear>2000</inceptionYear>
   <package>org.apache.turbine</package>
