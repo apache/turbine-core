@@ -11,6 +11,108 @@
 
 <body>
 
+<!--
+<section name="Turbine 2.2-b2">
+
+<p>
+Changes between Turbine 2.2-b1 and 2.2-b2.
+</p>
+
+<p>
+</p>
+
+<subsection name="Changes that could break older environments">
+<p>
+  <ul>
+    <li>
+    </li>
+  </ul>
+</p>
+</subsection>
+
+
+<subsection name="Other changes">
+<p>
+  <ul>
+    <li>
+    </li>
+  </ul>
+</p>
+</subsection>
+
+<subsection name="Fixed bugs">
+<p>
+  <ul>
+    <li>
+    </li>
+  </ul>
+</p>
+</subsection>
+</section>
+-->
+
+<section name="Turbine 2.2-b2">
+
+<p>
+Changes between Turbine 2.2-b1 and 2.2-b2.
+</p>
+
+<p>
+<b>The coupled version of Torque has been removed from Turbine 2.2!</b> <br/>
+Get a full list of changes at the
+<a href="http://jakarta.apache.org/turbine/torque/changes">Torque-site</a>.
+
+</p>
+
+<subsection name="Changes that could break older environments">
+<p>
+  <ul>
+    <li>
+      the coupled version of torque has been removed.
+    </li>
+  </ul>
+</p>
+</subsection>
+
+
+<subsection name="Other changes">
+<p>
+  <ul>
+    <li>
+      Maven is used as build system for Turbine 2.2
+    </li>
+    <li>
+      removed antiquated redirect logic.
+    </li>
+    <li>
+      You can use log4j properties directly.
+    </li>
+    <li>
+      The configuration package has been moved from stratum to commons
+    </li>
+    <li>
+      BaseValueParser.setProperty() changed from private to protected
+    </li>
+  </ul>
+</p>
+</subsection>
+
+<subsection name="Fixed bugs">
+<p>
+  <ul>
+    <li>
+      Fixed IllegalStateException when removing an attribute from an invalid
+      session (patch by David Vandegrift - dvandegrift@bluearc.com)
+    </li>
+    <li>
+      Fixed NumberFormatException in UUIdGenerator.
+    </li>
+  </ul>
+</p>
+</subsection>
+</section>
+
+
 <section name="Turbine 2.2b1">
 
 <p>
