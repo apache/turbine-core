@@ -1104,7 +1104,7 @@ public abstract class $basePrefix$table.JavaName $extendsBaseClass
 #end 
 
 #if ($complexObjectModel)
-
+  copyObj.setNew(false);
   #set ( $list = "List " )
   #foreach ($fk in $table.Referrers)
     #set ( $tblFK = $fk.Table )
@@ -1132,6 +1132,7 @@ public abstract class $basePrefix$table.JavaName $extendsBaseClass
         #set ( $list = "" )
     #end
   #end 
+  copyObj.setNew(true);
 #end
 
 #foreach ($col in $table.Columns)
