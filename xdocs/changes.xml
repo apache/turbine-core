@@ -157,6 +157,12 @@ Changes between Turbine 2.3 and 2.4.
 <p>
   <ul>
   	<li>
+  	  Backported the Pipeline from Turbine 3 to Turbine 2.4.  The pipeline allows
+  	  you to define via an XML file all the stages for processing a request.  This
+  	  makes it simple to add your own custom steps to be applied to each HTTP
+  	  request coming into Turbine.
+  	</li>
+  	<li>
   	  Maven Plugin for Turbine moved to /extensions directory.  The torque
   	  codegeneration of objects for the Schedule and Security services was
   	  moved to a new project /extensions/torque.  This removes all the nasty

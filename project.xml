@@ -309,6 +309,11 @@
   </contributors>
 
   <dependencies>
+  <!-- t3 -->
+    <dependency>
+      <id>commons-xo</id>
+      <version>20040218.104422</version>
+    </dependency>
     <dependency>
       <groupId>mx4j</groupId>
       <artifactId>mx4j-jmx</artifactId>
@@ -481,6 +486,11 @@
       <version>1.0</version>
       <url>http://jakarta.apache.org/commons/fileupload/index.html</url>
     </dependency>
+    <dependency>
+      <id>commons-io</id>
+      <version>0.2-dev.20020717.100545</version>
+      <url>http://jakarta.apache.org/commons/io/index.html</url>
+    </dependency>    
     <dependency>
       <id>commons-lang</id>
       <version>1.0.1</version>

@@ -1,5 +1,7 @@
 package org.apache.turbine;
 
+import org.apache.turbine.pipeline.TurbinePipeline;
+
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -362,4 +364,12 @@ public interface TurbineConstants
 
 	/** Prefix for scheduler job related classes */
 	String SCHEDULEDJOB_PREFIX = "scheduledjobs";
+	
+	/**
+	 * The fully qualified class name of the default {@link
+	 * org.apache.turbine.Pipeline} implementation to use in the
+	 * {@link org.apache.turbine.Turbine} servlet.
+	 */
+	public static final String STANDARD_PIPELINE =
+		TurbinePipeline.class.getName();	
 }
