@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
+
 <!-- 
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
@@ -34,7 +35,7 @@
   <shortDescription>Turbine Skeleton application</shortDescription>
   <description/>
   <organization/>
-  <inceptionYear>2003</inceptionYear>
+  <inceptionYear>2004</inceptionYear>
   <package>@TURBINE_APP_PACKAGE@</package>
   <releases/>
   <developers/>
@@ -45,6 +46,7 @@
       <groupId>turbine</groupId>
       <artifactId>turbine</artifactId>
       <version>2.3.1-rc2</version>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -61,6 +63,7 @@
       <artifactId>postgresql</artifactId>
       <version>7.3-jdbc3</version>
       <url>http://www.postgresql.org/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -71,6 +74,7 @@
       <artifactId>mysql-connector-java</artifactId>
       <version>2.0.14-bin</version>
       <url>http://www.mysql.org/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -86,6 +90,7 @@
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
       <version>1.1</version>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -95,6 +100,7 @@
       <artifactId>commons-email</artifactId>
       <version>20030310.165926</version>
       <url>http://jakarta.apache.org/commons/sandbox/email</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -104,6 +110,7 @@
       <artifactId>commons-fileupload</artifactId>
       <version>1.0</version>
       <url>http://jakarta.apache.org/commons/fileupload/index.html</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -113,6 +120,7 @@
       <artifactId>cryptix</artifactId>
       <version>3.2.0</version>
       <url>http://www.cryptix.org/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -122,6 +130,7 @@
       <artifactId>dom4j</artifactId>
       <version>1.4</version>
       <url>http://www.dom4j.org/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -131,6 +140,7 @@
       <artifactId>ecs</artifactId>
       <version>1.4.2</version>
       <url>http://jakarta.apache.org/ecs/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -139,7 +149,8 @@
       <groupId>excalibur-component</groupId>
       <artifactId>excalibur-component</artifactId>
       <version>1.1</version>
-      <url>http://jakarta.apache.org/avalon/</url>
+      <url>http://avalon.apache.org/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -148,7 +159,8 @@
       <groupId>excalibur-instrument</groupId>
       <artifactId>excalibur-instrument</artifactId>
       <version>1.0</version>
-      <url>http://jakarta.apache.org/avalon/</url>
+      <url>http://avalon.apache.org/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -157,7 +169,8 @@
       <groupId>excalibur-logger</groupId>
       <artifactId>excalibur-logger</artifactId>
       <version>1.0.1</version>
-      <url>http://jakarta.apache.org/avalon/</url>
+      <url>http://avalon.apache.org/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -166,7 +179,8 @@
       <groupId>excalibur-pool</groupId>
       <artifactId>excalibur-pool</artifactId>
       <version>1.2</version>
-      <url>http://jakarta.apache.org/avalon/</url>
+      <url>http://avalon.apache.org/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -176,6 +190,7 @@
       <artifactId>activation</artifactId>
       <version>1.0.2</version>
       <url>http://java.sun.com/products/javabeans/glasgow/jaf.html</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -185,6 +200,7 @@
       <artifactId>javamail</artifactId>
       <version>1.3.1</version>
       <url>http://java.sun.com/products/javamail/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -196,6 +212,7 @@
       <artifactId>oro</artifactId>
       <version>2.0.7</version>
       <url>http://jakarta.apache.org/oro/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -205,6 +222,7 @@
       <artifactId>jython</artifactId>
       <version>2.1</version>
       <url>http://www.jython.org/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -214,12 +232,14 @@
       <artifactId>servletapi</artifactId>
       <version>2.3</version>
       <url>http://java.sun.com/products/servlet/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>torque</groupId>
       <artifactId>torque</artifactId>
       <version>3.1</version>
       <url>http://db.apache.org/torque/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -229,6 +249,7 @@
       <artifactId>velocity</artifactId>
       <version>1.3.1</version>
       <url>http://jakarta.apache.org/velocity/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -238,6 +259,7 @@
       <artifactId>xalan</artifactId>
       <version>2.5.1</version>
       <url>http://xml.apache.org/xalan-j/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -247,6 +269,7 @@
       <artifactId>xmlrpc</artifactId>
       <version>1.2-b1</version>
       <url>http://xml.apache.org/xmlrpc/</url>
+      <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -266,6 +289,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>jcs</groupId>
@@ -275,6 +299,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
 
     <!-- ============================================================ -->
@@ -291,6 +316,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>commons-beanutils</groupId>
@@ -300,6 +326,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>commons-collections</groupId>
@@ -309,6 +336,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>commons-configuration</groupId>
@@ -318,6 +346,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>commons-digester</groupId>
@@ -327,6 +356,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>commons-lang</groupId>
@@ -336,6 +366,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
@@ -345,6 +376,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>commons-pool</groupId>
@@ -354,6 +386,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>jdbc</groupId>
@@ -363,6 +396,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>jndi</groupId>
@@ -372,6 +406,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
@@ -381,6 +416,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>logkit</groupId>
@@ -390,6 +426,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>stratum</groupId>
@@ -399,6 +436,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>village</groupId>
@@ -408,6 +446,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>xerces</groupId>
@@ -417,6 +456,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>xml-apis</groupId>
@@ -426,6 +466,7 @@
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
+      <type>jar</type>
     </dependency>
 
   </dependencies>
