@@ -407,14 +407,18 @@ public class FileItem implements DataSource
     {
         if (inMemory())
         {
-            FileWriter writer = new FileWriter(file);
+            FileWriter writer = null;
             try
             {
+                writer = new FileWriter(file);
                 writer.write(getString());
             }
             finally
             {
-                writer.close();
+                if (writer != null)
+                {
+                    writer.close();
+                }
             }
         }
         else if (storeLocation != null)
