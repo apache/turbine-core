@@ -70,19 +70,26 @@ import org.apache.turbine.util.TurbineException;
  * the implementations should implement the Recyclable interface.
  *
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public interface RunDataService extends Service
+public interface RunDataService
+    extends Service
 {
-    /**
-     * The key under which this service is stored in TurbineServices.
-     */
+    /** The key under which this service is stored in TurbineServices. */
     static final String SERVICE_NAME = "RunDataService";
 
-    /**
-     * The default configuration key.
-     */
+    /** The default parser configuration key. */
     static final String DEFAULT_CONFIG = "default";
+
+    /** The property for the implemention of the RunData object */
+    public static final String RUN_DATA_KEY = "run.data";
+
+    /** The property for the implemention of the ParameterParser. */
+    public static final String PARAMETER_PARSER_KEY = "parameter.parser";
+
+    /** The property for the implemention of the CookieParser. */
+    public static final String COOKIE_PARSER_KEY = "cookie.parser";
 
     /**
      * Gets a default RunData object.

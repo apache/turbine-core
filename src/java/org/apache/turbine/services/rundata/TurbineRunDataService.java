@@ -54,23 +54,31 @@ package org.apache.turbine.services.rundata;
  * <http://www.apache.org/>.
  */
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+
 import javax.servlet.ServletConfig;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.configuration.Configuration;
+
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
+
 import org.apache.turbine.services.pool.PoolService;
+
 import org.apache.turbine.util.CookieParser;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineException;
+
+import org.apache.turbine.util.parser.DefaultCookieParser;
+import org.apache.turbine.util.parser.DefaultParameterParser;
 
 /**
  * The RunData Service provides the implementations for RunData and
@@ -80,63 +88,48 @@ import org.apache.turbine.util.TurbineException;
  * the implementations should implement the Recyclable interface.
  *
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineRunDataService
-        extends TurbineBaseService
-        implements RunDataService
+    extends TurbineBaseService
+    implements RunDataService
 {
-    /**
-     * The property for the implemention of RunData.
-     */
-    public static final String RUN_DATA = "run.data";
+    /** @deprecated Use RunDataService.RUN_DATA_KEY */
+    public static final String RUN_DATA =
+        RunDataService.RUN_DATA_KEY;
 
-    /**
-     * The property for the implemention of ParameterParser.
-     */
-    public static final String PARAMETER_PARSER = "parameter.parser";
+    /** @deprecated Use RunDataService.PARAMETER_PARSER_KEY */
+    public static final String PARAMETER_PARSER =
+        RunDataService.PARAMETER_PARSER_KEY;
 
-    /**
-     * The property for the implemention of CookieParser.
-     */
-    public static final String COOKIE_PARSER = "cookie.parser";
+    /** @deprecated Use RunDataService.COOKIE_PARSER_KEY */
+    public static final String COOKIE_PARSER =
+        RunDataService.COOKIE_PARSER_KEY;
 
-    /**
-     * The default implementations.
-     */
+    /** The default implementation of the RunData object*/
     private static final String DEFAULT_RUN_DATA =
-            "org.apache.turbine.services.rundata.DefaultTurbineRunData";
+        DefaultTurbineRunData.class.getName();
+
+    /** The default implementation of the Parameter Parser object */
     private static final String DEFAULT_PARAMETER_PARSER =
-            "org.apache.turbine.util.parser.DefaultParameterParser";
+        DefaultParameterParser.class.getName();
+
+    /** The default implementation of the Cookie parser object */
     private static final String DEFAULT_COOKIE_PARSER =
-            "org.apache.turbine.util.parser.DefaultCookieParser";
+        DefaultCookieParser.class.getName();
 
-    /**
-     * The map of configurations.
-     */
-    private HashMap configurations = new HashMap();
+    /** The map of configurations. */
+    private Map configurations = new HashMap();
 
-    /**
-     * The getContextPath method from servet API >2.0.
-     */
-    private Method getContextPath;
+    /** Private reference to the pool service for object recycling */
+    private PoolService pool = null;
 
     /**
      * Constructs a RunData Service.
      */
     public TurbineRunDataService()
     {
-        // Allow Turbine to work with both 2.2 (and 2.1) and 2.0 Servlet API.
-        try
-        {
-            getContextPath =
-                    HttpServletRequest.class.getDeclaredMethod("getContextPath", null);
-        }
-        catch (NoSuchMethodException x)
-        {
-            // Ignore a NoSuchMethodException because
-            // it means we are using Servlet API 2.0.
-        }
     }
 
     /**
@@ -190,6 +183,15 @@ public class TurbineRunDataService
                 }
             }
         }
+        pool = (PoolService) TurbineServices.getInstance()
+            .getService(PoolService.SERVICE_NAME);
+
+        if (pool == null)
+        {
+            throw new InitializationException("RunData Service requires"
+                                              + " configured Pool Service!");
+        }
+
         setInit(true);
     }
 
@@ -234,12 +236,13 @@ public class TurbineRunDataService
         // to each and every module. Since each thread has its own RunData
         // object, it is not necessary to perform syncronization for
         // the data within this object.
-        if ((req == null) ||
-                (res == null) ||
-                (config == null))
+        if ((req == null)
+            || (res == null)
+            || (config == null))
         {
             throw new IllegalArgumentException(
-                    "RunDataFactory fatal error: HttpServletRequest, HttpServletResponse or ServletConfig was null.");
+                "RunDataFactory fatal error: HttpServletRequest, "
+                + "HttpServletResponse or ServletConfig was null.");
         }
 
         // Get the specified configuration.
@@ -248,10 +251,6 @@ public class TurbineRunDataService
         {
             throw new TurbineException("RunTime configuration '" + key + "' is undefined");
         }
-
-        // Use the Pool Service for recycling the implementing objects.
-        PoolService pool = (PoolService)
-                TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
 
         TurbineRunData data;
         try
@@ -276,17 +275,9 @@ public class TurbineRunDataService
         data.setServletConfig(config);
 
         // Set the ServerData.
-        String contextPath;
-        try
-        {
-            contextPath = getContextPath != null ?
-                    (String) getContextPath.invoke(req, null) : "";
-        }
-        catch (Exception x)
-        {
-            contextPath = "";
-        }
-        String scriptName = contextPath + req.getServletPath();
+        String contextPath = req.getContextPath();
+        String scriptName  = req.getServletPath();
+
         data.setServerData(new ServerData(req.getServerName(),
                 req.getServerPort(),
                 req.getScheme(),
@@ -306,10 +297,9 @@ public class TurbineRunDataService
     {
         if (data instanceof TurbineRunData)
         {
-            PoolService pool = (PoolService)
-                    TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
             pool.putInstance(((TurbineRunData) data).getParameterParser());
             pool.putInstance(((TurbineRunData) data).getCookieParser());
+
             return pool.putInstance(data);
         }
         else

@@ -123,9 +123,9 @@ import org.apache.turbine.util.template.TemplateInfo;
  * @version $Id$
  */
 public class DefaultTurbineRunData
-        extends RecyclableSupport
-        implements TurbineRunData,
-        Recyclable
+    extends RecyclableSupport
+    implements TurbineRunData,
+               Recyclable
 {
     /** The default locale. */
     private static Locale defaultLocale = null;
@@ -503,9 +503,9 @@ public class DefaultTurbineRunData
     {
         // Parse the cookies first, if not yet done.
         if ((this.cookies != null) &&
-                (this.cookies.getRequest() != this.req))
+                (this.cookies.getRequest() != getRequest()))
         {
-            this.cookies.setData(this.req, this.res);
+            this.cookies.setData(getRequest(), getResponse());
         }
         return this.cookies;
     }
@@ -523,7 +523,7 @@ public class DefaultTurbineRunData
     /**
      * Gets the servlet response.
      *
-     * @return the resposne.
+     * @return the response.
      */
     public HttpServletResponse getResponse()
     {
@@ -713,8 +713,7 @@ public class DefaultTurbineRunData
      */
     public boolean hasScreen()
     {
-        return (this.screen != null &&
-                this.screen.length() > 0);
+        return StringUtils.isNotEmpty(this.screen);
     }
 
     /**
@@ -802,8 +801,8 @@ public class DefaultTurbineRunData
      */
     public boolean hasMessage()
     {
-        return (this.message != null &&
-                this.message.toString().length() > 0);
+        return (this.message != null)
+            && StringUtils.isNotEmpty(this.message.toString());
     }
 
     /**
@@ -1067,7 +1066,6 @@ public class DefaultTurbineRunData
      */
     public String getCharSet()
     {
-
         log.debug("getCharSet()");
 
         if (StringUtils.isEmpty(charSet))
