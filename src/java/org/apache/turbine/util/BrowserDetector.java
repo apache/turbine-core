@@ -79,6 +79,8 @@ package org.apache.turbine.util;
  * @author <a href="mailto:mospaw@polk-county.com">Chris Mospaw</a>
  * @author <a href="mailto:bgriffin@cddb.com">Benjamin Elijah Griffin</a>
  * @version $Id$
+ * @deprecated This class will be removed after the 2.3 release. Please
+ *             use BrowserDetector from <a href="http://jakarta.apache.org/commons/">commons-http</a>.
  */
 public class BrowserDetector
 {

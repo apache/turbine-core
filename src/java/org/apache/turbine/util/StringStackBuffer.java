@@ -63,6 +63,9 @@ import java.util.Stack;
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @version $Id$
+ * @deprecated This class will be removed after the 2.3 release. It is
+ *             not part of the Web Framework scope. If you need this class,
+ *             please lobby for inclusion in the <a href="http://jakarta.apache.org/commons/">commons-collections</a> component repository.
  */
 public class StringStackBuffer implements Serializable
 {

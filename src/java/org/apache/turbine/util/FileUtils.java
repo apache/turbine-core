@@ -59,6 +59,8 @@ package org.apache.turbine.util;
  *
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
+ * @deprecated This class will be removed after the 2.3 release. Please
+ *             use FileUtils from <a href="http://jakarta.apache.org/commons/">commons-io</a>.
  */
 public class FileUtils
 {
