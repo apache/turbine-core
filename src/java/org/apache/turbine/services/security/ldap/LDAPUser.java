@@ -58,10 +58,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.Hashtable;
+import java.util.Properties;
 import javax.servlet.http.HttpSessionBindingEvent;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.Attribute;
+import javax.naming.NamingException;
 import org.apache.torque.om.BaseObject;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.util.Log;
+import org.apache.torque.om.ObjectKey;
+import org.apache.torque.om.NumberKey;
+import org.apache.torque.om.StringKey;
 
 /**
  * LDAPUser implements User and provides access to a user who accesses the
@@ -71,6 +79,7 @@ import org.apache.turbine.services.security.TurbineSecurity;
  * @author <a href="mailto:tadewunmi@gluecode.com">Tracy M. Adewunmi</a>
  * @author <a href="mailto:lflournoy@gluecode.com">Leonard J. Flournoy </a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hhernandez@itweb.com.mx">Humberto Hernandez</a>
  */
 public class LDAPUser extends BaseObject implements User
 {
@@ -96,6 +105,107 @@ public class LDAPUser extends BaseObject implements User
         permStorage = new Hashtable(10);
         setHasLoggedIn(new Boolean(false));
     }
+
+
+    /**
+     * Populates the user with values obtained from the LDAP Service.
+     * This method could be redefined in subclasses.
+     * @param attribs The attributes obtained from LDAP.
+     * @throws NamingException if there was an error with JNDI.
+     */
+    public void setAttributes(Attributes attribs)
+        throws NamingException
+    {
+
+        Attribute attr;
+        String attrName;
+
+        // Set the User id.
+        attrName = LDAPSecurityConstants.getUserIdAttribute();
+        if (attrName != null)
+        {
+            attr = attribs.get(attrName);
+            if (attr != null && attr.get() != null)
+            {
+                try
+                {
+                    setPrimaryKey(new StringKey(attr.get().toString()));
+                }
+                catch(Exception ex)
+                {
+                    Log.error("Exception caught:",ex);
+                }
+            }
+        }
+
+        // Set the Username.
+        attrName = LDAPSecurityConstants.getUserNameAttribute();
+        if (attrName != null)
+        {
+            attr = attribs.get(attrName);
+            if (attr != null && attr.get() != null)
+            {
+                setUserName(attr.get().toString());
+            }
+        }
+        else
+        {
+            Log.error("There is no LDAP attribute for the username.");
+        }
+
+        // Set the Firstname.
+        attrName = LDAPSecurityConstants.getFirstNameAttribute();
+        if (attrName != null)
+        {
+            attr = attribs.get(attrName);
+            if (attr != null && attr.get() != null)
+            {
+                setFirstName(attr.get().toString());
+            }
+        }
+
+        // Set the Lastname.
+        attrName = LDAPSecurityConstants.getLastNameAttribute();
+        if (attrName != null)
+        {
+            attr = attribs.get(attrName);
+            if (attr != null && attr.get() != null)
+            {
+                setLastName(attr.get().toString());
+            }
+        }
+
+        // Set the E-Mail
+        attrName = LDAPSecurityConstants.getEmailAttribute();
+        Log.debug("emailattr = "+attrName);
+        if (attrName != null)
+        {
+            attr = attribs.get(attrName);
+            if (attr != null && attr.get() != null)
+            {
+                Log.debug("attr.get() = "+attr.get().toString());
+                setEmail(attr.get().toString());
+                Log.debug("getEmail = "+getEmail());
+            }
+        }
+    }
+
+    /**
+     * Gets the distinguished name (DN) of the User.
+     * This method could be redefined in a subclass.
+     * @return The Distinguished Name of the user.
+     */
+     public String getDN()
+     {
+        String filterAttribute = LDAPSecurityConstants.getUserNameAttribute();
+        String userBaseSearch  = LDAPSecurityConstants.getBaseSearch();
+        String userName = getUserName();
+        Log.debug("userName ="+userName);
+
+        String dn = filterAttribute + "=" + userName + "," + userBaseSearch;
+        Log.debug("dn ="+dn);
+        return dn;
+     }
 
     /**
       * Gets the access counter for a user during a session.
@@ -169,6 +279,7 @@ public class LDAPUser extends BaseObject implements User
       */
     public String getEmail()
     {
+        Log.debug("start getEmail()");
         String tmp = null;
         try
         {
@@ -179,6 +290,7 @@ public class LDAPUser extends BaseObject implements User
         catch (Exception e)
         {
         }
+        Log.debug("email = "+tmp);
         return tmp;
     }
 
@@ -486,7 +598,8 @@ public class LDAPUser extends BaseObject implements User
      */
     public void setEmail(String email)
     {
-        getPerm (User.EMAIL, email);
+        Log.debug("setEmail("+email+")");
+        setPerm(User.EMAIL, email);
     }
 
     /**
@@ -495,7 +608,7 @@ public class LDAPUser extends BaseObject implements User
       */
     public void setFirstName(String fname)
     {
-        setPerm (User.FIRST_NAME, fname);
+        setPerm(User.FIRST_NAME, fname);
     }
 
     /**
@@ -516,7 +629,7 @@ public class LDAPUser extends BaseObject implements User
       */
     public void setLastName(String lname)
     {
-        setPerm (User.LAST_NAME, lname);
+        setPerm(User.LAST_NAME, lname);
     }
 
     /**

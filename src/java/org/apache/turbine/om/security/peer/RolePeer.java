@@ -140,6 +140,7 @@ public class RolePeer extends BasePeer
          * UserPeer up = TurbineSecurity.getUserPeerInstance();
          */
 
+/*
         UserPeer up = ((DBSecurityService)TurbineSecurity.getService())
             .getUserPeerInstance();
 
@@ -151,6 +152,13 @@ public class RolePeer extends BasePeer
         criteria.addJoin(up.getFullColumnName(UserPeer.USER_ID),
                          UserGroupRolePeer.USER_ID);
         criteria.addJoin(UserGroupRolePeer.ROLE_ID, RolePeer.ROLE_ID);
+*/
+        criteria.add(UserGroupRolePeer.USER_ID,
+            ((Persistent)user).getPrimaryKey());
+        criteria.add(UserGroupRolePeer.GROUP_ID,
+            ((Persistent)group).getPrimaryKey());
+        criteria.addJoin(UserGroupRolePeer.ROLE_ID, RolePeer.ROLE_ID);
+
         return retrieveSet(criteria);
     }
 

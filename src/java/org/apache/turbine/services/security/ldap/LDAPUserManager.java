@@ -53,13 +53,14 @@ package org.apache.turbine.services.security.ldap;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-
+import java.util.Properties;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
+import javax.naming.AuthenticationException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
@@ -68,6 +69,7 @@ import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.security.UserManager;
+import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.services.security.ldap.util.ParseExceptionMessage;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.security.DataBackendException;
@@ -93,9 +95,10 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * @author <a href="mailto:lflournoy@gluecode.com">Leonard J. Flournoy</a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hhernandez@itweb.com.mx">Humberto Hernandez</a>
  * @version $Id$
  */
-public class LDAPUserManager implements UserManager, LDAPSecurityConstants
+public class LDAPUserManager implements UserManager
 {
     /**
       * Check wether a specified user's account exists.
@@ -123,21 +126,13 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
     public boolean accountExists(String username)
             throws DataBackendException
     {
-        /*!
-         * Is it possible to retrieve more then one user?
-         * Possibly the check for multiple users that is
-         * employed in the DBUserManager can be employed
-         * here.
-         */
-
         try
         {
             User ldapUser = retrieve(username);
         }
-        catch (Exception e)
+        catch (UnknownEntityException ex)
         {
-            throw new DataBackendException(
-                "Failed to check account's presence", e);
+            return false;
         }
 
         return true;
@@ -156,83 +151,51 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
     public User retrieve(String username)
             throws UnknownEntityException, DataBackendException
     {
-        String dNAttribute = TurbineResources.getString(LDAP_DN_ATTR);
-        String filter = TurbineResources.getString(LDAP_SEARCH_FLTR);
-        String userBaseSearch = TurbineResources.getString(LDAP_BASE_SERACH);
-        String dN = null;
-        String adminUser = TurbineResources.getString(LDAP_ADMIN_USRNAME);
-        String adminPassword = TurbineResources.getString(LDAP_ADMIN_PASSWRD);
-
-        adminUser = adminUser.replace('/', '=');
-        adminUser = adminUser.replace('%', ',');
-
-        User ldapUser = null;
-
-        /*
-         * The userBaseSearch string contains some
-         * characters that need to be transformed.
-         */
-        userBaseSearch = userBaseSearch.replace('/', '=');
-        userBaseSearch = userBaseSearch.replace('%', ',');
-
         try
         {
-            DirContext ctx = bind(adminUser, adminPassword);
+            DirContext ctx = bindAsAdmin();
+
+            /*
+             * Define the search.
+             */
+            String userBaseSearch = LDAPSecurityConstants.getBaseSearch();
+            String filter         = LDAPSecurityConstants.getUserNameAttribute();
+            filter = "("+filter + "="+username + ")";
 
             /*
              * Create the default search controls.
              */
             SearchControls ctls = new SearchControls();
 
-            /*
-             * Create filter.
-             */
-            filter = "("+filter + "="+username + ")";
-
             NamingEnumeration answer =
                     ctx.search(userBaseSearch, filter, ctls);
 
-            while (answer.hasMore())
+            if (answer.hasMore())
             {
                 SearchResult sr = (SearchResult) answer.next();
                 Attributes attribs = sr.getAttributes();
-                Log.debug("attribs:  " + attribs.get(dNAttribute));
-                dN = attribs.get(dNAttribute).toString();
-                Log.debug("dN:  " + dN);
-            }
+                LDAPUser ldapUser = createLDAPUser();
+                ldapUser.setAttributes(attribs);
+                ldapUser.setTemp("turbine.user", ldapUser);
 
-            if (dN == null)
+                return ldapUser;
+            }
+            else
             {
                 throw new UnknownEntityException("The given user: " +
                         username + "\n does not exist.");
             }
-
-            StringTokenizer sT = new StringTokenizer(dN, ":");
-
-            while (sT.hasMoreElements())
-            {
-                dN = sT.nextToken();
-            }
-
-            dN = dN.trim();
-
-            ldapUser = new LDAPUser();
-            ldapUser.setUserName(dN);
-
-            ldapUser.setTemp("turbine.user", ldapUser);
-
         }
-        catch (NamingException nameEx)
+        catch (NamingException ex)
         {
             throw new DataBackendException(
-                "The LDAP server specified is unavailable");
+                "The LDAP server specified is unavailable",ex);
         }
-        return ldapUser;
     }
 
     /**
-      * This is currently not implemented to behave as expected.  It is
-      * just here to support the interface requirement.
+      * This is currently not implemented to behave as expected.  It
+      * ignores the Criteria argument and returns all the users.
       *
       * Retrieve a set of users that meet the specified criteria.
       *
@@ -246,10 +209,44 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
       * @return a List of users meeting the criteria.
       * @throws DataBackendException Error accessing the data backend.
       */
-    public User[] retrieve(Criteria criteria) throws DataBackendException
+    public User[] retrieve(Criteria criteria)
+        throws DataBackendException
     {
+
         Vector users = new Vector(0);
-        return (User[]) users.toArray(new User[0]);
+        try
+        {
+            DirContext ctx = bindAsAdmin();
+
+            String userBaseSearch = LDAPSecurityConstants.getBaseSearch();
+            String filter         = LDAPSecurityConstants.getUserNameAttribute();
+            filter = "("+filter+"=*)";
+
+            /*
+             * Create the default search controls.
+             */
+            SearchControls ctls = new SearchControls();
+
+            NamingEnumeration answer =
+                ctx.search(userBaseSearch, filter, ctls);
+
+            while (answer.hasMore())
+            {
+                SearchResult sr = (SearchResult) answer.next();
+                Attributes attribs = sr.getAttributes();
+                LDAPUser ldapUser = createLDAPUser();
+                ldapUser.setAttributes(attribs);
+                ldapUser.setTemp("turbine.user", ldapUser);
+                users.add(ldapUser);
+            }
+        }
+        catch (NamingException ex)
+        {
+            throw new DataBackendException(
+                "The LDAP server specified is unavailable",ex);
+        }
+
+        return (User[]) users.toArray(new User[users.size()]);
     }
 
     /**
@@ -271,7 +268,6 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
         throws PasswordMismatchException,
             UnknownEntityException,DataBackendException
     {
-
         User user = retrieve(username);
         authenticate(user, password);
         return user;
@@ -313,17 +309,24 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
       */
     public void authenticate(User user, String password)
         throws PasswordMismatchException,
-            UnknownEntityException, DataBackendException
+        UnknownEntityException,
+        DataBackendException
     {
+        LDAPUser ldapUser = (LDAPUser)user;
         try
         {
-            bind(user.getUserName(), password);
+            bind(ldapUser.getDN(), password);
         }
-        catch (NamingException authEx)
+        catch (AuthenticationException ex)
         {
             throw new PasswordMismatchException(
                 "The given password for: " +
-                    user.getUserName() + " is invalid\n");
+                    ldapUser.getDN() + " is invalid\n");
+        }
+        catch (NamingException ex)
+        {
+            throw new DataBackendException(
+                "The LDAP server specified is unavailable",ex);
         }
     }
 
@@ -399,67 +402,70 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
             "The method removeAccount has no implementation.");
     }
 
+    /**
+     * Bind as the admin user.
+     * @throws NamingException when an error occurs with the named server.
+     */
+     public static DirContext bindAsAdmin()
+        throws NamingException
+     {
+        String adminUser      = LDAPSecurityConstants.getAdminUsername();
+        String adminPassword  = LDAPSecurityConstants.getAdminPassword();
+        return bind(adminUser, adminPassword);
+     }
 
     /**
-     * Creats an initial context.
+     * Creates an initial context.
      *
      * @param ldap admin username supplied in TRP.
      * @param ldap admin password supplied in TRP
-     * @throws DataBackendException Error accessing the data backend.
-     * @throws UnknownEntityException if the user account is not present.
      * @throws NamingException when an error occurs with the named server.
      */
-    public DirContext bind(String username, String password)
-        throws NamingException, DataBackendException, UnknownEntityException
+    public static DirContext bind(String username, String password)
+        throws NamingException
     {
-        DirContext ctx = null;
+        String host = LDAPSecurityConstants.getLDAPHost();
+        String port = LDAPSecurityConstants.getLDAPPort();
+        String providerURL  = new String("ldap://" + host + ":" + port);
 
-        try
-        {
-            String host = TurbineResources.getString(LDAP_HOST);
-            String port = TurbineResources.getString(LDAP_PORT);
+        String ldapProvider = LDAPSecurityConstants.getLDAPProvider();
 
-            String providerURL = new String("ldap://" + host + ":" + port);
+        /*
+         * creating an initial context using Sun's client
+         * LDAP Provider.
+         */
+        Hashtable env = new Hashtable();
+        env.put(Context.INITIAL_CONTEXT_FACTORY, ldapProvider);
+        env.put(Context.PROVIDER_URL, providerURL);
+        env.put(Context.SECURITY_AUTHENTICATION, "simple");
+        env.put(Context.SECURITY_PRINCIPAL, username);
+        env.put(Context.SECURITY_CREDENTIALS, password);
 
-            /*
-             * creating an initial context using Sun's client
-             * LDAP Provider.
-             */
-            Hashtable env = new Hashtable();
-            env.put(Context.INITIAL_CONTEXT_FACTORY, LDAP_PROVIDER);
-
-            env.put(Context.PROVIDER_URL, providerURL);
-            env.put(Context.SECURITY_AUTHENTICATION, "simple");
-            env.put(Context.SECURITY_PRINCIPAL, username);
-            env.put(Context.SECURITY_CREDENTIALS, password);
-
-            ctx = new javax.naming.directory.InitialDirContext(env);
-            Log.debug("CTX: " + ctx.toString());
-        }
-        catch (NamingException ne)
-        {
-            String errno = ParseExceptionMessage.findErrno(ne.getExplanation());
-
-            if (errno.equals("49"))
-            {
-                throw new UnknownEntityException(
-                    "The given credentials for the administrator are invalid");
-            }
-            else if (errno.equals("22"))
-            {
-                throw new DataBackendException(
-                    "The LDAP server specified is unavailable");
-            }
-            else
-            {
-                throw ne;
-            }
-        }
-        catch (Exception e)
-        {
-            Log.error(e);
-        }
-
+        DirContext ctx = new javax.naming.directory.InitialDirContext(env);
         return ctx;
     }
+
+    /**
+     * Create a new instance of the LDAP User according to the value
+     * configured in TurbineResources.properties.
+     * @return a new instance of the LDAP User.
+     * @throws DataBackendException if there is an error creating the
+     */
+    private LDAPUser createLDAPUser()
+        throws DataBackendException
+    {
+        try
+        {
+            return (LDAPUser)TurbineSecurity.getUserInstance();
+        }
+        catch(ClassCastException ex)
+        {
+            throw new DataBackendException("ClassCastException caught:", ex);
+        }
+        catch(UnknownEntityException ex)
+        {
+            throw new DataBackendException("UnknownEntityException caught:", ex);
+        }
+  }
+
 }

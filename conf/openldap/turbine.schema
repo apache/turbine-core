@@ -1,0 +1,113 @@
+attributetype ( 15530.1.1
+  NAME 'turbineGroupMember'
+  DESC ''
+  EQUALITY caseIgnoreMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.12)
+
+attributetype ( 15530.1.2
+  NAME 'turbineObjectData'
+  DESC ''
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.40)
+
+attributetype ( 15530.1.3
+  NAME 'turbinePermission'
+  DESC ''
+  EQUALITY caseIgnoreMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 15530.1.4
+  NAME 'turbineRoleMember'
+  DESC ''
+  EQUALITY caseIgnoreMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.12)
+
+attributetype ( 15530.1.5
+  NAME 'turbineUserCreationDate'
+  DESC ''
+  EQUALITY caseIgnoreMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.53
+  SINGLE-VALUE)
+
+attributetype ( 15530.1.6
+  NAME 'turbineUserFirstName'
+  DESC ''
+  EQUALITY caseIgnoreMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 15530.1.7
+  NAME 'turbineUserLastLogon'
+  DESC ''
+  EQUALITY caseIgnoreMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.53
+  SINGLE-VALUE)
+
+attributetype ( 15530.1.8
+  NAME 'turbineUserLastModifiedTime'
+  DESC ''
+  EQUALITY caseIgnoreMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.53
+  SINGLE-VALUE)
+
+attributetype ( 15530.1.9
+  NAME 'turbineUserLastName'
+  DESC ''
+  EQUALITY caseIgnoreMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 15530.1.10
+  NAME 'turbineUserMailAddress'
+  DESC ''
+  EQUALITY caseIgnoreIA5Match
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
+
+attributetype ( 15530.1.11
+  NAME 'turbineUserPassword'
+  DESC ''
+  EQUALITY caseExactMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+  SINGLE-VALUE)
+
+attributetype ( 15530.1.12
+  NAME 'turbineUserUniqueId'
+  DESC ''
+  EQUALITY caseIgnoreMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+  SINGLE-VALUE)
+
+attributetype ( 15530.1.13
+  NAME 'turbineGroup'
+  DESC ''
+  EQUALITY caseIgnoreMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 15530.1.14
+  NAME 'turbineRoleName'
+  DESC ''
+  EQUALITY caseIgnoreMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+objectclass ( 15530.2.1
+  NAME 'turbineUserGroup'
+  DESC 'Turbine User Group '
+  SUP top
+  AUXILIARY
+  MUST (  turbineUserUniqueId $ turbineGroup )
+  MAY (  turbineRoleName $ turbineObjectData ))
+
+objectclass ( 15530.2.2
+  NAME 'turbineRole'
+  DESC 'Turbine role'
+  SUP top
+  AUXILIARY
+  MUST (  turbineRoleName )
+  MAY ( turbineObjectData $ turbinePermission ))
+
+objectclass ( 15530.2.3
+  NAME 'turbineUser'
+  DESC 'Turbine user'
+  SUP top
+  AUXILIARY
+  MUST ( turbineUserUniqueId )
+  MAY ( turbineObjectData $ turbineUserCreationDate $ turbineUserFirstName $
+    turbineUserLastLogon $ turbineUserLastModifiedTime $ turbineUserLastName $
+    turbineUserMailAddress $ userPassword ))

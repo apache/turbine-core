@@ -56,12 +56,26 @@ package org.apache.turbine.services.security.ldap;
 
 import java.util.Hashtable;
 import java.util.Vector;
+import java.util.Iterator;
+import javax.naming.Context;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.AuthenticationException;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.om.security.TurbineGroup;
+import org.apache.turbine.om.security.TurbinePermission;
+import org.apache.turbine.om.security.TurbineRole;
 import org.apache.turbine.services.security.BaseSecurityService;
+import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
@@ -69,6 +83,7 @@ import org.apache.turbine.util.security.GroupSet;
 import org.apache.turbine.util.security.PermissionSet;
 import org.apache.turbine.util.security.RoleSet;
 import org.apache.turbine.util.security.UnknownEntityException;
+import org.apache.turbine.util.Log;
 
 /**
  * An implementation of SecurityService that uses LDAP as a backend.
@@ -78,6 +93,7 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * @author <a href="mailto:lflournoy@gluecode.com">Leonard J. Flournoy </a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
+ * @author <a href="mailto:hhernandez@itweb.com.mx">Humberto Hernandez</a>
  * @version $Id$
  */
 public class LDAPSecurityService extends BaseSecurityService
@@ -102,12 +118,109 @@ public class LDAPSecurityService extends BaseSecurityService
     public AccessControlList getACL(User user)
             throws DataBackendException, UnknownEntityException
     {
-        /*
-         * This is severely lacking [jvz].
-         */
-        Hashtable roles = new Hashtable();
-        Hashtable permissions = new Hashtable();
-        return new AccessControlList(roles, permissions);
+        if(!TurbineSecurity.accountExists(user))
+        {
+            throw new UnknownEntityException("The account '" +
+                        user.getUserName() + "' does not exist");
+        }
+        try
+        {
+            Hashtable roles = new Hashtable();
+            Hashtable permissions = new Hashtable();
+            // notify the state modifiers (writers) that we want to create the snapshot.
+            lockShared();
+
+            // construct the snapshot:
+            // foreach group in the system
+            Iterator groupsIterator = getAllGroups().elements();
+            while(groupsIterator.hasNext())
+            {
+                Group group = (Group)groupsIterator.next();
+
+                // get roles of user in the group
+                RoleSet groupRoles = getRoles( user, group );
+                // put the Set into roles(group)
+                roles.put(group, groupRoles);
+                // collect all permissoins in this group
+                PermissionSet groupPermissions = new PermissionSet();
+                // foreach role in Set
+                Iterator rolesIterator = groupRoles.elements();
+                while(rolesIterator.hasNext())
+                {
+                    Role role = (Role)rolesIterator.next();
+                    // get permissions of the role
+                    PermissionSet rolePermissions = getPermissions(role);
+                    groupPermissions.add(rolePermissions);
+                }
+                // put the Set into permissions(group)
+                permissions.put(group, groupPermissions);
+            }
+            return new AccessControlList(roles, permissions);
+        }
+        catch(Exception e)
+        {
+            throw new DataBackendException("Failed to build ACL for user '" +
+                                    user.getUserName() + "'" , e);
+        }
+        finally
+        {
+            // notify the state modifiers that we are done creating the snapshot.
+            unlockShared();
+        }
+    }
+
+    private RoleSet getRoles(User user, Group group)
+        throws DataBackendException
+    {
+        Vector roles = new Vector(0);
+        try
+        {
+            DirContext ctx = LDAPUserManager.bindAsAdmin();
+
+            String baseSearch = LDAPSecurityConstants.getBaseSearch();
+            String filter = "(& ";
+            filter += "(objectclass=turbineUserGroup)";
+            filter += "(turbineUserUniqueId="+user.getUserName()+")";
+            filter += "(turbineGroup="+group.getName()+")";
+            filter += ")";
+
+            /*
+             * Create the default search controls.
+             */
+            SearchControls ctls = new SearchControls();
+
+            ctls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+
+            NamingEnumeration answer = ctx.search(baseSearch, filter, ctls);
+
+            while (answer.hasMore())
+            {
+                SearchResult sr = (SearchResult) answer.next();
+                Attributes attribs = sr.getAttributes();
+                Attribute attr = attribs.get("turbineRoleName");
+                if (attr != null)
+                {
+                    NamingEnumeration values = attr.getAll();
+                    while(values.hasMore())
+                    {
+                        Role role = getNewRole(values.next().toString());
+                        roles.add(role);
+                    }
+                }
+                else
+                {
+                    Log.error("Role doesn't have a name");
+                }
+            }
+        }
+        catch (NamingException ex)
+        {
+            Log.error("NamingException caught",ex);
+            throw new DataBackendException(
+                "The LDAP server specified is unavailable",ex);
+        }
+
+        return new RoleSet(roles);
     }
 
     /*
@@ -186,8 +299,7 @@ public class LDAPSecurityService extends BaseSecurityService
      */
     public Group getNewGroup( String groupName )
     {
-        // Not implemented
-        return null;
+        return (Group) new TurbineGroup(groupName);
     }
 
     /**
@@ -200,8 +312,7 @@ public class LDAPSecurityService extends BaseSecurityService
      */
     public Role getNewRole(String roleName)
     {
-        // Not implemented
-        return null;
+        return (Role) new TurbineRole(roleName);
     }
 
     /**
@@ -214,8 +325,7 @@ public class LDAPSecurityService extends BaseSecurityService
      */
     public Permission getNewPermission( String permissionName )
     {
-        // Not implemented
-        return null;
+        return (Permission) new TurbinePermission(permissionName);
     }
 
     /**
@@ -224,10 +334,44 @@ public class LDAPSecurityService extends BaseSecurityService
      * @param a Criteria of Group selection.
      * @return a set of Groups that meet the specified Criteria.
      */
-    public GroupSet getGroups(Criteria criteria) throws DataBackendException
+    public GroupSet getGroups(Criteria criteria)
+        throws DataBackendException
     {
-        Vector groups = new Vector(0);
-        return new GroupSet(groups);
+        Hashtable groups = new Hashtable();
+        try
+        {
+            DirContext ctx = LDAPUserManager.bindAsAdmin();
+
+            String baseSearch = LDAPSecurityConstants.getBaseSearch();
+            String filter     = "(objectclass=turbineUserGroup)";
+
+            /*
+             * Create the default search controls.
+             */
+            SearchControls ctls = new SearchControls();
+
+            ctls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+
+            NamingEnumeration answer = ctx.search(baseSearch, filter, ctls);
+            while (answer.hasMore())
+            {
+                SearchResult sr = (SearchResult) answer.next();
+                Attributes attribs = sr.getAttributes();
+                Attribute attr = attribs.get("turbineGroup");
+                if (attr != null && attr.get() != null)
+                {
+                    Group group = getNewGroup(attr.get().toString());
+                    groups.put(group.getName(), group);
+                }
+            }
+        }
+        catch (NamingException ex)
+        {
+            Log.error("NamingException caught",ex);
+            throw new DataBackendException(
+                "The LDAP server specified is unavailable",ex);
+        }
+        return new GroupSet(groups.values());
     }
 
     /**
@@ -239,6 +383,43 @@ public class LDAPSecurityService extends BaseSecurityService
     public RoleSet getRoles(Criteria criteria) throws DataBackendException
     {
         Vector roles = new Vector(0);
+        try
+        {
+            DirContext ctx = LDAPUserManager.bindAsAdmin();
+
+            String baseSearch = LDAPSecurityConstants.getBaseSearch();
+            String filter     = "(objectclass=turbineRole)";
+
+            /*
+             * Create the default search controls.
+             */
+            SearchControls ctls = new SearchControls();
+
+            NamingEnumeration answer = ctx.search(baseSearch, filter, ctls);
+
+            while (answer.hasMore())
+            {
+                SearchResult sr = (SearchResult) answer.next();
+                Attributes attribs = sr.getAttributes();
+                Attribute attr = attribs.get("turbineRoleName");
+                if (attr != null && attr.get() != null)
+                {
+                    Role role = getNewRole(attr.get().toString());
+                    roles.add(role);
+                }
+                else
+                {
+                    Log.error("Role doesn't have a name");
+                }
+            }
+        }
+        catch (NamingException ex)
+        {
+            Log.error("NamingException caught",ex);
+            throw new DataBackendException(
+                "The LDAP server specified is unavailable",ex);
+        }
+
         return new RoleSet(roles);
     }
 
@@ -251,8 +432,44 @@ public class LDAPSecurityService extends BaseSecurityService
     public PermissionSet getPermissions(Criteria criteria)
             throws DataBackendException
     {
-        Vector permissions = new Vector(0);
-        return new PermissionSet(permissions);
+        Hashtable permissions = new Hashtable();
+        try
+        {
+            DirContext ctx = LDAPUserManager.bindAsAdmin();
+
+            String baseSearch = LDAPSecurityConstants.getBaseSearch();
+            String filter     = "(objectClass=turbineRole)";
+
+            /*
+             * Create the default search controls.
+             */
+            SearchControls ctls = new SearchControls();
+
+            NamingEnumeration answer = ctx.search(baseSearch, filter, ctls);
+
+            while (answer.hasMore())
+            {
+                SearchResult sr = (SearchResult) answer.next();
+                Attributes attribs = sr.getAttributes();
+                Attribute attr = attribs.get("turbinePermission");
+                if (attr != null)
+                {
+                    NamingEnumeration values = attr.getAll();
+                    while(values.hasMore())
+                    {
+                        Permission perm = getNewPermission(values.next().toString());
+                        permissions.put(perm.getName(), perm);
+                    }
+                }
+            }
+        }
+        catch (NamingException ex)
+        {
+            Log.error("NamingException caught",ex);
+            throw new DataBackendException(
+                "The LDAP server specified is unavailable",ex);
+        }
+        return new PermissionSet(permissions.values());
     }
 
     /**
@@ -265,7 +482,47 @@ public class LDAPSecurityService extends BaseSecurityService
     public PermissionSet getPermissions(Role role)
             throws DataBackendException, UnknownEntityException
     {
-        return new PermissionSet();
+        Hashtable permissions = new Hashtable();
+        try
+        {
+            DirContext ctx = LDAPUserManager.bindAsAdmin();
+
+            String baseSearch = LDAPSecurityConstants.getBaseSearch();
+            String filter = "(& ";
+            filter += "(objectClass=turbineRole)";
+            filter += "(turbineRoleName="+ role.getName() +")";
+            filter += ")";
+
+            /*
+             * Create the default search controls.
+             */
+            SearchControls ctls = new SearchControls();
+
+            NamingEnumeration answer = ctx.search(baseSearch, filter, ctls);
+
+            while (answer.hasMore())
+            {
+                SearchResult sr = (SearchResult) answer.next();
+                Attributes attribs = sr.getAttributes();
+                Attribute attr = attribs.get("turbinePermission");
+                if (attr != null)
+                {
+                    NamingEnumeration values = attr.getAll();
+                    while(values.hasMore())
+                    {
+                        Permission perm = getNewPermission(values.next().toString());
+                        permissions.put(perm.getName(), perm);
+                    }
+                }
+            }
+        }
+        catch (NamingException ex)
+        {
+            Log.error("NamingException caught",ex);
+            throw new DataBackendException(
+                "The LDAP server specified is unavailable",ex);
+        }
+        return new PermissionSet(permissions.values());
     }
 
     /**

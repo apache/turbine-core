@@ -601,6 +601,8 @@ scheduler.enabled=false
 # You want to override this setting only if you want your User
 # implementation to provide application specific addtional
 # functionality.
+# For LDAP use:
+# services.SecurityService.user.class=org.apache.turbine.services.security.ldap.LDAPUser
 #
 # Default: org.apache.turbine.om.security.TurbineUser
 #
@@ -622,7 +624,10 @@ services.SecurityService.userPeer.class=org.apache.turbine.om.security.peer.Turb
 # This is the class that implements UserManager interface.
 # Override this setting if you want your User information stored
 # on a different medium (LDAP directory is a good example).
-# Default implementation uses Peers and a relational database .
+# Default implementation uses Peers and a relational database.
+#
+# For LDAP use:
+# services.SecurityService.user.manager=org.apache.turbine.services.security.ldap.LDAPUserManager
 #
 
 services.SecurityService.user.manager=org.apache.turbine.services.security.db.DBUserManager
@@ -650,17 +655,116 @@ services.SecurityService.secure.passwords=false
 
 services.SecurityService.secure.passwords.algorithm=SHA
 
+#
 # Configuration for the LDAP Security Service implementation
+#
 
-#services.SecurityService.ldap.security.athentication=simple
-#services.SecurityService.ldap.port=<LDAP PORT>
-#services.SecurityService.ldap.host=<LDAP HOST>
-#services.SecurityService.ldap.admin.username=<ADMIN USERNAME>
-#services.SecurityService.ldap.admin.password=<ADMIN PASSWORD>
-#services.SecurityService.ldap.user.basesearch=<SEARCH PATTERN>
-#services.SecurityService.ldap.user.search.filter=<SEARCH FILTER>
-#services.SecurityService.ldap.dn.attribute=userPrincipalName
-#services.SecurityService.ldap.provider=com.sun.jndi.ldap.LdapCtxFactory
+#
+# This property specifies the type of security authentication
+#
+# Default: simple
+#
+
+# services.SecurityService.ldap.security.authentication=simple
+
+#
+# The host name where the LDAP server is listenting.
+#
+# Default: localhost
+#
+
+# services.SecurityService.ldap.host=localhost
+
+#
+# The port number where the LDAP server is listenting.
+#
+# Default: 389
+#
+
+# services.SecurityService.ldap.port=389
+
+#
+# The user name of the admin user. The admin user should be able to
+# read from the LDAP repository.
+# Characteres '/' are replaced by '=' and '%' are replaced by ','.
+#
+# Default: none
+#
+
+# services.SecurityService.ldap.admin.username=turbineUserUniqueId/turbine%dc/example%dc/com
+
+#
+# The password of the admin user.
+#
+# Default: none
+#
+
+# services.SecurityService.ldap.admin.password=turbine
+
+#
+# The class name of the ldap provider.
+#
+# Default: com.sun.jndi.ldap.LdapCtxFactory
+#
+
+# services.SecurityService.ldap.provider=com.sun.jndi.ldap.LdapCtxFactory
+
+#
+# The directory base to search.
+# '/' are replaced by '=' and '%' are replaced by ','.
+#
+# Default: none
+#
+
+# services.SecurityService.ldap.basesearch=dc/example%dc/com
+
+#
+# The unique id. It must be an integer field and it is required only when
+# the users are in LDAP but the groups, roles and permissions are in the
+# Database.
+#
+# services.SecurityService.ldap.user.userid=
+
+#
+# This property maps the username with an attribute in LDAP.
+#
+# Default: turbineUserUniqueId
+#
+
+# services.SecurityService.ldap.user.username=turbineUserUniqueId
+
+#
+# This property maps the firstname with an attribute in LDAP.
+#
+# Default: turbineUserFirstName
+#
+
+# services.SecurityService.ldap.user.firstname=turbineUserFirstName
+
+#
+# This property maps the lastname with an attribute in LDAP.
+#
+# Default: turbineUserLastName
+#
+
+# services.SecurityService.ldap.user.lastname=turbineUserLastName
+
+#
+# This property maps the email with an attribute in LDAP.
+#
+# Default: turbineUserMailAddress
+#
+
+# services.SecurityService.ldap.user.email=turbineUserMailAddress
+
+#
+# This property maps the userPassword with an attribute in LDAP.
+#
+# Default: none
+#
+
+# services.SecurityService.ldap.user.password=userPassword
+
 
 # -------------------------------------------------------------------
 #

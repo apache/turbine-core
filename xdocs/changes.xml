@@ -88,6 +88,14 @@ Changes between Turbine 2.2 and 2.3-dev.
 <p>
   <ul>
     <li>
+      TTWS24: With this patch LDAP security services can have users, groups,
+      roles and permissions in the LDAP repository. It also works with users in
+      LDAP and the rest in the Database. <br/>
+      Sample configuration files for Openldap can be found
+      <a href="http://cvs.apache.org/viewcvs/jakarta-turbine-2/conf/openldap/">
+      here</a>
+    </li>
+    <li>
       added new Logging code which uses commons-logging everywhere.
     </li>
     <li>
@@ -95,7 +103,7 @@ Changes between Turbine 2.2 and 2.3-dev.
        all configuration requests to commons-configuration.
     </li>
     <li>
-      added Log4j configuration and startup. 
+      added Log4j configuration and startup.
     </li>
     <li>
       removed all remaining Torque code.
