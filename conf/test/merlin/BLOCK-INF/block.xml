@@ -1,0 +1,20 @@
+
+<container name="tutorial">
+   <classloader>
+     <classpath>
+       <repository>
+         <resource id="merlin:merlin-hello-tutorial" version="1.0"/>
+       </repository>
+     </classpath>
+   </classloader>
+   <component name="hello" class="tutorial.HelloComponent"/>
+
+</container>
+
+<!-- Not working, dont' know how to load wit local path...
+<container name="local">
+ 
+   <component name="testcomponent" class="org.apache.turbine.test.TestComponent"/>
+
+</container>
+-->
