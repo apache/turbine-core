@@ -73,4 +73,4 @@ public class EntityExistsException
     {
         super(msg);
     }
-};
+}

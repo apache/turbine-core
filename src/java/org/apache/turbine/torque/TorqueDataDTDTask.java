@@ -66,4 +66,3 @@ public class TorqueDataDTDTask
     extends TorqueDataModelTask
 {
 }
-

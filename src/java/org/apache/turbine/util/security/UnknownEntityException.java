@@ -86,4 +86,4 @@ public class UnknownEntityException
     {
         super(msg, nested);
     }
-};
+}
