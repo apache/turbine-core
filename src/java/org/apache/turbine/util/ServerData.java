@@ -304,8 +304,8 @@ public class ServerData
 
         getHostUrl(url);
 
-        url.append(getScriptName());
         url.append(getContextPath());
+        url.append(getScriptName());
         return url.toString();
     }
 }
