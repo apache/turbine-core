@@ -61,8 +61,6 @@ import javax.servlet.ServletConfig;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 
-import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.util.Log;
 
 import org.apache.commons.configuration.BaseConfiguration;
@@ -141,7 +139,7 @@ public class TurbineComponentService
                 {
                     Log.debug("Fixing up " + subVal);
                     subVal = 
-                        config.getServletContext().getRealPath((String)subVal);
+                        config.getServletContext().getRealPath((String) subVal);
                     Log.debug("Now: " + subVal);
                 }
                 
