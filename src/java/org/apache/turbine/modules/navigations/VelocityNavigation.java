@@ -54,9 +54,6 @@ package org.apache.turbine.modules.navigations;
  * <http://www.apache.org/>.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
 
@@ -82,9 +79,6 @@ import org.apache.velocity.context.Context;
 public class VelocityNavigation
         extends TemplateNavigation
 {
-    /** Logging */
-    private static Log log = LogFactory.getLog(VelocityNavigation.class);
-
     /** The prefix for lookup up navigation pages */
     private String prefix = TurbineConstants.NAVIGATION_PREFIX + "/";
 
