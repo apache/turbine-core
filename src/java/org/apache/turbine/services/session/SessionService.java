@@ -68,6 +68,7 @@ import org.apache.turbine.services.Service;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @since 2.3
  * @see org.apache.turbine.services.session.SessionListener
+ * @version $Id$
  */
 public interface SessionService extends Service
 {
