@@ -56,11 +56,13 @@ package org.apache.turbine.services.session;
 
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import javax.servlet.http.HttpSessionActivationListener;
 
 /**
- * This class is a listener for Session creation and destruction.  It
- * must be configured via your web application's <code>web.xml</code>
- * deployment descriptor as follows for the container to call it:
+ * This class is a listener for both session creation and destruction,
+ * and for session activation and passivation.  It must be configured
+ * via your web application's <code>web.xml</code> deployment
+ * descriptor as follows for the container to call it:
  *
  * <blockquote><code><pre>
  * <listener>
@@ -74,30 +76,65 @@ import javax.servlet.http.HttpSessionListener;
  * <code>&lt;context-param&gt;</code> and <code>&lt;servlet&gt;</code>
  * elements in your deployment descriptor.
  *
+ * The {@link #sessionCreated(HttpSessionEvent)} callback will
+ * automatically add an instance of this listener to any newly created
+ * <code>HttpSession</code> for detection of session passivation and
+ * re-activation.
+ *
  * @since 2.3
  * @version $Id$
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:dlr@apache.org">Daniel Rall</a>
  * @see javax.servlet.http.HttpSessionListener
  */
 public class SessionListener
-        implements HttpSessionListener
+        implements HttpSessionListener, HttpSessionActivationListener
 {
+    // ---- HttpSessionListener implementation -----------------------------
+
     /**
      * Called by the servlet container when a new session is created
      *
-     * @param event
+     * @param event Session creation event.
      */
     public void sessionCreated(HttpSessionEvent event)
     {
         TurbineSession.addSession(event.getSession());
+        event.getSession().setAttribute(getClass().getName(), this);
     }
 
     /**
      * Called by the servlet container when a session is destroyed
      *
-     * @param event
+     * @param event Session destruction event.
      */
     public void sessionDestroyed(HttpSessionEvent event)
+    {
+        event.getSession().removeAttribute(getClass().getName());
+        TurbineSession.removeSession(event.getSession());
+    }
+
+
+    // ---- HttpSessionActivationListener implementation -------------------
+
+    /**
+     * Called by the servlet container when an existing session is
+     * (re-)activated.
+     *
+     * @param event Session activation event.
+     */
+    public void sessionDidActivate(HttpSessionEvent event)
+    {
+        TurbineSession.addSession(event.getSession());
+    }
+
+    /**
+     * Called by the servlet container when a an existing session is
+     * passivated.
+     *
+     * @param event Session passivation event.
+     */
+    public void sessionWillPassivate(HttpSessionEvent event)
     {
         TurbineSession.removeSession(event.getSession());
     }
