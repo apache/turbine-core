@@ -143,12 +143,13 @@ public class TurbineMapBuilderAdapter extends TurbineMapBuilder
 }
     ]]></source>
      <p>
-      Now we will implement the pair of adapters we referred to in our schema.
-      First we implement TurbineUserAdapter to provide access to the primary key
-      as well as the column we are adding to TurbineUser.  If you are going to
-      use OBJECTDATA (and not define new columns in the database) you can still
-      add accessor methods here for convenience if you like, alternatively you
-      can just use setPerm() directly.
+      Now we will implement the pair of adapters we referred to in our
+      schema.  First we implement TurbineUserAdapter to provide access
+      to the primary key as well as the column we are adding to
+      TurbineUser.  If you are going to use OBJECTDATA (and not define
+      new columns in the database) you can still add accessor methods
+      here for convenience if you like, alternatively you can just use
+      setPerm() directly.
     </p>
      <source><![CDATA[
 package org.mycompany.newapp.om;
