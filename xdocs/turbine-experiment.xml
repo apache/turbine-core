@@ -22,6 +22,7 @@
 
  <properties>
   <title>The Turbine Experiment</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
  </properties>
 
 <body>

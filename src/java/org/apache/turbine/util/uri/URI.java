@@ -20,6 +20,7 @@ package org.apache.turbine.util.uri;
  * An interface class which describes the absolute minimum of methods that
  * a Turbine URI class must implement.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

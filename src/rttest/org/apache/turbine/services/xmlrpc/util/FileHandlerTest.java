@@ -23,6 +23,7 @@ import junit.framework.TestSuite;
 /**
  * Test class for FileHandler.
  *
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @version $Id$
  */
 public class FileHandlerTest extends TestCase

@@ -21,6 +21,8 @@
 <document>
  <properties>
   <title>Turbine Services - Factory Service</title>
+  <author email="ilkka.priha@simsoft.fi">Ilkka Priha</author>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
  </properties>
 
 <body>

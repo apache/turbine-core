@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
  * Helper Class to keep a key and a value together in 
  * one object. Used for URI Parameters
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

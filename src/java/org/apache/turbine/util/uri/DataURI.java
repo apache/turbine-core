@@ -27,6 +27,7 @@ import org.apache.turbine.util.ServerData;
  * The resulting links have no query data or path info. If you need
  * this, use TurbineURI or TemplateURI.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  *
  */

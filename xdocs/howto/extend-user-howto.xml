@@ -21,6 +21,10 @@
 <document>
   <properties>
     <title>Extend User Howto</title>
+    <author email="quintonm@bellsouth.net">Quinton McCombs</author>
+    <author email="jon@latchkey.com">Jon S. Stevens</author>
+    <author email="dan@chowda.net">Dan A. Bachelder</author>
+    <author email="seade@backstagetech.com.au">Scott Eade</author>
   </properties>
 
   <body>

@@ -21,9 +21,9 @@ import org.apache.turbine.modules.navigations.VelocityNavigation;
 /**
  * This is a test class for the template service.
  *
+ * @author <a href="hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-
 public class ExistPageWithClass
     extends VelocityNavigation
 {

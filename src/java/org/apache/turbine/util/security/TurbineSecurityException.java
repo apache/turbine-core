@@ -21,6 +21,8 @@ import org.apache.turbine.util.TurbineException;
 /**
  * Thrown by SecurityService methods to indicate various problems.
  *
+ * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineSecurityException

@@ -29,6 +29,7 @@ import java.util.*;
  * This tests that we can use the TurbineUser classes.  Note, this can be very dependent
  * on various configuration values.
  *
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
 public class TurbineUserTest extends ServletTestCase

@@ -29,6 +29,8 @@ import org.apache.turbine.util.RunData;
  * </code><br />This would return: <code>/myapp/servlet/myapp/template/index.wm/hello/world
  * </code>
  *
+ * @author <a href="jmcnally@collab.net">John D. McNally</a>
+ * @author see the authors of TemplateLink
  * @version $Id$
  * @deprecated Use {@link org.apache.turbine.services.pull.tools.RelativeTemplateLink} instead.
  */

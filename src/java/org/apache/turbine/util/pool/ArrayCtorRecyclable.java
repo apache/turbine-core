@@ -21,6 +21,7 @@ package org.apache.turbine.util.pool;
  * recycled several times by different clients.  This interface
  * presents a recycle method that does not require introspection/reflection.
  *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @version $Id$
  */
 public interface ArrayCtorRecyclable extends Recyclable

@@ -22,6 +22,8 @@
 
  <properties>
   <title>Turbine Features</title>
+  <author email="jon@latchkey.com">Jon S. Stevens</author>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
  </properties>
 
 <body>

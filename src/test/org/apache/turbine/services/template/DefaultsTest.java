@@ -26,6 +26,7 @@ import org.apache.turbine.util.TurbineConfig;
 /**
  * Tests all the various defaults for the Template Service.
  *
+ * @author <a href="hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class DefaultsTest

@@ -21,6 +21,7 @@ import org.apache.turbine.services.pool.TurbinePool;
 /**
  * A support class for recyclable objects implementing default methods.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
 public class RecyclableSupport implements Recyclable

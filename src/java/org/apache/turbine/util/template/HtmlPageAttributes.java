@@ -91,6 +91,8 @@ import org.apache.turbine.util.RunData;
  *   $page.setTitle("My page title")<br>
  *   $page.setHttpEquiv("refresh","5; URL=http://localhost/nextpage.html")</code>
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  */
 public class HtmlPageAttributes

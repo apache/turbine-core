@@ -49,6 +49,8 @@ import org.apache.commons.logging.LogFactory;
  * #end
  * </pre>
  *
+ * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
+ * @author <a href="mailto:martin@mvdb.net">Martin van den Bemt</a>
  * @version $Id$
  */
 public abstract class DataStreamParser implements Iterator

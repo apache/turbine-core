@@ -23,6 +23,8 @@ import org.apache.turbine.util.TurbineException;
  * sent using JavaMail.  It will most likly wrap a javax.mail.MessagingException
  * exception.
  *
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @version $Id$
  */
 public class VelocityEmailException extends TurbineException
 {

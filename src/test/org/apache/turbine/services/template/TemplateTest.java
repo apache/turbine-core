@@ -26,6 +26,7 @@ import org.apache.turbine.util.TurbineConfig;
  * Tests all the various template mappings for Screen and Layout
  * templates of the template service.
  *
+ * @author <a href="hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

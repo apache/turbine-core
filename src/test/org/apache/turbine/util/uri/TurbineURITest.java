@@ -30,6 +30,7 @@ import org.apache.turbine.util.parser.ParserUtils;
 /**
  * Testing of the TurbineURI class
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class TurbineURITest extends BaseTestCase

@@ -17,6 +17,8 @@ package org.apache.turbine.util.validation;
  */
 
 /**
+ * @author <a href="mailto:mikeh@ncsa.uiuc.edu">Mike Haberman</a>
+ * @version $Id$
  * @deprecated Use Intake or commons-validator
  */
 public abstract class InputValidator

@@ -22,6 +22,7 @@
 
  <properties>
   <title>Turbine Services - JSP Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
  </properties>
 
 <body>

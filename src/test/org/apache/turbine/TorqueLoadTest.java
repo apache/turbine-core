@@ -29,6 +29,7 @@ import org.apache.turbine.util.TurbineConfig;
  * Can we load and run Torque standalone, from Component and from
  * AvalonComponent Service?
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TorqueLoadTest

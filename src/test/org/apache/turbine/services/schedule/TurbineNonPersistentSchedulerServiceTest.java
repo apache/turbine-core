@@ -30,6 +30,7 @@ import org.apache.turbine.test.BaseTestCase;
 /**
  * Unit testing for the non-persistent implementation of the scheduler service.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class TurbineNonPersistentSchedulerServiceTest extends BaseTestCase

@@ -25,6 +25,7 @@ import org.apache.turbine.util.TurbineException;
  * care of using the init method.  This is a way to avoid
  * introspection/reflection when pooling an object.
  *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @version $Id$
  */
 public interface InitableRecyclable extends Recyclable

@@ -35,6 +35,7 @@ import junit.framework.TestSuite;
  * that the values are reusing the same object for the values.
  * If this shouldn't be, we need to fix that in the code!.
  * 
+ * @author <a href="mailto:martin@mvdb.net">Martin van den Bemt</a>
  * @version $Id$
  */
 public class CSVParserTest

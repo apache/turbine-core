@@ -24,6 +24,7 @@ import java.io.ObjectStreamClass;
 /**
  * A deserialization stream for a specific class loader context.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
 public class ObjectInputStreamForContext extends ObjectInputStream

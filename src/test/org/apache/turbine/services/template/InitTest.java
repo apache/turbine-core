@@ -30,6 +30,7 @@ import org.apache.turbine.util.TurbineConfig;
  * Tests startup of the Template Service and registration of the
  * Velocity Service.
  *
+ * @author <a href="hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

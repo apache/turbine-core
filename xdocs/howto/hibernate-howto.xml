@@ -21,6 +21,7 @@
 <document>
   <properties>
     <title>Hibernate Howto</title>
+    <author email="epugh@upstate.com">Eric Pugh</author>
   </properties>
 
   <body>

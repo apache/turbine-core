@@ -22,6 +22,8 @@
 
  <properties>
    <title>LDAP Howto</title>
+   <author email="frank.nolden@maxware.nl">Frank W. Nolden</author>
+   <author email="jon@latchkey.com">Jon S. Stevens</author>
  </properties>
 
  <body>

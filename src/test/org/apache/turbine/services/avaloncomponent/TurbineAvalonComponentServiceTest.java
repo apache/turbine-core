@@ -28,6 +28,7 @@ import org.apache.turbine.test.TestComponent;
 /**
  * Simple test to make sure that the AvalonComponentService can be initialized.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class TurbineAvalonComponentServiceTest

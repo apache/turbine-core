@@ -22,6 +22,8 @@
 
  <properties>
   <title>Turbine Services - Pull Service</title>
+  <author email="sean@informage.net">Sean Legassick</author>
+  <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
  </properties>
 
 <body>

@@ -33,6 +33,7 @@ import org.apache.turbine.util.TurbineXmlConfig;
  * This testcase verifies that TurbineConfig can be used to startup Turbine in a non
  * servlet environment properly.
  *
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
 public class TurbineConfigTest

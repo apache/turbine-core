@@ -33,6 +33,10 @@ import org.apache.commons.lang.StringUtils;
  * methods are available.
  * TreeSet's contain only unique Objects (no duplicates).
  *
+ * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class SecuritySet

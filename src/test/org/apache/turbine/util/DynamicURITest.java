@@ -29,6 +29,7 @@ import org.apache.turbine.util.parser.ParserUtils;
 /**
  * Testing of the DynamicURI class
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class DynamicURITest extends BaseTestCase
