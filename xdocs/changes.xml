@@ -75,6 +75,11 @@ Changes between Turbine 2.3 and 2.4.
 <p>
   <ul>
     <li>
+       doXXX events would eat exceptions while doPerform would bubble them up.
+       Added property action.event.bubbleexception which is true by default that
+       applies to both types and either bubbles them up, or logs and sinks them.
+    </li>  	
+    <li>
        The intake validators were fixed so that fields with required=false 
        rules no longer attempt to execute the remaining rules when no
        input is provided.  A minLength > 0 rule is no longer synonymous

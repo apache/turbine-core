@@ -89,6 +89,6 @@ public class VelocityActionThrowsException extends VelocityAction
     public void doCauseexception(RunData data, Context context) throws Exception
     {
         log.debug("Calling doCauseexception");
-        throw new Exception("From Actin Event VelocityActionThrowsException.doCauseexception an Exception is always thrown!");
+        throw new Exception("From Action Event VelocityActionThrowsException.doCauseexception an Exception is always thrown!");
     }
 }
