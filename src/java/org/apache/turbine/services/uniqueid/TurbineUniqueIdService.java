@@ -99,8 +99,13 @@ public class TurbineUniqueIdService
      */
     public void init()
     {
-        ServerData = Turbine.getDefaultServerData();
-
+        // This might be a problem if the unique Id Service runs
+        // before Turbine got its first request. In this case,
+        // getDefaultServerData will return just a dummy value
+        // which is the same for all instances of Turbine.
+        //
+        // @todo This needs definitely further working.
+        String url = Turbine.getDefaultServerData().toString();
 
         MD5 md5 = new MD5();
         turbineId = Bytes.toString(md5.digest(url.toString().getBytes()));
