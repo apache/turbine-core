@@ -54,7 +54,7 @@ package org.apache.turbine.services.pool;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.services.factory.FactoryService;
+import org.apache.turbine.services.Service;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -72,17 +72,96 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
-public interface PoolService extends FactoryService
+public interface PoolService
+        extends Service
 {
-    /**
-     * The key under which this service is stored in TurbineServices.
-     */
+    /** The key under which this service is stored in TurbineServices. */
     String SERVICE_NAME = "PoolService";
+    
+    /** The default pool capacity. */
+    int DEFAULT_POOL_CAPACITY = 128;
+    
+    /** The name of the pool capacity property */
+    String POOL_CAPACITY_KEY = "pool.capacity";
+    
+    /** Are we running in debug mode? */
+    String POOL_DEBUG_KEY = "pool.debug";
+
+    /** Default Value for debug mode */
+    boolean POOL_DEBUG_DEFAULT = false;
 
     /**
-     * The default pool capacity.
+     * Gets an instance of a named class.
+     *
+     * @param className the name of the class.
+     * @return the instance.
+     * @throws TurbineException if instantiation fails.
      */
-    int DEFAULT_POOL_CAPACITY = 128;
+    Object getInstance(String className)
+            throws TurbineException;
+
+    /**
+     * Gets an instance of a named class using a specified class loader.
+     *
+     * <p>Class loaders are supported only if the isLoaderSupported
+     * method returns true. Otherwise the loader parameter is ignored.
+     *
+     * @param className the name of the class.
+     * @param loader the class loader.
+     * @return the instance.
+     * @throws TurbineException if instantiation fails.
+     */
+    Object getInstance(String className,
+            ClassLoader loader)
+            throws TurbineException;
+
+    /**
+     * Gets an instance of a named class.
+     * Parameters for its constructor are given as an array of objects,
+     * primitive types must be wrapped with a corresponding class.
+     *
+     * @param className the name of the class.
+     * @param params an array containing the parameters of the constructor.
+     * @param signature an array containing the signature of the constructor.
+     * @return the instance.
+     * @throws TurbineException if instantiation fails.
+     */
+    Object getInstance(String className,
+            Object[] params,
+            String[] signature)
+            throws TurbineException;
+
+    /**
+     * Gets an instance of a named class using a specified class loader.
+     * Parameters for its constructor are given as an array of objects,
+     * primitive types must be wrapped with a corresponding class.
+     *
+     * <p>Class loaders are supported only if the isLoaderSupported
+     * method returns true. Otherwise the loader parameter is ignored.
+     *
+     * @param className the name of the class.
+     * @param loader the class loader.
+     * @param params an array containing the parameters of the constructor.
+     * @param signature an array containing the signature of the constructor.
+     * @return the instance.
+     * @throws TurbineException if instantiation fails.
+     */
+    Object getInstance(String className,
+            ClassLoader loader,
+            Object[] params,
+            String[] signature)
+            throws TurbineException;
+
+    /**
+     * Tests if specified class loaders are supported for a named class.
+     *
+     * @param className the name of the class.
+     * @return true if class loaders are supported, false otherwise.
+     * @throws TurbineException if test fails.
+     * @deprecated Use TurbineFactory.isLoaderSupported(className)
+     */
+    boolean isLoaderSupported(String className)
+            throws TurbineException;
 
     /**
      * Gets an instance of a specified class either from the pool
@@ -156,4 +235,5 @@ public interface PoolService extends FactoryService
      * Clears all instances from the pool.
      */
     void clearPool();
+
 }
