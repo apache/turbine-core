@@ -180,4 +180,37 @@ public class ContentTool
         return wantRelative ? 
                 dataURI.getRelativeLink() : dataURI.getAbsoluteLink();
     }
+
+    /**
+     * Returns the Turbine URI of a given Path. The
+     * result is always an absolute path starting with
+     * the server scheme (http/https).
+     *
+     * @param path The path to translate
+     *
+     * @return Turbine translated absolute path
+     */
+    public String getAbsoluteURI(String path)
+    {
+        dataURI.setScriptName(path);
+
+        return dataURI.getAbsoluteLink();
+    }
+
+    /**
+     * Returns the Turbine URI of a given Path. The
+     * result is always relative to the context of
+     * the application.
+     *
+     * @param path The path to translate
+     *
+     * @return Turbine translated absolute path
+     */
+    public String getRelativeURI(String path)
+    {
+        dataURI.setScriptName(path);
+
+        return dataURI.getRelativeLink();
+    }
+
 }
