@@ -99,7 +99,11 @@ import org.apache.turbine.util.RunData;
  *      &ltmeta http-equiv="$httpEquiv" content="$page.HttpEquivs.get($httpEquiv)"&gt<br>
  *      #end<br>
  *      #foreach( $styleSheet in $page.StyleSheets )<br>
- *      &ltlink href='$styleSheet' type="text/css" rel="stylesheet"&gt<br>
+ *        &ltlink rel="stylesheet" href="$styleSheet.Url"<br>
+ *          #if($styleSheet.Type != "" ) type="$styleSheet.Type" #end<br>
+ *          #if($styleSheet.Media != "") media="$styleSheet.Media" #end<br>
+ *          #if($styleSheet.Title != "") title="$styleSheet.Title" #end<br>
+ *        &gt<br>
  *      #end<br>
  *      #foreach( $script in $page.Scripts )<br>
  *        &ltscript type="text/javascript" src="$script" language="JavaScript"&gt&lt/script&gt<br>
@@ -305,7 +309,27 @@ public class HtmlPageAttributes
      */
     public HtmlPageAttributes addStyleSheet(String styleSheetURL)
     {
-        this.styleSheets.add(styleSheetURL);
+        addStyleSheet(styleSheetURL, "screen", null, "text/css" );
+        return this;
+    }
+
+    /**
+     * Adds a style sheet reference
+     *
+     * @param styleSheetURL URL of the style sheet
+     * @param media name of the media
+     * @param title title of the stylesheet
+     * @param type content type
+     * @return a <code>HtmlPageAttributes</code> (self).
+     */
+    public HtmlPageAttributes addStyleSheet(String styleSheetURL,
+            String media, String title, String type)
+    {
+        StyleSheet ss = new StyleSheet(styleSheetURL);
+        ss.setMedia(media);
+        ss.setTitle(title);
+        ss.setType(type);
+        this.styleSheets.add(ss);
         return this;
     }
 
@@ -324,9 +348,24 @@ public class HtmlPageAttributes
     }
 
     /**
+     * Adds a style sheet reference
+     *
+     * @param styleSheetURL
+     * @param media name of the media
+     * @return a <code>HtmlPageAttributes</code> (self).
+     * @deprecated use addStyleSheet instead
+     */
+    public HtmlPageAttributes setStyleSheet(String styleSheetURL, String media)
+    {
+        log.info("Use of the setStyleSheet(styleSheetURL,media) method is deprecated.  "+
+                "Please use addStyleSheet(styleSheetURL,media) instead.");
+        return addStyleSheet(styleSheetURL,media,null,"text/css");
+    }
+
+    /**
      * Returns a collection of script URLs
      *
-     * @return list of String objects containing URLS to style sheets
+     * @return list StyleSheet objects (inner class)
      */
     public List getStyleSheets()
     {
@@ -512,5 +551,105 @@ public class HtmlPageAttributes
     public String toString()
     {
         return "";
+    }
+
+    /**
+     * Helper class to hold data about a stylesheet
+     */
+    public class StyleSheet
+    {
+        private String url;
+        private String title;
+        private String media;
+        private String type;
+
+        /**
+         * Constructor requiring the URL to be set
+         *
+         * @param url URL of the external style sheet
+         */
+        public StyleSheet( String url )
+        {
+            setUrl( url );
+        }
+
+        /**
+         * Gets the content type of the style sheet
+         *
+         * @return content type
+         */
+        public String getType()
+        {
+            return (StringUtils.isEmpty(type) ? "" : type);
+        }
+
+        /**
+         * Sets the content type of the style sheet
+         *
+         * @param type content type
+         */
+        public void setType(String type)
+        {
+            this.type = type;
+        }
+
+        /**
+         * @return String representation of the URL
+         */
+        public String getUrl()
+        {
+            return url;
+        }
+
+        /**
+         * Sets the URL of the external style sheet
+         *
+         * @param url The URL of the stylesheet
+         */
+        private void setUrl(String url)
+        {
+            this.url = url;
+        }
+
+        /**
+         * Gets the title of the style sheet
+         *
+         * @return title
+         */
+        public String getTitle()
+        {
+            return (StringUtils.isEmpty(title) ? "" : title);
+        }
+
+        /**
+         * Sets the title of the stylesheet
+         *
+         * @param title
+         */
+        public void setTitle(String title)
+        {
+            this.title = title;
+        }
+
+        /**
+         * Gets the media for which the stylesheet should be applied.
+         *
+         * @return name of the media
+         */
+        public String getMedia()
+        {
+            return (StringUtils.isEmpty(media) ? "" : media);
+        }
+
+        /**
+         * Sets the media for which the stylesheet should be applied.
+         *
+         * @param media name of the media
+         */
+        public void setMedia(String media)
+        {
+            this.media = media;
+        }
+
     }
 }
