@@ -56,14 +56,10 @@ package org.apache.turbine.util.template;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
-
 import org.apache.turbine.services.security.TurbineSecurity;
-
 import org.apache.turbine.services.template.TurbineTemplate;
-
 import org.apache.turbine.util.RunData;
 
 /**

@@ -52,8 +52,6 @@ package org.apache.turbine.modules;
  * individuals on behalf of the Apache Software Foundation.  For more
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
- *
- * ====================================================================
  */
 
 /**
