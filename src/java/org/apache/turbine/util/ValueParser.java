@@ -3,7 +3,7 @@ package org.apache.turbine.util;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -85,10 +85,10 @@ import org.apache.turbine.util.parser.ParserUtils;
  */
 public interface ValueParser
 {
-    /** 
+    /**
      * The Key for the Case folding.
      *
-     * @deprecated. Use ParserUtils.URL_CASE_FOLDING_KEY
+     * @deprecated Use ParserUtils.URL_CASE_FOLDING_KEY
      */
     static final String URL_CASE_FOLDING = ParserUtils.URL_CASE_FOLDING_KEY;
 

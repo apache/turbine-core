@@ -3,7 +3,7 @@ package org.apache.turbine.util.uri;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,7 +56,7 @@ package org.apache.turbine.util.uri;
 
 /**
  * This interface contains all the constants that are always needed when
- * working with URIs. 
+ * working with URIs.
  *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$

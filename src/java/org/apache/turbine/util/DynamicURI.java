@@ -3,7 +3,7 @@ package org.apache.turbine.util;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -934,7 +934,7 @@ public class DynamicURI
      */
     public DynamicURI setSecure(int port)
     {
-        boolean useSSL = 
+        boolean useSSL =
             Turbine.getConfiguration()
             .getBoolean(TurbineConstants.USE_SSL_KEY,
                         TurbineConstants.USE_SSL_DEFAULT);

@@ -3,7 +3,7 @@ package org.apache.turbine.util.velocity;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -305,7 +305,7 @@ public class VelocityEmail
      */
     public String getMailServer()
     {
-        return StringUtils.isNotEmpty(mailServer) ? mailServer 
+        return StringUtils.isNotEmpty(mailServer) ? mailServer
             : Turbine.getConfiguration().getString(
                 TurbineConstants.MAIL_SERVER_KEY,
                 TurbineConstants.MAIL_SERVER_DEFAULT);

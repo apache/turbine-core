@@ -3,7 +3,7 @@ package org.apache.turbine;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -274,14 +274,14 @@ public interface TurbineConstants
      */
     String WEB_CONTEXT = "webContext";
 
-    /** Key for the Path to the TurbineResources.properties File */ 
+    /** Key for the Path to the TurbineResources.properties File */
     String APPLICATION_ROOT_KEY = "applicationRoot";
 
-    /** Default Value for the Path to the TurbineResources.properties File */ 
+    /** Default Value for the Path to the TurbineResources.properties File */
     String APPLICATION_ROOT_DEFAULT = WEB_CONTEXT;
-  
-    /** This is the key used in the Turbine.properties to access resources 
-     * relative to the Web Application root. It might differ from the 
+
+    /** This is the key used in the Turbine.properties to access resources
+     * relative to the Web Application root. It might differ from the
      * Application root, but the normal case is, that the webapp root
      * and the application root point to the same path.
      */
@@ -289,7 +289,7 @@ public interface TurbineConstants
 
     /** The Key in the deployment descriptor for the Logging Directory */
     String LOGGING_ROOT_KEY = "loggingRoot";
-    
+
     /** Default Value for the Logging Directory, relative to the webroot */
     String LOGGING_ROOT_DEFAULT = "/logs";
 

@@ -210,8 +210,8 @@ public class DefaultParameterParser
         tmp = req.getHeader("Content-type");
 
         if (uploadServiceIsAvailable
-            && uploadService.getAutomatic() 
-            && tmp != null 
+            && uploadService.getAutomatic()
+            && tmp != null
             && tmp.startsWith("multipart/form-data"))
         {
             try
