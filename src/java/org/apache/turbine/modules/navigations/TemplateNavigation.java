@@ -54,10 +54,10 @@ package org.apache.turbine.modules.navigations;
  * <http://www.apache.org/>.
  */
 
-// Turbine/ECS Imports
-
 import org.apache.ecs.ConcreteElement;
+
 import org.apache.turbine.modules.Navigation;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -66,7 +66,8 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
-public abstract class TemplateNavigation extends Navigation
+public abstract class TemplateNavigation
+        extends Navigation
 {
     /**
      * WebMacro Navigations extending this class should overide this

@@ -54,11 +54,12 @@ package org.apache.turbine.modules.navigations;
  * <http://www.apache.org/>.
  */
 
-// ECS Classes
-
 import org.apache.ecs.ConcreteElement;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.jsp.JspService;
+
+import org.apache.turbine.TurbineConstants;
+
+import org.apache.turbine.services.jsp.TurbineJsp;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -66,38 +67,39 @@ import org.apache.turbine.util.RunData;
  * use JSP.  Subclasses should override the doBuildTemplate() method.
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
-public class BaseJspNavigation extends TemplateNavigation
+public class BaseJspNavigation
+        extends TemplateNavigation
 {
-    /**
-     * Method that sets up beans and forward the request to the JSP.
-     *
-     * @param RunData
-     * @return null - the JSP sends the information
-     */
-    public ConcreteElement buildTemplate(RunData data) throws Exception
-    {
-        // set up any data in beans, etc
-        doBuildTemplate(data);
-
-        // get the name of the JSP we want to use
-        String templateName = data.getTemplateInfo().getNavigationTemplate();
-
-        // navigations are used by a layout
-        JspService jsp = (JspService)
-                TurbineServices.getInstance().getService(JspService.SERVICE_NAME);
-        jsp.handleRequest(data, "/navigations/" + templateName);
-
-        return null;
-    }
+    /** The prefix for lookup up navigation pages */
+    private String prefix = TurbineConstants.NAVIGATION_PREFIX + "/";
 
     /**
      * Method to be overidden by subclasses to include data in beans, etc.
      *
      * @param data, the Rundata object
      */
-    protected void doBuildTemplate(RunData data) throws Exception
+    protected void doBuildTemplate(RunData data)
+        throws Exception
     {
     }
 
+    /**
+     * Method that sets up beans and forward the request to the JSP.
+     *
+     * @param RunData
+     * @return null - the JSP sends the information
+     */
+    public ConcreteElement buildTemplate(RunData data)
+        throws Exception
+    {
+        // get the name of the JSP we want to use
+        String templateName = data.getTemplateInfo().getNavigationTemplate();
+
+        // navigations are used by a layout
+        TurbineJsp.handleRequest(data, prefix + templateName);
+        return null;
+    }
 }
