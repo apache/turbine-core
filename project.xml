@@ -593,7 +593,16 @@
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
-    </dependency>     
+    </dependency> 
+    <dependency>
+      <groupId>fulcrum</groupId>
+      <artifactId>fulcrum-factory-impl</artifactId>
+      <version>1.0-alpha-2</version>
+      <url>http://jakarta.apache.org/turbine/fulcrum/factory</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>          
     <dependency>
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-mimetype-api</artifactId>
