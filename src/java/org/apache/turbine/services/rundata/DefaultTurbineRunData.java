@@ -69,6 +69,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.avalon.framework.component.ComponentException;
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.logging.Log;
@@ -77,11 +78,13 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.ecs.Document;
 import org.apache.ecs.Element;
 import org.apache.ecs.StringElement;
+import org.apache.fulcrum.mimetype.MimeTypeService;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.mimetype.TurbineMimeTypes;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.FormMessages;
 import org.apache.turbine.util.ServerData;
@@ -332,7 +335,7 @@ public class DefaultTurbineRunData
         }
 
         String charset = defaultCharSet;
-
+        
         if (StringUtils.isEmpty(charset))
         {
             log.debug("charset is empty!");
@@ -348,8 +351,16 @@ public class DefaultTurbineRunData
 
             if (!locale.equals(Locale.US))
             {
-                log.debug("We have US Locale!");
-                charset = TurbineMimeTypes.getCharSet(locale);
+                log.debug("We don't have US Locale!");
+                AvalonComponentService acs= (AvalonComponentService)TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
+				MimeTypeService mimeTypeService=null;
+                try {
+					mimeTypeService= (MimeTypeService)acs.lookup(MimeTypeService.ROLE);
+                }
+                catch (ComponentException ce){
+                    throw new RuntimeException(ce);
+                }
+                charset = mimeTypeService.getCharSet(locale);
 
                 log.debug("Charset now " + charset);
             }
