@@ -77,6 +77,10 @@ import org.apache.commons.lang.exception.NestableException;
  *    at Test.main(Test.java:6)
  * </pre></blockquote><br>
  *
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @version $Id$
  */
 public class TurbineException extends NestableException
 {

@@ -33,6 +33,9 @@ import org.apache.turbine.util.TurbineRuntimeException;
  * is dependent on any rules that are defined, so this field will expect that
  * any validator will be (or extend) DateStringValidator.
  *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class DateStringField

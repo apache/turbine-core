@@ -43,6 +43,7 @@ import java.util.Set;
  * A slightly more complex implementation and interface could involve
  * the use of a list of <code>Map.Entry</code> objects.
  *
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @version $Id$
  * @deprecated Use SequencedHashMap from the commons collections.
  */

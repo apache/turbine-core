@@ -21,6 +21,7 @@ import org.apache.turbine.util.TurbineException;
 /**
  * Base exception thrown by the Intake service.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class IntakeException extends TurbineException

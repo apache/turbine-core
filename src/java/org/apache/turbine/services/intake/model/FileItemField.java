@@ -27,6 +27,9 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.parser.ValueParser;
 
 /**
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class FileItemField

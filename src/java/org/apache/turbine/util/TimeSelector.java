@@ -63,6 +63,8 @@ import org.apache.ecs.html.Select;
  *  timeSelect = ts.toString();
  *  </pre>
  *
+ * @author <a href="mailto:ekkerbj@netscape.net">Jeffrey D. Brekke</a>
+ * @author <a href="mailto:rich@thenetrevolution.com">Rich Aston</a>
  * @version $Id$
  */
 public class TimeSelector

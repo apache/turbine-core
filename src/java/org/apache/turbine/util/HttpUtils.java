@@ -25,6 +25,8 @@ import java.util.TimeZone;
  * This class provides utilities for handling some semi-trivial
  * HTTP stuff that would othterwize be handled elsewhere.
  *
+ * @author <a href="mailto:magnus@handpoint.com">Magnús Þór Torfason</a>
+ * @version $Id$
  * @deprecated This class will be removed after the 2.3 release. Please
  *             use HttpUtils from <a href="http://jakarta.apache.org/commons/">commons-http</a>.
  */

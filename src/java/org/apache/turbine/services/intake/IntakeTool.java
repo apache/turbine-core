@@ -35,6 +35,9 @@ import org.apache.turbine.util.pool.Recyclable;
 /**
  * The main class through which Intake is accessed.
  *
+ * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class IntakeTool

@@ -38,6 +38,8 @@ import javax.servlet.http.HttpServletRequest;
  *
  * &lt;A HREF="/servlets/Turbine/screen=UserScreen&amp;amp;user=jon"&gt;ClickHere&lt;/A&gt;
  *
+ * @author <a href="mailto:dfaller@raleigh.ibm.com">David S. Faller</a>
+ * @version $Id$
  * @deprecated Use {@link org.apache.turbine.util.uri.TurbineURI} with {@link org.apache.turbine.util.uri.TurbineURI#getRelativeLink} instead.
  */
 public class RelativeDynamicURI extends DynamicURI

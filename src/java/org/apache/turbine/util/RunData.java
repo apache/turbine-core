@@ -43,6 +43,11 @@ import org.apache.turbine.util.template.TemplateInfo;
  * at the same time.  Thus, there is only one RunData implementation
  * for each request that is being serviced.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
+ * @author <a href="mailto:bhoeneis@ee.ethz.ch">Bernie Hoeneisen</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public interface RunData

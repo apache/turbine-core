@@ -22,6 +22,8 @@ import org.apache.commons.collections.SequencedHashMap;
  * A fixed length object cache implementing the LRU algorithm.  Convenient for
  * buffering recently used objects.
  *
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class BufferCache

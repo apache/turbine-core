@@ -52,6 +52,8 @@ import org.apache.ecs.html.PRE;
  * part of the multipart becomes whichever is supplied rather than a
  * multipart/alternative.
  *
+ * @author <a href="mailto:unknown">Regis Koenig</a>
+ * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @version $Id$
  * @deprecated Use org.apache.commons.mail.HtmlEmail instead.
  */

@@ -36,6 +36,10 @@ package org.apache.turbine.util;
  * Ported from Leon's PHP code at
  * http://www.working-dogs.com/freetrade by Frank.
  *
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:leon@clearink.com">Leon Atkisnon</a>
+ * @author <a href="mailto:mospaw@polk-county.com">Chris Mospaw</a>
+ * @author <a href="mailto:bgriffin@cddb.com">Benjamin Elijah Griffin</a>
  * @version $Id$
  * @deprecated This class will be removed after the 2.3 release. Please
  *             use BrowserDetector from <a href="http://jakarta.apache.org/commons/">commons-http</a>.

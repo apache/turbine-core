@@ -27,6 +27,12 @@ package org.apache.turbine.util;
  * property in TurbineResources.properties.  Adding a name/value pair may
  * overwrite existing name=value pairs if the names match:
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
+ * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  * @deprecated Use org.apache.turbine.util.parser.ValueParser instead.
  */

@@ -32,6 +32,7 @@ import org.apache.turbine.services.security.TurbineSecurity;
  *   return;
  *</code></pre>
  *
+ * @author <a href="mailto:mbryson@mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
 public class SecurityCheck

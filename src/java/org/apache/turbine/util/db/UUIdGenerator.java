@@ -56,6 +56,8 @@ import org.apache.turbine.util.TurbineException;
  * <p>To specify the MAC/Ethernet address, add a uuid.address= property to the
  * TurbineResources.properties file.</p>
  *
+ * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  * @deprecated Use the Unique ID Service
  */

@@ -32,6 +32,8 @@ import java.util.Vector;
 /**
  * This is where common Object manipulation routines should go.
  *
+ * @author <a href="mailto:nissim@nksystems.com">Nissim Karpenstein</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class ObjectUtils

@@ -28,6 +28,8 @@ import java.util.Random;
  * in Apache JServ as a class, so I had to create one here in order to
  * use it.
  *
+ * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
+ * @author <a href="mailto:neeme@one.lv">Neeme Praks</a>
  * @version $Id$
  */
 public class GenerateUniqueId

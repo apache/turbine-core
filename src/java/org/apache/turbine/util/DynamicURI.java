@@ -60,6 +60,9 @@ import org.apache.turbine.util.uri.URIConstants;
  * @todo Add support for returning the correct URI when mod_rewrite is
  *       being used.
  *
+ * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  * @deprecated Use {@link org.apache.turbine.util.uri.TurbineURI} instead.
  */

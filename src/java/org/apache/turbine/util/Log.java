@@ -24,13 +24,13 @@ import org.apache.turbine.TurbineConstants;
  *
  * Use this class to conveniently access the system logging facility.
  *
- * @deprecated Use the commons.logging system for logging
- *
+ * @author <a href="mailto:Tomasz.Zielinski@e-point.pl">Tomasz Zielinski</a>
+ * @author <a href="mailto:hps@intermeta.de>Henning P. Schmiedehausen</a>
  * @version $Id$
+ * @deprecated Use the commons.logging system for logging
  */
 public class Log
 {
-
     /**
      * This method returns default logger for Turbine System
      *

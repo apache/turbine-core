@@ -25,6 +25,10 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
  * {@link java.lang.RuntimeException}). It has the nested stack trace
  * functionality found in the {@link TurbineException} class.
  *
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @version $Id$
  */
 public class TurbineRuntimeException extends NestableRuntimeException
 {

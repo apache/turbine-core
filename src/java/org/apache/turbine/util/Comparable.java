@@ -19,6 +19,7 @@ package org.apache.turbine.util;
 /**
  * Used by quicksort.
  *
+ * @author <a href="mailto:mbryson@mindspring.com">Dave Bryson</a>
  * @version $Id$
  * @deprecated This class will be removed after the 2.3 release. It is
  *             not part of the Web Framework scope. If you need it, please

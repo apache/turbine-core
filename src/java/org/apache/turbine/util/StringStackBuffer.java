@@ -23,6 +23,7 @@ import java.util.Stack;
 /**
  * This class implements a Stack for String objects.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @version $Id$
  * @deprecated This class will be removed after the 2.3 release. It is
  *             not part of the Web Framework scope. If you need this class,

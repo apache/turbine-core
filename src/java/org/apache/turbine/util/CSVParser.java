@@ -40,6 +40,8 @@ import java.util.List;
  * #end
  * </pre>
  *
+ * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
+ * @author <a href="mailto:martin@mvdb.net">Martin van den Bemt</a>
  * @version $Id$
  * @deprecated Use org.apache.turbine.util.parser.CSVParser instead.
  */
