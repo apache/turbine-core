@@ -139,9 +139,6 @@ public class DefaultTurbineRunData
     /** The servlet response interface. */
     private HttpServletResponse res;
 
-    /** The servlet session information. */
-    private HttpSession session;
-
     /** The servlet configuration. */
     private ServletConfig config;
 
@@ -388,7 +385,6 @@ public class DefaultTurbineRunData
         cookies = null;
         req = null;
         res = null;
-        session = null;
         config = null;
         servletContext = null;
         acl = null;
@@ -486,7 +482,7 @@ public class DefaultTurbineRunData
      */
     public HttpSession getSession()
     {
-        return session;
+        return getRequest().getSession();
     }
 
     /**
@@ -921,7 +917,7 @@ public class DefaultTurbineRunData
      */
     public User getUserFromSession()
     {
-        return getUserFromSession(session);
+        return getUserFromSession(getSession());
     }
 
     /**
@@ -931,7 +927,7 @@ public class DefaultTurbineRunData
      */
     public boolean removeUserFromSession()
     {
-        return removeUserFromSession(session);
+        return removeUserFromSession(getSession());
     }
 
     /**
@@ -1295,7 +1291,7 @@ public class DefaultTurbineRunData
      */
     public void save()
     {
-        session.setAttribute(User.SESSION_KEY, user);
+        getSession().setAttribute(User.SESSION_KEY, user);
     }
 
     /**
@@ -1432,10 +1428,10 @@ public class DefaultTurbineRunData
      * Sets the servlet session inforamtion.
      *
      * @param sess a session.
+     * @deprecated No replacement.  This method no longer does anything.
      */
     public void setSession(HttpSession sess)
     {
-        this.session = sess;
     }
 
     /**
