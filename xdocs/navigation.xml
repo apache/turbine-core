@@ -18,12 +18,17 @@
  -->
 
 <project>
-  <title>
-  </title>
+  <title>Maven Environment for Turbine Applications (M.E.T.A.)</title>
   <body>
     <links>
-      <item name="Turbine"                 href="http://jakarta.apache.org/turbine/"/>
+      <item name="Turbine Home"		   href="http://jakarta.apache.org/turbine/"/>
+      <item name="Fulcrum"                 href="http://jakarta.apache.org/turbine/fulcrum/"/>
+      <item name="META"                    href="http://jakarta.apache.org/turbine/meta/"/>
+      <item name="TDK"                     href="http://jakarta.apache.org/turbine/tdk/"/>
+      <item name="Stratum"                 href="http://jakarta.apache.org/turbine/stratum/"/>
+      <item name="JCS"                     href="http://jakarta.apache.org/turbine/jcs/"/>
     </links>
+
     <menu name="Overview">
       <item href="/index.html" name="Home"/>
       <item href="/installation.html" name="Installation"/>
@@ -31,8 +36,9 @@
       <item href="/using_meta.html" name="Using M.E.T.A."/>
       <item href="/tree.html" name="Directory tree reference"/>
       <item href="/config.html" name="Configuration file reference"/>
-      <item href="/schema.html" name="Schema file reference"/>
+      <item href="/schema.html" name="Torque Schema file reference"/>
       <item href="/modes.html" name="Application development modes"/>
+      <item href="/ide.html" name="Use an IDE with M.E.T.A."/>
       <item href="/flavors.html" name="Flavors of Turbine applications"/>
       <item href="/goals.html" name="Goals"/>
       <item href="/properties.html" name="Properties"/>

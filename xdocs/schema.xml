@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
@@ -19,7 +19,7 @@
 
 <document>
   <properties>
-    <title>Configuration files</title>
+    <title>Torque schema files</title>
     <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
   </properties>
 
@@ -27,7 +27,7 @@
 
   <section name="Torque schema files">
   <p>
-  Most Turbine applications use <a
+  Many Turbine applications use <a
   href="http://db.apache.org/torque/">Torque</a> to access
   databases. M.E.T.A. supplies you with a few schema files to preset your
   database and to generate some data which can be put into the
@@ -89,7 +89,7 @@
 
   <subsection name="Turbine Security">
   <p>
-  Even though the default M.E.T.A. application uses no security, it still
+  Even though the default M.E.T.A. setup and the demo application use no security, M.E.T.A. still
   generates the necessary tables and informations to write a
   security-enabled application.<br/>
   M.E.T.A. supplies table definition and preset data to be used in
@@ -105,12 +105,13 @@
   file. <code>turbine-security-data.xml</code> and
   <code>turbine-security-data.dtd</code> are provided as examples and
   can be safely modified or removed if the values are not suitable for
-  your application. There is no code inside the M.E.T.A. plugin or a M.E.T.A.
-  generated application that uses the generated Users, Groups, Roles
-  or Permissions.</p>
+  your application. There is no code inside the M.E.T.A. plugin or the M.E.T.A.
+  demo application that uses the generated Users, Groups, Roles
+  or Permissions. These are only for demonstration purposes on how to generate SQL
+  statements from the XML data schema.</p>
 
   <p>
-  Note that loading security objects from an XML file has a major
+  Note that loading security objects from XML files has a major
   drawback: If you want to use password encryption, you must put the
   encrypted strings into the <code>Password</code> attributes of the
   TurbineUser elements. If you want to put cleartext passwords into

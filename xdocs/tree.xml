@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
@@ -19,7 +19,7 @@
 
 <document>
   <properties>
-    <title>Directory Tree reference</title>
+    <title>Directory tree reference</title>
     <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
   </properties>
 
@@ -44,9 +44,11 @@
 <td>Configuration data for your web application</td>
 <td>This directory contains all the configuration files for your
 application. All files in this directory with the exception of
-&lt;appname&gt;-web.xml are copied to the <code>WEB-INF/conf</code>
-location of your application.<br/> The &lt;appname&gt;-web.xml file
-will be copied to <code>WEB-INF/web.xml</code>.
+&lt;appname&gt;-web.xml and commons-logging.properties are copied to
+the <code>WEB-INF/conf</code> location of your application.<br/> The
+&lt;appname&gt;-web.xml file will be copied to
+<code>WEB-INF/web.xml</code> and the commons-logging.properties file
+will be put into the <code>WEB-INF/classes</code> directory.
 </td>
 </tr>
 
@@ -205,7 +207,7 @@ copied into this sub directory. This is defined in the <a href="http://java.sun.
 <td>logs</td>
 <td>-</td>
 <td>Log files</td>
-<td>A M.E.T.A. generated application writes a few logfiles which are useful for debugging and runtime diagnosis. These files are put here.</td>
+<td>A M.E.T.A. generated application writes logfiles for debugging and runtime diagnosis. These files are put here.</td>
 </tr>
 </table>
 </section>
@@ -248,7 +250,7 @@ copied into this sub directory. This is defined in the <a href="http://java.sun.
 <a name="logs"/>
 <td>logs</td>
 <td>Log files</td>
-<td>A M.E.T.A. generated application writes a few logfiles which are useful for debugging and runtime diagnosis. These files are put here.</td>
+<td>A M.E.T.A. generated application writes logfiles for debugging and runtime diagnosis. These files are put here.</td>
 </tr>
 <tr>
 <td>templates</td>
@@ -289,7 +291,7 @@ properties</a>.
 <p>You can run your custom deployment or web application generation by
 using a <code>postGoal</code> to the <a
 href="goals.html#turbine_deploy">turbine:deploy</a> or <a
-href="goals.html#turbine_webapp">turbine:webapp</a> goal. In a <a
+href="goals.html#turbine_war">turbine:war</a> goal. In a <a
 href="goals.html#turbine_deploy">turbine:deploy</a> postGoal you can
 access the <a href="properties.html#turbine_target_dir">turbine.target.dir</a> property as the deployment
 location of your application.

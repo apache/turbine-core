@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
@@ -19,7 +19,7 @@
 	
 <document>
   <properties>
-    <title>Maven Environment for Turbine Applications (M.E.T.A.)</title>
+    <title>IDE Howto</title>
     <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
   </properties>
 
@@ -62,7 +62,9 @@
 
     <p>Now configure Eclipse to your installed tomcat by setting its
        home directory and server.xml location in &quot;Window&quot;
-       -&gt; &quot;Preferences&quot; -&gt; &quot;Tomcat&quot;:<br/>
+       -&gt; &quot;Preferences&quot; -&gt; &quot;Tomcat&quot;:
+    </p>
+    <p>
        <img src="images/eclipse-tomcat-prefs.png" width="721"
        height="687" alt="Tomcat Preferences"/>
     </p>
@@ -118,7 +120,9 @@ maven eclipse
       &quot;File&quot; -&gt; &quot;Import&quot; -&gt; &quot;Existing
       Project into Workspace&quot; and enter the location of your new
       Turbine application into the Wizard. The resulting tree should
-      look like this:<br/> 
+      look like this:
+    </p>
+    <p>
       <img src="images/eclipse-helloworld.png" width="841"
       height="644" alt="Helloworld in Eclipse"/>
     </p>
@@ -128,7 +132,9 @@ maven eclipse
       application and select &quot;File&quot; -&gt;
       &quot;Properties&quot; from the Menu to open the Properties
       Dialog for your application. Select the &quot;Tomcat&quot;
-      properties:<br/>
+      properties:
+    </p>
+    <p>
       <img src="images/helloworld-tomcat-prefs.png" width="676"
       height="544" alt="Helloworld Tomcat Preferences"/>
     </p>

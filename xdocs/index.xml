@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
@@ -19,7 +19,7 @@
 	
 <document>
   <properties>
-    <title>Maven Environment for Turbine Applications (M.E.T.A.)</title>
+    <title>Overview</title>
     <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
   </properties>
 
@@ -37,7 +37,7 @@ framework</a>.
 M.E.T.A. builds an application skeleton from a set of prebuilt
 configuration files and some user supplied parameters. Most of the
 parameters have reasonable defaults, only the application name must be
-supplied at setup time.
+givened at setup time.
 <br/>
 Parameters are supplied either on the command line (if you want to
 rapid prototype an application, you can do so by running <a
