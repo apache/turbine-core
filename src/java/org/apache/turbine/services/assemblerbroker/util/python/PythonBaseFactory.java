@@ -55,30 +55,48 @@ package org.apache.turbine.services.assemblerbroker.util.python;
  */
 
 import java.io.File;
+
+import org.apache.commons.configuration.Configuration;
+
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.python.core.Py;
 import org.python.util.PythonInterpreter;
 
 /**
- * A screen factory that attempts to load a python class in the
+ * A factory that attempts to load a python class in the
  * JPython interpreter and execute it as a Turbine screen.
  * The JPython script should inherit from Turbine Screen or one
  * of its subclasses.
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public abstract class PythonBaseFactory implements AssemblerFactory
+public abstract class PythonBaseFactory
+        implements AssemblerFactory
 {
+    /** Key for the python path */
+    public static final String PYTHON_PATH = "python.path";
+
+    /** Global config file. This is executed before every screen */
+    public static final String PYTHON_CONFIG_FILE = "conf.py";
 
     /** Logging */
     private static Log log = LogFactory.getLog(PythonBaseFactory.class);
+
+    /** Our configuration */
+    private Configuration conf =
+        TurbineAssemblerBroker.getService().getConfiguration();
 
     /**
      * Get an Assembler.
@@ -91,29 +109,32 @@ public abstract class PythonBaseFactory implements AssemblerFactory
     public Assembler getAssembler(String subDirectory, String name)
             throws Exception
     {
-        Assembler assembler = null;
-        // The filename of the Python script
-        String fName = null;
-        String confName = null;
+        String path = conf.getString(PYTHON_PATH);
 
-        log.info("Screen name for JPython " + name);
-
-        try
-        {
-            String path = TurbineResources.getString(
-                TurbineServices.SERVICE_PREFIX
-                + AssemblerBrokerService.SERVICE_NAME
-                + ".python.path") + "/";
-            confName = path + "conf.py";
-            fName = path + subDirectory + "/" + name.toLowerCase() + ".py";
-        }
-        catch (Exception e)
+        if (StringUtils.isEmpty(path))
         {
             throw new Exception(
                 "Python path not found - check your Properties");
         }
+            
+        log.debug("Screen name for JPython: " + name);
 
-        File f = new File(fName);
+        Assembler assembler = null;
+
+        String confName = path + "/" + PYTHON_CONFIG_FILE;
+
+        // The filename of the Python script
+        StringBuffer fName = new StringBuffer();
+
+        fName.append(path);
+        fName.append("/");
+        fName.append(subDirectory);
+        fName.append("/");
+        fName.append(name.toLowerCase());
+        fName.append(".py");
+
+        File f = new File(fName.toString());
+
         if (f.exists())
         {
             try
@@ -122,7 +143,7 @@ public abstract class PythonBaseFactory implements AssemblerFactory
                 PythonInterpreter interp = new PythonInterpreter();
 
                 // Make sure the Py Interpreter use the right classloader
-                // This is necissarry for servlet engines generally has
+                // This is necessary for servlet engines generally has
                 // their own classloader implementations and servlets aren't
                 // loaded in the system classloader.  The python script will
                 // load java package
@@ -132,14 +153,14 @@ public abstract class PythonBaseFactory implements AssemblerFactory
                         this.getClass().getClassLoader());
 
                 // We import the Python SYS module. Now we don't need to do this
-                // explicitely in the scrypt.  We always use the sys module to
+                // explicitely in the script.  We always use the sys module to
                 // do stuff like loading java package
                 // org.apache.turbine.services.assemblerbroker.util.python;
                 interp.exec("import sys");
 
                 // Now we try to load the script file
                 interp.execfile(confName);
-                interp.execfile(fName);
+                interp.execfile(fName.toString());
 
                 try
                 {
@@ -166,9 +187,7 @@ public abstract class PythonBaseFactory implements AssemblerFactory
                 // We log the error here because this code is not widely tested
                 // yet. After we tested the code on a range of platforms this
                 // won't be usefull anymore.
-                log.error("PYTHON SCRIPT SCREEN LOADER ERROR:");
-                log.error(e.toString());
-                // Let the error fall through like the normal way.
+                log.error("PYTHON SCRIPT SCREEN LOADER ERROR:", e);
                 throw e;
             }
         }
