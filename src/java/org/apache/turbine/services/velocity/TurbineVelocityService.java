@@ -76,6 +76,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.pull.PullService;
 import org.apache.turbine.services.pull.TurbinePull;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
 import org.apache.turbine.util.RunData;
@@ -134,12 +135,6 @@ public class TurbineVelocityService
     /** Logging */
     private static Log log = LogFactory.getLog(TurbineVelocityService.class);
 
-    /**
-     * The context used to the store the context
-     * containing the global application tools.
-     */
-    private Context globalContext = null;
-
     /** Is the pullModelActive? */
     private boolean pullModelActive = false;
 
@@ -151,6 +146,10 @@ public class TurbineVelocityService
 
     /** Shall we catch Velocity Errors and report them in the log file? */
     private boolean catchErrors = true;
+
+    /** Internal Reference to the pull Service */
+    private PullService pullService = null;
+
 
     /**
      * Load all configured components and initialize them. This is
@@ -167,26 +166,17 @@ public class TurbineVelocityService
         {
             initVelocity();
 
-            globalContext = null;
-
             // We can only load the Pull Model ToolBox
             // if the Pull service has been listed in the TR.props
             // and the service has successfully been initialized.
             if (TurbinePull.isRegistered())
             {
-                globalContext = TurbinePull.getGlobalContext();
-
                 pullModelActive = true;
 
-                refreshToolsPerRequest = TurbinePull.refreshToolsPerRequest();
-                log.debug("Activated Pull Tools");
-            }
+                pullService = TurbinePull.getService();
 
-            // If the Pull service is inactive then we create
-            // an empty toolBoxContext
-            if (globalContext == null)
-            {
-                globalContext = getNewContext();
+                refreshToolsPerRequest = pullService.refreshToolsPerRequest();
+                log.debug("Activated Pull Tools");
             }
 
             // Register with the template service.
@@ -229,6 +219,9 @@ public class TurbineVelocityService
      */
     public Context getContext()
     {
+        Context globalContext = 
+                pullModelActive ? pullService.getGlobalContext() : null;
+
         Context ctx = new VelocityContext(globalContext);
         addEventCartridge(ctx);
 
@@ -239,7 +232,7 @@ public class TurbineVelocityService
         //
         if (pullModelActive && refreshToolsPerRequest)
         {
-            TurbinePull.refreshGlobalTools();
+            pullService.refreshGlobalTools();
         }
         return ctx;
     }
@@ -267,6 +260,7 @@ public class TurbineVelocityService
         EventCartridge ec = new EventCartridge();
         ec.addEventHandler(this);
         ec.attachToContext(ctx);
+        log.debug("Activated Velocity Event Cartridge for Context " + ctx);
     }
 
     /**
@@ -321,7 +315,7 @@ public class TurbineVelocityService
                 // and persistent scope tools (global tools are already in
                 // the toolBoxContent which has been wrapped to construct
                 // this request-specific context).
-                TurbinePull.populateContext(context, data);
+                pullService.populateContext(context, data);
             }
 
             data.getTemplateInfo().setTemplateContext(
@@ -692,7 +686,7 @@ public class TurbineVelocityService
     {
         if (pullModelActive)
         {
-            TurbinePull.releaseTools(context);
+            pullService.releaseTools(context);
         }
     }
 }
