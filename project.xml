@@ -220,7 +220,7 @@
     </dependency>
 
     <dependency>
-      <name>xml-xalan</name>
+      <name>xml-xalan2</name>
       <type>required</type>
       <version>2.1.0</version>
       <jar>xalan-2.1.0.jar</jar>
