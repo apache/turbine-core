@@ -157,7 +157,7 @@ public class DateSelector
     }
 
     /**
-     * Adds the onChange to all of <SELECT> tags.  This is limited to
+     * Adds the onChange to all of &lt;SELECT&gt; tags.  This is limited to
      * one function for all three popups and is only used when the
      * output() methods are used.  Individual getMonth, getDay,
      * getYear static methods will not use this setting.
