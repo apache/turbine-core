@@ -270,19 +270,11 @@ public class IntakeTool
 
 
       /**
-       * maps an object to the values from a Retrievable object. 
-       *
-       * If you supply null as the object, it returns the defaults, thus making this superflous:
-       *
-       * #if($!mapobj)
-       * #set ($frm = $intake.myGroup.mapTo($mapobj))
-       * #else
-       * #set ($frm = $intake.myGroup.default)
-       * #end
+       * maps an Intake Group to the values from a Retrievable object.
        *
        * @param obj       A retrievable object
        *
-       * @return an Intake Group
+       * @return          an Intake Group
        *
        */
 
