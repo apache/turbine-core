@@ -75,6 +75,18 @@ services.VelocityService.default.layout = VelocityOnlyLayout
 </p>
 <source>
 <![CDATA[
+$page.DefaultDoctype
+]]>
+</source>
+<p>
+    to your templates to pick up the default doctype definition from
+    TurbineResources.properties and make it available as $page.DefaultDoctype.
+</p>
+<p>
+    Add the line
+</p>
+<source>
+<![CDATA[
 services.VelocityService.velocimacro.library = macros/TurbineMacros.vm
 ]]>
 </source>
@@ -82,18 +94,6 @@ services.VelocityService.velocimacro.library = macros/TurbineMacros.vm
     to your TurbineResources.properties and it will pick up the 
     TurbineMacros.vm in your Turbine jar. An example of how to use 
     these macros follows.
-</p>
-<p>
-    Add the line
-</p>
-<source>
-<![CDATA[
-	$page.DefaultDoctype
-]]>
-</source>
-<p>
-    to your templates to pick up the default doctype definition from
-    TurbineResources.properties.
 </p>
 <p>
     Here is a sample layout template that you can use:
@@ -108,7 +108,7 @@ services.VelocityService.velocimacro.library = macros/TurbineMacros.vm
     $page.addScript($content.getURI("globalJavascriptCode.js"))
     ## build the HTML, HEAD, and BODY tags dynamically
 
-	$page.DefaultDoctype
+    $page.DefaultDoctype
     <html>
       #TurbineHtmlHead()
       <body #TurbineHtmlBodyAttributes() >
@@ -134,7 +134,7 @@ services.VelocityService.velocimacro.library = macros/TurbineMacros.vm
     $page.addScript($content.getURI("globalJavascriptCode.js"))
     ## build the HTML, HEAD, and BODY tags dynamically
 
-	$page.DefaultDoctype
+    $page.DefaultDoctype
     <html>
       <head>
         #if($page.Title != "")
@@ -152,6 +152,13 @@ services.VelocityService.velocimacro.library = macros/TurbineMacros.vm
             #if($styleSheet.Media != "") media="$styleSheet.Media" #end
             #if($styleSheet.Title != "") title="$styleSheet.Title" #end
           >
+        #end
+        #if ($page.Styles.size() > 0)
+          <style type="text/css">
+          #foreach( $style in $page.Styles )
+            $!style
+          #end
+          </style>
         #end
         #foreach($script in $page.Scripts)
           <script type="text/javascript" src="$script" language="JavaScript"></script>
