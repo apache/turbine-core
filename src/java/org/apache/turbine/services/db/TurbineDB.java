@@ -167,7 +167,6 @@ public abstract class TurbineDB
      * @return the pool name for the default database.
      */
     public static String getDefaultDB()
-        throws Exception
     {
         // Required due to the nasty coupling between
         // torque in 2.x and the db related services.
