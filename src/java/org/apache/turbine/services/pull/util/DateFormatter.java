@@ -16,25 +16,29 @@ package org.apache.turbine.services.pull.util;
  * limitations under the License.
  */
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.pull.ApplicationTool;
 
 /**
  * This pull tool is used to format date objects into strings.
  *
+ * <p>As this is designed to be used as a gloal scope pull tool it needs to be
+ * threadsafe.
+ *
+ * <p>This is an application pull tool for the template system. You should 
+ * <b>not</b> use it in a normal application.
+ *
  * @author <a href="mailto:qmccombs@nequalsone.com">Quinton McCombs</a>
+ * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  */
 public class DateFormatter
         implements ApplicationTool
 {
-    /** Used for formatting date objects */
-    private SimpleDateFormat sdf = new SimpleDateFormat();
-
     /** Default date format */
     private static final String DATE_FORMAT_DEFAULT = "MM/dd/yyyy";
 
@@ -63,11 +67,9 @@ public class DateFormatter
     }
 
     /**
-     * Refresh the application tool. This is
-     * necessary for development work where you
-     * probably want the tool to refresh itself
-     * if it is using configuration information
-     * that is typically cached after initialization
+     * Refresh the application tool. This is necessary for development work 
+     * where you probably want the tool to refresh itself if it is using 
+     * configuration information that is typically cached after initialization.
      */
     public void refresh()
     {
@@ -89,8 +91,8 @@ public class DateFormatter
      * Formats the given date as a String.
      *
      * @param theDate date to format
-     * @param dateFormatString format string to use.  See java.text.SimpleDateFormat
-     * for details.
+     * @param dateFormatString format string to use.  See 
+     * java.text.SimpleDateFormat for details.
      * @return String value of the date
      */
     public String format(Date theDate, String dateFormatString)
@@ -103,8 +105,7 @@ public class DateFormatter
         }
         else
         {
-            this.sdf.applyPattern(dateFormatString);
-            result = this.sdf.format(theDate);
+            result = DateFormatUtils.format(theDate, dateFormatString);
         }
         return result;
     }
