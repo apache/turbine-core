@@ -110,7 +110,10 @@ If you set this to "true", only the events that contain a non-empty, non-zero va
 executed. This is useful if you have a form with multiple, different events, that need to be executed
 and the form is submitted by client-side code, e.g. JavaScript.
 </p>
-
+<p>
+If you want to trigger an action event from an html link, versus a button, then just add a parameter with the name eventSubmit_doMyaction.
+The value can be anything as the name is all that is important.
+</p>
 </section>
 
 </body>
