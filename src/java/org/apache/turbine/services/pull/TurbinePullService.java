@@ -70,9 +70,10 @@ import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.pool.PoolService;
 import org.apache.turbine.services.pool.TurbinePool;
 import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.services.velocity.VelocityService;
+import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
 
-import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 
 /**
@@ -161,6 +162,9 @@ public class TurbinePullService
     /** Reference to the pool service */
     private PoolService pool = null;
 
+    /** Reference to the templating (nee Velocity) service */
+    private VelocityService velocity = null;
+
     /**
      * This is the container for the global web application
      * tools that are used in conjunction with the
@@ -233,7 +237,17 @@ public class TurbinePullService
             // which causes an init loop.
             setInit(true);
 
-            initPullTools();
+            // Do _NOT_ move this before the setInit(true)
+            velocity = TurbineVelocity.getService();
+
+            if (velocity != null)
+            {
+                initPullTools();
+            }
+            else
+            {
+                log.info("Velocity Service not configured, skipping pull tools!");
+            }
         }
         catch (Exception e)
         {
@@ -318,7 +332,12 @@ public class TurbinePullService
         persistentTools = getTools(conf.subset(PERSISTENT_TOOL));
 
         // Create and populate the global context right now
-        globalContext = new VelocityContext();
+
+        // This is unholy, because it entwines the VelocityService and 
+        // the Pull Service even further. However, there isn't much we can
+        // do for the 2.3 release. Expect this to go post-2.3
+        globalContext = velocity.getNewContext();
+
         populateWithGlobalTools(globalContext);
     }
 
