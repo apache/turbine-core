@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <name>jakarta-turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.2-b3</currentVersion>
+  <currentVersion>2.2-b4-dev</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -352,7 +352,7 @@
   <dependencies>
     <dependency>
       <id>ant</id>
-      <version>1.4.1</version>
+      <version>1.5</version>
       <url>http://jakarta.apache.org/ant/</url>
     </dependency>
     <dependency>
@@ -367,7 +367,7 @@
     </dependency>
     <dependency>
       <id>commons-lang</id>
-      <version>1.0-b1</version>
+      <version>1.0</version>
       <url>http://jakarta.apache.org/commons/</url>
     </dependency>
     <dependency>
@@ -415,7 +415,7 @@
     </dependency>
     <dependency>
       <id>torque</id>
-      <version>3.0-b4</version>
+      <version>3.0-b5-dev</version>
       <url>http://jakarta.apache.org/turbine/torque/</url>
     </dependency>
     <dependency>
@@ -430,7 +430,7 @@
     </dependency>
     <dependency>
       <id>xmlrpc</id>
-      <version>1.1</version>
+      <version>1.2-dev</version>
       <url>http://xml.apache.org/xmlrpc/</url>
     </dependency>
     <dependency>
@@ -466,7 +466,7 @@
     </dependency>
     <dependency>
       <id>junit</id>
-      <version>3.7</version>
+      <version>3.8.1</version>
       <url>http://www.junit.org/</url>
     </dependency>
     <!-- *********************************** -->
