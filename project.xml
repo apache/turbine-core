@@ -578,13 +578,22 @@
     </dependency>     
     <dependency>
       <groupId>fulcrum</groupId>
-      <artifactId>fulcrum-mimetype</artifactId>
-      <version>1.0-alpha-3</version>
+      <artifactId>fulcrum-mimetype-api</artifactId>
+      <version>1.0-alpha-4</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-mimetype</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
-    </dependency>    
+    </dependency>  
+    <dependency>
+      <groupId>fulcrum</groupId>
+      <artifactId>fulcrum-mimetype-impl</artifactId>
+      <version>1.0-alpha-4</version>
+      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-mimetype</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>       
     <dependency>
       <id>jaf:activation</id>
       <version>1.0.2</version>
@@ -693,11 +702,11 @@
     </dependency>  
     
     <!-- Needed for testing -->
-    <!--dependency>
+    <dependency>
       <groupId>merlin</groupId>
       <artifactId>merlin-hello-tutorial</artifactId>
       <version>1.0</version>
-    </dependency-->   
+    </dependency>   
   </dependencies>
 
   <build>
