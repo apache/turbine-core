@@ -87,14 +87,20 @@ public class IntakeTool
     public IntakeTool()
     {
         String[] groupNames = TurbineIntake.getGroupNames();
-        groups = new HashMap((int)(1.25*groupNames.length + 1));
-        pullMap = new HashMap((int)(1.25*groupNames.length + 1));
-        // omToolKey = TurbineResources.getString("tool.intake.om");
-
-        for (int i=groupNames.length-1; i>=0; i--)
+        if(groupNames != null)
         {
-            pullMap.put(groupNames[i], new PullHelper(groupNames[i]));
-        }
+            groups = new HashMap((int)(1.25*groupNames.length + 1));
+            pullMap = new HashMap((int)(1.25*groupNames.length + 1));
+
+            for (int i=groupNames.length-1; i>=0; i--)
+            {
+                pullMap.put(groupNames[i], new PullHelper(groupNames[i]));
+            }
+		}
+		else
+		{
+			Log.warn("You do not have any groups defined for intake!!!!");
+		}
     }
 
     /**
