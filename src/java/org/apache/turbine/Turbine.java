@@ -832,7 +832,7 @@ public class Turbine
     private void loadSubsystems()
     {
         // name of the subsystem
-        String sysName;
+        String sysName = null;
         // name of the class to load
         String sysClassName;
         // name of the config file used to configure the subsystem
@@ -852,7 +852,7 @@ public class Turbine
                         TurbineResources.getString("subsystem."+ sysName
                         + ".config"));
 
-                Log.notice("loading subsystem " + sysName + " - class: "
+                Log.note("loading subsystem " + sysName + " - class: "
                         + sysClassName + " with config: " + sysConfig);
 
                 Object sys = Class.forName(sysClassName).newInstance();
@@ -866,7 +866,7 @@ public class Turbine
             }
             catch (Exception ex)
             {
-                Log.error(sysName + " could not be initialized!", ex);
+                Log.error(StringUtils.makeString(sysName) + " could not be initialized!", ex);
             }
         }
     }
