@@ -152,6 +152,10 @@ public abstract class TurbineSecurity
         return getService().checkPassword(checkpw, encpw);
     }
 
+    /*-----------------------------------------------------------------------
+      Getting Object Classes
+      -----------------------------------------------------------------------*/
+
     /**
      * Returns the Class object for the implementation of User interface
      * used by the system.
@@ -164,6 +168,48 @@ public abstract class TurbineSecurity
             throws UnknownEntityException
     {
         return getService().getUserClass();
+    }
+
+    /**
+     * Returns the Class object for the implementation of Group interface
+     * used by the system.
+     *
+     * @return the implementation of Group interface used by the system.
+     * @throws UnknownEntityException if the system's implementation of Group
+     *         interface could not be determined.
+     */
+    public static Class getGroupClass()
+        throws UnknownEntityException
+    {
+        return getService().getGroupClass();
+    }
+
+    /**
+     * Returns the Class object for the implementation of Permission interface
+     * used by the system.
+     *
+     * @return the implementation of Permission interface used by the system.
+     * @throws UnknownEntityException if the system's implementation of Permission
+     *         interface could not be determined.
+     */
+    public static Class getPermissionClass()
+        throws UnknownEntityException
+    {
+        return getService().getPermissionClass();
+    }
+
+    /**
+     * Returns the Class object for the implementation of Role interface
+     * used by the system.
+     *
+     * @return the implementation of Role interface used by the system.
+     * @throws UnknownEntityException if the system's implementation of Role
+     *         interface could not be determined.
+     */
+    public static Class getRoleClass()
+        throws UnknownEntityException
+    {
+        return getService().getRoleClass();
     }
 
     /**
