@@ -172,7 +172,7 @@ public class TemplateURI
     /**
      * Constructor, set explicit redirection
      *
-     * @param data A ServerData object
+     * @param serverData A ServerData object
      * @param redirect True if redirection allowed.
      */
     public TemplateURI(ServerData serverData, boolean redirect)
@@ -183,7 +183,7 @@ public class TemplateURI
     /**
      * Constructor, set Template
      *
-     * @param data A ServerData object
+     * @param serverData A ServerData object
      * @param template A Template Name
      */
     public TemplateURI(ServerData serverData, String template)
@@ -195,7 +195,7 @@ public class TemplateURI
     /**
      * Constructor, set Template, set explicit redirection
      *
-     * @param data A ServerData object
+     * @param serverData A ServerData object
      * @param template A Template Name
      * @param redirect True if redirection allowed.
      */
@@ -208,7 +208,7 @@ public class TemplateURI
     /**
      * Constructor, set Template and Action
      *
-     * @param data A ServerData object
+     * @param serverData A ServerData object
      * @param template A Template Name
      * @param action An Action Name
      */
@@ -221,7 +221,7 @@ public class TemplateURI
     /**
      * Constructor, set Template and Action, set explicit redirection
      *
-     * @param data A ServerData object
+     * @param serverData A ServerData object
      * @param template A Template Name
      * @param action An Action Name
      * @param redirect True if redirection allowed.
@@ -235,7 +235,7 @@ public class TemplateURI
     /**
      * Constructor, user Turbine.getDefaultServerData(), set Template and Action
      *
-     * @param data A ServerData object
+     * @param serverData A ServerData object
      * @param template A Template Name
      * @param action An Action Name
      */
