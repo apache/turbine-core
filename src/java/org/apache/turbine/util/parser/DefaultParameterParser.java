@@ -254,7 +254,7 @@ public class DefaultParameterParser
     /**
      * Gets the uploadData byte[]
      *
-     * @returns uploadData A byte[] with data.
+     * @return uploadData A byte[] with data.
      */
     public byte[] setUploadData ()
     {

@@ -43,7 +43,7 @@ public abstract class $basePrefix${table.JavaName}Peer
     public static final String TABLE_NAME = mapBuilder.getTable();
 
     /** 
-     * @returns the map builder for this peer 
+     * @return the map builder for this peer
      */
     public static MapBuilder getMapBuilder()
     {
