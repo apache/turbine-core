@@ -299,6 +299,7 @@ services.PullService.classname=org.apache.turbine.services.pull.TurbinePullServi
 #services.IntakeService.classname=org.apache.turbine.services.intake.TurbineIntakeService
 services.TemplateService.classname=org.apache.turbine.services.template.TurbineTemplateService
 services.XSLTService.classname=org.apache.turbine.services.xslt.TurbineXSLTService
+#services.SessionService.classname=org.apache.turbine.services.session.TurbineSessionService
 
 # Turn on the appropriate template service.
 @TEMPLATE_SERVICE@
@@ -978,6 +979,14 @@ services.ComponentService.torque.config = /WEB-INF/conf/Torque.properties
 #services.ComponentService.name = fulcrum
 #services.ComponentService.fulcrum.classname = org.apache.fulcrum.Fulcrum
 #services.ComponentService.fulcrum.config = /WEB-INF/conf/Fulcrum.properties
+
+# -------------------------------------------------------------------
+#
+#  S E S S I O N   S E R V I C E
+#
+# -------------------------------------------------------------------
+
+services.SessionService.eralyInit=true
 
 # -------------------------------------------------------------------
 #

@@ -150,6 +150,10 @@ Changes between Turbine 2.2 and 2.3-dev.
         All deprecated calls to the old org.apache.turbine.util.Log have
         been replaced with calls to org.apache.commons.logging.Log.
     </li>
+    <li>
+        A new SessionService has been added.  This will allow access to all
+        sessions in the current context.
+    </li>
   </ul>
 </p>
 </subsection>

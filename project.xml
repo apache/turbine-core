@@ -320,6 +320,12 @@
     <td></td>
     <td>Apprentice</td>
     -->
+    <developer>
+      <name>Quinton McCombs</name>
+      <id>quintonm</id>
+      <email>quintonm@bellsouth.net</email>
+      <organization>NEqualsOne</organization>
+    </developer>
 
   </developers>
 
@@ -453,7 +459,7 @@
     </dependency>
     <dependency>
       <id>servletapi</id>
-      <version>2.2</version>
+      <version>2.3</version>
     </dependency>
     <dependency>
       <id>stratum</id>
