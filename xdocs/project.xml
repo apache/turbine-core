@@ -15,6 +15,7 @@
       <item name="TDK"                     href="http://jakarta.apache.org/turbine/tdk/"/>
       <item name="Stratum"                 href="http://jakarta.apache.org/turbine/stratum/"/>
       <item name="Maven"                   href="http://jakarta.apache.org/turbine/maven/"/>
+      <item name="JCS"                     href="http://jakarta.apache.org/turbine/jcs/"/>
     </links>
 
     <menu name="Essentials">
@@ -24,7 +25,7 @@
       <item name="Getting Started"       href="/getting-started.html"/>
       <item name="Changes"               href="/changes.html"/>
     </menu>
-    
+
     <menu name="Documentation">
       <item name="Core Schema"           href="/turbine-schema.html"/>
       <item name="J2EE Integration"      href="/j2ee-integration.html"/>
@@ -33,7 +34,7 @@
       <item name="Services"              href="/services.html"/>
       <item name="Howtos"                href="/howtos.html"/>
     </menu>
-    
+
     <menu name="Development">
       <item name="DB Adapters"           href="/db-adapters.html"/>
       <item name="Project Map"           href="/project-map.html"/>
