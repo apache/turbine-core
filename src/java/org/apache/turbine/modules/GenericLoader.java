@@ -80,7 +80,7 @@ public abstract class GenericLoader
     private boolean isCaching = true;
 
     /** Base packages path for Turbine */
-    private static final String TURBINE_PACKAGE = GenericLoader.class.getPackage().getName();
+    private static final String TURBINE_PACKAGE = "org.apache.turbine.modules";
 
     /**
      * Basic constructor for creating a loader.
