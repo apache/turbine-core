@@ -87,11 +87,9 @@ public abstract class BaseURI
     private static Log log = LogFactory.getLog(BaseURI.class);
 
     /** ServerData Object for scheme, name, port etc. */
-    private ServerData serverData = new ServerData(null,
-            HTTP_PORT,
-            HTTP,
-            null,
-            null);
+    private ServerData serverData =
+            new ServerData(null, HTTP_PORT, HTTP, null, null);
+
     /** Whether we want to redirect or not. */
     private boolean redirect = false;
 
