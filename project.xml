@@ -348,11 +348,6 @@
 
   <dependencies>
     <dependency>
-      <id>ant</id>
-      <version>1.5.1</version>
-      <url>http://jakarta.apache.org/ant/</url>
-    </dependency>
-    <dependency>
       <id>commons-collections</id>
       <version>2.1</version>
       <url>http://jakarta.apache.org/commons/collections.html</url>
