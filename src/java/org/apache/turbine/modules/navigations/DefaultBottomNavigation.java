@@ -73,6 +73,7 @@ import org.apache.ecs.html.PRE;
 import org.apache.ecs.html.TD;
 import org.apache.ecs.html.TR;
 import org.apache.ecs.html.Table;
+
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Navigation;
 import org.apache.turbine.om.security.Permission;
@@ -160,10 +161,11 @@ public class DefaultBottomNavigation extends Navigation
             // a <PRE></PRE> tag so that they can be displayed on the
             // page. This is of course only for example purposes.
             PRE pre = new PRE();
-            Enumeration keys = data.getParameters().keys();
-            while (keys.hasMoreElements())
+            
+            for (Iterator it = data.getParameters().keySet().iterator();
+                 it.hasNext();)
             {
-                String key = (String) keys.nextElement();
+                String key = (String) it.next();
                 String[] values = data.getParameters().getStrings(key);
                 if (values.length == 1)
                 {
@@ -185,7 +187,7 @@ public class DefaultBottomNavigation extends Navigation
                 .addElement(pre);
 
             Table table2 = new Table().setBorder(0);
-            Map varDebug = data.getVarDebug();
+            Map varDebug = data.getDebugVariables();
 
             boolean hasValues2 = false;
 

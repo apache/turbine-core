@@ -538,12 +538,12 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
     {
         Criteria criteria = new Criteria();
         criteria.addSelectColumn(USER_ID);
-        criteria.add(USERNAME, user.getUserName());
+        criteria.add(USERNAME, user.getName());
         List results = BasePeer.doSelect(criteria);
         if (results.size() > 1)
         {
             throw new DataBackendException("Multiple users named '"
-                    + user.getUserName() + "' exist!");
+                    + user.getName() + "' exist!");
         }
         return (results.size() == 1);
     }

@@ -905,7 +905,7 @@ public class DefaultTurbineRunData
      */
     public void setUser(User user)
     {
-        log.debug("user set: " + user.getUserName());
+        log.debug("user set: " + user.getName());
         this.user = user;
     }
 
@@ -954,7 +954,9 @@ public class DefaultTurbineRunData
     {
         // Check to see if null first.
         if (this.out == null)
+        {
             setOut(res.getWriter());
+        }
         pageSet = false;
         outSet = true;
         return this.out;

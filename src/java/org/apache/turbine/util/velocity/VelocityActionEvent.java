@@ -56,7 +56,7 @@ package org.apache.turbine.util.velocity;
 
 import java.lang.reflect.Method;
 
-import java.util.Enumeration;
+import java.util.Iterator;
 
 import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.services.velocity.TurbineVelocity;
@@ -133,9 +133,9 @@ public abstract class VelocityActionEvent extends ActionEvent
         String button = pp.convert(BUTTON);
 
         // Loop through and find the button.
-        for (Enumeration e = pp.keys(); e.hasMoreElements();)
+        for (Iterator it = pp.keySet().iterator(); it.hasNext();)
         {
-            String key = (String) e.nextElement();
+            String key = (String) it.next();
             if (key.startsWith(button))
             {
                 theButton = formatString(key);

@@ -148,7 +148,7 @@ public class DBSecurityService
             // construct the snapshot:
 
             // foreach group in the system
-            for (Iterator groupsIterator = getAllGroups().elements();
+            for (Iterator groupsIterator = getAllGroups().iterator();
                  groupsIterator.hasNext();)
             {
                 Group group = (Group) groupsIterator.next();
@@ -159,7 +159,7 @@ public class DBSecurityService
                 // collect all permissions in this group
                 PermissionSet groupPermissions = new PermissionSet();
                 // foreach role in Set
-                for (Iterator rolesIterator = groupRoles.elements();
+                for (Iterator rolesIterator = groupRoles.iterator();
                      rolesIterator.hasNext();)
                 {
                     Role role = (Role) rolesIterator.next();

@@ -1049,9 +1049,9 @@ public class DynamicURI
         output.append(URIConstants.URI_SCHEME_SEPARATOR);
         output.append(data.getServerName());
 
-        if ((data.getServerScheme().equals(HTTP) &&
+        if ((data.getServerScheme().equals(URIConstants.HTTP) &&
                 data.getServerPort() != URIConstants.HTTP_PORT) ||
-                (data.getServerScheme().equals(HTTPS) &&
+                (data.getServerScheme().equals(URIConstants.HTTPS) &&
                 data.getServerPort() != URIConstants.HTTPS_PORT))
         {
             output.append(":");

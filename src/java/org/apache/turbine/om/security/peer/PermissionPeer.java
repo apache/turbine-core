@@ -188,7 +188,7 @@ public class PermissionPeer extends BasePeer
             // Populate the object(s).
             for (int i = 0; i < rows.size(); i++)
             {
-                Permission obj = TurbineSecurity.getNewPermission(null);
+                Permission obj = TurbineSecurity.getPermissionInstance(null);
                 Record row = (Record) rows.get(i);
                 ((SecurityObject) obj).setPrimaryKey(
                         new NumberKey(row.getValue(1).asInt()));

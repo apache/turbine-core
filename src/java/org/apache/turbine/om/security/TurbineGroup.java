@@ -176,7 +176,7 @@ public class TurbineGroup extends SecurityObject implements Group
     public void grant(User user, RoleSet roleSet)
             throws TurbineSecurityException
     {
-        for(Iterator roles = roleSet.elements(); roles.hasNext();)
+        for (Iterator roles = roleSet.iterator(); roles.hasNext();)
         {
             TurbineSecurity.grant(user, this, (Role) roles.next());
         }
@@ -206,7 +206,7 @@ public class TurbineGroup extends SecurityObject implements Group
     public void revoke(User user, RoleSet roleSet)
             throws TurbineSecurityException
     {
-        for(Iterator roles = roleSet.elements(); roles.hasNext();)
+        for (Iterator roles = roleSet.iterator(); roles.hasNext();)
         {
             TurbineSecurity.revoke(user, this, (Role) roles.next());
         }

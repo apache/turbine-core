@@ -142,7 +142,7 @@ public class LDAPSecurityService extends BaseSecurityService
 
             // construct the snapshot:
             // foreach group in the system
-            Iterator groupsIterator = getAllGroups().elements();
+            Iterator groupsIterator = getAllGroups().iterator();
 
             while (groupsIterator.hasNext())
             {
@@ -156,7 +156,7 @@ public class LDAPSecurityService extends BaseSecurityService
                 // collect all permissoins in this group
                 PermissionSet groupPermissions = new PermissionSet();
                 // foreach role in Set
-                Iterator rolesIterator = groupRoles.elements();
+                Iterator rolesIterator = groupRoles.iterator();
 
                 while (rolesIterator.hasNext())
                 {
@@ -1159,11 +1159,11 @@ public class LDAPSecurityService extends BaseSecurityService
     public void revokeAll(User user)
             throws DataBackendException, UnknownEntityException
     {
-        Iterator groupsIterator = getAllGroups().elements();
+        Iterator groupsIterator = getAllGroups().iterator();
         while (groupsIterator.hasNext())
         {
             Group group = (Group) groupsIterator.next();
-            Iterator rolesIterator = getRoles(user, group).elements();
+            Iterator rolesIterator = getRoles(user, group).iterator();
             while (rolesIterator.hasNext())
             {
                 Role role = (Role) rolesIterator.next();
@@ -1182,7 +1182,7 @@ public class LDAPSecurityService extends BaseSecurityService
             throws DataBackendException, UnknownEntityException
     {
         PermissionSet permissions = getPermissions(role);
-        Iterator permIterator = permissions.elements();
+        Iterator permIterator = permissions.iterator();
         while (permIterator.hasNext())
         {
             Permission perm = (Permission) permIterator.next();
@@ -1202,7 +1202,7 @@ public class LDAPSecurityService extends BaseSecurityService
         User[] users = getUsers(new Criteria());
         for (int i = 0; i < users.length; i++)
         {
-            Iterator rolesIterator = getRoles(users[i], group).elements();
+            Iterator rolesIterator = getRoles(users[i], group).iterator();
             while (rolesIterator.hasNext())
             {
                 Role role = (Role) rolesIterator.next();

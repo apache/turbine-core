@@ -267,9 +267,6 @@ public class TurbineRunDataService
         data.setRequest(req);
         data.setResponse(res);
 
-        // Set the session object.
-        data.setSession(data.getRequest().getSession(true));
-
         // Set the servlet configuration.
         data.setServletConfig(config);
 
