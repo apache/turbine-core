@@ -996,4 +996,19 @@ public abstract class Field
         return (StringUtils.isEmpty(maxSize) ? "" : maxSize);
     }
 
+    /**
+     * Gets the String representation of the Value. This is basically a wrapper
+     * method for the toString method which doesn't seem to show anything on
+     * screen if accessed from Template. Name is also more in line with getValue
+     * method which returns the actual Object.
+     * This is useful for displaying correctly formatted data such as dates,
+     * such as 18/11/1968 instead of the toString dump of a Date Object.
+     *
+     * @return the String Value
+     */
+    public String getStringValue()
+    {
+        return this.toString();   
+    }
+    
 }
