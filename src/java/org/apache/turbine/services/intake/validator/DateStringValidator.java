@@ -170,15 +170,15 @@ public class DateStringValidator
             flexible = Boolean.valueOf(constraint.getValue()).booleanValue();
         }
 
-        if (dateFormats.size() == 0 || flexible)
+        if (dateFormats.size() == 0)
         {
             df = DateFormat.getInstance();
-            df.setLenient(true);
+            df.setLenient(flexible);
         }
-
-        if (dateFormats.size() != 0)
+        else
         {
             sdf = new SimpleDateFormat();
+            sdf.setLenient(flexible);
         }
     }
 
