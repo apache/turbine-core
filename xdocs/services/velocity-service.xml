@@ -29,7 +29,7 @@
 # To specify properties of a service use the following syntax:
 # service.[name].[property]=[value]
 
-services.VelocityService.classname = org.apache.turbine.services.TurbineVelocityService
+services.VelocityService.classname = org.apache.turbine.services.velocity.TurbineVelocityService
 .
 .
 .
