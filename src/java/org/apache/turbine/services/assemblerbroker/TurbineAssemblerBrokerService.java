@@ -63,6 +63,7 @@ import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
 import org.apache.turbine.util.TurbineException;
+import org.apache.commons.logging.*;
 
 /**
  * TurbineAssemblerBrokerService allows assemblers (like screens,
@@ -77,6 +78,10 @@ public class TurbineAssemblerBrokerService
     implements AssemblerBrokerService
 
 {
+    /** the log */
+    private static Log log
+            = LogFactory.getLog(TurbineAssemblerBrokerService.class);
+
     /** A structure that holds the registered AssemblerFactories*/
     private Hashtable factories = null;
 
@@ -93,20 +98,16 @@ public class TurbineAssemblerBrokerService
     }
 
     /**
-     * Utiltiy method to register all factories for a given
-     * type.
+     * Utiltiy method to register all factories for a given type.
      */
     private void registerFactories (String type)
         throws TurbineException
     {
-        String key = TurbineServices.SERVICE_PREFIX+
-                     AssemblerBrokerService.SERVICE_NAME+
-                     "."+
-                     type;
+        log.debug("registerFactories: key = " + type);
 
-        String[] names = getConfiguration().getStringArray(key);
+        String[] names = getConfiguration().getStringArray(type);
 
-//        Log.info ("Registering " + names.length + " " + type + " factories.");
+        log.info("Registering " + names.length + " " + type + " factories.");
 
         for (int i=0; i<names.length; i++)
         {
