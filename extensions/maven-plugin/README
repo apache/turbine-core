@@ -196,10 +196,14 @@ insert them into your databases.
 torque:datasql (pre)
 ==============
 
-Copies the data definition files and their dtds into the build tree.
+Ensures that the the data definition files and their dtds are copied
+into the build tree before running the goal.
 
 torque:datadtd (pre)
 ==============
+
+Ensures that the the data definition files and their dtds are copied
+into the build tree before running the goal.
 
 war:webapp (post)
 ==========
@@ -298,7 +302,7 @@ Function:	Defines whether a web application should be
 Type:		boolean (true/false)
 Default:	"false" (copy the application tree into the web server)
 
-turbine.app.inplace.dir
+turbine.app.inplace.dir (turbine:deploy)
 
 Function:	Defines where an inplace editing application is put.
 		This property is only used, when inplace deployment is
