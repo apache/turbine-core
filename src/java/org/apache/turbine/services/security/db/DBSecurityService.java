@@ -621,6 +621,7 @@ public class DBSecurityService extends BaseSecurityService
             {
                 Criteria criteria = GroupPeer.buildCriteria(group);
                 GroupPeer.doUpdate(criteria);
+                return;
             }
         }
         catch(Exception e)
@@ -648,6 +649,7 @@ public class DBSecurityService extends BaseSecurityService
             {
                 Criteria criteria = RolePeer.buildCriteria(role);
                 RolePeer.doUpdate(criteria);
+                return;
             }
         }
         catch(Exception e)
@@ -675,6 +677,7 @@ public class DBSecurityService extends BaseSecurityService
             {
                 Criteria criteria = PermissionPeer.buildCriteria(permission);
                 PermissionPeer.doUpdate(criteria);
+                return;
             }
         }
         catch(Exception e)
