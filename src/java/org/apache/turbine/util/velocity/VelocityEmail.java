@@ -54,11 +54,14 @@ package org.apache.turbine.util.velocity;
  * <http://www.apache.org/>.
  */
 
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.mail.SimpleEmail;
 import org.apache.turbine.services.velocity.TurbineVelocity;
-import org.apache.turbine.util.StringUtils;
+import org.apache.turbine.services.resources.TurbineResources;
+import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.context.Context;
 
 /**
@@ -123,6 +126,7 @@ import org.apache.velocity.context.Context;
  *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:gcoladonato@yahoo.com">Greg Coladonato</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class VelocityEmail
@@ -147,6 +151,9 @@ public class VelocityEmail
 
     /** The column to word-wrap at.  <code>0</code> indicates no wrap. */
     private int wordWrap = 0;
+
+    /** Address of outgoing mail server */
+    private String mailServer;
 
     /**
      * The template to process, relative to WM's template
@@ -269,8 +276,40 @@ public class VelocityEmail
     }
 
     /**
+     * Sets the address of the outgoing mail server.  This method
+     * should be used when you need to override the value stored in
+     * TR.props.
+     *
+     * @param serverAddress host name of your outgoing mail server
+     */
+    public void setMailServer(String serverAddress)
+    {
+        this.mailServer = serverAddress;
+    }
+
+    /**
+     * Gets the host name of the outgoing mail server.  If the server
+     * name has not been set by calling setMailServer(), the value
+     * from TR.props for mail.server will be returned.  If TR.props
+     * has no value for mail.server, localhost will be returned.
+     *
+     * @return host name of the mail server.
+     */
+    public String getMailServer()
+    {
+        return (StringUtils.isEmpty(mailServer) ?
+                TurbineResources.getString("mail.server", "localhost")
+                : this.mailServer );
+    }
+
+    /**
      * This method sends the email.
-     * @exception VelocityEmailException thrown if mail cannot be sent.
+     * <p>If the mail server was not set by calling, setMailServer()
+     * the value of mail.server will be used from TR.props.  If that
+     * value was not set, localhost is used.
+     *
+     * @throws VelocityEmailException Failure during merging the velocity
+     * template or sending the email.
      */
     public void send()
             throws VelocityEmailException
@@ -283,7 +322,7 @@ public class VelocityEmail
             // If the caller desires word-wrapping, do it here
             if (wordWrap > 0)
             {
-                body = StringUtils.wrapText(body,
+                body = org.apache.turbine.util.StringUtils.wrapText(body,
                         System.getProperty("line.separator"), wordWrap);
             }
 
@@ -292,11 +331,12 @@ public class VelocityEmail
             se.addTo(toEmail, toName);
             se.setSubject(subject);
             se.setMsg(body);
+            se.setHostName(getMailServer());
             se.send();
         }
         catch (Exception e)
         {
-            throw new VelocityEmailException(e);
+            throw new VelocityEmailException("Could not send email", e);
         }
     }
 
