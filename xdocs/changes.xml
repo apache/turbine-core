@@ -127,13 +127,6 @@ must be used, because they are used internally by Turbine)
 </p>
 
 <p>
-The following services could (and should) be replaced by the Fulcrum versions:
-<ul>
-  <li>XmlRpcService</li>
-</ul>
-</p>
-
-<p>
 If you wrote your own services you should also change them to be Fulcrum
 services to make them work with Turbine 3.x
 </p>
