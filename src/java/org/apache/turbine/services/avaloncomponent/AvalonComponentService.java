@@ -56,6 +56,7 @@ package org.apache.turbine.services.avaloncomponent;
 
 import org.apache.avalon.framework.component.Component;
 import org.apache.avalon.framework.component.ComponentException;
+
 import org.apache.turbine.services.Service;
 
 /**
@@ -69,6 +70,12 @@ public interface AvalonComponentService
 {
     /** The publically visible name of the service */
     String SERVICE_NAME = "AvalonComponentService";
+
+    /** property specifing file name of the component config file */
+    String COMPONENT_CONFIG = "componentConfiguration";
+
+    /** property specifing file name of the component role file */
+    String COMPONENT_ROLE = "componentRoles";
 
     /**
      * Returns an instance of the named component
