@@ -201,7 +201,7 @@ public class TurbineURI
     /**
      * Constructor, set explicit redirection
      *
-     * @param data A ServerData object
+     * @param serverData A ServerData object
      * @param redirect True if redirection allowed.
      */
     public TurbineURI(ServerData serverData, boolean redirect)
@@ -213,7 +213,7 @@ public class TurbineURI
     /**
      * Constructor, set Screen
      *
-     * @param data A ServerData object
+     * @param serverData A ServerData object
      * @param screen A Screen Name
      */
     public TurbineURI(ServerData serverData, String screen)
@@ -225,7 +225,7 @@ public class TurbineURI
     /**
      * Constructor, set Screen, set explicit redirection
      *
-     * @param data A ServerData object
+     * @param serverData A ServerData object
      * @param screen A Screen Name
      * @param redirect True if redirection allowed.
      */
@@ -238,7 +238,7 @@ public class TurbineURI
     /**
      * Constructor, set Screen and Action
      *
-     * @param data A ServerData object
+     * @param serverData A ServerData object
      * @param screen A Screen Name
      * @param action An Action Name
      */
@@ -251,12 +251,13 @@ public class TurbineURI
     /**
      * Constructor, set Screen and Action, set explicit redirection
      *
-     * @param data A ServerData object
+     * @param serverData A ServerData object
      * @param screen A Screen Name
      * @param action An Action Name
      * @param redirect True if redirection allowed.
      */
-    public TurbineURI(ServerData serverData, String screen, String action, boolean redirect)
+    public TurbineURI(ServerData serverData, String screen, String action,
+                      boolean redirect)
     {
         this(serverData, screen, redirect);
         setAction(action);
@@ -265,7 +266,6 @@ public class TurbineURI
     /**
      * Constructor, user Turbine.getDefaultServerData(), set Screen and Action
      *
-     * @param data A ServerData object
      * @param screen A Screen Name
      * @param action An Action Name
      */
