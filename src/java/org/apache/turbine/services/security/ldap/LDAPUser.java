@@ -367,7 +367,7 @@ public class LDAPUser extends BaseObject implements User
         String tmp = null;
 
         tmp = (String) getPerm(User.CONFIRM_VALUE);
-        if (tmp.length() == 0)
+        if (tmp != null && tmp.length() == 0)
         {
             tmp = null;
         }
@@ -385,7 +385,7 @@ public class LDAPUser extends BaseObject implements User
         String tmp = null;
 
         tmp = (String) getPerm(User.EMAIL);
-        if (tmp.length() == 0)
+        if (tmp != null && tmp.length() == 0)
         {
             tmp = null;
         }
@@ -539,7 +539,7 @@ public class LDAPUser extends BaseObject implements User
         String tmp = null;
 
         tmp = (String) getPerm(User.USERNAME);
-        if (tmp.length() == 0)
+        if (tmp != null && tmp.length() == 0)
         {
                 tmp = null;
         }
@@ -557,7 +557,7 @@ public class LDAPUser extends BaseObject implements User
         String tmp = null;
 
         tmp = (String) getPerm(User.FIRST_NAME);
-        if (tmp.length() == 0)
+        if (tmp != null && tmp.length() == 0)
         {
             tmp = null;
         }
@@ -575,7 +575,7 @@ public class LDAPUser extends BaseObject implements User
         String tmp = null;
 
         tmp = (String) getPerm(User.LAST_NAME);
-        if (tmp.length() == 0)
+        if (tmp != null && tmp.length() == 0)
         {
             tmp = null;
         }
@@ -698,7 +698,6 @@ public class LDAPUser extends BaseObject implements User
      */
     public void setEmail(String email)
     {
-        log.debug("setEmail(" + email + ")");
         setPerm(User.EMAIL, email);
     }
 

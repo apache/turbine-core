@@ -18,33 +18,53 @@ turbineUserLastName: Hernandez
 turbineUserMailAddress: hhernandez@itweb.com.mx
 userPassword: secreto
 
+dn: turbinePermissionName=admin,dc=example,dc=com
+objectclass: turbinePermission
+turbinePermissionName: admin
+
+dn: turbinePermissionName=edit,dc=example,dc=com
+objectclass: turbinePermission
+turbinePermissionName: edit
+
+dn: turbinePermissionName=view,dc=example,dc=com
+objectclass: turbinePermission
+turbinePermissionName: view
+
 dn: turbineRoleName=root,dc=example,dc=com
 objectclass: turbineRole
 turbineRoleName: root
-turbinePermission: admin
-turbinePermission: view
+turbinePermissionName: admin
+turbinePermissionName: view
 
 dn: turbineRoleName=editor,dc=example,dc=com
 objectclass: turbineRole
 turbineRoleName: editor
-turbinePermission: edit
-turbinePermission: view
+turbinePermissionName: edit
+turbinePermissionName: view
 
-dn: turbineGroup=global,turbineUserUniqueId=turbine,dc=example,dc=com
+dn: turbineGroupName=global,dc=example,dc=com
+objectclass: turbineGroup
+turbineGroupName: global
+
+dn: turbineGroupName=yellow,dc=example,dc=com
+objectclass: turbineGroup
+turbineGroupName: yellow
+
+dn: turbineGroupName=global,turbineUserUniqueId=turbine,dc=example,dc=com
 objectclass: turbineUserGroup
 turbineUserUniqueId: turbine
-turbineGroup: global
+turbineGroupName: global
 turbineRoleName: root
 turbineRoleName: editor
 
-dn: turbineGroup=global,turbineUserUniqueId=hhernandez,dc=example,dc=com
+dn: turbineGroupName=global,turbineUserUniqueId=hhernandez,dc=example,dc=com
 objectclass: turbineUserGroup
 turbineUserUniqueId: hhernandez
-turbineGroup: global
+turbineGroupName: global
 turbineRoleName: editor
 
-dn: turbineGroup=yellow,turbineUserUniqueId=hhernandez,dc=example,dc=com
+dn: turbineGroupName=yellow,turbineUserUniqueId=hhernandez,dc=example,dc=com
 objectclass: turbineUserGroup
 turbineUserUniqueId: hhernandez
-turbineGroup: yellow
+turbineGroupName: yellow
 turbineRoleName: root
