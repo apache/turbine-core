@@ -106,7 +106,7 @@ public class TemplateScreenDefaultMapper
     public TemplateScreenDefaultMapper(boolean useCache,
         int cacheSize,
         String defaultProperty,
-        String separator,
+        char separator,
         String prefix)
     {
         super(useCache, cacheSize, defaultProperty, separator, prefix);
@@ -153,7 +153,7 @@ public class TemplateScreenDefaultMapper
 
         for(;;)
         {
-            String templatePackage = StringUtils.join(components.iterator(), separator);
+            String templatePackage = StringUtils.join(components.iterator(), String.valueOf(separator));
 
             log.debug("templatePackage is now: " + templatePackage);
 

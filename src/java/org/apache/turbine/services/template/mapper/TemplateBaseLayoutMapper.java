@@ -92,7 +92,7 @@ public abstract class TemplateBaseLayoutMapper
      * @param defaultProperty The name of the default property to pull from the TemplateEngine
      * @param separator The separator for this mapper.
      */
-    public TemplateBaseLayoutMapper(boolean useCache, int cacheSize, String defaultProperty, String separator, String prefix)
+    public TemplateBaseLayoutMapper(boolean useCache, int cacheSize, String defaultProperty, char separator, String prefix)
     {
         super(useCache, cacheSize, defaultProperty, separator);
         setPrefix(prefix);
@@ -133,7 +133,7 @@ public abstract class TemplateBaseLayoutMapper
 
         // Does the Template Name component have an extension?
         String [] components
-            = StringUtils.split(res, separator);
+            = StringUtils.split(res, String.valueOf(separator));
 
         if (components[components.length -1 ].indexOf(TemplateService.EXTENSION_SEPARATOR) < 0)
         {

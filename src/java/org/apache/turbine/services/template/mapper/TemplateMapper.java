@@ -110,13 +110,13 @@ public interface TemplateMapper
      * Get the Separator value.
      * @return the Separator value.
      */
-    String getSeparator();
+    char getSeparator();
 
     /**
      * Set the Separator value.
      * @param separator The new Separator value.
      */
-    void setSeparator(String separator);
+    void setSeparator(char separator);
 
 
     /**
