@@ -25,10 +25,12 @@
         <pathelement location="${javamail.jar}"/>
         <pathelement location="${oro.jar}"/>
         <pathelement location="${servlet.jar}"/>
+        <pathelement location="${torque.jar}"/>
         <pathelement location="${velocity.jar}"/>
         <pathelement location="${village.jar}"/>
         <pathelement location="${xalan.jar}"/>
         <pathelement location="${xerces.jar}"/>
+        <pathelement location="${xmlParserAPIs.jar}"/>
         <pathelement location="${xmlrpc.jar}"/>
         <pathelement location="${castor.jar}"/>
         <pathelement location="${freemarker.jar}"/>
