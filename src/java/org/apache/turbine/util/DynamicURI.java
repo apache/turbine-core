@@ -55,16 +55,18 @@ package org.apache.turbine.util;
  */
 
 import java.net.URLEncoder;
-
-import java.util.Enumeration;
 import java.util.Vector;
 import java.util.Iterator;
-
+import java.util.List;
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.ecs.html.A;
 
 import org.apache.turbine.Turbine;
@@ -94,9 +96,9 @@ import org.apache.turbine.util.uri.URIConstants;
  * @todo Add support for returning the correct URI when mod_rewrite is
  *       being used.
  *
- * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class DynamicURI
@@ -138,10 +140,10 @@ public class DynamicURI
     public HttpServletResponse res = null;
 
     /** A Vector that contains all the path info if any. */
-    protected Vector pathInfo = null;
+    protected List pathInfo = null;
 
     /** A Vectory that contains all the query data if any. */
-    protected Vector queryData = null;
+    protected List queryData = null;
 
     /** Fast shortcut to determine if there is any data in the path info. */
     protected boolean hasPathInfo = false;
@@ -185,8 +187,7 @@ public class DynamicURI
      * @param data A Turbine RunData object.
      * @param screen A String with the name of a screen.
      */
-    public DynamicURI(RunData data,
-                      String screen)
+    public DynamicURI(RunData data, String screen)
     {
         this(data);
         setScreen(screen);
@@ -199,9 +200,7 @@ public class DynamicURI
      * @param screen A String with the name of a screen.
      * @param action A String with the name of an action.
      */
-    public DynamicURI(RunData data,
-                      String screen,
-                      String action)
+    public DynamicURI(RunData data, String screen, String action)
     {
         this(data, screen);
         setAction(action);
@@ -215,10 +214,8 @@ public class DynamicURI
      * @param action A String with the name of an action.
      * @param redirect True if it should redirect.
      */
-    public DynamicURI(RunData data,
-                      String screen,
-                      String action,
-                      boolean redirect)
+    public DynamicURI(RunData data,String screen,
+                      String action,boolean redirect)
     {
         this(data, screen, action);
         this.redirect = redirect;
@@ -231,9 +228,7 @@ public class DynamicURI
      * @param screen A String with the name of a screen.
      * @param redirect True if it should redirect.
      */
-    public DynamicURI(RunData data,
-                      String screen,
-                      boolean redirect)
+    public DynamicURI(RunData data, String screen, boolean redirect)
     {
         this(data, screen);
         this.redirect = redirect;
@@ -245,8 +240,7 @@ public class DynamicURI
      * @param data A Turbine RunData object.
      * @param redirect True if it should redirect.
      */
-    public DynamicURI(RunData data,
-                      boolean redirect)
+    public DynamicURI(RunData data, boolean redirect)
     {
         this(data);
         this.redirect = redirect;
@@ -281,9 +275,7 @@ public class DynamicURI
      * @param screen A String with the name of a screen.
      * @param action A String with the name of an action.
      */
-    public DynamicURI(ServerData sd,
-                      String screen,
-                      String action)
+    public DynamicURI(ServerData sd, String screen, String action)
     {
         this(sd, screen);
         setAction(action);
@@ -297,10 +289,8 @@ public class DynamicURI
      * @param action A String with the name of an action.
      * @param redirect True if it should redirect.
      */
-    public DynamicURI(ServerData sd,
-                      String screen,
-                      String action,
-                      boolean redirect)
+    public DynamicURI(ServerData sd, String screen,
+                      String action, boolean redirect)
     {
         this(sd, screen, action);
         this.redirect = redirect;
@@ -309,28 +299,25 @@ public class DynamicURI
     /**
      * Main constructor for DynamicURI.  Uses ServerData.
      *
-     * @param sd A ServerData.
+     * @param serverData A ServerData.
      * @param screen A String with the name of a screen.
      * @param redirect True if it should redirect.
      */
-    public DynamicURI(ServerData sd,
-                      String screen,
-                      boolean redirect)
+    public DynamicURI(ServerData serverData, String screen, boolean redirect)
     {
-        this(sd, screen);
+        this(serverData, screen);
         this.redirect = redirect;
     }
 
     /**
      * Main constructor for DynamicURI.  Uses ServerData.
      *
-     * @param sd A ServerData.
+     * @param serverData A ServerData.
      * @param redirect True if it should redirect.
      */
-    public DynamicURI(ServerData sd,
-                      boolean redirect)
+    public DynamicURI(ServerData serverData, boolean redirect)
     {
-        this(sd);
+        this(serverData);
         this.redirect = redirect;
         this.initialized = true;
     }
@@ -350,29 +337,29 @@ public class DynamicURI
     /**
      * Initialize with a ServerData object.
      *
-     * @param sd
+     * @param serverData
      */
-    public void init(ServerData sd)
+    public void init(ServerData serverData)
     {
-        this.sd = sd;
+        this.sd = serverData;
         this.serverScheme = this.sd.getServerScheme();
         this.serverName = this.sd.getServerName();
         this.serverPort = this.sd.getServerPort();
         this.scriptName = this.sd.getScriptName();
-        this.pathInfo = new Vector();
-        this.queryData = new Vector();
+        this.pathInfo = new ArrayList();
+        this.queryData = new ArrayList();
         this.reference = null;
         this.initialized = true;
     }
 
     /**
-     * <p>If the type is P (0), then add name/value to the pathInfo
-     * hashtable.
+     * If the type is {@link #PATH_INFO}, then add name/value to the
+     * pathInfo.
+     * <p>
+     * If the type is {@link #QUERY_DATA}, then add name/value to the
+     * queryData.
      *
-     * <p>If the type is Q (1), then add name/value to the queryData
-     * hashtable.
-     *
-     * @param type Type (P or Q) of insertion.
+     * @param type Type of insertion.
      * @param name A String with the name to add.
      * @param value A String with the value to add.
      */
@@ -380,16 +367,16 @@ public class DynamicURI
     {
         assertInitialized();
         Object[] tmp = new Object[2];
-        tmp[0] = (Object) ParserUtils.convertAndTrim(name);
-        tmp[1] = (Object) value;
+        tmp[0] = ParserUtils.convertAndTrim(name);
+        tmp[1] = value;
         switch (type)
         {
             case PATH_INFO:
-                this.pathInfo.addElement(tmp);
+                this.pathInfo.add(tmp);
                 this.hasPathInfo = true;
                 break;
             case QUERY_DATA:
-                this.queryData.addElement(tmp);
+                this.queryData.add(tmp);
                 this.hasQueryData = true;
                 break;
         }
@@ -398,21 +385,21 @@ public class DynamicURI
     /**
      * Method for a quick way to add all the parameters in a
      * ParameterParser.
+     * <p>
+     * If the type is {@link #PATH_INFO}, then add name/value to the
+     * pathInfo.
+     * <p>
+     * If the type is {@link #QUERY_DATA}, then add name/value to the
+     * queryData.
      *
-     * <p>If the type is P (0), then add name/value to the pathInfo
-     * hashtable.
-     *
-     * <p>If the type is Q (1), then add name/value to the queryData
-     * hashtable.
-     *
-     * @param type Type (P or Q) of insertion.
+     * @param type Type of insertion.
      * @param pp A ParameterParser.
      */
     protected void add(int type, ParameterParser pp)
     {
-        for( Enumeration e = pp.keys(); e.hasMoreElements(); )
+        for( Iterator iter = pp.keySet().iterator(); iter.hasNext(); )
         {
-            String key = (String) e.nextElement();
+            String key = (String) iter.next();
             if (!key.equalsIgnoreCase("action") &&
                     !key.equalsIgnoreCase("screen") &&
                     !key.equalsIgnoreCase("template"))
@@ -611,11 +598,7 @@ public class DynamicURI
     public String getScriptName()
     {
         assertInitialized();
-        if (this.scriptName == null)
-        {
-            return "";
-        }
-        return this.scriptName;
+        return (StringUtils.isEmpty(this.scriptName) ? "" : this.scriptName);
     }
 
     /**
@@ -626,11 +609,7 @@ public class DynamicURI
     public String getReference()
     {
         assertInitialized();
-        if (this.reference == null)
-        {
-            return "";
-        }
-        return this.reference;
+        return (StringUtils.isEmpty(this.reference) ? "" : this.reference);
     }
 
     /**
@@ -641,11 +620,7 @@ public class DynamicURI
     public String getServerName()
     {
         assertInitialized();
-        if (this.serverName == null)
-        {
-            return "";
-        }
-        return (this.serverName);
+        return (StringUtils.isEmpty(this.serverName) ? "" : this.serverName);
     }
 
     /**
@@ -656,11 +631,7 @@ public class DynamicURI
     public int getServerPort()
     {
         assertInitialized();
-        if (this.serverPort == 0)
-        {
-            return 80;
-        }
-        return this.serverPort;
+        return (this.serverPort==0 ? 80 : this.serverPort);
     }
 
     /**
@@ -671,21 +642,18 @@ public class DynamicURI
     public String getServerScheme()
     {
         assertInitialized();
-        if (this.serverScheme == null)
-        {
-            return "";
-        }
-        return (this.serverScheme);
+        return (StringUtils.isEmpty(this.serverScheme) ?
+                "" : this.serverScheme);
     }
 
     /**
-     * <p>If the type is P (0), then remove name/value from the
-     * pathInfo hashtable.
+     * <p>If the type is {@link #PATH_INFO}, then remove name/value from the
+     * pathInfo.
      *
-     * <p>If the type is Q (1), then remove name/value from the
-     * queryData hashtable.
+     * <p>If the type is {@link #QUERY_DATA}, then remove name/value from the
+     * queryData.
      *
-     * @param type Type (P or Q) of removal.
+     * @param type Type of removal.
      * @param name A String with the name to be removed.
      */
     protected void remove(int type, String name)
@@ -703,7 +671,7 @@ public class DynamicURI
                         if (ParserUtils.convertAndTrim(name)
                                 .equals((String) tmp[0]))
                         {
-                            this.pathInfo.removeElement(tmp);
+                            this.pathInfo.remove(tmp);
                         }
                     }
                     if (hasPathInfo && this.pathInfo.size() == 0)
@@ -719,7 +687,7 @@ public class DynamicURI
                         if (ParserUtils.convertAndTrim(name)
                                 .equals((String) tmp[0]))
                         {
-                            this.queryData.removeElement(tmp);
+                            this.queryData.remove(tmp);
                         }
                     }
                     if (hasQueryData && this.queryData.size() == 0)
@@ -741,7 +709,7 @@ public class DynamicURI
     public void removePathInfo()
     {
         assertInitialized();
-        this.pathInfo.removeAllElements();
+        this.pathInfo.clear();
         this.hasPathInfo = false;
     }
 
@@ -761,7 +729,7 @@ public class DynamicURI
     public void removeQueryData()
     {
         assertInitialized();
-        this.queryData.removeAllElements();
+        this.queryData.clear();
         this.hasQueryData = false;
     }
 
@@ -779,10 +747,10 @@ public class DynamicURI
      * This method takes a Vector of key/value arrays and converts it
      * into a URL encoded querystring format.
      *
-     * @param data A Vector of key/value arrays.
+     * @param data A List of key/value arrays.
      * @return A String with the URL encoded data.
      */
-    protected String renderPathInfo(Vector data)
+    protected String renderPathInfo(List data)
     {
         String key = null;
         String value = null;
@@ -817,10 +785,10 @@ public class DynamicURI
      * This method takes a Vector of key/value arrays and converts it
      * into a URL encoded querystring format.
      *
-     * @param data A Vector of key/value arrays.
+     * @param data A List of key/value arrays.
      * @return A String with the URL encoded data.
      */
-    protected String renderQueryString(Vector data)
+    protected String renderQueryString(List data)
     {
         String key = null;
         String value = null;
@@ -1111,11 +1079,13 @@ public class DynamicURI
     /**
      * Sets the ServerData used to initialize this DynamicURI.
      *
-     * @param sd A ServerData used to initialize this DynamicURI.
+     * @param serverData A ServerData used to initialize this DynamicURI.
+     * @deprecated no replacement.  This value is set during initialization
+     *             and should not be changed.
      */
-    public void setServerData(ServerData sd)
+    public void setServerData(ServerData serverData)
     {
-        this.sd = sd;
+        this.sd = serverData;
     }
 
     /**
@@ -1123,7 +1093,7 @@ public class DynamicURI
      */
     protected void assertInitialized()
     {
-        if(!this.initialized)
+        if (!this.initialized)
         {
             throw new IllegalStateException("Not initialized");
         }
