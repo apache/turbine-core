@@ -70,6 +70,7 @@ import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
 
 import org.apache.turbine.services.pool.PoolService;
+import org.apache.turbine.services.pool.TurbinePool;
 
 import org.apache.turbine.util.CookieParser;
 import org.apache.turbine.util.ParameterParser;
@@ -183,13 +184,12 @@ public class TurbineRunDataService
                 }
             }
         }
-        pool = (PoolService) TurbineServices.getInstance()
-            .getService(PoolService.SERVICE_NAME);
+        pool = TurbinePool.getService();
 
         if (pool == null)
         {
             throw new InitializationException("RunData Service requires"
-                                              + " configured Pool Service!");
+                + " configured Pool Service!");
         }
 
         setInit(true);
@@ -275,15 +275,8 @@ public class TurbineRunDataService
         data.setServletConfig(config);
 
         // Set the ServerData.
-        String contextPath = req.getContextPath();
-        String scriptName  = req.getServletPath();
-
-        data.setServerData(new ServerData(req.getServerName(),
-                req.getServerPort(),
-                req.getScheme(),
-                scriptName,
-                contextPath));
-
+        data.setServerData(new ServerData(req));
+        
         return (RunData) data;
     }
 
