@@ -59,7 +59,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
@@ -92,9 +91,6 @@ import org.apache.velocity.context.Context;
 public class VelocityScreen
     extends TemplateScreen
 {
-    /** Logging */
-    private static Log log = LogFactory.getLog(VelocityScreen.class);
-
     /** The prefix for lookup up screen pages */
     private String prefix = TurbineConstants.SCREEN_PREFIX + "/";
 

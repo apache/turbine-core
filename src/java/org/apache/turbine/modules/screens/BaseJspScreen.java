@@ -55,7 +55,6 @@ package org.apache.turbine.modules.screens;
  */
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -78,9 +77,6 @@ import org.apache.turbine.util.RunData;
 public class BaseJspScreen
         extends TemplateScreen
 {
-    /** Logging */
-    private static Log log = LogFactory.getLog(BaseJspScreen.class);
-
     /** The prefix for lookup up screen pages */
     private String prefix = TurbineConstants.SCREEN_PREFIX + "/";
 

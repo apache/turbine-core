@@ -132,7 +132,7 @@ public class DefaultPage
     extends Page
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(DefaultPage.class);
+    protected Log log = LogFactory.getLog(this.getClass());
 
     /**
      * Builds the Page.
