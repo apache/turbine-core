@@ -59,6 +59,23 @@ Changes between Turbine 2.2-b1 and 2.2-b2.
 Changes between Turbine 2.2 and 2.3-dev.
 </p>
 
+<subsection name="Building">
+<p>
+  <ul>
+    <li>
+      You now must use Maven to build Turbine 2.3. The old, ant
+      based build system is no longer supported and actively removed
+      from the distribution.
+    </li>
+    <li>
+      Turbine requires the Maven Torque plugin to build. If you don't
+      use at least Maven 1.0b9, you will have to install it manually
+      before you can recompile the source code.
+    </li>
+  </ul>
+</p>
+</subsection>
+
 <subsection name="Changes that could break older environments">
 <p>
   <ul>
