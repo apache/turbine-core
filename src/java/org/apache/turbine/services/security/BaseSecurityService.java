@@ -100,6 +100,7 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public abstract class BaseSecurityService
@@ -784,7 +785,7 @@ public abstract class BaseSecurityService
     public boolean isAnonymousUser(User user)
     {
         // Either just null, the name is null or the name is the empty string
-        return (user == null) || StringUtils.isEmpty(user.getName());
+        return (user == null) || StringUtils.isEmpty(user.getUserName());
     }
 
     /**
