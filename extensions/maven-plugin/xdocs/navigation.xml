@@ -17,6 +17,7 @@
       <item href="/tree.html" name="Directory tree reference"/>
       <item href="/config.html" name="Configuration file reference"/>
       <item href="/schema.html" name="Schema file reference"/>
+      <item href="/flavors.html" name="Flavors of Turbine applications"/>
       <item href="/goals.html" name="Goals"/>
       <item href="/properties.html" name="Properties"/>
     </menu>

@@ -21,7 +21,7 @@
 <!--                                                                     -->
 <!--  Maven project.xml Datei                                            -->
 <!--                                                                     -->
-<!-- $Id$           -->
+<!-- $Id$        -->
 <!--                                                                     -->
 <!-- =================================================================== -->
 
@@ -30,7 +30,7 @@
   <id>maven-turbine-plugin</id>
   <name>Maven Environment for Turbine Applications Plugin</name>
   <groupId>turbine</groupId>
-  <currentVersion>1.0-dev</currentVersion>
+  <currentVersion>1.1-dev</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -110,4 +110,12 @@
        </resource> 
     </resources>
   </build>
+  <reports>
+    <report>maven-changes-plugin</report>
+    <report>maven-changelog-plugin</report>
+    <report>maven-developer-activity-plugin</report>
+    <report>maven-file-activity-plugin</report>
+    <report>maven-linkcheck-plugin</report>
+    <report>maven-tasklist-plugin</report>
+  </reports>
 </project>

@@ -24,7 +24,19 @@
   </properties>
 
   <body>
-
+    <release version="1.1-dev" date="in CVS">
+     <action dev="henning" type="modify">
+       Replaced the <code>turbine:inplace</code> goal by making <code>turbine:deploy</code>
+       configureable.
+     </action>
+     <action dev="henning" type="add">
+       Add lots of xdocs for documenting the plugin.
+     </action>
+     <action dev="henning" type="add">
+       Add <code>turbine.app.flavor</code> switch for setting up different types of Turbine
+       applications.
+     </action>
+    </release>
     <release version="2.4-dev" date="in CVS">
       <action dev="epugh" type="add">
         Added goals turbine:inplace-war and turbine:inplace-clean to facilate inplace editing

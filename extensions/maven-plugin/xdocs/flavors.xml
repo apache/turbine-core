@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+  <properties>
+    <title>Flavors</title>
+    <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
+  </properties>
+  <body>
+<section name="Flavors">
+    <p>
+    There is more than just one version of Turbine. You might have to build one application using
+    a released version of Turbine (currently 2.3) and the next should use a developer version or
+    even a &quot;bleeding edge&quot; snapshot release of the Turbine code. Whatever you want to use,
+    the META plugin helps you selecting the right skeleton for your code.
+    </p>
+
+<subsection name="Selecting Flavors">
+<p>
+The default flavor for a new application in <a
+href="using_meta.html#Ad_hoc_setup">ad hoc setup</a> mode is the
+current stable Turbine release (&quot;turbine-2.3&quot;). If you want
+to use a different flavor, you must either supply it on the command
+line or in your setup.properties file.</p>
+
+<source><![CDATA[
+Generate a Turbine 2.3.1-dev skeleton:
+
+maven -Dturbine.app.name=<application name> -Dturbine.app.flavor=turbine-2.3.1-dev turbine:setup
+]]></source>
+
+</subsection>
+
+<subsection name="Adding your own flavors">
+<p>
+<font color="red">This is a section for advanced users that are
+reasonably familiar with maven and the Turbine framework. If you're
+just starting to use Turbine and META, you can skip this
+section.</font></p>
+
+<p>
+Flavors are built from templates in various subdirectories in the META plugin. If you want to add a new
+flavor, you must modify the plugin source and then deploy the plugin to your maven installation.<br/>
+
+The plugin source contains a subdirectory
+<code>src/plugin-resources</code>. Here are the setup files for each flavor stored, that are used by the
+<code>turbine:setup</code> goal.
+
+<table>
+  <tr>
+    <th>Path</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>maven</td>
+    <td>Files for the application setup.</td>
+  </tr>
+  <tr>
+    <td>conf</td>
+    <td>Turbine configuration file.</td>
+  </tr>
+  <tr>
+    <td>schema</td>
+    <td>Schema files for Application and Security OM classes.</td>
+  </tr>
+  <tr>
+    <td>templates</td>
+    <td>Default templates for your application.</td>
+  </tr>
+  <tr>
+    <td>images</td>
+    <td>Images to be copied into your application.</td>
+  </tr>
+</table>
+
+In each of these directories you'll find a directory called
+<code>common</code> and a subdirectory for each flavor. The setup goal
+first copies all the files from the <code>common</code> directory into
+the new application skeleton and then the files from the respective
+flavor directory. Files from the latter will overwrite files from the
+common tree.
+</p>
+
+<p>
+Subdirectories might be missing in the trees (e.g. there are no
+flavor-specific files in the <code>images</code> tree and no common
+files in the <code>conf</code> tree). In this case they will be
+silently skipped.
+</p>
+
+<p>
+To add a new flavor, you must add at least a flavor specific
+subdirectory to the <code>maven</code> tree which contains the
+template for the maven POM (<code>project.xml</code>).
+</p>
+</subsection>
+</section>
+</body>
+</document>
