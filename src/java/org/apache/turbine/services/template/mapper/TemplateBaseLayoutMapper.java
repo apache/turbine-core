@@ -75,6 +75,16 @@ public abstract class TemplateBaseLayoutMapper
     protected String prefix = "";
 
     /**
+     * Default C'tor. If you use this C'tor, you must use
+     * the bean setter to set the various properties needed for
+     * this mapper before first usage.
+     */
+    public TemplateBaseLayoutMapper()
+    {
+        super();
+    }
+
+    /**
      * C'tor
      *
      * @param useCache If true, then the resulting mapper will cache mappings.
@@ -85,6 +95,24 @@ public abstract class TemplateBaseLayoutMapper
     public TemplateBaseLayoutMapper(boolean useCache, int cacheSize, String defaultProperty, String separator, String prefix)
     {
         super(useCache, cacheSize, defaultProperty, separator);
+        setPrefix(prefix);
+    }
+
+    /**
+     * Get the Prefix value.
+     * @return the Prefix value.
+     */
+    public String getPrefix()
+    {
+        return prefix;
+    }
+
+    /**
+     * Set the Prefix value.
+     * @param prefix The new Prefix value.
+     */
+    public void setPrefix(String prefix)
+    {
         this.prefix = prefix;
     }
 

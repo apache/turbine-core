@@ -92,6 +92,15 @@ public abstract class TemplateBaseMapper
     // Service which leads to an endless loop and a deadlock.
 
     /**
+     * Default C'tor. If you use this C'tor, you must use
+     * the bean setter to set the various properties needed for
+     * this mapper before first usage.
+     */
+    public TemplateBaseMapper()
+    {
+    }
+
+    /**
      * C'tor
      *
      * @param useCache If true, then the resulting mapper will cache mappings.
@@ -101,9 +110,81 @@ public abstract class TemplateBaseMapper
      */
     public TemplateBaseMapper(boolean useCache, int cacheSize, String defaultProperty, String separator)
     {
+        setCacheSize(cacheSize);
+        setUseCache(useCache);
+        setDefaultProperty(defaultProperty);
+        setSeparator(separator);
+    }
+
+    /**
+     * Get the CacheSize value.
+     * @return the CacheSize value.
+     */
+    public int getCacheSize()
+    {
+        return cacheSize;
+    }
+
+    /**
+     * Set the CacheSize value.
+     * @param cacheSize The new CacheSize value.
+     */
+    public void setCacheSize(int cacheSize)
+    {
         this.cacheSize = cacheSize;
+    }
+
+    /**
+     * Get the UseCache value.
+     * @return the UseCache value.
+     */
+    public boolean isUseCache()
+    {
+        return useCache;
+    }
+
+    /**
+     * Set the UseCache value.
+     * @param newUseCache The new UseCache value.
+     */
+    public void setUseCache(boolean useCache)
+    {
         this.useCache = useCache;
+    }
+
+    /**
+     * Get the DefaultProperty value.
+     * @return the DefaultProperty value.
+     */
+    public String getDefaultProperty()
+    {
+        return defaultProperty;
+    }
+
+    /**
+     * Set the DefaultProperty value.
+     * @param defaultProperty The new DefaultProperty value.
+     */
+    public void setDefaultProperty(String defaultProperty)
+    {
         this.defaultProperty = defaultProperty;
+    }
+
+    /**
+     * Get the Separator value.
+     * @return the Separator value.
+     */
+    public String getSeparator()
+    {
+        return separator;
+    }
+
+    /**
+     * Set the Separator value.
+     * @param separator The new Separator value.
+     */
+    public void setSeparator(String separator)
+    {
         this.separator = separator;
     }
 
