@@ -72,7 +72,7 @@ import org.apache.turbine.util.RunData;
  * This is an application pull tool for the template system. You should <b>not</b>
  * use it in a normal application!
  *
- * @deprecated Use TemplateLink.
+ * @deprecated Use {@link org.apache.turbine.services.pull.tools.TemplateLink} instead and fix up your template references.
  *
  * @author <a href="jmcnally@collab.net">John D. McNally</a>
  * @version $Id$

@@ -70,6 +70,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="jmcnally@collab.net">John D. McNally</a>
  * @author see the authors of TemplateLink
  * @version $Id$
+ * @deprecated Use {@link org.apache.turbine.services.pull.tools.RelativeTemplateLink} instead.
  */
 public class RelativeTemplateLink
         extends RelativeDynamicURI

@@ -94,7 +94,7 @@ services.PullService.tools.per.request.refresh=true
 #
 # tool.global.ui    = org.apache.turbine.util.pull.UIManager
 # tool.global.mm    = org.apache.turbine.util.pull.MessageManager
-# tool.request.link = org.apache.turbine.util.template.TemplateLink
+# tool.request.link = org.apache.turbine.services.pull.tools.TemplateLink
 # tool.request.page = org.apache.turbine.util.template.TemplatePageAttributes
 #
 # (the next two examples specify mythical classes) 
@@ -133,9 +133,9 @@ services.PullService.tools.per.request.refresh=true
 #
 # Defaults: none
 
-tool.request.link=org.apache.turbine.util.template.TemplateLink
+tool.request.link=org.apache.turbine.services.pull.tools.TemplateLink
 tool.request.page=org.apache.turbine.util.template.TemplatePageAttributes
-tool.request.content=org.apache.turbine.util.ContentURI
+tool.request.content=org.apache.turbine.services.pull.tools.ContentTool
 #tool.request.om=org.apache.turbine.om.OMTool
 #tool.request.intake=org.apache.turbine.services.intake.IntakeTool
 

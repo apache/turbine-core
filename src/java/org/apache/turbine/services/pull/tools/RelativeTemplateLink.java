@@ -73,7 +73,8 @@ import org.apache.turbine.util.RunData;
  * This is an application pull tool for the template system. You should <b>not</b>
  * use it in a normal application!
  *
- * @deprecated Use TemplateLink with the 'relative' methods
+ * @deprecated Use {@link org.apache.turbine.services.pull.tools.TemplateLink} with the
+ * {@link org.apache.turbine.services.pull.tools.TemplateLink#getRelativeLink} method.
  *
  * @author <a href="jmcnally@collab.net">John D. McNally</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>

@@ -66,6 +66,8 @@ import org.apache.turbine.services.pull.ApplicationTool;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @version $Id$
+ * @deprecated Use {@link org.apache.turbine.services.pull.tools.ContentTool} for tool usage
+ * and {@link org.apache.turbine.util.uri.DataURI} for code usage instead.
  */
 public class ContentURI
         extends DynamicURI
