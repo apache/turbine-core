@@ -70,131 +70,30 @@
       <email>dobbs@apache.org</email>
       <organization/>
     </developer>
-<!--
-    <developer>
-      <name>David Duddleston</name>
-      <id/>
-      <email>david@i2a.com</email>
-      <organization/>
-    </developer>
--->
     <developer>
       <name>Scott Eade</name>
       <id>seade</id>
       <email>seade@backstagetech.com.au</email>
       <organization>Backstage Technologies Pty. Ltd.</organization>
     </developer>
-<!--
-    <developer>
-      <name>Christopher Elkins</name>
-      <id/>
-      <email>celkins@scardini.com</email>
-      <organization/>
-    </developer>
-    <developer>
-      <name>Jian He</name>
-      <id/>
-      <email>hjnet@163.net</email>
-      <organization/>
-    </developer>
--->
     <developer>
       <name>Fedor Karpelevitch</name>
       <id>fedor</id>
       <email>fedor@karpelevitch.net</email>
       <organization/>
     </developer>
-    <!--
-    <developer>
-      <name>Nissim Karpenstein</name>
-      <id/>
-      <email>nissim@nksystems.com</email>
-      <organization/>
-    </developer>
-    <developer>
-      <name>Rafal Krzewski</name>
-      <id/>
-      <email>krzewski@e-point.pl</email>
-      <organization/>
-    </developer>
-    <developer>
-      <name>Frank Kim</name>
-      <id/>
-      <email/>
-      <organization/>
-    </developer>
-    <developer>
-      <name>Chris Kimpton</name>
-      <id/>
-      <email>kimptoc.mail@bigfoot.com</email>
-      <organization/>
-    </developer>
--->
     <developer>
       <name>Sean Legassick</name>
       <id>legassick</id>
       <email>sean@informage.net</email>
       <organization/>
     </developer>
-<!--
-    <developer>
-      <name>Josh Lucas</name>
-      <id/>
-      <email>josh@stonecottage.com</email>
-      <organization/>
-    </developer>
-    <developer>
-      <name>Carl Ludwig</name>
-      <id/>
-      <email>carl@destinymusic.com</email>
-      <organization/>
-    </developer>
-    <developer>
-      <name>Jonas Mauras</name>
-      <id/>
-      <email>jm@mediaphil.de</email>
-      <organization/>
-    </developer>
-    <developer>
-      <name>Brett McLaughlin</name>
-      <id/>
-      <email>bmclaugh@algx.net</email>
-      <organization/>
-    </developer>
--->
     <developer>
       <name>John McNally</name>
       <id>jmcnally</id>
       <email>jmcnally@collab.net</email>
       <organization>CollabNet, Inc.</organization>
     </developer>
-<!--
-    <developer>
-      <name>Leon Messerschmidt</name>
-      <id/>
-      <email>leon@opticode.co.za</email>
-      <organization/>
-    </developer>
-    <developer>
-      <name>Chris Meyer</name>
-      <id/>
-      <email>cmeyer@gatan.com</email>
-      <organization/>
-    </developer>
-    <developer>
-      <name>Steven Nagy</name>
-      <id/>
-      <email>snagy@web-publicity.com</email>
-      <organization/>
-    </developer>
-    <developer>
-      <name>Kasper Nielsen</name>
-      <id/>
-      <email>mailto:kav@kav.dk</email>
-      <organization/>
-    </developer>
-    -->
-
     <developer>
       <name>Quinton McCombs</name>
       <id>quintonm</id>
@@ -204,47 +103,12 @@
         <role>Java Developer</role>
       </roles>
     </developer>
-
-    <!--
-    <developer>
-      <name>Paul O'Leary</name>
-      <id/>
-      <email>paul@evolventtech.com</email>
-      <organization/>
-    </developer>
-    <developer>
-      <name>Giacomo Pati</name>
-      <id/>
-      <email>Giacomo.Pati@pwr.ch</email>
-      <organization/>
-    </developer>
--->
     <developer>
       <name>Martin Poeschl</name>
       <id>mpoeschl</id>
       <email>mpoeschl@marmot.at</email>
       <organization>tucana.at</organization>
     </developer>
-<!--
-    <developer>
-      <name>Mark Porter</name>
-      <id/>
-      <email>mark.porter@canlink.com</email>
-      <organization/>
-    </developer>
-    <developer>
-      <name>Jeff Prickett</name>
-      <id/>
-      <email>jeffprickett@mindspring.com</email>
-      <organization/>
-    </developer>
-    <developer>
-      <name>Ilkka Priha</name>
-      <id/>
-      <email>ilkka.priha@simsoft.fi</email>
-      <organization/>
-    </developer>
--->
     <developer>
       <name>Eric Pugh</name>
       <id>epugh</id>
@@ -257,18 +121,6 @@
       <email>dlr@finemaltcoding.com</email>
       <organization>CollabNet, Inc.</organization>
     </developer>
-    <!--
-    <td>Cameron Riley</td>
-    <td><a href="mailto:criley@ekmail.com">criley@ekmail.com</a></td>
-    <td></td>
-    <td>Apprentice</td>
-    -->
-    <!--
-    <td>Greg Ritter</td>
-    <td><a href="mailto:greg@shwoop.com">greg@shwoop.com</a></td>
-    <td></td>
-    <td>Master</td>
-    -->
     <developer>
       <name>Henning P. Schmiedehausen</name>
       <id>henning</id>
@@ -281,66 +133,12 @@
       <email>kschrader@karmalab.org</email>
       <organization>University of Michigan</organization>
     </developer>
-    <!--
-    <td>Ingo Schuster</td>
-    <td><a href="mailto:ingo@raleigh.ibm.com">ingo@raleigh.ibm.com</a></td>
-    <td></td>
-    <td>Apprentice</td>
-    -->
-    <!--
-    <td>Costas Stergiou</td>
-    <td><a href="mailto:csterg@aias.gr">csterg@aias.gr</a></td>
-    <td></td>
-    <td>Journeyer</td>
-    -->
     <developer>
       <name>Jon Scott Stevens</name>
       <id>jon</id>
       <email>jon@latchkey.com</email>
       <organization>CollabNet, Inc.</organization>
     </developer>
-    <!--
-    <td>George Stewart</td>
-    <td><a href="mailto:georgestewart@yahoo.com">georgestewart@yahoo.com</a></td>
-    <td></td>
-    <td>Journeyer</td>
-    -->
-    <!--
-    <td>Ralf Stranzenbach</td>
-    <td><a href="mailto:ralf@reswi.ruhr.de">ralf@reswi.ruhr.de</a></td>
-    <td></td>
-    <td>Journeyer</td>
-    -->
-    <!--
-    <td>Hakan Tandogan</td>
-    <td><a href="mailto:hakan42@gmx.de">hakan42@gmx.de</a></td>
-    <td></td>
-    <td>Journeyer</td>
-    -->
-    <!--
-    <td>Scott C. Tavares</td>
-    <td><a href="mailto:stavares@home.com">stavares@home.com</a></td>
-    <td></td>
-    <td>Master</td>
-    -->
-    <!--
-    <td>John Thorhauer</td>
-    <td><a href="mailto:john@zenplex.com">john@zenplex.com</a></td>
-    <td>Zenplex Inc.</td>
-    <td>Journeyer</td>
-    -->
-    <!--
-    <td>Magn&#250;s &#254;&#243;r Torfason</td>
-    <td><a href="mailto:magnus@handpoint.com">magnus@handpoint.com</a></td>
-    <td><a href="http://www.handpoint.com/">handPoint</a></td>
-    <td>Apprentice</td>
-    -->
-    <!--
-    <td>Scott Weaver</td>
-    <td><a href="mailto:sweaver@rippe.com">sweaver@rippe.com</a></td>
-    <td></td>
-    <td>Apprentice</td>
-    -->
   </developers>
 
   <contributors>
@@ -361,8 +159,128 @@
       <email>gonzalo.diethelm@iname.com</email>
     </contributor>
     <contributor>
+      <name>David Duddleston</name>
+      <email>david@i2a.com</email>
+    </contributor>
+    <contributor>
+      <name>Christopher Elkins</name>
+      <email>celkins@scardini.com</email>
+    </contributor>
+    <contributor>
+      <name>Jian He</name>
+      <email>hjnet@163.net</email>
+    </contributor>
+    <contributor>
       <name>Humberto Hernandez</name>
       <email>hhernandez@itweb.com.mx</email>
+    </contributor>
+    <contributor>
+      <name>Nissim Karpenstein</name>
+      <email>nissim@nksystems.com</email>
+    </contributor>
+    <contributor>
+      <name>Rafal Krzewski</name>
+      <email>krzewski@e-point.pl</email>
+    </contributor>
+    <contributor>
+      <name>Chris Kimpton</name>
+      <email>kimptoc.mail@bigfoot.com</email>
+    </contributor>
+    <contributor>
+      <name>Josh Lucas</name>
+      <email>josh@stonecottage.com</email>
+    </contributor>
+    <contributor>
+      <name>Carl Ludwig</name>
+      <email>carl@destinymusic.com</email>
+    </contributor>
+    <contributor>
+      <name>Jonas Mauras</name>
+      <email>jm@mediaphil.de</email>
+    </contributor>
+    <contributor>
+      <name>Brett McLaughlin</name>
+      <email>bmclaugh@algx.net</email>
+    </contributor>
+    <contributor>
+      <name>Leon Messerschmidt</name>
+      <email>leon@opticode.co.za</email>
+    </contributor>
+    <contributor>
+      <name>Chris Meyer</name>
+      <email>cmeyer@gatan.com</email>
+    </contributor>
+    <contributor>
+      <name>Steven Nagy</name>
+      <email>snagy@web-publicity.com</email>
+    </contributor>
+    <contributor>
+      <name>Kasper Nielsen</name>
+      <email>kav@kav.dk</email>
+    </contributor>
+    <contributor>
+      <name>Paul O'Leary</name>
+      <email>paul@evolventtech.com</email>
+    </contributor>
+    <contributor>
+      <name>Giacomo Pati</name>
+      <email>Giacomo.Pati@pwr.ch</email>
+    </contributor>
+    <contributor>
+      <name>Mark Porter</name>
+      <email>mark.porter@canlink.com</email>
+    </contributor>
+    <contributor>
+      <name>Jeff Prickett</name>
+      <email>jeffprickett@mindspring.com</email>
+    </contributor>
+    <contributor>
+      <name>Ilkka Priha</name>
+      <email>ilkka.priha@simsoft.fi</email>
+    </contributor>
+    <contributor>
+      <name>Cameron Riley</name>
+      <email>criley@ekmail.com</email>
+    </contributor>
+    <contributor>
+      <name>Greg Ritter</name>
+      <email>greg@shwoop.com</email>
+    </contributor>
+    <contributor>
+      <name>Ingo Schuster</name>
+      <email>ingo@raleigh.ibm.com</email>
+    </contributor>
+    <contributor>
+      <name>Costas Stergiou</name>
+      <email>csterg@aias.gr</email>
+    </contributor>
+    <contributor>
+      <name>George Stewart</name>
+      <email>georgestewart@yahoo.com</email>
+    </contributor>
+    <contributor>
+      <name>Ralf Stranzenbach</name>
+      <email>ralf@reswi.ruhr.de</email>
+    </contributor>
+    <contributor>
+      <name>Hakan Tandogan</name>
+      <email>hakan42@gmx.de</email>
+    </contributor>
+    <contributor>
+      <name>Scott C. Tavares</name>
+      <email>stavares@home.com</email>
+    </contributor>
+    <contributor>
+      <name>John Thorhauer</name>
+      <email>john@zenplex.com</email>
+    </contributor>
+    <contributor>
+      <name>Magn&#250;s &#254;&#243;r Torfason</name>
+      <email>magnus@handpoint.com</email>
+    </contributor>
+    <contributor>
+      <name>Scott Weaver</name>
+      <email>sweaver@rippe.com</email>
     </contributor>
   </contributors>
 
