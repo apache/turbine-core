@@ -56,13 +56,17 @@ package org.apache.turbine.om.security;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
+
 import java.sql.Connection;
+
 import java.util.Date;
 import java.util.Hashtable;
+
 import javax.servlet.http.HttpSessionBindingEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.ObjectUtils;
 
@@ -234,10 +238,6 @@ public class TurbineUser extends SecurityObject implements User
      */
     public Hashtable getPermStorage()
     {
-        if(this.permStorage == null)
-        {
-            this.permStorage = new Hashtable();
-        }
         return this.permStorage;
     }
 
@@ -451,18 +451,21 @@ public class TurbineUser extends SecurityObject implements User
      */
     public void setPerm(String name, Object value)
     {
-        ObjectUtils.safeAddToHashtable(getPermStorage(), name, value);
+        getPermStorage().put(name, (value == null) ? "" : value);
     }
 
     /**
      * This should only be used in the case where we want to save the
      * data to the database.
      *
-     * @param stuff A Hashtable.
+     * @param permStorage A Hashtable.
      */
-    public void setPermStorage(Hashtable stuff)
+    public void setPermStorage(Hashtable permStorage)
     {
-        this.permStorage = stuff;
+        if (permStorage != null)
+        {
+            this.permStorage = permStorage;
+        }
     }
 
     /**
@@ -473,10 +476,6 @@ public class TurbineUser extends SecurityObject implements User
      */
     public Hashtable getTempStorage()
     {
-        if(this.tempStorage == null)
-        {
-            this.tempStorage = new Hashtable();
-        }
         return this.tempStorage;
     }
 
@@ -488,7 +487,10 @@ public class TurbineUser extends SecurityObject implements User
      */
     public void setTempStorage(Hashtable storage)
     {
-        this.tempStorage = storage;
+        if (tempStorage != null)
+        {
+            this.tempStorage = tempStorage;
+        }
     }
 
     /**
@@ -525,7 +527,7 @@ public class TurbineUser extends SecurityObject implements User
      */
     public void setTemp(String name, Object value)
     {
-        ObjectUtils.safeAddToHashtable(tempStorage, name, value);
+        getTempStorage().put(name, (value == null) ? "" : value);
     }
 
     /**

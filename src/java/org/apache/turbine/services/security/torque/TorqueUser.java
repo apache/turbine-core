@@ -68,6 +68,7 @@ import org.apache.torque.om.Persistent;
 
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.security.TurbineSecurityException;
 
 /**
@@ -684,7 +685,7 @@ public class TorqueUser
      */
     public void setPerm(String name, Object value)
     {
-        ObjectUtils.safeAddToHashtable(getPermStorage(), name, value);
+        getPermStorage().put(name, (value == null) ? "" : value);
     }
 
     /**
@@ -735,7 +736,7 @@ public class TorqueUser
      */
     public void setTemp(String name, Object value)
     {
-        ObjectUtils.safeAddToHashtable(getTempStorage(), name, value);
+        getTempStorage().put(name, (value == null) ? "" : value);
     }
 
     /**
