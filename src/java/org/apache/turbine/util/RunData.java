@@ -226,7 +226,7 @@ public interface RunData
      * method allows for a layout to be modified from within a
      * template. For example;
      *
-     *    $data.setLayoutTemplate("/NewLayout.vm")
+     *    $data.setLayoutTemplate("NewLayout.vm")
      *
      * @param layout a layout template.
      */
