@@ -62,6 +62,7 @@ import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.ScreenLoader;
 
 import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.velocity.VelocityService;
 
 import org.apache.turbine.services.xslt.TurbineXSLT;
 
@@ -100,7 +101,10 @@ public class VelocityXslLayout extends Layout
     public void doBuild(RunData data) throws Exception
     {
         data.getResponse().setContentType("text/html");
-        Context context = TurbineVelocity.getContext(data);
+
+        Context context = (Context) data.getTemplateInfo()
+            .getTemplateContext(VelocityService.CONTEXT);
+
         String returnValue = "";
 
         // First, generate the screen and put it in the context so
