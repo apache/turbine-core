@@ -428,7 +428,7 @@
       <name>xml-rpc</name>
       <type>required</type>
       <version>1.0</version>
-      <jar>xmlrpc-helma.jar</jar>
+      <jar>xmlrpc-helma-1.0.jar</jar>
     </dependency>
     <dependency>
       <name>xml-xerces</name>
