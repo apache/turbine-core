@@ -365,12 +365,14 @@ public class LargeSelect
             try
             {
                 if (qds != null)
+                {
                     qds.close();
+                }
                 TurbineDB.releaseConnection(db);
             }
             catch(Exception e)
             {
-                Log.error(e);
+                Log.error("Release of connection failed.", e);
             }
         }
     }
