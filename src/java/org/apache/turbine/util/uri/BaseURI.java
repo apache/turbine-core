@@ -75,6 +75,7 @@ import org.apache.turbine.util.ServerData;
  * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 
@@ -157,7 +158,7 @@ public abstract class BaseURI
     /**
      * Constructor, set explicit redirection
      *
-     * @param data A ServerData object
+     * @param serverData A ServerData object
      * @param redirect True if redirection allowed.
      */
     public BaseURI(ServerData serverData, boolean redirect)
@@ -244,7 +245,7 @@ public abstract class BaseURI
     /**
      * Sets the script name (/servlets/Turbine).
      *
-     * @param name A String with the script name.
+     * @param scriptName A String with the script name.
      */
     public void setScriptName(String scriptName)
     {
@@ -264,7 +265,7 @@ public abstract class BaseURI
     /**
      * Sets the context path.
      *
-     * @param name A String with the context path
+     * @param contextPath A String with the context path
      */
     public void setContextPath(String contextPath)
     {
@@ -284,7 +285,7 @@ public abstract class BaseURI
     /**
      * Sets the server name.
      *
-     * @param name A String with the server name.
+     * @param serverName A String with the server name.
      */
     public void setServerName(String serverName)
     {
@@ -317,7 +318,7 @@ public abstract class BaseURI
     /**
      * Sets the server port.
      *
-     * @param port An int with the port.
+     * @param serverPort An int with the port.
      */
     public void setServerPort(int serverPort)
     {
@@ -355,11 +356,12 @@ public abstract class BaseURI
     /**
      * Sets the scheme (HTTP or HTTPS).
      *
-     * @param scheme A String with the scheme.
+     * @param serverScheme A String with the scheme.
      */
     public void setServerScheme(String serverScheme)
     {
-        serverData.setServerScheme(StringUtils.isNotEmpty(serverScheme) ? serverScheme : "");
+        serverData.setServerScheme(StringUtils.isNotEmpty(serverScheme)
+                ? serverScheme : "");
     }
 
     /**
@@ -379,7 +381,6 @@ public abstract class BaseURI
      * Sets a reference anchor (#ref).
      *
      * @param reference A String containing the reference.
-     * @return A DynamicURI (self).
      */
     public void setReference(String reference)
     {
@@ -529,11 +530,11 @@ public abstract class BaseURI
                 if(isRedirect())
                 {
                     log.debug("Should Redirect");
-                    res = response.encodeRedirectUrl(uri);
+                    res = response.encodeRedirectURL(uri);
                 }
                 else
                 {
-                    res = response.encodeUrl(uri);
+                    res = response.encodeURL(uri);
                 }
             }
             catch(Exception e)
