@@ -70,12 +70,13 @@ import org.apache.turbine.torque.engine.database.transform.XmlToAppData;
 
 /**
  * A base torque task that uses either a single XML schema
- * representing a data model, or a <fileset> of XML schemas.
+ * representing a data model, or a &lt;fileset&gt; of XML schemas.
  * We are making the assumption that an XML schema representing
  * a data model contains tables for a <strong>single</strong>
  * database.
  *
  * @author <a href="mailto:jvanzyl@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  */
 public class TorqueDataModelTask
     extends TexenTask
@@ -129,7 +130,8 @@ public class TorqueDataModelTask
      */
     public void setSqlDbMap(String sqldbmap)
     {
-        this.sqldbmap = sqldbmap;
+        //!! Make all these references files not strings.
+        this.sqldbmap = project.resolveFile(sqldbmap).toString();
     }
     
     /**
@@ -178,11 +180,11 @@ public class TorqueDataModelTask
      *  Set the xml schema describing the application
      *  model.
      *
-     * @param  v The new XmlFile value
+     * @param xmlFile The new XmlFile value
      */
-    public void setXmlFile(String v)
+    public void setXmlFile(String xmlFile)
     {
-        xmlFile = v;
+        this.xmlFile = project.resolveFile(xmlFile).toString();
     }
 
     /**
@@ -217,13 +219,13 @@ public class TorqueDataModelTask
             xmlParser = new XmlToAppData();
             AppData ad = xmlParser.parseFile(xmlFile);
             xmlParser.parseFile(xmlFile);
-            ad.setName(xmlFile.substring(0,xmlFile.indexOf(".")));
+            ad.setName(grokName(xmlFile));
             dataModels.addElement(ad);
         } 
         else 
         { 
             // Deal with the filesets.
-            for (int i=0; i < filesets.size(); i++) 
+            for (int i = 0; i < filesets.size(); i++) 
             {
                 FileSet fs = (FileSet) filesets.elementAt(i);
                 DirectoryScanner ds = fs.getDirectoryScanner(project);
@@ -232,15 +234,13 @@ public class TorqueDataModelTask
                 String[] dataModelFiles = ds.getIncludedFiles();
 
                 // Make a transaction for each file
-                for ( int j = 0 ; j < dataModelFiles.length ; j++ ) 
+                for (int j = 0; j < dataModelFiles.length; j++)
                 {
+                    File f = new File(srcDir, dataModelFiles[j]);
                     xmlParser = new XmlToAppData();
-                    AppData ad = xmlParser.parseFile(
-                        new File(srcDir, dataModelFiles[j]).toString());
-                    xmlParser.parseFile(
-                        new File(srcDir, dataModelFiles[j]).toString());
-                    
-                    ad.setName(dataModelFiles[j].substring(0,dataModelFiles[j].indexOf(".")));
+                    AppData ad = xmlParser.parseFile(f.toString());
+                    xmlParser.parseFile(f.toString());
+                    ad.setName(grokName(f.toString()));
                     dataModels.addElement(ad);
                 }
             }
@@ -271,5 +271,37 @@ public class TorqueDataModelTask
     
         return context;
     }
-}
+ 
+    /**
+     * Gets a name to use for the application's data model.
+     *
+     * @param xmlFile The path to the XML file housing the data model.
+     * @return The name to use for the <code>AppData</code>.
+     */
+    private String grokName(String xmlFile)
+    {
+        // This can't be set from the file name as it is an unreliable
+        // method of naming the descriptor. Not everyone uses the same
+        // method as I do in the TDK. jvz.
 
+        String name = "data-model";
+        int i = xmlFile.lastIndexOf(System.getProperty("file.separator"));
+        if (i != -1)
+        {
+            // Creep forward to the start of the file name.
+            i++;
+
+            int j = xmlFile.lastIndexOf('.');
+            if (i < j)
+            {
+                name = xmlFile.substring(i, j);
+            }
+            else
+            {
+                // Weirdo
+                name = xmlFile.substring(i);
+            }
+        }
+        return name;
+    }
+}
