@@ -66,7 +66,8 @@ import org.apache.turbine.util.TurbineXmlConfig;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.configuration.BaseConfiguration;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 /**
  * Tests that the ConfigurationFactory and regular old properties methods both work.
  * Verify the overriding of properties.
@@ -76,80 +77,189 @@ import org.apache.commons.configuration.BaseConfiguration;
  */
 public class ConfigurationTest extends BaseTestCase
 {
-    public static final String SERVICE_PREFIX = "services.";
+	private static Log log = LogFactory.getLog(ConfigurationTest.class);
+	public static final String SERVICE_PREFIX = "services.";
 
-    /**
-     * A <code>Service</code> property determining its implementing
-     * class name .
-     */
-    public static final String CLASSNAME_SUFFIX = ".classname";
+	/**
+	 * A <code>Service</code> property determining its implementing
+	 * class name .
+	 */
+	public static final String CLASSNAME_SUFFIX = ".classname";
 
-    private static TurbineConfig tc = null;
-    private static TurbineXmlConfig txc = null;
+	private static TurbineConfig tc = null;
+	private static TurbineXmlConfig txc = null;
 
-    public ConfigurationTest(String name) throws Exception
-    {
-        super(name);
-    }
+	public ConfigurationTest(String name) throws Exception
+	{
+		super(name);
+	}
 
-    public static Test suite()
-    {
-        return new TestSuite(ConfigurationTest.class);
-    }
+	public static Test suite()
+	{
+		return new TestSuite(ConfigurationTest.class);
+	}
 
-    public void testCreateTurbineWithConfigurationXML() throws Exception
-    {
-        txc = new TurbineXmlConfig(".", "/conf/test/TurbineConfiguration.xml");
+	public void testCreateTurbineWithConfigurationXML() throws Exception
+	{
+		txc = new TurbineXmlConfig(".", "/conf/test/TurbineConfiguration.xml");
 
-        try
-        {
-            txc.initialize();
+		try
+		{
+			txc.initialize();
 
-            Configuration configuration = Turbine.getConfiguration();
-            assertNotNull("No Configuration Object found!", configuration);
-            assertFalse("Make sure we have values", configuration.isEmpty());
+			Configuration configuration = Turbine.getConfiguration();
+			assertNotNull("No Configuration Object found!", configuration);
+			assertFalse("Make sure we have values", configuration.isEmpty());
 
-            // overridden value
-            String key = "module.cache";
-            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "true", configuration.getString(key));
+			// overridden value
+			String key = "module.cache";
+			assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "true", configuration.getString(key));
 
-            // non overridden value
-            key = "scheduledjob.cache.size";
-            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "10", configuration.getString(key));
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-        finally
-        {
-            txc.dispose();
-        }
-    }
+			// non overridden value
+			key = "scheduledjob.cache.size";
+			assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "10", configuration.getString(key));
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+		finally
+		{
+			txc.dispose();
+		}
+	}
 
-    public void testCreateTurbineWithConfiguration() throws Exception
-    {
-        tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
+	public void testCreateTurbineWithConfiguration() throws Exception
+	{
+		tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
 
-        try
-        {
-            tc.initialize();
+		try
+		{
+			tc.initialize();
 
-            Configuration configuration = Turbine.getConfiguration();
-            assertNotNull("No Configuration Object found!", configuration);
-            assertFalse("Make sure we have values", configuration.isEmpty());
+			Configuration configuration = Turbine.getConfiguration();
+			assertNotNull("No Configuration Object found!", configuration);
+			assertFalse("Make sure we have values", configuration.isEmpty());
 
-            String key = "scheduledjob.cache.size";
-            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "10", configuration.getString(key));
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-        finally
-        {
-            tc.dispose();
-        }
-    }
+			String key = "scheduledjob.cache.size";
+			assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "10", configuration.getString(key));
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+		finally
+		{
+			tc.dispose();
+		}
+	}
+
+	public void testConfigurationValuesInSameOrder() throws Exception
+	{
+		Configuration simpleConfiguration = null;
+		Configuration compositeConfiguration = null;
+
+		tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
+
+		try
+		{
+			tc.initialize();
+			simpleConfiguration = Turbine.getConfiguration();
+		}
+		finally
+		{
+			tc.dispose();
+		}
+
+		txc = new TurbineXmlConfig(".", "/conf/test/TurbineConfiguration.xml");
+		try
+		{
+			txc.initialize();
+			compositeConfiguration = Turbine.getConfiguration();
+		}
+		finally
+		{
+			txc.dispose();
+		}
+		Configuration a = simpleConfiguration.subset("services");
+		Configuration b = compositeConfiguration.subset("services");
+
+		List keysSimpleConfiguration = IteratorUtils.toList(a.getKeys());
+		List keysCompositeConfiguration = IteratorUtils.toList(b.getKeys());
+
+		assertTrue("Size:" + keysSimpleConfiguration.size(), keysSimpleConfiguration.size() > 0);
+		assertEquals(keysSimpleConfiguration.size(), keysCompositeConfiguration.size());
+
+		for (int i = 0; i < keysSimpleConfiguration.size(); i++)
+		{
+			log.debug("Key " + i + ": " + keysSimpleConfiguration.get(i) + " - " + keysCompositeConfiguration.get(i));
+			assertEquals(keysSimpleConfiguration.get(i), keysCompositeConfiguration.get(i));
+		}
+
+	}
+
+	public void testMappingInSameOrder() throws Exception
+	{
+		Configuration simpleConfiguration = null;
+		Configuration compositeConfiguration = null;
+		Configuration mapping = new BaseConfiguration();
+		Configuration mapping2 = new BaseConfiguration();
+
+		tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
+
+		try
+		{
+			tc.initialize();
+			simpleConfiguration = Turbine.getConfiguration();
+		}
+		finally
+		{
+			tc.dispose();
+		}
+
+		txc = new TurbineXmlConfig(".", "/conf/test/TurbineConfiguration.xml");
+		try
+		{
+			txc.initialize();
+			compositeConfiguration = Turbine.getConfiguration();
+		}
+		finally
+		{
+			txc.dispose();
+		}
+
+		for (Iterator keys = simpleConfiguration.getKeys(); keys.hasNext();)
+		{
+			String key = (String) keys.next();
+			String[] keyParts = StringUtils.split(key, ".");
+
+			if ((keyParts.length == 3) && (keyParts[0] + ".").equals(SERVICE_PREFIX) && ("." + keyParts[2]).equals(CLASSNAME_SUFFIX))
+			{
+				String serviceKey = keyParts[1];
+
+				if (!mapping.containsKey(serviceKey))
+				{
+					mapping.setProperty(serviceKey, simpleConfiguration.getString(key));
+				}
+			}
+		}
+
+		for (Iterator keys = compositeConfiguration.getKeys(); keys.hasNext();)
+		{
+			String key = (String) keys.next();
+			String[] keyParts = StringUtils.split(key, ".");
+
+			if ((keyParts.length == 3) && (keyParts[0] + ".").equals(SERVICE_PREFIX) && ("." + keyParts[2]).equals(CLASSNAME_SUFFIX))
+			{
+				String serviceKey = keyParts[1];
+
+				if (!mapping2.containsKey(serviceKey))
+				{
+					mapping2.setProperty(serviceKey, compositeConfiguration.getString(key));
+				}
+			}
+		}
+                
+	}
 
 }
