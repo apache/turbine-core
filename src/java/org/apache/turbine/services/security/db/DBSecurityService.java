@@ -59,6 +59,10 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.BaseObject;
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.util.Criteria;
@@ -78,9 +82,6 @@ import org.apache.turbine.om.security.peer.UserGroupRolePeer;
 import org.apache.turbine.om.security.peer.UserPeer;
 import org.apache.turbine.services.security.BaseSecurityService;
 import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
@@ -93,11 +94,12 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * An implementation of SecurityService that uses a database as backend.
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
- * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
  * @version $Id$
  */
-public class DBSecurityService extends BaseSecurityService
+public class DBSecurityService
+    extends BaseSecurityService
 {
     /** Logging */
     private static Log log = LogFactory.getLog(DBSecurityService.class);
@@ -151,7 +153,7 @@ public class DBSecurityService extends BaseSecurityService
             // construct the snapshot:
 
             // foreach group in the system
-            for (Iterator groupsIterator = getAllGroups().elements(); 
+            for (Iterator groupsIterator = getAllGroups().elements();
                  groupsIterator.hasNext();)
             {
                 Group group = (Group) groupsIterator.next();
@@ -168,7 +170,7 @@ public class DBSecurityService extends BaseSecurityService
                     Role role = (Role) rolesIterator.next();
                     // get permissions of the role
                     PermissionSet rolePermissions
-                            = PermissionPeer.retrieveSet(role);
+                        = PermissionPeer.retrieveSet(role);
                     groupPermissions.add(rolePermissions);
                 }
                 // put the Set into permissions(group)
@@ -219,11 +221,11 @@ public class DBSecurityService extends BaseSecurityService
             {
                 Criteria criteria = new Criteria();
                 criteria.add(UserGroupRolePeer.USER_ID,
-                        ((BaseObject) user).getPrimaryKey());
+                             ((BaseObject) user).getPrimaryKey());
                 criteria.add(UserGroupRolePeer.GROUP_ID,
-                        ((BaseObject) group).getPrimaryKey());
+                             ((BaseObject) group).getPrimaryKey());
                 criteria.add(UserGroupRolePeer.ROLE_ID,
-                        ((TurbineRole) role).getPrimaryKey());
+                             ((TurbineRole) role).getPrimaryKey());
                 UserGroupRolePeer.doInsert(criteria);
                 return;
             }
@@ -239,17 +241,17 @@ public class DBSecurityService extends BaseSecurityService
         if (!userExists)
         {
             throw new UnknownEntityException("Unknown user '"
-                    + user.getUserName() + "'");
+                                             + user.getUserName() + "'");
         }
         if (!groupExists)
         {
             throw new UnknownEntityException("Unknown group '"
-                    + ((SecurityObject) group).getName() + "'");
+                                             + group.getName() + "'");
         }
         if (!roleExists)
         {
             throw new UnknownEntityException("Unknown role '"
-                    + role.getName() + "'");
+                                             + role.getName() + "'");
         }
     }
 
@@ -280,11 +282,11 @@ public class DBSecurityService extends BaseSecurityService
             {
                 Criteria criteria = new Criteria();
                 criteria.add(UserGroupRolePeer.USER_ID,
-                        ((BaseObject) user).getPrimaryKey());
+                             ((BaseObject) user).getPrimaryKey());
                 criteria.add(UserGroupRolePeer.GROUP_ID,
-                        ((BaseObject) group).getPrimaryKey());
+                             ((BaseObject) group).getPrimaryKey());
                 criteria.add(UserGroupRolePeer.ROLE_ID,
-                        ((TurbineRole) role).getPrimaryKey());
+                             ((TurbineRole) role).getPrimaryKey());
                 UserGroupRolePeer.doDelete(criteria);
                 return;
             }
@@ -300,19 +302,19 @@ public class DBSecurityService extends BaseSecurityService
         if (!userExists)
         {
             throw new UnknownEntityException("Unknown user '"
-                    + user.getUserName() + "'");
+                                             + user.getUserName() + "'");
         }
         if (!groupExists)
         {
             throw new UnknownEntityException("Unknown group '"
-                    + ((SecurityObject) group).getName() + "'");
+                                             + group.getName() + "'");
         }
         if (!roleExists)
         {
             throw new UnknownEntityException("Unknown role '"
-                    + role.getName() + "'");
+                                             + role.getName() + "'");
         }
-     }
+    }
 
     /**
      * Revokes all roles from an User.
@@ -344,9 +346,9 @@ public class DBSecurityService extends BaseSecurityService
                 //         ((BaseObject) user).getPrimaryKey());
                 // UserGroupRolePeer.doDelete(criteria);
                 int id = ((NumberKey) ((BaseObject) user)
-                        .getPrimaryKey()).intValue();
+                          .getPrimaryKey()).intValue();
                 UserGroupRolePeer.deleteAll(UserGroupRolePeer.TABLE_NAME,
-                        UserGroupRolePeer.USER_ID, id);
+                                            UserGroupRolePeer.USER_ID, id);
                 return;
             }
         }
@@ -359,7 +361,7 @@ public class DBSecurityService extends BaseSecurityService
             unlockExclusive();
         }
         throw new UnknownEntityException("Unknown user '"
-                + user.getUserName() + "'");
+                                         + user.getUserName() + "'");
     }
 
     /**
@@ -385,9 +387,9 @@ public class DBSecurityService extends BaseSecurityService
             {
                 Criteria criteria = new Criteria();
                 criteria.add(RolePermissionPeer.ROLE_ID,
-                        ((TurbineRole) role).getPrimaryKey());
+                             ((TurbineRole) role).getPrimaryKey());
                 criteria.add(RolePermissionPeer.PERMISSION_ID,
-                        ((BaseObject) permission).getPrimaryKey());
+                             ((BaseObject) permission).getPrimaryKey());
                 UserGroupRolePeer.doInsert(criteria);
                 return;
             }
@@ -403,12 +405,12 @@ public class DBSecurityService extends BaseSecurityService
         if (!roleExists)
         {
             throw new UnknownEntityException("Unknown role '"
-                    + role.getName() + "'");
+                                             + role.getName() + "'");
         }
         if (!permissionExists)
         {
             throw new UnknownEntityException("Unknown permission '"
-                    + ((SecurityObject) permission).getName() + "'");
+                                             + permission.getName() + "'");
         }
     }
 
@@ -435,9 +437,9 @@ public class DBSecurityService extends BaseSecurityService
             {
                 Criteria criteria = new Criteria();
                 criteria.add(RolePermissionPeer.ROLE_ID,
-                        ((TurbineRole) role).getPrimaryKey());
+                             ((TurbineRole) role).getPrimaryKey());
                 criteria.add(RolePermissionPeer.PERMISSION_ID,
-                        ((BaseObject) permission).getPrimaryKey());
+                             ((BaseObject) permission).getPrimaryKey());
                 RolePermissionPeer.doDelete(criteria);
                 return;
             }
@@ -453,12 +455,12 @@ public class DBSecurityService extends BaseSecurityService
         if (!roleExists)
         {
             throw new UnknownEntityException("Unknown role '"
-                    + role.getName() + "'");
+                                             + role.getName() + "'");
         }
         if (!permissionExists)
         {
             throw new UnknownEntityException("Unknown permission '"
-                    + ((SecurityObject) permission).getName() + "'");
+                                             + permission.getName() + "'");
         }
     }
 
@@ -491,9 +493,9 @@ public class DBSecurityService extends BaseSecurityService
                 // RolePermissionPeer.doDelete(criteria);
 
                 int id = ((NumberKey) ((TurbineRole) role)
-                        .getPrimaryKey()).intValue();
+                          .getPrimaryKey()).intValue();
                 RolePermissionPeer.deleteAll(RolePermissionPeer.TABLE_NAME,
-                        RolePermissionPeer.ROLE_ID, id);
+                                             RolePermissionPeer.ROLE_ID, id);
                 return;
             }
         }
@@ -506,8 +508,8 @@ public class DBSecurityService extends BaseSecurityService
             unlockExclusive();
         }
         throw new UnknownEntityException("Unknown role '"
-                + role.getName() + "'");
-     }
+                                         + role.getName() + "'");
+    }
 
     /*-----------------------------------------------------------------------
       Group/Role/Permission management
@@ -516,7 +518,7 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Retrieve a set of Groups that meet the specified Criteria.
      *
-     * @param criteria Criteria of Group selection.
+     * @param criteria A Criteria of Group selection.
      * @return a set of Groups that meet the specified Criteria.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
@@ -546,7 +548,7 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Retrieve a set of Roles that meet the specified Criteria.
      *
-     * @param criteria Criteria of Roles selection.
+     * @param criteria A Criteria of Roles selection.
      * @return a set of Roles that meet the specified Criteria.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
@@ -576,7 +578,7 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Retrieve a set of Permissions that meet the specified Criteria.
      *
-     * @param criteria Criteria of Permissions selection.
+     * @param criteria A Criteria of Permissions selection.
      * @return a set of Permissions that meet the specified Criteria.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
@@ -590,7 +592,7 @@ public class DBSecurityService extends BaseSecurityService
         {
             String key = (String) keys.next();
             dbCriteria.put(PermissionPeer.getColumnName(key),
-                    criteria.get(key));
+                           criteria.get(key));
         }
         List permissions = new Vector(0);
         try
@@ -600,7 +602,7 @@ public class DBSecurityService extends BaseSecurityService
         catch (Exception e)
         {
             throw new DataBackendException(
-                    "getPermissions(Criteria) failed", e);
+                "getPermissions(Criteria) failed", e);
         }
         return new PermissionSet(permissions);
     }
@@ -609,7 +611,7 @@ public class DBSecurityService extends BaseSecurityService
      * Retrieves all permissions associated with a role.
      *
      * @param role the role name, for which the permissions are to be retrieved.
-     * @return the Permissions
+     * @return A Permission set for the Role.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the role is not present.
@@ -636,7 +638,7 @@ public class DBSecurityService extends BaseSecurityService
             unlockShared();
         }
         throw new UnknownEntityException("Unknown role '"
-                + role.getName() + "'");
+                                         + role.getName() + "'");
     }
 
     /**
@@ -723,10 +725,10 @@ public class DBSecurityService extends BaseSecurityService
         catch (Exception e)
         {
             throw new DataBackendException(
-                    "savePermission(Permission) failed", e);
+                "savePermission(Permission) failed", e);
         }
         throw new UnknownEntityException("Unknown permission '"
-                + permission + "'");
+                                         + permission + "'");
     }
 
     /**
@@ -778,9 +780,17 @@ public class DBSecurityService extends BaseSecurityService
      * @throws EntityExistsException if the group already exists.
      */
     public synchronized Group addGroup(Group group)
-        throws DataBackendException, EntityExistsException
+        throws DataBackendException,
+               EntityExistsException
     {
         boolean groupExists = false;
+
+        if (StringUtils.isEmpty(group.getName()))
+        {
+            throw new DataBackendException("Could not create "
+                                           + "a group with empty name!");
+        }
+
         try
         {
             lockExclusive();
@@ -793,13 +803,13 @@ public class DBSecurityService extends BaseSecurityService
                 // try to get the object back using the name as key.
                 criteria = new Criteria();
                 criteria.add(GroupPeer.NAME,
-                        ((SecurityObject) group).getName());
+                             group.getName());
                 List results = GroupPeer.doSelect(criteria);
                 if (results.size() != 1)
                 {
                     throw new DataBackendException(
-                            "Internal error - query returned "
-                            + results.size() + " rows");
+                        "Internal error - query returned "
+                        + results.size() + " rows");
                 }
                 Group newGroup = (Group) results.get(0);
                 // add the group to system-wide cache
@@ -834,6 +844,13 @@ public class DBSecurityService extends BaseSecurityService
         throws DataBackendException, EntityExistsException
     {
         boolean roleExists = false;
+
+        if (StringUtils.isEmpty(role.getName()))
+        {
+            throw new DataBackendException("Could not create "
+                                           + "a role with empty name!");
+        }
+
         try
         {
             lockExclusive();
@@ -850,8 +867,8 @@ public class DBSecurityService extends BaseSecurityService
                 if (results.size() != 1)
                 {
                     throw new DataBackendException(
-                            "Internal error - query returned "
-                            + results.size() + " rows");
+                        "Internal error - query returned "
+                        + results.size() + " rows");
                 }
                 Role newRole = (Role) results.get(0);
                 // add the role to system-wide cache
@@ -886,6 +903,13 @@ public class DBSecurityService extends BaseSecurityService
         throws DataBackendException, EntityExistsException
     {
         boolean permissionExists = false;
+
+        if (StringUtils.isEmpty(permission.getName()))
+        {
+            throw new DataBackendException("Could not create "
+                                           + "a permission with empty name!");
+        }
+
         try
         {
             lockExclusive();
@@ -898,13 +922,13 @@ public class DBSecurityService extends BaseSecurityService
                 // try to get the object back using the name as key.
                 criteria = new Criteria();
                 criteria.add(PermissionPeer.NAME,
-                        ((SecurityObject) permission).getName());
+                             permission.getName());
                 List results = PermissionPeer.doSelect(criteria);
                 if (results.size() != 1)
                 {
                     throw new DataBackendException(
-                            "Internal error - query returned "
-                            + results.size() + " rows");
+                        "Internal error - query returned "
+                        + results.size() + " rows");
                 }
                 Permission newPermission = (Permission) results.get(0);
                 // add the permission to system-wide cache
@@ -916,7 +940,7 @@ public class DBSecurityService extends BaseSecurityService
         catch (Exception e)
         {
             throw new DataBackendException(
-                    "addPermission(Permission) failed", e);
+                "addPermission(Permission) failed", e);
         }
         finally
         {
@@ -925,13 +949,13 @@ public class DBSecurityService extends BaseSecurityService
         // the only way we could get here without return/throw tirggered
         // is that the permissionExists was true.
         throw new EntityExistsException("Permission '" + permission
-                + "' already exists");
+                                        + "' already exists");
     }
 
     /**
      * Removes a Group from the system.
      *
-     * @param group object describing group to be removed.
+     * @param group The object describing the group to be removed.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the group does not exist.
@@ -968,7 +992,7 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Removes a Role from the system.
      *
-     * @param role object describing role to be removed.
+     * @param role The object describing the role to be removed.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the role does not exist.
@@ -1005,7 +1029,7 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Removes a Permission from the system.
      *
-     * @param permission object describing permission to be removed.
+     * @param permission The object describing the permission to be removed.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the permission does not exist.
@@ -1035,13 +1059,13 @@ public class DBSecurityService extends BaseSecurityService
             unlockExclusive();
         }
         throw new UnknownEntityException("Unknown permission '"
-                + permission + "'");
+                                         + permission + "'");
     }
 
     /**
      * Renames an existing Group.
      *
-     * @param group object describing the group to be renamed.
+     * @param group The object describing the group to be renamed.
      * @param name the new name for the group.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
@@ -1057,7 +1081,7 @@ public class DBSecurityService extends BaseSecurityService
             groupExists = checkExists(group);
             if (groupExists)
             {
-                ((SecurityObject) group).setName(name);
+                group.setName(name);
                 Criteria criteria = GroupPeer.buildCriteria(group);
                 GroupPeer.doUpdate(criteria);
                 return;
@@ -1077,7 +1101,7 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Renames an existing Role.
      *
-     * @param role object describing the role to be renamed.
+     * @param role The object describing the role to be renamed.
      * @param name the new name for the role.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
@@ -1113,15 +1137,15 @@ public class DBSecurityService extends BaseSecurityService
     /**
      * Renames an existing Permission.
      *
-     * @param permission object describing the permission to be renamed.
+     * @param permission The object describing the permission to be renamed.
      * @param name the new name for the permission.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the permission does not exist.
      */
     public synchronized void renamePermission(Permission permission,
-            String name)
-            throws DataBackendException, UnknownEntityException
+                                              String name)
+        throws DataBackendException, UnknownEntityException
     {
         boolean permissionExists = false;
         try
@@ -1130,7 +1154,7 @@ public class DBSecurityService extends BaseSecurityService
             permissionExists = checkExists(permission);
             if (permissionExists)
             {
-                ((SecurityObject) permission).setName(name);
+                permission.setName(name);
                 Criteria criteria = PermissionPeer.buildCriteria(permission);
                 PermissionPeer.doUpdate(criteria);
                 return;
@@ -1139,14 +1163,14 @@ public class DBSecurityService extends BaseSecurityService
         catch (Exception e)
         {
             throw new DataBackendException(
-                    "renamePermission(Permission,name)", e);
+                "renamePermission(Permission,name)", e);
         }
         finally
         {
             unlockExclusive();
         }
         throw new UnknownEntityException("Unknown permission '"
-                + permission + "'");
+                                         + permission + "'");
     }
 
     /* Service specific implementation methods */
@@ -1162,7 +1186,7 @@ public class DBSecurityService extends BaseSecurityService
     public Class getUserPeerClass() throws UnknownEntityException
     {
         String userPeerClassName = getConfiguration().getString(
-                USER_PEER_CLASS_KEY, USER_PEER_CLASS_DEFAULT);
+            USER_PEER_CLASS_KEY, USER_PEER_CLASS_DEFAULT);
         try
         {
             return Class.forName(userPeerClassName);
@@ -1206,7 +1230,7 @@ public class DBSecurityService extends BaseSecurityService
      * @return true if the group exists in the system, false otherwise
      * @throws DataBackendException when more than one Group with
      *         the same name exists.
-     * @throws Exception a generic exception.
+     * @throws Exception A generic exception.
      */
     protected boolean checkExists(Group group)
         throws DataBackendException, Exception
@@ -1221,7 +1245,7 @@ public class DBSecurityService extends BaseSecurityService
      * @return true if the role exists in the system, false otherwise
      * @throws DataBackendException when more than one Role with
      *         the same name exists.
-     * @throws Exception a generic exception.
+     * @throws Exception A generic exception.
      */
     protected boolean checkExists(Role role)
         throws DataBackendException, Exception
@@ -1236,7 +1260,7 @@ public class DBSecurityService extends BaseSecurityService
      * @return true if the permission exists in the system, false otherwise
      * @throws DataBackendException when more than one Permission with
      *         the same name exists.
-     * @throws Exception a generic exception.
+     * @throws Exception A generic exception.
      */
     protected boolean checkExists(Permission permission)
         throws DataBackendException, Exception

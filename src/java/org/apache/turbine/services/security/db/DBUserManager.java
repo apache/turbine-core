@@ -57,6 +57,7 @@ package org.apache.turbine.services.security.db;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.BaseObject;
@@ -270,10 +271,16 @@ public class DBUserManager
             throw new UnknownEntityException("The account '" +
                                              user.getUserName() + "' does not exist");
         }
-        Criteria criteria = TurbineUserPeer.buildCriteria(user);
+
         try
         {
-            TurbineUserPeer.doUpdate(criteria);
+            // this is to mimic the old behavior of the method, the user 
+            // should be new that is passed to this method.  It would be
+            // better if this was checked, but the original code did not
+            // care about the user's state, so we set it to be appropriate
+            ((BaseObject) user).setNew(false);
+            ((BaseObject) user).setModified(true);
+            ((BaseObject) user).save();
         }
         catch (Exception e)
         {
@@ -400,19 +407,28 @@ public class DBUserManager
     public void createAccount(User user, String initialPassword)
         throws EntityExistsException, DataBackendException
     {
+        if(StringUtils.isEmpty(user.getUserName()))
+        {
+            throw new DataBackendException("Could not create "
+                                           + "an user with empty name!");
+        }
+
         if (accountExists(user))
         {
             throw new EntityExistsException("The account '" +
                                             user.getUserName() + "' already exists");
         }
         user.setPassword(TurbineSecurity.encryptPassword(initialPassword));
-        Criteria criteria = TurbineUserPeer.buildCriteria(user);
+
         try
         {
-            // we can safely assume that BaseObject derivate is used as User
-            // implementation with this UserManager
-            ((BaseObject) user).setPrimaryKey(
-                TurbineUserPeer.doInsert(criteria));
+            // this is to mimic the old behavior of the method, the user 
+            // should be new that is passed to this method.  It would be
+            // better if this was checked, but the original code did not
+            // care about the user's state, so we set it to be appropriate
+            ((BaseObject) user).setNew(true);
+            ((BaseObject) user).setModified(true);
+            ((BaseObject) user).save();
         }
         catch (Exception e)
         {
