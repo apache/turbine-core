@@ -61,6 +61,7 @@ import java.util.Properties;
 import java.util.Vector;
 import javax.servlet.ServletConfig;
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.services.logging.LoggingService;
 import org.apache.turbine.services.resources.ResourceService;
 import org.apache.turbine.services.resources.TurbineResources;
@@ -260,13 +261,18 @@ public class TurbineServices
         while(keys.hasNext())
         {
             String key = (String)keys.next();
-            if (key.startsWith(SERVICE_PREFIX) && key.endsWith(CLASSNAME_SUFFIX))
+            String [] keyParts = StringUtils.split(key, ".");
+            if ((keyParts.length == 3) 
+                && keyParts[0].equals(SERVICE_PREFIX) 
+                && keyParts[2].equals(CLASSNAME_SUFFIX))
             {
-                String serviceKey = key.substring(pref, key.length() - suff);
+                String serviceKey = keyParts[1];
                 notice ("Added Mapping for Service: " + serviceKey);
 
                 if (!mapping.containsKey(serviceKey))
+                {
                     mapping.setProperty(serviceKey, TurbineResources.getString(key));
+                }
             }
         }
     }
