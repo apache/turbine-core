@@ -228,6 +228,9 @@ public class TurbineResourceService
             return null;
         }            
         
+        //Get the full ResourceService (we could be in a subset instance)
+        ResourceService top = TurbineResources.getService();
+
         int begin = -1;
         int end = -1;
         int prec = 0-END_TOKEN.length();
@@ -240,9 +243,9 @@ public class TurbineResourceService
         {
             result.append(base.substring(prec+END_TOKEN.length(),begin));
             variable = base.substring(begin+START_TOKEN.length(),end);
-            if (configuration.get(variable)!=null) 
+            if (top.getString(variable)!=null) 
             {
-                result.append(configuration.get(variable));
+                result.append(top.getString(variable));
             }
             prec=end;
         }
