@@ -105,11 +105,6 @@ public class PermissionPeer extends BasePeer
     public static final String OBJECTDATA
             = MAP_BUILDER.getPermission_ObjectData();
 
-    /** The Oracle sequence name for this peer. */
-    private static final String SEQUENCE_NAME
-            = MAP_BUILDER.getSequencePermission();
-
-
     /**
      * Retrieves/assembles a PermissionSet
      *
