@@ -10,9 +10,9 @@ action.logout=LogoutUser
 action.sessionvalidator=sessionvalidator.TemplateSessionValidator
 action.accesscontroller=AccessController
 
-layout.default=VelocityECSLayout
+layout.default=VelocityOnlyLayout
 page.default=VelocityPage
-        
+
 template.default.extension=vm
 template.path=/templates/app
 template.default.navigation=VelocityNavigation
