@@ -77,7 +77,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.impl.Log4jFactory;
 
 import org.apache.commons.xo.Mapper;
 
@@ -271,11 +270,6 @@ public class Turbine
     private void configure(ServletConfig config, ServletContext context)
             throws Exception
     {
-        //
-        // Set up Commons Logging to use the Log4J Logging
-        //
-        System.getProperties().setProperty(LogFactory.class.getName(),
-                                           Log4jFactory.class.getName());
 
         // Set the application root. This defaults to the webapp
         // context if not otherwise set. This is to allow 2.1 apps
@@ -886,10 +880,6 @@ public class Turbine
 
             data.getResponse().setContentType(data.getContentType());
             data.getResponse().setStatus(data.getStatusCode());
-            if (data.isPageSet())
-            {
-                data.getOut().print(data.getPage().toString());
-            }
         }
         // Catch this one because it occurs if some code hasn't been
         // completely re-compiled after a change..
@@ -906,7 +896,7 @@ public class Turbine
 
             try
             {
-                data.getOut().print("java.lang.NoSuchFieldError: "
+				data.getResponse().getWriter().print("java.lang.NoSuchFieldError: "
                         + "Please recompile all of your source code.");
             }
             catch (IOException ignored)
