@@ -581,21 +581,6 @@ public class Turbine
         }
         finally
         {
-            // Make sure to close the outputstream when we are done.
-            // Note: not for redirects, when we must not get a printwriter on 
-            // the response output stream.
-            if (!requestRedirected)
-            {
-                try
-                {
-                    data.getOut().close();
-                }
-                catch (Exception e)
-                {
-                    // Ignore.
-                }
-            }
-
             // Return the used RunData to the factory for recycling.
             RunDataFactory.putRunData(data);
         }
