@@ -207,7 +207,8 @@ public class TorqueUser
         }
         catch (Exception e)
         {
-            throw new TurbineSecurityException("User object said", e);
+            throw new TurbineSecurityException("User object said " 
+                    + e.getMessage(), e);
         }
     }
 
