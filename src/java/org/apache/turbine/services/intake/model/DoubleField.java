@@ -57,7 +57,7 @@ package org.apache.turbine.services.intake.model;
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.turbine.services.intake.IntakeException;
-import org.apache.turbine.services.intake.validator.NumberValidator;
+import org.apache.turbine.services.intake.validator.DoubleValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 
 /**
@@ -106,7 +106,7 @@ public class DoubleField
      */
     protected String getDefaultValidator()
     {
-        return NumberValidator.class.getName();
+        return DoubleValidator.class.getName();
     }
 
     /**
@@ -120,7 +120,7 @@ public class DoubleField
             Double[] values = new Double[inputs.length];
             for (int i = 0; i < inputs.length; i++)
             {
-                values[i] = StringUtils.isNotEmpty(inputs[i]) 
+                values[i] = StringUtils.isNotEmpty(inputs[i])
                         ? new Double(inputs[i]) : null;
             }
             setTestValue(values);

@@ -59,6 +59,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.torque.om.StringKey;
 
 import org.apache.turbine.services.intake.IntakeException;
+import org.apache.turbine.services.intake.validator.StringValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 
 /**
@@ -66,6 +67,7 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
+ * @deprecated Use String instead
  */
 public class StringKeyField
         extends Field
@@ -82,6 +84,16 @@ public class StringKeyField
             throws IntakeException
     {
         super(field, group);
+    }
+
+    /**
+     * Produces the fully qualified class name of the default validator.
+     *
+     * @return class name of the default validator
+     */
+    protected String getDefaultValidator()
+    {
+        return StringValidator.class.getName();
     }
 
     /**
@@ -110,14 +122,16 @@ public class StringKeyField
             StringKey[] ival = new StringKey[ss.length];
             for (int i = 0; i < ss.length; i++)
             {
-                ival[i] = (StringUtils.isNotEmpty(ss[i])) ? new StringKey(ss[i]) : null;
+                ival[i] = (StringUtils.isNotEmpty(ss[i]))
+                        ? new StringKey(ss[i]) : null;
             }
             setTestValue(ival);
         }
         else
         {
             String val = parser.getString(getKey());
-            setTestValue((StringUtils.isNotEmpty(val)) ? new StringKey(val) : null);
+            setTestValue((StringUtils.isNotEmpty(val))
+                    ? new StringKey(val) : null);
         }
     }
 }

@@ -61,7 +61,7 @@ import java.text.DecimalFormatSymbols;
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.turbine.services.intake.IntakeException;
-import org.apache.turbine.services.intake.validator.NumberValidator;
+import org.apache.turbine.services.intake.validator.BigDecimalValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 
 /**
@@ -111,7 +111,7 @@ public class BigDecimalField
      */
     protected String getDefaultValidator()
     {
-        return NumberValidator.class.getName();
+        return BigDecimalValidator.class.getName();
     }
 
     /**
@@ -125,7 +125,7 @@ public class BigDecimalField
             BigDecimal[] values = new BigDecimal[inputs.length];
             for (int i = 0; i < inputs.length; i++)
             {
-                values[i] = StringUtils.isNotEmpty(inputs[i]) 
+                values[i] = StringUtils.isNotEmpty(inputs[i])
                         ? canonicalizeDecimalInput(inputs[i]) : null;
             }
             setTestValue(values);
