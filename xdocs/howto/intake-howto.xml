@@ -327,6 +327,8 @@ $intake.declareGroups()
 <rule name="minLength" value="4">Error message for required min length failed</rule>
 <rule name="maxLength" value="9">Error message for required max length failed</rule>
 <rule name="mask" value="^[0-9]+$">Error message for regular expression failed</rule>
+<rule name="notANumberMessage">Error message for Number fields when the entry is not a number</rule>
+
                 ]]></source>
                 <p/>
                 <p>
