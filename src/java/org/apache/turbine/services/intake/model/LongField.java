@@ -135,7 +135,14 @@ public class LongField
      */
     protected Object getSafeEmptyValue()
     {
-        return (null == getEmptyValue()) ? new Long(0l) : getEmptyValue(); 
+        if (isMultiValued)
+        {
+            return new long[0];
+        }
+        else
+        {
+            return (null == getEmptyValue()) ? new Long(0l) : getEmptyValue();
+        }
     }
 
     /**

@@ -132,8 +132,15 @@ public class ShortField
      */
     protected Object getSafeEmptyValue()
     {
-        return (null == getEmptyValue()) 
-                ? new Short((short) 0) : getEmptyValue(); 
+        if (isMultiValued)
+        {
+            return new short[0];
+        }
+        else
+        {
+            return (null == getEmptyValue()) 
+                    ? new Short((short) 0) : getEmptyValue(); 
+        }
     }
 
     /**

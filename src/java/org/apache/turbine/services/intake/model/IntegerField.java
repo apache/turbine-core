@@ -131,7 +131,15 @@ public class IntegerField
      */
     protected Object getSafeEmptyValue()
     {
-        return (null == getEmptyValue()) ? new Integer(0) : getEmptyValue(); 
+        if (isMultiValued)
+        {
+            return new int[0];
+        }
+        else
+        {
+            return (null == getEmptyValue()) 
+                    ? new Integer(0) : getEmptyValue();
+        }
     }
 
     /**

@@ -132,7 +132,15 @@ public class FloatField
      */
     protected Object getSafeEmptyValue()
     {
-        return (null == getEmptyValue()) ? new Float(0.0) : getEmptyValue(); 
+        if (isMultiValued)
+        {
+            return new float[0];
+        }
+        else
+        {
+            return (null == getEmptyValue()) 
+                    ? new Float(0.0) : getEmptyValue();
+        }
     }
 
     /**
