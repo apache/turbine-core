@@ -54,8 +54,6 @@ package org.apache.turbine.util.uri;
  * <http://www.apache.org/>.
  */
 
-import org.apache.commons.lang.StringUtils;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 

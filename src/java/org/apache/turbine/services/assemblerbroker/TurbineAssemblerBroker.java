@@ -55,12 +55,8 @@ package org.apache.turbine.services.assemblerbroker;
  */
 
 import org.apache.turbine.modules.Assembler;
-
-import org.apache.turbine.services.Service;
 import org.apache.turbine.services.TurbineServices;
-
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
-
 import org.apache.turbine.util.TurbineException;
 
 /**

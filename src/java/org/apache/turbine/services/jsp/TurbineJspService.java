@@ -75,7 +75,6 @@ import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.services.pull.tools.TemplateLink;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
-import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 

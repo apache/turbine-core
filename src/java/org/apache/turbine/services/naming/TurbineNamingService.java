@@ -54,7 +54,6 @@ package org.apache.turbine.services.naming;
  * <http://www.apache.org/>.
  */
 
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;

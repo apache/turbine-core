@@ -58,14 +58,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.modules.Layout;
-
 import org.apache.turbine.services.velocity.TurbineVelocity;
-import org.apache.turbine.services.velocity.VelocityService;
-
 import org.apache.turbine.util.RunData;
-
 import org.apache.turbine.util.template.TemplateNavigation;
 import org.apache.turbine.util.template.TemplateScreen;
 

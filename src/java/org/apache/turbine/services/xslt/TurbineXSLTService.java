@@ -78,7 +78,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.TurbineServices;
 
 import org.w3c.dom.Node;
 

@@ -54,19 +54,6 @@ package org.apache.turbine.util.uri;
  * <http://www.apache.org/>.
  */
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.StringUtils;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
-
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.ServerData;
-
 /**
  * An interface class which describes the absolute minimum of methods that
  * a Turbine URI class must implement.

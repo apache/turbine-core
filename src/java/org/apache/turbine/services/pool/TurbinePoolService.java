@@ -67,7 +67,6 @@ import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.factory.FactoryService;
 import org.apache.turbine.services.factory.TurbineFactory;
 import org.apache.turbine.util.TurbineException;

@@ -60,15 +60,10 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.ecs.ConcreteElement;
 
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.ScreenLoader;
-
 import org.apache.turbine.services.velocity.TurbineVelocity;
-import org.apache.turbine.services.velocity.VelocityService;
-
 import org.apache.turbine.util.RunData;
-
 import org.apache.turbine.util.template.TemplateNavigation;
 
 import org.apache.velocity.context.Context;

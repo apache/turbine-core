@@ -54,8 +54,6 @@ package org.apache.turbine.services.security.torque;
  * <http://www.apache.org/>.
  */
 
-import java.sql.Connection;
-
 import java.util.Iterator;
 
 import org.apache.turbine.om.security.Permission;

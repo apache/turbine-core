@@ -65,7 +65,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.util.ObjectUtils;
 
 /**
  * A generic implementation of User interface.
