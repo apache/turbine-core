@@ -1,0 +1,4 @@
+<!ELEMENT dataset EMPTY>
+<!ATTLIST dataset
+    name CDATA #REQUIRED
+>

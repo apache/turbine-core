@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!DOCTYPE database SYSTEM "http://db.apache.org/torque/dtd/database_3_1.dtd">
+
+<!-- ======================================================================== -->
+<!-- =                                                                      = -->
+<!-- = Database Definition for the Application                              = -->
+<!-- =                                                                      = -->
+<!-- = @version $Id$ = -->
+<!-- =                                                                      = -->
+<!-- ======================================================================== -->
+
+<database name="@DATABASE_DEFAULT@"
+  defaultIdMethod="idbroker"
+  defaultJavaType="primitive"
+  defaultJavaNamingMethod="underscore"
+  package="@DATABASE_PACKAGE@">
+
+</database>
