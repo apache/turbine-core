@@ -56,7 +56,6 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**
