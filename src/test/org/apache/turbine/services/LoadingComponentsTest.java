@@ -1,5 +1,4 @@
-package org.apache.turbine.services.crypto;
-
+package org.apache.turbine.services;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -22,7 +21,7 @@ package org.apache.turbine.services.crypto;
  *    if any, must include the following acknowledgment:
  *       "This product includes software developed by the
  *        Apache Software Foundation (http://www.apache.org/)."
- *    AintakeToolernately, this acknowledgment may appear in the software itself,
+ *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
  * 4. The names "Apache" and "Apache Software Foundation" and
@@ -53,97 +52,65 @@ package org.apache.turbine.services.crypto;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
+import java.util.Vector;
+import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletResponse;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import org.apache.fulcrum.crypto.CryptoAlgorithm;
+import org.apache.fulcrum.cache.DefaultGlobalCacheService;
 import org.apache.fulcrum.crypto.CryptoService;
+import org.apache.fulcrum.factory.FactoryService;
+import org.apache.fulcrum.intake.IntakeService;
+import org.apache.fulcrum.localization.LocalizationService;
+import org.apache.fulcrum.mimetype.MimeTypeService;
+import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.MerlinComponentService;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
+import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.test.BaseTestCase;
+import org.apache.turbine.test.EnhancedMockHttpServletRequest;
+import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
-
+import com.mockobjects.servlet.MockHttpServletResponse;
+import com.mockobjects.servlet.MockHttpSession;
+import com.mockobjects.servlet.MockServletConfig;
 /**
- * Verifies the Fulcrum Crypto Service works properly in Turbine.
- * <br>
+ * Unit test for verifing that we can load all the appropriate components from the
+ * appropriate Container.  For now that is just ECM (AvalonComponentService)
+ * but in the future with mixed containers there could be multiple.
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
- * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
-public class CryptoDefaultTest extends BaseTestCase
+public class LoadingComponentsTest extends BaseTestCase
 {
-    private static final String preDefinedInput = "Oeltanks";
     private static TurbineConfig tc = null;
-    private CryptoService cryptoService;
-
-    public CryptoDefaultTest(String name) throws Exception
+    public LoadingComponentsTest(String name) throws Exception
     {
         super(name);
-
-      
     }
-
-    public static Test suite()
+    public void testLoading() throws Exception
     {
-        return new TestSuite(CryptoDefaultTest.class);
-    }
-
-    public void testMd5()
-    {
-        String preDefinedResult = "XSop0mncK19Ii2r2CUe29w==";
-
-        try
-        {
-            CryptoAlgorithm ca =cryptoService.getCryptoAlgorithm("default");
-
-            ca.setCipher("MD5");
-
-            String output = ca.encrypt(preDefinedInput);
-
-            assertEquals("MD5 Encryption failed ", preDefinedResult, output);
-
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            fail();
-        }
-    }
-
-    public void testSha1()
-    {
-        String preDefinedResult = "uVDiJHaavRYX8oWt5ctkaa7j1cw=";
-
-        try
-        {
-            CryptoAlgorithm ca = cryptoService.getCryptoAlgorithm("default");
-
-            ca.setCipher("SHA1");
-
-            String output = ca.encrypt(preDefinedInput);
-
-            assertEquals("SHA1 Encryption failed ", preDefinedResult, output);
-
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            fail();
-        }
+        AvalonComponentService ecm =
+            (AvalonComponentService) TurbineServices.getInstance().getService(
+                    AvalonComponentService.SERVICE_NAME);
+        DefaultGlobalCacheService dgcs = (DefaultGlobalCacheService)ecm.lookup(DefaultGlobalCacheService.ROLE);
+        assertNotNull(dgcs);
+        
+        CryptoService cs = (CryptoService)ecm.lookup(CryptoService.ROLE);
+        assertNotNull(cs);
+        LocalizationService ls = (LocalizationService)ecm.lookup(LocalizationService.ROLE);
+        assertNotNull(ls);
+        IntakeService intake = (IntakeService)ecm.lookup(IntakeService.ROLE);
+        assertNotNull(intake);
+        FactoryService fs = (FactoryService)ecm.lookup(FactoryService.ROLE);
+        assertNotNull(fs);
+        MimeTypeService mimetype = (MimeTypeService)ecm.lookup(MimeTypeService.ROLE);
+        assertNotNull(mimetype);
     }
     public void setUp() throws Exception
     {
-        tc =
-            new TurbineConfig(
-                ".",
-                "/conf/test/TestFulcrumComponents.properties");
+        tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
-        MerlinComponentService acs =
-            (MerlinComponentService) TurbineServices.getInstance().getService(
-		MerlinComponentService.SERVICE_NAME);
-        cryptoService = (CryptoService) acs.lookup("/fulcrum/crypto");
     }
     public void tearDown() throws Exception
     {

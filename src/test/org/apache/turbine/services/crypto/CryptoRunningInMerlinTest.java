@@ -1,4 +1,4 @@
-package org.apache.turbine;
+package org.apache.turbine.services.crypto;
 
 /* ====================================================================
  * The Apache Software License, Version 1.1
@@ -22,7 +22,7 @@ package org.apache.turbine;
  *    if any, must include the following acknowledgment:
  *       "This product includes software developed by the
  *        Apache Software Foundation (http://www.apache.org/)."
- *    Alternately, this acknowledgment may appear in the software itself,
+ *    AintakeToolernately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
  * 4. The names "Apache" and "Apache Software Foundation" and
@@ -57,113 +57,99 @@ package org.apache.turbine;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.torque.Torque;
-import org.apache.torque.avalon.TorqueComponent;
+import org.apache.fulcrum.crypto.CryptoAlgorithm;
+import org.apache.fulcrum.crypto.CryptoService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
+import org.apache.turbine.services.avaloncomponent.MerlinComponentService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 
 /**
- * Can we load and run Torque standalone, from Component and from
- * AvalonComponent Service?
+ * Verifies the Fulcrum Crypto Service works properly in Turbine.
+ * <br>
  *
- * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
-public class TorqueLoadTest extends BaseTestCase
+public class CryptoRunningInMerlinTest extends BaseTestCase
 {
-    public TorqueLoadTest(String name) throws Exception
+    private static final String preDefinedInput = "Oeltanks";
+    private static TurbineConfig tc = null;
+    private CryptoService cryptoService;
+
+    public CryptoRunningInMerlinTest(String name) throws Exception
     {
         super(name);
+
+      
     }
 
     public static Test suite()
     {
-        return new TestSuite(TorqueLoadTest.class);
+        return new TestSuite(CryptoRunningInMerlinTest.class);
     }
 
-    /**
-     * An uninitialized Torque must not be initialized.
-     */
-    public void testTorqueNonInit() throws Exception
+    public void testMd5()
     {
-        assertFalse("Torque should not be initialized!", Torque.isInit());
-    }
+        String preDefinedResult = "XSop0mncK19Ii2r2CUe29w==";
 
-    /**
-     * Load Torque from a given config file.
-     */
-    public void testTorqueManualInit() throws Exception
-    {
-        assertFalse("Torque should not be initialized!", Torque.isInit());
-        Torque.init("conf/test/TorqueTest.properties");
-        assertTrue("Torque must be initialized!", Torque.isInit());
-        Torque.shutdown();
-        assertFalse("Torque did not shut down properly!", Torque.isInit());
-    }
-
-    /**
-     * Load Torque with the ComponentService
-     */
-    public void testTorqueComponentServiceInit() throws Exception
-    {
-        assertFalse("Torque should not be initialized!", Torque.isInit());
-
-        TurbineConfig tc =
-            new TurbineConfig(
-                ".",
-                "/conf/test/TurbineComponentService.properties");
         try
         {
-            tc.initialize();
-            assertTrue("Torque must be initialized!", Torque.isInit());
+            CryptoAlgorithm ca =cryptoService.getCryptoAlgorithm("default");
+
+            ca.setCipher("MD5");
+
+            String output = ca.encrypt(preDefinedInput);
+
+            assertEquals("MD5 Encryption failed ", preDefinedResult, output);
+
         }
         catch (Exception e)
         {
-            throw e;
+            e.printStackTrace();
+            fail();
         }
-        finally
+    }
+
+    public void testSha1()
+    {
+        String preDefinedResult = "uVDiJHaavRYX8oWt5ctkaa7j1cw=";
+
+        try
         {
-            tc.dispose();
+            CryptoAlgorithm ca = cryptoService.getCryptoAlgorithm("default");
+
+            ca.setCipher("SHA1");
+
+            String output = ca.encrypt(preDefinedInput);
+
+            assertEquals("SHA1 Encryption failed ", preDefinedResult, output);
+
         }
-        // Uncomment once we get a torque 3.1 release post alpha-2
-        // Everything up to alpha-2 does not shut down Torque properly.
-        // assertFalse("Torque did not shut down properly!", Torque.isInit());
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            fail();
+        }
     }
-
-    private AvalonComponentService getService()
+    public void setUp() throws Exception
     {
-        return (AvalonComponentService) TurbineServices
-            .getInstance()
-            .getService(
-            AvalonComponentService.SERVICE_NAME);
-    }
-
-    /**
-     * Load Torque with the AvalonComponentService
-     */
-    public void testTorqueAvalonServiceInit() throws Exception
-    {
-        assertFalse("Torque should not be initialized!", Torque.isInit());
-
-        TurbineConfig tc =
+        tc =
             new TurbineConfig(
                 ".",
                 "/conf/test/TestFulcrumComponents.properties");
-
         tc.initialize();
-        assertTrue("Torque must be initialized!", Torque.isInit());
-
-        TorqueComponent toc =
-            (TorqueComponent) getService().lookup(
-                "org.apache.torque.avalon.Torque");
-        assertTrue("TorqueComponent must be initialized!", toc.isInit());
-
-        getService().release(toc);
-
-        tc.dispose();
-
-        assertFalse("Torque did not shut down properly!", Torque.isInit());
+        MerlinComponentService acs =
+            (MerlinComponentService) TurbineServices.getInstance().getService(
+		MerlinComponentService.SERVICE_NAME);
+        cryptoService = (CryptoService) acs.lookup("/fulcrum/crypto");
+    }
+    public void tearDown() throws Exception
+    {
+        if (tc != null)
+        {
+            tc.dispose();
+        }
     }
 }
