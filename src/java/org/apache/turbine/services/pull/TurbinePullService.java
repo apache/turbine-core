@@ -76,15 +76,13 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 
 /**
- * <p>
  * This is the concrete implementation of the Turbine
  * Pull Service.
- * </p>
  * <p>
  * These are tools that are placed in the context by the service
  * These tools will be made available to all your
  * templates. You list the tools in the following way:
- * </p>
+ * <p>
  * <pre>
  * tool.<scope>.<id> = <classname>
  *
@@ -142,6 +140,7 @@ import org.apache.velocity.context.Context;
  *              This means for a logged in user the tool will be persisted
  *              in the user's objectdata. Tool should be Serializable.  These
  *              tools do not need to be threadsafe.
+ *              <b>persistent scope tools are deprecated in 2.3</b>
  *
  * Defaults: none
  * </pre>
@@ -629,6 +628,7 @@ public class TurbinePullService
                         // put the tool in the context
                         log.debug("Adding " + tool + " to ctx as "
                                 + toolData.toolName);
+                        log.warn("Persistent scope tools are deprecated.");
                         context.put(toolData.toolName, tool);
                     }
                     else
