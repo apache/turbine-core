@@ -202,7 +202,6 @@ public abstract class TurbineUpload
                                     String path)
             throws TurbineException
     {
-        UploadService upload = getService();
-        upload.parseRequest(req, params, path);
+        getService().parseRequest(req, params, path);
     }
 }

@@ -191,8 +191,8 @@ public interface UploadService
      * @param params The ParameterParser instance to insert form
      * fields into.
      * @param path The location where the files should be stored.
-     * @exception TurbineException if there are problems reading/parsing
-     * the request or storing files.
+     * @exception TurbineException Problems reading/parsing the
+     * request or storing the uploaded file(s).
      */
     void parseRequest(HttpServletRequest req,
                       ParameterParser params,
