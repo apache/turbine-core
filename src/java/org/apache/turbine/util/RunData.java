@@ -56,8 +56,8 @@ package org.apache.turbine.util;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Hashtable;
 import java.util.Locale;
+import java.util.Map;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -67,6 +67,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.ecs.Document;
 import org.apache.ecs.Element;
 import org.apache.ecs.StringElement;
+
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.template.TemplateInfo;
@@ -82,6 +83,7 @@ import org.apache.turbine.util.template.TemplateInfo;
  * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
  * @author <a href="mailto:bhoeneis@ee.ethz.ch">Bernie Hoeneisen</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public interface RunData
@@ -421,7 +423,7 @@ public interface RunData
      * will set the print writer via the response.
      *
      * @return a print writer.
-     * @throws IOException.
+     * @throws IOException
      */
     PrintWriter getOut()
             throws IOException;
@@ -539,14 +541,14 @@ public interface RunData
      *
      * @return a hashtable.
      */
-    Hashtable getJNDIContexts();
+    Map getJNDIContexts();
 
     /**
      * Sets JNDI Contexts.
      *
      * @param contexts a hashtable.
      */
-    void setJNDIContexts(Hashtable contexts);
+    void setJNDIContexts(Map contexts);
 
     /**
      * Gets the cached server scheme.
@@ -648,7 +650,7 @@ public interface RunData
     /**
      * Gets a table of debug variables.
      *
-     * @return a hashtable for debug variables.
+     * @return a Map of debug variables.
      */
-    Hashtable getVarDebug();
+    Map getVarDebug();
 }
