@@ -72,6 +72,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.Turbine;
+import org.apache.turbine.util.ServletUtils;
 
 /**
  * An implementation of AvalonComponentService which loads all the
@@ -155,22 +156,31 @@ public class TurbineAvalonComponentService
      */
     public void initialize() throws Exception
     {
+        // get the filenames and expand them relative to webapp root
+        String sysConfigFilename = Turbine.getRealPath(
+                getConfiguration().getString("componentConfiguration"));
+        String roleConfigFilename = Turbine.getRealPath(
+                getConfiguration().getString("componentRoles"));
+
         // process configuration files
         DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
-        Configuration sysConfig = builder.buildFromFile(getConfiguration().getString("componentConfiguration"));
-        Configuration roleConfig = builder.buildFromFile(getConfiguration().getString("componentRoles"));
+        Configuration sysConfig = builder.buildFromFile(sysConfigFilename);
+        Configuration roleConfig = builder.buildFromFile(roleConfigFilename);
 
         // Create the LoggerManager for Log4J
-        LoggerManager lm = new org.apache.avalon.excalibur.logger.Log4JLoggerManager();
+        LoggerManager lm =
+                new org.apache.avalon.excalibur.logger.Log4JLoggerManager();
 
         // Setup the RoleManager
         DefaultRoleManager roles = new DefaultRoleManager();
-        roles.enableLogging(lm.getLoggerForCategory("org.apache.turbine.services"));
+        roles.enableLogging(
+                lm.getLoggerForCategory("org.apache.turbine.services"));
         roles.configure(roleConfig);
 
         // Setup ECM
         this.manager.setLoggerManager(lm);
-        this.manager.enableLogging(lm.getLoggerForCategory("org.apache.turbine.services"));
+        this.manager.enableLogging(
+                lm.getLoggerForCategory("org.apache.turbine.services"));
         this.manager.contextualize(new DefaultContext());
         this.manager.setRoleManager(roles);
         this.manager.configure(sysConfig);
