@@ -54,6 +54,7 @@ package org.apache.turbine.services.localization;
  * <http://www.apache.org/>.
  */
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import org.apache.turbine.services.Service;
@@ -84,6 +85,7 @@ import org.apache.turbine.util.RunData;
  * Localization.getString(str)
  *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
 public abstract class Localization
@@ -93,17 +95,25 @@ public abstract class Localization
      * locale values of what is defined in the
      * TurbineResources.properties file for the
      * locale.default.language and locale.default.country property
-     * values.  If those cannot be found, then en/US is used.
+     * values.  If those cannot be found, then the JVM defaults are
+     * used.
      *
-     * @param str Name of string.
+     * @param key Name of string.
      * @return A localized String.
      */
-    public static String getString ( String str )
+    public static String getString(String key)
     {
-        return ((LocalizationService)TurbineServices.getInstance()
-                .getService(LocalizationService.SERVICE_NAME))
-            .getBundle()
-            .getString ( str );
+        return getService().getBundle().getString(key);
+    }
+
+    /**
+     * @param key Name of the text to retrieve.
+     * @param locale Locale to get text for.
+     * @return Localized text.
+     */
+    public static String getString(String key, Locale locale)
+    {
+        return getService().getBundle(null, locale).getString(key);
     }
 
     /**
@@ -112,35 +122,32 @@ public abstract class Localization
      * header is not present, it will fall back to using the locale
      * values of what is defined in the TurbineResources.properties
      * file for the locale.default.language and locale.default.country
-     * property values.  If those cannot be found, then en/US is used.
+     * property values.  If those cannot be found, then the JVM
+     * defaults are used.
      *
-     * @param data Turbine information.
-     * @param str Name of string.
+     * @param req HttpServletRequest information.
+     * @param key Name of string.
      * @return A localized String.
      */
-    public static String getString ( RunData data,
-                                     String str )
+    public static String getString(String key, HttpServletRequest req)
     {
-        return ((LocalizationService)TurbineServices.getInstance()
-                .getService(LocalizationService.SERVICE_NAME))
-            .getBundle(data)
-            .getString ( str );
+        return getService().getBundle(req).getString(key);
     }
 
     /**
-     * Convenience method that pulls a localized string off the LocalizationService
-     * using the default ResourceBundle name defined in the TurbineResources.properties
-     * file and the specified language name in ISO format. 
+     * Convenience method that pulls a localized string off the
+     * LocalizationService using the default ResourceBundle name
+     * defined in the TurbineResources.properties file and the
+     * specified language name in ISO format.
      *
-     * @param str Name of string.
+     * @param key Name of string.
      * @param lang Desired language for the localized string.
      * @return A localized string.
      */
-       
-    public static String getString (String str, String lang) 
+    public static String getString(String key, String lang)
     {
-	String bundleName = TurbineResources.getString("locale.default.bundle", "");
-	return Localization.getBundle (bundleName, new Locale (lang, "")).getString (str);
+        return getBundle(getDefaultBundleName(), new Locale(lang, ""))
+            .getString(key);
     }
 
     /**
@@ -151,9 +158,7 @@ public abstract class Localization
      */
     public static ResourceBundle getBundle(String bundleName)
     {
-        return ((LocalizationService)TurbineServices.getInstance()
-                .getService(LocalizationService.SERVICE_NAME))
-            .getBundle(bundleName);
+        return getService().getBundle(bundleName);
     }
 
     /**
@@ -167,25 +172,33 @@ public abstract class Localization
     public static ResourceBundle getBundle(String bundleName,
                                            String languageHeader)
     {
-        return ((LocalizationService)TurbineServices.getInstance()
-                .getService(LocalizationService.SERVICE_NAME))
-            .getBundle(bundleName, languageHeader);
+        return getService().getBundle(bundleName, languageHeader);
     }
 
     /**
      * Convenience method to get a ResourceBundle based on name and
-     * HTTP Accept-Language header in RunData.
+     * HTTP Accept-Language header in HttpServletRequest.
+     *
+     * @param req HttpServletRequest.
+     * @return A localized ResourceBundle.
+     */
+    public static ResourceBundle getBundle(HttpServletRequest req)
+    {
+        return getService().getBundle(req);
+    }
+
+    /**
+     * Convenience method to get a ResourceBundle based on name and
+     * HTTP Accept-Language header in HttpServletRequest.
      *
      * @param bundleName Name of bundle.
-     * @param data Turbine information.
+     * @param req HttpServletRequest.
      * @return A localized ResourceBundle.
      */
     public static ResourceBundle getBundle(String bundleName,
-                                           RunData data)
+                                           HttpServletRequest req)
     {
-        return ((LocalizationService)TurbineServices.getInstance()
-                .getService(LocalizationService.SERVICE_NAME))
-            .getBundle(bundleName, data);
+        return getService().getBundle(bundleName, req);
     }
 
     /**
@@ -196,23 +209,62 @@ public abstract class Localization
      * @param locale A Locale.
      * @return A localized ResourceBundle.
      */
-    public static ResourceBundle getBundle(String bundleName,
-                                           Locale locale)
+    public static ResourceBundle getBundle(String bundleName, Locale locale)
     {
-        return ((LocalizationService)TurbineServices.getInstance()
-                .getService(LocalizationService.SERVICE_NAME))
-            .getBundle(bundleName, locale);
+        return getService().getBundle(bundleName, locale);
     }
 
     /**
-     * This method sets the name of the defaultBundle.
+     * This method sets the name of the default bundle.
      *
      * @param defaultBundle Name of default bundle.
      */
     public static void setBundle(String defaultBundle)
     {
-        ((LocalizationService)TurbineServices.getInstance()
-         .getService(LocalizationService.SERVICE_NAME))
-            .setBundle(defaultBundle);
+        getService().setBundle(defaultBundle);
+    }
+
+    /**
+     * Attempts to pull the <code>Accept-Language</code> header out of
+     * the HttpServletRequest object and then parse it.  If the header
+     * is not present, it will return a null Locale.
+     *
+     * @param req HttpServletRequest.
+     * @return A Locale.
+     */
+    public static Locale getLocale(HttpServletRequest req)
+    {
+        return getService().getLocale(req);
+    }
+
+    /**
+     * This method parses the <code>Accept-Language</code> header and
+     * attempts to create a Locale out of it.
+     *
+     * @param languageHeader A String with the language header.
+     * @return A Locale.
+     */
+    public static Locale getLocale(String languageHeader)
+    {
+        return getService().getLocale(languageHeader);
+    }
+
+    /**
+     * @see org.apache.fulcrum.localization.LocalizationService#getDefaultBundle()
+     */
+    public static String getDefaultBundleName()
+    {
+        return getService().getDefaultBundleName();
+    }
+
+    /**
+     * Gets the <code>LocalizationService</code> implementation.
+     *
+     * @return the LocalizationService implementation.
+     */
+    protected static final LocalizationService getService()
+    {
+        return (LocalizationService) TurbineServices.getInstance()
+                .getService(LocalizationService.SERVICE_NAME);
     }
 }
