@@ -55,8 +55,9 @@ package org.apache.turbine.services.naming;
  */
 
 import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.naming.Context;
@@ -81,22 +82,28 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class TurbineNamingService extends TurbineBaseService implements NamingService
+public class TurbineNamingService
+        extends TurbineBaseService
+        implements NamingService
 {
     /** Logging */
     private static Log log = LogFactory.getLog(TurbineNamingService.class);
 
     /**
-     * A global HashTable of Property objects which are initialised using
+     * A global Map of Property objects which are initialised using
      * parameters from the ResourcesFile
      */
-    private static Hashtable contextPropsList = null;
+    private static Map contextPropsList = null;
+
+    /** All initial contexts known to this service */
+    private Map initialContexts = new HashMap();
 
     /**
      * Called the first time the Service is used.<br>
      *
      */
-    public void init() throws InitializationException
+    public void init()
+            throws InitializationException
     {
         // Context properties are specified in lines in the properties
         // file that begin with "context.contextname.", allowing
@@ -108,14 +115,13 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
         Configuration conf = Turbine.getConfiguration();
         try
         {
-            contextPropsList = new Hashtable();
+            contextPropsList = new HashMap();
 
-            for (Iterator contextKeys = conf.getKeys("context."); contextKeys.hasNext();)
+            for (Iterator contextKeys = conf.subset("context"); contextKeys.hasNext();)
             {
                 String key = (String) contextKeys.next();
-                int start = key.indexOf(".") + 1;
                 int end = key.indexOf(".", start);
-                String contextName = key.substring(start, end);
+                String contextName = key.substring(0, end);
                 Properties contextProps = null;
 
                 if (contextPropsList.containsKey(contextName))
@@ -128,10 +134,19 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
                     contextProps = new Properties();
                 }
 
-                contextProps.put(
-                        key.substring(end + 1), conf.getString(key));
+                contextProps.put(key.substring(end + 1),
+                        conf.getString(key));
 
                 contextPropsList.put(contextName, contextProps);
+            }
+
+            for (Enumeration contextPropsKeys = contextPropsList.keys();
+                 contextPropsKeys.hasMoreElements();)
+            {
+                String key = (String) contextPropsKeys.nextElement();
+                Properties contextProps = (Properties) contextPropsList.get(key);
+                InitialContext context = new InitialContext(contextProps);
+                initialContexts.put(key, context);
             }
 
             setInit(true);
@@ -147,11 +162,12 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
 
     /**
      * Places the contexts defined in the TurbineResources instance
-     * (if any) into the data.contexts Hashtable.
+     * (if any) into the data.contexts Map.
      *
      * @param data The RunData object for the current request.
      * @exception InitializationException, if there was a problem
      * during initialization.
+     * @deprecated This should never have been here. No replacement.
      */
     public void init(RunData data) throws InitializationException
     {
