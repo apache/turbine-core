@@ -90,6 +90,16 @@
     </developer>
   </developers>
 
+  <contributors>
+    <contributor>
+      <name>Lester Ward</name>
+      <email>lward@tagaudit.com</email>
+      <roles>
+        <role>Java Contributor</role>
+      </roles>
+    </contributor>      
+  </contributors>
+
   <!-- ======================================================================== -->
   <!--                                                                          -->
   <!-- M.E.T.A. itself has no dependencies on any jars.                         -->
