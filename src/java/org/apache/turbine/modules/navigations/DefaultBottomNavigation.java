@@ -77,8 +77,8 @@ import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Navigation;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
-import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.uri.TurbineURI;
 
 /**
  * This is a sample navigation module.
@@ -107,18 +107,14 @@ public class DefaultBottomNavigation extends Navigation
     public ConcreteElement doBuild(RunData data) throws Exception
     {
         Form form;
-        form =
-            new Form(
-                new DynamicURI(
-                    data,
-                    TurbineConstants.SCREEN_DEFAULT_DEFAULT,
-                    TurbineConstants.ACTION_LOGOUT_DEFAULT,
-                    true)
-                    .toString(),
-                Form.POST).addElement(
-                new Input("SUBMIT", "Logout", "Logout"));
-        ElementContainer body =
-            new ElementContainer()
+        form = new Form(
+            new TurbineURI(data,
+                           TurbineConstants.SCREEN_DEFAULT_DEFAULT,
+                           TurbineConstants.ACTION_LOGOUT_DEFAULT,
+                           true).getRelativeLink(),
+            Form.POST).addElement(new Input("SUBMIT", "Logout", "Logout"));
+
+        ElementContainer body = new ElementContainer()
                 .addElement(new HR().setSize(1).setNoShade(true))
                 .addElement(
                     new B().addElement(
