@@ -19,7 +19,9 @@ REM - MySQL database from Windows machines :-)
     #set ($host = "")
 #end
 
-#foreach ($databaseModel in $appData.Databases)
-mysqladmin $user $password $host --force drop $databaseModel.Name
-mysqladmin $user $password $host --force create $databaseModel.Name
+#foreach ($dataModel in $dataModels)
+#foreach ($database in $dataModel.databases)
+mysqladmin $user $password $host --force drop $database.name
+mysqladmin $user $password $host --force create $database.name
+#end
 #end

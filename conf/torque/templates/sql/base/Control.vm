@@ -3,40 +3,22 @@
 #set ( $fname= "sql/base/$targetDatabase/table.vm" )
 #set ( $fnamekeys= "sql/base/$targetDatabase/tablefk.vm" )
 
-#foreach ($databaseModel in $appData.Databases)
-    
-    #if ($project)
+#foreach ($dataModel in $dataModels)
         
-        We have a defined project: $project
+  #set ( $outFile = "${dataModel.name}.sql" )
         
-        #if ($appData.MultipleDatabases)
-            #set ( $outFile = "${project}-${databaseModel.Name}-schema.sql" )
-        #else
-            #set ( $outFile = "${project}-schema.sql" )
-        #end
-        
-        File to be created: $outFile
-        
-        #foreach ($tbl in $databaseModel.Tables)
-            #if (!$tbl.isSkipSql())
-                $generator.parse($fname,$outFile,"table",$tbl)
-            #end
-        #end
-        #foreach ($tbl in $databaseModel.Tables)
-            #if (!$tbl.isSkipSql())
-                $generator.parse($fnamekeys,$outFile,"tablefk",$tbl)
-            #end
-        #end    
-    #else
-        #foreach ($tbl in $databaseModel.Tables)
-            #if (!$tbl.isSkipSql())
-                $generator.parse($fname,"","table",$tbl)
-            #end
-        #end
-        #foreach ($tbl in $databaseModel.Tables)
-            #if (!$tbl.isSkipSql())
-                $generator.parse($fnamekeys,"","tablefk",$tbl)
-            #end
-        #end    
+  File to be created: $outFile
+  
+  #set ( $database = $dataModel.database )
+  #foreach ($tbl in $database.tables)
+    #if (!$tbl.isSkipSql())
+      $generator.parse($fname,$outFile,"table",$tbl)
     #end
+  #end
+    
+  #foreach ($tbl in $database.tables)
+    #if (!$tbl.isSkipSql())
+      $generator.parse($fnamekeys,$outFile,"tablefk",$tbl)
+    #end
+  #end    
 #end

@@ -1,4 +1,3 @@
-delete from ID_TABLE where ID_TABLE_ID >= $initialID;
 #foreach ($tbl in $tables)
 insert into ID_TABLE (ID_TABLE_ID, TABLE_NAME, NEXT_ID, QUANTITY) VALUES ($initialID, '$tbl.Name', 100, 10);
 #set ( $initialID = $initialID + 1 )

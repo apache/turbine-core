@@ -18,7 +18,7 @@
     #set ($host = "")
 #end
 
-#foreach ($databaseModel in $appData.Databases)
-mysqladmin $user $password $host --force drop $databaseModel.Name
-mysqladmin $user $password $host --force create $databaseModel.Name
+#foreach ($databaseName in $databaseNames)
+mysqladmin $user $password $host --force drop $databaseName
+mysqladmin $user $password $host --force create $databaseName
 #end
