@@ -29,20 +29,19 @@
 <subsection name="Installing Maven">
 <p>
 If you want to use META, you need <a
-href="http://maven.apache.org/">maven</a>.  A problem with maven is,
-that there is still no real release and many things are in a constant
-state of flux.</p>
-
-<p>From the <a
+href="http://maven.apache.org/">maven</a>. Even though maven has still
+no real release and many things are in a constant state of flux, you
+can get maven 1.0-RC3 from the<a
 href="http://maven.apache.org/start/download.html">maven download
-site</a> you can get maven 1.0-RC3 which proved to be working with the
-META plugin. You can either get a binary or a source distribution.</p>
+site</a>, which proved to be working with the META plugin. You can
+either get a binary or a source distribution.
+</p>
 
 </subsection>
 
 <subsection name="Installing the Torque and META plugins">
 <p>
-If you have maven running, get these plugins through the following links.
+After you've installed maven, get these plugins through the following links.
 </p>
 <table>
 <tr>
@@ -53,15 +52,22 @@ If you have maven running, get these plugins through the following links.
 </tr>
 </table>
 <p>
-If you already have the Torque plugin, make sure that you have the
-Plugin from the Torque 3.1 Branch installed. META does not work yet
-with the 3.2 development branch.
+If you already have the Torque plugin installed, make sure that you
+have the Plugin from the <a
+href="http://db.apache.org/torque-31/">Torque 3.1 Branch</a>
+installed. META does not work yet with the 3.2 development branch.
 </p>
 
 <p>
-Now copy the two plugins into your plugins folder (which is located in
-your MAVEN_HOME directory). After doing so, run maven -g and check
-whether the following targets are displayed in the goal list:
+Now copy the two plugins into your local plugin directory, which is
+either referenced by MAVEN_HOME_LOCAL/plugins or the global plugins
+directory at MAVEN_HOME/plugins. Which one to use depends on your
+maven installation. You find some documentation on how to do this <a
+href="http://maven.apache.org/start/install.html">on the maven install
+page</a>.<br/>
+
+After the installation, run maven -g and check whether the following
+targets are displayed in the goal list:
 </p>
 
 <source><![CDATA[

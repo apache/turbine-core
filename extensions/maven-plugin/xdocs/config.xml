@@ -29,13 +29,72 @@
   <p>
   META generates a few configuration files for your application. These work
   well for a simple application without security and just a few data sources.<br/>
-  <b>Using META is no replacement for looking at the Turbine documentation and the
-  comments in the configuration files!</b>
+  <b>All configuration files, unless stated explicitly otherwise, get
+  deleted and recreated if you re-run <code>turbine:setup</code>. So be
+  careful!</b>
   </p>
+
+<subsection name="Maven specific configuration files">
+<p>
+META generates and uses the following configuration files in the root
+directory of your application tree.<br/>
+
+If you run the <code>turbine:setup</code> goal and no
+<code>setup.properties</code> file exists in it yet, a new file is
+created with all parameters copied in. An existing setup.properties
+file is never clobbered!<br/>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Function</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <a name="setup_properties"/>
+    <td>setup.properties</td>
+    <td>META configuration</td>
+    <td>Whenever you run the <code>turbine:setup</code> goal, this
+        file is read and used to generate all other configuration
+        files. It should contain the <a
+        href="properties.html#setup_properties">Setup Properties</a> for
+        generating you application skeleton.</td>
+  </tr>
+  <tr>
+    <td>build.properties</td>
+    <td>Application configuration</td>
+    <td>This file is intended to customize your application for a specific installation.</td>
+  </tr>
+    <a name="project_properties"/>
+  <tr>
+    <td>project.properties</td>
+    <td>Application configuration</td>
+    <td>This file is intended to configure your application. It should contain the properties that
+        are the same for all installations.</td>
+  </tr>
+  <tr>
+    <td>maven.xml</td>
+    <td>Maven build file</td>
+    <td>This file contains the callbacks from other maven goals into
+        META. If you need to customize your build process, you can add
+        custom goals or callbacks in this file.</td>
+  </tr>
+  <tr>
+    <td>project.xml</td>
+    <td>Maven POM file</td>
+    <td>This file contains the maven-specific <a
+        href="http://maven.apache.org/reference/project-descriptor.html">Project
+        descriptor</a>.</td>
+  </tr>
+  </table>
+  </p>
+  </subsection>
 
   <subsection name="Application specific configuration files">
   <p>
-  META generates the following configuration files for your application:
+  META generates the following configuration files for your
+  application. These files are located in the <code>conf</code>
+  subdirectory of the application tree.
 
   <table>
   <tr>
@@ -143,7 +202,7 @@ configuration file. META activates the following services:<br/>
   <tr>
     <td>services.VelocityService.velocimacro.library.autoreload</td>
     <td>true</td>
-    <td>Good for debuggging, bad for production. If your macro files no longer change, set this to false.</td>
+    <td>Good for debugging, bad for production. If your macro files no longer change, set this to false.</td>
   </tr>
   <tr>
     <td>services.IntakeService.serialize.path</td>
@@ -160,8 +219,8 @@ configuration file. META activates the following services:<br/>
 
   <subsection name="Application-specific properties">
   <p>
-  All application specific parameters are configured in this file. It gets
-  merged into <code>TurbineResources.properties</code>
+  All application specific parameters are configured in &lt;appname&gt;.properties. It gets
+  merged into <code>TurbineResources.properties</code>.
   </p>
 
   <table>
@@ -195,8 +254,7 @@ configuration file. META activates the following services:<br/>
   <a href="http://db.apache.org/torque/">Torque</a> to access databases.<br/>
   In this configuration file, the various datasources are defined. META
   generates a default data source (<code>default</code>) and an application
-  specific data source (<code>&lt;appname&gt;</code>) which can be accessed
-  in your application.<br/>
+  specific data source (<code>&lt;appname&gt;</code>) for you.<br/>
   At setup time, both data sources are mapped onto the same JDBC data provider.
   </p>
 
@@ -242,7 +300,7 @@ configuration file. META activates the following services:<br/>
 </tr>
 <tr>
 <td>application.log</td>
-<td>org.apache.turbine.app.&lt;appname&gt;<br/>
+<td><a href="properties.html#turbine_app_package">${turbine.app.package}</a><br/>
     Everything else</td>
 <td>Catchall category. Your application logs its messages here</td>
 </tr>
@@ -265,6 +323,8 @@ configuration file. META activates the following services:<br/>
   If you don't intend to use Avalon in your application, you should
   not change anything here.</p>
   </subsection>
+  <p><b>Using META is no replacement for looking at the Turbine documentation and the
+  comments in the configuration files!</b></p>
 </section>
 </body>
 </document>

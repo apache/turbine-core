@@ -27,7 +27,7 @@
   <section name="Development tree">
   <p>
 The development tree is prebuilt by the META plugin and conforms to the
-maven layout rules.</p>
+<a href="http://maven.apache.org/reference/dirlayout.html">maven common directory layout</a>.</p>
 
   <table>
     <tr>

@@ -32,13 +32,14 @@
   databases. META supplies you with a few schema files to preset your
   database and to generate some data which can be put into the
   database by running the <code>torque:insert-sql</code> goal. All
-  schema files are located in <code>src/schema</code>, their result is
-  put into the <code>target/sql</code> directory.</p>
+  schema files are located in <a
+  href="tree.html#src_schema"><code>src/schema</code></a>, their
+  result is put into the <code>target/sql</code> directory.</p>
 
   <subsection name="application-specific files">
   <p>
   META generates a dummy schema file for you. If want to use Torque
-  to access a database, you put your table definitions and data values
+  to access a database, put your table definitions and data values
   into these files.
   <table>
   <tr>
@@ -59,13 +60,13 @@
     <td>Torque allows you to describe data for your custom tables in
        an XML file and load it into the database using the
        <code>torque:datasql</code> and <code>torque:insert-sql</code>
-       tasks. The syntax of this file is described in the &lt;appname&gt;-data.dtd
+       goals. The syntax of this file is described in the &lt;appname&gt;-data.dtd
        file and changes whenever your table definition file changes.</td>
   </tr>
   <tr>
     <td>&lt;appname&gt;-data.dtdp</td>
     <td>Data Type Definition for your custom tables</td>
-    <td>If you want to use the data loading tasks of torque, you must describe
+    <td>If you want to use the data loading goals of torque, you must describe
         your data in XML which is validated against this DTD. You
         don't have to update this file by hand, you can run the
         <code>torque:datadtd</code> goal and copy the resulting file
@@ -81,7 +82,7 @@
   <p>
   The plugin supplies you with a configuration file for generating an <code>ID_TABLE</code>
   table which is used by the Torque IdBroker to generate unique table row IDs. If you run
-  the <code>turbine:sql</code> task, SQL for this table is generated. There are no peer and object classes
+  the <code>turbine:sql</code> goal, SQL for this table is generated. There are no peer and object classes
   for the id table.</p>
   </subsection>
 

@@ -6,7 +6,8 @@
     <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
   </properties>
   <body>
-<section name="Setup Properties from the META plugin">
+<a name="setup_properties"/>
+<section name="Setup Properties">
     <p>
 META uses two sets of plugin properties to configure your Turbine
 application. The first set is called the &quot;Setup Properties&quot;,
@@ -19,6 +20,7 @@ turbine:setup goal (which might result in losing other changes to your
 configuration files, so be careful!).
 </p>
 
+<subsection name="META Plugin">
   <p>
   <table>
     <tr>
@@ -32,43 +34,7 @@ configuration files, so be careful!).
 <td>turbine.app.name</td>
 <td>No</td>
 <td><b>no default value</b></td>
-<td>Name of the new application.<font color="red">Must be set for turbine:setup, else the task fails!</font></td>
-</tr>
-
-<tr>
-<td>turbine.app.package</td>
-<td>Yes</td>
-<td>org.apache.turbine.app.${turbine.app.name}</td>
-<td>The Java package of the new application.</td>
-</tr>
-
-<tr>
-<td>turbine.app.om.name</td>
-<td>Yes</td>
-<td>${turbine.app.name}</td>
-<td>Name of the Torque datasource for application data.</td>
-</tr>
-
-<tr>
-<td>turbine.app.om.package</td>
-<td>Yes</td>
-<td>${turbine.app.package}.om</td>
-<td>Package for the OM classes to be used for application data.</td>
-</tr>
-
-<tr>
-<td>turbine.app.om.security.name</td>
-<td>Yes</td>
-<td>${turbine.app.om.name}</td>
-<td>Name of the Torque datasource which
-    contains the Turbine security tables (users, groups, roles, permissions)</td>
-</tr>
-
-<tr>
-<td>turbine.app.om.security.package</td>
-<td>Yes</td>
-<td>${turbine.app.om.package}</td>
-<td>Package for the OM classes to be used for security information.</td>
+<td>Name of the new application.<font color="red">Must be set for turbine:setup, else the goal fails!</font></td>
 </tr>
 
 <tr>
@@ -83,9 +49,9 @@ configuration files, so be careful!).
 
   </table>
 </p>
-</section>
+</subsection>
 
-<section name="Setup Properties from other plugins">
+<subsection name="Other plugins">
   <p>
   <table>
     <tr>
@@ -156,9 +122,19 @@ configuration files, so be careful!).
 </tr>
   </table>
   </p>
+</subsection>
 </section>
 
-<section name="Properties from the META plugin">
+<section name="Properties">
+    <p>
+These properties are used at setup time and get copied into the META
+generated <a
+href="config.html#project_properties">project.properties</a>
+file. They're used by various META goals and can be changed to modify
+the behaviour of the plugin goals.
+</p>
+
+<subsection name="META Plugin">
   <p>
   <table>
     <tr>
@@ -167,6 +143,44 @@ configuration files, so be careful!).
       <th>Default value</th>
       <th>Description</th>
     </tr>
+
+<a name="turbine_app_package"/>
+<tr>
+<td>turbine.app.package</td>
+<td>Yes</td>
+<td>org.apache.turbine.app.${turbine.app.name}</td>
+<td>The Java package of the new application.</td>
+</tr>
+
+<tr>
+<td>turbine.app.om.name</td>
+<td>Yes</td>
+<td>${turbine.app.name}</td>
+<td>Name of the Torque datasource for application data.</td>
+</tr>
+
+<tr>
+<td>turbine.app.om.package</td>
+<td>Yes</td>
+<td>${turbine.app.package}.om</td>
+<td>Package for the OM classes to be used for application data.</td>
+</tr>
+
+<tr>
+<td>turbine.app.om.security.name</td>
+<td>Yes</td>
+<td>${turbine.app.om.name}</td>
+<td>Name of the Torque datasource which
+    contains the Turbine security tables (users, groups, roles, permissions)</td>
+</tr>
+
+<tr>
+<td>turbine.app.om.security.package</td>
+<td>Yes</td>
+<td>${turbine.app.om.package}</td>
+<td>Package for the OM classes to be used for security information.</td>
+</tr>
+
 <tr>
 <td>turbine.app.inplace</td>
 <td>Yes</td>
@@ -188,9 +202,9 @@ configuration files, so be careful!).
 </tr>
   </table>
   </p>
-</section>
+</subsection>
 
-<section name="Properties from other plugins">
+<subsection name="From other plugins">
   <p>
   <table>
     <tr>
@@ -212,6 +226,7 @@ configuration files, so be careful!).
 </tr>
   </table>
   </p>
+</subsection>
 </section>
 </body>
 </document>

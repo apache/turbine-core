@@ -42,7 +42,7 @@ maven.appserver.home = C:/Program Files/Apache Software Foundation/Tomcat-5.0.24
 
 Please make sure that you do not add the webapp subdirectory to this
 property! <br/>
-On Windows, you must use the slash (&quot;/&quot;), not the backslash!.
+On Windows, you must use the slash (&quot;/&quot;), not the backslash for the directory pathes!
 </p>
 </subsection>
 
@@ -56,8 +56,8 @@ maven -Dturbine.app.name=helloworld turbine:setup
 ]]></source>
 
 <p>
-This should produce some maven output and you end up with a
-subdirectory to your current directory called
+This produces some maven output and creates a
+subdirectory in your current directory called
 &quot;helloworld&quot;. It should have a directory structure like
 this:</p>
 <p><center>
@@ -73,11 +73,10 @@ web container to check this out:
 maven turbine:deploy
 ]]></source>
 
-Now do the necessary steps that your web container requires to reload
-an application in its webapp directory. Point your browser to the
-application (if you use Tomcat running on your local machine, this
-would be http://localhost:8080/helloworld/app/). It should look like
-this:</p>
+Restart your web comtainer or force it to reload its applications.<br/>
+Point your browser to the deployed application (if you use Tomcat
+running on your local machine, this would be
+http://localhost:8080/helloworld/app/). It should look like this:</p>
 
 <p><center>
 <img src="images/helloworld.png" width="722" height="525"/><br/>

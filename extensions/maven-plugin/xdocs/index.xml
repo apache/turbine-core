@@ -27,10 +27,9 @@
 <section name="Maven Environment for Turbine Applications (META)">
 <p>
 The Maven Environment for Turbine Application (META) is an easy way to
-get started with applications based on the Turbine Webapplication
+start writing applications based on the Turbine Webapplication
 framework and also a collection of &quot;best practices&quot; and
-configuration information to get you started with writing code using
-the Turbine framework.
+configuration information.
 </p>
 </section>
 
@@ -39,13 +38,14 @@ the Turbine framework.
 META builds an application skeleton from a set of prebuilt
 configuration files and some user supplied parameters. Most of the
 parameters have reasonable defaults, only the application name must be
-supplied by the developer.
+supplied at setup time.
 <br/>
 Parameters are supplied either on the command line (if you want to
 rapid prototype an application, you can do so by running a single
-maven command) or with a special properties file that will be read by
-the META task. Please see the <a href="getting_started.html">Getting Started</a>
-page for a reference on how to bootstrap your application.
+maven command) or with a special properties file that is read by META
+when you setup your appliation. Please see the <a
+href="getting_started.html">Getting Started</a> page for a reference
+on how to bootstrap your application.
 </p>
 </section>
 <section name="Maven Integration">
@@ -56,20 +56,23 @@ META is installed as a maven plugin and has goals and properties.
 <subsection name="Goals">
 <p>
 All META goals are prefixed by "turbine" in the maven
-environment. While META is distinctive in the Turbine context, using
-meta:&lt;xxx&gt; proved confusing in the Maven context (is meta:&lt;xxx&gt; a
-maven meta-task or is it part of the META environment?). So the META
-environment uses the "turbine:" prefix.<br/>
-
+environment. While &quot;META&quot; is distinctive in the Turbine
+context, using meta:&lt;xxx&gt; proved confusing in the Maven context
+(is meta:&lt;xxx&gt; a maven meta-goal or is it part of the META
+environment?). So the META environment uses the "turbine:"
+prefix.<br/>
 The available goals are listed on the <a href="goals.html">Goals</a> page.
 </p>
 </subsection>
 <subsection name="Properties">
 <p>
-To adjust the various plugin tasks to your application, you must set a few
-properties in your project.properties or build.properties file. Most of the
-properties have a reasonable default. You can find the complete list of properties
-on the <a href="properties.html">Properties</a> page.
+To adjust the various parameters of the plugin to your application,
+you must set a few properties in your project.properties or
+build.properties file. Most of the properties have a reasonable
+default. You can find the complete list of properties on the <a
+href="properties.html">Properties</a> page. If you use the setup goal
+from META, these properties are preset either from the command line
+parameters or from the parameters set in the setup properties file.
 <br/>
 As META tries to integrate with the maven web application environment
 as seamlessly as possible, it requires a few properties from other
