@@ -96,7 +96,7 @@ advantage of the PrintableLayout Template add to the Template;
 </p>
 
 <source test=""><![CDATA[
-    $data.setLayoutTemplate("/PrintableLayout.vm")
+    $data.setLayoutTemplate("PrintableLayout.vm")
 ]]></source>
 
 <p>
@@ -116,17 +116,17 @@ For example;
 </p>
 
 <source test=""><![CDATA[
-    $data.getTemplateInfo().setLayoutTemplate("/PrintableLayout.vm")
+    $data.getTemplateInfo().setLayoutTemplate("PrintableLayout.vm")
 
     or
 
     #set $template = $data.getTemplateInfo()<br />
-    $template.setLayoutTemplate("/PrintableLayout.vm")
+    $template.setLayoutTemplate("PrintableLayout.vm")
 
     or
 
     #set $template = $data.getTemplateInfo()<br />
-    $!template.setLayoutTemplate("/PrintableLayout.vm")
+    $!template.setLayoutTemplate("PrintableLayout.vm")
 
 ]]></source>
 
@@ -163,14 +163,6 @@ would return;
 <p>
 where "newapp" is the chosen webapp deployment name.
 </p>
-
-<p>
-This same mechanism can also be used to link to static html;
-</p>
-
-<source>
-    $link.setPage("/path/to/static.html")
-</source>
 
 <p>
 However the HTML page will load itself into a screen and not be embedded withint the Layouts and Navigations. If you still wish static content to be embedded within the specified layouts and navigations it is easier to add the static content as a velocity template and not take advantage of any of the dynamic content addition the Velocity Context allows.
