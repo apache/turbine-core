@@ -63,6 +63,10 @@ Changes between Turbine 2.3 and 2.4.
 <p>
   <ul>
   	<li>
+  	   Added first cut of the MerlinComponentService which uses the Avalon Merlin
+  	   container.  Merlin has many many features to help with dealing with components.  Thanks to Peter for this!
+  	</li>
+  	<li>
   	   The cache, crypto, mimetype services have now been deprecated in favor
   	   of the Fulcrum versions as well.  Turbine security now uses the Fulcrum
   	   crypto component.
