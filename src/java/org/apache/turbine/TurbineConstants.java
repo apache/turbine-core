@@ -85,57 +85,52 @@ public interface TurbineConstants
     /** This is the default log file to be used for logging */
     String DEFAULT_LOGGER = "turbine";
 
-    /**
-     * The logging facility which captures output from the SchedulerService.
-     */
+    /** The logging facility which captures output from the SchedulerService. */
     String SCHEDULER_LOG_FACILITY = "scheduler";
 
-    /**
-     * SMTP server Turbine uses to send mail.
-     */
+    /** The SMTP server Turbine uses to send mail. */
     String MAIL_SERVER_KEY = "mail.server";
 
-    /**
-     * Property that controls whether Turbine modules are
-     * cached or not.
-     */
-    String MODULE_CACHE = "module.cache";
+    /** Property that controls whether Turbine modules are cached or not. */
+    String MODULE_CACHE_KEY = "module.cache";
 
-    /**
-     * The size of the actions cache if module caching is on.
-     */
-    String ACTION_CACHE_SIZE = "action.cache.size";
+    /** Default value of the Turbine Module Caching */
+    boolean MODULE_CACHE_DEFAULT = true;
 
-    /**
-     * The size of the layout cache if module caching is on.
-     */
-    String LAYOUT_CACHE_SIZE = "layout.cache.size";
+    /** Property for the size of the action cache if caching is on */
+    String ACTION_CACHE_SIZE_KEY = "action.cache.size";
 
-    /**
-     * The size of the navigation cache if module caching is on.
-     */
-    String NAVIGATION_CACHE_SIZE = "navigation.cache.size";
+    /** The default size for the action cache */
+    int ACTION_CACHE_SIZE_DEFAULT = 20;
 
-    /**
-     * The size of the actions page if module caching is on.
-     */
-    String PAGE_CACHE_SIZE = "page.cache.size";
+    /** Property for the size of the layout cache if caching is on */
+    String LAYOUT_CACHE_SIZE_KEY = "layout.cache.size";
 
-    /**
-     * The size of the actions cache if module caching is on.
-     */
-    String SCREEN_CACHE_SIZE = "screen.cache.size";
+    /** The default size for the layout cache */
+    int LAYOUT_CACHE_SIZE_DEFAULT = 10;
 
-    /**
-     * The size of the actions cache if module caching is on.
-     */
-    String SCHEDULED_JOB_CACHE_SIZE = 
-        "scheduledjob.cache.size";
+    /** Property for the size of the navigation cache if caching is on */
+    String NAVIGATION_CACHE_SIZE_KEY = "navigation.cache.size";
 
-    /**
-     * The packages where Turbine will look for modules.
-     * This is effectively Turbine's classpath.
-     */
+    /** The default size for the navigation cache */
+    int NAVIGATION_CACHE_SIZE_DEFAULT = 10;
+
+    /** Property for the size of the page cache if caching is on */
+    String PAGE_CACHE_SIZE_KEY = "page.cache.size";
+
+    /** The default size for the page cache */
+    int PAGE_CACHE_SIZE_DEFAULT = 5;
+
+    /** Property for the size of the screen cache if caching is on */
+    String SCREEN_CACHE_SIZE_KEY = "screen.cache.size";
+
+    /** The default size for the screen cache */
+    int SCREEN_CACHE_SIZE_DEFAULT = 50;
+
+    /** The size of the schedulder job cache if module caching is on. */
+    String SCHEDULED_JOB_CACHE_SIZE = "scheduledjob.cache.size";
+
+    /** The packages where Turbine will look for modules. */
     String MODULE_PACKAGES = "module.packages";
 
     /** Home page template. */

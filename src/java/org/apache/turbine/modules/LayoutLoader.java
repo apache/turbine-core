@@ -56,10 +56,13 @@ package org.apache.turbine.modules;
 
 import java.util.Vector;
 
+import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.services.TurbineServices;
+
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
 
@@ -68,13 +71,17 @@ import org.apache.turbine.util.RunData;
  * Layout modules.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class LayoutLoader extends GenericLoader
+public class LayoutLoader
+    extends GenericLoader
 {
     /** The single instance of this class. */
-    private static LayoutLoader instance = new LayoutLoader(
-            TurbineResources.getInt(TurbineConstants.LAYOUT_CACHE_SIZE, 10));
+    private static LayoutLoader instance = 
+        new LayoutLoader(Turbine.getConfiguration()
+                         .getInt(TurbineConstants.LAYOUT_CACHE_SIZE_KEY, 
+                                 TurbineConstants.LAYOUT_CACHE_SIZE_DEFAULT));
 
     /**
      * These ctor's are private to force clients to use getInstance()
@@ -164,8 +171,9 @@ public class LayoutLoader extends GenericLoader
                 // the user a reason for that...
                 // FIX ME: The AssemblerFactories should each add it's own
                 //         string here...
-                Vector packages = TurbineResources.getVector(
-                        TurbineConstants.MODULE_PACKAGES);
+                Vector packages = Turbine.getConfiguration()
+                    .getVector(TurbineConstants.MODULE_PACKAGES);
+
                 ObjectUtils.addOnce(packages,
                         GenericLoader.getBasePackage());
 

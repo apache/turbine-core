@@ -56,8 +56,9 @@ package org.apache.turbine.modules;
 
 import java.util.Hashtable;
 
+import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -69,7 +70,8 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public abstract class GenericLoader extends Hashtable
+public abstract class GenericLoader
+    extends Hashtable
 {
     /** @serial This can be serialized */
     private boolean reload = false;
@@ -84,8 +86,9 @@ public abstract class GenericLoader extends Hashtable
     public GenericLoader()
     {
         super();
-        isCaching = TurbineResources
-                .getBoolean(TurbineConstants.MODULE_CACHE, true);
+        isCaching = Turbine.getConfiguration()
+            .getBoolean(TurbineConstants.MODULE_CACHE_KEY,
+                        TurbineConstants.MODULE_CACHE_DEFAULT);
     }
 
     /**
@@ -94,8 +97,9 @@ public abstract class GenericLoader extends Hashtable
     public GenericLoader(int i)
     {
         super(i);
-        isCaching = TurbineResources
-                .getBoolean(TurbineConstants.MODULE_CACHE, true);
+        isCaching = Turbine.getConfiguration()
+            .getBoolean(TurbineConstants.MODULE_CACHE_KEY,
+                        TurbineConstants.MODULE_CACHE_DEFAULT);
     }
 
     /**
