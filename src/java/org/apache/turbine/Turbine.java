@@ -659,8 +659,10 @@ public class Turbine
             // file if this is a new session
             if (data.getSession().isNew())
             {
-                int timeout = configuration.getInt("session.timeout", -1);
-                if (timeout != -1)
+                int timeout = configuration.getInt(SESSION_TIMEOUT_KEY,
+                                                   SESSION_TIMEOUT_DEFAULT);
+
+                if (timeout != SESSION_TIMEOUT_DEFAULT)
                 {
                     data.getSession().setMaxInactiveInterval(timeout);
                 }
@@ -692,8 +694,9 @@ public class Turbine
                 // associated with the previous User.  Currently the
                 // only keys stored in the session are "turbine.user"
                 // and "turbine.acl".
-                if (data.getAction().equalsIgnoreCase(configuration
-                        .getString("action.login")))
+                if (data.getAction()
+                    .equalsIgnoreCase(configuration.getString(ACTION_LOGIN_KEY,
+                                                              ACTION_LOGIN_DEFAULT)))
                 {
                     String[] names = data.getSession().getValueNames();
                     if (names != null)
@@ -717,7 +720,9 @@ public class Turbine
             // TurbineResources.properties...screen.homepage; or, you
             // can specify your own SessionValidator action.
             ActionLoader.getInstance().exec(
-                data, configuration.getString("action.sessionvalidator"));
+              data,
+              configuration.getString(ACTION_SESSION_VALIDATOR_KEY,
+                                      ACTION_SESSION_VALIDATOR_DEFAULT));
 
             // Put the Access Control List into the RunData object, so
             // it is easily available to modules.  It is also placed
@@ -725,7 +730,9 @@ public class Turbine
             // out the ACL to force it to be rebuilt based on more
             // information.
             ActionLoader.getInstance().exec(
-                data, configuration.getString("action.accesscontroller"));
+              data,
+              configuration.getString(ACTION_ACCESS_CONTROLLER_KEY,
+                                      ACTION_ACCESS_CONTROLLER_DEFAULT));
 
             // Start the execution phase. DefaultPage will execute the
             // appropriate action as well as get the Layout from the
@@ -754,8 +761,8 @@ public class Turbine
                  * if they wish but the DefaultPage should work in
                  * most cases.
                  */
-                defaultPage = configuration.getString(
-                    "page.default", "DefaultPage");
+                defaultPage = configuration.getString(PAGE_DEFAULT_KEY,
+                                                      PAGE_DEFAULT_DEFAULT);
             }
 
             PageLoader.getInstance().exec(data, defaultPage);
@@ -894,21 +901,23 @@ public class Turbine
             data.setStackTrace(ExceptionUtils.getStackTrace(t), t);
 
             // setup the screen
-            data.setScreen(configuration.getString("screen.error"));
+            data.setScreen(configuration.getString(SCREEN_ERROR_KEY,
+                                                   SCREEN_ERROR_DEFAULT));
 
             // do more screen setup for template execution if needed
             if (data.getTemplateInfo() != null)
             {
-                data.getTemplateInfo().setScreenTemplate(configuration
-                        .getString("template.error"));
+                data.getTemplateInfo()
+                    .setScreenTemplate(configuration.getString(TEMPLATE_ERROR_KEY,
+                                                               TEMPLATE_ERROR_VM));
             }
 
             // Make sure to not execute an action.
             data.setAction("");
 
             PageLoader.getInstance().exec(data,
-                                          configuration.getString("page.default",
-                                                                  "DefaultPage"));
+                                          configuration.getString(PAGE_DEFAULT_KEY,
+                                                                  PAGE_DEFAULT_DEFAULT));
 
             data.getResponse().setContentType(data.getContentType());
             data.getResponse().setStatus(data.getStatusCode());

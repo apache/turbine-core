@@ -138,67 +138,71 @@ public interface TurbineConstants
      */
     String MODULE_PACKAGES = "module.packages";
 
-    /**
-     * Home page template.
-     */
+    /** Home page template. */
     String TEMPLATE_HOMEPAGE = "template.homepage";
 
-    /**
-     * Login template.
-     */
+    /** Login template. */
     String TEMPLATE_LOGIN = "template.login";
 
-    /**
-     * Login error template.
-     */
-    String TEMPLATE_ERROR = "template.error";
+    /** Template error template Property. */
+    String TEMPLATE_ERROR_KEY = "template.error";
 
-    /**
-     * Home page screen.
-     */
+    /** Template error default for JSP */
+    String TEMPLATE_ERROR_JSP = "error.jsp";
+
+    /** Template error default for Velocity */
+    String TEMPLATE_ERROR_VM = "error.vm";
+
+    /** Home page screen. */
     String SCREEN_HOMEPAGE = "screen.homepage";
 
-    /**
-     * Login screen.
-     */
+    /** Login screen. */
     String SCREEN_LOGIN = "screen.login";
 
-    /**
-     * Login error screen.
-     */
-    String SCREEN_ERROR = "screen.error";
+    /** Login error screen. */
+    String SCREEN_ERROR_KEY = "screen.error";
+
+    /** Default value for Login Screen */
+    String SCREEN_ERROR_DEFAULT = "VelocityErrorScreen";
+
+    /** Report Screen for invalid state in the application*/
     String SCREEN_INVALID_STATE = "screen.invalidstate";
+
+    /** Report Template for invalid state in the application */
     String TEMPLATE_INVALID_STATE = "template.invalidstate";
 
-    /**
-     * Action to perform when a user logs in.
-     */
-    String ACTION_LOGIN = "action.login";
+    /** Action to perform when a user logs in. */
+    String ACTION_LOGIN_KEY = "action.login";
 
-    /**
-     * Action to perform when a user logs out.
-     */
-    String ACTION_LOGOUT = "action.logout";
+    /** Default Value for login Action */
+    String ACTION_LOGIN_DEFAULT = "LoginUser";
 
-    /**
-     * Actions that performs session validation.
-     */
-    String ACTION_SESSION_VALIDATOR = "action.sessionvalidator";
+    /** Action to perform when a user logs out. */
+    String ACTION_LOGOUT_KEY = "action.logout";
 
-    /**
-     * I don't think this is being used, is it?
-     */
-    String ACTION_ACCESS_CONTROLLER = "action.accesscontroller";
+    /** Default Value for ACTION_LOGOUT */
+    String ACTION_LOGOUT_DEFAULT = "LogoutUser";
 
-    /**
-     * Default layout.
-     */
+    /** Actions that performs session validation. */
+    String ACTION_SESSION_VALIDATOR_KEY = "action.sessionvalidator";
+
+    /** Default value for the session validator. (org.apache.modules.actions.sessionvalidator.TemplateSessionValidator) */
+    String ACTION_SESSION_VALIDATOR_DEFAULT = "sessionvalidator.TemplateSessionValidator";
+
+    /** Action that performs Access control */
+    String ACTION_ACCESS_CONTROLLER_KEY = "action.accesscontroller";
+
+    /** Default value for the access controller. (org.apache.modules.actions.AccessController) */
+    String ACTION_ACCESS_CONTROLLER_DEFAULT = "AccessController";
+
+    /** Default layout. */
     String LAYOUT_DEFAULT = "layout.default";
 
-    /**
-     * Default page.
-     */
-    String PAGE_DEFAULT = "page.default";
+    /** Default page. */
+    String PAGE_DEFAULT_KEY = "page.default";
+
+    /** Default value for the Default Page */
+    String PAGE_DEFAULT_DEFAULT = "DefaultPage";
 
     /**
      * Map building. This will probably be Torque generated at
@@ -225,6 +229,12 @@ public interface TurbineConstants
      * Message to display when a user logs out.
      */
     String LOGOUT_MESSAGE = "logout.message";
+
+    /** Session Timeout */
+    String SESSION_TIMEOUT_KEY = "session.timeout";
+
+    /** Session Timeout Default Value */
+    int SESSION_TIMEOUT_DEFAULT = -1;
 
     /**
      * Indicate whether this Turbine application is using SSL.
