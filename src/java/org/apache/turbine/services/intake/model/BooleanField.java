@@ -92,6 +92,8 @@ public class BooleanField
      */
     public void setDefaultValue(String prop)
     {
+        defaultValue = null;
+
         if (prop == null)
         {
             return;
