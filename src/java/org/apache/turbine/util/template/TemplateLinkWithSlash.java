@@ -61,7 +61,7 @@ import org.apache.turbine.util.RunData;
  * using '/' slash as opposed to the ',' used in TemplateLink.
  * It is less efficient as the '/' are converted to ',' to avoid
  * problems parsing the pathinfo after conversion in a web server.
- *
+ * <p>
  * It is recommended that projects standardize on using the ','
  * separator and use TemplateLink.  But this class is available for
  * those who do not mind the inefficiency.
@@ -95,12 +95,12 @@ public class TemplateLinkWithSlash
      * Sets the template variable used by the Template Service.
      * This method allows slashes '/' as the path separator.
      *
-     * @param t A String with the template name.
+     * @param template A String with the template name.
      * @return A TemplateLink.
      */
-    public TemplateLink setPage(String t)
+    public TemplateLink setPage(String template)
     {
-        super.setPage(t.replace('/', ','));
+        super.setPage(template.replace('/', ','));
         return this;
     }
 }
