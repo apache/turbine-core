@@ -83,6 +83,17 @@ public abstract class VelocityAction extends VelocityActionEvent
   {
     doPerform(data, getContext(data));
   }
+	
+  /**
+   * Initialize the module.
+   * 
+   * @throws Exception a generic exception.
+   */
+	public void initialize()
+		throws Exception
+	{
+			initialized = true;
+	}
 
   /**
    * You SHOULD override this method and implement it in your
