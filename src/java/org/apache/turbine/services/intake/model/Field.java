@@ -759,15 +759,15 @@ public abstract class Field
         }
         catch(IllegalAccessException e)
         {
-            throwSetGetException("setter", obj, this.getDisplayName(), this.group.getIntakeGroupName(), e);
+            throwSetGetException("getter", obj, this.getDisplayName(), this.group.getIntakeGroupName(), e);
         }
         catch(IllegalArgumentException e)
         {
-            throwSetGetException("setter", obj, this.getDisplayName(), this.group.getIntakeGroupName(), e);
+            throwSetGetException("getter", obj, this.getDisplayName(), this.group.getIntakeGroupName(), e);
         }
         catch(InvocationTargetException e)
         {
-            throwSetGetException("setter", obj, this.getDisplayName(), this.group.getIntakeGroupName(), e);
+            throwSetGetException("getter", obj, this.getDisplayName(), this.group.getIntakeGroupName(), e);
         }
     }
 
