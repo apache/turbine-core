@@ -1,8 +1,0 @@
-#set ( $dbprops = $properties.load("$generator.TemplatePath/sql/security/db.props") )
-#set ( $fname = "sql/security/${dbprops.get($targetDatabase)}-roles-perms.vm" )
-$generator.parse($fname,"")
-
-#if ($dbprops.get("secure.passwords") == "true")
-#set ( $fname= "sql/security/${dbprops.get($targetDatabase)}-secure-passwords.vm" )
-$generator.parse($fname,"")
-#end
