@@ -117,11 +117,11 @@ public class TurbineNamingService
         {
             contextPropsList = new HashMap();
 
-            for (Iterator contextKeys = conf.subset("context");
+            for (Iterator contextKeys = conf.subset("context").getKeys();
                  contextKeys.hasNext();)
             {
                 String key = (String) contextKeys.next();
-                int end = key.indexOf(".", start);
+                int end = key.indexOf(".");
 
                 if (end == -1)
                 {
@@ -147,10 +147,10 @@ public class TurbineNamingService
                 contextPropsList.put(contextName, contextProps);
             }
 
-            for (Enumeration contextPropsKeys = contextPropsList.keys();
-                 contextPropsKeys.hasMoreElements();)
+            for (Iterator contextPropsKeys = contextPropsList.keySet().iterator();
+                 contextPropsKeys.hasNext();)
             {
-                String key = (String) contextPropsKeys.nextElement();
+                String key = (String) contextPropsKeys.next();
                 Properties contextProps = (Properties) contextPropsList.get(key);
                 InitialContext context = new InitialContext(contextProps);
                 initialContexts.put(key, context);
@@ -185,10 +185,9 @@ public class TurbineNamingService
                 init();
             }
 
-            Enumeration contextPropsKeys = contextPropsList.keys();
-            while (contextPropsKeys.hasMoreElements())
+            for (Iterator it = contextPropsList.keySet().iterator(); it.hasNext();)
             {
-                String key = (String) contextPropsKeys.nextElement();
+                String key = (String) it.next();
                 Properties contextProps =
                         (Properties) contextPropsList.get(key);
                 InitialContext context = new InitialContext(contextProps);
