@@ -96,7 +96,7 @@ public abstract class BaseServiceBroker
     protected Hashtable services = new Hashtable();
 
     /**
-     * Default constructor of InitableBorker.
+     * Default constructor of InitableBroker.
      *
      * This constructor does nothing.
      */
@@ -123,7 +123,7 @@ public abstract class BaseServiceBroker
      * <code>SERVICE_NAME</code> constant of the service's interface
      * definition).
      * @param data An object to use for initialization activities.
-     * @exception InitializationException Initilaization of this
+     * @exception InitializationException Initialization of this
      * service was not successful.
      */
     public void initService( String name, Object data )
@@ -334,7 +334,7 @@ public abstract class BaseServiceBroker
      * Initable.initClass(Object), the class must be instantiated with
      * InitableBroker.getInitableInstance(), and
      * Service.setServiceBroker() and Service.setName() must be
-     * called.  This calls for two - level accesing the Services
+     * called.  This calls for two - level accessing the Services
      * instances.
      *
      * @param name The name of the service requested.

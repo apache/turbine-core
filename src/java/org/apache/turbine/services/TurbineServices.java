@@ -390,7 +390,7 @@ public class TurbineServices
         }
         else
         {
-            // cache the message to log as soon as logiing is on
+            // cache the message to log as soon as logging is on
             logCache.add(msg);
         }
     }
@@ -420,7 +420,7 @@ public class TurbineServices
         }
         else
         {
-            // cache the message to log as soon as logiing is on
+            // cache the message to log as soon as logging is on
             logCache.add("ERROR: " + t.getMessage());
             StringWriter sw = new StringWriter();
             t.printStackTrace(new PrintWriter(sw));
