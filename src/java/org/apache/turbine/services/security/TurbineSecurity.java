@@ -689,6 +689,40 @@ public abstract class TurbineSecurity
     }
 
     /**
+     * Retrieve a Group object with specified name.
+     *
+     * @param groupName The name of the Group to be retrieved.
+     * @return an object representing the Group with specified name.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if the Group is not present.
+     */
+    public static Group getGroupByName(String groupName)
+            throws DataBackendException, UnknownEntityException
+    {
+        return getService().getGroupByName(groupName);
+    }
+
+    /**
+     * Retrieve a Group object with specified Id.
+     *
+     * @param name the name of the Group.
+     *
+     * @return an object representing the Group with specified name.
+     *
+     * @exception UnknownEntityException if the permission does not
+     *            exist in the database.
+     * @exception DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    public static Group getGroupById(int groupId)
+            throws DataBackendException,
+                   UnknownEntityException
+    {
+        return getService().getGroupById(groupId);
+    }
+
+    /**
      * Retrieves a named Group. If the Group does not exist, it creates
      * a new Group based on the Services Group implementation. It is ok
      * to pass in null or "" here and then use Group.setName() at a later
@@ -754,6 +788,40 @@ public abstract class TurbineSecurity
     }
 
     /**
+     * Retrieve a Role object with specified name.
+     *
+     * @param roleName The name of the Role to be retrieved.
+     * @return an object representing the Role with specified name.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if the Role is not present.
+     */
+    public static Role getRoleByName(String roleName)
+            throws DataBackendException, UnknownEntityException
+    {
+        return getService().getRoleByName(roleName);
+    }
+
+    /**
+     * Retrieve a Role object with specified Id.
+     *
+     * @param name the name of the Role.
+     *
+     * @return an object representing the Role with specified name.
+     *
+     * @exception UnknownEntityException if the permission does not
+     *            exist in the database.
+     * @exception DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    public static Role getRoleById(int roleId)
+            throws DataBackendException,
+                   UnknownEntityException
+    {
+        return getService().getRoleById(roleId);
+    }
+
+    /**
      * Retrieve a Permission object with specified name.
      *
      * @param permissionName The name of the Permission to be retrieved.
@@ -766,6 +834,40 @@ public abstract class TurbineSecurity
             throws DataBackendException, UnknownEntityException
     {
         return getService().getPermission(permissionName);
+    }
+
+    /**
+     * Retrieve a Permission object with specified name.
+     *
+     * @param permissionName The name of the Permission to be retrieved.
+     * @return an object representing the Permission with specified name.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if the Permission is not present.
+     */
+    public static Permission getPermissionByName(String permissionName)
+            throws DataBackendException, UnknownEntityException
+    {
+        return getService().getPermissionByName(permissionName);
+    }
+
+    /**
+     * Retrieve a Permission object with specified Id.
+     *
+     * @param name the name of the Permission.
+     *
+     * @return an object representing the Permission with specified name.
+     *
+     * @exception UnknownEntityException if the permission does not
+     *            exist in the database.
+     * @exception DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    public static Permission getPermissionById(int permissionId)
+            throws DataBackendException,
+                   UnknownEntityException
+    {
+        return getService().getPermissionById(permissionId);
     }
 
     /**
