@@ -55,7 +55,14 @@ so you can see how powerful things are. You should compile this class into
 your <em>WEB-INF/classes</em> directory.
 </p>
 
+<p>
+Note: In the examples below, you should replace <code>com.yourcompany.app</code>
+with the correct value for your application.
+</p>
+
 <source>
+package com.yourcompany.app.modules.screens;
+
 // Velocity Stuff
 import org.apache.velocity.context.Context;
 
@@ -84,6 +91,15 @@ this file since that will be built seperately (more documentation on that
 futher down...). You should save this document in your <em>templates/screens/</em>
 directory.
 </p>
+
+<p>
+You will also need to modify your TurbineResources.properties file to tell 
+Turbine where to look for your new screen class.
+</p>
+
+<source>
+module.packages=org.apache.turbine.modules, com.yourcompany.app.modules
+</source>
 
 <source><![CDATA[
 <p>
@@ -150,6 +166,8 @@ code):
 </p>
 
 <source>
+package com.yourcompany.app.modules.screens;
+
 // Velocity Stuff
 import org.apache.velocity.context.Context;
 
@@ -361,8 +379,10 @@ URI. For example:
 </p>
 
 <p>In this case, what happens is that the class UpdateWorld class (located in your
-<em>WEB-INF/classes/PACKAGE/actions/</em> directory) is executed first before
-anything. Then your HelloWorld class (located in your WEB-INF/classes/PACKAGE/screens/
+<em>WEB-INF/classes/com/yourcompany/app/modules/actions/</em> directory) 
+is executed first before
+anything. Then your HelloWorld class (located in your 
+WEB-INF/classes/com/yourcompany/app/modules/screens/
 directory) is executed. Then your template (for screen/navigation/layout)
 HelloWorld.vm is executed. The point of an action is that it should perform
 some sort of "action" on your system. Usually, this means storing some
@@ -377,6 +397,8 @@ for an Action.
 </p>
 
 <source>
+package com.yourcompany.app.modules.actions;
+
 // Velocity Stuff
 import org.apache.velocity.context.Context;
 
