@@ -613,7 +613,7 @@
   </dependencies>
 
   <build>
-    <sourceDirectory>src/java</sourceDirectory>
+    <sourceDirectory>target/src</sourceDirectory>
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
 
     <unitTest>
@@ -625,9 +625,7 @@
     <integrationUnitTestSourceDirectory/>
     <integrationUnitTest/>
     <aspectSourceDirectory/>
-    <testResources/>
 
-    <jars/>
   </build>
 
 </project>
