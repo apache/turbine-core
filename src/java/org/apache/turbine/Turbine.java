@@ -92,12 +92,16 @@ import org.apache.turbine.services.component.ComponentService;
 
 import org.apache.turbine.services.template.TurbineTemplate;
 
+import org.apache.turbine.services.velocity.VelocityService;
+
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.RunDataFactory;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
 
 import org.apache.turbine.util.security.AccessControlList;
+
+import org.apache.turbine.util.template.TemplateInfo;
 
 import org.apache.turbine.util.uri.URIConstants;
 
@@ -883,6 +887,7 @@ public class Turbine
             }
         }
         ActionLoader.getInstance().exec(data, data.getAction());
+        cleanupTemplateContext(data);
         data.setAction(null);
     }
 
@@ -901,8 +906,30 @@ public class Turbine
         throws Exception
     {
         ActionLoader.getInstance().exec(data, data.getAction());
+        cleanupTemplateContext(data);
         data.setAction(null);
     }
+
+    /**
+     * cleans the Velocity Context if available.
+     *
+     * @param data A RunData Object
+     *
+     * @throws Exception A problem while cleaning out the Template Context occured.
+     */
+    private void cleanupTemplateContext(RunData data)
+        throws Exception
+    {
+        // This is Velocity specific and shouldn't be done here.
+        // But this is a band aid until we get real listeners
+        // here.
+        TemplateInfo ti = data.getTemplateInfo();
+        if (ti != null)
+        {
+            ti.removeTemp(VelocityService.CONTEXT);
+        }
+    }
+    
 
     /**
      * Return the servlet info.
