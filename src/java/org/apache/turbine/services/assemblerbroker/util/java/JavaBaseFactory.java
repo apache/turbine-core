@@ -62,11 +62,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.GenericLoader;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
-import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.ObjectUtils;
 
 /**
@@ -81,12 +81,11 @@ public abstract class JavaBaseFactory
     implements AssemblerFactory
 {
     /** A vector of packages. */
-    private static Vector packages =
-        TurbineResources.getVector(TurbineConstants.MODULE_PACKAGES);
+    private static Vector packages = 
+        Turbine.getConfiguration().getVector(TurbineConstants.MODULE_PACKAGES);
 
     /** Logging */
     private static Log log = LogFactory.getLog(JavaBaseFactory.class);
-
 
     static
     {
