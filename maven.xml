@@ -90,11 +90,8 @@
   <!-- ================================================== -->
   <!-- Prepare all Sources for Torque                     -->
   <!-- ================================================== -->
-  <goal name="copy-om" description="Copy all schema files to target/xml and replace database related variables">
-    <attainGoal name="copy-scheduler-om"/>
-    <attainGoal name="copy-torque-security-om"/>
-    <attainGoal name="copy-id-table-om"/>
-  </goal>
+  <goal name="copy-om" description="Copy all schema files to target/xml and replace database related variables"
+    prereqs="copy-scheduler-om ,copy-torque-security-om, copy-id-table-om"/>
 
   <!-- ================================================== -->
   <!-- Prepare Scheduler Sources for Torque               -->
@@ -138,9 +135,8 @@
   <!-- ================================================== -->
   <!-- Build Peers for the Scheduler                      -->
   <!-- ================================================== -->
-  <goal name="scheduler-om" description="generate Torque peers for the scheduler">
-
-    <attainGoal name="copy-scheduler-om"/>
+  <goal name="scheduler-om" description="generate Torque peers for the scheduler"
+    prereqs="copy-scheduler-om">
 
     <j:set var="torque.project" value="scheduler"/>
     <j:set var="torque.schema.om.includes" value="scheduler-schema.xml"/>
@@ -152,9 +148,8 @@
   <!-- ================================================== -->
   <!-- Build Peers for Torque Security                    -->
   <!-- ================================================== -->
-  <goal name="torque-security-om" description="generate Torque peers for the torque security service">
-
-    <attainGoal name="copy-torque-security-om"/>
+  <goal name="torque-security-om" description="generate Torque peers for the torque security service"
+    prereqs="copy-torque-security-om">
 
     <j:set var="torque.project" value="torque-security"/>
     <j:set var="torque.schema.om.includes" value="torque-security-schema.xml"/>
