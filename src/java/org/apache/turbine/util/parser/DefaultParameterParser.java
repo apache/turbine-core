@@ -57,6 +57,7 @@ package org.apache.turbine.util.parser;
 import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
+import java.util.Hashtable;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
@@ -95,8 +96,7 @@ import org.apache.turbine.util.pool.Recyclable;
  */
 public class DefaultParameterParser
     extends BaseValueParser
-    implements ParameterParser,
-               Recyclable
+    implements ParameterParser, Recyclable
 {
     /** Logging */
     private static Log log = LogFactory.getLog(DefaultParameterParser.class);
@@ -106,6 +106,9 @@ public class DefaultParameterParser
 
     /** The raw data of a file upload. */
     private byte[] uploadData = null;
+
+    /** Map of request parameters to FileItem[]'s */
+    private Hashtable fileParameters = new Hashtable();
 
     /** Turbine Upload Service reference */
     private static UploadService uploadService = null;
@@ -225,7 +228,7 @@ public class DefaultParameterParser
             while (names.hasMoreElements())
             {
                 tmp = (String) names.nextElement();
-                parameters.put(convert(tmp), req.getParameterValues(tmp));
+                fileParameters.put(convert(tmp), req.getParameterValues(tmp));
             }
         }
 
@@ -301,14 +304,14 @@ public class DefaultParameterParser
         {
             items = new FileItem[1];
             items[0] = value;
-            parameters.put(convert(name), items);
+            fileParameters.put(convert(name), items);
         }
         else
         {
             FileItem[] newItems = new FileItem[items.length + 1];
             System.arraycopy(items, 0, newItems, 0, items.length);
             newItems[items.length] = value;
-            parameters.put(convert(name), newItems);
+            fileParameters.put(convert(name), newItems);
         }
     }
 
@@ -324,7 +327,7 @@ public class DefaultParameterParser
         try
         {
             FileItem value = null;
-            Object object = parameters.get(convert(name));
+            Object object = fileParameters.get(convert(name));
             if (object != null)
             {
                 value = ((FileItem[]) object)[0];
@@ -333,6 +336,8 @@ public class DefaultParameterParser
         }
         catch (ClassCastException e)
         {
+            log.error("Parameter ("
+                    + name + ") is not an instance of FileItem", e);
             return null;
         }
     }
@@ -349,10 +354,12 @@ public class DefaultParameterParser
     {
         try
         {
-            return (FileItem[]) parameters.get(convert(name));
+            return (FileItem[]) fileParameters.get(convert(name));
         }
         catch (ClassCastException e)
         {
+            log.error("Parameter ("
+                    + name + ") is not an instance of FileItem[]", e);
             return null;
         }
     }
