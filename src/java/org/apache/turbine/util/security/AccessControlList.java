@@ -61,7 +61,7 @@ import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
 
 /**
- * This interface describes a control class that makes it 
+ * This interface describes a control class that makes it
  * easy to find out if a particular User has a given Permission.
  * It also determines if a User has a a particular Role.
  *
@@ -74,7 +74,7 @@ import org.apache.turbine.om.security.Role;
  * @version $Id$
  */
 public interface AccessControlList
-  extends Serializable
+        extends Serializable
 {
     /** The default Session key for the Access Control List */
     public static final java.lang.String SESSION_KEY = "turbine.AccessControlList";
@@ -240,5 +240,5 @@ public interface AccessControlList
      * because you can't call static methods of TurbineSecurity class
      * from within WebMacro/Velocity template
      */
-    Group [] getAllGroups();
+    Group[] getAllGroups();
 }

@@ -70,6 +70,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.stratum.lifecycle.Disposable;
@@ -105,10 +106,10 @@ import org.apache.turbine.Turbine;
  * @version $Id$
  */
 public class TurbineConfig
-    implements ServletConfig,
-               ServletContext,
-               Initializable,
-               Disposable
+        implements ServletConfig,
+        ServletContext,
+        Initializable,
+        Disposable
 {
     /**
      * Servlet initialization parameter name for the path to
@@ -121,7 +122,7 @@ public class TurbineConfig
      * (<code>/WEB-INF/conf/TurbineResources.properties</code>).
      */
     public static final String PROPERTIES_PATH_DEFAULT =
-        "/WEB-INF/conf/TurbineResources.properties";
+            "/WEB-INF/conf/TurbineResources.properties";
 
     /** Enables output of debug messages (compile time option). */
     private final static boolean DEBUG = false;
@@ -221,7 +222,7 @@ public class TurbineConfig
      */
     public void dispose()
     {
-        if(turbine != null)
+        if (turbine != null)
         {
             turbine.destroy();
         }
@@ -248,18 +249,18 @@ public class TurbineConfig
     public String getRealPath(String path)
     {
         File f = new File(root, path);
-        if(log.isDebugEnabled())
+        if (log.isDebugEnabled())
         {
-          StringBuffer sb = new StringBuffer();
+            StringBuffer sb = new StringBuffer();
 
-          sb.append("TurbineConfig.getRealPath: path '");
-          sb.append(path);
-          sb.append("' translated to '");
-          sb.append(f.getPath());
-          sb.append("' ");
-          sb.append(f.exists() ? "" : "not ");
-          sb.append("found");
-          log.debug(sb.toString());
+            sb.append("TurbineConfig.getRealPath: path '");
+            sb.append(path);
+            sb.append("' translated to '");
+            sb.append(f.getPath());
+            sb.append("' ");
+            sb.append(f.exists() ? "" : "not ");
+            sb.append("found");
+            log.debug(sb.toString());
         }
         return (f.exists() ? f.getPath() : null);
     }
@@ -272,7 +273,7 @@ public class TurbineConfig
      */
     public String getInitParameter(String name)
     {
-        return (String)initParams.get(name);
+        return (String) initParams.get(name);
     }
 
     /**
@@ -319,7 +320,7 @@ public class TurbineConfig
      * @exception MalformedURLException
      */
     public URL getResource(String s)
-        throws MalformedURLException
+            throws MalformedURLException
     {
         return new URL("file://" + getRealPath(s));
     }
@@ -338,7 +339,7 @@ public class TurbineConfig
             FileInputStream fis = new FileInputStream(getRealPath(s));
             return new BufferedInputStream(fis);
         }
-        catch(FileNotFoundException e)
+        catch (FileNotFoundException e)
         {
             return null;
         }

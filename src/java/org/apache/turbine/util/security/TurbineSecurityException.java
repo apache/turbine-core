@@ -64,7 +64,7 @@ import org.apache.turbine.util.TurbineException;
  * @version $Id$
  */
 public class TurbineSecurityException
-    extends TurbineException
+        extends TurbineException
 {
     /**
      * Construct an SecurityException with specified detail message.
@@ -88,4 +88,6 @@ public class TurbineSecurityException
     {
         super(msg, nested);
     }
-};
+}
+
+;

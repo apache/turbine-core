@@ -57,6 +57,7 @@ package org.apache.turbine.util;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.pool.PoolService;
 import org.apache.turbine.services.rundata.DefaultTurbineRunData;
@@ -89,11 +90,11 @@ public class RunDataFactory
      * @param config A ServletConfig.
      * @throws TurbineException.
      */
-    public static RunData getRunData( HttpServletRequest req,
-                                      HttpServletResponse res,
-                                      ServletConfig config )
-        throws TurbineException,
-               IllegalArgumentException
+    public static RunData getRunData(HttpServletRequest req,
+                                     HttpServletResponse res,
+                                     ServletConfig config)
+            throws TurbineException,
+            IllegalArgumentException
     {
         /*
          * NOTE: getRunData( HttpServletRequest req,
@@ -104,13 +105,13 @@ public class RunDataFactory
          * this should include the necessary functionality when we are
          * ready.
          */
-        if ( req == null ||
-             res == null ||
-             config == null )
+        if (req == null ||
+                res == null ||
+                config == null)
         {
             throw new IllegalArgumentException(
-                "RunDataFactory fatal error: HttpServletRequest, " +
-                    "HttpServletResponse or ServletConfig were null." );
+                    "RunDataFactory fatal error: HttpServletRequest, " +
+                    "HttpServletResponse or ServletConfig were null.");
         }
 
         // Create a new RunData object.  This object caches all the
@@ -126,8 +127,8 @@ public class RunDataFactory
             try
             {
                 RunDataService service = (RunDataService)
-                    TurbineServices.getInstance().getService(RunDataService.SERVICE_NAME);
-                return service.getRunData(req,res,config);
+                        TurbineServices.getInstance().getService(RunDataService.SERVICE_NAME);
+                return service.getRunData(req, res, config);
             }
             catch (Exception x)
             {
@@ -137,9 +138,9 @@ public class RunDataFactory
 
         // Failed, create a default implementation using the Pool Service.
         PoolService pool = (PoolService)
-            TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
+                TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
         TurbineRunData data = (TurbineRunData)
-            pool.getInstance(DefaultTurbineRunData.class);
+                pool.getInstance(DefaultTurbineRunData.class);
 
         // Cache some information that will be used elsewhere.
         data.setRequest(req);
@@ -165,7 +166,7 @@ public class RunDataFactory
         try
         {
             java.lang.reflect.Method meth =
-                jsdkClass.getDeclaredMethod("getContextPath", null);
+                    jsdkClass.getDeclaredMethod("getContextPath", null);
             contextPath = (String) meth.invoke(req, null);
         }
         catch (Exception ex)
@@ -185,18 +186,18 @@ public class RunDataFactory
         data.setParameterParser(new DefaultParameterParser());
 
         // Get the HttpSession object.
-        data.setSession( data.getRequest().getSession(true) );
+        data.setSession(data.getRequest().getSession(true));
 
         // Set the servlet configuration in RunData for use in loading
         // other servlets.
         data.setServletConfig(config);
 
         // Now set the ServerData.
-        data.setServerData( new ServerData( data.getRequest().getServerName(),
-                                data.getRequest().getServerPort(),
-                                data.getRequest().getScheme(),
-                                scriptName,
-                                contextPath ) );
+        data.setServerData(new ServerData(data.getRequest().getServerName(),
+                data.getRequest().getServerPort(),
+                data.getRequest().getScheme(),
+                scriptName,
+                contextPath));
         return (RunData) data;
     }
 
@@ -205,7 +206,7 @@ public class RunDataFactory
      *
      * @param data the used RunData object.
      */
-    public static void putRunData( RunData data )
+    public static void putRunData(RunData data)
     {
         // Try to return the RunData implementation to the RunData Service.
         if (tryRunDataService)
@@ -213,7 +214,7 @@ public class RunDataFactory
             try
             {
                 RunDataService service = (RunDataService)
-                    TurbineServices.getInstance().getService(RunDataService.SERVICE_NAME);
+                        TurbineServices.getInstance().getService(RunDataService.SERVICE_NAME);
                 service.putRunData(data);
                 return;
             }
@@ -224,7 +225,7 @@ public class RunDataFactory
 
         // Failed, use the Pool Service instead.
         PoolService pool = (PoolService)
-            TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
+                TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
         pool.putInstance(data);
     }
 }

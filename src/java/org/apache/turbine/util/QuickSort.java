@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -110,10 +110,10 @@ public class QuickSort
         }
 
         // Start one past lo since already handled lo.
-        int left = lo+1;
+        int left = lo + 1;
 
         // Similarly, end one before hi since already handled hi.
-        int right = hi-1;
+        int right = hi - 1;
 
         // If there are three or fewer elements, we are done.
         if (left >= right)
@@ -121,13 +121,13 @@ public class QuickSort
 
         Object partition = s[mid];
 
-        for (;;)
+        for (; ;)
         {
             while (cmp.compare(s[right], partition) > 0)
                 --right;
 
             while (left < right &&
-                   cmp.compare(s[left], partition) <= 0)
+                    cmp.compare(s[left], partition) <= 0)
                 ++left;
 
             if (left < right)
@@ -143,7 +143,7 @@ public class QuickSort
                 break;
         }
         quickSort(s, lo, left, cmp);
-        quickSort(s, left+1, hi, cmp);
+        quickSort(s, left + 1, hi, cmp);
     }
 
     /**
@@ -156,8 +156,8 @@ public class QuickSort
                      Comparable cmp)
     {
         QuickSort.quickSort(data,
-                            0,
-                            data.length - 1,
-                            cmp);
+                0,
+                data.length - 1,
+                cmp);
     }
 }

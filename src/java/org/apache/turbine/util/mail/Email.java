@@ -63,6 +63,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.resources.TurbineResources;
 
@@ -127,7 +128,6 @@ public abstract class Email
         this.charset = charset;
     }
 
-
     /**
      * TODO: Document.
      *
@@ -139,7 +139,7 @@ public abstract class Email
         properties.put(MAIL_TRANSPORT_PROTOCOL, SMTP);
         properties.put(MAIL_HOST, TurbineResources.getString(MAIL_SERVER));
         String mailSMTPFrom = TurbineResources.getString(MAIL_SMTP_FROM);
-        if(mailSMTPFrom!=null && !mailSMTPFrom.equals(""))
+        if (mailSMTPFrom != null && !mailSMTPFrom.equals(""))
         {
             properties.put(MAIL_SMTP_FROM, mailSMTPFrom);
         }
@@ -210,7 +210,7 @@ public abstract class Email
                 && criteria.containsKey(RECEIVER_NAME))
         {
             addTo(criteria.getString(RECEIVER_EMAIL),
-                   criteria.getString(RECEIVER_NAME));
+                    criteria.getString(RECEIVER_NAME));
         }
 
         // Set the SUBJECT field.
@@ -242,7 +242,7 @@ public abstract class Email
             }
             message.setFrom(new InternetAddress(email, name));
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             throw new MessagingException("cannot set from", e);
         }
@@ -310,7 +310,7 @@ public abstract class Email
      * @exception MessagingException.
      */
     public Email addBcc(String email, String name)
-        throws MessagingException
+            throws MessagingException
     {
         try
         {
@@ -337,7 +337,7 @@ public abstract class Email
      * @exception MessagingException.
      */
     public Email addReplyTo(String email, String name)
-        throws MessagingException
+            throws MessagingException
     {
         try
         {
@@ -362,7 +362,7 @@ public abstract class Email
      * @exception MessagingException.
      */
     public Email setSubject(String subject)
-        throws MessagingException
+            throws MessagingException
     {
         if (subject != null)
         {
@@ -386,7 +386,7 @@ public abstract class Email
      * @exception MessagingException.
      */
     public Email setSentDate(Date date)
-        throws MessagingException
+            throws MessagingException
     {
         if (date != null)
         {
@@ -404,7 +404,7 @@ public abstract class Email
      * @exception MessagingException.
      */
     public abstract Email setMsg(String msg)
-        throws MessagingException;
+            throws MessagingException;
 
     /**
      * Does the work of actually sending the email.
@@ -412,17 +412,17 @@ public abstract class Email
      * @exception MessagingException, if there was an error.
      */
     public void send()
-        throws MessagingException
+            throws MessagingException
     {
         InternetAddress[] foo = new InternetAddress[0];
         message.setRecipients(Message.RecipientType.TO,
-                              toInternetAddressArray(toList));
+                toInternetAddressArray(toList));
         message.setRecipients(Message.RecipientType.CC,
-                              toInternetAddressArray(ccList));
+                toInternetAddressArray(ccList));
         message.setRecipients(Message.RecipientType.BCC,
-                              toInternetAddressArray(bccList));
+                toInternetAddressArray(bccList));
         message.setReplyTo(toInternetAddressArray(replyList));
-        Transport.send( message );
+        Transport.send(message);
     }
 
     /**

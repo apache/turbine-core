@@ -58,6 +58,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
+
 import org.apache.turbine.om.security.Role;
 
 /**
@@ -184,8 +185,8 @@ public class RoleSet implements Serializable
         Iterator iter = set.iterator();
         while (iter.hasNext())
         {
-            Role role = (Role)iter.next();
-            if (roleName != null  && roleName.equals(role.getName()))
+            Role role = (Role) iter.next();
+            if (roleName != null && roleName.equals(role.getName()))
             {
                 return true;
             }
@@ -206,7 +207,7 @@ public class RoleSet implements Serializable
         Iterator iter = set.iterator();
         while (iter.hasNext())
         {
-            Role role = (Role)iter.next();
+            Role role = (Role) iter.next();
             if (roleName != null && roleName.equals(role.getName()))
             {
                 return role;
@@ -220,9 +221,9 @@ public class RoleSet implements Serializable
      *
      * @return An Array of roles.
      */
-    public Role [] getRolesArray()
+    public Role[] getRolesArray()
     {
-        return (Role [])set.toArray(new Role[0]);
+        return (Role[]) set.toArray(new Role[0]);
     }
 
     /**

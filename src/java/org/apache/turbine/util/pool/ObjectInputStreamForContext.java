@@ -25,13 +25,13 @@ package org.apache.turbine.util.pool;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,10 +54,10 @@ package org.apache.turbine.util.pool;
  * <http://www.apache.org/>.
  */
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
-import java.io.IOException;
 
 /**
  * A deserialization stream for a specific class loader context.
@@ -79,19 +79,19 @@ public class ObjectInputStreamForContext extends ObjectInputStream
      * @param loader the class loader of the context.
      * @throws IOException on errors.
      */
-    public  ObjectInputStreamForContext(InputStream in,
-                                        ClassLoader loader)
-                                        throws IOException
+    public ObjectInputStreamForContext(InputStream in,
+                                       ClassLoader loader)
+            throws IOException
     {
         super(in);
         classLoader = loader;
     }
 
     protected Class resolveClass(ObjectStreamClass v)
-                                 throws IOException,
-                                 ClassNotFoundException
+            throws IOException,
+            ClassNotFoundException
     {
         return classLoader == null ?
-            super.resolveClass(v) : classLoader.loadClass(v.getName());
+                super.resolveClass(v) : classLoader.loadClass(v.getName());
     }
 }

@@ -72,8 +72,8 @@ import org.apache.turbine.util.RunData;
  * @version $Id$
  */
 public class RelativeTemplateLink
-    extends RelativeDynamicURI
-    implements ApplicationTool
+        extends RelativeDynamicURI
+        implements ApplicationTool
 {
     /** the pathinfo key stored in the DynamicURI */
     private static final String TEMPLATE_KEY = "template";
@@ -142,7 +142,7 @@ public class RelativeTemplateLink
     public RelativeTemplateLink setPage(String t)
     {
         template = t;
-        addPathInfo(TEMPLATE_KEY,t);
+        addPathInfo(TEMPLATE_KEY, t);
         return this;
     }
 

@@ -66,6 +66,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import javax.activation.DataSource;
+
 import org.apache.turbine.services.uniqueid.TurbineUniqueId;
 import org.apache.turbine.services.upload.TurbineUpload;
 
@@ -121,7 +122,6 @@ public class FileItem implements DataSource
     /** Temporary storage for in-memory files. */
     protected ByteArrayOutputStream byteStream;
 
-
     /**
      * Constructs a new <code>FileItem</code>.
      *
@@ -160,13 +160,13 @@ public class FileItem implements DataSource
     }
 
     /**
-    * Returns the content type passed by the browser or
-    * <code>null</code> if not defined. (implements
-    * DataSource method).
-    *
-    * @return The content type passed by the browser or
-    * <code>null</code> if not defined.
-    */
+     * Returns the content type passed by the browser or
+     * <code>null</code> if not defined. (implements
+     * DataSource method).
+     *
+     * @return The content type passed by the browser or
+     * <code>null</code> if not defined.
+     */
     public String getContentType()
     {
         return contentType;
@@ -258,8 +258,8 @@ public class FileItem implements DataSource
      * @return The contents of the file.
      * @exception UnsupportedEncodingException.
      */
-    public String getString( String encoding )
-        throws UnsupportedEncodingException
+    public String getString(String encoding)
+            throws UnsupportedEncodingException
     {
         return new String(get(), encoding);
     }
@@ -274,7 +274,7 @@ public class FileItem implements DataSource
      * @exception Exception, a generic exception.
      */
     public InputStream getInputStream()
-        throws IOException
+            throws IOException
     {
         return getStream();
     }
@@ -288,7 +288,7 @@ public class FileItem implements DataSource
      * @exception Exception, a generic exception.
      */
     public InputStream getStream()
-        throws IOException
+            throws IOException
     {
         if (content == null)
         {
@@ -343,7 +343,7 @@ public class FileItem implements DataSource
      * @exception IOException.
      */
     public OutputStream getOutputStream()
-        throws IOException
+            throws IOException
     {
         if (storeLocation == null)
         {
@@ -452,7 +452,7 @@ public class FileItem implements DataSource
                     }
                     catch (Exception e)
                     {
-                                // ignore
+                        // ignore
                     }
                     try
                     {
@@ -460,7 +460,7 @@ public class FileItem implements DataSource
                     }
                     catch (Exception e)
                     {
-                                // ignore
+                        // ignore
                     }
                 }
             }

@@ -63,7 +63,7 @@ package org.apache.turbine.util.security;
  * @version $Id$
  */
 public class UnknownEntityException
-    extends TurbineSecurityException
+        extends TurbineSecurityException
 {
     /**
      * Construct an UnknownEntityException with specified detail message.

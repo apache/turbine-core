@@ -79,7 +79,7 @@ import org.apache.turbine.util.RunData;
 public class TemplateSecurityCheck
 {
     private String message =
-        "Sorry, you do not have permission to access this area.";
+            "Sorry, you do not have permission to access this area.";
     private String failScreen = TurbineTemplate.getDefaultScreen();
     private String failTemplate;
     private RunData data = null;
@@ -169,7 +169,7 @@ public class TemplateSecurityCheck
         if (data.getUser() != null && !data.getUser().hasLoggedIn())
         {
             data.setMessage(TurbineResources.getString("login.message"));
-            data.getTemplateInfo().setScreenTemplate( getFailTemplate());
+            data.getTemplateInfo().setScreenTemplate(getFailTemplate());
             value = false;
         }
         else

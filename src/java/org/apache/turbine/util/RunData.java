@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -58,21 +58,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Hashtable;
 import java.util.Locale;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.turbine.om.security.User;
-
-import org.apache.turbine.util.security.AccessControlList;
-import org.apache.turbine.util.template.TemplateInfo;
-
 import org.apache.ecs.Document;
 import org.apache.ecs.Element;
 import org.apache.ecs.StringElement;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.util.security.AccessControlList;
+import org.apache.turbine.util.template.TemplateInfo;
 
 /**
  * RunData is an interface to run-rime information that is passed
@@ -427,7 +424,7 @@ public interface RunData
      * @throws IOException.
      */
     PrintWriter getOut()
-        throws IOException;
+            throws IOException;
 
     /**
      * Declares that output will be direct to the response stream,
@@ -460,7 +457,7 @@ public interface RunData
      * setCharSet(), then a property named "locale.default.charset"
      * is checked from the Resource Service and returned. If this
      * property is undefined, the default charset of the locale
-     * is returned. If the locale is undefined, null is returned. 
+     * is returned. If the locale is undefined, null is returned.
      *
      * @return the name of the charset or null.
      */

@@ -83,7 +83,6 @@ public class EmailAttachment
     /** The disposition. */
     private String disposition = ATTACHMENT;
 
-
     /**
      * Get the description.
      *

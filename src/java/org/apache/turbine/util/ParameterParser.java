@@ -55,6 +55,7 @@ package org.apache.turbine.util;
  */
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.fileupload.FileItem;
 
 /**
@@ -82,7 +83,7 @@ import org.apache.commons.fileupload.FileItem;
  * @version $Id$
  */
 public interface ParameterParser
-    extends ValueParser
+        extends ValueParser
 {
     /**
      * Gets the parsed servlet request.
@@ -120,7 +121,6 @@ public interface ParameterParser
      */
     byte[] getUploadData();
 
-
     /**
      * Add a FileItem object as a parameters.  If there are any
      * FileItems already associated with the name, append to the
@@ -131,7 +131,6 @@ public interface ParameterParser
      * @param value A FileItem with the value.
      */
     void append(String name, FileItem value);
-
 
     /**
      * Return a FileItem object for the given name.  If the name does

@@ -25,13 +25,13 @@ package org.apache.turbine.util.template;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -57,12 +57,12 @@ package org.apache.turbine.util.template;
 import org.apache.turbine.util.RunData;
 
 /**
- * This class allows one to specify paths in the setPage method 
+ * This class allows one to specify paths in the setPage method
  * using '/' slash as opposed to the ',' used in TemplateLink.
  * It is less efficient as the '/' are converted to ',' to avoid
- * problems parsing the pathinfo after conversion in a web server. 
- * 
- * It is recommended that projects standardize on using the ',' 
+ * problems parsing the pathinfo after conversion in a web server.
+ *
+ * It is recommended that projects standardize on using the ','
  * separator and use TemplateLink.  But this class is available for
  * those who do not mind the inefficiency.
  *
@@ -70,7 +70,7 @@ import org.apache.turbine.util.RunData;
  * @version $Id$
  */
 public class TemplateLinkWithSlash
-    extends TemplateLink
+        extends TemplateLink
 {
     /**
      * Default constructor
@@ -80,7 +80,7 @@ public class TemplateLinkWithSlash
     public TemplateLinkWithSlash()
     {
     }
-    
+
     /**
      * Constructor.
      *
@@ -100,7 +100,7 @@ public class TemplateLinkWithSlash
      */
     public TemplateLink setPage(String t)
     {
-        super.setPage( t.replace('/', ',') );
+        super.setPage(t.replace('/', ','));
         return this;
     }
 }

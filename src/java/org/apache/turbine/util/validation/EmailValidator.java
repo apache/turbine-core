@@ -54,28 +54,27 @@ package org.apache.turbine.util.validation;
  * <http://www.apache.org/>.
  */
 
-
 /**
  * @author <a href="mailto:mikeh@ncsa.uiuc.edu">Mike Haberman</a>
- * @version $Id$ 
+ * @version $Id$
  *
  *
  */
-public class EmailValidator extends InputValidator 
+public class EmailValidator extends InputValidator
 {
     /**
-     * default Constructor, 
-    */
+     * default Constructor,
+     */
     public EmailValidator()
     {
-       super(false, NoMaxSize, EmptyArgv);
+        super(false, NoMaxSize, EmptyArgv);
     }
 
     /**
-     * @param String input, input to be checked 
-    */
-    protected void check(String input) 
-        throws Exception
+     * @param String input, input to be checked
+     */
+    protected void check(String input)
+            throws Exception
     {
         // the only two checks:
         // 1. @ must be present
@@ -84,27 +83,27 @@ public class EmailValidator extends InputValidator
         int idx = input.indexOf("@");
         if (idx == -1)
         {
-           throw new Exception("Missing @");
+            throw new Exception("Missing @");
         }
 
         idx = input.lastIndexOf(".");
         if (idx == -1)
         {
-           throw new Exception("Missing .{top level domain} suffix");
+            throw new Exception("Missing .{top level domain} suffix");
         }
 
         String domain = input.substring(idx);
-        if (domain.length() < 3) 
+        if (domain.length() < 3)
         {
-           throw new Exception("Invalid .{top level domain} suffix");
+            throw new Exception("Invalid .{top level domain} suffix");
         }
     }
 
     /**
-     * @return String, the expected format of the input 
-    */
+     * @return String, the expected format of the input
+     */
     public String getExpectedFormat()
     {
-       return "name@domain.topLevelDomain";
-    } 
+        return "name@domain.topLevelDomain";
+    }
 }

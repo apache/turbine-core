@@ -54,16 +54,16 @@ package org.apache.turbine.util.template;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ecs.HtmlColor;
 import org.apache.ecs.html.Link;
 import org.apache.ecs.html.Meta;
-import org.apache.ecs.html.Title;
-import org.apache.ecs.html.Style;
 import org.apache.ecs.html.Script;
+import org.apache.ecs.html.Style;
+import org.apache.ecs.html.Title;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Template context tool that will set various attributes of the HTML
@@ -83,7 +83,7 @@ import org.apache.commons.logging.LogFactory;
  * @version $Id$
  */
 public class TemplatePageAttributes
-    implements ApplicationTool
+        implements ApplicationTool
 {
     /** Logging */
     private static Log log = LogFactory.getLog(TemplatePageAttributes.class);
@@ -93,7 +93,6 @@ public class TemplatePageAttributes
 
     /** The title. */
     private String cachedTitle = null;
-
 
     /**
      * Default constructor. The init method must be called before use
@@ -237,9 +236,9 @@ public class TemplatePageAttributes
      */
     public TemplatePageAttributes setKeywords(String keywords)
     {
-       data.getPage().getHead().addElement(
-               new Meta().setName("keywords").setContent(keywords));
-       return this;
+        data.getPage().getHead().addElement(
+                new Meta().setName("keywords").setContent(keywords));
+        return this;
     }
 
     /**
@@ -253,9 +252,9 @@ public class TemplatePageAttributes
      */
     public TemplatePageAttributes setHttpEquiv(String httpEquiv, String content)
     {
-       data.getPage().getHead().addElement(
-               new Meta().setHttpEquiv(httpEquiv).setContent(content));
-       return this;
+        data.getPage().getHead().addElement(
+                new Meta().setHttpEquiv(httpEquiv).setContent(content));
+        return this;
     }
 
     /**

@@ -57,16 +57,15 @@ package org.apache.turbine.util.parser;
 import java.net.URLDecoder;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
-
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.services.upload.TurbineUpload;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.pool.Recyclable;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.turbine.services.upload.TurbineUpload;
 
 /**
  * DefaultParameterParser is a utility object to handle parsing and
@@ -93,9 +92,9 @@ import org.apache.turbine.services.upload.TurbineUpload;
  * @version $Id$
  */
 public class DefaultParameterParser
-    extends BaseValueParser
-    implements ParameterParser,
-               Recyclable
+        extends BaseValueParser
+        implements ParameterParser,
+        Recyclable
 {
     /** Logging */
     private static Log log = LogFactory.getLog(DefaultParameterParser.class);
@@ -185,7 +184,7 @@ public class DefaultParameterParser
 
         tmp = req.getHeader("Content-type");
         if (TurbineUpload.getAutomatic() &&
-            tmp != null && tmp.startsWith("multipart/form-data"))
+                tmp != null && tmp.startsWith("multipart/form-data"))
         {
             try
             {
@@ -200,7 +199,7 @@ public class DefaultParameterParser
         Enumeration names = req.getParameterNames();
         if (names != null)
         {
-            while(names.hasMoreElements())
+            while (names.hasMoreElements())
             {
                 tmp = (String) names.nextElement();
                 parameters.put(convert(tmp),
@@ -263,7 +262,6 @@ public class DefaultParameterParser
     {
         return this.uploadData;
     }
-
 
     /**
      * Add a FileItem object as a parameters.  If there are any

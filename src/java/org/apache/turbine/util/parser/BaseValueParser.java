@@ -57,16 +57,11 @@ package org.apache.turbine.util.parser;
 import java.beans.IndexedPropertyDescriptor;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-
 import java.io.UnsupportedEncodingException;
-
 import java.lang.reflect.Method;
-
 import java.math.BigDecimal;
-
 import java.text.DateFormat;
 import java.text.ParseException;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
@@ -74,12 +69,9 @@ import java.util.GregorianCalendar;
 import java.util.Hashtable;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.StringKey;
-
 import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.util.DateSelector;
 import org.apache.turbine.util.TimeSelector;
 import org.apache.turbine.util.ValueParser;
@@ -116,9 +108,9 @@ import org.apache.turbine.util.pool.RecyclableSupport;
  * @version $Id$
  */
 public class BaseValueParser
-    extends RecyclableSupport
-    implements ValueParser,
-               Recyclable
+        extends RecyclableSupport
+        implements ValueParser,
+        Recyclable
 {
     /**
      * Random access storage for parameter data.
@@ -138,15 +130,15 @@ public class BaseValueParser
      * @param value A String to be processed.
      * @return A new String converted to lowercase and trimmed.
      */
-    public static String convertAndTrim ( String value )
+    public static String convertAndTrim(String value)
     {
         String tmp = value.trim();
         String fold =
-            TurbineResources.getString(URL_CASE_FOLDING, "")
-            .toLowerCase();
+                TurbineResources.getString(URL_CASE_FOLDING, "")
+                .toLowerCase();
         if ((fold == null) ||
-            (fold.equals("")) ||
-            (fold.equals(URL_CASE_FOLDING_LOWER)))
+                (fold.equals("")) ||
+                (fold.equals(URL_CASE_FOLDING_LOWER)))
             return (tmp.toLowerCase());
         else if (fold.equals(URL_CASE_FOLDING_UPPER))
             return (tmp.toUpperCase());
@@ -211,7 +203,7 @@ public class BaseValueParser
     /**
      * Set the character encoding that will be used by this ValueParser.
      */
-    public void setCharacterEncoding (String s)
+    public void setCharacterEncoding(String s)
     {
         characterEncoding = s;
     }
@@ -219,7 +211,7 @@ public class BaseValueParser
     /**
      * Get the character encoding that will be used by this ValueParser.
      */
-    public String getCharacterEncoding ()
+    public String getCharacterEncoding()
     {
         return characterEncoding;
     }
@@ -230,10 +222,10 @@ public class BaseValueParser
      * @param name A String with the name.
      * @param value A double with the value.
      */
-    public void add ( String name,
-                      double value )
+    public void add(String name,
+                    double value)
     {
-        add ( name, Double.toString(value));
+        add(name, Double.toString(value));
     }
 
     /**
@@ -242,10 +234,10 @@ public class BaseValueParser
      * @param name A String with the name.
      * @param value An int with the value.
      */
-    public void add ( String name,
-                      int value )
+    public void add(String name,
+                    int value)
     {
-        add ( name, Integer.toString(value));
+        add(name, Integer.toString(value));
     }
 
     /**
@@ -254,10 +246,10 @@ public class BaseValueParser
      * @param name A String with the name.
      * @param value An Integer with the value.
      */
-    public void add ( String name,
-                      Integer value )
+    public void add(String name,
+                    Integer value)
     {
-        add ( name, value.toString());
+        add(name, value.toString());
     }
 
     /**
@@ -266,10 +258,10 @@ public class BaseValueParser
      * @param name A String with the name.
      * @param value A long with the value.
      */
-    public void add ( String name,
-                      long value )
+    public void add(String name,
+                    long value)
     {
-        add ( name, Long.toString(value));
+        add(name, Long.toString(value));
     }
 
     /**
@@ -278,10 +270,10 @@ public class BaseValueParser
      * @param name A String with the name.
      * @param value A long with the value.
      */
-    public void add ( String name,
-                      String value )
+    public void add(String name,
+                    String value)
     {
-        append ( name, value);
+        append(name, value);
     }
 
     /**
@@ -292,22 +284,22 @@ public class BaseValueParser
      * @param name A String with the name.
      * @param value A String with the value.
      */
-    public void append( String name,
-                        String value )
+    public void append(String name,
+                       String value)
     {
         String[] items = this.getStrings(name);
-        if(items == null)
+        if (items == null)
         {
             items = new String[1];
             items[0] = value;
-            parameters.put( convert(name), items );
+            parameters.put(convert(name), items);
         }
         else
         {
-            String[] newItems = new String[items.length+1];
+            String[] newItems = new String[items.length + 1];
             System.arraycopy(items, 0, newItems, 0, items.length);
             newItems[items.length] = value;
-            parameters.put( convert(name), newItems );
+            parameters.put(convert(name), newItems);
         }
     }
 
@@ -321,7 +313,7 @@ public class BaseValueParser
      */
     public Object remove(String name)
     {
-        return parameters.remove( convert(name) );
+        return parameters.remove(convert(name));
     }
 
     /**
@@ -332,7 +324,7 @@ public class BaseValueParser
      * @param value A String to be processed.
      * @return A new String converted to lowercase and trimmed.
      */
-    public String convert ( String value )
+    public String convert(String value)
     {
         return convertAndTrim(value);
     }
@@ -345,9 +337,9 @@ public class BaseValueParser
      * @param key An Object with the key to search for.
      * @return True if the object is found.
      */
-    public boolean containsKey( Object key )
+    public boolean containsKey(Object key)
     {
-        return parameters.containsKey(convert((String)key));
+        return parameters.containsKey(convert((String) key));
     }
 
     /**
@@ -377,7 +369,6 @@ public class BaseValueParser
                 containsKey(key + TimeSelector.MINUTE_SUFFIX) &&
                 containsKey(key + TimeSelector.SECOND_SUFFIX));
     }
-
 
     /*
      * Get an enumerator for the parameter keys. Wraps to the
@@ -416,14 +407,14 @@ public class BaseValueParser
         if (object != null)
         {
             String tmp = getString(name);
-            if ( tmp.equalsIgnoreCase ("1") ||
-                 tmp.equalsIgnoreCase ("true") ||
-                 tmp.equalsIgnoreCase ("on") )
+            if (tmp.equalsIgnoreCase("1") ||
+                    tmp.equalsIgnoreCase("true") ||
+                    tmp.equalsIgnoreCase("on"))
             {
                 value = true;
             }
-            if ( tmp.equalsIgnoreCase ("0") ||
-                 tmp.equalsIgnoreCase ("false") )
+            if (tmp.equalsIgnoreCase("0") ||
+                    tmp.equalsIgnoreCase("false"))
             {
                 value = false;
             }
@@ -489,7 +480,7 @@ public class BaseValueParser
         {
             Object object = parameters.get(convert(name));
             if (object != null)
-                value = Double.valueOf(((String[])object)[0]).doubleValue();
+                value = Double.valueOf(((String[]) object)[0]).doubleValue();
         }
         catch (NumberFormatException exception)
         {
@@ -518,21 +509,20 @@ public class BaseValueParser
      * @return A float.
      */
     public float getFloat(String name,
-                            float defaultValue)
+                          float defaultValue)
     {
         float value = defaultValue;
         try
         {
             Object object = parameters.get(convert(name));
             if (object != null)
-                value = Float.valueOf(((String[])object)[0]).floatValue();
+                value = Float.valueOf(((String[]) object)[0]).floatValue();
         }
         catch (NumberFormatException exception)
         {
         }
         return value;
     }
-
 
     /**
      * Return a float for the given name.  If the name does not
@@ -563,10 +553,10 @@ public class BaseValueParser
             Object object = parameters.get(convert(name));
             if (object != null)
             {
-                String temp = ((String[])object)[0];
+                String temp = ((String[]) object)[0];
                 if (temp.length() > 0)
                 {
-                    value = new BigDecimal(((String[])object)[0]);
+                    value = new BigDecimal(((String[]) object)[0]);
                 }
             }
         }
@@ -601,10 +591,10 @@ public class BaseValueParser
         Object object = getStrings(convert(name));
         if (object != null)
         {
-            String[] temp = (String[])object;
+            String[] temp = (String[]) object;
             value = new BigDecimal[temp.length];
-            for (int i=0; i<temp.length; i++)
-                value[i] = new BigDecimal( temp[i] );
+            for (int i = 0; i < temp.length; i++)
+                value[i] = new BigDecimal(temp[i]);
         }
         return value;
     }
@@ -618,14 +608,14 @@ public class BaseValueParser
      * @return An int.
      */
     public int getInt(String name,
-                      int defaultValue )
+                      int defaultValue)
     {
         int value = defaultValue;
         try
         {
             Object object = parameters.get(convert(name));
             if (object != null)
-                value = Integer.valueOf(((String[])object)[0]).intValue();
+                value = Integer.valueOf(((String[]) object)[0]).intValue();
         }
         catch (NumberFormatException exception)
         {
@@ -703,10 +693,10 @@ public class BaseValueParser
         Object object = getStrings(convert(name));
         if (object != null)
         {
-            String[] temp = (String[])object;
+            String[] temp = (String[]) object;
             value = new int[temp.length];
-            for (int i=0; i<temp.length; i++)
-                value[i] = Integer.parseInt( temp[i] );
+            for (int i = 0; i < temp.length; i++)
+                value[i] = Integer.parseInt(temp[i]);
         }
         return value;
     }
@@ -724,10 +714,10 @@ public class BaseValueParser
         Object object = getStrings(convert(name));
         if (object != null)
         {
-            String[] temp = (String[])object;
+            String[] temp = (String[]) object;
             value = new Integer[temp.length];
-            for (int i=0; i<temp.length; i++)
-                value[i] = Integer.valueOf( temp[i] );
+            for (int i = 0; i < temp.length; i++)
+                value[i] = Integer.valueOf(temp[i]);
         }
         return value;
     }
@@ -741,14 +731,14 @@ public class BaseValueParser
      * @return A long.
      */
     public long getLong(String name,
-                        long defaultValue )
+                        long defaultValue)
     {
         long value = defaultValue;
         try
         {
             Object object = parameters.get(convert(name));
             if (object != null)
-                value = Long.valueOf(((String[])object)[0]).longValue();
+                value = Long.valueOf(((String[]) object)[0]).longValue();
         }
         catch (NumberFormatException exception)
         {
@@ -781,10 +771,10 @@ public class BaseValueParser
         Object object = getStrings(convert(name));
         if (object != null)
         {
-            String[] temp = (String[])object;
+            String[] temp = (String[]) object;
             value = new long[temp.length];
-            for (int i=0; i<temp.length; i++)
-                value[i] = Long.parseLong( temp[i] );
+            for (int i = 0; i < temp.length; i++)
+                value[i] = Long.parseLong(temp[i]);
         }
         return value;
     }
@@ -802,10 +792,10 @@ public class BaseValueParser
         Object object = getStrings(convert(name));
         if (object != null)
         {
-            String[] temp = (String[])object;
+            String[] temp = (String[]) object;
             value = new Long[temp.length];
-            for (int i=0; i<temp.length; i++)
-                value[i] = Long.valueOf( temp[i] );
+            for (int i = 0; i < temp.length; i++)
+                value[i] = Long.valueOf(temp[i]);
         }
         return value;
     }
@@ -819,14 +809,14 @@ public class BaseValueParser
      * @return A byte.
      */
     public byte getByte(String name,
-                        byte defaultValue )
+                        byte defaultValue)
     {
         byte value = defaultValue;
         try
         {
             Object object = parameters.get(convert(name));
             if (object != null)
-                value = Byte.valueOf(((String[])object)[0]).byteValue();
+                value = Byte.valueOf(((String[]) object)[0]).byteValue();
         }
         catch (NumberFormatException exception)
         {
@@ -856,10 +846,10 @@ public class BaseValueParser
      * @exception UnsupportedEncodingException.
      */
     public byte[] getBytes(String name)
-        throws UnsupportedEncodingException
+            throws UnsupportedEncodingException
     {
         String tempStr = getString(name);
-        if ( tempStr != null )
+        if (tempStr != null)
             return tempStr.getBytes(characterEncoding);
         return null;
     }
@@ -878,12 +868,12 @@ public class BaseValueParser
             String value = null;
             Object object = parameters.get(convert(name));
             if (object != null)
-                value = ((String[])object)[0];
+                value = ((String[]) object)[0];
             if (value == null || value.equals("null"))
                 return null;
             return value;
         }
-        catch ( ClassCastException e )
+        catch (ClassCastException e)
         {
             return null;
         }
@@ -901,7 +891,7 @@ public class BaseValueParser
      * @param name A String with the name.
      * @return A String.
      */
-    public String get (String name)
+    public String get(String name)
     {
         return getString(name);
     }
@@ -919,8 +909,8 @@ public class BaseValueParser
     {
         String value = getString(name);
         if (value == null ||
-            value.length() == 0 ||
-            value.equals("null"))
+                value.length() == 0 ||
+                value.equals("null"))
             return defaultValue;
         else
             return value;
@@ -936,9 +926,9 @@ public class BaseValueParser
      */
     public void setString(String name, String value)
     {
-        if(value != null)
+        if (value != null)
         {
-            parameters.put(convert(name), new String[] {value} );
+            parameters.put(convert(name), new String[]{value});
         }
     }
 
@@ -954,7 +944,7 @@ public class BaseValueParser
         String[] value = null;
         Object object = parameters.get(convert(name));
         if (object != null)
-            value = ((String[])object);
+            value = ((String[]) object);
         return value;
     }
 
@@ -971,7 +961,7 @@ public class BaseValueParser
     {
         String[] value = getStrings(name);
         if (value == null ||
-            value.length == 0)
+                value.length == 0)
             return defaultValue;
         else
             return value;
@@ -987,7 +977,7 @@ public class BaseValueParser
      */
     public void setStrings(String name, String[] values)
     {
-        if(values != null)
+        if (values != null)
         {
             parameters.put(convert(name), values);
         }
@@ -1007,10 +997,10 @@ public class BaseValueParser
             Object value = null;
             Object object = parameters.get(convert(name));
             if (object != null)
-                value = ((Object[])object)[0];
+                value = ((Object[]) object)[0];
             return value;
         }
-        catch ( ClassCastException e )
+        catch (ClassCastException e)
         {
             return null;
         }
@@ -1027,9 +1017,9 @@ public class BaseValueParser
     {
         try
         {
-            return (Object[])parameters.get(convert(name));
+            return (Object[]) parameters.get(convert(name));
         }
-        catch ( ClassCastException e )
+        catch (ClassCastException e)
         {
             return null;
         }
@@ -1088,7 +1078,7 @@ public class BaseValueParser
         {
             try
             {
-                Calendar cal =  new GregorianCalendar(
+                Calendar cal = new GregorianCalendar(
                         getInt(name + DateSelector.YEAR_SUFFIX),
                         getInt(name + DateSelector.MONTH_SUFFIX),
                         getInt(name + DateSelector.DAY_SUFFIX));
@@ -1112,7 +1102,7 @@ public class BaseValueParser
                 // Convert from 12 to 24hr format if appropriate
                 if (ampm != null)
                 {
-                    if ( hour == 12 )
+                    if (hour == 12)
                     {
                         hour = (Integer.parseInt(ampm) == Calendar.PM) ? 12 : 0;
                     }
@@ -1121,7 +1111,7 @@ public class BaseValueParser
                         hour += 12;
                     }
                 }
-                Calendar cal =  new GregorianCalendar( 1, 1, 1,
+                Calendar cal = new GregorianCalendar(1, 1, 1,
                         hour,
                         getInt(name + TimeSelector.MINUTE_SUFFIX),
                         getInt(name + TimeSelector.SECOND_SUFFIX));
@@ -1173,11 +1163,11 @@ public class BaseValueParser
             Object object = parameters.get(convert(name));
             if (object != null)
             {
-                value = ((String[])object)[0];
+                value = ((String[]) object)[0];
             }
             return (StringUtils.isNotEmpty(value) ? new NumberKey(value) : null);
         }
-        catch ( ClassCastException e )
+        catch (ClassCastException e)
         {
             return null;
         }
@@ -1198,11 +1188,11 @@ public class BaseValueParser
             Object object = parameters.get(convert(name));
             if (object != null)
             {
-                value = ((String[])object)[0];
+                value = ((String[]) object)[0];
             }
             return (StringUtils.isNotEmpty(value) ? new StringKey(value) : null);
         }
-        catch ( ClassCastException e )
+        catch (ClassCastException e)
         {
             return null;
         }
@@ -1217,20 +1207,20 @@ public class BaseValueParser
      * @exception Exception, a generic exception.
      */
     public void setProperties(Object bean)
-        throws Exception
+            throws Exception
     {
         Class beanClass = bean.getClass();
         PropertyDescriptor[] props
-            = Introspector.getBeanInfo(beanClass).getPropertyDescriptors();
+                = Introspector.getBeanInfo(beanClass).getPropertyDescriptors();
 
         for (int i = 0; i < props.length; i++)
         {
             String propname = props[i].getName();
             Method setter = props[i].getWriteMethod();
             if (setter != null &&
-                (containsKey(propname) ||
-                 containsDateSelectorKeys(propname) ||
-                 containsTimeSelectorKeys(propname)))
+                    (containsKey(propname) ||
+                    containsDateSelectorKeys(propname) ||
+                    containsTimeSelectorKeys(propname)))
             {
                 setProperty(bean, props[i]);
             }
@@ -1247,45 +1237,45 @@ public class BaseValueParser
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
-        for (Enumeration e = parameters.keys() ; e.hasMoreElements() ;)
+        for (Enumeration e = parameters.keys(); e.hasMoreElements();)
         {
             String name = (String) e.nextElement();
             try
             {
-                sb.append ('{');
+                sb.append('{');
                 sb.append(name);
                 sb.append('=');
                 String[] params = this.getStrings(name);
-                if ( params.length <= 1 )
+                if (params.length <= 1)
                 {
                     sb.append(params[0]);
                 }
                 else
                 {
-                    for ( int i=0; i<params.length; i++ )
+                    for (int i = 0; i < params.length; i++)
                     {
-                        if ( i != 0 )
+                        if (i != 0)
                         {
                             sb.append(", ");
                         }
                         sb.append('[')
-                          .append(params[i])
-                          .append(']');
+                                .append(params[i])
+                                .append(']');
                     }
                 }
-                sb.append ("}\n");
+                sb.append("}\n");
             }
-            catch ( Exception ee)
+            catch (Exception ee)
             {
                 try
                 {
-                    sb.append ('{');
+                    sb.append('{');
                     sb.append(name);
                     sb.append('=');
-                    sb.append ("ERROR?");
-                    sb.append ("}\n");
+                    sb.append("ERROR?");
+                    sb.append("}\n");
                 }
-                catch ( Exception eee )
+                catch (Exception eee)
                 {
                 }
             }
@@ -1305,24 +1295,24 @@ public class BaseValueParser
      * @exception Exception, a generic exception.
      */
     protected void setProperty(Object bean,
-                             PropertyDescriptor prop)
-        throws Exception
+                               PropertyDescriptor prop)
+            throws Exception
     {
         if (prop instanceof IndexedPropertyDescriptor)
         {
             throw new Exception(prop.getName() +
-                                " is an indexed property (not supported)");
+                    " is an indexed property (not supported)");
         }
 
         Method setter = prop.getWriteMethod();
         if (setter == null)
         {
             throw new Exception(prop.getName() +
-                                " is a read only property");
+                    " is a read only property");
         }
 
         Class propclass = prop.getPropertyType();
-        Object[] args = { null };
+        Object[] args = {null};
 
         if (propclass == String.class)
         {
@@ -1332,7 +1322,7 @@ public class BaseValueParser
         {
             args[0] = getInteger(prop.getName());
         }
-        else if (propclass == Long.class    || propclass == Long.TYPE)
+        else if (propclass == Long.class || propclass == Long.TYPE)
         {
             args[0] = new Long(getLong(prop.getName()));
         }
@@ -1340,7 +1330,7 @@ public class BaseValueParser
         {
             args[0] = getBool(prop.getName());
         }
-        else if (propclass == Double.class  || propclass == Double.TYPE)
+        else if (propclass == Double.class || propclass == Double.TYPE)
         {
             args[0] = new Double(getDouble(prop.getName()));
         }
@@ -1379,9 +1369,9 @@ public class BaseValueParser
         else
         {
             throw new Exception("property "
-                                + prop.getName()
-                                + " is of unsupported type "
-                                + propclass.toString());
+                    + prop.getName()
+                    + " is of unsupported type "
+                    + propclass.toString());
         }
 
         setter.invoke(bean, args);

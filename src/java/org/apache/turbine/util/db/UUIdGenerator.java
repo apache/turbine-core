@@ -58,9 +58,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.StringTokenizer;
 import javax.mail.internet.MimeUtility;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -94,10 +95,10 @@ public class UUIdGenerator
     /** Logging */
     private static Log log = LogFactory.getLog(UUIdGenerator.class);
 
-    private static final String errorString = "uuid.address property in " +
-        "TurbineResources.properties should be a valid IP\n " +
-        "e.g. 18.2.3.100, or an ethernet address e.g. " +
-        "AE:10:3E:de:f5:77 uuid.address was ";
+    private static final String errorString = "uuid.address property in "
+            + "TurbineResources.properties should be a valid IP\n "
+            + "e.g. 18.2.3.100, or an ethernet address e.g. "
+            + "AE:10:3E:de:f5:77 uuid.address was ";
 
     private byte[] address = new byte[6];
     private String baseId = null;
@@ -111,12 +112,12 @@ public class UUIdGenerator
         String addr = TurbineResources.getString("uuid.address");
         if (addr == null)
         {
-            log.info("UUIdGenerator is using a random number as the " +
-                     "base for id's.  This is not the best method for many " +
-                     "purposes, but may be adequate in some circumstances." +
-                     " Consider using an IP or ethernet (MAC) address if " +
-                     "available. Edit TurbineResources.properties file and " +
-                     "add a uuid.address= property.");
+            log.info("UUIdGenerator is using a random number as the "
+                    + "base for id's.  This is not the best method for many "
+                    + "purposes, but may be adequate in some circumstances."
+                    + " Consider using an IP or ethernet (MAC) address if "
+                    + "available. Edit TurbineResources.properties file and "
+                    + "add a uuid.address= property.");
 
             for (int i = 0; i < 6; i++)
             {
@@ -137,15 +138,16 @@ public class UUIdGenerator
                 // will not conflict with MAC id's. I think MAC addresses
                 // will never have the highest bit set.  Though this should
                 // be investigated further.
-                address[0] = (byte)255;
-                address[1] = (byte)255;
+                address[0] = (byte) 255;
+                address[1] = (byte) 255;
                 int i = 2;
                 try
                 {
                     while (stok.hasMoreTokens())
                     {
                         address[i++] =
-                            Integer.valueOf(stok.nextToken(), 16).byteValue();
+                                Integer.valueOf(stok.nextToken(),
+                                        16).byteValue();
                     }
                 }
                 catch (Exception e)
@@ -153,11 +155,11 @@ public class UUIdGenerator
                     throw new TurbineException(errorString + addr, e);
                 }
             }
-            else if ( addr.indexOf(":") > 0 )
+            else if (addr.indexOf(":") > 0)
             {
                 // we should have a MAC
                 StringTokenizer stok = new StringTokenizer(addr, ":");
-                if ( stok.countTokens() != 6 )
+                if (stok.countTokens() != 6)
                 {
                     throw new TurbineException(errorString + addr);
                 }
@@ -180,6 +182,7 @@ public class UUIdGenerator
             }
         }
     }
+
     /**
      * Generates the new base id
      */
@@ -210,6 +213,7 @@ public class UUIdGenerator
             }
         }
     }
+
     /**
      * Gets the id
      * @return the 18 character id
@@ -243,11 +247,13 @@ public class UUIdGenerator
      * characters used in the ID
      */
     private static final char[] countChar =
-    {
-        'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
-        'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
-        'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
-        'w','x','y','z','0','1','2','3','4','5','6','7','8','9','-','_'
-    };
+            {
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
+                'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+                'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+                'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+                'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7',
+                '8', '9', '-', '_'
+            };
 }
 

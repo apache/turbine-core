@@ -97,9 +97,9 @@ public class ObjectUtils
      */
     public static void addOnce(Vector v, Object o)
     {
-        if (! v.contains( o ))
+        if (!v.contains(o))
         {
-            v.addElement( o );
+            v.addElement(o);
         }
     }
 
@@ -146,7 +146,7 @@ public class ObjectUtils
                         bin.close();
                     }
                 }
-                catch(IOException e)
+                catch (IOException e)
                 {
                 }
             }
@@ -163,7 +163,7 @@ public class ObjectUtils
      * @param o2 The second object.
      * @return True if the values of both xstrings are the same.
      */
-    public static boolean equals(Object o1, Object o2 )
+    public static boolean equals(Object o1, Object o2)
     {
         if (o1 == null)
         {
@@ -190,7 +190,7 @@ public class ObjectUtils
      * never happen.
      */
     public static final void safeAddToHashtable(Hashtable hash, Object key,
-            Object value)
+                                                Object value)
             throws NullPointerException
     {
         if (value == null)
@@ -199,7 +199,7 @@ public class ObjectUtils
         }
         else
         {
-           hash.put(key, value);
+            hash.put(key, value);
         }
     }
 }

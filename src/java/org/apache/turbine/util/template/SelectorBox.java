@@ -120,7 +120,6 @@ public class SelectorBox
     /** This is an array of which items are selected. */
     private boolean[] selected = null;
 
-
     /**
      * Generic constructor, builds a select box with a default size of
      * 1 and no selected items.
@@ -156,7 +155,7 @@ public class SelectorBox
      * @param selected A boolean[] with the selected items.
      */
     public SelectorBox(String name, Object[] names, Object[] values,
-            boolean[] selected)
+                       boolean[] selected)
     {
         this(name, names, values, 1, selected);
     }
@@ -171,7 +170,7 @@ public class SelectorBox
      * @param selected A boolean[] with the selected items.
      */
     public SelectorBox(String name, Object[] names, Object[] values, int size,
-            boolean[] selected )
+                       boolean[] selected)
     {
         this.name = name;
         this.names = names;
@@ -206,7 +205,7 @@ public class SelectorBox
             {
                 Object r1 = selectedSet[i];
                 if (r1 != null && r2 != null &&
-                    r1.toString().equalsIgnoreCase(r2.toString()))
+                        r1.toString().equalsIgnoreCase(r2.toString()))
                 {
                     selected[j] = true;
                 }

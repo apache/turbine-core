@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -92,7 +92,7 @@ public class BrowserDetector
      * The browser version specified in the user agent string.  If we
      * can't parse the version just assume an old browser.
      */
-    private float browserVersion = (float)1.0;
+    private float browserVersion = (float) 1.0;
 
     /**
      * The browser platform specified in the user agent string.
@@ -135,7 +135,7 @@ public class BrowserDetector
     public BrowserDetector(RunData data)
     {
         this.userAgentString =
-            data.getRequest().getHeader("User-Agent");
+                data.getRequest().getHeader("User-Agent");
         parse();
     }
 
@@ -218,17 +218,17 @@ public class BrowserDetector
         int versionEndIndex = userAgentString.indexOf(" ");
 
         // Get the browser name and version.
-        browserName = userAgentString.substring( 0, versionStartIndex );
+        browserName = userAgentString.substring(0, versionStartIndex);
         try
         {
             // Not all user agents will have a space in the reported
             // string.
             String agentSubstring = null;
-            if ( versionEndIndex < 0 )
-                agentSubstring = userAgentString.substring( versionStartIndex+1 );
+            if (versionEndIndex < 0)
+                agentSubstring = userAgentString.substring(versionStartIndex + 1);
             else
-                agentSubstring = userAgentString.substring( versionStartIndex+1, versionEndIndex );
-            browserVersion = toFloat( agentSubstring );
+                agentSubstring = userAgentString.substring(versionStartIndex + 1, versionEndIndex);
+            browserVersion = toFloat(agentSubstring);
         }
         catch (NumberFormatException e)
         {
@@ -236,18 +236,18 @@ public class BrowserDetector
         }
 
         // MSIE lies about its name.  Of course...
-        if ( userAgentString.indexOf(MSIE) != -1 )
+        if (userAgentString.indexOf(MSIE) != -1)
         {
             // Ex: Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)
             versionStartIndex = (userAgentString.indexOf(MSIE) +
-                                 MSIE.length() + 1);
-            versionEndIndex = userAgentString.indexOf( ";",
-                                                       versionStartIndex );
+                    MSIE.length() + 1);
+            versionEndIndex = userAgentString.indexOf(";",
+                    versionStartIndex);
 
             browserName = MSIE;
             try
             {
-                browserVersion = toFloat( userAgentString.substring(versionStartIndex, versionEndIndex) );
+                browserVersion = toFloat(userAgentString.substring(versionStartIndex, versionEndIndex));
             }
             catch (NumberFormatException e)
             {
@@ -263,18 +263,18 @@ public class BrowserDetector
 
         // Opera isn't completely honest, either...
         // Modificaton by Chris Mospaw <mospaw@polk-county.com>
-        if ( userAgentString.indexOf(OPERA) != -1 )
+        if (userAgentString.indexOf(OPERA) != -1)
         {
             //Ex: Mozilla/4.0 (Windows NT 4.0;US) Opera 3.61  [en]
             versionStartIndex = (userAgentString.indexOf(OPERA) +
-                                 OPERA.length() + 1);
-            versionEndIndex = userAgentString.indexOf( " ",
-                                                       versionStartIndex );
+                    OPERA.length() + 1);
+            versionEndIndex = userAgentString.indexOf(" ",
+                    versionStartIndex);
 
             browserName = OPERA;
             try
             {
-                browserVersion = toFloat( userAgentString.substring(versionStartIndex, versionEndIndex) );
+                browserVersion = toFloat(userAgentString.substring(versionStartIndex, versionEndIndex));
             }
             catch (NumberFormatException e)
             {
@@ -290,22 +290,22 @@ public class BrowserDetector
 
 
         // Try to figure out what platform.
-        if ( (userAgentString.indexOf("Windows") != -1) ||
-             (userAgentString.indexOf("WinNT") != -1) ||
-             (userAgentString.indexOf("Win98") != -1) ||
-             (userAgentString.indexOf("Win95") != -1) )
+        if ((userAgentString.indexOf("Windows") != -1) ||
+                (userAgentString.indexOf("WinNT") != -1) ||
+                (userAgentString.indexOf("Win98") != -1) ||
+                (userAgentString.indexOf("Win95") != -1))
         {
             browserPlatform = WINDOWS;
         }
 
-        if ( userAgentString.indexOf("Mac") != -1 )
+        if (userAgentString.indexOf("Mac") != -1)
         {
             browserPlatform = MACINTOSH;
         }
 
-        if ( userAgentString.indexOf("X11") != -1 )
+        if (userAgentString.indexOf("X11") != -1)
         {
-            browserPlatform =  UNIX;
+            browserPlatform = UNIX;
         }
 
         if (browserPlatform == WINDOWS)
@@ -350,7 +350,7 @@ public class BrowserDetector
                     javascriptOK = true;
                     fileUploadOK = true;
                 }
-                if( browserVersion >= 4.0)
+                if (browserVersion >= 4.0)
                 {
                     cssOK = true;
                 }
@@ -359,7 +359,7 @@ public class BrowserDetector
             {
                 if (browserVersion >= 4.0)
                 {
-                    javascriptOK = true ;
+                    javascriptOK = true;
                     fileUploadOK = true;
                 }
                 if (browserVersion > 4.0)
@@ -368,7 +368,7 @@ public class BrowserDetector
                 }
             }
         }
-        else if (browserPlatform ==  UNIX)
+        else if (browserPlatform == UNIX)
         {
             if (browserName.equals(MOZILLA))
             {

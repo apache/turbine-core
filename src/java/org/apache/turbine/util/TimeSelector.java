@@ -57,6 +57,7 @@ package org.apache.turbine.util;
 import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Date;
+
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.ElementContainer;
 import org.apache.ecs.html.Comment;
@@ -107,25 +108,25 @@ import org.apache.ecs.html.Select;
 public class TimeSelector
 {
     /** Prefix for time names. */
-    public static final String DEFAULT_PREFIX   = "TimeSelector";
+    public static final String DEFAULT_PREFIX = "TimeSelector";
 
     /** Suffix for hour parameter. */
-    public static final String HOUR_SUFFIX   = "_hour";
+    public static final String HOUR_SUFFIX = "_hour";
 
     /** Suffix for minute parameter. */
     public static final String MINUTE_SUFFIX = "_minute";
 
     /** Suffix for second parameter. */
-    public static final String SECOND_SUFFIX  = "_second";
+    public static final String SECOND_SUFFIX = "_second";
 
     /** Suffix for am/pm parameter. */
-    public static final String AMPM_SUFFIX  = "_ampm";
+    public static final String AMPM_SUFFIX = "_ampm";
 
     /** Constant for 12hr format */
-    public static final int TWELVE_HOUR  = 0;
+    public static final int TWELVE_HOUR = 0;
 
     /** Constant for 24hr format */
-    public static final int TWENTY_FOUR_HOUR  = 1;
+    public static final int TWENTY_FOUR_HOUR = 1;
 
     /** TODO: Add ability to specify Locale. */
     private static final NumberFormat nbrFmt;
@@ -315,7 +316,7 @@ public class TimeSelector
      */
     public static Select getSecondSelector(String name)
     {
-        return(getSecondSelector(name, Calendar.getInstance()));
+        return (getSecondSelector(name, Calendar.getInstance()));
     }
 
     /**
@@ -327,8 +328,8 @@ public class TimeSelector
      */
     public static Select getSecondSelector(String name, Calendar now)
     {
-        return(getSecondSelector(name, Calendar.getInstance(),
-               DEFAULT_SECOND_INTERVAL));
+        return (getSecondSelector(name, Calendar.getInstance(),
+                DEFAULT_SECOND_INTERVAL));
     }
 
     /**
@@ -340,7 +341,7 @@ public class TimeSelector
      * @return A select object with second options.
      */
     public static Select getSecondSelector(String name, Calendar now,
-                                              int interval)
+                                           int interval)
     {
         Select secondSelect = new Select().setName(name);
 
@@ -350,7 +351,7 @@ public class TimeSelector
             o.addElement(nbrFmt.format(currentSecond));
             o.setValue(currentSecond);
             int nearestSecond =
-                ((now.get(Calendar.SECOND) / interval) * interval);
+                    ((now.get(Calendar.SECOND) / interval) * interval);
 
             if (nearestSecond == currentSecond)
             {
@@ -358,7 +359,7 @@ public class TimeSelector
             }
             secondSelect.addElement(o);
         }
-        return(secondSelect);
+        return (secondSelect);
     }
 
     /**
@@ -369,7 +370,7 @@ public class TimeSelector
      */
     public static Select getMinuteSelector(String name)
     {
-        return(getMinuteSelector(name, Calendar.getInstance()));
+        return (getMinuteSelector(name, Calendar.getInstance()));
     }
 
     /**
@@ -380,7 +381,7 @@ public class TimeSelector
      */
     public static Select getMinuteSelector(String name, Calendar now)
     {
-        return(getMinuteSelector(name, now, DEFAULT_MINUTE_INTERVAL));
+        return (getMinuteSelector(name, now, DEFAULT_MINUTE_INTERVAL));
     }
 
     /**
@@ -392,17 +393,17 @@ public class TimeSelector
      * @return A select object with minute options.
      */
     public static Select getMinuteSelector(String name, Calendar now,
-                                              int interval)
+                                           int interval)
     {
         Select minuteSelect = new Select().setName(name);
 
-        for (int curMinute = 0;curMinute <= 59; curMinute += interval)
+        for (int curMinute = 0; curMinute <= 59; curMinute += interval)
         {
             Option o = new Option();
             o.addElement(nbrFmt.format(curMinute));
             o.setValue(curMinute);
             int nearestMinute =
-                ((now.get(Calendar.MINUTE)) / interval) * interval;
+                    ((now.get(Calendar.MINUTE)) / interval) * interval;
 
             if (nearestMinute == curMinute)
             {
@@ -410,7 +411,7 @@ public class TimeSelector
             }
             minuteSelect.addElement(o);
         }
-        return(minuteSelect);
+        return (minuteSelect);
     }
 
     /**
@@ -421,7 +422,7 @@ public class TimeSelector
      */
     public static Select getHourSelector(String name)
     {
-        return(getHourSelector(name, Calendar.getInstance()));
+        return (getHourSelector(name, Calendar.getInstance()));
     }
 
     /**
@@ -433,7 +434,7 @@ public class TimeSelector
      */
     public static Select getHourSelector(String name, Calendar now)
     {
-        return(getHourSelector(name, Calendar.getInstance(), TWELVE_HOUR));
+        return (getHourSelector(name, Calendar.getInstance(), TWELVE_HOUR));
     }
 
     /**
@@ -465,16 +466,16 @@ public class TimeSelector
         }
         else
         {
-            for (int curHour = 1;curHour <= 12; curHour++)
+            for (int curHour = 1; curHour <= 12; curHour++)
             {
                 Option o = new Option();
 
-                o.addElement(nbrFmt.format((long)curHour));
+                o.addElement(nbrFmt.format((long) curHour));
                 o.setValue(curHour);
                 if (now.get(Calendar.AM_PM) == Calendar.AM)
                 {
                     if (((now.get(Calendar.HOUR_OF_DAY)) == 0) &&
-                        (curHour == 12))
+                            (curHour == 12))
                     {
                         o.setSelected(true);
                     }
@@ -489,13 +490,13 @@ public class TimeSelector
                 else
                 {
                     if (((now.get(Calendar.HOUR_OF_DAY)) == 12) &&
-                        (curHour == 12))
+                            (curHour == 12))
                     {
                         o.setSelected(true);
                     }
                     else
                     {
-                        if (now.get(Calendar.HOUR_OF_DAY) == curHour+12)
+                        if (now.get(Calendar.HOUR_OF_DAY) == curHour + 12)
                         {
                             o.setSelected(true);
                         }
@@ -504,7 +505,7 @@ public class TimeSelector
                 hourSelect.addElement(o);
             }
         }
-        return(hourSelect);
+        return (hourSelect);
     }
 
     /**
@@ -517,7 +518,7 @@ public class TimeSelector
     {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
-        return(getAMPMSelector(name, c));
+        return (getAMPMSelector(name, c));
     }
 
     /**
@@ -550,7 +551,7 @@ public class TimeSelector
         }
         ampmSelect.addElement(o);
 
-        return(ampmSelect);
+        return (ampmSelect);
     }
 
     /**
@@ -579,7 +580,7 @@ public class TimeSelector
      */
     public String output()
     {
-        return(ecsOutput().toString());
+        return (ecsOutput().toString());
     }
 
     /**
@@ -608,7 +609,7 @@ public class TimeSelector
      */
     public String toString()
     {
-        return(ecsOutput().toString());
+        return (ecsOutput().toString());
     }
 
     /**
@@ -618,10 +619,10 @@ public class TimeSelector
      */
     public ElementContainer ecsOutput()
     {
-        if ( this.useDate == null )
+        if (this.useDate == null)
         {
             this.useDate = Calendar.getInstance();
-            this.useDate.setTime ( new Date() );
+            this.useDate.setTime(new Date());
         }
 
         ConcreteElement secondSelect = null;
@@ -629,15 +630,15 @@ public class TimeSelector
         Select ampmSelect = getAMPMSelector(selName + AMPM_SUFFIX, useDate);
 
         Select hourSelect = getHourSelector(selName + HOUR_SUFFIX,
-                                            useDate, this.timeFormat);
+                useDate, this.timeFormat);
 
         Select minuteSelect = getMinuteSelector(selName + MINUTE_SUFFIX,
-                                            useDate, this.minuteInterval);
+                useDate, this.minuteInterval);
 
         if (this.showSeconds)
         {
             Select tmp = getSecondSelector(selName + SECOND_SUFFIX, useDate,
-                                                        this.secondInterval);
+                    this.secondInterval);
             if (onChangeSet)
                 tmp.setOnChange(onChange);
             secondSelect = tmp;
@@ -645,8 +646,8 @@ public class TimeSelector
         else
         {
             secondSelect = new Input(Input.hidden,
-                                  selName + SECOND_SUFFIX,
-                                  setSeconds);
+                    selName + SECOND_SUFFIX,
+                    setSeconds);
         }
 
         if (onChangeSet)
@@ -658,7 +659,7 @@ public class TimeSelector
 
         ElementContainer ec = new ElementContainer();
         ec.addElement(new Comment(
-            "== BEGIN org.apache.turbine.util.TimeSelector.ecsOutput() =="));
+                "== BEGIN org.apache.turbine.util.TimeSelector.ecsOutput() =="));
         ec.addElement(hourSelect);
         ec.addElement(":");
         ec.addElement(minuteSelect);
@@ -670,7 +671,7 @@ public class TimeSelector
             ec.addElement(ampmSelect);
         }
         ec.addElement(new Comment(
-            "== END org.apache.turbine.util.TimeSelector.ecsOutput() =="));
+                "== END org.apache.turbine.util.TimeSelector.ecsOutput() =="));
         return (ec);
     }
 }

@@ -58,6 +58,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
+
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.SecurityObject;
 
@@ -187,7 +188,7 @@ public class PermissionSet implements Serializable
         {
             Permission permission = (Permission) iter.next();
             if (permissionName != null &&
-                permissionName.equals(((SecurityObject) permission).getName()))
+                    permissionName.equals(((SecurityObject) permission).getName()))
             {
                 return true;
             }
@@ -209,8 +210,8 @@ public class PermissionSet implements Serializable
         while (iter.hasNext())
         {
             Permission permission = (Permission) iter.next();
-            if (permissionName != null  &&
-                 permissionName.equals(((SecurityObject) permission).getName()))
+            if (permissionName != null &&
+                    permissionName.equals(((SecurityObject) permission).getName()))
             {
                 return permission;
             }
@@ -223,9 +224,9 @@ public class PermissionSet implements Serializable
      *
      * @return An Array of Permission Objects.
      */
-    public Permission [] getPermissionsArray()
+    public Permission[] getPermissionsArray()
     {
-        return (Permission []) set.toArray(new Permission[0]);
+        return (Permission[]) set.toArray(new Permission[0]);
     }
 
     /**

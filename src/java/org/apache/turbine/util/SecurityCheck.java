@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -90,9 +90,9 @@ public class SecurityCheck
                          String message,
                          String failedScreen)
     {
-        this.data=data;
-        this.message=message;
-        this.failScreen=failedScreen;
+        this.data = data;
+        this.message = message;
+        this.failScreen = failedScreen;
     }
 
     /**
@@ -103,11 +103,11 @@ public class SecurityCheck
      * @exception Exception, a generic exception.
      */
     public boolean hasRole(Role role)
-        throws Exception
+            throws Exception
     {
         boolean value = false;
         if (data.getACL() == null ||
-             !data.getACL().hasRole(role))
+                !data.getACL().hasRole(role))
         {
             data.setScreen(failScreen);
             data.setMessage(message);
@@ -127,7 +127,7 @@ public class SecurityCheck
      * @exception Exception, a generic exception.
      */
     public boolean hasRole(String role)
-        throws Exception
+            throws Exception
     {
         return hasRole(TurbineSecurity.getRole(role));
     }
@@ -140,11 +140,11 @@ public class SecurityCheck
      * @exception Exception, a generic exception.
      */
     public boolean hasPermission(Permission permission)
-        throws Exception
+            throws Exception
     {
         boolean value = false;
         if (data.getACL() == null ||
-             !data.getACL().hasPermission(permission))
+                !data.getACL().hasPermission(permission))
         {
             data.setScreen(failScreen);
             data.setMessage(message);
@@ -164,7 +164,7 @@ public class SecurityCheck
      * @exception Exception, a generic exception.
      */
     public boolean hasPermission(String permission)
-        throws Exception
+            throws Exception
     {
         return hasPermission(TurbineSecurity.getPermission(permission));
     }

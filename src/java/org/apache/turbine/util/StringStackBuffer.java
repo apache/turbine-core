@@ -86,7 +86,7 @@ public class StringStackBuffer implements Serializable
      */
     public StringStackBuffer add(String s)
     {
-        if(s != null && !contains(s))
+        if (s != null && !contains(s))
             stk.push(s);
         return this;
     }
@@ -100,7 +100,7 @@ public class StringStackBuffer implements Serializable
      */
     public StringStackBuffer addAll(StringStackBuffer s)
     {
-        for(Iterator it = s.stk.iterator(); it.hasNext();)
+        for (Iterator it = s.stk.iterator(); it.hasNext();)
         {
             add((String) it.next());
         }
@@ -179,23 +179,23 @@ public class StringStackBuffer implements Serializable
     public String toString(String separator)
     {
         String s;
-        if(size() > 0)
+        if (size() > 0)
         {
-            if(separator == null)
+            if (separator == null)
             {
                 separator = "";
             }
 
             // Determine what size to pre-allocate for the buffer.
             int totalSize = 0;
-            for(int i = 0; i < stk.size(); i++)
+            for (int i = 0; i < stk.size(); i++)
             {
                 totalSize += get(i).length();
             }
             totalSize += (stk.size() - 1) * separator.length();
 
             StringBuffer sb = new StringBuffer(totalSize).append(get(0));
-            for(int i = 1; i < stk.size(); i++)
+            for (int i = 1; i < stk.size(); i++)
             {
                 sb.append(separator).append(get(i));
             }
@@ -216,17 +216,17 @@ public class StringStackBuffer implements Serializable
     public boolean equals(Object ssbuf)
     {
         boolean isEquiv = false;
-        if(ssbuf == null || !(ssbuf instanceof StringStackBuffer))
+        if (ssbuf == null || !(ssbuf instanceof StringStackBuffer))
         {
             isEquiv = false;
         }
 
-        else if(ssbuf == this)
+        else if (ssbuf == this)
         {
             isEquiv = true;
         }
 
-        else if(this.toString().equals(ssbuf.toString()))
+        else if (this.toString().equals(ssbuf.toString()))
         {
             isEquiv = true;
         }
@@ -237,7 +237,7 @@ public class StringStackBuffer implements Serializable
     public String[] toStringArray()
     {
         String[] ss = new String[size()];
-        for(int i = 0; i < size(); i++)
+        for (int i = 0; i < size(); i++)
         {
             ss[i] = get(i);
         }

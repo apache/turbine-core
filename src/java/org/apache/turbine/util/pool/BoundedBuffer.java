@@ -25,13 +25,13 @@ package org.apache.turbine.util.pool;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -70,7 +70,7 @@ public class BoundedBuffer
      */
     public static final int DEFAULT_CAPACITY = 1024;
 
-    protected final Object[]  array_;      // the elements
+    protected final Object[] array_;      // the elements
 
     protected int takePtr_ = 0;            // circular indices
     protected int putPtr_ = 0;
@@ -85,10 +85,10 @@ public class BoundedBuffer
      * @throws IllegalArgumentException if capacity less or equal to zero.
      */
     public BoundedBuffer(int capacity)
-                         throws IllegalArgumentException
+            throws IllegalArgumentException
     {
         if (capacity <= 0)
-           throw new IllegalArgumentException();
+            throw new IllegalArgumentException();
 
         array_ = new Object[capacity];
         emptySlots_ = capacity;

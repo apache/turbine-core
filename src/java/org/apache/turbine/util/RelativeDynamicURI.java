@@ -273,7 +273,7 @@ public class RelativeDynamicURI extends DynamicURI
         // There seems to be a bug in Apache JServ 1.0 where the
         // session id is not appended to the end of the url when a
         // cookie has not been set.
-        if (this.res != null )
+        if (this.res != null)
         {
             if (this.redirect)
             {
