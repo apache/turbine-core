@@ -116,7 +116,6 @@ public class TurbineConfig
      * Turbine.properties file used by Turbine
      */
     public static final String PROPERTIES_PATH_KEY = "properties";
-    
     /**
        * Servlet initialization parameter name for the path to
        * TurbineConfiguration.xml file used by Turbine
@@ -130,12 +129,6 @@ public class TurbineConfig
     public static final String PROPERTIES_PATH_DEFAULT =
             "/WEB-INF/conf/TurbineResources.properties";
 
-    /**
-     * Default value of TurbineResources.properties file path
-     * (<code>/WEB-INF/conf/TurbineResources.properties</code>).
-     */
-    public static final String CONFIGURATION_PATH_DEFAULT =
-            "/WEB-INF/conf/TurbineConfiguration.xml";
     /** Filenames are looked up in this directory. */
     private File root;
 

@@ -58,21 +58,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import java.util.Properties;
-import java.util.Enumeration;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.configuration.ConfigurationFactory;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -89,26 +85,19 @@ import org.apache.turbine.modules.PageLoader;
 
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
-
 import org.apache.turbine.services.component.ComponentService;
-
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.template.TurbineTemplate;
-
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.services.rundata.TurbineRunDataFacade;
-
 import org.apache.turbine.services.velocity.VelocityService;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
-
 import org.apache.turbine.util.security.AccessControlList;
-
 import org.apache.turbine.util.template.TemplateInfo;
-
 import org.apache.turbine.util.uri.URIConstants;
 
 /**
@@ -119,12 +108,9 @@ import org.apache.turbine.util.uri.URIConstants;
  * If you need to override something in the <code>doGet()</code> or
  * <code>doPost()</code> methods, edit the TurbineResources.properties file and
  * specify your own classes there.
- *
- * <p> Turbine servlet recognizes the following initialization parameters.
- *
+ * <p>
+ * Turbine servlet recognizes the following initialization parameters.
  * <ul>
- * <li><code>resources</code> the implementation of
- * {@link org.apache.turbine.services.resources.TurbineResources} to be used</li>
  * <li><code>properties</code> the path to TurbineResources.properties file
  * used by the default implementation of <code>ResourceService</code>, relative
  * to the application root.</li>
@@ -133,7 +119,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * support <code>ServletContext.getRealPath(String)</code> method correctly.
  * You can use this parameter to specify the directory within the server's
  * filesystem, that is the base of your web application.</li>
- * </ul><br>
+ * </ul>
  *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
@@ -145,6 +131,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class Turbine
@@ -239,7 +226,6 @@ public class Turbine
             try
             {
                 ServletContext context = config.getServletContext();
-       
 
                 configure(config, context);
 
@@ -248,7 +234,6 @@ public class Turbine
 
                 if (rundataService == null)
                 {
-                    throw new TurbineException(
                             "No RunData Service configured!");
                 }
 
@@ -264,29 +249,15 @@ public class Turbine
         }
     }
 
-    private void configure(ServletConfig config, ServletContext context)
-            throws Exception
+    private void configure(ServletConfig config, ServletContext context) throws Exception
     {
-
-        String configurationFile =
-                           findInitParameter(context, config,
-                                             TurbineConfig.CONFIGURATION_PATH_KEY,
-                                             TurbineConfig.CONFIGURATION_PATH_DEFAULT);
-
-        String propsFile =
-                   findInitParameter(context, config,
-                                     TurbineConfig.PROPERTIES_PATH_KEY,
-                                     TurbineConfig.PROPERTIES_PATH_DEFAULT);
-
+        String configurationFile = findInitParameter(context, config, TurbineConfig.CONFIGURATION_PATH_KEY, null);
 
         // Set the application root. This defaults to the webapp
         // context if not otherwise set. This is to allow 2.1 apps
         // to be developed from CVS. This feature will carry over
         // into 3.0.
-        applicationRoot =
-            findInitParameter(context, config,
-                              APPLICATION_ROOT_KEY,
-                              APPLICATION_ROOT_DEFAULT);
+        applicationRoot = findInitParameter(context, config, APPLICATION_ROOT_KEY, APPLICATION_ROOT_DEFAULT);
 
         webappRoot = config.getServletContext().getRealPath("/");
         // log.info("Web Application root is " + webappRoot);
@@ -306,29 +277,42 @@ public class Turbine
         createRuntimeDirectories(context, config);
 
         //
-        // Set up logging as soon as possible
+        // Set up configuration first off
         //
 
-        String configurationPath = getRealPath(configurationFile);
-        File testConfigurationFileExists = new File(configurationPath);
-        if (!testConfigurationFileExists.exists()){
-            log.info("Configuration file can't be found, defaulting to TR.props:" + propsFile);
+        if (configurationFile != null)
+        {
+            String configurationFilePath = new File(getApplicationRoot(),configurationFile).toString();
+            log.info("Loading configuration from " + configurationFilePath);
+
+            ConfigurationFactory configurationFactory = new ConfigurationFactory();
+            log.info("path:" + getApplicationRoot());
+            configurationFactory.setBasePath(getApplicationRoot());
+            configurationFactory.setConfigurationFileName(configurationFilePath);
+
+            configuration = configurationFactory.getConfiguration();
+
+        }
+        else
+        {
+            // if configuration.xml file is null, then try for a 
+            // traditional TR.props
+            String propsFile = null;
+
+            propsFile = findInitParameter(context, config, TurbineConfig.PROPERTIES_PATH_KEY, TurbineConfig.PROPERTIES_PATH_DEFAULT);
+
+            log.info("Configuration file not set, defaulting to TR.props:" + propsFile);
 
             String propsPath = getRealPath(propsFile);
             configuration = (Configuration) new PropertiesConfiguration(propsPath);
 
         }
-        else {
-            log.info("Loading configuration from " + configurationFile);
-            
-            ConfigurationFactory configurationFactory = new ConfigurationFactory();
-            configurationFactory.setConfigurationFileName(configurationPath);
-            
-            configuration = configurationFactory.getConfiguration();        
-        }
 
-        String log4jFile = configuration.getString(LOG4J_CONFIG_FILE,
-                                                   LOG4J_CONFIG_FILE_DEFAULT);
+        //
+        // Set up logging as soon as possible
+        //
+
+        String log4jFile = configuration.getString(LOG4J_CONFIG_FILE, LOG4J_CONFIG_FILE_DEFAULT);
 
         log4jFile = getRealPath(log4jFile);
 
@@ -879,24 +863,6 @@ public class Turbine
     private void loginAction(RunData data)
             throws Exception
     {
-        // If a User is logging in, we should refresh the
-        // session here.  Invalidating session and starting a
-        // new session would seem to be a good method, but I
-        // (JDM) could not get this to work well (it always
-        // required the user to login twice).  Maybe related
-        // to JServ?  If we do not clear out the session, it
-        // is possible a new User may accidently (if they
-        // login incorrectly) continue on with information
-        // associated with the previous User.  Currently the
-        // only keys stored in the session are "turbine.user"
-        // and "turbine.acl".
-
-        for( Enumeration enum = data.getSession().getAttributeNames();
-                enum.hasMoreElements(); )
-        {
-            String attributeName = (String) enum.nextElement();
-            data.getSession().removeAttribute(attributeName);
-        }
         ActionLoader.getInstance().exec(data, data.getAction());
         cleanupTemplateContext(data);
         data.setAction(null);
@@ -908,6 +874,9 @@ public class Turbine
      * <p>
      * This Action must be performed before the Session validation for the
      * session validator to send us back to the Login screen.
+     * <p>
+     * The existing session is invalidated before the logout action is
+     * executed.
      *
      * @param data a RunData object
      *
@@ -916,6 +885,7 @@ public class Turbine
     private void logoutAction(RunData data)
             throws Exception
     {
+        data.getSession().invalidate();
         ActionLoader.getInstance().exec(data, data.getAction());
         cleanupTemplateContext(data);
         data.setAction(null);
