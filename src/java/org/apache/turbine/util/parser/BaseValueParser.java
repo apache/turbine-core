@@ -78,8 +78,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.StringKey;
 
-import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.util.DateSelector;
 import org.apache.turbine.util.TimeSelector;
 import org.apache.turbine.util.ValueParser;
