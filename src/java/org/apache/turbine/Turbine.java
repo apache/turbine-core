@@ -399,95 +399,25 @@ public class Turbine
             // themselves.
             init(data);
 
-            // Get the instance of the Session Validator.
-            SessionValidator sessionValidator = (SessionValidator)ActionLoader
-                .getInstance().getInstance(TurbineResources.getString(
-                    "action.sessionvalidator"));
-
-            // if this is the redirected stage of the initial request,
-            // check that the session is now not new.
-            // If it is not, then redirect back to the
-            // original URL (i.e. remove the "redirected" pathinfo)
-            if (data.getParameters()
-                .getString(REDIRECTED_PATHINFO_NAME, "false").startsWith("true"))
+            // set the session timeout if specified in turbine's properties
+            // file if this is a new session
+            if (data.getSession().isNew())
             {
-                if (data.getSession().isNew())
+                int timeout = TurbineResources.getInt("session.timeout", -1);
+                if (timeout != -1)
                 {
-                    String message = "Infinite redirect detected...";
-                    log(message);
-                    Log.error(message);
-                    throw new Exception(message);
-                }
-                else
-                {
-                    DynamicURI duri = new DynamicURI (data, true);
-
-                    // Pass on the sent data in pathinfo.
-                    for (Enumeration e = data.getParameters().keys() ;
-                         e.hasMoreElements() ;)
-                    {
-                        String key = (String) e.nextElement();
-                        if (!key.equals(REDIRECTED_PATHINFO_NAME))
-                        {
-                            String value =
-                                (String) data.getParameters().getString ( key );
-                            duri.addPathInfo((String)key, (String)value );
-                        }
-                    }
-
-                    data.getResponse().sendRedirect( duri.toString() );
-                    return;
-                }
-            }
-            else
-            {
-                // Insist that the client starts a session before access
-                // to data is allowed. this is done by redirecting them to
-                // the "screen.homepage" page but you could have them go
-                // to any page as a starter (ie: the homepage)
-                // "data.getResponse()" represents the HTTP servlet
-                // response.
-                if ( sessionValidator.requiresNewSession(data) &&
-                     data.getSession().isNew() )
-                {
-                    DynamicURI duri = new DynamicURI (data, true);
-
-                    // Pass on the sent data in pathinfo.
-                    for (Enumeration e = data.getParameters().keys() ;
-                         e.hasMoreElements() ;)
-                    {
-                        String key = (String) e.nextElement();
-                        String value =
-                            (String) data.getParameters().getString ( key );
-                        duri.addPathInfo((String)key, (String)value );
-                    }
-
-                    // add a dummy bit of path info to fool browser into
-                    // thinking this is a new URL
-                    if (!data.getParameters()
-                        .containsKey(REDIRECTED_PATHINFO_NAME))
-                    {
-                        duri.addPathInfo(REDIRECTED_PATHINFO_NAME, "true");
-                    }
-
-                    // as the session is new take this opportunity to
-                    // set the session timeout if specified in TR.properties
-                    int timeout =
-                        TurbineResources.getInt("session.timeout", -1);
-
-                    if (timeout != -1)
-                    {
-                        data.getSession().setMaxInactiveInterval(timeout);
-                    }
-
-                    data.getResponse().sendRedirect( duri.toString() );
-                    return;
+                    data.getSession().setMaxInactiveInterval(timeout);
                 }
             }
 
             // Fill in the screen and action variables.
             data.setScreen ( data.getParameters().getString("screen") );
             data.setAction ( data.getParameters().getString("action") );
+
+            // Get the instance of the Session Validator.
+            SessionValidator sessionValidator = (SessionValidator)ActionLoader
+                .getInstance().getInstance(TurbineResources.getString(
+                    "action.sessionvalidator"));
 
             // Special case for login and logout, this must happen before the
             // session validator is executed in order either to allow a user to

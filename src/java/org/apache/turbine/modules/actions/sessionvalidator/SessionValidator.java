@@ -85,14 +85,4 @@ import org.apache.turbine.util.RunData;
  */
 public abstract class SessionValidator extends Action
 {
-    /**
-     * Inform whether we require a new session in order to allow
-     * people to access the system. We accomplish this by doing a
-     * redirect and using the HttpSession spec.
-     *
-     * @param data Turbine information.
-     * @return True if we require a new session in order to allow
-     * people to access the system.
-     */
-    public abstract boolean requiresNewSession(RunData data);
 }
