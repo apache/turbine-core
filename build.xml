@@ -38,6 +38,40 @@
         <pathelement location="${webmacro.jar}"/>
     </path>
 
+  <!-- ================================================================== -->
+  <!-- U P D A T E  J A R S                                               -->
+  <!-- ================================================================== -->
+
+  <!-- Build classpath -->
+  <path id="update.classpath">
+    <pathelement location="tdk.jar"/>
+  </path>
+
+  <target
+    name="update-jars">
+    
+    <taskdef 
+      name="httpget" 
+      className="org.apache.tdk.task.Get">
+      <classpath refid="update.classpath"/>
+    </taskdef>
+    
+    <!-- If you need proxy support you'll have to manually add:
+    
+         proxyHost="x"
+         proxyPort="y"
+       
+         We'll clean this up but it worked for a user behind a proxy.
+    -->
+    
+    <httpget
+      baseUrl="http://jakarta.apache.org/turbine/jars/"
+      dest="${lib.repo}"
+      dependencyFile="deps.list"
+    />
+
+  </target>    
+
     <!-- ================================================================== -->
     <!-- Prints useful build environment values                             -->
     <!-- ================================================================== -->
