@@ -62,6 +62,7 @@ import org.apache.ecs.AlignType;
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.ElementContainer;
 import org.apache.ecs.HtmlColor;
+
 import org.apache.ecs.html.B;
 import org.apache.ecs.html.BR;
 import org.apache.ecs.html.Font;
@@ -73,9 +74,14 @@ import org.apache.ecs.html.PRE;
 import org.apache.ecs.html.TD;
 import org.apache.ecs.html.TR;
 import org.apache.ecs.html.Table;
+
+import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.modules.Navigation;
+
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
+
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
 
@@ -83,10 +89,12 @@ import org.apache.turbine.util.RunData;
  * This is a sample navigation module.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  * @deprecated The use of ECS for the view is deprecated. Use a templating solution.
  */
-public class DefaultBottomNavigation extends Navigation
+public class DefaultBottomNavigation
+    extends Navigation
 {
     private static final boolean DEBUG = false;
     private static String txt =
@@ -104,7 +112,10 @@ public class DefaultBottomNavigation extends Navigation
     {
         Form form;
         form = new Form(
-                new DynamicURI(data, "DefaultScreen", "LogoutUser", true).toString(),
+                new DynamicURI(data, 
+                  TurbineConstants.SCREEN_DEFAULT_DEFAULT,
+                  TurbineConstants.ACTION_LOGOUT_DEFAULT,
+                  true).toString(),
                 Form.POST)
                 .addElement(new Input("SUBMIT", "Logout", "Logout"));
         ElementContainer body = new ElementContainer()
@@ -215,9 +226,7 @@ public class DefaultBottomNavigation extends Navigation
                     .addElement(new B("PERMISSIONS"))
                     .addElement(new BR())
                     .addElement(pre);
-
         }
-
         return body;
     }
 }
