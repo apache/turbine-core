@@ -338,7 +338,6 @@
      <ant:property name="maven.test.skip" value="true"/>
      <ant:property name="maven.war.webapp.dir" value="${warWebappBuildDir}"/>
      <ant:property name="maven.war.build.dir" value="${warWebappBuildDir}"/>
-     <attainGoal name="eclipse"/>
      <attainGoal name="war:webapp"/>
      
    </goal>
@@ -394,7 +393,6 @@
   <!--                                                                          -->
   <!-- ======================================================================== -->
   <goal name="turbine:java-compile"
-    description="Prepare source tree for compilation"
     prereqs="turbine:om-check">
 
     <path id="maven.compile.src.set">
@@ -679,8 +677,7 @@
   <!-- keep our own test target around.                                   -->
   <!--                                                                    -->
   <!-- ================================================================== -->
-
-<goal name="turbine:om-check">
+  <goal name="turbine:om-check">
     <j:choose>
       <j:when test="${torque.runOnlyOnSchemaChange}">
         <uptodate
