@@ -509,6 +509,7 @@
     <dependency>
       <id>jython</id>
       <version>2.1</version>
+        <url>http://www.jython.org/</url>
     </dependency>
     <dependency>
       <id>log4j</id>
