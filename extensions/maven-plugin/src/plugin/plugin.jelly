@@ -12,7 +12,6 @@
   xmlns:j="jelly:core"
   xmlns:u="jelly:util"
   xmlns:ant="jelly:ant"
-  xmlns:m="maven"
   xmlns:define="jelly:define"
   xmlns:meta="http://jakarta.apache.org/turbine/meta/taglib"
 >
@@ -47,6 +46,8 @@
     <filter token="TURBINE_APP_OM_SECURITY_NAME" value="${turbine.app.om.security.name}"/>
     <filter token="TURBINE_APP_OM_SECURITY_PACKAGE" value="${turbine.app.om.security.package}"/>
     <filter token="TURBINE_APP_SUBDIR"         value="${turbine.app.subdir}"/>
+    <filter token="TURBINE_APP_INPLACE"        value="${turbine.app.inplace}"/>
+    <filter token="TURBINE_APP_INPLACE_DIR"    value="${turbine.app.inplace.dir}"/>
 
     <filter token="TURBINE_PLUGIN_SRC_JAVA"      value="${turbine.plugin.src.java}"/>
     <filter token="TURBINE_PLUGIN_SRC_TEST"  value="${turbine.plugin.src.test}"/>
@@ -265,117 +266,66 @@
 
     <echo>Located Application Server at ${maven.appserver.home}</echo>
 
-    <j:set var="appserver.target.dir" 
-             value="${maven.appserver.home}/webapps/${pom.name}" />
-
     <attainGoal name="java:jar"/>
 
     <delete file="${maven.build.dir}/${pom.artifactId}.war" />
 
-    <mkdir dir="${appserver.target.dir}/WEB-INF/lib" />
-    <mkdir dir="${appserver.target.dir}/WEB-INF/conf" />
-    <mkdir dir="${appserver.target.dir}/WEB-INF/classes" />
-    <mkdir dir="${appserver.target.dir}/logs" />
-    <mkdir dir="${appserver.target.dir}/templates" />
+    <j:set var="turbine.target.dir" 
+             value="${maven.appserver.home}/webapps/${pom.name}" />
+
+    <j:set var="inPlace" value="${turbine.app.inplace}"/>
+    <j:if test="${inPlace.equalsIgnoreCase('true')}">
+      <j:set var="turbine.target.dir" value="${turbine.app.inplace.dir}"/>
+    </j:if>
+
+    <echo>Installing to Appserver Directory: ${turbine.target.dir}, Inplace: ${turbine.app.inplace}</echo>
+
+    <mkdir dir="${turbine.target.dir}/WEB-INF/lib" />
+    <mkdir dir="${turbine.target.dir}/WEB-INF/conf" />
+    <mkdir dir="${turbine.target.dir}/WEB-INF/classes" />
+    <mkdir dir="${turbine.target.dir}/logs" />
+    <mkdir dir="${turbine.target.dir}/templates" />
 
     <j:forEach var="dep" items="${pom.dependencies}">
       <j:if test="${dep.getProperty('war.bundle')=='true'}">
-        <copy todir="${appserver.target.dir}/WEB-INF/lib"
+        <copy todir="${turbine.target.dir}/WEB-INF/lib"
           file="${maven.repo.local}/${dep.getArtifactDirectory()}/jars/${dep.getArtifact()}"/>
       </j:if>  
     </j:forEach>            
 
-    <copy todir="${appserver.target.dir}/WEB-INF/classes">
+    <copy todir="${turbine.target.dir}/WEB-INF/classes">
       <fileset dir="${maven.build.dest}"/>
     </copy>
 
-    <copy todir="${appserver.target.dir}/templates">
+    <copy todir="${turbine.target.dir}/templates">
       <fileset dir="${turbine.plugin.src.templates}"/>
     </copy>
 
-    <copy todir="${appserver.target.dir}/scripts">
+    <copy todir="${turbine.target.dir}/scripts">
       <fileset dir="src/scripts"/>
     </copy>
 
-    <copy todir="${appserver.target.dir}/style">
+    <copy todir="${turbine.target.dir}/style">
       <fileset dir="src/style"/>
     </copy>
 
-    <copy todir="${appserver.target.dir}/images">
+    <copy todir="${turbine.target.dir}/images">
       <fileset dir="src/images"/>
     </copy>
 
-    <copy todir="${appserver.target.dir}/WEB-INF/conf" flatten="true" includeEmptyDirs="no">
+    <copy todir="${turbine.target.dir}/WEB-INF/conf" flatten="true" includeEmptyDirs="no">
      <fileset dir="${turbine.plugin.src.conf}">
         <exclude name="${pom.name}-web.xml"/>
       </fileset>
     </copy>
 
     <copy file="${maven.war.webxml}"
-      tofile="${appserver.target.dir}/WEB-INF/web.xml"/>
+      tofile="${turbine.target.dir}/WEB-INF/web.xml"/>
   </goal>
   <!-- ======================================================================== -->
   <!-- turbine:deploy                                                           -->
   <!-- ======================================================================== -->
   
-  <!-- ======================================================================== -->
-  <!--                                                                          -->
-  <!-- turbine:inplace                                                          -->
-  <!--                                                                          -->
-  <!-- For Debugging purposes some people like to run the webapp out of the     -->
-  <!-- /src/webapp directory so you don't have to install the app.  This does   -->
-  <!-- is typically done by telling Tomcat that the webapp base is /src/webapp  -->
-  <!--                                                                          -->
-  <!-- ======================================================================== -->  
-  <goal name="turbine:inplace" description="Builds an inplace exploded Turbine webapp">
-
-     <j:set var="warWebappBuildDir"
-        value="${maven.src.dir}/webapp"/>    
-     <echo message="war dir:${warBuildDir}"/>
-     <j:set var="maven.war.webapp.dir" value="${warWebappBuildDir}"/>
-     <j:set var="maven.war.build.dir" value="${warWebappBuildDir}"/>
-
-     <ant:property name="maven.test.skip" value="true"/>
-     <ant:property name="maven.war.webapp.dir" value="${warWebappBuildDir}"/>
-     <ant:property name="maven.war.build.dir" value="${warWebappBuildDir}"/>
-     <attainGoal name="war:webapp"/>
-     
-   </goal>
-  <!-- ======================================================================== -->
-  <!-- turbine:inplace                                                          -->
-  <!-- ======================================================================== -->
-  
-  <!-- ======================================================================== -->
-  <!--                                                                          -->
-  <!-- turbine:inplace-clean                                                    -->
-  <!--                                                                          -->
-  <!-- Cleanup inplace generated artifacts.                                     -->
-  <!--                                                                          -->
-  <!-- ======================================================================== -->     
-   <goal 
-     name="turbine:inplace-clean" 
-     description="Cleans an inplace exploded Turbine webapp">
-
-     <j:set var="warWebappBuildDir"
-        value="${maven.src.dir}/webapp"/>    
-     <echo message="war dir:${warBuildDir}"/>
-     <j:set var="maven.war.webapp.dir" value="${warWebappBuildDir}"/>
-     <j:set var="maven.war.build.dir" value="${warWebappBuildDir}"/>
-
-     <ant:property name="maven.test.skip" value="true"/>
-     <ant:property name="maven.war.webapp.dir" value="${warWebappBuildDir}"/>
-     <ant:property name="maven.war.build.dir" value="${warWebappBuildDir}"/>
-     
-     <ant:delete dir="${warWebappBuildDir}/WEB-INF/lib"/>
-     <ant:delete dir="${warWebappBuildDir}/WEB-INF/classes"/>
-     <attainGoal name="clean"/>
-     
-     
-   </goal>    
-  <!-- ======================================================================== -->
-  <!-- turbine:inplace-clean                                                    -->
-  <!-- ======================================================================== -->
-
 <!-- ======================================================================== -->
 <!--                                                                          -->
 <!-- Callback goals for use from the application maven.xml file. These goals  -->
@@ -383,6 +333,25 @@
 <!-- Turbine build system into other plugins.                                 -->
 <!--                                                                          -->
 <!-- ======================================================================== -->
+
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- clean:clean                                                              -->
+  <!--                                                                          -->
+  <!-- Cleanup inplace generated artifacts.                                     -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->     
+   <goal name="turbine:clean-clean">
+    <j:set var="inPlace" value="${turbine.app.inplace}"/>
+    <j:if test="${inPlace.equalsIgnoreCase('true')}">
+      <j:set var="turbine.target.dir" value="${turbine.app.inplace.dir}"/>
+      <ant:delete dir="${turbine.target.dir}/WEB-INF/lib"/>
+      <ant:delete dir="${turbine.target.dir}/WEB-INF/classes"/>
+    </j:if>
+   </goal>    
+  <!-- ======================================================================== -->
+  <!-- clean                                                                    -->
+  <!-- ======================================================================== -->
 
   <!-- ======================================================================== -->
   <!--                                                                          -->
