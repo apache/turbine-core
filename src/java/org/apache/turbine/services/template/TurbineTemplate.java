@@ -339,6 +339,8 @@ public abstract class TurbineTemplate
      *
      * @param templatePaths An array of template paths.
      * @return An array of translated template paths.
+     * @deprecated Each template engine service should know how to translate
+     *             a request onto a file. 
      */
     public static final String[] translateTemplatePaths(String[] templatePaths)
     {
@@ -352,6 +354,7 @@ public abstract class TurbineTemplate
      *
      * @param template The template to check for the existance of.
      * @param templatePaths The paths to check for the template.
+     * @deprecated Use templateExists from the various Templating Engines
      */
     public static final boolean templateExists(String template, String[] templatePaths)
     {
