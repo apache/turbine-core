@@ -121,6 +121,16 @@ public class TurbineVelocityService extends BaseTemplateEngineService
     private static final String DEFAULT_CHAR_SET = "ISO-8859-1";
 
     /**
+     * The prefix used for URIs which are of type <code>jar</code>.
+     */
+    private static final String JAR_PREFIX = "jar:";
+
+    /**
+     * The prefix used for URIs which are of type <code>absolute</code>.
+     */
+    private static final String ABSOLUTE_PREFIX = "file://";
+    
+    /**
      * The context used to the store the context
      * containing the global application tools.
      */
@@ -584,7 +594,7 @@ public class TurbineVelocityService extends BaseTemplateEngineService
                 for (Iterator j = paths.iterator(); j.hasNext();)
                 {
                     path = (String) j.next();
-                    if (path.startsWith("jar:file"))
+                    if (path.startsWith(JAR_PREFIX + "file"))
                     {
                         /*
                          * A local jar resource URL path is a bit more
@@ -601,10 +611,15 @@ public class TurbineVelocityService extends BaseTemplateEngineService
                             entry = "!/";
                             path = path.substring(9);
                         }
-                        path = "jar:file:" +
+                        path = JAR_PREFIX + "file:" +
                             Turbine.getRealPath(path) + entry;
                     }
-                    else if (!path.startsWith("jar:"))
+                    else if (path.startsWith(ABSOLUTE_PREFIX))
+                    {
+                        path = path.substring (ABSOLUTE_PREFIX.length(),
+                                               path.length());
+                    }
+                    else if (!path.startsWith(JAR_PREFIX))
                     {
                         // But we don't translate remote jar URLs.
                         path = Turbine.getRealPath(path);
