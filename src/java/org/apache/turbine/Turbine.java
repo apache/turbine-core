@@ -879,10 +879,10 @@ public class Turbine
     private void logoutAction(RunData data)
             throws Exception
     {
-        data.getSession().invalidate();
         ActionLoader.getInstance().exec(data, data.getAction());
         cleanupTemplateContext(data);
         data.setAction(null);
+        data.getSession().invalidate();
     }
 
     /**
