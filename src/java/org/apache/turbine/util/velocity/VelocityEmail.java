@@ -54,8 +54,7 @@ package org.apache.turbine.util.velocity;
  * <http://www.apache.org/>.
  */
 
-import java.util.NoSuchElementException;
-import java.util.StringTokenizer;
+import javax.mail.MessagingException;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -66,7 +65,6 @@ import org.apache.commons.mail.SimpleEmail;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.services.velocity.TurbineVelocity;
 
 import org.apache.velocity.context.Context;
@@ -131,31 +129,19 @@ import org.apache.velocity.context.Context;
  * the TurbineResources.properties.  See the
  * TurbineConfig class for more information.</p>
  *
+ * <p>You can turn on debugging for the JavaMail API by calling
+ * setDebug(true).  The debugging messages will be written to System.out.
+ *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:gcoladonato@yahoo.com">Greg Coladonato</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class VelocityEmail
+public class VelocityEmail extends SimpleEmail
 {
     /** Logging */
     private static Log log = LogFactory.getLog(VelocityEmail.class);
-
-    /** The to name field. */
-    private String toName = null;
-
-    /** The to email field. */
-    private String toEmail = null;
-
-    /** The from name field. */
-    private String fromName = null;
-
-    /** The from email field. */
-    private String fromEmail = null;
-
-    /** The subject of the message. */
-    private String subject = null;
 
     /** The column to word-wrap at.  <code>0</code> indicates no wrap. */
     private int wordWrap = 0;
@@ -163,15 +149,10 @@ public class VelocityEmail
     /** Address of outgoing mail server */
     private String mailServer;
 
-    /**
-     * The template to process, relative to WM's template
-     * directory.
-     */
+    /** The template to process, relative to WM's template directory. */
     private String template = null;
 
-    /**
-     * A Context
-     */
+    /** Velocity context */
     private Context context = null;
 
     /**
@@ -190,56 +171,33 @@ public class VelocityEmail
     }
 
     /**
-     * To: name, email
+     * To: toName, toEmail
      *
-     * @param to A String with the TO name.
-     * @param email A String with the TO email.
+     * @param toName A String with the TO toName.
+     * @param toEmail A String with the TO toEmail.
+     * @deprecated use addTo(email,name) instead
+     * @throws MessagingException email address could not be parsed
      * @return A VelocityEmail (self).
      */
-    public VelocityEmail setTo(String to, String email)
+    public VelocityEmail setTo(String toName, String toEmail)
+            throws MessagingException
     {
-        this.toName = to;
-        this.toEmail = email;
-        return (this);
-    }
-
-    /**
-     * From: name, email.
-     *
-     * @param from A String with the FROM name.
-     * @param email A String with the FROM email.
-     * @return A VelocityEmail (self).
-     */
-    public VelocityEmail setFrom(String from, String email)
-    {
-        this.fromName = from;
-        this.fromEmail = email;
-        return (this);
-    }
-
-    /**
-     * Subject.
-     *
-     * @param subject A String with the subject.
-     * @return A VelocityEmail (self).
-     */
-    public VelocityEmail setSubject(String subject)
-    {
-        this.subject = subject;
-        return (this);
+        addTo(toEmail,toName);
+        return this;
     }
 
     /**
      * Velocity template to execute. Path is relative to the Velocity
      * templates directory.
      *
-     * @param template A String with the template.
+     * @param template relative path of the template to parse including the
+     *                 filename.
      * @return A VelocityEmail (self).
      */
     public VelocityEmail setTemplate(String template)
     {
         this.template = template;
-        return (this);
+        return this;
     }
 
     /**
@@ -256,7 +214,7 @@ public class VelocityEmail
     public VelocityEmail setWordWrap(int wordWrap)
     {
         this.wordWrap = wordWrap;
-        return (this);
+        return this;
     }
 
     /**
@@ -269,7 +227,7 @@ public class VelocityEmail
     public VelocityEmail setContext(Context context)
     {
         this.context = context;
-        return (this);
+        return this;
     }
 
     /**
@@ -306,7 +264,7 @@ public class VelocityEmail
     public String getMailServer()
     {
         return StringUtils.isNotEmpty(mailServer) ? mailServer
-            : Turbine.getConfiguration().getString(
+                : Turbine.getConfiguration().getString(
                 TurbineConstants.MAIL_SERVER_KEY,
                 TurbineConstants.MAIL_SERVER_DEFAULT);
     }
@@ -317,36 +275,33 @@ public class VelocityEmail
      * the value of mail.server will be used from TR.props.  If that
      * value was not set, localhost is used.
      *
-     * @throws VelocityEmailException Failure during merging the velocity
+     * @throws MessagingException Failure during merging the velocity
      * template or sending the email.
      */
-    public void send()
-            throws VelocityEmailException
+    public void send() throws MessagingException
     {
+        String body = null;
         try
         {
             // Process the template.
-            String body = TurbineVelocity.handleRequest(context, template);
-
-            // If the caller desires word-wrapping, do it here
-            if (wordWrap > 0)
-            {
-                body = org.apache.turbine.util.StringUtils.wrapText(body,
-                        System.getProperty("line.separator"), wordWrap);
-            }
-
-            SimpleEmail se = new SimpleEmail();
-            se.setFrom(fromEmail, fromName);
-            se.addTo(toEmail, toName);
-            se.setSubject(subject);
-            se.setMsg(body);
-            se.setHostName(getMailServer());
-            se.send();
+            body = TurbineVelocity.handleRequest(context, template);
         }
         catch (Exception e)
         {
-            throw new VelocityEmailException("Could not send email", e);
+            throw new MessagingException(
+                    "Could not render velocitty template", e);
         }
+
+        // If the caller desires word-wrapping, do it here
+        if (wordWrap > 0)
+        {
+            body = org.apache.turbine.util.StringUtils.wrapText(body,
+                    System.getProperty("line.separator"), wordWrap);
+        }
+
+        setMsg(body);
+        setHostName(getMailServer());
+        super.send();
     }
 
     /**
