@@ -61,11 +61,19 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.turbine.services.Service;
 
 /**
- * Provides localization functionality using the interface provided by
- * <code>ResourceBundle</code>.
+ * <p>Provides localization functionality using the interface provided
+ * by <code>ResourceBundle</code>, plus leverages a "search path"
+ * style traversal of the <code>ResourceBundle</code> objects named by
+ * the <code>locale.default.bundles</code> to discover a value for a
+ * given key.</p>
+ *
+ * <p>It is suggested that one handle
+ * <a href="http://www.math.fu-berlin.de/~rene/www/java/tutorial/i18n/message/messageFormat.html">dealing with concatenated messages</a>
+ * using <code>MessageFormat</code> and properties files.</p>
  *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:leonardr@collab.net">Leonard Richardson</a>
  * @version $Id$
  */
 public interface LocalizationService
@@ -74,12 +82,24 @@ public interface LocalizationService
     /**
      * The name of this service.
      */
-    static final String SERVICE_NAME = "LocalizationService";
+    String SERVICE_NAME = "LocalizationService";
 
     /**
      * A constant for the HTTP <code>Accept-Language</code> header.
      */
-    static final String ACCEPT_LANGUAGE = "Accept-Language";
+    String ACCEPT_LANGUAGE = "Accept-Language";
+
+    /**
+     * Retrieves the default language (as specified in the config
+     * file).
+     */
+    String getDefaultLanguage();
+
+    /**
+     * Retrieves the default country (as specified in the config
+     * file).
+     */
+    String getDefaultCountry();
 
     /**
      * Retrieves the name of the default bundle (as specified in the
@@ -89,6 +109,15 @@ public interface LocalizationService
     String getDefaultBundleName();
 
     /**
+     * Retrieves the list of names of bundles to search by default for
+     * <code>ResourceBundle</code> keys (as specified in the config
+     * file).
+     *
+     * @return The list of configured bundle names.
+     */
+    String[] getBundleNames();
+
+    /**
      * Convenience method to get a default ResourceBundle.
      *
      * @return A localized ResourceBundle.
@@ -96,7 +125,8 @@ public interface LocalizationService
     ResourceBundle getBundle();
 
     /**
-     * Convenience method to get a ResourceBundle based on name.
+     * Returns a ResourceBundle given the bundle name and the default
+     * locale information supplied by the configuration.
      *
      * @param bundleName Name of bundle.
      * @return A localized ResourceBundle.

@@ -75,7 +75,7 @@ public interface MimeTypeService extends Service
     /**
      * The name of the service.
      */
-    static final String SERVICE_NAME = "MimeTypeService";
+    String SERVICE_NAME = "MimeTypeService";
 
     /**
      * Sets a MIME content type mapping to extensions to the map.

@@ -73,7 +73,7 @@ public interface Service
         extends Initable
 {
     /** The name of this service. */
-    static final String SERVICE_NAME = "Service";
+    String SERVICE_NAME = "Service";
 
     /**
      * Provides a Service with a reference to the ServiceBroker that

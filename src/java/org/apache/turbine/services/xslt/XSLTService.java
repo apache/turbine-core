@@ -71,7 +71,14 @@ import org.w3c.dom.Node;
 public interface XSLTService
         extends Service
 {
-    static final String SERVICE_NAME = "XSLTService";
+    /** Service name */
+    String SERVICE_NAME = "XSLTService";
+
+    /** Name of the Style sheet path property */
+    String STYLESHEET_PATH = "path";
+
+    /** Property for caching the stylesheets */
+    String STYLESHEET_CACHING = "cache";
 
     /**
      * Uses an xsl file to transform xml input from a reader and writes the

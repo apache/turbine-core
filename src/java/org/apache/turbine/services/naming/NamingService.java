@@ -65,9 +65,10 @@ import org.apache.turbine.services.Service;
  * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
  * @version $Id$
  */
-public interface NamingService extends Service
+public interface NamingService
+        extends Service
 {
-    static final String SERVICE_NAME = "NamingService";
+    String SERVICE_NAME = "NamingService";
 
     /**
      * Return the Context with the specified name.

@@ -55,7 +55,9 @@ package org.apache.turbine.services.xmlrpc;
  */
 
 import java.io.InputStream;
+
 import java.net.URL;
+
 import java.util.Vector;
 
 import org.apache.turbine.services.Service;
@@ -74,7 +76,7 @@ public interface XmlRpcService
         extends Service
 {
     /** TurbineXmlRpcService. */
-    static final String SERVICE_NAME = "XmlRpcService";
+    String SERVICE_NAME = "XmlRpcService";
 
     /**
      * Execute a remote procedure call.
@@ -85,9 +87,9 @@ public interface XmlRpcService
      * @return An Object.
      * @exception TurbineException
      */
-    public Object executeRpc(URL url,
-                             String methodName,
-                             Vector params)
+    Object executeRpc(URL url,
+            String methodName,
+            Vector params)
             throws TurbineException;
 
     /**
@@ -102,11 +104,11 @@ public interface XmlRpcService
      * @return An Object.
      * @exception TurbineException
      */
-    public Object executeAuthenticatedRpc(URL url,
-                                          String username,
-                                          String password,
-                                          String methodName,
-                                          Vector params)
+    Object executeAuthenticatedRpc(URL url,
+            String username,
+            String password,
+            String methodName,
+            Vector params)
             throws TurbineException;
 
     /**
@@ -116,7 +118,7 @@ public interface XmlRpcService
      * to register the service
      * @param handler The handler object
      */
-    public void registerHandler(String handlerName, Object handler);
+    void registerHandler(String handlerName, Object handler);
 
     /**
      * Register an object as a the default handler for
@@ -124,14 +126,14 @@ public interface XmlRpcService
      *
      * @param handler The handler object
      */
-    public void registerHandler(Object handler);
+    void registerHandler(Object handler);
 
     /**
      * Unregister a handler.
      *
      * @param handlerName The name of the handler to unregister.
      */
-    public void unregisterHandler(String handlerName);
+    void unregisterHandler(String handlerName);
 
     /**
      * Handle an XML-RPC request using the encapsulated server.
@@ -142,7 +144,7 @@ public interface XmlRpcService
      * @param is the stream to read request data from.
      * @return the response body that needs to be sent to the client.
      */
-    public byte[] handleRequest(InputStream is);
+    byte[] handleRequest(InputStream is);
 
     /**
      * Handle an XML-RPC request using the encapsulated server with user
@@ -159,7 +161,7 @@ public interface XmlRpcService
      * @param password the password given by user.
      * @return the response body that needs to be sent to the client.
      */
-    public byte[] handleRequest(InputStream is, String user, String password);
+    byte[] handleRequest(InputStream is, String user, String password);
 
     /**
      * Method to allow a client to send a file to a server.
@@ -171,11 +173,11 @@ public interface XmlRpcService
      * @param destinationFileName
      * @throws TurbineException
      */
-    public void send(String serverURL,
-                     String sourceLocationProperty,
-                     String sourceFileName,
-                     String destinationLocationProperty,
-                     String destinationFileName)
+    void send(String serverURL,
+            String sourceLocationProperty,
+            String sourceFileName,
+            String destinationLocationProperty,
+            String destinationFileName)
             throws TurbineException;
 
     /**
@@ -191,13 +193,13 @@ public interface XmlRpcService
      * @param destinationFileName
      * @throws TurbineException
      */
-    public void send(String serverURL,
-                     String username,
-                     String password,
-                     String sourceLocationProperty,
-                     String sourceFileName,
-                     String destinationLocationProperty,
-                     String destinationFileName)
+    void send(String serverURL,
+            String username,
+            String password,
+            String sourceLocationProperty,
+            String sourceFileName,
+            String destinationLocationProperty,
+            String destinationFileName)
             throws TurbineException;
 
     /**
@@ -210,11 +212,11 @@ public interface XmlRpcService
      * @param destinationFileName
      * @throws TurbineException
      */
-    public void get(String serverURL,
-                    String sourceLocationProperty,
-                    String sourceFileName,
-                    String destinationLocationProperty,
-                    String destinationFileName)
+    void get(String serverURL,
+            String sourceLocationProperty,
+            String sourceFileName,
+            String destinationLocationProperty,
+            String destinationFileName)
             throws TurbineException;
 
     /**
@@ -230,13 +232,13 @@ public interface XmlRpcService
      * @param destinationFileName
      * @throws TurbineException
      */
-    public void get(String serverURL,
-                    String username,
-                    String password,
-                    String sourceLocationProperty,
-                    String sourceFileName,
-                    String destinationLocationProperty,
-                    String destinationFileName)
+    void get(String serverURL,
+            String username,
+            String password,
+            String sourceLocationProperty,
+            String sourceFileName,
+            String destinationLocationProperty,
+            String destinationFileName)
             throws TurbineException;
 
     /**
@@ -248,9 +250,9 @@ public interface XmlRpcService
      * @param sourceFileName
      * @throws TurbineException
      */
-    public void remove(String serverURL,
-                       String sourceLocationProperty,
-                       String sourceFileName)
+    void remove(String serverURL,
+            String sourceLocationProperty,
+            String sourceFileName)
             throws TurbineException;
 
     /**
@@ -264,11 +266,11 @@ public interface XmlRpcService
      * @param sourceFileName
      * @throws TurbineException
      */
-    public void remove(String serverURL,
-                       String username,
-                       String password,
-                       String sourceLocationProperty,
-                       String sourceFileName)
+    void remove(String serverURL,
+            String username,
+            String password,
+            String sourceLocationProperty,
+            String sourceFileName)
             throws TurbineException;
 
     /**
@@ -278,7 +280,7 @@ public interface XmlRpcService
      * @see #acceptClient(java.lang.String)
      * @see #denyClient(java.lang.String)
      */
-    public void setParanoid(boolean state);
+    void setParanoid(boolean state);
 
     /**
      * Add an IP address to the list of accepted clients. The parameter can
@@ -290,7 +292,7 @@ public interface XmlRpcService
      * @see #denyClient(java.lang.String)
      * @see #setParanoid(boolean)
      */
-    public void acceptClient(String address);
+    void acceptClient(String address);
 
     /**
      * Add an IP address to the list of denied clients. The parameter can
@@ -301,6 +303,6 @@ public interface XmlRpcService
      * @see #acceptClient(java.lang.String)
      * @see #setParanoid(boolean)
      */
-    public void denyClient(String address);
+    void denyClient(String address);
 
 }

@@ -76,7 +76,7 @@ public interface CryptoService
         extends Service
 {
     /** The name of the service */
-    static final String SERVICE_NAME = "CryptoService";
+    String SERVICE_NAME = "CryptoService";
 
     /**
      * Returns a CryptoAlgorithm Object which represents the requested

@@ -70,13 +70,13 @@ public interface ScheduleService
         extends Service
 {
     /** Name of service */
-    public static final String SERVICE_NAME = "SchedulerService";
+    String SERVICE_NAME = "SchedulerService";
 
     /** TR.props key for intially activating the scheduler thread */
-    public static final String INTIALLY_ACTIVE = "enabled";
+    String INTIALLY_ACTIVE = "enabled";
 
     /** TR.props key for the logger */
-    public static final String LOGGER_NAME = "scheduler";
+    String LOGGER_NAME = "scheduler";
 
     /**
      * Get a specific Job from Storage.
@@ -85,7 +85,7 @@ public interface ScheduleService
      * @return A JobEntry.
      * @exception TurbineException could not retreive job
      */
-    public JobEntry getJob(int oid)
+    JobEntry getJob(int oid)
             throws TurbineException;
 
     /**
@@ -94,7 +94,7 @@ public interface ScheduleService
      * @param je A JobEntry with the job to add.
      * @throws TurbineException job could not be added
      */
-    public void addJob(JobEntry je)
+    void addJob(JobEntry je)
             throws TurbineException;
 
     /**
@@ -103,7 +103,7 @@ public interface ScheduleService
      * @param je A JobEntry with the job to modify
      * @throws TurbineException job could not be updated
      */
-    public void updateJob(JobEntry je)
+    void updateJob(JobEntry je)
             throws TurbineException;
 
     /**
@@ -112,7 +112,7 @@ public interface ScheduleService
      * @param je A JobEntry with the job to remove.
      * @exception TurbineException job could not be removed
      */
-    public void removeJob(JobEntry je)
+    void removeJob(JobEntry je)
             throws TurbineException;
 
     /**
@@ -120,24 +120,23 @@ public interface ScheduleService
      *
      * @return A List of jobs.
      */
-    public List listJobs();
+    List listJobs();
 
     /**
      * Determines if the scheduler service is currently active.
      *
      * @return Status of the scheduler service.
      */
-    public boolean isEnabled();
+    boolean isEnabled();
 
     /**
      * Starts the scheduler if not already running.
      */
-    public void startScheduler();
+    void startScheduler();
 
     /**
      * Stops the scheduler if ti is currently running.
      */
-    public void stopScheduler();
+    void stopScheduler();
 
 }
-

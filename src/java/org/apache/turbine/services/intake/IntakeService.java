@@ -55,6 +55,7 @@ package org.apache.turbine.services.intake;
  */
 
 import java.beans.IntrospectionException;
+
 import java.lang.reflect.Method;
 
 import org.apache.turbine.services.intake.model.Group;
@@ -81,34 +82,34 @@ public interface IntakeService
     /**
      * The key under which this service is stored in TurbineServices.
      */
-    static final String SERVICE_NAME = "IntakeService";
+    String SERVICE_NAME = "IntakeService";
 
     /**
      * The property specifying the location of the xml specification.
      */
-    static final String XML_PATH = "xml.path";
+    String XML_PATH = "xml.path";
 
     /**
      * The default location of the xml specification.
      */
-    static final String XML_PATH_DEFAULT = "WEB-INF/conf/intake.xml";
+    String XML_PATH_DEFAULT = "WEB-INF/conf/intake.xml";
 
     /**
-     * The property specifying the location where a serialized version of
+     * The property specifying the location where a serialized version of 
      * the xml specification can be written for faster restarts..
      */
-    static final String SERIAL_XML = "serialize.path";
+    String SERIAL_XML = "serialize.path";
 
     /**
      * The default location where a serialized version of
      * the xml specification can be written for faster restarts..
      */
-    static final String SERIAL_XML_DEFAULT = "WEB-INF/appData.ser";
+    String SERIAL_XML_DEFAULT = "WEB-INF/appData.ser";
 
     /**
      * The default pool capacity.
      */
-    static final int DEFAULT_POOL_CAPACITY = 1024;
+    int DEFAULT_POOL_CAPACITY = 1024;
 
     /**
      * Gets an instance of a named group either from the pool

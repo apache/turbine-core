@@ -67,7 +67,7 @@ import org.apache.turbine.services.Service;
 public interface GlobalCacheService
         extends Service
 {
-    static final String SERVICE_NAME = "GlobalCacheService";
+    String SERVICE_NAME = "GlobalCacheService";
 
     /**
      * Gets a cached object given its id (a String).
