@@ -210,17 +210,6 @@ public class TurbineConfig
     }
 
     /**
-     * Initialization requiring a HTTP <code>GET</code> request.
-     */
-    public void init(RunData data)
-    {
-        if (turbine != null)
-        {
-            turbine.init(data);
-        }
-    }
-
-    /**
      * Shutdown the Turbine System, lifecycle style
      *
      */
@@ -232,6 +221,16 @@ public class TurbineConfig
         }
     }
 
+    /**
+     * Returns a reference to the Turbine servlet that was initialized.
+     *
+     * @return a ServletContext reference
+     */
+    public Turbine getTurbine()
+    {
+        return turbine;
+    }
+    
     /**
      * Returns a reference to the object cast onto ServletContext type.
      *

@@ -526,32 +526,6 @@ public class Turbine
     }
 
     /**
-     * Initializes the services which need <code>RunData</code> to
-     * initialize themselves (post startup).
-     *
-     * @param data The first <code>GET</code> request.
-     */
-    public final void init(RunData data)
-    {
-        synchronized (Turbine.class)
-        {
-            if (firstDoGet)
-            {
-                // All we want to do here is save some servlet
-                // information so that services and processes
-                // that don't have direct access to a RunData
-                // object can still know something about
-                // the servlet environment.
-                saveServletInfo(data);
-
-                // Mark that we're done.
-                firstDoGet = false;
-                log.info("Turbine: first Request successful");
-            }
-        }
-    }
-
-    /**
      * Return the current configuration with all keys included
      *
      * @return a Configuration Object
@@ -722,7 +696,19 @@ public class Turbine
             // themselves.
             if (firstDoGet)
             {
-                init(data);
+                synchronized (Turbine.class)
+                {
+
+                    // Store the context path for tools like ContentURI and
+                    // the UIManager that use webapp context path information
+                    // for constructing URLs.
+                    serverData = new ServerData(req);            
+
+                    // Mark that we're done.
+                    firstDoGet = false;
+                    log.info("Turbine: first Request successful");
+                }
+
             }
 
             // Stages of Pipeline implementation execution
@@ -930,25 +916,6 @@ public class Turbine
 
             log.error(reallyScrewedNow.getMessage(), reallyScrewedNow);
         }
-    }
-
-    /**
-     * Save some information about this servlet so that
-     * it can be utilized by object instances that do not
-     * have direct access to RunData.
-     *
-     * @param data
-     */
-    public static synchronized void saveServletInfo(RunData data)
-    {
-        // Store the context path for tools like ContentURI and
-        // the UIManager that use webapp context path information
-        // for constructing URLs.
-
-        //
-        // Bundle all the information above up into a convenient structure
-        //
-        serverData = (ServerData) data.getServerData().clone();
     }
 
     /**
