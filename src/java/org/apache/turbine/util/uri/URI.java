@@ -1,4 +1,4 @@
-package org.apache.turbine.util.parser;
+package org.apache.turbine.util.uri;
 
 /* ====================================================================
  * The Apache Software License, Version 1.1
@@ -54,106 +54,69 @@ package org.apache.turbine.util.parser;
  * <http://www.apache.org/>.
  */
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.uri.URI;
+import org.apache.turbine.util.ServerData;
 
 /**
- * CookieParser is an interface to a utility to to get and set values
- * of Cookies on the Client Browser. You can use CookieParser to convert
- * Cookie values to various types or to set Bean values with setParameters().
- * Servlet Spec for more information on Cookies.
- * <p>
- * Use set() or unset() to Create or Destroy Cookies.
- * <p>
- * NOTE: The name= portion of a name=value pair may be converted
- * to lowercase or uppercase when the object is initialized and when
- * new data is added.  This behaviour is determined by the url.case.folding
- * property in TurbineResources.properties.  Adding a name/value pair may
- * overwrite existing name=value pairs if the names match:
+ * An interface class which describes the absolute minimum of methods that
+ * a Turbine URI class must implement.
  *
- * <pre>
- * CookieParser cp = data.getCookies();
- * cp.add("ERROR",1);
- * cp.add("eRrOr",2);
- * int result = cp.getInt("ERROR");
- * </pre>
- *
- * In the above example, result is 2.
- *
- * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
- * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public interface CookieParser
-        extends ValueParser
+
+public interface URI
 {
-    int AGE_SESSION = -1;
-    int AGE_DELETE = 0;
-
     /**
-     * Gets the parsed RunData.
+     * Gets the script name (/servlets/Turbine).
      *
-     * @return the parsed RunData object or null.
-     * @deprecated. Don't use the Run Data object. use getRequest().
+     * @return A String with the script name.
      */
-    RunData getRunData();
+    String getScriptName();
 
     /**
-     * Gets the Request Object for this parser.
+     * Gets the context path.
      *
-     * @return the HttpServletRequest or null.
+     * @return A String with the context path.
      */
-    HttpServletRequest getRequest();
+    String getContextPath();
 
     /**
-     * Sets the RunData to be parsed.
-     * All previous cookies will be cleared.
+     * Gets the server name.
      *
-     * @param data the RunData object.
-     * @deprecated. Use setData (HttpServletRequest request, HttpServletResponse response) instead
+     * @return A String with the server name.
      */
-    void setRunData(RunData data);
+    String getServerName();
 
     /**
-     * Sets Request and Response to be parsed.
+     * Gets the server port.
      *
-     * All previous cookies will be cleared.
+     * @return A String with the server port.
+     */
+    int getServerPort();
+
+    /**
+     * Returns the current Server Scheme
      *
-     * @param request The http request from the servlet
-     * @param response The http reponse from the servlet
+     * @return The current Server scheme
+     *
      */
-    void setData(HttpServletRequest request,
-            HttpServletResponse response);
+    String getServerScheme();
 
     /**
-     * Get the Path where cookies will be stored
-     * @deprecated Will be replaced by {@link org.apache.turbine.util.uri.TurbineURI} getCookiePath()
+     * Returns the current reference anchor.
+     *
+     * @return A String containing the reference.
      */
-    URI getCookiePath();
-
-    /**
-     * Set the path for cookie storage
-     * @deprecated Will be replaced by setCookiePath({@link org.apache.turbine.util.uri.TurbineURI})
-     */
-    void setCookiePath(URI path);
-
-    /**
-     * Set a cookie that will be stored on the client for
-     * the duration of the session.
-     */
-    void set(String name, String value);
-
-    /**
-     * Set a persisten cookie on the client that will expire
-     * after a maximum age (given in seconds).
-     */
-    void set(String name, String value, int seconds_age);
-
-    /**
-     * Remove a previously set cookie from the client machine.
-     */
-    void unset(String name);
+    String getReference();
 }

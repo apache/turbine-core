@@ -61,9 +61,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.pool.Recyclable;
+import org.apache.turbine.util.uri.URI;
+import org.apache.turbine.util.uri.TurbineURI;
 
 /**
  * CookieParser is used to get and set values of Cookies on the Client
@@ -110,7 +111,7 @@ public class DefaultCookieParser
     private HttpServletResponse response;
 
     /** The cookie path. */
-    private DynamicURI cookiePath = null;
+    private URI cookiePath = null;
 
     /**
      * Constructs a new CookieParser.
@@ -188,7 +189,7 @@ public class DefaultCookieParser
         String enc = request.getCharacterEncoding();
         setCharacterEncoding(enc != null ? enc : "US-ASCII");
 
-        cookiePath = new DynamicURI(data);
+        cookiePath = new TurbineURI(data);
 
         Cookie[] cookies = request.getCookies();
 
@@ -212,8 +213,9 @@ public class DefaultCookieParser
      * Get the Path where cookies will be stored
      *
      * @return path for cookie storage
+     * @deprecated Will be replaced by {@link org.apache.turbine.util.uri.TurbineURI} getCookiePath()
      */
-    public DynamicURI getCookiePath()
+    public URI getCookiePath()
     {
         return cookiePath;
     }
@@ -222,10 +224,11 @@ public class DefaultCookieParser
      * Set the path for cookie storage
      *
      * @param path path for cookie storage
+     * @deprecated Will be replaced by setCookiePath({@link org.apache.turbine.util.uri.TurbineURI})
      */
-    public void setCookiePath(DynamicURI path)
+    public void setCookiePath(URI cookiePath)
     {
-        cookiePath = path;
+        this.cookiePath = cookiePath;
     }
 
     /**

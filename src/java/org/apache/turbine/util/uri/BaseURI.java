@@ -79,7 +79,8 @@ import org.apache.turbine.util.ServerData;
  */
 
 public abstract class BaseURI
-        implements URIConstants
+        implements URI,
+                   URIConstants
 {
     /** Logging */
     private static Log log = LogFactory.getLog(BaseURI.class);
