@@ -76,59 +76,17 @@ public abstract class TurbineTemplate
     protected static TemplateService getService()
     {
         return (TemplateService) TurbineServices
-                .getInstance().getService(TemplateService.SERVICE_NAME);
+            .getInstance().getService(TemplateService.SERVICE_NAME);
     }
 
     /**
-     * Locate and return the name of a screen template.
+     * Returns true if the Template Service has caching activated
      *
-     * @param key A String which is the key to the template.
-     * @return A String with the screen template path.
-     * @exception Exception, a generic exception.
+     * @return true if Caching is active.
      */
-    public static final String getScreenTemplateName(String key)
-            throws Exception
+    public static final boolean isCaching()
     {
-        return getService().getScreenTemplateName(key);
-    }
-
-    /**
-     * Locate and return the name of a layout template.
-     *
-     * @param name A String with the name of the template.
-     * @return A String with the layout template path.
-     * @exception Exception, a generic exception.
-     */
-    public static final String getLayoutTemplateName(String name)
-            throws Exception
-    {
-        return getService().getLayoutTemplateName(name);
-    }
-
-    /**
-     * Locate and return the name of a Navigation module.
-     *
-     * @param name A String with the name of the template.
-     * @return A String with the name of the navigation.
-     * @exception Exception, a generic exception.
-     */
-    public static final String getNavigationName(String name)
-            throws Exception
-    {
-        return getService().getNavigationName(name);
-    }
-
-    /**
-     * Locate and return the name of a Screen module.
-     *
-     * @param name A String with the name of the template.
-     * @return A String with the name of the screen.
-     * @exception Exception, a generic exception.
-     */
-    public static final String getScreenName(String name)
-            throws Exception
-    {
-        return getService().getScreenName(name);
+        return getService().isCaching();
     }
 
     /**
@@ -142,6 +100,40 @@ public abstract class TurbineTemplate
     }
 
     /**
+     * Return Extension for a supplied template
+     *
+     * @param template The template name
+     *
+     * @return extension The extension for the supplied template
+     */
+    public static final String getExtension(String template)
+    {
+        return getService().getExtension(template);
+    }
+
+    /**
+     * Returns the Default Template Name with the Default Extension.
+     * If the extension is unset, return only the template name
+     *
+     * @return The default template Name
+     */
+    public static final String getDefaultTemplate()
+    {
+        return getService().getDefaultTemplate();
+    }
+
+    /**
+     * Get the default page module name of the template engine
+     * service corresponding to the default template name extension.
+     *
+     * @return The default page module name.
+     */
+    public static final String getDefaultPage()
+    {
+        return getService().getDefaultPage();
+    }
+
+    /**
      * Get the Screen template given in the properties file.
      *
      * @return A String which is the value of the TemplateService
@@ -150,6 +142,17 @@ public abstract class TurbineTemplate
     public static final String getDefaultScreen()
     {
         return getService().getDefaultScreen();
+    }
+
+    /**
+     * Get the default layout module name of the template engine
+     * service corresponding to the default template name extension.
+     *
+     * @return The default layout module name.
+     */
+    public static final String getDefaultLayout()
+    {
+        return getService().getDefaultLayout();
     }
 
     /**
@@ -175,14 +178,159 @@ public abstract class TurbineTemplate
     }
 
     /**
-     * Registers the provided template engine for use by the
-     * <code>TemplateService</code>.
+     * Get the default page module name of the template engine
+     * service corresponding to the template name extension of
+     * the named template.
      *
-     * @param service The <code>TemplateEngineService</code> to register.
+     * @param template The template name.
+     * @return The default page module name.
      */
-    public static final void registerTemplateEngineService(TemplateEngineService service)
+    public static final String getDefaultPageName(String template)
     {
-        getService().registerTemplateEngineService(service);
+        return getService().getDefaultPageName(template);
+    }
+
+    /**
+     * Get the default screen module name of the template engine
+     * service corresponding to the template name extension of
+     * the named template.
+     *
+     * @param template The template name.
+     * @return The default screen module name.
+     */
+    public static final String getDefaultScreenName(String template)
+    {
+        return getService().getDefaultScreenName(template);
+    }
+
+    /**
+     * Get the default layout module name of the template engine
+     * service corresponding to the template name extension of
+     * the named template.
+     *
+     * @param template The template name.
+     * @return The default layout module name.
+     */
+    public static final String getDefaultLayoutName(String template)
+    {
+        return getService().getDefaultLayoutName(template);
+    }
+
+    /**
+     * Get the default navigation module name of the template engine
+     * service corresponding to the template name extension of
+     * the named template.
+     *
+     * @param template The template name.
+     * @return The default navigation module name.
+     */
+    public static final String getDefaultNavigationName(String template)
+    {
+        return getService().getDefaultNavigationName(template);
+    }
+
+    /**
+     * Get the default layout template name of the template engine
+     * service corresponding to the template name extension of
+     * the named template.
+     *
+     * @param template The template name.
+     * @return The default layout template name.
+     */
+    public static final String getDefaultLayoutTemplateName(String template)
+    {
+        return getService().getDefaultLayoutTemplateName(template);
+    }
+
+    /**
+     * Find the default page module name for the given request.
+     *
+     * @param data The encapsulation of the request to retrieve the
+     *             default page for.
+     * @return The default page module name.
+     */
+    public static final String getDefaultPageName(RunData data)
+    {
+        return getService().getDefaultPageName(data);
+    }
+
+    /**
+     * Find the default layout module name for the given request.
+     *
+     * @param data The encapsulation of the request to retrieve the
+     *             default layout for.
+     * @return The default layout module name.
+     */
+    public static final String getDefaultLayoutName(RunData data)
+    {
+        return getService().getDefaultLayoutName(data);
+    }
+
+    /**
+     * Locate and return the name of a Screen module.
+     *
+     * @param name A String with the name of the template.
+     * @return A String with the name of the screen.
+     * @exception Exception, a generic exception.
+     */
+    public static final String getScreenName(String name)
+        throws Exception
+    {
+        return getService().getScreenName(name);
+    }
+
+    /**
+     * Locate and return the name of the layout module to be used
+     * with the named layout template.
+     *
+     * @param template The layout template name.
+     * @return The found layout module name.
+     * @exception Exception, a generic exception.
+     */
+    public static final String getLayoutName(String template)
+        throws Exception
+    {
+        return getService().getLayoutName(template);
+    }
+
+    /**
+     * Locate and return the name of the navigation module to be used
+     * with the named navigation template.
+     *
+     * @param template The navigation template name.
+     * @return The found navigation module name.
+     * @exception Exception, a generic exception.
+     */
+    public static final String getNavigationName(String template)
+        throws Exception
+    {
+        return getService().getNavigationName(template);
+    }
+
+    /**
+     * Locate and return the name of a screen template.
+     *
+     * @param key A String which is the key to the template.
+     * @return A String with the screen template path.
+     * @exception Exception, a generic exception.
+     */
+    public static final String getScreenTemplateName(String key)
+        throws Exception
+    {
+        return getService().getScreenTemplateName(key);
+    }
+
+    /**
+     * Locate and return the name of a layout template.
+     *
+     * @param name A String with the name of the template.
+     * @return A String with the layout template path.
+     * @exception Exception, a generic exception.
+     */
+    public static final String getLayoutTemplateName(String name)
+        throws Exception
+    {
+        return getService().getLayoutTemplateName(name);
     }
 
     /**
@@ -211,26 +359,25 @@ public abstract class TurbineTemplate
     }
 
     /**
-     * Find the default page module name for the given request.
+     * Registers the provided template engine for use by the
+     * <code>TemplateService</code>.
      *
-     * @param data The encapsulation of the request to retrieve the
-     *             default page for.
-     * @return The default page module name.
+     * @param service The <code>TemplateEngineService</code> to register.
      */
-    public static final String getDefaultPageName(RunData data)
+    public static final void registerTemplateEngineService(TemplateEngineService service)
     {
-        return getService().getDefaultPageName(data);
+        getService().registerTemplateEngineService(service);
     }
 
     /**
-     * Find the default layout module name for the given request.
+     * The {@link org.apache.turbine.services.template.TemplateEngineService}
+     * associated with the specified template's file extension.
      *
-     * @param data The encapsulation of the request to retrieve the
-     *             default layout for.
-     * @return The default layout module name.
+     * @param template The template name.
+     * @return The template engine service.
      */
-    public static final String getDefaultLayoutName(RunData data)
+    public static final TemplateEngineService getTemplateEngineService(String template)
     {
-        return getService().getDefaultLayoutName(data);
+        return getService().getTemplateEngineService(template);
     }
 }

@@ -79,6 +79,34 @@ public interface TemplateService
      */
     static final String SERVICE_NAME = "TemplateService";
 
+    /** Default Template Name. */
+    String DEFAULT_TEMPLATE_KEY = "default.template";
+
+    /** Default value for the Template Name */
+    String DEFAULT_TEMPLATE_VALUE = "Default";
+
+    /** Default Extension for the template names. */
+    String DEFAULT_EXTENSION_KEY = "default.extension";
+
+    /** Default value of the Turbine Module Caching */
+    String DEFAULT_EXTENSION_VALUE = "";
+
+    /** Character that separates a Template Name from the Extension */
+    public static final char EXTENSION_SEPARATOR = '.';
+
+    /** Character that separates the various Template Parts */
+    public static final char TEMPLATE_PARTS_SEPARATOR = ',';
+
+    /** "Default" name for Classes and Templates */
+    public static final String DEFAULT_NAME = "Default";
+
+    /**
+     * Returns true if the Template Service has caching activated
+     *
+     * @return true if Caching is active.
+     */
+    boolean isCaching();
+
     /**
      * Get the default template name extension specified
      * in the template service properties.
@@ -86,6 +114,23 @@ public interface TemplateService
      * @return The default the extension.
      */
     String getDefaultExtension();
+
+    /**
+     * Return Extension for a supplied template
+     *
+     * @param template The template name
+     *
+     * @return extension The extension for the supplied template
+     */
+    String getExtension(String template);
+
+    /**
+     * Returns the Default Template Name with the Default Extension.
+     * If the extension is unset, return only the template name
+     *
+     * @return The default template Name
+     */
+    String getDefaultTemplate();
 
     /**
      * Get the default page module name of the template engine
@@ -269,6 +314,16 @@ public interface TemplateService
      */
     boolean templateExists(String template,
                            String[] templatePaths);
+
+
+    /**
+     * The {@link org.apache.turbine.services.template.TemplateEngineService}
+     * associated with the specified template's file extension.
+     *
+     * @param template The template name.
+     * @return The template engine service.
+     */
+    TemplateEngineService getTemplateEngineService(String template);
 
     /**
      * Registers the provided template engine for use by the
