@@ -31,7 +31,7 @@
 If you want to use M.E.T.A., you need <a
 href="http://maven.apache.org/">maven</a>. Even though maven has still
 no real release and many things are in a constant state of flux, you
-can get maven 1.0-RC3 from the <a
+can get maven 1.0-RC4 from the <a
 href="http://maven.apache.org/start/download.html">maven download
 site</a>, which proved to be working with the M.E.T.A. plugin. You can
 either get a binary or a source distribution.
@@ -39,27 +39,35 @@ either get a binary or a source distribution.
 
 </subsection>
 
-<subsection name="Installing the Torque and M.E.T.A. plugins">
+<subsection name="Installing the Torque plugin">
 <p>
-After you've installed maven, get these plugins through the following links.
+M.E.T.A. can use Torque as OM-Layer for Turbine applications. For this, you need
+the Torque Plugin for maven. Download it directly from the maven repository site:
 </p>
-<table>
-<tr>
-  <td><a href="http://www.apache.org/~henning/maven/maven-turbine-plugin-1.2-dev.jar">M.E.T.A. Plugin (Version 1.2-dev)</a></td>
-</tr>
-<tr>
-  <td><a href="http://www.apache.org/~henning/maven/maven-torque-plugin-3.1.1-dev.jar">Torque Plugin (Version 3.1.1-dev)</a></td>
-</tr>
-</table>
+
+<source><![CDATA[
+maven -DartifactId=maven-torque-plugin -DgroupId=torque -Dversion=3.1.1-dev plugin:download
+]]></source>
+
 <p>
-If you already have the Torque plugin installed, make sure that you
+If you already had the Torque plugin installed, make sure that you
 have the Plugin from the <a
 href="http://db.apache.org/torque-31/">Torque 3.1 Branch</a>
 installed. M.E.T.A. does not work with the 3.2 development branch.
 </p>
 
 <p>
-Now copy the two plugins into your local plugin directory, which is
+Get the M.E.T.A. plugin through the following link:
+</p>
+
+<table>
+<tr>
+  <td><a href="http://www.apache.org/~henning/maven/maven-turbine-plugin-1.2-dev.jar">M.E.T.A. Plugin (Version 1.2-dev)</a></td>
+</tr>
+</table>
+
+<p>
+Copy it into your local plugin directory, which is
 either referenced by MAVEN_HOME_LOCAL/plugins or the global plugins
 directory at MAVEN_HOME/plugins. Which one to use depends on your
 maven installation. You find some documentation on how to do this <a
