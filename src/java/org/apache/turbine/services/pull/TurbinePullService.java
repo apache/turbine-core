@@ -415,8 +415,12 @@ public class TurbinePullService extends TurbineBaseService
         // very similar, so the same method is used - the
         // boolean parameter indicates whether get/setPerm is to be used
         // rather than get/setTemp)
-        populateWithSessionTools(sessionTools,    context, data, false);
-        populateWithSessionTools(persistentTools, context, data, true);
+        User user = data.getUser();
+        if (user != null)
+        {
+            populateWithSessionTools(sessionTools,    context, user, false);
+            populateWithSessionTools(persistentTools, context, user, true);
+        }
     }
 
     /**
@@ -488,21 +492,23 @@ public class TurbinePullService extends TurbineBaseService
     }
 
     /**
-     * Populate the given context with the session-scope tools
+     * Populate the given context with the session-scoped tools.
      *
-     * @param context a Velocity Context to populate
-     * @param data a RunData instance
+     * @param tools The list of tools with which to populate the
+     * session.
+     * @param context The context to populate.
+     * @param user The <code>User</code> object whose storage to
+     * retrieve the tool from.
+     * @param userPerm Whether to retrieve the tools from the
+     * permanent storage (as opposed to the temporary storage).
      */
     private void populateWithSessionTools(List tools, Context context,
-            RunData data, boolean usePerm)
+                                          User user, boolean usePerm)
     {
         // Get the PoolService to fetch object instances from
         PoolService pool = (PoolService)
             TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
 
-        // Get the current user
-        User user = data.getUser();
-        
         // Iterate the tools
         Iterator it = tools.iterator();
         while (it.hasNext())
