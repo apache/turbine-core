@@ -63,9 +63,9 @@ import org.apache.turbine.util.TurbineException;
  *
  * <table>
  * <tr><th>Name</th><th>Valid Values</th><th>Default Value</th></tr>
- * <tr><td>minLength</td><td>greater than Integer.MIN_VALUE</td>
+ * <tr><td>minValue</td><td>greater than Integer.MIN_VALUE</td>
  * <td>&nbsp;</td></tr>
- * <tr><td>maxLength</td><td>less than Integer.MAX_VALUE</td>
+ * <tr><td>maxValue</td><td>less than Integer.MAX_VALUE</td>
  * <td>&nbsp;</td></tr>
  * <tr><td>notANumberMessage</td><td>Some text</td>
  * <td>Entry was not a valid number</td></tr>
