@@ -90,7 +90,7 @@ public class VelocityDirectScreen extends VelocityScreen
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
-    public ConcreteElement buildTemplate( RunData data ) throws Exception
+    public ConcreteElement buildTemplate(RunData data) throws Exception
     {
         StringElement output = new StringElement();
         String screenData = null;
@@ -99,7 +99,7 @@ public class VelocityDirectScreen extends VelocityScreen
         // This will already be properly set and will not be null
         // because of TemplateSessionValidator.
         String templateName = TurbineTemplate.getScreenTemplateName(
-            data.getTemplateInfo().getScreenTemplate() );
+            data.getTemplateInfo().getScreenTemplate());
 
         // Template service adds the leading slash, but make it sure.
         if ((templateName.length() > 0) &&
@@ -130,8 +130,8 @@ public class VelocityDirectScreen extends VelocityScreen
             // If there is an error, build a $processingException and
             // attempt to call the error.vm template in the screens
             // directory.
-            context.put ( "processingException", e.toString() );
-            context.put ( "stackTrace", StringUtils.stackTrace(e) );
+            context.put ("processingException", e.toString());
+            context.put ("stackTrace", StringUtils.stackTrace(e));
             templateName = TurbineResources.getString(
                 "template.error", "/error.vm");
             if ((templateName.length() > 0) &&

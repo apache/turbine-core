@@ -54,19 +54,20 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
-// Java Core Classes
 import java.util.Vector;
 
-// Turbine Utility Classes
+import org.apache.ecs.ConcreteElement;
+
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.services.TurbineServices;
+
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+
+import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
-
-// ECS
-import org.apache.ecs.ConcreteElement;
 
 /**
  * The purpose of this class is to allow one to load and execute
@@ -105,10 +106,12 @@ public class ScreenLoader extends GenericLoader
      * @param name Name of object.
      * @param screen Screen to be associated with name.
      */
-    private void addInstance( String name, Screen screen )
+    private void addInstance(String name, Screen screen)
     {
-        if ( cache() )
-            this.put( name, (Screen) screen );
+        if (cache())
+        {
+            this.put(name, (Screen) screen);
+        }
     }
 
     /**
@@ -122,7 +125,7 @@ public class ScreenLoader extends GenericLoader
      * @param name Name of object that will execute the screen.
      * @exception Exception a generic exception.
      */
-    public ConcreteElement eval( RunData data, String name )
+    public ConcreteElement eval(RunData data, String name)
         throws Exception
     {
         // Execute screen
@@ -138,10 +141,10 @@ public class ScreenLoader extends GenericLoader
      * @param name Name of object that will execute the screen.
      * @exception Exception a generic exception.
      */
-    public void exec( RunData data, String name )
+    public void exec(RunData data, String name)
         throws Exception
     {
-        this.eval( data, name );
+        this.eval(data, name);
     }
 
     /**
@@ -158,9 +161,9 @@ public class ScreenLoader extends GenericLoader
         Screen screen = null;
 
         // Check if the screen is already in the cache
-        if ( cache() && this.containsKey( name ) )
+        if (cache() && this.containsKey(name))
         {
-            screen = (Screen) this.get( name );
+            screen = (Screen) this.get(name);
         }
         else
         {
@@ -191,18 +194,18 @@ public class ScreenLoader extends GenericLoader
                 // own string here...
                 Vector packages = TurbineResources
                     .getVector(TurbineConstants.MODULE_PACKAGES);
-                ObjectUtils.addOnce( packages,
-                                     GenericLoader.getBasePackage() );
+                ObjectUtils.addOnce(packages,
+                                     GenericLoader.getBasePackage());
 
                 throw new ClassNotFoundException (
                     "\n\n\tRequested Screen not found: " + name +
                     "\n\tTurbine looked in the following " +
                     "modules.packages path: \n\t" + packages.toString() + "\n");
             }
-            else if ( cache() )
+            else if (cache())
             {
                 // The new instance is added to the cache
-                addInstance( name, screen );
+                addInstance(name, screen);
             }
         }
         return screen;

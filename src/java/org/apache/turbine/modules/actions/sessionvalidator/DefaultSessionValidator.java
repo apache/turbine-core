@@ -55,7 +55,9 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  */
 
 import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -91,7 +93,7 @@ public class DefaultSessionValidator extends SessionValidator
      * @see org.apache.turbine.modules.screens.error.InvalidState
      * @param data Turbine RunData context information.     * @exception Exception, a generic exception.
      */
-    public void doPerform( RunData data ) throws Exception
+    public void doPerform(RunData data) throws Exception
     {
         /*
          * Pull user from session.
@@ -100,7 +102,7 @@ public class DefaultSessionValidator extends SessionValidator
 
         // Make sure the User object exists in the Session and that
         // the user has logged into the system.
-        if ( (data.getUser() == null) || (! data.getUser().hasLoggedIn()) )
+        if ((data.getUser() == null) || (!data.getUser().hasLoggedIn()))
         {
             // only set the message if nothing else has already set it
             // (e.g. the LogoutUser action)
@@ -114,25 +116,25 @@ public class DefaultSessionValidator extends SessionValidator
             // will have been performed already)
             data.setAction(null);
         }
-        else if ( ! data.hasScreen() )
+        else if (!data.hasScreen())
         {
             data.setMessage(TurbineResources.getString(
                 TurbineConstants.LOGIN_MESSAGE_NOSCREEN));
             data.setScreen(TurbineResources.getString(
                 TurbineConstants.SCREEN_HOMEPAGE));
         }
-        else if ( data.getParameters().containsKey("_session_access_counter") )
+        else if (data.getParameters().containsKey("_session_access_counter"))
         {
             // See comments in screens.error.InvalidState.
-            if ( data.getParameters().getInt("_session_access_counter") <
+            if (data.getParameters().getInt("_session_access_counter") <
                  (((Integer)data.getUser().getTemp("_session_access_counter"))
-                 .intValue()-1) )
+                 .intValue() - 1))
             {
                 data.getUser().setTemp("prev_screen", data.getScreen());
                 data.getUser().setTemp("prev_parameters", data.getParameters());
-                data.setScreen( TurbineResources.getString(
-                    TurbineConstants.SCREEN_INVALID_STATE) );
-                data.setAction( "" );
+                data.setScreen(TurbineResources.getString(
+                    TurbineConstants.SCREEN_INVALID_STATE));
+                data.setAction("");
             }
         }
     }

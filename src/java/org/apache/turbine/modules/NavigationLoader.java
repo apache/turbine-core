@@ -54,19 +54,20 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
-// Java Core Classes
 import java.util.Vector;
 
-// Turbine Utility Classes
+import org.apache.ecs.ConcreteElement;
+
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.services.TurbineServices;
+
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+
+import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
-
-// ECS
-import org.apache.ecs.ConcreteElement;
 
 /**
  * The purpose of this class is to allow one to load and execute
@@ -105,10 +106,12 @@ public class NavigationLoader extends GenericLoader
      * @param name Name of object.
      * @param navigation Navigation to be associated with name.
      */
-    private void addInstance( String name, Navigation navigation )
+    private void addInstance(String name, Navigation navigation)
     {
-        if ( cache() )
-            this.put ( name, (Navigation) navigation );
+        if (cache())
+        {
+            this.put (name, (Navigation) navigation);
+        }
     }
 
     /**
@@ -122,7 +125,7 @@ public class NavigationLoader extends GenericLoader
      * @param name Name of object that will execute the navigation.
      * @exception Exception a generic exception.
      */
-    public ConcreteElement eval( RunData data, String name )
+    public ConcreteElement eval(RunData data, String name)
         throws Exception
     {
         // Execute Navigation
@@ -136,10 +139,10 @@ public class NavigationLoader extends GenericLoader
      * @param name Name of object instance.
      * @exception Exception a generic exception.
      */
-    public void exec( RunData data, String name )
+    public void exec(RunData data, String name)
         throws Exception
     {
-        this.eval( data, name );
+        this.eval(data, name);
     }
 
     /**
@@ -155,9 +158,9 @@ public class NavigationLoader extends GenericLoader
     {
         Navigation navigation = null;
 
-        if ( cache() && this.containsKey( name ) )
+        if (cache() && this.containsKey(name))
         {
-            navigation = (Navigation) this.get( name );
+            navigation = (Navigation) this.get(name);
         }
         else
         {
@@ -188,18 +191,18 @@ public class NavigationLoader extends GenericLoader
                 //         string here...
                 Vector packages = TurbineResources.getVector(
                     TurbineConstants.MODULE_PACKAGES);
-                ObjectUtils.addOnce( packages,
-                                     GenericLoader.getBasePackage() );
+                ObjectUtils.addOnce(packages,
+                                     GenericLoader.getBasePackage());
 
                 throw new ClassNotFoundException(
                     "\n\n\tRequested Navigation not found: " + name + "\n" +
                     "\tTurbine looked in the following modules.packages " +
                     "path: \n\t" + packages.toString() + "\n");
             }
-            else if ( cache() )
+            else if (cache())
             {
                 // The new instance is added to the cache
-                addInstance( name, navigation );
+                addInstance(name, navigation);
             }
         }
         return navigation;

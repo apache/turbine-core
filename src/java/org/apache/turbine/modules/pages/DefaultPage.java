@@ -56,18 +56,17 @@ package org.apache.turbine.modules.pages;
 
 import java.util.Vector;
 
-// Turbine Classes
+import org.apache.ecs.Doctype;
+
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.LayoutLoader;
 import org.apache.turbine.modules.Page;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
+
 import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.RunData;
-
-// ECS Stuff
-import org.apache.ecs.Doctype;
-
 
 /**
  * When building sites using templates, Screens need only be defined
@@ -129,7 +128,7 @@ public class DefaultPage extends Page
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    public void doBuild( RunData data )
+    public void doBuild(RunData data)
         throws Exception
     {
         // Template pages can use this to set up the context, so it is
@@ -138,9 +137,9 @@ public class DefaultPage extends Page
 
         // If an action has been defined, execute it here.  Actions
         // can re-define the template definition.
-        if ( data.hasAction() )
+        if (data.hasAction())
         {
-            ActionLoader.getInstance().exec ( data, data.getAction() );
+            ActionLoader.getInstance().exec (data, data.getAction());
         }
 
         // if a redirect was setup in data, don't do anything else
@@ -164,13 +163,13 @@ public class DefaultPage extends Page
 
         // If the Layout has been set to be null, attempt to execute
         // the Screen that has been defined.
-        if ( layout != null )
+        if (layout != null)
         {
-            LayoutLoader.getInstance().exec ( data, layout );
+            LayoutLoader.getInstance().exec (data, layout);
         }
         else
         {
-            ScreenLoader.getInstance().exec ( data, data.getScreen() );
+            ScreenLoader.getInstance().exec (data, data.getScreen());
         }
 
         // Do any post build actions (overridable by subclasses -
@@ -225,7 +224,7 @@ public class DefaultPage extends Page
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    private void setDefaultDoctype( RunData data )
+    private void setDefaultDoctype(RunData data)
         throws Exception
     {
         String errMsg = 

@@ -54,22 +54,18 @@ package org.apache.turbine.modules.actions;
  * <http://www.apache.org/>.
  */
 
-// Java Core Classes
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
 
-// Java Naming and Directory Interface Classes
 import javax.naming.InitialContext;
 
-// Turbine Modules
 import org.apache.turbine.modules.Action;
 
-// Turbine Utility Classes
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.services.resources.TurbineResources;
 
+import org.apache.turbine.util.RunData;
 
 /**
  * Used to initialize JNDI contexts.
@@ -87,7 +83,7 @@ public class InitContextsAction extends Action
      * @param data The RunData object for the current request.
      * @exception Exception, a generic exception.
      */
-    public void doPerform( RunData data )
+    public void doPerform(RunData data)
         throws Exception
     {
         // Context properties are specified in lines in the properties
@@ -99,14 +95,14 @@ public class InitContextsAction extends Action
 
         Iterator contextKeys = TurbineResources.getKeys("context.");
         Hashtable contextPropsList = new Hashtable();
-        while( contextKeys.hasNext() )
+        while (contextKeys.hasNext())
         {
             String key = (String) contextKeys.next();
             int start = key.indexOf(".") + 1;
             int end = key.indexOf(".", start);
             String contextName = key.substring(start, end);
             Properties contextProps = null;
-            if( contextPropsList.containsKey(contextName) )
+            if (contextPropsList.containsKey(contextName))
             {
                 contextProps =
                     (Properties) contextPropsList.get(contextName);
@@ -120,7 +116,7 @@ public class InitContextsAction extends Action
             contextPropsList.put(contextName, contextProps);
         }
         Enumeration contextPropsKeys = contextPropsList.keys();
-        while( contextPropsKeys.hasMoreElements() )
+        while (contextPropsKeys.hasMoreElements())
         {
             String key = (String) contextPropsKeys.nextElement();
             Properties contextProps =

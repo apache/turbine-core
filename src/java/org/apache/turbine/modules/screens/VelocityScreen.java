@@ -54,18 +54,19 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
-// Turbine/ECS Imports
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.StringUtils;
+
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.services.velocity.TurbineVelocity;
+
 import org.apache.turbine.services.template.TurbineTemplate;
 
-// Velocity Stuff
-import org.apache.velocity.context.Context;
+import org.apache.turbine.services.velocity.TurbineVelocity;
 
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.StringUtils;
+
+import org.apache.velocity.context.Context;
 
 /**
  * Base Velocity Screen.  The buildTemplate() assumes the template
@@ -91,8 +92,8 @@ public class VelocityScreen extends TemplateScreen
      * @param context Context for web pages.
      * @exception Exception, a generic exception.
      */
-    protected void doBuildTemplate( RunData data,
-                                    Context context )
+    protected void doBuildTemplate(RunData data,
+                                    Context context)
         throws Exception
     {
     }
@@ -105,7 +106,7 @@ public class VelocityScreen extends TemplateScreen
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    protected void doBuildTemplate( RunData data )
+    protected void doBuildTemplate(RunData data)
         throws Exception
     {
         doBuildTemplate(data, TurbineVelocity.getContext(data));
@@ -118,7 +119,7 @@ public class VelocityScreen extends TemplateScreen
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
-    public ConcreteElement buildTemplate( RunData data ) throws Exception
+    public ConcreteElement buildTemplate(RunData data) throws Exception
     {
         StringElement output = null;
         String screenData = null;
@@ -127,7 +128,7 @@ public class VelocityScreen extends TemplateScreen
         // This will already be properly set and will not be null
         // because of TemplateSessionValidator.
         String templateName = TurbineTemplate.getScreenTemplateName(
-            data.getTemplateInfo().getScreenTemplate() );
+            data.getTemplateInfo().getScreenTemplate());
 
         // Template service adds the leading slash, but make it sure.
         if ((templateName.length() > 0) &&
@@ -157,8 +158,8 @@ public class VelocityScreen extends TemplateScreen
             // If there is an error, build a $processingException and
             // attempt to call the error.vm template in the screens
             // directory.
-            context.put ( "processingException", e.toString() );
-            context.put ( "stackTrace", StringUtils.stackTrace(e) );
+            context.put ("processingException", e.toString());
+            context.put ("stackTrace", StringUtils.stackTrace(e));
             templateName = TurbineResources.getString(
                 "template.error", "/error.vm");
             if ((templateName.length() > 0) &&

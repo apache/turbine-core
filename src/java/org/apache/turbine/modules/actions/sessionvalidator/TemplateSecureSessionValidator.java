@@ -54,22 +54,23 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  * <http://www.apache.org/>.
  */
 
-// Turbine Classes
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.util.RunData;
+
 import org.apache.turbine.services.resources.TurbineResources;
 
+import org.apache.turbine.util.RunData;
+
 /**
- * SessionValidator that requires login for use with the WebMacroSite
- * Service.
+ * SessionValidator that requires login for use with Template Services
+ * like Velocity or WebMacro.
  *
  * <br>
  *
- * The WebMacroSite Service requires a different Session Validator
- * because of the way it handles screens.  If you use the WebMacroSite
- * Service with the DefaultSessionValidator, users will be able to
+ * Templating services requires a different Session Validator
+ * because of the way it handles screens.  If you use the WebMacro or
+ * Velocity Service with the DefaultSessionValidator, users will be able to
  * bypass login by directly addressing the template using
- * template/index.wm.  This is because WebMacroSitePage looks for the
+ * template/index.wm.  This is because the Page class looks for the
  * keyword "template" in the Path information and if it finds it will
  * reset the screen using it's lookup mechanism and thereby bypass
  * Login.
@@ -79,6 +80,7 @@ import org.apache.turbine.services.resources.TurbineResources;
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TemplateSecureSessionValidator extends SessionValidator
@@ -88,12 +90,12 @@ public class TemplateSecureSessionValidator extends SessionValidator
      * except that it calls template methods instead of bare screen
      * methods. For example, it uses <code>setScreenTemplate</code> to
      * load the tr.props TEMPLATE_LOGIN instead of the default's
-     * setScreen to TurbineContants.SCREEN_LOGIN.
+     * setScreen to TurbineConstants.SCREEN_LOGIN.
      *
      * @see DefaultSessionValidator     * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    public void doPerform( RunData data ) throws Exception
+    public void doPerform(RunData data) throws Exception
     {
         /*
          * Pull user from session.
@@ -103,7 +105,7 @@ public class TemplateSecureSessionValidator extends SessionValidator
         /*
          * This is the secure sessionvalidator, so user must be logged in.
          */
-        if ( (data.getUser() == null) || (! data.getUser().hasLoggedIn()) )
+        if ((data.getUser() == null) || (!data.getUser().hasLoggedIn()))
         {
             /*
              * Only set the message if nothing else has already set it
@@ -119,7 +121,7 @@ public class TemplateSecureSessionValidator extends SessionValidator
              * Set the screen template to the login page.
              */
             data.getTemplateInfo().setScreenTemplate(
-                TurbineResources.getString(TurbineConstants.TEMPLATE_LOGIN) );
+                TurbineResources.getString(TurbineConstants.TEMPLATE_LOGIN));
 
             /*
              * We're not doing any actions buddy! (except action.login which
@@ -131,8 +133,8 @@ public class TemplateSecureSessionValidator extends SessionValidator
         /*
          * Make sure we have some way to return a response.
          */
-        if ( !data.hasScreen() &&
-              data.getTemplateInfo().getScreenTemplate() == null )
+        if (!data.hasScreen() &&
+              data.getTemplateInfo().getScreenTemplate() == null)
         {
             String template = TurbineResources.getString(
                 TurbineConstants.TEMPLATE_HOMEPAGE);
@@ -154,33 +156,33 @@ public class TemplateSecureSessionValidator extends SessionValidator
          * browsers back button and submitting stale data.
          * FIXME!! a template needs to be written to use this with templates.
          */
-        else if ( data.getParameters().containsKey("_session_access_counter") )
+        else if (data.getParameters().containsKey("_session_access_counter"))
         {
             /*
              * See comments in screens.error.InvalidState.
              */
-            if ( data.getParameters().getInt("_session_access_counter") <
+            if (data.getParameters().getInt("_session_access_counter") <
                  (((Integer)data.getUser().getTemp("_session_access_counter"))
-                 .intValue()-1) )
+                 .intValue() - 1))
             {
                 if (data.getTemplateInfo().getScreenTemplate() != null)
                 {
-                    data.getUser().setTemp( "prev_template",
-                        data.getTemplateInfo().getScreenTemplate() );
+                    data.getUser().setTemp("prev_template",
+                        data.getTemplateInfo().getScreenTemplate());
                     data.getTemplateInfo().setScreenTemplate(
                         TurbineResources.getString(
-                            TurbineConstants.TEMPLATE_INVALID_STATE) );
+                            TurbineConstants.TEMPLATE_INVALID_STATE));
                 }
                 else
                 {
-                    data.getUser().setTemp( "prev_screen",
-                        data.getScreen().replace('/', ',') );
-                    data.setScreen( TurbineResources.getString(
-                        TurbineConstants.SCREEN_INVALID_STATE) );
+                    data.getUser().setTemp("prev_screen",
+                        data.getScreen().replace('/', ','));
+                    data.setScreen(TurbineResources.getString(
+                        TurbineConstants.SCREEN_INVALID_STATE));
                 }
                 data.getUser()
-                    .setTemp( "prev_parameters", data.getParameters() );
-                data.setAction( "" );
+                    .setTemp("prev_parameters", data.getParameters());
+                data.setAction("");
             }
         }
 
@@ -188,7 +190,7 @@ public class TemplateSecureSessionValidator extends SessionValidator
          * We do not want to allow both a screen and template parameter.
          * The template parameter is dominant.
          */
-        if ( data.getTemplateInfo().getScreenTemplate() != null )
+        if (data.getTemplateInfo().getScreenTemplate() != null)
         {
             data.setScreen(null);
         }

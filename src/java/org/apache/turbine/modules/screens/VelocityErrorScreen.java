@@ -54,12 +54,12 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
-// Turbine
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.util.RunData;
+
 import org.apache.turbine.services.resources.TurbineResources;
 
-// Velocity
+import org.apache.turbine.util.RunData;
+
 import org.apache.velocity.context.Context;
 
 /**
@@ -78,8 +78,8 @@ public class VelocityErrorScreen extends VelocityScreen
      * @param context Context for web pages.
      * @exception Exception, a generic exception.
      */
-    protected void doBuildTemplate( RunData data,
-                                    Context context )
+    protected void doBuildTemplate(RunData data,
+                                    Context context)
         throws Exception
     {
         context.put("processingException",

@@ -54,17 +54,18 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
-// Java Core Classes
 import java.util.Vector;
 
-// Turbine Utility Classes
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+
 import org.apache.turbine.services.TurbineServices;
+
+import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+
+import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
-
 
 /**
  * The purpose of this class is to allow one to load and execute
@@ -103,10 +104,10 @@ public class LayoutLoader extends GenericLoader
      * @param name Name of object.
      * @param layout Layout to be associated with name.
      */
-    private void addInstance( String name, Layout layout )
+    private void addInstance(String name, Layout layout)
     {
-        if ( cache() )
-            this.put( name, (Layout) layout );
+        if (cache())
+            this.put(name, (Layout) layout);
     }
 
     /**
@@ -116,7 +117,7 @@ public class LayoutLoader extends GenericLoader
      * @param name Name of object that will execute the layout.
      * @exception Exception a generic exception.
      */
-    public void exec( RunData data, String name )
+    public void exec(RunData data, String name)
         throws Exception
     {
         // Execute layout
@@ -136,9 +137,9 @@ public class LayoutLoader extends GenericLoader
     {
         Layout layout = null;
 
-        if ( cache() && this.containsKey( name ) )
+        if (cache() && this.containsKey(name))
         {
-            layout = (Layout) this.get ( name );
+            layout = (Layout) this.get (name);
         }
         else
         {
@@ -169,18 +170,18 @@ public class LayoutLoader extends GenericLoader
                 //         string here...
                 Vector packages = TurbineResources.getVector(
                     TurbineConstants.MODULE_PACKAGES);
-                ObjectUtils.addOnce( packages,
-                                     GenericLoader.getBasePackage() );
+                ObjectUtils.addOnce(packages,
+                                     GenericLoader.getBasePackage());
 
                 throw new ClassNotFoundException(
                     "\n\n\tRequested Layout not found: " + name + "\n" +
                     "\tTurbine looked in the following modules.packages " +
                     "path: \n\t" + packages.toString() + "\n");
             }
-            else if ( cache() )
+            else if (cache())
             {
                 // The new instance is added to the cache
-                addInstance( name, layout );
+                addInstance(name, layout);
             }
         }
         return layout;

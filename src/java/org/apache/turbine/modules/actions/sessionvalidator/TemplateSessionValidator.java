@@ -54,24 +54,29 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  * <http://www.apache.org/>.
  */
 
-// Turbine Classes
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.util.RunData;
+
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.security.TurbineSecurity;
+
+import org.apache.turbine.util.RunData;
 
 /**
  * SessionValidator for use with the Template Service, the
  * TemplateSessionValidator is virtually identical to the
- * TemplateSecureValidator except that it does not tranfer to the
+ * TemplateSecureValidator except that it does not transfer to the
  * login page when it detects a null user (or a user not logged in).
  *
  * <p>The Template Service requires a different Session Validator
  * because of the way it handles screens.
  *
+ * <p>Note that you will need to set the template.login property to the
+ * login template.
+ *
  * @see TemplateSecureSessionValidator
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TemplateSessionValidator extends SessionValidator
@@ -82,7 +87,7 @@ public class TemplateSessionValidator extends SessionValidator
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    public void doPerform( RunData data ) throws Exception
+    public void doPerform(RunData data) throws Exception
     {
         /*
          * Pull user from session.
@@ -90,15 +95,15 @@ public class TemplateSessionValidator extends SessionValidator
         data.populate();
 
         // The user may have not logged in, so create a "guest" user.
-        if ( data.getUser() == null )
+        if (data.getUser() == null)
         {
             data.setUser(TurbineSecurity.getAnonymousUser());
             data.save();
         }
 
         // make sure we have some way to return a response
-        if ( !data.hasScreen() &&
-             data.getTemplateInfo().getScreenTemplate() == null )
+        if (!data.hasScreen() &&
+             data.getTemplateInfo().getScreenTemplate() == null)
         {
             String template = TurbineResources.getString(
                 TurbineConstants.TEMPLATE_HOMEPAGE);
@@ -116,37 +121,37 @@ public class TemplateSessionValidator extends SessionValidator
         // the session_access_counter can be placed as a hidden field in
         // forms.  This can be used to prevent a user from using the
         // browsers back button and submitting stale data.
-        else if ( data.getParameters().containsKey("_session_access_counter") )
+        else if (data.getParameters().containsKey("_session_access_counter"))
         {
             // See comments in screens.error.InvalidState.
-            if ( data.getParameters().getInt("_session_access_counter") <
+            if (data.getParameters().getInt("_session_access_counter") <
                 (((Integer)data.getUser().getTemp("_session_access_counter"))
-                .intValue()-1) )
+                .intValue() - 1))
             {
                 if (data.getTemplateInfo().getScreenTemplate() != null)
                 {
-                    data.getUser().setTemp( "prev_template",
+                    data.getUser().setTemp("prev_template",
                         data.getTemplateInfo().getScreenTemplate()
-                        .replace('/', ',') );
+                        .replace('/', ','));
                     data.getTemplateInfo().setScreenTemplate(
                         TurbineResources.getString(
-                        TurbineConstants.TEMPLATE_INVALID_STATE) );
+                        TurbineConstants.TEMPLATE_INVALID_STATE));
                 }
                 else
                 {
-                    data.getUser().setTemp( "prev_screen",
-                        data.getScreen().replace('/', ',') );
-                    data.setScreen( TurbineResources.getString(
-                        TurbineConstants.SCREEN_INVALID_STATE) );
+                    data.getUser().setTemp("prev_screen",
+                        data.getScreen().replace('/', ','));
+                    data.setScreen(TurbineResources.getString(
+                        TurbineConstants.SCREEN_INVALID_STATE));
                 }
                 data.getUser().setTemp("prev_parameters", data.getParameters());
-                data.setAction( "" );
+                data.setAction("");
             }
         }
 
         // we do not want to allow both a screen and template parameter.
         // The template parameter is dominant.
-        if ( data.getTemplateInfo().getScreenTemplate() != null )
+        if (data.getTemplateInfo().getScreenTemplate() != null)
         {
             data.setScreen(null);
         }

@@ -54,13 +54,13 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
-// Java Core Classes
 import java.util.Hashtable;
 
-// Turbine Utility Classes
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.util.RunData;
+
 import org.apache.turbine.services.resources.TurbineResources;
+
+import org.apache.turbine.util.RunData;
 
 /**
  * This is the base class for the loaders. It contains code that is
@@ -94,7 +94,7 @@ public abstract class GenericLoader extends Hashtable
      */
     public GenericLoader(int i)
     {
-        super ( i );
+        super (i);
         CACHE = TurbineResources
             .getBoolean(TurbineConstants.MODULE_CACHE, true);
     }
@@ -115,7 +115,7 @@ public abstract class GenericLoader extends Hashtable
      *
      * @exception Exception a generic exception.
      */
-    public abstract void exec( RunData data, String name )
+    public abstract void exec(RunData data, String name)
         throws Exception;
 
     /**
@@ -150,7 +150,7 @@ public abstract class GenericLoader extends Hashtable
      * @param reload True if the action must be marked as reload.
      * @return Itself.
      */
-    public GenericLoader setReload( boolean reload )
+    public GenericLoader setReload(boolean reload)
     {
         this.reload = reload;
         return this;

@@ -54,12 +54,12 @@ package org.apache.turbine.modules.actions;
  * <http://www.apache.org/>.
  */
 
-// Turbine Utility Classes
 import org.apache.turbine.modules.Action;
+
 import org.apache.turbine.services.security.TurbineSecurity;
+
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.security.AccessControlList;
-
 
 /**
  * This action doPerforms an Access Control List and places it into
@@ -106,20 +106,20 @@ public class AccessController extends Action
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    public void doPerform( RunData data )
+    public void doPerform(RunData data)
         throws Exception
     {
-        if ( data.getUser() != null
+        if (data.getUser() != null
 //             && data.getUser().getName().length() > 0
-             && data.getUser().hasLoggedIn() )
+             && data.getUser().hasLoggedIn())
         {
             AccessControlList acl = (AccessControlList)
                 data.getSession().getValue(AccessControlList.SESSION_KEY);
-            if ( acl == null )
+            if (acl == null)
             {
-                acl = TurbineSecurity.getACL( data.getUser() );
-                data.getSession().putValue( AccessControlList.SESSION_KEY,
-                                            (Object)acl );
+                acl = TurbineSecurity.getACL(data.getUser());
+                data.getSession().putValue(AccessControlList.SESSION_KEY,
+                                            (Object)acl);
             }
             data.setACL(acl);
         }
