@@ -470,15 +470,35 @@ public abstract class BasePeer
         throws Exception
     {
         DBConnection dbCon = null;
+
+        // Transaction stuff added for postgres.
+        boolean doTransaction = (TurbineDB.getDB(criteria.getDbName()).
+            objectDataNeedsTrans() &&
+            criteria.containsObjectColumn(criteria.getDbName()));
+
         try
         {
             // Get a connection to the db.
-            dbCon = TurbineDB.getConnection( criteria.getDbName() );
+            if (doTransaction)
+            {
+                dbCon = beginTransaction(criteria.getDbName());
+            }
+            else
+            {
+                dbCon = TurbineDB.getConnection( criteria.getDbName() );
+            }
             doDelete(criteria, dbCon);
         }
         finally
         {
-            TurbineDB.releaseConnection(dbCon);
+            if (doTransaction)
+            {
+                commitTransaction(dbCon);
+            }
+            else
+            {
+                TurbineDB.releaseConnection(dbCon);
+            }
         }
     }
 
