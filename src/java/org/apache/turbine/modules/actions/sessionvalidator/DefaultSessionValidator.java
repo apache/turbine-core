@@ -3,7 +3,7 @@ package org.apache.turbine.modules.actions.sessionvalidator;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,6 +67,7 @@ import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.security.TurbineSecurity;
 
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * The SessionValidator attempts to retrieve the User object from the
@@ -105,10 +106,11 @@ public class DefaultSessionValidator
      *
      * @see org.apache.turbine.modules.screens.error.InvalidState
      * @param data Turbine RunData context information.
-     * @exception Exception, a generic exception.
+     * @throws TurbineException The anonymous user could not be obtained
+     *         from the security service
      */
     public void doPerform(RunData data)
-        throws Exception
+            throws TurbineException
     {
         Configuration conf = Turbine.getConfiguration();
 
