@@ -302,11 +302,6 @@ public class TorqueUserManager
         {
             return;
         }
-        //
-        // Quinton did some more magic here in the DBSecurityService
-        // but I don't think this is necessary, because our Peer will
-        // do all the grunt work for us. Maybe: FIXME -- henning
-        //
         store(user);
     }
 

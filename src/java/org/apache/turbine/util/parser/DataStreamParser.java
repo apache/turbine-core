@@ -193,10 +193,10 @@ public abstract class DataStreamParser implements Iterator
 
         neverRead = false;
         tokenizer.nextToken();
-        while (tokenizer.ttype == tokenizer.TT_WORD || tokenizer.ttype == tokenizer.TT_EOL
+        while (tokenizer.ttype == StreamTokenizer.TT_WORD || tokenizer.ttype == StreamTokenizer.TT_EOL
                 || tokenizer.ttype == '"' || tokenizer.ttype == fieldSeparator)
         {
-            if (tokenizer.ttype != fieldSeparator && tokenizer.ttype != tokenizer.TT_EOL)
+            if (tokenizer.ttype != fieldSeparator && tokenizer.ttype != StreamTokenizer.TT_EOL)
             {
                 columnNames.add(tokenizer.sval);
                 fieldCounter++;
@@ -207,12 +207,12 @@ public abstract class DataStreamParser implements Iterator
                 columnNames.add(EMPTYFIELDNAME + fieldCounter);
                 fieldCounter++;
             }
-            else if (lastTtype == fieldSeparator && tokenizer.ttype == tokenizer.TT_EOL)
+            else if (lastTtype == fieldSeparator && tokenizer.ttype == StreamTokenizer.TT_EOL)
             {
                 columnNames.add(EMPTYFIELDNAME + fieldCounter);
                 break;
             }
-            else if (tokenizer.ttype == tokenizer.TT_EOL)
+            else if (tokenizer.ttype == StreamTokenizer.TT_EOL)
             {
                 break;
             }
@@ -294,7 +294,7 @@ public abstract class DataStreamParser implements Iterator
                     {
                         lineValues.add(colname, tokenizer.sval);
                     }
-                    else if (tokenizer.ttype == tokenizer.TT_EOL)
+                    else if (tokenizer.ttype == StreamTokenizer.TT_EOL)
                     {
                         tokenizer.pushBack();
                     }
