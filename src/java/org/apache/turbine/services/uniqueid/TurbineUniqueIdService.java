@@ -56,8 +56,10 @@ package org.apache.turbine.services.uniqueid;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.java.lang.Bytes;
 import org.apache.java.security.MD5;
+
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.GenerateUniqueId;
@@ -97,22 +99,8 @@ public class TurbineUniqueIdService
      */
     public void init()
     {
-        StringBuffer url = new StringBuffer();
-        url.append(Turbine.getServerScheme());
-        url.append("://");
-        url.append(Turbine.getServerName());
-        if ((Turbine.getServerScheme().equals("http") &&
-                Turbine.getServerPort() != "80") ||
-                (Turbine.getServerScheme().equals("https") &&
-                Turbine.getServerPort() != "443")
-        )
-        {
-            url.append(":");
-            url.append(Turbine.getServerPort());
-        }
+        ServerData = Turbine.getDefaultServerData();
 
-        url.append(Turbine.getScriptName());
-        turbineURL = url.toString();
 
         MD5 md5 = new MD5();
         turbineId = Bytes.toString(md5.digest(url.toString().getBytes()));
