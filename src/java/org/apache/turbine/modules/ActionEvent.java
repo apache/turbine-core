@@ -221,7 +221,7 @@ public abstract class ActionEvent extends Action
             throw new NoSuchMethodException("ActionEvent: The button was null");
         }
 
-        Method method = null
+        Method method = null;
 
         try
         {
