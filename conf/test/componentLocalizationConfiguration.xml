@@ -1,9 +1,0 @@
-<!-- This configuration file for Avalon components is used for testing the LocalizationTool pull tool -->
-
-<componentConfig>
-    <localization>
-      <bundles>
-        <bundle>org.apache.turbine.services.localization.BarBundle</bundle>     
-      </bundles>
-    </localization>
-</componentConfig>

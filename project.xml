@@ -551,13 +551,22 @@
     </dependency>
     <dependency>
       <groupId>fulcrum</groupId>
-      <artifactId>fulcrum-localization</artifactId>
-      <version>1.0-alpha-3</version>
+      <artifactId>fulcrum-localization-api</artifactId>
+      <version>1.0-alpha-4</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/localization</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
     </dependency>    
+    <dependency>
+      <groupId>fulcrum</groupId>
+      <artifactId>fulcrum-localization-impl</artifactId>
+      <version>1.0-alpha-4</version>
+      <url>http://jakarta.apache.org/turbine/fulcrum/localization</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>      
     <dependency>
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-intake</artifactId>
