@@ -3,7 +3,7 @@ package org.apache.turbine.util.parser;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -107,13 +107,13 @@ public abstract class ParserUtils
      *
      * @param value the String to convert
      *
-     * @return a new String. 
+     * @return a new String.
      *
      */
     public static String convertAndTrim(String value)
     {
         return convertAndTrim(value, getUrlFolding());
-    }        
+    }
 
     /**
      * A static version of the convert method, which
@@ -153,7 +153,7 @@ public abstract class ParserUtils
         return tmp;
     }
 
-    /** 
+    /**
      * Gets the folding value from the properties
      *
      * @return The current Folding Value

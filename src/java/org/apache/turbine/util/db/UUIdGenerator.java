@@ -3,7 +3,7 @@ package org.apache.turbine.util.db;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -117,7 +117,7 @@ public class UUIdGenerator
      */
     public UUIdGenerator() throws TurbineException
     {
-        String addr = 
+        String addr =
             Turbine.getConfiguration().getString(TurbineConstants.UUID_ADDRESS_KEY);
 
         if (StringUtils.isEmpty(addr))

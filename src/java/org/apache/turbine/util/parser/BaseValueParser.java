@@ -3,7 +3,7 @@ package org.apache.turbine.util.parser;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -919,7 +919,7 @@ public class BaseValueParser
     {
         String value = getString(name);
 
-        return (StringUtils.isEmpty(value) || value.equals("null")) 
+        return (StringUtils.isEmpty(value) || value.equals("null"))
             ? defaultValue : value;
     }
 
