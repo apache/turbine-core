@@ -12,23 +12,23 @@
   <section name="Howtos">
     <p>
       <ul>
-        <li><a href="/howto/action-event-howto.html">Action Events Howto</a></li>
-        <li><a href="/howto/criteria-howto.html">Criteria Howto</a></li>
-        <li><a href="/howto/extend-user-howto.html">Extend User Howto</a></li>
-        <li><a href="/howto/jboss-howto.html">JBoss Howto</a></li>
-        <li><a href="/howto/jsp-howto.html">JSP Howto</a></li>
-        <li><a href="/howto/mssql-howto.html">MS SQL Server Howto</a></li>
-        <li><a href="/howto/oracle-howto.html">Oracle 8i Howto</a></li>
-        <li><a href="/howto/peers-howto.html">Peers Howto</a></li>
-        <li><a href="/howto/postgres-howto.html">Postgres Howto</a></li>
-        <li><a href="/howto/pullmodel-howto.html">Pull Model Howto</a></li>
-        <li><a href="/howto/python-howto.html">Python Howto</a></li>
-        <li><a href="/howto/security-howto.html">Security Howto</a></li>
-        <li><a href="/howto/sybase-howto.html">Sybase Howto</a></li>
-        <li><a href="/howto/url-rewriting-howto.html">URL rewriting Howto</a></li>
-        <li><a href="/howto/velocity-site-howto.html">Velocity Site Howto</a></li>
-        <li><a href="/howto/context-howto.html">Velocity Context Howto</a></li>
-        <li><a href="/howto/webmacro-site-howto.html">Webmacro Site Howto</a></li>
+        <li><a href="howto/action-event-howto.html">Action Events Howto</a></li>
+        <li><a href="howto/criteria-howto.html">Criteria Howto</a></li>
+        <li><a href="howto/extend-user-howto.html">Extend User Howto</a></li>
+        <li><a href="howto/jboss-howto.html">JBoss Howto</a></li>
+        <li><a href="howto/jsp-howto.html">JSP Howto</a></li>
+        <li><a href="howto/mssql-howto.html">MS SQL Server Howto</a></li>
+        <li><a href="howto/oracle-howto.html">Oracle 8i Howto</a></li>
+        <li><a href="howto/peers-howto.html">Peers Howto</a></li>
+        <li><a href="howto/postgres-howto.html">Postgres Howto</a></li>
+        <li><a href="howto/pullmodel-howto.html">Pull Model Howto</a></li>
+        <li><a href="howto/python-howto.html">Python Howto</a></li>
+        <li><a href="howto/security-howto.html">Security Howto</a></li>
+        <li><a href="howto/sybase-howto.html">Sybase Howto</a></li>
+        <li><a href="howto/url-rewriting-howto.html">URL rewriting Howto</a></li>
+        <li><a href="howto/velocity-site-howto.html">Velocity Site Howto</a></li>
+        <li><a href="howto/context-howto.html">Velocity Context Howto</a></li>
+        <li><a href="howto/webmacro-site-howto.html">Webmacro Site Howto</a></li>
       </ul>
     </p>
   </section>
