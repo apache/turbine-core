@@ -104,6 +104,7 @@ import org.apache.turbine.util.parser.ParserUtils;
  *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens </a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public abstract class ActionEvent extends Action
@@ -209,22 +210,12 @@ public abstract class ActionEvent extends Action
             // Chop off the prefixes.
             tmp = tmp.substring(BUTTON_LENGTH + METHOD_NAME_LENGTH);
 
-            return (METHOD_NAME_PREFIX + firstLetterCaps(tmp));
+            return (METHOD_NAME_PREFIX +
+                    StringUtils.capitalise(StringUtils.lowerCase(tmp)));
         }
         else
         {
             return input.substring(BUTTON_LENGTH);
         }
-    }
-
-    /**
-     * Makes the first letter caps and the rest lowercase.
-     *
-     * @param data The input string.
-     * @return A string with the described case.
-     */
-    private final String firstLetterCaps(String data)
-    {
-        return StringUtils.capitalise(StringUtils.lowerCase(data));
     }
 }
