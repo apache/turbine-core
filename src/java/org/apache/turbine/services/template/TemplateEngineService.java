@@ -74,6 +74,7 @@ public interface TemplateEngineService
     static final String DEFAULT_NAVIGATION = "default.navigation";
     static final String DEFAULT_ERROR_SCREEN = "default.error.screen";
     static final String DEFAULT_LAYOUT_TEMPLATE = "default.layout.template";
+    static final String DEFAULT_SCREEN_TEMPLATE = "default.screen.template";
 
     /**
      * Return the configuration of the template engine in
