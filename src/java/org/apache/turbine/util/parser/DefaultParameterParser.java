@@ -27,13 +27,12 @@ import java.util.StringTokenizer;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.upload.TurbineUpload;
 import org.apache.turbine.services.upload.UploadService;
-
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.pool.Recyclable;
 
@@ -169,7 +168,9 @@ public class DefaultParameterParser
         uploadData = null;
 
         String enc = request.getCharacterEncoding();
-        setCharacterEncoding(enc != null ? enc : "US-ASCII");
+        setCharacterEncoding(enc != null
+                ? enc 
+                : TurbineConstants.PARAMETER_ENCODING_DEFAULT);
 
         // String object re-use at its best.
         String tmp = null;
