@@ -322,4 +322,7 @@ public interface TurbineConstants
 
     /** Prefix for page related classes and templates */
     String PAGE_PREFIX = "pages";
+
+    /** Prefix for scheduler job related classes */
+    String SCHEDULEDJOB_PREFIX = "scheduledjobs";
 }

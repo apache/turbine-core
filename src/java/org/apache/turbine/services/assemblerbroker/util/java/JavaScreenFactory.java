@@ -54,6 +54,7 @@ package org.apache.turbine.services.assemblerbroker.util.java;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Assembler;
 
 /**
@@ -61,9 +62,11 @@ import org.apache.turbine.modules.Assembler;
  * the module packages defined in the TurbineResource.properties.
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class JavaScreenFactory extends JavaBaseFactory
+public class JavaScreenFactory
+        extends JavaBaseFactory
 {
     /**
      * Get an Assembler.
@@ -73,6 +76,6 @@ public class JavaScreenFactory extends JavaBaseFactory
      */
     public Assembler getAssembler(String name)
     {
-        return getAssembler("screens", name);
+        return getAssembler(TurbineConstants.SCREEN_PREFIX, name);
     }
 }
