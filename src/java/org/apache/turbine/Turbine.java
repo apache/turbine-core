@@ -55,22 +55,46 @@ package org.apache.turbine;
  */
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import java.util.Properties;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.PropertiesConfiguration;
+
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.lang.exception.ExceptionUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.impl.Log4jFactory;
+
+import org.apache.log4j.PropertyConfigurator;
+
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.PageLoader;
+
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.resources.TurbineResources;
+
+import org.apache.turbine.services.component.ComponentService;
+
 import org.apache.turbine.services.template.TurbineTemplate;
-import org.apache.turbine.util.Log;
+
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.RunDataFactory;
-import org.apache.turbine.util.StringUtils;
+import org.apache.turbine.util.TurbineConfig;
+
 import org.apache.turbine.util.security.AccessControlList;
 
 /**
@@ -159,16 +183,20 @@ public class Turbine
     private static ServletContext servletContext;
 
     /**
-     * The webapp root where the Turbine application
-     * is running.
+     * The webapp root where the Turbine application 
+     * is running in the servlet container. 
+     * This might differ from the application root.
      */
     private static String webappRoot;
 
-    /**
-     * instance of turbine services
-     */
-    private TurbineServices services =
-            (TurbineServices) TurbineServices.getInstance();
+    /** instance of turbine services */
+    private static TurbineServices serviceManager = null;
+
+    /** Our internal configuration object */
+    private static Configuration configuration = null;
+
+    /** Logging class from commons.logging */
+    private static Log log = LogFactory.getLog(Turbine.class);
 
     /**
      * Server information. This information needs to
@@ -200,7 +228,7 @@ public class Turbine
 
             if (!firstInit)
             {
-                log("Double initializaton of Turbine was attempted!");
+                log.info("Double initialization of Turbine was attempted!");
                 return;
             }
             // executing init will trigger some static initializers, so we have
@@ -210,81 +238,212 @@ public class Turbine
             try
             {
                 ServletContext context = config.getServletContext();
+                String trProps =
+                    findInitParameter(context, config,
+                                      TurbineConfig.PROPERTIES_PATH_KEY,
+                                      TurbineConfig.PROPERTIES_PATH_DEFAULT);
 
-                // Set the application root. This defaults to the webapp
-                // context if not otherwise set. This is to allow 2.1 apps
-                // to be developed from CVS. This feature will carry over
-                // into 3.0.
-                applicationRoot = config.getInitParameter(APPLICATION_ROOT);
-
-                if (applicationRoot == null
-                    || applicationRoot.equals(WEB_CONTEXT))
-                {
-                    applicationRoot = config.getServletContext()
-                            .getRealPath("/");
-                }
-
-                // Set the applicationRoot for this webapp.
-                setApplicationRoot(applicationRoot);
-
-                // Set the webapp root. The applicationRoot and the
-                // webappRoot will be the same when the application is
-                // deployed, but during development they may have
-                // different values.
-                webappRoot = config.getServletContext().getRealPath("/");
-
-                //
-                // Save Context and Config for later
-                //
-                setTurbineServletConfig(config);
-                setTurbineServletContext(context);
-
-                // Create any directories that need to be setup for
-                // a running Turbine application.
-                createRuntimeDirectories();
-
-                // Initialize essential services (Resources & Logging)
-                services.initPrimaryServices(config);
-
-                // Now that TurbineResources is setup, we want to insert
-                // the applicationRoot and webappRoot into the resources
-                // so that ${applicationRoot} and ${webappRoot} can be
-                // use in the TRP.
-                TurbineResources.setProperty(APPLICATION_ROOT, applicationRoot);
-                TurbineResources.setProperty(WEBAPP_ROOT, webappRoot);
-
-                // Initialize other services that require early init
-                services.initServices(config, false);
-
-                log ("Turbine: init() Ready to Rumble!");
+                configure(config, context, trProps);
             }
             catch (Exception e)
             {
                 // save the exception to complain loudly later :-)
                 initFailure = e;
-                log ("Turbine: init() failed: " + StringUtils.stackTrace(e));
+                log.fatal("Turbine: init() failed: ", e);
+                throw new ServletException("Turbine: init() failed", e);
             }
+            log.info("Turbine: init() Ready to Rumble!");
         }
+    }
+
+    private void configure(ServletConfig config, 
+                           ServletContext context,
+                           String propsFile)
+        throws Exception
+    {
+
+        // Set the application root. This defaults to the webapp
+        // context if not otherwise set. This is to allow 2.1 apps
+        // to be developed from CVS. This feature will carry over
+        // into 3.0.
+        applicationRoot =
+            findInitParameter(context, config, 
+                              APPLICATION_ROOT_KEY, 
+                              APPLICATION_ROOT_DEFAULT);
+
+        webappRoot = config.getServletContext().getRealPath("/");
+
+        if (applicationRoot == null || applicationRoot.equals(WEB_CONTEXT))
+        {
+            applicationRoot = webappRoot;
+        }
+
+        // Set the applicationRoot for this webapp.
+        setApplicationRoot(applicationRoot);
+
+        // Create any directories that need to be setup for
+        // a running Turbine application.
+        createRuntimeDirectories(context, config);
+
+        //
+        // Set up logging as soon as possible
+        //
+
+        // Get the full path to the properties file.
+        if (propsFile == null)
+        {
+            propsFile = TurbineConfig.PROPERTIES_PATH_DEFAULT;
+        }
+
+        String propsPath = getRealPath(propsFile);
+
+        // This should eventually be a Configuration
+        // interface so that service and app configuration
+        // can be stored anywhere.
+        configuration = (Configuration) new PropertiesConfiguration(propsPath);
+
+
+        String log4jFile = configuration.getString(LOG4J_CONFIG_FILE,
+                                                   LOG4J_CONFIG_FILE_DEFAULT);
+
+        log4jFile = getRealPath(log4jFile);
+
+        //
+        // Load the config file above into a Properties object and
+        // fix up the Application root
+        //
+
+        Properties p = new Properties();
+        try
+        {
+            p.load(new FileInputStream(log4jFile));
+            p.setProperty(APPLICATION_ROOT_KEY, getApplicationRoot());
+            PropertyConfigurator.configure(p);
+
+            log.info("Configured log4j from " + log4jFile);
+        }
+        catch (FileNotFoundException fnf)
+        {
+            System.err.println("Could not open Log4J configuration file "
+                               + log4jFile + ": ");
+            fnf.printStackTrace();
+        }
+
+        //
+        // Set up Commons Logging to use the Log4J Logging 
+        //
+        System.getProperties().setProperty(LogFactory.class.getName(),
+                                           Log4jFactory.class.getName());
+                                           
+        setTurbineServletConfig(config);
+        setTurbineServletContext(context);
+
+        // Get the instance of the service manager
+        serviceManager = (TurbineServices) TurbineServices.getInstance();
+
+        serviceManager.setApplicationRoot(applicationRoot);
+
+        // We want to set a few values in the configuration so
+        // that ${variable} interpolation will work for
+        //
+        // ${applicationRoot}
+        // ${webappRoot}
+        configuration.setProperty(APPLICATION_ROOT_KEY, applicationRoot);
+        configuration.setProperty(WEBAPP_ROOT_KEY, webappRoot);
+
+
+        //
+        // Be sure, that our essential services get run early
+        //
+        configuration.setProperty(TurbineServices.SERVICE_PREFIX + 
+                                  ComponentService.SERVICE_NAME + ".earlyInit", 
+                                  new Boolean(true));
+
+        serviceManager.setConfiguration(configuration);
+
+        // Initialize the service manager. Services
+        // that have its 'earlyInit' property set to
+        // a value of 'true' will be started when
+        // the service manager is initialized.
+        serviceManager.init();
     }
 
     /**
      * Create any directories that might be needed during
      * runtime. Right now this includes:
      *
-     * i) directories for logging
+     * <ul>
+     *
+     * <li>The directory to write the log files to (relative to the
+     * web application root), or <code>null</code> for the default of
+     * <code>/logs</code>.  The directory is specified via the {@link
+     * TurbineConstants#LOGGING_ROOT} parameter.</li>
+     *
+     * </ul>
+     *
+     * @param context Global initialization parameters.
+     * @param config Initialization parameters specific to the Turbine
+     * servlet.
      */
-    private static void createRuntimeDirectories()
+    private static void createRuntimeDirectories(ServletContext context,
+                                                 ServletConfig config)
     {
-        // Create the logging directory
-        File logDir = new File(webappRoot + "/logs");
+        String path = findInitParameter(context, config, 
+                                        LOGGING_ROOT_KEY, 
+                                        LOGGING_ROOT_DEFAULT);
 
-        if (logDir.exists() == false)
+        File logDir = new File(getRealPath(path));
+        if (!logDir.exists())
         {
-            if (logDir.mkdirs() == false)
+            // Create the logging directory
+            if (!logDir.mkdirs())
             {
                 System.err.println("Cannot create directory for logs!");
             }
         }
+    }
+
+    /**
+     * Finds the specified servlet configuration/initialization
+     * parameter, looking first for a servlet-specific parameter, then
+     * for a global parameter, and using the provided default if not
+     * found.
+     */
+    protected static final String findInitParameter(ServletContext context,
+                                                    ServletConfig config,
+                                                    String name,
+                                                    String defaultValue)
+    {
+        String path = null;
+
+        // Try the name as provided first.
+        boolean usingNamespace = name.startsWith(CONFIG_NAMESPACE);
+        while (true)
+        {
+            path = config.getInitParameter(name);
+            if (StringUtils.isEmpty(path))
+            {
+                path = context.getInitParameter(name);
+                if (StringUtils.isEmpty(path))
+                {
+                    // The named parameter didn't yield a value.
+                    if (usingNamespace)
+                    {
+                        path = defaultValue;
+                    }
+                    else
+                    {
+                        // Try again using Turbine's namespace.
+                        name = CONFIG_NAMESPACE + '.' + name;
+                        usingNamespace = true;
+                        continue;
+                    }
+                }
+            }
+            break;
+        }
+
+        return path;
     }
 
     /**
@@ -306,14 +465,22 @@ public class Turbine
                 // the servlet environment.
                 saveServletInfo(data);
 
-                log("Turbine: Starting HTTP initialization of services");
-                TurbineServices.getInstance().initServices(data);
-                log("Turbine: Completed HTTP initialization of services");
-
                 // Mark that we're done.
                 firstDoGet = false;
+                log.info("Turbine: first Request successful");
             }
         }
+    }
+
+    /**
+     * Return the current configuration with all keys included
+     *
+     * @return a Configuration Object
+     *
+     */
+    public static Configuration getConfiguration()
+    {
+        return configuration;
     }
 
     /**
@@ -415,10 +582,10 @@ public class Turbine
     public final void destroy()
     {
         // Shut down all Turbine Services.
-        TurbineServices.getInstance().shutdownServices();
+        serviceManager.shutdownServices();
         System.gc();
 
-        log("Turbine: Done shutting down!");
+        log.info("Turbine: Done shutting down!");
     }
 
     /**
@@ -461,7 +628,7 @@ public class Turbine
             // file if this is a new session
             if (data.getSession().isNew())
             {
-                int timeout = TurbineResources.getInt("session.timeout", -1);
+                int timeout = configuration.getInt("session.timeout", -1);
                 if (timeout != -1)
                 {
                     data.getSession().setMaxInactiveInterval(timeout);
@@ -478,9 +645,9 @@ public class Turbine
             // mandate its page selection policy for non-logged in users
             // after the logout has taken place.
             if (data.hasAction()
-                    && data.getAction().equalsIgnoreCase(TurbineResources
+                    && data.getAction().equalsIgnoreCase(configuration
                             .getString("action.login"))
-                    || data.getAction().equalsIgnoreCase(TurbineResources
+                    || data.getAction().equalsIgnoreCase(configuration
                             .getString("action.logout")))
             {
                 // If a User is logging in, we should refresh the
@@ -494,7 +661,7 @@ public class Turbine
                 // associated with the previous User.  Currently the
                 // only keys stored in the session are "turbine.user"
                 // and "turbine.acl".
-                if (data.getAction().equalsIgnoreCase(TurbineResources
+                if (data.getAction().equalsIgnoreCase(configuration
                         .getString("action.login")))
                 {
                     String[] names = data.getSession().getValueNames();
@@ -519,7 +686,7 @@ public class Turbine
             // TurbineResources.properties...screen.homepage; or, you
             // can specify your own SessionValidator action.
             ActionLoader.getInstance().exec(
-                data, TurbineResources.getString("action.sessionvalidator"));
+                data, configuration.getString("action.sessionvalidator"));
 
             // Put the Access Control List into the RunData object, so
             // it is easily available to modules.  It is also placed
@@ -527,7 +694,7 @@ public class Turbine
             // out the ACL to force it to be rebuilt based on more
             // information.
             ActionLoader.getInstance().exec(
-                data, TurbineResources.getString("action.accesscontroller"));
+                data, configuration.getString("action.accesscontroller"));
 
             // Start the execution phase. DefaultPage will execute the
             // appropriate action as well as get the Layout from the
@@ -556,7 +723,7 @@ public class Turbine
                  * if they wish but the DefaultPage should work in
                  * most cases.
                  */
-                defaultPage = TurbineResources.getString(
+                defaultPage = configuration.getString(
                     "page.default", "DefaultPage");
             }
 
@@ -578,14 +745,14 @@ public class Turbine
 
             // handle a redirect request
             requestRedirected = ((data.getRedirectURI() != null)
-                && (data.getRedirectURI().length() > 0));
+                                 && (data.getRedirectURI().length() > 0));
             if (requestRedirected)
             {
                 if (data.getResponse().isCommitted())
                 {
                     requestRedirected = false;
-                    log("redirect requested, response already committed: " +
-                         data.getRedirectURI());
+                    log.warn("redirect requested, response already committed: " +
+                             data.getRedirectURI());
                 }
                 else
                 {
@@ -611,7 +778,7 @@ public class Turbine
                         // Modules can override these.
                         data.getResponse().setLocale(data.getLocale());
                         data.getResponse()
-                                .setContentType(data.getContentType());
+                            .setContentType(data.getContentType());
 
                         // Set the status code.
                         data.getResponse().setStatus(data.getStatusCode());
@@ -625,7 +792,7 @@ public class Turbine
                     // end of things ie: the client clicked the Stop
                     // button on the browser, so ignore any errors that
                     // result.
-                    Log.debug("Output stream closed? ", e);
+                    log.debug("Output stream closed? ", e);
                 }
             }
         }
@@ -682,27 +849,26 @@ public class Turbine
      * @param t The exception to report.
      */
     private final void handleException(RunData data,
-                                 HttpServletResponse res,
-                                 Throwable t)
+                                       HttpServletResponse res,
+                                       Throwable t)
     {
         // make sure that the stack trace makes it the log
-        Log.error("Turbine.handleException: " + t.getMessage());
-        Log.error(t);
+        log.error("Turbine.handleException: ", t);
 
         String mimeType = "text/plain";
         try
         {
             // This is where we capture all exceptions and show the
             // Error Screen.
-            data.setStackTrace(StringUtils.stackTrace(t), t);
+            data.setStackTrace(ExceptionUtils.getStackTrace(t), t);
 
             // setup the screen
-            data.setScreen(TurbineResources.getString("screen.error"));
+            data.setScreen(configuration.getString("screen.error"));
 
             // do more screen setup for template execution if needed
             if (data.getTemplateInfo() != null)
             {
-                data.getTemplateInfo().setScreenTemplate(TurbineResources
+                data.getTemplateInfo().setScreenTemplate(configuration
                         .getString("template.error"));
             }
 
@@ -710,8 +876,8 @@ public class Turbine
             data.setAction("");
 
             PageLoader.getInstance().exec(data,
-                      TurbineResources.getString("page.default",
-                      "DefaultPage"));
+                                          configuration.getString("page.default",
+                                                                  "DefaultPage"));
 
             data.getResponse().setContentType(data.getContentType());
             data.getResponse().setStatus(data.getStatusCode());
@@ -736,14 +902,13 @@ public class Turbine
             try
             {
                 data.getOut().print("java.lang.NoSuchFieldError: "
-                        + "Please recompile all of your source code.");
+                                    + "Please recompile all of your source code.");
             }
             catch (IOException ignored)
             {
             }
 
-            log(data.getStackTrace());
-            org.apache.turbine.util.Log.error(e.getMessage(), e);
+            log.error(data.getStackTrace(), e);
         }
         // Attempt to do *something* at this point...
         catch (Throwable reallyScrewedNow)
@@ -767,8 +932,8 @@ public class Turbine
             catch (Exception ignored)
             {
             }
-            org.apache.turbine.util.Log.error(
-                    reallyScrewedNow.getMessage(), reallyScrewedNow);
+
+            log.error(reallyScrewedNow.getMessage(), reallyScrewedNow);
         }
     }
 
@@ -831,30 +996,6 @@ public class Turbine
             path = path.substring(1);
         }
 
-        return applicationRoot + "/" + path;
-    }
-
-    /**
-     * logs message using turbine's logging facility
-     *
-     * @param msg message to be logged
-     */
-    public void log(String msg)
-    {
-        services.notice(msg);
-    }
-
-    /**
-     * Writes an explanatory message and a stack trace
-     * for a given <code>Throwable</code> exception
-     *
-     * @param message the message
-     * @param t	the error
-     */
-
-    public void log(String message, Throwable t)
-    {
-        services.notice(message);
-        services.error(t);
+        return new File(getApplicationRoot(), path).getAbsolutePath();
     }
 }
