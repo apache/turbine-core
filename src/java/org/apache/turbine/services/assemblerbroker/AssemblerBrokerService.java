@@ -64,23 +64,49 @@ import org.apache.turbine.util.TurbineException;
  * See TurbineAssemblerBrokerService for more info.
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public interface AssemblerBrokerService extends Service
+public interface AssemblerBrokerService
+        extends Service
 {
-    static final String SERVICE_NAME = "AssemblerBrokerService";
+    /** Name of the Service */
+    String SERVICE_NAME = "AssemblerBrokerService";
 
-    /**Predefined types for Turbine built-in assemblers */
-    static final String ACTION_TYPE = "action";
-    static final String SCREEN_TYPE = "screen";
-    static final String NAVIGATION_TYPE = "navigation";
-    static final String LAYOUT_TYPE = "layout";
-    static final String PAGE_TYPE = "page";
-    static final String SCHEDULEDJOB_TYPE = "scheduledjob";
+    /** Predefined types for Turbine built-in assemblers: Actions  */
+    String ACTION_TYPE = "action";
 
-    /** Register an AssemblerFactory class for a given type*/
+    /** Predefined types for Turbine built-in assemblers: Screens  */
+    String SCREEN_TYPE = "screen";
+
+    /** Predefined types for Turbine built-in assemblers: Navigations  */
+    String NAVIGATION_TYPE = "navigation";
+
+    /** Predefined types for Turbine built-in assemblers: Layouts  */
+    String LAYOUT_TYPE = "layout";
+
+    /** Predefined types for Turbine built-in assemblers: Pages  */
+    String PAGE_TYPE = "page";
+
+    /** Predefined types for Turbine built-in assemblers: Scheduler Jobs  */
+    String SCHEDULEDJOB_TYPE = "scheduledjob";
+
+    /** 
+     * Register an AssemblerFactory class for a given type
+     *
+     * @param type Type of the Factory
+     * @param factory The factory object
+     */
     void registerFactory(String type, AssemblerFactory factory);
 
-    /** Attempts to load an Assembler of a type with a given name*/
+    /** 
+     * Attempts to load an Assembler of a type with a given name
+     * 
+     * @param type The Type of the Assembler
+     * @param name The Name of the Assembler
+     * @return An Assembler object for the requested name and type
+     *
+     * @throws TurbineException Something went wrong while looking for the Assembler
+     */
     Assembler getAssembler(String type, String name) throws TurbineException;
 }
