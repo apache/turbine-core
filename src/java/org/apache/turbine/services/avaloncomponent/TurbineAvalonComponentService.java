@@ -75,6 +75,19 @@ import org.apache.turbine.Turbine;
 /**
  * An implementation of AvalonComponentService which loads all the
  * components given in the TurbineResources.properties File
+ * <p>
+ * For component which require the location of the application or
+ * context root, there are two ways to get it.
+ * <ol>
+ * <li>
+ *   Implement the Contextualizable interface.  The full path to the
+ *   correct OS directory can be found under the ComponentAppRoot key.
+ * </li>
+ * <li>
+ *   The system property "applicationRoot" is also set to the full path
+ *   of the correct OS directory.
+ * </li>
+ * </ol>
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
@@ -181,6 +194,7 @@ public class TurbineAvalonComponentService
                 lm.getLoggerForCategory("org.apache.turbine.services"));
         DefaultContext context = new DefaultContext();
         context.put(AvalonComponentService.COMPONENT_APP_ROOT, Turbine.getRealPath("/"));
+        System.setProperty("applicationRoot", Turbine.getRealPath("/"));
         this.manager.contextualize(context);
         this.manager.setRoleManager(roles);
         this.manager.configure(sysConfig);
