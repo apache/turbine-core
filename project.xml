@@ -22,7 +22,7 @@
   <pomVersion>3</pomVersion>
   <name>jakarta-turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.3.1-rc2-dev</currentVersion>
+  <currentVersion>2.3.1-rc2</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -78,7 +78,11 @@
     </version>
     <version>
       <name>2.3.1-RC1</name>
-      <tag>TURBINE_2_3.1-RC1</tag>
+      <tag>TURBINE_2_3_1_RC1</tag>
+    </version>
+    <version>
+      <name>2.3.1-RC2</name>
+      <tag>TURBINE_2_3_1_RC2</tag>
     </version>
   </versions>
 

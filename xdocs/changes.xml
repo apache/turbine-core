@@ -73,7 +73,28 @@ Changes between Turbine LAST_RELEASE and CURRENT_RELEASE.
 -->
 
 
-<section name="Turbine 2.3">
+<section name="Turbine 2.3-rc2">
+
+<p>
+Changes between Turbine 2.3-rc1 and 2.3.1-rc2.
+</p>
+
+<subsection name="Fixed bugs">
+<p>
+  <ul>
+    <li>
+       Fix the brown paper bag bug that made RC1 unusable
+       with Velocity. This is an implicit incompatibility between
+       a change in Commons Configuration and an assumption in
+       Turbine that threw a class cast exception in Commons 
+       Collections and crashed Velocity. Isn't Java a cool thing?
+    </li>
+  </ul>
+</p>
+</subsection>
+</section>
+
+<section name="Turbine 2.3-rc2">
 
 <p>
 Changes between Turbine 2.3 and 2.3.1-rc1.
@@ -86,7 +107,7 @@ Changes between Turbine 2.3 and 2.3.1-rc1.
         commons-logging explicitly.  If you relied on this behaviour,
         you must add a commons-logging.properties file to your
         application as described in the <a
-        href=http://jakarta.apache.org/commons/logging/apidocs/org/apache/commons/logging/package-summary.html">commons
+        href="http://jakarta.apache.org/commons/logging/apidocs/org/apache/commons/logging/package-summary.html">commons
         logging documentation</a>
     </li>
     <li>commons-configuration was upgraded to 1.0-rc1. All getVector() method calls on the
@@ -187,6 +208,10 @@ Changes between Turbine 2.3 and 2.3.1-rc1.
   </ul>
 </p>
 </subsection>
+
+</section>
+
+<section name="Turbine 2.3">
 
 <p>
 Changes between Turbine 2.2 and 2.3.
