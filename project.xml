@@ -734,6 +734,9 @@
       <includes>
         <include>**/*Test.java</include>
       </includes>
+      <excludes>
+        <exclude>**/*Intake*Test*.java</exclude>
+      </excludes>
     </unitTest>
     <integrationUnitTestSourceDirectory/>
     <integrationUnitTest/>

@@ -33,9 +33,9 @@
        class="org.apache.fulcrum.intake.IntakeServiceImpl"
        activation="lazy">
      <configuration>
-       <serialDataPath>./target/appData.ser</serialDataPath>
+       <serialDataPath>../../target/appData.ser</serialDataPath>
        <xmlPaths>
-      	<xmlPath>conf/test/intake.xml</xmlPath>
+      	<xmlPath>../../conf/test/intake.xml</xmlPath>
        </xmlPaths>
      </configuration>
    </component>   
