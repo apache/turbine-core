@@ -96,6 +96,11 @@ Changes between Turbine 2.2 and 2.3-dev.
 <p>
   <ul>
     <li>
+      There is a new pull tool that makes it easy to format
+      Date objects into Strings.  See
+      org.apache.turbine.services.pull.util.DateFormatter for details.
+    </li>
+    <li>
       Backported the Scheduler service from Fulcrum.  Other Scheduler
       related changes include:
       <ul>
