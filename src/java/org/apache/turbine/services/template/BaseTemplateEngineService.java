@@ -154,12 +154,13 @@ public abstract class BaseTemplateEngineService
             DEFAULT_LAYOUT,
             DEFAULT_NAVIGATION,
             DEFAULT_ERROR_SCREEN,
-            DEFAULT_LAYOUT_TEMPLATE
+            DEFAULT_LAYOUT_TEMPLATE,
+            DEFAULT_SCREEN_TEMPLATE
         };
 
         for (int i = 0; i < copyParams.length; i++)
         {
-            configuration.put(copyParams[i], config.getString(copyParams[i]));
+            configuration.put(copyParams[i], config.getString(copyParams[i], ""));
         }
     }
 
