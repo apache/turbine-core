@@ -3,7 +3,7 @@ package org.apache.turbine.services.crypto;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,13 +25,13 @@ package org.apache.turbine.services.crypto;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -64,8 +64,8 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 
-import org.apache.turbine.services.factory.FactoryService; 
-import org.apache.turbine.services.factory.TurbineFactoryService; 
+import org.apache.turbine.services.factory.FactoryService;
+import org.apache.turbine.services.factory.TurbineFactoryService;
 
 import org.apache.turbine.services.crypto.provider.UnixCrypt;
 import org.apache.turbine.services.crypto.provider.ClearCrypt;
@@ -86,7 +86,7 @@ public class CryptoTest
 
         ServiceManager serviceManager = TurbineServices.getInstance();
         serviceManager.setApplicationRoot(".");
-        
+
         Configuration cfg = new BaseConfiguration();
         cfg.setProperty(PREFIX + "classname",
                         TurbineCryptoService.class.getName());
@@ -136,15 +136,15 @@ public class CryptoTest
         try
         {
             CryptoAlgorithm ca = TurbineCrypto.getCryptoAlgorithm("unix");
-            
+
             /*
              * Test predefined Seed
              */
-            
+
             ca.setSeed(preDefinedSeed);
-            
+
             String output = ca.encrypt(preDefinedInput);
-            
+
             assertEquals("Encryption failed ",
                          preDefinedResult,
                          output);
@@ -153,15 +153,15 @@ public class CryptoTest
              * Test random Seed
              *
              */
-            
+
             ca.setSeed(null);
-            
+
             String result = ca.encrypt(preDefinedInput);
-            
+
             ca.setSeed(result);
-            
+
             output = ca.encrypt(preDefinedInput);
-            
+
             assertEquals("Encryption failed ",
                          output,
                          result);
@@ -181,7 +181,7 @@ public class CryptoTest
         {
             CryptoAlgorithm ca = TurbineCrypto.getCryptoAlgorithm("clear");
             String output = ca.encrypt(preDefinedInput);
-            
+
             assertEquals("Encryption failed ",
                          preDefinedResult,
                          output);

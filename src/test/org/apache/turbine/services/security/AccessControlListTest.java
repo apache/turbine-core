@@ -3,7 +3,7 @@ package org.apache.turbine.services.security;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,13 +25,13 @@ package org.apache.turbine.services.security;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -65,8 +65,8 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 
-import org.apache.turbine.services.factory.FactoryService; 
-import org.apache.turbine.services.factory.TurbineFactoryService; 
+import org.apache.turbine.services.factory.FactoryService;
+import org.apache.turbine.services.factory.TurbineFactoryService;
 
 import org.apache.turbine.services.security.SecurityService;
 
@@ -108,13 +108,13 @@ public class AccessControlListTest
 
         Configuration cfg = new BaseConfiguration();
 
-        cfg.setProperty(PREFIX + "classname", 
+        cfg.setProperty(PREFIX + "classname",
                         DBSecurityService.class.getName());
 
-        cfg.setProperty(PREFIX + "acl.class", 
+        cfg.setProperty(PREFIX + "acl.class",
                         TurbineAccessControlList.class.getName());
 
-        // We must run init! 
+        // We must run init!
         cfg.setProperty(PREFIX+"earlyInit", "true");
 
         /* Ugh */
@@ -137,7 +137,7 @@ public class AccessControlListTest
         Map roles = new HashMap();
         Map permissions = new HashMap();
 
-        AccessControlList aclTest = 
+        AccessControlList aclTest =
           TurbineSecurity.getService().getAclInstance(roles, permissions);
 
         if(aclTest == null)
