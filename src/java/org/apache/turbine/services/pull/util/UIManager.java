@@ -287,7 +287,6 @@ public class UIManager implements ApplicationTool
            append(":").
            append(TurbineServlet.getServerPort()).
            append(TurbineServlet.getContextPath()).
-           append("/").
            append(resourcesDirectory).
            append(SKINS_DIRECTORY).
            append("/").
