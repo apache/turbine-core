@@ -25,13 +25,13 @@ package org.apache.turbine.services.schedule;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,19 +54,21 @@ package org.apache.turbine.services.schedule;
  * <http://www.apache.org/>.
  */
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
-import org.apache.turbine.util.Comparable;
-import org.apache.turbine.util.QuickSort;
+
+import org.apache.turbine.util.TurbineException;
 
 /**
  * Queue for the scheduler.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class JobQueue
-    implements Comparable
 {
     /**
      * The queue of <code>JobEntry</code> objects.
@@ -75,11 +77,8 @@ public class JobQueue
 
     /**
      * Creates a new instance.
-     *
-     * @exception Exception A generic exception.
      */
     public JobQueue()
-        throws Exception
     {
         queue = new Vector(10);
     }
@@ -92,9 +91,9 @@ public class JobQueue
      */
     public JobEntry getNext()
     {
-        if ( queue.size() > 0 )
+        if(queue.size() > 0)
         {
-            return (JobEntry)queue.elementAt(0);
+            return (JobEntry) queue.elementAt(0);
         }
         else
         {
@@ -112,18 +111,18 @@ public class JobQueue
     {
         int index = -1;
 
-        if ( je != null )
+        if(je != null)
         {
             index = queue.indexOf(je);
         }
 
-        if ( index < 0 )
+        if(index < 0)
         {
             return null;
         }
         else
         {
-            return (JobEntry)queue.elementAt(index);
+            return (JobEntry) queue.elementAt(index);
         }
     }
 
@@ -134,9 +133,9 @@ public class JobQueue
      */
     public Vector list()
     {
-        if ( queue != null && queue.size() > 0 )
+        if(queue != null && queue.size() > 0)
         {
-            return (Vector)queue.clone();
+            return (Vector) queue.clone();
         }
         else
         {
@@ -163,7 +162,7 @@ public class JobQueue
      */
     public synchronized void batchLoad(List jobEntries)
     {
-        if (jobEntries != null)
+        if(jobEntries != null)
         {
             queue.addAll(jobEntries);
             sortQueue();
@@ -188,7 +187,11 @@ public class JobQueue
      * @param je A JobEntry with the job to modify
      */
     public synchronized void modify(JobEntry je)
+            throws TurbineException
     {
+        remove(je);
+        je.calcRunTime();
+        this.add(je);
         sortQueue();
     }
 
@@ -196,51 +199,32 @@ public class JobQueue
      * Update the job for its next run time.
      *
      * @param je A JobEntry to be updated.
-     * @exception Exception, a generic exception.
+     * @exception TurbineException a generic exception.
      */
     public synchronized void updateQueue(JobEntry je)
-        throws Exception
+            throws TurbineException
     {
         je.calcRunTime();
         sortQueue();
     }
 
     /**
-     * Re-sort the existing queue.  Consumers of this method should be 
+     * Re-sort the existing queue.  Consumers of this method should be
      * <code>synchronized</code>.
      */
     private void sortQueue()
     {
-        // First sort.
-        Object data[] = new Object[queue.size()];
-        queue.copyInto(data);
-        QuickSort.quickSort(data, 0, data.length - 1, this);
-        queue.removeAllElements();
-
-        for (int i = 0; i < data.length; i++)
+        Comparator aComparator = new Comparator()
         {
-            queue.add(data[i]);
-        }
-    }
+            public int compare(Object o1, Object o2)
+            {
+                Long time1 = new Long(((JobEntry) o1).getNextRuntime());
+                Long time2 = new Long(((JobEntry) o2).getNextRuntime());
+                return (time1.compareTo(time2));
+            }
+        };
 
-    /**
-     * Compare to another <code>JobEntry</code>.  Used by the
-     * <code>QuickSort</code> class to determine sort order.
-     *
-     * @param je1 The first <code>JobEntry</code> object.
-     * @param je2 The second <code>JobEntry</code> object.
-     * @return An <code>int</code> indicating the result of the comparison.
-     */
-    public int compare(Object je1, Object je2)
-    {
-        long obj1Time = ((JobEntry)je1).getNextRuntime();
-        long obj2Time = ((JobEntry)je2).getNextRuntime();
-        
-        if (obj1Time > obj2Time)
-            return 1;
-        else if (obj1Time < obj2Time)
-            return -1;
-        else
-            return 0;
+        Collections.sort(queue, aComparator);
     }
 }
+

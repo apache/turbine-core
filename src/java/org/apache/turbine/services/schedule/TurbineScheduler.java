@@ -3,6 +3,7 @@ package org.apache.turbine.services.schedule;
 import java.util.List;
 
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.util.TurbineException;
 
 /* ====================================================================
  * The Apache Software License, Version 1.1
@@ -74,10 +75,10 @@ public abstract class TurbineScheduler
      *
      * @param oid The int id for the job.
      * @return A JobEntry.
-     * @exception Exception a generic exception.
+     * @exception TurbineException a generic exception.
      */
     public static JobEntry getJob(int oid)
-            throws Exception
+            throws TurbineException
     {
         return getService().getJob(oid);
     }
@@ -86,10 +87,10 @@ public abstract class TurbineScheduler
      * Add a new job to the queue.
      *
      * @param je A JobEntry with the job to add.
-     * @exception Exception, a generic exception.
+     * @exception TurbineException a generic exception.
      */
     void addJob(JobEntry je)
-            throws Exception
+            throws TurbineException
     {
         getService().addJob(je);
     }
@@ -98,10 +99,10 @@ public abstract class TurbineScheduler
      * Modify a Job.
      *
      * @param je A JobEntry with the job to modify
-     * @exception Exception a generic exception.
+     * @exception TurbineException a generic exception.
      */
     public static void updateJob(JobEntry je)
-            throws Exception
+            throws TurbineException
     {
         getService().updateJob(je);
     }
@@ -110,10 +111,10 @@ public abstract class TurbineScheduler
      * Remove a job from the queue.
      *
      * @param je A JobEntry with the job to remove.
-     * @exception Exception a generic exception.
+     * @exception TurbineException a generic exception.
      */
     public static void removeJob(JobEntry je)
-            throws Exception
+            throws TurbineException
     {
         getService().removeJob(je);
     }
@@ -126,6 +127,32 @@ public abstract class TurbineScheduler
     public static List listJobs()
     {
         return getService().listJobs();
+    }
+
+    /**
+     * Determines if the scheduler service is currently active.
+     *
+     * @return Status of the scheduler service.
+     */
+    public static boolean isEnabled()
+    {
+        return getService().isEnabled();
+    }
+
+    /**
+     * Starts the scheduler if not already running.
+     */
+    public static void startScheduler()
+    {
+        getService().startScheduler();
+    }
+
+    /**
+     * Stops the scheduler if ti is currently running.
+     */
+    public static void stopScheduler()
+    {
+        getService().stopScheduler();
     }
 
     /**

@@ -56,11 +56,13 @@ package org.apache.turbine.services.schedule;
 
 import java.util.Vector;
 import javax.servlet.ServletConfig;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.ObjectKey;
 import org.apache.turbine.services.resources.TurbineResources;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * Service for a cron like scheduler that uses the
@@ -72,54 +74,59 @@ import org.apache.turbine.services.resources.TurbineResources;
  * extend ScheduledJob.
  *
  *<PRE>
-   scheduler.jobs=scheduledJobName,scheduledJobName2
-
-   scheduler.job.scheduledJobName.ID=1
-   scheduler.job.scheduledJobName.SECOND=-1
-   scheduler.job.scheduledJobName.MINUTE=-1
-   scheduler.job.scheduledJobName.HOUR=7
-   scheduler.job.scheduledJobName.WEEKDAY=-1
-   scheduler.job.scheduledJobName.DAY_OF_MONTH=-1
-
-   scheduler.job.scheduledJobName2.ID=1
-   scheduler.job.scheduledJobName2.SECOND=-1
-   scheduler.job.scheduledJobName2.MINUTE=-1
-   scheduler.job.scheduledJobName2.HOUR=7
-   scheduler.job.scheduledJobName2.WEEKDAY=-1
-   scheduler.job.scheduledJobName2.DAY_OF_MONTH=-1
-   </PRE>
+ *
+ * services.SchedulerService.scheduler.jobs=scheduledJobName,scheduledJobName2
+ *
+ * services.SchedulerService.scheduler.job.scheduledJobName.ID=1
+ * services.SchedulerService.scheduler.job.scheduledJobName.SECOND=-1
+ * services.SchedulerService.scheduler.job.scheduledJobName.MINUTE=-1
+ * services.SchedulerService.scheduler.job.scheduledJobName.HOUR=7
+ * services.SchedulerService.scheduler.job.scheduledJobName.WEEKDAY=-1
+ * services.SchedulerService.scheduler.job.scheduledJobName.DAY_OF_MONTH=-1
+ *
+ * services.SchedulerService.scheduler.job.scheduledJobName2.ID=1
+ * services.SchedulerService.scheduler.job.scheduledJobName2.SECOND=-1
+ * services.SchedulerService.scheduler.job.scheduledJobName2.MINUTE=-1
+ * services.SchedulerService.scheduler.job.scheduledJobName2.HOUR=7
+ * services.SchedulerService.scheduler.job.scheduledJobName2.WEEKDAY=-1
+ * services.SchedulerService.scheduler.job.scheduledJobName2.DAY_OF_MONTH=-1
+ *
+ * </PRE>
  *
  * Based on TamboraSchedulerService written by John Thorhauer.
  *
  * @author <a href="mailto:ekkerbj@netscpae.net">Jeff Brekke</a>
  * @author <a href="mailto:john@zenplex.com">John Thorhauer</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @version $Id$
  */
 public class TurbineNonPersistentSchedulerService
-    extends TurbineSchedulerService
+        extends TurbineSchedulerService
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(
-        TurbineNonPersistentSchedulerService.class);
+    private static Log log = LogFactory.getLog(ScheduleService.LOGGER_NAME);
 
     /**
      * Constructor.
      *
-     * @exception Exception a generic exception.
+     * @exception TurbineException a generic exception.
      */
     public TurbineNonPersistentSchedulerService()
-        throws Exception
+            throws TurbineException
     {
         super();
     }
 
     /**
-     * Initializes the SchedulerService.
-     * This is a zero parameter variant which queries the Turbine Servlet
-     * for its config.
+     * Called the first time the Service is used.<br>
+     *
+     * Load all the jobs from cold storage.  Add jobs to the queue
+     * (sorted in ascending order by runtime) and start the scheduler
+     * thread.
      */
     public void init()
     {
-        if (getInit())
+        if(getInit())
         {
             return;
         }
@@ -135,39 +142,40 @@ public class TurbineNonPersistentSchedulerService
             Vector jobs = new Vector();
             // If there are scheduler.jobs defined then set up a job vector
             // for the scheduleQueue
-            if (!jobProps.isEmpty())
+            if(!jobProps.isEmpty())
             {
-                for (int i = 0; i < jobProps.size(); i++)
+                for(int i = 0; i < jobProps.size(); i++)
                 {
-                    String jobName = (String)jobProps.elementAt(i);
-                    String jobPrefix = "scheduler.job." + jobName ;
+                    String jobName = (String) jobProps.elementAt(i);
+                    String jobPrefix = "scheduler.job." + jobName;
 
-                    if ((TurbineResources.getString(jobPrefix + ".ID", null))
-                        == null)
+                    if((TurbineResources.getString(jobPrefix + ".ID", null))
+                            == null)
                     {
                         throw new Exception(
-                        "There is an error in the TurbineResources.properties file. \n"
-                        + jobPrefix + ".ID is not found.\n");
+                                "There is an error in the TurbineResources.properties file. \n"
+                                + jobPrefix + ".ID is not found.\n");
                     }
 
                     int sec = TurbineResources.getInt(jobPrefix + ".SECOND", -1);
                     int min = TurbineResources.getInt(jobPrefix + ".MINUTE", -1);
-                    int hr  = TurbineResources.getInt(jobPrefix + ".HOUR", -1);
+                    int hr = TurbineResources.getInt(jobPrefix + ".HOUR", -1);
                     int wkday = TurbineResources.getInt(jobPrefix + ".WEEKDAY", -1);
                     int dayOfMonth = TurbineResources.getInt(jobPrefix + ".DAY_OF_MONTH", -1);
 
-                    JobEntry je = new JobEntry(sec,
-                                               min,
-                                               hr,
-                                               wkday,
-                                               dayOfMonth,
-                                               jobName);
+                    JobEntry je = new JobEntry(
+                            sec,
+                            min,
+                            hr,
+                            wkday,
+                            dayOfMonth,
+                            jobName);
                     jobs.addElement(je);
 
                 }
             }
 
-            if (jobs != null && jobs.size() > 0)
+            if(jobs != null && jobs.size() > 0)
             {
                 scheduleQueue.batchLoad(jobs);
                 restart();
@@ -176,10 +184,10 @@ public class TurbineNonPersistentSchedulerService
             setInit(true);
             log.info("TurbineNonPersistentSchedulerService init()....finished!");
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Cannot initialize TurbineNonPersistentSchedulerService!: "
-                + e );
+                    + e);
         }
     }
 
@@ -203,17 +211,17 @@ public class TurbineNonPersistentSchedulerService
      *
      * @param oid The int id for the job.
      * @return A JobEntry.
-     * @exception Exception a generic exception.
+     * @exception TurbineException a generic exception.
      */
     public JobEntry getJob(int oid)
-        throws Exception
+            throws TurbineException
     {
         JobEntry je = new JobEntry(-1,
-                                   -1,
-                                   -1,
-                                   -1,
-                                   -1,
-                                   null);
+                -1,
+                -1,
+                -1,
+                -1,
+                null);
         je.setPrimaryKey((ObjectKey) new NumberKey(oid));
         return scheduleQueue.getJob(je);
     }
@@ -222,10 +230,10 @@ public class TurbineNonPersistentSchedulerService
      * Add a new job to the queue.
      *
      * @param je A JobEntry with the job to add.
-     * @exception Exception a generic exception.
+     * @exception TurbineException a generic exception.
      */
     public void addJob(JobEntry je)
-        throws Exception
+            throws TurbineException
     {
         // Add to the queue.
         scheduleQueue.add(je);
@@ -236,10 +244,10 @@ public class TurbineNonPersistentSchedulerService
      * Remove a job from the queue.
      *
      * @param je A JobEntry with the job to remove.
-     * @exception Exception a generic exception.
+     * @exception TurbineException a generic exception.
      */
     public void removeJob(JobEntry je)
-        throws Exception
+            throws TurbineException
     {
         // Remove from the queue.
         scheduleQueue.remove(je);
@@ -250,10 +258,10 @@ public class TurbineNonPersistentSchedulerService
      * Modify a Job.
      *
      * @param je A JobEntry with the job to modify
-     * @exception Exception a generic exception.
+     * @exception TurbineException a generic exception.
      */
     public void updateJob(JobEntry je)
-        throws Exception
+            throws TurbineException
     {
         try
         {
@@ -265,7 +273,7 @@ public class TurbineNonPersistentSchedulerService
             log.error("Problem updating Scheduled Job: " + e);
         }
         // Update the queue.
-       scheduleQueue.modify(je);
-       restart();
+        scheduleQueue.modify(je);
+        restart();
     }
 }

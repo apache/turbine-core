@@ -54,82 +54,81 @@ package org.apache.turbine.services.schedule;
  * <http://www.apache.org/>.
  */
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.turbine.modules.ScheduledJobLoader;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.pull.ApplicationTool;
+import org.apache.turbine.util.TurbineException;
 
 /**
- * Wrapper for a <code>JobEntry</code> to actually perform the job's action.
+ * This tool is used to retrieve information about the job scheduler.
  *
- * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
- * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
- * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
- * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:qmccombs@nequalsone.com">Quinton McCombs</a>
  * @version $Id$
  */
-public class WorkerThread
-        implements Runnable
+public class SchedulerTool implements ApplicationTool
 {
-    /**
-     * The <code>JobEntry</code> to run.
-     */
-    private JobEntry je = null;
-
-    /** Logging */
+    /** Used for logging */
     private static Log log = LogFactory.getLog(ScheduleService.LOGGER_NAME);
 
     /**
-     * Creates a new worker to run the specified <code>JobEntry</code>.
-     *
-     * @param je The <code>JobEntry</code> to create a worker for.
+     * Initialize the pull tool
      */
-    public WorkerThread(JobEntry je)
+    public void init(Object data)
     {
-        this.je = je;
+        if(!TurbineServices.getInstance().isRegistered(ScheduleService.SERVICE_NAME))
+        {
+            log.error("You can not use the SchedulerTool unless you enable the Scheduler Service!!!!");
+        }
     }
 
     /**
-     * Run the job.
+     * Does nothing
      */
-    public void run()
+    public void refresh()
     {
-        if(je == null || je.isActive())
-        {
-            return;
-        }
+    }
+
+    /**
+     * Gets the list of scheduled jobs.
+     *
+     * @return List of JobEntry objects.
+     */
+    public List getScheduledJobs()
+    {
+        return TurbineScheduler.listJobs();
+    }
+
+    /**
+     * Determines if the scheduler service is currently enabled.
+     */
+    public boolean isEnabled()
+    {
+        return TurbineScheduler.isEnabled();
+    }
+
+    /**
+     * Gets the job identified by the jobId.
+     *
+     * @param jobId Id of the job to retreive.
+     * @return The job.  Null if the jobId is not found.
+     */
+    public JobEntry getJob(String jobId)
+    {
+        JobEntry je = null;
 
         try
         {
-            if(!je.isActive())
-            {
-                je.setActive(true);
-                logStateChange("started");
-                ScheduledJobLoader.getInstance().exec(je, je.getTask());
-            }
+            je = TurbineScheduler.getJob(Integer.parseInt(jobId));
         }
-        catch(Exception e)
+        catch(TurbineException e)
         {
-            log.error("Error in WorkerThread for sheduled job #" +
-                    je.getPrimaryKey() + ", task: " + je.getTask(), e);
+            log.error("Could not retreive job id #" + jobId, e);
         }
-        finally
-        {
-            if(je.isActive())
-            {
-                je.setActive(false);
-                logStateChange("completed");
-            }
-        }
+
+        return je;
     }
 
-    /**
-     * Macro to log <code>JobEntry</code> status information.
-     *
-     * @param state The new state of the <code>JobEntry</code>.
-     */
-    private final void logStateChange(String state)
-    {
-        log.debug("Scheduled job #" + je.getPrimaryKey() + ' ' + state +
-                ", task: " + je.getTask());
-    }
 }

@@ -25,13 +25,13 @@ package org.apache.turbine.services.schedule;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,61 +54,90 @@ package org.apache.turbine.services.schedule;
  * <http://www.apache.org/>.
  */
 
-import java.util.Vector;
+import java.util.List;
+
 import org.apache.turbine.services.Service;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * ScheduleService interface.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public interface ScheduleService
-    extends Service
+        extends Service
 {
-    static final String SERVICE_NAME = "SchedulerService";
+    /** Name of service */
+    public static final String SERVICE_NAME = "SchedulerService";
+
+    /** TR.props key for intially activating the scheduler thread */
+    public static final String INTIALLY_ACTIVE = "enabled";
+
+    /** TR.props key for the logger */
+    public static final String LOGGER_NAME = "scheduler";
 
     /**
      * Get a specific Job from Storage.
      *
      * @param oid The int id for the job.
      * @return A JobEntry.
-     * @exception Exception, a generic exception.
+     * @exception TurbineException a generic exception.
      */
-    JobEntry getJob(int oid)
-        throws Exception;
+    public JobEntry getJob(int oid)
+            throws TurbineException;
 
     /**
      * Add a new job to the queue.
      *
      * @param je A JobEntry with the job to add.
-     * @exception Exception, a generic exception.
+     * @exception TurbineException a generic exception.
      */
-    void addJob(JobEntry je)
-        throws Exception;
+    public void addJob(JobEntry je)
+            throws TurbineException;
 
     /**
      * Modify a Job.
      *
      * @param je A JobEntry with the job to modify
-     * @exception Exception, a generic exception.
+     * @exception TurbineException a generic exception.
      */
-    void updateJob(JobEntry je)
-        throws Exception;
+    public void updateJob(JobEntry je)
+            throws TurbineException;
 
     /**
      * Remove a job from the queue.
      *
      * @param je A JobEntry with the job to remove.
-     * @exception Exception, a generic exception.
+     * @exception TurbineException a generic exception.
      */
-    void removeJob(JobEntry je)
-        throws Exception;
+    public void removeJob(JobEntry je)
+            throws TurbineException;
 
     /**
      * List jobs in the queue.  This is used by the scheduler UI.
      *
-     * @return A Vector of jobs.
+     * @return A List of jobs.
      */
-    Vector listJobs();
+    public List listJobs();
+
+    /**
+     * Determines if the scheduler service is currently active.
+     *
+     * @return Status of the scheduler service.
+     */
+    public boolean isEnabled();
+
+    /**
+     * Starts the scheduler if not already running.
+     */
+    public void startScheduler();
+
+    /**
+     * Stops the scheduler if ti is currently running.
+     */
+    public void stopScheduler();
+
 }
+
