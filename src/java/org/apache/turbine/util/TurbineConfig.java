@@ -109,14 +109,13 @@ import org.apache.turbine.Turbine;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
-public class TurbineConfig
-        implements ServletConfig, ServletContext, Initializable, Disposable
+public class TurbineConfig implements ServletConfig, ServletContext, Initializable, Disposable
 {
     /**
      * Servlet initialization parameter name for the path to
      * TurbineConfiguration.xml file used by Turbine
      */
-    public static final String CONFIGURATION_PATH_KEY = "configuration";    
+    public static final String CONFIGURATION_PATH_KEY = "configuration";
 
     /**
      * Servlet initialization parameter name for the path to
@@ -128,8 +127,7 @@ public class TurbineConfig
      * Default value of TurbineResources.properties file path
      * (<code>/WEB-INF/conf/TurbineResources.properties</code>).
      */
-    public static final String PROPERTIES_PATH_DEFAULT =
-            "/WEB-INF/conf/TurbineResources.properties";
+    public static final String PROPERTIES_PATH_DEFAULT = "/WEB-INF/conf/TurbineResources.properties";
 
     /** Filenames are looked up in this directory. */
     private File root;
@@ -182,12 +180,22 @@ public class TurbineConfig
      * Turbine easiliy in the common setups.
      *
      * @param path The web application root (i.e. the path for file lookup).
-     * @param properties the relative path to TurbineResources.properties file
+     * @param properties the relative path to setup file.  Either 
+     * TurbineResources.properties or TurbineConfiguration.xml.  If the file
+     * ends in .xml, then we assume taht it is a ConfigurationFactory config
+     * file.  Otherwise we assume it is a standard TurbineResources.propeties file.
      */
     public TurbineConfig(String path, String properties)
     {
         this(path, new HashMap(1));
-        initParams.put(PROPERTIES_PATH_KEY, properties);
+        if (properties.toLowerCase().endsWith(".xml"))
+        {
+            initParams.put(CONFIGURATION_PATH_KEY, properties);
+        }
+        else
+        {
+            initParams.put(PROPERTIES_PATH_KEY, properties);
+        }
     }
 
     /**
@@ -271,7 +279,7 @@ public class TurbineConfig
 
         if (f.exists())
         {
-          result = f.getPath();
+            result = f.getPath();
         }
         else
         {
@@ -335,8 +343,7 @@ public class TurbineConfig
      * @return a URL pointing to the resource
      * @exception MalformedURLException
      */
-    public URL getResource(String s)
-            throws MalformedURLException
+    public URL getResource(String s) throws MalformedURLException
     {
         return new URL("file://" + getRealPath(s));
     }
