@@ -84,6 +84,14 @@ Changes between Turbine 2.2 and 2.2.1.
         functions in the same way.  This was done to allow XML editors to use
         the correct version of the DTD.
     </li>
+    <li>
+        The non-secure web server for handling xml-rpc requests
+        will now use the services.XmlRpcService.address setting for
+        the address on which to listen for requests.  If the setting
+        is not found in TR.props, it will use the default of 0.0.0.0.
+        This address will cause the server to listen on all
+        addresses of a multi-homed machine.
+    </li>
   </ul>
 </p>
 </subsection>
