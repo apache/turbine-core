@@ -207,9 +207,11 @@ public abstract class SecurityObject extends BaseObject implements Comparable
      */
     public int compareTo(Object obj)
     {
-        if(this.getClass() != obj.getClass())
+        if (this.getClass() != obj.getClass())
+        {
             throw new ClassCastException();
-        String name1 = ((SecurityObject)obj).getName();
+        }
+        String name1 = ((SecurityObject) obj).getName();
         String name2 = this.getName();
 
         return name2.compareTo(name1);
