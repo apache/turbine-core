@@ -57,8 +57,6 @@ package org.apache.turbine.util.parser;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import junit.framework.Test;
-import junit.framework.TestSuite;
 import org.apache.cactus.ServletTestCase;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.util.TimeSelector;
@@ -116,17 +114,7 @@ public class BaseValueParserTest extends ServletTestCase
     {
         turbine.destroy();
         super.tearDown();
-    }
-                                             
-    /**
-     * Return a test suite of all our tests.
-     *
-     * @return a <code>Test</code> value
-     */
-    public static Test suite() 
-    {
-        return new TestSuite(BaseValueParserTest.class);
-    }
+    }                                            
 
     /**
      * Test that a current time 
