@@ -58,13 +58,17 @@ import org.apache.turbine.modules.ScheduledJob;
 import org.apache.turbine.services.schedule.JobEntry;
 
 /**
- * Simple job for use with unit testing of the scheduler service
+ * Simple job for use with unit testing of the scheduler service.  This
+ * job merely increments a static counter variable when it is run.  You 
+ * can check the counter to verify the job has run.
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
 public class SimpleJob extends ScheduledJob
 {
+    private static int counter=0;
     /**
      * Run the Jobentry from the scheduler queue.
      *
@@ -74,5 +78,24 @@ public class SimpleJob extends ScheduledJob
     public void run(JobEntry job)
             throws Exception
     {
+        counter++;
+        System.out.println("\n\nI AM RUNNING!\n\n");
+        
     }
+    /**
+     * @return
+     */
+    public static int getCounter()
+    {
+        return counter;
+    }
+
+    /**
+     * @param i
+     */
+    public static void setCounter(int i)
+    {
+        counter = i;
+    }
+
 }
