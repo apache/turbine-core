@@ -167,6 +167,12 @@ Changes between Turbine 2.2 and 2.3-dev.
           jakarta.apache.org/turbine/dtd/intake.dtd, then the DTD included
           in the jar file will be used instead of the online version.
         </li>
+        <li>
+          The field object has two new methods to help in creating the HTML
+          input tags for the field.  They are getDisplaySize() and getMaxSize().
+          The display size is set in the xml definition.  The max size is pulled
+          from the maxLength rule (if defined).
+        </li>
       </ul>
     </li>
     <li>
