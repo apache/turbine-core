@@ -798,8 +798,8 @@ public class TurbineURI
             for(Iterator it = list.iterator(); it.hasNext();)
             {
                 URIParam uriParam = (URIParam) it.next();
-                String key = URLEncoder.encode((String) uriParam.getKey());
-                String val = (String) uriParam.getValue();
+                String key = URLEncoder.encode(uriParam.getKey());
+                String val = String.valueOf(uriParam.getValue());
 
                 output.append(key);
                 output.append(valueDelim);
