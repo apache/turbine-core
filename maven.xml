@@ -57,7 +57,7 @@
   <!-- Create the SQL necessary for the Databases         -->
   <!-- ================================================== -->
 
-  <preGoal name="torque:sql">
+  <preGoal name="torque:init">
     <attainGoal name="copy-om"/>
   </preGoal>
 
@@ -68,6 +68,7 @@
   <goal name="copy-om">
     <attainGoal name="copy-scheduler-om"/>
     <attainGoal name="copy-torque-security-om"/>
+    <attainGoal name="copy-id-table-om"/>
   </goal>
 
   <goal name="copy-scheduler-om">
@@ -87,6 +88,18 @@
       filtering="yes"/>
   </goal>
   
+  <goal name="copy-id-table-om">
+    <filter token="DATABASE_DEFAULT" value="${scheduler.database.name}"/>
+    <copy
+      file="src/schema/id-table-schema.xml"
+      tofile="${torque.schema.dir}/scheduler-idtable-schema.xml"
+      filtering="yes"/>
+    <filter token="DATABASE_DEFAULT" value="${torque.security.database.name}"/>
+    <copy
+      file="src/schema/id-table-schema.xml"
+      tofile="${torque.schema.dir}/torque-security-idtable-schema.xml"
+      filtering="yes"/>
+  </goal>
 
   <!-- ================================================== -->
   <!-- Build Peers for the Scheduler                      -->
