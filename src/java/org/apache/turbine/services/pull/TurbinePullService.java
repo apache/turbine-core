@@ -101,7 +101,7 @@ import org.apache.velocity.context.Context;
  *
  * tool.global.ui    = org.apache.turbine.util.pull.UIManager
  * tool.global.mm    = org.apache.turbine.util.pull.MessageManager
- * tool.request.link = org.apache.turbine.util.template.TemplateLink
+ * tool.request.link = org.apache.turbine.services.pull.tools.TemplateLink
  * tool.request.page = org.apache.turbine.util.template.TemplatePageAttributes
  *
  * Then:
@@ -300,7 +300,7 @@ public class TurbinePullService
         // tool.global.ui = org.apache.turbine.util.pull.UIManager
         // tool.global.mm = org.apache.turbine.util.pull.MessageManager
         //
-        // tool.request.link = org.apache.turbine.util.template.TemplateLink;
+        // tool.request.link = org.apache.turbine.services.pull.tools.TemplateLink
         //
         // tool.session.basket = org.sample.util.ShoppingBasket;
         //

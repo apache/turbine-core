@@ -74,6 +74,8 @@ import org.apache.turbine.util.ServerData;
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
+ * @deprecated Use {@link org.apache.turbine.services.pull.tools.TemplateLink} for tool usage
+ * and {@link org.apache.turbine.util.uri.TemplateURI} for code usage instead.
  */
 public class TemplateLink
         extends DynamicURI

@@ -101,6 +101,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
+ * @deprecated Use {@link org.apache.turbine.util.uri.TurbineURI} instead.
  */
 public class DynamicURI
 {

@@ -68,6 +68,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="jmcnally@collab.net">John D. McNally</a>
  * @version $Id$
+ * @deprecated Use {@link org.apache.turbine.services.pull.tools.TemplateLinkWithSlash} instead.
  */
 public class TemplateLinkWithSlash
         extends TemplateLink
