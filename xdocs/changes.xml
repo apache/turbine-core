@@ -215,7 +215,7 @@ Changes between Turbine 2.2 and 2.3-dev.
             from the maxLength rule (if defined).
           </li>
           <li>
-            The setDefaultValue() method on the Field object is nowe public.  This
+            The setDefaultValue() method on the Field object is now public.  This
             will allow you to assign a value to a field for display on a form that
             does come from a mapped object.  Before this change, your only option
             was to defined the default value in intake.xml.
