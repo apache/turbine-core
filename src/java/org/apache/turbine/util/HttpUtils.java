@@ -77,7 +77,7 @@ public class HttpUtils
     static
     {
         httpDateFormat = new SimpleDateFormat(
-                "EEE, dd MMM yyyyy HH:mm:ss z", Locale.US);
+                "EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
         httpDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
 
