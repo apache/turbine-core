@@ -1,117 +1,72 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!-- 
-/*
- * Copyright 2001-2004 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- -->
-	
+
+<!-- =================================================================== -->
+<!--                                                                     -->
+<!--  Maven project.xml Datei                                            -->
+<!--                                                                     -->
+<!-- $Id$           -->
+<!--                                                                     -->
+<!-- =================================================================== -->
+
 <project>
   <pomVersion>3</pomVersion>
-  <groupId>turbine</groupId>
   <id>maven-turbine-plugin</id>
-  <name>Maven Turbine Plugin</name>
-  <currentVersion>2.4-dev</currentVersion>
+  <name>Maven Environment for Turbine Applications Plugin</name>
+  <currentVersion>1.0-dev</currentVersion>
+  <shortDescription>Maven Environment for Turbine Applications</shortDescription>
+  <description>
+    The Maven Environment for Turbine Applications (M.E.T.A.) is a replacement
+    for the Turbine Development Kit. It is based on Maven and contains a well
+    defined setup for starting new Turbine applications.
+  </description>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
-    <logo>/images/jakarta.png</logo>
+    <logo>/images/jakarta-logo-blue.gif</logo>
   </organization>
-  <!--logo>/images/blue-logo.gif</logo-->
+  <logo>/images/blue-logo.gif</logo>
   <inceptionYear>2003</inceptionYear>
-  <package>org.apache.turbine</package>
-  <shortDescription>Maven Turbine Plugin</shortDescription>
-
-  <url>http://jakarta.apache.org/turbine/turbine-2.4/maven-turbine-plugin/</url>
-  <issueTrackingUrl>http://issues.apache.org/scarab/issues</issueTrackingUrl>
-  <siteAddress>jakarta.apache.org</siteAddress>
-  <siteDirectory>/www/jakarta.apache.org/turbine/turbine-2.4/maven-turbine-plugin/</siteDirectory>
-  <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-turbine-2/</distributionDirectory>
-
-  <repository>
-    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2/extensions/maven-plugin/</connection>
-    <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2/extensions/maven-plugin/</url>
-  </repository>
-
-  <mailingLists>
-    <mailingList>
-      <name>Turbine User List</name>
-      <subscribe>turbine-user-subscribe@jakarta.apache.org</subscribe>
-      <unsubscribe>turbine-user-unsubscribe@jakarta.apache.org</unsubscribe>
-      <archive>http://nagoya.apache.org/eyebrowse/SummarizeList?listName=turbine-user@jakarta.apache.org</archive>
-    </mailingList>
-    <mailingList>
-      <name>Turbine Developer List</name>
-      <subscribe>turbine-dev-subscribe@jakarta.apache.org</subscribe>
-      <unsubscribe>turbine-dev-unsubscribe@jakarta.apache.org</unsubscribe>
-      <archive>http://nagoya.apache.org/eyebrowse/SummarizeList?listName=turbine-dev@jakarta.apache.org</archive>
-    </mailingList>
-  </mailingLists>
-
+  <releases/>
   <developers>
-    <developer>
-      <name>Martin Poeschl</name>
-      <id>mpoeschl</id>
-      <email>mpoeschl@marmot.at</email>
-      <organization>tucana.at</organization>
-      <roles>
-        <role>Java Developer</role>
-      </roles>
-    </developer>
     <developer>
       <name>Eric Pugh</name>
       <id>epugh</id>
-      <email>epugh@upstate.com</email>
-      <organization>upstate.com</organization>
+      <email>epugh@opensourceconnections.com</email>
+      <organization>OpenSource Connections</organization>
       <roles>
         <role>Java Developer</role>
       </roles>
-    </developer>    
+    </developer>      
+    <developer>
+      <name>Henning P. Schmiedehausen</name>
+      <id>henning</id>
+      <email>hps@intermeta.de</email>
+      <organization>INTERMETA - Gesellschaft fuer Mehrwertdienste mbH</organization>
+    </developer>
   </developers>
 
-  <dependencies/>
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- M.E.T.A. itself has no dependencies on any jars.                         -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
 
   <build>
-    <sourceDirectory>${basedir}/src/main</sourceDirectory>
-    <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
-
-    <unitTest>
-      <includes>
-        <include>**/*Test.java</include>
-      </includes>
-    </unitTest>
-
     <resources>
-      <resource>
-        <directory>${basedir}/src/plugin-resources</directory>
-        <targetPath>plugin-resources</targetPath>
-        <includes>
-          <include>**/*.*</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>${basedir}</directory>
-        <includes>
-          <include>plugin.jelly</include>
-          <include>plugin.properties</include>
-          <include>project.properties</include>
-          <include>project.xml</include>
-        </includes>
-      </resource>
+      <resource> 
+        <directory>${basedir}/src/plugin-resources</directory> 
+         <targetPath>plugin-resources</targetPath> 
+       </resource> 
+       <resource> 
+         <directory>${basedir}/src/plugin</directory> 
+         <targetPath>/</targetPath> 
+       </resource> 
+       <resource> 
+         <directory>${basedir}</directory> 
+         <includes> 
+           <include>project.xml</include> 
+         </includes> 
+       </resource> 
     </resources>
-
   </build>
-
 </project>
-

@@ -1,0 +1,198 @@
+Maven Environment for Turbine Applications (META)
+=================================================
+
+(C) 2003, 2004 The Apache Software Foundation
+Author: Henning P. Schmiedehausen <henning@apache.org>
+Version: 1.0
+
+General
+*******
+
+The Maven Environment for Turbine Application (META) is an easy way to
+get started with applications based on the Turbine Webapplication
+framework and also a collection of "best practices" and configuration
+information to get you started with writing code using the Turbine
+framework.
+
+It consists of a plugin for the Apache Maven project
+(maven.apache.org) and can be downloaded separately from the Turbine
+web site or the maven central repository on ibiblio.
+
+
+How it works
+************
+
+META builds an application skeleton from a set of predefined
+configuration files which are part of the plugin and some user
+supplied parameters. Most of the parameters have reasonable defaults,
+only the application name must be supplied by the developer.
+
+As META tries to integrate with the maven web application environment
+as seamlessly as possible, it requires a few properties from other
+plugins to be set correctly. These are listed below for the various
+targets.
+
+Parameters are supplied either on the command line (if you want to
+rapid prototype an application, you can do so by running a simple
+maven command) or with a special properties file that will be read by
+the META task.
+
+Building the plugin
+*******************
+
+If you fetched a binary release or simply want to use the plugin
+available from ibiblio, you can skip this section. It is only
+interesting for you if you downloaded the source code either from CVS
+or bundled with the turbine distribution and want to build the plugin
+yourself from source.
+
+Doing so is simple: Go to the base directory of the source and run
+
+maven plugin
+
+This builds the plugin and puts it into your maven.repo.local repository.
+
+Alternative targets are
+
+maven plugin:deploy
+
+for installing the unpacked plugin into your local maven installation. This
+is useful if you're testing or debugging the plugin.
+
+maven plugin:install
+
+for packing the plugin and installing it into your local maven
+installation. This jar will be expanded next time maven is run.
+
+
+META targets
+************
+
+All META targets are prefixed by "turbine" in the maven
+environment. While META is distinctive in the Turbine context, using
+meta:<xxx> proved confusing in the Maven context (is meta:<xxx> a
+maven meta-task or is it part of the META environment?). So the META
+environment uses the "turbine:" prefix.
+
+Available targets are:
+
+turbine:setup
+=============
+
+This is the setup procedure for a new application. It builds an
+application skeleton in the current working directory.
+
+The task reads an optional "setup.properties" file in the current
+directory which can contain additional properties for setting up and
+configuring the application.
+
+META Properties
+---------------
+
+turbine.app.name (turbine:setup)
+
+Function:	sets the name of the new application
+Type:		String
+Default:	**** NO DEFAULT ****
+		Must be set or the task fails.
+
+turbine.app.package (turbine:setup)
+
+Function:	sets the java package of the new application
+Type:		String
+Default:	org.apache.turbine.app.${turbine.app.name}
+
+turbine.app.om.name (turbine:setup)
+
+Function:	sets the name of the OM datasource for the application
+Type:		String
+Default:	${turbine.app.name}
+
+turbine.app.om.package (turbine:setup)
+
+Function:	sets the package for the OM classes of the new application
+Type:		String
+Default:	${turbine.app.package}.om
+
+turbine.app.om.security.name (turbine:setup)
+
+Function:	sets the name of the OM datasource for the application which
+                contains the security information (users, groups...)
+Type:		String
+Default:	${turbine.app.om.name}
+
+turbine.app.om.security.package (turbine:setup)
+
+Function:	sets the package for the OM classes of the new application which
+                access the security information (users, groups...)
+Type:		String
+Default:	${turbine.app.om.package}
+
+turbine.app.subdir (turbine:setup)
+
+Function:	Defines whether to create the new application in the
+                current directory or a subdirectory.
+Type:		boolean (true/false)
+Default:	"true" (use a subdirectory)
+
+Properties from other plugins
+-----------------------------
+
+maven.appserver.name (turbine:setup)
+
+Plugin:		appserver
+Function:	Defines the name of the application server
+                used for testing and/or deploying of the 
+                application
+Type:		String
+Default:	tomcat (use a Jakarta Tomcat Application Server)
+
+torque.database (turbine:setup)
+
+Plugin:		torque
+Function:	Sets the database type that this application will use
+Type:		String
+Default:	not set
+
+torque.database.driver (turbine:setup)
+
+Plugin:		torque
+Function:	Set the database driver class
+Type:		String
+Default:	not set
+
+torque.database.user (turbine:setup)
+
+Plugin:		torque
+Function:	Set the database user for connecting
+Type:		String
+Default:	not set
+
+torque.database.password (turbine:setup)
+
+Plugin:		torque
+Function:	Set the database password for connecting
+Type:		String
+Default:	not set
+
+torque.database.buildUrl (turbine:setup)
+
+Plugin:		torque
+Function:	Set an URL which can be used for creating tables
+                and inserting data into the database
+Type:		String
+Default:	not set
+
+torque.database.createUrl (turbine:setup)
+
+Plugin:		torque
+Function:	Set an URL which can be used by the Torque plugin
+                to connect to the database engine to create the 
+                requested database
+Type:		String
+Default:	not set
+
+
+
+
+

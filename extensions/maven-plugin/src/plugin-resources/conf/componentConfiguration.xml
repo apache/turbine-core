@@ -2,15 +2,14 @@
 
 <!-- ======================================================================== -->
 <!--                                                                          -->
-<!--  maven Buildfile                                                         -->
+<!--  Avalon component configuration for loading Torque                       -->
 <!--                                                                          -->
 <!-- $Id$ -->
 <!--                                                                          -->
 <!-- ======================================================================== -->
 
-<project
-  default="plugin:deploy"
-  xmlns:j="jelly:core"
-  xmlns:u="jelly:util"
-  xmlns:m="maven"/>
-
+<componentConfig>
+  <torque>
+    <configfile>/WEB-INF/conf/torque.properties</configfile>
+  </torque>
+</componentConfig>

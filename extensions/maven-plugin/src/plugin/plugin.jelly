@@ -1,0 +1,753 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- ======================================================================== -->
+<!--                                                                          -->
+<!--  plugin.jelly for M.E.T.A.                                               -->
+<!--                                                                          -->
+<!-- $Id: plugin.jelly,v 1.4 2003/11/13 11:02:54 henning Exp $               -->
+<!--                                                                          -->
+<!-- ======================================================================== -->
+
+<project
+  xmlns:j="jelly:core"
+  xmlns:u="jelly:util"
+  xmlns:ant="jelly:ant"
+  xmlns:m="maven"
+  xmlns:define="jelly:define"
+  xmlns:meta="http://jakarta.apache.org/turbine/meta/taglib"
+>
+
+<!-- ======================================================================== -->
+<!--                                                                          -->
+<!-- Public goals for general use                                             -->
+<!--                                                                          -->
+<!-- ======================================================================== -->
+
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- turbine:setup                                                            -->
+  <!--                                                                          -->
+  <!-- Build a new Turbine application skeleton from the supplied properties.   -->
+  <!-- Read in an optional setup.properties file                                -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:setup" description="Setup a new Turbine web application"
+    prereqs="turbine:init">
+
+    <u:available file="setup.properties">
+      <u:properties file="setup.properties"/>
+    </u:available>
+
+    <attainGoal name="turbine:check-setup-environment"/>
+
+    <filter token="TURBINE_APP_NAME"           value="${turbine.app.name}"/>
+    <filter token="TURBINE_APP_PACKAGE"        value="${turbine.app.package}"/>
+    <filter token="TURBINE_APP_OM_NAME"        value="${turbine.app.om.name}"/>
+    <filter token="TURBINE_APP_OM_PACKAGE"     value="${turbine.app.om.package}"/>
+    <filter token="TURBINE_APP_OM_SECURITY_NAME" value="${turbine.app.om.security.name}"/>
+    <filter token="TURBINE_APP_OM_SECURITY_PACKAGE" value="${turbine.app.om.security.package}"/>
+    <filter token="TURBINE_APP_SUBDIR"         value="${turbine.app.subdir}"/>
+
+    <filter token="TURBINE_PLUGIN_SRC_JAVA"      value="${turbine.plugin.src.java}"/>
+    <filter token="TURBINE_PLUGIN_SRC_TEST"  value="${turbine.plugin.src.test}"/>
+    <filter token="TURBINE_PLUGIN_SRC_SCHEMA"  value="${turbine.plugin.src.schema}"/>
+    <filter token="TURBINE_PLUGIN_SRC_TEMPLATES" value="${turbine.plugin.src.templates}"/>
+    <filter token="TURBINE_PLUGIN_SRC_CONF"  value="${turbine.plugin.src.conf}"/>
+
+    <filter token="TORQUE_DATABASE"            value="${torque.database}"/>
+    <filter token="TORQUE_DATABASE_DRIVER"     value="${torque.database.driver}"/>
+    <filter token="TORQUE_DATABASE_USER"       value="${torque.database.user}"/>
+    <filter token="TORQUE_DATABASE_PASSWD"     value="${torque.database.password}"/>
+    <filter token="TORQUE_DATABASE_URL"        value="${torque.database.buildUrl}"/>
+    <filter token="TORQUE_DATABASE_CREATE_URL" value="${torque.database.createUrl}"/>
+
+    <filter token="MAVEN_APPSERVER_NAME"       value="${maven.appserver.name}"/>
+
+    <u:replace var="appDir" oldChar="." newChar="/" value="${turbine.app.package}"/>
+
+    <j:set var="subDir" value="${turbine.app.subdir}"/>
+    <j:set var="baseDir" value="${turbine.app.name}"/>
+    <j:if test="${subDir.equalsIgnoreCase('false')}">
+      <j:set var="baseDir" value="."/>
+    </j:if>
+
+    <echo>Building Turbine Skeleton for ${turbine.app.name} application
+          Package:        ${turbine.app.package}
+          Database:       ${turbine.app.database}
+          Base Directory: ${baseDir} (${turbine.app.subdir})
+    </echo>
+
+    <mkdir dir="${baseDir}/${turbine.plugin.src.conf}"/>
+    <mkdir dir="${baseDir}/${turbine.plugin.src.java}"/>
+    <mkdir dir="${baseDir}/${turbine.plugin.src.schema}"/>
+    <mkdir dir="${baseDir}/${turbine.plugin.src.templates}/layouts"/>
+    <mkdir dir="${baseDir}/${turbine.plugin.src.templates}/macros"/>
+    <mkdir dir="${baseDir}/${turbine.plugin.src.templates}/screens"/>
+    <mkdir dir="${baseDir}/${turbine.plugin.src.templates}/navigations"/>
+    <mkdir dir="${baseDir}/${turbine.plugin.src.test}"/>
+    <mkdir dir="${baseDir}/src/scripts"/>
+    <mkdir dir="${baseDir}/src/style"/>
+    <mkdir dir="${baseDir}/src/images"/>
+
+    <mkdir dir="${baseDir}/${turbine.plugin.src.java}/${appDir}" />
+    <mkdir dir="${baseDir}/${turbine.plugin.src.java}/${appDir}/modules/actions" />
+    <mkdir dir="${baseDir}/${turbine.plugin.src.java}/${appDir}/modules/screens" />
+    <mkdir dir="${baseDir}/${turbine.plugin.src.java}/${appDir}/modules/layouts" />
+    <mkdir dir="${baseDir}/${turbine.plugin.src.java}/${appDir}/modules/navigations" />
+    <mkdir dir="${baseDir}/${turbine.plugin.src.java}/${appDir}/modules/pages" />
+
+    <ant:copy todir="${baseDir}" filtering="true">
+      <ant:fileset dir="${plugin.resources}/maven">
+        <exclude name="setup.properties"/>
+      </ant:fileset>
+    </ant:copy>
+
+    <!-- Try to rebuild the setup.properties file. 
+         If it already exists, don't clobber it!
+    -->
+    <ant:copy todir="${baseDir}" filtering="true" overwrite="false">
+      <ant:fileset dir="${plugin.resources}/maven">
+        <include name="setup.properties"/>
+      </ant:fileset>
+    </ant:copy>
+
+
+    <!-- filtering="false" is intentional! The file variables are 
+         replaced when the files are copied inside the application.
+    -->
+    <ant:copy todir="${baseDir}/${turbine.plugin.src.schema}" filtering="false">
+      <ant:fileset dir="${plugin.resources}/schema">
+        <exclude name="**/application*"/>
+      </ant:fileset>
+    </ant:copy>
+
+    <ant:copy tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-schema.xml" filtering="false"
+      file="${plugin.resources}/schema/application-schema.xml"/>
+
+    <ant:copy tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.dtd" filtering="false"
+      file="${plugin.resources}/schema/application-data.dtd"/>
+
+    <ant:copy tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.xml" filtering="true"
+      file="${plugin.resources}/schema/application-data.xml"/>
+
+    <ant:copy todir="${baseDir}/${turbine.plugin.src.templates}" filtering="true">
+      <ant:fileset dir="${plugin.resources}/templates">
+        <exclude name="**/application*"/>
+      </ant:fileset>
+    </ant:copy>
+
+    <ant:copy tofile="${baseDir}/${turbine.plugin.src.templates}/macros/${turbine.app.name}Macros.vm" filtering="true"
+      file="${plugin.resources}/templates/macros/applicationMacros.vm"/>
+
+    <ant:copy todir="${baseDir}/${turbine.plugin.src.conf}" filtering="true">
+      <ant:fileset dir="${plugin.resources}/conf">
+        <exclude name="**/application*"/>
+      </ant:fileset>
+    </ant:copy>
+
+    <ant:copy tofile="${baseDir}/${turbine.plugin.src.conf}/${turbine.app.name}-web.xml" filtering="true"
+      file="${plugin.resources}/conf/application-web.xml"/>
+
+    <ant:copy tofile="${baseDir}/${turbine.plugin.src.conf}/${turbine.app.name}.properties" filtering="true"
+      file="${plugin.resources}/conf/application.properties"/>
+
+    <ant:copy tofile="${baseDir}/${turbine.plugin.src.conf}/${turbine.app.name}-intake.xml" filtering="true"
+      file="${plugin.resources}/conf/application-intake.xml"/>
+
+    <ant:copy todir="${baseDir}/src/images">
+      <ant:fileset dir="${plugin.resources}/images"/>
+    </ant:copy>
+
+  </goal>
+  <!-- ======================================================================== -->
+  <!-- turbine:setup                                                            -->
+  <!-- ======================================================================== -->
+
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- turbine:sql                                                              -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:sql"
+     description="Build the SQL files necessary for the application">
+    <attainGoal name="torque:sql"/>
+    <attainGoal name="torque:id-table-init-sql"/>
+
+    <u:available file="${turbine.plugin.src.schema}/${pom.name}-data.xml">
+      <attainGoal name="torque:datasql"/>
+    </u:available>
+
+    <u:available file="${turbine.plugin.src.schema}/turbine-security-data.xml">
+      <attainGoal name="turbine:security-datasql"/>
+    </u:available>
+  </goal>
+  <!-- ======================================================================== -->
+  <!-- turbine:sql                                                              -->
+  <!-- ======================================================================== -->
+
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- turbine:webapp                                                           -->
+  <!--                                                                          -->
+  <!-- While the normal "war:webapp" goal tries to do a reasonably good job     -->
+  <!-- to build a web application, this goal knows about all the pecularities   -->
+  <!-- when building a turbine webapplication. So you might prefer this goal    -->
+  <!-- (which actually uses war:webapp).                                        -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:webapp"
+    description="Generate a Turbine based Web application (war)"
+    prereqs="java:compile, war:webapp">
+
+    <j:set var="webapp.build" value="target/${pom.name}"/>
+    <j:set var="webapp.build.lib" value="target/${pom.name}/WEB-INF/lib"/>
+    <j:set var="webapp.build.classes" value="target/${pom.name}/WEB-INF/classes"/>
+    <j:set var="webapp.build.webinf" value="target/${pom.name}/WEB-INF"/>
+
+    <delete file="${maven.build.dir}/${pom.artifactId}.war" />
+
+    <war warfile="${maven.build.dir}/${pom.artifactId}.war"
+         webxml="${maven.war.webxml}">
+
+      <fileset dir="${webapp.build}">
+        <exclude name="WEB-INF/lib/**"/>
+        <exclude name="WEB-INF/web.xml"/>
+      </fileset>
+
+      <lib dir="${webapp.build.lib}"/>
+
+      <classes dir="${webapp.build.classes}">
+        <include name="${maven.war.classes.includes}" />
+        <exclude name="${maven.war.classes.excludes}" />
+      </classes>
+
+      <metainf dir="${basedir}">
+        <include name="LICENSE.txt"/>
+      </metainf>
+
+      <manifest>
+        <attribute name="Built-By" value="${user.name}" />
+        <section name="${pom.package}">
+          <attribute name="Specification-Title" value="${pom.artifactId}" />
+          <attribute name="Specification-Version"
+                     value="${pom.currentVersion}" />
+          <attribute name="Specification-Vendor"
+                     value="${pom.organization.name}" />
+          <attribute name="Implementation-Title"
+                     value="${pom.package}" />
+          <attribute name="Implementation-Version"
+                     value="${pom.currentVersion}" />
+          <attribute name="Implementation-Vendor"
+                     value="${pom.organization.name}" />
+          <attribute name="Build-Jdk"
+                     value="${java.version}"/>
+        </section>
+      </manifest>
+    </war>
+
+  </goal>
+  <!-- ======================================================================== -->
+  <!-- turbine:webapp                                                           -->
+  <!-- ======================================================================== -->
+
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- turbine:deploy                                                           -->
+  <!--                                                                          -->
+  <!-- For Debugging purposes it is nice to be able to copy a Turbine           -->
+  <!-- application directly into an existing Web Container. This target         -->
+  <!-- allows direct container installation                                     -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:deploy"
+    description="Deploys the Application into a local web container for testing"
+    prereqs="java:jar, turbine:check-runtime-environment">
+
+    <echo>Located Application Server at ${maven.appserver.home}</echo>
+
+    <j:set var="appserver.target.dir" 
+             value="${maven.appserver.home}/webapps/${pom.name}" />
+
+    <attainGoal name="java:jar"/>
+
+    <delete file="${maven.build.dir}/${pom.artifactId}.war" />
+
+    <mkdir dir="${appserver.target.dir}/WEB-INF/lib" />
+    <mkdir dir="${appserver.target.dir}/WEB-INF/conf" />
+    <mkdir dir="${appserver.target.dir}/WEB-INF/classes" />
+    <mkdir dir="${appserver.target.dir}/logs" />
+    <mkdir dir="${appserver.target.dir}/templates" />
+
+    <j:forEach var="dep" items="${pom.dependencies}">
+      <j:if test="${dep.getProperty('war.bundle')=='true'}">
+        <copy todir="${appserver.target.dir}/WEB-INF/lib"
+          file="${maven.repo.local}/${dep.getArtifactDirectory()}/jars/${dep.getArtifact()}"/>
+      </j:if>  
+    </j:forEach>            
+
+    <copy todir="${appserver.target.dir}/WEB-INF/classes">
+      <fileset dir="${maven.build.dest}"/>
+    </copy>
+
+    <copy todir="${appserver.target.dir}/templates">
+      <fileset dir="${turbine.plugin.src.templates}"/>
+    </copy>
+
+    <copy todir="${appserver.target.dir}/scripts">
+      <fileset dir="src/scripts"/>
+    </copy>
+
+    <copy todir="${appserver.target.dir}/style">
+      <fileset dir="src/style"/>
+    </copy>
+
+    <copy todir="${appserver.target.dir}/images">
+      <fileset dir="src/images"/>
+    </copy>
+
+    <copy todir="${appserver.target.dir}/WEB-INF/conf" flatten="true" includeEmptyDirs="no">
+     <fileset dir="${turbine.plugin.src.conf}">
+        <exclude name="${pom.name}-web.xml"/>
+      </fileset>
+    </copy>
+
+    <copy file="${maven.war.webxml}"
+      tofile="${appserver.target.dir}/WEB-INF/web.xml"/>
+  </goal>
+  <!-- ======================================================================== -->
+  <!-- turbine:deploy                                                           -->
+  <!-- ======================================================================== -->
+  
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- turbine:inplace                                                          -->
+  <!--                                                                          -->
+  <!-- For Debugging purposes some people like to run the webapp out of the     -->
+  <!-- /src/webapp directory so you don't have to install the app.  This does   -->
+  <!-- is typically done by telling Tomcat that the webapp base is /src/webapp  -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->  
+  <goal name="turbine:inplace" description="Builds an inplace exploded Turbine webapp">
+
+     <j:set var="warWebappBuildDir"
+        value="${maven.src.dir}/webapp"/>    
+     <echo message="war dir:${warBuildDir}"/>
+     <j:set var="maven.war.webapp.dir" value="${warWebappBuildDir}"/>
+     <j:set var="maven.war.build.dir" value="${warWebappBuildDir}"/>
+
+     <ant:property name="maven.test.skip" value="true"/>
+     <ant:property name="maven.war.webapp.dir" value="${warWebappBuildDir}"/>
+     <ant:property name="maven.war.build.dir" value="${warWebappBuildDir}"/>
+     <attainGoal name="eclipse"/>
+     <attainGoal name="war:webapp"/>
+     
+   </goal>
+  <!-- ======================================================================== -->
+  <!-- turbine:inplace                                                          -->
+  <!-- ======================================================================== -->
+  
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- turbine:inplace-clean                                                    -->
+  <!--                                                                          -->
+  <!-- Cleanup inplace generated artifacts.                                     -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->     
+   <goal 
+     name="turbine:inplace-clean" 
+     description="Cleans an inplace exploded Turbine webapp">
+
+     <j:set var="warWebappBuildDir"
+        value="${maven.src.dir}/webapp"/>    
+     <echo message="war dir:${warBuildDir}"/>
+     <j:set var="maven.war.webapp.dir" value="${warWebappBuildDir}"/>
+     <j:set var="maven.war.build.dir" value="${warWebappBuildDir}"/>
+
+     <ant:property name="maven.test.skip" value="true"/>
+     <ant:property name="maven.war.webapp.dir" value="${warWebappBuildDir}"/>
+     <ant:property name="maven.war.build.dir" value="${warWebappBuildDir}"/>
+     
+     <ant:delete dir="${warWebappBuildDir}/WEB-INF/lib"/>
+     <ant:delete dir="${warWebappBuildDir}/WEB-INF/classes"/>
+     <attainGoal name="clean"/>
+     
+     
+   </goal>    
+  <!-- ======================================================================== -->
+  <!-- turbine:inplace-clean                                                    -->
+  <!-- ======================================================================== -->
+
+<!-- ======================================================================== -->
+<!--                                                                          -->
+<!-- Callback goals for use from the application maven.xml file. These goals  -->
+<!-- are normally called when maven processes another target and plug the     -->
+<!-- Turbine build system into other plugins.                                 -->
+<!--                                                                          -->
+<!-- ======================================================================== -->
+
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- java:compile                                                             -->
+  <!--                                                                          -->
+  <!-- This moves the source tree around and calls the torque:om goal if        -->
+  <!-- nececssary to merge all the source files before compilation.             -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:java-compile"
+    description="Prepare source tree for compilation"
+    prereqs="turbine:om-check">
+
+    <path id="maven.compile.src.set">
+      <pathelement location="${pom.build.SourceDirectory}"/>
+    </path>
+
+    <copy todir="${pom.build.SourceDirectory}" filtering="no">
+      <fileset dir="${turbine.plugin.src.java}"/>
+    </copy>
+
+    <j:if test="${turbineInternalOmUpToDate != 'true'}">
+      <echo>Building OM Source files from Schema ...</echo>
+      <attainGoal name="torque:om"/>
+    </j:if>
+
+    <property name="sourcesPresent" value="true"/>
+  </goal>
+  <!-- ======================================================================== -->
+  <!-- java:compile                                                             -->
+  <!-- ======================================================================== -->
+
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- torque:init                                                              -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:torque-init" prereqs="turbine:copy-om"/>
+  <!-- ======================================================================== -->
+  <!-- torque:init                                                              -->
+  <!-- ======================================================================== -->
+
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- torque:insert-sql                                                        -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:torque-insert-sql" prereqs="turbine:sql"/>
+  <!-- ======================================================================== -->
+  <!-- torque:insert-sql                                                        -->
+  <!-- ======================================================================== -->
+
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- torque:datasql                                                           -->
+  <!--                                                                          -->
+  <!-- Before running datasql, copy the data files from the source              -->
+  <!-- into the build tree                                                      -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:torque-datasql">
+    <copy filtering="no"
+      todir="${torque.schema.dir}">
+      <fileset dir="${turbine.plugin.src.schema}">
+        <patternset includes = "*-data.xml"/>
+        <patternset includes = "*-data.dtd"/>
+      </fileset>
+    </copy>
+  </goal>
+  <!-- ======================================================================== -->
+  <!-- torque:datasql                                                           -->
+  <!-- ======================================================================== -->
+
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- torque:datadtd                                                           -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:torque-datadtd" prereqs="turbine:copy-om"/>
+  <!-- ======================================================================== -->
+  <!-- torque:datadtd                                                           -->
+  <!-- ======================================================================== -->
+
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- war:webapp                                                               -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:war-webapp">
+    <j:set var="webapp.build" value="target/${pom.name}"/>
+    <j:set var="webapp.build.lib" value="target/${pom.name}/WEB-INF/lib"/>
+    <j:set var="webapp.build.classes" value="target/${pom.name}/WEB-INF/classes"/>
+    <j:set var="webapp.build.webinf" value="target/${pom.name}/WEB-INF"/>
+
+   <mkdir dir="${turbine.plugin.src.templates}"/>
+   <copy todir="${webapp.build}/templates" includeEmptyDirs="no">
+     <fileset dir="${turbine.plugin.src.templates}"/>
+   </copy>
+
+   <mkdir dir="${webapp.build}/scripts"/>
+   <copy todir="${webapp.build}/scripts" includeEmptyDirs="no">
+     <fileset dir="src/scripts"/>
+   </copy>
+
+   <mkdir dir="${webapp.build}/style"/>
+   <copy todir="${webapp.build}/style" includeEmptyDirs="no">
+     <fileset dir="src/style"/>
+   </copy>
+
+   <mkdir dir="${webapp.build}/images"/>
+   <copy todir="${webapp.build}/images" includeEmptyDirs="no">
+     <fileset dir="src/images"/>
+   </copy>
+
+   <copy todir="${webapp.build.webinf}/conf" flatten="true" includeEmptyDirs="no">
+     <fileset dir="${turbine.plugin.src.conf}">
+       <exclude name="**/${pom.name}-web.xml"/>
+     </fileset>
+   </copy>
+  </goal>
+  <!-- ======================================================================== -->
+  <!-- war:webapp                                                               -->
+  <!-- ======================================================================== -->
+
+<!-- ======================================================================== -->
+<!--                                                                          -->
+<!-- Private goals                                                            -->
+<!--                                                                          -->
+<!-- ======================================================================== -->
+
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- turbine:init                                                             -->
+  <!--                                                                          -->
+  <!-- Setup the Plugin. Create necessary taglibs, load configuration           -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:init">
+    <define:taglib uri="http://jakarta.apache.org/turbine/meta/taglib">
+      <define:tag name="requiredPropertyMissing">
+        <fail>
+ --------------------------------------------------------------------------
+ | Plugin Configuration Error                                             |
+ --------------------------------------------------------------------------
+
+  A required property is missing a value.
+
+  Property name: ${propname}
+
+  Errors must be corrected before using this plugin.
+
+ --------------------------------------------------------------------------
+        </fail>
+      </define:tag>
+    </define:taglib>
+  </goal>
+
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- turbine:check-environment                                                -->
+  <!--                                                                          -->
+  <!-- Check runtime and setup environment to be correctly configured           -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:check-runtime-environment"
+    prereqs="turbine:init">
+    <j:if test="${context.getVariable('maven.appserver.name') == null}">
+      <meta:requiredPropertyMissing propname="maven.appserver.name" />
+    </j:if>
+  </goal>
+
+  <goal name="turbine:check-setup-environment"
+    prereqs="turbine:init, turbine:check-runtime-environment">
+    <j:if test="${context.getVariable('turbine.app.name') == ''}">
+      <meta:requiredPropertyMissing propname="turbine.app.name" />
+    </j:if>
+  </goal>
+  <!-- ======================================================================== -->
+  <!-- turbine:check-environment                                                -->
+  <!-- ======================================================================== -->
+
+  <!-- ================================================================== -->
+  <!--                                                                    -->
+  <!-- turbine:copy-om                                                    -->
+  <!--                                                                    -->
+  <!-- Prepare the XML files for building the OM peer classes             -->
+  <!--                                                                    -->
+  <!-- ================================================================== -->
+  <goal name="turbine:copy-om"
+     prereqs="turbine:copy-security-om, turbine:copy-app-om, turbine:copy-id-table-om, turbine:copy-data-dtd">
+  </goal>
+
+  <!-- ================================================================== -->
+  <!--                                                                    -->
+  <!-- turbine:copy-security-om                                           -->
+  <!--                                                                    -->
+  <!-- Set up the Turbine Security Service Tables                         -->
+  <!--                                                                    -->
+  <!-- ================================================================== -->
+  <goal name="turbine:copy-security-om">
+    <j:if test="${turbineInternalSecurityUpToDate != 'true'}">
+      <filter token="DATABASE_DEFAULT" value="${turbine.app.om.security.name}"/>
+      <filter token="DATABASE_PACKAGE" value="${turbine.app.om.security.package}"/>
+      <copy filtering="yes" overwrite="yes"
+        file="${turbine.plugin.src.schema}/turbine-security-schema.xml"
+        tofile="${torque.schema.dir}/turbine-security-schema.xml"/>
+        <j:set var="turbineInternalSecurityUpToDate" value="true" />
+    </j:if>
+  </goal>
+
+  <!-- ================================================================== -->
+  <!--                                                                    -->
+  <!-- turbine:copy-app-om                                                -->
+  <!--                                                                    -->
+  <!-- Set up the application specific database tables                    -->
+  <!--                                                                    -->
+  <!-- ================================================================== -->
+  <goal name="turbine:copy-app-om">
+    <j:if test="${turbineInternalAppUpToDate != 'true'}">
+      <filter token="DATABASE_DEFAULT" value="${turbine.app.om.name}"/>
+      <filter token="DATABASE_PACKAGE" value="${turbine.app.om.package}"/>
+      <copy filtering="yes" overwrite="yes"
+        file="${turbine.plugin.src.schema}/${turbine.app.name}-schema.xml"
+        tofile="${torque.schema.dir}/${turbine.app.name}-schema.xml"/>
+      <j:set var="turbineInternalAppUpToDate" value="true" />
+    </j:if>
+  </goal>
+
+  <!-- ================================================================== -->
+  <!--                                                                    -->
+  <!-- turbine:copy-id-table-om                                           -->
+  <!--                                                                    -->
+  <!-- Set up the Torque ID Broker Table                                  -->
+  <!--                                                                    -->
+  <!-- ================================================================== -->
+  <goal name="turbine:copy-id-table-om">
+    <j:if test="${turbineInternalIdTableUpToDate != 'true'}">
+      <filter token="DATABASE_DEFAULT" value="${turbine.app.om.name}"/>
+      <filter token="DATABASE_PACKAGE" value="${turbine.app.om.package}"/>
+      <copy filtering="yes" overwrite="yes"
+        file="${turbine.plugin.src.schema}/id-table-schema.xml"
+        tofile="${torque.schema.dir}/${pom.name}-id-table-schema.xml"/>
+
+      <!-- If we have different data source for Application and Security, we must
+           also set up two ID Table XML files 
+      -->
+      <j:set var="securityOmName" value="${turbine.app.om.security.name}"/>
+      <j:set var="omName" value="${turbine.app.om.name}"/>
+      <j:if test="${!omName.equals(securityOmName)}">
+        <filter token="DATABASE_DEFAULT" value="${turbine.app.om.security.name}"/>
+        <filter token="DATABASE_PACKAGE" value="${turbine.app.om.security.package}"/>
+        <copy filtering="yes" overwrite="yes"
+          file="${turbine.plugin.src.schema}/id-table-schema.xml"
+          tofile="${torque.schema.dir}/security-id-table-schema.xml"/>
+      </j:if>
+      <j:set var="turbineInternalIdTableUpToDate" value="true" />
+    </j:if>
+  </goal>
+
+  <!-- ================================================================== -->
+  <!--                                                                    -->
+  <!-- turbine:copy-data-dtd                                              -->
+  <!--                                                                    -->
+  <!-- Set up the Torque ID Broker Table                                  -->
+  <!--                                                                    -->
+  <!-- ================================================================== -->
+  <goal name="turbine:copy-data-dtd">
+    <j:if test="${turbineInternalDataDTDUpToDate != 'true'}">
+      <copy overwrite="true"
+        todir="${torque.schema.dir}">
+        <fileset dir="${turbine.plugin.src.schema}">
+          <patternset includes = "*-data.dtd"/>
+        </fileset>
+      </copy>
+      <j:set var="turbineInternalDataDTDUpToDate" value="true" />
+    </j:if>
+  </goal>
+  <!-- ================================================================== -->
+  <!-- turbine:copy-om                                                    -->
+  <!-- ================================================================== -->
+
+  <!-- ================================================================== -->
+  <!-- turbine:om-check                                                   -->
+  <!--                                                                    -->
+  <!-- Lifted from the torque plugin. We cannot use torque:om-check       -->
+  <!-- directly because this would call torque:init which in turn then    -->
+  <!-- calls the preGoal above which copies the schema files to the       -->
+  <!-- target/xml directory and the test would be false all the time.     -->
+  <!--                                                                    -->
+  <!-- If we set overwrite to "no" so that the files are kept then        -->
+  <!-- changes in the schema files would not be propagated unless the     -->
+  <!-- target/xml directory is cleaned out manually. So we prefer to      -->
+  <!-- keep our own test target around.                                   -->
+  <!--                                                                    -->
+  <!-- ================================================================== -->
+
+<goal name="turbine:om-check">
+    <j:choose>
+      <j:when test="${torque.runOnlyOnSchemaChange}">
+        <uptodate
+          property="turbineInternalOmUpToDate"
+          targetfile="${torque.java.dir}/report.${torque.project}.om.generation">
+          <srcfiles dir="${turbine.plugin.src.schema}" includes="**/*-schema.xml" />
+        </uptodate>
+      </j:when>
+      <j:otherwise>
+        <j:set var="turbineInternalOmUpToDate" value="false"/>
+      </j:otherwise>
+    </j:choose>
+ 
+  </goal>
+  <!-- ================================================================== -->
+  <!-- turbine:om-check                                                   -->
+  <!-- ================================================================== -->
+
+
+  <!-- ================================================================== -->
+  <!-- turbine:security-datasql                                           -->
+  <!--                                                                    -->
+  <!-- Insert Data file for the Torque based security objects.            -->
+  <!--                                                                    -->
+  <!-- ================================================================== -->
+  <goal name="turbine:security-datasql"
+    prereqs="torque:init">
+
+    <torque-data-sql
+      contextProperties="${torque.contextProperties}"
+      controlTemplate="${torque.template.dataSql}"
+      dataDTD="${torque.schema.dir}/turbine-security-data.dtd"
+      dataXmlFile="${torque.schema.dir}/turbine-security-data.xml"
+      outputDirectory="${torque.sql.dir}"
+      outputFile="turbine-security-data.sql"
+      sqldbmap="${torque.sql.dir}/sqldb.map"
+      targetDatabase="${torque.database}"
+      templatePath="${torque.templatePath}"
+      useClasspath="${torque.useClasspath}"
+      xmlFile="${torque.schema.dir}/turbine-security-schema.xml"
+    />
+  </goal>
+  <!-- ================================================================== -->
+  <!-- turbine:security-datasql                                           -->
+  <!-- ================================================================== -->
+
+  <!-- ================================================================== -->
+  <!-- turbine:security-datadtd                                           -->
+  <!--                                                                    -->
+  <!-- Generate a DTD for the Torque based Turbine security objects.      -->
+  <!--                                                                    -->
+  <!-- ================================================================== -->
+  <goal name="turbine:security-datadtd"
+    prereqs="torque:init">
+
+    <torque-data-model
+      contextProperties="${torque.contextProperties}"
+      controlTemplate="${torque.template.dataDtd}"
+      outputDirectory="${torque.output.dir}"
+      outputFile="report.turbine-security.datadtd.generation"
+      templatePath="${torque.templatePath}"
+      useClasspath="${torque.useClasspath}"
+      xmlFile="${torque.schema.dir}/turbine-security-schema.xml"
+    />
+  </goal>
+  <!-- ================================================================== -->
+  <!-- turbine:security-datadtd                                           -->
+  <!-- ================================================================== -->
+
+</project>

@@ -1,0 +1,36 @@
+Todo:
+
+Dependency Listen von Turbine und Torque sollten irgendwie automatisch
+gelesen und verarbeitet werden. Würde den Setup sehr erleichtern.
+
+Die Dependency Listen sollten dann auch automatisch in das project.xml
+der neuen Applikation gepackt werden.
+
+Die Dateien in "dependencies" dienen zur Erzeugung dieser Jar-Listen.
+
+Sie werden eingelesen (Turbine-2.3, Torque-3.0.1 sind Default, dazu
+kommt META und der jeweilige JDBC Treiber) und dann verarbeitet.
+
+Directory Struktur:
+
+-+- / ---- README, project.xml um das Plugin selbst zu erzeugen
+ |
+ +-- dependencies --- dependency XML Fragmente fuer Turbine usw.
+ |
+ + -- src
+       |
+       +---- plugin --- Dateien, die in die Wurzel des Plugins kopiert
+       |                werden:  plugin.jelly
+       |                         plugin.properties
+       |                         project.properties
+       |                         project.xml
+       |
+       +---- plugin-resources --- Dateien, die nach plugin-resources 
+                |                 kopiert werden
+                |
+                +--- maven ------ Setup fuer Maven (-> Root der Applikation)
+
+Folgende XML Files muessen noch gecheckt werden:
+
+- Intake (Leeres File? Leere Gruppe? (geht nicht))
+- Torque-Data mit Insert (leeres File)

@@ -1,16 +1,16 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 
 <!-- ======================================================================== -->
 <!--                                                                          -->
-<!--  maven Buildfile                                                         -->
+<!--  Default Intake file for Turbine Skeleton                                -->
 <!--                                                                          -->
-<!-- $Id$ -->
+<!-- $Id$   -->
 <!--                                                                          -->
 <!-- ======================================================================== -->
 
-<project
-  default="plugin:deploy"
-  xmlns:j="jelly:core"
-  xmlns:u="jelly:util"
-  xmlns:m="maven"/>
+<!DOCTYPE input-data PUBLIC "JAKARTA//TURBINE intake.dtd//EN"
+                                        "http://jakarta.apache.org/turbine/dtd/intake_2_3.dtd">
 
+<input-data>
+  <group name="dummy" key="dummy"/>
+</input-data>
