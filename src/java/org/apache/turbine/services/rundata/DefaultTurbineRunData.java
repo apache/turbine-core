@@ -344,7 +344,7 @@ public class DefaultTurbineRunData
      * This changed from earlier Turbine versions that you can
      * rely on getDefaultLocale() to never return null.
      *
-     * @return A Locale object. 
+     * @return A Locale object.
      */
     protected static Locale getDefaultLocale()
     {
@@ -961,6 +961,7 @@ public class DefaultTurbineRunData
      */
     public void setUser(User user)
     {
+        log.debug("user set: " + user.getUserName());
         this.user = user;
     }
 
@@ -1066,7 +1067,7 @@ public class DefaultTurbineRunData
      */
     public String getCharSet()
     {
-      
+
         log.debug("getCharSet()");
 
         if (StringUtils.isEmpty(charSet))
