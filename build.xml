@@ -7,10 +7,10 @@
     <!-- Give user a chance to override without editing this file
          (and without typing -D each time they invoke a target) -->
     <property file="${user.home}/build.properties" />
-    <property file=".ant.properties" />
+    <property file="build.properties" />
 
     <!-- Set default values for the build -->
-    <property file="build.properties" />
+    <property file="default.properties" />
 
     <!-- Construct compile classpath -->
     <path id="classpath">
@@ -65,6 +65,10 @@
                    classname="junit.framework.TestCase">
             <classpath refid="classpath"/>
         </available>
+        <available property="webmacro.present"
+                   classname="org.webmacro.WebMacro">
+            <classpath refid="classpath"/>
+        </available>
         <available property="freemarker.present"
                    classname="freemarker.template.Template">
             <classpath refid="classpath"/>
@@ -98,6 +102,8 @@
                 <exclude name="**/jsp/**"/>
                 <exclude name="**/*FreeMarker*.java"/>
                 <exclude name="**/freemarker/**"/>
+                <exclude name="**/*WebMacro*.java"/>
+                <exclude name="**/webmacro/**"/>
                 <exclude name="**/assemblerbroker/util/python/*.java"/>
                 <exclude name="**/samples/newtorque/input/**/*.java"/>
                 <exclude name="**/*Test.java"/>
@@ -118,6 +124,19 @@
             <fileset dir="${src.java.dir}/org">
                 <include name="**/*Jsp*.java"/>
                 <include name="**/jsp/**"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Adds Webmacro related files to the build directory                 -->
+    <!-- ================================================================== -->
+    <target name="prepare-webmacro" depends="prepare"
+        if="webmacro.present">
+        <copy todir="${build.src}/org" filtering="yes">
+            <fileset dir="${src.java.dir}/org">
+                <include name="**/*WebMacro*.java"/>
+                <include name="**/webmacro/**"/>
             </fileset>
         </copy>
     </target>
@@ -185,7 +204,7 @@
     <!-- ================================================================== -->
     <target name="compile"
             depends="prepare, prepare-jsp, prepare-freemarker,
-                     prepare-log4java, prepare-castor"
+                     prepare-webmacro, prepare-log4java, prepare-castor"
             description="--> compiles the source code">
         <javac srcdir="${build.src}"
             destdir="${build.dest}"
