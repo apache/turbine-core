@@ -90,8 +90,10 @@
 
     <echo>Building Turbine Skeleton for ${turbine.app.name} application
           Flavor:         ${turbine.app.flavor}
+          Mode:           ${turbine.plugin.mode}
           Package:        ${turbine.app.package}
           Database:       ${turbine.app.database}
+
           Root Directory: ${turbine.plugin.root.dir} 
           Base Directory: ${turbine.plugin.base.dir}
           web.xml:        ${maven.war.webxml}
@@ -714,7 +716,7 @@
      </j:when>
      <j:when test="${pluginMode.equalsIgnoreCase('inplace')}">
        <j:if test="${context.getVariable('turbine.plugin.inplace.dir') == null || context.getVariable('turbine.plugin.inplace.dir') == ''}">
-         <meta:requiredPropertyMissing propname="turbine.plugin.inplace.dir" />
+         <j:set var="turbine.plugin.inplace.dir" value="." />
        </j:if>
      </j:when>
    </j:choose>
