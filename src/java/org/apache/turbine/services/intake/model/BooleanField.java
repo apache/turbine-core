@@ -116,6 +116,21 @@ public class BooleanField
     }
 
     /**
+     * Provides access to emptyValue such that the value returned will be 
+     * acceptable as an argument parameter to Method.invoke.  Subclasses
+     * that deal with primitive types should ensure that they return an 
+     * appropriate value wrapped in the object wrapper class for the 
+     * primitive type.
+     *   
+     * @return the value to use when the field is empty or an Object that
+     * wraps the empty value for primitive types.
+     */
+    Object getSafeEmptyValue()
+    {
+        return (null == getEmptyValue()) ? Boolean.FALSE : getEmptyValue(); 
+    }
+
+    /**
      * A suitable validator.
      *
      * @return class name of the validator
