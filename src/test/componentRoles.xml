@@ -1,7 +1,0 @@
-<!-- This configuration file for Avalon components is used for testing the TestComponent -->
-<role-list>
-    <role
-        name="org.apache.turbine.test.TestComponent"
-        shorthand="test"
-        default-class="org.apache.turbine.test.TestComponentImpl"/>
-</role-list>

@@ -1,2 +1,0 @@
-For some reason the build for Torque wants this.  Something in how the
-project inheritance sorts out postGoals.

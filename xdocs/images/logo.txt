@@ -1,7 +1,0 @@
-Logo Created By: David Watanabe <davew@exosci.com>
-
-The font is Arial Black (faux italic) at 80 pts.  The tracking is -60 except
-on the tight spots you noted ("tu","rb","ne") where it is -40.
-
-The glyph is a ~ (tilde) of the same font and style rotated 60 degrees
-thrice.
