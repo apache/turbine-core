@@ -241,6 +241,7 @@
             depends="prepare, prepare-jsp, prepare-freemarker, prepare-python,
                      prepare-webmacro, prepare-log4java, prepare-castor"
             description="--> compiles the source code">
+
         <javac srcdir="${build.src}"
             destdir="${build.dest}"
             excludes="**/package.html,**/*Test.java"

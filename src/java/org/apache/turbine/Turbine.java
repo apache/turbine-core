@@ -376,6 +376,9 @@ public class Turbine
         throws IOException,
                ServletException
     {
+        // set to true if the request is to be redirected by the page
+        boolean requestRedirected = false;
+
         // Placeholder for the RunData object.
         RunData data = null;
         try
@@ -584,46 +587,57 @@ public class Turbine
                     AccessControlList.SESSION_KEY);
             }
 
-            try
+            // handle a redirect request
+            requestRedirected = ((data.getRedirectURI() != null) 
+                && (data.getRedirectURI().length() > 0));
+            if (requestRedirected)
             {
-                if ( data.isPageSet() == false &&
-                     data.isOutSet() == false )
-                    throw new Exception ( "Nothing to output" );
-
-                // We are all done! if isPageSet() output that way
-                // otherwise, data.getOut() has already been written
-                // to the data.getOut().close() happens below in the
-                // finally.
-                if ( data.isPageSet() && data.isOutSet() == false )
+                if (data.getResponse().isCommitted())
                 {
-                    // Modules can override these.
-                    data.getResponse()
-                        .setLocale( data.getLocale() );
-                    data.getResponse()
-                        .setContentType( data.getContentType() );
-
-                    // Handle the case where a module may want to send
-                    // a redirect.
-                    if ( ( data.getStatusCode() == 301 ||
-                           data.getStatusCode() ==  302 ) &&
-                         data.getRedirectURI() != null )
-                    {
-                        data.getResponse()
-                            .sendRedirect ( data.getRedirectURI() );
-                    }
-
-                    // Set the status code.
-                    data.getResponse().setStatus ( data.getStatusCode() );
-                    // Output the Page.
-                    data.getPage().output (data.getOut());
+                    requestRedirected = false;
+                    log ("redirect requested, response already committed: " + 
+                         data.getRedirectURI());
+                }
+                else
+                {
+                    data.getResponse().sendRedirect(data.getRedirectURI());
                 }
             }
-            catch ( Exception e )
+
+            if (!requestRedirected)
             {
-                // The output stream was probably closed by the client
-                // end of things ie: the client clicked the Stop
-                // button on the browser, so ignore any errors that
-                // result.
+                try
+                {
+                    if ( data.isPageSet() == false &&
+                        data.isOutSet() == false )
+                        throw new Exception ( "Nothing to output" );
+
+                    // We are all done! if isPageSet() output that way
+                    // otherwise, data.getOut() has already been written
+                    // to the data.getOut().close() happens below in the
+                    // finally.
+                    if ( data.isPageSet() && data.isOutSet() == false )
+                    {
+                        // Modules can override these.
+                        data.getResponse()
+                            .setLocale( data.getLocale() );
+                        data.getResponse()
+                            .setContentType( data.getContentType() );
+
+                        // Set the status code.
+                        data.getResponse().setStatus ( data.getStatusCode() );
+                        // Output the Page.
+                        data.getPage().output (data.getOut());
+                    }
+                }
+                catch ( Exception e )
+                {
+                    // The output stream was probably closed by the client
+                    // end of things ie: the client clicked the Stop
+                    // button on the browser, so ignore any errors that
+                    // result.
+                    Log.debug("Output stream closed? ", e);
+                }
             }
         }
         catch ( Exception e )
@@ -637,13 +651,18 @@ public class Turbine
         finally
         {
             // Make sure to close the outputstream when we are done.
-            try
+            // Note: not for redirects, when we must not get a printwriter on 
+            // the response output stream.
+            if (!requestRedirected)
             {
-                data.getOut().close();
-            }
-            catch (Exception e)
-            {
-                // Ignore.
+                try
+                {
+                    data.getOut().close();
+                }
+                catch (Exception e)
+                {
+                    // Ignore.
+                }
             }
 
             // Return the used RunData to the factory for recycling.

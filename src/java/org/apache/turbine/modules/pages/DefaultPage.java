@@ -143,6 +143,9 @@ public class DefaultPage extends Page
             ActionLoader.getInstance().exec ( data, data.getAction() );
         }
 
+        // if a redirect was setup in data, don't do anything else
+        if ((data.getRedirectURI() != null) && (data.getRedirectURI().length() > 0)) return;
+
         // Set the default doctype from the value given in
         // TurbineResources.properties.
         setDefaultDoctype(data);
