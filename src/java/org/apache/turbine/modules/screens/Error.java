@@ -54,9 +54,6 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
-// Java Core Classes
-
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -92,10 +89,10 @@ public class Error extends Screen
 
         Table table = new Table().setBorder(0);
         boolean hasValues = false;
-        Enumeration keys = data.getParameters().keys();
-        while (keys.hasMoreElements())
+        for (Iterator it = data.getParameters().keySet().iterator();
+             it.hasNext();)
         {
-            String key = (String) keys.nextElement();
+            String key = (String) it.next();
             String value = data.getParameters().getString(key);
             TR tr =
                 new TR().addElement(
@@ -106,7 +103,7 @@ public class Error extends Screen
         }
 
         Table table2 = new Table().setBorder(0);
-        Map varDebug = data.getVarDebug();
+        Map varDebug = data.getDebugVariables();
 
         boolean hasValues2 = false;
         for (Iterator i = varDebug.keySet().iterator(); i.hasNext();)

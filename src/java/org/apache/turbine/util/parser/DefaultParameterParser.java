@@ -58,6 +58,7 @@ import java.net.URLDecoder;
 
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -277,9 +278,9 @@ public class DefaultParameterParser
         if (log.isDebugEnabled())
         {
             log.debug("Parameters found in the Request:");
-            for (Enumeration e = keys(); e.hasMoreElements(); )
+            for (Iterator it = keySet().iterator(); it.hasNext();)
             {
-                String key = (String) e.nextElement();
+                String key = (String) it.next();
                 log.debug("Key: " + key + " -> " + getString(key));
             }
         }

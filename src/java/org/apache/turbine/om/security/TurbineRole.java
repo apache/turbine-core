@@ -213,7 +213,7 @@ public class TurbineRole extends SecurityObject implements Role
     public void grant(PermissionSet permissionSet)
             throws TurbineSecurityException
     {
-        for(Iterator permissions = permissionSet.elements(); permissions.hasNext();)
+        for (Iterator permissions = permissionSet.iterator(); permissions.hasNext();)
         {
             TurbineSecurity.grant(this, (Permission) permissions.next());
         }
@@ -242,7 +242,7 @@ public class TurbineRole extends SecurityObject implements Role
     public void revoke(PermissionSet permissionSet)
             throws TurbineSecurityException
     {
-        for(Iterator permissions = permissionSet.elements(); permissions.hasNext();)
+        for (Iterator permissions = permissionSet.iterator(); permissions.hasNext();)
         {
             TurbineSecurity.revoke(this, (Permission) permissions.next());
         }

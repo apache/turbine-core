@@ -171,7 +171,7 @@ public class GroupPeer extends BasePeer
             // Populate the object(s).
             for (int i = 0; i < rows.size(); i++)
             {
-                Group obj = TurbineSecurity.getNewGroup(null);
+                Group obj = TurbineSecurity.getGroupInstance(null);
                 Record row = (Record) rows.get(i);
                 ((SecurityObject) obj).setPrimaryKey(
                         new NumberKey(row.getValue(1).asInt()));

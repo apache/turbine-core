@@ -212,7 +212,7 @@ public class TurbineAccessControlList
         {
             return false;
         }
-        for (Iterator groups = groupset.elements(); groups.hasNext();)
+        for (Iterator groups = groupset.iterator(); groups.hasNext();)
         {
             Group group = (Group) groups.next();
             RoleSet roles = getRoles(group);
@@ -271,7 +271,7 @@ public class TurbineAccessControlList
         {
             return false;
         }
-        for (Iterator groups = groupset.elements(); groups.hasNext();)
+        for (Iterator groups = groupset.iterator(); groups.hasNext();)
         {
             Group group = (Group) groups.next();
             RoleSet roles = getRoles(group);
@@ -347,7 +347,7 @@ public class TurbineAccessControlList
         {
             return false;
         }
-        for (Iterator groups = groupset.elements(); groups.hasNext();)
+        for (Iterator groups = groupset.iterator(); groups.hasNext();)
         {
             Group group = (Group) groups.next();
             PermissionSet permissions = getPermissions(group);
@@ -426,7 +426,7 @@ public class TurbineAccessControlList
         {
             return false;
         }
-        for (Iterator groups = groupset.elements(); groups.hasNext();)
+        for (Iterator groups = groupset.iterator(); groups.hasNext();)
         {
             Group group = (Group) groups.next();
             PermissionSet permissions = getPermissions(group);

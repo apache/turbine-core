@@ -55,7 +55,7 @@ package org.apache.turbine.modules;
  */
 
 import java.lang.reflect.Method;
-import java.util.Enumeration;
+import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -167,9 +167,9 @@ public abstract class ActionEvent extends Action
         String button = pp.convert(BUTTON);
 
         // Loop through and find the button.
-        for (Enumeration e = pp.keys(); e.hasMoreElements();)
+        for (Iterator it = pp.keySet().iterator(); it.hasNext();)
         {
-            String key = (String) e.nextElement();
+            String key = (String) it.next();
             if (key.startsWith(button))
             {
                 theButton = formatString(key);
