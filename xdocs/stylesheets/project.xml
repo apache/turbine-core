@@ -12,6 +12,7 @@
       <item name="Specification"         href="/fsd.html"/>
       <item name="Getting Started"       href="/getting-started.html"/>
       <item name="Further Reading"       href="/further-reading.html"/>
+      <item name="Changes"               href="/changes.html"/>
     </menu>
     
     <menu name="Documentation">
@@ -27,7 +28,8 @@
       <item name="Action Events Howto"    href="/howto/action-event-howto.html"/>
       <item name="Criteria Howto"         href="/howto/criteria-howto.html"/>
       <item name="JBoss Howto"            href="/howto/jboss-howto.html"/>
-      <item name="JSP Howto"              href="/howto/jsp-howto.html"/>        
+      <item name="JSP Howto"              href="/howto/jsp-howto.html"/>
+      <item name="MS SQL Server Howto"    href="/howto/mssql-howto.html"/>
       <item name="Oracle 8i Howto"        href="/howto/oracle-howto.html"/>
       <item name="Peers Howto"            href="/howto/peers-howto.html"/>
       <item name="Postgres Howto"         href="/howto/postgres-howto.html"/>
@@ -35,13 +37,14 @@
       <item name="Security Howto"         href="/howto/security-howto.html"/>
       <item name="Sybase Howto"           href="/howto/sybase-howto.html"/>
       <item name="Torque Howto"           href="/howto/torque-howto.html"/>
+      <item name="Torque Schema Ref"      href="/howto/torque-schema-ref.html"/>
+      <item name="URL rewriting Howto"    href="/howto/url-rewriting-howto.html"/>
       <item name="Velocity Site Howto"    href="/howto/velocity-site-howto.html"/>
       <item name="Velocity Context Howto" href="/howto/context-howto.html"/>
       <item name="Webmacro Site Howto"    href="/howto/webmacro-site-howto.html"/>
     </menu>
 
     <menu name="Development">
-      <item name="Changes"               href="/changes.html"/>
       <item name="DB Adapters"           href="/db-adapters.html"/>
       <item name="Project Map"           href="/project-map.html"/>
       <item name="Proposals"             href="/proposals.html"/>
