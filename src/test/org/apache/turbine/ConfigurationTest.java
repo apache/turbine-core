@@ -97,10 +97,10 @@ public class ConfigurationTest
          
            Configuration configuration = Turbine.getConfiguration();
             assertNotNull("No Configuration Object found!", configuration);
-            assertTrue("Make sure we have values", !configuration.isEmpty());
-           
-           // overridden value
-           String key = "module.cache";
+            assertFalse("Make sure we have values", configuration.isEmpty());
+            
+            // overridden value
+            String key = "module.cache";
             assertEquals("Read a config value " + key + ", received:" + configuration.getString(key),
                     "true", configuration.getString(key));
            
@@ -129,8 +129,8 @@ public class ConfigurationTest
             
             Configuration configuration = Turbine.getConfiguration();
             assertNotNull("No Configuration Object found!", configuration);
-            assertTrue("Make sure we have values", !configuration.isEmpty());
-       
+            assertFalse("Make sure we have values", configuration.isEmpty());
+            
             String key = "scheduledjob.cache.size";
             assertEquals("Read a config value " + key + ", received:" + configuration.getString(key),
                     "10", configuration.getString(key));
