@@ -54,7 +54,6 @@ package org.apache.turbine.services.xmlrpc;
  * <http://www.apache.org/>.
  */
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -74,7 +73,6 @@ import org.apache.turbine.util.TurbineException;
 import org.apache.xmlrpc.WebServer;
 import org.apache.xmlrpc.XmlRpc;
 import org.apache.xmlrpc.XmlRpcClient;
-import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcServer;
 import org.apache.xmlrpc.secure.SecureWebServer;
 
@@ -150,27 +148,30 @@ public class TurbineXmlRpcService
             // setup JSSE System properties from secure.server.options
             Configuration secureServerOptions =
                     getConfiguration().subset("secure.server.option");
-            setSystemPropertiesFromConfiguration(secureServerOptions);
+            if (secureServerOptions != null)
+            {
+                setSystemPropertiesFromConfiguration(secureServerOptions);
+            }
 
             // Host and port information for the WebServer
             String addr = getConfiguration().getString("address", "0.0.0.0");
             port = getConfiguration().getInt("port", 0);
 
-            if(port != 0)
+            if (port != 0)
             {
-                if(addr != null && addr.length() > 0)
+                if (addr != null && addr.length() > 0)
                 {
                     try
                     {
                         address = InetAddress.getByName(addr);
                     }
-                    catch(UnknownHostException useDefault)
+                    catch (UnknownHostException useDefault)
                     {
                         address = null;
                     }
                 }
 
-                if(getConfiguration().getBoolean("secure.server", false))
+                if (getConfiguration().getBoolean("secure.server", false))
                 {
                     webserver = new SecureWebServer(port, address);
                 }
@@ -200,7 +201,7 @@ public class TurbineXmlRpcService
              */
             boolean stateOfParanoia = getConfiguration().getBoolean("paranoid", false);
 
-            if(stateOfParanoia)
+            if (stateOfParanoia)
             {
                 webserver.setParanoid(stateOfParanoia);
                 log.info(XmlRpcService.SERVICE_NAME +
@@ -223,7 +224,7 @@ public class TurbineXmlRpcService
                 {
                     String acceptClient = (String) acceptedClients.get(i);
 
-                    if(acceptClient != null && !acceptClient.equals(""))
+                    if (acceptClient != null && !acceptClient.equals(""))
                     {
                         webserver.acceptClient(acceptClient);
                         log.info(XmlRpcService.SERVICE_NAME +
@@ -242,7 +243,7 @@ public class TurbineXmlRpcService
                 {
                     String denyClient = (String) deniedClients.get(i);
 
-                    if(denyClient != null && !denyClient.equals(""))
+                    if (denyClient != null && !denyClient.equals(""))
                     {
                         webserver.denyClient(denyClient);
                         log.info(XmlRpcService.SERVICE_NAME +
@@ -258,7 +259,7 @@ public class TurbineXmlRpcService
                 isModernVersion = true;
                 webserver.start();
             }
-            catch(ClassNotFoundException ignored)
+            catch (ClassNotFoundException ignored)
             {
                 // XmlRpcRequest does not exist in versions 1.1 and lower.
                 // Assume that our WebServer was already started.
@@ -268,10 +269,11 @@ public class TurbineXmlRpcService
                     (isModernVersion ?
                     "greater than 1.1" : "1.1 or lower"));
         }
-        catch(Exception e)
+        catch (Exception e)
         {
-            throw new InitializationException
-                    ("XMLRPCService failed to initialize", e);
+            String errorMessage = "XMLRPCService failed to initialize";
+            log.error(errorMessage, e);
+            throw new InitializationException(errorMessage, e);
         }
 
         setInit(true);
@@ -296,7 +298,7 @@ public class TurbineXmlRpcService
      * @param configuration the Configuration defining the System
      * properties to be set
      */
-    void setSystemPropertiesFromConfiguration(Configuration configuration)
+    private void setSystemPropertiesFromConfiguration(Configuration configuration)
     {
         for(Iterator i = configuration.getKeys(); i.hasNext();)
         {
@@ -328,7 +330,7 @@ public class TurbineXmlRpcService
     public void registerHandler(String handlerName,
                                 Object handler)
     {
-        if(webserver != null)
+        if (webserver != null)
         {
             webserver.addHandler(handlerName, handler);
         }
@@ -353,7 +355,7 @@ public class TurbineXmlRpcService
         {
             Object handler = Class.forName(handlerClass).newInstance();
 
-            if(webserver != null)
+            if (webserver != null)
             {
                 webserver.addHandler(handlerName, handler);
             }
@@ -361,16 +363,16 @@ public class TurbineXmlRpcService
             server.addHandler(handlerName, handler);
         }
                 // those two errors must be passed to the VM
-        catch(ThreadDeath t)
+        catch (ThreadDeath t)
         {
             throw t;
         }
-        catch(OutOfMemoryError t)
+        catch (OutOfMemoryError t)
         {
             throw t;
         }
 
-        catch(Throwable t)
+        catch (Throwable t)
         {
             throw new TurbineException
                     ("Failed to instantiate " + handlerClass, t);
@@ -384,7 +386,7 @@ public class TurbineXmlRpcService
      */
     public void unregisterHandler(String handlerName)
     {
-        if(webserver != null)
+        if (webserver != null)
         {
             webserver.removeHandler(handlerName);
         }
@@ -448,7 +450,7 @@ public class TurbineXmlRpcService
             XmlRpcClient client = new XmlRpcClient(url);
             return client.execute(methodName, params);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             throw new TurbineException("XML-RPC call failed", e);
         }
@@ -481,7 +483,7 @@ public class TurbineXmlRpcService
             client.setBasicAuthentication(username, password);
             return client.execute(methodName, params);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             throw new TurbineException("XML-RPC call failed", e);
         }
@@ -687,7 +689,7 @@ public class TurbineXmlRpcService
         // Stop the XML RPC server.
         webserver.shutdown();
 
-        if(!isModernVersion)
+        if (!isModernVersion)
         {
             // org.apache.xmlrpc.WebServer used to block in a call to
             // ServerSocket.accept() until a socket connection was made.
@@ -696,7 +698,7 @@ public class TurbineXmlRpcService
                 Socket interrupt = new Socket(address, port);
                 interrupt.close();
             }
-            catch(Exception notShutdown)
+            catch (Exception notShutdown)
             {
                 // It's remotely possible we're leaving an open listener
                 // socket around.
