@@ -22,7 +22,7 @@
   <pomVersion>3</pomVersion>
   <name>jakarta-turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.3.1-dev</currentVersion>
+  <currentVersion>2.3.1-rc1</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -46,7 +46,8 @@
   <issueTrackingUrl>http://issues.apache.org/scarab/issues</issueTrackingUrl>
   <siteAddress>jakarta.apache.org</siteAddress>
   <siteDirectory>/www/jakarta.apache.org/turbine/turbine-2.3/</siteDirectory>
-  <distributionDirectory>/www/www.apache.org/dist/jakarta/turbine</distributionDirectory>
+  <distributionSite>www.apache.org</distributionSite>
+  <distributionDirectory>/www/www.apache.org/dist/java-repository/</distributionDirectory>
 
   <repository>
     <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2</connection>
@@ -74,6 +75,10 @@
     <version>
       <name>2.3</name>
       <tag>TURBINE_2_3</tag>
+    </version>
+    <version>
+      <name>2.3.1-RC1</name>
+      <tag>TURBINE_2_3.1-RC1</tag>
     </version>
   </versions>
 
