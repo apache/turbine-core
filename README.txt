@@ -19,12 +19,16 @@ lib/        This is where the additional libraries and .jar
             files reside.
 src/        This is where all of the source code to Turbine lives.
 
-In order to get started with Turbine, you must build it first.  
+In order to get started with Turbine, you must build it first.
 Turbine uses Maven for its build environment.  You can find installation
 information about Maven online at http://jakarta.apache.org/turbine/maven.
 Once Maven has been installed, just type 'maven'.  The default behavior is to compile,
 run the unit tests, and build the jar.  Some other useful goals:
 
 maven site:generate   - generate the site documention
+
+Note: Before you can build Turbine, you must have the Torque plugin installed.
+Instructions on how to do this can be found at
+http://jakarta.apache.org/turbine/torque/maven-howto.html
 
 -The Turbine Team
