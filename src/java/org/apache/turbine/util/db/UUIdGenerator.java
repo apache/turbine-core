@@ -56,12 +56,19 @@ package org.apache.turbine.util.db;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+
 import java.util.StringTokenizer;
+
 import javax.mail.internet.MimeUtility;
+
+import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.turbine.services.resources.TurbineResources;
+
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -88,6 +95,7 @@ import org.apache.turbine.util.TurbineException;
  * TurbineResources.properties file.</p>
  *
  * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class UUIdGenerator
@@ -109,8 +117,10 @@ public class UUIdGenerator
      */
     public UUIdGenerator() throws TurbineException
     {
-        String addr = TurbineResources.getString("uuid.address");
-        if (addr == null)
+        String addr = 
+            Turbine.getConfiguration().getString(TurbineConstants.UUID_ADDRESS_KEY);
+
+        if (StringUtils.isEmpty(addr))
         {
             log.info("UUIdGenerator is using a random number as the "
                     + "base for id's.  This is not the best method for many "
