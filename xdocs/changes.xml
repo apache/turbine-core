@@ -84,6 +84,10 @@ Changes between Turbine 2.2 and 2.2.1.
 <p>
   <ul>
     <li>
+      Fixed null pointer exception during initialization of IntakeTool when there are
+      no groups defined in intake.xml
+    </li>
+    <li>
       TRQD10: Extending Turbine User How-to for T2.2
     </li>
   </ul>
