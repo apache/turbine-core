@@ -54,11 +54,10 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
-import java.util.Vector;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
@@ -177,8 +176,8 @@ public class ActionLoader
                 // the user a reason for that...
                 // FIX ME: The AssemblerFactories should each add it's
                 // own string here...
-                Vector packages = Turbine.getConfiguration()
-                    .getVector(TurbineConstants.MODULE_PACKAGES);
+                List packages = Turbine.getConfiguration()
+                    .getList(TurbineConstants.MODULE_PACKAGES);
 
                 ObjectUtils.addOnce(packages,
                         GenericLoader.getBasePackage());

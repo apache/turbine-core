@@ -536,8 +536,9 @@ public abstract class BaseServiceBroker implements ServiceBroker
 
         if (service == null)
         {
-            String className = mapping.getString(name);
-            if (StringUtils.isEmpty(className))
+            
+            String className=null;
+            if (!mapping.containsKey(name))
             {
                 throw new InstantiationException(
                         "ServiceBroker: unknown service " + name
@@ -545,6 +546,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
             }
             try
             {
+                className = mapping.getString(name);
                 service = (Service) services.get(className);
 
                 if (service == null)

@@ -148,7 +148,7 @@ public class TurbineIntakeService
         defaultXmlPathes.add(XML_PATH_DEFAULT);
 
         List xmlPathes = getConfiguration()
-                .getVector(XML_PATH, defaultXmlPathes);
+                .getList(XML_PATH, defaultXmlPathes);
 
         Map appDataElements = null;
 
