@@ -54,14 +54,18 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.collections.SequencedHashMap;
+
 /**
  * A fixed length object cache implementing the LRU algorithm.  Convenient for
  * buffering recently used objects.
  *
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class BufferCache extends SequencedHashtable
+public class BufferCache
+    extends SequencedHashMap
 {
     /**
      * The default maximum cache size.
@@ -123,11 +127,6 @@ public class BufferCache extends SequencedHashtable
      */
     public synchronized Object get(Object key)
     {
-        Object value = super.get(key);
-        if (value != null)
-        {
-            freshenSequence(key, value);
-        }
-        return value;
+        return super.get(key);
     }
 }
