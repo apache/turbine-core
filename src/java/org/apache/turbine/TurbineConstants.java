@@ -233,7 +233,14 @@ public interface TurbineConstants
     String PP_URL_CASE_FOLDING = "url.case.folding";
 
     /** Default document type. */
-    String DEFAULT_DOCUMENT_TYPE = "default.doctype";
+    String DEFAULT_DOCUMENT_TYPE_KEY = "default.doctype";
+
+    /** Html 4.0 Transitional */
+    String DOCUMENT_TYPE_HTML40TRANSITIONAL = "Html40Transitional";
+    /** Html 4.0 Strict */
+    String DOCUMENT_TYPE_HTML40STRICT = "Html40Strict";
+    /** Html 4.0 Frameset */
+    String DOCUMENT_TYPE_HTML40FRAMESET = "Html40Frameset";
 
     /** Default Language property */
     String LOCALE_DEFAULT_LANGUAGE_KEY = "locale.default.language";
