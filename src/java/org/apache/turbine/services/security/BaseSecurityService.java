@@ -58,6 +58,7 @@ import java.util.Map;
 import javax.servlet.ServletConfig;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.torque.util.Criteria;
@@ -769,6 +770,21 @@ public abstract class BaseSecurityService
         User user = getUserInstance();
         user.setUserName("");
         return user;
+    }
+
+    /**
+     * Checks whether a passed user object matches the anonymous user pattern
+     * according to the configured user manager
+     *
+     * @param user An user object
+     *
+     * @return True if this is an anonymous user
+     *
+     */
+    public boolean isAnonymousUser(User user)
+    {
+        // Either just null, the name is null or the name is the empty string
+        return (user == null) || StringUtils.isEmpty(user.getName());
     }
 
     /**
