@@ -148,6 +148,6 @@ public class VelocityECSLayout
         // Finally, generate the layout template and add it to the body of the
         // Document in the RunData.
         data.getPage().getBody().addElement(TurbineVelocity
-                                            .handleRequest(context, prefix +  templateName));
+                .handleRequest(context, prefix +  templateName));
     }
 }

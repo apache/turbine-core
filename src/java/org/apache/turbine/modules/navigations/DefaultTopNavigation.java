@@ -72,8 +72,9 @@ import org.apache.turbine.util.RunData;
 public class DefaultTopNavigation
         extends Navigation
 {
-    private static String txt =
-            "Turbine - A Servlet Framework for building Secure Dynamic Websites.";
+    /** The string to display */
+    private static String txt = "Turbine - A Servlet Framework for building "
+            + "Secure Dynamic Websites.";
 
     /**
      * Build the Navigation.

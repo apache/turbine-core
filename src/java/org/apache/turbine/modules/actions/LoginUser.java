@@ -118,7 +118,8 @@ public class LoginUser
         try
         {
             // Authenticate the user and get the object.
-            User user = TurbineSecurity.getAuthenticatedUser(username, password);
+            User user = TurbineSecurity.getAuthenticatedUser(
+                    username, password);
 
             // Store the user object.
             data.setUser(user);
@@ -158,7 +159,8 @@ public class LoginUser
             data.setMessage(conf.getString(TurbineConstants.LOGIN_ERROR, ""));
             data.setUser (TurbineSecurity.getAnonymousUser());
 
-            String loginTemplate = conf.getString(TurbineConstants.TEMPLATE_LOGIN);
+            String loginTemplate = conf.getString(
+                    TurbineConstants.TEMPLATE_LOGIN);
 
             if (StringUtils.isNotEmpty(loginTemplate))
             {

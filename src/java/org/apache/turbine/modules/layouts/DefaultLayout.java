@@ -88,8 +88,8 @@ public class DefaultLayout extends Layout
     public void doBuild(RunData data) throws Exception
     {
         // Execute the Top Navigation portion for this Layout.
-        ConcreteElement topNav =
-                NavigationLoader.getInstance().eval(data, "DefaultTopNavigation");
+        ConcreteElement topNav = NavigationLoader.getInstance()
+                .eval(data, "DefaultTopNavigation");
 
         if (topNav != null)
         {
