@@ -54,12 +54,17 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
-// Turbine/Village/ECS Imports
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.apache.ecs.ConcreteElement;
+
 import org.apache.turbine.services.TurbineServices;
+
 import org.apache.turbine.services.jsp.JspService;
+
 import org.apache.turbine.services.template.TurbineTemplate;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -68,10 +73,14 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author Frank Y. Kim
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class BaseJspScreen extends TemplateScreen
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(BaseJspScreen.class);
+
     /**
      * Method that sets up beans and forward the request to the JSP.
      *
@@ -85,9 +94,17 @@ public class BaseJspScreen extends TemplateScreen
         // set up any data in beans, etc
         doBuildTemplate(data);
 
+        String screenTemplate = data.getTemplateInfo().getScreenTemplate();
         // get the name of the JSP we want to use
-        String templateName = TurbineTemplate.getScreenTemplateName(
-                data.getTemplateInfo().getScreenTemplate());
+        String templateName 
+            = TurbineTemplate.getScreenTemplateName(screenTemplate);
+
+        // The Template Service could not find the Screen
+        if (templateName == null)
+        {
+            log.error("Screen " + screenTemplate + " not found!");
+            throw new Exception("Could not find screen for " + screenTemplate);
+        }
 
         // Template service adds the leading slash, but make it sure.
         if ((templateName.length() > 0) &&

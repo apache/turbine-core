@@ -58,6 +58,9 @@ import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
 
@@ -89,6 +92,9 @@ import org.apache.velocity.context.Context;
 public class VelocityScreen
     extends TemplateScreen
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(VelocityScreen.class);
+
     /**
      * Velocity Screens extending this class should overide this
      * method to perform any particular business logic and add
@@ -132,10 +138,16 @@ public class VelocityScreen
         String screenData = null;
         Context context = TurbineVelocity.getContext(data);
 
-        // This will already be properly set and will not be null
-        // because of TemplateSessionValidator.
-        String templateName = TurbineTemplate.getScreenTemplateName(
-                data.getTemplateInfo().getScreenTemplate());
+        String screenTemplate = data.getTemplateInfo().getScreenTemplate();
+        String templateName 
+            = TurbineTemplate.getScreenTemplateName(screenTemplate);
+
+        // The Template Service could not find the Screen
+        if (templateName == null)
+        {
+            log.error("Screen " + screenTemplate + " not found!");
+            throw new Exception("Could not find screen for " + screenTemplate);
+        }
 
         // Template service adds the leading slash, but make it sure.
         if ((templateName.length() > 0) &&

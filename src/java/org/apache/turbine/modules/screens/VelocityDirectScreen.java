@@ -58,6 +58,9 @@ import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
 
@@ -89,6 +92,8 @@ import org.apache.velocity.context.Context;
 public class VelocityDirectScreen
     extends VelocityScreen
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(VelocityDirectScreen.class);
 
     /**
      * This builds the Velocity template.
@@ -104,11 +109,16 @@ public class VelocityDirectScreen
         String screenData = null;
         Context context = TurbineVelocity.getContext(data);
 
-        // This will already be properly set and will not be null
-        // because of TemplateSessionValidator.
-        String templateName = TurbineTemplate.getScreenTemplateName(
-                data.getTemplateInfo().getScreenTemplate());
+        String screenTemplate = data.getTemplateInfo().getScreenTemplate();
+        String templateName 
+            = TurbineTemplate.getScreenTemplateName(screenTemplate);
 
+        // The Template Service could not find the Screen
+        if (templateName == null)
+        {
+            log.error("Screen " + screenTemplate + " not found!");
+            throw new Exception("Could not find screen for " + screenTemplate);
+        }
         // Template service adds the leading slash, but make it sure.
         if ((templateName.length() > 0) &&
                 (templateName.charAt(0) != '/'))
