@@ -64,7 +64,7 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.mimetype.util.MimeType;
 import org.apache.turbine.services.mimetype.util.MimeTypeMap;
 import org.apache.turbine.services.mimetype.util.CharSetMap;
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 
 /**

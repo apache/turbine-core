@@ -64,7 +64,7 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.resources.TurbineResources;
 
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 
 /**

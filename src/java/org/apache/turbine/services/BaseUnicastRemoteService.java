@@ -1,6 +1,6 @@
 package org.apache.turbine.services;
 
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 import java.util.Properties;
 import java.rmi.RemoteException;

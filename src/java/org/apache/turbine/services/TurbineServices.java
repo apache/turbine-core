@@ -64,7 +64,7 @@ import javax.servlet.ServletConfig;
 import org.apache.turbine.services.logging.LoggingService;
 import org.apache.turbine.services.resources.ResourceService;
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 
 /**

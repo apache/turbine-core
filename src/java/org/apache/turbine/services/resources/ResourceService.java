@@ -59,7 +59,7 @@ import java.util.Iterator;
 import java.util.Vector;
 import javax.servlet.ServletConfig;
 import org.apache.turbine.services.Service;
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 
 /**

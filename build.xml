@@ -16,6 +16,7 @@
     <path id="classpath">
         <pathelement location="${activation.jar}"/>
         <pathelement location="${commons-collections.jar}"/>
+        <pathelement location="${commons-configuration.jar}"/>
         <pathelement location="${commons-lang.jar}"/>
         <pathelement location="${ecs.jar}"/>
         <pathelement location="${regexp.jar}"/>

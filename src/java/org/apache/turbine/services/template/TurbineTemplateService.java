@@ -70,7 +70,7 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 
 /**

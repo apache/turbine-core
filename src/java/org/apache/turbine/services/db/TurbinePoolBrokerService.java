@@ -63,7 +63,7 @@ import org.apache.turbine.util.Log;
 import org.apache.turbine.util.db.adapter.DB;
 import org.apache.turbine.util.db.pool.ConnectionPool;
 import org.apache.turbine.util.db.pool.DBConnection;
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 
 /**

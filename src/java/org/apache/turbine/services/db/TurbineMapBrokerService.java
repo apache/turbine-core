@@ -66,7 +66,7 @@ import org.apache.turbine.util.db.adapter.DB;
 import org.apache.turbine.util.db.adapter.DBFactory;
 import org.apache.turbine.util.db.map.DatabaseMap;
 import org.apache.turbine.util.db.map.TableMap;
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 
 /**

@@ -69,7 +69,7 @@ import org.apache.turbine.services.*;
 import org.apache.turbine.services.resources.*;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 import org.apache.ecs.StringElement;
 

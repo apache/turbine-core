@@ -70,10 +70,10 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.ServletUtils;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
-import org.apache.stratum.configuration.BaseConfiguration;
-import org.apache.stratum.configuration.Configuration;
-import org.apache.stratum.configuration.ConfigurationConverter;
-import org.apache.stratum.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationConverter;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 
 /**

@@ -61,7 +61,7 @@ import java.lang.reflect.Method;
 
 import javax.servlet.ServletConfig;
 
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.pool.Recyclable;

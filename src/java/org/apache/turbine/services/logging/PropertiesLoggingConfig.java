@@ -61,7 +61,7 @@ import java.util.Properties;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.resources.ResourceService;
 import org.apache.turbine.util.Log;
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 /**
  * Small helper class that encapsulates the logging configuration 

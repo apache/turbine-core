@@ -64,7 +64,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.CookieParser;

@@ -77,7 +77,7 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.xmlrpc.util.FileTransfer;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.TurbineException;
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 
 /**

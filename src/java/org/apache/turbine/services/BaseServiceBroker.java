@@ -61,8 +61,8 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.apache.turbine.util.StringUtils;
-import org.apache.stratum.configuration.BaseConfiguration;
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.commons.configuration.Configuration;
 
 
 /**

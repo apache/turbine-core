@@ -59,7 +59,7 @@ import java.util.Hashtable;
 
 import org.apache.turbine.services.TurbineBaseService;
 
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 
 /**

@@ -55,7 +55,7 @@ package org.apache.turbine.services;
  */
 
 import java.util.Properties;
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 
 /**

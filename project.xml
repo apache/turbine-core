@@ -10,21 +10,21 @@
   <package>org.apache.turbine</package>
   <gumpRepositoryId>jakarta</gumpRepositoryId>
   <shortDescription>A servlet based framework.</shortDescription>
-  
+
   <description>
-    Turbine is a servlet based framework that allows experienced 
-    Java developers to quickly build secure web applications. Parts 
-    of Turbine can also be used independently of the web portion of 
-    Turbine as well. In other words, we strive to make portions of 
+    Turbine is a servlet based framework that allows experienced
+    Java developers to quickly build secure web applications. Parts
+    of Turbine can also be used independently of the web portion of
+    Turbine as well. In other words, we strive to make portions of
     Turbine easily available for use in other applications.
   </description>
-  
+
   <url>http://jakarta.apache.org/turbine/turbine-2/</url>
   <cvsWebUrl>http://cvs.apache.org/viewcvs/jakarta-turbine-2/</cvsWebUrl>
   <issueTrackingUrl>http://nagoya.apache.org:8080/scarab/servlet/scarab/</issueTrackingUrl>
   <siteAddress>jakarta.apache.org</siteAddress>
   <siteDirectory>/www/jakarta.apache.org/turbine/turbine-2/</siteDirectory>
-  
+
   <mailingLists>
     <mailingList>
       <name>Turbine User List</name>
@@ -39,7 +39,7 @@
       <archive>http://nagoya.apache.org:8080/eyebrowse/SummarizeList?listName=turbine-dev@jakarta.apache.org</archive>
     </mailingList>
   </mailingLists>
-  
+
   <developers>
     <developer>
       <name>Gary Bartlett</name>
@@ -239,7 +239,7 @@
       <email>dlr@finemaltcoding.com</email>
       <organization>CollabNet, Inc.</organization>
     </developer>
-  
+
     <!--
     <td>Cameron Riley</td>
     <td><a href="mailto:criley@ekmail.com">criley@ekmail.com</a></td>
@@ -252,12 +252,12 @@
     <td></td>
     <td>Master</td>
     -->
-    <!--
-    <td>Kurt Schrader</td>
-    <td><a href="mailto:kschrade@engin.umich.edu">kschrade@engin.umich.edu</a></td>
-    <td></td>
-    <td>Journeyer</td>
-    -->
+    <developer>
+      <name>Kurt Schrader</name>
+      <id>kschrader</id>
+      <email>kschrader@karmalab.org</email>
+      <organization>University of Michigan</organization>
+    </developer>
     <!--
     <td>Ingo Schuster</td>
     <td><a href="mailto:ingo@raleigh.ibm.com">ingo@raleigh.ibm.com</a></td>
@@ -336,6 +336,12 @@
       <type>required</type>
       <version>1.0</version>
       <jar>commons-collections.jar</jar>
+    </dependency>
+    <dependency>
+      <name>commons-configuration</name>
+      <type>required</type>
+      <version>1.0</version>
+      <jar>commons-configuration-1.0-dev.jar</jar>
     </dependency>
     <dependency>
       <name>commons-lang</name>

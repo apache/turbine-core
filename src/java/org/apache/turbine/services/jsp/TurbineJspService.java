@@ -76,7 +76,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
 import org.apache.turbine.services.template.TurbineTemplate;
 
-import org.apache.stratum.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 
 /**
