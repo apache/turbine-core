@@ -1108,7 +1108,7 @@ services.AvalonComponentService.roleConfiguration = WEB-ING/conf/roleConfigurati
 #
 # -------------------------------------------------------------------
 
-services.SessionService.eralyInit=true
+services.SessionService.earlyInit=true
 
 # -------------------------------------------------------------------
 #
