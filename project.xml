@@ -120,12 +120,14 @@
       <email>kimptoc.mail@bigfoot.com</email>
       <organization/>
     </developer>
+-->
     <developer>
       <name>Sean Legassick</name>
-      <id/>
+      <id>legassick</id>
       <email>mailto:sean@informage.net</email>
       <organization/>
     </developer>
+<!--
     <developer>
       <name>Josh Lucas</name>
       <id/>
