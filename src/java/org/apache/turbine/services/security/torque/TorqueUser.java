@@ -64,6 +64,8 @@ import java.util.Hashtable;
 
 import javax.servlet.http.HttpSessionBindingEvent;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.Persistent;
 
 import org.apache.turbine.om.security.User;
@@ -91,6 +93,8 @@ public class TorqueUser
     implements User,
                Persistent
 {
+    private static Log log = LogFactory.getLog(TorqueUser.class);
+    
     /** The date on which the user last accessed the application. */
     private Date lastAccessDate = null;
 
@@ -207,7 +211,8 @@ public class TorqueUser
         }
         catch (Exception e)
         {
-            throw new TurbineSecurityException("User object said", e);
+            throw new TurbineSecurityException("User object said " 
+                    + e.getMessage(), e);
         }
     }
 
