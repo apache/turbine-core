@@ -66,7 +66,7 @@ import org.apache.turbine.services.Service;
  * a listener.  The listener must be configured in your web.xml file.
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
- * @version $Id$
+ * @since 2.3
  * @see org.apache.turbine.services.session.SessionListener
  */
 public interface SessionService extends Service
@@ -125,18 +125,18 @@ public interface SessionService extends Service
     /**
      * Gets the User object of the the specified HttpSession.
      *
-     * @param session
-     * @return
+     * @param session The session from which to extract a user.
+     * @return The Turbine User object.
      */
-    public User getUserFromSession(HttpSession session);
+    User getUserFromSession(HttpSession session);
 
     /**
      * Gets the HttpSession by the session identifier
      *
-     * @param sessionId
-     * @return
+     * @param sessionId The unique session identifier.
+     * @return The session keyed by the specified identifier.
      */
-    public HttpSession getSession(String sessionId);
+    HttpSession getSession(String sessionId);
 
     /**
      * Get a collection of all session on which the given user
@@ -145,6 +145,6 @@ public interface SessionService extends Service
      * @param user the user
      * @return Collection of HtttSession objects
      */
-    public Collection getSessionsForUser(User user);
+    Collection getSessionsForUser(User user);
 
 }
