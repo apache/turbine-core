@@ -63,6 +63,7 @@
     <filter token="TORQUE_DATABASE_CREATE_URL" value="${torque.database.createUrl}"/>
 
     <filter token="MAVEN_APPSERVER_NAME"       value="${maven.appserver.name}"/>
+    <filter token="MAVEN_APPSERVER_HOME"       value="${maven.appserver.home}"/>
 
     <u:replace var="appDir" oldChar="." newChar="/" value="${turbine.app.package}"/>
 
