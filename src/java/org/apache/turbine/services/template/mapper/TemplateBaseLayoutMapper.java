@@ -3,7 +3,7 @@ package org.apache.turbine.services.template.mapper;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -92,7 +92,7 @@ public abstract class TemplateBaseLayoutMapper
      * Returns the default name for the passed Template.
      * If the template has no extension, the default extension
      * is added.
-     * If the template is empty, the default template is 
+     * If the template is empty, the default template is
      * returned.
      *
      * @param template The template name.

@@ -3,7 +3,7 @@ package org.apache.turbine.services.security.torque;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -125,7 +125,7 @@ public class TorqueUser
         super(obj);
 
         // Do not set creation date. This is only called on retrieval from
-        // storage! 
+        // storage!
 
         tempStorage = new Hashtable(10);
         setHasLoggedIn(Boolean.FALSE);
@@ -157,7 +157,7 @@ public class TorqueUser
      *
      * @exception Exception This method might throw an exceptions
      */
-    public void save(String dbName) 
+    public void save(String dbName)
         throws Exception
     {
         setObjectdata(ObjectUtils.serializeHashtable(getPermStorage()));
@@ -175,7 +175,7 @@ public class TorqueUser
      *
      * @exception Exception This method might throw an exceptions
      */
-    public void save(Connection con) 
+    public void save(Connection con)
         throws Exception
     {
         setObjectdata(ObjectUtils.serializeHashtable(getPermStorage()));
@@ -255,7 +255,7 @@ public class TorqueUser
     /**
      * Sets the Id of this object
      *
-     * @param id The new Id 
+     * @param id The new Id
      */
     public void setId(int id)
     {
@@ -404,7 +404,7 @@ public class TorqueUser
 
     /**
      * Returns the date of the last login of the user
-     *             
+     *
      * @return The date of the last login of the user
      */
     public java.util.Date getLastLogin()
@@ -485,7 +485,7 @@ public class TorqueUser
      */
     public void incrementAccessCounter()
     {
-        // Ugh. Race city, here I come... 
+        // Ugh. Race city, here I come...
         setAccessCounter(getAccessCounter() + 1);
     }
 

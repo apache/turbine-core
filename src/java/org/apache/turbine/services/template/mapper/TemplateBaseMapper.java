@@ -3,7 +3,7 @@ package org.apache.turbine.services.template.mapper;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -122,7 +122,7 @@ public abstract class TemplateBaseMapper
      * Returns the default name for the passed Template.
      * If the passed template has no extension,
      * the default extension is assumed.
-     * If the template is empty, the default template is 
+     * If the template is empty, the default template is
      * returned.
      *
      * @param template The template name.
@@ -135,7 +135,7 @@ public abstract class TemplateBaseMapper
         // We might get a Name without an extension passed. If yes, then we use
         // the Default extension
 
-        TemplateEngineService tes 
+        TemplateEngineService tes
             = TurbineTemplate.getTemplateEngineService(template);
 
         if (StringUtils.isEmpty(template) || (tes == null))
@@ -146,8 +146,8 @@ public abstract class TemplateBaseMapper
         String defaultName = (String) tes.getTemplateEngineServiceConfiguration()
             .get(defaultProperty);
 
-        return StringUtils.isEmpty(defaultName) 
-            ? TurbineTemplate.getDefaultTemplate() 
+        return StringUtils.isEmpty(defaultName)
+            ? TurbineTemplate.getDefaultTemplate()
             : defaultName;
     }
 
@@ -164,7 +164,7 @@ public abstract class TemplateBaseMapper
         {
             return null;
         }
-    
+
         if (useCache && templateCache.containsKey(template))
         {
             return (String) templateCache.get(template);

@@ -3,7 +3,7 @@ package org.apache.turbine.services.velocity;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -221,7 +221,7 @@ public class TurbineVelocityService
     /**
      * Create a Context object that also contains the globalContext.
      * Refreshes all the global tools in the context. We can't move
-     * this into getContext(RunData data) or even the PullService 
+     * this into getContext(RunData data) or even the PullService
      * itself, because we would lose some of the refresh events which
      * should happen every time a context is pulled.
      *
@@ -230,8 +230,8 @@ public class TurbineVelocityService
     public Context getContext()
     {
         Context ctx = new VelocityContext();
-        
-        // 
+
+        //
         // We have only one context per request (that is the nature
         // of the context...) So this is the right place to refresh
         // the global tools.
@@ -245,7 +245,7 @@ public class TurbineVelocityService
 
     /**
      * Create a Context from the RunData object.  Adds a pointer to
-     * the RunData object to the VelocityContext so that RunData 
+     * the RunData object to the VelocityContext so that RunData
      * is available in the templates.
      *
      * @param data The Turbine RunData object.
@@ -456,7 +456,7 @@ public class TurbineVelocityService
      */
     private String getCharSet(Context context)
     {
-        String charset = null; 
+        String charset = null;
 
         Object data = context.get(VelocityService.RUNDATA_KEY);
         if ((data != null) && (data instanceof RunData))
@@ -517,12 +517,12 @@ public class TurbineVelocityService
     {
         // Get the configuration for this service.
         Configuration configuration = getConfiguration();
-        
+
         configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS,
             SimpleLog4JLogSystem.class.getName());
         configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM
             + ".log4j.category", "velocity");
-        
+
         Velocity.setExtendedProperties(createVelocityProperties(configuration));
         Velocity.init();
     }
@@ -544,14 +544,14 @@ public class TurbineVelocityService
         throws Exception
     {
         // This bugger is public, because we want to run some Unit tests
-        // on it. 
-        
+        // on it.
+
         ExtendedProperties veloConfig = new ExtendedProperties();
-        
+
         // Fix up all the template resource loader pathes to be
         // webapp relative. Copy all other keys verbatim into the
         // veloConfiguration.
-        
+
         for (Iterator i = conf.getKeys(); i.hasNext();)
         {
             String key = (String) i.next();
@@ -571,7 +571,7 @@ public class TurbineVelocityService
             }
 
             Velocity.clearProperty(key);
-            
+
             // Translate the supplied pathes given here.
             // the following three different kinds of
             // pathes must be translated to be webapp-relative
@@ -582,7 +582,7 @@ public class TurbineVelocityService
             for (Iterator j = paths.iterator(); j.hasNext();)
             {
                 String path = (String) j.next();
-                
+
                 log.debug("Translating " + path);
 
                 if (path.startsWith(JAR_PREFIX))
@@ -592,9 +592,9 @@ public class TurbineVelocityService
                     {
                         // We must convert up to the jar path separator
                         int jarSepIndex = path.indexOf("!/");
-                        
+
                         // jar:file:// -> skip 11 chars
-                        path = (jarSepIndex < 0) 
+                        path = (jarSepIndex < 0)
                             ? Turbine.getRealPath(path.substring(11))
                         // Add the path after the jar path separator again to the new url.
                             : (Turbine.getRealPath(path.substring(11, jarSepIndex)) + path.substring(jarSepIndex));

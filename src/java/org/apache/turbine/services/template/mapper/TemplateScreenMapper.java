@@ -3,7 +3,7 @@ package org.apache.turbine.services.template.mapper;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -61,7 +61,7 @@ import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.template.TurbineTemplate;
 
 /**
- * This is a pretty simple mapper which returns template pathes for 
+ * This is a pretty simple mapper which returns template pathes for
  * a supplied template name. This path can be used by the TemplateEngine
  * to access a certain resource to actually render the template.
  *
@@ -94,7 +94,7 @@ public class TemplateScreenMapper
     /**
      * Check, whether the provided name exists. Returns null
      * if the screen does not exist.
-     * 
+     *
      * @param template The template name.
      * @return The matching screen name.
      */
@@ -103,7 +103,7 @@ public class TemplateScreenMapper
         String [] components = StringUtils.split(template, String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR));
 
         // Last element decides, which template Service to use...
-        TemplateEngineService tes = 
+        TemplateEngineService tes =
             TurbineTemplate.getTemplateEngineService(components[components.length - 1]);
 
         String templatePackage = StringUtils.join(components, separator);
@@ -122,7 +122,7 @@ public class TemplateScreenMapper
             : null;
     }
 }
-  
-    
-        
-    
+
+
+
+

@@ -3,7 +3,7 @@ package org.apache.turbine.services.security.torque;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,15 +64,15 @@ package org.apache.turbine.services.security.torque;
  * security.torque.rolePeer.class = org.apache.turbine.services.security.torque.om.TurbineRolePeer
  * security.torque.rolePeer.column.name       = ROLE_NAME
  * security.torque.rolePeer.column.id         = ROLE_ID
- * 
+ *
  * security.torque.role.class = org.apache.turbine.services.security.torque.om.TurbineRole
  * security.torque.role.property.name       = Name
  * security.torque.role.property.id         = RoleId
  *
  * </pre>
  * If security.torque.role.class is unset, then the value of the constant CLASSNAME_DEFAULT
- * from the configured Peer is used. 
- * 
+ * from the configured Peer is used.
+ *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
@@ -80,11 +80,11 @@ package org.apache.turbine.services.security.torque;
 public interface RolePeerManagerConstants
 {
     /** The key within the security service properties for the role class implementation */
-    public static final String ROLE_CLASS_KEY = 
+    public static final String ROLE_CLASS_KEY =
         "torque.role.class";
 
     /** The key within the security service properties for the role peer class implementation */
-    public static final String ROLE_PEER_CLASS_KEY = 
+    public static final String ROLE_PEER_CLASS_KEY =
         "torque.rolePeer.class";
 
     /** Role peer default class */
@@ -110,13 +110,13 @@ public interface RolePeerManagerConstants
 
 
     /** The property name of the bean property for the login name field. */
-    public static final String ROLE_NAME_PROPERTY_KEY = 
+    public static final String ROLE_NAME_PROPERTY_KEY =
         "torque.role.property.name";
-    
+
     /** The property name of the bean property for the id field. */
     public static final String ROLE_ID_PROPERTY_KEY =
         "torque.role.property.id";
-    
+
 
     /** The default value of the bean property for the login name field. */
     public static final String ROLE_NAME_PROPERTY_DEFAULT =
@@ -128,4 +128,4 @@ public interface RolePeerManagerConstants
 
 };
 
-    
+

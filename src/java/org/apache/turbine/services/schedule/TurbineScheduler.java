@@ -1,14 +1,9 @@
 package org.apache.turbine.services.schedule;
 
-import java.util.List;
-
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.util.TurbineException;
-
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -58,6 +53,11 @@ import org.apache.turbine.util.TurbineException;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
+
+import java.util.List;
+
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * This is a fascade class to provide easy access to the Scheduler

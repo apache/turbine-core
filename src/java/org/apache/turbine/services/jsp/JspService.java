@@ -3,7 +3,7 @@ package org.apache.turbine.services.jsp;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,13 +25,13 @@ package org.apache.turbine.services.jsp;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -66,7 +66,7 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  */
 public interface JspService
-    extends Service 
+    extends Service
 {
     /** The name used to specify this service in Turbine.properties */
     static final String SERVICE_NAME = "JspService";
@@ -74,7 +74,7 @@ public interface JspService
     static final String RUNDATA = "rundata";
     /** The key used to store an instance of JspLink in the request */
     static final String LINK = "link";
-    
+
     /**
      * Adds some convenience objects to the request.  For example an instance
      * of JspLink which can be used to generate links to other templates.
@@ -91,7 +91,7 @@ public interface JspService
      * @param isForward whether to perform a forward or include.
      *
      * @throws TurbineException If a problem occured while executing the JSP
-     */    
+     */
     void handleRequest(RunData data, String templateName, boolean isForward)
         throws TurbineException;
 
@@ -102,7 +102,7 @@ public interface JspService
      * @param templateName The template to execute
      *
      * @throws TurbineException If a problem occured while executing the JSP
-     */    
+     */
     void handleRequest(RunData data, String templateName)
         throws TurbineException;
 
@@ -114,7 +114,7 @@ public interface JspService
     int getDefaultBufferSize();
 
     /**
-     * Searchs for a template in the default.template path[s] and 
+     * Searchs for a template in the default.template path[s] and
      * returns the template name with a relative path which is required
      * by <a href="http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/ServletContext.html#getRequestDispatcher(java.lang.String)">javax.servlet.RequestDispatcher</a>
      *

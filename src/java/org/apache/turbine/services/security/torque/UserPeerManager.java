@@ -3,7 +3,7 @@ package org.apache.turbine.services.security.torque;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -165,7 +165,7 @@ public class UserPeerManager
     static Log log = LogFactory.getLog(UserPeerManager.class);
 
     /**
-     * Initializes the UserPeerManager, loading the class object for the 
+     * Initializes the UserPeerManager, loading the class object for the
      * Peer used to retrieve User objects
      *
      * @param conf The configuration object used to configure the Manager
@@ -177,7 +177,7 @@ public class UserPeerManager
     public static void init(Configuration conf)
         throws InitializationException
     {
-        String userPeerClassName = conf.getString(USER_PEER_CLASS_KEY, 
+        String userPeerClassName = conf.getString(USER_PEER_CLASS_KEY,
                                                   USER_PEER_CLASS_DEFAULT);
         String userObjectName = null;
 
@@ -185,11 +185,11 @@ public class UserPeerManager
         {
             userPeerClass = Class.forName(userPeerClassName);
 
-            tableName  = 
+            tableName  =
               (String) userPeerClass.getField("TABLE_NAME").get(null);
 
             //
-            // We have either an user configured Object class or we use the 
+            // We have either an user configured Object class or we use the
             // default as supplied by the Peer class
             //
 
@@ -204,8 +204,8 @@ public class UserPeerManager
             // Maybe the user set a new value...
             userObject = Class.forName(userObjectName);
 
-            /* If any of the following Field queries fails, the user 
-             * subsystem is unusable. So check this right here at init time, 
+            /* If any of the following Field queries fails, the user
+             * subsystem is unusable. So check this right here at init time,
              * which saves us much time and hassle if it fails...
              */
 
@@ -213,10 +213,10 @@ public class UserPeerManager
                 (String) conf.getString(USER_NAME_COLUMN_KEY,
                                         USER_NAME_COLUMN_DEFAULT)
                 ).get(null);
-            
+
             idColumn = (String) userPeerClass.getField(
                 (String) conf.getString(USER_ID_COLUMN_KEY,
-                                        USER_ID_COLUMN_DEFAULT)  
+                                        USER_ID_COLUMN_DEFAULT)
                 ).get(null);
 
             passwordColumn = (String) userPeerClass.getField(
@@ -252,68 +252,68 @@ public class UserPeerManager
             lastLoginColumn = (String) userPeerClass.getField(
                 (String) conf.getString(USER_LAST_LOGIN_COLUMN_KEY,
                                         USER_LAST_LOGIN_COLUMN_DEFAULT)
-                ).get(null); 
-            
+                ).get(null);
+
             objectdataColumn = (String) userPeerClass.getField(
                 (String) conf.getString(USER_OBJECTDATA_COLUMN_KEY,
                                         USER_OBJECTDATA_COLUMN_DEFAULT)
-                ).get(null); 
-            
-            namePropDesc = 
+                ).get(null);
+
+            namePropDesc =
                 new PropertyDescriptor((String) conf.getString(
                                            USER_NAME_PROPERTY_KEY,
                                            USER_NAME_PROPERTY_DEFAULT),
                                        userObject);
-            
+
             idPropDesc =
                 new PropertyDescriptor((String) conf.getString(
                                            USER_ID_PROPERTY_KEY,
                                            USER_ID_PROPERTY_DEFAULT),
                                        userObject);
-            
-            passwordPropDesc = 
+
+            passwordPropDesc =
                 new PropertyDescriptor((String) conf.getString(
                                            USER_PASSWORD_PROPERTY_KEY,
                                            USER_PASSWORD_PROPERTY_DEFAULT),
                                        userObject);
-            
-            firstNamePropDesc = 
+
+            firstNamePropDesc =
                 new PropertyDescriptor((String) conf.getString(
                                            USER_FIRST_NAME_PROPERTY_KEY,
                                            USER_FIRST_NAME_PROPERTY_DEFAULT),
                                        userObject);
-            
+
             lastNamePropDesc   =
                 new PropertyDescriptor((String) conf.getString(
                                            USER_LAST_NAME_PROPERTY_KEY,
                                            USER_LAST_NAME_PROPERTY_DEFAULT),
                                        userObject);
-            
-            emailPropDesc = 
+
+            emailPropDesc =
                 new PropertyDescriptor((String) conf.getString(
                                            USER_EMAIL_PROPERTY_KEY,
                                            USER_EMAIL_PROPERTY_DEFAULT),
                                        userObject);
-            
-            confirmPropDesc = 
+
+            confirmPropDesc =
                 new PropertyDescriptor((String) conf.getString(
                                            USER_CONFIRM_PROPERTY_KEY,
                                            USER_CONFIRM_PROPERTY_DEFAULT),
                                        userObject);
-            
-            createDatePropDesc = 
+
+            createDatePropDesc =
                 new PropertyDescriptor((String) conf.getString(
                                            USER_CREATE_PROPERTY_KEY,
                                            USER_CREATE_PROPERTY_DEFAULT),
                                        userObject);
-            
-            lastLoginPropDesc  = 
+
+            lastLoginPropDesc  =
                 new PropertyDescriptor((String) conf.getString(
                                            USER_LAST_LOGIN_PROPERTY_KEY,
                                            USER_LAST_LOGIN_PROPERTY_DEFAULT),
                                        userObject);
 
-            objectdataPropDesc = 
+            objectdataPropDesc =
                 new PropertyDescriptor((String) conf.getString(
                                            USER_OBJECTDATA_PROPERTY_KEY,
                                            USER_OBJECTDATA_PROPERTY_DEFAULT),
@@ -343,61 +343,61 @@ public class UserPeerManager
             if (nameColumn == null || namePropDesc == null)
             {
                 throw new InitializationException(
-                    "UserPeer " + userPeerClassName 
+                    "UserPeer " + userPeerClassName
                     + " has no name column information!", e);
             }
             if (idColumn == null || idPropDesc == null)
             {
                 throw new InitializationException(
-                    "UserPeer " + userPeerClassName 
+                    "UserPeer " + userPeerClassName
                     + " has no id column information!", e);
             }
             if (passwordColumn == null || passwordPropDesc == null)
             {
                 throw new InitializationException(
-                    "UserPeer " + userPeerClassName 
+                    "UserPeer " + userPeerClassName
                     + " has no password column information!", e);
             }
             if (firstNameColumn == null || firstNamePropDesc == null)
             {
                 throw new InitializationException(
-                    "UserPeer " + userPeerClassName 
+                    "UserPeer " + userPeerClassName
                     + " has no firstName column information!", e);
             }
             if (lastNameColumn == null || lastNamePropDesc == null)
             {
                 throw new InitializationException(
-                    "UserPeer " + userPeerClassName 
+                    "UserPeer " + userPeerClassName
                     + " has no lastName column information!", e);
             }
             if (emailColumn == null || emailPropDesc == null)
             {
                 throw new InitializationException(
-                    "UserPeer " + userPeerClassName 
+                    "UserPeer " + userPeerClassName
                     + " has no email column information!", e);
             }
             if (confirmColumn == null || confirmPropDesc == null)
             {
                 throw new InitializationException(
-                    "UserPeer " + userPeerClassName 
+                    "UserPeer " + userPeerClassName
                     + " has no confirm column information!", e);
             }
             if (createDateColumn == null || createDatePropDesc == null)
             {
                 throw new InitializationException(
-                    "UserPeer " + userPeerClassName 
+                    "UserPeer " + userPeerClassName
                     + " has no createDate column information!", e);
             }
             if (lastLoginColumn == null || lastLoginPropDesc == null)
             {
                 throw new InitializationException(
-                    "UserPeer " + userPeerClassName 
+                    "UserPeer " + userPeerClassName
                     + " has no lastLogin column information!", e);
             }
             if (objectdataColumn == null || objectdataPropDesc == null)
             {
                 throw new InitializationException(
-                    "UserPeer " + userPeerClassName 
+                    "UserPeer " + userPeerClassName
                     + " has no objectdata column information!", e);
             }
         }
@@ -527,7 +527,7 @@ public class UserPeerManager
      * Returns the full name of a column.
      *
      * @param name The column to fully qualify
-     * 
+     *
      * @return A String with the full name of the column.
      */
     public static String getColumnName(String name)
@@ -543,7 +543,7 @@ public class UserPeerManager
      * Returns the full name of a column.
      *
      * @param name The column to fully qualify
-     * 
+     *
      * @return A String with the full name of the column.
      * @deprecated use getColumnName(String name)
      */
@@ -651,12 +651,12 @@ public class UserPeerManager
         criteria.setIgnoreCase(true);
         return doSelect(criteria);
     }
-    
+
     /*
      * ========================================================================
      *
      * WARNING! Do not read on if you have a weak stomach. What follows here
-     * are some abominations thanks to the braindead static peers of Torque 
+     * are some abominations thanks to the braindead static peers of Torque
      * and the rigidity of Java....
      *
      * ========================================================================
@@ -671,7 +671,7 @@ public class UserPeerManager
      *
      * @param user An object which implements the User interface
      *
-     * @return A criteria for the supplied user object 
+     * @return A criteria for the supplied user object
      */
 
     public static Criteria buildCriteria(User user)
@@ -681,7 +681,7 @@ public class UserPeerManager
         try
         {
             Class[] clazz = new Class[] { userObject };
-            Object[] params = 
+            Object[] params =
                 new Object[] { ((TorqueUser) user).getPersistentObj() };
 
             crit =  (Criteria) userPeerClass
@@ -764,7 +764,7 @@ public class UserPeerManager
 
         try
         {
-            Class[] clazz = 
+            Class[] clazz =
                 new Class[] { Criteria.class };
             Object[] params = new Object[] { criteria };
 
@@ -1404,7 +1404,7 @@ public class UserPeerManager
      * Invokes setId(int n) on the supplied base object
      *
      * @param obj The object to use for setting the name
-     * @param id The new Id 
+     * @param id The new Id
      */
     public static void setId(Persistent obj, int id)
     {

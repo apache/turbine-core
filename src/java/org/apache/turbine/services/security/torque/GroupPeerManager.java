@@ -3,7 +3,7 @@ package org.apache.turbine.services.security.torque;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -119,7 +119,7 @@ public class GroupPeerManager
     static Log log = LogFactory.getLog(GroupPeerManager.class);
 
     /**
-     * Initializes the GroupPeerManager, loading the class object for the 
+     * Initializes the GroupPeerManager, loading the class object for the
      * Peer used to retrieve Group objects
      *
      * @param conf The configuration object used to configure the Manager
@@ -130,7 +130,7 @@ public class GroupPeerManager
     public static void init(Configuration conf)
         throws InitializationException
     {
-        String groupPeerClassName = conf.getString(GROUP_PEER_CLASS_KEY, 
+        String groupPeerClassName = conf.getString(GROUP_PEER_CLASS_KEY,
                                                    GROUP_PEER_CLASS_DEFAULT);
         String groupObjectName = null;
 
@@ -145,11 +145,11 @@ public class GroupPeerManager
             // as supplied by the Peer class
             //
             groupObject = getPersistenceClass(); // Default from Peer, can be overridden
-            
+
             groupObjectName = (String) conf
                 .getString(GROUP_CLASS_KEY,
                            groupObject.getName());
-            
+
             groupObject = Class.forName(groupObjectName); // Maybe the user set a new value...
 
             /* If any of the following Field queries fails, the group subsystem is unusable. So check
@@ -163,7 +163,7 @@ public class GroupPeerManager
 
             idColumn         = (String) groupPeerClass.getField((String) conf
                                                                .getString(GROUP_ID_COLUMN_KEY,
-                                                                          GROUP_ID_COLUMN_DEFAULT)  
+                                                                          GROUP_ID_COLUMN_DEFAULT)
                                                                ).get(null);
 
 
@@ -245,7 +245,7 @@ public class GroupPeerManager
      * Returns the full name of a column.
      *
      * @param name The column to fully qualify
-     * 
+     *
      * @return A String with the full name of the column.
      */
     public static String getColumnName(String name)
@@ -296,7 +296,7 @@ public class GroupPeerManager
     /**
      * Retrieves/assembles a GroupSet of all of the Groups.
      *
-     * @return A set of all the Groups in the system 
+     * @return A set of all the Groups in the system
      * @exception Exception A generic exception.
      */
     public static GroupSet retrieveSet()
@@ -307,16 +307,16 @@ public class GroupPeerManager
 
     /**
      * Retrieves/assembles a GroupSet based on the Criteria passed in
-     * 
+     *
      * @param criteria A criteria containing a pre-assembled set of criterias
      *                 for the GroupSet
      *
      * @return A Set of groups which fulfil the required criterias
-     * 
+     *
      * @exception Exception A generic exception
-     *        
+     *
      */
-    public static GroupSet retrieveSet(Criteria criteria) 
+    public static GroupSet retrieveSet(Criteria criteria)
         throws Exception
     {
         List results = doSelect(criteria);
@@ -363,7 +363,7 @@ public class GroupPeerManager
      * ========================================================================
      *
      * WARNING! Do not read on if you have a weak stomach. What follows here
-     * are some abominations thanks to the braindead static peers of Torque 
+     * are some abominations thanks to the braindead static peers of Torque
      * and the rigidity of Java....
      *
      * ========================================================================
@@ -378,7 +378,7 @@ public class GroupPeerManager
      *
      * @param group An object which implements the Group interface
      *
-     * @return A criteria for the supplied group object 
+     * @return A criteria for the supplied group object
      */
 
     public static Criteria buildCriteria(Group group)
@@ -388,7 +388,7 @@ public class GroupPeerManager
         try
         {
             Class[] clazz = new Class[] { groupObject };
-            Object[] params = 
+            Object[] params =
               new Object[] { ((TorqueGroup) group).getPersistentObj() };
 
             crit =  (Criteria) groupPeerClass
@@ -508,7 +508,7 @@ public class GroupPeerManager
     {
         try
         {
-            Class[] clazz = 
+            Class[] clazz =
               new Class[] { Criteria.class };
             Object[] params = new Object[] { criteria };
 
@@ -592,7 +592,7 @@ public class GroupPeerManager
      * Invokes setId(int n) on the supplied base object
      *
      * @param obj The object to use for setting the name
-     * @param id The new Id 
+     * @param id The new Id
      */
     public static void setId(Persistent obj, int id)
     {
