@@ -498,7 +498,7 @@ public class LDAPUser extends BaseObject implements User
       */
     public void setFirstName(String fname)
     {
-        setPerm (User.LAST_NAME, fname);
+        setPerm (User.FIRST_NAME, fname);
     }
 
     /**

@@ -25,13 +25,13 @@ package org.apache.turbine.torque.engine.database.transform;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,31 +54,15 @@ package org.apache.turbine.torque.engine.database.transform;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.services.db.TurbineDB;
+import org.apache.turbine.torque.engine.database.model.*;
+import org.xml.sax.*;
+import org.xml.sax.helpers.DefaultHandler;
+
+import javax.xml.parsers.SAXParserFactory;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.PrintStream;
-import java.io.Reader;
 import java.util.List;
-import org.apache.turbine.services.db.TurbineDB;
-import org.apache.turbine.torque.engine.database.model.AppData;
-import org.apache.turbine.torque.engine.database.model.Column;
-import org.apache.turbine.torque.engine.database.model.Database;
-import org.apache.turbine.torque.engine.database.model.ForeignKey;
-import org.apache.turbine.torque.engine.database.model.IdMethodParameter;
-import org.apache.turbine.torque.engine.database.model.Index;
-import org.apache.turbine.torque.engine.database.model.Inheritance;
-import org.apache.turbine.torque.engine.database.model.Table;
-import org.apache.turbine.torque.engine.database.model.Unique;
-import org.apache.xerces.framework.XMLParser;
-import org.apache.xerces.parsers.SAXParser;
-import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * A Class that is used to parse an input
@@ -89,8 +73,9 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
-public class XmlToAppData extends DefaultHandler
+public class XmlToAppData extends DefaultHandler implements DocumentHandler
 {
     private AppData app;
     private Database currDB;
@@ -103,7 +88,7 @@ public class XmlToAppData extends DefaultHandler
     private boolean firstPass;
     private Table foreignTable;
     private String errorMessage;
-    
+
     /**
      * Default custructor
      */
@@ -123,24 +108,19 @@ public class XmlToAppData extends DefaultHandler
     {
         try
         {
-            if ( firstPass ) 
+            if ( firstPass )
             {
-                app = new AppData();                
+                app = new AppData();
             }
-            
-            SAXParser parser = new SAXParser();
+
+            Parser parser = SAXParserFactory.newInstance().newSAXParser().getParser();
 
             // set the Resolver for the database DTD
             DTDResolver dtdResolver = new DTDResolver();
             parser.setEntityResolver(dtdResolver);
 
             // We don't use an external content handler - we use this object
-            parser.setContentHandler(this);
-
-            // Validate the input file
-            parser.setFeature
-                ("http://apache.org/xml/features/validation/dynamic", true);
-            parser.setFeature("http://xml.org/sax/features/validation", true);
+            parser.setDocumentHandler(this);
 
             parser.setErrorHandler(this);
 
@@ -162,7 +142,7 @@ public class XmlToAppData extends DefaultHandler
             e.printStackTrace();
         }
         firstPass = false;
-        if ( errorMessage.length() > 0 ) 
+        if ( errorMessage.length() > 0 )
         {
             System.out.println("ERROR in schema!!!\n" + errorMessage);
             // Log.error("ERROR in schema!!!\n" + errorMessage);
@@ -171,13 +151,16 @@ public class XmlToAppData extends DefaultHandler
         return app;
     }
 
-
+    public void endElement(String s) throws SAXException
+    {
+        // nothing to do
+    }
 
     /**
      * Handles opening elements of the xml file.
      */
-    public void startElement(String uri, String localName, String rawName,
-                             Attributes attributes)
+    public void startElement(String rawName,
+                             AttributeList attributes)
     {
         try
         {
@@ -195,38 +178,38 @@ public class XmlToAppData extends DefaultHandler
                 if (rawName.equals("table"))
                 {
                     currTable = currDB.getTable(attributes.getValue("name"));
-                    
+
                     // check schema integrity
                     // if idMethod="autoincrement", make sure a column is
                     // specified as autoIncrement="true"
-                    if ( currTable.getIdMethod().equals("autoincrement") ) 
+                    if ( currTable.getIdMethod().equals("autoincrement") )
                     {
                         Column[] columns = currTable.getColumns();
                         boolean foundOne = false;
-                        for ( int i=0; i<columns.length && !foundOne; i++ ) 
+                        for ( int i=0; i<columns.length && !foundOne; i++ )
                         {
                             foundOne = columns[i].isAutoIncrement();
                         }
-                        if ( !foundOne ) 
+                        if ( !foundOne )
                         {
                             errorMessage += "Table '" + currTable.getName() +
                             "' is marked as autoincrement, but it does not " +
                             "have a column which declared as the one to " +
                             "auto increment (i.e. autoIncrement=\"true\")\n";
                         }
-                        
+
                     }
                 }
                 else if (rawName.equals("foreign-key"))
                 {
-                    String foreignTableName = 
-                        attributes.getValue("foreignTable"); 
+                    String foreignTableName =
+                        attributes.getValue("foreignTable");
                     foreignTable = currDB
                         .getTable(foreignTableName);
-                    if ( foreignTable == null ) 
+                    if ( foreignTable == null )
                     {
                         System.out.println("ERROR!! Attempt to set foreign"
-                            + " key to nonexistent table, " + 
+                            + " key to nonexistent table, " +
                             attributes.getValue("foreignTable") + "!");
                     }
                 }
@@ -245,10 +228,10 @@ public class XmlToAppData extends DefaultHandler
                     // give notice of a schema inconsistency.
                     // note we do not prevent the npe as there is nothing
                     // that we can do, if it is to occur.
-                    if ( local == null ) 
+                    if ( local == null )
                     {
                         System.out.println("ERROR!! Attempt to define foreign"
-                            + " key with nonexistent column, " + 
+                            + " key with nonexistent column, " +
                             attributes.getValue("local") + ", in table, " +
                             currTable.getName() + "!" );
                     }
@@ -262,10 +245,10 @@ public class XmlToAppData extends DefaultHandler
                         .getColumn(attributes.getValue("foreign"));
                     // if the foreign column does not exist, we may have an
                     // external reference or a misspelling
-                    if ( foreign == null ) 
+                    if ( foreign == null )
                     {
                         System.out.println("ERROR!! Attempt to set foreign"
-                            + " key to nonexistent column, " + 
+                            + " key to nonexistent column, " +
                             attributes.getValue("foreign") + ", in table, "
                             + foreignTable.getName() + "!" );
                     }

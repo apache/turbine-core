@@ -25,13 +25,13 @@ package org.apache.turbine.services.jsp;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,7 +54,7 @@ package org.apache.turbine.services.jsp;
  * <http://www.apache.org/>.
  */
 
-// Java Stuff 
+// Java Stuff
 import java.io.File;
 import java.io.IOException;
 
@@ -76,10 +76,11 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
 import org.apache.turbine.services.template.TurbineTemplate;
 
-import org.apache.velocity.runtime.configuration.Configuration;
+import org.apache.stratum.configuration.Configuration;
+
 
 /**
- * This is a Service that can process JSP templates from within a Turbine 
+ * This is a Service that can process JSP templates from within a Turbine
  * screen.
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
@@ -91,7 +92,7 @@ public class TurbineJspService extends BaseTemplateEngineService
 {
     /** The base path[s] prepended to filenames given in arguments */
     private String[] templatePaths;
-    
+
     /** The relative path[s] prepended to filenames */
     private String[] relativeTemplatePaths;
 
@@ -115,12 +116,12 @@ public class TurbineJspService extends BaseTemplateEngineService
                 "TurbineJspService failed to initialize", e);
         }
     }
-    
+
     /**
      * Adds some convenience objects to the request.  For example an instance
      * of JspLink which can be used to generate links to other templates.
-     * 
-     * @param RunData the turbine rundata object 
+     *
+     * @param RunData the turbine rundata object
      */
     public void addDefaultObjects(RunData data)
     {
@@ -131,7 +132,7 @@ public class TurbineJspService extends BaseTemplateEngineService
 
     /**
      * The buffer size
-     * 
+     *
      */
     public int getDefaultBufferSize()
     {
@@ -139,56 +140,56 @@ public class TurbineJspService extends BaseTemplateEngineService
     }
 
     /**
-     * Process the request 
-     * 
-     * @param RunData 
+     * Process the request
+     *
+     * @param RunData
      * @param String the filename of the template.
      * @throws TurbineException Any exception trown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
-    public void handleRequest(RunData data, String filename) 
+    public void handleRequest(RunData data, String filename)
         throws TurbineException
     {
         handleRequest(data, filename, false);
     }
-    
+
     /**
-     * Process the request 
-     * 
-     * @param RunData 
+     * Process the request
+     *
+     * @param RunData
      * @param String the filename of the template.
      * @param boolean whether to perform a forward or include.
      * @throws TurbineException Any exception trown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
-    public void handleRequest(RunData data, String filename, boolean isForward) 
+    public void handleRequest(RunData data, String filename, boolean isForward)
         throws TurbineException
-    {                                
+    {
         /** template name with relative path */
         String relativeTemplateName = getRelativeTemplateName(filename);
-        
+
         if (relativeTemplateName == null)
         {
             throw new TurbineException(
             "Template " + filename + " not found in template paths");
         }
-        
+
         // get the RequestDispatcher for the JSP
         RequestDispatcher dispatcher = data.getServletContext()
         .getRequestDispatcher(relativeTemplateName);
-        
+
         try
         {
             if (isForward)
             {
                 // forward the request to the JSP
-                dispatcher.forward( data.getRequest(), data.getResponse() ); 
+                dispatcher.forward( data.getRequest(), data.getResponse() );
             }
             else
             {
                 data.getOut().flush();
                 // include the JSP
-                dispatcher.include( data.getRequest(), data.getResponse() ); 
+                dispatcher.include( data.getRequest(), data.getResponse() );
             }
         }
         catch(Exception e)
@@ -197,12 +198,12 @@ public class TurbineJspService extends BaseTemplateEngineService
             // message to the browser, to speed up debugging
             try
             {
-                data.getOut().print("Error encountered processing a template: "+filename); 
+                data.getOut().print("Error encountered processing a template: "+filename);
                 e.printStackTrace(data.getOut());
             }
-            catch(IOException ignored) 
+            catch(IOException ignored)
             {
-            }    
+            }
 
             // pass the exception to the caller according to the general
             // contract for tamplating services in Turbine
@@ -210,7 +211,7 @@ public class TurbineJspService extends BaseTemplateEngineService
                 "Error encountered processing a template:" + filename, e);
         }
     }
-   
+
     /**
      * This method sets up the template cache.
      */
@@ -225,13 +226,13 @@ public class TurbineJspService extends BaseTemplateEngineService
          */
         templatePaths = TurbineTemplate.translateTemplatePaths(
         config.getStringArray("templates"));
-        
+
         /*
          * Set relative paths from config.
          * Needed for javax.servlet.RequestDispatcher
          */
         relativeTemplatePaths = config.getStringArray("templates");
-        
+
         /*
          * Make sure that the relative paths begin with /
          */
@@ -242,9 +243,9 @@ public class TurbineJspService extends BaseTemplateEngineService
                 relativeTemplatePaths[i] = "/" + relativeTemplatePaths[i];
             }
         }
-        
+
         bufferSize = config.getInt("buffer.size", 8192);
-    
+
         /*
          * Register with the template service.
          */
@@ -263,7 +264,7 @@ public class TurbineJspService extends BaseTemplateEngineService
     public boolean templateExists(String template)
     {
         return TurbineTemplate.templateExists(template, templatePaths);
-    } 
+    }
     /**
      * Searchs for a template in the default.template path[s] and
      * returns the template name with a relative path which is
@@ -276,14 +277,14 @@ public class TurbineJspService extends BaseTemplateEngineService
 
     public String getRelativeTemplateName(String template)
     {
-        /* 
+        /*
          * A dummy String[] object used to pass a String to
          * TurbineTemplate.templateExists
          */
         String[] testTemplatePath = new String[1];
-        
-        /** 
-         * Find which template path the template is in 
+
+        /**
+         * Find which template path the template is in
          */
         for (int i = 0; i < relativeTemplatePaths.length; i++)
         {
@@ -293,7 +294,7 @@ public class TurbineJspService extends BaseTemplateEngineService
                 return relativeTemplatePaths[i] + template;
             }
         }
-        
+
         return null;
-    }             
+    }
 }

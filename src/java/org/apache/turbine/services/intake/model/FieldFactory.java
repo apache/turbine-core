@@ -127,12 +127,30 @@ public abstract class FieldFactory
                 }
             }
                        );
+        fieldCtors.put("StringKey", new FieldFactory.FieldCtor()
+            {
+                public Field getInstance(XmlField f, Group g)
+                    throws Exception
+                {
+                    return new StringKeyField(f, g);
+                }
+            }
+                       );
         fieldCtors.put("FileItem", new FieldFactory.FieldCtor()
             {
                 public Field getInstance(XmlField f, Group g)
                     throws Exception
                 {
                     return new FileItemField(f, g);
+                }
+            }
+                       );
+        fieldCtors.put("float", new FieldFactory.FieldCtor()
+            {
+                public Field getInstance(XmlField f, Group g)
+                    throws Exception
+                {
+                    return new FloatField(f, g);
                 }
             }
                        );
@@ -157,15 +175,20 @@ public abstract class FieldFactory
     public static final Field getInstance(XmlField f, Group g)
         throws Exception
     {
+        FieldCtor fieldCtor = null;
         Field field = null;
         String type = f.getType();
 
-        field = ((FieldCtor)fieldCtors.get(type)).getInstance(f, g);
-        if ( field == null)
+        fieldCtor = (FieldCtor)fieldCtors.get(type);
+        if ( fieldCtor == null)
         {
             throw new TurbineException("Unsupported type: " + type);
         }
-
+        else 
+        {
+            field = fieldCtor.getInstance(f, g);
+        }
+        
         return field;
     }
 }

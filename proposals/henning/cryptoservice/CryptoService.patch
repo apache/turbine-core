@@ -1,0 +1,1451 @@
+diff --exclude=CVS -Nurb jakarta/turbine-2/build/build.xml jakarta.p/turbine-2/build/build.xml
+--- jakarta/turbine-2/build/build.xml	Fri Dec 14 13:49:25 2001
++++ jakarta.p/turbine-2/build/build.xml	Mon Dec 17 13:29:16 2001
+@@ -73,6 +73,10 @@
+            classname="org.exolab.castor.jdo.Database">
+             <classpath refid="classpath"/>
+         </available>
++        <available property="cryptix.present"
++           classname="cryptix.tools.UnixCrypt">
++            <classpath refid="classpath"/>
++        </available>
+     </target>
+ 
+     <!-- ================================================================== -->
+@@ -100,6 +104,7 @@
+                 <exclude name="**/test/**"/>
+                 <exclude name="**/services/logging/Log4JavaLogger.java"/>
+                 <exclude name="**/services/castor/*.java"/>
++                <exclude name="**/util/crypto/UnixCrypt.java"/>
+             </fileset>
+         </copy>
+         <available classname="org.apache.velocity.anakia.AnakiaTask"
+@@ -177,11 +182,22 @@
+     </target>
+ 
+     <!-- ================================================================== -->
++    <!-- Adds cryptix files to the build directory                           -->
++    <!-- ================================================================== -->
++    <target name="prepare-cryptix" depends="prepare" if="cryptix.present">
++        <copy todir="${build.src}/org" filtering="yes">
++            <fileset dir="${src.java.dir}/org">
++                <include name="**/util/crypto/UnixCrypt.java"/>
++            </fileset>
++        </copy>
++    </target>
++
++    <!-- ================================================================== -->
+     <!-- Compiles the source directory                                      -->
+     <!-- ================================================================== -->
+     <target name="compile"
+             depends="prepare, prepare-jsp, prepare-freemarker,
+-                     prepare-log4java, prepare-castor"
++                     prepare-log4java, prepare-castor, prepare-cryptix"
+             description="--> compiles the source code">
+         <javac srcdir="${build.src}"
+             destdir="${build.dest}"
+diff --exclude=CVS -Nurb jakarta/turbine-2/conf/TurbineResources.properties jakarta.p/turbine-2/conf/TurbineResources.properties
+--- jakarta/turbine-2/conf/TurbineResources.properties	Fri Dec 14 13:49:25 2001
++++ jakarta.p/turbine-2/conf/TurbineResources.properties	Mon Dec 17 13:29:16 2001
+@@ -430,12 +430,41 @@
+ #services.IntakeService.classname=org.apache.turbine.services.intake.TurbineIntakeService
+ services.TemplateService.classname=org.apache.turbine.services.template.TurbineTemplateService
+ services.XSLTService.classname=org.apache.turbine.services.xslt.TurbineXSLTService
++services.CryptoService.classname=org.apache.turbine.services.crypto.TurbineCryptoService
++
+ 
+ # Turn on the appropriate template service.
+ services.VelocityService.classname=org.apache.turbine.services.velocity.TurbineVelocityService
+ 
+ # -------------------------------------------------------------------
+ #
++#  C R Y P T O   S E R V I C E
++#
++# -------------------------------------------------------------------
++
++#
++# Uncomment the following line if you want to use UnixCrypt and have
++# compiled the turbine jar in the presence of the cryptix32.jar. You
++# can then use services.SecurityService.secure.passwords.algorithm=unix 
++# for Unix crypt(3) like password encryption.
++# 
++#services.CryptoService.algorithm.unix  = org.apache.turbine.util.crypto.UnixCrypt
++#
++# This is a replacement for the encrypting passwords switches in the security service.
++# You can no let the "services.SecurityService.secure.passwords switch be "true"
++# unconditionally and use "services.SecurityService.secure.passwords.algorithm=cleartext"
++# for password 'encryption'
++#
++services.CryptoService.algorithm.cleartext  = org.apache.turbine.util.crypto.ClearCrypt
++#
++# This is the default service. It implements the normal Java MessageDigest ciphers
++# You need not to have this, it is the default if no algorithms are given
++#
++#services.CryptoService.algorithm.default  = org.apache.turbine.util.crypto.JavaCrypt
++
++
++# -------------------------------------------------------------------
++#
+ #  P O O L / M A P  B R O K E R
+ #
+ # -------------------------------------------------------------------
+@@ -815,27 +844,35 @@
+ services.SecurityService.user.manager=org.apache.turbine.services.security.db.DBUserManager
+ 
+ #
++# This is the class that implements AccessControlList interface
++# Override this setting if you want your security system return 
++# different objects. 
++# Default implementation uses Permissions and Roles as described in
++# the Turbine Security HOWTO.
++
++service.SecurityService.acl.class=org.apache.turbine.util.security.TurbineAccessControlList
++
++#
+ # This is used by the SecurityService to make the password checking
+-# secure. When enabled, passwords are transformed by a one-way
+-# function into a sequence of bytes that is base64 encoded.
+-# It is impossible to guess the plain-text form of the password
+-# from the representation. When user logs in, the entered password
+-# is transformed the same way and then compared with stored value.
++# secure. When enabled, passwords are transformed by the CryptoService
++# into encrypted strings. This switch is now obsolete because
++# "false" equals to "true" with algorithm=cleartext which is now the
++# default. This switch will disappear in a later Turbine version.
+ #
+-# Default: false
++# Default: true
+ #
+ 
+-services.SecurityService.secure.passwords=false
++services.SecurityService.secure.passwords=true
+ 
+ #
+ # This property lets you choose what digest algorithm will be used
+ # for encrypting passwords. Check documentation of your JRE for
+ # available algorithms.
+ #
+-# Default: SHA
++# Default: cleartext, which means "no encryption". 
+ #
+ 
+-services.SecurityService.secure.passwords.algorithm=SHA
++services.SecurityService.secure.passwords.algorithm=cleartext
+ 
+ # Configuration for the LDAP Security Service implementation
+ 
+diff --exclude=CVS -Nurb jakarta/turbine-2/lib/README.txt jakarta.p/turbine-2/lib/README.txt
+--- jakarta/turbine-2/lib/README.txt	Fri Dec 14 13:49:25 2001
++++ jakarta.p/turbine-2/lib/README.txt	Mon Dec 17 13:29:16 2001
+@@ -132,6 +132,12 @@
+ 
+   http://castor.exolab.org/
+ 
++* cryptix*.jar
++
++  Encryption and security provider. Used to supply UnixCrypt. 
++
++  http://www.cryptix.org/
++
+ * jdbc-*.jar
+ 
+   JDBC 2.0 Optional Package API. Required by Castor. JDBC is Java Data
+@@ -169,3 +175,5 @@
+   implemented through the passing of XML messages.
+ 
+   http://www.xmlrpc.org/
++
++
+diff --exclude=CVS -Nurb jakarta/turbine-2/src/java/org/apache/turbine/services/crypto/BaseCryptoService.java jakarta.p/turbine-2/src/java/org/apache/turbine/services/crypto/BaseCryptoService.java
+--- jakarta/turbine-2/src/java/org/apache/turbine/services/crypto/BaseCryptoService.java	Thu Jan  1 01:00:00 1970
++++ jakarta.p/turbine-2/src/java/org/apache/turbine/services/crypto/BaseCryptoService.java	Mon Dec 17 13:29:16 2001
+@@ -0,0 +1,71 @@
++package org.apache.turbine.services.crypto;
++
++/* ====================================================================
++ * The Apache Software License, Version 1.1
++ *
++ * Copyright (c) 2001 The Apache Software Foundation.  All rights
++ * reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in
++ *    the documentation and/or other materials provided with the
++ *    distribution.
++ *
++ * 3. The end-user documentation included with the redistribution,
++ *    if any, must include the following acknowledgment:
++ *       "This product includes software developed by the
++ *        Apache Software Foundation (http://www.apache.org/)."
++ *    Alternately, this acknowledgment may appear in the software itself,
++ *    if and wherever such third-party acknowledgments normally appear.
++ *
++ * 4. The names "Apache" and "Apache Software Foundation" and 
++ *    "Apache Turbine" must not be used to endorse or promote products 
++ *    derived from this software without prior written permission. For 
++ *    written permission, please contact apache@apache.org.
++ *
++ * 5. Products derived from this software may not be called "Apache",
++ *    "Apache Turbine", nor may "Apache" appear in their name, without 
++ *    prior written permission of the Apache Software Foundation.
++ *
++ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
++ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
++ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
++ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
++ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
++ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
++ * SUCH DAMAGE.
++ * ====================================================================
++ *
++ * This software consists of voluntary contributions made by many
++ * individuals on behalf of the Apache Software Foundation.  For more
++ * information on the Apache Software Foundation, please see
++ * <http://www.apache.org/>.
++ */
++
++import org.apache.turbine.services.TurbineBaseService;
++
++/**
++ * Base implementation of the Crypto Service. Should be extended
++ * for the actual service class.
++ *
++ * @author <a href="mailto:henning@intermeta.de">Henning P. Schmiedehausen</a>
++ * @version $Id: BaseCryptoService.java,v 1.1 2001/12/17 10:33:14 henning Exp $
++ *
++ */
++
++public abstract class BaseCryptoService
++    extends TurbineBaseService implements CryptoService
++{
++}
+diff --exclude=CVS -Nurb jakarta/turbine-2/src/java/org/apache/turbine/services/crypto/CryptoAlgorithm.java jakarta.p/turbine-2/src/java/org/apache/turbine/services/crypto/CryptoAlgorithm.java
+--- jakarta/turbine-2/src/java/org/apache/turbine/services/crypto/CryptoAlgorithm.java	Thu Jan  1 01:00:00 1970
++++ jakarta.p/turbine-2/src/java/org/apache/turbine/services/crypto/CryptoAlgorithm.java	Mon Dec 17 13:29:16 2001
+@@ -0,0 +1,121 @@
++package org.apache.turbine.services.crypto;
++
++/* ====================================================================
++ * The Apache Software License, Version 1.1
++ *
++ * Copyright (c) 2001 The Apache Software Foundation.  All rights
++ * reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in
++ *    the documentation and/or other materials provided with the
++ *    distribution.
++ *
++ * 3. The end-user documentation included with the redistribution,
++ *    if any, must include the following acknowledgment:
++ *       "This product includes software developed by the
++ *        Apache Software Foundation (http://www.apache.org/)."
++ *    Alternately, this acknowledgment may appear in the software itself,
++ *    if and wherever such third-party acknowledgments normally appear.
++ *
++ * 4. The names "Apache" and "Apache Software Foundation" and 
++ *    "Apache Turbine" must not be used to endorse or promote products 
++ *    derived from this software without prior written permission. For 
++ *    written permission, please contact apache@apache.org.
++ *
++ * 5. Products derived from this software may not be called "Apache",
++ *    "Apache Turbine", nor may "Apache" appear in their name, without 
++ *    prior written permission of the Apache Software Foundation.
++ *
++ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
++ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
++ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
++ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
++ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
++ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
++ * SUCH DAMAGE.
++ * ====================================================================
++ *
++ * This software consists of voluntary contributions made by many
++ * individuals on behalf of the Apache Software Foundation.  For more
++ * information on the Apache Software Foundation, please see
++ * <http://www.apache.org/>.
++ */
++
++/**
++ * The CryptoAlgorithm Object represents the various encryption 
++ * algorithms in an uniform manner for Turbine. If Sun would actually
++ * have been able to supply either a decent MessageDigest implementation
++ * or a Crypt(3) algorithm, all this stuff would not have been necessary.
++ *
++ * @author <a href="mailto:henning@intermeta.de">Henning P. Schmiedehausen</a>
++ * @version $Id: CryptoAlgorithm.java,v 1.2 2001/12/17 11:53:44 henning Exp $
++ *
++ */
++
++public interface CryptoAlgorithm
++{
++    /**
++     * Allows the user to set a salt value whenever the
++     * algorithm is used. Setting a new salt should invalidate
++     * all internal state of this object.
++     * <p>
++     * Algorithms that do not use a salt are allowed to ignore
++     * this parameter.
++     * <p>
++     * Algorithms must be able to deal with the null value as salt.
++     * They should treat it as "use a random salt".
++     *
++     * @param salt      The salt value
++     *
++     */
++
++    public void setSeed(String salt);
++
++    /**
++     * Performs the actual encryption. 
++     *
++     * @param value       The value to be encrypted
++     *
++     * @return The encrypted value
++     *
++     * @throws Exception various errors from the underlying ciphers. The caller should catch them and report accordingly.
++     *
++     */
++
++    public String encrypt(String value)
++        throws Exception;
++
++    /**
++     * Algorithms that perform multiple ciphers get told
++     * with setCipher, which cipher to use. This should be
++     * called before any other method call.
++     * 
++     * If called after any call to encrypt or setSeed, the
++     * CryptoAlgorithm may choose to ignore this or to reset
++     * and use the new cipher.
++     *
++     * If any other call is used before this, the algorithm
++     * should use a default cipher and not throw an error.
++     *
++     * @param cipher    The cipher to use.
++     *
++     */
++
++    public void setCipher(String cipher);
++
++}
++
++
+diff --exclude=CVS -Nurb jakarta/turbine-2/src/java/org/apache/turbine/services/crypto/CryptoService.java jakarta.p/turbine-2/src/java/org/apache/turbine/services/crypto/CryptoService.java
+--- jakarta/turbine-2/src/java/org/apache/turbine/services/crypto/CryptoService.java	Thu Jan  1 01:00:00 1970
++++ jakarta.p/turbine-2/src/java/org/apache/turbine/services/crypto/CryptoService.java	Mon Dec 17 13:29:16 2001
+@@ -0,0 +1,96 @@
++package org.apache.turbine.services.crypto;
++
++/* ====================================================================
++ * The Apache Software License, Version 1.1
++ *
++ * Copyright (c) 2001 The Apache Software Foundation.  All rights
++ * reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in
++ *    the documentation and/or other materials provided with the
++ *    distribution.
++ *
++ * 3. The end-user documentation included with the redistribution,
++ *    if any, must include the following acknowledgment:
++ *       "This product includes software developed by the
++ *        Apache Software Foundation (http://www.apache.org/)."
++ *    Alternately, this acknowledgment may appear in the software itself,
++ *    if and wherever such third-party acknowledgments normally appear.
++ *
++ * 4. The names "Apache" and "Apache Software Foundation" and 
++ *    "Apache Turbine" must not be used to endorse or promote products 
++ *    derived from this software without prior written permission. For 
++ *    written permission, please contact apache@apache.org.
++ *
++ * 5. Products derived from this software may not be called "Apache",
++ *    "Apache Turbine", nor may "Apache" appear in their name, without 
++ *    prior written permission of the Apache Software Foundation.
++ *
++ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
++ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
++ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
++ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
++ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
++ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
++ * SUCH DAMAGE.
++ * ====================================================================
++ *
++ * This software consists of voluntary contributions made by many
++ * individuals on behalf of the Apache Software Foundation.  For more
++ * information on the Apache Software Foundation, please see
++ * <http://www.apache.org/>.
++ */
++
++import java.security.NoSuchAlgorithmException;
++import org.apache.turbine.services.Service;
++
++/**
++ * The Crypto Service manages the availability of various crypto 
++ * sources. It provides a consistent interface to things like the
++ * various java.security Message Digest stuff or the Unix Crypt 
++ * algorithm.
++ *
++ * It contains no actual crypto code so it should be fine to import/export
++ * everywhere.
++ *
++ * @author <a href="mailto:henning@intermeta.de">Henning P. Schmiedehausen</a>
++ * @version $Id: CryptoService.java,v 1.1 2001/12/17 10:33:14 henning Exp $
++ *
++ */
++
++public interface CryptoService 
++    extends Service
++{
++    /** The name of the service */
++    public static final String SERVICE_NAME = "CryptoService";
++
++    /**
++     * Returns a CryptoAlgorithm Object which represents the requested
++     * crypto algorithm.
++     *
++     * @param algorithm      Name of the requested algorithm
++     *
++     * @return An Object representing the algorithm
++     *
++     * @throws java.security.NoSuchAlgorithmException  Requested algorithm is not available
++     *
++     */
++
++    public CryptoAlgorithm getCryptoAlgorithm(String algorithm)
++        throws NoSuchAlgorithmException;
++}
++
++
+diff --exclude=CVS -Nurb jakarta/turbine-2/src/java/org/apache/turbine/services/crypto/TurbineCrypto.java jakarta.p/turbine-2/src/java/org/apache/turbine/services/crypto/TurbineCrypto.java
+--- jakarta/turbine-2/src/java/org/apache/turbine/services/crypto/TurbineCrypto.java	Thu Jan  1 01:00:00 1970
++++ jakarta.p/turbine-2/src/java/org/apache/turbine/services/crypto/TurbineCrypto.java	Mon Dec 17 13:29:16 2001
+@@ -0,0 +1,85 @@
++package org.apache.turbine.services.crypto;
++
++/* ====================================================================
++ * The Apache Software License, Version 1.1
++ *
++ * Copyright (c) 2001 The Apache Software Foundation.  All rights
++ * reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in
++ *    the documentation and/or other materials provided with the
++ *    distribution.
++ *
++ * 3. The end-user documentation included with the redistribution,
++ *    if any, must include the following acknowledgment:
++ *       "This product includes software developed by the
++ *        Apache Software Foundation (http://www.apache.org/)."
++ *    Alternately, this acknowledgment may appear in the software itself,
++ *    if and wherever such third-party acknowledgments normally appear.
++ *
++ * 4. The names "Apache" and "Apache Software Foundation" and 
++ *    "Apache Turbine" must not be used to endorse or promote products 
++ *    derived from this software without prior written permission. For 
++ *    written permission, please contact apache@apache.org.
++ *
++ * 5. Products derived from this software may not be called "Apache",
++ *    "Apache Turbine", nor may "Apache" appear in their name, without 
++ *    prior written permission of the Apache Software Foundation.
++ *
++ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
++ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
++ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
++ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
++ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
++ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
++ * SUCH DAMAGE.
++ * ====================================================================
++ *
++ * This software consists of voluntary contributions made by many
++ * individuals on behalf of the Apache Software Foundation.  For more
++ * information on the Apache Software Foundation, please see
++ * <http://www.apache.org/>.
++ */
++
++import org.apache.turbine.services.TurbineServices;
++
++/**
++ * This is a facade class for the CryptoService. 
++ *
++ * Here are the static methods that call related methods of the 
++ * various implementations of the Crypto Security Service, according
++ * to the settings in TurbineResources.
++ *
++ * @author <a href="mailto:henning@intermeta.de">Henning P. Schmiedehausen</a>
++ * @version $Id: TurbineCrypto.java,v 1.1 2001/12/17 10:33:14 henning Exp $
++ *
++ */
++
++public abstract class TurbineCrypto
++{
++    /**
++     * Retrieves an implementation of the CryptoService, based on
++     * the settings in TurbineResources.
++     *
++     * @return an implementation of the CryptoService
++     */
++
++    public static CryptoService getService()
++    {
++        return (CryptoService)TurbineServices.getInstance()
++            .getService(CryptoService.SERVICE_NAME);
++    }
++}
+diff --exclude=CVS -Nurb jakarta/turbine-2/src/java/org/apache/turbine/services/crypto/TurbineCryptoService.java jakarta.p/turbine-2/src/java/org/apache/turbine/services/crypto/TurbineCryptoService.java
+--- jakarta/turbine-2/src/java/org/apache/turbine/services/crypto/TurbineCryptoService.java	Thu Jan  1 01:00:00 1970
++++ jakarta.p/turbine-2/src/java/org/apache/turbine/services/crypto/TurbineCryptoService.java	Mon Dec 17 13:29:16 2001
+@@ -0,0 +1,216 @@
++package org.apache.turbine.services.crypto;
++
++/* ====================================================================
++ * The Apache Software License, Version 1.1
++ *
++ * Copyright (c) 2001 The Apache Software Foundation.  All rights
++ * reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in
++ *    the documentation and/or other materials provided with the
++ *    distribution.
++ *
++ * 3. The end-user documentation included with the redistribution,
++ *    if any, must include the following acknowledgment:
++ *       "This product includes software developed by the
++ *        Apache Software Foundation (http://www.apache.org/)."
++ *    Alternately, this acknowledgment may appear in the software itself,
++ *    if and wherever such third-party acknowledgments normally appear.
++ *
++ * 4. The names "Apache" and "Apache Software Foundation" and 
++ *    "Apache Turbine" must not be used to endorse or promote products 
++ *    derived from this software without prior written permission. For 
++ *    written permission, please contact apache@apache.org.
++ *
++ * 5. Products derived from this software may not be called "Apache",
++ *    "Apache Turbine", nor may "Apache" appear in their name, without 
++ *    prior written permission of the Apache Software Foundation.
++ *
++ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
++ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
++ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
++ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
++ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
++ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
++ * SUCH DAMAGE.
++ * ====================================================================
++ *
++ * This software consists of voluntary contributions made by many
++ * individuals on behalf of the Apache Software Foundation.  For more
++ * information on the Apache Software Foundation, please see
++ * <http://www.apache.org/>.
++ */
++
++import java.util.Hashtable;
++import java.util.Iterator;
++
++import java.security.NoSuchAlgorithmException;
++
++import javax.servlet.ServletConfig;
++
++import org.apache.turbine.services.InitializationException;
++import org.apache.turbine.services.factory.FactoryService;
++import org.apache.turbine.services.resources.ResourceService;
++import org.apache.turbine.services.resources.TurbineResources;
++import org.apache.turbine.services.TurbineServices;
++import org.apache.turbine.util.Log;
++
++/**
++ * An implementation of CryptoService that uses either supplied crypto
++ * Algorithms (provided in TurbineResources) or tries to get them via
++ * the normal java mechanisms if this fails.
++ *
++ * @author <a href="mailto:henning@intermeta.de">Henning P. Schmiedehausen</a>
++ * @version $Id: TurbineCryptoService.java,v 1.2 2001/12/17 11:53:44 henning Exp $
++ *
++ */
++
++public class TurbineCryptoService extends BaseCryptoService
++{
++
++    /** Key Prefix for our algorithms */
++
++    private static final String ALGORITHM = "algorithm"; 
++
++    /** Default Key */
++
++    private static final String DEFAULT_KEY = "default";
++
++    /** Default Encryption Class */
++
++    private static final String DEFAULT_CLASS = "org.apache.turbine.util.crypto.JavaCrypt";
++
++    /** Names of the registered algorithms and the wanted classes */
++
++    private Hashtable algos = null;
++
++    /** Resources for this Service */
++    private ResourceService resources = null;
++
++    /** A factory to construct CryptoAlgorithm objects  */
++
++    private FactoryService factoryService = null;
++
++
++    /**
++     * This gets the ResourceService associated to this Service
++     */
++
++    public ResourceService getResources()
++    {
++        if (resources == null)
++        {
++            // Get the properties for this Service
++            resources = TurbineResources
++                .getResources(TurbineServices.SERVICE_PREFIX +
++                              CryptoService.SERVICE_NAME);
++        }
++        return (resources);
++    }
++
++    /**
++     * There is not much to initialize here. This runs
++     * as early init method.
++     *
++     */ 
++
++    public void init(ServletConfig config)
++        throws InitializationException
++    {
++        this.algos = new Hashtable();
++
++        /*
++         * Set up default (Can be overridden by default key
++         * from the properties
++         */
++
++        algos.put(DEFAULT_KEY, DEFAULT_CLASS);
++
++        /*
++         * getResources() returns all keys. We just want those
++         * that contain the "algorithm" prefix. The second one
++         * is really ResourceServices::getResources(String) :-)
++         */
++
++        ResourceService props = getResources().getResources(ALGORITHM);
++
++        if(props != null)
++        {
++            Iterator it = props.getKeys();
++
++            while(it.hasNext())
++            {
++                String key = (String)it.next();
++                String val = props.getString(key);
++                Log.debug("Registered "+val+" for Crypto Algorithm "+key);
++                algos.put(key, val);
++            }
++        }
++
++        try 
++        {
++            factoryService = (FactoryService)TurbineServices.getInstance().
++                getService(FactoryService.SERVICE_NAME);
++        }
++        catch(Exception e)
++        {
++            throw new InitializationException(
++                "TurbineCryptoService.init: Failed to get a Factory object", e);
++        }
++
++        setInit(true);
++    }
++
++    /**
++     * Returns a CryptoAlgorithm Object which represents the requested
++     * crypto algorithm.
++     *
++     * @param algorithm      Name of the requested algorithm
++     *
++     * @return An Object representing the algorithm
++     *
++     * @throws java.security.NoSuchAlgorithmException  Requested algorithm is not available
++     *
++     */
++
++    public CryptoAlgorithm getCryptoAlgorithm(String algo)
++        throws NoSuchAlgorithmException
++    {
++        String cryptoClass = (String)algos.get(algo);
++        CryptoAlgorithm ca = null;
++
++        if(cryptoClass == null)
++            cryptoClass = (String)algos.get(DEFAULT_KEY);
++
++        if(cryptoClass == null || cryptoClass.equals("none"))
++        {
++            throw new NoSuchAlgorithmException("TurbineCryptoService: No Algorithm for "+algo+" found");
++        }
++
++        try 
++        {
++            ca = (CryptoAlgorithm)factoryService.getInstance(cryptoClass);
++        }
++        catch(Exception e)
++        {
++            throw new NoSuchAlgorithmException("TurbineCryptoService: Error instantiating "+cryptoClass+" for "+algo);
++        }
++
++        ca.setCipher(algo);
++
++        return ca;
++    }
++}
+diff --exclude=CVS -Nurb jakarta/turbine-2/src/java/org/apache/turbine/services/security/BaseSecurityService.java jakarta.p/turbine-2/src/java/org/apache/turbine/services/security/BaseSecurityService.java
+--- jakarta/turbine-2/src/java/org/apache/turbine/services/security/BaseSecurityService.java	Sat Dec 15 19:41:26 2001
++++ jakarta.p/turbine-2/src/java/org/apache/turbine/services/security/BaseSecurityService.java	Mon Dec 17 13:33:32 2001
+@@ -78,11 +78,9 @@
+ import org.apache.turbine.util.security.PasswordMismatchException;
+ import org.apache.turbine.util.security.TurbineSecurityException;
+ 
+-// Classes needed for password encryption
+-import javax.mail.internet.MimeUtility;
+-import java.security.MessageDigest;
+-import java.io.OutputStream;
+-import java.io.ByteArrayOutputStream;
++import org.apache.turbine.services.crypto.TurbineCrypto;
++import org.apache.turbine.services.crypto.CryptoService;
++import org.apache.turbine.services.crypto.CryptoAlgorithm;
+ 
+ /**
+  * This is a common subset of SecurityService implementation.
+@@ -100,6 +98,7 @@
+  * </ul>
+  *
+  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
++ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+  * @version $Id: BaseSecurityService.java,v 1.2 2001/12/14 16:06:36 henning Exp $
+  */
+ public abstract class BaseSecurityService
+@@ -144,6 +143,26 @@
+      */
+     public String encryptPassword( String password )
+     {
++        return encryptPassword( password, null );
++    }            
++
++    /**
++     * This method provides client-side encryption of passwords.
++     *
++     * If <code>secure.passwords</code> are enabled in TurbineResources,
++     * the password will be encrypted, if not, it will be returned unchanged.
++     * The <code>secure.passwords.algorithm</code> property can be used
++     * to chose which digest algorithm should be used for performing the
++     * encryption. <code>SHA</code> is used by default.
++     * 
++     * The used algorithms must be prepared to accept null as a valid parameter for salt.
++     *
++     * @param password the password to process
++     * @param salt     algorithms that needs a salt can provide one here
++     * @return processed password
++     */
++    public String encryptPassword( String password, String salt )
++    {
+         if(password == null)
+             return null;
+         String secure = getProperties().getProperty(
+@@ -152,18 +171,19 @@
+         String algorithm = getProperties().getProperty(
+             SecurityService.SECURE_PASSWORDS_ALGORITHM_KEY,
+             SecurityService.SECURE_PASSWORDS_ALGORITHM_DEFAULT);
+-        if (secure.equals("true") || secure.equals("yes"))
++
++        CryptoService cs = TurbineCrypto.getService();
++        if (secure.equals("true") || secure.equals("yes") && cs != null)
+         {
+             try
+             {
+-                MessageDigest md = MessageDigest.getInstance(algorithm);
+-                // We need to use unicode here, to be independent of platform's
+-                // default encoding. Thanks to SGawin for spotting this.
+-                byte[] digest = md.digest(password.getBytes("UTF-8"));
+-                ByteArrayOutputStream bas = new ByteArrayOutputStream(digest.length + digest.length / 3 + 1);
+-                OutputStream encodedStream = MimeUtility.encode(bas, "base64");
+-                encodedStream.write(digest);
+-                return bas.toString();
++                CryptoAlgorithm ca = cs.getCryptoAlgorithm(algorithm);
++
++                ca.setSeed(salt);
++
++                String result = ca.encrypt(password);
++
++                return result;
+             }
+             catch (Exception e)
+             {
+@@ -172,8 +192,34 @@
+ 
+                 return null;
+             }
+-        } else {
++        } 
++        else 
++        {
+             return password;
++        }
++    }
++
++    
++    /**
++     * Checks if a supplied password matches the encrypted password
++     *
++     * @param checkpw      The clear text password supplied by the user
++     * @param encpw        The current, encrypted password
++     *
++     * @return true if the password matches, else false
++     *
++     */
++    
++    public boolean checkPassword(String checkpw, String encpw)
++    {
++        String result = encryptPassword(checkpw, encpw);
++        if(result != null)
++        {
++            return result.equals(encpw);
++        }
++        else
++        {
++            return false;
+         }
+     }
+ 
+diff --exclude=CVS -Nurb jakarta/turbine-2/src/java/org/apache/turbine/services/security/SecurityService.java jakarta.p/turbine-2/src/java/org/apache/turbine/services/security/SecurityService.java
+--- jakarta/turbine-2/src/java/org/apache/turbine/services/security/SecurityService.java	Fri Dec 14 13:49:26 2001
++++ jakarta.p/turbine-2/src/java/org/apache/turbine/services/security/SecurityService.java	Mon Dec 17 13:34:19 2001
+@@ -89,6 +89,7 @@
+  * and directory server as the data backend.<br>
+  *
+  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
++ * @author <a href="mailto:henning@intermeta.de">Henning P. Schmiedehausen</a>
+  * @version $Id: SecurityService.java,v 1.1.1.1 2001/08/16 05:09:16 jvanzyl Exp $
+  */
+ public interface SecurityService 
+@@ -274,6 +275,32 @@
+      * @return processed password
+      */
+     public String encryptPassword( String password );
++
++    /**
++     * This method provides client-side encryption mechanism for passwords. 
++     *   
++     * This is an utility method that is used by other classes to maintain
++     * a consistent approach to encrypting password. The behavior of the
++     * method can be configured in service's properties. 
++     *
++     * Algorithms that must supply a salt for encryption can use this method to provide it
++     *
++     * @param password the password to process
++     * @param salt the salt used to encrypt the password
++     * @return processed password
++     */
++    public String encryptPassword( String password, String salt );
++
++    /**
++     * Checks if a supplied password matches the encrypted password
++     *
++     * @param checkpw      The clear text password supplied by the user
++     * @param encpw        The current, encrypted password
++     *
++     * @return true if the password matches, else false
++     *
++     */
++    public boolean checkPassword(String checkpw, String encpw);
+ 
+     /**
+      * Change the password for an User.
+diff --exclude=CVS -Nurb jakarta/turbine-2/src/java/org/apache/turbine/services/security/TurbineSecurity.java jakarta.p/turbine-2/src/java/org/apache/turbine/services/security/TurbineSecurity.java
+--- jakarta/turbine-2/src/java/org/apache/turbine/services/security/TurbineSecurity.java	Fri Dec 14 13:49:26 2001
++++ jakarta.p/turbine-2/src/java/org/apache/turbine/services/security/TurbineSecurity.java	Mon Dec 17 13:35:04 2001
+@@ -125,6 +125,36 @@
+     }
+ 
+     /**
++     * This method provides client-side encryption of passwords. 
++     *   
++     * This is an utility method that is used by other classes to maintain
++     * a consistent approach to encrypting password. The behavior of the
++     * method can be configured in service's properties. 
++     *
++     * @param password the password to process
++     * @param salt the supplied salt to encrypt the password
++     * @return processed password
++     */
++    public static String encryptPassword( String password, String salt )
++    {
++        return getService().encryptPassword(password, salt); 
++    }
++    
++    /**
++     * Checks if a supplied password matches the encrypted password
++     *
++     * @param checkpw      The clear text password supplied by the user
++     * @param encpw        The current, encrypted password
++     *
++     * @return true if the password matches, else false
++     *
++     */
++    public static boolean checkPassword(String checkpw, String encpw)
++    {
++        return getService().checkPassword(checkpw, encpw); 
++    }
++    
++    /**
+      * Return a Class object representing the system's chosen implementation of
+      * of User interface.
+      *
+diff --exclude=CVS -Nurb jakarta/turbine-2/src/java/org/apache/turbine/services/security/db/DBUserManager.java jakarta.p/turbine-2/src/java/org/apache/turbine/services/security/db/DBUserManager.java
+--- jakarta/turbine-2/src/java/org/apache/turbine/services/security/db/DBUserManager.java	Fri Dec 14 13:49:26 2001
++++ jakarta.p/turbine-2/src/java/org/apache/turbine/services/security/db/DBUserManager.java	Mon Dec 17 13:37:50 2001
+@@ -300,8 +300,14 @@
+             throw new UnknownEntityException("The account '" + 
+                 user.getUserName() + "' does not exist");
+         }
+-        String encrypted = TurbineSecurity.encryptPassword(password);
+-        if(!user.getPassword().equals(encrypted))
++
++        /*
++         * Unix crypt needs the existing, encrypted password text as
++         * salt for checking the supplied password. So we supply it 
++         * into the checkPassword routine
++         */
++
++        if(!TurbineSecurity.checkPassword(password, user.getPassword()))
+         {
+             throw new PasswordMismatchException("The passwords do not match");
+         }
+@@ -324,13 +330,13 @@
+         throws PasswordMismatchException, UnknownEntityException, 
+                DataBackendException
+     {
+-        String encrypted = TurbineSecurity.encryptPassword(oldPassword);
+         if(!accountExists(user))
+         {
+             throw new UnknownEntityException("The account '" + 
+                 user.getUserName() + "' does not exist");
+         }
+-        if(!user.getPassword().equals(encrypted))
++
++        if(!TurbineSecurity.checkPassword(oldPassword, user.getPassword()))
+         {
+             throw new PasswordMismatchException(
+                 "The supplied old password for '" + user.getUserName() +
+@@ -389,8 +395,9 @@
+             throw new EntityExistsException("The account '" + 
+                 user.getUserName() + "' already exists");
+         }
+-        String encrypted = TurbineSecurity.encryptPassword(initialPassword);
+-        user.setPassword(encrypted);
++
++        user.setPassword(TurbineSecurity.encryptPassword(initialPassword));
++
+         Criteria criteria = TurbineUserPeer.buildCriteria(user);
+         try
+         {
+diff --exclude=CVS -Nurb jakarta/turbine-2/src/java/org/apache/turbine/util/crypto/ClearCrypt.java jakarta.p/turbine-2/src/java/org/apache/turbine/util/crypto/ClearCrypt.java
+--- jakarta/turbine-2/src/java/org/apache/turbine/util/crypto/ClearCrypt.java	Thu Jan  1 01:00:00 1970
++++ jakarta.p/turbine-2/src/java/org/apache/turbine/util/crypto/ClearCrypt.java	Mon Dec 17 13:29:16 2001
+@@ -0,0 +1,128 @@
++package org.apache.turbine.util.crypto;
++
++/* ====================================================================
++ * The Apache Software License, Version 1.1
++ *
++ * Copyright (c) 2001 The Apache Software Foundation.  All rights
++ * reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in
++ *    the documentation and/or other materials provided with the
++ *    distribution.
++ *
++ * 3. The end-user documentation included with the redistribution,
++ *    if any, must include the following acknowledgment:
++ *       "This product includes software developed by the
++ *        Apache Software Foundation (http://www.apache.org/)."
++ *    Alternately, this acknowledgment may appear in the software itself,
++ *    if and wherever such third-party acknowledgments normally appear.
++ *
++ * 4. The names "Apache" and "Apache Software Foundation" and 
++ *    "Apache Turbine" must not be used to endorse or promote products 
++ *    derived from this software without prior written permission. For 
++ *    written permission, please contact apache@apache.org.
++ *
++ * 5. Products derived from this software may not be called "Apache",
++ *    "Apache Turbine", nor may "Apache" appear in their name, without 
++ *    prior written permission of the Apache Software Foundation.
++ *
++ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
++ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
++ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
++ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
++ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
++ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
++ * SUCH DAMAGE.
++ * ====================================================================
++ *
++ * This software consists of voluntary contributions made by many
++ * individuals on behalf of the Apache Software Foundation.  For more
++ * information on the Apache Software Foundation, please see
++ * <http://www.apache.org/>.
++ */
++
++// Classes needed for password encryption
++
++import org.apache.turbine.services.crypto.CryptoAlgorithm;
++
++/**
++ * This is a dummy for "cleartext" encryption. It goes through
++ * the notions of the CryptoAlgorithm interface but actually does
++ * nothing. It can be used as a replacement for the "encrypt = no" 
++ * setting in TurbineResources.
++ *
++ * Can be used as the default crypto algorithm 
++ *
++ * @author <a href="mailto:henning@intermeta.de">Henning P. Schmiedehausen</a>
++ * @version $Id: ClearCrypt.java,v 1.1 2001/12/17 11:53:44 henning Exp $
++ */
++
++public class ClearCrypt implements CryptoAlgorithm
++{
++    /**
++     * C'tor
++     *
++     */
++
++    public ClearCrypt()
++    {
++    }
++
++    /**
++     * This class never uses an algorithm, so this is
++     * just a dummy.
++     *
++     * @param cipher    Cipher (ignored)
++     */
++
++    public void setCipher(String cipher)
++    {
++        /* dummy */
++    }
++
++    /**
++     * This class never uses a seed, so this is
++     * just a dummy.
++     *
++     * @param seed        Seed (ignored)
++     */
++
++    public void setSeed(String seed)
++    {
++        /* dummy */
++    }
++
++    /**
++     * encrypt the supplied string with the requested cipher
++     *
++     * @param value       The value to be encrypted
++     *
++     * @return The encrypted value
++     *
++     */
++
++    public String encrypt(String value)
++        throws Exception
++    {
++      /*
++       * Ultra-clever implementation. ;-) 
++       */
++
++      return value;
++    }
++}
++
++
+diff --exclude=CVS -Nurb jakarta/turbine-2/src/java/org/apache/turbine/util/crypto/JavaCrypt.java jakarta.p/turbine-2/src/java/org/apache/turbine/util/crypto/JavaCrypt.java
+--- jakarta/turbine-2/src/java/org/apache/turbine/util/crypto/JavaCrypt.java	Thu Jan  1 01:00:00 1970
++++ jakarta.p/turbine-2/src/java/org/apache/turbine/util/crypto/JavaCrypt.java	Mon Dec 17 13:29:16 2001
+@@ -0,0 +1,151 @@
++package org.apache.turbine.util.crypto;
++
++/* ====================================================================
++ * The Apache Software License, Version 1.1
++ *
++ * Copyright (c) 2001 The Apache Software Foundation.  All rights
++ * reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in
++ *    the documentation and/or other materials provided with the
++ *    distribution.
++ *
++ * 3. The end-user documentation included with the redistribution,
++ *    if any, must include the following acknowledgment:
++ *       "This product includes software developed by the
++ *        Apache Software Foundation (http://www.apache.org/)."
++ *    Alternately, this acknowledgment may appear in the software itself,
++ *    if and wherever such third-party acknowledgments normally appear.
++ *
++ * 4. The names "Apache" and "Apache Software Foundation" and 
++ *    "Apache Turbine" must not be used to endorse or promote products 
++ *    derived from this software without prior written permission. For 
++ *    written permission, please contact apache@apache.org.
++ *
++ * 5. Products derived from this software may not be called "Apache",
++ *    "Apache Turbine", nor may "Apache" appear in their name, without 
++ *    prior written permission of the Apache Software Foundation.
++ *
++ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
++ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
++ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
++ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
++ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
++ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
++ * SUCH DAMAGE.
++ * ====================================================================
++ *
++ * This software consists of voluntary contributions made by many
++ * individuals on behalf of the Apache Software Foundation.  For more
++ * information on the Apache Software Foundation, please see
++ * <http://www.apache.org/>.
++ */
++
++// Classes needed for password encryption
++
++import javax.mail.internet.MimeUtility;
++import java.security.MessageDigest;
++import java.io.OutputStream;
++import java.io.ByteArrayOutputStream;
++
++import org.apache.turbine.services.crypto.CryptoAlgorithm;
++
++/**
++ * Implements the normal java.security.MessageDigest stream cipers
++ *
++ * Can be used as the default crypto algorithm 
++ *
++ * @author <a href="mailto:henning@intermeta.de">Henning P. Schmiedehausen</a>
++ * @version $Id: JavaCrypt.java,v 1.1 2001/12/17 11:53:44 henning Exp $
++ */
++
++public class JavaCrypt implements CryptoAlgorithm
++{
++
++    /** The default cipher */
++
++    private final String DEFAULT_CIPHER = "SHA";
++
++    /** The cipher to use for encryption */
++
++    private String cipher = null;
++
++
++    /**
++     * C'tor
++     *
++     */
++
++    public JavaCrypt()
++    {
++        this.cipher = DEFAULT_CIPHER;
++    }
++
++    /**
++     * Setting the actual cipher requested. If not
++     * called, then the default cipher (SHA) is used.
++     *
++     * This will never throw an error even if there is no
++     * provider for this cipher. The error will be thrown
++     * by encrypt() (Fixme?)
++     *
++     * @param cipher     The cipher to use.
++     *
++     */
++
++    public void setCipher(String cipher)
++    {
++        this.cipher = cipher;
++    }
++
++    /**
++     * This class never uses a seed, so this is
++     * just a dummy.
++     *
++     * @param seed        Seed (ignored)
++     *
++     */
++
++    public void setSeed(String seed)
++    {
++        /* dummy */
++    }
++
++    /**
++     * encrypt the supplied string with the requested cipher
++     *
++     * @param value       The value to be encrypted
++     *
++     * @return The encrypted value
++     *
++     */
++
++    public String encrypt(String value)
++        throws Exception
++    {
++        MessageDigest md = MessageDigest.getInstance(cipher);
++
++        // We need to use unicode here, to be independent of platform's
++        // default encoding. Thanks to SGawin for spotting this.
++
++        byte[] digest = md.digest(value.getBytes("UTF-8"));
++        ByteArrayOutputStream bas = new ByteArrayOutputStream(digest.length + digest.length / 3 + 1);
++        OutputStream encodedStream = MimeUtility.encode(bas, "base64");
++        encodedStream.write(digest);
++        return bas.toString();
++    }
++}
++
+diff --exclude=CVS -Nurb jakarta/turbine-2/src/java/org/apache/turbine/util/crypto/UnixCrypt.java jakarta.p/turbine-2/src/java/org/apache/turbine/util/crypto/UnixCrypt.java
+--- jakarta/turbine-2/src/java/org/apache/turbine/util/crypto/UnixCrypt.java	Thu Jan  1 01:00:00 1970
++++ jakarta.p/turbine-2/src/java/org/apache/turbine/util/crypto/UnixCrypt.java	Mon Dec 17 13:29:16 2001
+@@ -0,0 +1,143 @@
++package org.apache.turbine.util.crypto;
++
++/* ====================================================================
++ * The Apache Software License, Version 1.1
++ *
++ * Copyright (c) 2001 The Apache Software Foundation.  All rights
++ * reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ *
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ *
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in
++ *    the documentation and/or other materials provided with the
++ *    distribution.
++ *
++ * 3. The end-user documentation included with the redistribution,
++ *    if any, must include the following acknowledgment:
++ *       "This product includes software developed by the
++ *        Apache Software Foundation (http://www.apache.org/)."
++ *    Alternately, this acknowledgment may appear in the software itself,
++ *    if and wherever such third-party acknowledgments normally appear.
++ *
++ * 4. The names "Apache" and "Apache Software Foundation" and 
++ *    "Apache Turbine" must not be used to endorse or promote products 
++ *    derived from this software without prior written permission. For 
++ *    written permission, please contact apache@apache.org.
++ *
++ * 5. Products derived from this software may not be called "Apache",
++ *    "Apache Turbine", nor may "Apache" appear in their name, without 
++ *    prior written permission of the Apache Software Foundation.
++ *
++ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
++ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
++ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
++ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
++ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
++ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
++ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
++ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
++ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
++ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
++ * SUCH DAMAGE.
++ * ====================================================================
++ *
++ * This software consists of voluntary contributions made by many
++ * individuals on behalf of the Apache Software Foundation.  For more
++ * information on the Apache Software Foundation, please see
++ * <http://www.apache.org/>.
++ */
++
++// Classes needed for password encryption
++
++import org.apache.turbine.services.crypto.CryptoAlgorithm;
++
++/**
++ * Implements UnixCrypt as a CryptoAlgorithm
++ *
++ * @author <a href="mailto:henning@intermeta.de">Henning P. Schmiedehausen</a>
++ * @version $Id: UnixCrypt.java,v 1.1 2001/12/17 11:53:44 henning Exp $
++ */
++
++public class UnixCrypt implements CryptoAlgorithm
++{
++
++    /** The seed to use */
++
++    private String seed = null;
++
++    /** standard Unix crypt chars (64) */
++    private static final char[] saltChars =
++        ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./".toCharArray());
++
++
++    /**
++     * C'tor
++     *
++     */
++
++    public UnixCrypt()
++    {
++    }
++
++    /**
++     * This class never uses anything but
++     * UnixCrypt, so it is just a dummy
++     * (Fixme: Should we throw an exception if 
++     * something is requested that we don't support?
++     *
++     * @param cipher    Cipher (ignored)
++     */
++
++    public void setCipher(String cipher)
++    {
++        /* dummy */
++    }
++
++    /**
++     * Setting the seed for the UnixCrypt
++     * algorithm. If a null value is supplied,
++     * or no seed is set, then a random seed is used.
++     *
++     * @param seed     The seed value to use.
++     */
++
++    public void setSeed(String seed)
++    {
++        this.seed = seed;
++    }
++
++    /**
++     * encrypt the supplied string with the requested cipher
++     *
++     * @param value       The value to be encrypted
++     *
++     * @return The encrypted value
++     *
++     */
++
++    public String encrypt(String value)
++        throws Exception
++    {
++        if(seed == null)
++        {
++            java.util.Random randomGenerator = new java.util.Random();
++            int numSaltChars = saltChars.length;
++
++            seed = (new StringBuffer())
++                .append(saltChars[Math.abs(randomGenerator.nextInt()) % numSaltChars])
++                .append(saltChars[Math.abs(randomGenerator.nextInt()) % numSaltChars])
++                .toString();
++        }
++
++        return new cryptix.tools.UnixCrypt(seed).crypt(value);
++    }
++}
++
++

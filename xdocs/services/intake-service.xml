@@ -126,18 +126,18 @@ groups from Scarab's intake.xml:
 <group name="AttributeValue" key="attv" 
             mapToObject="om.AttributeValue">
     <field name="Value" key="val" type="String">
-        <rule maxLength="255">Value length cannot be &gt; 255</rule>
+        <rule name="maxLength" value="255">Value length cannot be &gt; 255</rule>
         <required-message>This module requires data for this 
                           attribute.
         </required-message>
     </field>
     <field name="Url" key="url" type="String" mapToProperty="Value">
-        <rule maxLength="255">Url length cannot be &gt; 255</rule>
-        <rule mask="^$|http.+">Please enter an url starting with "http"</rule>
+        <rule name="maxLength" value="255">Url length cannot be &gt; 255</rule>
+        <rule name="mask" value="^$|http.+">Please enter an url starting with "http"</rule>
         <required-message>This module requires a valid url.</required-message>
     </field>
     <field name="OptionId" key="optionid" type="NumberKey">
-        <rule mask="^$|[0-9]+">Please select a valid choice</rule>
+        <rule name="mask" value="^$|[0-9]+">Please select a valid choice</rule>
         <required-message>This module requires that you select an option 
                           for this attribute.
         </required-message>
@@ -146,11 +146,11 @@ groups from Scarab's intake.xml:
 
 <group name="Login" key="login">
     <field name="Username" key="u" type="String">
-        <rule minLength="1">Please enter an email address</rule>
-        <rule mask=".+@.+\..+">Please enter a valid email address</rule>
+        <rule name="minLength" value="1">Please enter an email address</rule>
+        <rule name="mask" value=".+@.+\..+">Please enter a valid email address</rule>
     </field> 
     <field name="Password" key="p" type="String">
-        <rule minLength="1">Please enter a password</rule>
+        <rule name="minLength" value="1">Please enter a password</rule>
     </field>
 </group>
 
@@ -212,11 +212,11 @@ lets look at the fields in the group.
 
 <source><![CDATA[
 <field name="Username" key="u" type="String">
-    <rule minLength="1">Please enter an email address</rule>
-    <rule mask=".+@.+\..+">Please enter a valid email address</rule>
+    <rule name="minLength" value="1">Please enter an email address</rule>
+    <rule name="mask" value=".+@.+\..+">Please enter a valid email address</rule>
 </field> 
 <field name="Password" key="p" type="String">
-    <rule minLength="1">Please enter a password</rule>
+    <rule name="minLength" value="1">Please enter a password</rule>
 </field>
 ]]></source>
 
@@ -406,9 +406,8 @@ The Java Action code which handles the submission of the form looks like this:
 <source><![CDATA[
 public void doLogin( RunData data, Context context ) throws Exception
 {
-    IntakeTool intake = (IntakeTool)context
-        .get(ScarabConstants.INTAKE_TOOL);
-    
+    IntakeTool intake = (IntakeTool) context.get("intake");
+
     if ( intake.isAllValid() &amp;&amp; checkUser(data, context) ) 
     {
         String template = data.getParameters()
@@ -493,14 +492,14 @@ populated object. This will be covered in detail further on.
 
 <source><![CDATA[
 <field name="Value" key="val" type="String">
-    <rule maxLength="255">Value length cannot be &gt; 255</rule>
+    <rule name="maxLength" value="255">Value length cannot be &gt; 255</rule>
     <required-message>This module requires data for this 
                       attribute.
     </required-message>
 </field>
 <field name="Url" key="url" type="String" mapToProperty="Value">
-    <rule maxLength="255">Url length cannot be &gt; 255</rule>
-    <rule mask="^$|http.+">Please enter an url starting with "http"</rule>
+    <rule name="maxLength" value="255">Url length cannot be &gt; 255</rule>
+    <rule name="mask" value="^$|http.+">Please enter an url starting with "http"</rule>
     <required-message>This module requires a valid url.</required-message>
 </field>
 ]]></source>
@@ -612,14 +611,14 @@ Back to explaining the fields, lets look at the example again:
 
 <source><![CDATA[
     <field name="Value" key="val" type="String">
-        <rule maxLength="255">Value length cannot be &gt; 255</rule>
+        <rule name="maxLength" value="255">Value length cannot be &gt; 255</rule>
         <required-message>This module requires data for this 
                           attribute.
         </required-message>
     </field>
     <field name="Url" key="url" type="String" mapToProperty="Value">
-        <rule maxLength="255">Url length cannot be &gt; 255</rule>
-        <rule mask="^$|http.+">Please enter an url starting with "http"</rule>
+        <rule name="maxLength" value="255">Url length cannot be &gt; 255</rule>
+        <rule name="mask" value="^$|http.+">Please enter an url starting with "http"</rule>
         <required-message>This module requires a valid url.</required-message>
     </field>
 ]]></source>
@@ -764,8 +763,128 @@ can be added to a template and then the information is easily passed on
 to an associated bean.
 </p>
 
+
+<source><![CDATA[
+Dan Diephouse wrote:
+> 
+> I want to validate a form that updates my business object properties
+> with intake.  I got the latest cvs of turbine-2 repository and built a
+> new distribution of the turbine jar.  I can easily use intake to add
+> validate items I add to my databse, but I'm running in to a snag when
+> trying to modify them.  I've defined by business object in the intake
+> validation file.  I use the following code to update my item:
+> 
+>          IntakeTool intake = (IntakeTool) context.get("intake");
+> 
+>          ParameterParser pp = data.getParameters();
+> 
+>          if ( intake.isAllValid() ) {
+>              Job j = new Job();
+>              j.setNew(false);
+>              group.setProperties(j);
+> 
+>              JobPeer.doUpdate(j);
+> 
+> Error-->    data.getParameters().add("jobid", j.getJobId().toString());
+>              data.setMessage("Job updated.");
+>          } else {
+>              data.setMessage("There was an error updating the job.
+> Check below for further information.");
+>          }
+> 
+> It runs OK, until I try and retrieve the JobId.  I get a Null Pointer
+> exception.  Is there something I'm doing wrong here?  Or is this a bug?
+>   Do I need to specify that this is not a new object to intake?  I would
+> include my template, but there are lots of fields so its really long.
+> But here's a little summary with most fields gone:
+> 
+> #set ( $job = $basecamp.getJob() )   - This gets a job from a pull tool
+> #set ( $jobGroup = $intake.Job.mapTo($job) )
+> <input type=hidden name="$jobGroup.JobId.Key" 
+> value="$jobGroup.JobId.Value">
+> 
+> #if ( !$jobGroup.Title.isValid() )
+> $jobGroup.Title.Message<br>
+> #end
+> <input type=text name="$jobGroup.Title.Key"
+> value="$!jobGroup.Title.Value" size="50">
+> .
+> .
+> .
+> .
+> $intake.declareGroups()
+> 
+> Thanks,
+> 
+> Dan Diephouse
+
+This is not how i usually do things, but I guess it could work.  One
+thing that is wrong is that you are using mapTo(job) in the template and
+then in the action you are using IntakeTool.DEFAULT_KEY.  Unless
+job.getQueryKey() returns "_0", this combination is not going to work.
+Print out data.getParameters().toString() in the action to see what the
+parameters look like.
+
+Here is what I consider a normal course of events:
+
+1.  In the template:  
+
+$job = $foo.Job
+#set ( $jobGroup = $intake.Job.mapTo($job) )
+
+(This job is can be a new Job or one that is already saved.)
+
+2. In the action:
+
+// get the same (not necessarilary the same java Object, but has the
+exact same attribute values) job
+Job job = foo.getJob()
+Group group = intake.get("Job", job.getQueryKey());
+group.setProperties(job);
+
+It appears as though you are trying to map the parameters given for one
+job to another job.
+
+john mcnally
+]]></source>
+
   </section>
 
+  <section name="Default Values for fields">
+
+<p>
+If you want to use input fields which should default to non-empty values,
+you can use the defaultValue field:
+</p>
+
+<source><![CDATA[
+<group name="test" key="test">
+    <field name="Value" key="val" type="String" defaultValue="preset">
+    </field>
+</group>
+]]></source>
+
+If you set up a form like this:
+
+<source><![CDATA[
+#if($!dz)
+#set ($frm = $intake.test.mapTo($t))
+$frm.Mode.
+#else
+#set ($frm = $intake.test.default )
+#end
+
+<FORM NAME="entryForm">
+<INPUT type="text" name="$frm.get("val").Key" value="$!frm.get("val")">
+</FORM>
+]]></source>
+
+<p>
+then you can either map your form to the fields of the $t object or to the default values, which, for
+the val Field is the string 'preset'.
+</p>
+
+</section>
 
  </body>
 

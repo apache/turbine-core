@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -117,6 +117,10 @@ public class DateSelector
     private boolean onChangeSet = false;
     private boolean showDays = true;
     private int setDay = 0;
+    private boolean useYears = false;
+    private int firstYear = 0;
+    private int lastYear = 0;
+    private int selectedYear = 0;
 
 
     /**
@@ -332,23 +336,67 @@ public class DateSelector
     public static Select getYearSelector(String name,
                                          Calendar now)
     {
+        int startYear = now.get(Calendar.YEAR);
+        return(getYearSelector(name, startYear-5, startYear+5, startYear));
+    }
+
+    /**
+     * Return a year selector.
+     *
+     * @param name The name to use for the selected year.
+     * @param firstYear the first (earliest) year in the selector.
+     * @param lastYear the last (latest) year in the selector.
+     * @param selectedYear the year initially selected in the Select html.
+     * @return A select object with all the years from firstyear
+     * to lastyear..
+     */
+    public static Select getYearSelector(String name,
+                                         int firstYear, int lastYear,
+                                         int selectedYear )
+    {
         Select yearSelect = new Select().setName(name);
 
-        int startYear = now.get(Calendar.YEAR);
-        for(int currentYear = startYear-5;
-            currentYear <= startYear+5;
+        for(int currentYear = firstYear;
+            currentYear <= lastYear;
+
             currentYear++)
         {
             Option o = new Option();
             o.addElement(Integer.toString(currentYear));
             o.setValue(currentYear);
-            if (startYear == currentYear)
+            if (currentYear == selectedYear)
             {
                 o.setSelected(true);
             }
             yearSelect.addElement(o);
         }
         return(yearSelect);
+    }
+
+
+    /**
+     * Select the day to be selected if the showDays(false) behavior
+     * is used.  Individual getMonth, getDay, getYear static methods
+     * will not use this setting.
+     *
+     * @param day The day.
+     * @return A DateSelector (self).
+     */
+    public boolean setYear( int firstYear, int lastYear, int selectedYear )
+    {
+        if (firstYear <= lastYear && firstYear <= selectedYear
+            && selectedYear <= lastYear)
+        {
+            this.useYears = true;
+            this.firstYear = firstYear;
+            this.lastYear = lastYear;
+            this.selectedYear = selectedYear;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /**
@@ -424,18 +472,27 @@ public class DateSelector
                 tmp.setOnChange(onChange);
             daySelect = tmp;
         }
-        Select yearSelect = getYearSelector(selName + YEAR_SUFFIX, useDate);
+        Select yearSelect = null;
+        if (useYears)
+        {
+            yearSelect = getYearSelector(selName + YEAR_SUFFIX,
+                            firstYear, lastYear, selectedYear);
+        }
+        else
+        {
+            yearSelect = getYearSelector(selName + YEAR_SUFFIX, useDate);
+        }
         if (onChangeSet)
         {
             monthSelect.setOnChange(onChange);
             yearSelect.setOnChange(onChange);
         }
         ElementContainer ec = new ElementContainer();
-        ec.addElement(new Comment("== BEGIN org.apache.turbine.util.DateSelector.ecsOutput() =="));
+        // ec.addElement(new Comment("== BEGIN org.apache.turbine.util.DateSelector.ecsOutput() =="));
         ec.addElement(monthSelect);
         ec.addElement(daySelect);
         ec.addElement(yearSelect);
-        ec.addElement(new Comment("== END org.apache.turbine.util.DateSelector.ecsOutput() =="));
+        // ec.addElement(new Comment("== END org.apache.turbine.util.DateSelector.ecsOutput() =="));
         return (ec);
     }
 }

@@ -1,7 +1,9 @@
 #set ($basePath = $generator.OutputPath)
-#foreach ($databaseModel in $appData.Databases)
-    #if ($databaseModel.Package)
-        #set ($package = $databaseModel.Package)   
+
+#foreach ($dataModel in $dataModels)
+#foreach ($database in $dataModel.Databases)
+    #if ($database.Package)
+        #set ($package = $database.Package)   
     #else   
         #set ($package = $targetPackage)
     #end
@@ -23,7 +25,7 @@
     #set ( $path = $strings.getPackageAsPath($pkbase) )
     $files.mkdir("$outputDirectory/$path")
 
-    #foreach ($tbl in $databaseModel.Tables)
+    #foreach ($tbl in $database.Tables)
         $tbl.Name
 
         #set ( $firstcap=$tbl.JavaName )
@@ -70,6 +72,6 @@
         #end
     #end
 #end
-
+#end
 
 

@@ -93,6 +93,7 @@ import org.w3c.dom.Node;
  *  @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  *  @author <a href="mailto:fedor.karpelevitch@barra.com">Fedor Karpelevitch</a>
  *  @version $Id$
+ * @deprecated use turbine-torque
  */
 public class TorqueJDBCTransformTask extends Task
 {

@@ -594,6 +594,7 @@ public class DefaultTurbineRunData
      * Checks to see if the page is set.
      *
      * @return true if the page is set.
+     * @deprecated no replacement planned, ECS is no longer a requirement
      */
     public boolean isPageSet()
     {
@@ -604,6 +605,7 @@ public class DefaultTurbineRunData
      * Gets the page.
      *
      * @return a document.
+     * @deprecated no replacement planned, ECS is no longer a requirement
      */
     public Document getPage()
     {
@@ -998,6 +1000,7 @@ public class DefaultTurbineRunData
      * Checks to see if out is set.
      *
      * @return true if out is set.
+     * @deprecated no replacement planned, response writer will not be cached
      */
     public boolean isOutSet()
     {
@@ -1514,6 +1517,7 @@ public class DefaultTurbineRunData
      * Sets the print writer.
      *
      * @param out a print writer.
+     * @deprecated no replacement planned, response writer will not be cached
      */
     protected void setOut(PrintWriter out)
     {

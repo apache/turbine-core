@@ -1,9 +1,11 @@
+#foreach ($databaseModel in $appData.Databases)
 USE MASTER
 ;
 
-DROP DATABASE $databaseName
+DROP DATABASE $databaseModel.Name
 ;
 
-CREATE DATABASE $databaseName
+CREATE DATABASE $databaseModel.Name
 ON $sybaseDatadev = $sybaseDatasize
 LOG ON $sybaseLogdev = $sybaseLogsize
+#end

@@ -3650,6 +3650,36 @@ public class Criteria extends Hashtable
             return isEquiv;
         }
 
+        /**
+         * Returns a hash code value for the object.
+         */
+        public int hashCode()
+        {
+            int h = value.hashCode() ^ comparison.hashCode();
+
+            if (table != null)
+            {
+                h ^= table.hashCode();
+            }
+
+            if (column != null)
+            {
+                h ^= column.hashCode();
+            }
+
+            if (and != null)
+            {
+                h ^= and.hashCode();
+            }
+
+            if (or != null)
+            {
+                h ^= or.hashCode();
+            }
+
+            return h;
+        }
+
         public String[] getAllTables()
         {
             StringStackBuffer tables = new StringStackBuffer();

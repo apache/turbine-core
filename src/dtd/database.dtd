@@ -8,7 +8,7 @@
 <!ELEMENT database (table+)>
 <!ATTLIST database
   name CDATA #IMPLIED
-  defaultIdMethod (idbroker|autoincrement|sequence|none) "none"
+  defaultIdMethod (native|idbroker|autoincrement|sequence|none) "none"
   package CDATA #IMPLIED
   baseClass CDATA #IMPLIED
   basePeer CDATA #IMPLIED
@@ -18,7 +18,7 @@
 <!ATTLIST table 
   name CDATA #REQUIRED
   javaName CDATA #IMPLIED
-  idMethod (idbroker|autoincrement|sequence|none|null) "null"
+  idMethod (native|idbroker|autoincrement|sequence|none|null) "null"
   skipSql (true|false) "false"
   abstract (true|false) "false"
   baseClass CDATA #IMPLIED

@@ -25,13 +25,13 @@ package org.apache.turbine.torque;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -56,7 +56,6 @@ package org.apache.turbine.torque;
 
 import org.apache.velocity.context.Context;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.texen.ant.TexenTask;
 
 /**
  * An extended Texen task used for generating simple scripts
@@ -64,8 +63,10 @@ import org.apache.velocity.texen.ant.TexenTask;
  *
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
-public class TorqueCreateDatabase extends TexenTask
+public class TorqueCreateDatabase
+    extends TorqueDataModelTask
 {
     /**
      * The target database vendor: MySQL, Oracle.
@@ -80,20 +81,15 @@ public class TorqueCreateDatabase extends TexenTask
     private String targetPlatform;
 
     /**
-     * Name of the database to create.
-     */
-    private String databaseName;
-
-    /**
      * Database user.
      */
     private String databaseUser;
-    
+
     /**
      * Password for specified database user.
      */
     private String databasePassword;
-    
+
     /**
      * Host on which specified database resides.
      */
@@ -137,26 +133,6 @@ public class TorqueCreateDatabase extends TexenTask
     public void setTargetPlatform (String v)
     {
         targetPlatform = v;
-    }
-
-    /**
-     * Get the database name.
-     *
-     * @return String database name.
-     */
-    public String getDatabaseName ()
-    {
-        return databaseName;
-    }
-
-    /**
-     * Set the database name.
-     *
-     * @param String database name.
-     */
-    public void setDatabaseName (String v)
-    {
-        databaseName = v;
     }
 
     /**
@@ -225,17 +201,16 @@ public class TorqueCreateDatabase extends TexenTask
      * templates.
      */
     public Context initControlContext()
+        throws Exception
     {
-        /*
-         * Create a new Velocity context.
-         */
-        Context context = new VelocityContext();
+        super.initControlContext();
+
         context.put("targetDatabase", targetDatabase);
         context.put("targetPlatform", targetPlatform);
-        context.put("databaseName", databaseName);
         context.put("databaseUser", databaseUser);
         context.put("databasePassword", databasePassword);
         context.put("databaseHost", databaseHost);
+
         return context;
     }
 }

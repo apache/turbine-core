@@ -72,7 +72,7 @@ public class XmlField
     implements java.io.Serializable
 {
     private static final String DEFAULT_VALIDATOR = 
-        "org.apache.turbine.services.intake.validatore.DefaultValidator";
+        "org.apache.turbine.services.intake.validator.DefaultValidator";
 
     private String baseClass;
     private String name;
@@ -88,6 +88,7 @@ public class XmlField
     private String mapToObject;
     private String mapToProperty;
     private String validator;
+    private String defaultValue;
 
     private static HashMap defaultOnErrors;
     private static HashMap convertHash;
@@ -187,6 +188,7 @@ public class XmlField
             setMapToProperty(mapProp);            
         }
         setValidator(attrib.getValue("validator"));
+        setDefaultValue(attrib.getValue("defaultValue"));
     }
 
 
@@ -259,10 +261,10 @@ public class XmlField
     public String getType()
     {
         /*
-        if ( isMultiValued() ) 
-        {
-            return type + "[]";    
-        } 
+          if ( isMultiValued() ) 
+          {
+          return type + "[]";    
+          } 
         */  
         return type;
     }
@@ -286,22 +288,22 @@ public class XmlField
     /* *
      * Set the value of the property, if a conversion error occurs.
      * /
-    public void setOnError(String newOnError)
-    {
-        onError = newOnError;
-    }
+     public void setOnError(String newOnError)
+     {
+     onError = newOnError;
+     }
 
-    /* *
+     /**
      * Get the value of the property, if a conversion error occurs.
      * /
-    public String getOnError()
-    {
-        if ( onError == null && defaultOnErrors.containsKey(getType()) ) 
-        {
-            onError = (String)defaultOnErrors.get(getType());
-        }
-        return onError;
-    }
+     public String getOnError()
+     {
+     if ( onError == null && defaultOnErrors.containsKey(getType()) ) 
+     {
+     onError = (String)defaultOnErrors.get(getType());
+     }
+     return onError;
+     }
     */
 
     /**
@@ -377,6 +379,22 @@ public class XmlField
     public String getValidator()
     {
         return validator;
+    }
+    
+    /**
+     * Set the default Value
+     */
+    public void setDefaultValue(String prop)
+    {
+        defaultValue = prop;
+    }
+
+    /**
+     * Get the default Value
+     */
+    public String getDefaultValue()
+    {
+        return defaultValue;
     }
     
     /**
@@ -524,6 +542,10 @@ public class XmlField
         {
             result.append(" validator=\""+validator+"\"");
         }
+        if (defaultValue != null)
+        {
+            result.append(" defaultValue=\""+defaultValue+"\"");
+        }
 
 
         if ( rules.size() == 0 )
@@ -559,6 +581,3 @@ public class XmlField
 
 
 }
-
-
-

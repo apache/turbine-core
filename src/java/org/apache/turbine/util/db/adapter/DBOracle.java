@@ -25,13 +25,13 @@ package org.apache.turbine.util.db.adapter;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -68,6 +68,7 @@ import javax.sql.ConnectionPoolDataSource;
  *
  * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
 public class DBOracle
@@ -113,36 +114,29 @@ public class DBOracle
     }
 
     /**
-     * Returns the SQL to get the database key of the last row
-     * inserted.
-     * Oracle doesn't have this, so it returns null.
-     *
-     * @return null.
+     * @see DB#getIDMethodType()
      */
-    public String getIdSqlForAutoIncrement(Object obj)
+    public String getIDMethodType()
     {
-        return null;
+        return SEQUENCE;
     }
 
     /**
-     * Returns the next key from a sequence.  Databases like Oracle
-     * which support this feature will return a result, others will
-     * return null.
+     * Returns the next key from a sequence.  Uses the following
+     * implementation:
      *
-     * Oracle does this by returning
+     * <blockquote><code><pre>
+     * select sequenceName.nextval from dual
+     * </pre></code></blockquote>
      *
-     *   select sequenceName.nextval from dual
-     *
-     * @param sequenceName, An object of type String
-     * @return The next database key.
+     * @param sequenceName The name of the sequence (should be of type
+     * <code>String</code>).
+     * @return SQL to retreive the next database key.
+     * @see DB#getIDMethodSQL(Object)
      */
-    public String getSequenceSql(Object sequenceName)
+    public String getIDMethodSQL(Object sequenceName)
     {
-        return new StringBuffer()
-               .append("select ")
-               .append((String)sequenceName)
-               .append(".nextval from dual")
-               .toString();
+        return ("select " + sequenceName + ".nextval from dual");
     }
 
     /**
@@ -212,7 +206,7 @@ public class DBOracle
     *
     * @return false.
     */
-    
+
     public boolean escapeText()
     {
         return false;

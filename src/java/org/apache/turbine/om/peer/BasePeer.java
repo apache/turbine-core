@@ -341,14 +341,19 @@ public abstract class BasePeer
     public static void commitTransaction(DBConnection dbCon)
         throws Exception
     {
-        if ( dbCon.getConnection().getMetaData().supportsTransactions() )
+        try
         {
-            dbCon.commit();
-            dbCon.setAutoCommit(true);
+            if ( dbCon.getConnection().getMetaData().supportsTransactions() )
+            {
+                dbCon.commit();
+                dbCon.setAutoCommit(true);
+            }
         }
-
-        // Release the connection to the pool.
-        TurbineDB.releaseConnection( dbCon );
+        finally
+        {
+            // Release the connection to the pool.
+            TurbineDB.releaseConnection( dbCon );
+        }
     }
 
     /**
@@ -363,19 +368,24 @@ public abstract class BasePeer
     public static void rollBackTransaction(DBConnection dbCon)
         throws Exception
     {
-        if ( dbCon.getConnection().getMetaData().supportsTransactions() )
+        try
         {
-            dbCon.rollback();
-            dbCon.setAutoCommit(true);
+            if ( dbCon.getConnection().getMetaData().supportsTransactions() )
+            {
+                dbCon.rollback();
+                dbCon.setAutoCommit(true);
+            }
+            else
+            {
+                Log.error("An attempt was made to rollback a transaction but the"
+                          + " database did not allow the operation to be rolled back.");
+            }
         }
-        else
+        finally
         {
-            Log.error("An attempt was made to rollback a transaction but the"
-                + " database did not allow the operation to be rolled back.");
+            // Release the connection to the pool.
+            TurbineDB.releaseConnection( dbCon );
         }
-
-        // Release the connection to the pool.
-        TurbineDB.releaseConnection( dbCon );
     }
 
 
@@ -460,15 +470,35 @@ public abstract class BasePeer
         throws Exception
     {
         DBConnection dbCon = null;
+
+        // Transaction stuff added for postgres.
+        boolean doTransaction = (TurbineDB.getDB(criteria.getDbName()).
+            objectDataNeedsTrans() &&
+            criteria.containsObjectColumn(criteria.getDbName()));
+
         try
         {
             // Get a connection to the db.
-            dbCon = TurbineDB.getConnection( criteria.getDbName() );
+            if (doTransaction)
+            {
+                dbCon = beginTransaction(criteria.getDbName());
+            }
+            else
+            {
+                dbCon = TurbineDB.getConnection( criteria.getDbName() );
+            }
             doDelete(criteria, dbCon);
         }
         finally
         {
-            TurbineDB.releaseConnection(dbCon);
+            if (doTransaction)
+            {
+                commitTransaction(dbCon);
+            }
+            else
+            {
+                TurbineDB.releaseConnection(dbCon);
+            }
         }
     }
 
@@ -895,6 +925,10 @@ public abstract class BasePeer
         for (int i=0; i<select.size(); i++)
         {
             String columnName = select.get(i);
+            if (columnName.indexOf('.') == -1)
+            {
+                throw getMalformedColumnNameException("select", columnName);
+            }
             String tableName = null;
             selectClause.add(columnName);
             int parenPos = columnName.indexOf('(');
@@ -907,6 +941,13 @@ public abstract class BasePeer
             {
                 tableName = columnName.substring(parenPos + 1,
                                                  columnName.indexOf('.') );
+                // functions may contain qualifiers so only take the last
+                // word as the table name.
+                int lastSpace = tableName.lastIndexOf(' ');
+                if ( lastSpace != -1 ) 
+                {
+                    tableName = tableName.substring(lastSpace+1);
+                }
             }
             String tableName2 = criteria.getTableForAlias(tableName);
             if ( tableName2 != null )
@@ -976,6 +1017,14 @@ public abstract class BasePeer
             {
                 String join1 = (String)join.get(i);
                 String join2 = (String)criteria.getJoinR().get(i);
+                if (join1.indexOf('.') == -1)
+                {
+                    throw getMalformedColumnNameException("join",join1);
+                }
+                if (join2.indexOf('.') == -1)
+                {
+                    throw getMalformedColumnNameException("join",join2);
+                }
 
                 String tableName = join1.substring(0, join1.indexOf('.'));
                 String table = criteria.getTableForAlias(tableName);
@@ -1027,6 +1076,11 @@ public abstract class BasePeer
             for (int i=0; i<orderBy.size(); i++)
             {
                 String orderByColumn = orderBy.get(i);
+                if (orderByColumn.indexOf('.') == -1)
+                {
+                    throw getMalformedColumnNameException("order by",orderByColumn);
+                }
+
                 String table = orderByColumn.substring(0,orderByColumn.indexOf('.') );
                 // See if there's a space (between the column list and sort
                 // order in ORDER BY table.column DESC).
@@ -1542,9 +1596,13 @@ public abstract class BasePeer
         finally
         {
             if (doTransaction)
+            {
                 commitTransaction(db);
+            }
             else
+            {
                 TurbineDB.releaseConnection(db);
+            }
         }
     }
 
@@ -1948,6 +2006,10 @@ public abstract class BasePeer
         for (int i=0; i<select.size(); i++)
         {
             String columnName = select.get(i);
+            if (columnName.indexOf('.') == -1)
+            {
+                throw getMalformedColumnNameException("select",columnName);
+            }
             String tableName = null;
             selectClause.add(columnName);
             int parenPos = columnName.indexOf('(');
@@ -2033,6 +2095,14 @@ public abstract class BasePeer
             {
                 String join1 = (String)join.get(i);
                 String join2 = (String)criteria.getJoinR().get(i);
+                if (join1.indexOf('.') == -1)
+                {
+                    throw getMalformedColumnNameException("join",join1);
+                }
+                if (join2.indexOf('.') == -1)
+                {
+                    throw getMalformedColumnNameException("join",join2);
+                }
 
                 String tableName = join1.substring(0, join1.indexOf('.'));
                 String table = criteria.getTableForAlias(tableName);
@@ -2084,6 +2154,10 @@ public abstract class BasePeer
             for (int i=0; i<orderBy.size(); i++)
             {
                 String orderByColumn = orderBy.get(i);
+                if (orderByColumn.indexOf('.') == -1)
+                {
+                    throw getMalformedColumnNameException("order by",orderByColumn);
+                }
                 String table = orderByColumn.substring(0,orderByColumn.indexOf('.') );
                 // See if there's a space (between the column list and sort
                 // order in ORDER BY table.column DESC).
@@ -2177,4 +2251,24 @@ public abstract class BasePeer
         query.setTop(topString);
     }
 
+    /**
+     * return an Exception with the malformed column name error message.
+     * The error message looks like this:<p>
+     *
+     * <code>
+     *     malformed column name in Criteria [criteriaPhrase]:
+     *     '[columnName]' is not of the form 'table.column'
+     * </code>
+     *
+     * @param criteriaPhrase a String, one of "select", "join", or "order by"
+     * @param columnName a String containing the offending column name
+     */
+    private static Exception getMalformedColumnNameException(String criteriaPhrase,
+                                                             String columnName)
+    {
+        return new Exception("malformed column name in Criteria "
+                             + criteriaPhrase + ": '"
+                             + columnName
+                             + "' is not of the form 'table.column'");
+    }
 }

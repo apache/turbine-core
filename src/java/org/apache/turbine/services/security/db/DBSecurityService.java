@@ -96,6 +96,7 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * An implementation of SecurityService that uses a database as backend. 
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
  * @version $Id$
  */
 public class DBSecurityService extends BaseSecurityService
@@ -620,6 +621,7 @@ public class DBSecurityService extends BaseSecurityService
             {
                 Criteria criteria = GroupPeer.buildCriteria(group);
                 GroupPeer.doUpdate(criteria);
+                return;
             }
         }
         catch(Exception e)
@@ -647,6 +649,7 @@ public class DBSecurityService extends BaseSecurityService
             {
                 Criteria criteria = RolePeer.buildCriteria(role);
                 RolePeer.doUpdate(criteria);
+                return;
             }
         }
         catch(Exception e)
@@ -674,6 +677,7 @@ public class DBSecurityService extends BaseSecurityService
             {
                 Criteria criteria = PermissionPeer.buildCriteria(permission);
                 PermissionPeer.doUpdate(criteria);
+                return;
             }
         }
         catch(Exception e)

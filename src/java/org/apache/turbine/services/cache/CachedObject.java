@@ -156,6 +156,24 @@ public class CachedObject
     }
 
     /**
+     * Set the expiration interval for the object.
+     *
+     * @param expires Expiration interval in millis ( 1 second = 1000 millis)
+     */
+    public void setExpires( long expires ) {
+        if ( expires == DEFAULT ) {
+            this.expires = defaultage;
+        } else {
+            this.expires = expires;
+        }
+        if (expires == FOREVER) {
+            setStale(false);
+        } else {
+            setStale( (System.currentTimeMillis() - created) > expires );
+        }
+    }
+
+    /**
      * Set the stale status for the object.
      *
      * @param stale Whether the object is stale or not.

@@ -92,6 +92,7 @@ import org.apache.turbine.services.security.BaseSecurityService;
  * @author <a href="mailto:tadewunmi@gluecode.com">Tracy M. Adewunmi </a>
  * @author <a href="mailto:lflournoy@gluecode.com">Leonard J. Flournoy </a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
  * @version $Id$
  */
 public class LDAPSecurityService extends BaseSecurityService

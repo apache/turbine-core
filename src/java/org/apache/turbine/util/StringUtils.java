@@ -181,7 +181,7 @@ public class StringUtils
      * Takes a String of the form substring[substring]subtring and
      * returns the 3 substrings
      *
-     * @returns a three element String array
+     * @return a three element String array
      */
     public static String[] parseObjectKey(String s)
     {

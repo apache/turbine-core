@@ -55,7 +55,8 @@ package org.apache.turbine.services;
  */
 
 import java.util.Properties;
-import org.apache.velocity.runtime.configuration.Configuration;
+import org.apache.stratum.configuration.Configuration;
+
 
 /**
  * <code>Services</code> are <code>Initables</code> that have a name,

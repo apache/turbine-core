@@ -110,6 +110,21 @@ public abstract class TurbineDB
      */
     public static String getDefaultMap()
     {
+        // Required due to the nasty coupling between
+        // torque in 2.x and the db related services.
+        // This is only called once in the peer so the
+        // hit of catching the exception will only happen
+        // once and while running torque from the command
+        // line it won't incur an unbearable wait.
+        try
+        {
+            return getMapBroker().getDefaultMap();
+        }
+        catch(Exception e)
+        {
+            // do nothing
+        }
+        
         return MapBrokerService.DEFAULT;
     }
 
@@ -153,6 +168,21 @@ public abstract class TurbineDB
      */
     public static String getDefaultDB()
     {
+        // Required due to the nasty coupling between
+        // torque in 2.x and the db related services.
+        // This is only called once in the peer so the
+        // hit of catching the exception will only happen
+        // once and while running torque from the command
+        // line it won't incur an unbearable wait.
+        try
+        {
+            return getPoolBroker().getDefaultDB();
+        }
+        catch(Exception e)
+        {
+            // do nothing
+        }
+        
         return PoolBrokerService.DEFAULT;
     }
 
@@ -296,7 +326,8 @@ public abstract class TurbineDB
      */
     private static MapBrokerService getMapBroker()
     {
-        return (MapBrokerService)TurbineServices.getInstance().getService(MapBrokerService.SERVICE_NAME);
+        return (MapBrokerService)TurbineServices.getInstance().getService(
+            MapBrokerService.SERVICE_NAME);
     }
 
     /**
@@ -306,6 +337,7 @@ public abstract class TurbineDB
      */
     private static PoolBrokerService getPoolBroker()
     {
-        return (PoolBrokerService)TurbineServices.getInstance().getService(PoolBrokerService.SERVICE_NAME);
+        return (PoolBrokerService)TurbineServices.getInstance().getService(
+            PoolBrokerService.SERVICE_NAME);
     }
 }

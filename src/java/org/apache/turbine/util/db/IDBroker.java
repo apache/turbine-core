@@ -234,10 +234,13 @@ public class IDBroker
         }
         if (!transactionsSupported)
         {
-            Log.warn("IDBroker is being used with db: " + dbName +
-                "\n which does not support transactions.  It is possible to " +
-                "\n generate duplicate keys, if multiple JVM's are used or other " +
-                "\n means are used to write to the database.");
+            Log.warn
+                ("IDBroker is being used with db '" + dbName +
+                 "', which does not support transactions.  IDBroker " +
+                 "attempts to use transactions to limit the possibility of " +
+                 "duplicate key generation.  Without transactions, " +
+                 "duplicate key generation is possible if multiple JVMs " +
+                 "are used or other means are used to write to the database.");
         }
     }
 
@@ -493,7 +496,7 @@ public class IDBroker
             long thenLong = lastTime.getTime();
             long nowLong = now.getTime();
             int timeLapse = (int)(nowLong-thenLong);
-            if ( timeLapse < sleepPeriod )
+            if ( timeLapse < sleepPeriod && timeLapse > 0 )
             {
                 Log.info("Unscheduled retrieval of more ids for table: " +
                          tableName);

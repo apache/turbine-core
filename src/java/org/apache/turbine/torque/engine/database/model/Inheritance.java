@@ -25,13 +25,13 @@ package org.apache.turbine.torque.engine.database.model;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,19 +54,20 @@ package org.apache.turbine.torque.engine.database.model;
  * <http://www.apache.org/>.
  */
 
-import org.xml.sax.Attributes;
+import org.xml.sax.AttributeList;
 
 /**
  * A Class for information regarding possible objects representing a table
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
 public class Inheritance
 {
     private String key;
     private String className;
-    private String ancestor;    
+    private String ancestor;
     private Column parent;
 
     /**
@@ -79,7 +80,7 @@ public class Inheritance
     /**
      * Imports foreign key from an XML specification
      */
-    public void loadFromXML (Attributes attrib)
+    public void loadFromXML (AttributeList attrib)
     {
         setKey(attrib.getValue("key"));
         setClassName(attrib.getValue("class"));
@@ -90,75 +91,75 @@ public class Inheritance
      * Get the value of key.
      * @return value of key.
      */
-    public String getKey() 
+    public String getKey()
     {
         return key;
     }
-    
+
     /**
      * Set the value of key.
      * @param v  Value to assign to key.
      */
-    public void setKey(String  v) 
+    public void setKey(String  v)
     {
         this.key = v;
     }
-    
-    
+
+
     /**
      * Get the value of parent.
      * @return value of parent.
      */
-    public Column getColumn() 
+    public Column getColumn()
     {
         return parent;
     }
-    
+
     /**
      * Set the value of parent.
      * @param v  Value to assign to parent.
      */
-    public void setColumn(Column  v) 
+    public void setColumn(Column  v)
     {
         this.parent = v;
     }
-    
+
     /**
      * Get the value of className.
      * @return value of className.
      */
-    public String getClassName() 
+    public String getClassName()
     {
         return className;
     }
-    
+
     /**
      * Set the value of className.
      * @param v  Value to assign to className.
      */
-    public void setClassName(String  v) 
+    public void setClassName(String  v)
     {
         this.className = v;
     }
-    
+
     /**
      * Get the value of ancestor.
      * @return value of ancestor.
      */
-    public String getAncestor() 
+    public String getAncestor()
     {
         return ancestor;
     }
-    
+
     /**
      * Set the value of ancestor.
      * @param v  Value to assign to ancestor.
      */
-    public void setAncestor(String  v) 
+    public void setAncestor(String  v)
     {
         this.ancestor = v;
     }
-    
+
     /**
      * String representation of the foreign key. This
      * is an xml representation.
@@ -179,9 +180,9 @@ public class Inheritance
                   .append(ancestor)
                   .append('\"');
         }
-                
+
         result.append("/>");
-        
+
         return result.toString();
     }
 

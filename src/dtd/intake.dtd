@@ -27,6 +27,7 @@
   mapToObject CDATA #IMPLIED
   mapToProperty CDATA #IMPLIED
   validator CDATA #IMPLIED
+  defaultValue CDATA #IMPLIED
 >
 
                   

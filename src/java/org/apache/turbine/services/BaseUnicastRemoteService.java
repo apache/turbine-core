@@ -1,11 +1,12 @@
 package org.apache.turbine.services;
 
+import org.apache.stratum.configuration.Configuration;
+
 import java.util.Properties;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import javax.servlet.ServletConfig;
 
-import org.apache.velocity.runtime.configuration.Configuration;
 
 /**
  * A base implementation of an {@link java.rmi.server.UnicastRemoteObject}

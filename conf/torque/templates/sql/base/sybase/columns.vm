@@ -1,7 +1,7 @@
 #foreach ($col in $table.Columns)
     #set ( $type = $dbprops.get($col.Type) )
     #set ( $size = $col.printSize() )
-    #if ( $dbprops.get("supressDefaults") == "true" )
+    #if ( $dbprops.get("suppressDefaults") == "true" )
         #set ( $default = "" )
     #else
         #set ( $default = $col.DefaultSetting )

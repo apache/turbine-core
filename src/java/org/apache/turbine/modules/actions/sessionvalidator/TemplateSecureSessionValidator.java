@@ -165,18 +165,18 @@ public class TemplateSecureSessionValidator extends SessionValidator
             {
                 if (data.getTemplateInfo().getScreenTemplate() != null)
                 {
+                    data.getUser().setTemp( "prev_template",
+                        data.getTemplateInfo().getScreenTemplate() );
                     data.getTemplateInfo().setScreenTemplate(
                         TurbineResources.getString(
                             TurbineConstants.TEMPLATE_INVALID_STATE) );
-
-                    data.getUser().setTemp( "prev_template",
-                        data.getTemplateInfo().getScreenTemplate() );
                 }
                 else
                 {
+                    data.getUser().setTemp( "prev_screen",
+                        data.getScreen().replace('/', ',') );
                     data.setScreen( TurbineResources.getString(
                         TurbineConstants.SCREEN_INVALID_STATE) );
-                    data.getUser().setTemp( "prev_screen", data.getScreen() );
                 }
                 data.getUser()
                     .setTemp( "prev_parameters", data.getParameters() );

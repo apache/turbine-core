@@ -70,23 +70,28 @@ import org.apache.turbine.util.Log;
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
  * @author <a href="mailto:ralf@reswi.ruhr.de">Ralf Stranzenbach</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
 public class DBFactory
 {
-    // List of registered drivers.
-    private static Hashtable drivers = null;
+    /**
+     * A table of <code>Class</code> objects for registered adapters,
+     * keyed by the fully qualified class name of their associated
+     * JDBC driver.
+     */
+    private static Hashtable adapters = null;
 
     // This static code creates the list of possible drivers and adds
-    // the "NO DATABASE" adaptor to this list.  After all the
+    // the "NO DATABASE" adapter to this list.  After all the
     // TurbineResources is queried to get a list of JDBC drivers and
     // their associated adaptors.
     static
     {
-        drivers = new Hashtable();
+        adapters = new Hashtable();
 
         // Add the null db driver.
-        registerDriver("", DBNone.class);
+        registerAdapter("", DBNone.class);
 
         Enumeration adaptors =
             TurbineResources.getVector("database.adaptor").elements();
@@ -113,64 +118,71 @@ public class DBFactory
                     Log.error(ign2);
                 }
             }
-            if ((c != null) && (driver != null))
+            if (c != null && driver != null)
             {
-                registerDriver(driver, c);
+                registerAdapter(driver, c);
             }
         }
     }
 
     /**
-     * Try to register the class of a database driver at the factory.
-     * This concept allows for dynamically adding new database drivers
-     * using the configuration files instead of changing the codebase.
+     * Registers the <code>Class</code> of a database adapter at the
+     * factory.  This concept allows for dynamically adding new
+     * database adapters using the configuration files instead of
+     * changing the codebase.
      *
-     * @param driver The fully-qualified name of the JDBC driver to create.
-     * @param dc     The named JDBC driver.
+     * @param driver The fully-qualified class name of the JDBC driver
+     * to associate with an adapter.
+     * @param adapterClass The <code>Class</code> of the database
+     * adapter associated with <code>driver</code>.
      */
-    private static void registerDriver(String driver, Class dc)
+    private static void registerAdapter(String driver, Class adapterClass)
     {
-        if (!drivers.containsKey(driver))
-            // Add this new driver class to the list of known drivers.
-            drivers.put(driver, dc);
+        if (!adapters.containsKey(driver))
+        {
+            // Add this new adapter class to the list of known adapters.
+            adapters.put(driver, adapterClass);
+        }
     }
 
     /**
      * Creates an instance of the Turbine database adapter associated with the
      * specified JDBC driver.
+
+    /**
+     * Creates a new instance of the Turbine database adapter associated
+     * with the specified JDBC driver.
      *
-     * NOTE: This method used to be <code>protected</code>.  I'd like to try
-     * to get it back that way ASAP.  I had to change its access level since
-     * it is called by <code>ConnectionPool</code>, and these two
-     * classes are no longer in the same package.  -Daniel <dlr@collab.net>
-     *
-     * @param driver The fully-qualified name of the JDBC driver to create.
-     * @return       An instance of a Turbine database adapter.
+     * @param driver The fully-qualified name of the JDBC driver to
+     * create a new adapter instance for.
+     * @return An instance of a Turbine database adapter.
      */
     public static DB create(String driver)
         throws InstantiationException
     {
-        Class dc = (Class)drivers.get(driver);
+        Class adapterClass = (Class) adapters.get(driver);
 
-        if (dc != null)
+        if (adapterClass != null)
         {
             try
             {
-                // Create an instantiation of the driver.
-                DB retVal = (DB)dc.newInstance();
-                retVal.setJDBCDriver(driver);
-                return retVal;
+                DB adapter = (DB) adapterClass.newInstance();
+                adapter.setJDBCDriver(driver);
+                return adapter;
             }
             catch (IllegalAccessException e)
             {
-                throw new InstantiationException(
-                    "Driver " + driver + " not instantiated.");
+                throw new InstantiationException
+                    ("Could not instantiate adapter for JDBC driver: " +
+                     driver + ": Assure that adapter bytecodes are in your " +
+                     "classpath");
             }
         }
         else
         {
-            throw new InstantiationException(
-                "Database type " + driver + " not implemented.");
+            throw new InstantiationException
+                ("Unknown JDBC driver: " + driver + ": Check your " +
+                 "configuration file");
         }
     }
 }

@@ -25,13 +25,13 @@ package org.apache.turbine.services.resources;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -59,12 +59,13 @@ import java.util.Iterator;
 import java.util.Vector;
 import javax.servlet.ServletConfig;
 import org.apache.turbine.services.Service;
-import org.apache.velocity.runtime.configuration.Configuration;
+import org.apache.stratum.configuration.Configuration;
+
 
 /**
  * <p>This service define a resource interface for accessing the configuration
  * information of the application.</p>
- * <p>Since implementations of this service are used by Turbine itself and 
+ * <p>Since implementations of this service are used by Turbine itself and
  * the <code>TurbineServices</code> depends on their proper operation, they
  * must respect some specific implementation rules:</p>
  * <ul>
@@ -72,7 +73,7 @@ import org.apache.velocity.runtime.configuration.Configuration;
  *        in their inititialization code. This would create circular services
  *        dependency
  *    </li>
- *    <li>They must provide an early initialization init method. The 
+ *    <li>They must provide an early initialization init method. The
  *      <code>ServletConfig</code> init parameters are the only way
  *      to retrieve parameters for this service. It's impossible to use
  *      TurbineServices utility methods for this purpose
@@ -89,7 +90,15 @@ public interface ResourceService extends Service
 {
 
     public String SERVICE_NAME = "ResourceService";
-    
+
+    /**
+     * Set a property in with a key=value pair.
+     *
+     * @param String key
+     * @param String value
+     */
+    public void setProperty(String key, String value);
+
     /**
      * The purpose of this method is to get the configuration resource
      * with the given name as a boolean value.

@@ -59,6 +59,7 @@ import java.lang.reflect.Array;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.sql.Timestamp;
 
 import org.apache.turbine.om.DateKey;
 import org.apache.turbine.om.ObjectKey;
@@ -99,7 +100,7 @@ public class SqlExpression
     public static String buildInnerJoin( String column,
                                          String relatedColumn )
     {
-        // 'db' can be null because 'ignoreCase' is null.
+        // 'db' can be null because 'ignoreCase' is false.
         return buildInnerJoin( column, relatedColumn, false, null );
     }
 
@@ -290,7 +291,8 @@ public class SqlExpression
            else if( criteria instanceof java.util.Date ||
                     criteria instanceof DateKey)
            {
-               criteria = db.getDateString(criteria.toString());
+               Date dt = criteria instanceof Date?(Date) criteria:((DateKey)criteria).getDate();
+               criteria = "{ts '" + new Timestamp(dt.getTime()).toString() + "'}";
            }
            else if( criteria instanceof Boolean )
            {

@@ -373,13 +373,16 @@ public abstract class Email
     public Email setSubject( String subject )
         throws MessagingException
     {
-        if ( charset != null )
+        if (subject != null)
         {
-            message.setSubject(subject, charset);
-        }
-        else
-        {
-            message.setSubject(subject);
+            if ( charset != null )
+            {
+                message.setSubject(subject, charset);
+            }
+            else
+            {
+                message.setSubject(subject);
+            }
         }
         return this;
     }
@@ -394,7 +397,10 @@ public abstract class Email
     public Email setSentDate( Date date )
         throws MessagingException
     {
-        message.setSentDate( date );
+        if (date != null)
+        {
+            message.setSentDate( date );
+        }
         return this;
     }
 

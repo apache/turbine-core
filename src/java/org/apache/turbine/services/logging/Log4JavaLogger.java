@@ -250,7 +250,7 @@ public class Log4JavaLogger extends BaseLogger
         String bufferSize = loggingConfig.getEmailBufferSize();
 
         if (smtpHost == null || smtpHost.trim().equals("")
-                || emailFrom == null || smtpHost.trim().equals("")
+                || emailFrom == null || emailFrom.trim().equals("")
                 || emailTo == null || emailTo.trim().equals("")
                 || emailSubject == null || emailSubject.trim().equals("")
                 || bufferSize == null || bufferSize.trim().equals("") )

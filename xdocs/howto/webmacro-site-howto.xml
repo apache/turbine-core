@@ -11,6 +11,11 @@
 <section name="WebMacro Site">
 
 <p>
+<b>WebMacro is deprecated and will NOT be supported by Turbine 3.0! <br/>
+You should use Velocity.</b>
+</p>
+
+<p>
 In Turbine, we have excellent integration with the template tool
 <a href="http://www.webmacro.org/">WebMacro</a>,
 we call this WebMacroSite building. The reason why we want to wrap Turbine
