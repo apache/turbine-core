@@ -55,10 +55,16 @@
 
 <p>
 
-  Documentation is <b>*always*</b> appreciated in any form. There are two ways to provide helpful documentation. The first way is to write up XML documentation and send it to one of the primary authors directly (we are also
+  Documentation is <b>*always*</b> appreciated in any form. There are two ways to
+  provide helpful documentation. The first way is to write up XML documentation and
+  send it to one of the primary authors directly (we are also
   willing to give you CVS write access if you wish). The second way is to post
   Questions/Answers to the <a href="http://java.apache.org/jyve-faq/Turbine">
-  FAQ</a> under the Turbine sections there. Please review the sections in the <a href="turbine-documentation-project.html">Turbine Documentation Project</a> for ways to get started and areas of documentation needing attention. You need to take the initiative and just start writing down your thoughts and concerns and questions and answers and then giving those back to us.
+  FAQ</a> under the Turbine sections there. Please review the sections in the
+  <a href="turbine-documentation-project.html">Turbine Documentation Project</a>
+  for ways to get started and areas of documentation needing attention. You need
+  to take the initiative and just start writing down your thoughts and concerns
+  and questions and answers and then giving those back to us.
 
 </p>
 
@@ -129,6 +135,11 @@
   </li>
 
 </ul>
+<p>
+    The most current version of this list can be found on the
+    <a href="http://nagoya.apache.org/wiki/apachewiki.cgi?JakartaTurbine2/WishList">Apache Wiki</a>
+
+</p>
 
 </section>
 
