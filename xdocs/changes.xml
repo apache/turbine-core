@@ -380,6 +380,11 @@ Changes between Turbine 2.2 and 2.3-dev.
       Turbine now has some integration for Avalon Components. It can start
       Avalon based components with the new AvalonComponentService.
     </li>
+    <li>Added a new TurbineMacros file to the turbine jar, which contains some helper
+        macros for Velocity Templates. Currently there are only some macros to be used
+        with VelocityOnlyLayout to render the page attributes like in VelocityECSLayout
+        based pages.
+    </li>
   </ul>
 </p>
 </subsection>
