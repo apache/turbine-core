@@ -76,7 +76,7 @@ Used in:        input-data
 The field element defines a field within a group.  This will be used to
 validate one HTML input field.
 
-kay:            A short identifier for the field.  It is only used in
+key:            A short identifier for the field.  It is only used in
                 query parameters.  It must be unique across all fields
                 within the enclosing group element.
 
