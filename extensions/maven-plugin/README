@@ -220,7 +220,7 @@ torque.database (turbine:setup)
 Plugin:		torque
 Function:	Sets the database type that this application will use
 Type:		String
-Default:	not set
+Default:	postgresql
 
 torque.database.driver (turbine:setup)
 
@@ -259,9 +259,3 @@ Function:	Set an URL which can be used by the Torque plugin
                 requested database
 Type:		String
 Default:	not set
-
-
-
-
-
-

@@ -517,8 +517,11 @@
   <!-- ======================================================================== -->
   <goal name="turbine:check-runtime-environment"
     prereqs="turbine:init">
-    <j:if test="${context.getVariable('maven.appserver.name') == null}">
+    <j:if test="${context.getVariable('maven.appserver.name') == null || context.getVariable('maven.appserver.name') == ''}">
       <meta:requiredPropertyMissing propname="maven.appserver.name" />
+    </j:if>
+    <j:if test="${context.getVariable('torque.database') == null || context.getVariable('torque.database') == ''}">
+      <meta:requiredPropertyMissing propname="torque.database" />
     </j:if>
   </goal>
 
