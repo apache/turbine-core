@@ -159,65 +159,9 @@ module.packages=@MODULE_PACKAGES@
 #  D A T A B A S E  S E T T I N G S
 #
 # -------------------------------------------------------------------
-# These are your database settings.  Look in the
-# org.apache.turbine.util.db.pool.* packages for more information.
-# The default driver for Turbine is for MySQL.
-#
-# The parameters to connect to the default database.  You MUST
-# configure these properly.
+# Turbine uses the decoupled torque now!!
+# The database settings are now in Torque.properties
 # -------------------------------------------------------------------
-
-database.@DATABASE_DEFAULT@.driver=@DATABASE_DRIVER@
-database.@DATABASE_DEFAULT@.url=@DATABASE_URL@
-database.@DATABASE_DEFAULT@.username=@DATABASE_USER@
-database.@DATABASE_DEFAULT@.password=@DATABASE_PASSWORD@
-
-# The number of database connections to cache per ConnectionPool
-# instance (specified per database).
-
-database.@DATABASE_DEFAULT@.maxConnections=3
-
-# The amount of time (in milliseconds) that database connections will be
-# cached (specified per database).
-#
-# Default: one hour = 60 * 60 * 1000
-
-database.@DATABASE_DEFAULT@.expiryTime=3600000
-
-# The amount of time (in milliseconds) a connection request will have to wait
-# before a time out occurs and an error is thrown.
-#
-# Default: ten seconds = 10 * 1000
-
-database.connectionWaitTimeout=10000
-
-# The interval (in milliseconds) between which the PoolBrokerService logs
-# the status of it's ConnectionPools.
-#
-# Default: No logging = 0 = 0 * 1000
-
-database.logInterval=0
-
-# These are the supported JDBC drivers and their associated Turbine
-# adaptor.  These properties are used by the DBFactory.  You can add
-# all the drivers you want here.
-
-database.adaptor=@DATABASE_ADAPTOR@
-database.adaptor.@DATABASE_ADAPTOR@=@DATABASE_DRIVER@
-
-# Determines if the quantity column of the IDBroker's id_table should
-# be increased automatically if requests for ids reaches a high
-# volume.
-
-database.idbroker.cleverquantity=true
-
-# Determines if IDBroker should prefetch IDs or not.  If set to false
-# this property has the effect of shutting off the housekeeping thread
-# that attempts to prefetch the id's.  It also sets the # of id's grabbed
-# per request to 1 regardless of the settings in the database.
-# Default: true
-
-database.idbroker.prefetch=true
 
 # -------------------------------------------------------------------
 #
