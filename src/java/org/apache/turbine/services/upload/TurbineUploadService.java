@@ -140,8 +140,8 @@ public class TurbineUploadService
                     throw new InitializationException(
                             "Could not create target directory!");
                 }
-                repoPath = testPath;
             }
+            repoPath = testPath;
             conf.setProperty(UploadService.REPOSITORY_KEY, repoPath);
         }
 
