@@ -63,15 +63,10 @@ import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.modules.Action;
-
 import org.apache.turbine.om.security.User;
-
 import org.apache.turbine.services.security.TurbineSecurity;
-
 import org.apache.turbine.util.RunData;
-
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.TurbineSecurityException;
 
@@ -84,15 +79,14 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class LoginUser 
-    extends Action
+public class LoginUser
+        extends Action
 {
     /** CGI Parameter for the user name */
     public static final String CGI_USERNAME = "username";
 
     /** CGI Parameter for the password */
     public static final String CGI_PASSWORD = "password";
-
 
     /** Logging */
     private static Log log = LogFactory.getLog(LoginUser.class);
@@ -108,11 +102,12 @@ public class LoginUser
      * <p><em>Note: Turbine clears the session before calling this
      * method</em></p>
      *
-     * @param data Turbine information.
-     * @exception Exception a generic exception.
+     * @param     data Turbine information.
+     * @exception TurbineSecurityException could not get instance of the
+     *            anonymous user
      */
     public void doPerform(RunData data)
-            throws Exception
+            throws TurbineSecurityException
     {
         // This prevents a db hit on second Action call during page
         // generation.  Turbine removes everything from the Session
