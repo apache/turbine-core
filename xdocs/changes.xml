@@ -7,6 +7,7 @@
   <author email="jvanzyl@apache.org">Jason van Zyl</author>
   <author email="jmcnally@apache.org">John D. McNally</author>
   <author email="mpoeschl@marmot.at">Martin Poeschl</author>
+  <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
 </properties>
 
 <body>
@@ -57,9 +58,6 @@ Changes between Turbine 2.2-b1 and 2.2-b2.
 Changes between Turbine 2.2 and 2.3-dev.
 </p>
 
-<p>
-</p>
-
 <subsection name="Changes that could break older environments">
 <p>
   <ul>
@@ -67,6 +65,19 @@ Changes between Turbine 2.2 and 2.3-dev.
       removed all deprecated java code (incl. support for webmacro, freemarker
       and castor). Make sure to not get any deprecation warnings before you
       switch to 2.3!
+    </li>
+    <li>
+      removed the LoggingService. Deprecated everything in the utils.Log class.
+    </li>
+    <li>
+       removed the TurbineResources Service.
+    </li>
+    <li>
+       the service initialization code has been changed. This is important if
+       you write services yourself. You should supply a constructor which takes
+       no parameters. The usage of a constructor which takes a RunData object
+       is deprecated and might be removed later. If you're using the supplied
+       services, you shouldn't notice any change.
     </li>
   </ul>
 </p>
@@ -77,6 +88,21 @@ Changes between Turbine 2.2 and 2.3-dev.
 <p>
   <ul>
     <li>
+      added new Logging code which uses commons-logging everywhere.
+    </li>
+    <li>
+       added new Configuration code based on commons-configuration. Switched
+       all configuration requests to commons-configuration.
+    </li>
+    <li>
+      added Log4j configuration and startup. 
+    </li>
+    <li>
+      removed all remaining Torque code.
+    </li>
+    <li>
+      VelocityLayout is now the proposed default layout.
+      VelocityECSLayout might go away post-2.3.
     </li>
   </ul>
 </p>
