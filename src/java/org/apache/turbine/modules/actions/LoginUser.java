@@ -56,6 +56,8 @@ package org.apache.turbine.modules.actions;
 
 import org.apache.commons.configuration.Configuration;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -85,6 +87,13 @@ import org.apache.turbine.util.security.TurbineSecurityException;
 public class LoginUser 
     extends Action
 {
+    /** CGI Parameter for the user name */
+    public static final String CGI_USERNAME = "username";
+
+    /** CGI Parameter for the password */
+    public static final String CGI_PASSWORD = "username";
+
+
     /** Logging */
     private static Log log = LogFactory.getLog(LoginUser.class);
 
@@ -114,20 +123,19 @@ public class LoginUser
             return;
         }
 
-        String username = data.getParameters().getString("username", "");
-        String password = data.getParameters().getString("password", "");
+        String username = data.getParameters().getString(CGI_USERNAME, "");
+        String password = data.getParameters().getString(CGI_PASSWORD, "");
 
-        User user = null;
         try
         {
             // Authenticate the user and get the object.
-            user = TurbineSecurity.getAuthenticatedUser(username, password);
+            User user = TurbineSecurity.getAuthenticatedUser(username, password);
 
             // Store the user object.
             data.setUser(user);
 
             // Mark the user as being logged in.
-            user.setHasLoggedIn(new Boolean(true));
+            user.setHasLoggedIn(Boolean.TRUE);
 
             // Set the last_login date in the database.
             user.updateLastLogin();
@@ -148,7 +156,7 @@ public class LoginUser
              */
 
         }
-        catch (TurbineSecurityException e)
+        catch (Exception e)
         {
             Configuration conf = Turbine.getConfiguration();
 
@@ -156,13 +164,16 @@ public class LoginUser
             {
                 log.error(e);
             }
-            data.setMessage(conf.getString(TurbineConstants.LOGIN_ERROR));
-            // Retrieve an anonymous user.
+
+            // Set Error Message and clean out the user.
+            data.setMessage(conf.getString(TurbineConstants.LOGIN_ERROR, ""));
             data.setUser (TurbineSecurity.getAnonymousUser());
+
             String loginTemplate = conf.getString(TurbineConstants.TEMPLATE_LOGIN);
 
-            if (loginTemplate != null && loginTemplate.length() > 0)
+            if (StringUtils.isNotEmpty(loginTemplate))
             {
+                // We're running in a templating solution
                 data.setScreenTemplate(loginTemplate);
             }
             else

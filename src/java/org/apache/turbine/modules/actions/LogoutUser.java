@@ -110,7 +110,7 @@ public class LogoutUser
                 return;
             }
 
-            user.setHasLoggedIn(new Boolean(false));
+            user.setHasLoggedIn(Boolean.FALSE);
             TurbineSecurity.saveUser(user);
         }
 
