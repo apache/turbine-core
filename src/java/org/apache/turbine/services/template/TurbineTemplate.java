@@ -334,6 +334,19 @@ public abstract class TurbineTemplate
     }
 
     /**
+     * Locate and return the name of a navigation template.
+     *
+     * @param key A String which is the key to the template.
+     * @return A String with the navigation template path.
+     * @exception Exception, a generic exception.
+     */
+    public static final String getNavigationTemplateName(String key)
+        throws Exception
+    {
+        return getService().getNavigationTemplateName(key);
+    }
+
+    /**
      * Translates the supplied template paths into their Turbine-canonical
      * equivalent (probably absolute paths).
      *

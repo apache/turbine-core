@@ -61,9 +61,8 @@ import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
 
 import org.apache.turbine.TurbineConstants;
-
+import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.services.velocity.TurbineVelocity;
-
 import org.apache.turbine.util.RunData;
 
 import org.apache.velocity.context.Context;
@@ -130,7 +129,9 @@ public class VelocityNavigation
     {
         Context context = TurbineVelocity.getContext(data);
 
-        String templateName = data.getTemplateInfo().getNavigationTemplate();
+        String navigationTemplate = data.getTemplateInfo().getNavigationTemplate();
+        String templateName
+                = TurbineTemplate.getNavigationTemplateName(navigationTemplate);
 
         StringElement output = new StringElement();
         output.setFilterState(false);
