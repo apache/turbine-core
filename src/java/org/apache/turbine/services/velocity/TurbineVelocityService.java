@@ -59,7 +59,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -558,8 +557,8 @@ public class TurbineVelocityService
             if (!key.endsWith(RESOURCE_LOADER_PATH))
             {
                 Object value = conf.getProperty(key);
-                if (value instanceof ArrayList) {
-                    for (Iterator itr = ((ArrayList)value).iterator(); itr.hasNext();)
+                if (value instanceof List) {
+                    for (Iterator itr = ((List)value).iterator(); itr.hasNext();)
                     {
                         veloConfig.addProperty(key, itr.next());
                     }
