@@ -110,12 +110,7 @@ public class TemplateInfo
      */
     public String getNavigationTemplate()
     {
-        String temp = getString(TemplateInfo.NAVIGATION_TEMPLATE);
-        if (temp != null)
-        {
-            temp = temp.replace(',', '/');
-        }
-        return temp;
+        return getString(TemplateInfo.NAVIGATION_TEMPLATE);
     }
 
     /**
@@ -130,9 +125,7 @@ public class TemplateInfo
 
     /**
      * Get the value of screen for the RunData parameters.  This
-     * information comes from PathInfo or a QueryString.  Note: The
-     * template name is always "cleaned" with this method, which
-     * replaces ',' with '/'.
+     * information comes from PathInfo or a QueryString. 
      *
      * @return A String with the value of screen.
      */
