@@ -272,10 +272,13 @@ public class Turbine
                               APPLICATION_ROOT_DEFAULT);
 
         webappRoot = config.getServletContext().getRealPath("/");
+        // log.info("Web Application root is " + webappRoot);
+        // log.info("Application root is "     + applicationRoot);
 
         if (applicationRoot == null || applicationRoot.equals(WEB_CONTEXT))
         {
             applicationRoot = webappRoot;
+            // log.info("got empty or 'webContext' Application root. Application root now: " + applicationRoot);
         }
 
         // Set the applicationRoot for this webapp.
@@ -297,6 +300,8 @@ public class Turbine
 
         String propsPath = getRealPath(propsFile);
 
+        // log.info("Loading Configuration from " + propsPath);
+
         // This should eventually be a Configuration
         // interface so that service and app configuration
         // can be stored anywhere.
@@ -307,6 +312,8 @@ public class Turbine
                                                    LOG4J_CONFIG_FILE_DEFAULT);
 
         log4jFile = getRealPath(log4jFile);
+
+        log.debug("Loading Log4J configuration from " + log4jFile);
 
         //
         // Load the config file above into a Properties object and
