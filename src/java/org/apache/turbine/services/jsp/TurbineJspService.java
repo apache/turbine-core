@@ -71,7 +71,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.jsp.util.JspLink;
+import org.apache.turbine.services.pull.ApplicationTool;
+import org.apache.turbine.services.pull.tools.TemplateLink;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
 import org.apache.turbine.services.template.TurbineTemplate;
@@ -143,14 +144,23 @@ public class TurbineJspService
 
     /**
      * Adds some convenience objects to the request.  For example an instance
-     * of JspLink which can be used to generate links to other templates.
+     * of TemplateLink which can be used to generate links to other templates.
      *
      * @param data the turbine rundata object
      */
     public void addDefaultObjects(RunData data)
     {
         HttpServletRequest req = data.getRequest();
-        req.setAttribute(LINK, new JspLink(data));
+
+        //
+        // This is a place where an Application Pull Tool is used
+        // in a regular Java Context. We have no Pull Service with the
+        // Jsp Paging stuff, but we can run our Application Tool by Hand:
+        //
+        ApplicationTool templateLink = new TemplateLink();
+        templateLink.init(data);
+
+        req.setAttribute(LINK, templateLink);
         req.setAttribute(RUNDATA, data);
     }
 
