@@ -115,6 +115,10 @@ Changes between Turbine 2.3 and 2.4.
        setting it to the appropriate value (it shouldn't be in the group 
        anyway).
     </li>
+    <li>
+       Fixed the intake DateString flexible rule so that it applies to the
+       format rules and not just to the default locale format.
+    </li>
   </ul>
 </p>
 </subsection>
