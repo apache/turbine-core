@@ -28,7 +28,7 @@ Some of the following examples are taken from the project-schema.xml document in
     <p>The database element and its relevant attributes.</p>
     <source><![CDATA[
     <database name="MY_DATABASE" 
-            defaultIdMethod="idBroker" 
+            defaultIdMethod="idbroker" 
             package="com.myapp.om" 
             baseClass="com.myapp.om.BaseClass" 
             basePeer="com.myapp.om.BasePeer"
