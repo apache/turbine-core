@@ -134,7 +134,7 @@ class". Currently, Turbine includes two supported view services,
   <li>com.mycorp.modules.screens.Default</li>
   <li>org.apache.turbine.modules.screens.VelocityScreen</li>
   <li>com.mycorp.modules.screens.VelocityScreen</li>
-</li>
+</ul>
 
 <p>
   Most of the times, you don't have any backing Java class for a
