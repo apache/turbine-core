@@ -573,13 +573,12 @@ public class TemplateLink
 
     /**
      * Returns the URI. After rendering the URI, it clears the
-     * pathInfo and QueryString portions of the TemplateURI. Equivalent
-     * to the getAbsoluteLink() method of this class.
+     * pathInfo and QueryString portions of the TemplateURI. 
      *
      * @return A String with the URI in the form
      * http://foo.com/Turbine/template/index.wm/hello/world
      */
-    public String toString()
+    public String getLink()
     {
         return wantRelative ? 
                 getRelativeLink() : getAbsoluteLink();
@@ -588,13 +587,28 @@ public class TemplateLink
     /**
      * Returns the relative URI leaving the source intact. Use this
      * if you need the path_info and query data multiple times.
-     * This is equivalent to $link.AbsoluteLink or just $link,
+     * This is equivalent to $link.Link or just $link,
      * but does not reset the path_info and query data.
      *
      * @return A String with the URI in the form
      * http://foo.com/Turbine/template/index.wm/hello/world
      */
     public String getURI()
+    {
+        return wantRelative ?
+                templateURI.getRelativeLink() : templateURI.getAbsoluteLink();
+    }
+
+    /**
+     * Returns the absolute URI leaving the source intact. Use this
+     * if you need the path_info and query data multiple times.
+     * This is equivalent to $link.AbsoluteLink but does not reset 
+     * the path_info and query data.
+     *
+     * @return A String with the URI in the form
+     * http://foo.com/Turbine/template/index.wm/hello/world
+     */
+    public String getAbsoluteURI()
     {
         return templateURI.getAbsoluteLink();
     }
@@ -611,5 +625,16 @@ public class TemplateLink
     public String getRelativeURI()
     {
         return templateURI.getRelativeLink();
+    }
+
+    /**
+     * Same as getLink().
+     *
+     * @return A String with the URI represented by this object.
+     * 
+     */
+    public String toString()
+    {
+        return getLink();
     }
 }
