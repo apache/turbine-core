@@ -58,6 +58,9 @@ import org.apache.velocity.context.Context;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.texen.ant.TexenTask;
 
+import org.apache.turbine.torque.engine.database.model.AppData;
+import org.apache.turbine.torque.engine.database.transform.XmlToAppData;
+
 /**
  * An extended Texen task used for generating simple scripts
  * for creating databases on various platforms.
@@ -65,8 +68,20 @@ import org.apache.velocity.texen.ant.TexenTask;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @version $Id$
  */
-public class TorqueCreateDatabase extends TexenTask
+public class TorqueCreateDatabase 
+    extends TexenTask
 {
+    /**
+     * Application model. In this case a database model.
+     */
+    private AppData app;
+
+    /**
+     * XML that describes the database model, this is transformed
+     * into the application model object.
+     */
+    private String xmlFile;
+
     /**
      * The target database vendor: MySQL, Oracle.
      */
@@ -78,11 +93,6 @@ public class TorqueCreateDatabase extends TexenTask
      * which template is parsed
      */
     private String targetPlatform;
-
-    /**
-     * Name of the database to create.
-     */
-    private String databaseName;
 
     /**
      * Database user.
@@ -98,6 +108,28 @@ public class TorqueCreateDatabase extends TexenTask
      * Host on which specified database resides.
      */
     private String databaseHost;
+
+    /**
+     * Get the xml schema describing the application
+     * model.
+     *
+     * @return String xml schema file.
+     */
+    public String getXmlFile ()
+    {
+        return xmlFile;
+    }
+
+    /**
+     * Set the xml schema describing the application
+     * model.
+     *
+     * @param String xml schema file.
+     */
+    public void setXmlFile(String v)
+    {
+        xmlFile = v;
+    }
 
     /**
      * Get the target database.
@@ -137,26 +169,6 @@ public class TorqueCreateDatabase extends TexenTask
     public void setTargetPlatform (String v)
     {
         targetPlatform = v;
-    }
-
-    /**
-     * Get the database name.
-     *
-     * @return String database name.
-     */
-    public String getDatabaseName ()
-    {
-        return databaseName;
-    }
-
-    /**
-     * Set the database name.
-     *
-     * @param String database name.
-     */
-    public void setDatabaseName (String v)
-    {
-        databaseName = v;
     }
 
     /**
@@ -226,13 +238,19 @@ public class TorqueCreateDatabase extends TexenTask
      */
     public Context initControlContext()
     {
-        /*
-         * Create a new Velocity context.
-         */
+        // Create a new Velocity context.
         Context context = new VelocityContext();
+        
+        // Transform the XML database schema into an
+        // object that represents our model.
+        XmlToAppData xmlParser = new XmlToAppData();
+        app = xmlParser.parseFile(xmlFile);
+
+        // Place our model in the context.
+        context.put("appData", app);
+
         context.put("targetDatabase", targetDatabase);
         context.put("targetPlatform", targetPlatform);
-        context.put("databaseName", databaseName);
         context.put("databaseUser", databaseUser);
         context.put("databasePassword", databasePassword);
         context.put("databaseHost", databaseHost);

@@ -54,8 +54,6 @@ package org.apache.turbine.torque;
  * <http://www.apache.org/>.
  */
 
-import java.util.Date;
-
 import org.apache.velocity.context.Context;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.texen.ant.TexenTask;
@@ -141,26 +139,19 @@ public class TorqueSQLTask extends TexenTask
      */
     public Context initControlContext()
     {
-        /*
-         * Create a new Velocity context.
-         */
+
+        // Create a new Velocity context.
         Context context = new VelocityContext();
         
-        /*
-         * Transform the XML database schema into an
-         * object that represents our model.
-         */
+        // Transform the XML database schema into an
+        // object that represents our model.
         XmlToAppData xmlParser = new XmlToAppData();
         app = xmlParser.parseFile(xmlFile);
         
-        /*
-         * Place our model in the context.
-         */
+        // Place our model in the context.
         context.put("appData", app);
 
-        /*
-         * Place the target database in the context.
-         */
+        // Place the target database in the context.
         context.put("targetDatabase", targetDatabase);
         
         return context;
