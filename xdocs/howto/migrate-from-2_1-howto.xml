@@ -5,105 +5,44 @@
  <properties>
   <title>Migrating from 2.1 to 2.2</title>
   <author email="quintonm@bellsouth.net">Quinton McCombs</author>
-  <author email="seade@backstagetech.com.au">Scott Eade</author>
  </properties>
 
 <body>
 
-<section name="Introduction">
+<section name="Getting Started">
 <p>
     This document describes the basic steps needed to migrate an
     application written for Turbine 2.1 to Turbine 2.2 using the
-    decoupled Torque.
+    decoupled Torque. This does not cover moving any of your services
+    to Fulcrum. It is a good idea to convert some or all of the
+    services over to Fulcrum (if you really want to) after you get
+    everything working under T2.2.
 </p>
 <p>
-    You may find that migrating to 2.2 is not all that difficult.
+    You will find that migrating to 2.2 is not all that difficult.
     Of course, this depends quite a bit on how much of Turbine your
-    application actually uses.  You may find migrating to 2.2 to be
-    quite a chore, but it is well worth the effort. Most of the
-    pain in figuring out this migration process has been documented 
-    in the mailing list archives, but is summarized here for your 
-    convenience.
+    application actually uses. Most of the pain in figuring out
+    this migration process has been documented in the mailing list
+    archives.
 </p>
-</section>
-
-<section name="Cleanup">
 <p>
     Start off with deleting all of the objects that Torque generated
     for you. I am talking about om.map.* and om.Base*. You will be
     able to regenerate them later during the migration process.
 </p>
-</section>
+<p>
+    You will want to get the source versions of Torque and Turbine
+    if you do not already have them. The migration will not require
+    you to modify any code. You will need to compare the properties
+    files in jakarta-turbine-2/conf to those used by your app. Apply
+    changes to your version as needed.
+</p>
 
-<section name="Build and Properties Files">
-<p>
-    The structure of the build files used by Turbine has changed 
-    quite a bit with the 2.2 release. The easiest way of obtaining 
-    a reference set of property (and build files) is to install 
-    version 2.2 of the TDK and generate the demo application.
-</p>
-<p>
-    From the demo application you should:
-    <ul>
-    <li>Merge <code>tdk-2.2/webapps/newapp/WEB-INF/conf/build.properties</code>
-        with your existing properties file.</li>
-    <li>Copy <code>build-torque.xml</code> from the demo application
-        to your build directory.</li>
-    <li>Copy <code>project-build.xml</code> from the demo application
-        to your build directory.</li>
-    <li>Merge <code>build.xml</code> from the demo application
-        to your existing build file (if you have only ever used the
-        default build file supplied with the tdk then I assume you 
-        can just replace your file with the new one).</li>
-    <li>Copy <code>WEB-INF/conf/TurbineResources.template</code> and 
-        <code>WEB-INF/conf/Torque.template</code>) to your application
-        and apply changes as needed (it is up to you as to how much you
-        hard code into your application template and how much you allow
-        to be processed into the resulting properties files by way of
-        <code>build.properties</code> or the other property files).</li>
-    </ul>
-</p>
-<p>
-    See the Torque 
-  <a href="http://jakarta.apache.org/turbine/torque/properties-reference.html">
-    Properties Reference</a> for full details of the available properties.
-</p>
-</section>
-
-<section name="Libraries">
-<p>
-    Turbine and Torque use updated versions of a number of 
-    libraries (jar files). Take a look at the WEB-INF/lib directory 
-    of the TDK sample application to see which libraries have been 
-    updated and replace the files in the lib directory of your 
-    application as needed.
-</p>
-<p>
-    Note that if you have applied local changes to Turbine itself
-    then you should ensure that your changes have made it into the
-    Turbine 2.2 and Torque 3.0 releases.  If any of your changes 
-    have not made it then you will need to port these changes forward 
-    and build your own versions of the Turbine and Torque jar files
-    (while you are there you may as well create patches and submit 
-    them to the relevant modules in Scarab so that they can be 
-    included in future releases).
-</p>
-<p>
-    By default Torque will utilize a set of  Velocity templates that
-    you need to extract from the Torque jar file (see the 
-    <code>torque.templatePath</code> property). Unless you have a 
-    need to alter these templates you may prefer to use these directly
-    from the jar file.  To do this you need to set the 
-    <code>torque.useClasspath</code> property to <code>true</code> in
-    <code>build.peoperties</code>.  In any case, you should either 
-    replace or delete the old versions of these templates from your
-    existing project.
-</p>
 </section>
 
 <section name="Import Statements">
 <p>
-    Many of your import statements will need to be changed. This is
+    Many of your import statments will need to be changed. This is
     due to the decoupled version of Torque. This will take care of
     most of the changes due to refactoring. There will still be a
     few cases (discussed later) where the methods have been changed and/or
@@ -131,7 +70,7 @@
 </p>
 <p>
     Below is an example of how you might have been obtaining database
-    connections in version 2.1.
+    connections in verion 2.1.
 </p>
 
 <source>
@@ -139,23 +78,23 @@
 DBConnection dbConn = null;
 try
 {
-    dbConn = TurbineDB.getConnection();
-    // Do something with the connection here...
+   dbConn = TurbineDB.getConnection();
+   // Do something with the connection here...
 }
 catch (Exception e)
 {
-    // Either from obtaining the connection or from your application code.
+   // Either from obtaining the connection or from your application code.
 }
 finally
 {
-    try
-    {
-        TurbineDB.releaseConnection(dbConn);
-    }
-    catch (Exception e)
-    {
-        // Error releasing database connection back to pool.
-    }
+   try
+   {
+       TurbineDB.releaseConnection(dbConn);
+   }
+   catch (Exception e)
+   {
+       // Error releasing database connection back to pool.
+   }
 }
 ]]>
 </source>
@@ -167,17 +106,23 @@ finally
 Connection conn = null;
 try
 {
-    conn = Torque.getConnection();
-    // Do something with the connection here...
+   conn = Torque.getConnection();
+   // Do something with the connection here...
 }
-catch (TorqueException ex)
+catch (Exception e)
 {
-    // Either from obtaining the connection or from your application code.
-	Log.error(ex);
+   // Either from obtaining the connection or from your application code.
 }
 finally
 {
-    Torque.closeConnection(conn);
+   try
+   {
+       Torque.closeConnection(conn);
+   }
+   catch (Exception e)
+   {
+       // Error releasing database connection back to pool.
+   }
 }
 ]]>
 </source>
@@ -191,15 +136,15 @@ finally
 DBConnection dbConn = null;
 try
 {
-    dbConn = BasePeer.beginTrasaction(TurbineDB.getDefaultDB?());
-    someObject.save(dbConn);
-    someOtherObject.save(dbConn);
-    BasePeer.commitTransaction(dbConn);
+   dbConn = BasePeer.beginTrasaction(TurbineDB.getDefaultDB?());
+   someObject.save(dbConn);
+   someOtherObject.save(dbConn);
+   BasePeer.commitTransaction(dbConn);
 }
 catch (Exception e)
 {
-    // Either from obtaining the connection or from your application code.
-    BasePeer?.rollbackTransaction(dbConn);
+   // Either from obtaining the connection or from your application code.
+   BasePeer?.rollbackTransaction(dbConn);
 }
 ]]>
 </source>
@@ -211,50 +156,18 @@ catch (Exception e)
 Connection conn = null;
 try
 {
-    conn = Transaction.begin(Torque.getDefaultDB());
-    someObject.save(conn);
-    someOtherObject.save(conn);
-    Transaction.commit(conn);
+  conn = Transaction.begin(Torque.getDefaultDB());
+  someObject.save(conn);
+  someOtherObject.save(conn);
+  Transaction.commit(conn);
 }
-catch (TorqueException ex) 
+catch (Exception e)
 {
-    try
-    {
-        Transaction.rollback(conn);
-    }
-    catch (TorqueException ex2)
-    { 
-        Log.error(ex2);
-    }
-    Log.error(ex);
+   // Either from obtaining the connection or from your application code.
+   Transaction.rollback(conn);
 }
 ]]>
 </source>
-</section>
-
-<section name="Vector becomes List">
-<p>
-    Methods generated by Torque that previously had a return type of
-    <code>Vector</code> now have a return type of <code>List</code>.
-    If you have not already been doing so you should switch to 
-    retrieving the results of these methods into variables declared 
-    as <code>List</code>.  While you are at it you might like to 
-    update any of your own code to use <code>ArrayList</code> in 
-    preference to <code>Vector</code>.
-</p>
-</section>
-
-<section name="Exception becomes TorqueException">
-<p>
-    Methods generated by Torque now throw <code>TorqueException</code>
-    rather than <code>Exception</code>.  You might like to update
-    your code to match.
-</p>
-<p>
-    Note that the exception thrown by <code>save()</code> methods is 
-    determined by the Torque property <code>torque.saveException</code>
-    which defaults to <code>Exception</code>.
-</p>
 </section>
 
 <section name="Extending Turbine User">
@@ -324,26 +237,7 @@ public <base class> copy() throws TorqueException
 </p>
 </section>
 
-<section name="Maven">
-<p>
-    You may like to consider using 
-    <a href="http://jakarta.apache.org/turbine/maven/">Maven</a> to
-    build your project.  The  document 
-    <a href="http://nagoya.apache.org/wiki/apachewiki.cgi?JakartaTDK/Starting_Project_With_TDK2.2_And_Maven">
-    Starting your project and database with TDK2.2 and Maven</a> 
-    provides some information that can be adapted for this purpose 
-    (jump down to the "Moving The Sample" heading for the 
-    documentation relevant to an existing project).
-</p>
-</section>
-
-<section name="Updates to this document">
-<p>
-    This document is by no means complete or totally accurate. We welcome 
-    suggestions as to how it might be improved, particularly if you have 
-    just completed migrating an application by following this howto.
-</p>
-</section>
-
 </body>
 </document>
+
+

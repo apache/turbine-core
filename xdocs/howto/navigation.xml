@@ -39,6 +39,7 @@
         <item name="Pull Model Howto"    href="/howto/pullmodel-howto.html"/>
         <item name="Python Howto"        href="/howto/python-howto.html"/>
         <item name="Security Howto"      href="/howto/security-howto.html"/>
+        <item name="Migrating from 2.1"  href="/howto/migrate-from-2_1-howto.html"/>
         <item name="URL rewriting Howto" href="/howto/url-rewriting-howto.html"/>
         <item name="Velocity Site Howto" href="/howto/velocity-site-howto.html"/>
         <item name="Velocity Context Howto" href="/howto/context-howto.html"/>
