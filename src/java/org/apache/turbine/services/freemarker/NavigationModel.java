@@ -102,6 +102,9 @@ public class NavigationModel
 
         String module = null;
         String returnValue = null;
+        
+        /*
+        
         try
         {
             module = ((TemplateService)TurbineServices.getInstance().getService(
@@ -115,6 +118,9 @@ public class NavigationModel
             Log.error(message, e);
             returnValue = message;
         }
+        
+        */
+        
         return new SimpleScalar(returnValue);
 
     }
