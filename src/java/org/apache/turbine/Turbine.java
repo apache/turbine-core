@@ -250,7 +250,8 @@ public class Turbine
 
                 if (rundataService == null)
                 {
-                    throw new TurbineException("No RunData Service configured!");
+                    throw new TurbineException(
+                            "No RunData Service configured!");
                 }
 
             }
@@ -559,7 +560,6 @@ public class Turbine
      * if you need a DataURI and have no RunData object handy-
      *
      * @return An initialized ServerData object
-     *
      */
     public static ServerData getDefaultServerData()
     {
@@ -635,7 +635,7 @@ public class Turbine
      * @exception ServletException a servlet exception.
      */
     public final void doGet(HttpServletRequest req, HttpServletResponse res)
-        throws IOException, ServletException
+            throws IOException, ServletException
     {
         // set to true if the request is to be redirected by the page
         boolean requestRedirected = false;
@@ -736,8 +736,8 @@ public class Turbine
             // than just the default page.  If you do, add logic to
             // DefaultPage to do what you want.
 
-            String defaultPage = (templateService == null) 
-                ? null :templateService.getDefaultPageName(data);
+            String defaultPage = (templateService == null)
+                    ? null :templateService.getDefaultPageName(data);
 
             if (defaultPage == null)
             {
@@ -857,7 +857,7 @@ public class Turbine
     /**
      * This method is executed if the configured Login action should be
      * executed by Turbine.
-     *
+     * <p>
      * This Action must be performed before the Session validation or we
      * get sent in an endless loop back to the Login screen before
      * the action can be performed
@@ -895,7 +895,7 @@ public class Turbine
     /**
      * This method is executed if the configured Logout action should be
      * executed by Turbine.
-     *
+     * <p>
      * This Action must be performed before the Session validation for the
      * session validator to send us back to the Login screen.
      *
