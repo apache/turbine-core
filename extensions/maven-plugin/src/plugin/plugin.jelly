@@ -136,11 +136,11 @@
                                 flavor="${turbine.app.flavor}"
                                 frompath="${plugin.resources}/schema" fromfile="application-schema.xml" />
 
-    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.dtd" filtering="false"
+    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.dtd" filtering="true"
                                 flavor="${turbine.app.flavor}"
                                 frompath="${plugin.resources}/schema" fromfile="application-data.dtd" />
 
-    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.xml" filtering="false"
+    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.xml" filtering="true"
                                 flavor="${turbine.app.flavor}"
                                 frompath="${plugin.resources}/schema" fromfile="application-data.xml" />
 
