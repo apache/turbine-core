@@ -194,7 +194,7 @@ public class DateStringValidator
     {
         super.assertValidity(testValue);
 
-        if ((required) || ((testValue != null) && (testValue.length() > 0)))
+        if (required || StringUtils.isNotEmpty(testValue))
         {
             try
             {

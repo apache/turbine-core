@@ -56,6 +56,8 @@ package org.apache.turbine.services.intake.validator;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Validates Doubles with the following constraints in addition to those
  * listed in NumberValidator and DefaultValidator.
@@ -147,7 +149,7 @@ public class DoubleValidator
 
         double d = 0.0D;
 
-        if ((required) || ((testValue != null) && (testValue.length() > 0)))
+        if (required || StringUtils.isNotEmpty(testValue))
         {
             try
             {

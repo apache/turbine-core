@@ -56,6 +56,8 @@ package org.apache.turbine.services.intake.validator;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
@@ -172,7 +174,7 @@ public class StringValidator
     {
         super.assertValidity(testValue);
 
-        if ((required) || ((testValue != null) && (testValue.length() > 0)))
+        if (required || StringUtils.isNotEmpty(testValue))
         {
             if (maskPattern != null)
             {
