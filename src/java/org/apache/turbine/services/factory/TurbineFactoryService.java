@@ -444,8 +444,6 @@ public class TurbineFactoryService
      * objects in the parameter array can be switched to the context
      * of a different class loader.
      * @throws ClassNotFoundException if any of the classes is not found.
-     * @deprecated This is just a temporary workaround for decoupling the
-     * Pool and Factory Service. Please do not use.
      */
     public Class[] getSignature(Class clazz,
             Object params[],
