@@ -40,6 +40,7 @@
     <attainGoal name="turbine:check-setup-environment"/>
 
     <filter token="TURBINE_APP_NAME"           value="${turbine.app.name}"/>
+    <filter token="TURBINE_APP_FLAVOR"         value="${turbine.app.flavor}"/>
     <filter token="TURBINE_APP_PACKAGE"        value="${turbine.app.package}"/>
     <filter token="TURBINE_APP_OM_NAME"        value="${turbine.app.om.name}"/>
     <filter token="TURBINE_APP_OM_PACKAGE"     value="${turbine.app.om.package}"/>
@@ -74,11 +75,13 @@
     </j:if>
 
     <echo>Building Turbine Skeleton for ${turbine.app.name} application
+          Flavor:         ${turbine.app.flavor}
           Package:        ${turbine.app.package}
           Database:       ${turbine.app.database}
           Base Directory: ${baseDir} (${turbine.app.subdir})
     </echo>
 
+    <!-- Make directories -->
     <mkdir dir="${baseDir}/${turbine.plugin.src.conf}"/>
     <mkdir dir="${baseDir}/${turbine.plugin.src.java}"/>
     <mkdir dir="${baseDir}/${turbine.plugin.src.schema}"/>
@@ -98,67 +101,87 @@
     <mkdir dir="${baseDir}/${turbine.plugin.src.java}/${appDir}/modules/navigations" />
     <mkdir dir="${baseDir}/${turbine.plugin.src.java}/${appDir}/modules/pages" />
 
-    <ant:copy todir="${baseDir}" filtering="true">
-      <ant:fileset dir="${plugin.resources}/maven">
-        <exclude name="setup.properties"/>
-      </ant:fileset>
-    </ant:copy>
+    <!-- ========== Copy base files into application root ========== -->
+
+    <meta:copyTurbineDir todir="${baseDir}" filtering="true"
+                                flavor="${turbine.app.flavor}"
+                                frompath="${plugin.resources}/maven"
+                                include="**/*"
+                                exclude="setup.properties"/>
 
     <!-- Try to rebuild the setup.properties file. 
          If it already exists, don't clobber it!
     -->
-    <ant:copy todir="${baseDir}" filtering="true" overwrite="false">
-      <ant:fileset dir="${plugin.resources}/maven">
-        <include name="setup.properties"/>
-      </ant:fileset>
-    </ant:copy>
+    <u:available file="${plugin.resources}/maven/common">
+      <ant:copy todir="${baseDir}" filtering="true" overwrite="false">
+        <ant:fileset dir="${plugin.resources}/maven/common">
+          <include name="setup.properties"/>
+        </ant:fileset>
+      </ant:copy>
+    </u:available>
 
+    <!-- ========== Copy schema files for Torque ========== -->
 
     <!-- filtering="false" is intentional! The file variables are 
          replaced when the files are copied inside the application.
     -->
-    <ant:copy todir="${baseDir}/${turbine.plugin.src.schema}" filtering="false">
-      <ant:fileset dir="${plugin.resources}/schema">
-        <exclude name="**/application*"/>
-      </ant:fileset>
-    </ant:copy>
 
-    <ant:copy tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-schema.xml" filtering="false"
-      file="${plugin.resources}/schema/application-schema.xml"/>
+    <meta:copyTurbineDir todir="${baseDir}/${turbine.plugin.src.schema}" filtering="false"
+                                flavor="${turbine.app.flavor}"
+                                frompath="${plugin.resources}/schema"
+                                include="**/*"
+                                exclude="**/application*"/>
 
-    <ant:copy tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.dtd" filtering="false"
-      file="${plugin.resources}/schema/application-data.dtd"/>
+    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-schema.xml" filtering="false"
+                                flavor="${turbine.app.flavor}"
+                                frompath="${plugin.resources}/schema" fromfile="application-schema.xml" />
 
-    <ant:copy tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.xml" filtering="true"
-      file="${plugin.resources}/schema/application-data.xml"/>
+    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.dtd" filtering="false"
+                                flavor="${turbine.app.flavor}"
+                                frompath="${plugin.resources}/schema" fromfile="application-data.dtd" />
 
-    <ant:copy todir="${baseDir}/${turbine.plugin.src.templates}" filtering="true">
-      <ant:fileset dir="${plugin.resources}/templates">
-        <exclude name="**/application*"/>
-      </ant:fileset>
-    </ant:copy>
+    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.xml" filtering="false"
+                                flavor="${turbine.app.flavor}"
+                                frompath="${plugin.resources}/schema" fromfile="application-data.xml" />
 
-    <ant:copy tofile="${baseDir}/${turbine.plugin.src.templates}/macros/${turbine.app.name}Macros.vm" filtering="true"
-      file="${plugin.resources}/templates/macros/applicationMacros.vm"/>
+    <!-- ========== Copy template files ========== -->
 
-    <ant:copy todir="${baseDir}/${turbine.plugin.src.conf}" filtering="true">
-      <ant:fileset dir="${plugin.resources}/conf">
-        <exclude name="**/application*"/>
-      </ant:fileset>
-    </ant:copy>
+    <meta:copyTurbineDir todir="${baseDir}/${turbine.plugin.src.templates}" filtering="true"
+                                flavor="${turbine.app.flavor}"
+                                frompath="${plugin.resources}/templates"
+                                include="**/*"
+                                exclude="**/application*"/>
 
-    <ant:copy tofile="${baseDir}/${turbine.plugin.src.conf}/${turbine.app.name}-web.xml" filtering="true"
-      file="${plugin.resources}/conf/application-web.xml"/>
+    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.templates}/macros/${turbine.app.name}Macros.vm" filtering="true"
+                                flavor="${turbine.app.flavor}"
+                                frompath="${plugin.resources}/templates/macros" fromfile="applicationMacros.vm" />
 
-    <ant:copy tofile="${baseDir}/${turbine.plugin.src.conf}/${turbine.app.name}.properties" filtering="true"
-      file="${plugin.resources}/conf/application.properties"/>
+    <!-- ========== Copy Turbine configuration files ========== -->
 
-    <ant:copy tofile="${baseDir}/${turbine.plugin.src.conf}/${turbine.app.name}-intake.xml" filtering="true"
-      file="${plugin.resources}/conf/application-intake.xml"/>
+    <meta:copyTurbineDir todir="${baseDir}/${turbine.plugin.src.conf}" filtering="true"
+                                flavor="${turbine.app.flavor}"
+                                frompath="${plugin.resources}/conf"
+                                include="**/*"
+                                exclude="**/application*"/>
 
-    <ant:copy todir="${baseDir}/src/images">
-      <ant:fileset dir="${plugin.resources}/images"/>
-    </ant:copy>
+    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.conf}/${turbine.app.name}-web.xml" filtering="true"
+                                flavor="${turbine.app.flavor}"
+                                frompath="${plugin.resources}/conf" fromfile="application-web.xml" />
+
+    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.conf}/${turbine.app.name}.properties" filtering="true"
+                                flavor="${turbine.app.flavor}"
+                                frompath="${plugin.resources}/conf" fromfile="application.properties" />
+
+    <meta:copyTurbineFile tofile="${baseDir}/${turbine.plugin.src.conf}/${turbine.app.name}-intake.xml" filtering="true"
+                                flavor="${turbine.app.flavor}"
+                                frompath="${plugin.resources}/conf" fromfile="application-intake.xml" />
+
+    <!-- ========== Copy other files into application tree ========== -->
+
+    <meta:copyTurbineDir todir="${baseDir}/src/images" filtering="false"
+                                flavor="${turbine.app.flavor}"
+                                frompath="${plugin.resources}/images"
+                                include="**/*" />
 
   </goal>
   <!-- ======================================================================== -->
@@ -512,7 +535,44 @@
  --------------------------------------------------------------------------
         </fail>
       </define:tag>
+
+      <define:tag name="copyTurbineFile">
+
+        <u:available file="${frompath}/common/${fromfile}">
+          <ant:copy tofile="${tofile}" filtering="${filtering}" overwrite="true"
+            file="${frompath}/common/${fromfile}"/>
+        </u:available>
+    
+        <u:available file="${frompath}/${flavor}/${fromfile}">
+          <ant:copy tofile="${tofile}" filtering="${filtering}" overwrite="true"
+            file="${frompath}/${flavor}/${fromfile}"/>
+        </u:available>
+
+      </define:tag>
+
+      <define:tag name="copyTurbineDir">
+
+        <u:available file="${frompath}/common">
+          <ant:copy todir="${todir}" filtering="${filtering}" overwrite="true" >
+            <ant:fileset dir="${frompath}/common">
+              <include name="${include}"/>
+              <exclude name="${exclude}"/>
+            </ant:fileset>
+          </ant:copy>
+        </u:available>
+
+        <u:available file="${frompath}/${flavor}">
+          <ant:copy todir="${todir}" filtering="${filtering}" overwrite="true" >
+            <ant:fileset dir="${frompath}/${flavor}">
+              <include name="${include}"/>
+              <exclude name="${exclude}"/>
+            </ant:fileset>
+          </ant:copy>
+        </u:available>
+
+      </define:tag>
     </define:taglib>
+
   </goal>
 
   <!-- ======================================================================== -->
@@ -537,6 +597,26 @@
     <j:if test="${context.getVariable('turbine.app.name') == ''}">
       <meta:requiredPropertyMissing propname="turbine.app.name" />
     </j:if>
+
+    <ant:condition property="flavorExists">
+    <or>
+      <ant:available type="dir" file="${plugin.resources}/maven/${turbine.app.flavor}" />
+    </or>
+    </ant:condition>    
+
+    <j:if test="${context.getVariable('flavorExists') != 'true'}">
+        <fail>
+ --------------------------------------------------------------------------
+ | Flavor not found Error                                                 |
+ --------------------------------------------------------------------------
+
+  The requested flavor ${turbine.app.flavor} was not found in the
+  current version ($plugin.version) of M.E.T.A.
+
+ --------------------------------------------------------------------------
+        </fail>
+    </j:if>
+
   </goal>
   <!-- ======================================================================== -->
   <!-- turbine:check-environment                                                -->

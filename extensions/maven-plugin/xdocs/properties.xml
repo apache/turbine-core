@@ -34,7 +34,19 @@ configuration files, so be careful!).
 <td>turbine.app.name</td>
 <td>No</td>
 <td><b>no default value</b></td>
-<td>Name of the new application.<font color="red">Must be set for turbine:setup, else the goal fails!</font></td>
+<td>Name of the new application. <font color="red">Must be set for turbine:setup, else the goal fails!</font></td>
+</tr>
+
+<tr>
+<td>turbine.app.flavor</td>
+<td>No</td>
+<td>turbine-2.3</td>
+<td>Defines the dependencies and the release version of Turbine that the new application should use. Currently supported versions are:<br/>
+    <ul>
+    <li>turbine-2.3</li>
+    <li>turbine-2.3.1-dev</li>
+    </ul>
+    See the <a href="flavors.html">Flavors page</a> for more information.</td>
 </tr>
 
 <tr>
