@@ -48,28 +48,28 @@
     <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2/</url>
   </repository>
 
-<releases>
-    <release>
-      <version>2.1</version>
+<versions>
+    <version>
+      <name>2.1</name>
       <tag>TURBINE_2_1</tag>
-    </release>
-    <release>
-      <version>2.2</version>
+    </version>
+    <version>
+      <name>2.2</name>
       <tag>TURBINE_2_2_0</tag>
-    </release>
-    <release>
-      <version>2.3-rc1</version>
+    </version>
+    <version>
+      <name>2.3-rc1</name>
       <tag>TURBINE_2_3_RC1</tag>
-    </release>
-    <release>
-      <version>2.3-rc2</version>
+    </version>
+    <version>
+      <name>2.3-rc2</name>
       <tag>TURBINE_2_3_RC2</tag>
-    </release>
-    <release>
-      <version>2.3</version>
+    </version>
+    <version>
+      <name>2.3</name>
       <tag>TURBINE_2_3</tag>
-    </release>
-  </releases>
+    </version>
+  </versions>
 
   <mailingLists>
     <mailingList>
@@ -167,6 +167,10 @@
       <id>henning</id>
       <email>hps@intermeta.de</email>
       <organization>INTERMETA - Gesellschaft fuer Mehrwertdienste mbH</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+      <timezone>2</timezone>
     </developer>
     <developer>
       <name>Kurt Schrader</name>
@@ -327,196 +331,274 @@
 
   <dependencies>
     <dependency>
-      <id>avalon-framework</id>
+      <groupId>avalon-framework</groupId>
+      <artifactId>avalon-framework</artifactId>
       <version>4.1.4</version>
       <url>http://jakarta.apache.org/avalon/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>commons-beanutils</id>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
       <version>1.6.1</version>
       <url>http://jakarta.apache.org/commons/beanutils.html</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>commons-codec</id>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
       <version>1.1</version>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>commons-collections</id>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
       <version>2.1</version>
       <url>http://jakarta.apache.org/commons/collections.html</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>commons-configuration</id>
+      <groupId>commons-configuration</groupId>
+      <artifactId>commons-configuration</artifactId>
       <version>20030706.202021</version>
       <url>http://jakarta.apache.org/commons/sandbox/configuration/index.html</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>commons-digester</id>
+      <groupId>commons-digester</groupId>
+      <artifactId>commons-digester</artifactId>
       <version>1.5</version>
       <url>http://jakarta.apache.org/commons/digester/index.html</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>commons-email</id>
+      <groupId>commons-email</groupId>
+      <artifactId>commons-email</artifactId>
       <version>20030310.165926</version>
       <url>http://jakarta.apache.org/commons/sandbox/email</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>commons-fileupload</id>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
       <version>1.0</version>
       <url>http://jakarta.apache.org/commons/fileupload/index.html</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>commons-lang</id>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
       <version>1.0.1</version>
       <url>http://jakarta.apache.org/commons/lang.html</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>commons-logging</id>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
       <version>1.0.3</version>
       <url>http://jakarta.apache.org/commons/logging.html</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>commons-pool</id>
+      <groupId>commons-pool</groupId>
+      <artifactId>commons-pool</artifactId>
       <version>1.1</version>
       <url>http://jakarta.apache.org/commons/pool/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>cryptix</id>
+      <groupId>cryptix</groupId>
+      <artifactId>cryptix</artifactId>
       <version>3.2.0</version>
       <url>http://www.cryptix.org/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>dom4j</id>
+      <groupId>dom4j</groupId>
+      <artifactId>dom4j</artifactId>
       <version>1.4</version>
       <url>http://www.dom4j.org/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>ecs</id>
+      <groupId>ecs</groupId>
+      <artifactId>ecs</artifactId>
       <version>1.4.2</version>
       <url>http://jakarta.apache.org/ecs/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>excalibur-component</id>
+      <groupId>excalibur-component</groupId>
+      <artifactId>excalibur-component</artifactId>
       <version>1.1</version>
       <url>http://jakarta.apache.org/avalon/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>excalibur-instrument</id>
+      <groupId>excalibur-instrument</groupId>
+      <artifactId>excalibur-instrument</artifactId>
       <version>1.0</version>
       <url>http://jakarta.apache.org/avalon/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>excalibur-logger</id>
+      <groupId>excalibur-logger</groupId>
+      <artifactId>excalibur-logger</artifactId>
       <version>1.0.1</version>
       <url>http://jakarta.apache.org/avalon/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>excalibur-pool</id>
+      <groupId>excalibur-pool</groupId>
+      <artifactId>excalibur-pool</artifactId>
       <version>1.2</version>
       <url>http://jakarta.apache.org/avalon/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>jaf:activation</id>
+      <groupId>jaf</groupId>
+      <artifactId>activation</artifactId>
       <version>1.0.2</version>
       <url>http://java.sun.com/products/javabeans/glasgow/jaf.html</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>javamail</id>
+      <groupId>javamail</groupId>
+      <artifactId>javamail</artifactId>
       <version>1.3.1</version>
       <url>http://java.sun.com/products/javamail/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>jdbc</id>
+      <groupId>jdbc</groupId>
+      <artifactId>jdbc</artifactId>
       <version>2.0</version>
       <url>http://java.sun.com/products/jdbc/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>jndi</id>
+      <groupId>jndi</groupId>
+      <artifactId>jndi</artifactId>
       <version>1.2.1</version>
       <url>http://java.sun.com/products/jndi/</url>
+      <type>jar</type>
     </dependency>
-    <dependency>
-      <id>junit</id>
-      <version>3.8.1</version>
-      <url>http://www.junit.org/</url>
-    </dependency>
+
     <!-- ORO must be loaded before Jython, as Jython includes some ORO -->
     <!-- classes which cause the Maven JXR plug-in to fail. -->
+
     <dependency>
-      <id>oro</id>
+      <groupId>oro</groupId>
+      <artifactId>oro</artifactId>
       <version>2.0.7</version>
       <url>http://jakarta.apache.org/oro/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>jython</id>
+      <groupId>jython</groupId>
+      <artifactId>jython</artifactId>
       <version>2.1</version>
       <url>http://www.jython.org/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>log4j</id>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
       <version>1.2.8</version>
       <url>http://jakarta.apache.org/log4j/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>logkit</id>
+      <groupId>logkit</groupId>
+      <artifactId>logkit</artifactId>
       <version>1.0.1</version>
       <url>http://jakarta.apache.org/avalon/logkit/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>servletapi</id>
+      <groupId>servletapi</groupId>
+      <artifactId>servletapi</artifactId>
       <version>2.3</version>
       <url>http://java.sun.com/products/servlet/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>stratum</id>
+      <groupId>stratum</groupId>
+      <artifactId>stratum</artifactId>
       <version>1.0-b3</version>
       <url>http://jakarta.apache.org/turbine/stratum/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>torque</id>
+      <groupId>torque</groupId>
+      <artifactId>torque</artifactId>
       <version>3.1</version>
       <url>http://db.apache.org/torque/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>velocity</id>
+      <groupId>velocity</groupId>
+      <artifactId>velocity</artifactId>
       <version>1.3.1</version>
       <url>http://jakarta.apache.org/velocity/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>village</id>
+      <groupId>village</groupId>
+      <artifactId>village</artifactId>
       <version>2.0-dev-20030825</version>
       <url>http://share.whichever.com/index.php?SCREEN=village</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>xalan</id>
+      <groupId>xalan</groupId>
+      <artifactId>xalan</artifactId>
       <version>2.5.1</version>
       <url>http://xml.apache.org/xalan-j/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>xerces:xercesImpl</id>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
       <version>2.4.0</version>
       <url>http://xml.apache.org/xerces2-j/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>xml-apis</id>
+      <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
       <version>1.0.b2</version>
       <url>http://xml.apache.org/commons/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>xmlrpc</id>
+      <groupId>xmlrpc</groupId>
+      <artifactId>xmlrpc</artifactId>
       <version>1.2-b1</version>
       <url>http://xml.apache.org/xmlrpc/</url>
+      <type>jar</type>
     </dependency>
 
     <!-- Needed only for testing -->
-    <dependency>
-      <id>commons-dbcp</id>
-      <version>1.1</version>
-    </dependency>
 
     <dependency>
-      <id>hsqldb</id>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <url>http://www.junit.org/</url>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+      <version>1.1</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
       <version>1.7.1</version>
+      <type>jar</type>
     </dependency>
 
   </dependencies>
