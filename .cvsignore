@@ -10,3 +10,4 @@ velocity.log*
 logs
 junit*.properties
 turbine-pom-snapshot-version
+*.ser
