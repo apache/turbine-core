@@ -782,6 +782,7 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the group does not exist.
+     * @deprecated Use <a href="#getGroupByName">getGroupByName</a> instead.
      */
     Group getGroup(String name)
             throws DataBackendException, UnknownEntityException;
@@ -822,6 +823,7 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the role does not exist.
+     * @deprecated Use <a href="#getRoleByName">getRoleByName</a> instead.
      */
     Role getRole(String name)
             throws DataBackendException, UnknownEntityException;
@@ -862,6 +864,7 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the permission does not exist.
+     * @deprecated Use <a href="#getPermissionByName">getPermissionByName</a> instead.
      */
     Permission getPermission(String name)
             throws DataBackendException, UnknownEntityException;

@@ -681,6 +681,7 @@ public abstract class TurbineSecurity
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the Group is not present.
+     * @deprecated Use <a href="#getGroupByName">getGroupByName</a> instead.
      */
     public static Group getGroup(String groupName)
             throws DataBackendException, UnknownEntityException
@@ -836,6 +837,7 @@ public abstract class TurbineSecurity
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the Role is not present.
+     * @deprecated Use <a href="#getRoleByName">getRoleByName</a> instead.
      */
     public static Role getRole(String roleName)
             throws DataBackendException, UnknownEntityException
@@ -885,6 +887,7 @@ public abstract class TurbineSecurity
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the Permission is not present.
+     * @deprecated Use <a href="#getPermissionByName">getPermissionByName</a> instead.
      */
     public static Permission getPermission(String permissionName)
             throws DataBackendException, UnknownEntityException

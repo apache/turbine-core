@@ -185,6 +185,7 @@ public class GroupSet
      * @param groupName Name of Group.
      * @return Group if argument matched a Group in this
      * GroupSet; null if no match.
+     * @deprecated Use <a href="#getGroupByName">getGroupByName</a> instead.
      */
     public Group getGroup(String groupName)
     {

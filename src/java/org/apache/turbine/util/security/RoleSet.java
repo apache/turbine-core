@@ -185,6 +185,7 @@ public class RoleSet
      * @param roleName Name of Role.
      * @return Role if argument matched a Role in this
      * RoleSet; null if no match.
+     * @deprecated Use <a href="#getRoleByName">getRoleByName</a> instead.
      */
     public Role getRole(String roleName)
     {
