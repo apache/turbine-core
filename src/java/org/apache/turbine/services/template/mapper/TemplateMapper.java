@@ -71,6 +71,55 @@ public interface TemplateMapper
     void init();
 
     /**
+     * Get the CacheSize value.
+     * @return the CacheSize value.
+     */
+    int getCacheSize();
+
+    /**
+     * Set the CacheSize value.
+     * @param cacheSize The new CacheSize value.
+     */
+    void setCacheSize(int cacheSize);
+
+    /**
+     * Get the UseCache value.
+     * @return the UseCache value.
+     */
+    boolean isUseCache();
+
+    /**
+     * Set the UseCache value.
+     * @param newUseCache The new UseCache value.
+     */
+    void setUseCache(boolean useCache);
+
+    /**
+     * Get the DefaultProperty value.
+     * @return the DefaultProperty value.
+     */
+    String getDefaultProperty();
+
+    /**
+     * Set the DefaultProperty value.
+     * @param defaultProperty The new DefaultProperty value.
+     */
+    void setDefaultProperty(String defaultProperty);
+
+    /**
+     * Get the Separator value.
+     * @return the Separator value.
+     */
+    String getSeparator();
+
+    /**
+     * Set the Separator value.
+     * @param separator The new Separator value.
+     */
+    void setSeparator(String separator);
+
+
+    /**
      * Returns the default name for the supplied template
      * name. Must never return null.
      *

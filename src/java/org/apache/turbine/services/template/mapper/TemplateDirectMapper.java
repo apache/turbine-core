@@ -70,6 +70,15 @@ public class TemplateDirectMapper
     implements TemplateMapper
 {
     /**
+     * Default C'tor. If you use this C'tor, you must use
+     * the bean setter to set the various properties needed for
+     * this mapper before first usage.
+     */
+    public TemplateDirectMapper()
+    {
+    }
+
+    /**
      * C'tor
      *
      * @param defaultProperty The name of the default property to pull from the TemplateEngine

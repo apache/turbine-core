@@ -90,6 +90,15 @@ public class TemplateLayoutMapper
     private static Log log = LogFactory.getLog(TemplateLayoutMapper.class);
 
     /**
+     * Default C'tor. If you use this C'tor, you must use
+     * the bean setter to set the various properties needed for
+     * this mapper before first usage.
+     */
+    public TemplateLayoutMapper()
+    {
+    }
+
+    /**
      * C'tor
      *
      * @param useCache If true, then the resulting mapper will cache mappings.

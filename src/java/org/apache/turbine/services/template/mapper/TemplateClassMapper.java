@@ -97,6 +97,15 @@ public class TemplateClassMapper
     private static Log log = LogFactory.getLog(TemplateClassMapper.class);
 
     /**
+     * Default C'tor. If you use this C'tor, you must use
+     * the bean setter to set the various properties needed for
+     * this mapper before first usage.
+     */
+    public TemplateClassMapper()
+    {
+    }
+
+    /**
      * C'tor.
      *
      * @param useCache If true, then the resulting mapper will cache mappings.
@@ -112,8 +121,26 @@ public class TemplateClassMapper
         Loader loader)
     {
         super(useCache, cacheSize, defaultProperty, separator);
+        setLoader(loader);
+    }
+
+    /**
+     * Get the Loader value.
+     * @return the Loader value.
+     */
+    public Loader getLoader()
+    {
+        return loader;
+    }
+
+    /**
+     * Set the Loader value.
+     * @param loader The new Loader value.
+     */
+    public void setLoader(Loader loader)
+    {
         this.loader = loader;
-        log.debug("Loader is " + loader);
+        log.debug("Loader is " + this.loader);
     }
 
     /**
