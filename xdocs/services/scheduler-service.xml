@@ -92,7 +92,7 @@ services.SchedulerService.earlyInit=true
 # -------------------------------------------------------------------
 
 # This is a tool that allows access to the scheduler service.
-tool.request.scheduler=org.apache.turbine.services.SchedulerTool
+tool.request.scheduler=org.apache.turbine.services.schedule.SchedulerTool
 
 ]]></source>
 
