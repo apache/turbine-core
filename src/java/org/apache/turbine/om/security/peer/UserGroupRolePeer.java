@@ -55,6 +55,7 @@ package org.apache.turbine.om.security.peer;
  */
 
 import org.apache.torque.util.BasePeer;
+
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
 
 /**
@@ -70,7 +71,7 @@ public class UserGroupRolePeer extends BasePeer
 {
     /** The map builder for this Peer. */
     private static final TurbineMapBuilder mapBuilder = (TurbineMapBuilder)
-            getMapBuilder("org.apache.turbine.util.db.map.TurbineMapBuilder");
+            getMapBuilder(TurbineMapBuilder.class.getName());
 
     /** The table name for this peer. */
     public static final String TABLE_NAME = mapBuilder.getTableUserGroupRole();

@@ -54,25 +54,29 @@ package org.apache.turbine.om.security.peer;
  * <http://www.apache.org/>.
  */
 
-import com.workingdogs.village.Record;
-import com.workingdogs.village.Schema;
-import com.workingdogs.village.Value;
 import java.sql.Connection;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+
+import com.workingdogs.village.Column;
+import com.workingdogs.village.Record;
+import com.workingdogs.village.Schema;
+import com.workingdogs.village.Value;
+
 import org.apache.torque.TorqueException;
 import org.apache.torque.map.TableMap;
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.Persistent;
 import org.apache.torque.util.BasePeer;
 import org.apache.torque.util.Criteria;
+
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
 import org.apache.turbine.util.security.DataBackendException;
-
 
 /**
  * This class handles all the database access for the User/User
@@ -87,7 +91,7 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
 {
     /** The mapBuilder for this Peer. */
     private static final TurbineMapBuilder mapBuilder = (TurbineMapBuilder)
-            getMapBuilder("org.apache.turbine.util.db.map.TurbineMapBuilder");
+            getMapBuilder(TurbineMapBuilder.class.getName());
 
     // column names
     /** The column name for the visitor id field. */
@@ -142,7 +146,7 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
     private static Schema schema = initTableSchema(TABLE_NAME);
 
     /** The columns. */
-    private static com.workingdogs.village.Column[] columns
+    private static Column[] columns
             = initTableColumns(schema);
 
     /** The names of the columns. */
