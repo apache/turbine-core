@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 
 <configuration>
-  <dom4j className="org.apache.commons.configuration.DOM4JConfiguration" fileName="/WEB-INF/conf/TurbineResources.xml"/>
-  <properties className="org.apache.commons.configuration.PropertiesConfiguration" fileName="/WEB-INF/conf/TurbineComplete.properties"/>
+  <dom4j className="org.apache.commons.configuration.DOM4JConfiguration" fileName="WEB-INF/conf/TurbineResources.xml"/>
+  <properties className="org.apache.commons.configuration.PropertiesConfiguration" fileName="WEB-INF/conf/TurbineComplete.properties"/>
 </configuration>
 
   
