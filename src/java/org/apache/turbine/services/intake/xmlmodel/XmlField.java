@@ -136,7 +136,7 @@ public class XmlField
         setMapToProperty(attrib.getValue("mapToProperty"));
         setValidator(attrib.getValue("validator"));
         setDefaultValue(attrib.getValue("defaultValue"));
-        setDefaultValue(attrib.getValue("emptyValue"));
+        setEmptyValue(attrib.getValue("emptyValue"));
     }
 
     /**
