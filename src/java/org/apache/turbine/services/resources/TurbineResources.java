@@ -17,13 +17,12 @@ package org.apache.turbine.services.resources;
  */
 
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.services.security.SecurityService;
 
 /**
@@ -295,9 +294,9 @@ public abstract class TurbineResources
      * @param name The resource name.
      * @return The value of the resource as a vector.
      */
-    public static Vector getVector(String name)
+    public static List getList(String name)
     {
-        return Turbine.getConfiguration().getVector(name);
+        return Turbine.getConfiguration().getList(name);
     }
 
     /**
@@ -308,10 +307,10 @@ public abstract class TurbineResources
      * @param def The default value of the resource.
      * @return The value of the resource as a vector.
      */
-    public static Vector getVector(String name,
-                                   Vector def)
+    public static List getList(String name,
+                                   List def)
     {
-        return Turbine.getConfiguration().getVector(name, def);
+        return Turbine.getConfiguration().getList(name, def);
     }
 
     /**

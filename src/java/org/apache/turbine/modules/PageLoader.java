@@ -16,7 +16,7 @@ package org.apache.turbine.modules;
  * limitations under the License.
  */
 
-import java.util.Vector;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -160,8 +160,8 @@ public class PageLoader
                 // the user a reason for that...
                 // FIX ME: The AssemblerFactories should each add it's
                 // own string here...
-                Vector packages = Turbine.getConfiguration()
-                    .getVector(TurbineConstants.MODULE_PACKAGES);
+                List packages = Turbine.getConfiguration()
+                    .getList(TurbineConstants.MODULE_PACKAGES);
 
                 ObjectUtils.addOnce(packages,
                         GenericLoader.getBasePackage());

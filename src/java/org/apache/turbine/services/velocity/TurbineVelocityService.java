@@ -21,20 +21,23 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 
 import org.apache.commons.collections.ExtendedProperties;
-
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.event.EventCartridge;
+import org.apache.velocity.app.event.MethodExceptionEventHandler;
+import org.apache.velocity.context.Context;
+import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
@@ -43,13 +46,6 @@ import org.apache.turbine.services.pull.TurbinePull;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
-
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.apache.velocity.app.event.EventCartridge;
-import org.apache.velocity.app.event.MethodExceptionEventHandler;
-import org.apache.velocity.context.Context;
-import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
 
 /**
  * This is a Service that can process Velocity templates from within a
@@ -531,7 +527,7 @@ public class TurbineVelocityService
                 continue; // for()
             }
 
-            Vector paths = conf.getVector(key, null);
+            List paths = conf.getList(key, null);
             if (paths == null)
             {
                 // We don't copy this into VeloProperties, because

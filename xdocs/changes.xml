@@ -79,6 +79,23 @@ Changes between Turbine LAST_RELEASE and CURRENT_RELEASE.
 Changes between Turbine 2.3 and 2.3.1.
 </p>
 
+<subsection name="Changes that could break older environments">
+<p>
+  <ul>
+    <li>commons-configuration was upgraded to 1.0-rc1. All getVector() method calls on the
+        Configuration interface must be replaced with getList().
+    </li>
+    <li>commons-lang was upgraded to 2.0.
+    </li>
+    <li>commons-collections was upgraded to 3.0.
+    </li>
+    <li>stratum was upgraded to 1.0-b5.
+    </li>
+    <li>commons-logging was upgraded to 1.0.4.
+    </li>
+  </ul>
+</p>
+</subsection>
 <subsection name="Other changes">
 <p>
   <ul>

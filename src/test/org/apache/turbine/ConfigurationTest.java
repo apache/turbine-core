@@ -16,10 +16,13 @@ package org.apache.turbine;
  * limitations under the License.
  */
 
+import java.util.List;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.apache.commons.configuration.Configuration;
+
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineXmlConfig;
@@ -68,6 +71,7 @@ public class ConfigurationTest extends BaseTestCase
 
             // overridden value
             String key = "module.cache";
+            
             assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "true", configuration.getString(key));
 
             // non overridden value

@@ -17,7 +17,11 @@ package org.apache.turbine.services.avaloncomponent;
  */
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.apache.avalon.excalibur.component.DefaultRoleManager;
 import org.apache.avalon.excalibur.component.ExcaliburComponentManager;
@@ -32,12 +36,9 @@ import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.avalon.framework.context.DefaultContext;
 import org.apache.avalon.framework.logger.Logger;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.Turbine;
 
 /**
  * An implementation of AvalonComponentService which loads all the
@@ -176,7 +177,7 @@ public class TurbineAvalonComponentService
         // Init ECM!!!!
         manager.initialize();
 
-        Vector lookupComponents = conf.getVector(COMPONENT_LOOKUP_KEY,
+        List lookupComponents = conf.getList(COMPONENT_LOOKUP_KEY,
                 new Vector());
         
         for (Iterator it = lookupComponents.iterator(); it.hasNext();)
