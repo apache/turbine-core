@@ -125,11 +125,11 @@ public class TemplateSessionValidator extends SessionValidator
             {
                 if (data.getTemplateInfo().getScreenTemplate() != null)
                 {
+                    data.getUser().setTemp( "prev_template",
+                        data.getTemplateInfo().getScreenTemplate() );
                     data.getTemplateInfo().setScreenTemplate(
                         TurbineResources.getString(
                         TurbineConstants.TEMPLATE_INVALID_STATE) );
-                    data.getUser().setTemp( "prev_template",
-                        data.getTemplateInfo().getScreenTemplate() );
                 }
                 else
                 {
