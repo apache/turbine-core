@@ -368,6 +368,8 @@ services.TemplateService.screen.cache.size=50
 # that works in conjuction with the Turbine Pull Model API.
 # -------------------------------------------------------------------
 
+services.PullService.earlyInit= true
+
 # This determines whether the non-request tools are refreshed
 # on each request (request tools aren't ever, because they're
 # instantiated for the request only anyway).
@@ -456,6 +458,8 @@ tool.ui.skin=default
 #  V E L O C I T Y  S E R V I C E
 #
 # -------------------------------------------------------------------
+
+services.VelocityService.earlyInit= true
 
 # The location of Velocity configuration file, relative to webapp root
 # These properties will override the default properties set by Velocity.
