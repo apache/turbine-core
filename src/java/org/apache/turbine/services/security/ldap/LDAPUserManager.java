@@ -418,6 +418,8 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
         {
             String host = TurbineResources.getString(LDAP_HOST);
             String port = TurbineResources.getString(LDAP_PORT);
+            String ldapProvider = TurbineResources.getString(LDAP_PROVIDER);
+            String ldapAuthentication = TurbineResources.getString(LDAP_AUTHENTICATION);
 
             String providerURL = new String("ldap://" + host + ":" + port);
 
@@ -426,10 +428,10 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
              * LDAP Provider.
              */
             Hashtable env = new Hashtable();
-            env.put(Context.INITIAL_CONTEXT_FACTORY, LDAP_PROVIDER);
+            env.put(Context.INITIAL_CONTEXT_FACTORY, ldapProvider);
 
             env.put(Context.PROVIDER_URL, providerURL);
-            env.put(Context.SECURITY_AUTHENTICATION, "simple");
+            env.put(Context.SECURITY_AUTHENTICATION, ldapAuthentication);
             env.put(Context.SECURITY_PRINCIPAL, username);
             env.put(Context.SECURITY_CREDENTIALS, password);
 

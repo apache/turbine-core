@@ -71,4 +71,5 @@ public interface LDAPSecurityConstants
     public static final String LDAP_HOST = "ldap.host";
     public static final String LDAP_PORT = "ldap.port";
     public static final String LDAP_PROVIDER = "ldap.provider";
+    public static final String LDAP_AUTHENTICATION = "ldap.security.authentication";
 }
