@@ -25,13 +25,13 @@ package org.apache.turbine.om.security;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,6 +54,7 @@ package org.apache.turbine.om.security;
  * <http://www.apache.org/>.
  */
 
+import java.sql.Connection;
 import java.util.Iterator;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.security.PermissionSet;
@@ -78,7 +79,7 @@ public class TurbineRole extends SecurityObject implements Role
         super();
     }
 
-    /** 
+    /**
      * Constructs a new Role with the sepcified name.
      *
      * @param name The name of the new object.
@@ -117,7 +118,7 @@ public class TurbineRole extends SecurityObject implements Role
 
     /**
      * Creates a new Role in the system.
-     * 
+     *
      * @param name The name of the new Role.
      * @return An object representing the new Role.
      * @throws TurbineSecurityException if the Role could not be created.
@@ -141,6 +142,28 @@ public class TurbineRole extends SecurityObject implements Role
         throws TurbineSecurityException
     {
         TurbineSecurity.saveRole(this);
+    }
+
+    /**
+     * not implemented
+     *
+     * @param conn
+     * @throws Exception
+     */
+    public void save(Connection conn) throws Exception
+    {
+        throw new Exception("not implemented");
+    }
+
+    /**
+     * not implemented
+     *
+     * @param dbname
+     * @throws Exception
+     */
+    public void save(String dbname) throws Exception
+    {
+        throw new Exception("not implemented");
     }
 
     /**

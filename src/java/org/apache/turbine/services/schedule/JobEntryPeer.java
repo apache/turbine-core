@@ -55,20 +55,16 @@ package org.apache.turbine.services.schedule;
  */
 
 import com.workingdogs.village.Record;
-import com.workingdogs.village.Value;
+import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.*;
-import org.apache.turbine.om.BaseObject;
+import java.util.List;
+import org.apache.torque.TorqueException;
 import org.apache.torque.om.ObjectKey;
 import org.apache.torque.util.BasePeer;
-import org.apache.turbine.util.ObjectUtils;
 import org.apache.torque.util.Criteria;
-import org.apache.torque.map.DatabaseMap;
-import org.apache.torque.map.MapBuilder;
+import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
-import java.sql.Connection;
-import org.apache.torque.TorqueException;
-import com.workingdogs.village.DataSetException;
 
 /**
  * Peer class for JobEntry database access.

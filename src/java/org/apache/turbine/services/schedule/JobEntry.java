@@ -54,10 +54,11 @@ package org.apache.turbine.services.schedule;
  * <http://www.apache.org/>.
  */
 
+import java.sql.Connection;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
-import org.apache.turbine.om.BaseObject;
+import org.apache.torque.om.BaseObject;
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.util.Criteria;
 
@@ -483,6 +484,29 @@ public class JobEntry extends BaseObject
             setPrimaryKey( JobEntryPeer.doInsert(criteria) );
         }
     }
+
+    /**
+     * not implemented
+     *
+     * @param conn
+     * @throws Exception
+     */
+    public void save(Connection conn) throws Exception
+    {
+        throw new Exception("not implemented");
+    }
+
+    /**
+     * not implemented
+     *
+     * @param dbname
+     * @throws Exception
+     */
+    public void save(String dbname) throws Exception
+    {
+        throw new Exception("not implemented");
+    }
+
 
     /**
      * What schedule am I on?

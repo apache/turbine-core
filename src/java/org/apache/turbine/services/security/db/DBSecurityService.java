@@ -54,20 +54,16 @@ package org.apache.turbine.services.security.db;
  * <http://www.apache.org/>.
  */
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.*;
-import org.apache.turbine.om.BaseObject;
-import org.apache.torque.om.ObjectKey;
-import org.apache.torque.util.BasePeer;
+import java.util.List;
+import java.util.Vector;
+import org.apache.torque.om.BaseObject;
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
-import org.apache.turbine.om.security.SecurityEntity;
 import org.apache.turbine.om.security.SecurityObject;
 import org.apache.turbine.om.security.TurbineGroup;
 import org.apache.turbine.om.security.TurbinePermission;
@@ -79,11 +75,9 @@ import org.apache.turbine.om.security.peer.RolePeer;
 import org.apache.turbine.om.security.peer.RolePermissionPeer;
 import org.apache.turbine.om.security.peer.UserGroupRolePeer;
 import org.apache.turbine.om.security.peer.UserPeer;
-import org.apache.turbine.services.BaseService;
 import org.apache.turbine.services.security.BaseSecurityService;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.Log;
-import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;

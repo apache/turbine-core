@@ -54,24 +54,19 @@ package org.apache.turbine.services.security.db;
  * <http://www.apache.org/>.
  */
 
-import java.util.*;
+import java.util.ArrayList;
 import java.util.Iterator;
-
-import org.apache.turbine.om.BaseObject;
-import org.apache.torque.om.ObjectKey;
+import java.util.List;
+import org.apache.torque.om.BaseObject;
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.om.security.peer.TurbineUserPeer;
-
+import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.services.security.UserManager;
 import org.apache.turbine.util.security.DataBackendException;
-import org.apache.turbine.util.security.UnknownEntityException;
 import org.apache.turbine.util.security.EntityExistsException;
 import org.apache.turbine.util.security.PasswordMismatchException;
-
-import org.apache.turbine.util.Log;
-import org.apache.torque.util.Criteria;
-
-import org.apache.turbine.services.security.UserManager;
-import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
  * An UserManager performs {@link org.apache.turbine.om.security.User} objects

@@ -55,16 +55,13 @@ package org.apache.turbine.services.security.ldap;
  */
 
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.util.Date;
+import java.sql.Connection;
 import java.util.Hashtable;
 import javax.servlet.http.HttpSessionBindingEvent;
-import org.apache.turbine.om.BaseObject;
+import org.apache.torque.om.BaseObject;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.util.Log;
 
 /**
  * LDAPUser implements User and provides access to a user who accesses the
@@ -690,7 +687,7 @@ public class LDAPUser extends BaseObject implements User
     {
         return null;
     }
-    
+
     public void setName(String name)
     {
     }
@@ -710,4 +707,27 @@ public class LDAPUser extends BaseObject implements User
             TurbineSecurity.addUser(this, getPassword());
         }
     }
+
+    /**
+     * not implemented
+     *
+     * @param conn
+     * @throws Exception
+     */
+    public void save(Connection conn) throws Exception
+    {
+        throw new Exception("not implemented");
+    }
+
+    /**
+     * not implemented
+     *
+     * @param dbname
+     * @throws Exception
+     */
+    public void save(String dbname) throws Exception
+    {
+        throw new Exception("not implemented");
+    }
+
 }

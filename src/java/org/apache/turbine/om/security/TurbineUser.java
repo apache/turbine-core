@@ -56,6 +56,7 @@ package org.apache.turbine.om.security;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.util.Date;
 import java.util.Hashtable;
 import javax.servlet.http.HttpSessionBindingEvent;
@@ -681,4 +682,27 @@ public class TurbineUser extends SecurityObject implements User
             TurbineSecurity.addUser(this, getPassword());
         }
     }
+
+    /**
+     * not implemented
+     *
+     * @param conn
+     * @throws Exception
+     */
+    public void save(Connection conn) throws Exception
+    {
+        throw new Exception("not implemented");
+    }
+
+    /**
+     * not implemented
+     *
+     * @param dbname
+     * @throws Exception
+     */
+    public void save(String dbname) throws Exception
+    {
+        throw new Exception("not implemented");
+    }
+
 }
