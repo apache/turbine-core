@@ -49,73 +49,73 @@ implemented.</strong>
 
 <ul>
 <li>
-<a href="services/assemblerbroker-service.html">Assembler Broker Service</a>
+<a href="assemblerbroker-service.html">Assembler Broker Service</a>
 <br/>
 Is the Service which allows assemblers such as Screens, Actions, Layout and
 Scheduled Jobs to be loaded.
 </li>
 
 <li>
-<a href="services/cache-service.html">Cache Service</a>
+<a href="cache-service.html">Cache Service</a>
 <br/>
 Provides a persistant Object Storage mechanism within your application.
 </li>
 
 <li>
-<a href="services/castor-service.html">Castor Service</a>
+<a href="castor-service.html">Castor Service</a>
 <br/>
 Castor is a OR tool that is supported by Turbine.
 </li>
 
 <li>
-<a href="services/component-service.html">Component Service</a>
+<a href="component-service.html">Component Service</a>
 <br/>
 Initializes external components which implement the lifecycle interface, e.g. Torque und Fulcrum.
 </li>
 
 <li>
-<a href="services/db-service.html">DB Service (deprecated)</a>
+<a href="db-service.html">DB Service (deprecated)</a>
 <br/>
 Is a common front end to all database systems.
 This service also provides the brokers for Connection Pooling and Database Map Objects.
 </li>
 
 <li>
-<a href="services/factory-service.html">Factory Service</a>
+<a href="factory-service.html">Factory Service</a>
 <br/>
 A Service for the instantiation of objects with either the specified loaders or
 default class loaders.
 </li>
 
 <li>
-<a href="services/freemarker-service.html">FreeMarker Service</a>
+<a href="freemarker-service.html">FreeMarker Service</a>
 <br/>
 The FreeMarker Service is the set of classes that process FreeMarker
 files inside the Turbine Layout/Navigations and Screen structure.
 </li>
 
 <li>
-<a href="services/intake-service.html">Intake Service</a>
+<a href="intake-service.html">Intake Service</a>
 <br/>
 A service that provides input validation along with a standard
 parameter naming framework.
 </li>
 
 <li>
-<a href="services/jsp-service.html">JSP Service</a>
+<a href="jsp-service.html">JSP Service</a>
 <br/>
 The JSP Service is the set of classes that process JSP files inside the
 Turbine Layout/Navigations and Screen structure.
 </li>
 
 <li>
-<a href="services/localization-service.html">Localization Service</a>
+<a href="localization-service.html">Localization Service</a>
 <br/>
 The single point of access to all localization resources.
 </li>
 
 <li>
-<a href="services/logging-service.html">Logging Service</a>
+<a href="logging-service.html">Logging Service</a>
 <br/>
 The default Loggin implementation for Turbine, logging can be either
 through an explicite getLogger() method or by standard printing methods
@@ -123,27 +123,27 @@ such as info or debug.
 </li>
 
 <li>
-<a href="services/mimetype-service.html">MimeType Service</a>
+<a href="mimetype-service.html">MimeType Service</a>
 <br/>
 The service maintains the mappings between MIME types and corresponding file
 name extensions as well as between locales and character encoding.
 </li>
 
 <li>
-<a href="services/naming-service.html">Naming Service</a>
+<a href="naming-service.html">Naming Service</a>
 <br/>
 Provides JNDI naming contexts.
 </li>
 
 <li>
-<a href="services/pool-service.html">Pool Service</a>
+<a href="pool-service.html">Pool Service</a>
 <br/>
 A service for the pooling of instantiated Objects, allowing for the recycling
 and disposal of Objects in the pool.
 </li>
 
 <li>
-<a href="services/pull-service.html">Pull Service</a>
+<a href="pull-service.html">Pull Service</a>
 <br/>
 Manages the creation of application tools that are available to all templates
 in a Turbine application. The tools can have global scope, request scope, session
@@ -151,7 +151,7 @@ scope or persistant scope within your application.
 </li>
 
 <li>
-<a href="services/resources-service.html">Resources Service</a>
+<a href="resources-service.html">Resources Service</a>
 <br/>
 <b>[TO DO (Configuration)]</b> The Resources Service is the set of classes and
 the functionality that allows for the reading and acccessing data
@@ -159,21 +159,21 @@ from within properties files.
 </li>
 
 <li>
-<a href="services/rundata-service.html">RunData Service</a>
+<a href="rundata-service.html">RunData Service</a>
 <br/>
 Is the Service which manages the higher level operations surrounding
 requests and responses.
 </li>
 
 <li>
-<a href="services/scheduler-service.html">Scheduler Service</a>
+<a href="scheduler-service.html">Scheduler Service</a>
 <br/>
 This service manages the schedule queue giving Cron like functionality.
 The ScheduledJob can be stored in a database or a properties file.
 </li>
 
 <li>
-<a href="services/security-service.html">Security Service</a>
+<a href="security-service.html">Security Service</a>
 <br/>
 <b>[TO DO]</b> A service for the management of Users, Groups, Roles and Permissions
 in the system, allowing for those Objects to interact with either
@@ -182,27 +182,27 @@ without a backend.
 </li>
 
 <li>
-<a href="services/servlet-service.html">Servlet Service</a>
+<a href="servlet-service.html">Servlet Service</a>
 <br/>
 Encapsulates the information provided by the ServletContext API,
 and makes it available from anywhere in the code.
 </li>
 
 <li>
-<a href="services/template-service.html">Template Service</a>
+<a href="template-service.html">Template Service</a>
 <br/>
 <b>[TO DO]</b> The Service for the mapping of templates to their
 screens and actions.
 </li>
 
 <li>
-<a href="services/uniqueid-service.html">Unique ID Service</a>
+<a href="uniqueid-service.html">Unique ID Service</a>
 <br/>
 Allows for the creation of Context unique and pseudo random identifiers.
 </li>
 
 <li>
-<a href="services/upload-service.html">Upload Service</a>
+<a href="upload-service.html">Upload Service</a>
 <br/>
 This service manages multipart/form-data POST requests, storing them
 temporarily in memory or locally. The resultant Objects can be manipulated through
@@ -210,27 +210,27 @@ a FileItem Object.
 </li>
 
 <li>
-<a href="services/velocity-service.html">Velocity Service</a>
+<a href="velocity-service.html">Velocity Service</a>
 <br/>
 <b>[TO DO]</b> The service for the processing of Velocity Templates from within
 the Turbine Layout/Navigations and Screen structure.
 </li>
 
 <li>
-<a href="services/webmacro-service.html">WebMacro Service</a>
+<a href="webmacro-service.html">WebMacro Service</a>
 <br/>
 <b>[TO DO]</b> The service for the processing of WebMacro Templates from within
 Turbine Layout/Navigations and Screen structure.
 </li>
 
 <li>
-<a href="services/xmlrpc-service.html">XML-RPC Service</a>
+<a href="xmlrpc-service.html">XML-RPC Service</a>
 <br/>
 This service manages xml-rpc calls to a remote Server.
 </li>
 
 <li>
-<a href="services/xslt-service.html">XSLT Service</a>
+<a href="xslt-service.html">XSLT Service</a>
 <br/>
 The service which  is used to transform XML with an XSLT stylesheet.
 </li>

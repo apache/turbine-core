@@ -12,18 +12,18 @@
   <section name="Howtos">
     <p>
       <ul>
-        <li><a href="howto/action-event-howto.html">Action Events Howto</a></li>
-        <li><a href="howto/extend-user-howto.html">Extend User Howto</a></li>
-        <li><a href="howto/jboss-howto.html">JBoss Howto</a></li>
-        <li><a href="howto/jsp-howto.html">JSP Howto</a></li>
-        <li><a href="howto/intake-howto.html">Intake Howto</a></li>
-        <li><a href="howto/pullmodel-howto.html">Pull Model Howto</a></li>
-        <li><a href="howto/python-howto.html">Python Howto</a></li>
-        <li><a href="howto/security-howto.html">Security Howto</a></li>
-        <li><a href="howto/url-rewriting-howto.html">URL rewriting Howto</a></li>
-        <li><a href="howto/velocity-site-howto.html">Velocity Site Howto</a></li>
-        <li><a href="howto/context-howto.html">Velocity Context Howto</a></li>
-        <li><a href="howto/webmacro-site-howto.html">Webmacro Site Howto</a></li>
+        <li><a href="action-event-howto.html">Action Events Howto</a></li>
+        <li><a href="extend-user-howto.html">Extend User Howto</a></li>
+        <li><a href="jboss-howto.html">JBoss Howto</a></li>
+        <li><a href="jsp-howto.html">JSP Howto</a></li>
+        <li><a href="intake-howto.html">Intake Howto</a></li>
+        <li><a href="pullmodel-howto.html">Pull Model Howto</a></li>
+        <li><a href="python-howto.html">Python Howto</a></li>
+        <li><a href="security-howto.html">Security Howto</a></li>
+        <li><a href="url-rewriting-howto.html">URL rewriting Howto</a></li>
+        <li><a href="velocity-site-howto.html">Velocity Site Howto</a></li>
+        <li><a href="context-howto.html">Velocity Context Howto</a></li>
+        <li><a href="webmacro-site-howto.html">Webmacro Site Howto</a></li>
       </ul>
     </p>
   </section>
