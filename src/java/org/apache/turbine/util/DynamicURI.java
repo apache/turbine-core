@@ -91,6 +91,9 @@ import org.apache.turbine.util.uri.URIConstants;
  *
  * &lt;A HREF="http://www.server.com:80/servlets/Turbine/screen=UserScreen&amp;amp;user=jon"&gt;Click Here&lt;/A&gt;
  *
+ * @todo Add support for returning the correct URI when mod_rewrite is
+ *       being used.
+ *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
