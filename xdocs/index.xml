@@ -1,10 +1,26 @@
 <?xml version="1.0"?>
+<!-- 
+/*
+ * Copyright 2001-2004 The Apache Software Foundation.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ -->
 
 <document>
 
  <properties>
   <title>Turbine</title>
-  <author email="jon@latchkey.com">Jon S. Stevens</author>
  </properties>
 
  <body>
@@ -55,7 +71,7 @@
     make it easy to create re-usable components (such as
     ParameterParsing, Database Connection Pools, Job Scheduling,
     GlobalCaches, integration with other tools such as Torque, Velocity,
-    etc...) all under a <a href="license.html">license</a>
+    etc...) all under a <a href="../common/license.html">license</a>
     (Apache) that allows you to create useful websites for your
     customers without worrying about viral code. Turbine is not the end
     all answer, but it sure is a nice way to make your development life
