@@ -728,7 +728,7 @@ public class TurbineTemplateService
                     TurbineConstants.LAYOUT_CACHE_SIZE_DEFAULT),
                 TemplateEngineService.DEFAULT_LAYOUT_TEMPLATE,
                 "/",
-                "layouts"));
+                TurbineConstants.LAYOUT_PREFIX));
 
         registerMapper(SCREEN_TEMPLATE_KEY,
             new TemplateScreenMapper(
@@ -738,6 +738,6 @@ public class TurbineTemplateService
                     TurbineConstants.SCREEN_CACHE_SIZE_DEFAULT),
                 TemplateEngineService.DEFAULT_SCREEN_TEMPLATE,
                 "/",
-                "screens"));
+                TurbineConstants.SCREEN_PREFIX));
     }
 }
