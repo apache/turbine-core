@@ -106,6 +106,9 @@ Changes between Turbine 2.3-rc1 and 2.3.1-rc2.
        Turbine that threw a class cast exception in Commons 
        Collections and crashed Velocity. Isn't Java a cool thing?
     </li>
+    <li>
+      TTWS63: Intake rule parser sometimes corrupted rule message text.
+    </li>
   </ul>
 </p>
 </subsection>
