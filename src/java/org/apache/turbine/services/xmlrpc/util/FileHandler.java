@@ -100,6 +100,9 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
+ * @deprecated This is not scope of the Service itself but of an
+ *             application which uses the service. This class shouldn't
+ *             be part of Turbine but of an addon application.
  */
 public class FileHandler
 {
