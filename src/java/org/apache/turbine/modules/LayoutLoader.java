@@ -65,6 +65,7 @@ import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.TurbineServices;
 
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
@@ -91,9 +92,7 @@ public class LayoutLoader
                                  TurbineConstants.LAYOUT_CACHE_SIZE_DEFAULT));
 
     /** The Assembler Broker Service */
-    private static AssemblerBrokerService ab = 
-        (AssemblerBrokerService) TurbineServices.getInstance()
-        .getService(AssemblerBrokerService.SERVICE_NAME);
+    private static AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
 
     /**
      * These ctor's are private to force clients to use getInstance()
