@@ -219,6 +219,7 @@ public class DefaultParameterParser
                 && tmp != null
                 && tmp.startsWith("multipart/form-data"))
         {
+            log.debug("Running the Turbine Upload Service");
             try
             {
                 TurbineUpload.parseRequest(request, this);
@@ -233,7 +234,6 @@ public class DefaultParameterParser
              names.hasMoreElements();)
         {
             tmp = (String) names.nextElement();
-
             add(convert(tmp),
                     request.getParameterValues(tmp));
         }
@@ -273,6 +273,16 @@ public class DefaultParameterParser
         }
 
         this.request = request;
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("Parameters found in the Request:");
+            for (Enumeration e = keys(); e.hasMoreElements(); )
+            {
+                String key = (String) e.nextElement();
+                log.debug("Key: " + key + " -> " + getString(key));
+            }
+        }
     }
 
     /**

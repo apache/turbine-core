@@ -55,8 +55,7 @@ package org.apache.turbine.services.upload;
  */
 
 import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 import java.util.Iterator;
 import java.util.List;
@@ -229,8 +228,8 @@ public class TurbineUploadService
      * @param params The ParameterParser instance to insert form
      * fields into.
      * @param path The location where the files should be stored.
-     * @exception TurbineException If there are problems reading/parsing
-     * the request or storing files.
+     * @exception TurbineException Problems reading/parsing the
+     * request or storing the uploaded file(s).
      */
     public void parseRequest(HttpServletRequest req,
                              ParameterParser params,
@@ -260,7 +259,7 @@ public class TurbineUploadService
             List fileList = fileUpload
                     .parseRequest(req, 
                             getSizeThreshold(),
-                            getSizeMax(), 
+                            getSizeMax(),
                             path);
 
             if (fileList != null)
@@ -271,7 +270,20 @@ public class TurbineUploadService
                     if (fi.isFormField())
                     {
                         log.debug("Found an simple form field: " + fi.getFieldName() +", adding value " + fi.getString());
-                        params.append(fi.getFieldName(), fi.getString());
+                        
+                        String value = null;
+                        try
+                        {
+                            value = fi.getString(params.getCharacterEncoding());
+                        }
+                        catch (UnsupportedEncodingException e)
+                        {
+                            log.error(params.getCharacterEncoding()
+                                    + " encoding is not supported."
+                                    + "Used the default when reading form data.");
+                            value = fi.getString();
+                        }
+                        params.append(fi.getFieldName(), value);
                     }
                     else
                     {
