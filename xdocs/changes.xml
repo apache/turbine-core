@@ -215,6 +215,9 @@ Changes between Turbine 2.3 and 2.4.
     <li>
      Upgraded to commons-pool-1.1
     </li>
+    <li>
+     A means of initializing Velocity action modules has been added.
+    </li>
   </ul>
 </p>
 </subsection>
