@@ -47,6 +47,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.StringKey;
 
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.util.DateSelector;
 import org.apache.turbine.util.TimeSelector;
 import org.apache.turbine.util.pool.Recyclable;
@@ -97,7 +98,7 @@ public class BaseValueParser
     private Map parameters = new HashMap();
 
     /** The character encoding to use when converting to byte arrays */
-    private String characterEncoding = "US-ASCII";
+    private String characterEncoding = TurbineConstants.PARAMETER_ENCODING_DEFAULT;
 
     /**
      * A static version of the convert method, which
@@ -136,7 +137,7 @@ public class BaseValueParser
      */
     public void recycle()
     {
-        recycle("US-ASCII");
+        recycle(TurbineConstants.PARAMETER_ENCODING_DEFAULT);
     }
 
     /**

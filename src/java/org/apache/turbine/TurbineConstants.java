@@ -318,4 +318,10 @@ public interface TurbineConstants
 
     /** Prefix for scheduler job related classes */
     String SCHEDULEDJOB_PREFIX = "scheduledjobs";
+
+    /** Encoding for Parameter Parser */
+    String PARAMETER_ENCODING_KEY = "input.encoding";
+
+    /** Default Encoding for Parameter Parser */
+    String PARAMETER_ENCODING_DEFAULT = "ISO-8859-1";
 }

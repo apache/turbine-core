@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
@@ -156,6 +158,9 @@ public class Turbine
 
     /** A reference to the RunData Service */
     private RunDataService rundataService = null;
+
+    /** Default Input encoding if the servlet container does not report an encoding */
+    private String inputEncoding = null;
 
     /** Logging class from commons.logging */
     private static Log log = LogFactory.getLog(Turbine.class);
@@ -376,6 +381,16 @@ public class Turbine
         // a value of 'true' will be started when
         // the service manager is initialized.
         getServiceManager().init();
+
+        // Get the default input encoding
+        inputEncoding = configuration.getString(
+                TurbineConstants.PARAMETER_ENCODING_KEY,
+                TurbineConstants.PARAMETER_ENCODING_DEFAULT);
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("Input Encoding has been set to " + inputEncoding);
+        }
     }
 
     /**
@@ -640,6 +655,26 @@ public class Turbine
             if (initFailure != null)
             {
                 throw initFailure;
+            }
+
+            //
+            // If the servlet container gives us no clear indication about the
+            // Encoding of the contents, set it to our default value.
+            if (req.getCharacterEncoding() == null)
+            {
+                if (log.isDebugEnabled())
+                {
+                    log.debug("Changing Input Encoding to " + inputEncoding);
+                }
+
+                try
+                {
+                    req.setCharacterEncoding(inputEncoding);
+                }
+                catch (UnsupportedEncodingException uee)
+                {
+                    log.warn("Could not change request encoding to " + inputEncoding, uee);
+                }
             }
 
             // Get general RunData here...
