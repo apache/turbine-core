@@ -127,7 +127,7 @@ public class DBSecurityService extends BaseSecurityService
      * into an AccessControlList object.
      *
      * @param user the user for whom the AccessControlList are to be retrieved
-     * @return the AccessControlList
+     * @return A new AccessControlList object.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if user account is not present.
@@ -138,7 +138,7 @@ public class DBSecurityService extends BaseSecurityService
         if (!TurbineSecurity.accountExists(user))
         {
             throw new UnknownEntityException("The account '"
-                    + user.getUserName() + "' does not exist");
+                                             + user.getUserName() + "' does not exist");
         }
         try
         {
@@ -151,19 +151,19 @@ public class DBSecurityService extends BaseSecurityService
             // construct the snapshot:
 
             // foreach group in the system
-            Iterator groupsIterator = getAllGroups().elements();
-            while (groupsIterator.hasNext())
+            for (Iterator groupsIterator = getAllGroups().elements(); 
+                 groupsIterator.hasNext();)
             {
                 Group group = (Group) groupsIterator.next();
                 // get roles of user in the group
                 RoleSet groupRoles = RolePeer.retrieveSet(user, group);
                 // put the Set into roles(group)
                 roles.put(group, groupRoles);
-                // collect all permissoins in this group
+                // collect all permissions in this group
                 PermissionSet groupPermissions = new PermissionSet();
                 // foreach role in Set
-                Iterator rolesIterator = groupRoles.elements();
-                while (rolesIterator.hasNext())
+                for (Iterator rolesIterator = groupRoles.elements();
+                     rolesIterator.hasNext();)
                 {
                     Role role = (Role) rolesIterator.next();
                     // get permissions of the role
@@ -174,16 +174,16 @@ public class DBSecurityService extends BaseSecurityService
                 // put the Set into permissions(group)
                 permissions.put(group, groupPermissions);
             }
-            return new AccessControlList(roles, permissions);
+            return getAclInstance(roles, permissions);
         }
         catch (Exception e)
         {
-            throw new DataBackendException("Failed to build ACL for user '"
-                    + user.getUserName() + "'" , e);
+            throw new DataBackendException("Failed to build ACL for user '" +
+                                           user.getUserName() + "'" , e);
         }
         finally
         {
-            // notify the state modifiers that we are done creating the snapshot
+            // notify the state modifiers that we are done creating the snapshot.
             unlockShared();
         }
     }

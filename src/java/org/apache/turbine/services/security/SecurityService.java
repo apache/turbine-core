@@ -54,6 +54,7 @@ package org.apache.turbine.services.security;
  * <http://www.apache.org/>.
  */
 
+import java.util.Map;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
@@ -68,6 +69,7 @@ import org.apache.turbine.util.security.GroupSet;
 import org.apache.turbine.util.security.PasswordMismatchException;
 import org.apache.turbine.util.security.PermissionSet;
 import org.apache.turbine.util.security.RoleSet;
+import org.apache.turbine.util.security.TurbineAccessControlList;
 import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
@@ -107,6 +109,19 @@ public interface SecurityService
     static final String USER_CLASS_DEFAULT
         = "org.apache.turbine.om.security.TurbineUser";
 
+    /**
+     * The key within services' properties for the
+     * ACL implementation classname (acl.class)
+     */
+    static final String ACL_CLASS_KEY = "acl.class";
+
+    /**
+     * The default implementation of the Acl Interface
+     * (org.apache.turbine.util.security.TurbineAccessControlList)
+     */
+    static final String ACL_CLASS_DEFAULT
+        = TurbineAccessControlList.class.getName();
+        
     /**
      * the key within services's properties for user implementation
      * classname (user.manager)
@@ -164,6 +179,32 @@ public interface SecurityService
      * @throws UnknownEntityException if the object could not be instantiated.
      */
     User getUserInstance()
+        throws UnknownEntityException;
+
+    /**
+     * Returns the Class object for the implementation of AccessControlList interface
+     * used by the system.
+     *
+     * @return the implementation of AccessControlList interface used by the system.
+     * @throws UnknownEntityException if the system's implementation of AccessControlList
+     *         interface could not be determined.
+     */
+    Class getAclClass()
+        throws UnknownEntityException;
+
+    /**
+     * Construct a new ACL object.
+     *
+     * This constructs a new ACL object from the configured class and
+     * initializes it with the supplied roles and permissions.
+     * 
+     * @param roles The roles that this ACL should contain
+     * @param permissions The permissions for this ACL
+     *
+     * @return an object implementing ACL interface.
+     * @throws UnknownEntityException if the object could not be instantiated.
+     */
+    AccessControlList getAclInstance(Map roles, Map permissions)
         throws UnknownEntityException;
 
     /**

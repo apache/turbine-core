@@ -63,6 +63,13 @@ Changes between Turbine 2.2 and 2.3-dev.
 <p>
   <ul>
     <li>
+      AccessControlList is now an interface and its implementation is in
+      TurbineAccessControlList. This is now configurable and can be replaced
+      by a custom AccessControlList implementation. If older compiled code
+      suddently throws IncompatibleClassChange errors, just recompile and
+      they go away.
+    </li>
+    <li>
       removed all deprecated java code (incl. support for webmacro, freemarker
       and castor). Make sure to not get any deprecation warnings before you
       switch to 2.3!

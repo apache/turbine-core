@@ -157,7 +157,7 @@ public class LDAPSecurityService extends BaseSecurityService
                 // put the Set into permissions(group)
                 permissions.put(group, groupPermissions);
             }
-            return new AccessControlList(roles, permissions);
+            return getAclInstance(roles, permissions);
         }
         catch(Exception e)
         {

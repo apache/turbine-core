@@ -155,7 +155,7 @@ The ScheduledJob can be stored in a database or a properties file.
 <li>
 <a href="security-service.html">Security Service</a>
 <br/>
-<b>[TO DO]</b> A service for the management of Users, Groups, Roles and Permissions
+A service for the management of Users, Groups, Roles and Permissions
 in the system, allowing for those Objects to interact with either
 Database or LDAP backends. The service also allows for the security to be managed
 without a backend.

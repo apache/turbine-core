@@ -57,6 +57,7 @@ package org.apache.turbine.services.security;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
+import java.util.Map;
 import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletConfig;
 import org.apache.commons.configuration.Configuration;
@@ -67,14 +68,18 @@ import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.factory.FactoryService;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
 import org.apache.turbine.util.security.GroupSet;
 import org.apache.turbine.util.security.PasswordMismatchException;
 import org.apache.turbine.util.security.PermissionSet;
 import org.apache.turbine.util.security.RoleSet;
+import org.apache.turbine.util.security.TurbineAccessControlList;
 import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
@@ -120,6 +125,12 @@ public abstract class BaseSecurityService
 
     /** The class of User the SecurityService uses */
     private Class userClass = null;
+
+    /** The class of ACL the SecurityService uses */
+    private Class aclClass = null;
+
+    /** A factory to construct ACL Objects */
+    private FactoryService aclFactoryService = null;
 
     /**
      * The Group object that represents the <a href="#global">global group</a>.
@@ -191,36 +202,61 @@ public abstract class BaseSecurityService
     public void init()
         throws InitializationException
     {
-        String userManagerClassName = getConfiguration().getString(
+        Configuration conf = getConfiguration();
+
+        String userManagerClassName = conf.getString(
             SecurityService.USER_MANAGER_KEY,
             SecurityService.USER_MANAGER_DEFAULT);
 
-        String userClassName = getConfiguration().getString(
+        String userClassName = conf.getString(
             SecurityService.USER_CLASS_KEY,
             SecurityService.USER_CLASS_DEFAULT);
 
+        String aclClassName = conf.getString(
+            SecurityService.ACL_CLASS_KEY, 
+            SecurityService.ACL_CLASS_DEFAULT);
+
         try
         {
-            userClass = Class.forName(userClassName);
+            userClass       = Class.forName(userClassName);
+            aclClass        = Class.forName(aclClassName);
         }
         catch (Exception e)
         {
-            throw new InitializationException("BaseSecurityService.init: "
-                                              + "Failed create a Class object for User implementation",
-                                              e);
+            if (userClass == null)
+            {
+                throw new InitializationException(
+                    "Failed to create a Class object for User implementation", e);
+            }
+            if (aclClass == null)
+            {
+                throw new InitializationException(
+                    "Failed to create a Class object for ACL implementation", e);
+            }
         }
 
         try
         {
-            userManager = (UserManager) Class.forName(userManagerClassName)
-                .newInstance();
-            setInit(true);
+            userManager =
+                (UserManager) Class.forName(userManagerClassName).newInstance();
         }
         catch (Exception e)
         {
-            throw new InitializationException("BaseSecurityService.init: "
-                                              + "Failed to instantiate UserManager", e);
+            throw new InitializationException("Failed to instantiate UserManager", e);
         }
+
+        try 
+        {
+            aclFactoryService = (FactoryService) TurbineServices.getInstance().
+                getService(FactoryService.SERVICE_NAME);
+        }
+        catch (Exception e)
+        {
+            throw new InitializationException(
+                "BaseSecurityService.init: Failed to get the Factory Service object", e);
+        }
+
+        setInit(true);
     }
 
     /**
@@ -277,6 +313,60 @@ public abstract class BaseSecurityService
                 "Failed instantiate an User implementation object", e);
         }
         return user;
+    }
+
+    /**
+     * Return a Class object representing the system's chosen implementation of
+     * of ACL interface.
+     *
+     * @return systems's chosen implementation of ACL interface.
+     * @throws UnknownEntityException if the implementation of ACL interface
+     *         could not be determined, or does not exist.
+     */
+    public Class getAclClass()
+        throws UnknownEntityException
+    {
+        if (aclClass == null)
+        {
+            throw new UnknownEntityException(
+                "Failed to create a Class object for ACL implementation");
+        }
+        return aclClass;
+    }
+
+    /**
+     * Construct a new ACL object.
+     *
+     * This constructs a new ACL object from the configured class and
+     * initializes it with the supplied roles and permissions.
+     * 
+     * @param roles The roles that this ACL should contain
+     * @param permissions The permissions for this ACL
+     *
+     * @return an object implementing ACL interface.
+     * @throws UnknownEntityException if the object could not be instantiated.
+     */
+    public AccessControlList getAclInstance(Map roles, Map permissions)
+        throws UnknownEntityException
+    {
+        Object[] objects    = { roles, permissions };
+        String[] signatures = {Map.class.getName(), Map.class.getName()};
+        AccessControlList accessControlList;
+        
+        try
+        {
+            accessControlList = 
+                (AccessControlList) aclFactoryService.getInstance(aclClass.getName(), 
+                                                                  objects, 
+                                                                  signatures);
+        }
+        catch (Exception e)
+        {
+            throw new UnknownEntityException(
+                "Failed to instantiate an ACL implementation object", e);
+        }
+
+        return accessControlList;
     }
 
     /**
