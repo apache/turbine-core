@@ -58,6 +58,9 @@ package org.apache.turbine.modules.screens;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.html.B;
@@ -78,72 +81,76 @@ import org.apache.turbine.util.RunData;
  */
 public class Error extends Screen
 {
-    /**
-     * Build screen.
-     *
-     * @param data Turbine information.
-     * @exception Exception, a generic exception.
-     */
-    public ConcreteElement doBuild(RunData data)
-            throws Exception
-    {
-        data.setTitle("There has been an error!");
+	/**
+	 * Build screen.
+	 *
+	 * @param data Turbine information.
+	 * @exception Exception, a generic exception.
+	 */
+	public ConcreteElement doBuild(RunData data) throws Exception
+	{
+		data.setTitle("There has been an error!");
 
-        Table table = new Table().setBorder(0);
-        boolean hasValues = false;
-        Enumeration keys = data.getParameters().keys();
-        while (keys.hasMoreElements())
-        {
-            String key = (String) keys.nextElement();
-            String value = data.getParameters().getString(key);
-            TR tr = new TR()
-                    .addElement(new TD().addElement(new B(key)))
-                    .addElement(new TD().addElement(" = " + value));
-            table.addElement(tr);
-            hasValues = true;
-        }
+		Table table = new Table().setBorder(0);
+		boolean hasValues = false;
+		Enumeration keys = data.getParameters().keys();
+		while (keys.hasMoreElements())
+		{
+			String key = (String) keys.nextElement();
+			String value = data.getParameters().getString(key);
+			TR tr =
+				new TR().addElement(
+					new TD().addElement(new B(key))).addElement(
+					new TD().addElement(" = " + value));
+			table.addElement(tr);
+			hasValues = true;
+		}
 
-        Table table2 = new Table().setBorder(0);
-        Hashtable varDebug = data.getVarDebug();
-        keys = varDebug.keys();
-        boolean hasValues2 = false;
-        while (keys.hasMoreElements())
-        {
-            String key = (String) keys.nextElement();
-            String value = varDebug.get(key).toString();
-            TR tr = new TR()
-                    .addElement(new TD().addElement(new B(key)))
-                    .addElement(new TD().addElement(" = " + value));
-            table2.addElement(tr);
-            hasValues2 = true;
-        }
+		Table table2 = new Table().setBorder(0);
+		Map varDebug = data.getVarDebug();
+		
 
-        data.getPage().getBody().addElement(new H3(data.getTitle() +
-                " Please review the exception below for more information."));
+		boolean hasValues2 = false;
+		for (Iterator i = varDebug.keySet().iterator();i.hasNext();){
+			String key = (String) i.next();
+			String value = varDebug.get(key).toString();
+			TR tr =
+				new TR().addElement(
+					new TD().addElement(new B(key))).addElement(
+					new TD().addElement(" = " + value));
+			table2.addElement(tr);
+			hasValues2 = true;
+		}
 
-        if (hasValues)
-        {
-            data.getPage().getBody()
-                    .addElement(new H4().addElement("Get/Post Data:"));
-            data.getPage().getBody().addElement(table);
-        }
+		data.getPage().getBody().addElement(
+			new H3(
+				data.getTitle()
+					+ " Please review the exception below for more information."));
 
-        if (hasValues2)
-        {
-            data.getPage()
-                    .getBody().addElement(new H4()
-                    .addElement("Debugging Data:"));
-            data.getPage().getBody().addElement(table2);
-        }
+		if (hasValues)
+		{
+			data.getPage().getBody().addElement(
+				new H4().addElement("Get/Post Data:"));
+			data.getPage().getBody().addElement(table);
+		}
 
-        String trace = data.getStackTrace();
-        if (trace != null)
-        {
-            data.getPage().getBody()
-                    .addElement(new H4().addElement("The exception is:"))
-                    .addElement(new PRE(trace))
-                    .addElement(new PRE(data.getStackTraceException().toString()));
-        }
-        return null;
-    }
+		if (hasValues2)
+		{
+			data.getPage().getBody().addElement(
+				new H4().addElement("Debugging Data:"));
+			data.getPage().getBody().addElement(table2);
+		}
+
+		String trace = data.getStackTrace();
+		if (trace != null)
+		{
+			data
+				.getPage()
+				.getBody()
+				.addElement(new H4().addElement("The exception is:"))
+				.addElement(new PRE(trace))
+				.addElement(new PRE(data.getStackTraceException().toString()));
+		}
+		return null;
+	}
 }
