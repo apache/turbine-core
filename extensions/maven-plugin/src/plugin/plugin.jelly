@@ -795,7 +795,6 @@
     </j:choose>
 
     <u:available file="${pluginProperties}">
-      <echo>Loading Mode Properties from ${pluginProperties}</echo>
       <u:properties file="${pluginProperties}" var="_properties"/>
       <j:forEach var="_property" items="${_properties.keys()}">
          <j:set var="_propname" value="${_property}"/>
