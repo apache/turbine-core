@@ -588,14 +588,16 @@ public class TurbineTemplateService
         return ((TemplateMapper) mapperRegistry[LAYOUT_TEMPLATE_KEY]).getMappedName(template);
     }
 
-    /* ====================================== FIXME! ============================== */
-
     /**
      * Translates the supplied template paths into their Turbine-canonical
-     * equivalent (probably absolute paths).
+     * equivalent (probably absolute paths). This is used if the templating
+     * engine (e.g. JSP) does not provide any means to load a page but 
+     * the page path is passed to the servlet container.
      *
      * @param templatePaths An array of template paths.
      * @return An array of translated template paths.
+     * @deprecated Each template engine service should know how to translate
+     *             a request onto a file. 
      */
     public String[] translateTemplatePaths(String[] templatePaths)
     {
@@ -613,6 +615,7 @@ public class TurbineTemplateService
      *
      * @param template The template to check for the existance of.
      * @param templatePaths The paths to check for the template.
+     * @deprecated Use templateExists from the various Templating Engines
      */
     public boolean templateExists(String template,
         String[] templatePaths)
@@ -626,8 +629,6 @@ public class TurbineTemplateService
         }
         return false;
     }
-
-    /* ====================================== FIXME! ============================== */
 
     /**
      * Registers the provided template engine for use by the

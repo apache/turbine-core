@@ -301,6 +301,8 @@ public interface TemplateService
      *
      * @param templatePaths An array of template paths.
      * @return An array of translated template paths.
+     * @deprecated Each template engine service should know how to translate
+     *             a request onto a file. 
      */
     String[] translateTemplatePaths(String[] templatePaths);
 
@@ -311,6 +313,7 @@ public interface TemplateService
      *
      * @param template      The template to check for the existance of.
      * @param templatePaths The paths to check for the template.
+     * @deprecated Use templateExists from the various Templating Engines
      */
     boolean templateExists(String template,
                            String[] templatePaths);
