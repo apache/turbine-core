@@ -426,29 +426,32 @@ public class IntakeTool
      */
     public void remove(Group group)
     {
-        groups.remove(group.getObjectKey());
-        group.removeFromRequest();
-
-        String[] groupKeys = pp.getStrings(INTAKE_GRP);
-
-        pp.remove(INTAKE_GRP);
-
-        for (int i = 0; i < groupKeys.length; i++)
+        if (group != null)
         {
-            if (!groupKeys[i].equals(group.getGID()))
+            groups.remove(group.getObjectKey());
+            group.removeFromRequest();
+
+            String[] groupKeys = pp.getStrings(INTAKE_GRP);
+
+            pp.remove(INTAKE_GRP);
+
+            for (int i = 0; i < groupKeys.length; i++)
             {
-                pp.add(INTAKE_GRP, groupKeys[i]);
+                if (!groupKeys[i].equals(group.getGID()))
+                {
+                    pp.add(INTAKE_GRP, groupKeys[i]);
+                }
             }
-        }
-
-        try
-        {
-            TurbineIntake.releaseGroup(group);
-        }
-        catch (TurbineException se)
-        {
-            log.error("Tried to release unknown group "
-                    + group.getIntakeGroupName());
+            
+            try
+            {
+                TurbineIntake.releaseGroup(group);
+            }
+            catch (TurbineException se)
+            {
+                log.error("Tried to release unknown group "
+                        + group.getIntakeGroupName());
+            }
         }
     }
 
