@@ -217,6 +217,8 @@ public interface User
      * Returns the username for this user.
      *
      * @return A String with the username.
+     *
+     * @deprecated This is the same as getName(), so use this.
      */
     String getUserName();
 
@@ -350,6 +352,8 @@ public interface User
      * Sets the username for this user.
      *
      * @param username The user's username.
+     *
+     * @deprecated This is the same as setName(), so use this.
      */
     void setUserName(String username);
 
