@@ -59,6 +59,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -117,7 +118,7 @@ public class TurbineVelocityService
 {
     /** The generic resource loader path property in velocity.*/
     private static final String RESOURCE_LOADER_PATH = ".resource.loader.path";
-
+    
     /** Default character set to use if not specified in the RunData object. */
     private static final String DEFAULT_CHAR_SET = "ISO-8859-1";
 
@@ -557,7 +558,16 @@ public class TurbineVelocityService
             if (!key.endsWith(RESOURCE_LOADER_PATH))
             {
                 Object value = conf.getProperty(key);
-                veloConfig.addProperty(key, value);
+                if (value instanceof ArrayList) {
+                    for (Iterator itr = ((ArrayList)value).iterator(); itr.hasNext();)
+                    {
+                        veloConfig.addProperty(key, itr.next());
+                    }
+                } 
+                else
+                {
+                    veloConfig.addProperty(key, value);
+                }
                 continue; // for()
             }
 
