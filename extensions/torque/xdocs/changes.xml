@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Changes</title>
+    <author email="epugh@upstate.com">Eric Pugh</author>
+  </properties>
+
+  <body>
+
+    <release version="2.4-dev" date="in CVS">
+      <action dev="epugh" type="add">
+        Initial creation of project with Torque backed implementations for Turbine
+        Schedule and Security services.
+      </action>     	
+    </release>
+
+  </body>
+</document>
+
