@@ -176,7 +176,7 @@ module.packages=@MODULE_PACKAGES@
 # Used to set the template homepage if you are using a template
 # layout.
 #
-# Default: /Index.vm
+# Default: Index.vm
 
 template.homepage=@TEMPLATE_HOMEPAGE@
 
@@ -208,7 +208,7 @@ screen.login=@SCREEN_LOGIN@
 # ErrorScreen for displaying the error. If you are not using a Template based
 # ErrorScreen, then this is ignored.
 #
-# Default: /Error.vm
+# Default: Error.vm
 
 template.error=@TEMPLATE_ERROR@
 
@@ -554,7 +554,7 @@ services.VelocityService.default.screen=VelocityScreen
 services.VelocityService.default.layout = VelocityECSLayout
 services.VelocityService.default.navigation=VelocityNavigation
 services.VelocityService.default.error.screen = VelocityErrorScreen
-services.VelocityService.default.layout.template = /Default.vm
+services.VelocityService.default.layout.template = Default.vm
 
 services.VelocityService.runtime.log=/logs/velocity.log
 #services.VelocityService.input.encoding=UTF-8
@@ -583,7 +583,7 @@ services.JspService.default.screen=BaseJspScreen
 services.JspService.default.layout = JspLayout
 services.JspService.default.navigation=BaseJspNavigation
 services.JspService.default.error.screen = JspErrorScreen
-services.JspService.default.layout.template = /Default.jsp
+services.JspService.default.layout.template = Default.jsp
 
 services.JspService.templates = @TEMPLATE_PATH@
 services.JspService.buffer.size = 8192
@@ -603,7 +603,7 @@ services.WebMacroService.default.screen=WebMacroSiteScreen
 services.WebMacroService.default.layout = WebMacroSiteLayout
 services.WebMacroService.default.navigation=WebMacroSiteNavigation
 services.WebMacroService.default.error.screen = WebMacroSiteErrorScreen
-services.WebMacroService.default.layout.template = /Default.wm
+services.WebMacroService.default.layout.template = Default.wm
 
 # The location of WebMacro configuration file, relative to webapp
 # root.
