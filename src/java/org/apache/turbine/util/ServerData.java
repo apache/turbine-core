@@ -110,8 +110,22 @@ public class ServerData
         String contextPath)
     {
 
-        log.debug("Constructor( " + serverName + ", " + serverPort + ", "
-            + serverScheme + ", " + scriptName + ", " + contextPath + ")");
+        if (log.isDebugEnabled())
+        {
+            StringBuffer sb = new StringBuffer();
+            sb.append("Constructor(");
+            sb.append(serverName);
+            sb.append(", ");
+            sb.append(serverPort);
+            sb.append(", ");
+            sb.append(serverScheme);
+            sb.append(", ");
+            sb.append(scriptName);
+            sb.append(", ");
+            sb.append(contextPath);
+            sb.append(")");
+            log.debug(sb.toString());
+        }
 
         setServerName(serverName);
         setServerPort(serverPort);
