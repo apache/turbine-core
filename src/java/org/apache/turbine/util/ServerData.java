@@ -54,6 +54,11 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Holds basic server information under which Turbine is running.
  * This class is accessable via the RunData object within the Turbine
@@ -62,6 +67,7 @@ package org.apache.turbine.util;
  *
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class ServerData
@@ -70,16 +76,19 @@ public class ServerData
     private String serverName = null;
 
     /** Cached serverPort. */
-    private int serverPort = 80;
+    private int serverPort = 0;
 
     /** Cached serverScheme. */
     private String serverScheme = null;
 
     /** Cached script name. */
-    private String scriptName = null;
-
+    private String  scriptName = null;
+    
     /** Cached context path. */
-    private String contextPath = null;
+    private String  contextPath = null;
+
+    /** Logging */
+    private static Log log = LogFactory.getLog(ServerData.class);
 
     /**
      * Constructor.
@@ -88,18 +97,52 @@ public class ServerData
      * @param serverPort The server port.
      * @param serverScheme The server scheme.
      * @param scriptName The script name.
+     * @param contextPath The context Path
      */
     public ServerData(String serverName,
-                      int serverPort,
-                      String serverScheme,
-                      String scriptName,
-                      String contextPath)
+        int serverPort,
+        String serverScheme,
+        String scriptName,
+        String contextPath)
     {
-        this.serverName = serverName;
-        this.serverPort = serverPort;
-        this.serverScheme = serverScheme;
-        this.scriptName = scriptName;
-        this.contextPath = contextPath;
+
+        log.debug("Constructor( " + serverName + ", " + serverPort + ", "
+            + serverScheme + ", " + scriptName + ", " + contextPath + ")");
+
+        setServerName(serverName);
+        setServerPort(serverPort);
+        setServerScheme(serverScheme);
+        setScriptName(scriptName);
+        setContextPath(contextPath);
+    }
+
+    /**
+     * Copy-Constructor
+     *
+     * @param serverData A ServerData Object
+     *
+     */
+    public ServerData(ServerData serverData)
+    {
+        log.debug("Copy Constructor(" + serverData + ")");
+
+        setServerName(serverData.getServerName());
+        setServerPort(serverData.getServerPort());
+        setServerScheme(serverData.getServerScheme());
+        setScriptName(serverData.getScriptName());
+        setContextPath(serverData.getContextPath());
+    }
+
+    /**
+     * generates a new Object with the same values as this one.
+     *
+     * @return A cloned object.
+     *
+     */
+    public Object clone()
+    {
+        log.debug("clone()");
+        return new ServerData(this);
     }
 
     /**
@@ -109,9 +152,7 @@ public class ServerData
      */
     public String getServerName()
     {
-        if (this.serverName == null)
-            return "";
-        return serverName;
+        return StringUtils.isEmpty(serverName) ? "" : serverName;
     }
 
     /**
@@ -119,9 +160,10 @@ public class ServerData
      *
      * @param sn A String.
      */
-    public void setServerName(String sn)
+    public void setServerName(String serverName)
     {
-        this.serverName = sn;
+        log.debug("setServerName(" + serverName + ")");
+        this.serverName = serverName;
     }
 
     /**
@@ -139,9 +181,10 @@ public class ServerData
      *
      * @param port An int.
      */
-    public void setServerPort(int port)
+    public void setServerPort(int serverPort)
     {
-        this.serverPort = port;
+        log.debug("setServerPort(" + serverPort + ")");
+        this.serverPort = serverPort;
     }
 
     /**
@@ -151,9 +194,7 @@ public class ServerData
      */
     public String getServerScheme()
     {
-        if (this.serverScheme == null)
-            return "";
-        return this.serverScheme;
+        return StringUtils.isEmpty(serverScheme) ? "" : serverScheme;
     }
 
     /**
@@ -161,9 +202,10 @@ public class ServerData
      *
      * @param ss A String.
      */
-    public void setServerScheme(String ss)
+    public void setServerScheme(String serverScheme)
     {
-        this.serverScheme = ss;
+        log.debug("setServerScheme(" + serverScheme + ")");
+        this.serverScheme = serverScheme;
     }
 
     /**
@@ -173,9 +215,7 @@ public class ServerData
      */
     public String getScriptName()
     {
-        if (this.scriptName == null)
-            return "";
-        return this.scriptName;
+        return StringUtils.isEmpty(scriptName) ? "" : scriptName;
     }
 
     /**
@@ -183,9 +223,10 @@ public class ServerData
      *
      * @param sname A String.
      */
-    public void setScriptName(String sname)
+    public void setScriptName(String scriptName)
     {
-        this.scriptName = sname;
+        log.debug("setScriptName(" + scriptName + ")");
+        this.scriptName = scriptName;
     }
 
     /**
@@ -195,18 +236,17 @@ public class ServerData
      */
     public String getContextPath()
     {
-        if (this.contextPath == null)
-            return "";
-        return this.contextPath;
+        return StringUtils.isEmpty(contextPath) ? "" : contextPath;
     }
 
     /**
      * Set the context path.
      *
-     * @param sname A String.
+     * @param contextPath A String.
      */
-    public void setContextPath(String cpath)
+    public void setContextPath(String contextPath)
     {
-        this.contextPath = cpath;
+        log.debug("setContextPath(" + contextPath + ")");
+        this.contextPath = contextPath;
     }
 }
