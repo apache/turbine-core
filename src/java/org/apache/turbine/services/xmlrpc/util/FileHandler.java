@@ -92,7 +92,9 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * The client must then decode the file contents and write the
  * decoded file contents to disk.
  *
+ * @version $Id$
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  */
 public class FileHandler
 {
@@ -141,7 +143,8 @@ public class FileHandler
          * the directory in which to place the fileContents
          * with the name fileName.
          */
-        return writeFileContents(fileContents, targetLocationProperty, fileName);
+        return writeFileContents(fileContents, targetLocationProperty, 
+                                 fileName);
     }
     
     /**
@@ -188,10 +191,14 @@ public class FileHandler
     public static String readFileContents(String targetLocationProperty,
                                           String fileName)
     {
+        File tmpF = new File(".");
+
         String file = TurbineServlet.getRealPath(
             TurbineResources.getString(targetLocationProperty) + 
-                "/" + fileName);
-        
+                tmpF.separator + fileName);
+
+        StringWriter sw = null;
+        BufferedReader reader = null;
         try
         {
             /*
@@ -199,9 +206,9 @@ public class FileHandler
              * velocity ContentResource class.
              */
             
-            StringWriter sw = new StringWriter();
-            
-            BufferedReader reader = new BufferedReader(
+            sw = new StringWriter();    
+
+            reader = new BufferedReader(
                 new InputStreamReader(
                     new FileInputStream(file)));
             
@@ -222,6 +229,23 @@ public class FileHandler
             
             return null;
         }
+        finally
+        {
+            try
+            {
+                if (sw != null)
+                {
+                    sw.close();
+                }
+                if (reader != null)
+                {
+                    reader.close();
+                }
+            }
+            catch (Exception e)
+            {
+            }
+        }
     }
 
     public static boolean writeFileContents(String fileContents,
@@ -233,7 +257,6 @@ public class FileHandler
          * make the application fully portable. So use the TurbineServlet
          * service to map the target location in the webapp space.
          */
-        
         File targetLocation = new File(
             TurbineServlet.getRealPath(
                 TurbineResources.getString(
@@ -245,8 +268,7 @@ public class FileHandler
              * If the target location doesn't exist then
              * attempt to create the target location and any
              * necessary parent directories as well.
-             */
-            
+             */            
             if (targetLocation.mkdirs() == false)
             {
                 Log.error("[FileHandler] Could not create target location: " + 
@@ -256,30 +278,29 @@ public class FileHandler
             }
             else
             {
-                Log.info("[FileHandler] Creating target location:" + targetLocation +
+                Log.info("[FileHandler] Creating target location:" + 
+                 targetLocation +
                  " in order to complete file transfer from client.");
             }
         }            
         
+        FileWriter fileWriter = null;
         try
         {
             /*
              * Try to create the target file and write it out
              * to the target location.
              */
-            
-            FileWriter fileWriter = new FileWriter(
+            fileWriter = new FileWriter(
                 targetLocation + "/" + fileName);
             
             /*
              * It is assumed that the file has been encoded
              * and therefore must be decoded before the
              * contents of the file are stored to disk.
-             */
-            
+             */            
             fileWriter.write(MimeUtility.decodeText(fileContents));
-            fileWriter.close();
-            
+
             return true;
         }
         catch (IOException ioe)
@@ -288,6 +309,19 @@ public class FileHandler
                 "contents to disk for the following reason.", ioe);
                 
             return false;
+        }
+        finally
+        {
+            try
+            {
+                if (fileWriter != null)
+                {
+                    fileWriter.close();
+                }
+            }
+            catch (Exception e)
+            {
+            }
         }
     }
 
@@ -307,10 +341,9 @@ public class FileHandler
          * make the application fully portable. So use the TurbineServlet
          * service to map the target location in the webapp space.
          */
-        
         File sourceFile = new File(
-            TurbineServlet.getRealPath(
-                TurbineResources.getString(sourceLocationProperty) +
+           TurbineServlet.getRealPath(
+               TurbineResources.getString(sourceLocationProperty) +
                     "/" + sourceFileName));
 
         if (sourceFile.exists())

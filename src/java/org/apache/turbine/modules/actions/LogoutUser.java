@@ -60,7 +60,6 @@ import org.apache.turbine.modules.Action;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.util.Log;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.security.AccessControlList;
 
@@ -90,18 +89,18 @@ public class LogoutUser extends Action
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    public void doPerform( RunData data )
+    public void doPerform(RunData data)
         throws Exception
     {
         User user = data.getUser();
 
-        if ( user != null )
+        if (user != null)
         {
             // Make sure that the user has really logged in...
-            if (!user.hasLoggedIn() )
+            if (!user.hasLoggedIn())
                 return;
 
-            user.setHasLoggedIn( new Boolean(false) );
+            user.setHasLoggedIn(new Boolean(false));
             TurbineSecurity.saveUser( user );
         }
 
@@ -113,7 +112,7 @@ public class LogoutUser extends Action
         data.setACL(null);
 
         // Retrieve an anonymous user.
-        data.setUser( TurbineSecurity.getAnonymousUser() );
+        data.setUser(TurbineSecurity.getAnonymousUser());
         data.save();
 
         // In the event that the current screen or related navigations

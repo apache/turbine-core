@@ -25,13 +25,13 @@ package org.apache.turbine.om.security;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -57,10 +57,10 @@ package org.apache.turbine.om.security;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.turbine.om.BaseObject;
+import org.apache.torque.om.BaseObject;
 
 /**
- * This class represents a generic object used in the Access Control Lists. 
+ * This class represents a generic object used in the Access Control Lists.
  *
  * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
@@ -84,7 +84,7 @@ public abstract class SecurityObject extends BaseObject implements Comparable
         this("");
     }
 
-    /** 
+    /**
      * Constructs a new SecurityObject with the specified name.
      *
      * @param name The name of the new object.
@@ -121,7 +121,7 @@ public abstract class SecurityObject extends BaseObject implements Comparable
      * @param name the name of the attribute
      * @return the value of the attribute
      */
-    public Object getAttribute( String name ) 
+    public Object getAttribute( String name )
     {
         return attributes.get(name);
     }
@@ -175,7 +175,7 @@ public abstract class SecurityObject extends BaseObject implements Comparable
     }
 
     /**
-     * Returns a textual representation of this object, consisted by 
+     * Returns a textual representation of this object, consisted by
      * it's name and attributes.
      *
      * @return  a textual representation of this group.

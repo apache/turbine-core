@@ -55,8 +55,6 @@ package org.apache.turbine.services.logging;
  */
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import org.apache.turbine.services.BaseInitable;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.util.RunData;
 

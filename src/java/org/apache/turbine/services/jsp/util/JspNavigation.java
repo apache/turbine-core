@@ -25,13 +25,13 @@ package org.apache.turbine.services.jsp.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -53,14 +53,12 @@ package org.apache.turbine.services.jsp.util;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
- 
-import java.io.IOException;
+
 import org.apache.turbine.modules.NavigationLoader;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.template.TemplateInfo;
 
 /**
  * Returns output of a Navigation module. An instance of this is placed in the
@@ -80,7 +78,7 @@ public class JspNavigation
 {
     /* The RunData object */
     private RunData data;
-       
+
     /**
      * Constructor
      *
@@ -101,7 +99,7 @@ public class JspNavigation
         data.getTemplateInfo().setNavigationTemplate(template);
         String module = null;
         try
-        {  
+        {
             module = ((TemplateService)TurbineServices.getInstance().getService(
                 TemplateService.SERVICE_NAME)).getNavigationName(template);
             NavigationLoader.getInstance().exec(data, module);
@@ -113,10 +111,10 @@ public class JspNavigation
             Log.error(message, e);
             try
             {
-                data.getOut().print("Error processing navigation template: " 
+                data.getOut().print("Error processing navigation template: "
                     + template + " using module: " + module);
             }
-            catch(java.io.IOException ioe) {}    
+            catch(java.io.IOException ioe) {}
         }
     }
-}    
+}

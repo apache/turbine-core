@@ -54,35 +54,26 @@ package org.apache.turbine.services.security;
  * <http://www.apache.org/>.
  */
 
-import javax.servlet.ServletConfig;
-
-import org.apache.turbine.util.Log;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.db.Criteria;
-import org.apache.turbine.om.security.User;
-import org.apache.turbine.om.security.Group;
-import org.apache.turbine.om.security.Role;
-import org.apache.turbine.om.security.Permission;
-
-import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.services.security.UserManager;
-import org.apache.turbine.util.security.GroupSet;
-import org.apache.turbine.util.security.RoleSet;
-import org.apache.turbine.util.security.PermissionSet;
-
-import org.apache.turbine.util.security.DataBackendException;
-import org.apache.turbine.util.security.UnknownEntityException;
-import org.apache.turbine.util.security.EntityExistsException;
-import org.apache.turbine.util.security.PasswordMismatchException;
-import org.apache.turbine.util.security.TurbineSecurityException;
-
-// Classes needed for password encryption
-import javax.mail.internet.MimeUtility;
-import java.security.MessageDigest;
-import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.security.MessageDigest;
+import javax.mail.internet.MimeUtility;
+import javax.servlet.ServletConfig;
+import org.apache.torque.util.Criteria;
+import org.apache.turbine.om.security.Group;
+import org.apache.turbine.om.security.Permission;
+import org.apache.turbine.om.security.Role;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.util.Log;
+import org.apache.turbine.util.security.DataBackendException;
+import org.apache.turbine.util.security.EntityExistsException;
+import org.apache.turbine.util.security.GroupSet;
+import org.apache.turbine.util.security.PasswordMismatchException;
+import org.apache.turbine.util.security.PermissionSet;
+import org.apache.turbine.util.security.RoleSet;
+import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
  * This is a common subset of SecurityService implementation.
@@ -200,7 +191,7 @@ public abstract class BaseSecurityService
         catch(Exception e)
         {
             throw new InitializationException(
-                "Failed create a Class object for User implementation", e);
+                "BaseSecurityService.init: Failed create a Class object for User implementation", e);
         }
 
         try
@@ -211,7 +202,8 @@ public abstract class BaseSecurityService
         }
         catch(Exception e)
         {
-            throw new InitializationException("BaseSecurityService.init: Failed to instantiate UserManager" ,e);
+            throw new InitializationException(
+                "BaseSecurityService.init: Failed to instantiate UserManager" ,e);
         }
 
     }

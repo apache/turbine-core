@@ -65,6 +65,7 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.resources.ResourceService;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.Turbine;
 
 /**
  * The default implementation of the logging service in Turbine.
@@ -116,7 +117,8 @@ public class TurbineLoggingService
      * Inits the service using servlet parameters to obtain path to the
      * configuration file. Change relatives paths.
      */
-    public void init(ServletConfig config) throws InitializationException
+    public void init(ServletConfig config) 
+        throws InitializationException
     {
         context = config.getServletContext();
 
@@ -190,6 +192,12 @@ public class TurbineLoggingService
             resources = TurbineResources
                 .getResources(TurbineServices.SERVICE_PREFIX +
                 LoggingService.SERVICE_NAME);
+
+            //add webappRoot manually - cos logging is a primary
+            //service and so it is not yet defined
+            String webappRoot = context.getRealPath("");
+            resources.setProperty(Turbine.WEBAPP_ROOT,webappRoot);
+
         }
         return (resources);
     }

@@ -54,16 +54,14 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
-import java.util.Vector;
-import org.apache.turbine.util.ParameterParser;
-import org.apache.turbine.om.ComboKey;
-import org.apache.turbine.om.ObjectKey;
-import org.apache.turbine.services.intake.xmlmodel.Rule;
+import org.apache.torque.om.ComboKey;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.util.Log;
+import org.apache.turbine.util.ParameterParser;
 
 /**
  *
+ * @version $Id$
  */
 public class ComboKeyField extends Field
 {
@@ -71,6 +69,15 @@ public class ComboKeyField extends Field
         throws Exception
     {
         super(field, group);
+    }
+
+    /**
+     * Sets the default value for an ComboKeyField
+     */
+
+    protected void setDefaultValue(String prop)
+    {
+        defaultValue = prop;
     }
 
     /**

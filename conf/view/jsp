@@ -1,5 +1,5 @@
-template.hompage=/Index.jsp
-template.login=/Login.jsp
+template.hompage=Index.jsp
+template.login=Login.jsp
 screen.homepage=
 screen.login=
 screen.error=JspErrorScreen
@@ -17,7 +17,7 @@ template.default.extension=jsp
 template.path=/templates/app
 template.default.navigation=BaseJspNavigation
 template.default.screen=BaseJspScreen
-template.default.layout=/Default.jsp
-template.error=/Error.jsp
+template.default.layout=Default.jsp
+template.error=Error.jsp
 
 template.service=services.JspService.classname=org.apache.turbine.services.velocity.TurbineJspService

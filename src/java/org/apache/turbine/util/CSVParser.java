@@ -79,6 +79,7 @@ import java.util.List;
  * </pre>
  *
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
+ * @author <a href="mailto:martin@mvdb.net">Martin van den Bemt</a>
  * @version $Id$
  */
 public class CSVParser extends DataStreamParser
@@ -125,25 +126,14 @@ public class CSVParser extends DataStreamParser
     /**
      * Initialize the StreamTokenizer instance used to read the lines
      * from the input reader. 
+     * It is now only needed to set the fieldSeparator
      */
     protected void initTokenizer(StreamTokenizer tokenizer)
     {
-        // set all numeric characters as ordinary characters
-        // (switches off number parsing)
-        tokenizer.ordinaryChars('0', '9');
-        tokenizer.ordinaryChars('-', '-');
-        tokenizer.ordinaryChars('.', '.');
-        
-        // set all printable characters to be treated as word chars
-        tokenizer.wordChars(' ', Integer.MAX_VALUE);
+        // everything is default so let's call super
+        super.initTokenizer(tokenizer);
+        // set the field separator to comma
+        super.setFieldSeparator(',');
 
-        // now set comma as the whitespace character
-        tokenizer.whitespaceChars(',', ',');
-
-        // and  set the quote mark as the quoting character
-        tokenizer.quoteChar('"');
-
-        // and finally say that end of line is significant
-        tokenizer.eolIsSignificant(true);
     }
 }

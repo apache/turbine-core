@@ -86,6 +86,7 @@ import org.apache.turbine.util.parser.BaseValueParser;
  * </pre>
  *
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
+ * @author <a href="mailto:martin@mvdb.net">Martin van den Bemt</a>
  * @version $Id$
  */
 public abstract class DataStreamParser implements Iterator
@@ -94,6 +95,11 @@ public abstract class DataStreamParser implements Iterator
      * Conditional compilation flag.
      */
     private static final boolean DEBUG = false;
+    
+    /**
+     * The constant for empty fields
+     */
+    protected static final String EMPTYFIELDNAME="UNKNOWNFIELD";
 
     /**
      * The list of column names.
@@ -119,6 +125,11 @@ public abstract class DataStreamParser implements Iterator
      * The character encoding of the input
      */
     private String          characterEncoding;
+    
+    /**
+     * The fieldseperator, which can be almost any char
+     */
+    private char            fieldSeparator;
 
     /**
      * Create a new DataStreamParser instance. Requires a Reader to read the
@@ -155,9 +166,40 @@ public abstract class DataStreamParser implements Iterator
     /**
      * Initialize the StreamTokenizer instance used to read the lines
      * from the input reader. This must be implemented in subclasses to
-     * set up the tokenizing properties.
+     * set up other tokenizing properties.
+     * 
+     * @param tokenizer the tokenizer to adjust
      */
-    protected abstract void initTokenizer(StreamTokenizer tokenizer);
+    protected void initTokenizer(StreamTokenizer tokenizer) 
+    {
+        // set all numeric characters as ordinary characters
+        // (switches off number parsing)
+        tokenizer.ordinaryChars('0', '9');
+        tokenizer.ordinaryChars('-', '-');
+        tokenizer.ordinaryChars('.', '.');
+        
+        // leave out the comma sign (,), we need it for empty fields
+
+        tokenizer.wordChars(' ', Integer.MAX_VALUE);
+
+        // and  set the quote mark as the quoting character
+        tokenizer.quoteChar('"');
+
+        // and finally say that end of line is significant
+        tokenizer.eolIsSignificant(true);
+    }
+    
+    /**
+     * This method must be called to setup the field seperator
+     * @param fieldSeparator the char which separates the fields
+     */
+    public void setFieldSeparator(char fieldSeparator) 
+    {
+        this.fieldSeparator = fieldSeparator;
+        // make this field also an ordinary char by default.
+        tokenizer.ordinaryChar(fieldSeparator);
+    }
+        
 
     /**
      * Set the list of column names explicitly.
@@ -171,7 +213,8 @@ public abstract class DataStreamParser implements Iterator
 
     /**
      * Read the list of column names from the input reader using the
-     * tokenizer.
+     * tokenizer. If fieldNames are empty, we use the current fieldNumber 
+     * + the EMPTYFIELDNAME to make one up.
      *
      * @exception IOException an IOException occurred.
      */
@@ -179,13 +222,35 @@ public abstract class DataStreamParser implements Iterator
         throws IOException
     {
         columnNames = new ArrayList();
+        int lastTtype = 0;
+        int fieldCounter = 1;
 
         neverRead = false;
         tokenizer.nextToken();
-        while (tokenizer.ttype == StreamTokenizer.TT_WORD
-               || tokenizer.ttype == '"')
+        while (tokenizer.ttype == tokenizer.TT_WORD || tokenizer.ttype == tokenizer.TT_EOL
+               || tokenizer.ttype == '"' || tokenizer.ttype == fieldSeparator)
         {
-            columnNames.add(tokenizer.sval);
+            if (tokenizer.ttype !=  fieldSeparator && tokenizer.ttype != tokenizer.TT_EOL) 
+            {
+                columnNames.add(tokenizer.sval);
+                fieldCounter++;
+            }
+            else if (tokenizer.ttype == fieldSeparator && lastTtype == fieldSeparator) 
+            {
+                // we have an empty field name
+                columnNames.add(EMPTYFIELDNAME+fieldCounter);
+                fieldCounter++;
+            }
+            else if (lastTtype == fieldSeparator && tokenizer.ttype == tokenizer.TT_EOL) 
+            {
+                columnNames.add(EMPTYFIELDNAME+fieldCounter);
+                break;
+            }
+            else if(tokenizer.ttype == tokenizer.TT_EOL)
+            {
+                break;
+            }
+            lastTtype = tokenizer.ttype;
             tokenizer.nextToken();
         }
     }
@@ -237,20 +302,37 @@ public abstract class DataStreamParser implements Iterator
         Iterator it = columnNames.iterator();
         tokenizer.nextToken();
         while (tokenizer.ttype == StreamTokenizer.TT_WORD
-               || tokenizer.ttype == '"')
+               || tokenizer.ttype == '"' || tokenizer.ttype == fieldSeparator)
         {
+            int lastTtype = 0;
             // note this means that if there are more values than
             // column names, the extra values are discarded.
             if (it.hasNext())
             {
                 String colname = it.next().toString();
                 String colval  = tokenizer.sval;
-                if (DEBUG)
+                if (tokenizer.ttype != fieldSeparator && lastTtype != fieldSeparator)
                 {
-                	Log.debug("DataStreamParser.nextRow(): " +
-                	          colname + "=" + colval);
-				}
-                lineValues.add(colname, colval);
+                    if (DEBUG)
+                    {
+                        Log.debug("DataStreamParser.nextRow(): " +
+                            colname + "=" + colval);
+                    }
+                    lineValues.add(colname, colval);
+                 }
+                 else if (tokenizer.ttype == fieldSeparator && lastTtype != fieldSeparator) 
+                 {
+                    lastTtype = tokenizer.ttype;
+                    tokenizer.nextToken();
+                    if (tokenizer.ttype != fieldSeparator && tokenizer.sval!=null)
+                    {
+                        lineValues.add(colname, tokenizer.sval);
+                    }
+                    else if (tokenizer.ttype == tokenizer.TT_EOL)
+                    {
+                        tokenizer.pushBack();
+                    }
+                }
             }
             tokenizer.nextToken();
         }

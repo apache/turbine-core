@@ -59,7 +59,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.apache.turbine.om.Retrievable;
 import org.apache.turbine.services.intake.TurbineIntake;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
@@ -69,7 +68,11 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.pool.Recyclable;
 
-/** Holds a group of Fields */
+/**
+ * Holds a group of Fields
+ *
+ * @version $Id$
+ */
 public class Group
     implements Recyclable
 {

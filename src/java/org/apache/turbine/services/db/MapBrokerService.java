@@ -25,13 +25,13 @@ package org.apache.turbine.services.db;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,9 +54,9 @@ package org.apache.turbine.services.db;
  * <http://www.apache.org/>.
  */
 
+import org.apache.torque.map.DatabaseMap;
 import org.apache.turbine.services.Service;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.db.map.DatabaseMap;
 
 /**
  * This service manages {@link org.apache.turbine.util.db.map.DatabaseMap}
@@ -66,6 +66,7 @@ import org.apache.turbine.util.db.map.DatabaseMap;
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
+ * @deprecated use org.apache.torque.Torque
  */
 public interface MapBrokerService extends Service
 {
@@ -76,16 +77,21 @@ public interface MapBrokerService extends Service
      */
     public static final String DEFAULT = "default";
 
+    /** Name of default map property */
+    public static final String DEFAULT_MAP = "defaultMap";
+
+    /** Return default map */
+    public String getDefaultMap();
+
     /**
      * Returns the default database map information.
      *
      * @return A DatabaseMap.
-     * @throws TurbineException Any exceptions caught during procssing will be 
+     * @throws TurbineException Any exceptions caught during procssing will be
      *         rethrown wrapped into a TurbineException.
      */
-    public DatabaseMap getDatabaseMap()
-        throws TurbineException;
-    
+    public DatabaseMap getDatabaseMap() throws TurbineException;
+
     /**
      * Returns the database map information. Name relates to the name
      * of the connection pool to associate with the map.
@@ -93,9 +99,8 @@ public interface MapBrokerService extends Service
      * @param name The name of the <code>DatabaseMap</code> to
      * retrieve.
      * @return The named <code>DatabaseMap</code>.
-     * @throws TurbineException Any exceptions caught during procssing will be 
+     * @throws TurbineException Any exceptions caught during procssing will be
      *         rethrown wrapped into a TurbineException.
      */
-    public DatabaseMap getDatabaseMap(String name)
-        throws TurbineException;
+    public DatabaseMap getDatabaseMap(String name) throws TurbineException;
 }

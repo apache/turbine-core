@@ -53,15 +53,10 @@ package org.apache.turbine.services.xmlrpc.util;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-import java.util.Vector;
-
-import org.apache.turbine.util.Log;
-
-import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.om.security.User;
-
 import helma.xmlrpc.AuthenticatedXmlRpcHandler;
+import java.util.Vector;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.security.TurbineSecurity;
 
 /**
  * An authenticated Handler for use with the XML-RPC service that will deal

@@ -25,13 +25,13 @@ package org.apache.turbine.services.upload;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,11 +54,7 @@ package org.apache.turbine.services.upload;
  * <http://www.apache.org/>.
  */
 
-import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.turbine.services.InstantiationException;
-import org.apache.turbine.services.Service;
-import org.apache.turbine.services.ServiceBroker;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.TurbineException;
@@ -88,7 +84,7 @@ public abstract class TurbineUpload
         return (UploadService)TurbineServices.getInstance().
             getService(UploadService.SERVICE_NAME);
     }
-    
+
     /**
      * <p> Retrieves the value of 'automatic' property of {@link
      * UploadService}.
@@ -105,7 +101,7 @@ public abstract class TurbineUpload
         }
         catch(org.apache.turbine.services.InstantiationException ie)
         {
-            // If the service couldn't be instantiated, it obviously 
+            // If the service couldn't be instantiated, it obviously
             // can't be used for automatic uploading.
             return false;
         }

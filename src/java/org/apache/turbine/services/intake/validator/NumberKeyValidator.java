@@ -54,10 +54,8 @@ package org.apache.turbine.services.intake.validator;
  * <http://www.apache.org/>.
  */
 
-import java.math.BigDecimal;
 import java.util.Map;
-import org.apache.turbine.om.NumberKey;
-import org.apache.turbine.util.Log;
+import org.apache.torque.om.NumberKey;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -66,9 +64,9 @@ import org.apache.turbine.util.TurbineException;
  *
  * <table>
  * <tr><th>Name</th><th>Valid Values</th><th>Default Value</th></tr>
- * <tr><td>minLength</td><td>greater than Integer.MIN_VALUE</td>
+ * <tr><td>minValue</td><td>greater than Integer.MIN_VALUE</td>
  * <td>&nbsp;</td></tr>
- * <tr><td>maxLength</td><td>less than BigDecimal.MAX_VALUE</td>
+ * <tr><td>maxValue</td><td>less than BigDecimal.MAX_VALUE</td>
  * <td>&nbsp;</td></tr>
  * <tr><td>notANumberMessage</td><td>Some text</td>
  * <td>Entry was not a valid number</td></tr>

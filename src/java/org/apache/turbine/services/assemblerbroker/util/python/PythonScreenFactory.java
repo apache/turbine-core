@@ -54,19 +54,8 @@ package org.apache.turbine.services.assemblerbroker.util.python;
  * <http://www.apache.org/>.
  */
 
-// JDK Classes
-import java.io.*;
-
-// Turbine Utility Classes
-import org.apache.turbine.util.*;
-import org.apache.turbine.modules.*;
-import org.apache.turbine.modules.screens.*;
-import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.util.assemblerbroker.*;
-
-// JPython Classes
-import org.python.util.PythonInterpreter;
-import org.python.core.*;
+// Turbine Classes
+import org.apache.turbine.modules.Assembler;
 
 /**
  * A screen factory that attempts to load a python class in the
@@ -76,7 +65,6 @@ import org.python.core.*;
  */
 public class PythonScreenFactory extends PythonBaseFactory
 {
-
 
     public Assembler getAssembler( String name ) throws Exception
     {

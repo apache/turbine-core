@@ -25,13 +25,13 @@ package org.apache.turbine.services.intake.transform;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -56,19 +56,13 @@ package org.apache.turbine.services.intake.transform;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.Reader;
 import org.apache.turbine.services.intake.xmlmodel.AppData;
 import org.apache.turbine.services.intake.xmlmodel.Rule;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.services.intake.xmlmodel.XmlGroup;
-import org.apache.xerces.framework.XMLParser;
 import org.apache.xerces.parsers.SAXParser;
 import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -106,7 +100,7 @@ public class XmlToAppData extends DefaultHandler
     {
         return parseFile(xmlFile, false);
     }
-        
+
     /**
      * Parse and xml input file and returns a newly
      * created and populated AppData structure
@@ -115,7 +109,7 @@ public class XmlToAppData extends DefaultHandler
         throws Exception
     {
         SAXParser parser = new SAXParser();
-        
+
         // set the Resolver for the database DTD
         DTDResolver dtdResolver = new DTDResolver();
         parser.setEntityResolver(dtdResolver);
@@ -123,7 +117,7 @@ public class XmlToAppData extends DefaultHandler
         // We don't use an external content handler - we use this object
         parser.setContentHandler(this);
         parser.setErrorHandler(this);
-        
+
         // Validate the input file
         parser.setFeature(
             "http://apache.org/xml/features/validation/dynamic", true);
@@ -149,7 +143,7 @@ public class XmlToAppData extends DefaultHandler
     /**
      * Handles opening elements of the xml file.
      */
-    public void startElement(String uri, String localName, 
+    public void startElement(String uri, String localName,
                              String rawName, Attributes attributes)
     {
         currElement = rawName;
@@ -179,11 +173,11 @@ public class XmlToAppData extends DefaultHandler
     public void characters(char[] mesgArray, int start, int length)
     {
         String cdata = new String(mesgArray, start, length).trim();
-        if ( "rule".equals(currElement) && cdata.length() > 0) 
+        if ( "rule".equals(currElement) && cdata.length() > 0)
         {
             currRule.setMessage(cdata);
         }
-        if ( "required-message".equals(currElement) && cdata.length() > 0) 
+        if ( "required-message".equals(currElement) && cdata.length() > 0)
         {
             currField.setIfRequiredMessage(cdata);
         }

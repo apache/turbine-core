@@ -32,13 +32,11 @@ keywords in differant databases.
 
 <section name="Relationships">
 <source test=""><![CDATA[
-
 TURBINE_USER  -|------o-< TURBINE_USER_GROUP_ROLE
 TURBINE_ROLE  -|------o-< TURBINE_USER_GROUP_ROLE
 TURBINE_GROUP -|------o-< TURBINE_USER_GROUP_ROLE
 TURBINE_ROLE  -|------o-< TURBINE_ROLE_PERMISSION
 TURBINE_PERMISSION -|------o-< TURBINE_ROLE_PERMISSION
-
 ]]></source>
 </section>
 
@@ -49,26 +47,16 @@ For other database specific data-types check the .sql scripts in
 the src/sql directory of the Turbine distribution.
 </p>
 
-<p>
-<strong>ID_TABLE</strong>
-</p>
-
-<p>
-The ID_TABLE carries the information for the next ID
-number in the specified tables. This table is useful when
-the database being used has no data-type which carries out
-auto-increment operations.
-</p>
-
+<subsection name="ID_TABLE">
 <table>
 <tr>
-    <td>Column Name</td>
-    <td>Key</td>
-    <td>Data Type</td>
-    <td>Default Value</td>
-    <td>Null</td>
-    <td>Indexed</td>
-    <td>Comment</td>
+    <th>Column Name</th>
+    <th>Key</th>
+    <th>Data Type</th>
+    <th>Default Value</th>
+    <th>Null</th>
+    <th>Indexed</th>
+    <th>Comment</th>
 </tr>
 <tr>
     <td>ID_TABLE_ID</td>
@@ -107,25 +95,24 @@ auto-increment operations.
     <td></td>
 </tr>
 </table>
-
 <p>
-<strong>TURBINE_PERMISSION</strong>
+The ID_TABLE carries the information for the next ID
+number in the specified tables. This table is useful when
+the database being used has no data-type which carries out
+auto-increment operations.
 </p>
+</subsection>
 
-<p>
-The TURBINE_PERMISSION table stores the lowest level of permissions allowed
-for a Turbine User.
-</p>
-
+<subsection name="TURBINE_PERMISSION">
 <table>
 <tr>
-    <td>Column Name</td>
-    <td>Key</td>
-    <td>Data Type</td>
-    <td>Default Value</td>
-    <td>Null</td>
-    <td>Indexed</td>
-    <td>Comment</td>
+    <th>column name</th>
+    <th>key</th>
+    <th>data type</th>
+    <th>default value</th>
+    <th>null</th>
+    <th>indexed</th>
+    <th>comment</th>
 </tr>
 <tr>
     <td>PERMISSION_ID</td>
@@ -155,27 +142,22 @@ for a Turbine User.
     <td></td>
 </tr>
 </table>
-
 <p>
-<strong>TURBINE_ROLE</strong>
+The TURBINE_PERMISSION table stores the lowest level of permissions allowed
+for a Turbine User.
 </p>
+</subsection>
 
-<p>
-The TURBINE_ROLE table links a Turbine User to a span of permissions.
-Potentially a Turbine User can have many roles within the system. In this case
-a role represents a descriptive word for a series of permissions or actions the
-Turbine User is able to undertake.
-</p>
-
+<subsection name="TURBINE_ROLE">
 <table>
 <tr>
-    <td>Column Name</td>
-    <td>Key</td>
-    <td>Data Type</td>
-    <td>Default Value</td>
-    <td>Null</td>
-    <td>Indexed</td>
-    <td>Comment</td>
+    <th>column name</th>
+    <th>key</th>
+    <th>data type</th>
+    <th>default value</th>
+    <th>null</th>
+    <th>indexed</th>
+    <th>comment</th>
 </tr>
 <tr>
     <td>ROLE_ID</td>
@@ -205,28 +187,24 @@ Turbine User is able to undertake.
     <td></td>
 </tr>
 </table>
-
 <p>
-<strong>TURBINE_GROUP</strong>
+The TURBINE_ROLE table links a Turbine User to a span of permissions.
+Potentially a Turbine User can have many roles within the system. In this case
+a role represents a descriptive word for a series of permissions or actions the
+Turbine User is able to undertake.
 </p>
+</subsection>
 
-<p>
-The TURBINE_GROUP table allows for a series of roles and Turbine Users to be
-connected under a Group ID and hence Group Name. For instance there may be a
-group named Administrators with the necessary roles and permissions. There may
-also be many Administrators on the system. The Group table and it's relationship
-with the TURBINE_USER_GROUP_ROLE table maps this functionality.
-</p>
-
+<subsection name="TURBINE_GROUP">
 <table>
 <tr>
-    <td>Column Name</td>
-    <td>Key</td>
-    <td>Data Type</td>
-    <td>Default Value</td>
-    <td>Null</td>
-    <td>Indexed</td>
-    <td>Comment</td>
+    <th>column name</th>
+    <th>key</th>
+    <th>data type</th>
+    <th>default value</th>
+    <th>null</th>
+    <th>indexed</th>
+    <th>comment</th>
 </tr>
 <tr>
     <td>GROUP_ID</td>
@@ -256,26 +234,25 @@ with the TURBINE_USER_GROUP_ROLE table maps this functionality.
     <td></td>
 </tr>
 </table>
-
 <p>
-<strong>TURBINE_ROLE_PERMISSION</strong>
+The TURBINE_GROUP table allows for a series of roles and Turbine Users to be
+connected under a Group ID and hence Group Name. For instance there may be a
+group named Administrators with the necessary roles and permissions. There may
+also be many Administrators on the system. The Group table and it's relationship
+with the TURBINE_USER_GROUP_ROLE table maps this functionality.
 </p>
+</subsection>
 
-<p>
-The TURBINE_ROLE_PERMISSION table is a bridging table between TURBINE_ROLE and
-TURBINE_PERMISSION that allows a several differant roles to make use of the
-same permission.
-</p>
-
+<subsection name="TURBINE_ROLE_PERMISSION">
 <table>
 <tr>
-    <td>Column Name</td>
-    <td>Key</td>
-    <td>Data Type</td>
-    <td>Default Value</td>
-    <td>Null</td>
-    <td>Indexed</td>
-    <td>Comment</td>
+    <th>column name</th>
+    <th>key</th>
+    <th>data type</th>
+    <th>default value</th>
+    <th>null</th>
+    <th>indexed</th>
+    <th>comment</th>
 </tr>
 <tr>
     <td>ROLE_ID</td>
@@ -296,25 +273,23 @@ same permission.
     <td></td>
 </tr>
 </table>
-
 <p>
-<strong>TURBINE_USER</strong>
+The TURBINE_ROLE_PERMISSION table is a bridging table between TURBINE_ROLE and
+TURBINE_PERMISSION that allows a several differant roles to make use of the
+same permission.
 </p>
+</subsection>
 
-<p>
-The TURBINE_USER table describes the basic information on the user in the
-system.
-</p>
-
+<subsection name="TURBINE_USER">
 <table>
 <tr>
-    <td>Column Name</td>
-    <td>Key</td>
-    <td>Data Type</td>
-    <td>Default Value</td>
-    <td>Null</td>
-    <td>Indexed</td>
-    <td>Comment</td>
+    <th>column name</th>
+    <th>key</th>
+    <th>data type</th>
+    <th>default value</th>
+    <th>null</th>
+    <th>indexed</th>
+    <th>comment</th>
 </tr>
 <tr>
     <td>USER_ID</td>
@@ -416,25 +391,22 @@ system.
     <td></td>
 </tr>
 </table>
-
 <p>
-<strong>TURBINE_USER_GROUP_ROLE</strong>
+The TURBINE_USER table describes the basic information on the user in the
+system.
 </p>
+</subsection>
 
-<p>
-The TURBINE_USER_GROUP_ROLE describes what roles a given user has as a member of
-a given group.
-</p>
-
+<subsection name="TURBINE_USER_GROUP_ROLE">
 <table>
 <tr>
-    <td>Column Name</td>
-    <td>Key</td>
-    <td>Data Type</td>
-    <td>Default Value</td>
-    <td>Null</td>
-    <td>Indexed</td>
-    <td>Comment</td>
+    <th>column name</th>
+    <th>key</th>
+    <th>data type</th>
+    <th>default value</th>
+    <th>null</th>
+    <th>indexed</th>
+    <th>comment</th>
 </tr>
 <tr>
     <td>USER_ID</td>
@@ -464,20 +436,22 @@ a given group.
     <td></td>
 </tr>
 </table>
-
 <p>
-<strong>TURBINE_SCHEDULED_JOB</strong>
+The TURBINE_USER_GROUP_ROLE describes what roles a given user has as a member of
+a given group.
 </p>
+</subsection>
 
+<subsection name="TURBINE_SCHEDULED_JOB">
 <table>
 <tr>
-    <td>Column Name</td>
-    <td>Key</td>
-    <td>Data Type</td>
-    <td>Default Value</td>
-    <td>Null</td>
-    <td>Indexed</td>
-    <td>Comment</td>
+    <th>column name</th>
+    <th>key</th>
+    <th>data type</th>
+    <th>default value</th>
+    <th>null</th>
+    <th>indexed</th>
+    <th>comment</th>
 </tr>
 <tr>
     <td>JOB_ID</td>
@@ -561,6 +535,7 @@ a given group.
     <td></td>
 </tr>
 </table>
+</subsection>
 
 </section>
 

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Turbine"
+        href="http://jakarta.apache.org/turbine/">
+
+  <title>Turbine</title>
+
+  <body>
+    <links>
+      <item name="Turbine"                 href="http://jakarta.apache.org/turbine/"/>
+      <item name="Turbine-2"               href="http://jakarta.apache.org/turbine/turbine-2/"/>
+      <item name="Turbine-3"               href="http://jakarta.apache.org/turbine/turbine-3/"/>
+      <item name="Torque"                  href="http://jakarta.apache.org/turbine/torque/"/>
+      <item name="Fulcrum"                 href="http://jakarta.apache.org/turbine/fulcrum/"/>
+      <item name="TDK"                     href="http://jakarta.apache.org/turbine/tdk/"/>
+      <item name="Maven"                   href="http://jakarta.apache.org/turbine/maven/"/>
+      <item name="JCS"                     href="http://jakarta.apache.org/turbine/jcs/"/>
+    </links>
+
+    <menu name="Essentials">
+      <item name="Overview"              href="/index.html"/>
+      <item name="Features"              href="/features.html"/>
+      <item name="Specification"         href="/fsd.html"/>
+      <item name="Getting Started"       href="/getting-started.html"/>
+      <item name="Changes"               href="/changes.html"/>
+    </menu>
+
+    <menu name="Documentation">
+      <item name="Core Schema"           href="/turbine-schema.html"/>
+      <item name="J2EE Integration"      href="/j2ee-integration.html"/>
+      <item name="Model 2+1"             href="/model2+1.html"/>
+      <item name="Pull MVC Model"        href="/pullmodel.html"/>
+      <item name="Services"              href="/services.html"/>
+      <item name="Howtos"                href="/howtos.html"/>
+    </menu>
+
+    <menu name="Development">
+      <item name="DB Adapters"           href="/db-adapters.html"/>
+      <item name="Project Map"           href="/project-map.html"/>
+      <item name="Proposals"             href="/proposals.html"/>
+      <item name="Todo"                  href="/todo.html"/>
+    </menu>
+
+  </body>
+</project>

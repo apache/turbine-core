@@ -165,18 +165,18 @@ public class TemplateSecureSessionValidator extends SessionValidator
             {
                 if (data.getTemplateInfo().getScreenTemplate() != null)
                 {
+                    data.getUser().setTemp( "prev_template",
+                        data.getTemplateInfo().getScreenTemplate() );
                     data.getTemplateInfo().setScreenTemplate(
                         TurbineResources.getString(
                             TurbineConstants.TEMPLATE_INVALID_STATE) );
-
-                    data.getUser().setTemp( "prev_template",
-                        data.getTemplateInfo().getScreenTemplate() );
                 }
                 else
                 {
+                    data.getUser().setTemp( "prev_screen",
+                        data.getScreen().replace('/', ',') );
                     data.setScreen( TurbineResources.getString(
                         TurbineConstants.SCREEN_INVALID_STATE) );
-                    data.getUser().setTemp( "prev_screen", data.getScreen() );
                 }
                 data.getUser()
                     .setTemp( "prev_parameters", data.getParameters() );
@@ -192,19 +192,5 @@ public class TemplateSecureSessionValidator extends SessionValidator
         {
             data.setScreen(null);
         }
-    }
-
-    /**
-     * By default, this is true. It says that we require a new session
-     * in order to allow people to access the system. We accomplish
-     * this by doing a redirect and using the HttpSession spec.
-     *
-     * @param data Turbine information.
-     * @return True if we require a new session in order to allow
-     * people to access the system.
-     */
-    public boolean requiresNewSession(RunData data)
-    {
-        return true;
     }
 }

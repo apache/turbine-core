@@ -25,13 +25,13 @@ package org.apache.turbine.services.db;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -53,20 +53,12 @@ package org.apache.turbine.services.db;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
- 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+
+import org.apache.torque.Torque;
+import org.apache.torque.map.DatabaseMap;
 import org.apache.turbine.services.BaseService;
-import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.db.AutoIncrementIdGenerator;
-import org.apache.turbine.util.db.SequenceIdGenerator;
-import org.apache.turbine.util.db.IDBroker;
-import org.apache.turbine.util.db.adapter.DB;
-import org.apache.turbine.util.db.adapter.DBFactory;
-import org.apache.turbine.util.db.map.DatabaseMap;
-import org.apache.turbine.util.db.map.TableMap;
+
 
 /**
  * Turbine's default implmentation of {@link MapBrokerService}.
@@ -79,22 +71,26 @@ import org.apache.turbine.util.db.map.TableMap;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
+ * @deprecated use org.apache.torque.Torque instead
  */
-public class TurbineMapBrokerService extends BaseService 
-    implements MapBrokerService
+public class TurbineMapBrokerService extends BaseService
+        implements MapBrokerService
 {
-    /** The global cache of database maps */
-    private Map dbMaps;
 
     /**
      * Initializes the service.
      */
     public void init()
     {
-        dbMaps = (Map)new HashMap();
-
-        // indicate that the service initialized correctly
         setInit(true);
+    }
+
+    /**
+     * Return the default map.
+     */
+    public String getDefaultMap()
+    {
+        return Torque.getDefaultMap();
     }
 
     /**
@@ -105,31 +101,28 @@ public class TurbineMapBrokerService extends BaseService
      */
     public void shutdown()
     {
-        Iterator maps = dbMaps.values().iterator(); 
-        while ( maps.hasNext() )
-        {
-            DatabaseMap map = (DatabaseMap) maps.next();
-            IDBroker idBroker = map.getIDBroker();
-            if (idBroker != null)
-            {
-                idBroker.stop();
-            }
-        }
     }
 
     /**
      * Returns the default database map information.
      *
      * @return A DatabaseMap.
-     * @throws TurbineException Any exceptions caught during procssing will be 
+     * @throws TurbineException Any exceptions caught during procssing will be
      *         rethrown wrapped into a TurbineException.
      */
     public DatabaseMap getDatabaseMap()
-        throws TurbineException
+            throws TurbineException
     {
-        return getDatabaseMap(DEFAULT);
+        try
+        {
+            return Torque.getDatabaseMap();
+        }
+        catch (Exception ex)
+        {
+            throw new TurbineException(ex);
+        }
     }
-    
+
     /**
      * Returns the database map information. Name relates to the name
      * of the connection pool to associate with the map.
@@ -137,90 +130,20 @@ public class TurbineMapBrokerService extends BaseService
      * @param name The name of the <code>DatabaseMap</code> to
      * retrieve.
      * @return The named <code>DatabaseMap</code>.
-     * @throws TurbineException Any exceptions caught during procssing will be 
+     * @throws TurbineException Any exceptions caught during procssing will be
      *         rethrown wrapped into a TurbineException.
      */
     public DatabaseMap getDatabaseMap(String name)
-        throws TurbineException
+            throws TurbineException
     {
-            if ( name == null )
+        try
         {
-            throw new TurbineException ("DatabaseMap name was null!");
+            return Torque.getDatabaseMap(name);
         }
-
-        // Quick (non-sync) check for the map we want.
-        DatabaseMap map = (DatabaseMap)dbMaps.get(name);
-        if ( map == null )
+        catch (Exception ex)
         {
-            // Map not there...
-            synchronized( dbMaps )
-            {
-                // ... sync and look again to avoid race condition.
-                map = (DatabaseMap)dbMaps.get(name);
-                if ( map == null )
-                {
-                    // Still not there.  Create and add.
-                    map = new DatabaseMap(name);
-       
-                    // Add info about IDBroker's table.
-                    setupIdTable(map);
-                    // setup other id generators
-                    try
-                    {
-                        DB db = DBFactory.create(
-                            getDatabaseProperty(name, "driver") );
-                        map.addIdGenerator(TableMap.AUTOINCREMENT,
-                                       new AutoIncrementIdGenerator(db) );
-                        map.addIdGenerator(TableMap.SEQUENCE,
-                                       new SequenceIdGenerator(db) );
-                    }
-                    catch (java.lang.InstantiationException e)
-                    {
-                        throw new TurbineException(e);
-                    }
-
-                    dbMaps.put(name, map);
-                }
-            }
+            throw new TurbineException(ex);
         }
-        return map;
-    }
-
-    /**
-     * Returns the specified property of the given database, or the empty
-     * string if no value is set for the property.
-     *
-     * @param db   The name of the database whose property to get.
-     * @param prop The name of the property to get.
-     * @return     The property's value.
-     */
-    private static final String getDatabaseProperty(String db, String prop)
-    {
-        return TurbineResources.getString
-            ( new StringBuffer("database.")
-                .append(db)
-                .append('.')
-                .append(prop)
-                .toString(), "" );
-    }
-
-    /**
-     * Setup IDBroker's table information within given database map.
-     *
-     * This method should be called on all new database map to ensure that
-     * IDBroker functionality is available in all databases userd by the 
-     * application.
-     *
-     * @param map the DataBaseMap to setup.
-     */
-    private void setupIdTable(DatabaseMap map)
-    {
-        map.setIdTable("ID_TABLE");
-        TableMap tMap = map.getIdTable();
-        tMap.addPrimaryKey("ID_TABLE_ID", new Integer(0));
-        tMap.addColumn("TABLE_NAME", new String(""));
-        tMap.addColumn("NEXT_ID", new Integer(0));
-        tMap.addColumn("QUANTITY", new Integer(0));
     }
 }
 

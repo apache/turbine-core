@@ -54,6 +54,7 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Stack;
 
@@ -63,7 +64,7 @@ import java.util.Stack;
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @version $Id$
  */
-public class StringStackBuffer
+public class StringStackBuffer implements Serializable
 {
     /** The stack. */
     private Stack stk = null;

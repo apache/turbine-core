@@ -25,13 +25,13 @@ package org.apache.turbine.services.db;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,27 +54,25 @@ package org.apache.turbine.services.db;
  * <http://www.apache.org/>.
  */
 
+import java.sql.Connection;
+import org.apache.torque.adapter.DB;
+import org.apache.torque.map.DatabaseMap;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.db.adapter.DB;
-import org.apache.turbine.util.db.map.DatabaseMap;
-import org.apache.turbine.util.db.pool.DBConnection;
 
 /**
  * This class provides a common front end to all database - related
  * services in Turbine. Currently these are {@link PoolBrokerService} and
  * {@link MapBrokerService}. This class contains static methods that you
- * can call to access the methods of system's configured service 
+ * can call to access the methods of system's configured service
  * implementations.
  * <p>
- * Assuming that your TurbineResources.properties file is setup correctly, the 
- * sample code below demonstrates the right way to get and release a database 
- * connection (exception handling is application dependent):
- * <blockquote><code><pre>
- * DBConnection dbConn = null;
+ * <b> This class is deprecated you should use org.apache.torque.Torque</b>
+ *
+ * Connection dbConn = null;
  * try
  * {
- *     dbConn = TurbineDB.getConnection();
+ *     dbConn = Torque.getConnection();
  *     // Do something with the connection here...
  * }
  * catch (Exception e)
@@ -85,7 +83,7 @@ import org.apache.turbine.util.db.pool.DBConnection;
  * {
  *     try
  *     {
- *         TurbineDB.releaseConnection(dbConn);
+ *         dbConn.close();
  *     }
  *     catch (Exception e)
  *     {
@@ -96,6 +94,7 @@ import org.apache.turbine.util.db.pool.DBConnection;
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
+ * @deprecated use org.apache.torque.Torque
  */
 public abstract class TurbineDB
 {
@@ -110,6 +109,21 @@ public abstract class TurbineDB
      */
     public static String getDefaultMap()
     {
+        // Required due to the nasty coupling between
+        // torque in 2.x and the db related services.
+        // This is only called once in the peer so the
+        // hit of catching the exception will only happen
+        // once and while running torque from the command
+        // line it won't incur an unbearable wait.
+        try
+        {
+            return getMapBroker().getDefaultMap();
+        }
+        catch(Exception e)
+        {
+            // do nothing
+        }
+
         return MapBrokerService.DEFAULT;
     }
 
@@ -153,6 +167,21 @@ public abstract class TurbineDB
      */
     public static String getDefaultDB()
     {
+        // Required due to the nasty coupling between
+        // torque in 2.x and the db related services.
+        // This is only called once in the peer so the
+        // hit of catching the exception will only happen
+        // once and while running torque from the command
+        // line it won't incur an unbearable wait.
+        try
+        {
+            return getPoolBroker().getDefaultDB();
+        }
+        catch(Exception e)
+        {
+            // do nothing
+        }
+
         return PoolBrokerService.DEFAULT;
     }
 
@@ -160,10 +189,10 @@ public abstract class TurbineDB
      * This method returns a DBConnection from the default pool.
      *
      * @return The requested connection.
-     * @throws TurbineException Any exceptions caught during processing will be
+     * @throws Exception Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
-    public static DBConnection getConnection()
+    public static Connection getConnection()
         throws Exception
     {
         return getPoolBroker().getConnection();
@@ -185,38 +214,13 @@ public abstract class TurbineDB
      *
      * @param name The name of the pool to get a connection from.
      * @return     The requested connection.
-     * @throws TurbineException Any exceptions caught during processing will be
+     * @throws Exception Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
-    public static DBConnection getConnection(String name)
+    public static Connection getConnection(String name)
         throws Exception
     {
         return getPoolBroker().getConnection(name);
-    }
-
-
-    /**
-     * This method returns a DBConnecton using the given parameters.
-     *
-     * @param driver The fully-qualified name of the JDBC driver to use.
-     * @param url The URL of the database from which the connection is
-     * desired.
-     * @param username The name of the database user.
-     * @param password The password of the database user.
-     * @return A DBConnection.
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
-     *
-     * @deprecated Database parameters should not be specified each
-     * time a DBConnection is fetched from the service.
-     */
-    public static DBConnection getConnection(String driver,
-                                      String url,
-                                      String username,
-                                      String password)
-        throws Exception
-    {
-        return getPoolBroker().getConnection(driver, url, username, password);
     }
 
     /**
@@ -226,7 +230,7 @@ public abstract class TurbineDB
      *         rethrown wrapped into a TurbineException.
      * @exception Exception A generic exception.
      */
-    public static void releaseConnection(DBConnection dbconn)
+    public static void releaseConnection(Connection dbconn)
         throws Exception
     {
         getPoolBroker().releaseConnection(dbconn);
@@ -244,6 +248,7 @@ public abstract class TurbineDB
      * @throws TurbineException Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
+/*
     public static void registerPool( String name,
                               String driver,
                               String url,
@@ -253,7 +258,7 @@ public abstract class TurbineDB
     {
         getPoolBroker().registerPool(name, driver, url, username, password);
     }
-
+*/
     ///////////////////////////////////////////////////////////////////////////
     // DB Adapters
     ///////////////////////////////////////////////////////////////////////////
@@ -262,7 +267,7 @@ public abstract class TurbineDB
      * Returns the database adapter for the default connection pool.
      *
      * @return The database adapter.
-     * @throws TurbineException Any exceptions caught during processing will be
+     * @throws Exception Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
     public static DB getDB()
@@ -276,7 +281,7 @@ public abstract class TurbineDB
      *
      * @param name A pool name.
      * @return     The corresponding database adapter.
-     * @throws TurbineException Any exceptions caught during processing will be
+     * @throws Exception Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
     public static DB getDB(String name)
@@ -296,7 +301,8 @@ public abstract class TurbineDB
      */
     private static MapBrokerService getMapBroker()
     {
-        return (MapBrokerService)TurbineServices.getInstance().getService(MapBrokerService.SERVICE_NAME);
+        return (MapBrokerService)TurbineServices.getInstance().getService(
+            MapBrokerService.SERVICE_NAME);
     }
 
     /**
@@ -306,6 +312,7 @@ public abstract class TurbineDB
      */
     private static PoolBrokerService getPoolBroker()
     {
-        return (PoolBrokerService)TurbineServices.getInstance().getService(PoolBrokerService.SERVICE_NAME);
+        return (PoolBrokerService)TurbineServices.getInstance().getService(
+            PoolBrokerService.SERVICE_NAME);
     }
 }

@@ -25,13 +25,13 @@ package org.apache.turbine.util.db;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -57,11 +57,7 @@ package org.apache.turbine.util.db;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.util.StringTokenizer;
-
 import javax.mail.internet.MimeUtility;
-
-import org.apache.java.lang.Bytes;
-
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.TurbineException;
@@ -75,9 +71,9 @@ import org.apache.turbine.util.TurbineException;
  * The second part of the key is time related and will be the lower 48 bits
  * of the long used to signify the time since Jan. 1, 1970.  This will
  * cause key rollover in the year 6429.
- * The preceding 12 bytes are Base64 encoded with the characters / and * 
+ * The preceding 12 bytes are Base64 encoded with the characters / and *
  * replaced by _ (underscore) and - (dash).  Resulting in 16 characters.
- * Finally a counter is used to hand out 4095 keys in between each 
+ * Finally a counter is used to hand out 4095 keys in between each
  * timestamp.
  * The resulting id is a String of 18 characters including:
  * a-z,A-Z,0-9, and the previously mentioned - and _.</p>
@@ -85,7 +81,7 @@ import org.apache.turbine.util.TurbineException;
  * <p>Note this class does not save any state information, so it is important
  * that time only moves forward to keep the integrity of the ids.  We
  * might want to consider saving some state info.</p>
- * 
+ *
  * <p>To specify the MAC/Ethernet address, add a uuid.address= property to the
  * TurbineResources.properties file.</p>
  *
@@ -109,7 +105,7 @@ public class UUIdGenerator
     public UUIdGenerator() throws TurbineException
     {
         String addr = TurbineResources.getString("uuid.address");
-        if ( addr == null ) 
+        if (addr == null)
         {
             Log.info("UUIdGenerator is using a random number as the " +
                      "base for id's.  This is not the best method for many " +
@@ -118,20 +114,20 @@ public class UUIdGenerator
                      "available. Edit TurbineResources.properties file and " +
                      "add a uuid.address= property.");
 
-            for ( int i=0; i<6; i++ ) 
+            for (int i = 0; i < 6; i++)
             {
                 address[i] = (byte) (255 * Math.random());
             }
         }
-        else 
+        else
         {
-            if ( addr.indexOf(".") > 0 ) 
+            if (addr.indexOf(".") > 0)
             {
                 // we should have an IP
                 StringTokenizer stok = new StringTokenizer(addr, ".");
-                if ( stok.countTokens() != 4 ) 
-                {                    
-                    throw new TurbineException( errorString + addr );
+                if (stok.countTokens() != 4)
+                {
+                    throw new TurbineException(errorString + addr);
                 }
                 // this is meant to insure that id's made from ip addresses
                 // will not conflict with MAC id's. I think MAC addresses
@@ -139,45 +135,46 @@ public class UUIdGenerator
                 // be investigated further.
                 address[0] = (byte)255;
                 address[1] = (byte)255;
-                int i=2;
+                int i = 2;
                 try
                 {
-                    while ( stok.hasMoreTokens() ) 
+                    while (stok.hasMoreTokens())
                     {
-                        address[i++] = Byte.parseByte(stok.nextToken());
+                        address[i++] =
+                            Integer.valueOf(stok.nextToken(), 16).byteValue();
                     }
                 }
                 catch (Exception e)
                 {
-                    throw new TurbineException( errorString + addr, e);
+                    throw new TurbineException(errorString + addr, e);
                 }
             }
             else if ( addr.indexOf(":") > 0 )
             {
                 // we should have a MAC
                 StringTokenizer stok = new StringTokenizer(addr, ":");
-                if ( stok.countTokens() != 6 ) 
-                {                    
-                    throw new TurbineException( errorString + addr );
+                if ( stok.countTokens() != 6 )
+                {
+                    throw new TurbineException(errorString + addr);
                 }
-                int i=0;
+                int i = 0;
                 try
                 {
-                    while ( stok.hasMoreTokens() ) 
+                    while (stok.hasMoreTokens())
                     {
                         address[i++] = Byte.parseByte(stok.nextToken(), 16);
                     }
                 }
                 catch (Exception e)
                 {
-                    throw new TurbineException( errorString + addr, e);
+                    throw new TurbineException(errorString + addr, e);
                 }
             }
-            else 
+            else
             {
-                throw new TurbineException( errorString + addr);
-            }    
-        }        
+                throw new TurbineException(errorString + addr);
+            }
+        }
     }
     /**
      * Generates the new base id
@@ -199,22 +196,28 @@ public class UUIdGenerator
         }
         finally
         {
-            if ( bas != null) bas.close();
-            if ( encodedStream != null) encodedStream.close();
+            if (bas != null)
+            {
+                bas.close();
+            }
+            if (encodedStream != null)
+            {
+                encodedStream.close();
+            }
         }
     }
     /**
      * Gets the id
-     * @returns the 18 character id
+     * @return the 18 character id
      */
     public String getId() throws Exception
     {
         int index = ++counter;
-        if ( index > 4095 ) 
+        if (index > 4095)
         {
             synchronized (this)
             {
-                if ( counter > 4095 ) 
+                if (counter > 4095)
                 {
                     generateNewBaseId();
                     counter = 0;
@@ -227,19 +230,20 @@ public class UUIdGenerator
         }
         StringBuffer idbuf = new StringBuffer(18);
         idbuf.append(baseId);
-        idbuf.append(countChar[index/64]);
-        idbuf.append(countChar[index%64]);
+        idbuf.append(countChar[index / 64]);
+        idbuf.append(countChar[index % 64]);
         return idbuf.toString();
     }
 
     /**
      * characters used in the ID
      */
-    private static final char[] countChar = {
+    private static final char[] countChar =
+    {
         'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
         'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
         'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
         'w','x','y','z','0','1','2','3','4','5','6','7','8','9','-','_'
     };
-}        
+}
 

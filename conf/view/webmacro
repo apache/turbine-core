@@ -1,5 +1,5 @@
-template.hompage=/index.wm
-template.login=/login.wm
+template.hompage=Index.wm
+template.login=Login.wm
 screen.homepage=
 screen.login=
 screen.error=WebMacroSiteErrorScreen
@@ -17,7 +17,7 @@ template.default.extension=wm
 template.path=/templates/app
 template.default.navigation=WebMacroSiteNavigation
 template.default.screen=WebMacroSiteScreen
-template.default.layout=/default.wm
-template.error=/Error.wm
+template.default.layout=Default.wm
+template.error=Error.wm
 
 template.service=services.WebMacroService.classname=org.apache.turbine.services.webmacro.TurbineWebMacroService

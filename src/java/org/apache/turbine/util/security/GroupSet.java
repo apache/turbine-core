@@ -25,13 +25,13 @@ package org.apache.turbine.util.security;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,12 +55,9 @@ package org.apache.turbine.util.security;
  */
 
 import java.io.Serializable;
-
-import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
-
 import org.apache.turbine.om.security.Group;
 
 /**
@@ -86,10 +83,10 @@ public class GroupSet implements Serializable
     {
         set = new TreeSet();
     }
-    
+
     /**
      * Constructs a new GroupSet with specifed contents.
-     * 
+     *
      * If the given collection contains multiple objects that are
      * identical WRT equals() method, some objects will be overwriten.
      *
@@ -110,13 +107,13 @@ public class GroupSet implements Serializable
      */
     public boolean add(Group group)
     {
-        return set.add( (Object)group );
+        return set.add((Object) group);
     }
 
     /**
      * Adds the Groups in a Collection to this GroupSet.
      *
-     * @param groupSet A Collection of Groups.
+     * @param groups A Collection of Groups.
      * @return True if this GroupSet changed as a result; false
      * if no change to this GroupSet occurred (this GroupSet
      * already contained all members of the added GroupSet).
@@ -136,7 +133,7 @@ public class GroupSet implements Serializable
      */
     public boolean add(GroupSet groupSet)
     {
-        return add((Collection)groupSet.set);
+        return set.addAll(groupSet.set);
     }
 
     /**
@@ -148,7 +145,7 @@ public class GroupSet implements Serializable
      */
     public boolean remove(Group group)
     {
-        return set.remove( (Object)group );
+        return set.remove((Object) group);
     }
 
     /**
@@ -168,7 +165,7 @@ public class GroupSet implements Serializable
      */
     public boolean contains(Group group)
     {
-        return set.contains( (Object)group );
+        return set.contains((Object) group);
     }
 
     /**
@@ -182,11 +179,10 @@ public class GroupSet implements Serializable
     public boolean contains(String groupName)
     {
         Iterator iter = set.iterator();
-        while ( iter.hasNext() )
+        while (iter.hasNext())
         {
-            Group group = (Group)iter.next();
-            if ( groupName != null  &&
-                 groupName.equals( group.getName() ) )
+            Group group = (Group) iter.next();
+            if (groupName != null && groupName.equals(group.getName()))
             {
                 return true;
             }
@@ -205,11 +201,10 @@ public class GroupSet implements Serializable
     public Group getGroup(String groupName)
     {
         Iterator iter = set.iterator();
-        while ( iter.hasNext() )
+        while (iter.hasNext())
         {
-            Group group = (Group)iter.next();
-            if ( groupName != null  &&
-                 groupName.equals( group.getName() ) )
+            Group group = (Group) iter.next();
+            if ( groupName != null && groupName.equals(group.getName()))
             {
                 return group;
             }
@@ -224,7 +219,7 @@ public class GroupSet implements Serializable
      */
     public Group[] getGroupsArray()
     {
-        return (Group[])set.toArray(new Group[0]);
+        return (Group[]) set.toArray(new Group[0]);
     }
 
     /**

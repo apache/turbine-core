@@ -54,8 +54,6 @@ package org.apache.turbine.services.intake.validator;
  * <http://www.apache.org/>.
  */
 
-import java.util.Map;
-import org.apache.turbine.util.TurbineException;
 
 /**
  * Validator api.

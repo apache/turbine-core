@@ -25,13 +25,13 @@ package org.apache.turbine.util.velocity;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -56,18 +56,12 @@ package org.apache.turbine.util.velocity;
 
 import java.net.URL;
 import java.util.Hashtable;
-
 import javax.mail.MessagingException;
-
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.services.velocity.VelocityService;
-
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.mail.HtmlEmail;
-import org.apache.turbine.util.mail.MultiPartEmail;
-import org.apache.turbine.util.template.TemplateInfo;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -105,8 +99,7 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:A.Schild@aarboard.ch">Andre Schild</a>
  * @version $Id$
  */
-public class VelocityHtmlEmail
-    extends HtmlEmail
+public class VelocityHtmlEmail extends HtmlEmail
 {
     /**
      * The html template to process, relative to VM's template
@@ -185,14 +178,16 @@ public class VelocityHtmlEmail
         // Process the templates.
         try
         {
-            if( htmlTemplate != null )
-                htmlbody = TurbineVelocity.handleRequest(context,
-                                                         htmlTemplate);
-            if( textTemplate != null )
-                textbody = TurbineVelocity.handleRequest(context,
-                                                         textTemplate);
+            if (htmlTemplate != null)
+            {
+                htmlbody = TurbineVelocity.handleRequest(context, htmlTemplate);
+            }
+            if (textTemplate != null)
+            {
+                textbody = TurbineVelocity.handleRequest(context, textTemplate);
+            }
         }
-        catch( Exception e)
+        catch (Exception e)
         {
             throw new MessagingException("Cannot parse template", e);
         }
@@ -227,9 +222,7 @@ public class VelocityHtmlEmail
      * @exception MessagingException.
      * @see HtmlEmail#embed(URL surl, String name) embed.
      */
-    public String embed(String surl,
-                        String name)
-        throws MessagingException
+    public String embed(String surl, String name) throws MessagingException
     {
         String cid ="";
         try
@@ -238,9 +231,9 @@ public class VelocityHtmlEmail
             cid = super.embed(url, name);
             embmap.put(name,cid);
         }
-        catch( Exception e )
+        catch (Exception e)
         {
-            Log.error("cannot embed "+surl+": ", e);
+            Log.error("cannot embed " + surl + ": ", e);
         }
         return cid;
     }
@@ -254,8 +247,8 @@ public class VelocityHtmlEmail
      */
     public String getCid(String filename)
     {
-        String cid = (String)embmap.get(filename);
-        return "cid:"+cid;
+        String cid = (String) embmap.get(filename);
+        return "cid:" + cid;
     }
 
     /**
@@ -268,16 +261,14 @@ public class VelocityHtmlEmail
     {
         // Attempt to get it from the RunData first.  If it doesn't
         // exist, create it and then stuff it into the RunData.
-        Context vc = (Context)data.getTemplateInfo()
+        Context vc = (Context) data.getTemplateInfo()
             .getTemplateContext(VelocityService.CONTEXT);
         if (vc == null)
         {
             vc = TurbineVelocity.getContext(data);
             data.getTemplateInfo()
-                .setTemplateContext(VelocityService.CONTEXT,
-                                    vc);
+                .setTemplateContext(VelocityService.CONTEXT, vc);
         }
         return vc;
     }
 }
- 

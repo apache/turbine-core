@@ -56,34 +56,19 @@ package org.apache.turbine.services.security.ldap;
 
 import java.util.Hashtable;
 import java.util.Vector;
-
-import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.util.RunData;
-
-import org.apache.turbine.om.security.User;
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
-import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.Permission;
-import org.apache.turbine.om.security.peer.GroupPeer;
-import org.apache.turbine.om.security.peer.RolePeer;
-import org.apache.turbine.om.security.peer.PermissionPeer;
-import org.apache.turbine.om.security.peer.UserGroupRolePeer;
-import org.apache.turbine.om.security.peer.RolePermissionPeer;
-import org.apache.turbine.om.security.peer.TurbineUserPeer;
-
-import org.apache.turbine.util.Log;
-import org.apache.turbine.util.db.Criteria;
-
-import org.apache.turbine.util.security.AccessControlList;
-import org.apache.turbine.util.security.GroupSet;
-import org.apache.turbine.util.security.RoleSet;
-import org.apache.turbine.util.security.PermissionSet;
-import org.apache.turbine.util.security.DataBackendException;
-import org.apache.turbine.util.security.UnknownEntityException;
-import org.apache.turbine.util.security.EntityExistsException;
-import org.apache.turbine.util.security.PasswordMismatchException;
-
+import org.apache.turbine.om.security.Role;
+import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.BaseSecurityService;
+import org.apache.turbine.util.security.AccessControlList;
+import org.apache.turbine.util.security.DataBackendException;
+import org.apache.turbine.util.security.EntityExistsException;
+import org.apache.turbine.util.security.GroupSet;
+import org.apache.turbine.util.security.PermissionSet;
+import org.apache.turbine.util.security.RoleSet;
+import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
  * An implementation of SecurityService that uses LDAP as a backend.
@@ -92,6 +77,7 @@ import org.apache.turbine.services.security.BaseSecurityService;
  * @author <a href="mailto:tadewunmi@gluecode.com">Tracy M. Adewunmi </a>
  * @author <a href="mailto:lflournoy@gluecode.com">Leonard J. Flournoy </a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
  * @version $Id$
  */
 public class LDAPSecurityService extends BaseSecurityService

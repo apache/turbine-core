@@ -54,22 +54,16 @@ package org.apache.turbine.modules.layouts;
  * <http://www.apache.org/>.
  */
 
-// ECS Classes
-import org.apache.ecs.ConcreteElement;
-import org.apache.ecs.StringElement;
-
-// Turbine Classes
-import org.apache.turbine.modules.Layout;
-import org.apache.turbine.modules.ScreenLoader;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.services.freemarker.FreeMarkerService;
-import org.apache.turbine.services.freemarker.NavigationModel;
-import org.apache.turbine.services.TurbineServices;
-
-// FreeMarker Stuff
 import freemarker.template.SimpleHash;
 import freemarker.template.SimpleScalar;
+import org.apache.ecs.ConcreteElement;
+import org.apache.ecs.StringElement;
+import org.apache.turbine.modules.Layout;
+import org.apache.turbine.modules.ScreenLoader;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.freemarker.FreeMarkerService;
+import org.apache.turbine.services.freemarker.NavigationModel;
+import org.apache.turbine.util.RunData;
 
 
 /**
@@ -90,7 +84,7 @@ public class FreeMarkerSiteLayout extends Layout
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    public void doBuild( RunData data )
+    public void doBuild(RunData data)
         throws Exception
     {
          SimpleHash context = getContext(data);

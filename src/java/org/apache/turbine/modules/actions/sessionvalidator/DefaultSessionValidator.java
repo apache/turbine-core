@@ -54,13 +54,9 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  * <http://www.apache.org/>.
  */
 
-// Turbine Modules
-//import org.apache.turbine.modules.*;
-
-// Turbine Utility Classes
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.services.resources.TurbineResources;
+import org.apache.turbine.util.RunData;
 
 /**
  * The SessionValidator attempts to retrieve the User object from the
@@ -139,19 +135,5 @@ public class DefaultSessionValidator extends SessionValidator
                 data.setAction( "" );
             }
         }
-    }
-
-    /**
-     * By default, this is true. It says that we require a new session
-     * in order to allow people to access the system. We accomplish
-     * this by doing a redirect and using the HttpSession spec.
-     *
-     * @param data Turbine information.
-     * @return True if we require a new session in order to allow
-     * people to access the system.
-     */
-    public boolean requiresNewSession(RunData data)
-    {
-        return true;
     }
 }

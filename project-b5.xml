@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <pomVersion>3</pomVersion>
+  <name>jakarta-turbine-2</name>
+  <id>turbine</id>
+  <currentVersion>2.2-b2</currentVersion>
+  <organization>
+    <name>Apache Software Foundation</name>
+    <url>http://jakarta.apache.org/</url>
+  </organization>
+  <logo>/images/blue-logo.gif</logo>
+  <inceptionYear>2000</inceptionYear>
+  <package>org.apache.turbine</package>
+  <gumpRepositoryId>jakarta</gumpRepositoryId>
+  <shortDescription>A servlet based framework.</shortDescription>
+  <description>Turbine is a servlet based framework that allows experienced Java developers to quickly build secure web applications. Parts of Turbine can also be used independently of the web portion of Turbine as well. In other words, we strive to make portions of Turbine easily available for use in other applications.</description>
+  <url>http://jakarta.apache.org/turbine/turbine-2/</url>
+  <issueTrackingUrl>http://issues.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
+  <siteAddress>jakarta.apache.org</siteAddress>
+  <siteDirectory>/www/jakarta.apache.org/turbine/turbine-2/</siteDirectory>
+  <mailingLists>
+    <mailingList>
+      <name>Turbine User List</name>
+      <subscribe>turbine-user-subscribe@jakarta.apache.org</subscribe>
+      <unsubscribe>turbine-user-unsubscribe@jakarta.apache.org</unsubscribe>
+      <archive>http://archives.apache.org/eyebrowse/SummarizeList?listName=turbine-user@jakarta.apache.org</archive>
+    </mailingList>
+    <mailingList>
+      <name>Turbine Developer List</name>
+      <subscribe>mailto:turbine-dev-subscribe@jakarta.apache.org</subscribe>
+      <unsubscribe>mailto:turbine-dev-unsubscribe@jakarta.apache.org</unsubscribe>
+      <archive>http://archives.apache.org/eyebrowse/SummarizeList?listName=turbine-dev@jakarta.apache.org</archive>
+    </mailingList>
+  </mailingLists>
+  <repository>
+    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2</connection>
+    <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2/</url>
+  </repository>
+  <developers>
+    <developer>
+      <name>Gary Bartlett</name>
+      <id/>
+      <email/>
+      <organization>gary_a_bartlett@yahoo.com</organization>
+    </developer>
+    <developer>
+      <name>Jeff Brekke</name>
+      <id>brekke</id>
+      <email>ekkerbj@yahoo.com</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Dave Bryson</name>
+      <id>daveb</id>
+      <email>mbryson@mont.mindspring.com</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Kevin A. Burton</name>
+      <id>burton</id>
+      <email>burton@relativity.yi.org</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Youngho Cho</name>
+      <id/>
+      <email>youngho@nannet.co.kr</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Frank Conradie</name>
+      <id/>
+      <email>frank@opticode.co.za</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Gonzalo A. Diethelm</name>
+      <id/>
+      <email>gonzalo.diethelm@iname.com</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Eric Dobbs</name>
+      <id/>
+      <email>dobbs@apache.org</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>David Duddleston</name>
+      <id/>
+      <email>david@i2a.com</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Christopher Elkins</name>
+      <id/>
+      <email>celkins@scardini.com</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Jian He</name>
+      <id/>
+      <email>hjnet@163.net</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Fedor Karpelevitch</name>
+      <id>fedor</id>
+      <email>fedor@karpelevitch.net</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Nissim Karpenstein</name>
+      <id/>
+      <email>nissim@nksystems.com</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Rafal Krzewski</name>
+      <id/>
+      <email>krzewski@e-point.pl</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Frank Kim</name>
+      <id/>
+      <email/>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Chris Kimpton</name>
+      <id/>
+      <email>kimptoc.mail@bigfoot.com</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Sean Legassick</name>
+      <id/>
+      <email>mailto:sean@informage.net</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Josh Lucas</name>
+      <id/>
+      <email>josh@stonecottage.com</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Carl Ludwig</name>
+      <id/>
+      <email>carl@destinymusic.com</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Jonas Mauras</name>
+      <id/>
+      <email>jm@mediaphil.de</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Brett McLaughlin</name>
+      <id/>
+      <email>bmclaugh@algx.net</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>John McNally</name>
+      <id>jmcnally</id>
+      <email>jmcnally@collab.net</email>
+      <organization>CollabNet, Inc.</organization>
+    </developer>
+    <developer>
+      <name>Leon Messerschmidt</name>
+      <id/>
+      <email>leon@opticode.co.za</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Chris Meyer</name>
+      <id/>
+      <email>cmeyer@gatan.com</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Steven Nagy</name>
+      <id/>
+      <email>snagy@web-publicity.com</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Kasper Nielsen</name>
+      <id/>
+      <email>mailto:kav@kav.dk</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Paul O'Leary</name>
+      <id/>
+      <email>paul@evolventtech.com</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Giacomo Pati</name>
+      <id/>
+      <email>Giacomo.Pati@pwr.ch</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Martin Poeschl</name>
+      <id>mpoeschl</id>
+      <email>mpoeschl@marmot.at</email>
+      <organization>Tucana</organization>
+    </developer>
+    <developer>
+      <name>Mark Porter</name>
+      <id/>
+      <email>mark.porter@canlink.com</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Jeff Prickett</name>
+      <id/>
+      <email>jeffprickett@mindspring.com</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Ilkka Priha</name>
+      <id/>
+      <email>ilkka.priha@simsoft.fi</email>
+      <organization/>
+    </developer>
+    <developer>
+      <name>Daniel Rall</name>
+      <id>dlr</id>
+      <email>dlr@finemaltcoding.com</email>
+      <organization>CollabNet, Inc.</organization>
+    </developer>
+    <!--
+    <td>Cameron Riley</td>
+    <td><a href="mailto:criley@ekmail.com">criley@ekmail.com</a></td>
+    <td></td>
+    <td>Apprentice</td>
+    -->
+    <!--
+    <td>Greg Ritter</td>
+    <td><a href="mailto:greg@shwoop.com">greg@shwoop.com</a></td>
+    <td></td>
+    <td>Master</td>
+    -->
+
+    <developer>
+      <name>Henning P. Schmiedehausen</name>
+      <id>henning</id>
+      <email>hps@intermeta.de</email>
+      <organization>INTERMETA - Gesellschaft fuer Mehrwertdienste mbH</organization>
+    </developer>
+    <developer>
+      <name>Kurt Schrader</name>
+      <id>kschrader</id>
+      <email>kschrader@karmalab.org</email>
+      <organization>University of Michigan</organization>
+    </developer>
+    <!--
+    <td>Ingo Schuster</td>
+    <td><a href="mailto:ingo@raleigh.ibm.com">ingo@raleigh.ibm.com</a></td>
+    <td></td>
+    <td>Apprentice</td>
+    -->
+    <!--
+    <td>Costas Stergiou</td>
+    <td><a href="mailto:csterg@aias.gr">csterg@aias.gr</a></td>
+    <td></td>
+    <td>Journeyer</td>
+    -->
+
+    <developer>
+      <name>Jon Scott Stevens</name>
+      <id>jon</id>
+      <email>jon@latchkey.com</email>
+      <organization>CollabNet, Inc.</organization>
+    </developer>
+    <!--
+    <td>George Stewart</td>
+    <td><a href="mailto:georgestewart@yahoo.com">georgestewart@yahoo.com</a></td>
+    <td></td>
+    <td>Journeyer</td>
+    -->
+    <!--
+    <td>Ralf Stranzenbach</td>
+    <td><a href="mailto:ralf@reswi.ruhr.de">ralf@reswi.ruhr.de</a></td>
+    <td></td>
+    <td>Journeyer</td>
+    -->
+    <!--
+    <td>Hakan Tandogan</td>
+    <td><a href="mailto:hakan42@gmx.de">hakan42@gmx.de</a></td>
+    <td></td>
+    <td>Journeyer</td>
+    -->
+    <!--
+    <td>Scott C. Tavares</td>
+    <td><a href="mailto:stavares@home.com">stavares@home.com</a></td>
+    <td></td>
+    <td>Master</td>
+    -->
+    <!--
+    <td>John Thorhauer</td>
+    <td><a href="mailto:john@zenplex.com">john@zenplex.com</a></td>
+    <td>Zenplex Inc.</td>
+    <td>Journeyer</td>
+    -->
+    <!--
+    <td>Magn&#250;s &#254;&#243;r Torfason</td>
+    <td><a href="mailto:magnus@handpoint.com">magnus@handpoint.com</a></td>
+    <td><a href="http://www.handpoint.com/">handPoint</a></td>
+    <td>Apprentice</td>
+    -->
+
+    <developer>
+      <name>Jason van Zyl</name>
+      <id>jvanzyl</id>
+      <email>jason@zenplex.com</email>
+      <organization>Zenplex</organization>
+    </developer>
+    <!--
+    <td>Scott Weaver</td>
+    <td><a href="mailto:sweaver@rippe.com">sweaver@rippe.com</a></td>
+    <td></td>
+    <td>Apprentice</td>
+    -->
+
+  </developers>
+  <dependencies>
+    <dependency>
+      <id>ant</id>
+      <version>1.4.1</version>
+    </dependency>
+    <dependency>
+      <id>commons-collections</id>
+      <version>2.0</version>
+      <url>http://jakarta.apache.org/commons/collections.html</url>
+    </dependency>
+    <dependency>
+      <id>commons-configuration</id>
+      <version>1.0-dev</version>
+      <url>http://jakarta.apache.org/commons/</url>
+    </dependency>
+    <dependency>
+      <id>commons-lang</id>
+      <version>1.0-dev-20020716</version>
+      <url>http://jakarta.apache.org/commons/</url>
+    </dependency>
+    <dependency>
+      <id>ecs</id>
+      <version>1.4.1</version>
+    </dependency>
+    <dependency>
+      <id>regexp</id>
+      <version>1.3-dev</version>
+    </dependency>
+    <dependency>
+      <id>javamail</id>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+      <id>activation</id>
+      <version>1.0.2</version>
+      <url>http://java.sun.com/products/javabeans/glasgow/jaf.html</url>
+    </dependency>
+    <dependency>
+      <id>jdbc</id>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <id>jndi</id>
+      <version>1.2.1</version>
+    </dependency>
+    <dependency>
+      <id>log4j</id>
+      <version>1.1.3</version>
+    </dependency>
+    <dependency>
+      <id>servletapi</id>
+      <version>2.2</version>
+    </dependency>
+    <dependency>
+      <id>stratum</id>
+      <version>1.0-b2</version>
+    </dependency>
+    <dependency>
+      <id>torque</id>
+      <version>3.0-b3</version>
+    </dependency>
+    <dependency>
+      <id>velocity</id>
+      <version>1.3</version>
+      <url>http://jakarta.apache.org/velocity/</url>
+    </dependency>
+    <dependency>
+      <id>village</id>
+      <version>1.5.3</version>
+      <url>http://share.whichever.com/index.php?SCREEN=village</url>
+    </dependency>
+    <dependency>
+      <id>xmlrpc-helma</id>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <id>xerces</id>
+      <version>2.0.2</version>
+    </dependency>
+    <dependency>
+      <id>xml-apis</id>
+      <version>2.0.2</version>
+    </dependency>
+    <dependency>
+      <id>xalan</id>
+      <version>2.1.0</version>
+    </dependency>
+    <!-- ********************************** -->
+    <!-- THESE DEPENDENCIES ARE FOR TESTING -->
+    <!-- ********************************** -->
+
+    <dependency>
+      <id>commons-httpclient</id>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <id>httpunit</id>
+      <version>1.3</version>
+    </dependency>
+    <dependency>
+      <id>jtidy</id>
+      <version>4aug2000r7-dev</version>
+    </dependency>
+    <dependency>
+      <id>junit</id>
+      <version>3.7</version>
+    </dependency>
+    <!-- *********************************** -->
+    <!-- THESE ARE THE OPTIONAL DEPENDENCIES -->
+    <!-- *********************************** -->
+
+    <dependency>
+      <id>castor</id>
+      <version>0.9.3</version>
+    </dependency>
+    <dependency>
+      <id>webmacro</id>
+      <version>0.94</version>
+    </dependency>
+    <dependency>
+      <id>freemarker</id>
+      <version>1.5.3</version>
+    </dependency>
+    <dependency>
+      <id>jython</id>
+      <version>2.1</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+
+    <integrationUnitTestSourceDirectory>src/rttest</integrationUnitTestSourceDirectory>
+
+    <integrationUnitTest>
+      <includes>
+        <include>**/FileHandlerTest.java</include>
+        <include>include = **/*Test.java</include>
+      </includes>
+    </integrationUnitTest>
+
+    <aspectSourceDirectory/>
+
+    <jarResources/>
+
+    <jars/>
+  </build>
+</project>

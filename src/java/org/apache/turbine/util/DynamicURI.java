@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -59,7 +59,6 @@ import java.util.Enumeration;
 import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.ecs.GenericElement;
 import org.apache.ecs.html.A;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.parser.BaseValueParser;
@@ -163,7 +162,7 @@ public class DynamicURI
     public DynamicURI()
     {
     }
-    
+
     /**
      * Constructor sets up some variables.
      *
@@ -318,7 +317,7 @@ public class DynamicURI
         this( sd );
         this.redirect = redirect;
     }
-    
+
     /**
      * Initialize with a RunData object
      *
@@ -341,7 +340,7 @@ public class DynamicURI
         this.setServerData( sd );
         init();
     }
-    
+
     /**
      * <p>If the type is P (0), then add name/value to the pathInfo
      * hashtable.
@@ -398,10 +397,10 @@ public class DynamicURI
                  !key.equalsIgnoreCase("template") )
             {
                 String[] values = pp.getStrings(key);
-                for ( int i=0; i<values.length; i++ ) 
+                for ( int i=0; i<values.length; i++ )
                 {
-                    add( type, key, values[i] );   
-                }                
+                    add( type, key, values[i] );
+                }
             }
         }
     }
@@ -581,7 +580,7 @@ public class DynamicURI
         if ( this.scriptName == null )
         {
             return "";
-        }            
+        }
         return this.scriptName;
     }
 
@@ -595,7 +594,7 @@ public class DynamicURI
         if ( this.serverName == null )
         {
             return "";
-        }            
+        }
         return(this.serverName);
     }
 
@@ -609,7 +608,7 @@ public class DynamicURI
         if ( this.serverPort == 0 )
         {
             return 80;
-        }            
+        }
         return this.serverPort;
     }
 
@@ -623,7 +622,7 @@ public class DynamicURI
         if ( this.serverScheme == null )
         {
             return "";
-        }            
+        }
         return (this.serverScheme);
     }
 
@@ -671,7 +670,7 @@ public class DynamicURI
                 if ( hasPathInfo && this.pathInfo.size() == 0 )
                 {
                     this.hasPathInfo = false;
-                }                    
+                }
                 break;
             case QUERY_DATA:
                 for (Enumeration e = this.queryData.elements() ;
@@ -687,7 +686,7 @@ public class DynamicURI
                 if ( hasQueryData && this.queryData.size() == 0 )
                 {
                     this.hasQueryData = false;
-                }                    
+                }
                 break;
             }
         }
@@ -762,7 +761,7 @@ public class DynamicURI
                 value = URLEncoder.encode(tmp);
             }
 
-            if (out.length() > 0) 
+            if (out.length() > 0)
             {
                 out.append ( "/" );
             }

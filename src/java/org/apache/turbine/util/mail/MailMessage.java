@@ -25,13 +25,13 @@ package org.apache.turbine.util.mail;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,17 +54,12 @@ package org.apache.turbine.util.mail;
  * <http://www.apache.org/>.
  */
 
-import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
-
-import javax.mail.Address;
-import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -173,7 +168,7 @@ public class MailMessage
      */
     public MailMessage()
     {
-        this(null,null,null,null,null,"","",false);
+        this(null, null, null, null, null, "", "", false);
     }
 
     /**
@@ -192,7 +187,7 @@ public class MailMessage
                        String s,
                        String b)
     {
-        this(h,t,null,null,f,s,b,false);
+        this(h, t, null, null, f, s, b, false);
     }
 
     /**
@@ -309,7 +304,7 @@ public class MailMessage
         str = str.trim();
         int sp = str.lastIndexOf(":");
         name = str.substring(0, sp);
-        value = (str.substring(sp+1)).trim();
+        value = (str.substring(sp + 1)).trim();
 
         headers.put(name, value);
     }
@@ -334,7 +329,7 @@ public class MailMessage
             headerList = new String[v.size()];
             for (int i = 0; i < v.size(); i++)
             {
-                headerList[i] = (String)v.elementAt(i);
+                headerList[i] = (String) v.elementAt(i);
             }
         }
         else
@@ -483,8 +478,8 @@ public class MailMessage
                 Enumeration e = headers.keys();
                 while (e.hasMoreElements())
                 {
-                    String name = (String)e.nextElement();
-                    String value = (String)headers.get(name);
+                    String name = (String) e.nextElement();
+                    String value = (String) headers.get(name);
                     msg.addHeader(name, value);
                 }
             }

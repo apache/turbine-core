@@ -55,9 +55,8 @@ package org.apache.turbine.services.intake.model;
  */
 
 import java.math.BigDecimal;
-import java.util.Vector;
-import org.apache.turbine.services.intake.xmlmodel.Rule;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
+import org.apache.turbine.util.Log;
 import org.apache.turbine.util.ParameterParser;
 
 /**  */
@@ -67,6 +66,29 @@ public class BigDecimalField extends Field
         throws Exception
     {
         super(field, group);
+    }
+
+
+    /**
+     * Sets the default value for a BigDecimal
+     *
+     */
+
+    protected void setDefaultValue(String prop)
+    {
+        defaultValue = null;
+
+        if(prop == null)
+            return;
+
+        try
+        {
+            defaultValue = new BigDecimal(prop);
+        }
+        catch(RuntimeException e)
+        {
+            Log.error("Could not convert "+prop+" into a BigDecimal. ("+name+")");
+        }
     }
 
     /**

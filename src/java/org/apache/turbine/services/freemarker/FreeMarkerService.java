@@ -54,16 +54,20 @@ package org.apache.turbine.services.freemarker;
  * <http://www.apache.org/>.
  */
 
+// FreeMarker Stuff
+import freemarker.template.SimpleHash;
+import freemarker.template.Template;
+
 // Java Classes
-import javax.servlet.*;
-import java.io.*;
+import java.io.IOException;
+
+import javax.servlet.ServletRequest;
 
 // Turbine Stuff
 import org.apache.turbine.services.Service;
-import org.apache.turbine.util.*;
 
-// FreeMarker Stuff
-import freemarker.template.*;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * Implementations of the FreeMarkerService interface.

@@ -53,18 +53,14 @@ package org.apache.turbine.services.intake;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
+import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.IOException;
-import java.beans.BeanInfo;
-import java.beans.FeatureDescriptor;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -73,18 +69,17 @@ import java.util.Map;
 import java.util.Properties;
 import javax.servlet.ServletConfig;
 import org.apache.turbine.om.OMTool;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.intake.model.Group;
 import org.apache.turbine.services.intake.transform.XmlToAppData;
 import org.apache.turbine.services.intake.xmlmodel.AppData;
-import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.services.intake.xmlmodel.XmlGroup;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.ServletUtils;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.pool.BoundedBuffer;
 import org.apache.turbine.util.pool.Recyclable;
-import org.apache.turbine.services.BaseService;
-import org.apache.turbine.services.InitializationException;
 
 /**
  * This service provides access to input processing objects based
@@ -94,7 +89,7 @@ import org.apache.turbine.services.InitializationException;
  * @version $Id$
  */
 public class TurbineIntakeService
-    extends BaseService
+    extends TurbineBaseService
     implements IntakeService
 {
     /** Array of group names. */
@@ -153,7 +148,7 @@ public class TurbineIntakeService
             throw new InitializationException(pathError);
         }
         //!! need a constant
-        String appDataPath = "WEB-INF/appData.ser";
+        String appDataPath = "/WEB-INF/appData.ser";
         try
         {
             // If possible, transform paths to be webapp root relative.
@@ -164,21 +159,29 @@ public class TurbineIntakeService
             if ( serialAppData.exists()
                  && serialAppData.lastModified() > xmlFile.lastModified() )
             {
-                InputStream in = new FileInputStream(serialAppData);
-                ObjectInputStream p = new ObjectInputStream(in);
-                appData = (AppData)p.readObject();
-                in.close();
+                InputStream in = null;
+                try
+                {
+                    in = new FileInputStream(serialAppData);
+                    ObjectInputStream p = new ObjectInputStream(in);
+                    appData = (AppData)p.readObject();
+                }
+                catch (Exception e)
+                {
+                    // We got a corrupt file for some reason
+                    writeAppData(xmlPath, appDataPath, serialAppData);
+                }
+                finally
+                {
+                    if (in != null)
+                    {
+                        in.close();
+                    }
+                }
             }
             else
             {
-                XmlToAppData xmlApp = new XmlToAppData();
-                appData = xmlApp.parseFile(xmlPath);
-
-                OutputStream out = new FileOutputStream(serialAppData);
-                ObjectOutputStream p = new ObjectOutputStream(out);
-                p.writeObject(appData);
-                p.flush();
-                out.close();
+                writeAppData(xmlPath, appDataPath, serialAppData);
             }
 
             groupNames = new String[appData.getGroups().size()];
@@ -220,50 +223,51 @@ public class TurbineIntakeService
         }
     }
 
-    private Method initializeBeanProp(String className, String propName,
-                                        int getOrSet)
+
+    /**
+     * This method writes the appData file into Objects and stores
+     * the information into this classes appData property
+     */
+    private void writeAppData(String xmlPath, String appDataPath, File serialAppData)
         throws Exception
     {
-        // getter or setter method
-        Method method = null;
-        if ( className != null && propName != null )
+        XmlToAppData xmlApp = new XmlToAppData();
+        appData = xmlApp.parseFile(xmlPath);
+        OutputStream out = null;
+        InputStream in = null;
+        try
         {
-            // Uses bean introspection to set writable properties
-            // of bean from the parameters, where a
-            // (case-insensitive) name match between the bean
-            // property and the parameter is looked for.
-            PropertyDescriptor[] beanProps = Introspector
-                .getBeanInfo(Class.forName(className))
-                .getPropertyDescriptors();
+            // write the appData file out
+            out = new FileOutputStream(serialAppData);
+            ObjectOutputStream p = new ObjectOutputStream(out);
+            p.writeObject(appData);
+            p.flush();
 
-            boolean noMatch = true;
-            for (int j=beanProps.length-1; j>=0; j--)
+            // read the file back in. for some reason on OSX 10.1
+            // this is necessary.
+            in = new FileInputStream(serialAppData);
+            ObjectInputStream pin = new ObjectInputStream(in);
+            appData = (AppData)pin.readObject();
+        }
+        catch (Exception e)
+        {
+            Log.info(
+                "Intake initialization could not be serialized " +
+                "because writing to " + appDataPath + " was not " +
+                "allowed.  This will require that the xml file be " +
+                "parsed when restarting the application.");
+        }
+        finally
+        {
+            if (out != null)
             {
-                if (propName.equalsIgnoreCase(beanProps[j].getName()))
-                {
-                    switch ( getOrSet )
-                    {
-                        case GETTER:
-                            method = beanProps[j].getReadMethod();
-                            ((HashMap)getterMap.get(className))
-                                .put(propName, method);
-                            break;
-                        case SETTER:
-                            method = beanProps[j].getWriteMethod();
-                            ((HashMap)setterMap.get(className))
-                                .put(propName, method);
-                    }
-                    noMatch = false;
-                    break;
-                }
+                out.close();
             }
-            if ( noMatch )
+            if (in != null)
             {
-                Log.error("Property, " + propName + " for class, " +
-                          className + " could not be found.");
+                in.close();
             }
         }
-        return method;
     }
 
     /**
@@ -551,15 +555,39 @@ public class TurbineIntakeService
     public Method getFieldSetter(String className, String propName)
     {
         Map settersForClassName = (Map)setterMap.get(className);
-        Method method = (Method)settersForClassName.get(propName);
+        Method setter = (Method)settersForClassName.get(propName);
 
-        if ( method == null )
+        if ( setter == null )
         {
+            PropertyDescriptor pd = null;
             synchronized(setterMap)
             {
                 try
                 {
-                    method = initializeBeanProp(className, propName, SETTER);
+                    pd = new PropertyDescriptor(propName,
+                                                Class.forName(className));
+                    setter = pd.getWriteMethod();
+                    ((Map)setterMap.get(className)).put(propName, setter);
+                    if ( setter == null )
+                    {
+                        Log.error("Intake: setter for '" + propName
+                                  + "' in class '" + className
+                                  + "' could not be found.");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.error(e);
+                }
+            }
+            // we have already completed the reflection on the getter, so
+            // save it so we do not have to repeat
+            synchronized(getterMap)
+            {
+                try
+                {
+                    Method getter = pd.getReadMethod();
+                    ((Map)getterMap.get(className)).put(propName, getter);
                 }
                 catch (Exception e)
                 {
@@ -567,8 +595,7 @@ public class TurbineIntakeService
                 }
             }
         }
-
-        return method;
+        return setter;
     }
 
     /**
@@ -581,15 +608,39 @@ public class TurbineIntakeService
     public Method getFieldGetter(String className, String propName)
     {
         Map gettersForClassName = (Map)getterMap.get(className);
-        Method method = (Method)gettersForClassName.get(propName);
+        Method getter = (Method)gettersForClassName.get(propName);
 
-        if ( method == null )
+        if ( getter == null )
         {
+            PropertyDescriptor pd = null;
             synchronized(getterMap)
             {
                 try
                 {
-                    method = initializeBeanProp(className, propName, GETTER);
+                    pd = new PropertyDescriptor(propName,
+                                                Class.forName(className));
+                    getter = pd.getReadMethod();
+                    ((Map)getterMap.get(className)).put(propName, getter);
+                    if ( getter == null )
+                    {
+                        Log.error("Intake: getter for '" + propName
+                                  + "' in class '" + className
+                                  + "' could not be found.");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.error(e);
+                }
+            }
+            // we have already completed the reflection on the setter, so
+            // save it so we do not have to repeat
+            synchronized(setterMap)
+            {
+                try
+                {
+                    Method setter = pd.getWriteMethod();
+                    ((Map)setterMap.get(className)).put(propName, setter);
                 }
                 catch (Exception e)
                 {
@@ -597,8 +648,6 @@ public class TurbineIntakeService
                 }
             }
         }
-
-        return method;
+        return getter;
     }
-
 }

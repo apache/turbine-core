@@ -54,27 +54,22 @@ package org.apache.turbine.services.rundata;
  * <http://www.apache.org/>.
  */
 
-import java.util.Map;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.velocity.runtime.configuration.Configuration;
-
-import org.apache.turbine.util.RunData;
+import org.apache.commons.configuration.Configuration;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.pool.PoolService;
 import org.apache.turbine.util.CookieParser;
 import org.apache.turbine.util.ParameterParser;
+import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.pool.PoolService;
 
 /**
  * The RunData Service provides the implementations for RunData and
@@ -86,7 +81,7 @@ import org.apache.turbine.services.pool.PoolService;
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
-public class TurbineRunDataService 
+public class TurbineRunDataService
     extends TurbineBaseService
     implements RunDataService
 {
@@ -146,7 +141,6 @@ public class TurbineRunDataService
     /**
      * Initializes the service by setting the pool capacity.
      *
-     * @param config initialization configuration.
      * @throws InitializationException if initialization fails.
      */
     public void init()
@@ -253,7 +247,7 @@ public class TurbineRunDataService
         {
             throw new TurbineException("RunTime configuration '" + key + "' is undefined");
         }
-        
+
         // Use the Pool Service for recycling the implementing objects.
         PoolService pool = (PoolService)
             TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
@@ -269,7 +263,7 @@ public class TurbineRunDataService
         {
             throw new TurbineException("RunData configuration '" + key + "' is illegal",x);
         }
-        
+
         // Set the request and response.
         data.setRequest(req);
         data.setResponse(res);

@@ -55,18 +55,11 @@ package org.apache.turbine.util.velocity;
  */
 
 import java.lang.reflect.Method;
-
 import java.util.Enumeration;
-
 import org.apache.turbine.modules.ActionEvent;
-
 import org.apache.turbine.services.velocity.TurbineVelocity;
-
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.ValueParser;
-import org.apache.turbine.util.template.TemplateInfo;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -95,7 +88,7 @@ public abstract class VelocityActionEvent extends ActionEvent
      * @param data A Turbine RunData object.
      * @exception Exception, a generic exception.
      */
-    public abstract void doPerform( RunData data )
+    public abstract void doPerform(RunData data)
         throws Exception;
 
     /**
@@ -106,7 +99,7 @@ public abstract class VelocityActionEvent extends ActionEvent
      * @param data A Turbine RunData object.
      * @exception Exception, a generic exception.
      */
-    protected void perform( RunData data )
+    protected void perform(RunData data)
         throws Exception
     {
         try
@@ -115,7 +108,7 @@ public abstract class VelocityActionEvent extends ActionEvent
         }
         catch (NoSuchMethodException e)
         {
-            doPerform( data );
+            doPerform(data);
         }
     }
 
@@ -163,7 +156,7 @@ public abstract class VelocityActionEvent extends ActionEvent
             Method method = getClass().getMethod(theButton, classes);
             args[0] = data;
             args[1] = context;
-            method.invoke(this, args );
+            method.invoke(this, args);
         }
         catch (NoSuchMethodException nsme)
         {

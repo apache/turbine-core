@@ -25,13 +25,13 @@ package org.apache.turbine.services.logging.jdbc;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -56,17 +56,15 @@ package org.apache.turbine.services.logging.jdbc;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-
 import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.PatternLayout;
 import org.apache.log4j.spi.LoggingEvent;
 
 /**
  * The JDBCAppender, writes messages into a database.
  *
- * The JDBCAppender is configurable at runtime by setting options in 
+ * The JDBCAppender is configurable at runtime by setting options in
  * two alternatives :
- * 
+ *
  * @author <a href="mailto:t.fenner@klopotek.de">Thomas Fenner</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  */
@@ -76,7 +74,7 @@ public class JDBCAppender extends AppenderSkeleton
      * Logger class option.
      */
     public static final String LOGGER_CLASS_OPTION = "logger.class";
-    
+
     /**
      * An option to set for the logger, these are name:value pairs
      * that are used to initialize a logger.
@@ -96,7 +94,7 @@ public class JDBCAppender extends AppenderSkeleton
     private Hashtable loggerOptions = new Hashtable();
 
     /*
-     * This class encapsulate the logic which is necessary 
+     * This class encapsulate the logic which is necessary
      * to log into a table.
      */
     private JDBCLogger logger = null;
@@ -106,7 +104,7 @@ public class JDBCAppender extends AppenderSkeleton
      * the database into which we are logging.
      */
     private ArrayList buffer = new ArrayList();
-    
+
     /**
      * How many messages should we buffer until to
      * push the messages into the database.
@@ -114,13 +112,13 @@ public class JDBCAppender extends AppenderSkeleton
     private int bufferSize = 1;
 
     /*
-     * A flag to indicate that everything is ready to 
+     * A flag to indicate that everything is ready to
      * get append() commands.
      */
     private boolean ready = false;
 
     /**
-     * If program terminates close the database-connection and 
+     * If program terminates close the database-connection and
      * flush the buffer.
      */
     public void finalize()
@@ -130,16 +128,16 @@ public class JDBCAppender extends AppenderSkeleton
     }
 
     /**
-     * Internal method. Returns a array of strings containing the available 
+     * Internal method. Returns a array of strings containing the available
      * options which can be set with method setOption()
      */
     public String[] getOptionStrings()
     {
-        /* 
-         * The sequence of options in this string is important, because 
+        /*
+         * The sequence of options in this string is important, because
          * setOption() is called this way ...
          */
-        return new String[] 
+        return new String[]
         {
             LOGGER_CLASS_OPTION,
             LOGGER_OPTION
@@ -160,11 +158,11 @@ public class JDBCAppender extends AppenderSkeleton
         if (option == null || value == null)
         {
             return;
-        }            
+        }
         if (option.length() == 0 || value.length() == 0)
         {
             return;
-        }            
+        }
 
         value = value.trim();
 
@@ -201,7 +199,7 @@ public class JDBCAppender extends AppenderSkeleton
     }
 
     /**
-     * Internal method. Returns true, you may define 
+     * Internal method. Returns true, you may define
      * your own layout...
      *
      * @return boolean
@@ -242,7 +240,7 @@ public class JDBCAppender extends AppenderSkeleton
         if (buffer.size() >= bufferSize)
         {
             flushBuffer();
-        }            
+        }
     }
 
 
@@ -258,7 +256,7 @@ public class JDBCAppender extends AppenderSkeleton
             if (size < 1)
             {
                 return;
-            }                
+            }
 
             for (int i = 0; i < size; i++)
             {
@@ -275,7 +273,7 @@ public class JDBCAppender extends AppenderSkeleton
         catch (Exception e)
         {
             errorHandler.error(
-                "JDBCAppender.flushBuffer(), " + e + " : " + 
+                "JDBCAppender.flushBuffer(), " + e + " : " +
                     logger.getErrorMsg());
 
             return;
@@ -283,7 +281,7 @@ public class JDBCAppender extends AppenderSkeleton
     }
 
     /**
-     * Internal method. Returns true, when the JDBCAppender is ready to 
+     * Internal method. Returns true, when the JDBCAppender is ready to
      * append messages to the database, else false.
      *
      * @return boolean
@@ -293,7 +291,7 @@ public class JDBCAppender extends AppenderSkeleton
         if (ready)
         {
             return true;
-        }            
+        }
 
         ready = logger.isReady();
 

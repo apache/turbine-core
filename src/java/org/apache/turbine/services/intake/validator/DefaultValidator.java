@@ -54,17 +54,8 @@ package org.apache.turbine.services.intake.validator;
  * <http://www.apache.org/>.
  */
 
-import java.lang.reflect.Method;
 import java.util.Map;
 import org.apache.regexp.RE;
-import org.apache.turbine.om.Retrievable;
-import org.apache.turbine.services.intake.TurbineIntake;
-import org.apache.turbine.services.intake.xmlmodel.Rule;
-import org.apache.turbine.services.intake.xmlmodel.XmlField;
-import org.apache.turbine.services.intake.xmlmodel.XmlGroup;
-import org.apache.turbine.util.Log;
-import org.apache.turbine.util.ParameterParser;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**

@@ -57,15 +57,12 @@ package org.apache.turbine.services.logging;
 import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
-import javax.servlet.ServletContext;
+import org.apache.turbine.Turbine;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -116,9 +113,12 @@ public class FileLogger extends BaseLogger
         for (Enumeration fileList = files.elements(); fileList.hasMoreElements(); )
         {
             String path = (String) fileList.nextElement();
-            //resolves relative paths
-            String pathTmp = ((ServletContext)loggingConfig.getServletContext())
-                .getRealPath(path);
+
+            // Resolve relative paths using Turbine.getRealPath(s) so that
+            // the paths are translated against the applicationRoot which
+            // may be the webContext or the CVS layout of a Turbine application.
+            String pathTmp = Turbine.getRealPath(path);
+
             if (pathTmp != null)
             {
                 path = pathTmp;

@@ -25,13 +25,13 @@ package org.apache.turbine.services.security;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,44 +54,38 @@ package org.apache.turbine.services.security;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.services.Service;
-
-import org.apache.turbine.om.security.User;
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
-import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.Permission;
-import org.apache.turbine.om.security.peer.UserPeer;
-
-import org.apache.turbine.util.security.GroupSet;
-import org.apache.turbine.util.security.RoleSet;
-import org.apache.turbine.util.security.PermissionSet;
+import org.apache.turbine.om.security.Role;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.Service;
 import org.apache.turbine.util.security.AccessControlList;
-
 import org.apache.turbine.util.security.DataBackendException;
-import org.apache.turbine.util.security.UnknownEntityException;
 import org.apache.turbine.util.security.EntityExistsException;
+import org.apache.turbine.util.security.GroupSet;
 import org.apache.turbine.util.security.PasswordMismatchException;
-import org.apache.turbine.util.security.TurbineSecurityException;
-
-import org.apache.turbine.util.db.Criteria;
+import org.apache.turbine.util.security.PermissionSet;
+import org.apache.turbine.util.security.RoleSet;
+import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
- * The Security Service manages Users, Groups Roles and Permissions in the 
+ * The Security Service manages Users, Groups Roles and Permissions in the
  * system.
  *
- * The task performed by the security service include creation and removal of 
- * accounts, groups, roles, and permissions; assigning users roles in groups; 
- * assigning roles specific permissions and construction of objects 
+ * The task performed by the security service include creation and removal of
+ * accounts, groups, roles, and permissions; assigning users roles in groups;
+ * assigning roles specific permissions and construction of objects
  * representing these logical entities.
  *
- * <p> Because of pluggable nature of the Services, it is possible to create 
- * multiple implementations of SecurityService, for example employing database 
+ * <p> Because of pluggable nature of the Services, it is possible to create
+ * multiple implementations of SecurityService, for example employing database
  * and directory server as the data backend.<br>
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
-public interface SecurityService 
+public interface SecurityService
     extends Service
 {
     /** The name of the service */
@@ -99,31 +93,31 @@ public interface SecurityService
 
     /** the key within services's properties for user implementation classname (user.class) */
     public static final String USER_CLASS_KEY = "user.class";
-   
+
     /** the default implementation of User interface (org.apache.turbine.om.security.DBUser) */
     public static final String USER_CLASS_DEFAULT = "org.apache.turbine.om.security.TurbineUser";
 
     /** the key within services's properties for user implementation classname (user.manager) */
     public static final String USER_MANAGER_KEY = "user.manager";
-   
+
     /** the default implementation of UserManager interface (org.apache.turbine.services.security.DBUserManager) */
     public static final String USER_MANAGER_DEFAULT = "org.apache.turbine.services.security.DBUserManager";
 
     /** the key within services's properties for secure passwords flag (secure.passwords) */
     public static final String SECURE_PASSWORDS_KEY = "secure.passwords";
-   
+
     /** the value of secure passwords flag (false) */
     public static final String SECURE_PASSWORDS_DEFAULT = "false";
 
     /** the key within services's properties for secure passwords algorithm (secure.passwords.algorithm) */
     public static final String SECURE_PASSWORDS_ALGORITHM_KEY = "secure.passwords.algorithm";
-   
+
     /** the default algorithm for password encryption (SHA) */
     public static final String SECURE_PASSWORDS_ALGORITHM_DEFAULT = "SHA";
 
     /*-----------------------------------------------------------------------
       Management of User objects
-      -----------------------------------------------------------------------*/ 
+      -----------------------------------------------------------------------*/
 
     /**
      * Returns the Class object for the implementation of User interface
@@ -153,11 +147,11 @@ public interface SecurityService
      *
      * The login name is used for looking up the account.
      *
-     * @param user The user to be checked.
+     * @param username The user to be checked.
      * @return true if the specified account exists
      * @throws DataBackendException if there was an error accessing the data backend.
      */
-    public boolean accountExists( String username )
+    public boolean accountExists(String username)
         throws DataBackendException;
 
     /**
@@ -165,11 +159,11 @@ public interface SecurityService
      *
      * The login name is used for looking up the account.
      *
-     * @param usename The name of the user to be checked.
+     * @param user The name of the user to be checked.
      * @return true if the specified account exists
      * @throws DataBackendException if there was an error accessing the data backend.
      */
-    public boolean accountExists( User user )
+    public boolean accountExists(User user)
         throws DataBackendException;
 
     /**
@@ -182,7 +176,7 @@ public interface SecurityService
      * @throws UnknownEntityException if user account is not present.
      * @throws PasswordMismatchException if the supplied password was incorrect.
      */
-    public User getAuthenticatedUser( String username, String password )
+    public User getAuthenticatedUser(String username, String password)
         throws DataBackendException, UnknownEntityException, PasswordMismatchException;
 
     /**
@@ -193,7 +187,7 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if user account is not present.
      */
-    public User getUser( String username ) 
+    public User getUser( String username )
         throws DataBackendException, UnknownEntityException;
 
     /**
@@ -217,7 +211,7 @@ public interface SecurityService
      * Constructs an User object to represent an anonymous user of the application.
      *
      * @return An anonymous Turbine User.
-     * @throws UnknownEntityException if the anonymous User object couldn't be 
+     * @throws UnknownEntityException if the anonymous User object couldn't be
      *         constructed.
      */
     public User getAnonymousUser()
@@ -234,10 +228,10 @@ public interface SecurityService
      */
     public void saveUser( User user )
         throws UnknownEntityException, DataBackendException;
-   
+
     /*-----------------------------------------------------------------------
       Account management
-      -----------------------------------------------------------------------*/ 
+      -----------------------------------------------------------------------*/
 
     /**
      * Creates new user account with specified attributes.
@@ -246,7 +240,7 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws EntityExistsException if the user account already exists.
      */
-    public void addUser( User user, String password ) 
+    public void addUser( User user, String password )
         throws DataBackendException, EntityExistsException;
 
     /**
@@ -256,19 +250,19 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the user account is not present.
      */
-    public void removeUser( User user ) 
+    public void removeUser( User user )
         throws DataBackendException, UnknownEntityException;
 
     /*-----------------------------------------------------------------------
       Management of passwords
-      -----------------------------------------------------------------------*/ 
+      -----------------------------------------------------------------------*/
 
     /**
-     * This method provides client-side encryption mechanism for passwords. 
-     *   
+     * This method provides client-side encryption mechanism for passwords.
+     *
      * This is an utility method that is used by other classes to maintain
      * a consistent approach to encrypting password. The behavior of the
-     * method can be configured in service's properties. 
+     * method can be configured in service's properties.
      *
      * @param password the password to process
      * @return processed password
@@ -281,7 +275,7 @@ public interface SecurityService
      * @param user an User to change password for.
      * @param oldPassword the current password supplied by the user.
      * @param newPassword the current password requested by the user.
-     * @exception PasswordMismatchException if the supplied password was 
+     * @exception PasswordMismatchException if the supplied password was
      *            incorrect.
      * @exception UnknownEntityException if the user's record does not
      *            exist in the database.
@@ -289,17 +283,17 @@ public interface SecurityService
      *            storage.
      */
     public void changePassword( User user, String oldPassword, String newPassword )
-        throws PasswordMismatchException, UnknownEntityException, 
+        throws PasswordMismatchException, UnknownEntityException,
                DataBackendException;
 
     /**
      * Forcibly sets new password for an User.
      *
      * This is supposed by the administrator to change the forgotten or
-     * compromised passwords. Certain implementatations of this feature 
-     * would require administrative level access to the authenticating 
+     * compromised passwords. Certain implementatations of this feature
+     * would require administrative level access to the authenticating
      * server / program.
-     * 
+     *
      * @param user an User to change password for.
      * @param password the new password.
      * @exception UnknownEntityException if the user's record does not
@@ -312,7 +306,7 @@ public interface SecurityService
 
     /*-----------------------------------------------------------------------
       Retrieval of security information
-      -----------------------------------------------------------------------*/ 
+      -----------------------------------------------------------------------*/
 
     /**
      * Constructs an AccessControlList for a specific user.
@@ -321,7 +315,7 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if user account is not present.
      */
-    public AccessControlList getACL( User user ) 
+    public AccessControlList getACL( User user )
         throws DataBackendException, UnknownEntityException;
 
     /**
@@ -336,30 +330,30 @@ public interface SecurityService
 
     /*-----------------------------------------------------------------------
       Manipulation of security information
-      -----------------------------------------------------------------------*/ 
+      -----------------------------------------------------------------------*/
 
-    /** 
+    /**
      * Grant an User a Role in a Group.
      *
-     * @param User the user.
-     * @param Group the group.
-     * @param Role the role.
+     * @param user the user.
+     * @param group the group.
+     * @param role the role.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if user account, group or role is not present.
      */
-    public void grant( User user, Group group, Role role )
+    public void grant(User user, Group group, Role role)
         throws DataBackendException, UnknownEntityException;
 
-    /** 
+    /**
      * Revoke a Role in a Group from an User.
      *
-     * @param User the user.
-     * @param Group the group.
-     * @param Role the role.
+     * @param user the user.
+     * @param group the group.
+     * @param role the role.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if user account, group or role is not present.
      */
-    public void revoke( User user, Group group, Role role )
+    public void revoke(User user, Group group, Role role)
         throws DataBackendException, UnknownEntityException;
 
     /**
@@ -413,9 +407,9 @@ public interface SecurityService
       -----------------------------------------------------------------------*/
 
     /**
-     * Provides a reference to the Group object that represents the 
-     * <a href="#global">global group</a>. 
-     * 
+     * Provides a reference to the Group object that represents the
+     * <a href="#global">global group</a>.
+     *
      * @return a Group object that represents the global group.
      */
     public Group getGlobalGroup();
@@ -448,7 +442,7 @@ public interface SecurityService
     public Permission getNewPermission( String permissionName );
 
     /**
-     * Retrieve a Group object with specified name. 
+     * Retrieve a Group object with specified name.
      *
      * @param name the name of the Group.
      * @return an object representing the Group with specified name.
@@ -457,7 +451,7 @@ public interface SecurityService
         throws DataBackendException, UnknownEntityException;
 
     /**
-     * Retrieve a Role object with specified name. 
+     * Retrieve a Role object with specified name.
      *
      * @param name the name of the Role.
      * @return an object representing the Role with specified name.
@@ -466,39 +460,39 @@ public interface SecurityService
         throws DataBackendException, UnknownEntityException;
 
     /**
-     * Retrieve a Permission object with specified name. 
+     * Retrieve a Permission object with specified name.
      *
      * @param name the name of the Permission.
      * @return an object representing the Permission with specified name.
      */
     public Permission getPermission( String name )
         throws DataBackendException, UnknownEntityException;
-    
+
     /**
      * Retrieve a set of Groups that meet the specified Criteria.
      *
-     * @param a Criteria of Group selection.
+     * @param criteria of Group selection.
      * @return a set of Groups that meet the specified Criteria.
      */
-    public GroupSet getGroups( Criteria criteria )
+    public GroupSet getGroups(Criteria criteria)
         throws DataBackendException;
-    
+
     /**
      * Retrieve a set of Roles that meet the specified Criteria.
      *
-     * @param a Criteria of Roles selection.
+     * @param criteria of Roles selection.
      * @return a set of Roles that meet the specified Criteria.
      */
-    public RoleSet getRoles( Criteria criteria )
+    public RoleSet getRoles(Criteria criteria)
         throws DataBackendException;
 
     /**
      * Retrieve a set of Permissions that meet the specified Criteria.
      *
-     * @param a Criteria of Permissions selection.
+     * @param criteria of Permissions selection.
      * @return a set of Permissions that meet the specified Criteria.
      */
-    public PermissionSet getPermissions( Criteria criteria )
+    public PermissionSet getPermissions(Criteria criteria)
         throws DataBackendException;
 
     /**
@@ -534,7 +528,7 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the group does not exist.
      */
-    public void saveGroup( Group group )
+    public void saveGroup(Group group)
         throws DataBackendException, UnknownEntityException;
 
     /**
@@ -544,7 +538,7 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the role does not exist.
      */
-    public void saveRole( Role role )
+    public void saveRole(Role role)
         throws DataBackendException, UnknownEntityException;
 
     /**
@@ -554,12 +548,12 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the permission does not exist.
      */
-    public void savePermission( Permission permission )
+    public void savePermission(Permission permission)
         throws DataBackendException, UnknownEntityException;
 
     /*-----------------------------------------------------------------------
       Group/Role/Permission management
-      -----------------------------------------------------------------------*/ 
+      -----------------------------------------------------------------------*/
 
     /**
      * Creates a new group with specified attributes.
@@ -569,91 +563,91 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws EntityExistsException if the group already exists.
      */
-    public Group addGroup( Group group ) 
+    public Group addGroup(Group group)
         throws DataBackendException, EntityExistsException;
 
     /**
      * Creates a new role with specified attributes.
      *
-     * @param group the objects describing the group to be created.
+     * @param role the objects describing the group to be created.
      * @return the new Role object.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws EntityExistsException if the role already exists.
      */
-    public Role addRole( Role role )
+    public Role addRole(Role role)
         throws DataBackendException, EntityExistsException;
 
     /**
      * Creates a new permission with specified attributes.
      *
-     * @param group the objects describing the group to be created.
+     * @param permission the objects describing the group to be created.
      * @return the new Permission object.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws EntityExistsException if the permission already exists.
      */
-    public Permission addPermission( Permission permission )
+    public Permission addPermission(Permission permission)
         throws DataBackendException, EntityExistsException;
 
     /**
      * Removes a Group from the system.
      *
-     * @param the object describing group to be removed.
+     * @param group the object describing group to be removed.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the group does not exist.
      */
-    public void removeGroup( Group group )
+    public void removeGroup(Group group)
         throws DataBackendException, UnknownEntityException;
 
     /**
      * Removes a Role from the system.
      *
-     * @param the object describing role to be removed.
+     * @param role the object describing role to be removed.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the role does not exist.
      */
-    public void removeRole( Role role )
+    public void removeRole(Role role)
         throws DataBackendException, UnknownEntityException;
 
     /**
      * Removes a Permission from the system.
      *
-     * @param the object describing permission to be removed.
+     * @param permission the object describing permission to be removed.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the permission does not exist.
      */
-    public void removePermission( Permission permission )
+    public void removePermission(Permission permission)
         throws DataBackendException, UnknownEntityException;
 
     /**
      * Renames an existing Group.
      *
-     * @param the object describing the group to be renamed.
+     * @param group the object describing the group to be renamed.
      * @param name the new name for the group.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the group does not exist.
      */
-    public void renameGroup( Group group, String name )
+    public void renameGroup(Group group, String name)
         throws DataBackendException, UnknownEntityException;
-    
+
     /**
      * Renames an existing Role.
      *
-     * @param the object describing the role to be renamed.
+     * @param role the object describing the role to be renamed.
      * @param name the new name for the role.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the role does not exist.
      */
-    public void renameRole( Role role, String name )
+    public void renameRole(Role role, String name)
         throws DataBackendException, UnknownEntityException;
 
     /**
      * Renames an existing Permission.
      *
-     * @param the object describing the permission to be renamed.
+     * @param permission the object describing the permission to be renamed.
      * @param name the new name for the permission.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the permission does not exist.
      */
-    public void renamePermission( Permission permission, String name )
+    public void renamePermission(Permission permission, String name)
         throws DataBackendException, UnknownEntityException;
 }

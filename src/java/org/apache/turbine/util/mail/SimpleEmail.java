@@ -25,13 +25,13 @@ package org.apache.turbine.util.mail;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,12 +54,8 @@ package org.apache.turbine.util.mail;
  * <http://www.apache.org/>.
  */
 
-import java.util.Hashtable;
-
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
-import org.apache.turbine.util.db.Criteria;
+import org.apache.torque.util.Criteria;
 
 /**
  * This class is used to send simple internet email messages without
@@ -82,8 +78,7 @@ public class SimpleEmail
      *
      * @exception MessagingException.
      */
-    public SimpleEmail()
-        throws MessagingException
+    public SimpleEmail() throws MessagingException
     {
         super.init();
     }
@@ -107,7 +102,7 @@ public class SimpleEmail
      * @param criteria A Criteria.
      * @exception MessagingException.
      */
-    public SimpleEmail( Criteria criteria )
+    public SimpleEmail(Criteria criteria)
         throws MessagingException
     {
         super.init();
@@ -122,18 +117,24 @@ public class SimpleEmail
      * @param criteria A Criteria.
      * @exception MessagingException.
      */
-    protected void initCriteria( Criteria criteria )
+    protected void initCriteria(Criteria criteria)
         throws MessagingException
     {
         super.initCriteria(criteria);
 
-        if( criteria.containsKey( CONTENT_TYPE ) )
-            contentType = criteria.getString( CONTENT_TYPE );
+        if (criteria.containsKey(CONTENT_TYPE))
+        {
+            contentType = criteria.getString(CONTENT_TYPE);
+        }
 
-        if( criteria.containsKey( EMAIL_BODY ) )
-            setMsg( criteria.getString( EMAIL_BODY ) );
+        if (criteria.containsKey(EMAIL_BODY))
+        {
+            setMsg(criteria.getString(EMAIL_BODY));
+        }
         else
+        {
             setMsg("NO MESSAGE");
+        }
     }
 
     /**
@@ -143,12 +144,13 @@ public class SimpleEmail
      * @return An Email.
      * @exception MessagingException.
      */
-    public Email setMsg( String msg )
-        throws MessagingException
+    public Email setMsg(String msg) throws MessagingException
     {
         if (contentType == null)
+        {
             contentType = TEXT_PLAIN;
-        message.setContent( msg, contentType );
+        }
+        message.setContent(msg, contentType);
         return this;
     }
 }

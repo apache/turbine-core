@@ -10,14 +10,13 @@
 <body>
 
 <section name="Naming service">
-
-<p>
+<ul>
   <li>
     this service is rater outdated, it needs some cleanup, and adding
     suppport for DirContexts (low priority, might be useful in  
     creating LDAP User Manager / Security Service implementations)
   </li>
-</p>
+</ul>
 
 </section>
 

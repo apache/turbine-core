@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -58,9 +58,7 @@ import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Date;
 import org.apache.ecs.ConcreteElement;
-import org.apache.ecs.Element;
 import org.apache.ecs.ElementContainer;
-import org.apache.ecs.GenericElement;
 import org.apache.ecs.html.Comment;
 import org.apache.ecs.html.Input;
 import org.apache.ecs.html.Option;
@@ -91,7 +89,7 @@ import org.apache.ecs.html.Select;
  * although this can be easily changed.
  *
  * 24hr TimeSelectors can also be produced. The following example
- * creates a full precision TimeSelector (eg HH:MM:SS): 
+ * creates a full precision TimeSelector (eg HH:MM:SS):
  *
  *  <pre>
  *  TimeSelector ts = new TimeSelector(myName);
@@ -122,7 +120,7 @@ public class TimeSelector
 
     /** Suffix for am/pm parameter. */
     public static final String AMPM_SUFFIX  = "_ampm";
-    
+
     /** Constant for 12hr format */
     public static final int TWELVE_HOUR  = 0;
 
@@ -146,7 +144,7 @@ public class TimeSelector
     private boolean onChangeSet = false;
     private boolean showSeconds = false;
     private int setSeconds = 0;
-    
+
     static
     {
         nbrFmt = NumberFormat.getInstance();
@@ -158,21 +156,21 @@ public class TimeSelector
      * Constructor defaults to current date/time and uses the default
      * prefix: <pre>TimeSelector.DEFAULT</pre>
      */
-    public TimeSelector( )
+    public TimeSelector()
     {
         this.selName = DEFAULT_PREFIX;
         this.useDate = Calendar.getInstance();
-        this.useDate.setTime ( new Date() );
+        this.useDate.setTime(new Date());
     }
 
     /**
-     * Constructor, uses the date/time set in the calendar 
+     * Constructor, uses the date/time set in the calendar
      * passed in (with the date/time set correctly).
      *
      * @param selName A String with the selector name.
      * @param useDate A Calendar with a date/time.
      */
-    public TimeSelector( String selName, Calendar useDate )
+    public TimeSelector(String selName, Calendar useDate)
     {
         this.useDate = useDate;
         this.selName = selName;
@@ -183,17 +181,17 @@ public class TimeSelector
      *
      * @param selName A String with the selector name.
      */
-    public TimeSelector( String selName )
+    public TimeSelector(String selName)
     {
         this.selName = selName;
         this.useDate = Calendar.getInstance();
-        this.useDate.setTime ( new Date() );
+        this.useDate.setTime(new Date());
     }
 
     /**
      * Adds the onChange to all of <code>&lt;SELECT&gt;</code> tags.
      * This is limited to one function for all three popups and is only
-     * used when the output() methods are used.  Individual getHour, 
+     * used when the output() methods are used.  Individual getHour,
      * getMinute, getSecond, getAMPM static methods will not use this
      * setting.
      *
@@ -201,7 +199,7 @@ public class TimeSelector
      * then nothing will be set.
      * @return A TimeSelector (self).
      */
-    public TimeSelector setOnChange ( String onChange )
+    public TimeSelector setOnChange(String onChange)
     {
         if (onChange != null)
         {
@@ -215,7 +213,7 @@ public class TimeSelector
         }
         return this;
     }
-    
+
     /**
      * Select the second to be selected if the showSeconds(false) behavior
      * is used.  Individual getHour, getMinute, getSecond, getAMPM
@@ -224,7 +222,7 @@ public class TimeSelector
      * @param seconds The second.
      * @return A TimeSelector (self).
      */
-    public TimeSelector setSeconds( int seconds )
+    public TimeSelector setSeconds(int seconds)
     {
         this.setSeconds = seconds;
         this.showSeconds = false;
@@ -239,9 +237,9 @@ public class TimeSelector
      * @param minutes Interval in minutes.
      * @return A TimeSelector (self).
      */
-    public TimeSelector setMinuteInterval( int minutes )
+    public TimeSelector setMinuteInterval(int minutes)
     {
-        this.minuteInterval = minutes;    
+        this.minuteInterval = minutes;
         return this;
     }
 
@@ -253,7 +251,7 @@ public class TimeSelector
      * @param seconds Interval in seconds.
      * @return A TimeSelector (self).
      */
-    public TimeSelector setSecondInterval( int seconds )
+    public TimeSelector setSecondInterval(int seconds)
     {
         this.secondInterval = seconds;
         return this;
@@ -267,7 +265,7 @@ public class TimeSelector
      * @param format Time format.
      * @return A TimeSelector (self).
      */
-    public TimeSelector setTimeFormat( int format )
+    public TimeSelector setTimeFormat(int format)
     {
         this.timeFormat = format;
         return this;
@@ -282,19 +280,19 @@ public class TimeSelector
      * @param show True if the second should be shown.
      * @return A TimeSelector (self).
      */
-    public TimeSelector setShowSeconds ( boolean show )
+    public TimeSelector setShowSeconds(boolean show)
     {
         this.showSeconds = show;
         return this;
     }
 
     /**
-     * Set the selector name prefix.  Individual getHour, getMinute, 
+     * Set the selector name prefix.  Individual getHour, getMinute,
      * getSeconds, getAMPM static methods will not use this setting.
      *
      * @param selname A String with the select name prefix.
      */
-    public void setSelName( String selName )
+    public void setSelName(String selName)
     {
         this.selName = selName;
     }
@@ -345,15 +343,15 @@ public class TimeSelector
                                               int interval)
     {
         Select secondSelect = new Select().setName(name);
-        
-        for(int currentSecond=0; currentSecond <= 59; currentSecond+=interval)
+
+        for (int currentSecond = 0; currentSecond <= 59; currentSecond += interval)
         {
             Option o = new Option();
             o.addElement(nbrFmt.format(currentSecond));
             o.setValue(currentSecond);
-            int nearestSecond = 
+            int nearestSecond =
                 ((now.get(Calendar.SECOND) / interval) * interval);
-            
+
             if (nearestSecond == currentSecond)
             {
                 o.setSelected(true);
@@ -403,9 +401,9 @@ public class TimeSelector
             Option o = new Option();
             o.addElement(nbrFmt.format(curMinute));
             o.setValue(curMinute);
-            int nearestMinute = 
+            int nearestMinute =
                 ((now.get(Calendar.MINUTE)) / interval) * interval;
-                
+
             if (nearestMinute == curMinute)
             {
                 o.setSelected(true);
@@ -430,14 +428,14 @@ public class TimeSelector
      * Return an 12 hour selector.
      *
      * @param name The name to use for the selected hour.
-     * @param now Calendar to start with.     
+     * @param now Calendar to start with.
      * @return A select object with all the hours.
      */
     public static Select getHourSelector(String name, Calendar now)
     {
         return(getHourSelector(name, Calendar.getInstance(), TWELVE_HOUR));
     }
-    
+
     /**
      * Return an hour selector (either 12hr or 24hr depending on
      * <code>format</code>.
@@ -450,7 +448,7 @@ public class TimeSelector
     public static Select getHourSelector(String name, Calendar now, int format)
     {
         Select hourSelect = new Select().setName(name);
-        
+
         if (format == TWENTY_FOUR_HOUR)
         {
             for (int currentHour = 0; currentHour <= 23; currentHour++)
@@ -463,14 +461,14 @@ public class TimeSelector
                     o.setSelected(true);
                 }
                 hourSelect.addElement(o);
-            }    
+            }
         }
         else
         {
             for (int curHour = 1;curHour <= 12; curHour++)
             {
                 Option o = new Option();
-    
+
                 o.addElement(nbrFmt.format((long)curHour));
                 o.setValue(curHour);
                 if (now.get(Calendar.AM_PM) == Calendar.AM)
@@ -508,7 +506,7 @@ public class TimeSelector
         }
         return(hourSelect);
     }
-    
+
     /**
      * Return an am/pm selector.
      *
@@ -630,12 +628,12 @@ public class TimeSelector
 
         Select ampmSelect = getAMPMSelector(selName + AMPM_SUFFIX, useDate);
 
-        Select hourSelect = getHourSelector(selName + HOUR_SUFFIX, 
+        Select hourSelect = getHourSelector(selName + HOUR_SUFFIX,
                                             useDate, this.timeFormat);
 
-        Select minuteSelect = getMinuteSelector(selName + MINUTE_SUFFIX,         
+        Select minuteSelect = getMinuteSelector(selName + MINUTE_SUFFIX,
                                             useDate, this.minuteInterval);
-                                            
+
         if (this.showSeconds)
         {
             Select tmp = getSecondSelector(selName + SECOND_SUFFIX, useDate,
@@ -650,7 +648,7 @@ public class TimeSelector
                                   selName + SECOND_SUFFIX,
                                   setSeconds);
         }
-        
+
         if (onChangeSet)
         {
             hourSelect.setOnChange(onChange);
@@ -664,10 +662,10 @@ public class TimeSelector
         ec.addElement(hourSelect);
         ec.addElement(":");
         ec.addElement(minuteSelect);
-        if (this.showSeconds == true) 
+        if (this.showSeconds == true)
             ec.addElement(":");
         ec.addElement(secondSelect);
-        if (this.timeFormat == this.TWELVE_HOUR) 
+        if (this.timeFormat == this.TWELVE_HOUR)
         {
             ec.addElement(ampmSelect);
         }

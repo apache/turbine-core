@@ -25,13 +25,13 @@ package org.apache.turbine.util.upload;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,19 +54,18 @@ package org.apache.turbine.util.upload;
  * <http://www.apache.org/>.
  */
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.io.OutputStream;
-
+import java.io.UnsupportedEncodingException;
 import javax.activation.DataSource;
-
 import org.apache.turbine.services.uniqueid.TurbineUniqueId;
 import org.apache.turbine.services.upload.TurbineUpload;
 
@@ -132,8 +131,7 @@ public class FileItem implements DataSource
      * @param contentType The content type passed by the browser or
      * <code>null</code> if not defined.
      */
-    protected FileItem( String fileName,
-                        String contentType )
+    protected FileItem(String fileName, String contentType)
     {
         this.fileName = fileName;
         this.contentType = contentType;
@@ -191,11 +189,11 @@ public class FileItem implements DataSource
      */
     public long getSize()
     {
-        if(storeLocation != null)
+        if (storeLocation != null)
         {
             return storeLocation.length();
         }
-        else if(byteStream != null)
+        else if (byteStream != null)
         {
             return byteStream.size();
         }
@@ -214,11 +212,11 @@ public class FileItem implements DataSource
      */
     public byte[] get()
     {
-        if(content == null)
+        if (content == null)
         {
-            if(storeLocation != null)
+            if (storeLocation != null)
             {
-                content = new byte[(int)getSize()];
+                content = new byte[(int) getSize()];
                 try
                 {
                     FileInputStream fis = new FileInputStream(storeLocation);
@@ -279,7 +277,7 @@ public class FileItem implements DataSource
     {
         return getStream();
     }
-    
+
     /**
      * Returns an {@link java.io.InputStream InputStream} that can be
      * used to retrieve the contents of the file.
@@ -291,9 +289,9 @@ public class FileItem implements DataSource
     public InputStream getStream()
         throws IOException
     {
-        if(content == null)
+        if (content == null)
         {
-            if(storeLocation != null)
+            if (storeLocation != null)
             {
                 return new FileInputStream(storeLocation);
             }
@@ -328,7 +326,7 @@ public class FileItem implements DataSource
      */
     protected void finalize()
     {
-        if(storeLocation != null && storeLocation.exists())
+        if (storeLocation != null && storeLocation.exists())
         {
             storeLocation.delete();
         }
@@ -346,7 +344,7 @@ public class FileItem implements DataSource
     public OutputStream getOutputStream()
         throws IOException
     {
-        if(storeLocation == null)
+        if (storeLocation == null)
         {
             return byteStream;
         }
@@ -378,13 +376,14 @@ public class FileItem implements DataSource
                                        int requestSize)
     {
         FileItem item = new FileItem(name, contentType);
-        if(requestSize > TurbineUpload.getSizeThreshold())
+        if (requestSize > TurbineUpload.getSizeThreshold())
         {
             String instanceName = TurbineUniqueId.getInstanceId();
             String fileName = TurbineUniqueId.getUniqueId();
             fileName = instanceName + "_upload_" + fileName + ".tmp";
             fileName = path + "/" + fileName;
             item.storeLocation = new File(fileName);
+            item.storeLocation.deleteOnExit();
         }
         else
         {
@@ -407,8 +406,19 @@ public class FileItem implements DataSource
     {
         if (inMemory())
         {
-            FileWriter writer = new FileWriter(file);
-            writer.write(getString());
+            FileOutputStream fout = null;
+            try
+            {
+                fout = new FileOutputStream(file);
+                fout.write(get());
+            }
+            finally
+            {
+                if (fout != null)
+                {
+                    fout.close();
+                }
+            }
         }
         else if (storeLocation != null)
         {
@@ -419,9 +429,40 @@ public class FileItem implements DataSource
              */
             if (storeLocation.renameTo(new File(file)) == false)
             {
-                throw new Exception(
-                    "Cannot write uploaded file to disk!");
-            }                
+                BufferedInputStream in = null;
+                BufferedOutputStream out = null;
+                try
+                {
+                    in = new BufferedInputStream(
+                            new FileInputStream(storeLocation));
+                    out = new BufferedOutputStream(new FileOutputStream(file));
+                    byte[] bytes = new byte[2048];
+                    int s = 0;
+                    while ((s = in.read(bytes)) != -1)
+                    {
+                        out.write(bytes, 0, s);
+                    }
+                }
+                finally
+                {
+                    try
+                    {
+                        in.close();
+                    }
+                    catch (Exception e)
+                    {
+                                // ignore
+                    }
+                    try
+                    {
+                        out.close();
+                    }
+                    catch (Exception e)
+                    {
+                                // ignore
+                    }
+                }
+            }
         }
         else
         {

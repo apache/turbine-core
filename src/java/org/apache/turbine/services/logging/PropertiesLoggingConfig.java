@@ -25,13 +25,13 @@ package org.apache.turbine.services.logging;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,12 +55,14 @@ package org.apache.turbine.services.logging;
  */
 
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Vector;
+import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.resources.ResourceService;
 
 /**
- * Small helper class that encapsulates the logging configuration 
+ * Small helper class that encapsulates the logging configuration
  * information. This class reads its information from a Properties
  * file.
  *
@@ -95,7 +97,7 @@ public class PropertiesLoggingConfig implements LoggingConfig
     private long fileSize = -1;
     private int backupFiles = DEFAULT_BACKUP_FILES;
     private ResourceService props = null;
-    
+
     protected PropertiesLoggingConfig()
     {
     }
@@ -103,6 +105,52 @@ public class PropertiesLoggingConfig implements LoggingConfig
     public void setInitResource (Object props)
     {
         this.props = (ResourceService) props;
+    }
+
+    /**
+     * returns all properties in a properties object - used by log4j
+     * initialization
+     **/
+    public Properties getFacilityProperties(String facilityName)
+    {
+        // Extract the log4j values out of the configuration and
+        // place them in a Properties object so that we can
+        // use the log4j PropertyConfigurator.
+        Properties p = new Properties();
+
+        Configuration facilityConfiguration =
+            props.getConfiguration(facilityName);
+        Iterator i = facilityConfiguration.getKeys();
+        while (i.hasNext())
+        {
+            String key = (String) i.next();
+
+            // We have to deal with ExtendedProperties way
+            // of dealing with "," in properties which is to
+            // make them separate values. Log4j category
+            // properties contain commas so we must stick them
+            // back together for log4j.
+            String[] values = facilityConfiguration.getStringArray(key);
+
+            String value = null;
+            if (values.length == 1)
+            {
+                value = values[0];
+            }
+            else if (values.length > 1)
+            {
+                StringBuffer valueSB = new StringBuffer();
+                for (int j=0; j<values.length-1; j++)
+                {
+                    valueSB.append(values[j]).append(",");
+                }
+                value = valueSB.append(values[values.length-1]).toString();
+            }
+
+            p.put(key, value);
+        }
+
+        return p;
     }
 
     public void init()
@@ -203,7 +251,7 @@ public class PropertiesLoggingConfig implements LoggingConfig
                     {
                         setDbPool(res.getString(key));
                     }
-                }                    
+                }
             }
         }
     }
@@ -216,7 +264,7 @@ public class PropertiesLoggingConfig implements LoggingConfig
     public void setServletContext(Object value)
     {
         this.context = value;
-    }        
+    }
 
     public String getFormat()
     {
@@ -226,7 +274,7 @@ public class PropertiesLoggingConfig implements LoggingConfig
     public void setFormat(String value)
     {
         this.format = value;
-    }        
+    }
 
     public String getName()
     {
@@ -236,7 +284,7 @@ public class PropertiesLoggingConfig implements LoggingConfig
     public void setName(String value)
     {
         this.name = value;
-    }        
+    }
 
     public String getRemoteHost()
     {
@@ -246,7 +294,7 @@ public class PropertiesLoggingConfig implements LoggingConfig
     public void setRemoteHost(String value)
     {
         this.remoteHost = value;
-    }        
+    }
 
     public int getRemotePort()
     {
@@ -256,7 +304,7 @@ public class PropertiesLoggingConfig implements LoggingConfig
     public void setRemotePort(int value)
     {
         this.remotePort = value;
-    }        
+    }
 
     public int getBackupFiles()
     {
@@ -266,7 +314,7 @@ public class PropertiesLoggingConfig implements LoggingConfig
     public void setBackupFiles(int value)
     {
         this.backupFiles = value;
-    }        
+    }
 
     public long getFileSize()
     {
@@ -276,7 +324,7 @@ public class PropertiesLoggingConfig implements LoggingConfig
     public void setFileSize(long value)
     {
         this.fileSize = value;
-    }        
+    }
 
     public Vector getFiles()
     {
@@ -286,7 +334,7 @@ public class PropertiesLoggingConfig implements LoggingConfig
     public void setFiles(Vector value)
     {
         this.files = value;
-    }        
+    }
 
     public boolean getConsole()
     {
@@ -296,7 +344,7 @@ public class PropertiesLoggingConfig implements LoggingConfig
     public void setConsole(boolean value)
     {
         this.console = value;
-    }        
+    }
 
     public String getSyslogHost()
     {
@@ -306,7 +354,7 @@ public class PropertiesLoggingConfig implements LoggingConfig
     public void setSyslogHost(String syslogHost)
     {
         this.syslogHost = syslogHost;
-    }        
+    }
 
     public String getSyslogFacility()
     {
@@ -366,7 +414,7 @@ public class PropertiesLoggingConfig implements LoggingConfig
     public String getDbLogger()
     {
         return dbLogger;
-    }        
+    }
 
     public void setDbPool(String v)
     {
@@ -376,12 +424,12 @@ public class PropertiesLoggingConfig implements LoggingConfig
     public String getDbPool()
     {
         return dbPool;
-    }        
+    }
 
     public void setClassName(String className)
     {
         this.className = className;
-    }        
+    }
 
     public String getClassName()
     {

@@ -25,13 +25,13 @@ package org.apache.turbine.services.pool;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,25 +54,19 @@ package org.apache.turbine.services.pool;
  * <http://www.apache.org/>.
  */
 
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.lang.reflect.Method;
-
-import javax.servlet.ServletConfig;
-
-import org.apache.velocity.runtime.configuration.Configuration;
-
-import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.pool.Recyclable;
-import org.apache.turbine.util.pool.ArrayCtorRecyclable;
-import org.apache.turbine.util.pool.BoundedBuffer;
-import org.apache.turbine.util.pool.ObjectInputStreamForContext;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.TurbineBaseService;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.factory.FactoryService;
 import org.apache.turbine.services.factory.TurbineFactoryService;
+import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.pool.ArrayCtorRecyclable;
+import org.apache.turbine.util.pool.BoundedBuffer;
+import org.apache.turbine.util.pool.Recyclable;
 
 /**
  * The Pool Service extends the Factory Service by adding support
@@ -88,7 +82,7 @@ import org.apache.turbine.services.factory.TurbineFactoryService;
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
-public class TurbinePoolService 
+public class TurbinePoolService
     extends TurbineFactoryService
     implements PoolService
 {
@@ -123,8 +117,7 @@ public class TurbinePoolService
              * @param rec the recycle method.
              * @param sign the signature.
              */
-            public Recycler(Method rec,
-                            String[] sign)
+            public Recycler(Method rec, String[] sign)
             {
                 recycle = rec;
                 signature = (sign != null) && (sign.length > 0) ? sign : null;
@@ -133,17 +126,16 @@ public class TurbinePoolService
             /**
              * Matches the given signature against
              * that of the recycle method of this recycler.
-             * 
+             *
              * @param sign the signature.
              * @return the matching recycle method or null.
              */
             public Method match(String[] sign)
             {
-                if ((sign != null) &&
-                    (sign.length > 0))
+                if ((sign != null) && (sign.length > 0))
                 {
-                    if ((signature != null) &&
-                        (sign.length == signature.length))
+                    if ((signature != null)
+                            && (sign.length == signature.length))
                     {
                         for (int i = 0; i < signature.length; i++)
                         {
@@ -211,13 +203,12 @@ public class TurbinePoolService
          *
          * @return an instance or null.
          */
-        public Object poll(Object[] params,
-                           String[] signature)
+        public Object poll(Object[] params, String[] signature)
             throws TurbineException
         {
             Object instance = pool.poll();
             if (instance != null)
-            {    
+            {
                 if (arrayCtorRecyclable)
                 {
                     ((ArrayCtorRecyclable) instance).recycle(params);
@@ -226,8 +217,7 @@ public class TurbinePoolService
                 {
                     try
                     {
-                        if ((signature != null) &&
-                            (signature.length > 0))
+                        if ((signature != null) && (signature.length > 0))
                         {
                             /* Get the recycle method from the cache. */
                             Method recycle = getRecycle(signature);
@@ -244,7 +234,7 @@ public class TurbinePoolService
                                             TurbinePoolService.this.getSignature(
                                                 clazz,params,signature));
                                         ArrayList cache = recyclers != null ?
-                                            (ArrayList) recyclers.clone() : 
+                                            (ArrayList) recyclers.clone() :
                                             new ArrayList();
                                         cache.add(
                                             new Recycler(recycle,signature));
@@ -309,11 +299,11 @@ public class TurbinePoolService
         {
             return pool.size();
         }
-        
+
         /**
-         * Returns a cached recycle method 
+         * Returns a cached recycle method
          * corresponding to the given signature.
-         * 
+         *
          * @param signature the signature.
          * @return the recycle method or null.
          */
@@ -468,9 +458,9 @@ public class TurbinePoolService
 
     /**
      * Tests if specified class loaders are supported for a named class.
-     * 
+     *
      * @param className the name of the class.
-     * @return true if class loaders are supported, false otherwise. 
+     * @return true if class loaders are supported, false otherwise.
      * @throws TurbineException if test fails.
      */
     public boolean isLoaderSupported(String className)
@@ -537,8 +527,8 @@ public class TurbinePoolService
                 repository = (HashMap) repository.clone();
                 repository.put(className,pool);
                 poolRepository = repository;
-                
-                if (instance instanceof ArrayCtorRecyclable) 
+
+                if (instance instanceof ArrayCtorRecyclable)
                 {
                     pool.setArrayCtorRecyclable(true);
                 }
@@ -575,8 +565,8 @@ public class TurbinePoolService
                         capacity = poolCapacity;
                     }
                 }
-                catch (Exception x) 
-                { 
+                catch (Exception x)
+                {
                 }
             }
             return capacity;

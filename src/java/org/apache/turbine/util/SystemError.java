@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,7 +55,6 @@ package org.apache.turbine.util;
  */
 
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 
 /**
@@ -75,7 +74,7 @@ public class SystemError
      *
      * @param e An Exception.
      */
-    public SystemError( Exception e)
+    public SystemError(Exception e)
     {
         setMessage(e.getMessage());
         setException(e);
@@ -87,8 +86,7 @@ public class SystemError
      * @param e An Exception.
      * @param message A String.
      */
-    public SystemError( Exception e,
-                        String message )
+    public SystemError(Exception e, String message)
     {
         this(e);
         setMessage(message);
@@ -100,10 +98,9 @@ public class SystemError
      * @param e An Exception.
      * @param returncode A long.
      */
-    public SystemError( Exception e,
-                        long returncode )
+    public SystemError(Exception e, long returncode)
     {
-        this( e, new Long(returncode).toString() );
+        this(e, new Long(returncode).toString());
     }
 
     /**
@@ -156,10 +153,12 @@ public class SystemError
         if (e != null)
         {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            e.printStackTrace( new PrintWriter(out,true) );
+            e.printStackTrace(new PrintWriter(out,true));
             return out.toString();
         }
         else
+        {
             return "";
+        }
     }
 }

@@ -25,13 +25,13 @@ package org.apache.turbine.util.mail;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,21 +55,16 @@ package org.apache.turbine.util.mail;
  */
 
 import java.util.Date;
-import java.util.Hashtable;
 import java.util.Properties;
 import java.util.Vector;
-
-import javax.mail.Address;
-import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.util.db.Criteria;
 
 /**
  * The base class for all email messages.  This class sets the
@@ -125,8 +120,6 @@ public abstract class Email
      * Set the charset of the message.
      *
      * @param charset A String.
-     * @return An HtmlEmail.
-     * @exception MessagingException.
      */
     public void setCharset(String charset)
     {
@@ -142,12 +135,12 @@ public abstract class Email
     private Session getMailSession()
     {
         Properties properties = System.getProperties();
-        properties.put ( MAIL_TRANSPORT_PROTOCOL, SMTP );
-        properties.put ( MAIL_HOST,
-                         TurbineResources.getString( MAIL_SERVER ) );
+        properties.put(MAIL_TRANSPORT_PROTOCOL, SMTP);
+        properties.put(MAIL_HOST, TurbineResources.getString(MAIL_SERVER));
         String mailSMTPFrom = TurbineResources.getString(MAIL_SMTP_FROM);
-        if(mailSMTPFrom!=null && !mailSMTPFrom.equals("")) {
-            properties.put ( MAIL_SMTP_FROM, mailSMTPFrom );
+        if(mailSMTPFrom!=null && !mailSMTPFrom.equals(""))
+        {
+            properties.put(MAIL_SMTP_FROM, mailSMTPFrom);
         }
         return Session.getDefaultInstance(properties, null);
     }
@@ -161,8 +154,7 @@ public abstract class Email
      * @exception MessagingException.
      * @see #init() init.
      */
-    protected void initialize(Criteria criteria)
-        throws MessagingException
+    protected void initialize(Criteria criteria) throws MessagingException
     {
         init();
         initCriteria(criteria);
@@ -176,12 +168,11 @@ public abstract class Email
      *
      * @exception MessagingException.
      */
-    protected void init()
-        throws MessagingException
+    protected void init() throws MessagingException
     {
 
         // Create the message.
-        message = new MimeMessage( getMailSession() );
+        message = new MimeMessage(getMailSession());
 
         toList = new Vector();
         ccList = new Vector();
@@ -189,7 +180,7 @@ public abstract class Email
         replyList = new Vector();
 
         // Set the sent date.
-        setSentDate( new Date() );
+        setSentDate(new Date());
     }
 
     /**
@@ -203,26 +194,33 @@ public abstract class Email
      * @param criteria A Criteria.
      * @exception MessagingException.
      */
-    protected void initCriteria( Criteria criteria )
-        throws MessagingException
+    protected void initCriteria(Criteria criteria) throws MessagingException
     {
         // Set the FROM field.
-        if( criteria.containsKey( SENDER_EMAIL) &&
-            criteria.containsKey( SENDER_NAME ) )
-            setFrom(criteria.getString( SENDER_EMAIL ),
-                    criteria.getString( SENDER_NAME ));
+        if (criteria.containsKey(SENDER_EMAIL)
+                && criteria.containsKey(SENDER_NAME))
+        {
+            setFrom(criteria.getString(SENDER_EMAIL),
+                    criteria.getString(SENDER_NAME));
+        }
 
         // Set the TO field.
-        if( criteria.containsKey( RECEIVER_EMAIL) &&
-            criteria.containsKey( RECEIVER_NAME ) )
-            addTo( criteria.getString( RECEIVER_EMAIL ),
-                   criteria.getString( RECEIVER_NAME ) );
+        if (criteria.containsKey(RECEIVER_EMAIL)
+                && criteria.containsKey(RECEIVER_NAME))
+        {
+            addTo(criteria.getString(RECEIVER_EMAIL),
+                   criteria.getString(RECEIVER_NAME));
+        }
 
         // Set the SUBJECT field.
-        if( criteria.containsKey( EMAIL_SUBJECT ) )
-            setSubject( criteria.getString( EMAIL_SUBJECT ) );
+        if (criteria.containsKey(EMAIL_SUBJECT))
+        {
+            setSubject(criteria.getString(EMAIL_SUBJECT));
+        }
         else
-            setSubject( "no subject available" );
+        {
+            setSubject("no subject available");
+        }
     }
 
     /**
@@ -233,19 +231,17 @@ public abstract class Email
      * @return An Email.
      * @exception MessagingException.
      */
-    public Email setFrom(String email,
-                         String name )
-        throws MessagingException
+    public Email setFrom(String email, String name) throws MessagingException
     {
         try
         {
-            if ( name == null || name.trim().equals("") )
+            if (name == null || name.trim().equals(""))
             {
                 name = email;
             }
-            message.setFrom(new InternetAddress( email, name ) );
+            message.setFrom(new InternetAddress(email, name));
         }
-        catch( Exception e )
+        catch(Exception e)
         {
             throw new MessagingException("cannot set from", e);
         }
@@ -260,19 +256,17 @@ public abstract class Email
      * @return An Email.
      * @exception MessagingException.
      */
-    public Email addTo(String email,
-                       String name )
-        throws MessagingException
+    public Email addTo(String email, String name) throws MessagingException
     {
         try
         {
-            if ( name == null || name.trim().equals("") )
+            if (name == null || name.trim().equals(""))
             {
                 name = email;
             }
-            toList.addElement( new InternetAddress( email, name ) );
+            toList.addElement(new InternetAddress(email, name));
         }
-        catch( Exception e )
+        catch (Exception e)
         {
             throw new MessagingException("cannot add to", e);
         }
@@ -287,20 +281,18 @@ public abstract class Email
      * @return An Email.
      * @exception MessagingException.
      */
-    public Email addCc(String email,
-                       String name )
-        throws MessagingException
+    public Email addCc(String email, String name) throws MessagingException
     {
 
         try
         {
-            if ( name == null || name.trim().equals("") )
+            if (name == null || name.trim().equals(""))
             {
                 name = email;
             }
-            ccList.addElement( new InternetAddress( email, name ) );
+            ccList.addElement(new InternetAddress(email, name));
         }
-        catch( Exception e )
+        catch (Exception e)
         {
             throw new MessagingException("cannot add cc", e);
         }
@@ -316,19 +308,18 @@ public abstract class Email
      * @return An Email.
      * @exception MessagingException.
      */
-    public Email addBcc(String email,
-                        String name )
+    public Email addBcc(String email, String name)
         throws MessagingException
     {
         try
         {
-            if ( name == null || name.trim().equals("") )
+            if (name == null || name.trim().equals(""))
             {
                 name = email;
             }
-            bccList.addElement( new InternetAddress( email, name ) );
+            bccList.addElement(new InternetAddress(email, name));
         }
-        catch( Exception e )
+        catch (Exception e)
         {
             throw new MessagingException("cannot add bcc", e);
         }
@@ -344,19 +335,18 @@ public abstract class Email
      * @return An Email.
      * @exception MessagingException.
      */
-    public Email addReplyTo(String email,
-                            String name )
+    public Email addReplyTo(String email, String name)
         throws MessagingException
     {
         try
         {
-            if ( name == null || name.trim().equals("") )
+            if (name == null || name.trim().equals(""))
             {
                 name = email;
             }
-            replyList.addElement( new InternetAddress( email, name ) );
+            replyList.addElement(new InternetAddress(email, name));
         }
-        catch( Exception e )
+        catch (Exception e)
         {
             throw new MessagingException("cannot add replyTo", e);
         }
@@ -370,16 +360,19 @@ public abstract class Email
      * @return An Email.
      * @exception MessagingException.
      */
-    public Email setSubject( String subject )
+    public Email setSubject(String subject)
         throws MessagingException
     {
-        if ( charset != null )
+        if (subject != null)
         {
-            message.setSubject(subject, charset);
-        }
-        else
-        {
-            message.setSubject(subject);
+            if (charset != null)
+            {
+                message.setSubject(subject, charset);
+            }
+            else
+            {
+                message.setSubject(subject);
+            }
         }
         return this;
     }
@@ -391,10 +384,13 @@ public abstract class Email
      * @return An Email.
      * @exception MessagingException.
      */
-    public Email setSentDate( Date date )
+    public Email setSentDate(Date date)
         throws MessagingException
     {
-        message.setSentDate( date );
+        if (date != null)
+        {
+            message.setSentDate(date);
+        }
         return this;
     }
 
@@ -439,9 +435,9 @@ public abstract class Email
     {
         int size = v.size();
         InternetAddress[] ia = new InternetAddress[size];
-        for (int i=0; i<size; i++)
+        for (int i = 0; i < size; i++)
         {
-            ia[i] = (InternetAddress)v.elementAt(i);
+            ia[i] = (InternetAddress) v.elementAt(i);
         }
         return ia;
     }

@@ -95,4 +95,14 @@ public interface JspService extends Service
      */
     public int getDefaultBufferSize();
 
+    /**
+     * Searchs for a template in the default.template path[s] and 
+     * returns the template name with a relative path which is required
+     * by <a href="http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/ServletContext.html#getRequestDispatcher(java.lang.String)">javax.servlet.RequestDispatcher</a>
+     *
+     * @param template The name of the template to search for.
+     * @return the template with a relative path
+     */
+    public String getRelativeTemplateName(String template);
+
 }

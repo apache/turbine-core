@@ -25,13 +25,13 @@ package org.apache.turbine.util.security;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,14 +55,10 @@ package org.apache.turbine.util.security;
  */
 
 import java.io.Serializable;
-
-import java.util.AbstractCollection;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
-
 import org.apache.turbine.om.security.Role;
-import org.apache.turbine.om.security.SecurityEntity;
 
 /**
  * This class represents a set of Roles.  It makes it easy to build a
@@ -89,10 +85,10 @@ public class RoleSet implements Serializable
     {
         set = new TreeSet();
     }
-    
+
     /**
      * Constructs a new RoleSet with specifed contents.
-     * 
+     *
      * If the given collection contains multiple objects that are
      * identical WRT equals() method, some objects will be overwriten.
      *
@@ -113,13 +109,13 @@ public class RoleSet implements Serializable
      */
     public boolean add(Role role)
     {
-        return set.add( (Object)role );
+        return set.add((Object) role);
     }
 
     /**
      * Adds the Roles in a Collection to this RoleSet.
      *
-     * @param roleSet A Collection of Roles.
+     * @param roles A Collection of Roles.
      * @return True if this RoleSet changed as a result; false
      * if no change to this RoleSet occurred (this RoleSet
      * already contained all members of the added RoleSet).
@@ -151,7 +147,7 @@ public class RoleSet implements Serializable
      */
     public boolean remove(Role role)
     {
-        return set.remove( (Object)role );
+        return set.remove((Object) role);
     }
 
     /**
@@ -171,7 +167,7 @@ public class RoleSet implements Serializable
      */
     public boolean contains(Role role)
     {
-        return set.contains( (Object)role );
+        return set.contains((Object) role);
     }
 
     /**
@@ -185,11 +181,10 @@ public class RoleSet implements Serializable
     public boolean contains(String roleName)
     {
         Iterator iter = set.iterator();
-        while ( iter.hasNext() )
+        while (iter.hasNext())
         {
             Role role = (Role)iter.next();
-            if ( roleName != null  &&
-                 roleName.equals( role.getName() ) )
+            if (roleName != null  && roleName.equals(role.getName()))
             {
                 return true;
             }
@@ -208,11 +203,10 @@ public class RoleSet implements Serializable
     public Role getRole(String roleName)
     {
         Iterator iter = set.iterator();
-        while ( iter.hasNext() )
+        while (iter.hasNext())
         {
             Role role = (Role)iter.next();
-            if ( roleName != null  &&
-                 roleName.equals( role.getName() ) )
+            if (roleName != null && roleName.equals(role.getName()))
             {
                 return role;
             }
@@ -231,7 +225,7 @@ public class RoleSet implements Serializable
     }
 
     /**
-     * Returns an Iterator for Roles in this RoleSet.  
+     * Returns an Iterator for Roles in this RoleSet.
      */
     public Iterator elements()
     {

@@ -146,7 +146,7 @@ public class MimeTypeMap
      * Loads mappings from a file path.
      *
      * @param path a file path.
-     * @returns the mappings.
+     * @return the mappings.
      * @throws IOException for an incorrect file.
      */
     protected static MimeTypeMapper loadPath(String path)

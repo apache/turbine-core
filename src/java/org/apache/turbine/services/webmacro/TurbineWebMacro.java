@@ -55,8 +55,6 @@ package org.apache.turbine.services.webmacro;
  */
 
 import java.io.OutputStream;
-import org.apache.turbine.services.Service;
-import org.apache.turbine.services.ServiceBroker;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.webmacro.servlet.WebContext;

@@ -25,13 +25,13 @@ package org.apache.turbine.services.schedule;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,13 +54,11 @@ package org.apache.turbine.services.schedule;
  * <http://www.apache.org/>.
  */
 
-import java.util.List;
 import java.util.Vector;
 import javax.servlet.ServletConfig;
-import org.apache.turbine.om.NumberKey;
-import org.apache.turbine.om.ObjectKey;
+import org.apache.torque.om.NumberKey;
+import org.apache.torque.om.ObjectKey;
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.util.Log;
 
 /**
  * Service for a cron like scheduler that uses the

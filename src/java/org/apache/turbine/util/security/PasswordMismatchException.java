@@ -72,4 +72,4 @@ public class PasswordMismatchException
     {
         super(msg);
     }
-};
+}

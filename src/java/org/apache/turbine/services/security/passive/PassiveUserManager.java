@@ -25,13 +25,13 @@ package org.apache.turbine.services.security.passive;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -56,7 +56,7 @@ package org.apache.turbine.services.security.passive;
 
 import org.apache.turbine.om.security.User;
 
-import org.apache.turbine.util.db.Criteria;
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.UnknownEntityException;
 import org.apache.turbine.util.security.EntityExistsException;
@@ -66,7 +66,7 @@ import org.apache.turbine.services.security.UserManager;
 
 /**
  * Void user manager can be used where no data storage is needed
- * by the application. 
+ * by the application.
  * It's methods don't provide any useful functionality  except throwing
  * DataBackendExceptions. Security service will be still able to create
  * anonymous User objects when this UserManager is used.
@@ -87,7 +87,7 @@ public class PassiveUserManager implements UserManager
      */
     public boolean accountExists( User user )
         throws DataBackendException
-    { 
+    {
         throw new DataBackendException("PassiveUserManager knows no users");
     }
 
@@ -108,7 +108,7 @@ public class PassiveUserManager implements UserManager
 
    /**
      * Retrieve a user from persistent storage using username as the
-     * key. 
+     * key.
      *
      * @param username the name of the user.
      * @return an User object.
@@ -152,7 +152,7 @@ public class PassiveUserManager implements UserManager
      * @param username the name of the user.
      * @param password the user supplied password.
      * @return an User object.
-     * @exception PasswordMismatchException if the supplied password was 
+     * @exception PasswordMismatchException if the supplied password was
      *            incorrect.
      * @exception UnknownEntityException if the user's record does not
      *            exist in the database.
@@ -160,11 +160,11 @@ public class PassiveUserManager implements UserManager
      *            storage.
      */
     public User retrieve( String username, String password )
-        throws PasswordMismatchException, UnknownEntityException, 
+        throws PasswordMismatchException, UnknownEntityException,
                DataBackendException
     {
         throw new DataBackendException("PassiveUserManager knows no users");
-    }        
+    }
 
     /**
      * Save an User object to persistent storage. User's record is
@@ -189,7 +189,7 @@ public class PassiveUserManager implements UserManager
      *
      * @param user an User object to authenticate.
      * @param password the user supplied password.
-     * @exception PasswordMismatchException if the supplied password was 
+     * @exception PasswordMismatchException if the supplied password was
      *            incorrect.
      * @exception UnknownEntityException if the user's record does not
      *            exist in the database.
@@ -197,7 +197,7 @@ public class PassiveUserManager implements UserManager
      *            storage.
      */
     public void authenticate( User user, String password )
-        throws PasswordMismatchException, UnknownEntityException, 
+        throws PasswordMismatchException, UnknownEntityException,
                DataBackendException
     {
         throw new DataBackendException("PassiveUserManager knows no users");
@@ -235,7 +235,7 @@ public class PassiveUserManager implements UserManager
      * @param user an User to change password for.
      * @param oldPassword the current password supplied by the user.
      * @param newPassword the current password requested by the user.
-     * @exception PasswordMismatchException if the supplied password was 
+     * @exception PasswordMismatchException if the supplied password was
      *            incorrect.
      * @exception UnknownEntityException if the user's record does not
      *            exist in the database.
@@ -243,7 +243,7 @@ public class PassiveUserManager implements UserManager
      *            storage.
      */
     public void changePassword( User user, String oldPassword, String newPassword )
-        throws PasswordMismatchException, UnknownEntityException, 
+        throws PasswordMismatchException, UnknownEntityException,
                DataBackendException
     {
         throw new DataBackendException("PassiveUserManager does not support setting passwords");
@@ -253,10 +253,10 @@ public class PassiveUserManager implements UserManager
      * Forcibly sets new password for an User.
      *
      * This is supposed by the administrator to change the forgotten or
-     * compromised passwords. Certain implementatations of this feature 
-     * would require administrative level access to the authenticating 
+     * compromised passwords. Certain implementatations of this feature
+     * would require administrative level access to the authenticating
      * server / program.
-     * 
+     *
      * @param user an User to change password for.
      * @param password the new password.
      * @exception UnknownEntityException if the user's record does not

@@ -57,10 +57,7 @@ package org.apache.turbine.services.webmacro;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import javax.servlet.ServletConfig;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.turbine.services.BaseInitable;
-import org.apache.turbine.services.BaseService;
+import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
@@ -72,12 +69,9 @@ import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.template.TemplateLink;
 import org.apache.turbine.util.template.TemplatePageAttributes;
 import org.apache.turbine.util.webmacro.WebMacroFormatter;
-import org.apache.velocity.runtime.configuration.Configuration;
 import org.webmacro.Broker;
-import org.webmacro.Context;
 import org.webmacro.FastWriter;
 import org.webmacro.InitException;
-import org.webmacro.Macro;
 import org.webmacro.NotFoundException;
 import org.webmacro.Template;
 import org.webmacro.WM;
@@ -85,7 +79,6 @@ import org.webmacro.WebMacro;
 import org.webmacro.broker.ResourceBroker;
 import org.webmacro.broker.ResourceProvider;
 import org.webmacro.servlet.WebContext;
-import org.webmacro.util.ThreadScheduler;
 
 /**
  * This is a Service that can process WebMacro templates from within a

@@ -3,7 +3,7 @@ package org.apache.turbine;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,13 +25,13 @@ package org.apache.turbine;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,36 +54,24 @@ package org.apache.turbine;
  * <http://www.apache.org/>.
  */
 
-// Java Core Classes
+import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Enumeration;
-
-// Java Servlet Classes
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-// Turbine Modules
+import org.apache.stratum.component.ComponentLoader;
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.PageLoader;
-import org.apache.turbine.modules.actions.sessionvalidator.SessionValidator;
-
-// Turbine Utility Classes
-import org.apache.turbine.util.DynamicURI;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.resources.TurbineResources;
+import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.RunDataFactory;
 import org.apache.turbine.util.StringUtils;
 import org.apache.turbine.util.security.AccessControlList;
-
-//Turbine Services
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.services.logging.LoggingService;
-import org.apache.turbine.services.template.TurbineTemplate;
 
 /**
  * Turbine is the main servlet for the entire system. It is <code>final</code>
@@ -116,9 +104,13 @@ import org.apache.turbine.services.template.TurbineTemplate;
  * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
+ * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
  * @version $Id$
  */
-public class Turbine extends HttpServlet
+public class Turbine
+    extends HttpServlet
+    implements TurbineConstants
 {
     /**
      * Name of path info parameter used to indicate the redirected stage of
@@ -150,6 +142,35 @@ public class Turbine extends HttpServlet
     private static boolean firstDoGet = true;
 
     /**
+     * The base from which the Turbine application
+     * will operate.
+     */
+    private static String applicationRoot;
+
+    /**
+     * The webapp root where the Turbine application
+     * is running.
+     */
+    private static String webappRoot;
+
+    /**
+     * instance of turbine services
+     */
+    private TurbineServices services =
+            (TurbineServices) TurbineServices.getInstance();
+
+    /**
+     * Server information. This information needs to
+     * be made available to processes that do not have
+     * access to RunData and the ServletService doesn't
+     * seem to be working in all cases.
+     */
+    private static String serverName;
+    private static String serverScheme;
+    private static String serverPort;
+    private static String contextPath;
+
+    /**
      * This init method will load the default resources from a
      * properties file.
      *
@@ -161,11 +182,11 @@ public class Turbine extends HttpServlet
     {
         super.init(config);
 
-        synchronized ( this.getClass() )
+        synchronized (this.getClass())
         {
-            if(!firstInit)
+            if (!firstInit)
             {
-                log ("Double initializaton of Turbine was attempted!");
+                log("Double initializaton of Turbine was attempted!");
                 return;
             }
             // executing init will trigger some static initializers, so we have
@@ -174,24 +195,75 @@ public class Turbine extends HttpServlet
 
             try
             {
-                // Initalize TurbineServices and init bootstrap services
-                TurbineServices services =
-                    (TurbineServices) TurbineServices.getInstance();
+                // Set the application root. This defaults to the webapp
+                // context if not otherwise set. This is to allow 2.1 apps
+                // to be developed from CVS. This feature will carry over
+                // into 3.0.
+                applicationRoot = config.getInitParameter(APPLICATION_ROOT);
+
+                if (applicationRoot == null
+                        || applicationRoot.equals("webContext"))
+                {
+                    applicationRoot = config.getServletContext()
+                            .getRealPath("");
+                }
+
+                // Set the webapp root. The applicationRoot and the
+                // webappRoot will be the same when the application is
+                // deployed, but during development they may have
+                // different values.
+                webappRoot = config.getServletContext().getRealPath("");
+
+                // Create any directories that need to be setup for
+                // a running Turbine application.
+                createRuntimeDirectories();
 
                 // Initialize essential services (Resources & Logging)
                 services.initPrimaryServices(config);
 
+                // Now that TurbineResources is setup, we want to insert
+                // the applicationRoot and webappRoot into the resources
+                // so that ${applicationRoot} and ${webappRoot} can be
+                // use in the TRP.
+                TurbineResources.setProperty(APPLICATION_ROOT, applicationRoot);
+                TurbineResources.setProperty(WEBAPP_ROOT, webappRoot);
+
                 // Initialize other services that require early init
                 services.initServices(config, false);
+
+                // Initialize components like torque and fulcrum
+                ComponentLoader loader = new ComponentLoader(
+                        TurbineResources.getConfiguration());
+                loader.load();
+
+                log ("Turbine: init() Ready to Rumble!");
             }
-            catch ( Exception e )
+            catch (Exception e)
             {
                 // save the exception to complain loudly later :-)
                 initFailure = e;
                 log ("Turbine: init() failed: " + StringUtils.stackTrace(e));
-                return;
             }
-            log ("Turbine: init() Ready to Rumble!");
+        }
+    }
+
+    /**
+     * Create any directories that might be needed during
+     * runtime. Right now this includes:
+     *
+     * i) directories for logging
+     */
+    private static void createRuntimeDirectories()
+    {
+        // Create the logging directory
+        File logDir = new File(webappRoot + "/logs");
+
+        if (logDir.exists() == false)
+        {
+            if (logDir.mkdirs() == false)
+            {
+                System.err.println("Cannot create directory for logs!");
+            }
         }
     }
 
@@ -203,21 +275,67 @@ public class Turbine extends HttpServlet
      */
     public final void init(RunData data)
     {
-        if (firstDoGet)
+        synchronized (Turbine.class)
         {
-            synchronized (Turbine.class)
+            if (firstDoGet)
             {
-                if (firstDoGet)
-                {
-                    log("Turbine: Starting HTTP initialization of services");
-                    TurbineServices.getInstance().initServices(data);
-                    log("Turbine: Completed HTTP initialization of services");
+                serverName = data.getRequest().getServerName();
+                serverPort = Integer.toString(data.getRequest().getServerPort());
+                serverScheme = data.getRequest().getScheme();
 
-                    // Mark that we're done.
-                    firstDoGet = false;
-               }
+                // Store the context path for tools like ContentURI and
+                // the UIManager that use webapp context path information
+                // for constructing URLs.
+                contextPath = data.getRequest().getContextPath();
+
+                log("Turbine: Starting HTTP initialization of services");
+                TurbineServices.getInstance().initServices(data);
+                log("Turbine: Completed HTTP initialization of services");
+
+                // Mark that we're done.
+                firstDoGet = false;
             }
         }
+    }
+
+    /**
+     * Return the server name.
+     *
+     * @return String server name
+     */
+    public static String getServerName()
+    {
+        return serverName;
+    }
+
+    /**
+     * Return the server scheme.
+     *
+     * @return String server scheme
+     */
+    public static String getServerScheme()
+    {
+        return serverScheme;
+    }
+
+    /**
+     * Return the server port.
+     *
+     * @return String server port
+     */
+    public static String getServerPort()
+    {
+        return serverPort;
+    }
+
+    /**
+     * Return the context path.
+     *
+     * @return String context path
+     */
+    public static String getContextPath()
+    {
+        return contextPath;
     }
 
     /**
@@ -241,11 +359,12 @@ public class Turbine extends HttpServlet
      * @exception IOException a servlet exception.
      * @exception ServletException a servlet exception.
      */
-    public final void doGet (HttpServletRequest req,
-                       HttpServletResponse res)
-        throws IOException,
-               ServletException
+    public final void doGet(HttpServletRequest req, HttpServletResponse res)
+        throws IOException, ServletException
     {
+        // set to true if the request is to be redirected by the page
+        boolean requestRedirected = false;
+
         // Placeholder for the RunData object.
         RunData data = null;
         try
@@ -258,110 +377,37 @@ public class Turbine extends HttpServlet
 
             // Get general RunData here...
             // Perform turbine specific initialization below.
-            data = RunDataFactory.getRunData( req, res,
-                                              getServletConfig() );
+            data = RunDataFactory.getRunData(req, res, getServletConfig());
 
             // If this is the first invocation, perform some
             // initialization.  Certain services need RunData to initialize
             // themselves.
-            init(data);
-
-            // Get the instance of the Session Validator.
-            SessionValidator sessionValidator = (SessionValidator)ActionLoader
-                .getInstance().getInstance(TurbineResources.getString(
-                    "action.sessionvalidator"));
-
-            // if this is the redirected stage of the initial request, 
-            // check that the session is now not new. 
-            // If it is not, then redirect back to the
-            // original URL (i.e. remove the "redirected" pathinfo)
-            if (data.getParameters()
-                .getString(REDIRECTED_PATHINFO_NAME, "false").equals("true"))
+            if (firstDoGet)
             {
-                if (data.getSession().isNew())
-                {
-                    String message = "Infinite redirect detected...";
-                    log(message);
-                    Log.error(message);
-                    throw new Exception(message);
-                }
-                else
-                {
-                    DynamicURI duri = new DynamicURI (data, true);
-
-                    // Pass on the sent data in pathinfo.
-                    for (Enumeration e = data.getParameters().keys() ;
-                         e.hasMoreElements() ;)
-                    {
-                        String key = (String) e.nextElement();
-                        if (!key.equals(REDIRECTED_PATHINFO_NAME))
-                        {
-                            String value =
-                                (String) data.getParameters().getString ( key );
-                            duri.addPathInfo((String)key, (String)value );
-                        }
-                    }
-
-                    data.getResponse().sendRedirect( duri.toString() );
-                    return;
-                }
+                init(data);
             }
-            else
+
+            // set the session timeout if specified in turbine's properties
+            // file if this is a new session
+            if (data.getSession().isNew())
             {
-                // Insist that the client starts a session before access
-                // to data is allowed. this is done by redirecting them to
-                // the "screen.homepage" page but you could have them go
-                // to any page as a starter (ie: the homepage)
-                // "data.getResponse()" represents the HTTP servlet
-                // response.
-                if ( sessionValidator.requiresNewSession(data) &&
-                     data.getSession().isNew() )
+                int timeout = TurbineResources.getInt("session.timeout", -1);
+                if (timeout != -1)
                 {
-                    DynamicURI duri = new DynamicURI (data, true);
-
-                    // Pass on the sent data in pathinfo.
-                    for (Enumeration e = data.getParameters().keys() ;
-                         e.hasMoreElements() ;)
-                    {
-                        String key = (String) e.nextElement();
-                        String value =
-                            (String) data.getParameters().getString ( key );
-                        duri.addPathInfo((String)key, (String)value );
-                    }
-
-                    // add a dummy bit of path info to fool browser into 
-                    // thinking this is a new URL
-                    if (!data.getParameters()
-                        .containsKey(REDIRECTED_PATHINFO_NAME))
-                    {
-                        duri.addPathInfo(REDIRECTED_PATHINFO_NAME, "true");
-                    }
-
-                    // as the session is new take this opportunity to 
-                    // set the session timeout if specified in TR.properties
-                    int timeout = 
-                        TurbineResources.getInt("session.timeout", -1);
-                    
-                    if (timeout != -1)
-                    {
-                        data.getSession().setMaxInactiveInterval(timeout);
-                    }                        
-
-                    data.getResponse().sendRedirect( duri.toString() );
-                    return;
+                    data.getSession().setMaxInactiveInterval(timeout);
                 }
             }
 
             // Fill in the screen and action variables.
-            data.setScreen ( data.getParameters().getString("screen") );
-            data.setAction ( data.getParameters().getString("action") );
+            data.setScreen(data.getParameters().getString("screen"));
+            data.setAction(data.getParameters().getString("action"));
 
             // Special case for login and logout, this must happen before the
             // session validator is executed in order either to allow a user to
             // even login, or to ensure that the session validator gets to
             // mandate its page selection policy for non-logged in users
             // after the logout has taken place.
-            if ( data.hasAction()
+            if (data.hasAction()
                     && data.getAction().equalsIgnoreCase(TurbineResources
                             .getString("action.login"))
                     || data.getAction().equalsIgnoreCase(TurbineResources
@@ -384,13 +430,13 @@ public class Turbine extends HttpServlet
                     String[] names = data.getSession().getValueNames();
                     if (names != null)
                     {
-                        for (int i=0; i< names.length; i++)
+                        for (int i = 0; i < names.length; i++)
                         {
                             data.getSession().removeValue(names[i]);
                         }
                     }
                 }
-                ActionLoader.getInstance().exec ( data, data.getAction() );
+                ActionLoader.getInstance().exec(data, data.getAction());
                 data.setAction(null);
             }
 
@@ -403,7 +449,7 @@ public class Turbine extends HttpServlet
             // TurbineResources.properties...screen.homepage; or, you
             // can specify your own SessionValidator action.
             ActionLoader.getInstance().exec(
-                data,TurbineResources.getString("action.sessionvalidator") );
+                data, TurbineResources.getString("action.sessionvalidator"));
 
             // Put the Access Control List into the RunData object, so
             // it is easily available to modules.  It is also placed
@@ -411,7 +457,7 @@ public class Turbine extends HttpServlet
             // out the ACL to force it to be rebuilt based on more
             // information.
             ActionLoader.getInstance().exec(
-                data,TurbineResources.getString("action.accesscontroller"));
+                data, TurbineResources.getString("action.accesscontroller"));
 
             // Start the execution phase. DefaultPage will execute the
             // appropriate action as well as get the Layout from the
@@ -424,9 +470,9 @@ public class Turbine extends HttpServlet
             // security purposes.  You should really never need more
             // than just the default page.  If you do, add logic to
             // DefaultPage to do what you want.
-            
+
             String defaultPage = TurbineTemplate.getDefaultPageName(data);
-            
+
             if (defaultPage == null)
             {
                 /*
@@ -443,60 +489,77 @@ public class Turbine extends HttpServlet
                 defaultPage = TurbineResources.getString(
                     "page.default", "DefaultPage");
             }
-            
+
             PageLoader.getInstance().exec(data, defaultPage);
 
             // If a module has set data.acl = null, remove acl from
             // the session.
-            if ( data.getACL() == null )
+            if (data.getACL() == null)
             {
-                data.getSession().removeValue(
-                    AccessControlList.SESSION_KEY);
-            }
-
-            try
-            {
-                if ( data.isPageSet() == false &&
-                     data.isOutSet() == false )
-                    throw new Exception ( "Nothing to output" );
-
-                // We are all done! if isPageSet() output that way
-                // otherwise, data.getOut() has already been written
-                // to the data.getOut().close() happens below in the
-                // finally.
-                if ( data.isPageSet() && data.isOutSet() == false )
+                try
                 {
-                    // Modules can override these.
-                    data.getResponse()
-                        .setLocale( data.getLocale() );
-                    data.getResponse()
-                        .setContentType( data.getContentType() );
-
-                    // Handle the case where a module may want to send
-                    // a redirect.
-                    if ( ( data.getStatusCode() == 301 ||
-                           data.getStatusCode() ==  302 ) &&
-                         data.getRedirectURI() != null )
-                    {
-                        data.getResponse()
-                            .sendRedirect ( data.getRedirectURI() );
-                    }
-
-                    // Set the status code.
-                    data.getResponse().setStatus ( data.getStatusCode() );
-                    // Output the Page.
-                    data.getPage().output (data.getOut());
+                    data.getSession().removeValue(
+                        AccessControlList.SESSION_KEY);
+                }
+                catch (IllegalStateException ignored)
+                {
                 }
             }
-            catch ( Exception e )
+
+            // handle a redirect request
+            requestRedirected = ((data.getRedirectURI() != null)
+                && (data.getRedirectURI().length() > 0));
+            if (requestRedirected)
             {
-                // The output stream was probably closed by the client
-                // end of things ie: the client clicked the Stop
-                // button on the browser, so ignore any errors that
-                // result.
+                if (data.getResponse().isCommitted())
+                {
+                    requestRedirected = false;
+                    log("redirect requested, response already committed: " +
+                         data.getRedirectURI());
+                }
+                else
+                {
+                    data.getResponse().sendRedirect(data.getRedirectURI());
+                }
+            }
+
+            if (!requestRedirected)
+            {
+                try
+                {
+                    if (data.isPageSet() == false && data.isOutSet() == false)
+                    {
+                        throw new Exception("Nothing to output");
+                    }
+
+                    // We are all done! if isPageSet() output that way
+                    // otherwise, data.getOut() has already been written
+                    // to the data.getOut().close() happens below in the
+                    // finally.
+                    if (data.isPageSet() && data.isOutSet() == false)
+                    {
+                        // Modules can override these.
+                        data.getResponse().setLocale(data.getLocale());
+                        data.getResponse()
+                                .setContentType(data.getContentType());
+
+                        // Set the status code.
+                        data.getResponse().setStatus(data.getStatusCode());
+                        // Output the Page.
+                        data.getPage().output(data.getOut());
+                    }
+                }
+                catch (Exception e)
+                {
+                    // The output stream was probably closed by the client
+                    // end of things ie: the client clicked the Stop
+                    // button on the browser, so ignore any errors that
+                    // result.
+                    Log.debug("Output stream closed? ", e);
+                }
             }
         }
-        catch ( Exception e )
+        catch (Exception e)
         {
             handleException(data, res, e);
         }
@@ -506,16 +569,6 @@ public class Turbine extends HttpServlet
         }
         finally
         {
-            // Make sure to close the outputstream when we are done.
-            try
-            {
-                data.getOut().close();
-            }
-            catch (Exception e)
-            {
-                // Ignore.
-            }
-
             // Return the used RunData to the factory for recycling.
             RunDataFactory.putRunData(data);
         }
@@ -529,12 +582,10 @@ public class Turbine extends HttpServlet
      * @exception IOException a servlet exception.
      * @exception ServletException a servlet exception.
      */
-    public final void doPost (HttpServletRequest req,
-                        HttpServletResponse res)
-        throws IOException,
-               ServletException
+    public final void doPost(HttpServletRequest req, HttpServletResponse res)
+        throws IOException, ServletException
     {
-        doGet ( req, res );
+        doGet(req, res);
     }
 
     /**
@@ -558,14 +609,14 @@ public class Turbine extends HttpServlet
      *
      * @param data A Turbine RunData object.
      * @param res Servlet response.
-     * @param e The exception to report.
+     * @param t The exception to report.
      */
     private final void handleException(RunData data,
                                  HttpServletResponse res,
                                  Throwable t)
     {
         // make sure that the stack trace makes it the log
-        Log.error("Turbine.handleException: "+t.getMessage());
+        Log.error("Turbine.handleException: " + t.getMessage());
         Log.error(t);
 
         String mimeType = "text/plain";
@@ -573,55 +624,59 @@ public class Turbine extends HttpServlet
         {
             // This is where we capture all exceptions and show the
             // Error Screen.
-            data.setStackTrace(StringUtils.stackTrace(t),t);
+            data.setStackTrace(StringUtils.stackTrace(t), t);
 
             // setup the screen
-            data.setScreen(TurbineResources
-                           .getString("screen.error"));
+            data.setScreen(TurbineResources.getString("screen.error"));
 
             // do more screen setup for template execution if needed
             if (data.getTemplateInfo() != null)
-                data.getTemplateInfo()
-                    .setScreenTemplate(TurbineResources
-                                       .getString("template.error"));
+            {
+                data.getTemplateInfo().setScreenTemplate(TurbineResources
+                        .getString("template.error"));
+            }
 
             // Make sure to not execute an action.
-            data.setAction ("");
+            data.setAction("");
 
-            PageLoader.getInstance()
-                .exec(data,
-                      TurbineResources.getString("page.default", 
+            PageLoader.getInstance().exec(data,
+                      TurbineResources.getString("page.default",
                       "DefaultPage"));
 
-            data.getResponse().setContentType( data.getContentType() );
-            data.getResponse().setStatus ( data.getStatusCode() );
-            if( data.isPageSet() )
-                data.getOut().print ( data.getPage().toString() );
+            data.getResponse().setContentType(data.getContentType());
+            data.getResponse().setStatus(data.getStatusCode());
+            if (data.isPageSet())
+            {
+                data.getOut().print(data.getPage().toString());
+            }
         }
         // Catch this one because it occurs if some code hasn't been
         // completely re-compiled after a change..
-        catch ( java.lang.NoSuchFieldError e )
+        catch (java.lang.NoSuchFieldError e)
         {
             try
             {
-                data.getResponse().setContentType( mimeType );
-                data.getResponse().setStatus ( 200 );
+                data.getResponse().setContentType(mimeType);
+                data.getResponse().setStatus(200);
             }
-            catch (Exception ignored) {}
+            catch (Exception ignored)
+            {
+            }
 
             try
             {
-                data.getOut().print ("java.lang.NoSuchFieldError: " +
-                                     "Please recompile all of your " +
-                                     "source code.");
+                data.getOut().print("java.lang.NoSuchFieldError: "
+                        + "Please recompile all of your source code.");
             }
-            catch (IOException ignored) {}
+            catch (IOException ignored)
+            {
+            }
 
-            log ( data.getStackTrace() );
-            org.apache.turbine.util.Log.error ( e.getMessage(), e );
+            log(data.getStackTrace());
+            org.apache.turbine.util.Log.error(e.getMessage(), e);
         }
         // Attempt to do *something* at this point...
-        catch ( Throwable reallyScrewedNow )
+        catch (Throwable reallyScrewedNow)
         {
             StringBuffer msg = new StringBuffer();
             msg.append("Horrible Exception: ");
@@ -635,13 +690,71 @@ public class Turbine extends HttpServlet
             }
             try
             {
-                res.setContentType( mimeType );
-                res.setStatus ( 200 );
-                res.getWriter().print (msg.toString());
+                res.setContentType(mimeType);
+                res.setStatus(200);
+                res.getWriter().print(msg.toString());
             }
-            catch (Exception ignored) {}
-            org.apache.turbine.util.Log.error (
-                    reallyScrewedNow.getMessage(), reallyScrewedNow );
+            catch (Exception ignored)
+            {
+            }
+            org.apache.turbine.util.Log.error(
+                    reallyScrewedNow.getMessage(), reallyScrewedNow);
         }
+    }
+
+    /**
+     * Get the application root for this Turbine webapp. This
+     * concept was started in 3.0 and will allow an app to be
+     * developed from a standard CVS layout. With a simple
+     * switch the app will work fully within the servlet
+     * container for deployment.
+     *
+     * @return String applicationRoot
+     */
+    public static String getApplicationRoot()
+    {
+        return applicationRoot;
+    }
+
+    /**
+     * Used to get the real path of configuration and resource
+     * information. This can be used by an app being
+     * developed in a standard CVS layout.
+     *
+     * @param path path translated to the application root
+     * @return the real path
+     */
+    public static String getRealPath(String path)
+    {
+        if (path.startsWith("/"))
+        {
+            path = path.substring(1);
+        }
+
+        return applicationRoot + "/" + path;
+    }
+
+    /**
+     * logs message using turbine's logging facility
+     *
+     * @param msg message to be logged
+     */
+    public void log(String msg)
+    {
+        services.notice(msg);
+    }
+
+    /**
+     * Writes an explanatory message and a stack trace
+     * for a given <code>Throwable</code> exception
+     *
+     * @param message the message
+     * @param t	the error
+     */
+
+    public void log(String message, Throwable t)
+    {
+        services.notice(message);
+        services.error(t);
     }
 }

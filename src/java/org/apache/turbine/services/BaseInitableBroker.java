@@ -25,13 +25,13 @@ package org.apache.turbine.services;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -57,7 +57,6 @@ package org.apache.turbine.services;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Stack;
-import java.util.Vector;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -161,7 +160,7 @@ public abstract class BaseInitableBroker
     /**
      * Shuts down an <code>Initable</code>.
      *
-     * This method is used to release resources allocated by an 
+     * This method is used to release resources allocated by an
      * <code>Initable</code>, and return it to its initial (uninitailized)
      * state.
      *
@@ -182,7 +181,7 @@ public abstract class BaseInitableBroker
         {
             // Shutdown of a nonexistent class was requested.
             // This does not hurt anything, so we log the error and continue.
-            error(new TurbineException("Shutdown of a nonexistent class " + 
+            error(new TurbineException("Shutdown of a nonexistent class " +
                     className + " was requested", e));
         }
     }
@@ -230,7 +229,7 @@ public abstract class BaseInitableBroker
         }
         catch( InitializationException e )
         {
-            throw new InstantiationException("Class " + className + 
+            throw new InstantiationException("Class " + className +
                             " failed to initialize", e);
         }
     }
@@ -257,7 +256,7 @@ public abstract class BaseInitableBroker
             {
                 initable = (Initable)Class.forName(className).newInstance();
             }
-   
+
             // those two errors must be passed to the VM
             catch( ThreadDeath t )
             {
@@ -267,33 +266,33 @@ public abstract class BaseInitableBroker
             {
                 throw t;
             }
-   
-            catch( Throwable t ) 
+
+            catch( Throwable t )
             {
                 // Used to indicate error condition.
                 String msg = null;
 
                 if(t instanceof NoClassDefFoundError)
                 {
-                    msg = "A class referenced by " + className + 
+                    msg = "A class referenced by " + className +
                         " is unavailable. Check your jars and classes.";
                 }
                 else if(t instanceof ClassNotFoundException)
                 {
-                    msg = "Class " + className + 
+                    msg = "Class " + className +
                         " is unavailable. Check your jars and classes.";
                 }
                 else if(t instanceof ClassCastException)
                 {
-                    msg = "Class " + className + 
+                    msg = "Class " + className +
                         " doesn't implement Initable.";
                 }
-                else 
+                else
                 {
                     msg = "Failed to instantiate " + className;
                 }
-                
-                throw new InstantiationException(msg, t);   
+
+                throw new InstantiationException(msg, t);
             }
 
             initable.setInitableBroker(this);
@@ -310,12 +309,12 @@ public abstract class BaseInitableBroker
      * tracing mesages that might be useful for debugging (newline terminated).
      *
      * <p>The default implementation uses system error stream. When writing
-     * your own, remeber to direct that message to the proper logging 
+     * your own, remeber to direct that message to the proper logging
      * mechanism.
      *
      * @param msg the message to print.
      */
-    public void notice(String msg) 
+    public void notice(String msg)
     {
         System.err.println('[' + new Date().toString() + "] " + msg);
     }
@@ -327,7 +326,7 @@ public abstract class BaseInitableBroker
      * stacktraces of any exceptions that might be caught during processing.
      *
      * <p>The default implementation uses system error stream. When writing
-     * your own, remeber to direct that message to the proper logging 
+     * your own, remeber to direct that message to the proper logging
      * mechanism.
      *
      * @param msg the message to print.

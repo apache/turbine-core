@@ -25,13 +25,13 @@ package org.apache.turbine.services.cache;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,7 +54,6 @@ package org.apache.turbine.services.cache;
  * <http://www.apache.org/>.
  */
 
-import java.io.Serializable;
 import org.apache.turbine.services.resources.TurbineResources;
 
 /**
@@ -112,10 +111,9 @@ public class CachedObject
      * @param expires How long before the object expires, in ms,
      * e.g. 1000 = 1 second.
      */
-    public CachedObject(Object o,
-                        long expires)
+    public CachedObject(Object o, long expires)
     {
-        if ( expires == DEFAULT )
+        if (expires == DEFAULT)
         {
             this.expires = defaultage;
         }
@@ -156,11 +154,36 @@ public class CachedObject
     }
 
     /**
+     * Set the expiration interval for the object.
+     *
+     * @param expires Expiration interval in millis ( 1 second = 1000 millis)
+     */
+    public void setExpires(long expires)
+    {
+        if (expires == DEFAULT)
+        {
+            this.expires = defaultage;
+        }
+        else
+        {
+            this.expires = expires;
+        }
+        if (expires == FOREVER)
+        {
+            setStale(false);
+        }
+        else
+        {
+            setStale((System.currentTimeMillis() - created) > expires);
+        }
+    }
+
+    /**
      * Set the stale status for the object.
      *
      * @param stale Whether the object is stale or not.
      */
-    public synchronized void setStale ( boolean stale )
+    public synchronized void setStale(boolean stale)
     {
         this.stale = stale;
     }
@@ -187,7 +210,7 @@ public class CachedObject
             return false;
         }
 
-        setStale( (System.currentTimeMillis() - created) > expires );
+        setStale((System.currentTimeMillis() - created) > expires);
         return getStale();
     }
 }

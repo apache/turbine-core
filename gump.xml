@@ -1,0 +1,64 @@
+<module name="jakarta-turbine-2">
+
+
+  <description>A servlet based framework.</description>
+  <url href="http://jakarta.apache.org/turbine/turbine-2/"/>
+  
+  <cvs repository="jakarta"/>
+  
+  <!-- This is really the cvs module. We need to change this but -->
+  <!-- I will leave this for now until everything works.         -->
+  
+  <project name="jakarta-turbine-2">
+    
+    <!-- Standard Maven target to produce Javadocs, source -->
+    <!-- and binary distributions.                         -->
+    
+    <ant buildfile="build-gump.xml" target="jar">
+      <property name="final.name" value="turbine-@@DATE@@"/>
+    </ant>
+    
+    <!-- All Maven projects need Ant and Xerces to build. -->
+    <depend project="jakarta-ant"/>
+    <depend project="xml-xerces"/>
+
+    <depend project="commons-collections"/>
+    <depend project="commons-configuration"/>
+    <depend project="commons-lang"/>
+    <depend project="jakarta-ecs"/>
+    <depend project="jakarta-regexp"/>
+    <depend project="javamail"/>
+    <depend project="jaf"/>
+    <depend project="jdbc"/>
+    <depend project="jndi"/>
+    <depend project="jakarta-log4j"/>
+    <depend project="jakarta-servletapi"/>
+    <depend project="jakarta-turbine-stratum"/>
+    <depend project="jakarta-turbine-torque"/>
+    <depend project="jakarta-velocity"/>
+    <depend project="village"/>
+    <depend project="xml-rpc"/>
+    <depend project="xml-xerces"/>
+    <depend project="xml-apis"/>
+    <depend project="xml-xalan2"/>
+    <depend project="commons-httpclient"/>
+    <depend project="httpunit"/>
+    <depend project="jakarta-cactus-framework-12"/>
+    <depend project="jakarta-cactus-ant"/>
+    <depend project="jtidy"/>
+    <depend project="junit"/>
+    <depend project="castor"/>
+    <depend project="webmacro"/>
+    <depend project="freemarker"/>
+    <depend project="jython"/>
+
+    <work nested="target/classes"/>
+    <home nested="target"/>
+    <jar name="turbine-@@DATE@@.jar"/>
+    <javadoc nested="docs/apidocs"/>
+
+
+    
+  </project>
+  
+</module>

@@ -60,7 +60,6 @@ import java.util.Iterator;
 import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import org.apache.turbine.services.BaseService;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.resources.TurbineResources;
@@ -110,17 +109,17 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
 
                 if (contextPropsList.containsKey(contextName))
                 {
-                    contextProps = (Properties) 
+                    contextProps = (Properties)
                         contextPropsList.get(contextName);
                 }
                 else
                 {
                     contextProps = new Properties();
                 }
-                
+
                 contextProps.put(
                     key.substring(end + 1),TurbineResources.getString(key));
-                
+
                 contextPropsList.put(contextName, contextProps);
             }
 
@@ -129,7 +128,7 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
         catch (Exception e)
         {
             Log.error("Failed to initialize JDNI contexts!", e);
-            
+
             throw new InitializationException(
                 "Failed to initialize JDNI contexts!");
         }
@@ -150,7 +149,7 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
             if (contextPropsList == null)
             {
                 init();
-            }                
+            }
 
             Enumeration contextPropsKeys = contextPropsList.keys();
             while (contextPropsKeys.hasMoreElements())
@@ -165,7 +164,7 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
         catch (Exception e)
         {
             Log.error("Failed to initialize JDNI contexts!",e);
-            
+
             throw new InitializationException(
                 "Failed to initialize JDNI contexts!");
         }
@@ -177,7 +176,7 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
       * specified name; ie. those properties that start with
       * "services.servicename.properties.name.".
       *
-      * @param name The name of the context.
+      * @param contextName The name of the context.
       * @return The context with the specified name, or null if no
       * context exists with that name.
       */
