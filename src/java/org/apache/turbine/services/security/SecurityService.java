@@ -60,6 +60,7 @@ import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.Service;
+import org.apache.turbine.services.security.db.DBUserManager;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
@@ -117,7 +118,7 @@ public interface SecurityService
      * (org.apache.turbine.services.security.DBUserManager)
      */
     static final String USER_MANAGER_DEFAULT
-        = "org.apache.turbine.services.security.DBUserManager";
+        = DBUserManager.class.getName();
 
     /**
      * the key within services's properties for secure passwords flag
