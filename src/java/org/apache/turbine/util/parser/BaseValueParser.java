@@ -68,12 +68,17 @@ import java.text.DateFormat;
 import java.text.ParseException;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -83,7 +88,6 @@ import org.apache.torque.om.StringKey;
 import org.apache.turbine.util.DateSelector;
 import org.apache.turbine.util.TimeSelector;
 import org.apache.turbine.util.ValueParser;
-
 import org.apache.turbine.util.pool.Recyclable;
 import org.apache.turbine.util.pool.RecyclableSupport;
 
@@ -125,7 +129,7 @@ public class BaseValueParser
     private static Log log = LogFactory.getLog(BaseValueParser.class);
 
     /** Random access storage for parameter data. */
-    private Hashtable parameters = new Hashtable();
+    private Map parameters = new HashMap();
 
     /** The character encoding to use when converting to byte arrays */
     private String characterEncoding = "US-ASCII";
@@ -364,18 +368,28 @@ public class BaseValueParser
                 containsKey(key + TimeSelector.SECOND_SUFFIX));
     }
 
-    /*
-     * Get an enumerator for the parameter keys. Wraps to the
-     * contained <code>Hashtable.keys()</code>.
+    /**
+     * Get an enumerator for the parameter keys.
      *
      * @return An <code>enumerator</code> of the keys.
+     * @deprecated use {@link #keySet} instead.
      */
     public Enumeration keys()
     {
-        return parameters.keys();
+        return Collections.enumeration(parameters.keySet());
     }
 
-    /*
+    /**
+     * Gets the set of keys
+     *
+     * @return A <code>Set</code> of the keys.
+     */
+    public Set keySet()
+    {
+        return parameters.keySet();
+    }
+
+    /**
      * Returns all the available parameter names.
      *
      * @return A object array with the keys.
@@ -1243,9 +1257,9 @@ public class BaseValueParser
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
-        for (Enumeration e = parameters.keys(); e.hasMoreElements();)
+        for (Iterator iter = keySet().iterator(); iter.hasNext();)
         {
-            String name = (String) e.nextElement();
+            String name = (String) iter.next();
             try
             {
                 sb.append('{');
