@@ -172,6 +172,7 @@ import org.apache.commons.logging.LogFactory;
 <source>
 <![CDATA[
 services.PullService.earlyInit=true
+services.SessionService.earlyInit=true
 ]]>
 </source>
 <p>
@@ -219,6 +220,17 @@ org.apache.turbine.services.pull.tools.TemplateLinkWithSlash
     that this does not apply to the Velocity #parse() and #include() 
     statements which operate at a lower level). See: 
     <a href="../services/template-service.html">Template Service</a>.
+</p>
+</section>
+
+<section name="Update to the latest DTDs for Intake and Torque">
+<p>
+    Updating your Intake configuration xml file and your Torque schema files
+    to use the most recent DTDs will ensure that the DTDResolver can be used
+    when validating these files.  Deprecation warnings may be produced while
+    these files are being processed - as with your application code you should
+    aim to update these files so that no deprecation warnings are produced
+    before the next Turbine release. 
 </p>
 </section>
 
