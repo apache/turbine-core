@@ -50,10 +50,47 @@ Changes between Turbine 2.2-b1 and 2.2-b2.
 </subsection>
 </section>
 -->
+<section name="Turbine 2.2.1 (not released)">
 
-<section name="Turbine 2.2-rc2">
 <p>
-Changes between Turbine 2.2-rc1 and 2.2-rc2.
+Changes between Turbine 2.2 and 2.2.1.
+</p>
+
+<p>
+</p>
+
+<subsection name="Changes that could break older environments">
+<p>
+  <ul>
+    <li>
+    </li>
+  </ul>
+</p>
+</subsection>
+
+<subsection name="Other changes">
+<p>
+  <ul>
+    <li>
+    </li>
+  </ul>
+</p>
+</subsection>
+
+<subsection name="Fixed bugs">
+<p>
+  <ul>
+    <li>
+      TRQD10: Extending Turbine User How-to for T2.2
+    </li>
+  </ul>
+</p>
+</subsection>
+</section>
+
+<section name="Turbine 2.2 (= 2.2-rc2)">
+<p>
+Changes between Turbine 2.2-rc1 and 2.2.
 </p>
 
 <subsection name="Other changes">
