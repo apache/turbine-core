@@ -60,6 +60,7 @@ package org.apache.turbine;
  *
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  */
 public interface TurbineConstants
@@ -256,6 +257,17 @@ public interface TurbineConstants
     String DOCUMENT_TYPE_HTML40STRICT = "Html40Strict";
     /** Html 4.0 Frameset */
     String DOCUMENT_TYPE_HTML40FRAMESET = "Html40Frameset";
+
+    /** Default doctype root element. */
+    String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY 
+            = "default.html.doctype.root.element";
+
+    /** Default doctype dtd. */
+    String DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY 
+            = "default.html.doctype.identifier";
+
+    /** Default doctype url. */
+    String DEFAULT_HTML_DOCTYPE_URI_KEY = "default.html.doctype.url";
 
     /** Default Language property */
     String LOCALE_DEFAULT_LANGUAGE_KEY = "locale.default.language";
