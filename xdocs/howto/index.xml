@@ -17,6 +17,7 @@
         <li><a href="jboss-howto.html">JBoss Howto</a></li>
         <li><a href="jsp-howto.html">JSP Howto</a></li>
         <li><a href="intake-howto.html">Intake Howto</a></li>
+        <li><a href="migrate-from-2_1-howto.html">Migrating from 2.1</a></li>
         <li><a href="pullmodel-howto.html">Pull Model Howto</a></li>
         <li><a href="python-howto.html">Python Howto</a></li>
         <li><a href="security-howto.html">Security Howto</a></li>
