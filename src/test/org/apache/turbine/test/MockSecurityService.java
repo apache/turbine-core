@@ -54,29 +54,16 @@ package org.apache.turbine.test;
  * <http://www.apache.org/>.
  */
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.torque.om.BaseObject;
-import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.om.security.peer.GroupPeer;
-import org.apache.turbine.om.security.peer.PermissionPeer;
-import org.apache.turbine.om.security.peer.RolePeer;
-import org.apache.turbine.om.security.peer.RolePermissionPeer;
-import org.apache.turbine.om.security.peer.UserGroupRolePeer;
-import org.apache.turbine.om.security.peer.UserPeer;
 import org.apache.turbine.services.security.BaseSecurityService;
-import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
@@ -151,54 +138,7 @@ public class MockSecurityService extends BaseSecurityService
     public synchronized void grant(User user, Group group, Role role)
         throws DataBackendException, UnknownEntityException
     {
-        boolean userExists = false;
-        boolean groupExists = false;
-        boolean roleExists = false;
-        try
-        {
-            lockExclusive();
-            userExists = TurbineSecurity.accountExists(user);
-            groupExists = checkExists(group);
-            roleExists = checkExists(role);
-            if (userExists && groupExists && roleExists)
-            {
-                Criteria criteria = new Criteria();
-                criteria.add(
-                    UserGroupRolePeer.USER_ID,
-                    ((BaseObject) user).getPrimaryKey());
-                criteria.add(
-                    UserGroupRolePeer.GROUP_ID,
-                    ((BaseObject) group).getPrimaryKey());
-                criteria.add(
-                    UserGroupRolePeer.ROLE_ID,
-                    ((BaseObject) role).getPrimaryKey());
-                UserGroupRolePeer.doInsert(criteria);
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("grant(User,Group,Role) failed", e);
-        }
-        finally
-        {
-            unlockExclusive();
-        }
-        if (!userExists)
-        {
-            throw new UnknownEntityException(
-                "Unknown user '" + user.getName() + "'");
-        }
-        if (!groupExists)
-        {
-            throw new UnknownEntityException(
-                "Unknown group '" + group.getName() + "'");
-        }
-        if (!roleExists)
-        {
-            throw new UnknownEntityException(
-                "Unknown role '" + role.getName() + "'");
-        }
+       
     }
 
     /**
@@ -215,54 +155,7 @@ public class MockSecurityService extends BaseSecurityService
     public synchronized void revoke(User user, Group group, Role role)
         throws DataBackendException, UnknownEntityException
     {
-        boolean userExists = false;
-        boolean groupExists = false;
-        boolean roleExists = false;
-        try
-        {
-            lockExclusive();
-            userExists = TurbineSecurity.accountExists(user);
-            groupExists = checkExists(group);
-            roleExists = checkExists(role);
-            if (userExists && groupExists && roleExists)
-            {
-                Criteria criteria = new Criteria();
-                criteria.add(
-                    UserGroupRolePeer.USER_ID,
-                    ((BaseObject) user).getPrimaryKey());
-                criteria.add(
-                    UserGroupRolePeer.GROUP_ID,
-                    ((BaseObject) group).getPrimaryKey());
-                criteria.add(
-                    UserGroupRolePeer.ROLE_ID,
-                    ((BaseObject) role).getPrimaryKey());
-                UserGroupRolePeer.doDelete(criteria);
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("revoke(User,Role,Group) failed", e);
-        }
-        finally
-        {
-            unlockExclusive();
-        }
-        if (!userExists)
-        {
-            throw new UnknownEntityException(
-                "Unknown user '" + user.getName() + "'");
-        }
-        if (!groupExists)
-        {
-            throw new UnknownEntityException(
-                "Unknown group '" + group.getName() + "'");
-        }
-        if (!roleExists)
-        {
-            throw new UnknownEntityException(
-                "Unknown role '" + role.getName() + "'");
-        }
+      
     }
 
     /**
@@ -278,31 +171,7 @@ public class MockSecurityService extends BaseSecurityService
     public synchronized void revokeAll(User user)
         throws DataBackendException, UnknownEntityException
     {
-        boolean userExists = false;
-        try
-        {
-            lockExclusive();
-            userExists = TurbineSecurity.accountExists(user);
-            if (userExists)
-            {
-                Criteria criteria = new Criteria();
-                criteria.add(
-                    UserGroupRolePeer.USER_ID,
-                    ((BaseObject) user).getPrimaryKey());
-                UserGroupRolePeer.doDelete(criteria);
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("revokeAll(User) failed", e);
-        }
-        finally
-        {
-            unlockExclusive();
-        }
-        throw new UnknownEntityException(
-            "Unknown user '" + user.getName() + "'");
+      
     }
 
     /**
@@ -317,44 +186,7 @@ public class MockSecurityService extends BaseSecurityService
     public synchronized void grant(Role role, Permission permission)
         throws DataBackendException, UnknownEntityException
     {
-        boolean roleExists = false;
-        boolean permissionExists = false;
-        try
-        {
-            lockExclusive();
-            roleExists = checkExists(role);
-            permissionExists = checkExists(permission);
-            if (roleExists && permissionExists)
-            {
-                Criteria criteria = new Criteria();
-                criteria.add(
-                    RolePermissionPeer.ROLE_ID,
-                    ((BaseObject) role).getPrimaryKey());
-                criteria.add(
-                    RolePermissionPeer.PERMISSION_ID,
-                    ((BaseObject) permission).getPrimaryKey());
-                UserGroupRolePeer.doInsert(criteria);
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("grant(Role,Permission) failed", e);
-        }
-        finally
-        {
-            unlockExclusive();
-        }
-        if (!roleExists)
-        {
-            throw new UnknownEntityException(
-                "Unknown role '" + role.getName() + "'");
-        }
-        if (!permissionExists)
-        {
-            throw new UnknownEntityException(
-                "Unknown permission '" + permission.getName() + "'");
-        }
+     
     }
 
     /**
@@ -369,44 +201,7 @@ public class MockSecurityService extends BaseSecurityService
     public synchronized void revoke(Role role, Permission permission)
         throws DataBackendException, UnknownEntityException
     {
-        boolean roleExists = false;
-        boolean permissionExists = false;
-        try
-        {
-            lockExclusive();
-            roleExists = checkExists(role);
-            permissionExists = checkExists(permission);
-            if (roleExists && permissionExists)
-            {
-                Criteria criteria = new Criteria();
-                criteria.add(
-                    RolePermissionPeer.ROLE_ID,
-                    ((BaseObject) role).getPrimaryKey());
-                criteria.add(
-                    RolePermissionPeer.PERMISSION_ID,
-                    ((BaseObject) permission).getPrimaryKey());
-                RolePermissionPeer.doDelete(criteria);
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("revoke(Role,Permission) failed", e);
-        }
-        finally
-        {
-            unlockExclusive();
-        }
-        if (!roleExists)
-        {
-            throw new UnknownEntityException(
-                "Unknown role '" + role.getName() + "'");
-        }
-        if (!permissionExists)
-        {
-            throw new UnknownEntityException(
-                "Unknown permission '" + permission.getName() + "'");
-        }
+     
     }
 
     /**
@@ -422,32 +217,7 @@ public class MockSecurityService extends BaseSecurityService
     public synchronized void revokeAll(Role role)
         throws DataBackendException, UnknownEntityException
     {
-        boolean roleExists = false;
-        try
-        {
-            lockExclusive();
-            roleExists = checkExists(role);
-            if (roleExists)
-            {
-                Criteria criteria = new Criteria();
-                criteria.add(
-                    RolePermissionPeer.ROLE_ID,
-                    ((BaseObject) role).getPrimaryKey());
-                RolePermissionPeer.doDelete(criteria);
-
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("revokeAll(Role) failed", e);
-        }
-        finally
-        {
-            unlockExclusive();
-        }
-        throw new UnknownEntityException(
-            "Unknown role '" + role.getName() + "'");
+     
     }
 
     /*-----------------------------------------------------------------------
@@ -462,25 +232,10 @@ public class MockSecurityService extends BaseSecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    public GroupSet getGroups(Criteria criteria) throws DataBackendException
+    public GroupSet getGroups(Object criteria) throws DataBackendException
     {
-        Criteria dbCriteria = new Criteria();
-        Iterator keys = criteria.keySet().iterator();
-        while (keys.hasNext())
-        {
-            String key = (String) keys.next();
-            dbCriteria.put(GroupPeer.getColumnName(key), criteria.get(key));
-        }
-        List groups = new ArrayList(0);
-        try
-        {
-            groups = GroupPeer.doSelect(criteria);
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("getGroups(Criteria) failed", e);
-        }
-        return new GroupSet(groups);
+       
+        return new GroupSet();
     }
 
     /**
@@ -491,25 +246,10 @@ public class MockSecurityService extends BaseSecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    public RoleSet getRoles(Criteria criteria) throws DataBackendException
+    public RoleSet getRoles(Object criteria) throws DataBackendException
     {
-        Criteria dbCriteria = new Criteria();
-        Iterator keys = criteria.keySet().iterator();
-        while (keys.hasNext())
-        {
-            String key = (String) keys.next();
-            dbCriteria.put(RolePeer.getColumnName(key), criteria.get(key));
-        }
-        List roles = new ArrayList(0);
-        try
-        {
-            roles = RolePeer.doSelect(criteria);
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("getRoles(Criteria) failed", e);
-        }
-        return new RoleSet(roles);
+     
+        return new RoleSet();
     }
 
     /**
@@ -520,30 +260,11 @@ public class MockSecurityService extends BaseSecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    public PermissionSet getPermissions(Criteria criteria)
+    public PermissionSet getPermissions(Object criteria)
         throws DataBackendException
     {
-        Criteria dbCriteria = new Criteria();
-        Iterator keys = criteria.keySet().iterator();
-        while (keys.hasNext())
-        {
-            String key = (String) keys.next();
-            dbCriteria.put(
-                PermissionPeer.getColumnName(key),
-                criteria.get(key));
-        }
-        List permissions = new Vector(0);
-        try
-        {
-            permissions = PermissionPeer.doSelect(criteria);
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException(
-                "getPermissions(Criteria) failed",
-                e);
-        }
-        return new PermissionSet(permissions);
+       
+        return new PermissionSet();
     }
 
     /**
@@ -558,26 +279,7 @@ public class MockSecurityService extends BaseSecurityService
     public PermissionSet getPermissions(Role role)
         throws DataBackendException, UnknownEntityException
     {
-        boolean roleExists = false;
-        try
-        {
-            lockShared();
-            roleExists = checkExists(role);
-            if (roleExists)
-            {
-                return PermissionPeer.retrieveSet(role);
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("getPermissions(Role) failed", e);
-        }
-        finally
-        {
-            unlockShared();
-        }
-        throw new UnknownEntityException(
-            "Unknown role '" + role.getName() + "'");
+       return null;
     }
 
     /**
@@ -591,22 +293,7 @@ public class MockSecurityService extends BaseSecurityService
     public void saveGroup(Group group)
         throws DataBackendException, UnknownEntityException
     {
-        boolean groupExists = false;
-        try
-        {
-            groupExists = checkExists(group);
-            if (groupExists)
-            {
-                Criteria criteria = GroupPeer.buildCriteria(group);
-                GroupPeer.doUpdate(criteria);
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("saveGroup(Group) failed", e);
-        }
-        throw new UnknownEntityException("Unknown group '" + group + "'");
+
     }
 
     /**
@@ -620,22 +307,7 @@ public class MockSecurityService extends BaseSecurityService
     public void saveRole(Role role)
         throws DataBackendException, UnknownEntityException
     {
-        boolean roleExists = false;
-        try
-        {
-            roleExists = checkExists(role);
-            if (roleExists)
-            {
-                Criteria criteria = RolePeer.buildCriteria(role);
-                RolePeer.doUpdate(criteria);
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("saveRole(Role) failed", e);
-        }
-        throw new UnknownEntityException("Unknown role '" + role + "'");
+ 
     }
 
     /**
@@ -650,25 +322,7 @@ public class MockSecurityService extends BaseSecurityService
     public void savePermission(Permission permission)
         throws DataBackendException, UnknownEntityException
     {
-        boolean permissionExists = false;
-        try
-        {
-            permissionExists = checkExists(permission);
-            if (permissionExists)
-            {
-                Criteria criteria = PermissionPeer.buildCriteria(permission);
-                PermissionPeer.doUpdate(criteria);
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException(
-                "savePermission(Permission) failed",
-                e);
-        }
-        throw new UnknownEntityException(
-            "Unknown permission '" + permission + "'");
+       
     }
 
     /**
@@ -683,52 +337,7 @@ public class MockSecurityService extends BaseSecurityService
     public synchronized Group addGroup(Group group)
         throws DataBackendException, EntityExistsException
     {
-        boolean groupExists = false;
-
-        if (StringUtils.isEmpty(group.getName()))
-        {
-            throw new DataBackendException(
-                "Could not create " + "a group with empty name!");
-        }
-
-        try
-        {
-            lockExclusive();
-            groupExists = checkExists(group);
-            if (!groupExists)
-            {
-                // add a row to the table
-                Criteria criteria = GroupPeer.buildCriteria(group);
-                GroupPeer.doInsert(criteria);
-                // try to get the object back using the name as key.
-                criteria = new Criteria();
-                criteria.add(GroupPeer.NAME, group.getName());
-                List results = GroupPeer.doSelect(criteria);
-                if (results.size() != 1)
-                {
-                    throw new DataBackendException(
-                        "Internal error - query returned "
-                            + results.size()
-                            + " rows");
-                }
-                Group newGroup = (Group) results.get(0);
-                // add the group to system-wide cache
-                getAllGroups().add(newGroup);
-                // return the object with correct id
-                return newGroup;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("addGroup(Group) failed", e);
-        }
-        finally
-        {
-            unlockExclusive();
-        }
-        // the only way we could get here without return/throw tirggered
-        // is that the groupExists was true.
-        throw new EntityExistsException("Group '" + group + "' already exists");
+        return null;
     }
 
     /**
@@ -743,52 +352,7 @@ public class MockSecurityService extends BaseSecurityService
     public synchronized Role addRole(Role role)
         throws DataBackendException, EntityExistsException
     {
-        boolean roleExists = false;
-
-        if (StringUtils.isEmpty(role.getName()))
-        {
-            throw new DataBackendException(
-                "Could not create " + "a role with empty name!");
-        }
-
-        try
-        {
-            lockExclusive();
-            roleExists = checkExists(role);
-            if (!roleExists)
-            {
-                // add a row to the table
-                Criteria criteria = RolePeer.buildCriteria(role);
-                RolePeer.doInsert(criteria);
-                // try to get the object back using the name as key.
-                criteria = new Criteria();
-                criteria.add(RolePeer.NAME, role.getName());
-                List results = RolePeer.doSelect(criteria);
-                if (results.size() != 1)
-                {
-                    throw new DataBackendException(
-                        "Internal error - query returned "
-                            + results.size()
-                            + " rows");
-                }
-                Role newRole = (Role) results.get(0);
-                // add the role to system-wide cache
-                getAllRoles().add(newRole);
-                // return the object with correct id
-                return newRole;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("addRole(Role) failed", e);
-        }
-        finally
-        {
-            unlockExclusive();
-        }
-        // the only way we could get here without return/throw tirggered
-        // is that the roleExists was true.
-        throw new EntityExistsException("Role '" + role + "' already exists");
+        return null;
     }
 
     /**
@@ -803,55 +367,7 @@ public class MockSecurityService extends BaseSecurityService
     public synchronized Permission addPermission(Permission permission)
         throws DataBackendException, EntityExistsException
     {
-        boolean permissionExists = false;
-
-        if (StringUtils.isEmpty(permission.getName()))
-        {
-            throw new DataBackendException(
-                "Could not create " + "a permission with empty name!");
-        }
-
-        try
-        {
-            lockExclusive();
-            permissionExists = checkExists(permission);
-            if (!permissionExists)
-            {
-                // add a row to the table
-                Criteria criteria = PermissionPeer.buildCriteria(permission);
-                PermissionPeer.doInsert(criteria);
-                // try to get the object back using the name as key.
-                criteria = new Criteria();
-                criteria.add(PermissionPeer.NAME, permission.getName());
-                List results = PermissionPeer.doSelect(criteria);
-                if (results.size() != 1)
-                {
-                    throw new DataBackendException(
-                        "Internal error - query returned "
-                            + results.size()
-                            + " rows");
-                }
-                Permission newPermission = (Permission) results.get(0);
-                // add the permission to system-wide cache
-                getAllPermissions().add(newPermission);
-                // return the object with correct id
-                return newPermission;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException(
-                "addPermission(Permission) failed",
-                e);
-        }
-        finally
-        {
-            unlockExclusive();
-        }
-        // the only way we could get here without return/throw tirggered
-        // is that the permissionExists was true.
-        throw new EntityExistsException(
-            "Permission '" + permission + "' already exists");
+        return null;
     }
 
     /**
@@ -865,30 +381,7 @@ public class MockSecurityService extends BaseSecurityService
     public synchronized void removeGroup(Group group)
         throws DataBackendException, UnknownEntityException
     {
-        boolean groupExists = false;
-        try
-        {
-            lockExclusive();
-            groupExists = checkExists(group);
-            if (groupExists)
-            {
-                Criteria criteria = GroupPeer.buildCriteria(group);
-                GroupPeer.doDelete(criteria);
-                getAllGroups().remove(group);
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            log.error("Failed to delete a Group");
-            log.error(e);
-            throw new DataBackendException("removeGroup(Group) failed", e);
-        }
-        finally
-        {
-            unlockExclusive();
-        }
-        throw new UnknownEntityException("Unknown group '" + group + "'");
+       
     }
 
     /**
@@ -902,30 +395,7 @@ public class MockSecurityService extends BaseSecurityService
     public synchronized void removeRole(Role role)
         throws DataBackendException, UnknownEntityException
     {
-        boolean roleExists = false;
-        try
-        {
-            lockExclusive();
-            roleExists = checkExists(role);
-            if (roleExists)
-            {
-                // revoke all permissions from the role to be deleted
-                revokeAll(role);
-                Criteria criteria = RolePeer.buildCriteria(role);
-                RolePeer.doDelete(criteria);
-                getAllRoles().remove(role);
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("removeRole(Role)", e);
-        }
-        finally
-        {
-            unlockExclusive();
-        }
-        throw new UnknownEntityException("Unknown role '" + role + "'");
+      
     }
 
     /**
@@ -939,29 +409,7 @@ public class MockSecurityService extends BaseSecurityService
     public synchronized void removePermission(Permission permission)
         throws DataBackendException, UnknownEntityException
     {
-        boolean permissionExists = false;
-        try
-        {
-            lockExclusive();
-            permissionExists = checkExists(permission);
-            if (permissionExists)
-            {
-                Criteria criteria = PermissionPeer.buildCriteria(permission);
-                PermissionPeer.doDelete(criteria);
-                getAllPermissions().remove(permission);
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("removePermission(Permission)", e);
-        }
-        finally
-        {
-            unlockExclusive();
-        }
-        throw new UnknownEntityException(
-            "Unknown permission '" + permission + "'");
+       
     }
 
     /**
@@ -976,28 +424,7 @@ public class MockSecurityService extends BaseSecurityService
     public synchronized void renameGroup(Group group, String name)
         throws DataBackendException, UnknownEntityException
     {
-        boolean groupExists = false;
-        try
-        {
-            lockExclusive();
-            groupExists = checkExists(group);
-            if (groupExists)
-            {
-                group.setName(name);
-                Criteria criteria = GroupPeer.buildCriteria(group);
-                GroupPeer.doUpdate(criteria);
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("renameGroup(Group,String)", e);
-        }
-        finally
-        {
-            unlockExclusive();
-        }
-        throw new UnknownEntityException("Unknown group '" + group + "'");
+       
     }
 
     /**
@@ -1012,28 +439,7 @@ public class MockSecurityService extends BaseSecurityService
     public synchronized void renameRole(Role role, String name)
         throws DataBackendException, UnknownEntityException
     {
-        boolean roleExists = false;
-        try
-        {
-            lockExclusive();
-            roleExists = checkExists(role);
-            if (roleExists)
-            {
-                role.setName(name);
-                Criteria criteria = RolePeer.buildCriteria(role);
-                RolePeer.doUpdate(criteria);
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("renameRole(Role,String)", e);
-        }
-        finally
-        {
-            unlockExclusive();
-        }
-        throw new UnknownEntityException("Unknown role '" + role + "'");
+        
     }
 
     /**
@@ -1050,129 +456,18 @@ public class MockSecurityService extends BaseSecurityService
         String name)
         throws DataBackendException, UnknownEntityException
     {
-        boolean permissionExists = false;
-        try
-        {
-            lockExclusive();
-            permissionExists = checkExists(permission);
-            if (permissionExists)
-            {
-                permission.setName(name);
-                Criteria criteria = PermissionPeer.buildCriteria(permission);
-                PermissionPeer.doUpdate(criteria);
-                return;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException(
-                "renamePermission(Permission,name)",
-                e);
-        }
-        finally
-        {
-            unlockExclusive();
-        }
-        throw new UnknownEntityException(
-            "Unknown permission '" + permission + "'");
     }
 
-    /* Service specific implementation methods */
-
-    /**
-     * Returns the Class object for the implementation of UserPeer interface
-     * used by the system (defined in TR.properties)
-     *
-     * @return the implementation of UserPeer interface used by the system.
-     * @throws UnknownEntityException if the system's implementation of UserPeer
-     *         interface could not be determined.
-     */
-    public Class getUserPeerClass() throws UnknownEntityException
-    {
-        String userPeerClassName =
-            getConfiguration().getString(
-                USER_PEER_CLASS_KEY,
-                USER_PEER_CLASS_DEFAULT);
-        try
-        {
-            return Class.forName(userPeerClassName);
-        }
-        catch (Exception e)
-        {
-            throw new UnknownEntityException(
-                "Failed create a Class object for UserPeer implementation",
-                e);
-        }
+    public GroupSet getAllGroups() throws DataBackendException {
+        return null;
     }
-
-    /**
-     * Construct a UserPeer object.
-     *
-     * This method calls getUserPeerClass, and then creates a new object using
-     * the default constructor.
-     *
-     * @return an object implementing UserPeer interface.
-     * @throws UnknownEntityException if the object could not be instantiated.
-     */
-    public UserPeer getUserPeerInstance() throws UnknownEntityException
-    {
-        UserPeer up;
-        try
-        {
-            up = (UserPeer) getUserPeerClass().newInstance();
-        }
-        catch (Exception e)
-        {
-            throw new UnknownEntityException(
-                "Failed instantiate an UserPeer implementation object",
-                e);
-        }
-        return up;
+    public PermissionSet getAllPermissions() throws DataBackendException {
+        return null;
     }
-
-    /**
-     * Determines if the <code>Group</code> exists in the security system.
-     *
-     * @param group a <code>Group</code> value
-     * @return true if the group exists in the system, false otherwise
-     * @throws DataBackendException when more than one Group with
-     *         the same name exists.
-     * @throws Exception A generic exception.
-     */
-    protected boolean checkExists(Group group)
-        throws DataBackendException, Exception
-    {
-        return GroupPeer.checkExists(group);
+    public RoleSet getAllRoles() throws DataBackendException {
+        return null;
     }
-
-    /**
-     * Determines if the <code>Role</code> exists in the security system.
-     *
-     * @param role a <code>Role</code> value
-     * @return true if the role exists in the system, false otherwise
-     * @throws DataBackendException when more than one Role with
-     *         the same name exists.
-     * @throws Exception A generic exception.
-     */
-    protected boolean checkExists(Role role)
-        throws DataBackendException, Exception
-    {
-        return RolePeer.checkExists(role);
+    public List getUserList(Object criteria) throws DataBackendException {
+        return null;
     }
-
-    /**
-     * Determines if the <code>Permission</code> exists in the security system.
-     *
-     * @param permission a <code>Permission</code> value
-     * @return true if the permission exists in the system, false otherwise
-     * @throws DataBackendException when more than one Permission with
-     *         the same name exists.
-     * @throws Exception A generic exception.
-     */
-    protected boolean checkExists(Permission permission)
-        throws DataBackendException, Exception
-    {
-        return PermissionPeer.checkExists(permission);
-    }
-
 }

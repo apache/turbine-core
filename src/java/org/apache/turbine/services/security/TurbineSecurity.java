@@ -54,7 +54,6 @@ package org.apache.turbine.services.security;
  * <http://www.apache.org/>.
  */
 
-import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
@@ -894,7 +893,7 @@ public abstract class TurbineSecurity
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    public static GroupSet getGroups(Criteria criteria)
+    public static GroupSet getGroups(Object criteria)
             throws DataBackendException
     {
         return getService().getGroups(criteria);
@@ -908,7 +907,7 @@ public abstract class TurbineSecurity
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    public static RoleSet getRoles(Criteria criteria)
+    public static RoleSet getRoles(Object criteria)
             throws DataBackendException
     {
         return getService().getRoles(criteria);
@@ -922,7 +921,7 @@ public abstract class TurbineSecurity
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    public static PermissionSet getPermissions(Criteria criteria)
+    public static PermissionSet getPermissions(Object criteria)
             throws DataBackendException
     {
         return getService().getPermissions(criteria);

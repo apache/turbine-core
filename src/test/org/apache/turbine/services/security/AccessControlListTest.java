@@ -65,8 +65,8 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.factory.FactoryService;
 import org.apache.turbine.services.factory.TurbineFactoryService;
 import org.apache.turbine.services.security.SecurityService;
-import org.apache.turbine.services.security.db.DBSecurityService;
 import org.apache.turbine.test.BaseTestCase;
+import org.apache.turbine.test.MockSecurityService;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.TurbineAccessControlList;
 
@@ -90,7 +90,7 @@ public class AccessControlListTest
           Configuration cfg = new BaseConfiguration();
 
           cfg.setProperty(PREFIX + "classname",
-                          DBSecurityService.class.getName());
+                          MockSecurityService.class.getName());
 
           cfg.setProperty(PREFIX + "acl.class",
                           TurbineAccessControlList.class.getName());

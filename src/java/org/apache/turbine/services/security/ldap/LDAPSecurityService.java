@@ -56,6 +56,7 @@ package org.apache.turbine.services.security.ldap;
 
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 import javax.naming.NameAlreadyBoundException;
 import javax.naming.NamingEnumeration;
@@ -70,7 +71,6 @@ import javax.naming.directory.SearchResult;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
@@ -505,7 +505,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @return a set of Groups that meet the specified Criteria.
      * @throws DataBackendException if there is problem with the Backend.
      */
-    public GroupSet getGroups(Criteria criteria)
+    public GroupSet getGroups(Object criteria)
             throws DataBackendException
     {
         Vector groups = new Vector();
@@ -617,7 +617,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @return a set of Roles that meet the specified Criteria.
      * @throws DataBackendException if there is a problem with the Backend.
      */
-    public RoleSet getRoles(Criteria criteria) throws DataBackendException
+    public RoleSet getRoles(Object criteria) throws DataBackendException
     {
         Vector roles = new Vector(0);
 
@@ -668,7 +668,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @return a set of Permissions that meet the specified Criteria.
      * @throws DataBackendException if there is a problem with the Backend.
      */
-    public PermissionSet getPermissions(Criteria criteria)
+    public PermissionSet getPermissions(Object criteria)
             throws DataBackendException
     {
         Vector permissions = new Vector();
@@ -1199,7 +1199,7 @@ public class LDAPSecurityService extends BaseSecurityService
     public void revokeAll(Group group)
             throws DataBackendException, UnknownEntityException
     {
-        for (Iterator it = getUserList(new Criteria()).iterator();
+        for (Iterator it = getUserList(new Object()).iterator();
              it.hasNext();)
         {
             User user = (User) it.next();
@@ -1222,7 +1222,7 @@ public class LDAPSecurityService extends BaseSecurityService
     public boolean checkExists(Role role)
             throws DataBackendException
     {
-        RoleSet roleSet = getRoles(new Criteria());
+        RoleSet roleSet = getRoles(new Object());
 
         return roleSet.contains(role);
     }
@@ -1237,7 +1237,7 @@ public class LDAPSecurityService extends BaseSecurityService
     public boolean checkExists(Group group)
             throws DataBackendException
     {
-        GroupSet groupSet = getGroups(new Criteria());
+        GroupSet groupSet = getGroups(new Object());
 
         return groupSet.contains(group);
     }
@@ -1252,8 +1252,38 @@ public class LDAPSecurityService extends BaseSecurityService
     public boolean checkExists(Permission permission)
             throws DataBackendException
     {
-        PermissionSet permissionSet = getPermissions(new Criteria());
+        PermissionSet permissionSet = getPermissions(new Object());
 
         return permissionSet.contains(permission);
+    }
+    
+    
+    /* (non-Javadoc)
+     * @see org.apache.turbine.services.security.SecurityService#getAllGroups()
+     */
+    public GroupSet getAllGroups() throws DataBackendException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    /* (non-Javadoc)
+     * @see org.apache.turbine.services.security.SecurityService#getAllPermissions()
+     */
+    public PermissionSet getAllPermissions() throws DataBackendException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    /* (non-Javadoc)
+     * @see org.apache.turbine.services.security.SecurityService#getAllRoles()
+     */
+    public RoleSet getAllRoles() throws DataBackendException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    /* (non-Javadoc)
+     * @see org.apache.turbine.services.security.SecurityService#getUserList(java.lang.Object)
+     */
+    public List getUserList(Object criteria) throws DataBackendException {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

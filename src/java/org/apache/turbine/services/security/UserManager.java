@@ -58,8 +58,6 @@ import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
 
-import org.apache.torque.util.Criteria;
-
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.util.security.DataBackendException;
@@ -148,7 +146,7 @@ public interface UserManager
      *         storage.
      * @deprecated Use retrieveList(Criteria crit)
      */
-    User[] retrieve(Criteria criteria) throws DataBackendException;
+    User[] retrieve(Object criteria) throws DataBackendException;
 
     /**
      * Retrieve a list of users that meet the specified criteria.
@@ -164,7 +162,7 @@ public interface UserManager
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
      */
-    List retrieveList(Criteria criteria)
+    List retrieveList(Object criteria)
         throws DataBackendException;
 
     /**
