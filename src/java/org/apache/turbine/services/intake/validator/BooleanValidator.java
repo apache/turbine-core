@@ -55,7 +55,10 @@ package org.apache.turbine.services.intake.validator;
  */
 
 import java.text.ParseException;
+
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Validator for boolean field types.<br><br>
@@ -127,7 +130,7 @@ public class BooleanValidator
     {
         super.assertValidity(testValue);
 
-        if ((required) || ((testValue != null) && (testValue.length() > 0)))
+        if (required || StringUtils.isNotEmpty(testValue))
         {
             try
             {

@@ -56,6 +56,8 @@ package org.apache.turbine.services.intake.validator;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Validates Longs with the following constraints in addition to those
  * listed in NumberValidator and DefaultValidator.
@@ -145,7 +147,7 @@ public class LongValidator
     {
         super.assertValidity(testValue);
 
-        if ((required) || ((testValue != null) && (testValue.length() > 0)))
+        if (required || StringUtils.isNotEmpty(testValue))
         {
             long l = 0L;
             try
