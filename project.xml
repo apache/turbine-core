@@ -162,7 +162,7 @@
       <name>xml-rpc</name>
       <type>required</type>
       <version>1.0</version>
-      <jar>helma-xmlrpc.jar</jar>
+      <jar>xmlrpc-helma.jar</jar>
     </dependency>
 
     <dependency>
