@@ -172,17 +172,6 @@ public class TurbineConfig
      * Causes this class to initialize itself which in turn initializes
      * all of the Turbine Services that need to be initialized.
      *
-     * @deprecated Use initialize() instead.
-     */
-    public void init()
-    {
-        initialize();
-    }
-
-    /**
-     * Causes this class to initialize itself which in turn initializes
-     * all of the Turbine Services that need to be initialized.
-     *
      * @see org.apache.stratum.lifecycle.Initializable
      */
     public void initialize()
@@ -336,7 +325,8 @@ public class TurbineConfig
      *
      * @param e an Exception.
      * @param m a message.
-     * @deprecated
+     * @deprecated As of Java Servlet API 2.1, use
+     *     #log(String message, Throwable throwable) instead.
      */
     public void log(Exception e, String m)
     {
@@ -464,23 +454,8 @@ public class TurbineConfig
     /**
      * Not implemented.
      *
-     * A method in ServletConfig or ServletContext interface that is not
-     * implemented and will throw <code>UnsuportedOperationException</code>
-     * upon invocation
-     * @deprecated
-     */
-    public Set getResourcePaths()
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Not implemented.
-     *
-     * A method in ServletConfig or ServletContext interface that is not
-     * implemented and will throw <code>UnsuportedOperationException</code>
-     * upon invocation
-     * @deprecated
+     * A method in ServletContext (2.3) interface that is not implemented and
+     * will throw <code>UnsuportedOperationException</code> upon invocation
      */
     public Set getResourcePaths(String s)
     {
@@ -490,9 +465,8 @@ public class TurbineConfig
     /**
      * Not implemented.
      *
-     * A method in ServletConfig or ServletContext interface that is not
-     * implemented and will throw <code>UnsuportedOperationException</code>
-     * upon invocation
+     * A method in ServletContext (2.3) interface that is not implemented and
+     * will throw <code>UnsuportedOperationException</code> upon invocation
      */
     public String getServerInfo()
     {
@@ -502,10 +476,9 @@ public class TurbineConfig
     /**
      * Not implemented.
      *
-     * A method in ServletConfig or ServletContext interface that is not
-     * implemented and will throw <code>UnsuportedOperationException</code>
-     * upon invocation
-     * @deprecated
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     * @deprecated As of Java Servlet API 2.1, with no direct replacement.
      */
     public Servlet getServlet(String s)
     {
@@ -515,10 +488,9 @@ public class TurbineConfig
     /**
      * Not implemented.
      *
-     * A method in ServletConfig or ServletContext interface that is not
-     * implemented and will throw <code>UnsuportedOperationException</code>
-     * upon invocation
-     * @deprecated
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     * @deprecated As of Java Servlet API 2.1, with no replacement.
      */
     public Enumeration getServletNames()
     {
@@ -528,10 +500,9 @@ public class TurbineConfig
     /**
      * Not implemented.
      *
-     * A method in ServletConfig or ServletContext interface that is not
-     * implemented and will throw <code>UnsuportedOperationException</code>
-     * upon invocation
-     * @deprecated
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
+     * @deprecated As of Java Servlet API 2.0, with no replacement.
      */
     public Enumeration getServlets()
     {
@@ -541,9 +512,8 @@ public class TurbineConfig
     /**
      * Not implemented.
      *
-     * A method in ServletConfig or ServletContext interface that is not
-     * implemented and will throw <code>UnsuportedOperationException</code>
-     * upon invocation
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
      */
     public void removeAttribute(String s)
     {
@@ -553,9 +523,8 @@ public class TurbineConfig
     /**
      * Not implemented.
      *
-     * A method in ServletConfig or ServletContext interface that is not
-     * implemented and will throw <code>UnsuportedOperationException</code>
-     * upon invocation
+     * A method in ServletContext interface that is not implemented and will
+     * throw <code>UnsuportedOperationException</code> upon invocation
      */
     public void setAttribute(String s, Object o)
     {
