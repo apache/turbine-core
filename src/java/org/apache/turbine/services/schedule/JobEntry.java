@@ -457,7 +457,12 @@ public class JobEntry extends BaseObject
             .add(JobEntryPeer.EMAIL, getEmail())
             .add(JobEntryPeer.PROPERTY, getProperty());
 
-        long key = ((NumberKey)getPrimaryKey()).getBigDecimal().longValue();
+        NumberKey nk = (NumberKey)getPrimaryKey();
+        long key = 0;
+        if (nk != null)
+        {
+            key = ((NumberKey)getPrimaryKey()).getBigDecimal().longValue();
+        }
         if ( isModified() && key > 0)
         {
             // This is an update.
