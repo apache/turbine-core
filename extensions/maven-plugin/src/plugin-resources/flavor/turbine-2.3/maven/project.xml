@@ -289,7 +289,7 @@
     <dependency>
       <id>commons-configuration</id>
       <version>20030706.202021</version>
-      <url>http://jakarta.apache.org/commons/sandbox/configuration/index.html</url>
+      <url>http://jakarta.apache.org/commons/configuration/index.html</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -410,7 +410,7 @@
     <!-- with the generated OM classes "on the fly" and copied to  -->
     <!-- this directory. Then all java classes are compiled to     -->
     <!-- class files. Do not change this lightly!                  -->
-    <sourceDirectory>target/src</sourceDirectory>
+    <sourceDirectory>@TURBINE_PLUGIN_SRC_COMPILE@</sourceDirectory>
 
     <!-- Unit test classes -->
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
