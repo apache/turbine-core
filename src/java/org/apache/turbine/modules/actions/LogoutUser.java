@@ -54,12 +54,19 @@ package org.apache.turbine.modules.actions;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.configuration.Configuration;
+
+import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.modules.Action;
+
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.services.security.TurbineSecurity;
+
 import org.apache.turbine.util.RunData;
+
 import org.apache.turbine.util.security.AccessControlList;
 
 /**
@@ -67,9 +74,11 @@ import org.apache.turbine.util.security.AccessControlList;
  * the User object in the session.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class LogoutUser extends Action
+public class LogoutUser
+    extends Action
 {
     /**
      * Clears the RunData user object back to an anonymous status not
@@ -105,8 +114,9 @@ public class LogoutUser extends Action
             TurbineSecurity.saveUser(user);
         }
 
-        data.setMessage(TurbineResources.getString(
-                TurbineConstants.LOGOUT_MESSAGE));
+        Configuration conf = Turbine.getConfiguration();
+
+        data.setMessage(conf.getString(TurbineConstants.LOGOUT_MESSAGE));
 
         // This will cause the acl to be removed from the session in
         // the Turbine servlet code.
@@ -128,11 +138,11 @@ public class LogoutUser extends Action
         // - it is recommended that action.logout is set to "LogoutUser" and
         // that the session validator does handle setting the screen/template
         // for a logged out (read not-logged-in) user.
-        if (!TurbineResources.getString(TurbineConstants.ACTION_LOGOUT_KEY, "")
-                .equals("LogoutUser"))
+        if (!conf.getString(TurbineConstants.ACTION_LOGOUT_KEY, 
+                            TurbineConstants.ACTION_LOGOUT_DEFAULT)
+            .equals(TurbineConstants.ACTION_LOGOUT_DEFAULT))
         {
-            data.setScreen(TurbineResources.getString(
-                    TurbineConstants.SCREEN_HOMEPAGE));
+            data.setScreen(conf.getString(TurbineConstants.SCREEN_HOMEPAGE));
         }
     }
 }
