@@ -128,7 +128,9 @@ public class TemplateScreen
                     .eval(data, this.screen);
 
             if (results != null)
+            {
                 returnValue = results.toString();
+            }
         }
         catch (Exception e)
         {
