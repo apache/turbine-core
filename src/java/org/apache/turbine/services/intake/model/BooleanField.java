@@ -56,8 +56,11 @@ package org.apache.turbine.services.intake.model;
 
 import java.text.ParseException;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.BooleanValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
@@ -112,13 +115,22 @@ public class BooleanField
      */
     protected void doSetValue()
     {
-        String boolStringValue = parser.getString(getKey());
-        Boolean newValue = null;
-        if (boolStringValue != null)
+        if (isMultiValued)
         {
-            newValue = getBoolean(boolStringValue);
+            String[] inputs = parser.getStrings(getKey());
+            Boolean[] values = new Boolean[inputs.length];
+            for (int i = 0; i < inputs.length; i++)
+            {
+                values[i] = StringUtils.isNotEmpty(inputs[i]) 
+                        ? getBoolean(inputs[i]) : null;
+            }
+            setTestValue(values);
         }
-        setTestValue(newValue);
+        else
+        {
+            String val = parser.getString(getKey());
+            setTestValue(StringUtils.isNotEmpty(val) ? getBoolean(val) : null);
+        }
     }
 
     /**

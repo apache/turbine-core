@@ -56,7 +56,11 @@ package org.apache.turbine.services.intake.model;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+
 import java.util.Date;
+
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.DateStringValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
@@ -139,47 +143,30 @@ public class DateStringField
     {
         if (isMultiValued)
         {
-            String[] ss = parser.getStrings(getKey());
-            Date[] dates = new Date[ss.length];
-            for (int i = 0; i < ss.length; i++)
+            String[] inputs = parser.getStrings(getKey());
+            Date[] values = new Date[inputs.length];
+            for (int i = 0; i < inputs.length; i++)
             {
-                if (ss[i] != null && ss[i].length() != 0)
+                try
                 {
-                    try
-                    {
-                        dates[i] = getDate(ss[i]);
-                    }
-                    catch (ParseException e)
-                    {
-                        // do nothing.  By the time this method is called,
-                        // the validator will have already ensured that the
-                        // string can be parsed.
-                    }
+                    values[i] = StringUtils.isNotEmpty(inputs[i]) 
+                            ? getDate(inputs[i]) : null;
                 }
-                else
+                catch (ParseException e)
                 {
-                    dates[i] = null;
+                    values[i] = null;
                 }
             }
-            setTestValue(dates);
+            setTestValue(values);
         }
         else
         {
             String val = parser.getString(getKey());
-            if (val != null && val.length() != 0)
+            try
             {
-                try
-                {
-                    setTestValue(getDate(val));
-                }
-                catch (ParseException e)
-                {
-                    // do nothing. By the time this method is called, the
-                    // validator will have already ensured that the string
-                    // can be parsed.
-                }
+                setTestValue(StringUtils.isNotEmpty(val) ? getDate(val) : null);
             }
-            else
+            catch (ParseException e)
             {
                 setTestValue(null);
             }

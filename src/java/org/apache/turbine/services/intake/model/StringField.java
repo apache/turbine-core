@@ -54,6 +54,8 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 
@@ -103,28 +105,14 @@ public class StringField
             String[] sval = new String[ss.length];
             for (int i = 0; i < ss.length; i++)
             {
-                if (ss[i] != null && ss[i].length() != 0)
-                {
-                    sval[i] = ss[i];
-                }
-                else
-                {
-                    sval[i] = null;
-                }
+                sval[i] = (StringUtils.isNotEmpty(ss[i])) ? ss[i] : null;
             }
             setTestValue(sval);
         }
         else
         {
             String val = parser.getString(getKey());
-            if (val != null && val.length() > 0)
-            {
-                setTestValue(val);
-            }
-            else
-            {
-                setTestValue(null);
-            }
+            setTestValue(StringUtils.isNotEmpty(val) ? val : null);
         }
     }
 
@@ -152,9 +140,10 @@ public class StringField
                     boolean set = false;
                     for (int i = 0; i < ss.length; i++)
                     {
-                        if (ss[i] != null && ss[i].length() > 0)
+                        set |= StringUtils.isNotEmpty(ss[i]);
+                        if (set)
                         {
-                            set = true;
+                            break;
                         }
                     }
                     if (!set)
@@ -166,7 +155,7 @@ public class StringField
             }
             else
             {
-                if (!setFlag || ((String) getTestValue()).length() == 0)
+                if (!setFlag || StringUtils.isEmpty((String) getTestValue()))
                 {
                     validFlag = false;
                     this.message = message;

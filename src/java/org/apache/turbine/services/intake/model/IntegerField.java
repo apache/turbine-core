@@ -54,6 +54,8 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.IntegerValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
@@ -115,30 +117,19 @@ public class IntegerField
     {
         if (isMultiValued)
         {
-            String[] ss = parser.getStrings(getKey());
-            Integer[] ival = new Integer[ss.length];
-            for (int i = 0; i < ss.length; i++)
+            String[] inputs = parser.getStrings(getKey());
+            Integer[] values = new Integer[inputs.length];
+            for (int i = 0; i < inputs.length; i++)
             {
-                if (ss[i] != null && ss[i].length() != 0)
-                {
-                    ival[i] = new Integer(ss[i]);
-                }
-                else
-                {
-                    ival[i] = null;
-                }
+                values[i] = StringUtils.isNotEmpty(inputs[i]) 
+                        ? new Integer(inputs[i]) : null;
             }
-            setTestValue(ival);
+            setTestValue(values);
         }
         else
         {
-            Integer newValue = null;
             String val = parser.getString(getKey());
-            if (val != null && val.length() > 0)
-            {
-                newValue = new Integer(val);
-            }
-            setTestValue(newValue);
+            setTestValue(StringUtils.isNotEmpty(val) ? new Integer(val) : null);
         }
     }
 }

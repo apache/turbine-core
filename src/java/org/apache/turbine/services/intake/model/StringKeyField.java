@@ -54,7 +54,10 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.torque.om.StringKey;
+
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 
@@ -107,29 +110,14 @@ public class StringKeyField
             StringKey[] ival = new StringKey[ss.length];
             for (int i = 0; i < ss.length; i++)
             {
-                if (ss[i] != null && ss[i].length() != 0)
-                {
-                    ival[i] = new StringKey(ss[i]);
-                }
-                else
-                {
-                    ival[i] = null;
-                }
+                ival[i] = (StringUtils.isNotEmpty(ss[i])) ? new StringKey(ss[i]) : null;
             }
             setTestValue(ival);
         }
         else
         {
             String val = parser.getString(getKey());
-            if (val != null && val.length() != 0)
-            {
-                setTestValue(new StringKey(val));
-            }
-            else
-            {
-                setTestValue(null);
-            }
+            setTestValue((StringUtils.isNotEmpty(val)) ? new StringKey(val) : null);
         }
     }
-
 }

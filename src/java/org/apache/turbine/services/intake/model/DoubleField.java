@@ -54,6 +54,8 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.NumberValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
@@ -81,7 +83,7 @@ public class DoubleField
     }
 
     /**
-     * Sets the default value for a Doulbe Field
+     * Sets the default value for a Double Field
      *
      * @param prop Parameter for the default values
      */
@@ -114,32 +116,19 @@ public class DoubleField
     {
         if (isMultiValued)
         {
-            String[] ss = parser.getStrings(getKey());
-            Double[] ival = new Double[ss.length];
-            for (int i = 0; i < ss.length; i++)
+            String[] inputs = parser.getStrings(getKey());
+            Double[] values = new Double[inputs.length];
+            for (int i = 0; i < inputs.length; i++)
             {
-                if (ss[i] != null && ss[i].length() > 0)
-                {
-                    ival[i] = new Double(ss[i]);
-                }
-                else
-                {
-                    ival[i] = null;
-                }
+                values[i] = StringUtils.isNotEmpty(inputs[i]) 
+                        ? new Double(inputs[i]) : null;
             }
-            setTestValue(ival);
+            setTestValue(values);
         }
         else
         {
-            String s = parser.getString(getKey());
-            if (s != null && s.length() > 0)
-            {
-                setTestValue(new Double(s));
-            }
-            else
-            {
-                setTestValue(null);
-            }
+            String val = parser.getString(getKey());
+            setTestValue(StringUtils.isNotEmpty(val) ? new Double(val) : null);
         }
     }
 }

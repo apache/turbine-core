@@ -54,7 +54,10 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.torque.om.ComboKey;
+
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 
@@ -104,32 +107,19 @@ public class ComboKeyField
     {
         if (isMultiValued)
         {
-            String[] ss = parser.getStrings(getKey());
-            ComboKey[] ival = new ComboKey[ss.length];
-            for (int i = 0; i < ss.length; i++)
+            String[] inputs = parser.getStrings(getKey());
+            ComboKey[] values = new ComboKey[inputs.length];
+            for (int i = 0; i < inputs.length; i++)
             {
-                if (ss[i] != null && ss[i].length() != 0)
-                {
-                    ival[i] = new ComboKey(ss[i]);
-                }
-                else
-                {
-                    ival[i] = null;
-                }
+                values[i] = StringUtils.isNotEmpty(inputs[i]) 
+                        ? new ComboKey(inputs[i]) : null;
             }
-            setTestValue(ival);
+            setTestValue(values);
         }
         else
         {
             String val = parser.getString(getKey());
-            if (val != null && val.length() != 0)
-            {
-                setTestValue(new ComboKey(val));
-            }
-            else
-            {
-                setTestValue(null);
-            }
+            setTestValue(StringUtils.isNotEmpty(val) ? new ComboKey(val) : null);
         }
     }
 }
