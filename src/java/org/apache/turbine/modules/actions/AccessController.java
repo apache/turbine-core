@@ -55,11 +55,10 @@ package org.apache.turbine.modules.actions;
  */
 
 import org.apache.turbine.modules.Action;
-
 import org.apache.turbine.services.security.TurbineSecurity;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.security.AccessControlList;
+import org.apache.turbine.util.security.TurbineSecurityException;
 
 /**
  * This action doPerforms an Access Control List and places it into
@@ -93,8 +92,8 @@ import org.apache.turbine.util.security.AccessControlList;
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
  * @version $Id$
  */
-public class AccessController 
-    extends Action
+public class AccessController
+        extends Action
 {
     /**
      * If there is a user and the user is logged in, doPerform will
@@ -105,21 +104,22 @@ public class AccessController
      *
      * @see org.apache.turbine.services.security.TurbineSecurity
      * @param data Turbine information.
-     * @exception Exception, a generic exception.
+     * @exception TurbineSecurityException problem with the security service.
      */
     public void doPerform(RunData data)
-            throws Exception
+            throws TurbineSecurityException
     {
         if (!TurbineSecurity.isAnonymousUser(data.getUser())
             && data.getUser().hasLoggedIn())
         {
             AccessControlList acl = (AccessControlList)
-                    data.getSession().getValue(AccessControlList.SESSION_KEY);
+                    data.getSession().getAttribute(
+                            AccessControlList.SESSION_KEY);
             if (acl == null)
             {
                 acl = TurbineSecurity.getACL(data.getUser());
-                data.getSession().putValue(AccessControlList.SESSION_KEY,
-                        (Object) acl);
+                data.getSession().setAttribute(
+                        AccessControlList.SESSION_KEY, acl);
             }
             data.setACL(acl);
         }
