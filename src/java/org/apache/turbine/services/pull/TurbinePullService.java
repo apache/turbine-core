@@ -159,7 +159,7 @@ public class TurbinePullService
     private static Log log = LogFactory.getLog(TurbinePullService.class);
 
     /** Reference to the pool service */
-    private PoolService pool = TurbinePool.getService();
+    private PoolService pool = null;
 
     /**
      * This is the container for the global web application
@@ -219,9 +219,12 @@ public class TurbinePullService
     {
         try
         {
+            pool = TurbinePool.getService();
+
             if (pool == null)
             {
-                throw new Exception("Couldn't find pool service!");
+                throw new InitializationException("Pull Service requires"
+                    + " configured Pool Service!");
             }
 
             initPullService();
