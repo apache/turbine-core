@@ -87,7 +87,7 @@
     href="http://jakarta.apache.org/velocity/">Velocity</a>, <a
     href="http://www.webmacro.org/">Webmacro</a>, <a
     href="http://jakarta.apache.org/">Java Server Pages (JSP)</a>, <a
-    href="http://freemarker.org">FreeMarker</a> and <a
+    href="http://freemarker.sourceforge.net">FreeMarker</a> and <a
     href="http://xml.apache.org/cocoon/">Cocoon</a> technologies by
     specially creating Screens that use Services to parse templates.
     Screens can also be created to read files from other websites as
