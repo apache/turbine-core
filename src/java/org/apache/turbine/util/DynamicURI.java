@@ -111,6 +111,8 @@ public class DynamicURI
     /** /foo/Turbine. */
     protected String      scriptName = null;
 
+    /** #ref */
+    protected String      reference = null;
 
     // Used with RunData constructors to provide a way around a JServ
     // 1.0 bug.
@@ -585,6 +587,20 @@ public class DynamicURI
     }
 
     /**
+     * Gets the reference (#ref).
+     *
+     * @return A String containing the reference.
+     */
+    public String getReference()
+    {
+        if (this.reference == null)
+        {
+            return "";
+        }
+        return this.reference;
+    }
+
+    /**
      * Gets the server name.
      *
      * @return A String with the server name.
@@ -637,6 +653,7 @@ public class DynamicURI
         this.scriptName = this.getServerData().getScriptName();
         this.pathInfo = new Vector();
         this.queryData = new Vector();
+        this.reference = null;
     }
 
     /**
@@ -854,6 +871,18 @@ public class DynamicURI
     }
 
     /**
+     * Sets the reference  (#ref).
+     *
+     * @param reference A String containing the reference.
+     * @return A DynamicURI (self).
+     */
+    public DynamicURI setReference (String reference)
+    {
+        this.reference = reference;
+        return this;
+    }
+
+    /**
      * Sets the server name.
      *
      * @param name A String with the server name.
@@ -960,6 +989,11 @@ public class DynamicURI
         {
             output.append ( "?" );
             output.append ( renderQueryString(this.queryData) );
+        }
+        if (this.reference != null)
+        {
+            output.append("#");
+            output.append(this.getReference());
         }
 
         // There seems to be a bug in Apache JServ 1.0 where the

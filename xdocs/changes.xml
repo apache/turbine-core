@@ -75,6 +75,9 @@ Changes between Turbine 2.2-rc1 and 2.2-rc2.
     <li>
       TTWS1: TemplatePageAttributes enhancements
     </li>
+    <li>
+      TTWS5: Reference support for DynamicURI
+    </li>
   </ul>
 </p>
 </subsection>
