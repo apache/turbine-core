@@ -352,6 +352,13 @@
 
   <dependencies>
     <dependency>
+      <id>avalon-framework</id>
+      <version>4.0</version>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>
+    <dependency>
       <id>commons-codec</id>
       <version>1.0-dev</version>
       <properties>
@@ -405,14 +412,22 @@
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
     </dependency>
-    <dependency>
-      <id>ecs</id>
-      <version>1.4.1</version>
-      <url>http://jakarta.apache.org/ecs/</url>
-      <properties>
-        <war.bundle.jar>true</war.bundle.jar>
-      </properties>
-    </dependency>
+      <dependency>
+        <id>ecs</id>
+        <version>1.4.1</version>
+        <url>http://jakarta.apache.org/ecs/</url>
+        <properties>
+          <war.bundle.jar>true</war.bundle.jar>
+        </properties>
+      </dependency>
+      <dependency>
+        <id>excalibur-component</id>
+        <version>1.0</version>
+        <url>http://jakarta.apache.org/avalon/</url>
+        <properties>
+          <war.bundle.jar>true</war.bundle.jar>
+        </properties>
+      </dependency>
     <dependency>
       <id>jaf:activation</id>
       <version>1.0.2</version>
@@ -457,6 +472,14 @@
       <id>log4j</id>
       <version>1.2.7</version>
       <url>http://jakarta.apache.org/log4j/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>
+    <dependency>
+      <id>logkit</id>
+      <version>1.0.1</version>
+      <url>http://jakarta.apache.org/avalon/logkit/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
