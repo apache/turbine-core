@@ -74,6 +74,7 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.parser.ParserUtils;
+import org.apache.turbine.util.uri.URI;
 import org.apache.turbine.util.uri.URIConstants;
 
 /**
@@ -104,6 +105,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * @deprecated Use {@link org.apache.turbine.util.uri.TurbineURI} instead.
  */
 public class DynamicURI
+        implements URI
 {
     /** @deprecated Use URIConstants.HTTP */
     public static final String HTTP = URIConstants.HTTP;
