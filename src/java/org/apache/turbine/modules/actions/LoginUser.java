@@ -89,26 +89,26 @@ public class LoginUser extends Action
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    public void doPerform( RunData data )
+    public void doPerform(RunData data)
         throws Exception
     {
         // This prevents a db hit on second Action call during page
         // generation.  Turbine removes everything from the Session
         // before calling this method, so in this case we should
         // continue on with the Login procedure.
-        if ( data.getUserFromSession() != null )
+        if (data.getUserFromSession() != null)
         {
             return;
         }
 
-        String username = data.getParameters().getString( "username", "" );
-        String password = data.getParameters().getString( "password", "" );
+        String username = data.getParameters().getString("username", "");
+        String password = data.getParameters().getString("password", "");
 
         User user = null;
         try
         {
             // Authenticate the user and get the object.
-            user = TurbineSecurity.getAuthenticatedUser( username, password );
+            user = TurbineSecurity.getAuthenticatedUser(username, password);
 
             // Store the user object.
             data.setUser(user);
@@ -135,9 +135,9 @@ public class LoginUser extends Action
              */
 
         }
-        catch ( TurbineSecurityException e )
+        catch (TurbineSecurityException e)
         {
-            if(e instanceof DataBackendException)
+            if (e instanceof DataBackendException)
             {
                 Log.error(e);
             }

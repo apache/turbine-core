@@ -98,10 +98,12 @@ public class LogoutUser extends Action
         {
             // Make sure that the user has really logged in...
             if (!user.hasLoggedIn())
+            {
                 return;
+            }
 
             user.setHasLoggedIn(new Boolean(false));
-            TurbineSecurity.saveUser( user );
+            TurbineSecurity.saveUser(user);
         }
 
         data.setMessage(TurbineResources.getString(
