@@ -241,7 +241,6 @@
     <td></td>
     <td>Master</td>
     -->
-
     <developer>
       <name>Henning P. Schmiedehausen</name>
       <id>henning</id>
@@ -266,7 +265,6 @@
     <td></td>
     <td>Journeyer</td>
     -->
-
     <developer>
       <name>Jon Scott Stevens</name>
       <id>jon</id>
@@ -309,7 +307,6 @@
     <td><a href="http://www.handpoint.com/">handPoint</a></td>
     <td>Apprentice</td>
     -->
-
     <developer>
       <name>Jason van Zyl</name>
       <id>jvanzyl</id>
@@ -328,7 +325,6 @@
       <email>quintonm@bellsouth.net</email>
       <organization>NEqualsOne</organization>
     </developer>
-
   </developers>
 
   <contributors>
@@ -336,22 +332,22 @@
       <name>Gary Bartlett</name>
       <email>gary_a_bartlett@yahoo.com</email>
     </contributor>
-
     <contributor>
       <name>Youngho Cho</name>
       <email>youngho@nannet.co.kr</email>
     </contributor>
-
     <contributor>
       <name>Frank Conradie</name>
       <email>frank@opticode.co.za</email>
     </contributor>
-
     <contributor>
       <name>Gonzalo A. Diethelm</name>
       <email>gonzalo.diethelm@iname.com</email>
     </contributor>
-
+    <contributor>
+      <name>Humberto Hernandez</name>
+      <email>hhernandez@itweb.com.mx</email>
+    </contributor>
   </contributors>
 
   <dependencies>
@@ -559,5 +555,5 @@
 
     <jars/>
   </build>
-  
+
 </project>
