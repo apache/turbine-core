@@ -62,6 +62,7 @@ import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.ScreenLoader;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateNavigation;
@@ -97,6 +98,7 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class VelocityOnlyLayout
@@ -111,7 +113,7 @@ public class VelocityOnlyLayout
     /**
      * Build the layout.  Also sets the ContentType and Locale headers
      * of the HttpServletResponse object.
-     *
+     * @deprecated Use PipelineData version
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
@@ -154,4 +156,55 @@ public class VelocityOnlyLayout
         data.getOut().print(TurbineVelocity
                 .handleRequest(context, prefix + templateName));
     }
+    
+    /**
+     * Build the layout.  Also sets the ContentType and Locale headers
+     * of the HttpServletResponse object.
+     *
+     *
+     * @param data PipelineData
+     * @throws Exception generic exception
+     */
+    public void doBuild(PipelineData pipelineData)
+        throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        // Get the context needed by Velocity.
+        Context context = TurbineVelocity.getContext(pipelineData);
+
+        String screenName = data.getScreen();
+
+        log.debug("Loading Screen " + screenName);
+
+        // First, generate the screen and put it in the context so
+        // we can grab it the layout template.
+        ConcreteElement results =
+            ScreenLoader.getInstance().eval(data, screenName);
+
+        String returnValue = (results == null) ? "" : results.toString();
+
+        // variable for the screen in the layout template
+        context.put(TurbineConstants.SCREEN_PLACEHOLDER, returnValue);
+
+        // variable to reference the navigation screen in the layout template
+        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER, 
+                    new TemplateNavigation(data));
+
+        // Grab the layout template set in the VelocityPage.
+        // If null, then use the default layout template
+        // (done by the TemplateInfo object)
+        String templateName = data.getTemplateInfo().getLayoutTemplate();
+
+        // Set the locale and content type
+        data.getResponse().setLocale(data.getLocale());
+        data.getResponse().setContentType(data.getContentType());
+
+        log.debug("Now trying to render layout " + templateName);
+
+        // Finally, generate the layout template and send it to the browser
+        data.getOut().print(TurbineVelocity
+                .handleRequest(context, prefix + templateName));
+    }
+
+    
 }

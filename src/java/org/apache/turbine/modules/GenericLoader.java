@@ -55,9 +55,11 @@ package org.apache.turbine.modules;
  */
 
 import java.util.Hashtable;
+import java.util.Map;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -67,6 +69,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public abstract class GenericLoader
@@ -116,12 +119,27 @@ public abstract class GenericLoader
     /**
      * Attempts to load and execute the external action that has been
      * set.
-     *
+     * Should revert to abstract when RunData has gone.
+     * @exception Exception a generic exception.
+     */
+    public void exec(PipelineData pipelineData, String name)
+            throws Exception
+    {
+        RunData data = (RunData)getRunData(pipelineData);
+        exec(data, name);
+    }
+
+    
+    /**
+     * Attempts to load and execute the external action that has been
+     * set.
+     * @deprecated Use of this method should be avoided. Use
+     * <code>exec(PipelineData data, String name)</code> instead.
      * @exception Exception a generic exception.
      */
     public abstract void exec(RunData data, String name)
-            throws Exception;
-
+    	throws Exception;
+    
     /**
      * Commented out.
      * This method should return the complete classpath + name.
@@ -170,4 +188,13 @@ public abstract class GenericLoader
     {
         return TURBINE_PACKAGE;
     }
+    
+    private RunData getRunData(PipelineData pipelineData)
+    {
+        RunData data = null;
+        Map runDataMap = (Map) pipelineData.get(RunData.class);
+        data = (RunData)runDataMap.get(RunData.class);
+        return data;
+    }
+
 }

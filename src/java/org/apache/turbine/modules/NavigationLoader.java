@@ -61,6 +61,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.util.ObjectUtils;
@@ -72,6 +73,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class NavigationLoader
@@ -129,6 +131,7 @@ public class NavigationLoader
      * value.  This allows you to easily chain the execution of
      * Navigation modules together.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @param name Name of object that will execute the navigation.
      * @exception Exception a generic exception.
@@ -141,8 +144,27 @@ public class NavigationLoader
     }
 
     /**
-     * Attempts to load and execute the external Navigation.
+     * Attempts to load and execute the external Navigation. This is
+     * used when you want to execute a Navigation which returns its
+     * output via a MultiPartElement instead of out the data.getPage()
+     * value.  This allows you to easily chain the execution of
+     * Navigation modules together.
      *
+     * @param data Turbine information.
+     * @param name Name of object that will execute the navigation.
+     * @exception Exception a generic exception.
+     */
+    public ConcreteElement eval(PipelineData pipelineData, String name)
+            throws Exception
+    {
+        // Execute Navigation
+        return getInstance(name).build(pipelineData);
+    }
+
+    
+    /**
+     * Attempts to load and execute the external Navigation.
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @param name Name of object instance.
      * @exception Exception a generic exception.
@@ -153,6 +175,20 @@ public class NavigationLoader
         this.eval(data, name);
     }
 
+    /**
+     * Attempts to load and execute the external Navigation.
+     *
+     * @param pipelineData Turbine information.
+     * @param name Name of object instance.
+     * @exception Exception a generic exception.
+     */
+    public void exec(PipelineData pipelineData, String name)
+    		throws Exception
+    {
+        this.eval(pipelineData, name);
+    }
+
+    
     /**
      * Pulls out an instance of the object by name.  Name is just the
      * single name of the object. This is equal to getInstance but

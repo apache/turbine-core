@@ -69,6 +69,7 @@ import org.apache.commons.mail.HtmlEmail;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
 
@@ -116,6 +117,7 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:A.Schild@aarboard.ch">Andre Schild</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class VelocityHtmlEmail extends HtmlEmail
@@ -146,12 +148,23 @@ public class VelocityHtmlEmail extends HtmlEmail
 
     /**
      * Constructor, sets the context object from the passed RunData object
-     *
+     * @deprecated use PipelineData version instead
      * @param data A Turbine RunData object.
      */
     public VelocityHtmlEmail(RunData data)
     {
         this.context = TurbineVelocity.getContext(data);
+        embmap = new Hashtable();
+    }
+
+    /**
+     * Constructor, sets the context object from the passed RunData object
+     *
+     * @param data A Turbine RunData object.
+     */
+    public VelocityHtmlEmail(PipelineData pipelineData)
+    {
+        this.context = TurbineVelocity.getContext(pipelineData);
         embmap = new Hashtable();
     }
 

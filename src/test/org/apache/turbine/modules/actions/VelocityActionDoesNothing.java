@@ -53,6 +53,11 @@ package org.apache.turbine.modules.actions;
  * <http://www.apache.org/>.
  */
 
+import java.util.Map;
+
+import junit.framework.Assert;
+
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.commons.logging.Log;
@@ -61,11 +66,14 @@ import org.apache.commons.logging.LogFactory;
  * This action is used in testing the ExecutePageValve by the ExecutePageValveTest.
  * 
  * @author     <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
 public class VelocityActionDoesNothing extends VelocityAction
 {
     private static Log log = LogFactory.getLog(VelocityActionDoesNothing.class);
-    private static int numberOfCalls;
+    public static int numberOfCalls;
+    public static int runDataCalls;
+    public static int pipelineDataCalls;
     /**
      *  Default action is throw an exception.
      *
@@ -77,23 +85,24 @@ public class VelocityActionDoesNothing extends VelocityAction
     {
         log.debug("Calling doPerform");
 		VelocityActionDoesNothing.numberOfCalls++;
+		VelocityActionDoesNothing.runDataCalls++;
     }
     
-   
     /**
-     * @return Returns the numberOfCalls.
+     *  Default action is throw an exception.
+     *
+     * @param  data           Current RunData information
+     * @param  context        Context to populate
+     * @exception  Exception  Thrown on error
      */
-    public static int getNumberOfCalls()
+    public void doPerform(PipelineData pipelineData, Context context) throws Exception
     {
-        return numberOfCalls;
-    }
-
-    /**
-     * @param numberOfCalls The numberOfCalls to set.
-     */
-    public static void setNumberOfCalls(int numberOfCalls)
-    {
-        VelocityActionDoesNothing.numberOfCalls = numberOfCalls;
-    }
+        log.debug("Calling doPerform(PipelineData)");
+		VelocityActionDoesNothing.numberOfCalls++;
+		Map rundataMap = (Map)pipelineData.get(RunData.class);
+		RunData rd = (RunData)rundataMap.get(RunData.class);
+		Assert.assertNotNull("RunData object was Null.", rd);
+		VelocityActionDoesNothing.pipelineDataCalls++;
+    }   
 
 }

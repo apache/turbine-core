@@ -68,6 +68,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.Turbine;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.RunData;
@@ -79,6 +80,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
  * @author <a href="mailto:colin.chalmers@maxware.nl">Colin Chalmers</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class TurbineNamingService
@@ -166,41 +168,6 @@ public class TurbineNamingService
         }
     }
 
-    /**
-     * Places the contexts defined in the TurbineResources instance
-     * (if any) into the data.contexts Map.
-     *
-     * @param data The RunData object for the current request.
-     * @exception InitializationException, if there was a problem
-     * during initialization.
-     * @deprecated This should never have been here. No replacement.
-     */
-    public void init(RunData data) throws InitializationException
-    {
-        try
-        {
-            if (contextPropsList == null)
-            {
-                init();
-            }
-
-            for (Iterator it = contextPropsList.keySet().iterator(); it.hasNext();)
-            {
-                String key = (String) it.next();
-                Properties contextProps =
-                        (Properties) contextPropsList.get(key);
-                InitialContext context = new InitialContext(contextProps);
-                data.getJNDIContexts().put(key, context);
-            }
-        }
-        catch (Exception e)
-        {
-            log.error("Failed to initialize JDNI contexts!", e);
-
-            throw new InitializationException(
-                    "Failed to initialize JDNI contexts!");
-        }
-    }
 
     /**
      * Return the Context with the specified name.  The Context is

@@ -65,6 +65,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.parser.ParserUtils;
@@ -111,6 +112,7 @@ import org.apache.turbine.util.parser.ParserUtils;
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens </a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public abstract class ActionEvent extends Action
@@ -124,12 +126,26 @@ public abstract class ActionEvent extends Action
 
 	/**
 	 * You need to implement this in your classes that extend this class.
-	 *
+	 * @deprecated use PipelineData version instead.
 	 * @param data Turbine information.
 	 * @exception Exception a generic exception.
 	 */
 	public abstract void doPerform(RunData data)
 			throws Exception;
+	
+	/**
+	 * You need to implement this in your classes that extend this class.
+	 * This should revert to being abstract when RunData has gone. 
+	 * @param data Turbine information.
+	 * @exception Exception a generic exception.
+	 */
+	public void doPerform(PipelineData pipelineData)
+			throws Exception
+	{
+	      RunData data = (RunData) getRunData(pipelineData);
+	      doPerform(data);	    
+	}
+	
 
 	/** The name of the button to look for. */
 	protected static final String BUTTON = "eventSubmit_";
@@ -182,7 +198,7 @@ public abstract class ActionEvent extends Action
 	 * This overrides the default Action.perform() to execute the
 	 * doEvent() method. If that fails, then it will execute the
 	 * doPerform() method instead.
-	 *
+	 * @deprecated Use PipelineData version instead.
 	 * @param data Turbine information.
 	 * @exception Exception a generic exception.
 	 */
@@ -200,8 +216,31 @@ public abstract class ActionEvent extends Action
 	}
 
 	/**
+	 * This overrides the default Action.perform() to execute the
+	 * doEvent() method. If that fails, then it will execute the
+	 * doPerform() method instead.
+	 *
+	 * @param data Turbine information.
+	 * @exception Exception a generic exception.
+	 */
+	protected void perform(PipelineData pipelineData)
+			throws Exception
+	{
+		try
+		{
+			executeEvents(pipelineData);
+		}
+		catch (NoSuchMethodException e)
+		{
+			doPerform(pipelineData);
+		}
+	}
+
+	
+	/**
 	 * This method should be called to execute the event based system.
 	 *
+	 * @deprecated Use PipelineData version instead.
 	 * @param data Turbine information.
 	 * @exception Exception a generic exception.
 	 */
@@ -260,6 +299,72 @@ public abstract class ActionEvent extends Action
 		}
 	}
 
+	/**
+	 * This method should be called to execute the event based system.
+	 *
+	 * @param data Turbine information.
+	 * @exception Exception a generic exception.
+	 */
+	public void executeEvents(PipelineData pipelineData)
+			throws Exception
+	{
+	    
+	    RunData data = (RunData) getRunData(pipelineData);
+	    
+		// Name of the button.
+		String theButton = null;
+		// Parameter parser.
+		ParameterParser pp = data.getParameters();
+
+		String button = pp.convert(BUTTON);
+		String key = null;
+
+		// Loop through and find the button.
+		for (Iterator it = pp.keySet().iterator(); it.hasNext();)
+		{
+			key = (String) it.next();
+			if (key.startsWith(button))
+			{
+				if (considerKey(key, pp))
+				{
+					theButton = formatString(key);
+					break;
+				}
+			}
+		}
+
+		if (theButton == null)
+		{
+			throw new NoSuchMethodException("ActionEvent: The button was null");
+		}
+
+		Method method = null;
+
+		try
+		{
+			method = getClass().getMethod(theButton, methodParams);
+			Object[] methodArgs = new Object[] { pipelineData };
+
+			if (log.isDebugEnabled())
+			{
+				log.debug("Invoking " + method);
+			}
+
+			method.invoke(this, methodArgs);
+		}
+		catch (InvocationTargetException ite)
+		{
+			Throwable t = ite.getTargetException();
+			log.error("Invokation of " + method , t);
+		}
+		finally
+		{
+			pp.remove(key);
+		}
+	}
+
+	
+	
 	/**
 	 * This method does the conversion of the lowercase method name
 	 * into the proper case.

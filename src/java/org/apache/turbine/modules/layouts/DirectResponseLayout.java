@@ -55,6 +55,7 @@ package org.apache.turbine.modules.layouts;
  */
 
 import org.apache.turbine.modules.Layout;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -71,6 +72,7 @@ public class DirectResponseLayout extends Layout
     /**
      * Ensures that a direct response has been declared.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @exception TurbineException if a direct response has not been declared.
      */
@@ -83,5 +85,19 @@ public class DirectResponseLayout extends Layout
                 "data.declareDirectResponse() has not been called");
         }
     }
+    
+    /**
+     * Ensures that a direct response has been declared.
+     *
+     * @param data Turbine information.
+     * @exception TurbineException if a direct response has not been declared.
+     */
+    public void doBuild(PipelineData pipelineData)
+    throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        doBuild(data);
+    }
+    
     
 }

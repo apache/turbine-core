@@ -54,6 +54,7 @@ package org.apache.turbine.services.pull;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.Service;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -86,6 +87,7 @@ import org.apache.velocity.context.Context;
  *
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public interface PullService
@@ -148,7 +150,18 @@ public interface PullService
      * @param context a Velocity Context to populate
      * @param data a RunData object for request specific data
      */
-    void populateContext(Context context, RunData data);
+     void populateContext(Context context, PipelineData pipelineData);
+
+     /**
+      * Populate the given context with all request, session, authorized
+      * and persistent scope tools (it is assumed that the context
+      * already wraps the global context, and thus already contains
+      * the global tools).
+      *
+      * @param context a Velocity Context to populate
+      * @param data a RunData object for request specific data
+      */
+      void populateContext(Context context, RunData data);
 
     /**
      * Return the absolute path of the resources directory

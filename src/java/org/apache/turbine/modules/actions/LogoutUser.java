@@ -60,6 +60,7 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.security.AccessControlList;
@@ -71,6 +72,7 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class LogoutUser
@@ -90,6 +92,7 @@ public class LogoutUser
      * that the session validator does handle setting the screen/template
      * for a logged out (read not-logged-in) user.
      *
+     * @deprecated Use PipelineData version instead
      * @param data Turbine information.
      * @exception TurbineSecurityException a problem occured in the security
      *            service.
@@ -141,5 +144,30 @@ public class LogoutUser
         {
             data.setScreen(conf.getString(TurbineConstants.SCREEN_HOMEPAGE));
         }
+    }
+    
+    /**
+     * Clears the RunData user object back to an anonymous status not
+     * logged in, and with a null ACL.  If the tr.props ACTION_LOGIN
+     * is anthing except "LogoutUser", flow is transfered to the
+     * SCREEN_HOMEPAGE
+     *
+     * If this action name is the value of action.logout then we are
+     * being run before the session validator, so we don't need to
+     * set the screen (we assume that the session validator will handle
+     * that). This is basically still here simply to preserve old behaviour
+     * - it is recommended that action.logout is set to "LogoutUser" and
+     * that the session validator does handle setting the screen/template
+     * for a logged out (read not-logged-in) user.
+     *
+     * @param data Turbine information.
+     * @exception TurbineSecurityException a problem occured in the security
+     *            service.
+     */
+    public void doPerform(PipelineData pipelineData)
+            throws TurbineSecurityException
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        doPerform(data);                
     }
 }

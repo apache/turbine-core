@@ -61,6 +61,7 @@ import org.apache.ecs.ConcreteElement;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
@@ -75,6 +76,7 @@ import org.apache.velocity.context.Context;
  * <p>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class VelocityDirectScreen
@@ -86,6 +88,7 @@ public class VelocityDirectScreen
     /**
      * This builds the Velocity template.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
@@ -131,5 +134,56 @@ public class VelocityDirectScreen
         }
 
         return null;
+    }
+    
+    /**
+     * This builds the Velocity template.
+     *
+     * @param data Turbine information.
+     * @return A ConcreteElement.
+     * @exception Exception, a generic exception.
+     */
+    public ConcreteElement buildTemplate(PipelineData pipelineData)
+        throws Exception
+    {
+            RunData data = (RunData) getRunData(pipelineData);
+            Context context = TurbineVelocity.getContext(pipelineData);
+
+            String screenTemplate = data.getTemplateInfo().getScreenTemplate();
+            String templateName
+                = TurbineTemplate.getScreenTemplateName(screenTemplate);
+
+            // The Template Service could not find the Screen
+            if (StringUtils.isEmpty(templateName))
+            {
+                log.error("Screen " + screenTemplate + " not found!");
+                throw new Exception("Could not find screen for " + screenTemplate);
+            }
+
+            try
+            {
+                TurbineVelocity.handleRequest(context,
+                                              prefix + templateName,
+                                              data.getOut());
+
+            }
+            catch (Exception e)
+            {
+                // If there is an error, build a $processingException and
+                // attempt to call the error.vm template in the screens
+                // directory.
+                context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
+                context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
+
+                templateName = Turbine.getConfiguration()
+                    .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
+                               TurbineConstants.TEMPLATE_ERROR_VM);
+
+                TurbineVelocity.handleRequest(context,
+                        prefix + templateName,
+                        data.getOut());
+            }
+
+            return null;
     }
 }

@@ -54,6 +54,7 @@ package org.apache.turbine.modules.pages;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.template.TurbineTemplate;
 
 import org.apache.turbine.util.RunData;
@@ -108,6 +109,7 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class TemplatePage
@@ -151,4 +153,21 @@ public class TemplatePage
             data.setScreen(screen);
         }
     }
+    
+    /**
+     * Works with TemplateService to set up default templates and
+     * corresponding class modules.
+     *
+     * @param pipelineData Turbine information.
+     * @exception Exception, a generic exception.
+     */
+    protected void doBuildAfterAction(PipelineData pipelineData)
+        throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);        
+        doBuildAfterAction(data);
+    }
+
+    
+    
 }

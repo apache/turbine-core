@@ -97,4 +97,5 @@ public interface RunDataApplicationTool
      * @param data The current RunData Object
      */
     public void refresh(RunData data);
+
 }

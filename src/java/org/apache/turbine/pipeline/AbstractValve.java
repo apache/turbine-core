@@ -55,6 +55,7 @@ package org.apache.turbine.pipeline;
  */
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
@@ -63,6 +64,7 @@ import org.apache.turbine.util.TurbineException;
  * Valve that can be used as the basis of Valve implementations.
  *
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public abstract class AbstractValve
@@ -83,4 +85,19 @@ public abstract class AbstractValve
      */
     public abstract void invoke(PipelineData data, ValveContext context)
         throws IOException, TurbineException;
+    
+    
+    /**
+     * utility for getting RunData out of the pielineData object.
+     * @param pipelineData
+     * @return
+     */
+    public final RunData getRunData(PipelineData pipelineData)
+    {
+        RunData data = null;
+        Map runDataMap = (Map) pipelineData.get(RunData.class);
+        data = (RunData)runDataMap.get(RunData.class);
+        return data;
+    }
+
 }

@@ -61,9 +61,6 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 
-import tutorial.HelloComponent;
-
-
 
 
 /**

@@ -54,6 +54,7 @@ package org.apache.turbine.modules.actions;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -71,6 +72,7 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public abstract class VelocitySecureAction extends VelocityAction
@@ -78,6 +80,7 @@ public abstract class VelocitySecureAction extends VelocityAction
     /**
      * Implement this to add information to the context.
      *
+     * @deprecated Use the PipelineData version instead.
      * @param data Turbine information.
      * @param context Context for web pages.
      * @throws Exception a generic exception.
@@ -86,9 +89,25 @@ public abstract class VelocitySecureAction extends VelocityAction
             throws Exception;
 
     /**
+     * Implement this to add information to the context.
+     * Should revert to abstract when RunData has gone.
+     * @param data Turbine information.
+     * @param context Context for web pages.
+     * @throws Exception a generic exception.
+     */
+    public void doPerform(PipelineData pipelineData, Context context)
+            throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        doPerform(data, context);
+    }
+
+    
+    /**
      * This method overrides the method in WebMacroSiteAction to
      * perform a security check first.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @throws Exception a generic exception.
      */
@@ -99,16 +118,52 @@ public abstract class VelocitySecureAction extends VelocityAction
             super.perform(data);
         }
     }
+    
+    /**
+     * This method overrides the method in WebMacroSiteAction to
+     * perform a security check first.
+     *
+     * @param data Turbine information.
+     * @throws Exception a generic exception.
+     */
+    protected void perform(PipelineData pipelineData) throws Exception
+    {
+        if (isAuthorized(pipelineData))
+        {
+            super.perform(pipelineData);
+        }
+    }
+
+    
+    
 
     /**
      * Implement this method to perform the security check needed.
      * You should set the template in this method that you want the
      * user to be sent to if they're unauthorized.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @return True if the user is authorized to access the screen.
      * @throws Exception a generic exception.
      */
     protected abstract boolean isAuthorized(RunData data)
             throws Exception;
+    
+    /**
+     * Implement this method to perform the security check needed.
+     * You should set the template in this method that you want the
+     * user to be sent to if they're unauthorized.
+     * Should revert to abstract when RunData has gone.
+     * @param data Turbine information.
+     * @return True if the user is authorized to access the screen.
+     * @throws Exception a generic exception.
+     */
+    protected boolean isAuthorized(PipelineData pipelineData)
+            throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        return isAuthorized(data);
+    }
+
 }

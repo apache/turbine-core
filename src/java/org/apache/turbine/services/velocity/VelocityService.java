@@ -57,6 +57,7 @@ package org.apache.turbine.services.velocity;
 import java.io.OutputStream;
 import java.io.Writer;
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.Service;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
@@ -70,6 +71,7 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public interface VelocityService
@@ -87,6 +89,9 @@ public interface VelocityService
     /** The Key for storing the RunData Object in the Context */
     String RUNDATA_KEY = "data";
 
+    /** The Key for storing the PipelineData Object in the Context */
+    String PIPELINEDATA_KEY = "pipelineData";
+    
     /** Shall we catch Velocity Errors and report them? */
     String CATCH_ERRORS_KEY = "catch.errors";
 
@@ -157,6 +162,18 @@ public interface VelocityService
      */
     Context getContext(RunData data);
 
+    /**
+     * Create a Context from the RunData object.  Adds a pointer to
+     * the RunData object to the Context so that RunData is available in
+     * the templates.
+     *
+     * @param data The Turbine RunData object.
+     * @return A clone of the Context needed by Velocity.
+     */
+    Context getContext(PipelineData pipelineData);
+
+    
+    
     /**
      * Performs post-request actions (releases context
      * tools back to the object pool).

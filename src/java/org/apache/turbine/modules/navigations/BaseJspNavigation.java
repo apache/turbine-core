@@ -58,6 +58,7 @@ import org.apache.ecs.ConcreteElement;
 
 import org.apache.turbine.TurbineConstants;
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.jsp.TurbineJsp;
 
 import org.apache.turbine.util.RunData;
@@ -68,6 +69,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class BaseJspNavigation
@@ -78,7 +80,7 @@ public class BaseJspNavigation
 
     /**
      * Method to be overidden by subclasses to include data in beans, etc.
-     *
+     * @deprecated Use PipelineData version instead.
      * @param data the Rundata object
      * @throws Exception a generic exception.
      */
@@ -88,8 +90,22 @@ public class BaseJspNavigation
     }
 
     /**
+     * Method to be overidden by subclasses to include data in beans, etc.
+     *
+     * @param data the PipelineData object
+     * @throws Exception a generic exception.
+     */
+    protected void doBuildTemplate(PipelineData pipelineData)
+        throws Exception
+    {
+    }
+
+    
+    
+    /**
      * Method that sets up beans and forward the request to the JSP.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data the Rundata object
      * @return null - the JSP sends the information
      * @throws Exception a generic exception.
@@ -104,4 +120,25 @@ public class BaseJspNavigation
         TurbineJsp.handleRequest(data, prefix + templateName);
         return null;
     }
+    
+    /**
+     * Method that sets up beans and forward the request to the JSP.
+     *
+     * @param data the PipelineData object
+     * @return null - the JSP sends the information
+     * @throws Exception a generic exception.
+     */
+    public ConcreteElement buildTemplate(PipelineData pipelineData)
+        throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        // get the name of the JSP we want to use
+        String templateName = data.getTemplateInfo().getNavigationTemplate();
+
+        // navigations are used by a layout
+        TurbineJsp.handleRequest(pipelineData, prefix + templateName);
+        return null;
+    }    
+    
+    
 }

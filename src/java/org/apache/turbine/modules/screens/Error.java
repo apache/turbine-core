@@ -66,12 +66,14 @@ import org.apache.ecs.html.TD;
 import org.apache.ecs.html.TR;
 import org.apache.ecs.html.Table;
 import org.apache.turbine.modules.Screen;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 
 /**
  * This is a sample Error Screen module.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class Error extends Screen
@@ -79,6 +81,7 @@ public class Error extends Screen
     /**
      * Build screen.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @return ConcreteElement the page with all the error information.
      * @throws Exception a generic exception.
@@ -149,5 +152,19 @@ public class Error extends Screen
                 .addElement(new PRE(data.getStackTraceException().toString()));
         }
         return null;
+    }
+    
+    
+    /**
+     * Build screen.
+     *
+     * @param data Turbine information.
+     * @return ConcreteElement the page with all the error information.
+     * @throws Exception a generic exception.
+     */
+    public ConcreteElement doBuild(PipelineData pipelineData) throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        return doBuild(data);
     }
 }

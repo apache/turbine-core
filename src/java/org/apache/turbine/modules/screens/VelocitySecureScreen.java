@@ -54,6 +54,7 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
 
@@ -71,6 +72,7 @@ import org.apache.velocity.context.Context;
  * your base screen.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public abstract class VelocitySecureScreen
@@ -79,6 +81,7 @@ public abstract class VelocitySecureScreen
     /**
      * Implement this to add information to the context.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @param context Context for web pages.
      * @exception Exception, a generic exception.
@@ -88,9 +91,26 @@ public abstract class VelocitySecureScreen
             throws Exception;
 
     /**
+     * Implement this to add information to the context.
+     *
+     * @param data Turbine information.
+     * @param context Context for web pages.
+     * @exception Exception, a generic exception.
+     */
+    protected void doBuildTemplate(PipelineData pipelineData,
+                                            Context context)
+            throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        doBuildTemplate(data);
+    }
+
+    
+    /**
      * This method overrides the method in VelocityScreen to
      * perform a security check first.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
@@ -104,6 +124,38 @@ public abstract class VelocitySecureScreen
     }
 
     /**
+     * This method overrides the method in VelocityScreen to
+     * perform a security check first.
+     *
+     * @param data Turbine information.
+     * @exception Exception, a generic exception.
+     */
+    protected void doBuildTemplate(PipelineData pipelineData)
+        throws Exception
+    {
+        if (isAuthorized(pipelineData))
+        {
+            doBuildTemplate(pipelineData, TurbineVelocity.getContext(pipelineData));
+        }
+    }
+
+    
+    
+    /**
+     * Implement this method to perform the security check needed.
+     * You should set the template in this method that you want the
+     * user to be sent to if they're unauthorized.  See the
+     * VelocitySecurityCheck utility.
+     *
+     * @deprecated Use PipelineData version instead.
+     * @param data Turbine information.
+     * @return True if the user is authorized to access the screen.
+     * @exception Exception, a generic exception.
+     */
+    protected abstract boolean isAuthorized(RunData data)
+            throws Exception;
+    
+    /**
      * Implement this method to perform the security check needed.
      * You should set the template in this method that you want the
      * user to be sent to if they're unauthorized.  See the
@@ -113,6 +165,13 @@ public abstract class VelocitySecureScreen
      * @return True if the user is authorized to access the screen.
      * @exception Exception, a generic exception.
      */
-    protected abstract boolean isAuthorized(RunData data)
-            throws Exception;
+    protected boolean isAuthorized(PipelineData pipelineData)
+    throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        return isAuthorized(data);
+    }
+
+    
+    
 }

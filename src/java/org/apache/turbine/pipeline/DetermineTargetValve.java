@@ -72,6 +72,7 @@ import org.apache.turbine.util.uri.URIConstants;
  *        configurable. 
  *
  * @author <a href="mailto:james@jamestaylor.org">James Taylor</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
 public class DetermineTargetValve 
     extends AbstractValve
@@ -85,7 +86,7 @@ public class DetermineTargetValve
     public void invoke( PipelineData pipelineData, ValveContext context )
         throws IOException, TurbineException
     {
-        RunData runData = (RunData)pipelineData.get(RunData.class);
+        RunData runData = (RunData)getRunData(pipelineData);
         if ( ! runData.hasScreen() )
         {
             String target = runData.getParameters().getString(URIConstants.CGI_SCREEN_PARAM);

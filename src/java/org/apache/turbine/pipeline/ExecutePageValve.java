@@ -61,6 +61,9 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.PageLoader;
+import org.apache.turbine.pipeline.AbstractValve;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.pipeline.ValveContext;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
@@ -71,6 +74,7 @@ import org.apache.turbine.util.TurbineException;
  * processing pipeline (from the Turbine 2.x series).
  *
  * @author <a href="mailto:epugh@opensourceConnections.com">Eric Pugh</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class ExecutePageValve
@@ -94,7 +98,7 @@ public class ExecutePageValve
     {
         try
         {
-            executePage((RunData)pipelineData.get(RunData.class));
+            executePage(pipelineData);
         }
         catch (Exception e)
         {
@@ -110,9 +114,11 @@ public class ExecutePageValve
      *
      * @param data The run-time data.
      */
-    protected void executePage(RunData data)
+    protected void executePage(PipelineData pipelineData)
         throws Exception
-    {      
+    {
+        RunData data = (RunData)getRunData(pipelineData);
+        
         // Start the execution phase. DefaultPage will execute the
         // appropriate action as well as get the Layout from the
         // Screen and then execute that. The Layout is then
@@ -149,7 +155,7 @@ public class ExecutePageValve
                     TurbineConstants.PAGE_DEFAULT_DEFAULT);
         }
 
-        PageLoader.getInstance().exec(data, defaultPage);
+        PageLoader.getInstance().exec(pipelineData, defaultPage);
 
     }
 }

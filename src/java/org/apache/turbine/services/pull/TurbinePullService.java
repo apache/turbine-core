@@ -57,6 +57,7 @@ package org.apache.turbine.services.pull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.configuration.Configuration;
 
@@ -65,6 +66,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.pool.PoolService;
@@ -150,6 +152,7 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class TurbinePullService
@@ -442,6 +445,50 @@ public class TurbinePullService
     }
 
     /**
+     * Populate the given context with all request, session, authorized
+     * and persistent scope tools (it is assumed that the context
+     * already wraps the global context, and thus already contains
+     * the global tools).
+     *
+     * @param context a Velocity Context to populate
+     * @param data a PipelineData object for request specific data
+     */
+    public void populateContext(Context context, PipelineData pipelineData)
+    {
+        Map runDataMap = (Map) pipelineData.get(RunData.class);
+        RunData data = (RunData)runDataMap.get(RunData.class);
+
+        populateWithRequestTools(context, pipelineData);
+        // session tools (whether session-only or persistent are
+        // very similar, so the same method is used - the
+        // boolean parameter indicates whether get/setPerm is to be used
+        // rather than get/setTemp)
+
+        //
+        // Session Tool start right at the session once the user has been set
+        // while persistent and authorized Tools are started when the user has
+        // logged in
+        //
+        User user = data.getUser();
+
+        // Note: Session tools are currently lost after the login action
+        // because the anonymous user is replaced the the real user object.
+        // We should either store the session pull tools in the session or
+        // make Turbine.loginAction() copy the session pull tools into the
+        // new user object.
+        populateWithSessionTools(sessionTools, context, pipelineData, user);
+
+        if (!TurbineSecurity.isAnonymousUser(user))
+        {
+            if (user.hasLoggedIn())
+            {
+                populateWithSessionTools(authorizedTools, context, pipelineData, user);
+                populateWithPermTools(persistentTools, context, pipelineData, user);
+            }
+        }
+    }    
+    
+    /**
      * Populate the given context with the global tools
      *
      * @param context a Velocity Context to populate
@@ -496,6 +543,126 @@ public class TurbinePullService
             catch (Exception e)
             {
                 log.error("Could not instantiate request tool "
+                    + toolData.toolName + " from a "
+                    + toolData.toolClassName + " object", e);
+            }
+        }
+    }
+
+    
+    /**
+     * Populate the given context with the request-scope tools
+     *
+     * @param context a Velocity Context to populate
+     * @param data a RunData instance
+     */
+    private void populateWithRequestTools(Context context, PipelineData pipelineData)
+    {
+        // Iterate the tools
+        for (Iterator it = requestTools.iterator(); it.hasNext();)
+        {
+            ToolData toolData = (ToolData) it.next();
+            try
+            {
+                // Fetch Object through the Pool.
+                Object tool = pool.getInstance(toolData.toolClass);
+
+                initTool(tool, pipelineData);
+
+                // put the tool in the context
+                context.put(toolData.toolName, tool);
+            }
+            catch (Exception e)
+            {
+                log.error("Could not instantiate request tool "
+                    + toolData.toolName + " from a "
+                    + toolData.toolClassName + " object", e);
+            }
+        }
+    }
+
+    /**
+     * Populate the given context with the session-scoped tools.
+     *
+     * @param tools The list of tools with which to populate the
+     * session.
+     * @param context The context to populate.
+     * @param data The current RunData object
+     * @param user The <code>User</code> object whose storage to
+     * retrieve the tool from.
+     */
+    private void populateWithSessionTools(List tools, Context context,
+            PipelineData pipelineData, User user)
+    {
+        Map runDataMap = (Map)pipelineData.get(RunData.class);
+        RunData data = (RunData) runDataMap.get(RunData.class);
+        // Iterate the tools
+        for (Iterator it = tools.iterator(); it.hasNext();)
+        {
+            ToolData toolData = (ToolData) it.next();
+            try
+            {
+                // ensure that tool is created only once for a user
+                // by synchronizing against the user object
+                synchronized (data.getSession())
+                {
+                    // first try and fetch the tool from the user's
+                    // hashtable
+                    Object tool = data.getSession().getAttribute(
+                            SESSION_TOOLS_ATTRIBUTE_PREFIX
+                            + toolData.toolClassName);
+
+                    if (tool == null)
+                    {
+                        // if not there, an instance must be fetched from
+                        // the pool
+                        tool = pool.getInstance(toolData.toolClass);
+
+                        // session tools are init'd with the User object
+                        initTool(tool, user);
+
+                        // store the newly created tool in the session
+                        data.getSession().setAttribute(
+                                SESSION_TOOLS_ATTRIBUTE_PREFIX
+                                + tool.getClass().getName(), tool);
+                    }
+
+                    // *NOT* else
+                    if(tool != null)
+                    {
+                        // This is a semantics change. In the old
+                        // Turbine, Session tools were initialized and
+                        // then refreshed every time they were pulled
+                        // into the context if "refreshToolsPerRequest"
+                        // was wanted.
+                        //
+                        // RunDataApplicationTools now have a parameter
+                        // for refresh. If it is not refreshed immediately
+                        // after init(), the parameter value will be undefined
+                        // until the 2nd run. So we refresh all the session
+                        // tools on every run, even if we just init'ed it.
+                        //
+
+                        if (refreshToolsPerRequest)
+                        {
+                            refreshTool(tool, pipelineData);
+                        }
+
+                        // put the tool in the context
+                        log.debug("Adding " + tool + " to ctx as "
+                                + toolData.toolName);
+                        context.put(toolData.toolName, tool);
+                    }
+                    else
+                    {
+                        log.info("Tool " + toolData.toolName
+                                + " was null, skipping it.");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                log.error("Could not instantiate session tool "
                     + toolData.toolName + " from a "
                     + toolData.toolClassName + " object", e);
             }
@@ -588,6 +755,91 @@ public class TurbinePullService
         }
     }
 
+    
+    
+    /**
+     * Populate the given context with the perm-scoped tools.
+     *
+     * @param tools The list of tools with which to populate the
+     * session.
+     * @param context The context to populate.
+     * @param data The current RunData object
+     * @param user The <code>User</code> object whose storage to
+     * retrieve the tool from.
+     */
+    private void populateWithPermTools(List tools, Context context,
+            PipelineData pipelineData, User user)
+    {
+        // Iterate the tools
+        for (Iterator it = tools.iterator(); it.hasNext();)
+        {
+            ToolData toolData = (ToolData) it.next();
+            try
+            {
+                // ensure that tool is created only once for a user
+                // by synchronizing against the user object
+                synchronized (user)
+                {
+                    // first try and fetch the tool from the user's
+                    // hashtable
+                    Object tool = user.getPerm(toolData.toolClassName);
+
+                    if (tool == null)
+                    {
+                        // if not there, an instance must be fetched from
+                        // the pool
+                        tool = pool.getInstance(toolData.toolClass);
+
+                        // session tools are init'd with the User object
+                        initTool(tool, user);
+
+                        // store the newly created tool in the user's hashtable
+                        user.setPerm(toolData.toolClassName, tool);
+                    }
+
+                    // *NOT* else
+                    if(tool != null)
+                    {
+                        // This is a semantics change. In the old
+                        // Turbine, Session tools were initialized and
+                        // then refreshed every time they were pulled
+                        // into the context if "refreshToolsPerRequest"
+                        // was wanted.
+                        //
+                        // RunDataApplicationTools now have a parameter
+                        // for refresh. If it is not refreshed immediately
+                        // after init(), the parameter value will be undefined
+                        // until the 2nd run. So we refresh all the session
+                        // tools on every run, even if we just init'ed it.
+                        //
+
+                        if (refreshToolsPerRequest)
+                        {
+                            refreshTool(tool, pipelineData);
+                        }
+
+                        // put the tool in the context
+                        log.debug("Adding " + tool + " to ctx as "
+                                + toolData.toolName);
+                        log.warn("Persistent scope tools are deprecated.");
+                        context.put(toolData.toolName, tool);
+                    }
+                    else
+                    {
+                        log.info("Tool " + toolData.toolName
+                                + " was null, skipping it.");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                log.error("Could not instantiate perm tool "
+                    + toolData.toolName + " from a "
+                    + toolData.toolClassName + " object", e);
+            }
+        }
+    }
+
     /**
      * Populate the given context with the perm-scoped tools.
      *
@@ -671,6 +923,8 @@ public class TurbinePullService
         }
     }
 
+    
+    
     /**
      * Return the absolute path to the resources directory
      * used by the application tools.
@@ -766,13 +1020,37 @@ public class TurbinePullService
     private void initTool(Object tool, Object param)
         throws Exception
     {
-        if (tool instanceof ApplicationTool)
+        if (param instanceof PipelineData)
         {
-            ((ApplicationTool) tool).init(param);
-        }
-        else if (tool instanceof RunDataApplicationTool)
+            if (tool instanceof PipelineDataApplicationTool)
+            {
+                ((PipelineDataApplicationTool) tool).init((PipelineData)param);
+            }
+            else if (tool instanceof RunDataApplicationTool)
+            {
+                RunData data = getRunData((PipelineData)param);
+                ((RunDataApplicationTool) tool).init(data);
+            }
+            else if (tool instanceof ApplicationTool)
+            {
+                RunData data = getRunData((PipelineData)param);
+                ((ApplicationTool) tool).init(data);
+            }
+        } 
+        else
         {
-            ((RunDataApplicationTool) tool).init(param);
+            if (tool instanceof PipelineDataApplicationTool)
+            {
+                ((PipelineDataApplicationTool) tool).init(param);
+            }
+            else if (tool instanceof RunDataApplicationTool)
+            {
+                ((RunDataApplicationTool) tool).init(param);
+            }
+            else if (tool instanceof ApplicationTool)
+            {
+                ((ApplicationTool) tool).init(param);
+            }
         }
     }
 
@@ -782,8 +1060,19 @@ public class TurbinePullService
      * @param tool A Tool Object
      * @param data The current RunData Object
      */
-    private void refreshTool(Object tool, RunData data)
+    private void refreshTool(Object tool, Object dataObject)
     {
+        RunData data = null;
+        PipelineData pipelineData = null;
+        if (dataObject instanceof PipelineData)
+        {
+            pipelineData = (PipelineData)dataObject;
+            data = getRunData(pipelineData);
+            if (tool instanceof PipelineDataApplicationTool)
+            {
+                ((PipelineDataApplicationTool) tool).refresh(pipelineData);
+            }
+        }
         if (tool instanceof ApplicationTool)
         {
             ((ApplicationTool) tool).refresh();
@@ -792,5 +1081,12 @@ public class TurbinePullService
         {
             ((RunDataApplicationTool) tool).refresh(data);
         }
+    }
+    
+    private RunData getRunData(PipelineData pipelineData)
+    {
+        Map runDataMap = (Map)pipelineData.get(RunData.class);
+        RunData data = (RunData) runDataMap.get(RunData.class);
+        return data;
     }
 }

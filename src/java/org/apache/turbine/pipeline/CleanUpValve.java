@@ -70,6 +70,7 @@ import org.apache.turbine.util.security.AccessControlList;
  * @author <a href="mailto:mikeh@apache.org">Mike Haberman</a>
  * @author <a href="mailto:james@jamestaylor.org">James Taylor</a>
  * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class CleanUpValve
@@ -85,12 +86,12 @@ public class CleanUpValve
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke(PipelineData data, ValveContext context)
+    public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
         try
         {
-            cleanUp((RunData)data.get(RunData.class));
+            cleanUp(pipelineData);
         }
         catch (Exception e)
         {
@@ -98,7 +99,7 @@ public class CleanUpValve
         }
 
         // Pass control to the next Valve in the Pipeline
-        context.invokeNext(data);
+        context.invokeNext(pipelineData);
     }
 
     /**
@@ -106,10 +107,10 @@ public class CleanUpValve
      *
      * @param data The run-time data.
      */
-    protected void cleanUp(RunData data)
+    protected void cleanUp(PipelineData pipelineData)
         throws Exception
     {      
-
+        RunData data = (RunData)getRunData(pipelineData);
         // If a module has set data.acl = null, remove acl from
         // the session.
         if (data.getACL() == null)

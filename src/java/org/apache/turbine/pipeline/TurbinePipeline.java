@@ -56,7 +56,6 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -65,6 +64,7 @@ import org.apache.turbine.util.TurbineException;
  *
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:jvanzyl@zenplex.com">Jason van Zyl</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
 public class TurbinePipeline
     implements Pipeline, ValveContext
@@ -198,20 +198,20 @@ public class TurbinePipeline
     /**
      * @see org.apache.turbine.Pipeline#invoke(RunData)
      */
-    public void invoke(PipelineData data)
+    public void invoke(PipelineData pipelineData)
         throws TurbineException, IOException
     {
         // Initialize the per-thread state for this thread
         state.set(new Integer(0));
 
         // Invoke the first Valve in this pipeline for this request
-        invokeNext(data);
+        invokeNext(pipelineData);
     }
 
     /**
      * @see org.apache.turbine.ValveContext#invokeNext(RunData)
      */
-    public void invokeNext(PipelineData data)
+    public void invokeNext(PipelineData pipelineData)
         throws TurbineException, IOException
     {
         // Identify the current subscript for the current request thread
@@ -223,7 +223,7 @@ public class TurbinePipeline
             // Invoke the requested Valve for the current request
             // thread and increment its thread-local state.
             state.set(new Integer(subscript + 1));
-            valves[subscript].invoke(data, this);
+            valves[subscript].invoke(pipelineData, this);
         }
     }
 }

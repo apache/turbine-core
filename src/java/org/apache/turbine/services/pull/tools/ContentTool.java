@@ -54,9 +54,12 @@ package org.apache.turbine.services.pull.tools;
  * <http://www.apache.org/>.
  */
 
+import java.util.Map;
+
 import org.apache.commons.configuration.Configuration;
 
 import org.apache.turbine.Turbine;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.uri.DataURI;
@@ -75,6 +78,7 @@ import org.apache.turbine.util.uri.DataURI;
  * use it in a normal application!
  *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 
@@ -138,7 +142,18 @@ public class ContentTool
         // we just blithely cast to RunData as if another object
         // or null is passed in we'll throw an appropriate runtime
         // exception.
-        dataURI = new DataURI((RunData) data);
+        if (data instanceof PipelineData)
+        {
+            PipelineData pipelineData = (PipelineData) data;
+            Map runDataMap = (Map) pipelineData.get(RunData.class);
+            RunData runData = (RunData)runDataMap.get(RunData.class);
+            dataURI = new DataURI(runData);
+        }
+        else
+        {
+            dataURI = new DataURI((RunData) data);
+
+        }
 
         Configuration conf = 
                 Turbine.getConfiguration().subset(CONTENT_TOOL_PREFIX);

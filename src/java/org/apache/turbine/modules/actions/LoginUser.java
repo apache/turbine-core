@@ -65,6 +65,7 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.security.DataBackendException;
@@ -75,9 +76,11 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * against a user in the database. If the user exists in the database
  * that users last login time will be updated.
  *
+ * @deprecated Use PipelineData version instead.
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class LoginUser
@@ -173,4 +176,25 @@ public class LoginUser
             }
         }
     }
+    
+    
+    /**
+     * Updates the user's LastLogin timestamp, sets their state to
+     * "logged in" and calls RunData.setUser() .  If the user cannot
+     * be authenticated (database error?) the user is assigned
+     * anonymous status and, if tr.props contains a TEMPLATE_LOGIN,
+     * the screenTemplate is set to this, otherwise the screen is set
+     * to SCREEN_LOGIN
+     *
+     * @param     pipelineData Turbine information.
+     * @exception TurbineSecurityException could not get instance of the
+     *            anonymous user
+     */
+    public void doPerform(PipelineData pipelineData)
+            throws TurbineSecurityException
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        doPerform(data);                
+    }
+    
 }

@@ -54,6 +54,8 @@ package org.apache.turbine.pipeline;
  * <http://www.apache.org/>.
  */
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.servlet.ServletConfig;
@@ -76,6 +78,7 @@ import com.mockobjects.servlet.MockServletConfig;
  * Tests TurbinePipeline.
  *
  * @author <a href="mailto:epugh@opensourceConnections.com">Eric Pugh</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class DefaultLoginValveTest extends BaseTestCase
@@ -151,7 +154,11 @@ public class DefaultLoginValveTest extends BaseTestCase
         
         Pipeline pipeline = new TurbinePipeline();
         PipelineData pipelineData = new DefaultPipelineData();
-        pipelineData.put(RunData.class,runData);
+        Map runDataMap = new HashMap();
+        runDataMap.put(RunData.class, runData);
+        // put the data into the pipeline
+        pipelineData.put(RunData.class, runDataMap);            
+        //pipelineData.put(RunData.class,runData);
 
         DefaultLoginValve valve = new DefaultLoginValve();
         pipeline.addValve(valve);

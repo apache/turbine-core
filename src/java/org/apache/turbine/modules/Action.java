@@ -54,12 +54,14 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 
 /**
  * Generic Action class.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public abstract class Action extends Assembler
@@ -68,6 +70,7 @@ public abstract class Action extends Assembler
      * A subclass must override this method to perform itself.  The
      * Action can also set the screen that is associated with RunData.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
@@ -77,7 +80,7 @@ public abstract class Action extends Assembler
      * Subclasses can override this method to add additional
      * functionality.  This method is protected to force clients to
      * use ActionLoader to perform an Action.
-     *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
@@ -85,4 +88,32 @@ public abstract class Action extends Assembler
     {
         doPerform(data);
     }
+    
+    /**
+     * A subclass must override this method to perform itself.  The
+     * Action can also set the screen that is associated with RunData.
+     *
+     * @param data Turbine information.
+     * @exception Exception a generic exception.
+     */
+    public void doPerform(PipelineData pipelineData) throws Exception
+    {
+        RunData data = (RunData)getRunData(pipelineData);
+        doPerform(data);
+    }
+
+    /**
+     * Subclasses can override this method to add additional
+     * functionality.  This method is protected to force clients to
+     * use ActionLoader to perform an Action.
+     *
+     * @param data Turbine information.
+     * @exception Exception a generic exception.
+     */
+    protected void perform(PipelineData pipelineData) throws Exception
+    {
+        doPerform(pipelineData);
+    }
+
+    
 }

@@ -64,6 +64,7 @@ import org.apache.commons.configuration.Configuration;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.modules.Action;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -71,6 +72,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class InitContextsAction
@@ -81,6 +83,7 @@ public class InitContextsAction
      * TurbineResources instance (if any) into the data.contexts
      * Hashtable.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data The RunData object for the current request.
      * @exception NamingException could not create InitialContext
      */
@@ -126,4 +129,21 @@ public class InitContextsAction
             data.getJNDIContexts().put(key, context);
         }
     }
+    
+    /**
+     * This action will place the contexts defined in the
+     * TurbineResources instance (if any) into the data.contexts
+     * Hashtable.
+     *
+     * @param pipelineData The PipelineRunData object for the current request.
+     * @exception NamingException could not create InitialContext
+     */
+    public void doPerform(PipelineData pipelineData)
+    throws NamingException
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        doPerform(data);        
+    }
+    
+    
 }

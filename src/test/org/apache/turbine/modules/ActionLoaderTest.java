@@ -53,13 +53,21 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
 
+import junit.framework.Assert;
+
 import org.apache.turbine.Turbine;
+import org.apache.turbine.modules.actions.VelocityActionDoesNothing;
+import org.apache.turbine.modules.actions.VelocityActionThrowsException;
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.DefaultPipelineData;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
@@ -76,6 +84,7 @@ import com.mockobjects.servlet.MockServletConfig;
  * logged and sunk.
  * 
  * @author     <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
 public class ActionLoaderTest extends BaseTestCase {
 	private static TurbineConfig tc = null;
@@ -139,9 +148,20 @@ public class ActionLoaderTest extends BaseTestCase {
 	 */
 	public void testDoPerformBubblesException() throws Exception {
 		RunData data = getRunData(request,response,config);
+		PipelineData pipelineData = new DefaultPipelineData();
+		Map runDataMap = new HashMap();
+		runDataMap.put(RunData.class, data);
+		pipelineData.put(RunData.class, runDataMap);
 		data.setAction("VelocityActionThrowsException");
 		try {
 			ActionLoader.getInstance().exec(data, data.getAction());
+			fail("Should have thrown an exception");
+		} catch (Exception e) {
+			//good
+		}
+		
+		try {
+			ActionLoader.getInstance().exec(pipelineData, data.getAction());
 			fail("Should have thrown an exception");
 		} catch (Exception e) {
 			//good
@@ -157,12 +177,22 @@ public class ActionLoaderTest extends BaseTestCase {
 		// can't seem to figure out how to setup the Mock Request with the right parameters...
 		request.setupAddParameter("eventSubmit_doCauseexception", "foo");
 		RunData data = getRunData(request,response,config);
+		PipelineData pipelineData = new DefaultPipelineData();
+		Map runDataMap = new HashMap();
+		runDataMap.put(RunData.class, data);
+		pipelineData.put(RunData.class, runDataMap);
 		data.setAction("VelocityActionThrowsException");
 		data.getParameters().add("eventSubmit_doCauseexception", "foo");
 		assertTrue(
 			data.getParameters().containsKey("eventSubmit_doCauseexception"));
 		try {
 			ActionLoader.getInstance().exec(data, data.getAction());
+			fail("Should have bubbled out an exception thrown by the action.");
+		} catch (Exception e) {
+			//good
+		}
+		try {
+			ActionLoader.getInstance().exec(pipelineData, data.getAction());
 			fail("Should have bubbled out an exception thrown by the action.");
 		} catch (Exception e) {
 			//good
@@ -180,9 +210,19 @@ public class ActionLoaderTest extends BaseTestCase {
 		Turbine.getConfiguration().setProperty("action.event.bubbleexception",Boolean.FALSE);
 		assertFalse(Turbine.getConfiguration().getBoolean("action.event.bubbleexception"));
 		RunData data = getRunData(request,response,config);
+		PipelineData pipelineData = new DefaultPipelineData();
+		Map runDataMap = new HashMap();
+		runDataMap.put(RunData.class, data);
+		pipelineData.put(RunData.class, runDataMap);
 		data.setAction("VelocityActionThrowsException");
 		try {
 			ActionLoader.getInstance().exec(data, data.getAction());
+		
+		} catch (Exception e) {
+			fail("Should NOT have thrown an exception:" + e.getMessage());
+		}	
+		try {
+			ActionLoader.getInstance().exec(pipelineData, data.getAction());
 		
 		} catch (Exception e) {
 			fail("Should NOT have thrown an exception:" + e.getMessage());
@@ -200,6 +240,10 @@ public class ActionLoaderTest extends BaseTestCase {
 		Turbine.getConfiguration().setProperty("action.event.bubbleexception",Boolean.FALSE);
 		request.setupAddParameter("eventSubmit_doCauseexception", "foo");
 		RunData data = getRunData(request,response,config);
+		PipelineData pipelineData = new DefaultPipelineData();
+		Map runDataMap = new HashMap();
+		runDataMap.put(RunData.class, data);
+		pipelineData.put(RunData.class, runDataMap);
 		data.setAction("VelocityActionThrowsException");
 		data.getParameters().add("eventSubmit_doCauseexception", "foo");
 		assertTrue(
@@ -210,16 +254,67 @@ public class ActionLoaderTest extends BaseTestCase {
 		} catch (Exception e) {
 			fail("Should NOT have thrown an exception:" + e.getMessage());
 		}
+		try {
+			ActionLoader.getInstance().exec(pipelineData, data.getAction());			
+		} catch (Exception e) {
+			fail("Should NOT have thrown an exception:" + e.getMessage());
+		}
 	}
 	public void testNonexistentActionCausesError() throws Exception {
 	    RunData data = getRunData(request,response,config);
+		PipelineData pipelineData = new DefaultPipelineData();
+		Map runDataMap = new HashMap();
+		runDataMap.put(RunData.class, data);
+		pipelineData.put(RunData.class, runDataMap);
 		data.setAction("ImaginaryAction");
 		try {
-			PageLoader.getInstance().exec(data, "boo");
+			ActionLoader.getInstance().exec(data, "boo");
+			fail("Should have thrown an exception");
+		} catch (Exception e) {
+			//good
+		}
+		try {
+			ActionLoader.getInstance().exec(pipelineData, "boo");
 			fail("Should have thrown an exception");
 		} catch (Exception e) {
 			//good
 		}
 	}
 	
+	public void testDoPerformWithRunData() throws Exception
+	{
+	    RunData data = getRunData(request,response,config);
+		data.setAction("VelocityActionDoesNothing");
+		try {
+			ActionLoader.getInstance().exec(data, data.getAction());
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    Assert.fail("Should not have thrown an exception.");
+		}
+	    
+	}
+	
+	public void testDoPerformWithPipelineData() throws Exception
+	{
+	    RunData data = getRunData(request,response,config);
+		PipelineData pipelineData = new DefaultPipelineData();
+		Map runDataMap = new HashMap();
+		runDataMap.put(RunData.class, data);
+		pipelineData.put(RunData.class, runDataMap);
+		data.setAction("VelocityActionDoesNothing");
+		int numberOfCalls = VelocityActionDoesNothing.numberOfCalls;
+		int pipelineDataCalls = VelocityActionDoesNothing.pipelineDataCalls;
+		int runDataCalls = VelocityActionDoesNothing.runDataCalls;
+		try {
+			ActionLoader.getInstance().exec(pipelineData, data.getAction());
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    Assert.fail("Should not have thrown an exception.");
+		}
+		assertEquals(numberOfCalls+1,VelocityActionDoesNothing.numberOfCalls);
+		assertEquals(runDataCalls,VelocityActionDoesNothing.runDataCalls);
+		assertEquals(pipelineDataCalls+1,VelocityActionDoesNothing.pipelineDataCalls);
+	    
+	}
+
 }

@@ -64,6 +64,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.security.TurbineSecurity;
 
 import org.apache.turbine.util.RunData;
@@ -90,6 +91,7 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class TemplateSecureSessionValidator
@@ -105,7 +107,7 @@ public class TemplateSecureSessionValidator
      * methods. For example, it uses <code>setScreenTemplate</code> to
      * load the tr.props TEMPLATE_LOGIN instead of the default's
      * setScreen to TurbineConstants.SCREEN_LOGIN.
-     *
+     * @deprecated Use PipelineData version instead.
      * @see DefaultSessionValidator
      * @param data Turbine information.
      * @throws TurbineException The anonymous user could not be obtained
@@ -212,4 +214,25 @@ public class TemplateSecureSessionValidator
             data.setScreen(null);
         }
     }
+    
+    /**
+     * doPerform is virtually identical to DefaultSessionValidator
+     * except that it calls template methods instead of bare screen
+     * methods. For example, it uses <code>setScreenTemplate</code> to
+     * load the tr.props TEMPLATE_LOGIN instead of the default's
+     * setScreen to TurbineConstants.SCREEN_LOGIN.
+     *
+     * @see DefaultSessionValidator
+     * @param pipelineData Turbine information.
+     * @throws TurbineException The anonymous user could not be obtained
+     *         from the security service
+     */
+    public void doPerform(PipelineData pipelineData)
+    throws TurbineException
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        doPerform(data);
+    }
+
+    
 }

@@ -59,6 +59,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ecs.ConcreteElement;
 
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.jsp.TurbineJsp;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
@@ -70,6 +71,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author Frank Y. Kim
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class BaseJspScreen
@@ -81,6 +83,7 @@ public class BaseJspScreen
     /**
      * Method that sets up beans and forward the request to the JSP.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @return null - the JSP sends the information.
      * @exception Exception, a generic exception.
@@ -108,8 +111,39 @@ public class BaseJspScreen
     }
 
     /**
+     * Method that sets up beans and forward the request to the JSP.
+     *
+     * @param data Turbine information.
+     * @return null - the JSP sends the information.
+     * @exception Exception, a generic exception.
+     */
+    public ConcreteElement buildTemplate(PipelineData pipelineData)
+            throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        String screenTemplate = data.getTemplateInfo().getScreenTemplate();
+        // get the name of the JSP we want to use
+        String templateName
+            = TurbineTemplate.getScreenTemplateName(screenTemplate);
+
+        // The Template Service could not find the Screen
+        if (StringUtils.isEmpty(templateName))
+        {
+            log.error("Screen " + screenTemplate + " not found!");
+            throw new Exception("Could not find screen for " + screenTemplate);
+        }
+
+        // let service know whether we are using a layout
+        TurbineJsp.handleRequest(pipelineData, prefix + templateName,
+                                 getLayout(pipelineData) == null);
+
+        return null;
+    }
+    
+    /**
      * Method to be overidden by subclasses to include data in beans, etc.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data, the Rundata object
      * @exception Exception, a generic exception.
      */
@@ -117,4 +151,16 @@ public class BaseJspScreen
         throws Exception
     {
     }
+    
+    /**
+     * Method to be overidden by subclasses to include data in beans, etc.
+     *
+     * @param data, the Rundata object
+     * @exception Exception, a generic exception.
+     */
+    protected void doBuildTemplate(PipelineData pipelineData)
+        throws Exception
+    {
+    }
+
 }

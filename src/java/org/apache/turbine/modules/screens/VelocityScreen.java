@@ -54,6 +54,8 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -64,6 +66,7 @@ import org.apache.ecs.StringElement;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.template.TurbineTemplate;
 
 import org.apache.turbine.services.velocity.TurbineVelocity;
@@ -84,6 +87,7 @@ import org.apache.velocity.context.Context;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class VelocityScreen
@@ -97,6 +101,7 @@ public class VelocityScreen
      * method to perform any particular business logic and add
      * information to the context.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @param context Context for web pages.
      * @exception Exception, a generic exception.
@@ -108,10 +113,27 @@ public class VelocityScreen
     }
 
     /**
+     * Velocity Screens extending this class should overide this
+     * method to perform any particular business logic and add
+     * information to the context.
+     *
+     * @param pipelineData Turbine information.
+     * @param context Context for web pages.
+     * @exception Exception, a generic exception.
+     */
+    protected void doBuildTemplate(PipelineData pipelineData,
+                                   Context context)
+            throws Exception
+    {
+    }
+
+    
+    /**
      * Needs to be implemented to make TemplateScreen like us.  The
      * actual method that you should override is the one with the
      * context in the parameter list.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
@@ -122,8 +144,25 @@ public class VelocityScreen
     }
 
     /**
+     * Needs to be implemented to make TemplateScreen like us.  The
+     * actual method that you should override is the one with the
+     * context in the parameter list.
+     *
+     * @param data Turbine information.
+     * @exception Exception, a generic exception.
+     */
+    protected void doBuildTemplate(PipelineData pipelineData)
+            throws Exception
+    {
+        doBuildTemplate(pipelineData, TurbineVelocity.getContext(pipelineData));
+    }
+
+    
+    
+    /**
      * This builds the Velocity template.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
@@ -190,6 +229,76 @@ public class VelocityScreen
     }
 
     /**
+     * This builds the Velocity template.
+     *
+     * @param data Turbine information.
+     * @return A ConcreteElement.
+     * @exception Exception, a generic exception.
+     */
+    public ConcreteElement buildTemplate(PipelineData pipelineData)
+        throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        String screenData = null;
+        
+        Context context = TurbineVelocity.getContext(pipelineData);
+
+        String screenTemplate = data.getTemplateInfo().getScreenTemplate();
+        String templateName
+            = TurbineTemplate.getScreenTemplateName(screenTemplate);
+        
+        // The Template Service could not find the Screen
+        if (StringUtils.isEmpty(templateName))
+        {
+            log.error("Screen " + screenTemplate + " not found!");
+            throw new Exception("Could not find screen for " + screenTemplate);
+        }
+        
+        try
+        {
+            // if a layout has been defined return the results, otherwise
+            // send the results directly to the output stream.
+            if (getLayout(pipelineData) == null)
+            {
+                TurbineVelocity.handleRequest(context,
+                        prefix + templateName,
+                        data.getResponse().getOutputStream());
+            }
+            else
+            {
+                screenData = TurbineVelocity
+                        .handleRequest(context, prefix + templateName);
+            }
+        }
+        catch (Exception e)
+        {
+            // If there is an error, build a $processingException and
+            // attempt to call the error.vm template in the screens
+            // directory.
+            context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
+            context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
+            
+            templateName = Turbine.getConfiguration()
+                .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
+                           TurbineConstants.TEMPLATE_ERROR_VM);
+            
+            screenData = TurbineVelocity.handleRequest(
+                context, prefix + templateName);
+        }
+        
+        // package the response in an ECS element
+        StringElement output = new StringElement();
+        output.setFilterState(false);
+
+        if (screenData != null)
+        {
+            output.addElement(screenData);
+        }
+        return output;
+    }
+    
+    
+    /**
      * Return the Context needed by Velocity.
      *
      * @param data Turbine information.
@@ -201,4 +310,18 @@ public class VelocityScreen
     {
         return TurbineVelocity.getContext(data);
     }
+    
+    /**
+     * Return the Context needed by Velocity.
+     *
+     * @param data Turbine information.
+     * @return A Context.
+     *
+     * @deprecated Use TurbineVelocity.getContext(pipelineData)
+     */
+    public static Context getContext(PipelineData pipelineData)
+    {
+        return TurbineVelocity.getContext(pipelineData);
+    }
+
 }

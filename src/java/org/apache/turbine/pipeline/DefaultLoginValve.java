@@ -76,6 +76,7 @@ import org.apache.turbine.util.template.TemplateInfo;
  *
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @author <a href="mailto:dlr@apache.org">Daniel Rall</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class DefaultLoginValve
@@ -95,12 +96,12 @@ public class DefaultLoginValve
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke(PipelineData data, ValveContext context)
+    public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
         try
         {             
-            process((RunData)data.get(RunData.class));
+            process(pipelineData);
         }
         catch (Exception e)
         {
@@ -108,7 +109,7 @@ public class DefaultLoginValve
         }
 
         // Pass control to the next Valve in the Pipeline
-        context.invokeNext(data);
+        context.invokeNext(pipelineData);
     }
 
     /**
@@ -117,9 +118,10 @@ public class DefaultLoginValve
      *
      * @param data The run-time data.
      */
-    protected void process(RunData data)
+    protected void process(PipelineData pipelineData)
         throws Exception
     {
+        RunData data = (RunData)getRunData(pipelineData);
         // Special case for login and logout, this must happen before the
         // session validator is executed in order either to allow a user to
         // even login, or to ensure that the session validator gets to
@@ -174,7 +176,7 @@ public class DefaultLoginValve
             }
 
             
-            ActionLoader.getInstance().exec(data, data.getAction());
+            ActionLoader.getInstance().exec(pipelineData, data.getAction());
             cleanupTemplateContext(data);
             data.setAction(null);
         }

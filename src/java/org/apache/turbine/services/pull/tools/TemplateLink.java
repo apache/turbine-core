@@ -54,12 +54,15 @@ package org.apache.turbine.services.pull.tools;
  * <http://www.apache.org/>.
  */
 
+import java.util.Map;
+
 import org.apache.commons.configuration.Configuration;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.Turbine;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
@@ -86,6 +89,7 @@ import org.apache.turbine.util.uri.TemplateURI;
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 
@@ -144,8 +148,17 @@ public class TemplateLink
         // we just blithely cast to RunData as if another object
         // or null is passed in we'll throw an appropriate runtime
         // exception.
-
-        templateURI = new TemplateURI((RunData) data);
+        if (data instanceof PipelineData)
+        {
+            PipelineData pipelineData = (PipelineData) data;
+            Map runDataMap = (Map) pipelineData.get(RunData.class);
+            RunData runData = (RunData)runDataMap.get(RunData.class);
+            templateURI = new TemplateURI(runData);
+        }
+        else
+        {
+            templateURI = new TemplateURI((RunData) data);
+        }
 
         Configuration conf = 
                 Turbine.getConfiguration().subset(TEMPLATE_LINK_PREFIX);
