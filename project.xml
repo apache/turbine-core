@@ -567,12 +567,6 @@
       </properties>
     </dependency>
     <dependency>
-      <groupId>torque</groupId>
-      <artifactId>torque-gen</artifactId>
-      <version>SNAPSHOT</version>
-      <url>http://db.apache.org/torque/</url>
-    </dependency>
-    <dependency>
       <id>velocity</id>
       <version>1.3</version>
       <url>http://jakarta.apache.org/velocity/</url>
