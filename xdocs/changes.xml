@@ -258,6 +258,10 @@ Changes between Turbine 2.2 and 2.3-dev.
         All classed in the org.apache.turbine.util.mail package have been deprecated.  You should change your
         application code to use commons-mail instead.
     </li>
+    <li>
+        Turbine now uses commons-fileupload.  The org.apache.turbine.util.upload
+        package has been deprecated.
+    </li>
   </ul>
 </p>
 </subsection>
