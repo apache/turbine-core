@@ -1,7 +1,0 @@
-<!-- This configuration file for Avalon components is used for testing the TorqueComponent -->
-
-<componentConfig>
-    <torque>
-       <configfile>conf/test/TorqueTest.properties</configfile>
-    </torque>
-</componentConfig>

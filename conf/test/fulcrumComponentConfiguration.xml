@@ -11,8 +11,22 @@
       	<unix>org.apache.fulcrum.crypto.provider.UnixCrypt</unix>
         <clear>org.apache.fulcrum.crypto.provider.ClearCrypt</clear>
         <java>org.apache.fulcrum.crypto.provider.JavaCrypt</java>   
-        <oldjava>org.apache.fulcrum.crypto.provider.OldJavaCrypt</oldjava>   
-                      
+        <oldjava>org.apache.fulcrum.crypto.provider.OldJavaCrypt</oldjava>                         
       </algorithm>
     </crypto>	
+    <localization>
+      <bundles>
+        <bundle>org.apache.turbine.services.localization.BarBundle</bundle>        
+      </bundles>
+    </localization>
+	<intake>
+      <serialDataPath>target/appData.ser</serialDataPath>
+      <xmlPaths>
+        <xmlPath>conf/test/intake.xml</xmlPath>
+      </xmlPaths>
+    </intake>    
+    <factory/>
+    <torque>
+       <configfile>conf/test/TorqueTest.properties</configfile>
+    </torque>    
 </componentConfig>
