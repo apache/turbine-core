@@ -60,6 +60,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.torque.TorqueException;
 import org.apache.torque.om.BaseObject;
+import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.Persistent;
 import org.apache.torque.util.BasePeer;
 import org.apache.torque.util.Criteria;
@@ -197,7 +198,7 @@ public class RolePeer extends BasePeer
                 //Role obj = new Role();
                 Role obj = new TurbineRole();
                 Record row = (Record) rows.get(i);
-                ((TurbineRole) obj).setPrimaryKey(row.getValue(1).asInt());
+                ((TurbineRole) obj).setPrimaryKey(new NumberKey(row.getValue(1).asInt()));
                 ((TurbineRole) obj).setName(row.getValue(2).asString());
                 byte[] objectData = (byte[]) row.getValue(3).asBytes();
                 Map temp = (Map) ObjectUtils.deserialize(objectData);

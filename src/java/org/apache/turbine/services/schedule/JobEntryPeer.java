@@ -54,17 +54,18 @@ package org.apache.turbine.services.schedule;
  * <http://www.apache.org/>.
  */
 
-import com.workingdogs.village.Record;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import org.apache.torque.TorqueException;
+import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.ObjectKey;
 import org.apache.torque.util.BasePeer;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
+import com.workingdogs.village.Record;
 
 /**
  * Peer class for JobEntry database access.
@@ -140,7 +141,7 @@ public class JobEntryPeer extends BasePeer
                 Hashtable tempHash = (Hashtable) ObjectUtils.deserialize(objectData);
 
                 JobEntry je = new JobEntry(sec, min, hr, wd, d_m, task);
-                je.setPrimaryKey(oid);
+                je.setPrimaryKey(new NumberKey(oid));
                 je.setEmail(email);
                 je.setProperty(tempHash);
                 je.setModified(false);

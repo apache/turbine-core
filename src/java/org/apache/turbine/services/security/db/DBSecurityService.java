@@ -60,6 +60,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import org.apache.torque.om.BaseObject;
+import org.apache.torque.om.NumberKey;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
@@ -322,7 +323,7 @@ public class DBSecurityService extends BaseSecurityService
                 // Criteria criteria = new Criteria();
                 // criteria.add(UserGroupRolePeer.USER_ID, ((BaseObject)user).getPrimaryKey());
                 // UserGroupRolePeer.doDelete(criteria);
-                int id = ((BaseObject)user).getPrimaryKeyAsInt();
+                int id = ((NumberKey) ((BaseObject) user).getPrimaryKey()).intValue();
                 UserGroupRolePeer.deleteAll(UserGroupRolePeer.TABLE_NAME, UserGroupRolePeer.USER_ID, id);
                 return;
             }
@@ -460,7 +461,7 @@ public class DBSecurityService extends BaseSecurityService
                 // criteria.add(RolePermissionPeer.ROLE_ID, role.getPrimaryKey());
                 // RolePermissionPeer.doDelete(criteria);
 
-                int id = ((TurbineRole)role).getPrimaryKeyAsInt();
+                int id = ((NumberKey) ((TurbineRole)role).getPrimaryKey()).intValue();
                 RolePermissionPeer.deleteAll(RolePermissionPeer.TABLE_NAME,
                     RolePermissionPeer.ROLE_ID, id);
                 return;

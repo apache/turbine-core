@@ -54,7 +54,6 @@ package org.apache.turbine.om.security.peer;
  * <http://www.apache.org/>.
  */
 
-import com.workingdogs.village.Record;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -62,6 +61,7 @@ import java.util.Map;
 import java.util.Vector;
 import org.apache.torque.TorqueException;
 import org.apache.torque.om.BaseObject;
+import org.apache.torque.om.NumberKey;
 import org.apache.torque.util.BasePeer;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Permission;
@@ -73,6 +73,7 @@ import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.PermissionSet;
+import com.workingdogs.village.Record;
 
 /**
  * This class handles all the database access for the PERMISSION
@@ -188,7 +189,7 @@ public class PermissionPeer extends BasePeer
             {
                 Permission obj = TurbineSecurity.getNewPermission(null);
                 Record row = (Record) rows.get(i);
-                ((SecurityObject) obj).setPrimaryKey( row.getValue(1).asInt() );
+                ((SecurityObject) obj).setPrimaryKey(new NumberKey(row.getValue(1).asInt()));
                 ((SecurityObject) obj).setName( row.getValue(2).asString() );
                 byte[] objectData = (byte[]) row.getValue(3).asBytes();
                 Map temp = (Map) ObjectUtils.deserialize(objectData);

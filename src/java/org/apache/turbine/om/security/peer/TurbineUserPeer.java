@@ -353,7 +353,7 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
         throws TorqueException
     {
         // stuff for postgresql problem.....
-        criteria.setBlobFlag();
+        criteria.setBlobFlag(true);
 
         // add User table columns
         addSelectColumns(criteria);
@@ -410,7 +410,7 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
         throws TorqueException
     {
         // stuff for postgresql problem.....
-        criteria.setBlobFlag();
+        criteria.setBlobFlag(true);
 
         // add User table columns
         addSelectColumns(criteria);

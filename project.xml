@@ -448,7 +448,7 @@
     </dependency>
     <dependency>
       <id>torque</id>
-      <version>3.0</version>
+      <version>3.1-dev</version>
       <url>http://jakarta.apache.org/turbine/torque/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>

@@ -90,7 +90,7 @@ public class TurbineMapBrokerService extends BaseService
      */
     public String getDefaultMap()
     {
-        return Torque.getDefaultMap();
+        return Torque.getDefaultDB();
     }
 
     /**
