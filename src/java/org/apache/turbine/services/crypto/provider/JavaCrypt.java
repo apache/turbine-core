@@ -56,8 +56,8 @@ package org.apache.turbine.services.crypto.provider;
 
 import java.security.MessageDigest;
 
-import org.apache.commons.codec.base64.Base64;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.turbine.services.crypto.CryptoAlgorithm;
 
 /**
@@ -149,7 +149,7 @@ public class JavaCrypt
         byte[] digest = md.digest(value.getBytes("UTF-8"));
 
         // Base64-encode the digest.
-        byte[] encodedDigest = Base64.encode(digest);
+        byte[] encodedDigest = Base64.encodeBase64(digest);
         return (encodedDigest == null ? null : new String(encodedDigest));
     }
 }
