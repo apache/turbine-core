@@ -55,9 +55,7 @@ package org.apache.turbine.services.intake.validator;
  */
 
 import java.text.ParseException;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Vector;
 
 /**
  * Validator for boolean field types.<br><br>
@@ -84,38 +82,31 @@ import java.util.Vector;
  * </ul>
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
  * @version $Id$
  */
 public class BooleanValidator
         extends DefaultValidator
 {
     /** String values which would evaluate to Boolean.TRUE */
-    private static Vector trueValues;
+    private static String[] trueValues = {"TRUE","T","YES","Y","1"};
 
     /** String values which would evaluate to Boolean.FALSE */
-    private static Vector falseValues;
+    private static String[] falseValues = {"FALSE","F","NO","N","0"};
 
-    static
-    {
-        trueValues = new Vector();
-        trueValues.add("TRUE");
-        trueValues.add("T");
-        trueValues.add("YES");
-        trueValues.add("Y");
-        trueValues.add("1");
-
-        falseValues = new Vector();
-        falseValues.add("FALSE");
-        falseValues.add("F");
-        falseValues.add("NO");
-        falseValues.add("N");
-        falseValues.add("0");
-    }
-
+    /**
+     * Default Constructor
+     */
     public BooleanValidator()
     {
     }
 
+    /**
+     * Constructor to use when initialising Object
+     *
+     * @param paramMap
+     * @throws InvalidMaskException
+     */
     public BooleanValidator(Map paramMap)
             throws InvalidMaskException
     {
@@ -130,9 +121,11 @@ public class BooleanValidator
      * @exception ValidationException containing an error message if the
      * testValue did not pass the validation tests.
      */
-    protected void doAssertValidity(String testValue)
+    public void assertValidity(String testValue)
             throws ValidationException
     {
+        super.assertValidity(testValue);
+
         try
         {
             parse(testValue);
@@ -153,21 +146,18 @@ public class BooleanValidator
             throws ParseException
     {
         Boolean result = null;
-        for (Iterator iter = trueValues.iterator(); iter.hasNext() && result == null;)
+        for (int cnt = 0; cnt < trueValues.length; cnt++)
         {
-            String trueValue = (String) iter.next();
-            if (trueValue.equalsIgnoreCase(stringValue))
+            if (stringValue.equalsIgnoreCase(trueValues[cnt]))
             {
                 result = Boolean.TRUE;
+                break;
             }
-        }
 
-        for (Iterator iter = falseValues.iterator(); iter.hasNext() && result == null;)
-        {
-            String falseValue = (String) iter.next();
-            if (falseValue.equalsIgnoreCase(stringValue))
+            if (stringValue.equalsIgnoreCase(falseValues[cnt]))
             {
                 result = Boolean.FALSE;
+                break;
             }
         }
 
@@ -176,8 +166,6 @@ public class BooleanValidator
             throw new ParseException(stringValue +
                     " could not be converted to a Boolean", 0);
         }
-
         return result;
     }
-
 }

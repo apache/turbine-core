@@ -86,6 +86,7 @@ import org.apache.turbine.services.intake.IntakeException;
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
  * @version $Id$
  */
 public class DateStringValidator
@@ -94,29 +95,45 @@ public class DateStringValidator
     private static final String DEFAULT_DATE_MESSAGE =
             "Date could not be parsed";
 
-    private List dateFormats;
-    private String dateFormatMessage;
-    private boolean flexible;
-    private DateFormat df;
-    private SimpleDateFormat sdf;
+    /**  */
+    private List dateFormats = null;
+
+    /**  */
+    private String dateFormatMessage = null;
+
+    /**  */
+    private boolean flexible = false;
+
+    /**  */
+    private DateFormat df = null;
+
+    /**  */
+    private SimpleDateFormat sdf = null;
 
     public DateStringValidator(Map paramMap)
             throws IntakeException
     {
-        this();
         init(paramMap);
     }
 
+    /**
+     * Default Constructor
+     */
     public DateStringValidator()
     {
-        super();
+        dateFormats = new ArrayList(5);
     }
 
+    /**
+     * Constructor to use when initialising Object
+     *
+     * @param paramMap
+     * @throws InvalidMaskException
+     */
     public void init(Map paramMap)
             throws InvalidMaskException
     {
         super.init(paramMap);
-        dateFormats = new ArrayList(5);
 
         Constraint constraint = (Constraint) paramMap.get("format");
 
@@ -168,16 +185,18 @@ public class DateStringValidator
      * @exception ValidationException containing an error message if the
      * testValue did not pass the validation tests.
      */
-    protected void doAssertValidity(String testValue)
+    public void assertValidity(String testValue)
             throws ValidationException
     {
+        super.assertValidity(testValue);
+
         try
         {
             parse(testValue);
         }
         catch (ParseException e)
         {
-            message = dateFormatMessage;
+            errorMessage = dateFormatMessage;
             throw new ValidationException(dateFormatMessage);
         }
     }
