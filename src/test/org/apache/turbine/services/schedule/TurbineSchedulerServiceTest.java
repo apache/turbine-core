@@ -125,8 +125,8 @@ public class TurbineSchedulerServiceTest extends TestCase
     }
 
     /**
-         * Tests the ability to enable and disable the service.
-         */
+     * Tests the ability to enable and disable the service.
+     */
     public void testStartSchedulerWithNoDatabaseConnection()
     {
         try
