@@ -144,6 +144,12 @@ Changes between Turbine 2.2 and 2.3-dev.
         <li>
           Intake now uses commons-pool for pooling.
         </li>
+        <li>
+          intake.dtd is now packaged in the turbine.jar file.  If your
+          intake.xml file validates against 
+          jakarta.apache.org/turbine/dtd/intake.dtd, then the DTD included
+          in the jar file will be used instead of the online version. 
+        </li>
       </ul>
     </li>
     <li>
