@@ -82,6 +82,13 @@
       >
     #end
   #end
+  #if ($page.Styles.size() > 0)
+      <style type="text/css">
+    #foreach( $style in $page.Styles )
+        $!style
+    #end
+      </style>
+  #end
   #if ($page.Scripts.size() > 0)
     #foreach( $script in $page.Scripts )
       <script type="text/javascript" src="$script" language="JavaScript"></script>
