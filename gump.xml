@@ -1,9 +1,7 @@
 <module name="jakarta-turbine-2">
 
 
-  <description>
-    A servlet based framework.
-  </description>
+  <description>A servlet based framework.</description>
   <url href="http://jakarta.apache.org/turbine/turbine-2/"/>
   
   <cvs repository="jakarta"/>
@@ -25,6 +23,7 @@
     <depend project="xml-xerces"/>
 
     <depend project="commons-collections"/>
+    <depend project="commons-configuration"/>
     <depend project="commons-lang"/>
     <depend project="jakarta-ecs"/>
     <depend project="jakarta-regexp"/>
@@ -57,14 +56,9 @@
     <home nested="target"/>
     <jar name="turbine-@@DATE@@.jar"/>
     <javadoc nested="docs/apidocs"/>
+
+
     
   </project>
   
-  <!-- Transform the Maven project descriptor into a form -->
-  <!-- that can be digested by Gump.                      -->
-  
-  <project name="jakarta-turbine-2-gump-descriptor">
-    <ant buildfile="build-maven.xml" target="gump-descriptor"/>
-  </project>
-
 </module>
