@@ -57,6 +57,8 @@ package org.apache.turbine.services.security.db;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.BaseObject;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.User;
@@ -69,8 +71,8 @@ import org.apache.turbine.util.security.PasswordMismatchException;
 import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
- * An UserManager performs {@link org.apache.turbine.om.security.User} objects
- * related tasks on behalf of the
+ * An UserManager performs {@link org.apache.turbine.om.security.User}
+ * objects related tasks on behalf of the
  * {@link org.apache.turbine.services.security.BaseSecurityService}.
  *
  * This implementation uses a relational database for storing user data. It
@@ -82,10 +84,15 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
  * @author <a href="mailto:cberry@gluecode.com">Craig D. Berry</a>
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class DBUserManager implements UserManager
+public class DBUserManager 
+    implements UserManager
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(DBUserManager.class);
+
     /**
      * Check whether a specified user's account exists.
      *
@@ -96,7 +103,8 @@ public class DBUserManager implements UserManager
      * @throws DataBackendException if there was an error accessing
      *         the data backend.
      */
-    public boolean accountExists(User user) throws DataBackendException
+    public boolean accountExists(User user)
+        throws DataBackendException
     {
         return accountExists(user.getUserName());
     }
@@ -106,15 +114,16 @@ public class DBUserManager implements UserManager
      *
      * The login name is used for looking up the account.
      *
-     * @param username The name of the user to be checked.
+     * @param userName The name of the user to be checked.
      * @return true if the specified account exists
      * @throws DataBackendException if there was an error accessing
      *         the data backend.
      */
-    public boolean accountExists(String username) throws DataBackendException
+    public boolean accountExists(String userName)
+        throws DataBackendException
     {
         Criteria criteria = new Criteria();
-        criteria.add(TurbineUserPeer.USERNAME, username);
+        criteria.add(TurbineUserPeer.USERNAME, userName);
         List users;
         try
         {
@@ -123,31 +132,32 @@ public class DBUserManager implements UserManager
         catch (Exception e)
         {
             throw new DataBackendException(
-                    "Failed to check account's presence", e);
+                "Failed to check account's presence", e);
         }
         if (users.size() > 1)
         {
             throw new DataBackendException(
-                    "Multiple Users with same username '" + username + "'");
+                "Multiple Users with same username '" + userName + "'");
         }
         return (users.size() == 1);
     }
 
     /**
-     * Retrieve a user from persistent storage using username as the key.
+     * Retrieve a user from persistent storage using username as the
+     * key.
      *
-     * @param username the name of the user.
+     * @param userName the name of the user.
      * @return an User object.
      * @exception UnknownEntityException if the user's account does not
      *            exist in the database.
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public User retrieve(String username)
+    public User retrieve(String userName)
         throws UnknownEntityException, DataBackendException
     {
         Criteria criteria = new Criteria();
-        criteria.add(TurbineUserPeer.USERNAME, username);
+        criteria.add(TurbineUserPeer.USERNAME, userName);
         List users;
         try
         {
@@ -155,19 +165,19 @@ public class DBUserManager implements UserManager
         }
         catch (Exception e)
         {
-            throw new DataBackendException("Failed to retrieve user '"
-                    + username + "'", e);
+            throw new DataBackendException("Failed to retrieve user '" +
+                                           userName + "'", e);
         }
         if (users.size() > 1)
         {
             throw new DataBackendException(
-                "Multiple Users with same username '" + username + "'");
+                "Multiple Users with same username '" + userName + "'");
         }
         if (users.size() == 1)
         {
             return (User) users.get(0);
         }
-        throw new UnknownEntityException("Unknown user '" + username + "'");
+        throw new UnknownEntityException("Unknown user '" + userName + "'");
     }
 
     /**
@@ -191,9 +201,11 @@ public class DBUserManager implements UserManager
         while (keys.hasNext())
         {
             String key = (String) keys.next();
+
             // set the table name for all attached criterion
-            Criteria.Criterion[] criterion = criteria.getCriterion(key)
-                    .getAttachedCriterion();
+            Criteria.Criterion[] criterion = criteria
+                .getCriterion(key).getAttachedCriterion();
+
             for (int i = 0; i < criterion.length; i++)
             {
                 String table = criterion[i].getTable();
@@ -221,7 +233,7 @@ public class DBUserManager implements UserManager
      * to authenticate to the server as the user whose data is being
      * retrieved.
      *
-     * @param username the name of the user.
+     * @param userName the name of the user.
      * @param password the user supplied password.
      * @return an User object.
      * @exception PasswordMismatchException if the supplied password was
@@ -231,11 +243,11 @@ public class DBUserManager implements UserManager
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public User retrieve(String username, String password)
-         throws PasswordMismatchException, UnknownEntityException,
-                DataBackendException
+    public User retrieve(String userName, String password)
+        throws PasswordMismatchException, UnknownEntityException,
+               DataBackendException
     {
-        User user = retrieve(username);
+        User user = retrieve(userName);
         authenticate(user, password);
         return user;
     }
@@ -255,8 +267,8 @@ public class DBUserManager implements UserManager
     {
         if (!accountExists(user))
         {
-            throw new UnknownEntityException("The account '"
-                    + user.getUserName() + "' does not exist");
+            throw new UnknownEntityException("The account '" +
+                                             user.getUserName() + "' does not exist");
         }
         Criteria criteria = TurbineUserPeer.buildCriteria(user);
         try
@@ -289,8 +301,8 @@ public class DBUserManager implements UserManager
     {
         if (!accountExists(user))
         {
-            throw new UnknownEntityException("The account '"
-                    + user.getUserName() + "' does not exist");
+            throw new UnknownEntityException("The account '" +
+                                             user.getUserName() + "' does not exist");
         }
         String encrypted = TurbineSecurity.encryptPassword(password);
         if (!user.getPassword().equals(encrypted))
@@ -300,11 +312,12 @@ public class DBUserManager implements UserManager
     }
 
     /**
-     * Change the password for an User.
+     * Change the password for an User. The user must have supplied the
+     * old password to allow the change.
      *
      * @param user an User to change password for.
-     * @param oldPassword the old password.
-     * @param newPassword the new password.
+     * @param oldPassword The old password to verify
+     * @param newPassword The new password to set
      * @exception PasswordMismatchException if the supplied password was
      *            incorrect.
      * @exception UnknownEntityException if the user's account does not
@@ -313,21 +326,21 @@ public class DBUserManager implements UserManager
      *            storage.
      */
     public void changePassword(User user, String oldPassword,
-            String newPassword)
-            throws PasswordMismatchException, UnknownEntityException,
-            DataBackendException
+                               String newPassword)
+        throws PasswordMismatchException, UnknownEntityException,
+               DataBackendException
     {
         String encrypted = TurbineSecurity.encryptPassword(oldPassword);
         if (!accountExists(user))
         {
-            throw new UnknownEntityException("The account '"
-                    + user.getUserName() + "' does not exist");
+            throw new UnknownEntityException("The account '" +
+                                             user.getUserName() + "' does not exist");
         }
         if (!user.getPassword().equals(encrypted))
         {
             throw new PasswordMismatchException(
-                    "The supplied old password for '" + user.getUserName()
-                    + "' was incorrect");
+                "The supplied old password for '" + user.getUserName() +
+                "' was incorrect");
         }
         user.setPassword(TurbineSecurity.encryptPassword(newPassword));
         // save the changes in the database imediately, to prevent the password
@@ -356,8 +369,8 @@ public class DBUserManager implements UserManager
     {
         if (!accountExists(user))
         {
-            throw new UnknownEntityException("The account '"
-                    + user.getUserName() + "' does not exist");
+            throw new UnknownEntityException("The account '" +
+                                             user.getUserName() + "' does not exist");
         }
         user.setPassword(TurbineSecurity.encryptPassword(password));
         // save the changes in the database immediately, to prevent the
@@ -369,10 +382,10 @@ public class DBUserManager implements UserManager
     /**
      * Creates new user account with specified attributes.
      *
-     * @param user the object describing account to be created.
+     * @param user The object describing account to be created.
      * @param initialPassword the password for the new account
      * @throws DataBackendException if there was an error accessing
-               the data backend.
+     the data backend.
      * @throws EntityExistsException if the user account already exists.
      */
     public void createAccount(User user, String initialPassword)
@@ -380,8 +393,8 @@ public class DBUserManager implements UserManager
     {
         if (accountExists(user))
         {
-            throw new EntityExistsException("The account '"
-                    + user.getUserName() + "' already exists");
+            throw new EntityExistsException("The account '" +
+                                            user.getUserName() + "' already exists");
         }
         String encrypted = TurbineSecurity.encryptPassword(initialPassword);
         user.setPassword(encrypted);
@@ -391,12 +404,12 @@ public class DBUserManager implements UserManager
             // we can safely assume that BaseObject derivate is used as User
             // implementation with this UserManager
             ((BaseObject) user).setPrimaryKey(
-                    TurbineUserPeer.doInsert(criteria));
+                TurbineUserPeer.doInsert(criteria));
         }
         catch (Exception e)
         {
-            throw new DataBackendException("Failed to create account '"
-                    + user.getUserName() + "'", e);
+            throw new DataBackendException("Failed to create account '" +
+                                           user.getUserName() + "'", e);
         }
     }
 
@@ -405,7 +418,7 @@ public class DBUserManager implements UserManager
      *
      * @param user the object describing the account to be removed.
      * @throws DataBackendException if there was an error accessing
-               the data backend.
+     the data backend.
      * @throws UnknownEntityException if the user account is not present.
      */
     public void removeAccount(User user)
@@ -413,8 +426,8 @@ public class DBUserManager implements UserManager
     {
         if (!accountExists(user))
         {
-            throw new UnknownEntityException("The account '"
-                    + user.getUserName() + "' does not exist");
+            throw new UnknownEntityException("The account '" +
+                                             user.getUserName() + "' does not exist");
         }
         Criteria criteria = new Criteria();
         criteria.add(TurbineUserPeer.USERNAME, user.getUserName());
@@ -424,8 +437,8 @@ public class DBUserManager implements UserManager
         }
         catch (Exception e)
         {
-            throw new DataBackendException("Failed to remove account '"
-                    + user.getUserName() + "'", e);
+            throw new DataBackendException("Failed to remove account '" +
+                                           user.getUserName() + "'", e);
         }
     }
 }
