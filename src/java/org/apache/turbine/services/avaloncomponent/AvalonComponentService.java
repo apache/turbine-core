@@ -97,6 +97,7 @@ public interface AvalonComponentService
      * Returns an instance of the named component
      *
      * @param roleName Name of the role the component fills.
+     * @return an instance of the named component
      * @throws ComponentException generic exception
      */
     Component lookup(String roleName)
@@ -105,7 +106,7 @@ public interface AvalonComponentService
     /**
      * Releases the component
      *
-     * @param component
+     * @param component the component to release
      */
     void release(Component component);
 

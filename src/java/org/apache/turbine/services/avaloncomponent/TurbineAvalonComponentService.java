@@ -57,8 +57,6 @@ package org.apache.turbine.services.avaloncomponent;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.servlet.ServletConfig;
-
 import org.apache.avalon.excalibur.component.DefaultRoleManager;
 import org.apache.avalon.excalibur.component.ExcaliburComponentManager;
 import org.apache.avalon.excalibur.logger.Log4JLoggerManager;
@@ -166,7 +164,8 @@ public class TurbineAvalonComponentService
      */
     public void initialize() throws Exception
     {
-        org.apache.commons.configuration.Configuration conf = getConfiguration();
+        org.apache.commons.configuration.Configuration conf 
+                = getConfiguration();
 
         // get the filenames and expand them relative to webapp root
         String sysConfigFilename = Turbine.getRealPath(
@@ -218,7 +217,7 @@ public class TurbineAvalonComponentService
         Vector lookupComponents = conf.getVector(COMPONENT_LOOKUP_KEY,
                 new Vector());
         
-        for (Iterator it = lookupComponents.iterator(); it.hasNext(); )
+        for (Iterator it = lookupComponents.iterator(); it.hasNext();)
         {
             String component = (String) it.next();
             try
@@ -246,6 +245,7 @@ public class TurbineAvalonComponentService
      * Returns an instance of the named component
      *
      * @param roleName Name of the role the component fills.
+     * @return an instance of the named component
      * @throws ComponentException generic exception
      */
     public Component lookup(String roleName)
@@ -257,7 +257,7 @@ public class TurbineAvalonComponentService
     /**
      * Releases the component
      *
-     * @param component
+     * @param component the component to release
      */
     public void release(Component component)
     {
