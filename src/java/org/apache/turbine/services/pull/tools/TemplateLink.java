@@ -54,9 +54,12 @@ package org.apache.turbine.services.pull.tools;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.configuration.Configuration;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
@@ -89,6 +92,19 @@ import org.apache.turbine.util.uri.TemplateURI;
 public class TemplateLink
     implements ApplicationTool
 {
+    /** Prefix for Parameters for this tool */
+    public static final String TEMPLATE_LINK_PREFIX = "tool.link";
+
+    /** Should this tool return relative URIs or absolute? Default: Absolute. */
+    public static final String TEMPLATE_LINK_RELATIVE_KEY = "want.relative";
+
+    /** Default Value for TEMPLATE_LINK_RELATIVE_KEY */
+    public static final boolean TEMPLATE_LINK_RELATIVE_DEFAULT = false;
+
+
+    /** Do we want a relative link? */
+    boolean wantRelative = false;
+        
     /** cache of the template name for getPage() */
     private String template = null;
 
@@ -130,6 +146,13 @@ public class TemplateLink
         // exception.
 
         templateURI = new TemplateURI((RunData) data);
+
+        Configuration conf = 
+                Turbine.getConfiguration().subset(TEMPLATE_LINK_PREFIX);
+        
+        wantRelative = conf.getBoolean(TEMPLATE_LINK_RELATIVE_KEY,
+                TEMPLATE_LINK_RELATIVE_DEFAULT);
+
     }
 
     /**
@@ -555,7 +578,8 @@ public class TemplateLink
      */
     public String toString()
     {
-        return getAbsoluteLink();
+        return wantRelative ? 
+                getRelativeLink() : getAbsoluteLink();
     }
 
     /**
