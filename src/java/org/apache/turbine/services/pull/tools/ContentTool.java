@@ -142,12 +142,15 @@ public class ContentTool
 
         Configuration conf = 
                 Turbine.getConfiguration().subset(CONTENT_TOOL_PREFIX);
-        
-        wantRelative = conf.getBoolean(CONTENT_TOOL_RELATIVE_KEY,
-                CONTENT_TOOL_RELATIVE_DEFAULT);
 
-        wantEncoding = conf.getBoolean(CONTENT_TOOL_ENCODING_KEY,
-                CONTENT_TOOL_ENCODING_DEFAULT);
+        if (conf != null)
+        {
+            wantRelative = conf.getBoolean(CONTENT_TOOL_RELATIVE_KEY,
+                    CONTENT_TOOL_RELATIVE_DEFAULT);
+
+            wantEncoding = conf.getBoolean(CONTENT_TOOL_ENCODING_KEY,
+                    CONTENT_TOOL_ENCODING_DEFAULT);
+        }
         
         if (!wantEncoding)
         {
