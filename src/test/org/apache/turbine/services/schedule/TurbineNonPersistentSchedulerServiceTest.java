@@ -54,6 +54,8 @@ package org.apache.turbine.services.schedule;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.modules.scheduledjob.SimpleJob;
+
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.ServiceManager;
@@ -71,8 +73,7 @@ import junit.framework.TestSuite;
  */
 public class TurbineNonPersistentSchedulerServiceTest extends TestCase
 {
-    private static final String PREFIX = "services." +
-            ScheduleService.SERVICE_NAME + '.';
+    private static final String PREFIX = "services." + ScheduleService.SERVICE_NAME + '.';
 
     public TurbineNonPersistentSchedulerServiceTest(String name)
     {
@@ -82,25 +83,16 @@ public class TurbineNonPersistentSchedulerServiceTest extends TestCase
         serviceManager.setApplicationRoot(".");
 
         Configuration cfg = new BaseConfiguration();
-        cfg.setProperty(PREFIX + "classname",
-                TurbineNonPersistentSchedulerService.class.getName());
+        cfg.setProperty(PREFIX + "classname", TurbineNonPersistentSchedulerService.class.getName());
 
-        cfg.setProperty(PREFIX + "scheduler.jobs",
-                "SimpleJob");
-        cfg.setProperty(PREFIX + "scheduler.job.SimpleJob.ID",
-                "1");
-        cfg.setProperty(PREFIX + "scheduler.job.SimpleJob.SECOND",
-                "0");
-        cfg.setProperty(PREFIX + "scheduler.job.SimpleJob.MINUTE",
-                "1");
-        cfg.setProperty(PREFIX + "scheduler.job.SimpleJob.HOUR",
-                "-1");
-        cfg.setProperty(PREFIX + "scheduler.job.SimpleJob.WEEK_DAY",
-                "-1");
-        cfg.setProperty(PREFIX + "scheduler.job.SimpleJob.DAY_OF_MONTH",
-                "-1");
-        cfg.setProperty(PREFIX + "enabled",
-                "false");
+        cfg.setProperty(PREFIX + "scheduler.jobs", "SimpleJob");
+        cfg.setProperty(PREFIX + "scheduler.job.SimpleJob.ID", "1");
+        cfg.setProperty(PREFIX + "scheduler.job.SimpleJob.SECOND", "10");
+        cfg.setProperty(PREFIX + "scheduler.job.SimpleJob.MINUTE", "-1");
+        cfg.setProperty(PREFIX + "scheduler.job.SimpleJob.HOUR", "-1");
+        cfg.setProperty(PREFIX + "scheduler.job.SimpleJob.WEEK_DAY", "-1");
+        cfg.setProperty(PREFIX + "scheduler.job.SimpleJob.DAY_OF_MONTH", "-1");
+        cfg.setProperty(PREFIX + "enabled", "true");
 
         serviceManager.setConfiguration(cfg);
 
@@ -108,7 +100,7 @@ public class TurbineNonPersistentSchedulerServiceTest extends TestCase
         {
             serviceManager.init();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             e.printStackTrace();
             fail();
@@ -133,7 +125,7 @@ public class TurbineNonPersistentSchedulerServiceTest extends TestCase
             TurbineScheduler.stopScheduler();
             assertEquals(false, TurbineScheduler.isEnabled());
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             e.printStackTrace();
             fail();
@@ -153,7 +145,7 @@ public class TurbineNonPersistentSchedulerServiceTest extends TestCase
 
             // Add a new job entry
             JobEntry je = new JobEntry();
-            je.setJobId(jobCount+1);
+            je.setJobId(jobCount + 1);
             je.setSecond(0);
             je.setMinute(1);
             je.setHour(-1);
@@ -162,13 +154,13 @@ public class TurbineNonPersistentSchedulerServiceTest extends TestCase
             je.setTask("SimpleJob");
 
             TurbineScheduler.addJob(je);
-            assertEquals(jobCount+1, TurbineScheduler.listJobs().size());
+            assertEquals(jobCount + 1, TurbineScheduler.listJobs().size());
 
             TurbineScheduler.removeJob(je);
             assertEquals(jobCount, TurbineScheduler.listJobs().size());
 
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             e.printStackTrace();
             fail();
@@ -184,17 +176,39 @@ public class TurbineNonPersistentSchedulerServiceTest extends TestCase
         {
             JobEntry je = TurbineScheduler.getJob(1);
             assertEquals(je.getJobId(), 1);
-            assertEquals(je.getSecond(), 0);
-            assertEquals(je.getMinute(), 1);
+            assertEquals(je.getSecond(), 10);
+            assertEquals(je.getMinute(), -1);
             assertEquals(je.getHour(), -1);
             assertEquals(je.getDayOfMonth(), -1);
             assertEquals(je.getWeekDay(), -1);
             assertEquals(je.getTask(), "SimpleJob");
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             e.printStackTrace();
             fail();
         }
     }
+
+    /** Test to make sure a job actually runs.  Currently not work.
+     * @TODO Must get testRunningJob to work.
+     *
+     */
+    public void OFFtestRunningJob()
+    {
+        try
+        {
+           int beforeCount = SimpleJob.getCounter();
+           Thread.sleep(120000);
+           int afterCount = SimpleJob.getCounter();
+           assertTrue(beforeCount < afterCount);
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
 }
