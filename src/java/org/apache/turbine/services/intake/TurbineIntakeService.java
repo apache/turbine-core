@@ -39,6 +39,8 @@ import java.util.Vector;
 
 import javax.servlet.ServletConfig;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -649,13 +651,31 @@ public class TurbineIntakeService
 
         if (setter == null)
         {
-            PropertyDescriptor pd =
-                    new PropertyDescriptor(propName,
-                            Class.forName(className));
+            PropertyDescriptor pd = null;
+
             synchronized (setterMap)
             {
+                try
+                {
+                    pd = new PropertyDescriptor(propName,
+                            Class.forName(className));
+                }
+                catch (IntrospectionException ie)
+                {
+                    if (log.isWarnEnabled())
+                    {
+                        log.warn("Trying to find only a setter for " + propName);
+                    }
+                    
+                    pd = new PropertyDescriptor(propName,
+                            Class.forName(className),
+                            "set" + StringUtils.capitalise(propName),
+                            null); // Java sucks.
+                }
+                
                 setter = pd.getWriteMethod();
                 settersForClassName.put(propName, setter);
+
                 if (setter == null)
                 {
                     log.error("Intake: setter for '" + propName
@@ -663,25 +683,29 @@ public class TurbineIntakeService
                             + "' could not be found.");
                 }
             }
-            // we have already completed the reflection on the getter, so
-            // save it so we do not have to repeat
-            synchronized (getterMap)
-            {
-                Map gettersForClassName = (Map) getterMap.get(className);
 
-                if (gettersForClassName != null)
+            if (pd.getReadMethod() != null)
+            {
+                // we have already completed the reflection on the getter, so
+                // save it so we do not have to repeat
+                synchronized (getterMap)
                 {
-                    try
+                    Map gettersForClassName = (Map) getterMap.get(className);
+                    
+                    if (gettersForClassName != null)
                     {
-                        Method getter = pd.getReadMethod();
-                        if (getter != null)
+                        try
                         {
-                            gettersForClassName.put(propName, getter);
+                            Method getter = pd.getReadMethod();
+                            if (getter != null)
+                            {
+                                gettersForClassName.put(propName, getter);
+                            }
                         }
-                    }
-                    catch (Exception e)
-                    {
-                        // Do nothing
+                        catch (Exception e)
+                        {
+                            // Do nothing
+                        }
                     }
                 }
             }
@@ -713,12 +737,30 @@ public class TurbineIntakeService
         if (getter == null)
         {
             PropertyDescriptor pd = null;
+
             synchronized (getterMap)
             {
-                pd = new PropertyDescriptor(propName,
-                        Class.forName(className));
+                try
+                {
+                    pd = new PropertyDescriptor(propName,
+                            Class.forName(className));
+                }
+                catch (IntrospectionException ie)
+                {
+                    if (log.isWarnEnabled())
+                    {
+                        log.warn("Trying to find only a getter for " + propName);
+                    }
+                    
+                    pd = new PropertyDescriptor(propName,
+                            Class.forName(className),
+                            "get" + StringUtils.capitalise(propName),
+                            null); // Java sucks some more.
+                }
+                
                 getter = pd.getReadMethod();
                 gettersForClassName.put(propName, getter);
+
                 if (getter == null)
                 {
                     log.error("Intake: getter for '" + propName
@@ -726,25 +768,29 @@ public class TurbineIntakeService
                             + "' could not be found.");
                 }
             }
-            // we have already completed the reflection on the setter, so
-            // save it so we do not have to repeat
-            synchronized (setterMap)
-            {
-                Map settersForClassName = (Map) getterMap.get(className);
 
-                if (settersForClassName != null)
+            if (pd.getWriteMethod() != null)
+            {
+                // we have already completed the reflection on the setter, so
+                // save it so we do not have to repeat
+                synchronized (setterMap)
                 {
-                    try
+                    Map settersForClassName = (Map) getterMap.get(className);
+                    
+                    if (settersForClassName != null)
                     {
-                        Method setter = pd.getWriteMethod();
-                        if (setter != null)
+                        try
                         {
-                            settersForClassName.put(propName, setter);
+                            Method setter = pd.getWriteMethod();
+                            if (setter != null)
+                            {
+                                settersForClassName.put(propName, setter);
+                            }
                         }
-                    }
-                    catch (Exception e)
-                    {
-                        // Do nothing
+                        catch (Exception e)
+                        {
+                            // Do nothing
+                        }
                     }
                 }
             }
