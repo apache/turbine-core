@@ -677,38 +677,22 @@ public class Turbine
             // even login, or to ensure that the session validator gets to
             // mandate its page selection policy for non-logged in users
             // after the logout has taken place.
-            if (data.hasAction()
-                    && data.getAction().equalsIgnoreCase(configuration
-                            .getString("action.login"))
-                    || data.getAction().equalsIgnoreCase(configuration
-                            .getString("action.logout")))
+            if (data.hasAction())
             {
-                // If a User is logging in, we should refresh the
-                // session here.  Invalidating session and starting a
-                // new session would seem to be a good method, but I
-                // (JDM) could not get this to work well (it always
-                // required the user to login twice).  Maybe related
-                // to JServ?  If we do not clear out the session, it
-                // is possible a new User may accidently (if they
-                // login incorrectly) continue on with information
-                // associated with the previous User.  Currently the
-                // only keys stored in the session are "turbine.user"
-                // and "turbine.acl".
-                if (data.getAction()
-                    .equalsIgnoreCase(configuration.getString(ACTION_LOGIN_KEY,
-                                                              ACTION_LOGIN_DEFAULT)))
+                String action = data.getAction();
+
+                if (action.equalsIgnoreCase(
+                        configuration.getString(ACTION_LOGIN_KEY,
+                                                ACTION_LOGIN_DEFAULT)))
                 {
-                    String[] names = data.getSession().getValueNames();
-                    if (names != null)
-                    {
-                        for (int i = 0; i < names.length; i++)
-                        {
-                            data.getSession().removeValue(names[i]);
-                        }
-                    }
+                    loginAction(data);
                 }
-                ActionLoader.getInstance().exec(data, data.getAction());
-                data.setAction(null);
+                else if (action.equalsIgnoreCase(
+                        configuration.getString(ACTION_LOGOUT_KEY,
+                                                ACTION_LOGOUT_DEFAULT)))
+                {
+                   logoutAction(data);
+                }
             }
 
             // This is where the validation of the Session information
@@ -861,6 +845,63 @@ public class Turbine
         throws IOException, ServletException
     {
         doGet(req, res);
+    }
+
+    /**
+     * This method is executed if the configured Login action should be
+     * executed by Turbine.
+     *
+     * This Action must be performed before the Session validation or we
+     * get sent in an endless loop back to the Login screen before
+     * the action can be performed
+     *
+     * @param data a RunData object
+     *
+     * @throws Exception A problem while logging in occured.
+     */
+    private void loginAction(RunData data)
+        throws Exception
+    {
+        // If a User is logging in, we should refresh the
+        // session here.  Invalidating session and starting a
+        // new session would seem to be a good method, but I
+        // (JDM) could not get this to work well (it always
+        // required the user to login twice).  Maybe related
+        // to JServ?  If we do not clear out the session, it
+        // is possible a new User may accidently (if they
+        // login incorrectly) continue on with information
+        // associated with the previous User.  Currently the
+        // only keys stored in the session are "turbine.user"
+        // and "turbine.acl".
+        
+        String[] names = data.getSession().getValueNames();
+        if (names != null)
+        {
+            for (int i = 0; i < names.length; i++)
+            {
+                data.getSession().removeValue(names[i]);
+            }
+        }
+        ActionLoader.getInstance().exec(data, data.getAction());
+        data.setAction(null);
+    }
+
+    /**
+     * This method is executed if the configured Logout action should be
+     * executed by Turbine.
+     *
+     * This Action must be performed before the Session validation for the
+     * session validator to send us back to the Login screen.
+     *
+     * @param data a RunData object
+     *
+     * @throws Exception A problem while logging out occured.
+     */
+    private void logoutAction(RunData data)
+        throws Exception
+    {
+        ActionLoader.getInstance().exec(data, data.getAction());
+        data.setAction(null);
     }
 
     /**
