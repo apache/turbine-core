@@ -125,6 +125,121 @@ container deployment: The turbine.app.inplace property must be set to
                       your project id (<id> tag in your project.xml).
 
 
+
+
+turbine:sql
+===========
+
+Your application will need some sql statements inserted into its
+database. The security service, the scheduler service and probably
+your application use database tables and these must be
+initialized. This target generates all the sql files necessary to
+create the tables, insert the id broker values and even do some
+meaningful population of your tables (e.g. default logins).
+
+If you're adventurous (and have your application configured correctly)
+you should be able to run
+
+maven torque:create-db turbine:sql torque:insert-sql
+
+and have your database created and filled with default values in one
+go.
+
+
+turbine:webapp
+==============
+
+This target bundles your web application into a .WAR archive ready to
+be deployed into a J2EE compliant servlet container.
+
+This target does not bundle the source code of your application.
+
+
+META callbacks
+**************
+
+Some of the regular maven targets get extended by META. To be able to
+do this, a maven.xml file is created in your application root. This
+file should only be modified if you're familiar with maven and know
+what to change here.
+
+The following targets get pre or post goals:
+
+java:compile (pre)
+============
+
+Most Turbine applications generate some classes (the Torque peer
+classes) at compile time. This preGoal ensures that java tree from
+src/java gets copied into target/src and the auto-generated classes
+are mixed in correctly.
+
+Also runs the om generation targets if the peer classes are out of
+date.
+
+
+torque:init (pre)
+===========
+
+Copies the schema files from src/schema into the build tree and
+replaces properties on the fly. As torque:init is run before every
+other torque task, this preGoal ensures that all torque tasks work on
+the latest schema file versions.
+
+
+torque:insert-sql (pre)
+=================
+
+Makes sure that all SQL files are up-to-date before torque tries to
+insert them into your databases.
+
+
+torque:datasql (pre)
+==============
+
+Copies the data definition files and their dtds into the build tree.
+
+torque:datadtd (pre)
+==============
+
+war:webapp (post)
+==========
+
+Copies the Turbine specific parts of a web application (templates,
+scripts, styles, images and configuration) into the web application
+tree.
+
+clean:clean (post)
+===========
+
+When you run the clean:clean (or just clean) goal in your web
+application and you use inplace deployment, then the clean goal also
+removes your WEB-INF/lib and WEB-INF/classes directory. This ensures
+that no stale classes or libraries from previous compile-deploy-test
+cycles have been left behind.
+
+There are also a few META private goals, which should never be called
+directly. Unfortunately, as maven offers no way to hide these goals
+from the user, they still show up with maven -g.
+
+Never call these targets directly:
+
+turbine:check-runtime-environment
+turbine:check-setup-environment
+turbine:copy-app-om
+turbine:copy-data-dtd
+turbine:copy-id-table-om
+turbine:copy-om
+turbine:copy-security-om
+turbine:init
+turbine:om-check
+turbine:security-datadtd
+turbine:security-datasql
+
+These targets might change from relase to release (or even between
+releases). They're not public and their function outside the META
+plugin.jelly file is undefined.
+
+
 META Properties
 ---------------
 
@@ -133,7 +248,7 @@ turbine.app.name (turbine:setup)
 Function:	sets the name of the new application
 Type:		String
 Default:	**** NO DEFAULT ****
-		Must be set or the task fails.
+		Must be set for turbine:setup, else the task fails!
 
 turbine.app.package (turbine:setup)
 
