@@ -174,7 +174,7 @@ public class GroupPeer extends BasePeer
                 ((SecurityObject) obj).setPrimaryKey(
                         new NumberKey(row.getValue(1).asInt()));
                 ((SecurityObject) obj).setName(row.getValue(2).asString());
-                byte[] objectData = (byte[]) row.getValue(3).asBytes();
+                byte[] objectData = row.getValue(3).asBytes();
                 Map temp = (Map) ObjectUtils.deserialize(objectData);
                 if (temp != null)
                 {
