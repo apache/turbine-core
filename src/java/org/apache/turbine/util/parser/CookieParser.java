@@ -130,13 +130,11 @@ public interface CookieParser
 
     /**
      * Get the Path where cookies will be stored
-     * @deprecated Will be replaced by {@link org.apache.turbine.util.uri.TurbineURI} getCookiePath()
      */
     URI getCookiePath();
 
     /**
      * Set the path for cookie storage
-     * @deprecated Will be replaced by setCookiePath({@link org.apache.turbine.util.uri.TurbineURI})
      */
     void setCookiePath(URI path);
 
