@@ -54,15 +54,9 @@ package org.apache.turbine.services.xmlrpc.util;
  * <http://www.apache.org/>.
  */
 
-import java.util.Vector;
-
-import java.net.URL;
-
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import org.apache.turbine.test.BaseTestCase;
-import org.apache.turbine.services.xmlrpc.TurbineXmlRpc;
 
 /**
  * Test class for FileHandler.
@@ -70,7 +64,7 @@ import org.apache.turbine.services.xmlrpc.TurbineXmlRpc;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @version $Id$
  */
-public class FileHandlerTest extends BaseTestCase
+public class FileHandlerTest extends TestCase
 {
     /**
      * Creates a new instance.
