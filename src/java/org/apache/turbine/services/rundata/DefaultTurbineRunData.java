@@ -449,14 +449,7 @@ public class DefaultTurbineRunData
         if ((this.cookies != null) &&
                 (this.cookies.getRequest() != getRequest()))
         {
-            // We deprecated the use of the RunData object in
-            // the Cookie Parser. However, until we remove the
-            // RunData access from the Cookie Parser, we must
-            // of course, set the member variable in the Parser
-            // After we removed the code, please replace the
-            // following line with
-            // this.cookies.setData(getRequest(), getResponse());
-            this.cookies.setRunData(this);
+            this.cookies.setData(getRequest(), getResponse());            
         }
         return this.cookies;
     }

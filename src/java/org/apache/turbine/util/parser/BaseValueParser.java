@@ -82,9 +82,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.torque.om.NumberKey;
-import org.apache.torque.om.StringKey;
-
 import org.apache.turbine.util.DateSelector;
 import org.apache.turbine.util.TimeSelector;
 import org.apache.turbine.util.pool.Recyclable;
@@ -136,21 +133,6 @@ public class BaseValueParser
 
     /** The character encoding to use when converting to byte arrays */
     private String characterEncoding = "US-ASCII";
-
-    /**
-     * A static version of the convert method, which
-     * trims the string data and applies the conversion specified in
-     * the property given by URL_CASE_FOLDING.  It returns a new
-     * string so that it does not destroy the value data.
-     *
-     * @param value A String to be processed.
-     * @return A new String converted to lowercase and trimmed.
-     * @deprecated Use ParserUtils.convertAndTrim(value).
-     */
-    public static String convertAndTrim(String value)
-    {
-        return ParserUtils.convertAndTrim(value);
-    }
 
     /**
      * Default constructor
@@ -388,17 +370,6 @@ public class BaseValueParser
     }
 
     /**
-     * Get an enumerator for the parameter keys.
-     *
-     * @return An <code>enumerator</code> of the keys.
-     * @deprecated use {@link #keySet} instead.
-     */
-    public Enumeration keys()
-    {
-        return Collections.enumeration(parameters.keySet());
-    }
-
-    /**
      * Gets the set of keys
      *
      * @return A <code>Set</code> of the keys.
@@ -501,33 +472,6 @@ public class BaseValueParser
     {
         Boolean result = getBooleanObject(name);
         return (result==null ? defaultValue : result);
-    }
-
-    /**
-     * Return a Boolean for the given name.  If the name does not
-     * exist, return defaultValue.
-     *
-     * @param name A String with the name.
-     * @param defaultValue The default value.
-     * @return A Boolean.
-     * @deprecated use {@link #getBooleanObject} instead
-     */
-    public Boolean getBool(String name, boolean defaultValue)
-    {
-        return getBooleanObject(name, new Boolean(defaultValue));
-    }
-
-    /**
-     * Return a Boolean for the given name.  If the name does not
-     * exist, return false.
-     *
-     * @param name A String with the name.
-     * @return A Boolean.
-     * @deprecated use {@link #getBooleanObject(String)} instead
-     */
-    public Boolean getBool(String name)
-    {
-        return getBooleanObject(name, Boolean.FALSE);
     }
 
     /**
@@ -921,48 +865,6 @@ public class BaseValueParser
     }
 
     /**
-     * Return an Integer for the given name.  If the name does not
-     * exist, return defaultValue.
-     *
-     * @param name A String with the name.
-     * @param defaultValue The default value.
-     * @return An Integer.
-     * @deprecated use {@link #getIntObject} instead
-     */
-    public Integer getInteger(String name, int defaultValue)
-    {
-        return getIntObject(name, new Integer(defaultValue));
-    }
-
-    /**
-     * Return an Integer for the given name.  If the name does not
-     * exist, return defaultValue.  You cannot pass in a null here for
-     * the default value.
-     *
-     * @param name A String with the name.
-     * @param def The default value.
-     * @return An Integer.
-     * @deprecated use {@link #getIntObject} instead
-     */
-    public Integer getInteger(String name, Integer def)
-    {
-        return getIntObject(name, def);
-    }
-
-    /**
-     * Return an Integer for the given name.  If the name does not
-     * exist, return 0.
-     *
-     * @param name A String with the name.
-     * @return An Integer.
-     * @deprecated use {@link #getIntObject} instead
-     */
-    public Integer getInteger(String name)
-    {
-        return getIntObject(name, new Integer(0));
-    }
-
-    /**
      * Return an array of ints for the given name.  If the name does
      * not exist, return null.
      *
@@ -1063,19 +965,6 @@ public class BaseValueParser
             }
         }
         return result;
-    }
-
-    /**
-     * Return an array of Integers for the given name.  If the name
-     * does not exist, return null.
-     *
-     * @param name A String with the name.
-     * @return An Integer[].
-     * @deprecated use {@link #getIntObjects} instead
-     */
-    public Integer[] getIntegers(String name)
-    {
-        return getIntObjects(name);
     }
 
     /**
@@ -1584,60 +1473,6 @@ public class BaseValueParser
     }
 
     /**
-     * Return an NumberKey for the given name.  If the name does not
-     * exist, return null.
-     *
-     * @param name A String with the name.
-     * @return A NumberKey, or <code>null</code> if unparsable.
-     * @deprecated no replacement
-     */
-    public NumberKey getNumberKey(String name)
-    {
-        NumberKey result = null;
-        try
-        {
-            String value = getString(name);
-            if (StringUtils.isNotEmpty(value))
-            {
-                result = new NumberKey(value);
-            }
-        }
-        catch (ClassCastException e)
-        {
-            log.error("Parameter ("
-                    + name + ") could not be converted to a NumberKey", e);
-        }
-        return result;
-    }
-
-    /**
-     * Return an StringKey for the given name.  If the name does not
-     * exist, return null.
-     *
-     * @param name A String with the name.
-     * @return A StringKey, or <code>null</code> if unparsable.
-     * @deprecated no replacement
-     */
-    public StringKey getStringKey(String name)
-    {
-        StringKey result = null;
-        try
-        {
-            String value = getString(name);
-            if (StringUtils.isNotEmpty(value))
-            {
-                result = new StringKey(value);
-            }
-        }
-        catch (ClassCastException e)
-        {
-            log.error("Parameter ("
-                    + name + ") could not be converted to a StringKey", e);
-        }
-        return result;
-    }
-
-    /**
      * Uses bean introspection to set writable properties of bean from
      * the parameters, where a (case-insensitive) name match between
      * the bean property and the parameter is looked for.
@@ -1795,14 +1630,6 @@ public class BaseValueParser
         else if (propclass == Date.class)
         {
             args[0] = getDate(prop.getName());
-        }
-        else if (propclass == NumberKey.class)
-        {
-            args[0] = getNumberKey(prop.getName());
-        }
-        else if (propclass == StringKey.class)
-        {
-            args[0] = getStringKey(prop.getName());
         }
         else
         {
