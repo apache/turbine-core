@@ -68,11 +68,11 @@ import junit.framework.TestSuite;
 
 /**
  * Test the CSVParser.
- * 
+ *
  * NOTE : I am assuming (as is in the code of DataStreamParser.java
  * that the values are reusing the same object for the values.
  * If this shouldn't be, we need to fix that in the code!.
- * 
+ *
  * @author <a href="mailto:martin@mvdb.net">Martin van den Bemt</a>
  * @version $Id$
  */
@@ -100,11 +100,7 @@ public class CSVParserTest
     throws Exception
     {
         super.setUp();
-        /* Note: we are using the properties file from the cache test
-         *  since we don't really need any specific property at this 
-         *  time.  Future tests may require a test case specific 
-         *  properties file to be used.:
-         */
+
         config.setInitParameter("properties",
                                 "/WEB-INF/conf/TurbineDefault.properties");
         turbine = new Turbine();
