@@ -58,8 +58,6 @@ import java.lang.reflect.Method;
 
 import java.util.Iterator;
 
-import org.apache.commons.logging.Log;
-
 import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
