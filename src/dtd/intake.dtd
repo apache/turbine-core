@@ -159,7 +159,7 @@ Used in:        group
   displayName CDATA #IMPLIED
   type ( boolean | BigDecimal | int  | float | FileItem
        | String | DateString  | StringKey | NumberKey
-       | ComboKey ) "String"
+       | ComboKey | double ) "String"
   multiValued ( true | false ) "false"
   mapToObject CDATA #IMPLIED
   mapToProperty CDATA #IMPLIED

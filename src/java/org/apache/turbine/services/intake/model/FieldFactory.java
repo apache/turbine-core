@@ -165,6 +165,15 @@ public abstract class FieldFactory
             }
         }
         );
+        fieldCtors.put("double", new FieldFactory.FieldCtor()
+        {
+            public Field getInstance(XmlField f, Group g)
+                    throws IntakeException
+            {
+                return new DoubleField(f, g);
+            }
+        }
+        );
         return fieldCtors;
     }
 
