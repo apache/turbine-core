@@ -87,35 +87,35 @@ import org.apache.turbine.util.RunData;
  *  $page.addScript($content.getURI("globalJavascriptCode.js"))<br>
  *  <br>
  *  ## build the HTML, HEAD, and BODY tags dynamically<br>
- *  &lthtml&gt<br>
- *    &lthead&gt<br>
+ *  &lt;html&gt;<br>
+ *    &lt;head&gt;<br>
  *      #if( $page.Title != "" )<br>
- *      &lttitle&gt$page.Title&lt/title&gt<br>
+ *      &lt;title&gt;$page.Title&lt;/title&gt;<br>
  *      #end<br>
  *      #foreach($metaTag in $page.MetaTags.keySet())<br>
- *      &ltmeta name="$metaTag" content="$page.MetaTags.get($metaTag)"&gt<br>
+ *      &lt;meta name="$metaTag" content="$page.MetaTags.get($metaTag)"&gt;<br>
  *      #end<br>
  *      #foreach($httpEquiv in $page.HttpEquivs.keySet())<br>
- *      &ltmeta http-equiv="$httpEquiv" content="$page.HttpEquivs.get($httpEquiv)"&gt<br>
+ *      &lt;meta http-equiv="$httpEquiv" content="$page.HttpEquivs.get($httpEquiv)"&gt;<br>
  *      #end<br>
  *      #foreach( $styleSheet in $page.StyleSheets )<br>
- *        &ltlink rel="stylesheet" href="$styleSheet.Url"<br>
+ *        &lt;link rel="stylesheet" href="$styleSheet.Url"<br>
  *          #if($styleSheet.Type != "" ) type="$styleSheet.Type" #end<br>
  *          #if($styleSheet.Media != "") media="$styleSheet.Media" #end<br>
  *          #if($styleSheet.Title != "") title="$styleSheet.Title" #end<br>
- *        &gt<br>
+ *        &gt;<br>
  *      #end<br>
  *      #foreach( $script in $page.Scripts )<br>
- *        &ltscript type="text/javascript" src="$script" language="JavaScript"&gt&lt/script&gt<br>
+ *        &lt;script type="text/javascript" src="$script" language="JavaScript"&gt;&lt;/script&gt;<br>
  *      #end<br>
- *    &lt/head&gt<br>
+ *    &lt;/head&gt;<br>
  *<br>
  *    ## Construct the body tag.  Iterate through the body attributes to build the opening tag<br>
- *    &ltbody<br>
+ *    &lt;body<br>
  *      #foreach( $attributeName in $page.BodyAttributes.keySet() )<br>
  *        $attributeName = "$page.BodyAttributes.get($attributeName)"<br>
  *      #end<br>
- *     &gt
+ *     &gt;
  * </code>
  * <p>
  * Example usages of this tool in your screen templates:<br>
