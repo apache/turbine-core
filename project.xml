@@ -245,7 +245,7 @@
     </dependency>
 
     <dependency>
-      <name>jakarta-cactus</name>
+      <name>jakarta-cactus-framework-12</name>
       <type>required</type>
       <version>1.2</version>
       <jar>cactus.jar</jar>
