@@ -96,6 +96,23 @@ Changes between Turbine 2.2 and 2.3-dev.
 <p>
   <ul>
     <li>
+      Backported the Scheduler service from Fulcrum.  Other Scheduler
+      related changes include:
+      <ul>
+      <li>
+        The scheduler can now be enabled/disabled while Turbine is running.
+      </li>
+      <li>
+        A new pull tool is available to allow access to the Scheduler service
+        from Velocity templates.  See
+        org.apache.turbine.service.scheduler.SchedulerTool for details.
+      </li>
+      <li>
+        TurbineException is now thrown instead of Exception.
+      </li>
+      </ul>
+    </li>
+    <li>
       Backported the Crypto Service from Fulcrum.
     </li>
     <li>
@@ -198,6 +215,11 @@ Changes between Turbine 2.2 and 2.3-dev.
     </li>
     <li>
       TTWS20: Intake can not set mapped attributes to null.
+    </li>
+    <li>
+      Changed made to scheduled jobs are now recognized by the scheduler
+      service.  Before, it would only recognize changes to the next run
+      time.
     </li>
   </ul>
 </p>
