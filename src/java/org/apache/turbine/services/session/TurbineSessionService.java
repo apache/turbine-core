@@ -205,25 +205,25 @@ public class TurbineSessionService
      */
     public Collection getSessionsForUser(User user)
     {
-        Vector results = new Vector();
-        Collection sessions = this.getActiveSessions();
-        for(Iterator iter = sessions.iterator(); iter.hasNext();)
+        Collection sessions = new ArrayList();
+        synchronized (activeSessions)
         {
-            HttpSession session = (HttpSession) iter.next();
-            User tmpUser = this.getUserFromSession(session);
-            if(user.equals(tmpUser))
+            for (Iterator i = activeSessions.values().iterator(); i.hasNext();)
             {
-                results.add(session);
+                HttpSession session = (HttpSession) i.next();
+                User u = this.getUserFromSession(session);
+                if (user.equals(u))
+                {
+                    sessions.add(session);
+                }
             }
-
         }
 
-        return results;
+        return sessions;
     }
 
-    /******************************************************
-     * Service initilization methods
-     *****************************************************/
+
+    // ---- Service initilization ------------------------------------------
 
     /**
      * Initializes the service
