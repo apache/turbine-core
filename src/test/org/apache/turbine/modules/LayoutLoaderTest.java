@@ -1,5 +1,3 @@
-package org.apache.turbine.pipeline;
-
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -53,15 +51,21 @@ package org.apache.turbine.pipeline;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
+package org.apache.turbine.modules;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.turbine.om.security.TurbineUser;
+import junit.framework.Assert;
+
+import org.apache.turbine.modules.layouts.TestVelocityOnlyLayout;
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.DefaultPipelineData;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
@@ -72,103 +76,112 @@ import org.apache.turbine.util.TurbineConfig;
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockServletConfig;
 
+
 /**
- * Tests TurbinePipeline.
- *
- * @author <a href="mailto:epugh@opensourceConnections.com">Eric Pugh</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
- * @version $Id$
  */
-public class DefaultACLCreationValveTest extends BaseTestCase
-{
-    private static TurbineConfig tc = null;
-    private static TemplateService ts = null;
-    private MockServletConfig config = null;
-    private EnhancedMockHttpServletRequest request = null;
-    private EnhancedMockHttpSession session = null;
-    private HttpServletResponse response = null;
-    private static ServletConfig sc = null;
-    /**
-     * Constructor
-     */
-    public DefaultACLCreationValveTest(String testName) throws Exception
-    {
-        super(testName);
-    }
+public class LayoutLoaderTest extends BaseTestCase {
+	private static TurbineConfig tc = null;
+	private static TemplateService ts = null;
+	private MockServletConfig config = null;
+	private EnhancedMockHttpServletRequest request = null;
+	private EnhancedMockHttpSession session = null;
+	private HttpServletResponse response = null;
+	private static ServletConfig sc = null;
+	/*
+	 * @see TestCase#setUp()
+	 */
+	protected void setUp() throws Exception {
+		super.setUp();
+		config = new MockServletConfig();
+		config.setupNoParameters();
+		request = new EnhancedMockHttpServletRequest();
+		request.setupServerName("bob");
+		request.setupGetProtocol("http");
+		request.setupScheme("scheme");
+		request.setupPathInfo("damn");
+		request.setupGetServletPath("damn2");
+		request.setupGetContextPath("wow");
+		request.setupGetContentType("html/text");
+		request.setupAddHeader("Content-type", "html/text");
+		request.setupAddHeader("Accept-Language", "en-US");
+		Vector v = new Vector();
+		request.setupGetParameterNames(v.elements());
+		session = new EnhancedMockHttpSession();
+		response = new MockHttpServletResponse();
+		session.setupGetAttribute(User.SESSION_KEY, null);
+		request.setSession(session);
+		sc = config;
+		tc =
+			new TurbineConfig(
+				".",
+				"/conf/test/CompleteTurbineResources.properties");
+		tc.initialize();
+	}
+	/*
+	 * @see TestCase#tearDown()
+	 */
+	protected void tearDown() throws Exception {
+		super.tearDown();
+		if (tc != null) {
+			tc.dispose();
+		}
+	}
+	/**
+	 * Constructor for LayoutLoaderTest.
+	 * @param arg0
+	 */
+	public LayoutLoaderTest(String arg0) throws Exception {
+		super(arg0);
+	}
 
-    protected void setUp() throws Exception {
-        super.setUp();
-        config = new MockServletConfig();
-        config.setupNoParameters();
-        request = new EnhancedMockHttpServletRequest();
-        request.setupServerName("bob");
-        request.setupGetProtocol("http");
-        request.setupScheme("scheme");
-        request.setupPathInfo("damn");
-        request.setupGetServletPath("damn2");
-        request.setupGetContextPath("wow");
-        request.setupGetContentType("html/text");
-        request.setupAddHeader("Content-type", "html/text");
-        request.setupAddHeader("Accept-Language", "en-US");
-        
-       
-        
-       
-        
-        
-        session = new EnhancedMockHttpSession();
-        response = new MockHttpServletResponse();
-        
-        
-       
-        request.setSession(session);
-        
-        
-        
-        sc = config;
-        tc =
-            new TurbineConfig(
-                    ".",
-            "/conf/test/CompleteTurbineResources.properties");
-        tc.initialize();
-    }
-    
+	public void testPipelineDataContainsRunData()
+	{
+	    try
+	    {
+		    RunData data = getRunData(request,response,config);
+			PipelineData pipelineData = new DefaultPipelineData();
+			Map runDataMap = new HashMap();
+			runDataMap.put(RunData.class, data);
+			pipelineData.put(RunData.class, runDataMap);
+			data.setLayout("TestVelocityOnlyLayout");
+			int numberOfCalls = TestVelocityOnlyLayout.numberOfCalls;
+			try {
+				LayoutLoader.getInstance().exec(pipelineData, data.getLayout());
+			} catch (Exception e) {
+			    e.printStackTrace();
+			    Assert.fail("Should not have thrown an exception.");
+			}
+			assertEquals(numberOfCalls+1,TestVelocityOnlyLayout.numberOfCalls);
+	    }
+	    catch (Exception e)
+	    {
+	        e.printStackTrace();
+	        Assert.fail("Should not have thrown an exception.");
+	    }
+	}
 
-    public void testLoggedInUser() throws Exception
-    {
-        
+	public void testDoBuildWithRunData()
+	{
+	    try
+	    {
+		    RunData data = getRunData(request,response,config);
+			data.setLayout("TestVelocityOnlyLayout");
+			int numberOfCalls = TestVelocityOnlyLayout.numberOfCalls;
+			try {
+				LayoutLoader.getInstance().exec(data, data.getLayout());
+			} catch (Exception e) {
+			    e.printStackTrace();
+			    Assert.fail("Should not have thrown an exception.");
+			}
+			assertEquals(numberOfCalls+1,TestVelocityOnlyLayout.numberOfCalls);
+	    }
+	    catch (Exception e)
+	    {
+	        e.printStackTrace();
+	        Assert.fail("Should not have thrown an exception.");
+	    }
+	}
 
-        
-        RunData runData = getRunData(request,response,config);
-        TurbineUser tu = new TurbineUser();
-        tu.setName("username");
-        tu.setHasLoggedIn(Boolean.TRUE);
-        runData.setAction("TestAction");
-        runData.setUser(tu);
-        
-        
-        Pipeline pipeline = new TurbinePipeline();
-        PipelineData pipelineData = new DefaultPipelineData();
-        Map runDataMap = new HashMap();
-        runDataMap.put(RunData.class, runData);
-        // put the data into the pipeline
-        pipelineData.put(RunData.class, runDataMap);            
-        //pipelineData.put(RunData.class,runData);
-
-        DefaultACLCreationValve valve = new DefaultACLCreationValve();
-        pipeline.addValve(valve);
-
-        pipeline.invoke(pipelineData);
-        User user = runData.getUser();
-        assertNotNull(user);
-        assertEquals("username",user.getName());
-        assertTrue(user.hasLoggedIn());
-        assertNotNull(runData.getACL());
-
-    }    
-    
-   
-  
-    
-   
+	
 }

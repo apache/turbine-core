@@ -60,6 +60,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.util.ObjectUtils;
@@ -71,6 +72,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class LayoutLoader
@@ -124,6 +126,7 @@ public class LayoutLoader
     /**
      * Attempts to load and execute the external layout.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @param name Name of object that will execute the layout.
      * @exception Exception a generic exception.
@@ -135,6 +138,21 @@ public class LayoutLoader
         getInstance(name).build(data);
     }
 
+    /**
+     * Attempts to load and execute the external layout.
+     *
+     * @param pipelineData Turbine information.
+     * @param name Name of object that will execute the layout.
+     * @exception Exception a generic exception.
+     */
+    public void exec(PipelineData pipelineData, String name)
+    		throws Exception
+    {
+        getInstance(name).build(pipelineData);
+    }
+
+    
+    
     /**
      * Pulls out an instance of the object by name.  Name is just the
      * single name of the object. This is equal to getInstance but

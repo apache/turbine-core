@@ -54,6 +54,7 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -61,6 +62,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public abstract class Page
@@ -70,18 +72,34 @@ public abstract class Page
      * A subclass must override this method to build itself.
      * Subclasses override this method to store the page in RunData or
      * to write the page to the output stream referenced in RunData.
-     *
+     * @deprecated Use <code>doBuild(PipelineData pipelineData)</code> instead
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
     protected abstract void doBuild(RunData data)
         throws Exception;
 
+
+    /**
+     * A subclass must override this method to build itself.
+     * Subclasses override this method to store the page in RunData or
+     * to write the page to the output stream referenced in RunData.
+     * Should revert to abstract when RunData goes.
+     * @param data Turbine information.
+     * @exception Exception a generic exception.
+     */
+    protected void doBuild(PipelineData pipelineData)
+    	throws Exception
+    {
+        RunData data = (RunData)getRunData(pipelineData);
+        doBuild(data);
+    }
+    
     /**
      * Subclasses can override this method to add additional
      * functionality.  This method is protected to force clients to
      * use PageLoader to build a Page.
-     *
+     * @deprecated Use <code>build(PipelineData)</code> instead.
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
@@ -90,4 +108,21 @@ public abstract class Page
     {
         doBuild(data);
     }
+
+
+    
+    /**
+     * Subclasses can override this method to add additional
+     * functionality.  This method is protected to force clients to
+     * use PageLoader to build a Page.
+     *
+     * @param data Turbine information.
+     * @exception Exception a generic exception.
+     */
+    protected void build(PipelineData pipelineData)
+    	throws Exception
+    {
+        doBuild(pipelineData);
+    }
+        
 }

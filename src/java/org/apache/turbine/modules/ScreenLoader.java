@@ -61,6 +61,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.util.ObjectUtils;
@@ -72,6 +73,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class ScreenLoader
@@ -129,6 +131,7 @@ public class ScreenLoader
      * This allows you to easily chain the execution of Screen modules
      * together.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @param name Name of object that will execute the screen.
      * @exception Exception a generic exception.
@@ -141,10 +144,27 @@ public class ScreenLoader
     }
 
     /**
+     * Attempts to load and execute the external Screen. This is used
+     * when you want to execute a Screen which returns its output via
+     * a MultiPartElement instead of out the data.getPage() value.
+     * This allows you to easily chain the execution of Screen modules
+     * together.
+     *
+     * @param data Turbine information.
+     * @param name Name of object that will execute the screen.
+     * @exception Exception a generic exception.
+     */
+    public ConcreteElement eval(PipelineData pipelineData, String name)
+            throws Exception
+    {
+        // Execute screen
+        return getInstance(name).build(pipelineData);
+    }
+    /**
      * Attempts to load and execute the Screen. This is used when you
      * want to execute a Screen which returns its output via the
      * data.getPage() object.
-     *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @param name Name of object that will execute the screen.
      * @exception Exception a generic exception.
@@ -155,6 +175,20 @@ public class ScreenLoader
         this.eval(data, name);
     }
 
+    /**
+     * Attempts to load and execute the Screen. This is used when you
+     * want to execute a Screen which returns its output via the
+     * data.getPage() object.
+     *
+     * @param data Turbine information.
+     * @param name Name of object that will execute the screen.
+     * @exception Exception a generic exception.
+     */
+    public void exec(PipelineData pipelineData, String name)
+	throws Exception
+	{
+        this.eval(pipelineData, name);
+	}
     /**
      * Pulls out an instance of the object by name.  Name is just the
      * single name of the object. This is equal to getInstance but

@@ -56,6 +56,7 @@ package org.apache.turbine.modules.layouts;
 
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Layout;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.jsp.TurbineJsp;
 import org.apache.turbine.services.jsp.util.JspNavigation;
 import org.apache.turbine.services.jsp.util.JspScreenPlaceholder;
@@ -68,6 +69,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
 public class JspLayout
     extends Layout
@@ -78,6 +80,7 @@ public class JspLayout
     /**
      * Method called by LayoutLoader.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data RunData
      * @throws Exception generic exception
      */
@@ -102,4 +105,34 @@ public class JspLayout
 
         TurbineJsp.handleRequest(data, prefix + templateName, true);
     }
+    
+    /**
+     * Method called by LayoutLoader.
+     *
+     * @param data PipelineData
+     * @throws Exception generic exception
+     */
+    public void doBuild(PipelineData pipelineData)
+        throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        data.getResponse().setContentType("text/html");
+        data.declareDirectResponse();
+
+        // variable to reference the screen in the layout template
+        data.getRequest()
+            .setAttribute(TurbineConstants.SCREEN_PLACEHOLDER,
+                          new JspScreenPlaceholder(data));
+
+        // variable to reference the navigations in the layout template
+        data.getRequest().setAttribute(
+            TurbineConstants.NAVIGATION_PLACEHOLDER,
+            new JspNavigation(data));
+
+        // Grab the layout template set in the TemplatePage.
+        String templateName = data.getTemplateInfo().getLayoutTemplate();
+
+        TurbineJsp.handleRequest(pipelineData, prefix + templateName, true);
+    }
+    
 }

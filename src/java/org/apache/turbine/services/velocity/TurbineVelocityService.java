@@ -61,6 +61,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletConfig;
 
@@ -70,6 +71,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.pull.PullService;
 import org.apache.turbine.services.pull.TurbinePull;
@@ -108,6 +110,7 @@ import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a> 
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class TurbineVelocityService
@@ -257,7 +260,7 @@ public class TurbineVelocityService
      * Create a Context from the RunData object.  Adds a pointer to
      * the RunData object to the VelocityContext so that RunData
      * is available in the templates.
-     *
+     * @deprecated. Use PipelineData version.
      * @param data The Turbine RunData object.
      * @return A clone of the WebContext needed by Velocity.
      */
@@ -280,6 +283,45 @@ public class TurbineVelocityService
                 // the toolBoxContent which has been wrapped to construct
                 // this request-specific context).
                 pullService.populateContext(context, data);
+            }
+
+            data.getTemplateInfo().setTemplateContext(
+                VelocityService.CONTEXT, context);
+        }
+        return context;
+    }
+
+    /**
+     * Create a Context from the PipelineData object.  Adds a pointer to
+     * the RunData object to the VelocityContext so that RunData
+     * is available in the templates.
+     *
+     * @param data The Turbine RunData object.
+     * @return A clone of the WebContext needed by Velocity.
+     */
+    public Context getContext(PipelineData pipelineData)
+    {
+        Map runDataMap = (Map)pipelineData.get(RunData.class);
+        RunData data = (RunData)runDataMap.get(RunData.class);
+        // Attempt to get it from the data first.  If it doesn't
+        // exist, create it and then stuff it into the data.
+        Context context = (Context)
+            data.getTemplateInfo().getTemplateContext(VelocityService.CONTEXT);
+
+        if (context == null)
+        {
+            context = getContext();
+            context.put(VelocityService.RUNDATA_KEY, data);
+            // we will add both data and pipelineData to the context.
+            context.put(VelocityService.PIPELINEDATA_KEY, pipelineData);
+
+            if (pullModelActive)
+            {
+                // Populate the toolbox with request scope, session scope
+                // and persistent scope tools (global tools are already in
+                // the toolBoxContent which has been wrapped to construct
+                // this request-specific context).
+                pullService.populateContext(context, pipelineData);
             }
 
             data.getTemplateInfo().setTemplateContext(

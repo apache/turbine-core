@@ -58,6 +58,7 @@ package org.apache.turbine.modules.screens;
 
 import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.modules.Screen;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -73,6 +74,7 @@ import org.apache.turbine.util.RunData;
  * contained in the TDK.<br>
  *
  * @author <a href="mailto:rkoenig@chez.com">Regis Koenig</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public abstract class RawScreen extends Screen
@@ -81,6 +83,7 @@ public abstract class RawScreen extends Screen
      * Build the Screen.  This method actually makes a call to the
      * doOutput() method in order to generate the Screen content.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
@@ -95,13 +98,56 @@ public abstract class RawScreen extends Screen
     }
 
     /**
+     * Build the Screen.  This method actually makes a call to the
+     * doOutput() method in order to generate the Screen content.
+     *
+     * @param data Turbine information.
+     * @return A ConcreteElement.
+     * @exception Exception, a generic exception.
+     */
+    protected final ConcreteElement doBuild(PipelineData pipelineData)
+            throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        return doBuild(data);
+    }
+
+    
+    /**
+     * Set the content type.  This method should be overidden to
+     * actually set the real content-type header of the output.
+     *
+     * @deprecated Use PipelineData version instead.
+     * @param data Turbine information.
+     * @return A String with the content type.
+     */
+    protected abstract String getContentType(RunData data);
+
+    /**
      * Set the content type.  This method should be overidden to
      * actually set the real content-type header of the output.
      *
      * @param data Turbine information.
      * @return A String with the content type.
      */
-    protected abstract String getContentType(RunData data);
+    protected String getContentType(PipelineData pipelineData)
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        return getContentType(data);
+    }
+
+    
+    /**
+     * Actually output the dynamic content.  The OutputStream can be
+     * accessed like this: <pre>OutputStream out =
+     * data.getResponse().getOutputStream();</pre>.
+     *
+     * @deprecated Use PipelineData version instead.
+     * @param data Turbine information.
+     * @exception Exception, a generic exception.
+     */
+    protected abstract void doOutput(RunData data)
+            throws Exception;
 
     /**
      * Actually output the dynamic content.  The OutputStream can be
@@ -111,12 +157,18 @@ public abstract class RawScreen extends Screen
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    protected abstract void doOutput(RunData data)
-            throws Exception;
+    protected void doOutput(PipelineData pipelineData)
+            throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        doOutput(data);
+    }
 
+    
     /**
      * The layout must be set to null.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @return A null String.
      */
@@ -124,4 +176,18 @@ public abstract class RawScreen extends Screen
     {
         return null;
     }
+    
+    /**
+     * The layout must be set to null.
+     *
+     * @param data Turbine information.
+     * @return A null String.
+     */
+    public final String getLayout(PipelineData pipelineData)
+    {
+        return null;
+    }
+    
+    
+    
 }

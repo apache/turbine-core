@@ -68,6 +68,7 @@ import org.apache.turbine.util.TurbineException;
  * pipeline (from the Turbine 2.x series).
  *
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>\
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class DefaultSessionValidationValve
@@ -86,7 +87,7 @@ public class DefaultSessionValidationValve
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke(PipelineData data, ValveContext context)
+    public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
         try
@@ -99,8 +100,8 @@ public class DefaultSessionValidationValve
             // screen other than Login, you need to change that within
             // TurbineResources.properties...screen.homepage; or, you
             // can specify your own SessionValidator action.
-            ActionLoader.getInstance().exec(
-                    (RunData)data.get(RunData.class), Turbine.getConfiguration().getString(ACTION_SESSION_VALIDATOR_KEY,
+            ActionLoader.getInstance().exec(pipelineData, 
+                    Turbine.getConfiguration().getString(ACTION_SESSION_VALIDATOR_KEY,
                             ACTION_SESSION_VALIDATOR_DEFAULT));
         }
         catch (Exception e)
@@ -109,6 +110,6 @@ public class DefaultSessionValidationValve
         }            
     
         // Pass control to the next Valve in the Pipeline
-        context.invokeNext(data);
+        context.invokeNext(pipelineData);
     }
 }

@@ -57,6 +57,7 @@ package org.apache.turbine.services.velocity;
 import java.io.OutputStream;
 import java.io.Writer;
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 
@@ -76,6 +77,7 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:jvanzyl@periapt.com.com">Jason van Zyl</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public abstract class TurbineVelocity
@@ -148,13 +150,26 @@ public abstract class TurbineVelocity
      * This returns a Context that you can pass into handleRequest
      * once you have populated it with information that the template
      * will know about.
-     *
+     * @deprecated Use the PipelineData version instead.
      * @param data A Turbine RunData.
      * @return A Context.
      */
     public static Context getContext(RunData data)
     {
         return getService().getContext(data);
+    }
+    
+    /**
+     * This returns a Context that you can pass into handleRequest
+     * once you have populated it with information that the template
+     * will know about.
+     *
+     * @param data A Turbine RunData.
+     * @return A Context.
+     */
+    public static Context getContext(PipelineData pipelineData)
+    {
+        return getService().getContext(pipelineData);
     }
 
     /**

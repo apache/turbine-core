@@ -64,6 +64,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.security.TurbineSecurity;
 
 import org.apache.turbine.util.RunData;
@@ -91,6 +92,7 @@ import org.apache.turbine.util.TurbineException;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class DefaultSessionValidator
@@ -104,6 +106,7 @@ public class DefaultSessionValidator
      * object and, if the user is unknown, to force a login screen (as
      * set in the tr.props).
      *
+     * @deprecated Use PipelineData version instead.
      * @see org.apache.turbine.modules.screens.error.InvalidState
      * @param data Turbine RunData context information.
      * @throws TurbineException The anonymous user could not be obtained
@@ -165,4 +168,22 @@ public class DefaultSessionValidator
             }
         }
     }
+    
+    /**
+     * Execute the action.  The default is to populate the RunData
+     * object and, if the user is unknown, to force a login screen (as
+     * set in the tr.props).
+     *
+     * @see org.apache.turbine.modules.screens.error.InvalidState
+     * @param pipelineData Turbine PipelineData context information.
+     * @throws TurbineException The anonymous user could not be obtained
+     *         from the security service
+     */
+    public void doPerform(PipelineData pipelineData)
+            throws TurbineException
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        doPerform(data);
+    }
+    
 }

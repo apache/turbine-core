@@ -56,6 +56,7 @@ package org.apache.turbine.modules;
 
 import org.apache.ecs.ConcreteElement;
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.InputFilterUtils;
 import org.apache.turbine.util.RunData;
 
@@ -64,6 +65,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public abstract class Screen
@@ -74,7 +76,73 @@ public abstract class Screen
      * Subclasses override this method to store the screen in RunData
      * or to write the screen to the output stream referenced in
      * RunData.
+     * Should revert to abstract when RunData has gone.
+     * @param data Turbine information.
+     * @exception Exception a generic exception.
+     */
+    protected ConcreteElement doBuild(PipelineData pipelineData)
+        throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        return doBuild(data);
+    }
+
+    /**
+     * Subclasses can override this method to add additional
+     * functionality.  This method is protected to force clients to
+     * use ScreenLoader to build a Screen.
      *
+     * @param pipelineData Turbine information.
+     * @exception Exception a generic exception.
+     */
+    protected ConcreteElement build(PipelineData pipelineData)
+        throws Exception
+    {
+        return doBuild(pipelineData);
+    }
+
+    /**
+     * If the Layout has not been defined by the Screen then set the
+     * layout to be "DefaultLayout".  The Screen object can also
+     * override this method to provide intelligent determination of
+     * the Layout to execute.  You can also define that logic here as
+     * well if you want it to apply on a global scale.  For example,
+     * if you wanted to allow someone to define Layout "preferences"
+     * where they could dynamically change the Layout for the entire
+     * site.  The information for the request is passed in with the
+     * PipelineData object.
+     *
+     * @param pipelineData Turbine information.
+     * @return A String with the Layout.
+     */
+    public String getLayout(PipelineData pipelineData)
+    {
+        RunData data = (RunData) getRunData(pipelineData);        
+        return data.getLayout();
+    }
+
+    /**
+     * Set the layout for a Screen.
+     *
+     * @param data Turbine information.
+     * @param layout The layout name.
+     */
+    public void setLayout(PipelineData pipelineData, String layout)
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        data.setLayout(layout);
+    }
+
+    
+    
+    
+    
+    /**
+     * A subclass must override this method to build itself.
+     * Subclasses override this method to store the screen in RunData
+     * or to write the screen to the output stream referenced in
+     * RunData.
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
@@ -85,6 +153,7 @@ public abstract class Screen
      * Subclasses can override this method to add additional
      * functionality.  This method is protected to force clients to
      * use ScreenLoader to build a Screen.
+     * @deprecated Use PipelineData version instead.
      *
      * @param data Turbine information.
      * @exception Exception a generic exception.
@@ -105,6 +174,7 @@ public abstract class Screen
      * where they could dynamically change the Layout for the entire
      * site.  The information for the request is passed in with the
      * RunData object.
+     * @deprecated Use PipelineData version instead.
      *
      * @param data Turbine information.
      * @return A String with the Layout.
@@ -117,6 +187,7 @@ public abstract class Screen
     /**
      * Set the layout for a Screen.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @param layout The layout name.
      */

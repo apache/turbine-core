@@ -1,5 +1,10 @@
 package org.apache.turbine.modules;
 
+import java.util.Map;
+
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.util.RunData;
+
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -60,8 +65,23 @@ package org.apache.turbine.modules;
  * future use is yet to be determined.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public abstract class Assembler
 {
+    /**
+     * This can go once RunData is replaced...
+     * @param pipelineData
+     * @return RunData
+     */
+    public final RunData getRunData(PipelineData pipelineData)
+    {
+        RunData data = null;
+        Map runDataMap = (Map) pipelineData.get(RunData.class);
+        data = (RunData)runDataMap.get(RunData.class);
+        return data;
+    }
+
+    
 }

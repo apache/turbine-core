@@ -68,6 +68,7 @@ import org.apache.turbine.util.TurbineException;
  * pipeline (from the Turbine 2.x series).
  *
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class DefaultACLCreationValve
@@ -95,14 +96,13 @@ public class DefaultACLCreationValve
     {
         try
         { 
-            RunData runData = (RunData)pipelineData.get(RunData.class);
             // Put the Access Control List into the RunData object, so
             // it is easily available to modules.  It is also placed
             // into the session for serialization.  Modules can null
             // out the ACL to force it to be rebuilt based on more
             // information.
             ActionLoader.getInstance().exec(
-                    runData, Turbine.getConfiguration().getString(ACTION_ACCESS_CONTROLLER_KEY,
+                    pipelineData, Turbine.getConfiguration().getString(ACTION_ACCESS_CONTROLLER_KEY,
                             ACTION_ACCESS_CONTROLLER_DEFAULT));
         }
         catch (Exception e)

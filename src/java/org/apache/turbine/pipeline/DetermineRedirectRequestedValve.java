@@ -66,6 +66,7 @@ import org.apache.turbine.util.TurbineException;
  * processing pipeline (from the Turbine 2.x series).
  *
  * @author <a href="mailto:epugh@opensourceConnections.com">Eric Pugh</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class DetermineRedirectRequestedValve
@@ -82,12 +83,12 @@ public class DetermineRedirectRequestedValve
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke(PipelineData data, ValveContext context)
+    public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
         try
         {
-            redirectRequested((RunData)data.get(RunData.class));
+            redirectRequested(pipelineData);
         }
         catch (Exception e)
         {
@@ -95,7 +96,7 @@ public class DetermineRedirectRequestedValve
         }
 
         // Pass control to the next Valve in the Pipeline
-        context.invokeNext(data);
+        context.invokeNext(pipelineData);
     }
 
     /**
@@ -103,11 +104,11 @@ public class DetermineRedirectRequestedValve
      *
      * @param data The run-time data.
      */
-    protected void redirectRequested(RunData data)
+    protected void redirectRequested(PipelineData pipelineData)
         throws Exception
     {      
-
-// handle a redirect request
+        RunData data = (RunData)getRunData(pipelineData);
+        // handle a redirect request
         boolean requestRedirected = ((data.getRedirectURI() != null)
         && (data.getRedirectURI().length() > 0));
         if (requestRedirected)

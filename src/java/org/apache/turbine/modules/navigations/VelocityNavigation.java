@@ -58,6 +58,7 @@ import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
 
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
@@ -74,6 +75,7 @@ import org.apache.velocity.context.Context;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class VelocityNavigation
@@ -87,11 +89,27 @@ public class VelocityNavigation
      * method to perform any particular business logic and add
      * information to the context.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @param context Context for web pages.
      * @exception Exception, a generic exception.
      */
     protected void doBuildTemplate(RunData data,
+                                   Context context)
+            throws Exception
+    {
+    }
+    
+    /**
+     * Velocity Navigations extending this class should overide this
+     * method to perform any particular business logic and add
+     * information to the context.
+     *
+     * @param data Turbine information.
+     * @param context Context for web pages.
+     * @exception Exception, a generic exception.
+     */
+    protected void doBuildTemplate(PipelineData pipelineData,
                                    Context context)
             throws Exception
     {
@@ -102,6 +120,7 @@ public class VelocityNavigation
      * The actual method that you should override is the one with the
      * context in the parameter list.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
@@ -111,9 +130,25 @@ public class VelocityNavigation
         doBuildTemplate(data, TurbineVelocity.getContext(data));
     }
 
+    
+    /**
+     * Needs to be implemented to make TemplateNavigation like us.
+     * The actual method that you should override is the one with the
+     * context in the parameter list.
+     *
+     * @param pipelineData Turbine information.
+     * @exception Exception, a generic exception.
+     */
+    protected void doBuildTemplate(PipelineData pipelineData)
+            throws Exception
+    {
+        doBuildTemplate(pipelineData, TurbineVelocity.getContext(pipelineData));
+    }
+
     /**
      * This Builds the Velocity template.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
@@ -134,4 +169,29 @@ public class VelocityNavigation
         return output;
     }
 
+    /**
+     * This Builds the Velocity template.
+     *
+     * @param data Turbine information.
+     * @return A ConcreteElement.
+     * @exception Exception, a generic exception.
+     */
+    public ConcreteElement buildTemplate(PipelineData pipelineData)
+            throws Exception
+    {
+        RunData data = getRunData(pipelineData);
+        Context context = TurbineVelocity.getContext(pipelineData);
+
+        String navigationTemplate = data.getTemplateInfo().getNavigationTemplate();
+        String templateName
+                = TurbineTemplate.getNavigationTemplateName(navigationTemplate);
+
+        StringElement output = new StringElement();
+        output.setFilterState(false);
+        output.addElement(TurbineVelocity
+                .handleRequest(context, prefix + templateName));
+        return output;
+    }
+
+    
 }

@@ -57,6 +57,7 @@ package org.apache.turbine.modules.screens;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -64,12 +65,14 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:ingo@raleigh.ibm.com">Ingo Schuster</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class JspErrorScreen
     extends BaseJspScreen
 {
     /**
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
@@ -82,4 +85,16 @@ public class JspErrorScreen
 
         setTemplate(data, errorTemplate);
     }
+    
+    /**
+     * @param data Turbine information.
+     * @exception Exception a generic exception.
+     */
+    protected void doBuildTemplate(PipelineData pipelineData)
+        throws Exception
+    {
+            RunData data = (RunData) getRunData(pipelineData);
+            doBuildTemplate(data);
+    }    
+    
 }

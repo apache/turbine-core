@@ -65,7 +65,6 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.GenerateUniqueId;
-import org.apache.turbine.util.RunData;
 
 /**
  * <p> This is an implementation of {@link UniqueIdService}.
@@ -88,14 +87,6 @@ public class TurbineUniqueIdService
 
     protected static int counter;
 
-    /**
-     * @deprecated Use init() instead
-     */
-    public void init(RunData data)
-            throws InitializationException
-    {
-        init();
-    }
 
     /**
      * <p> Initializes the service upon first Turbine.doGet()

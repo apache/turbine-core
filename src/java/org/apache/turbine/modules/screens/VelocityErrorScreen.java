@@ -57,6 +57,7 @@ package org.apache.turbine.modules.screens;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 
 import org.apache.velocity.context.Context;
@@ -67,6 +68,7 @@ import org.apache.velocity.context.Context;
  *
  * @author <a href="mailto:gonzalo.diethelm@sonda.com">Gonzalo Diethelm</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class VelocityErrorScreen
@@ -75,6 +77,7 @@ public class VelocityErrorScreen
     /**
      * Implement this to add information to the context.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @param context Context for web pages.
      * @exception Exception a generic exception.
@@ -93,4 +96,20 @@ public class VelocityErrorScreen
 
         setTemplate(data, errorTemplate);
     }
+    
+    /**
+     * Implement this to add information to the context.
+     *
+     * @param pipelineData Turbine information.
+     * @param context Context for web pages.
+     * @exception Exception a generic exception.
+     */
+    protected void doBuildTemplate(PipelineData pipelineData, Context context)
+            throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        doBuildTemplate(data);
+    }
+
+    
 }

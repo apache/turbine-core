@@ -1,5 +1,7 @@
 package org.apache.turbine.pipeline;
 
+import java.util.Map;
+
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -65,9 +67,13 @@ package org.apache.turbine.pipeline;
  * the additional methods
  *
  * @author <a href="mailto:epugh@opensourceconnections.com">Eric Pugh</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
 public interface PipelineData
 {
-    public void put(Object name, Object value);
-    public Object get(Object name);
+    public void put(Class name, Map value);
+    
+    public Object get(Class name);
+    
+    public Object get(Class key, Object innerKey);
 }

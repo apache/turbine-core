@@ -58,6 +58,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
@@ -136,6 +138,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class Turbine
@@ -709,9 +712,10 @@ public class Turbine
             // Get general RunData here...
             // Perform turbine specific initialization below.
             data = rundataService.getRunData(req, res, getServletConfig());
-            
+            Map runDataMap = new HashMap();
+            runDataMap.put(RunData.class, data);
             // put the data into the pipeline
-            pipelineData.put(RunData.class,data);            
+            pipelineData.put(RunData.class, runDataMap);            
 
             // Stages of Pipeline implementation execution
 			// configurable via attached Valve implementations in a
@@ -721,11 +725,11 @@ public class Turbine
         }
         catch (Exception e)
         {
-            handleException(data, res, e);
+            handleException(pipelineData, res, e);
         }
         catch (Throwable t)
         {
-            handleException(data, res, t);
+            handleException(pipelineData, res, t);
         }
         finally
         {
@@ -767,13 +771,14 @@ public class Turbine
      * including the servlet engine log file, the Turbine log file and
      * on the screen.
      *
-     * @param data A Turbine RunData object.
+     * @param data A Turbine PipelineData object.
      * @param res Servlet response.
      * @param t The exception to report.
      */
-    private final void handleException(RunData data, HttpServletResponse res,
+    private final void handleException(PipelineData pipelineData, HttpServletResponse res,
                                        Throwable t)
     {
+        RunData data = (RunData)getRunData(pipelineData);
         // make sure that the stack trace makes it the log
         log.error("Turbine.handleException: ", t);
 
@@ -799,7 +804,7 @@ public class Turbine
             // Make sure to not execute an action.
             data.setAction("");
 
-            PageLoader.getInstance().exec(data,
+            PageLoader.getInstance().exec(pipelineData,
                     configuration.getString(PAGE_DEFAULT_KEY,
                             PAGE_DEFAULT_DEFAULT));
 
@@ -907,5 +912,19 @@ public class Turbine
     private ServiceManager getServiceManager()
     {
         return TurbineServices.getInstance();
+    }
+    
+    /**
+     * Get a RunData from the pipelineData. Once RunData is replaced
+     * by PipelineData this should not be required. 
+     * @param pipelineData
+     * @return
+     */
+    private RunData getRunData(PipelineData pipelineData)
+    {
+        RunData data = null;
+        Map runDataMap = (Map) pipelineData.get(RunData.class);
+        data = (RunData)runDataMap.get(RunData.class);
+        return data;
     }
 }

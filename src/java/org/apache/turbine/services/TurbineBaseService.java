@@ -56,6 +56,7 @@ package org.apache.turbine.services;
 
 import javax.servlet.ServletConfig;
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -87,6 +88,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public abstract class TurbineBaseService
@@ -112,6 +114,10 @@ public abstract class TurbineBaseService
         {
             init((RunData) data);
         }
+        else if (data instanceof PipelineData)
+        {
+            init((PipelineData) data);
+        }
     }
 
     /**
@@ -130,6 +136,7 @@ public abstract class TurbineBaseService
     /**
      * Performs early initialization.
      *
+     * @deprecated Use the PipelineData version instead.
      * @param data An RunData to use for initialization activities.
      * @exception InitializationException if initialization of this
      * class was not successful.
@@ -138,6 +145,18 @@ public abstract class TurbineBaseService
     {
     }
 
+    /**
+     * Performs early initialization.
+     *
+     * @param data A PipelineData to use for initialization activities.
+     * @exception InitializationException if initialization of this
+     * class was not successful.
+     */
+    public void init(PipelineData data) throws InitializationException
+    {
+    }
+
+    
     /**
      * Performs late initialization.
      *

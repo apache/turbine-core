@@ -54,9 +54,9 @@ package org.apache.turbine.services.pull;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -69,6 +69,7 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public abstract class TurbinePull
@@ -136,6 +137,20 @@ public abstract class TurbinePull
         return getService().getResourcesDirectory();
     }
 
+    /**
+     * Populate the given context with all request, session
+     * and persistent scope tools (it is assumed that the context
+     * already wraps the global context, and thus already contains
+     * the global tools).
+     *
+     * @param context a Velocity Context to populate
+     * @param data a RunData object for request specific data
+     */
+    public static void populateContext(Context context, PipelineData pipelineData)
+    {
+        getService().populateContext(context, pipelineData);
+    }
+    
     /**
      * Populate the given context with all request, session
      * and persistent scope tools (it is assumed that the context

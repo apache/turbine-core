@@ -68,6 +68,7 @@ import org.apache.turbine.util.TurbineException;
  *
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class DefaultSessionTimeoutValve
@@ -95,10 +96,10 @@ public class DefaultSessionTimeoutValve
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke(PipelineData data, ValveContext context)
+    public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
-        RunData runData = (RunData)data.get(RunData.class);
+        RunData runData = (RunData)getRunData(pipelineData);
         // If the session is new take this opportunity to
         // set the session timeout if specified in TR.properties
         if (runData.getSession().isNew() && timeout != SESSION_TIMEOUT_DEFAULT)
@@ -107,6 +108,6 @@ public class DefaultSessionTimeoutValve
         }
 
         // Pass control to the next Valve in the Pipeline
-        context.invokeNext(data);
+        context.invokeNext(pipelineData);
     }
 }

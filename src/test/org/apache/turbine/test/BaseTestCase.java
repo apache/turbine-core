@@ -57,6 +57,8 @@ package org.apache.turbine.test;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -83,6 +85,7 @@ import com.mockobjects.servlet.MockHttpServletRequest;
  *
  * @author <a href="mailto:celkins@scardini.com">Christopher Elkins</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public abstract class BaseTestCase
@@ -122,7 +125,11 @@ public abstract class BaseTestCase
     protected PipelineData getPipelineData(HttpServletRequest request,HttpServletResponse response,ServletConfig config) throws Exception {
        PipelineData pipelineData = new DefaultPipelineData();
        RunData runData = getRunData(request,response,config);
-       pipelineData.put(RunData.class,runData);
+       Map runDataMap = new HashMap();
+       runDataMap.put(RunData.class, runData);
+       // put the data into the pipeline
+       pipelineData.put(RunData.class, runDataMap);            
+       //pipelineData.put(RunData.class,runData);
        return pipelineData;
     }
     

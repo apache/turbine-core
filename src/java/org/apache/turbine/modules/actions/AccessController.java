@@ -64,6 +64,7 @@ import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.TurbineSecurityException;
 
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.PipelineData;
 
 /**
  * This action doPerforms an Access Control List and places it into
@@ -96,6 +97,7 @@ import org.apache.turbine.om.security.User;
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
  * @author <a href="quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class AccessController
@@ -111,7 +113,7 @@ public class AccessController
      * session, otherwise it is loaded through
      * <code>TurbineSecurity.getACL()</code> and added to the current
      * session.
-     *
+     * @deprecated Use PipelineData version instead.
      * @see org.apache.turbine.services.security.TurbineSecurity
      * @param data Turbine information.
      * @exception TurbineSecurityException problem with the security service.
@@ -139,5 +141,23 @@ public class AccessController
             }
             data.setACL(acl);
         }
+    }
+    
+    /**
+     * If there is a user and the user is logged in, doPerform will
+     * set the RunData ACL.  The list is first sought from the current
+     * session, otherwise it is loaded through
+     * <code>TurbineSecurity.getACL()</code> and added to the current
+     * session.
+     *
+     * @see org.apache.turbine.services.security.TurbineSecurity
+     * @param data Turbine information.
+     * @exception TurbineSecurityException problem with the security service.
+     */
+    public void doPerform(PipelineData pipelineData)
+    	throws TurbineSecurityException
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        doPerform(data);
     }
 }

@@ -53,6 +53,7 @@ package org.apache.turbine.modules.actions;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.commons.logging.Log;
@@ -62,6 +63,7 @@ import org.apache.commons.logging.LogFactory;
  * that exceptions are properly bubbled out.
  * 
  * @author     <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @created    October 11, 2002
  */
 public class VelocityActionThrowsException extends VelocityAction
@@ -76,9 +78,24 @@ public class VelocityActionThrowsException extends VelocityAction
      */
     public void doPerform(RunData data, Context context) throws Exception
     {
-        log.debug("Calling doPerform");
+        log.debug("Calling doPerform(RunData)");
         throw new Exception("From VelocityActionThrowsException.doPerform an Exception is always thrown!");
     }
+    
+    /**
+     *  Default action is throw an exception.
+     *
+     * @param  data           Current PipelineData information
+     * @param  context        Context to populate
+     * @exception  Exception  Thrown on error
+     */
+    public void doPerform(PipelineData data, Context context) throws Exception
+    {
+        log.debug("Calling doPerform(PipelineData)");
+        throw new Exception("From VelocityActionThrowsException.doPerform an Exception is always thrown!");
+    }
+    
+    
     
     /**
      * This action event also throws an exception.  
@@ -88,7 +105,21 @@ public class VelocityActionThrowsException extends VelocityAction
      */
     public void doCauseexception(RunData data, Context context) throws Exception
     {
-        log.debug("Calling doCauseexception");
+        log.debug("Calling doCauseexception(RunData)");
         throw new Exception("From Action Event VelocityActionThrowsException.doCauseexception an Exception is always thrown!");
     }
+    
+    /**
+     * This action event also throws an exception.  
+     * @param data
+     * @param context
+     * @throws Exception
+     */
+    public void doCauseexception(PipelineData data, Context context) throws Exception
+    {
+        log.debug("Calling doCauseexception(PipelineData)");
+        throw new Exception("From Action Event VelocityActionThrowsException.doCauseexception an Exception is always thrown!");
+    }
+
+    
 }

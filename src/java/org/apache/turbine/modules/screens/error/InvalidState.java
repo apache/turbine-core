@@ -60,6 +60,7 @@ import org.apache.ecs.ElementContainer;
 import org.apache.ecs.html.A;
 
 import org.apache.turbine.modules.Screen;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.uri.TurbineURI;
@@ -77,6 +78,7 @@ import org.apache.turbine.util.uri.TurbineURI;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class InvalidState
@@ -117,4 +119,18 @@ public class InvalidState
         body.addElement(message);
         return body;
     }
+    
+    /**
+     * Build the Screen.
+     *
+     * @param data Turbine information.
+     * @exception Exception, a generic exception.
+     */
+    public ConcreteElement doBuild(PipelineData pipelineData)
+            throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        return doBuild(data);
+    }	
+    
 }

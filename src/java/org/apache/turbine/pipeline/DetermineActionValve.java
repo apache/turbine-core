@@ -68,6 +68,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * perfectly valid.
  *
  * @author <a href="mailto:james@jamestaylor.org">James Taylor</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
 public class DetermineActionValve 
     extends AbstractValve
@@ -81,7 +82,7 @@ public class DetermineActionValve
     public void invoke( PipelineData pipelineData, ValveContext context )
         throws IOException, TurbineException
     {
-        RunData data = (RunData)pipelineData.get(RunData.class);
+        RunData data = (RunData)getRunData(pipelineData);
         if ( ! data.hasAction() )
         {
             String action = 

@@ -56,6 +56,7 @@ package org.apache.turbine.modules;
 
 import org.apache.ecs.ConcreteElement;
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.InputFilterUtils;
 import org.apache.turbine.util.RunData;
 
@@ -64,6 +65,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public abstract class Navigation
@@ -74,6 +76,7 @@ public abstract class Navigation
      * Subclasses override this method to store the navigation in
      * RunData or to write the navigation to the output stream
      * referenced in RunData.
+     * @deprecated Use PipelineData version instead
      *
      * @param data Turbine information.
      * @exception Exception a generic exception.
@@ -85,7 +88,7 @@ public abstract class Navigation
      * Subclasses can override this method to add additional
      * functionality.  This method is protected to force clients to
      * use NavigationLoader to build a Navigation.
-     *
+     * @deprecated Use PipelineData version instead
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
@@ -95,6 +98,37 @@ public abstract class Navigation
         return doBuild(data);
     }
 
+    /**
+     * A subclass must override this method to build itself.
+     * Subclasses override this method to store the navigation in
+     * RunData or to write the navigation to the output stream
+     * referenced in RunData.
+     *
+     * @param data Turbine information.
+     * @exception Exception a generic exception.
+     */
+    protected ConcreteElement doBuild(PipelineData pipelineData)
+        throws Exception
+    {
+        RunData data = (RunData)getRunData(pipelineData);
+        return doBuild(data);
+    }
+
+    /**
+     * Subclasses can override this method to add additional
+     * functionality.  This method is protected to force clients to
+     * use NavigationLoader to build a Navigation.
+     *
+     * @param data Turbine information.
+     * @exception Exception a generic exception.
+     */
+    protected ConcreteElement build(PipelineData pipelineData)
+        throws Exception
+    {
+        return doBuild(pipelineData);
+    }
+
+    
     /**
      * This function can/should be used in any screen that will output
      * User entered text.  This will help prevent users from entering

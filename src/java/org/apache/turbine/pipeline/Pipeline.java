@@ -56,7 +56,6 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -82,6 +81,7 @@ import org.apache.turbine.util.TurbineException;
  *
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
 public interface Pipeline
 {

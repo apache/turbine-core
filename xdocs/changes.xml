@@ -208,7 +208,10 @@ Changes between Turbine 2.3 and 2.4.
   	  Backported the Pipeline from Turbine 3 to Turbine 2.4.  The pipeline allows
   	  you to define via an XML file all the stages for processing a request.  This
   	  makes it simple to add your own custom steps to be applied to each HTTP
-  	  request coming into Turbine.  You will need to add the pipeline.xml file.
+  	  request coming into Turbine.  You will need to add the pipeline.xml file. 
+  	  Added methods to many classes to allow the use of PipelineData as an 
+  	  alternative to RunData. Added new PipelineDataApplicationTool interface for
+  	  tools which use PipelineData instead of RunData.
   	</li>
   	<li>
   	  Maven Plugin for Turbine moved to /extensions directory.  The torque

@@ -57,12 +57,14 @@ package org.apache.turbine.modules.actions;
 // Turbine Modules
 
 import org.apache.turbine.modules.Action;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 
 /**
  * This is a Default Action module that doesn't do much.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class DefaultAction extends Action
@@ -70,6 +72,7 @@ public class DefaultAction extends Action
     /**
      * Execute the action.
      *
+     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @throws Exception a generic exception.
      */
@@ -78,4 +81,18 @@ public class DefaultAction extends Action
     {
         data.setMessage(data.getScreen() + " has been executed!");
     }
+    
+    /**
+     * Execute the action.
+     *
+     * @param data Turbine information.
+     * @throws Exception a generic exception.
+     */
+    public void doPerform(PipelineData pipelineData)
+            throws Exception
+    {
+        RunData data = (RunData) getRunData(pipelineData);
+        doPerform(data);
+    }
+    
 }

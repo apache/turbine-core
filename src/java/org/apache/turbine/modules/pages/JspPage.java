@@ -54,6 +54,7 @@ package org.apache.turbine.modules.pages;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.jsp.TurbineJsp;
 import org.apache.turbine.util.RunData;
 
@@ -62,6 +63,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Revision$
  */
 public class JspPage
@@ -87,4 +89,27 @@ public class JspPage
             // No logger here?
         }
     }
+    
+    /**
+     * Stuffs some useful objects into the request so that
+     * it is available to the Action module and the Screen module
+     */
+    protected void doBuildBeforeAction(PipelineData pipelineData)
+        throws Exception
+    {
+        TurbineJsp.addDefaultObjects(pipelineData);
+
+        try
+        {
+            RunData data = (RunData) getRunData(pipelineData);
+            //We try to set the buffer size from defaults
+            data.getResponse().setBufferSize(TurbineJsp.getDefaultBufferSize());
+        }
+        catch (IllegalStateException ise)
+        {
+            // If the response was already commited, we die silently
+            // No logger here?
+        }
+    }
+
 }

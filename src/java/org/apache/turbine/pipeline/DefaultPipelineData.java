@@ -68,16 +68,29 @@ import java.util.Map;
  * the additional methods
  *
  * @author <a href="mailto:epugh@opensourceconnections.com">Eric Pugh</a>
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
 public class DefaultPipelineData implements PipelineData
 {
     private Map map = new HashMap();
     
-    public void put(Object key, Object value){
+    public void put(Class key, Map value){
         map.put(key,value);        
     }
     
-    public Object get(Object key){
+    public Object get(Class key){
         return map.get(key);
     }
+    
+    public Object get(Class key, Object innerKey)
+    {
+        Map innerMap = (Map) get(key);
+        if (innerMap == null)
+        {
+            return null;
+        }
+        return innerMap.get(innerKey);
+    }
+    
+    
 }
