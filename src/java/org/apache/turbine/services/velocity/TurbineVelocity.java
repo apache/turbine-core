@@ -56,11 +56,8 @@ package org.apache.turbine.services.velocity;
 
 import java.io.OutputStream;
 import java.io.Writer;
-
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
-
 import org.apache.velocity.context.Context;
 
 /**

@@ -54,12 +54,10 @@ package org.apache.turbine.services.resources;
  * <http://www.apache.org/>.
  */
 
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
-import javax.servlet.ServletConfig;
-import org.apache.turbine.services.Service;
 import org.apache.commons.configuration.Configuration;
+import org.apache.turbine.services.Service;
 
 
 /**

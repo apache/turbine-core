@@ -54,12 +54,9 @@ package org.apache.turbine.services.template;
  * <http://www.apache.org/>.
  */
 
-import java.util.Iterator;
 import java.util.Hashtable;
-
-import org.apache.turbine.services.TurbineBaseService;
-
 import org.apache.commons.configuration.Configuration;
+import org.apache.turbine.services.TurbineBaseService;
 
 
 /**

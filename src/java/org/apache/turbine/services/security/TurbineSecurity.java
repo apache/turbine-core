@@ -54,26 +54,21 @@ package org.apache.turbine.services.security;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.resources.TurbineResources;
-
-import org.apache.turbine.om.security.User;
-import org.apache.turbine.om.security.Group;
-import org.apache.turbine.om.security.Role;
-import org.apache.turbine.om.security.Permission;
-import org.apache.turbine.om.security.peer.UserPeer;
-import org.apache.turbine.util.security.GroupSet;
-import org.apache.turbine.util.security.RoleSet;
-import org.apache.turbine.util.security.PermissionSet;
-import org.apache.turbine.util.security.AccessControlList;
-
-import org.apache.turbine.util.security.DataBackendException;
-import org.apache.turbine.util.security.UnknownEntityException;
-import org.apache.turbine.util.security.EntityExistsException;
-import org.apache.turbine.util.security.PasswordMismatchException;
-import org.apache.turbine.util.security.TurbineSecurityException;
-
 import org.apache.torque.util.Criteria;
+import org.apache.turbine.om.security.Group;
+import org.apache.turbine.om.security.Permission;
+import org.apache.turbine.om.security.Role;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.util.security.AccessControlList;
+import org.apache.turbine.util.security.DataBackendException;
+import org.apache.turbine.util.security.EntityExistsException;
+import org.apache.turbine.util.security.GroupSet;
+import org.apache.turbine.util.security.PasswordMismatchException;
+import org.apache.turbine.util.security.PermissionSet;
+import org.apache.turbine.util.security.RoleSet;
+import org.apache.turbine.util.security.TurbineSecurityException;
+import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
  * This is a Facade class for SecurityService.

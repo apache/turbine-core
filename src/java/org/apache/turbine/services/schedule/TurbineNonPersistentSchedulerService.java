@@ -54,13 +54,11 @@ package org.apache.turbine.services.schedule;
  * <http://www.apache.org/>.
  */
 
-import java.util.List;
 import java.util.Vector;
 import javax.servlet.ServletConfig;
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.ObjectKey;
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.util.Log;
 
 /**
  * Service for a cron like scheduler that uses the

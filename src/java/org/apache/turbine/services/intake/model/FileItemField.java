@@ -54,20 +54,18 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
-import java.util.Vector;
-import org.apache.turbine.services.intake.xmlmodel.Rule;
+import org.apache.turbine.services.intake.validator.FileValidator;
+import org.apache.turbine.services.intake.validator.ValidationException;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.services.intake.validator.Validator;
-import org.apache.turbine.services.intake.validator.FileValidator;
-// import org.apache.turbine.services.intake.validator.InitableByConstraintMap;
-import org.apache.turbine.services.intake.validator.ValidationException;
-import org.apache.turbine.services.intake.validator.Constraint;
-import org.apache.turbine.util.upload.FileItem;
 import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.upload.FileItem;
 
-/**  */
+/**
+ *
+ * @version $Id$
+ */
 public class FileItemField extends Field
 {
 
@@ -80,7 +78,7 @@ public class FileItemField extends Field
     /**
      * Sets the default value for an FileItemField
      */
-    
+
     protected void setDefaultValue(String prop)
     {
         defaultValue = prop;

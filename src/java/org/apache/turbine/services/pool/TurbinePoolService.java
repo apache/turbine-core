@@ -54,25 +54,19 @@ package org.apache.turbine.services.pool;
  * <http://www.apache.org/>.
  */
 
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.lang.reflect.Method;
-
-import javax.servlet.ServletConfig;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import org.apache.commons.configuration.Configuration;
-
-import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.pool.Recyclable;
-import org.apache.turbine.util.pool.ArrayCtorRecyclable;
-import org.apache.turbine.util.pool.BoundedBuffer;
-import org.apache.turbine.util.pool.ObjectInputStreamForContext;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.factory.FactoryService;
 import org.apache.turbine.services.factory.TurbineFactoryService;
+import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.pool.ArrayCtorRecyclable;
+import org.apache.turbine.util.pool.BoundedBuffer;
+import org.apache.turbine.util.pool.Recyclable;
 
 /**
  * The Pool Service extends the Factory Service by adding support
@@ -123,8 +117,7 @@ public class TurbinePoolService
              * @param rec the recycle method.
              * @param sign the signature.
              */
-            public Recycler(Method rec,
-                            String[] sign)
+            public Recycler(Method rec, String[] sign)
             {
                 recycle = rec;
                 signature = (sign != null) && (sign.length > 0) ? sign : null;
@@ -139,11 +132,10 @@ public class TurbinePoolService
              */
             public Method match(String[] sign)
             {
-                if ((sign != null) &&
-                    (sign.length > 0))
+                if ((sign != null) && (sign.length > 0))
                 {
-                    if ((signature != null) &&
-                        (sign.length == signature.length))
+                    if ((signature != null)
+                            && (sign.length == signature.length))
                     {
                         for (int i = 0; i < signature.length; i++)
                         {
@@ -211,8 +203,7 @@ public class TurbinePoolService
          *
          * @return an instance or null.
          */
-        public Object poll(Object[] params,
-                           String[] signature)
+        public Object poll(Object[] params, String[] signature)
             throws TurbineException
         {
             Object instance = pool.poll();
@@ -226,8 +217,7 @@ public class TurbinePoolService
                 {
                     try
                     {
-                        if ((signature != null) &&
-                            (signature.length > 0))
+                        if ((signature != null) && (signature.length > 0))
                         {
                             /* Get the recycle method from the cache. */
                             Method recycle = getRecycle(signature);

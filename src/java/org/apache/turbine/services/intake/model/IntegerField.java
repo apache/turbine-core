@@ -54,13 +54,14 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
-import java.util.Vector;
-import org.apache.turbine.services.intake.xmlmodel.Rule;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
-import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.Log;
+import org.apache.turbine.util.ParameterParser;
 
-/**  */
+/**
+ *
+ * @version $Id$
+ */
 public class IntegerField extends Field
 {
 
@@ -73,7 +74,7 @@ public class IntegerField extends Field
     /**
      * Sets the default value for an Integer
      */
-    
+
     protected void setDefaultValue(String prop)
     {
         defaultValue = null;
@@ -84,8 +85,8 @@ public class IntegerField extends Field
         try
         {
             defaultValue = new Integer(prop);
-        } 
-        catch(Exception e) 
+        }
+        catch(Exception e)
         {
             Log.error("Could not convert "+prop+" into an Integer. ("+name+")");
         }

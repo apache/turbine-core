@@ -25,13 +25,13 @@ package org.apache.turbine.util.template;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,9 +55,8 @@ package org.apache.turbine.util.template;
  */
 
 import java.util.Hashtable;
-
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.services.template.TurbineTemplate;
+import org.apache.turbine.util.RunData;
 
 /**
  * This is a wrapper for Template specific information.  It's part of
@@ -88,7 +87,7 @@ public class TemplateInfo
      */
     public TemplateInfo(RunData data)
     {
-        this.data=data;
+        this.data = data;
         tempStorage = new Hashtable(10);
     }
 
@@ -100,7 +99,7 @@ public class TemplateInfo
     public String getNavigationTemplate()
     {
         String temp = getString(TemplateInfo.NAVIGATION_TEMPLATE);
-        if ( temp != null )
+        if (temp != null)
         {
             temp = temp.replace(',', '/');
         }
@@ -114,7 +113,7 @@ public class TemplateInfo
      */
     public void setNavigationTemplate(String v)
     {
-        setTemp(TemplateInfo.NAVIGATION_TEMPLATE,v);
+        setTemp(TemplateInfo.NAVIGATION_TEMPLATE, v);
     }
 
     /**
@@ -127,8 +126,8 @@ public class TemplateInfo
      */
     public String getScreenTemplate()
     {
-        String temp = data.getParameters().getString("template",null);
-        if ( temp != null )
+        String temp = data.getParameters().getString("template", null);
+        if (temp != null)
         {
             temp = temp.replace(',', '/');
         }
@@ -143,8 +142,8 @@ public class TemplateInfo
      */
     public void setScreenTemplate(String v)
     {
-       data.getParameters().setString("template",v);
-       
+       data.getParameters().setString("template", v);
+
        /*
         * We have changed the screen template so
         * we should now update the layout template
@@ -154,7 +153,7 @@ public class TemplateInfo
         try
         {
             setLayoutTemplate(TurbineTemplate.getLayoutTemplateName(v));
-        }                    
+        }
         catch (Exception e)
         {
             /*
@@ -170,7 +169,7 @@ public class TemplateInfo
      */
     public String getLayoutTemplate()
     {
-        String value = getString(TemplateInfo.LAYOUT_TEMPLATE);   
+        String value = getString(TemplateInfo.LAYOUT_TEMPLATE);
         return value;
     }
 
@@ -202,8 +201,7 @@ public class TemplateInfo
      * @param name The name of the template context.
      * @param v Value to assign to context.
      */
-    public void setTemplateContext(String name,
-                                   Object v)
+    public void setTemplateContext(String name, Object v)
     {
         setTemp(name, v);
     }
@@ -225,7 +223,7 @@ public class TemplateInfo
      */
     public void setService(String v)
     {
-        setTemp(TemplateInfo.SERVICE_NAME,v);
+        setTemp(TemplateInfo.SERVICE_NAME, v);
     }
 
     /**
@@ -234,9 +232,9 @@ public class TemplateInfo
      * @param name A String with the name of the object.
      * @return An Object.
      */
-    public Object getTemp ( String name )
+    public Object getTemp(String name)
     {
-        return tempStorage.get (name);
+        return tempStorage.get(name);
     }
 
     /**
@@ -246,12 +244,12 @@ public class TemplateInfo
      * @param def An Object, the default value.
      * @return An Object.
      */
-    public Object getTemp ( String name, Object def )
+    public Object getTemp(String name, Object def)
     {
         try
         {
-            Object val = tempStorage.get (name);
-            if ( val == null )
+            Object val = tempStorage.get(name);
+            if (val == null)
             {
                 return def;
             }
@@ -269,9 +267,9 @@ public class TemplateInfo
      * @param name A String with the name of the object.
      * @param value An Object, the value.
      */
-    public void setTemp ( String name, Object value )
+    public void setTemp(String name, Object value)
     {
-        tempStorage.put (name, value);
+        tempStorage.put(name, value);
     }
 
     /**
@@ -284,9 +282,9 @@ public class TemplateInfo
     {
         String[] value = null;
         Object object = getTemp(name, null);
-        if ( object != null )
+        if (object != null)
         {
-            value = (String[])object;
+            value = (String[]) object;
         }
         return value;
     }
@@ -301,9 +299,9 @@ public class TemplateInfo
     {
         String value = null;
         Object object = getTemp(name,null);
-        if ( object != null )
+        if (object != null)
         {
-            value = (String)object;
+            value = (String) object;
         }
         return value;
     }
@@ -322,7 +320,7 @@ public class TemplateInfo
 
     /*
      * Returns all the available names in the temporary storage.
-     * 
+     *
      * @return A object array with the keys.
      */
     public Object[] getTempKeys()

@@ -57,11 +57,9 @@ package org.apache.turbine.services.localization;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
-import org.apache.turbine.services.localization.Localization;
 import org.apache.turbine.services.pull.ApplicationTool;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.Log;
+import org.apache.turbine.util.RunData;
 
 /**
  * A pull tool which provides lookups for localized text by delegating

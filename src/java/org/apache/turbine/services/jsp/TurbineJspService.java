@@ -54,29 +54,19 @@ package org.apache.turbine.services.jsp;
  * <http://www.apache.org/>.
  */
 
-// Java Stuff
-import java.io.File;
 import java.io.IOException;
-
-// Java Servlet Classes
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
-
-// Turbine Stuff
-import org.apache.turbine.util.Log;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.TurbineException;
-
-import org.apache.turbine.services.jsp.util.JspLink;
+import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.jsp.util.JspLink;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
 import org.apache.turbine.services.template.TurbineTemplate;
-
-import org.apache.commons.configuration.Configuration;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
 
 
 /**
@@ -183,22 +173,23 @@ public class TurbineJspService extends BaseTemplateEngineService
             if (isForward)
             {
                 // forward the request to the JSP
-                dispatcher.forward( data.getRequest(), data.getResponse() );
+                dispatcher.forward(data.getRequest(), data.getResponse());
             }
             else
             {
                 data.getOut().flush();
                 // include the JSP
-                dispatcher.include( data.getRequest(), data.getResponse() );
+                dispatcher.include(data.getRequest(), data.getResponse());
             }
         }
         catch(Exception e)
         {
-            // as JSP service is in Alpha stage, let's try hard to send the error
-            // message to the browser, to speed up debugging
+            // as JSP service is in Alpha stage, let's try hard to send the
+            // error message to the browser, to speed up debugging
             try
             {
-                data.getOut().print("Error encountered processing a template: "+filename);
+                data.getOut().print("Error encountered processing a template: "
+                        + filename);
                 e.printStackTrace(data.getOut());
             }
             catch(IOException ignored)
@@ -225,7 +216,7 @@ public class TurbineJspService extends BaseTemplateEngineService
          * the template paths.
          */
         templatePaths = TurbineTemplate.translateTemplatePaths(
-        config.getStringArray("templates"));
+                config.getStringArray("templates"));
 
         /*
          * Set relative paths from config.
@@ -288,13 +279,13 @@ public class TurbineJspService extends BaseTemplateEngineService
          */
         for (int i = 0; i < relativeTemplatePaths.length; i++)
         {
-            testTemplatePath[0] = TurbineServlet.getRealPath(relativeTemplatePaths[i]);
+            testTemplatePath[0] = TurbineServlet.getRealPath(
+                    relativeTemplatePaths[i]);
             if (TurbineTemplate.templateExists(template, testTemplatePath))
             {
                 return relativeTemplatePaths[i] + template;
             }
         }
-
         return null;
     }
 }

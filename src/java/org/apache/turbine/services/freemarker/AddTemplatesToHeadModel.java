@@ -55,24 +55,15 @@ package org.apache.turbine.services.freemarker;
  */
 
 
-// FreeMarker Classes
 import freemarker.template.SimpleHash;
 import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
-
-// Java stuff.
 import java.util.List;
-
 import org.apache.ecs.html.Head;
-
-// Turbine Utility Classes
-import org.apache.turbine.services.Service;
 import org.apache.turbine.services.TurbineServices;
-
 import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;

@@ -56,9 +56,10 @@ package org.apache.turbine.util.db.map;
 
 import java.util.Date;
 import java.util.Hashtable;
-
+import org.apache.torque.map.DatabaseMap;
+import org.apache.torque.map.MapBuilder;
+import org.apache.torque.map.TableMap;
 import org.apache.turbine.services.db.TurbineDB;
-import org.apache.torque.map.*;
 
 /**
  * Default Builder for Database/Table/Column Maps within the Turbine
@@ -845,7 +846,7 @@ public class TurbineMapBuilder implements MapBuilder
      */
     public boolean isBuilt()
     {
-        return ( dbMap != null );
+        return (dbMap != null);
     }
 
     /**
@@ -902,7 +903,7 @@ public class TurbineMapBuilder implements MapBuilder
         tMap.addColumn(getCreated(), date);
         tMap.addColumn(getModified(), date);
         tMap.addColumn(getLastLogin(), date);
-        tMap.addColumn(getObjectData(), new Hashtable(1) );
+        tMap.addColumn(getObjectData(), new Hashtable(1));
 
         // Add Group columns.
         tMap = dbMap.getTable(getTableGroup());
@@ -910,7 +911,7 @@ public class TurbineMapBuilder implements MapBuilder
         tMap.setPrimaryKeyMethodInfo(tMap.getName());
         tMap.addPrimaryKey(getGroupId(), integer);
         tMap.addColumn(getGroupName(), string);
-        tMap.addColumn(getObjectData(), new Hashtable(1) );
+        tMap.addColumn(getObjectData(), new Hashtable(1));
 
         // Add Role columns.
         tMap = dbMap.getTable(getTableRole());
@@ -918,7 +919,7 @@ public class TurbineMapBuilder implements MapBuilder
         tMap.setPrimaryKeyMethodInfo(tMap.getName());
         tMap.addPrimaryKey(getRoleId(), integer);
         tMap.addColumn(getRoleName(), string);
-        tMap.addColumn(getObjectData(), new Hashtable(1) );
+        tMap.addColumn(getObjectData(), new Hashtable(1));
 
         // Add Permission columns.
         tMap = dbMap.getTable(getTablePermission());
@@ -926,7 +927,7 @@ public class TurbineMapBuilder implements MapBuilder
         tMap.setPrimaryKeyMethodInfo(tMap.getName());
         tMap.addPrimaryKey(getPermissionId(), integer);
         tMap.addColumn(getPermissionName(), string);
-        tMap.addColumn(getObjectData(), new Hashtable(1) );
+        tMap.addColumn(getObjectData(), new Hashtable(1));
 
         // Add RolePermission columns.
         tMap = dbMap.getTable(getTableRolePermission());

@@ -25,13 +25,13 @@ package org.apache.turbine.util.template;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -56,13 +56,9 @@ package org.apache.turbine.util.template;
 
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
-import org.apache.turbine.om.security.User;
-
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.template.TurbineTemplate;
-
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.security.AccessControlList;
 
 /**
  * Utility class to help check for proper authorization when using
@@ -95,11 +91,10 @@ public class TemplateSecurityCheck
      * @param message A String with the message to display upon
      * failure.
      */
-    public TemplateSecurityCheck ( RunData data,
-                                   String message )
+    public TemplateSecurityCheck(RunData data, String message)
     {
-        this.data=data;
-        this.message=message;
+        this.data = data;
+        this.message = message;
     }
 
     /**
@@ -107,9 +102,9 @@ public class TemplateSecurityCheck
      *
      * @param data A Turbine RunData object.
      */
-    public TemplateSecurityCheck( RunData data )
+    public TemplateSecurityCheck(RunData data)
     {
-        this.data=data;
+        this.data = data;
     }
 
     /**
@@ -119,19 +114,17 @@ public class TemplateSecurityCheck
      * @return Whether the user has the role.
      * @exception Exception Trouble validating.
      */
-    public boolean hasRole(Role role)
-        throws Exception
+    public boolean hasRole(Role role) throws Exception
     {
-        if ( !checkLogin() )
+        if (!checkLogin())
         {
             return false;
         }
 
-        if ( data.getACL() == null ||
-             !data.getACL().hasRole(role) )
+        if (data.getACL() == null || !data.getACL().hasRole(role))
         {
-            data.setScreen( getFailScreen() );
-            data.getTemplateInfo().setScreenTemplate( getFailTemplate() );
+            data.setScreen(getFailScreen());
+            data.getTemplateInfo().setScreenTemplate(getFailTemplate());
             data.setMessage(getMessage());
             return false;
         }
@@ -148,14 +141,12 @@ public class TemplateSecurityCheck
      * @return Whether the user has the permission.
      * @exception Exception Trouble validating.
      */
-    public boolean hasPermission(Permission permission)
-        throws Exception
+    public boolean hasPermission(Permission permission) throws Exception
     {
-        if ( data.getACL() == null ||
-             !data.getACL().hasPermission(permission) )
+        if (data.getACL() == null || !data.getACL().hasPermission(permission))
         {
-            data.setScreen( getFailScreen() );
-            data.getTemplateInfo().setScreenTemplate( getFailTemplate() );
+            data.setScreen(getFailScreen());
+            data.getTemplateInfo().setScreenTemplate(getFailTemplate());
             data.setMessage(getMessage());
             return false;
         }
@@ -171,16 +162,14 @@ public class TemplateSecurityCheck
      * @return True if user has logged in.
      * @exception Exception, a generic exception.
      */
-    public boolean checkLogin()
-        throws Exception
+    public boolean checkLogin() throws Exception
     {
         boolean value = false;
 
-        if ( data.getUser() != null &&
-             !data.getUser().hasLoggedIn() )
+        if (data.getUser() != null && !data.getUser().hasLoggedIn())
         {
-            data.setMessage( TurbineResources.getString("login.message") );
-            data.getTemplateInfo().setScreenTemplate( getFailTemplate() );
+            data.setMessage(TurbineResources.getString("login.message"));
+            data.getTemplateInfo().setScreenTemplate( getFailTemplate());
             value = false;
         }
         else
@@ -196,9 +185,9 @@ public class TemplateSecurityCheck
      *
      * @param v A String with the message that should be displayed.
      */
-    public void setMessage( String v )
+    public void setMessage(String v)
     {
-        this.message=v;
+        this.message = v;
     }
 
     /**

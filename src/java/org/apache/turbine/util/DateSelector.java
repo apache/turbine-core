@@ -58,10 +58,7 @@ import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.Date;
 import org.apache.ecs.ConcreteElement;
-import org.apache.ecs.Element;
 import org.apache.ecs.ElementContainer;
-import org.apache.ecs.GenericElement;
-import org.apache.ecs.html.Comment;
 import org.apache.ecs.html.Input;
 import org.apache.ecs.html.Option;
 import org.apache.ecs.html.Select;
@@ -98,7 +95,7 @@ import org.apache.ecs.html.Select;
 public class DateSelector
 {
     /** Prefix for date names. */
-    public static final String DEFAULT_PREFIX   = "DateSelector";
+    public static final String DEFAULT_PREFIX = "DateSelector";
 
     /** Suffix for day parameter. */
     public static final String DAY_SUFFIX   = "_day";
@@ -127,11 +124,11 @@ public class DateSelector
      * Constructor defaults to current date and uses the default
      * prefix: <pre>DateSelector.DEFAULT</pre>
      */
-    public DateSelector( )
+    public DateSelector()
     {
         this.selName = DEFAULT_PREFIX;
         this.useDate = Calendar.getInstance();
-        this.useDate.setTime ( new Date() );
+        this.useDate.setTime(new Date());
     }
 
     /**
@@ -141,7 +138,7 @@ public class DateSelector
      * @param selName A String with the selector name.
      * @param useDate A Calendar with a date.
      */
-    public DateSelector( String selName, Calendar useDate )
+    public DateSelector(String selName, Calendar useDate)
     {
         this.useDate = useDate;
         this.selName = selName;
@@ -152,11 +149,11 @@ public class DateSelector
      *
      * @param selName A String with the selector name.
      */
-    public DateSelector( String selName )
+    public DateSelector(String selName)
     {
         this.selName = selName;
         this.useDate = Calendar.getInstance();
-        this.useDate.setTime ( new Date() );
+        this.useDate.setTime(new Date());
     }
 
     /**
@@ -169,7 +166,7 @@ public class DateSelector
      * then nothing will be set.
      * @return A DateSelector (self).
      */
-    public DateSelector setOnChange ( String onChange )
+    public DateSelector setOnChange(String onChange)
     {
         if (onChange != null)
         {
@@ -192,7 +189,7 @@ public class DateSelector
      * @param day The day.
      * @return A DateSelector (self).
      */
-    public DateSelector setDay( int day )
+    public DateSelector setDay(int day)
     {
         this.setDay = day;
         this.showDays = false;
@@ -208,7 +205,7 @@ public class DateSelector
      * @param show True if the day should be shown.
      * @return A DateSelector (self).
      */
-    public DateSelector setShowDay ( boolean show )
+    public DateSelector setShowDay(boolean show)
     {
         this.showDays = false;
         return this;
@@ -220,7 +217,7 @@ public class DateSelector
      *
      * @param selname A String with the select name prefix.
      */
-    public void setSelName( String selName )
+    public void setSelName(String selName)
     {
         this.selName = selName;
     }
@@ -257,12 +254,11 @@ public class DateSelector
      * @param now Calendar to start with.
      * @return A select object with all the months.
      */
-    public static Select getMonthSelector(String name,
-                                          Calendar now)
+    public static Select getMonthSelector(String name, Calendar now)
     {
         Select monthSelect = new Select().setName(name);
 
-        for (int curMonth = 0;curMonth <= 11; curMonth++)
+        for (int curMonth = 0; curMonth <= 11; curMonth++)
         {
             Option o = new Option();
             o.addElement(monthName[curMonth]);
@@ -294,12 +290,11 @@ public class DateSelector
      * @param now Calendar to start with.
      * @return A select object with all the days in a month.
      */
-    public static Select getDaySelector(String name,
-                                        Calendar now)
+    public static Select getDaySelector(String name, Calendar now)
     {
         Select daySelect = new Select().setName(name);
 
-        for(int currentDay=1; currentDay <= 31; currentDay++)
+        for(int currentDay = 1; currentDay <= 31; currentDay++)
         {
             Option o = new Option();
             o.addElement(Integer.toString(currentDay));
@@ -333,11 +328,10 @@ public class DateSelector
      * @return A select object with all the years starting five years
      * from now and five years before this year.
      */
-    public static Select getYearSelector(String name,
-                                         Calendar now)
+    public static Select getYearSelector(String name, Calendar now)
     {
         int startYear = now.get(Calendar.YEAR);
-        return(getYearSelector(name, startYear-5, startYear+5, startYear));
+        return(getYearSelector(name, startYear - 5, startYear + 5, startYear));
     }
 
     /**
@@ -382,7 +376,7 @@ public class DateSelector
      * @param day The day.
      * @return A DateSelector (self).
      */
-    public boolean setYear( int firstYear, int lastYear, int selectedYear )
+    public boolean setYear(int firstYear, int lastYear, int selectedYear)
     {
         if (firstYear <= lastYear && firstYear <= selectedYear
             && selectedYear <= lastYear)
@@ -452,24 +446,24 @@ public class DateSelector
      */
     public ElementContainer ecsOutput()
     {
-        if ( this.useDate == null )
+        if (this.useDate == null)
         {
-            this.useDate.setTime ( new Date() );
+            this.useDate.setTime(new Date());
         }
 
         Select monthSelect = getMonthSelector(selName + MONTH_SUFFIX, useDate);
         ConcreteElement daySelect = null;
         if (!showDays)
         {
-            daySelect = new Input(Input.hidden,
-                                  selName + DAY_SUFFIX,
-                                  setDay);
+            daySelect = new Input(Input.hidden, selName + DAY_SUFFIX, setDay);
         }
         else
         {
             Select tmp = getDaySelector(selName + DAY_SUFFIX, useDate);
             if (onChangeSet)
+            {
                 tmp.setOnChange(onChange);
+            }
             daySelect = tmp;
         }
         Select yearSelect = null;

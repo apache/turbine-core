@@ -54,40 +54,32 @@ package org.apache.turbine.services.rundata;
  * <http://www.apache.org/>.
  */
 
-// Java Core Classes
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Vector;
-import java.util.Hashtable;
-import java.io.PrintWriter;
-import java.io.IOException;
-
-// Java Servlet Classes
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-// Turbine Utility Classes
-import org.apache.turbine.om.security.User;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.CookieParser;
-import org.apache.turbine.util.ParameterParser;
-import org.apache.turbine.util.ServerData;
-import org.apache.turbine.util.FormMessages;
-import org.apache.turbine.util.SystemError;
-import org.apache.turbine.util.security.AccessControlList;
-import org.apache.turbine.util.template.TemplateInfo;
-import org.apache.turbine.util.pool.Recyclable;
-import org.apache.turbine.util.pool.RecyclableSupport;
-import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.services.template.TurbineTemplate;
-import org.apache.turbine.services.mimetype.TurbineMimeTypes;
-
-// ECS Classes
+import javax.servlet.http.HttpSession;
 import org.apache.ecs.Document;
 import org.apache.ecs.Element;
 import org.apache.ecs.StringElement;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.mimetype.TurbineMimeTypes;
+import org.apache.turbine.services.resources.TurbineResources;
+import org.apache.turbine.services.template.TurbineTemplate;
+import org.apache.turbine.util.CookieParser;
+import org.apache.turbine.util.FormMessages;
+import org.apache.turbine.util.ParameterParser;
+import org.apache.turbine.util.ServerData;
+import org.apache.turbine.util.SystemError;
+import org.apache.turbine.util.pool.Recyclable;
+import org.apache.turbine.util.pool.RecyclableSupport;
+import org.apache.turbine.util.security.AccessControlList;
+import org.apache.turbine.util.template.TemplateInfo;
 
 /**
  * DefaultTurbineRunData is the default implementation of the
@@ -393,7 +385,6 @@ public class DefaultTurbineRunData
      * "locale.default.charset" or by the specified locale.
      * If the specified locale is null, the default locale is applied.
      *
-     * @param locale the locale of the charset.
      * @return the name of the default charset or null.
      */
     protected String getDefaultCharSet()
@@ -405,7 +396,7 @@ public class DefaultTurbineRunData
                 getString("locale.default.charset");
             defaultCharSetChecked = true;
         }
-        
+
         String charset = defaultCharSet;
         if (charset == null)
         {
@@ -1075,7 +1066,7 @@ public class DefaultTurbineRunData
      * setCharSet(), then a property named "locale.default.charset"
      * is checked from the Resource Service and returned. If this
      * property is undefined, the default charset of the locale
-     * is returned. If the locale is undefined, null is returned. 
+     * is returned. If the locale is undefined, null is returned.
      *
      * @return the name of the charset or null.
      */

@@ -57,29 +57,23 @@ package org.apache.turbine.services.security.ldap;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
-
 import javax.naming.Context;
-import javax.naming.NamingException;
 import javax.naming.NamingEnumeration;
-
+import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
-import javax.naming.directory.SearchResult;
-import javax.naming.directory.SearchControls;
 import javax.naming.directory.DirContext;
-import javax.naming.directory.InitialDirContext;
-
-import org.apache.turbine.om.security.User;
-
-import org.apache.turbine.util.Log;
+import javax.naming.directory.SearchControls;
+import javax.naming.directory.SearchResult;
 import org.apache.torque.util.Criteria;
-import org.apache.turbine.util.security.DataBackendException;
-import org.apache.turbine.util.security.UnknownEntityException;
-import org.apache.turbine.util.security.EntityExistsException;
-import org.apache.turbine.util.security.PasswordMismatchException;
-
+import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.security.UserManager;
 import org.apache.turbine.services.security.ldap.util.ParseExceptionMessage;
+import org.apache.turbine.util.Log;
+import org.apache.turbine.util.security.DataBackendException;
+import org.apache.turbine.util.security.EntityExistsException;
+import org.apache.turbine.util.security.PasswordMismatchException;
+import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
  * A UserManager performs {@link org.apache.turbine.om.security.User}

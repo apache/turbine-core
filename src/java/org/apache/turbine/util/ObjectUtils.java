@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -57,7 +57,6 @@ package org.apache.turbine.util;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -77,8 +76,7 @@ public class ObjectUtils
      * @param dflt The default value to return.
      * @return The object o if it is not null, dflt otherwise.
      */
-    public static Object isNull(Object o,
-                                Object dflt)
+    public static Object isNull(Object o, Object dflt)
     {
         if (o == null)
         {
@@ -97,8 +95,7 @@ public class ObjectUtils
      * @param v The vector.
      * @param o The object.
      */
-    public static void addOnce(Vector v,
-                               Object o)
+    public static void addOnce(Vector v, Object o)
     {
         if (! v.contains( o ))
         {
@@ -112,18 +109,16 @@ public class ObjectUtils
      * @param objectData The serialized object.
      * @return The deserialized object, or <code>null</code> on failure.
      */
-    public static Object deserialize( byte[] objectData )
+    public static Object deserialize(byte[] objectData)
     {
         Object object = null;
-        if (objectData != null)            
+        if (objectData != null)
         {
             // These streams are closed in finally.
             ObjectInputStream in = null;
-            ByteArrayInputStream bin =
-                new ByteArrayInputStream(objectData);
-            BufferedInputStream bufin =
-                new BufferedInputStream(bin);
-            try                
+            ByteArrayInputStream bin = new ByteArrayInputStream(objectData);
+            BufferedInputStream bufin = new BufferedInputStream(bin);
+            try
             {
                 in = new ObjectInputStream(bufin);
 
@@ -134,14 +129,23 @@ public class ObjectUtils
             catch (Exception e)
             {
             }
-            finally                
+            finally
             {
-                try 
+                try
                 {
-                    if (in != null) in.close();
-                    if (bufin != null) bufin.close();
-                    if (bin != null) bin.close();
-                } 
+                    if (in != null)
+                    {
+                        in.close();
+                    }
+                    if (bufin != null)
+                    {
+                        bufin.close();
+                    }
+                    if (bin != null)
+                    {
+                        bin.close();
+                    }
+                }
                 catch(IOException e)
                 {
                 }
@@ -159,8 +163,7 @@ public class ObjectUtils
      * @param o2 The second object.
      * @return True if the values of both xstrings are the same.
      */
-    public static boolean equals( Object o1,
-                                  Object o2 )
+    public static boolean equals(Object o1, Object o2 )
     {
         if (o1 == null)
         {
@@ -176,27 +179,27 @@ public class ObjectUtils
             return o1.equals(o2);
         }
     }
-    
+
     /**
      * Nice method for adding data to a Hashtable in such a way
      * as to not get NPE's. The point being that if the
      * value is null, Hashtable.put() will throw an exception.
-     * That blows in the case of this class cause you may want to 
+     * That blows in the case of this class cause you may want to
      * essentially treat put("Not Null", null ) == put("Not Null", "")
      * We will still throw a NPE if the key is null cause that should
      * never happen.
      */
-    public static final void safeAddToHashtable(Hashtable hash, Object key, Object value)
-        throws NullPointerException
+    public static final void safeAddToHashtable(Hashtable hash, Object key,
+            Object value)
+            throws NullPointerException
     {
         if (value == null)
         {
-            hash.put ( key, "" );
+            hash.put(key, "");
         }
         else
         {
-           hash.put ( key, value );
+           hash.put(key, value);
         }
     }
-
 }

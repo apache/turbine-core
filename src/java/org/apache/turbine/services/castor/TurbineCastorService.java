@@ -54,34 +54,22 @@ package org.apache.turbine.services.castor;
  * <http://www.apache.org/>.
  */
 
-// Java Stuff
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Timestamp;
-import java.util.Enumeration;
 import java.util.Properties;
-
-// Castor Stuff
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.util.Log;
 import org.exolab.castor.jdo.Database;
 import org.exolab.castor.jdo.DatabaseNotFoundException;
 import org.exolab.castor.jdo.JDO;
-import org.exolab.castor.jdo.OQLQuery;
 import org.exolab.castor.jdo.PersistenceException;
-import org.exolab.castor.jdo.QueryException;
-import org.exolab.castor.jdo.TransactionNotInProgressException;
 import org.exolab.castor.mapping.MappingException;
 import org.exolab.castor.util.Logger;
-
-// Turbine Stuff
-import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.util.Log;
-
-// SAX Stuff
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 

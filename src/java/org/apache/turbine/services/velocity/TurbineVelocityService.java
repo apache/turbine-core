@@ -54,40 +54,29 @@ package org.apache.turbine.services.velocity;
  * <http://www.apache.org/>.
  */
 
-import java.util.Iterator;
-import java.util.Vector;
-
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.Writer;
+import java.util.Iterator;
+import java.util.Vector;
 import javax.servlet.ServletConfig;
-
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.apache.velocity.context.Context;
-
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationConverter;
 import org.apache.turbine.Turbine;
-import org.apache.turbine.util.ContentURI;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.pull.TurbinePull;
+import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.turbine.services.template.BaseTemplateEngineService;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.StringUtils;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.template.TemplateLink;
-import org.apache.turbine.util.template.TemplatePageAttributes;
-
-import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.pull.TurbinePull;
-import org.apache.turbine.services.servlet.TurbineServlet;
-
-import org.apache.turbine.services.template.TurbineTemplate;
-import org.apache.turbine.services.template.BaseTemplateEngineService;
-
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationConverter;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.context.Context;
 
 
 /**

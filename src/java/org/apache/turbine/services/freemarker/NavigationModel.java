@@ -58,12 +58,8 @@ import freemarker.template.SimpleScalar;
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
-
 import java.util.List;
-
 import org.apache.turbine.util.RunData;
-
-import org.apache.turbine.util.template.TemplateInfo;
 
 /**
  * Returns output of a Navigation module.  Extension of FreeMarker.
@@ -103,9 +99,9 @@ public class NavigationModel
 
         String module = null;
         String returnValue = null;
-        
+
         /*
-        
+
         try
         {
             module = ((TemplateService)TurbineServices.getInstance().getService(
@@ -119,9 +115,9 @@ public class NavigationModel
             Log.error(message, e);
             returnValue = message;
         }
-        
+
         */
-        
+
         return new SimpleScalar(returnValue);
 
     }

@@ -56,10 +56,7 @@ package org.apache.turbine.util.webmacro;
 
 import org.apache.turbine.services.webmacro.TurbineWebMacro;
 import org.apache.turbine.util.Log;
-import org.apache.turbine.util.mail.Email;
 import org.apache.turbine.util.mail.SimpleEmail;
-
-import org.webmacro.Context;
 import org.webmacro.servlet.WebContext;
 
 /**
@@ -159,7 +156,7 @@ public class WebMacroEmail
     /**
      * Constructor
      */
-    public WebMacroEmail (WebContext context)
+    public WebMacroEmail(WebContext context)
     {
         this.context = context;
     }
@@ -171,8 +168,7 @@ public class WebMacroEmail
      * @param email A String with the TO email.
      * @return A WebMacroEmail (self).
      */
-    public WebMacroEmail setTo(String to,
-                               String email)
+    public WebMacroEmail setTo(String to, String email)
     {
         this.toName = to;
         this.toEmail = email;
@@ -186,8 +182,7 @@ public class WebMacroEmail
      * @param email A String with the FROM email.
      * @return A WebMacroEmail (self).
      */
-    public WebMacroEmail setFrom(String from,
-                                 String email)
+    public WebMacroEmail setFrom(String from, String email)
     {
         this.fromName = from;
         this.fromEmail = email;
@@ -264,7 +259,7 @@ public class WebMacroEmail
         catch (Exception e)
         {
             // Log the error.
-            Log.error ("WebMacroEmail error: ", e);
+            Log.error("WebMacroEmail error: ", e);
         }
     }
 

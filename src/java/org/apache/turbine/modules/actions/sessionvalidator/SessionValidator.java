@@ -54,11 +54,7 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  * <http://www.apache.org/>.
  */
 
-// Turbine Modules
 import org.apache.turbine.modules.Action;
-
-// Turbine Utility Classes
-import org.apache.turbine.util.RunData;
 
 /**
  * The SessionValidator attempts to retrive the User object from the

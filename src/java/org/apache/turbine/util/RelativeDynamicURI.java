@@ -54,9 +54,7 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
-import java.util.Vector;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * This creates a Dynamic URI for use within the Turbine system
@@ -94,7 +92,7 @@ public class RelativeDynamicURI extends DynamicURI
      *
      * @param data A Turbine RunData object.
      */
-    public RelativeDynamicURI( RunData data )
+    public RelativeDynamicURI(RunData data)
     {
         super(data);
     }
@@ -105,8 +103,7 @@ public class RelativeDynamicURI extends DynamicURI
      * @param data A Turbine RunData object.
      * @param screen A String with the name of a screen.
      */
-    public RelativeDynamicURI( RunData data,
-                               String screen )
+    public RelativeDynamicURI(RunData data, String screen)
     {
         super(data, screen);
     }
@@ -118,9 +115,7 @@ public class RelativeDynamicURI extends DynamicURI
      * @param screen A String with the name of a screen.
      * @param action A String with the name of an action.
      */
-    public RelativeDynamicURI( RunData data,
-                               String screen,
-                               String action )
+    public RelativeDynamicURI(RunData data, String screen, String action)
     {
         super(data, screen, action);
     }
@@ -133,10 +128,10 @@ public class RelativeDynamicURI extends DynamicURI
      * @param action A String with the name of an action.
      * @param redirect True if it should redirect.
      */
-    public RelativeDynamicURI( RunData data,
-                               String screen,
-                               String action,
-                               boolean redirect )
+    public RelativeDynamicURI(RunData data,
+                              String screen,
+                              String action,
+                              boolean redirect)
     {
         super(data, screen, action, redirect);
     }
@@ -148,9 +143,9 @@ public class RelativeDynamicURI extends DynamicURI
      * @param screen A String with the name of a screen.
      * @param redirect True if it should redirect.
      */
-    public RelativeDynamicURI( RunData data,
-                               String screen,
-                               boolean redirect )
+    public RelativeDynamicURI(RunData data,
+                              String screen,
+                              boolean redirect)
     {
         super(data, screen, redirect);
     }
@@ -161,8 +156,7 @@ public class RelativeDynamicURI extends DynamicURI
      * @param data A Turbine RunData object.
      * @param redirect True if it should redirect.
      */
-    public RelativeDynamicURI( RunData data,
-                               boolean redirect )
+    public RelativeDynamicURI(RunData data, boolean redirect)
     {
         super(data, redirect);
     }
@@ -172,7 +166,7 @@ public class RelativeDynamicURI extends DynamicURI
      *
      * @param sd A ServerData.
      */
-    public RelativeDynamicURI( ServerData sd )
+    public RelativeDynamicURI(ServerData sd)
     {
         super(sd);
     }
@@ -183,8 +177,7 @@ public class RelativeDynamicURI extends DynamicURI
      * @param sd A ServerData.
      * @param screen A String with the name of a screen.
      */
-    public RelativeDynamicURI( ServerData sd,
-                               String screen )
+    public RelativeDynamicURI(ServerData sd, String screen)
     {
         super(sd, screen);
     }
@@ -196,9 +189,9 @@ public class RelativeDynamicURI extends DynamicURI
      * @param screen A String with the name of a screen.
      * @param action A String with the name of an action.
      */
-    public RelativeDynamicURI( ServerData sd,
-                               String screen,
-                               String action )
+    public RelativeDynamicURI(ServerData sd,
+                              String screen,
+                              String action)
     {
         super(sd, screen, action);
     }
@@ -211,10 +204,10 @@ public class RelativeDynamicURI extends DynamicURI
      * @param action A String with the name of an action.
      * @param redirect True if it should redirect.
      */
-    public RelativeDynamicURI( ServerData sd,
-                               String screen,
-                               String action,
-                               boolean redirect )
+    public RelativeDynamicURI(ServerData sd,
+                              String screen,
+                              String action,
+                              boolean redirect)
     {
         super(sd, screen, action, redirect);
     }
@@ -226,9 +219,9 @@ public class RelativeDynamicURI extends DynamicURI
      * @param screen A String with the name of a screen.
      * @param redirect True if it should redirect.
      */
-    public RelativeDynamicURI( ServerData sd,
-                               String screen,
-                               boolean redirect )
+    public RelativeDynamicURI(ServerData sd,
+                              String screen,
+                              boolean redirect)
     {
         super(sd, screen, redirect);
     }
@@ -239,8 +232,7 @@ public class RelativeDynamicURI extends DynamicURI
      * @param sd A ServerData.
      * @param redirect True if it should redirect.
      */
-    public RelativeDynamicURI( ServerData sd,
-                               boolean redirect )
+    public RelativeDynamicURI(ServerData sd, boolean redirect)
     {
         super(sd, redirect);
     }
@@ -266,27 +258,31 @@ public class RelativeDynamicURI extends DynamicURI
     public String toString()
     {
         StringBuffer output = new StringBuffer();
-        output.append ( getScriptName() );
-        if ( this.hasPathInfo )
+        output.append(getScriptName());
+        if (this.hasPathInfo)
         {
-            output.append ( "/" );
-            output.append ( renderPathInfo(this.pathInfo) );
+            output.append("/");
+            output.append(renderPathInfo(this.pathInfo));
         }
-        if ( this.hasQueryData )
+        if (this.hasQueryData)
         {
-            output.append ( "?" );
-            output.append ( renderQueryString(this.queryData) );
+            output.append("?");
+            output.append(renderQueryString(this.queryData));
         }
 
         // There seems to be a bug in Apache JServ 1.0 where the
         // session id is not appended to the end of the url when a
         // cookie has not been set.
-        if ( this.res != null )
+        if (this.res != null )
         {
-            if ( this.redirect )
-                return res.encodeRedirectUrl (output.toString());
+            if (this.redirect)
+            {
+                return res.encodeRedirectUrl(output.toString());
+            }
             else
-                return res.encodeUrl (output.toString());
+            {
+                return res.encodeUrl(output.toString());
+            }
         }
         else
         {
@@ -309,20 +305,18 @@ public class RelativeDynamicURI extends DynamicURI
         StringBuffer output = new StringBuffer();
         HttpServletRequest request = data.getRequest();
 
-        output.append ( data.getServerData().getScriptName() );
+        output.append(data.getServerData().getScriptName());
 
-        if ( request.getPathInfo() != null )
+        if (request.getPathInfo() != null)
         {
-            output.append( request.getPathInfo() );
+            output.append(request.getPathInfo());
         }
 
-        if ( request.getQueryString() != null )
+        if (request.getQueryString() != null)
         {
-            output.append ( "?" );
-            output.append ( request.getQueryString() );
+            output.append("?");
+            output.append(request.getQueryString());
         }
         return output.toString();
     }
 }
-
-

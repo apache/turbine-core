@@ -53,18 +53,14 @@ package org.apache.turbine.services.intake;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
+import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.IOException;
-import java.beans.BeanInfo;
-import java.beans.FeatureDescriptor;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -73,18 +69,17 @@ import java.util.Map;
 import java.util.Properties;
 import javax.servlet.ServletConfig;
 import org.apache.turbine.om.OMTool;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.intake.model.Group;
 import org.apache.turbine.services.intake.transform.XmlToAppData;
 import org.apache.turbine.services.intake.xmlmodel.AppData;
-import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.services.intake.xmlmodel.XmlGroup;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.ServletUtils;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.pool.BoundedBuffer;
 import org.apache.turbine.util.pool.Recyclable;
-import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.InitializationException;
 
 /**
  * This service provides access to input processing objects based
@@ -564,16 +559,16 @@ public class TurbineIntakeService
 
         if ( setter == null )
         {
-            PropertyDescriptor pd = null; 
+            PropertyDescriptor pd = null;
             synchronized(setterMap)
             {
                 try
                 {
-                    pd = new PropertyDescriptor(propName, 
+                    pd = new PropertyDescriptor(propName,
                                                 Class.forName(className));
                     setter = pd.getWriteMethod();
                     ((Map)setterMap.get(className)).put(propName, setter);
-                    if ( setter == null ) 
+                    if ( setter == null )
                     {
                         Log.error("Intake: setter for '" + propName
                                   + "' in class '" + className
@@ -617,16 +612,16 @@ public class TurbineIntakeService
 
         if ( getter == null )
         {
-            PropertyDescriptor pd = null; 
+            PropertyDescriptor pd = null;
             synchronized(getterMap)
             {
                 try
                 {
-                    pd = new PropertyDescriptor(propName, 
+                    pd = new PropertyDescriptor(propName,
                                                 Class.forName(className));
                     getter = pd.getReadMethod();
                     ((Map)getterMap.get(className)).put(propName, getter);
-                    if ( getter == null ) 
+                    if ( getter == null )
                     {
                         Log.error("Intake: getter for '" + propName
                                   + "' in class '" + className

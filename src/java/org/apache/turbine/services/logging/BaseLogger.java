@@ -25,13 +25,13 @@ package org.apache.turbine.services.logging;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,9 +54,8 @@ package org.apache.turbine.services.logging;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.services.resources.TurbineResources;
 
-/** 
+/**
  * This is an abbstract class that implements Logger interface.
  * User implementation has to redefine only five methods that can
  * handle different type of destinations.
@@ -66,7 +65,7 @@ import org.apache.turbine.services.resources.TurbineResources;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
-public abstract class BaseLogger 
+public abstract class BaseLogger
     implements Logger
 {
     /** Current log level for logger */
@@ -98,8 +97,8 @@ public abstract class BaseLogger
         runDataFilter = new BaseRunDataFilter();
     }
 
-    /** 
-     * This method should be reimplemented by user if class use need 
+    /**
+     * This method should be reimplemented by user if class use need
      * some objects intialization.
      *
      * @param loggingConfig Configuration describing the logger.
@@ -107,13 +106,13 @@ public abstract class BaseLogger
     public void init(LoggingConfig loggingConfig)
     {
         this.loggingConfig = loggingConfig;
-        doBaseInit(loggingConfig);     
-        
+        doBaseInit(loggingConfig);
+
         // Initialization of objects goes here
         doDispatch(loggingConfig);
     }
 
-    /** 
+    /**
      * Starts configuration of the logger, sets name, format, loging level
      * (defaults to <code>DEBUG</code>).
      *
@@ -126,7 +125,7 @@ public abstract class BaseLogger
         setFormat(loggingConfig.getFormat());
     }
 
-    /** 
+    /**
      * Dispatches tasks for different types of destinations.
      * Checks if the logger were configure properly
      *
@@ -157,7 +156,7 @@ public abstract class BaseLogger
         name = logName;
     }
 
-    /** 
+    /**
      * Sets format output of the <code>Rundata</code>.
      * Format style is defined in the BaseRunDataFilter class.
      *
@@ -202,7 +201,7 @@ public abstract class BaseLogger
     }
 
     /**
-     * Sets the logging level based on the numeric level passed in.  Uses 
+     * Sets the logging level based on the numeric level passed in.  Uses
      * reasonable defaults if passed bogus data.
      *
      * @param level The logging level.
@@ -263,7 +262,7 @@ public abstract class BaseLogger
     {
     }
 
-    /** 
+    /**
      * This method should be implemented by user if the logger can handle
      * remote server.  It adds remote servers as destinations for logger.
      *
@@ -273,7 +272,7 @@ public abstract class BaseLogger
     {
     }
 
-    /** 
+    /**
      * This method should be implemented by user if the logger can handle
      * console.  It adds console as a destination for logger.
      *
@@ -283,7 +282,7 @@ public abstract class BaseLogger
     {
     }
 
-    /** 
+    /**
      * This method should be implemented by user if the logger can handle
      * syslog demon.  It adds syslog demon as destinations for logger.
      *
@@ -293,7 +292,7 @@ public abstract class BaseLogger
     {
     }
 
-    /** 
+    /**
      * This method should be implemented by user if the logger can handle
      * emailing logs.  It adds email as a destination for logger.
      *
@@ -303,7 +302,7 @@ public abstract class BaseLogger
     {
     }
 
-    /** 
+    /**
      * This method should be implemented by user if the logger can handle
      * database logs.  It adds a db as a destination for logger.
      *
@@ -313,8 +312,8 @@ public abstract class BaseLogger
     {
     }
 
-    /** 
-     * This method should be implemented by user. 
+    /**
+     * This method should be implemented by user.
      * It performs action that are need for deterimne whether
      * logger was well configured or has any output
      */

@@ -25,13 +25,13 @@ package org.apache.turbine.services.cache;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,13 +55,12 @@ package org.apache.turbine.services.cache;
  */
 
 import java.io.IOException;
-import org.apache.turbine.services.Service;
 import org.apache.turbine.services.TurbineServices;
 
 /**
  * This is a Facade class for GlobalCacheService.
  *
- * This class provides static methods that call related methods of the 
+ * This class provides static methods that call related methods of the
  * implementation of the GlobalCacheService used by the System, according to
  * the settings in TurbineResources.
  *
@@ -71,7 +70,7 @@ import org.apache.turbine.services.TurbineServices;
 public abstract class TurbineGlobalCache
 {
     /**
-     * Utility method for accessing the service 
+     * Utility method for accessing the service
      * implementation
      *
      * @return a GlobalCacheService implementation instance
@@ -81,7 +80,7 @@ public abstract class TurbineGlobalCache
         return (GlobalCacheService)TurbineServices
             .getInstance().getService(GlobalCacheService.SERVICE_NAME);
     }
-    
+
 
     /**
      * Gets a cached object given its id (a String).

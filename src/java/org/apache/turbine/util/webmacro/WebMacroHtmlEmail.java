@@ -55,17 +55,11 @@ package org.apache.turbine.util.webmacro;
  */
 
 import java.net.URL;
-
 import java.util.Hashtable;
-
 import javax.mail.MessagingException;
-
 import org.apache.turbine.services.webmacro.TurbineWebMacro;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.mail.HtmlEmail;
-import org.apache.turbine.util.mail.MultiPartEmail;
-
-import org.webmacro.Context;
 import org.webmacro.servlet.WebContext;
 
 /**
@@ -253,11 +247,11 @@ public class WebMacroHtmlEmail
         {
             URL url = new URL(surl);
             cid = super.embed(url, name);
-            embmap.put(name,cid);
+            embmap.put(name, cid);
         }
-        catch( Exception e )
+        catch (Exception e)
         {
-            Log.error("cannot embed "+surl+": ", e);
+            Log.error("cannot embed " + surl + ": ", e);
         }
         return cid;
     }
@@ -271,7 +265,7 @@ public class WebMacroHtmlEmail
      */
     public String getCid(String filename)
     {
-        String cid = (String)embmap.get(filename);
-        return "cid:"+cid;
+        String cid = (String) embmap.get(filename);
+        return "cid:" + cid;
     }
 }

@@ -25,13 +25,13 @@ package org.apache.turbine.util.template;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,18 +54,11 @@ package org.apache.turbine.util.template;
  * <http://www.apache.org/>.
  */
 
-import org.apache.ecs.Document;
-import org.apache.ecs.Element;
-import org.apache.ecs.ElementAttributes;
 import org.apache.ecs.HtmlColor;
-import org.apache.ecs.html.Body;
-import org.apache.ecs.html.Head;
 import org.apache.ecs.html.Link;
 import org.apache.ecs.html.Meta;
 import org.apache.ecs.html.Title;
-
 import org.apache.turbine.services.pull.ApplicationTool;
-
 import org.apache.turbine.util.RunData;
 
 /**
@@ -100,7 +93,7 @@ public class TemplatePageAttributes
     public TemplatePageAttributes()
     {
     }
-    
+
     /**
      * Construct a new instance with the given RunData object.
      *
@@ -121,7 +114,7 @@ public class TemplatePageAttributes
     {
         // we blithely cast to RunData as the runtime error thrown
         // if data is null or not RunData is appropriate.
-        this.data = (RunData)data;
+        this.data = (RunData) data;
 
         // clear cached title
         this.cachedTitle = null;
@@ -146,9 +139,13 @@ public class TemplatePageAttributes
     {
         Title title = data.getPage().getTitle();
         if (cachedTitle != null)
+        {
             cachedTitle += intitle;
+        }
         else
+        {
             cachedTitle = intitle;
+        }
         title.addElement(intitle);
         return this;
     }
@@ -163,7 +160,9 @@ public class TemplatePageAttributes
     public String getTitle()
     {
         if (cachedTitle == null)
+        {
             return "";
+        }
         return cachedTitle;
     }
 
@@ -313,8 +312,7 @@ public class TemplatePageAttributes
      * @param value A String.
      * @return A TemplatePageAttributes (self).
      */
-    public TemplatePageAttributes addAttribute(String name,
-                                               String value)
+    public TemplatePageAttributes addAttribute(String name, String value)
     {
         data.getPage().getBody().addAttribute(name, value);
         return this;

@@ -25,13 +25,13 @@ package org.apache.turbine.services.pull;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -58,22 +58,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.context.Context;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.pool.PoolService;
-import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.services.resources.ResourceService;
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.ServletUtils;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.context.Context;
 
 /**
  * <p>
@@ -130,13 +126,13 @@ import org.apache.turbine.util.ServletUtils;
  *              be threadsafe.
  *
  *  session:    tool is instantiated once for each user session, and is
- *              stored in the user's temporary hashtable. Tool should be 
+ *              stored in the user's temporary hashtable. Tool should be
  *              threadsafe.
  *
  *  persistent: tool is instantitated once for each use session, and
  *              is stored in the user's permanent hashtable. This means
  *              for a logged in user the tool will be persisted in the
- *              user's objectdata. Tool should be threadsafe and 
+ *              user's objectdata. Tool should be threadsafe and
  *              Serializable.
  *
  * Defaults: none
@@ -146,13 +142,13 @@ import org.apache.turbine.util.ServletUtils;
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @version $Id$
  */
-public class TurbinePullService extends TurbineBaseService 
+public class TurbinePullService extends TurbineBaseService
     implements PullService
 {
     /**
-     * This is the container for the global web application 
+     * This is the container for the global web application
      * tools that are used in conjunction with the
-     * Turbine Pull Model. All the global tools will be placed 
+     * Turbine Pull Model. All the global tools will be placed
      * in this Context and be made accessible inside
      * templates via the tool name specified in the TR.props
      * file.
@@ -183,7 +179,7 @@ public class TurbinePullService extends TurbineBaseService
      * of the different type of tool. The Lists contain ToolData
      * objects.
      */
-    private List globalTools;  
+    private List globalTools;
     private List requestTools;
     private List sessionTools;
     private List persistentTools;
@@ -209,19 +205,19 @@ public class TurbinePullService extends TurbineBaseService
      * by the application tools.
      */
     private static String absolutePathToResourcesDirectory;
-    
+
     /**
      * Property tag for application tool resources directory
      */
     private static final String TOOL_RESOURCES_DIR
         = "tools.resources.dir";
-    
+
     /**
      * Default value for the application tool resources
      * directory. The location for the resources directory
      * is typically WEBAPP/resources.
      */
-    private static final String TOOL_RESOURCES_DIR_DEFAULT 
+    private static final String TOOL_RESOURCES_DIR_DEFAULT
         = "/resources";
 
     /**
@@ -229,7 +225,7 @@ public class TurbinePullService extends TurbineBaseService
      * (for obvious reasons has no effect for per-request tools)
      */
     private static final String TOOLS_PER_REQUEST_REFRESH =
-        "tools.per.request.refresh";         
+        "tools.per.request.refresh";
 
     /**
      * Should we refresh the application tools on
@@ -245,9 +241,9 @@ public class TurbinePullService extends TurbineBaseService
         try
         {
            /*
-            * Make sure to setInit(true) *inside* initPull() 
-            * because Tools may make calls back to the TurbinePull 
-            * static methods which may cause a recursive init 
+            * Make sure to setInit(true) *inside* initPull()
+            * because Tools may make calls back to the TurbinePull
+            * static methods which may cause a recursive init
             * thing to happen.
             */
             initPull();
@@ -278,22 +274,22 @@ public class TurbinePullService extends TurbineBaseService
 
         /*
          * Get absolute path to the resources directory.
-         * 
+         *
          * This should be done before the tools initialized
          * because a tool might need to know this value
          * for it to initialize correctly.
          */
-         absolutePathToResourcesDirectory = 
+         absolutePathToResourcesDirectory =
             Turbine.getRealPath(resourcesDirectory);
-    
+
         /*
          * Should we refresh the tool box on a per
          * request basis.
          */
-        refreshToolsPerRequest = 
+        refreshToolsPerRequest =
             new Boolean(properties.getProperty(
                 TOOLS_PER_REQUEST_REFRESH)).booleanValue();
-        
+
         /*
          * Log the fact that the application tool box will
          * be refreshed on a per request basis.
@@ -304,7 +300,7 @@ public class TurbinePullService extends TurbineBaseService
 
         /*
          * Make sure to set init true because Tools may make
-         * calls back to the TurbinePull static methods which 
+         * calls back to the TurbinePull static methods which
          * may cause a recursive init thing to happen.
          */
         setInit(true);
@@ -345,7 +341,7 @@ public class TurbinePullService extends TurbineBaseService
     {
         List classes = new ArrayList();
 
-        ResourceService toolResources = 
+        ResourceService toolResources =
             TurbineResources.getResources(keyPrefix);
 
         /*
@@ -355,17 +351,17 @@ public class TurbinePullService extends TurbineBaseService
         if (toolResources == null)
         {
             return classes;
-        }            
+        }
 
         Iterator it = toolResources.getKeys();
         while (it.hasNext())
         {
             String toolName = (String) it.next();
             String toolClassName = toolResources.getString(toolName);
-            
+
             try
             {
-                /* 
+                /*
                  * Create an instance of the tool class.
                  */
                 Class toolClass = Class.forName(toolClassName);
@@ -374,9 +370,9 @@ public class TurbinePullService extends TurbineBaseService
                  * Add the tool to the list being built.
                  */
                 classes.add(new ToolData(toolName, toolClassName, toolClass));
-                
+
                 Log.info("Instantiated tool class " + toolClassName
-                        + " to add to the context as '$"  + toolName + "'"); 
+                        + " to add to the context as '$"  + toolName + "'");
             }
             catch (Exception e)
             {
@@ -387,7 +383,7 @@ public class TurbinePullService extends TurbineBaseService
 
         return classes;
     }
-    
+
     /**
      * Return the Context which contains all global tools that
      * are to be used in conjunction with the Turbine
@@ -524,12 +520,12 @@ public class TurbinePullService extends TurbineBaseService
                 // by synchronizing against the user object
                 synchronized (user)
                 {
-                    // first try and fetch the tool from the user's 
+                    // first try and fetch the tool from the user's
                     // hashtable
                     Object tool = usePerm
                         ? user.getPerm(toolData.toolClassName)
                         : user.getTemp(toolData.toolClassName);
-                    
+
                     if (tool == null)
                     {
                         // if not there, an instance must be fetched from
@@ -567,16 +563,16 @@ public class TurbinePullService extends TurbineBaseService
             }
         }
     }
-      
+
     /**
-     * Return the absolute path to the resources directory 
+     * Return the absolute path to the resources directory
      * used by the application tools.
      */
     public String getAbsolutePathToResourcesDirectory()
     {
         return absolutePathToResourcesDirectory;
     }
-    
+
     /**
      * Return the resources directory. This is
      * relative to the web context.
@@ -584,7 +580,7 @@ public class TurbinePullService extends TurbineBaseService
     public String getResourcesDirectory()
     {
         return resourcesDirectory;
-    }        
+    }
 
     /**
      * Refresh the global tools. We can
@@ -625,8 +621,8 @@ public class TurbinePullService extends TurbineBaseService
         // Get the PoolService to release object instances to
         PoolService pool = (PoolService)
             TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
-       
-        // only the request tools can be released - other scoped 
+
+        // only the request tools can be released - other scoped
         // tools will have continuing references to them
         releaseTools(context, pool, requestTools);
     }
@@ -646,11 +642,11 @@ public class TurbinePullService extends TurbineBaseService
         {
             ToolData toolData = (ToolData)it.next();
             Object tool = context.remove(toolData.toolName);
-            
+
             if (tool != null)
             {
                 pool.putInstance(tool);
-            }                
+            }
         }
     }
 }

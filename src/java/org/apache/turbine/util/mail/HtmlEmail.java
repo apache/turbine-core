@@ -55,24 +55,16 @@ package org.apache.turbine.util.mail;
  */
 
 import java.net.URL;
-
 import javax.activation.DataHandler;
-import javax.activation.DataSource;
 import javax.activation.URLDataSource;
-
-import javax.mail.BodyPart;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
-
 import org.apache.ecs.Document;
 import org.apache.ecs.ElementContainer;
 import org.apache.ecs.html.Body;
 import org.apache.ecs.html.Html;
 import org.apache.ecs.html.PRE;
-
-import org.apache.turbine.util.GenerateUniqueId;
 import org.apache.turbine.util.StringUtils;
 
 /**
@@ -221,13 +213,13 @@ public class HtmlEmail extends MultiPartEmail
     {
         MimeBodyPart mbp = new MimeBodyPart();
 
-        mbp.setDataHandler ( new DataHandler( new URLDataSource(url) ) );
-        mbp.setFileName( name );
+        mbp.setDataHandler(new DataHandler(new URLDataSource(url)));
+        mbp.setFileName(name);
         mbp.setDisposition("inline");
         String cid = org.apache.turbine.util.GenerateUniqueId.getIdentifier();
         mbp.addHeader("Content-ID", cid);
 
-        getHtmlContent().addBodyPart( mbp );
+        getHtmlContent().addBodyPart(mbp);
         return mbp.getContentID();
     }
 
@@ -287,13 +279,13 @@ public class HtmlEmail extends MultiPartEmail
         if (msgHtml != null)
         {
             // add the html
-            if ( charset != null )
+            if (charset != null)
             {
-                msgHtml.setContent( html, TEXT_HTML + ";charset=" + charset );
+                msgHtml.setContent(html, TEXT_HTML + ";charset=" + charset);
             }
             else
             {
-                msgHtml.setContent( html, TEXT_HTML );
+                msgHtml.setContent(html, TEXT_HTML);
             }
         }
 

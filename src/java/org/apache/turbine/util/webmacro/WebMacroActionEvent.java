@@ -55,18 +55,11 @@ package org.apache.turbine.util.webmacro;
  */
 
 import java.lang.reflect.Method;
-
 import java.util.Enumeration;
-
 import org.apache.turbine.modules.ActionEvent;
-
 import org.apache.turbine.services.webmacro.WebMacroService;
-
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.ValueParser;
-import org.apache.turbine.util.template.TemplateInfo;
-
 import org.webmacro.servlet.WebContext;
 
 /**
@@ -96,7 +89,7 @@ public abstract class WebMacroActionEvent
      * @param data A Turbine RunData object.
      * @exception Exception, a generic exception.
      */
-    public abstract void doPerform( RunData data )
+    public abstract void doPerform(RunData data)
         throws Exception;
 
     /**
@@ -107,17 +100,17 @@ public abstract class WebMacroActionEvent
      * @param data A Turbine RunData object.
      * @exception Exception, a generic exception.
      */
-    protected void perform( RunData data )
+    protected void perform(RunData data)
         throws Exception
     {
         try
         {
-            executeEvents(data, (WebContext)data.getTemplateInfo()
+            executeEvents(data, (WebContext) data.getTemplateInfo()
                 .getTemplateContext(WebMacroService.WEBMACRO_CONTEXT));
         }
         catch (NoSuchMethodException e)
         {
-            doPerform( data );
+            doPerform(data);
         }
     }
 
@@ -128,8 +121,7 @@ public abstract class WebMacroActionEvent
      * @param context WebMacro context information.
      * @exception Exception, a generic exception.
      */
-    public void executeEvents(RunData data,
-                         WebContext context)
+    public void executeEvents(RunData data, WebContext context)
         throws Exception
     {
         // Name of the button.
@@ -152,7 +144,9 @@ public abstract class WebMacroActionEvent
         }
 
         if (theButton == null)
+        {
             throw new NoSuchMethodException("ActionEvent: The button was null");
+        }
 
         try
         {

@@ -54,8 +54,6 @@ package org.apache.turbine.util.template;
  * <http://www.apache.org/>.
  */
 
-import org.apache.ecs.Element;
-import org.apache.ecs.GenericElement;
 import org.apache.ecs.html.Option;
 import org.apache.ecs.html.Select;
 
@@ -131,11 +129,9 @@ public class SelectorBox
      * @param names An Object[] with the names.
      * @param values An Object[] with the values.
      */
-    public SelectorBox ( String name,
-                         Object[] names,
-                         Object[] values )
+    public SelectorBox(String name, Object[] names, Object[] values)
     {
-        this(name, names,values, 1, null);
+        this(name, names, values, 1, null);
     }
 
     /**
@@ -146,12 +142,9 @@ public class SelectorBox
      * @param values An Object[] with the values.
      * @param size An int specifying the size.
      */
-    public SelectorBox ( String name,
-                         Object[] names,
-                         Object[] values,
-                         int size )
+    public SelectorBox(String name, Object[] names, Object[] values, int size)
     {
-        this(name, names,values, size, null);
+        this(name, names, values, size, null);
     }
 
     /**
@@ -162,12 +155,10 @@ public class SelectorBox
      * @param values An Object[] with the values.
      * @param selected A boolean[] with the selected items.
      */
-    public SelectorBox ( String name,
-                         Object[] names,
-                         Object[] values,
-                         boolean[] selected )
+    public SelectorBox(String name, Object[] names, Object[] values,
+            boolean[] selected)
     {
-        this(name, names,values, 1, selected);
+        this(name, names, values, 1, selected);
     }
 
     /**
@@ -179,11 +170,8 @@ public class SelectorBox
      * @param size An int specifying the size.
      * @param selected A boolean[] with the selected items.
      */
-    public SelectorBox ( String name,
-                         Object[] names,
-                         Object[] values,
-                         int size,
-                         boolean[] selected )
+    public SelectorBox(String name, Object[] names, Object[] values, int size,
+            boolean[] selected )
     {
         this.name = name;
         this.names = names;
@@ -208,18 +196,17 @@ public class SelectorBox
      * @param selectedSet An Object[].
      * @param entireSet An Object[].
      */
-    public void buildBooleans(Object[] selectedSet,
-                              Object[] entireSet)
+    public void buildBooleans(Object[] selectedSet, Object[] entireSet)
     {
         selected = new boolean[entireSet.length];
-        for ( int j=0; j<entireSet.length; j++ )
+        for (int j = 0; j < entireSet.length; j++)
         {
             Object r2 = entireSet[j];
-            for ( int i=0; i<selectedSet.length; i++ )
+            for (int i = 0; i < selectedSet.length; i++)
             {
                 Object r1 = selectedSet[i];
-                if ( r1 != null && r2 != null &&
-                    r1.toString().equalsIgnoreCase(r2.toString()) )
+                if (r1 != null && r2 != null &&
+                    r1.toString().equalsIgnoreCase(r2.toString()))
                 {
                     selected[j] = true;
                 }
@@ -239,11 +226,11 @@ public class SelectorBox
     {
         sel.setSize(size);
         sel.setName(name);
-        for (int f=0;f<values.length;f++)
+        for (int f = 0; f < values.length; f++)
         {
-            Option opt = new Option((String)values[f]);
-            opt.addElement((String)names[f]);
-            if ( selected != null && selected[f] == true )
+            Option opt = new Option((String) values[f]);
+            opt.addElement((String) names[f]);
+            if (selected != null && selected[f] == true)
             {
                 opt.setSelected(true);
             }
@@ -285,7 +272,7 @@ public class SelectorBox
      * @param val True if multiple selection should be allowed.
      * @return A SelectorBox (self).
      */
-    public SelectorBox setMultiple ( boolean val )
+    public SelectorBox setMultiple(boolean val)
     {
         sel.setMultiple(val);
         return this;
@@ -298,7 +285,7 @@ public class SelectorBox
      * @param name A String with the name.
      * @return A SelectorBox (self).
      */
-    public SelectorBox setName ( String name )
+    public SelectorBox setName(String name)
     {
         this.name = name;
         sel.setName(name);
@@ -354,11 +341,10 @@ public class SelectorBox
         if (name != null)
         {
             selected = new boolean[names.length];
-            for ( int i=0; i<names.length; i++ )
+            for (int i = 0; i < names.length; i++)
             {
                 Object o = names[i];
-                if ( o != null &&
-                     o.toString().equalsIgnoreCase(name.toString()) )
+                if (o != null && o.toString().equalsIgnoreCase(name.toString()))
                 {
                     selected[i] = true;
                 }

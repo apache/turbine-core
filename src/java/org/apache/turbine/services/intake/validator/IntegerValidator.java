@@ -55,7 +55,6 @@ package org.apache.turbine.services.intake.validator;
  */
 
 import java.util.Map;
-import org.apache.turbine.util.Log;
 import org.apache.turbine.util.TurbineException;
 
 /**

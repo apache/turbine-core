@@ -25,13 +25,13 @@ package org.apache.turbine.services.upload;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -57,18 +57,11 @@ package org.apache.turbine.services.upload;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Map;
 import java.util.HashMap;
-import java.util.Properties;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.turbine.services.BaseService;
-import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.ValueParser;
 import org.apache.turbine.util.upload.FileItem;
 import org.apache.turbine.util.upload.MultipartStream;
 
@@ -114,27 +107,27 @@ public class TurbineUploadService
         String contentType = req.getHeader(CONTENT_TYPE);
         if(!contentType.startsWith(MULTIPART_FORM_DATA))
         {
-            throw new TurbineException("the request doesn't contain a " + 
+            throw new TurbineException("the request doesn't contain a " +
                 MULTIPART_FORM_DATA + " stream");
         }
         int requestSize = req.getContentLength();
         if(requestSize == -1)
         {
-            throw new TurbineException("the request was rejected because " + 
+            throw new TurbineException("the request was rejected because " +
                 "it's size is unknown");
         }
         if(requestSize > TurbineUpload.getSizeMax())
         {
-            throw new TurbineException("the request was rejected because " + 
+            throw new TurbineException("the request was rejected because " +
                 "it's size exceeds allowed range");
         }
 
-        try 
+        try
         {
             byte[] boundary = contentType.substring(
                                 contentType.indexOf("boundary=")+9).getBytes();
             InputStream input = (InputStream)req.getInputStream();
-            
+
             MultipartStream multi = new MultipartStream(input, boundary);
             boolean nextPart = multi.skipPreamble();
             while(nextPart)
@@ -148,7 +141,7 @@ public class TurbineUploadService
                                                 .startsWith(MULTIPART_MIXED))
                     {
                         // Multiple files.
-                        byte[] subBoundary = 
+                        byte[] subBoundary =
                             subContentType.substring(
                                 subContentType
                                 .indexOf("boundary=")+9).getBytes();
@@ -345,7 +338,7 @@ public class TurbineUploadService
                     }
                     headerName = header.substring(0, header.indexOf(':'))
                         .trim().toLowerCase();
-                    headerValue = 
+                    headerValue =
                         header.substring(header.indexOf(':') + 1).trim();
                     if (getHeader(headers, headerName) != null)
                     {

@@ -54,10 +54,9 @@ package org.apache.turbine.util.template;
  * <http://www.apache.org/>.
  */
 
-import javax.servlet.http.HttpServletResponse;
+import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RelativeDynamicURI;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.services.pull.ApplicationTool;
 
 /**
  * A customized version of the RelativeDynamicURI to be used in Templates.
@@ -112,7 +111,7 @@ public class RelativeTemplateLink
         // we just blithely cast to RunData as if another object
         // or null is passed in we'll throw an appropriate runtime
         // exception.
-        super.init((RunData)data);
+        super.init((RunData) data);
     }
 
     /**

@@ -54,14 +54,11 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
-import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.Date;
 import org.apache.turbine.services.intake.validator.DateStringValidator;
-import org.apache.turbine.services.intake.xmlmodel.Rule;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
-
-
 import org.apache.turbine.util.ParameterParser;
 
 /**
@@ -73,81 +70,81 @@ import org.apache.turbine.util.ParameterParser;
  */
 public class DateStringField extends Field
 {
-	private DateFormat df = null;
+    private DateFormat df = null;
 
-	public DateStringField(XmlField field, Group group)
-		throws Exception
-	{
-		super(field, group);
+    public DateStringField(XmlField field, Group group)
+        throws Exception
+    {
+        super(field, group);
 
-		if ( validator == null )
-		{
-			df = DateFormat.getInstance();
-			df.setLenient(true);
-		}
-	}
+        if ( validator == null )
+        {
+            df = DateFormat.getInstance();
+            df.setLenient(true);
+        }
+    }
 
-	/**
-	 * A suitable validator.
-	 *
-	 * @return "DateStringValidator"
-	 */
-	protected String getDefaultValidator()
-	{
-		return "org.apache.turbine.services.intake.validator.DateStringValidator";
-	}
+    /**
+     * A suitable validator.
+     *
+     * @return "DateStringValidator"
+     */
+    protected String getDefaultValidator()
+    {
+        return "org.apache.turbine.services.intake.validator.DateStringValidator";
+    }
 
 
 
-	private Date getDate(String dateString)
-	{
-		Date date = null;
-		try
-		{
-			// FIXME: Canonicalize user-entered date strings.
-			if ( df == null ) // guarantees validator != null
-			{
-				date = ((DateStringValidator)validator).parse(dateString);
-			}
-			else
-			{
-				date = df.parse(dateString);
-			}
-		}
-		catch (ParseException e)
-		{
-			//ignore, return null
-		}
-		return date;
-	}
+    private Date getDate(String dateString)
+    {
+        Date date = null;
+        try
+        {
+            // FIXME: Canonicalize user-entered date strings.
+            if ( df == null ) // guarantees validator != null
+            {
+                date = ((DateStringValidator)validator).parse(dateString);
+            }
+            else
+            {
+                date = df.parse(dateString);
+            }
+        }
+        catch (ParseException e)
+        {
+            //ignore, return null
+        }
+        return date;
+    }
 
-	/**
-	 * converts the parameter to the correct Object.
-	 */
-	protected void doSetValue(ParameterParser pp)
-	{
-		if ( isMultiValued  )
-		{
-			String[] ss = pp.getStrings(getKey());
-			Date[] dates = new Date[ss.length];
-			for (int i=0; i<ss.length; i++)
-			{
-				dates[i] = getDate(ss[i]);
-			}
-			setTestValue(dates);
-		}
-		else
-		{
-			setTestValue( getDate(pp.getString(getKey())) );
-		}
-	}
+    /**
+     * converts the parameter to the correct Object.
+     */
+    protected void doSetValue(ParameterParser pp)
+    {
+        if ( isMultiValued  )
+        {
+            String[] ss = pp.getStrings(getKey());
+            Date[] dates = new Date[ss.length];
+            for (int i=0; i<ss.length; i++)
+            {
+                dates[i] = getDate(ss[i]);
+            }
+            setTestValue(dates);
+        }
+        else
+        {
+            setTestValue( getDate(pp.getString(getKey())) );
+        }
+    }
 
-	/**
-	 * Sets the default value for an ComboKeyField
-	 */
-	
-	protected void setDefaultValue(String prop)
-	{
-		defaultValue = prop;
-	}
+    /**
+     * Sets the default value for an ComboKeyField
+     */
+
+    protected void setDefaultValue(String prop)
+    {
+        defaultValue = prop;
+    }
 }

@@ -25,13 +25,13 @@ package org.apache.turbine.services.servlet;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,16 +55,13 @@ package org.apache.turbine.services.servlet;
  */
 
 import java.io.InputStream;
-import java.net.URL;
 import java.net.MalformedURLException;
-import java.util.StringTokenizer;
+import java.net.URL;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.Log;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServletUtils;
 
 /**
@@ -81,7 +78,7 @@ import org.apache.turbine.util.ServletUtils;
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @version $Id$
  */
-public class TurbineServletService 
+public class TurbineServletService
     extends TurbineBaseService implements ServletService
 {
     private ServletContext servletContext = null;
@@ -98,7 +95,7 @@ public class TurbineServletService
         {
             this.servletConfig = servletConfig;
             this.servletContext = servletConfig.getServletContext();
-            
+
             Log.debug("[TurbineServletService] Initializing with ServletConfig");
         }
         catch (Exception e)
@@ -118,16 +115,16 @@ public class TurbineServletService
      * @return an URL object or null is the uri is malformed or
      * can't be resolved
      */
-    public URL getResource( String uri ) 
+    public URL getResource( String uri )
     {
-        if ( servletContext == null) 
+        if ( servletContext == null)
         {
             return null;
-        }            
-        
+        }
+
         URL url = null;
-        
-        try 
+
+        try
         {
             url = getServletContext().getResource( uri );
             // work-around for Websphere 3.52
@@ -139,15 +136,15 @@ public class TurbineServletService
             {
                 url = new URL("file:" + getServletContext().getRealPath(uri));
             }
-        } 
-        catch ( MalformedURLException e) 
+        }
+        catch ( MalformedURLException e)
         {
             //if the URL is wrong, return null
         }
-        
+
         return url;
     }
-    
+
     /**
      * Same as getResource except that it returns an InputStream
      *
@@ -155,19 +152,19 @@ public class TurbineServletService
      * @param uri the URI to resolve
      * @return an InputStream on the URI content or null
      */
-    public InputStream getResourceAsStream( String uri ) 
+    public InputStream getResourceAsStream( String uri )
     {
         if ( servletContext == null) return null;
-        
+
         InputStream is = null;
 
         is = servletContext.getResourceAsStream( uri );
-        
+
         return is;
     }
-    
+
     /**
-     * Returns the complete filesystem path for a 
+     * Returns the complete filesystem path for a
      * given URI
      *
      * @see javax.servlet.ServletContext#getRealPath
@@ -219,7 +216,7 @@ public class TurbineServletService
     {
         return Turbine.getServerScheme();
     }
-    
+
     /**
      * Returns the server name that this
      * Turbine application is running
@@ -231,7 +228,7 @@ public class TurbineServletService
     {
         return Turbine.getServerName();
     }
-    
+
     /**
      * Returns the port that this Turbine
      * application is running through

@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,7 +55,6 @@ package org.apache.turbine.util;
  */
 
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
@@ -93,7 +92,7 @@ public class StringUtils
     {
         return (foo != null && foo.length() > 0);
     }
-    
+
     /**
      * Determine whether a (trimmed) string is empty
      *
@@ -118,7 +117,7 @@ public class StringUtils
         {
             // And show the Error Screen.
             ByteArrayOutputStream buf = new ByteArrayOutputStream();
-            e.printStackTrace( new PrintWriter(buf, true) );
+            e.printStackTrace(new PrintWriter(buf, true));
             foo = buf.toString();
         }
         catch (Exception f)
@@ -127,7 +126,7 @@ public class StringUtils
         }
         return foo;
     }
-    
+
     /**
      * Returns the output of printStackTrace as a String.
      *
@@ -143,7 +142,7 @@ public class StringUtils
         }
         else
         {
-            return stackTrace(e);    
+            return stackTrace(e);
         }
     }
 
@@ -155,8 +154,7 @@ public class StringUtils
      * @param s2 The second string.
      * @return True if the values of both strings are the same.
      */
-    public static boolean equals( String s1,
-                                  String s2 )
+    public static boolean equals(String s1, String s2 )
     {
         if (s1 == null)
         {
@@ -205,7 +203,7 @@ public class StringUtils
      * Remove Underscores from a string and replaces first
      * Letters with Capitals.  foo_bar becomes FooBar
      */
-    public static String removeUnderScores (String data)
+    public static String removeUnderScores(String data)
     {
         String temp = null;
         StringBuffer out = new StringBuffer();
@@ -215,7 +213,7 @@ public class StringUtils
         while (st.hasMoreTokens())
         {
             String element = (String) st.nextElement();
-            out.append ( firstLetterCaps(element));
+            out.append(firstLetterCaps(element));
         }
         return out.toString();
     }
@@ -223,7 +221,7 @@ public class StringUtils
     /**
      * Makes the first letter caps and leaves the rest as is.
      */
-    public static String firstLetterCaps ( String data )
+    public static String firstLetterCaps(String data)
     {
         StringBuffer sbuf = new StringBuffer(data.length());
         sbuf.append(data.substring(0, 1).toUpperCase())
@@ -286,10 +284,10 @@ public class StringUtils
      * @return           The text with all the long lines word-wrapped.
      */
 
-    public static String wrapText (String inString, String newline,
-                                   int wrapColumn)
+    public static String wrapText(String inString, String newline,
+            int wrapColumn)
     {
-        StringTokenizer lineTokenizer = new StringTokenizer (
+        StringTokenizer lineTokenizer = new StringTokenizer(
                 inString, newline, true);
         StringBuffer stringBuffer = new StringBuffer();
 
@@ -302,10 +300,10 @@ public class StringUtils
                 if (nextLine.length() > wrapColumn)
                 {
                     // This line is long enough to be wrapped.
-                    nextLine = wrapLine (nextLine, newline, wrapColumn);
+                    nextLine = wrapLine(nextLine, newline, wrapColumn);
                 }
 
-                stringBuffer.append (nextLine);
+                stringBuffer.append(nextLine);
             }
             catch (NoSuchElementException nsee)
             {
@@ -319,7 +317,7 @@ public class StringUtils
 
     /**
      * Wraps a single line of text. Called by wrapText(). I can't
-     * think of any good reason for exposing this to the public, 
+     * think of any good reason for exposing this to the public,
      * since wrapText should always be used AFAIK.
      *
      * @param line       A line which is in need of word-wrapping.
@@ -328,20 +326,20 @@ public class StringUtils
      * @return           A line with newlines inserted.
      */
 
-    protected static String wrapLine (String line, String newline,
+    protected static String wrapLine(String line, String newline,
                                       int wrapColumn)
     {
         StringBuffer wrappedLine = new StringBuffer();
 
         while (line.length() > wrapColumn)
         {
-            int spaceToWrapAt = line.lastIndexOf (' ', wrapColumn);
+            int spaceToWrapAt = line.lastIndexOf(' ', wrapColumn);
 
             if (spaceToWrapAt >= 0)
             {
-                wrappedLine.append (line.substring (0, spaceToWrapAt));
-                wrappedLine.append (newline);
-                line = line.substring (spaceToWrapAt + 1);
+                wrappedLine.append(line.substring (0, spaceToWrapAt));
+                wrappedLine.append(newline);
+                line = line.substring(spaceToWrapAt + 1);
             }
 
             // This must be a really long word or URL. Pass it
@@ -351,17 +349,17 @@ public class StringUtils
             // someone wants long words broken at line length.
             else
             {
-                spaceToWrapAt = line.indexOf (' ', wrapColumn);
+                spaceToWrapAt = line.indexOf(' ', wrapColumn);
 
                 if (spaceToWrapAt >= 0)
                 {
-                    wrappedLine.append (line.substring (0, spaceToWrapAt));
-                    wrappedLine.append (newline);
-                    line = line.substring (spaceToWrapAt + 1);
+                    wrappedLine.append(line.substring (0, spaceToWrapAt));
+                    wrappedLine.append(newline);
+                    line = line.substring(spaceToWrapAt + 1);
                 }
                 else
                 {
-                    wrappedLine.append (line);
+                    wrappedLine.append(line);
                     line = "";
                 }
             }
@@ -369,8 +367,8 @@ public class StringUtils
 
         // Whatever is left in line is short enough to just pass through,
         // just like a small small kidney stone
-        wrappedLine.append (line);
+        wrappedLine.append(line);
 
-        return (wrappedLine.toString());
+        return wrappedLine.toString();
     }
 }

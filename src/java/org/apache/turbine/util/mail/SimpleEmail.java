@@ -54,11 +54,7 @@ package org.apache.turbine.util.mail;
  * <http://www.apache.org/>.
  */
 
-import java.util.Hashtable;
-
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
 import org.apache.torque.util.Criteria;
 
 /**
@@ -82,8 +78,7 @@ public class SimpleEmail
      *
      * @exception MessagingException.
      */
-    public SimpleEmail()
-        throws MessagingException
+    public SimpleEmail() throws MessagingException
     {
         super.init();
     }
@@ -107,7 +102,7 @@ public class SimpleEmail
      * @param criteria A Criteria.
      * @exception MessagingException.
      */
-    public SimpleEmail( Criteria criteria )
+    public SimpleEmail(Criteria criteria)
         throws MessagingException
     {
         super.init();
@@ -122,18 +117,24 @@ public class SimpleEmail
      * @param criteria A Criteria.
      * @exception MessagingException.
      */
-    protected void initCriteria( Criteria criteria )
+    protected void initCriteria(Criteria criteria)
         throws MessagingException
     {
         super.initCriteria(criteria);
 
-        if( criteria.containsKey( CONTENT_TYPE ) )
-            contentType = criteria.getString( CONTENT_TYPE );
+        if (criteria.containsKey(CONTENT_TYPE))
+        {
+            contentType = criteria.getString(CONTENT_TYPE);
+        }
 
-        if( criteria.containsKey( EMAIL_BODY ) )
-            setMsg( criteria.getString( EMAIL_BODY ) );
+        if (criteria.containsKey(EMAIL_BODY))
+        {
+            setMsg(criteria.getString(EMAIL_BODY));
+        }
         else
+        {
             setMsg("NO MESSAGE");
+        }
     }
 
     /**
@@ -143,12 +144,13 @@ public class SimpleEmail
      * @return An Email.
      * @exception MessagingException.
      */
-    public Email setMsg( String msg )
-        throws MessagingException
+    public Email setMsg(String msg) throws MessagingException
     {
         if (contentType == null)
+        {
             contentType = TEXT_PLAIN;
-        message.setContent( msg, contentType );
+        }
+        message.setContent(msg, contentType);
         return this;
     }
 }

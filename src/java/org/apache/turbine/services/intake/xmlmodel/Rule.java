@@ -25,13 +25,13 @@ package org.apache.turbine.services.intake.xmlmodel;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,9 +54,8 @@ package org.apache.turbine.services.intake.xmlmodel;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.util.StringUtils;
-import org.xml.sax.Attributes;
 import org.apache.turbine.services.intake.validator.Constraint;
+import org.xml.sax.Attributes;
 
 /**
  * A Class for holding data about a constraint on a property.
@@ -159,7 +158,7 @@ public class Rule
         StringBuffer result = new StringBuffer(100);
 
         result.append("<rule name=\""+name+"\"")
-              .append(" value=\""+value+"\"");        
+              .append(" value=\""+value+"\"");
 
 
         if (message == null)
@@ -171,7 +170,7 @@ public class Rule
             result.append(">")
                   .append(message)
                   .append("</rule>\n");
-        }        
+        }
 
         return result.toString();
     }

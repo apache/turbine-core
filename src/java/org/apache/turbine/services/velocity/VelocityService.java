@@ -59,7 +59,6 @@ import java.io.Writer;
 import org.apache.turbine.services.Service;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
-import org.apache.velocity.Template;
 import org.apache.velocity.context.Context;
 
 /**

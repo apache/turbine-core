@@ -25,13 +25,13 @@ package org.apache.turbine.util.velocity;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,17 +55,14 @@ package org.apache.turbine.util.velocity;
  */
 
 import org.apache.turbine.services.velocity.TurbineVelocity;
-
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.StringUtils;
-import org.apache.turbine.util.mail.Email;
 import org.apache.turbine.util.mail.SimpleEmail;
-
 import org.apache.velocity.context.Context;
 
 /**
  * This is a simple class for sending email from within Velocity.
- * Essentially, the body of the email is processed with a 
+ * Essentially, the body of the email is processed with a
  * Velocity Context object.
  * The beauty of this is that you can send email from within your
  * Velocity template or from your business logic in your Java code.
@@ -107,7 +104,7 @@ import org.apache.velocity.context.Context;
  * will be called for you when Velocity tries to convert the
  * VelocityEmail to a string by calling toString()).</p>
  *
- * <p>If you need your email to be word-wrapped, you can add the 
+ * <p>If you need your email to be word-wrapped, you can add the
  * following call to those above:
  *
  * <pre>
@@ -160,14 +157,14 @@ public class VelocityEmail
     /**
      * Constructor
      */
-    public VelocityEmail ()
+    public VelocityEmail()
     {
     }
 
     /**
      * Constructor
      */
-    public VelocityEmail (Context context)
+    public VelocityEmail(Context context)
     {
         this.context = context;
     }
@@ -179,8 +176,7 @@ public class VelocityEmail
      * @param email A String with the TO email.
      * @return A VelocityEmail (self).
      */
-    public VelocityEmail setTo(String to,
-                               String email)
+    public VelocityEmail setTo(String to, String email)
     {
         this.toName = to;
         this.toEmail = email;
@@ -194,8 +190,7 @@ public class VelocityEmail
      * @param email A String with the FROM email.
      * @return A VelocityEmail (self).
      */
-    public VelocityEmail setFrom(String from,
-                                 String email)
+    public VelocityEmail setFrom(String from, String email)
     {
         this.fromName = from;
         this.fromEmail = email;
@@ -245,7 +240,7 @@ public class VelocityEmail
     }
 
     /**
-     * Set the context object that will be merged with the 
+     * Set the context object that will be merged with the
      * template.
      *
      * @param context A Velocity context object.
@@ -258,7 +253,7 @@ public class VelocityEmail
     }
 
     /**
-     * Get the context object that will be merged with the 
+     * Get the context object that will be merged with the
      * template.
      *
      * @return A Context (self).
@@ -280,9 +275,8 @@ public class VelocityEmail
         // If the caller desires word-wrapping, do it here
         if (wordWrap > 0)
         {
-            body = StringUtils.wrapText (body,
-                                         System.getProperty("line.separator"),
-                                         wordWrap);
+            body = StringUtils.wrapText(body,
+                    System.getProperty("line.separator"), wordWrap);
         }
 
         SimpleEmail se = new SimpleEmail();

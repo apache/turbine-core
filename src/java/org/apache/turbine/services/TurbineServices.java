@@ -54,17 +54,16 @@ package org.apache.turbine.services;
  * <http://www.apache.org/>.
  */
 
-import java.util.Hashtable;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Vector;
-import java.io.StringWriter;
-import java.io.PrintWriter;
 import javax.servlet.ServletConfig;
+import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.logging.LoggingService;
 import org.apache.turbine.services.resources.ResourceService;
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.commons.configuration.Configuration;
 
 
 /**
@@ -261,12 +260,12 @@ public class TurbineServices
         while(keys.hasNext())
         {
             String key = (String)keys.next();
-            if(key.startsWith(SERVICE_PREFIX) && key.endsWith(CLASSNAME_SUFFIX))
+            if (key.startsWith(SERVICE_PREFIX) && key.endsWith(CLASSNAME_SUFFIX))
             {
                 String serviceKey = key.substring(pref, key.length() - suff);
                 notice ("Added Mapping for Service: " + serviceKey);
 
-                if (! mapping.containsKey(serviceKey))
+                if (!mapping.containsKey(serviceKey))
                     mapping.setProperty(serviceKey, TurbineResources.getString(key));
             }
         }

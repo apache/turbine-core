@@ -54,8 +54,6 @@ package org.apache.turbine.services.intake;
  * <http://www.apache.org/>.
  */
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -64,7 +62,6 @@ import org.apache.turbine.om.Retrievable;
 import org.apache.turbine.services.intake.model.Group;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.Log;
-import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.pool.Recyclable;
 
@@ -233,7 +230,7 @@ public class IntakeTool
       /**
        * populates the object with the default values from the XML File
        *
-       * @return a Group object with the default values 
+       * @return a Group object with the default values
        */
 
         public Group getDefault()

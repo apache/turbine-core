@@ -59,8 +59,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Vector;
-import org.apache.turbine.services.Service;
-import org.apache.turbine.services.ServiceBroker;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.TurbineException;
 

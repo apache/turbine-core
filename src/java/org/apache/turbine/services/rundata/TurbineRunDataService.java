@@ -54,27 +54,22 @@ package org.apache.turbine.services.rundata;
  * <http://www.apache.org/>.
  */
 
-import java.util.Map;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.configuration.Configuration;
-
-import org.apache.turbine.util.RunData;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.pool.PoolService;
 import org.apache.turbine.util.CookieParser;
 import org.apache.turbine.util.ParameterParser;
+import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.pool.PoolService;
 
 /**
  * The RunData Service provides the implementations for RunData and
@@ -146,7 +141,6 @@ public class TurbineRunDataService
     /**
      * Initializes the service by setting the pool capacity.
      *
-     * @param config initialization configuration.
      * @throws InitializationException if initialization fails.
      */
     public void init()

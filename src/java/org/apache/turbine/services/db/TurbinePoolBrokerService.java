@@ -54,17 +54,15 @@ package org.apache.turbine.services.db;
  * <http://www.apache.org/>.
  */
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import org.apache.turbine.services.BaseService;
-import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.util.Log;
-import org.apache.torque.adapter.DB;
 import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.configuration.Configuration;
 import org.apache.torque.Torque;
+import org.apache.torque.adapter.DB;
 import org.apache.torque.util.BasePeer;
+import org.apache.turbine.services.BaseService;
+import org.apache.turbine.services.resources.TurbineResources;
 
 
 /**

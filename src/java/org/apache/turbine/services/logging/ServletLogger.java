@@ -54,7 +54,6 @@ package org.apache.turbine.services.logging;
  * <http://www.apache.org/>.
  */
 
-import java.util.Date;
 import javax.servlet.ServletContext;
 import org.apache.turbine.util.RunData;
 

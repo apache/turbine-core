@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,7 +54,6 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
-import java.util.Hashtable;
 
 /**
  * A fixed length object cache implementing the LRU algorithm.  Convenient for
@@ -79,7 +78,7 @@ public class BufferCache extends SequencedHashtable
     /**
      * Creates a new instance with default storage buffer pre-allocated.
      */
-    public BufferCache ()
+    public BufferCache()
     {
         this(DEFAULT_MAX_SIZE);
     }
@@ -89,7 +88,7 @@ public class BufferCache extends SequencedHashtable
      *
      * @param maxSize The maximum size of the cache.
      */
-    public BufferCache (int maxSize)
+    public BufferCache(int maxSize)
     {
         super(maxSize);
         this.maxSize = maxSize;
@@ -104,7 +103,7 @@ public class BufferCache extends SequencedHashtable
      * @return      The previous value for the specified key, or
      *              <code>null</code> if none.
      */
-    public synchronized Object put (Object key, Object value)
+    public synchronized Object put(Object key, Object value)
     {
         int size = size();
         if (size > 0 && size + 1 >= maxSize)
@@ -123,7 +122,7 @@ public class BufferCache extends SequencedHashtable
      * @param key The key whose value to retrieve.
      * @return    The keyed value.
      */
-    public synchronized Object get (Object key)
+    public synchronized Object get(Object key)
     {
         Object value = super.get(key);
         if (value != null)

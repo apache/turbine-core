@@ -55,11 +55,10 @@ package org.apache.turbine.services.webmacro;
  */
 
 import java.io.File;
-import org.apache.turbine.services.ServiceBroker;
+import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.Log;
-import org.apache.commons.configuration.Configuration;
 import org.webmacro.Broker;
 import org.webmacro.NotFoundException;
 import org.webmacro.Template;

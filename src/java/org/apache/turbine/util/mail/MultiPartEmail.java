@@ -55,21 +55,13 @@ package org.apache.turbine.util.mail;
  */
 
 import java.net.URL;
-
-import java.util.Hashtable;
 import java.util.Vector;
-
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.URLDataSource;
-
-import javax.mail.BodyPart;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-
 import org.apache.torque.util.Criteria;
 
 /**
@@ -88,8 +80,7 @@ import org.apache.torque.util.Criteria;
  * @author <a href="mailto:unknown">Regis Koenig</a>
  * @version $Id$
  */
-public class MultiPartEmail
-    extends Email
+public class MultiPartEmail extends Email
 {
     /** Body portion of the email. */
     protected MimeMultipart emailBody;
@@ -132,7 +123,7 @@ public class MultiPartEmail
      * @param criteria A Criteria.
      * @exception MessagingException.
      */
-    public MultiPartEmail( Criteria criteria )
+    public MultiPartEmail(Criteria criteria)
         throws MessagingException
     {
         this.init();
@@ -153,7 +144,7 @@ public class MultiPartEmail
 
         /* The body of the mail. */
         emailBody = new MimeMultipart();
-        message.setContent( emailBody );
+        message.setContent(emailBody);
 
         /* The main message content. */
         main = new MimeBodyPart();
@@ -187,26 +178,36 @@ public class MultiPartEmail
     {
         super.initCriteria(criteria);
 
-        if( criteria.containsKey( EMAIL_BODY ) )
-            setMsg( criteria.getString( EMAIL_BODY ) );
+        if (criteria.containsKey(EMAIL_BODY))
+        {
+            setMsg(criteria.getString(EMAIL_BODY));
+        }
         else
+        {
             setMsg("NO MESSAGE");
+        }
 
         Vector attachments;
 
-        if( criteria.containsKey(ATTACHMENTS ) )
-            attachments = (Vector)criteria.get( ATTACHMENTS );
+        if (criteria.containsKey(ATTACHMENTS))
+        {
+            attachments = (Vector) criteria.get(ATTACHMENTS);
+        }
         else
+        {
             attachments = new Vector();
+        }
 
-        if( criteria.containsKey(FILE_SERVER) )
+        if (criteria.containsKey(FILE_SERVER))
+        {
             fileServer = criteria.getString(FILE_SERVER);
+        }
 
-        for (int i=0; i<attachments.size(); i++)
+        for (int i = 0; i < attachments.size(); i++)
         {
             EmailAttachment attachment =
-                (EmailAttachment)attachments.elementAt(i);
-            attach( attachment );
+                (EmailAttachment) attachments.elementAt(i);
+            attach(attachment);
         }
     }
 
@@ -220,7 +221,7 @@ public class MultiPartEmail
     public Email setMsg(String msg)
         throws MessagingException
     {
-        if ( charset != null )
+        if (charset != null)
         {
             main.setText(msg, charset);
         }
@@ -238,27 +239,26 @@ public class MultiPartEmail
      * @return A MultiPartEmail.
      * @exception MessagingException.
      */
-    public MultiPartEmail attach( EmailAttachment attachment )
+    public MultiPartEmail attach(EmailAttachment attachment)
         throws MessagingException
     {
         URL url = attachment.getURL();
-        if( url == null )
+        if (url == null)
         {
             try
             {
                 String file = attachment.getPath();
-                url = new URL( "file", fileServer, file );
+                url = new URL("file", fileServer, file);
             }
-            catch( Exception e)
+            catch (Exception e)
             {
                 throw new MessagingException("Cannot find file", e);
             }
         }
 
-        return attach(url,
-                      attachment.getName(),
+        return attach(url, attachment.getName(),
                       attachment.getDescription(),
-                      attachment.getDisposition() );
+                      attachment.getDisposition());
     }
 
     /**
@@ -271,12 +271,10 @@ public class MultiPartEmail
      * @return A MultiPartEmail.
      * @exception MessagingException.
      */
-    public MultiPartEmail attach( URL url,
-                                  String name,
-                                  String description )
+    public MultiPartEmail attach(URL url, String name, String description)
         throws MessagingException
     {
-        return attach( url, name, description, EmailAttachment.ATTACHMENT);
+        return attach(url, name, description, EmailAttachment.ATTACHMENT);
     }
 
     /**
@@ -289,13 +287,13 @@ public class MultiPartEmail
      * @return A MultiPartEmail.
      * @exception MessagingException.
      */
-    public MultiPartEmail attach( URL url,
-                                  String name,
-                                  String description,
-                                  String disposition)
+    public MultiPartEmail attach(URL url,
+                                 String name,
+                                 String description,
+                                 String disposition)
         throws MessagingException
     {
-        return attach( new URLDataSource(url), name, description, disposition );
+        return attach(new URLDataSource(url), name, description, disposition);
     }
 
     /**
@@ -307,12 +305,12 @@ public class MultiPartEmail
      * @return A MultiPartEmail.
      * @exception MessagingException.
      */
-    public MultiPartEmail attach( DataSource ds,
-                                  String name,
-                                  String description)
+    public MultiPartEmail attach(DataSource ds,
+                                 String name,
+                                 String description)
         throws MessagingException
     {
-        return attach ( ds, name, description, EmailAttachment.ATTACHMENT);
+        return attach(ds, name, description, EmailAttachment.ATTACHMENT);
     }
 
     /**
@@ -325,19 +323,19 @@ public class MultiPartEmail
      * @return A MultiPartEmail.
      * @exception MessagingException.
      */
-    public MultiPartEmail attach( DataSource ds,
-                                  String name,
-                                  String description,
-                                  String disposition)
+    public MultiPartEmail attach(DataSource ds,
+                                 String name,
+                                 String description,
+                                 String disposition)
         throws MessagingException
     {
         MimeBodyPart mbp = new MimeBodyPart();
-        emailBody.addBodyPart( mbp );
+        emailBody.addBodyPart(mbp);
 
-        mbp.setDisposition( disposition );
-        mbp.setFileName ( name );
-        mbp.setDescription ( description );
-        mbp.setDataHandler ( new DataHandler( ds ) );
+        mbp.setDisposition(disposition);
+        mbp.setFileName(name);
+        mbp.setDescription(description);
+        mbp.setDataHandler(new DataHandler(ds));
 
         return this;
     }

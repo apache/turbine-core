@@ -57,11 +57,10 @@ package org.apache.turbine.services.schedule;
 import java.util.List;
 import java.util.Vector;
 import javax.servlet.ServletConfig;
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.util.Log;
-import org.apache.torque.util.Criteria;
 
 /**
  * Service for a cron like scheduler.

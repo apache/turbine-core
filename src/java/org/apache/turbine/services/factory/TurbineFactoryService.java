@@ -54,24 +54,18 @@ package org.apache.turbine.services.factory;
  * <http://www.apache.org/>.
  */
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Vector;
-import java.util.ArrayList;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Vector;
 import org.apache.commons.configuration.Configuration;
-
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.pool.ObjectInputStreamForContext;
-import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.resources.ResourceService;
-import org.apache.turbine.services.resources.TurbineResources;
 
 /**
  * The Factory Service instantiates objects using specified
@@ -102,14 +96,14 @@ public class TurbineFactoryService
 
     {
         primitiveClasses = new HashMap(8);
-        primitiveClasses.put(Boolean.TYPE.toString(),Boolean.TYPE);
-        primitiveClasses.put(Character.TYPE.toString(),Character.TYPE);
-        primitiveClasses.put(Byte.TYPE.toString(),Byte.TYPE);
-        primitiveClasses.put(Short.TYPE.toString(),Short.TYPE);
-        primitiveClasses.put(Integer.TYPE.toString(),Integer.TYPE);
-        primitiveClasses.put(Long.TYPE.toString(),Long.TYPE);
-        primitiveClasses.put(Float.TYPE.toString(),Float.TYPE);
-        primitiveClasses.put(Double.TYPE.toString(),Double.TYPE);
+        primitiveClasses.put(Boolean.TYPE.toString(), Boolean.TYPE);
+        primitiveClasses.put(Character.TYPE.toString(), Character.TYPE);
+        primitiveClasses.put(Byte.TYPE.toString(), Byte.TYPE);
+        primitiveClasses.put(Short.TYPE.toString(), Short.TYPE);
+        primitiveClasses.put(Integer.TYPE.toString(), Integer.TYPE);
+        primitiveClasses.put(Long.TYPE.toString(), Long.TYPE);
+        primitiveClasses.put(Float.TYPE.toString(), Float.TYPE);
+        primitiveClasses.put(Double.TYPE.toString(), Double.TYPE);
     }
 
     /**

@@ -55,14 +55,12 @@ package org.apache.turbine.services;
  */
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
-
-import org.apache.turbine.util.StringUtils;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
+import org.apache.turbine.util.StringUtils;
 
 
 /**

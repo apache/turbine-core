@@ -25,13 +25,13 @@ package org.apache.turbine.util.upload;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -59,28 +59,16 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FilterInputStream;
-import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import java.lang.reflect.Method;
-
 import java.util.Date;
-
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.turbine.util.Log;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.ValueParser;
 
 /**
  * This class is used to upload files from a client to the server (any
@@ -141,8 +129,10 @@ public class FileHandler
     public static boolean isSimpleForm(HttpServletRequest req)
     {
         String header = req.getHeader("Content-Type");
-        if( header != null && header.indexOf("multipart/form-data") >= 0)
+        if (header != null && header.indexOf("multipart/form-data") >= 0)
+        {
             return false;
+        }
         return true;
     }
 
@@ -157,14 +147,15 @@ public class FileHandler
                             OutputStream outs)
         throws IOException
     {
-        BufferedInputStream bis =
-            new BufferedInputStream(ins, writebuffersize);
-        BufferedOutputStream bos =
-            new BufferedOutputStream(outs, writebuffersize);
+        BufferedInputStream bis = new BufferedInputStream(ins, writebuffersize);
+        BufferedOutputStream bos
+                = new BufferedOutputStream(outs, writebuffersize);
         int bufread;
 
-        while((bufread = bis.read(writebuffer)) != -1)
-            bos.write(writebuffer,0,bufread);
+        while ((bufread = bis.read(writebuffer)) != -1)
+        {
+            bos.write(writebuffer, 0, bufread);
+        }
         bos.flush(); bos.close();
         bis.close();
     }
@@ -255,12 +246,18 @@ public class FileHandler
         int lastbackslash = fullname.lastIndexOf("\\");
         int pos;
 
-        if(lastslash == lastbackslash)
+        if (lastslash == lastbackslash)
+        {
             pos = -1;
-        else if(lastslash > lastbackslash)
+        }
+        else if (lastslash > lastbackslash)
+        {
             pos = lastslash + 1;
+        }
         else
+        {
             pos = lastbackslash + 1;
+        }
 
         return fullname.substring(pos);
     }
@@ -273,18 +270,24 @@ public class FileHandler
      * @param pos Position to start from.
      * @return The first occurence of B from Pos.
      */
-    private int findByte(byte b,
-                         int pos)
+    private int findByte(byte b, int pos)
     {
         if (pos < 0)
+        {
             pos = 0;
+        }
         else if (pos >= storebuffersize)
+        {
             return -1;
+        }
 
         for (int i = pos; i < storebuffersize ; i++)
-            if(storebuffer[i] == b)
+        {
+            if (storebuffer[i] == b)
+            {
                 return i;
-
+            }
+        }
         return -1;
     }
 
@@ -296,8 +299,7 @@ public class FileHandler
      * @param pos Position to start from.
      * @return The first occurence of Subarray from Pos.
      */
-    private int findSubArray(byte[] subarray,
-                             int pos)
+    private int findSubArray(byte[] subarray, int pos)
     {
         int sublen = subarray.length;
         int maxpos, first, sp=0;
@@ -307,18 +309,28 @@ public class FileHandler
         for(first = pos ; (sp != sublen) && (first <= maxpos); first++)
         {
             first=findByte(subarray[0],first);
-            if((first < 0) || (first > maxpos))
-                return -1;
+            if ((first < 0) || (first > maxpos))
+            {
+                return - 1;
+            }
 
-            for(sp = 1 ; sp < sublen ; sp++)
-                if(storebuffer[first+sp] != subarray[sp])
-                    sp=sublen;
+            for (sp = 1 ; sp < sublen ; sp++)
+            {
+                if (storebuffer[first+sp] != subarray[sp])
+                {
+                    sp = sublen;
+                }
+            }
         }
 
-        if(sublen == 0)
+        if (sublen == 0)
+        {
             return 0;
-        if(sp == sublen)
-            return (first-1);
+        }
+        if (sp == sublen)
+        {
+            return (first - 1);
+        }
         return -1;
     }
 
@@ -331,15 +343,16 @@ public class FileHandler
     private void readToStoreBuffer(InputStream instream)
         throws IOException
     {
-        int bufread, pos=0;
+        int bufread;
+        int pos = 0;
         BufferedInputStream bis =
             new BufferedInputStream(instream, readbuffersize);
 
-        while( (bufread=bis.read(readbuffer)) != -1 &&
+        while ((bufread=bis.read(readbuffer)) != -1 &&
                (maxdata >= pos || maxdata==0) )
         {
-            System.arraycopy(readbuffer,0,storebuffer,pos,bufread);
-            pos+=bufread;
+            System.arraycopy(readbuffer, 0, storebuffer, pos, bufread);
+            pos += bufread;
         }
         bis.close();
     }
@@ -351,10 +364,9 @@ public class FileHandler
      * @param start Starting position in StoreBuffer.
      * @param end Ending position in StoreBuffer.
      */
-    private void getHeaderInfo(int start,
-                               int end)
+    private void getHeaderInfo(int start, int end)
     {
-        String temp = new String(storebuffer, start, end-start+1);
+        String temp = new String(storebuffer, start, end - start + 1);
         int namestart, nameend;
         int filenamestart, filenameend;
         int conttypestart, conttypeend;
@@ -390,10 +402,9 @@ public class FileHandler
      * @param end Ending position in StoreBuffer.
      * @return Given chunk's representation as a String.
      */
-    private String getChunkAsText(int start,
-                                  int end)
+    private String getChunkAsText(int start, int end)
     {
-        String text = new String(storebuffer, start, end-start+1);
+        String text = new String(storebuffer, start, end - start + 1);
         return text;
     }
 
@@ -411,9 +422,9 @@ public class FileHandler
         throws IOException
     {
         BufferedOutputStream bos =
-            new BufferedOutputStream(outstream,readbuffersize);
+            new BufferedOutputStream(outstream, readbuffersize);
 
-        bos.write(storebuffer, start, end-start+1);
+        bos.write(storebuffer, start, end - start + 1);
         bos.flush();
         bos.close();
     }
@@ -429,23 +440,26 @@ public class FileHandler
     private void writeChunks()
         throws IOException
     {
-        int a,b,c=0;
-        String savename = null, param = null;
+        int a;
+        int b;
+        int c = 0;
+        String savename = null;
+        String param = null;
 
-        b=findSubArray(boundary, 0);
+        b = findSubArray(boundary, 0);
         do
         {
-            if( (a=findSubArray(CRLF2, b + boundarysize)) >= 0 )
+            if ((a = findSubArray(CRLF2, b + boundarysize)) >= 0)
             {
-                if( (b=findSubArray(boundary, a+4)) >=0 );
+                if ((b = findSubArray(boundary, a + 4)) >= 0);
                 {
-                    getHeaderInfo(c,a);
-                    c=b;
+                    getHeaderInfo(c, a);
+                    c = b;
 
-                    if(filename==null || filename.length()==0)
+                    if (filename == null || filename.length() == 0)
                     {
-                        param = getChunkAsText(a+4,b-5);
-                        org.apache.turbine.util.Log.info ("FileUploader: received field: " + fieldname + "=" + param);
+                        param = getChunkAsText(a + 4, b - 5);
+                        org.apache.turbine.util.Log.info("FileUploader: received field: " + fieldname + "=" + param);
                         pp.add(fieldname, param);
                     }
                     else
@@ -460,7 +474,7 @@ public class FileHandler
                         savename = getRandomName() + shortname + ".dat";
                         String fullPath = root + "/" + savename;
                         org.apache.turbine.util.Log.info ("FileUploader: received file: field=" + fieldname + ", fullpath=" + filename + ", filename=" + shortname + ", saved to file: " + fullPath);
-                        storeChunk(a+4, b-5,
+                        storeChunk(a + 4, b - 5,
                                    new FileOutputStream(fullPath));
                         File f = new File(fullPath);
                         pp.add(this.PARAMETER_NAME_FILESIZE, f.length());
@@ -471,7 +485,7 @@ public class FileHandler
                 }
             }
         }
-        while(a>=0 && b>=0);
+        while (a >= 0 && b >= 0);
     }
 
     /**
@@ -497,21 +511,21 @@ public class FileHandler
      * @param pp A ParameterParser.
      * @deprecated Use TurbineUploadService counterpart FileItem.
      */
-    public FileHandler( HttpServletRequest req,
-                        HttpServletResponse res,
-                        ParameterParser pp )
+    public FileHandler(HttpServletRequest req,
+                       HttpServletResponse res,
+                       ParameterParser pp)
     {
         this.req = req;
         this.res = res;
         this.pp = pp;
         this.root = "c:";
 
-        String conttype=req.getHeader("Content-Type");
+        String conttype = req.getHeader("Content-Type");
         if (conttype != null)
         {
-            boundary=conttype.substring(conttype.indexOf("boundary")+9).getBytes();
-            boundarysize=boundary.length;
-            storebuffersize=Integer.parseInt(req.getHeader("Content-Length"));
+            boundary = conttype.substring(conttype.indexOf("boundary") + 9).getBytes();
+            boundarysize = boundary.length;
+            storebuffersize = Integer.parseInt(req.getHeader("Content-Length"));
             storebuffer = new byte[storebuffersize];
         }
     }
