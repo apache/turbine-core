@@ -58,8 +58,6 @@ import java.io.StringWriter;
 
 import junit.framework.TestCase;
 
-import org.apache.turbine.services.rundata.DefaultTurbineRunData;
-
 /**
  * Tests TurbinePipeline.
  *
