@@ -57,7 +57,7 @@ package org.apache.turbine.services.pull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
+import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
@@ -262,7 +262,7 @@ public class TurbinePullService extends TurbineBaseService
      */
     private void initPull() throws Exception
     {
-        Properties props = getProperties();
+        Configuration conf = getConfiguration();
 
         /*
          * Get the resources directory that is specificed
@@ -286,9 +286,7 @@ public class TurbinePullService extends TurbineBaseService
          * Should we refresh the tool box on a per
          * request basis.
          */
-        refreshToolsPerRequest =
-            new Boolean(properties.getProperty(
-                TOOLS_PER_REQUEST_REFRESH)).booleanValue();
+         refreshToolsPerRequest = conf.getBoolean(TOOLS_PER_REQUEST_REFRESH);
 
         /*
          * Log the fact that the application tool box will
@@ -333,7 +331,7 @@ public class TurbinePullService extends TurbineBaseService
 
     /**
      * Retrieve the tool names and classes for the tools definied
-     * in the properties file with the prefix given.
+     * in the configuration file with the prefix given.
      *
      * @param keyPrefix a String giving the property name prefix to look for
      */
