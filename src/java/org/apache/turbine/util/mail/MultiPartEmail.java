@@ -55,10 +55,13 @@ package org.apache.turbine.util.mail;
  */
 
 import java.net.URL;
+
 import java.util.Vector;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.URLDataSource;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;

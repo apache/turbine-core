@@ -55,7 +55,9 @@ package org.apache.turbine.util.velocity;
  */
 
 import java.net.URL;
+
 import java.util.Hashtable;
+
 import javax.mail.MessagingException;
 
 import org.apache.commons.lang.StringUtils;

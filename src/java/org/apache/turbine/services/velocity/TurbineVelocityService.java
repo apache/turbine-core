@@ -59,6 +59,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -145,7 +146,6 @@ public class TurbineVelocityService
      */
     private boolean refreshToolsPerRequest = false;
 
-
     /**
      * Load all configured components and initialize them. This is
      * a zero parameter variant which queries the Turbine Servlet
@@ -188,10 +188,8 @@ public class TurbineVelocityService
 
             setInit(true);
         }
-
         catch (Exception e)
         {
-            log.error("Error: ", e);
             throw new InitializationException(
                 "Failed to initialize TurbineVelocityService", e);
         }
@@ -274,7 +272,6 @@ public class TurbineVelocityService
         return context;
     }
 
-
     /**
      * Process the request and fill in the template with the values
      * you set in the Context.
@@ -324,7 +321,6 @@ public class TurbineVelocityService
         }
         return results;
     }
-
 
     /**
      * Process the request and fill in the template with the values
@@ -439,7 +435,6 @@ public class TurbineVelocityService
         }
     }
 
-
     /**
      * Retrieve the required charset from the Turbine RunData in the context
      *
@@ -458,7 +453,6 @@ public class TurbineVelocityService
 
         return (StringUtils.isEmpty(charset)) ? DEFAULT_CHAR_SET : charset;
     }
-
 
     /**
      * Retrieve the required encoding from the Turbine RunData in the context
@@ -479,7 +473,6 @@ public class TurbineVelocityService
         return encoding;
     }
 
-
     /**
      * Macro to handle rendering errors.
      *
@@ -496,7 +489,6 @@ public class TurbineVelocityService
         log.error(err, e);
         throw new TurbineException(err, e);
     }
-
 
     /**
      * Setup the velocity runtime by using a subset of the
@@ -644,4 +636,3 @@ public class TurbineVelocityService
         }
     }
 }
-
