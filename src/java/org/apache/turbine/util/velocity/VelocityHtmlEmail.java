@@ -63,7 +63,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.HtmlEmail;
+import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -90,8 +92,8 @@ import org.apache.velocity.context.Context;
  * <p>The templates should be located under your Template turbine
  * directory.
  *
- * <p>This class wraps the HtmlEmail class from commons-email.  Thus, it uses the
- * JavaMail API and also depends on having the mail.server property
+ * <p>This class wraps the HtmlEmail class from commons-email.  Thus, it uses
+ * the JavaMail API and also depends on having the mail.server property
  * set in the TurbineResources.properties file.  If you want to use
  * this class outside of Turbine for general processing that is also
  * possible by making sure to set the path to the
@@ -104,6 +106,7 @@ import org.apache.velocity.context.Context;
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:A.Schild@aarboard.ch">Andre Schild</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class VelocityHtmlEmail
@@ -147,12 +150,15 @@ public class VelocityHtmlEmail
     /** The subject of the message. */
     private String subject = null;
 
+    /** Address of outgoing mail server */
+    private String mailServer;
+
     /**
      * Constructor, sets the context object from
      * the passed RunData object
      *
      * @param data A Turbine RunData object.
-     * @exception VelocityEmailException.
+     * @exception VelocityEmailException
      */
     public VelocityHtmlEmail(RunData data)
             throws VelocityEmailException
@@ -173,7 +179,7 @@ public class VelocityHtmlEmail
      * Constructor, sets the context object.
      *
      * @param context A Velocity context object.
-     * @exception VelocityEmailException.
+     * @exception VelocityEmailException
      */
     public VelocityHtmlEmail(Context context)
             throws VelocityEmailException
@@ -259,6 +265,33 @@ public class VelocityHtmlEmail
     }
 
     /**
+     * Sets the address of the outgoing mail server.  This method
+     * should be used when you need to override the value stored in
+     * TR.props.
+     *
+     * @param serverAddress host name of your outgoing mail server
+     */
+    public void setMailServer(String serverAddress)
+    {
+        this.mailServer = serverAddress;
+    }
+
+    /**
+     * Gets the host name of the outgoing mail server.  If the server
+     * name has not been set by calling setMailServer(), the value
+     * from TR.props for mail.server will be returned.  If TR.props
+     * has no value for mail.server, localhost will be returned.
+     *
+     * @return host name of the mail server.
+     */
+    public String getMailServer()
+    {
+        return (StringUtils.isEmpty(mailServer) ?
+                TurbineResources.getString("mail.server", "localhost")
+                : this.mailServer);
+    }
+
+    /**
      * Actually send the mail.
      *
      * @exception VelocityEmailException thrown if mail cannot be sent.
@@ -295,6 +328,7 @@ public class VelocityHtmlEmail
             htmlEmail.setSubject(subject);
             htmlEmail.setHtmlMsg(htmlbody);
             htmlEmail.setTextMsg(textbody);
+            htmlEmail.setHostName(getMailServer());
             htmlEmail.send();
         }
         catch (Exception e)
@@ -324,7 +358,7 @@ public class VelocityHtmlEmail
      * @param surl A String.
      * @param name A String.
      * @return A String with the cid of the embedded file.
-     * @exception VelocityEmailException.
+     * @exception VelocityEmailException
      * @see HtmlEmail#embed(URL surl, String name) embed.
      */
     public String embed(String surl, String name) throws VelocityEmailException
