@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!-- ======================================================================== -->
+<!--                                                                          -->
+<!--  Avalon component configuration for loading Torque                       -->
+<!--                                                                          -->
+<!-- $Id$ -->
+<!--                                                                          -->
+<!-- ======================================================================== -->
+
+<componentConfig>
+  <torque>
+    <configfile>/WEB-INF/conf/torque.properties</configfile>
+  </torque>
+</componentConfig>

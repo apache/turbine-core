@@ -39,8 +39,8 @@
     <!-- ============================================================ -->
 
     <dependency>
-      <id>postgresql:pg-jdbc2</id>
-      <version>7.3.4</version>
+      <id>postgresql</id>
+      <version>7.3-jdbc3</version>
       <url>http://www.postgresql.org/</url>
       <properties>
         <war.bundle>true</war.bundle>

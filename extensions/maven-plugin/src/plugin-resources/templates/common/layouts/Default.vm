@@ -1,0 +1,13 @@
+##
+## Default Layout for Turbine
+##
+## $Id$
+##
+## Just display the screen contents as page
+##
+<html>
+#TurbineHtmlHead()
+<body #TurbineHtmlBodyAttributes() >
+$screen_placeholder
+</body>
+</html>
