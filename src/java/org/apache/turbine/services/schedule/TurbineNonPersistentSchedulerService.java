@@ -60,7 +60,7 @@ import javax.servlet.ServletConfig;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.NumberKey;
-import org.apache.torque.om.ObjectKey;
+import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.TurbineException;
 
@@ -125,20 +125,14 @@ public class TurbineNonPersistentSchedulerService
      * thread.
      */
     public void init()
+            throws InitializationException
     {
-        if(getInit())
-        {
-            return;
-        }
-
         try
         {
-            log.info("TurbineNonPersistentSchedulerService init()....starting!");
-
             scheduleQueue = new JobQueue();
             mainLoop = new MainLoop();
 
-            Vector jobProps = TurbineResources.getVector("scheduler.jobs");
+            Vector jobProps = getConfiguration().getVector("scheduler.jobs");
             Vector jobs = new Vector();
             // If there are scheduler.jobs defined then set up a job vector
             // for the scheduleQueue
@@ -157,11 +151,11 @@ public class TurbineNonPersistentSchedulerService
                                 + jobPrefix + ".ID is not found.\n");
                     }
 
-                    int sec = TurbineResources.getInt(jobPrefix + ".SECOND", -1);
-                    int min = TurbineResources.getInt(jobPrefix + ".MINUTE", -1);
-                    int hr = TurbineResources.getInt(jobPrefix + ".HOUR", -1);
-                    int wkday = TurbineResources.getInt(jobPrefix + ".WEEKDAY", -1);
-                    int dayOfMonth = TurbineResources.getInt(jobPrefix + ".DAY_OF_MONTH", -1);
+                    int sec = getConfiguration().getInt(jobPrefix + ".SECOND", -1);
+                    int min = getConfiguration().getInt(jobPrefix + ".MINUTE", -1);
+                    int hr = getConfiguration().getInt(jobPrefix + ".HOUR", -1);
+                    int wkday = getConfiguration().getInt(jobPrefix + ".WEEKDAY", -1);
+                    int dayOfMonth = getConfiguration().getInt(jobPrefix + ".DAY_OF_MONTH", -1);
 
                     JobEntry je = new JobEntry(
                             sec,
@@ -178,16 +172,19 @@ public class TurbineNonPersistentSchedulerService
             if(jobs != null && jobs.size() > 0)
             {
                 scheduleQueue.batchLoad(jobs);
-                restart();
+                if(getConfiguration().getBoolean("enabled", true))
+                {
+                    restart();
+                }
             }
 
             setInit(true);
-            log.info("TurbineNonPersistentSchedulerService init()....finished!");
         }
         catch(Exception e)
         {
-            log.error("Cannot initialize TurbineNonPersistentSchedulerService!: "
-                    + e);
+            String errorMessage = "Could not initialize the scheduler service";
+            log.error(errorMessage, e);
+            throw new InitializationException(errorMessage, e);
         }
     }
 
@@ -202,6 +199,7 @@ public class TurbineNonPersistentSchedulerService
      * @deprecated use init() instead.
      */
     public void init(ServletConfig config)
+            throws InitializationException
     {
         init();
     }
@@ -211,18 +209,13 @@ public class TurbineNonPersistentSchedulerService
      *
      * @param oid The int id for the job.
      * @return A JobEntry.
-     * @exception TurbineException a generic exception.
+     * @exception TurbineException could not retreive job
      */
     public JobEntry getJob(int oid)
             throws TurbineException
     {
-        JobEntry je = new JobEntry(-1,
-                -1,
-                -1,
-                -1,
-                -1,
-                null);
-        je.setPrimaryKey((ObjectKey) new NumberKey(oid));
+        JobEntry je = new JobEntry();
+        je.setPrimaryKey(new NumberKey(oid));
         return scheduleQueue.getJob(je);
     }
 
@@ -230,35 +223,35 @@ public class TurbineNonPersistentSchedulerService
      * Add a new job to the queue.
      *
      * @param je A JobEntry with the job to add.
-     * @exception TurbineException a generic exception.
+     * @throws TurbineException job could not be added
      */
     public void addJob(JobEntry je)
             throws TurbineException
     {
-        // Add to the queue.
-        scheduleQueue.add(je);
-        restart();
+        updateJob(je);
     }
 
     /**
      * Remove a job from the queue.
      *
      * @param je A JobEntry with the job to remove.
-     * @exception TurbineException a generic exception.
      */
     public void removeJob(JobEntry je)
-            throws TurbineException
     {
         // Remove from the queue.
         scheduleQueue.remove(je);
-        restart();
+
+        if(isEnabled())
+        {
+            restart();
+        }
     }
 
     /**
-     * Modify a Job.
+     * Add/update a job
      *
      * @param je A JobEntry with the job to modify
-     * @exception TurbineException a generic exception.
+     * @throws TurbineException job could not be updated
      */
     public void updateJob(JobEntry je)
             throws TurbineException
@@ -266,14 +259,19 @@ public class TurbineNonPersistentSchedulerService
         try
         {
             je.calcRunTime();
+
+            // Update the queue.
+            scheduleQueue.modify(je);
+            if(isEnabled())
+            {
+                restart();
+            }
         }
         catch(Exception e)
         {
-            // Log problems.
-            log.error("Problem updating Scheduled Job: " + e);
+            String errorMessage = "Problem updating Scheduled Job: " + je.getTask();
+            log.error(errorMessage, e);
+            throw new TurbineException(errorMessage, e);
         }
-        // Update the queue.
-        scheduleQueue.modify(je);
-        restart();
     }
 }
