@@ -104,17 +104,16 @@ public class TemplateSecureSessionValidator
      * load the tr.props TEMPLATE_LOGIN instead of the default's
      * setScreen to TurbineConstants.SCREEN_LOGIN.
      *
-     * @see DefaultSessionValidator     * @param data Turbine information.
-     * @exception Exception, a generic exception.
+     * @see DefaultSessionValidator
+     * @param data Turbine information.
+     * @exception Exception a generic exception.
      */
     public void doPerform(RunData data)
         throws Exception
     {
         Configuration conf = Turbine.getConfiguration();
 
-        /*
-         * Pull user from session.
-         */
+        // Pull user from session.
         data.populate();
 
         // The user may have not logged in, so create a "guest/anonymous" user.
@@ -125,13 +124,11 @@ public class TemplateSecureSessionValidator
             data.save();
         }
 
-        /*
-         * This is the secure sessionvalidator, so user must be logged in.
-         */
+        // This is the secure sessionvalidator, so user must be logged in.
         if (!data.getUser().hasLoggedIn())
         {
             log.debug("User is not logged in!");
-            
+
             /*
              * Only set the message if nothing else has already set it
              * (e.g. the LogoutUser action).
@@ -145,7 +142,7 @@ public class TemplateSecureSessionValidator
              * Set the screen template to the login page.
              */
 
-            String loginTemplate = 
+            String loginTemplate =
                 conf.getString(TurbineConstants.TEMPLATE_LOGIN);
 
             log.debug("Sending User to the Login Screen (" + loginTemplate + ")");
@@ -159,7 +156,7 @@ public class TemplateSecureSessionValidator
         }
 
         log.debug("Login Check finished!");
-        
+
         //Make sure we have some way to return a response.
         if (!data.hasScreen() &&
             StringUtils.isEmpty(data.getTemplateInfo().getScreenTemplate()))
