@@ -289,7 +289,7 @@ public class TurbinePullService extends TurbineBaseService
          * Should we refresh the tool box on a per
          * request basis.
          */
-        refreshToolsPerRequest = conf.getBoolean(TOOLS_PER_REQUEST_REFRESH);
+        refreshToolsPerRequest = conf.getBoolean(TOOLS_PER_REQUEST_REFRESH, false);
 
         /*
          * Log the fact that the application tool box will
