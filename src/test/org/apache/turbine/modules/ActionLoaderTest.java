@@ -64,7 +64,6 @@ import junit.framework.Assert;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.modules.actions.VelocityActionDoesNothing;
-import org.apache.turbine.modules.actions.VelocityActionThrowsException;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.DefaultPipelineData;
 import org.apache.turbine.pipeline.PipelineData;
@@ -297,10 +296,7 @@ public class ActionLoaderTest extends BaseTestCase {
 	public void testDoPerformWithPipelineData() throws Exception
 	{
 	    RunData data = getRunData(request,response,config);
-		PipelineData pipelineData = new DefaultPipelineData();
-		Map runDataMap = new HashMap();
-		runDataMap.put(RunData.class, data);
-		pipelineData.put(RunData.class, runDataMap);
+        PipelineData pipelineData = data;
 		data.setAction("VelocityActionDoesNothing");
 		int numberOfCalls = VelocityActionDoesNothing.numberOfCalls;
 		int pipelineDataCalls = VelocityActionDoesNothing.pipelineDataCalls;

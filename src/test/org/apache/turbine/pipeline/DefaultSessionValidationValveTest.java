@@ -54,8 +54,6 @@ package org.apache.turbine.pipeline;
  * <http://www.apache.org/>.
  */
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Vector;
 
 import javax.servlet.ServletConfig;
@@ -154,13 +152,8 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
         runData.setAction(TurbineConstants.ACTION_LOGIN_DEFAULT);
         
         Pipeline pipeline = new TurbinePipeline();
-        PipelineData pipelineData = new DefaultPipelineData();
-        Map runDataMap = new HashMap();
-        runDataMap.put(RunData.class, runData);
-        // put the data into the pipeline
-        pipelineData.put(RunData.class, runDataMap);            
-        //pipelineData.put(RunData.class,runData);
-
+        PipelineData pipelineData = runData;
+ 
         DefaultSessionValidationValve valve = new DefaultSessionValidationValve();
         pipeline.addValve(valve);
 
@@ -191,12 +184,7 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
         session.setupGetAttribute(User.SESSION_KEY, tu);
         
         Pipeline pipeline = new TurbinePipeline();
-        PipelineData pipelineData = new DefaultPipelineData();
-        Map runDataMap = new HashMap();
-        runDataMap.put(RunData.class, runData);
-        // put the data into the pipeline
-        pipelineData.put(RunData.class, runDataMap);            
-        //pipelineData.put(RunData.class,runData);
+        PipelineData pipelineData = runData;
 
         DefaultSessionValidationValve valve = new DefaultSessionValidationValve();
         pipeline.addValve(valve);

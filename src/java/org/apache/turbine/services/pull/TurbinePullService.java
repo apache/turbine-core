@@ -57,7 +57,6 @@ package org.apache.turbine.services.pull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.configuration.Configuration;
 
@@ -455,8 +454,9 @@ public class TurbinePullService
      */
     public void populateContext(Context context, PipelineData pipelineData)
     {
-        Map runDataMap = (Map) pipelineData.get(RunData.class);
-        RunData data = (RunData)runDataMap.get(RunData.class);
+       // Map runDataMap = (Map) pipelineData.get(RunData.class);
+       // RunData data = (RunData)runDataMap.get(RunData.class);
+        RunData data = (RunData)pipelineData;
 
         populateWithRequestTools(context, pipelineData);
         // session tools (whether session-only or persistent are
@@ -594,8 +594,9 @@ public class TurbinePullService
     private void populateWithSessionTools(List tools, Context context,
             PipelineData pipelineData, User user)
     {
-        Map runDataMap = (Map)pipelineData.get(RunData.class);
-        RunData data = (RunData) runDataMap.get(RunData.class);
+        //Map runDataMap = (Map)pipelineData.get(RunData.class);
+        //RunData data = (RunData) runDataMap.get(RunData.class);
+        RunData runData = (RunData)pipelineData;
         // Iterate the tools
         for (Iterator it = tools.iterator(); it.hasNext();)
         {
@@ -604,11 +605,11 @@ public class TurbinePullService
             {
                 // ensure that tool is created only once for a user
                 // by synchronizing against the user object
-                synchronized (data.getSession())
+                synchronized (runData.getSession())
                 {
                     // first try and fetch the tool from the user's
                     // hashtable
-                    Object tool = data.getSession().getAttribute(
+                    Object tool = runData.getSession().getAttribute(
                             SESSION_TOOLS_ATTRIBUTE_PREFIX
                             + toolData.toolClassName);
 
@@ -622,7 +623,7 @@ public class TurbinePullService
                         initTool(tool, user);
 
                         // store the newly created tool in the session
-                        data.getSession().setAttribute(
+                        runData.getSession().setAttribute(
                                 SESSION_TOOLS_ATTRIBUTE_PREFIX
                                 + tool.getClass().getName(), tool);
                     }
@@ -1085,8 +1086,9 @@ public class TurbinePullService
     
     private RunData getRunData(PipelineData pipelineData)
     {
-        Map runDataMap = (Map)pipelineData.get(RunData.class);
-        RunData data = (RunData) runDataMap.get(RunData.class);
-        return data;
+        if(!(pipelineData instanceof RunData)){
+            throw new RuntimeException("Can't cast to rundata from pipeline data.");
+        }
+        return (RunData)pipelineData;
     }
 }

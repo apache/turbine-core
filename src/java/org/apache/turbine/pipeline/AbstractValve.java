@@ -55,7 +55,6 @@ package org.apache.turbine.pipeline;
  */
 
 import java.io.IOException;
-import java.util.Map;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
@@ -94,10 +93,10 @@ public abstract class AbstractValve
      */
     public final RunData getRunData(PipelineData pipelineData)
     {
-        RunData data = null;
-        Map runDataMap = (Map) pipelineData.get(RunData.class);
-        data = (RunData)runDataMap.get(RunData.class);
-        return data;
+        if(!(pipelineData instanceof RunData)){
+            throw new RuntimeException("Can't cast pipelineData to rundata");
+        }
+        return (RunData)pipelineData;
     }
 
 }

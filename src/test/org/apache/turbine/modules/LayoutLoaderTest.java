@@ -53,8 +53,6 @@
  */
 package org.apache.turbine.modules;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Vector;
 
 import javax.servlet.ServletConfig;
@@ -64,7 +62,6 @@ import junit.framework.Assert;
 
 import org.apache.turbine.modules.layouts.TestVelocityOnlyLayout;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.pipeline.DefaultPipelineData;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.test.BaseTestCase;
@@ -140,10 +137,7 @@ public class LayoutLoaderTest extends BaseTestCase {
 	    try
 	    {
 		    RunData data = getRunData(request,response,config);
-			PipelineData pipelineData = new DefaultPipelineData();
-			Map runDataMap = new HashMap();
-			runDataMap.put(RunData.class, data);
-			pipelineData.put(RunData.class, runDataMap);
+            PipelineData pipelineData = data;
 			data.setLayout("TestVelocityOnlyLayout");
 			int numberOfCalls = TestVelocityOnlyLayout.numberOfCalls;
 			try {

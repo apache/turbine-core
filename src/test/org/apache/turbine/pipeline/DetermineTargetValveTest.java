@@ -54,8 +54,6 @@ package org.apache.turbine.pipeline;
  * <http://www.apache.org/>.
  */
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Vector;
 
 import javax.servlet.ServletConfig;
@@ -147,13 +145,7 @@ public class DetermineTargetValveTest extends BaseTestCase
         RunData runData = getRunData(request,response,config);
         
         Pipeline pipeline = new TurbinePipeline();
-        PipelineData pipelineData = new DefaultPipelineData();
-        Map runDataMap = new HashMap();
-        runDataMap.put(RunData.class, runData);
-        // put the data into the pipeline
-        pipelineData.put(RunData.class, runDataMap);            
-        //pipelineData.put(RunData.class,runData);
-
+        PipelineData pipelineData = runData;
         DetermineTargetValve valve = new DetermineTargetValve();
         pipeline.addValve(valve);
 
@@ -175,12 +167,7 @@ public class DetermineTargetValveTest extends BaseTestCase
         RunData runData = getRunData(request,response,config);
         
         Pipeline pipeline = new TurbinePipeline();
-        PipelineData pipelineData = new DefaultPipelineData();
-        Map runDataMap = new HashMap();
-        runDataMap.put(RunData.class, runData);
-        // put the data into the pipeline
-        pipelineData.put(RunData.class, runDataMap);            
-        //pipelineData.put(RunData.class,runData);
+        PipelineData pipelineData = runData;
 
         DetermineTargetValve valve = new DetermineTargetValve();
         pipeline.addValve(valve);

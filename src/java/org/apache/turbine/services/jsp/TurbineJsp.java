@@ -54,8 +54,6 @@ package org.apache.turbine.services.jsp;
  * <http://www.apache.org/>.
  */
 
-import java.util.Map;
-
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
 
@@ -103,9 +101,10 @@ public abstract class TurbineJsp
      */
     public static void addDefaultObjects(PipelineData pipelineData)
     {
-        Map runDataMap = (Map) pipelineData.get(RunData.class);
-        RunData data = (RunData)runDataMap.get(RunData.class);
-        addDefaultObjects(data);
+        //Map runDataMap = (Map) pipelineData.get(RunData.class);
+        //RunData data = (RunData)runDataMap.get(RunData.class);
+        RunData runData = (RunData)pipelineData;
+        addDefaultObjects(runData);
     }
 
     /**
@@ -151,9 +150,10 @@ public abstract class TurbineJsp
     public static void handleRequest(PipelineData pipelineData, String templateName, boolean isForward)
         throws TurbineException
     {
-        Map runDataMap = (Map) pipelineData.get(RunData.class);
-        RunData data = (RunData)runDataMap.get(RunData.class);
-        handleRequest(data, templateName, isForward);
+        //Map runDataMap = (Map) pipelineData.get(RunData.class);
+        //RunData data = (RunData)runDataMap.get(RunData.class);
+        RunData runData = (RunData)pipelineData;
+        handleRequest(runData, templateName, isForward);
     }
 
     /**
@@ -167,9 +167,10 @@ public abstract class TurbineJsp
     public static void handleRequest(PipelineData pipelineData, String templateName)
         throws TurbineException
     {
-        Map runDataMap = (Map) pipelineData.get(RunData.class);
-        RunData data = (RunData)runDataMap.get(RunData.class);
-        handleRequest(data, templateName);
+        if(!(pipelineData instanceof RunData)){
+            throw new RuntimeException("Can't cast to rundata from pipeline data.");
+        }
+        handleRequest((RunData)pipelineData, templateName);
     }
 
     

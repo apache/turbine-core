@@ -54,8 +54,6 @@ package org.apache.turbine.pipeline;
  * <http://www.apache.org/>.
  */
 
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
@@ -148,12 +146,7 @@ public class DefaultACLCreationValveTest extends BaseTestCase
         
         
         Pipeline pipeline = new TurbinePipeline();
-        PipelineData pipelineData = new DefaultPipelineData();
-        Map runDataMap = new HashMap();
-        runDataMap.put(RunData.class, runData);
-        // put the data into the pipeline
-        pipelineData.put(RunData.class, runDataMap);            
-        //pipelineData.put(RunData.class,runData);
+        PipelineData pipelineData = runData;
 
         DefaultACLCreationValve valve = new DefaultACLCreationValve();
         pipeline.addValve(valve);

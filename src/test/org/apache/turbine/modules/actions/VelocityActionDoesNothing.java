@@ -53,8 +53,6 @@ package org.apache.turbine.modules.actions;
  * <http://www.apache.org/>.
  */
 
-import java.util.Map;
-
 import junit.framework.Assert;
 
 import org.apache.turbine.pipeline.PipelineData;
@@ -99,8 +97,7 @@ public class VelocityActionDoesNothing extends VelocityAction
     {
         log.debug("Calling doPerform(PipelineData)");
 		VelocityActionDoesNothing.numberOfCalls++;
-		Map rundataMap = (Map)pipelineData.get(RunData.class);
-		RunData rd = (RunData)rundataMap.get(RunData.class);
+        RunData rd = (RunData)pipelineData;
 		Assert.assertNotNull("RunData object was Null.", rd);
 		VelocityActionDoesNothing.pipelineDataCalls++;
     }   

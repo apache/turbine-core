@@ -82,6 +82,7 @@ import org.apache.fulcrum.mimetype.MimeTypeService;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.DefaultPipelineData;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.template.TurbineTemplate;
@@ -91,7 +92,6 @@ import org.apache.turbine.util.SystemError;
 import org.apache.turbine.util.parser.CookieParser;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.pool.Recyclable;
-import org.apache.turbine.util.pool.RecyclableSupport;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.template.TemplateInfo;
 
@@ -119,9 +119,14 @@ import org.apache.turbine.util.template.TemplateInfo;
  * @version $Id$
  */
 public class DefaultTurbineRunData
-        extends RecyclableSupport
+        extends DefaultPipelineData
         implements TurbineRunData, Recyclable
 {
+    /**
+     * The disposed flag.
+     */
+    private boolean disposed;
+    
     /** The default locale. */
     private static Locale defaultLocale = null;
 
@@ -375,14 +380,15 @@ public class DefaultTurbineRunData
     public DefaultTurbineRunData()
     {
         super();
+        recycle();
     }
 
     /**
-     * Recycles a run data object.
+     * Recycles the object by removing its disposed flag.
      */
     public void recycle()
     {
-        super.recycle();
+        disposed = false;
     }
 
     /**
@@ -424,8 +430,6 @@ public class DefaultTurbineRunData
         stackTrace = null;
         stackTraceException = null;
         debugVariables.clear();
-
-        super.dispose();
     }
 
     // ***************************************
@@ -554,8 +558,10 @@ public class DefaultTurbineRunData
     public Document getPage()
     {
         pageSet = true;
-        if (this.page == null)
+        if (this.page == null) 
+        {
             this.page = new Document();
+        }
         return this.page;
     }
 
@@ -1537,4 +1543,15 @@ public class DefaultTurbineRunData
     {
         getServerData().setScriptName(scriptName);
     }
+ 
+    /**
+     * Checks whether the object is disposed.
+     *
+     * @return true, if the object is disposed.
+     */
+    public boolean isDisposed()
+    {
+        return disposed;
+    }    
+    
 }

@@ -61,10 +61,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.pool.TurbinePool;
 import org.apache.turbine.services.rundata.DefaultTurbineRunData;
+import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.services.rundata.TurbineRunData;
-import org.apache.turbine.services.rundata.TurbineRunDataFacade;
 import org.apache.turbine.util.parser.DefaultCookieParser;
 import org.apache.turbine.util.parser.DefaultParameterParser;
 
@@ -133,7 +134,8 @@ public class RunDataFactory
         {
             try
             {
-                return TurbineRunDataFacade.getRunData(req, res, config);
+                
+                return getRunDataService().getRunData(req, res, config);
             }
             catch (Exception x)
             {
@@ -201,7 +203,7 @@ public class RunDataFactory
         {
             try
             {
-                 TurbineRunDataFacade.putRunData(data);
+                getRunDataService().putRunData(data);
                 return;
             }
             catch (Exception x)
@@ -211,5 +213,14 @@ public class RunDataFactory
 
         // Failed, use the Pool Service instead.
         TurbinePool.putInstance(data);
+    }
+    
+    /**
+     * Static Helper method for looking up the RunDataService
+     * @return A RunDataService
+     */
+    private static RunDataService getRunDataService(){
+        return (RunDataService) TurbineServices
+        .getInstance().getService(RunDataService.SERVICE_NAME);
     }
 }

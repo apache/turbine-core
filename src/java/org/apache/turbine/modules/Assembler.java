@@ -77,10 +77,10 @@ public abstract class Assembler
      */
     public final RunData getRunData(PipelineData pipelineData)
     {
-        RunData data = null;
-        Map runDataMap = (Map) pipelineData.get(RunData.class);
-        data = (RunData)runDataMap.get(RunData.class);
-        return data;
+        if(!(pipelineData instanceof RunData)){
+            throw new RuntimeException("Can't cast to rundata from pipeline data.");
+        }
+        return (RunData)pipelineData;
     }
 
     

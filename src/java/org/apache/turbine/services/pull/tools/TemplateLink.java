@@ -54,8 +54,6 @@ package org.apache.turbine.services.pull.tools;
  * <http://www.apache.org/>.
  */
 
-import java.util.Map;
-
 import org.apache.commons.configuration.Configuration;
 
 import org.apache.commons.logging.Log;
@@ -151,8 +149,7 @@ public class TemplateLink
         if (data instanceof PipelineData)
         {
             PipelineData pipelineData = (PipelineData) data;
-            Map runDataMap = (Map) pipelineData.get(RunData.class);
-            RunData runData = (RunData)runDataMap.get(RunData.class);
+            RunData runData = (RunData)pipelineData;
             templateURI = new TemplateURI(runData);
         }
         else

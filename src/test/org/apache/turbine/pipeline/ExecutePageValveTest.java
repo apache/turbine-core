@@ -54,8 +54,6 @@ package org.apache.turbine.pipeline;
  * <http://www.apache.org/>.
  */
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Vector;
 
 import javax.servlet.ServletConfig;
@@ -157,13 +155,8 @@ public class ExecutePageValveTest extends BaseTestCase
         runData.setUser(tu);
 
         Pipeline pipeline = new TurbinePipeline();
-        PipelineData pipelineData = new DefaultPipelineData();
-        Map runDataMap = new HashMap();
-        runDataMap.put(RunData.class, runData);
-        // put the data into the pipeline
-        pipelineData.put(RunData.class, runDataMap);            
-        //pipelineData.put(RunData.class,runData);
 
+        PipelineData pipelineData = runData;
         ExecutePageValve valve = new ExecutePageValve();
         pipeline.addValve(valve);
 

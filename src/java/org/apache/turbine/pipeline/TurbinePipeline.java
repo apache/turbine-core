@@ -92,7 +92,7 @@ public class TurbinePipeline
      * a subscript equal to <code>values.length</code> if the basic
      * Valve is currently being processed.
      */
-    protected ThreadLocal state = new ThreadLocal();
+    protected ThreadLocal state= new ThreadLocal();
 
     /**
      * @see org.apache.turbine.Pipeline#initialize()
@@ -100,9 +100,13 @@ public class TurbinePipeline
     public void initialize()
         throws Exception
     {
+        if (state==null){
+            state = new ThreadLocal();
+        }
+        
         // Valve implementations are added to this Pipeline using the
         // Mapper.
-        
+                
         // Initialize the valves
         for (int i = 0; i < valves.length; i++)
         {
