@@ -1,0 +1,30 @@
+<project name="maven" default="jar" basedir=".">
+
+  <target
+    name="jar">
+    
+    <property name="build.dir" value="target"/>
+    <property name="build.dest" value="${build.dir}/classes"/>
+    
+    <mkdir dir="${build.dest}"/>
+    
+    <javac
+      destdir="${build.dest}"
+      excludes="**/package.html"
+      debug="false"
+      deprecation="false"
+      optimize="false">
+      <src>
+         <pathelement location="src/java"/>
+      </src>
+    </javac>
+
+    <jar
+      jarfile="${build.dir}/${final.name}.jar"
+      basedir="${build.dest}"
+      excludes="**/package.html"
+    />
+
+  </target>
+  
+</project>
