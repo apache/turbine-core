@@ -100,9 +100,6 @@ public class GroupPeer extends BasePeer
     /** The column name for the ObjectData field */
     public static final String OBJECTDATA = MAP_BUILDER.getGroup_ObjectData();
 
-    /** The Oracle sequence name for this peer. */
-    private static final String SEQUENCE_NAME = MAP_BUILDER.getSequenceGroup();
-
     /**
      * Retrieves/assembles a GroupSet of all of the Groups.
      *
