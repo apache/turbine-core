@@ -72,6 +72,9 @@
       <resource>
         <directory>${basedir}/src/plugin-resources</directory>
         <targetPath>plugin-resources</targetPath>
+        <includes>
+          <include>**/*.*</include>
+        </includes>
       </resource>
       <resource>
         <directory>${basedir}</directory>
