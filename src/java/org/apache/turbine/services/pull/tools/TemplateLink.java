@@ -60,8 +60,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.services.pull.ApplicationTool;
-import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.uri.TemplateURI;
 import org.apache.turbine.util.uri.URIConstants;
 
