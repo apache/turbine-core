@@ -259,7 +259,14 @@ public class TurbineConfig
             sb.append("found");
             log.debug(sb.toString());
         }
-        return (f.exists() ? f.getPath() : null);
+
+        if (f.exists())
+        {
+          return f.getPath();
+        }
+
+        log.error("getRealPath(\"" + path + "\") is undefined, returning null");
+        return null;
     }
 
     /**

@@ -128,8 +128,15 @@ public class TurbineComponentService
                 if (subKey.equals(CONFIG))
                 {
                     log.debug("Fixing up " + subVal);
-                    subVal =
+                    String newPath =
                             config.getServletContext().getRealPath((String) subVal);
+
+                    if (newPath == null)
+                    {
+                      throw new InitializationException("Could not translate path " + subVal);
+                    }
+
+                    subVal = newPath;
                     log.debug("Now: " + subVal);
                 }
 
