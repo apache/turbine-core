@@ -85,7 +85,7 @@ public class ShortField
     }
 
     /**
-     * Sets the default value for an Float Field
+     * Sets the default value for an Short Field
      *
      * @param prop Parameter for the default values
      */
@@ -98,7 +98,7 @@ public class ShortField
             return;
         }
 
-        defaultValue = new Float(prop);
+        defaultValue = new Short(prop);
     }
 
     /**
