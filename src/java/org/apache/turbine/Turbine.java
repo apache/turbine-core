@@ -359,11 +359,11 @@ public class Turbine
         //
         configuration.setProperty(TurbineServices.SERVICE_PREFIX +
                                   ComponentService.SERVICE_NAME + ".earlyInit",
-                                  new Boolean(true));
+                                  Boolean.TRUE);
 
         configuration.setProperty(TurbineServices.SERVICE_PREFIX +
                                   AvalonComponentService.SERVICE_NAME + ".earlyInit",
-                                  new Boolean(true));
+                                  Boolean.TRUE);
 
         serviceManager.setConfiguration(configuration);
 
