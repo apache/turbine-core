@@ -25,13 +25,13 @@ package org.apache.turbine.torque.engine.database.transform;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -69,7 +69,6 @@ import org.apache.turbine.torque.engine.database.model.Index;
 import org.apache.turbine.torque.engine.database.model.Inheritance;
 import org.apache.turbine.torque.engine.database.model.Table;
 import org.apache.turbine.torque.engine.database.model.Unique;
-import org.apache.xerces.framework.XMLParser;
 import org.apache.xerces.parsers.SAXParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -103,7 +102,7 @@ public class XmlToAppData extends DefaultHandler
     private boolean firstPass;
     private Table foreignTable;
     private String errorMessage;
-    
+
     /**
      * Default custructor
      */
@@ -123,11 +122,11 @@ public class XmlToAppData extends DefaultHandler
     {
         try
         {
-            if ( firstPass ) 
+            if ( firstPass )
             {
-                app = new AppData();                
+                app = new AppData();
             }
-            
+
             SAXParser parser = new SAXParser();
 
             // set the Resolver for the database DTD
@@ -162,7 +161,7 @@ public class XmlToAppData extends DefaultHandler
             e.printStackTrace();
         }
         firstPass = false;
-        if ( errorMessage.length() > 0 ) 
+        if ( errorMessage.length() > 0 )
         {
             System.out.println("ERROR in schema!!!\n" + errorMessage);
             // Log.error("ERROR in schema!!!\n" + errorMessage);
@@ -195,38 +194,38 @@ public class XmlToAppData extends DefaultHandler
                 if (rawName.equals("table"))
                 {
                     currTable = currDB.getTable(attributes.getValue("name"));
-                    
+
                     // check schema integrity
                     // if idMethod="autoincrement", make sure a column is
                     // specified as autoIncrement="true"
-                    if ( currTable.getIdMethod().equals("autoincrement") ) 
+                    if ( currTable.getIdMethod().equals("autoincrement") )
                     {
                         Column[] columns = currTable.getColumns();
                         boolean foundOne = false;
-                        for ( int i=0; i<columns.length && !foundOne; i++ ) 
+                        for ( int i=0; i<columns.length && !foundOne; i++ )
                         {
                             foundOne = columns[i].isAutoIncrement();
                         }
-                        if ( !foundOne ) 
+                        if ( !foundOne )
                         {
                             errorMessage += "Table '" + currTable.getName() +
                             "' is marked as autoincrement, but it does not " +
                             "have a column which declared as the one to " +
                             "auto increment (i.e. autoIncrement=\"true\")\n";
                         }
-                        
+
                     }
                 }
                 else if (rawName.equals("foreign-key"))
                 {
-                    String foreignTableName = 
-                        attributes.getValue("foreignTable"); 
+                    String foreignTableName =
+                        attributes.getValue("foreignTable");
                     foreignTable = currDB
                         .getTable(foreignTableName);
-                    if ( foreignTable == null ) 
+                    if ( foreignTable == null )
                     {
                         System.out.println("ERROR!! Attempt to set foreign"
-                            + " key to nonexistent table, " + 
+                            + " key to nonexistent table, " +
                             attributes.getValue("foreignTable") + "!");
                     }
                 }
@@ -245,10 +244,10 @@ public class XmlToAppData extends DefaultHandler
                     // give notice of a schema inconsistency.
                     // note we do not prevent the npe as there is nothing
                     // that we can do, if it is to occur.
-                    if ( local == null ) 
+                    if ( local == null )
                     {
                         System.out.println("ERROR!! Attempt to define foreign"
-                            + " key with nonexistent column, " + 
+                            + " key with nonexistent column, " +
                             attributes.getValue("local") + ", in table, " +
                             currTable.getName() + "!" );
                     }
@@ -262,10 +261,10 @@ public class XmlToAppData extends DefaultHandler
                         .getColumn(attributes.getValue("foreign"));
                     // if the foreign column does not exist, we may have an
                     // external reference or a misspelling
-                    if ( foreign == null ) 
+                    if ( foreign == null )
                     {
                         System.out.println("ERROR!! Attempt to set foreign"
-                            + " key to nonexistent column, " + 
+                            + " key to nonexistent column, " +
                             attributes.getValue("foreign") + ", in table, "
                             + foreignTable.getName() + "!" );
                     }
