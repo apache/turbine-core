@@ -54,6 +54,7 @@ package org.apache.turbine.util.velocity;
  * <http://www.apache.org/>.
  */
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import java.util.Iterator;
@@ -61,6 +62,7 @@ import java.util.Iterator;
 import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.parser.ParameterParser;
 
 import org.apache.velocity.context.Context;
@@ -127,7 +129,8 @@ public abstract class VelocityActionEvent extends ActionEvent
      * @param context Velocity context information.
      * @exception Exception a generic exception.
      */
-    public void executeEvents(RunData data, Context context) throws Exception
+    public void executeEvents(RunData data, Context context)
+            throws Exception
     {
         // Name of the button.
         String theButton = null;
@@ -157,9 +160,10 @@ public abstract class VelocityActionEvent extends ActionEvent
                     "ActionEvent: The button was null");
         }
 
+        Method method = null;
         try
         {
-            Method method = getClass().getMethod(theButton, methodParams);
+            method = getClass().getMethod(theButton, methodParams);
             Object[] methodArgs = new Object[] { data, context };
 
             log.debug("Invoking " + method);
@@ -173,6 +177,11 @@ public abstract class VelocityActionEvent extends ActionEvent
                     + "), running executeEvents() in "
                     + super.getClass().getName());
             super.executeEvents(data);
+        }
+        catch (InvocationTargetException ite)
+        {
+            Throwable t = ite.getTargetException();
+            log.error("Invokation of " + method , t);
         }
     }
 }
