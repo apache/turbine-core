@@ -67,10 +67,10 @@ import org.apache.turbine.util.TurbineConfig;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
-public class FulcrumMimetypeComponent extends BaseTestCase
+public class FulcrumMimetypeComponentTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    public FulcrumMimetypeComponent(String name) throws Exception
+    public FulcrumMimetypeComponentTest(String name) throws Exception
     {
         super(name);
     }
