@@ -54,6 +54,7 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
@@ -65,6 +66,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.parser.ParserUtils;
 
@@ -158,7 +160,9 @@ public abstract class ActionEvent extends Action
                 .getBoolean(TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_KEY,
                         TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_DEFAULT);
 
-        log.debug("Need Submit Value: " + submitValueKey);
+        log.info(submitValueKey 
+                ? "ActionEvent accepts only eventSubmit_do Keys with a value != 0"
+                : "ActionEvent accepts all eventSubmit_do Keys");
     }
     
     /**
