@@ -82,6 +82,13 @@ Changes between Turbine 2.3 and 2.3.1.
 <subsection name="Changes that could break older environments">
 <p>
   <ul>
+    <li>Turbine no longer configures the logging factory for
+        commons-logging explicitly.  If you relied on this behaviour,
+        you must add a commons-logging.properties file to your
+        application as described in the <a
+        href=http://jakarta.apache.org/commons/logging/apidocs/org/apache/commons/logging/package-summary.html">commons
+        logging documentation</a>
+    </li>
     <li>commons-configuration was upgraded to 1.0-rc1. All getVector() method calls on the
         Configuration interface must be replaced with getList().
     </li>

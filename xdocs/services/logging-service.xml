@@ -51,7 +51,25 @@ configured with the log4j.file property in TurbineResource.properties:
 #
 # -------------------------------------------------------------------
 
-log4j.file = /WEB-INF/conf/Log4j.properties
+# Configure log4j from the log4j properties file
+log4j.file = WEB-INF/conf/Log4j.properties
+]]></source>
+
+<p>
+If you use another logging system band don't want to configure
+the log4j subsystem, you can use the empty string or &quot;none&quot; as
+<code>log4j.file</code> parameter to turn it off.
+</p>
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+#
+#  L O G 4 J - L O G G I N G
+#
+# -------------------------------------------------------------------
+
+# Do not configure Log4J logging.
+log4j.file = none
 ]]></source>
 
 </section>
