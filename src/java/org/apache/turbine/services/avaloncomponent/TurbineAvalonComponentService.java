@@ -54,10 +54,14 @@ package org.apache.turbine.services.avaloncomponent;
  * <http://www.apache.org/>.
  */
 
+import java.util.Iterator;
+import java.util.Vector;
+
 import javax.servlet.ServletConfig;
 
 import org.apache.avalon.excalibur.component.DefaultRoleManager;
 import org.apache.avalon.excalibur.component.ExcaliburComponentManager;
+import org.apache.avalon.excalibur.logger.Log4JLoggerManager;
 import org.apache.avalon.excalibur.logger.LoggerManager;
 import org.apache.avalon.framework.activity.Disposable;
 import org.apache.avalon.framework.activity.Initializable;
@@ -66,8 +70,11 @@ import org.apache.avalon.framework.component.ComponentException;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.avalon.framework.context.DefaultContext;
+import org.apache.avalon.framework.logger.Logger;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.Turbine;
@@ -88,8 +95,15 @@ import org.apache.turbine.Turbine;
  *   of the correct OS directory.
  * </li>
  * </ol>
+ * If you want to initialize Torque by using the AvalonComponentService, you
+ * must activate Torque at initialization time by specifying
+ *
+ * services.AvalonComponentService.lookup = org.apache.torque.Torque 
+ *
+ * in your TurbineResources.properties.
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineAvalonComponentService
@@ -101,10 +115,10 @@ public class TurbineAvalonComponentService
             TurbineAvalonComponentService.class);
 
     /** Component manager */
-    private ExcaliburComponentManager manager = new ExcaliburComponentManager();
+    private ExcaliburComponentManager manager = null;
 
     // -------------------------------------------------------------
-    // Service initilization
+    // Service initialization
     // -------------------------------------------------------------
 
     /**
@@ -126,24 +140,8 @@ public class TurbineAvalonComponentService
         }
         catch (Exception e)
         {
-            log.error("Component Service failed: ", e);
-            throw new InitializationException("ComponentService failed: ", e);
+            throw new InitializationException("init failed", e);
         }
-    }
-
-    /**
-     * Inits the service using servlet parameters to obtain path to the
-     * configuration file. Change relatives paths.
-     *
-     * @param config The ServletConfiguration from Turbine
-     *
-     * @throws InitializationException Something went wrong when starting up.
-     * @deprecated use init() instead.
-     */
-    public void init(ServletConfig config)
-            throws InitializationException
-    {
-        init();
     }
 
     /**
@@ -168,41 +166,70 @@ public class TurbineAvalonComponentService
      */
     public void initialize() throws Exception
     {
+        org.apache.commons.configuration.Configuration conf = getConfiguration();
+
         // get the filenames and expand them relative to webapp root
         String sysConfigFilename = Turbine.getRealPath(
-                getConfiguration().getString(COMPONENT_CONFIG));
+                conf.getString(COMPONENT_CONFIG_KEY, COMPONENT_CONFIG_VALUE));
         String roleConfigFilename = Turbine.getRealPath(
-                getConfiguration().getString(COMPONENT_ROLE));
+                conf.getString(COMPONENT_ROLE_KEY, COMPONENT_ROLE_VALUE));
+
+        log.debug("Config File: " + sysConfigFilename);
+        log.debug("Role File:   " + roleConfigFilename);
 
         // process configuration files
+
         DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
-        Configuration sysConfig = builder.buildFromFile(sysConfigFilename);
+        Configuration sysConfig  = builder.buildFromFile(sysConfigFilename);
         Configuration roleConfig = builder.buildFromFile(roleConfigFilename);
 
         // Create the LoggerManager for Log4J
-        LoggerManager lm =
-                new org.apache.avalon.excalibur.logger.Log4JLoggerManager();
+        LoggerManager lm = new Log4JLoggerManager();
 
         // Setup the RoleManager
         DefaultRoleManager roles = new DefaultRoleManager();
-        roles.enableLogging(
-                lm.getLoggerForCategory("org.apache.turbine.services"));
+
+        Logger logger = lm.getLoggerForCategory(AVALON_LOG_CATEGORY);
+
+        roles.enableLogging(logger);
         roles.configure(roleConfig);
 
         // Setup ECM
-        this.manager.setLoggerManager(lm);
-        this.manager.enableLogging(
-                lm.getLoggerForCategory("org.apache.turbine.services"));
+        manager = new ExcaliburComponentManager();
+
+        manager.setLoggerManager(lm);
+        manager.enableLogging(logger);
+
         DefaultContext context = new DefaultContext();
-        context.put(AvalonComponentService.COMPONENT_APP_ROOT,
-                Turbine.getRealPath("/"));
-        System.setProperty("applicationRoot", Turbine.getRealPath("/"));
-        this.manager.contextualize(context);
-        this.manager.setRoleManager(roles);
-        this.manager.configure(sysConfig);
+        String realPath = Turbine.getRealPath("/");
+
+        context.put(AvalonComponentService.COMPONENT_APP_ROOT, realPath);
+        System.setProperty("applicationRoot", realPath);
+
+        log.debug("Application Root is " + realPath);
+
+        manager.contextualize(context);
+        manager.setRoleManager(roles);
+        manager.configure(sysConfig);
 
         // Init ECM!!!!
-        this.manager.initialize();
+        manager.initialize();
+
+        Vector lookupComponents = conf.getVector(COMPONENT_LOOKUP_KEY, new Vector());
+
+        for (Iterator it = lookupComponents.iterator(); it.hasNext(); )
+        {
+            String component = (String) it.next();
+            try
+            {
+                Component c = manager.lookup(component);
+                log.info("Lookup for Component " + component + " successful");
+            }
+            catch (Exception e)
+            {
+                log.error("Lookup for Component " + component + " failed!");
+            }
+        }
     }
 
     /**
@@ -210,7 +237,7 @@ public class TurbineAvalonComponentService
      */
     public void dispose()
     {
-        this.manager.dispose();
+        manager.dispose();
     }
 
     /**
@@ -222,7 +249,7 @@ public class TurbineAvalonComponentService
     public Component lookup(String roleName)
             throws ComponentException
     {
-        return this.manager.lookup(roleName);
+        return manager.lookup(roleName);
     }
 
     /**
@@ -232,7 +259,7 @@ public class TurbineAvalonComponentService
      */
     public void release(Component component)
     {
-        this.manager.release(component);
+        manager.release(component);
     }
 
 }
