@@ -222,7 +222,7 @@ public class DefaultCookieParser
     /**
      * Set the path for cookie storage
      *
-     * @param path path for cookie storage
+     * @param cookiePath path for cookie storage
      */
     public void setCookiePath(URI cookiePath)
     {
