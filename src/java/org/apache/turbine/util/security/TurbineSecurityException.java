@@ -89,5 +89,3 @@ public class TurbineSecurityException
         super(msg, nested);
     }
 }
-
-;
