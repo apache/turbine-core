@@ -30,5 +30,7 @@
                                         "http://jakarta.apache.org/turbine/dtd/intake_2_3.dtd">
 
 <input-data>
-  <group name="dummy" key="dummy"/>
+  <group name="dummy" key="dummy">
+    <field name="dummy" key="dummy" />
+  </group>
 </input-data>
