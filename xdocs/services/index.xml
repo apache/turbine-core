@@ -68,13 +68,6 @@ Initializes external components which implement the lifecycle interface, e.g. To
 </li>
 
 <li>
-<a href="db-service.html">DB Service (deprecated)</a>
-<br/>
-Is a common front end to all database systems.
-This service also provides the brokers for Connection Pooling and Database Map Objects.
-</li>
-
-<li>
 <a href="factory-service.html">Factory Service</a>
 <br/>
 A Service for the instantiation of objects with either the specified loaders or

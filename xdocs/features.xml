@@ -34,11 +34,10 @@ contributed</a> to Turbine over the last 2+ years.</strong>
 
 <ul>
     <li>
-      Integration with template systems: Velocity, WebMacro,
-      FreeMarker, JSP
+      Integration with template systems: Velocity, JSP
     </li>
     <li>
-        Utility code for working with Velocity and WebMacro, such as a
+        Utility code for working with Velocity, such as a
         SelectorBox class for building &lt;select> boxes</li>
     <li>
         Single Entry Point Servlet model for optimal security and control</li>
@@ -50,8 +49,7 @@ contributed</a> to Turbine over the last 2+ years.</strong>
         Strict MVC guidelines implemented through many interfaces and abstract
         classes as well as through the template systems.</li>
     <li>
-        Object-Relational tools: DatabaseMap/Peers, Village,
-        <a href="http://castor.exolab.org">Castor</a>.</li>
+        Object-Relational tools: DatabaseMap/Peers, Village.</li>
     <li>
         IDBroker that abstracts the autoinsert/sequence usage from the database</li>
     <li>
@@ -65,8 +63,6 @@ contributed</a> to Turbine over the last 2+ years.</strong>
         File Upload API</li>
     <li>
         Generic Services API for creating Singletons</li>
-    <li>
-        Castor Service Integration</li>
     <li>
         <a href="http://www.xml-rpc.com/">XML-RPC</a> Service Integration</li>
     <li>
