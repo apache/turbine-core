@@ -56,7 +56,7 @@ log4j.file = WEB-INF/conf/Log4j.properties
 ]]></source>
 
 <p>
-If you use another logging system band don't want to configure
+If you use another logging system and don't want to configure
 the log4j subsystem, you can use the empty string or &quot;none&quot; as
 <code>log4j.file</code> parameter to turn it off.
 </p>
