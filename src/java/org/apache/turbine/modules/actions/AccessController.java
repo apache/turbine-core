@@ -109,7 +109,9 @@ public class AccessController extends Action
     public void doPerform( RunData data )
         throws Exception
     {
-        if ( data.getUser() != null && data.getUser().hasLoggedIn() )
+        if ( data.getUser() != null 
+             && data.getUser().getName().length > 0
+             && data.getUser().hasLoggedIn() )
         {
             AccessControlList acl = (AccessControlList)
                 data.getSession().getValue(AccessControlList.SESSION_KEY);
