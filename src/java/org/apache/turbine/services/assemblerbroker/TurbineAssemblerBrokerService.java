@@ -56,14 +56,13 @@ package org.apache.turbine.services.assemblerbroker;
 
 import java.util.Hashtable;
 import java.util.Vector;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
 import org.apache.turbine.util.TurbineException;
-import org.apache.commons.logging.*;
 
 /**
  * TurbineAssemblerBrokerService allows assemblers (like screens,
@@ -72,6 +71,7 @@ import org.apache.commons.logging.*;
  * by adding them to the TurbineResources.properties file.
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @version $Id$
  */
 public class TurbineAssemblerBrokerService
     extends TurbineBaseService
@@ -87,20 +87,26 @@ public class TurbineAssemblerBrokerService
 
     /**
      * Get a list of AssemblerFactories of a certain type
+     *
+     * @param type type of Assembler
+     * @return list of AssemblerFactories
      */
-    private Vector getFactoryGroup (String type)
+    private Vector getFactoryGroup(String type)
     {
-        if (!factories.containsKey (type))
+        if (!factories.containsKey(type))
         {
-            factories.put (type, new Vector());
+            factories.put(type, new Vector());
         }
-        return (Vector)factories.get(type);
+        return (Vector) factories.get(type);
     }
 
     /**
      * Utiltiy method to register all factories for a given type.
+     *
+     * @param type type of Assembler
+     * @throws TurbineException
      */
-    private void registerFactories (String type)
+    private void registerFactories(String type)
         throws TurbineException
     {
         log.debug("registerFactories: key = " + type);
@@ -109,19 +115,19 @@ public class TurbineAssemblerBrokerService
 
         log.info("Registering " + names.length + " " + type + " factories.");
 
-        for (int i=0; i<names.length; i++)
+        for (int i = 0; i < names.length; i++)
         {
             try
             {
-                Object o = Class.forName (names[i]).newInstance();
-                registerFactory (type, (AssemblerFactory)o);
+                Object o = Class.forName(names[i]).newInstance();
+                registerFactory(type, (AssemblerFactory) o);
             }
             // these must be passed to the VM
-            catch(ThreadDeath e)
+            catch (ThreadDeath e)
             {
                 throw e;
             }
-            catch(OutOfMemoryError e)
+            catch (OutOfMemoryError e)
             {
                 throw e;
             }
@@ -129,69 +135,77 @@ public class TurbineAssemblerBrokerService
             // to happen (missing jar files)
             catch (Throwable t)
             {
-                throw new TurbineException("Failed registering " + type + " factories", t);
+                throw new TurbineException("Failed registering " + type
+                        + " factories", t);
             }
         }
     }
 
-
     /**
      * Initializes the AssemblerBroker and loads the AssemblerFactory
      * classes registerd in TurbineResources.Properties.
+     *
+     * @throws InitializationException
      */
-    public void init()
-        throws InitializationException
+    public void init() throws InitializationException
     {
         factories = new Hashtable();
         try
         {
-            registerFactories (AssemblerBrokerService.ACTION_TYPE);
-            registerFactories (AssemblerBrokerService.SCREEN_TYPE);
-            registerFactories (AssemblerBrokerService.NAVIGATION_TYPE);
-            registerFactories (AssemblerBrokerService.LAYOUT_TYPE);
-            registerFactories (AssemblerBrokerService.PAGE_TYPE);
-            registerFactories (AssemblerBrokerService.SCHEDULEDJOB_TYPE);
+            registerFactories(AssemblerBrokerService.ACTION_TYPE);
+            registerFactories(AssemblerBrokerService.SCREEN_TYPE);
+            registerFactories(AssemblerBrokerService.NAVIGATION_TYPE);
+            registerFactories(AssemblerBrokerService.LAYOUT_TYPE);
+            registerFactories(AssemblerBrokerService.PAGE_TYPE);
+            registerFactories(AssemblerBrokerService.SCHEDULEDJOB_TYPE);
         }
-        catch(TurbineException e)
+        catch (TurbineException e)
         {
-            throw new InitializationException("AssemblerBrokerService failed to initialize", e);
+            throw new InitializationException(
+                    "AssemblerBrokerService failed to initialize", e);
         }
         setInit(true);
     }
 
     /**
      * Register a new AssemblerFactory under a certain type
+     *
+     * @param type type of Assembler
+     * @param factory factory to register
      */
     public void registerFactory(String type, AssemblerFactory factory)
     {
-        getFactoryGroup(type).add (factory);
+        getFactoryGroup(type).add(factory);
     }
 
     /**
      * Attempt to retrieve an Assembler of a given type with
      * a name.  Cycle through all the registered AssemblerFactory
-     * classes of type and retrun the first non-null assembly
+     * classes of type and return the first non-null assembly
      * found.  If an assembly was not found return null.
+     *
+     * @param type type of Assembler
+     * @param name name of the requested Assembler
+     * @return an Assembler or null
+     * @throws TurbineException
      */
     public Assembler getAssembler(String type, String name)
         throws TurbineException
     {
         Vector facs = getFactoryGroup(type);
 
-        for (int i=0; i<facs.size(); i++)
+        for (int i = 0; i < facs.size(); i++)
         {
-            AssemblerFactory fac = (AssemblerFactory)facs.get(i);
+            AssemblerFactory fac = (AssemblerFactory) facs.get(i);
             Assembler assembler = null;
             try
             {
-                assembler = fac.getAssembler (name);
+                assembler = fac.getAssembler(name);
             }
             catch (Exception e)
             {
-                throw new TurbineException("Failed to find the "
-                                           + type
-                                           +" named "
-                                           + name, e);
+                throw new TurbineException("Failed to find the " + type
+                        + " named " + name, e);
             }
 
             if (assembler != null)
