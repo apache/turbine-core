@@ -93,9 +93,9 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * The client must then decode the file contents and write the
  * decoded file contents to disk.
  *
- * @version $Id$
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @version $Id$
  */
 public class FileHandler
 {
@@ -189,7 +189,8 @@ public class FileHandler
     /**
      * Return the content of file encoded for transfer
      *
-     * @param file: path to file to encode.
+     * @param targetLocationProperty path to file to encode.
+     * @param fileName file to encode
      * @return String encoded contents of the requested file.
      */
     public static String readFileContents(String targetLocationProperty,
