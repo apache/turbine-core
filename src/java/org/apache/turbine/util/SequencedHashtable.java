@@ -83,6 +83,7 @@ import java.util.Set;
  *
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @version $Id$
+ * @deprecated Use SequencedHashMap from the commons collections.
  */
 public class SequencedHashtable extends Hashtable
 {
