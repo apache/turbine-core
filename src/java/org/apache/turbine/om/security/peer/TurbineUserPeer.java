@@ -223,7 +223,11 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
     }
 
     /**
-     * Builds a criteria object based upon an User object
+     * Builds a criteria object based upon an User object.  Data
+     * stored in the permData table which a key matching a column
+     * name is removed from the permData table and added as a criterion.
+     * All remaining data in the permData table is serialized and
+     * added as a criterion for the OBJECT_DATA column.
      *
      * @param user object to build the criteria
      * @return the Criteria
