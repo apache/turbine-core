@@ -58,7 +58,6 @@ import java.net.URLEncoder;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
@@ -851,9 +850,9 @@ public class TurbineURI
     protected void add(int type,
             ParameterParser pp)
     {
-        for(Enumeration e = pp.keys(); e.hasMoreElements();)
+        for(Iterator it = pp.keySet().iterator(); it.hasNext();)
         {
-            String key = (String) e.nextElement();
+            String key = (String) it.next();
 
             if (!key.equalsIgnoreCase(CGI_ACTION_PARAM) &&
                     !key.equalsIgnoreCase(CGI_SCREEN_PARAM))

@@ -54,7 +54,7 @@ package org.apache.turbine.util.uri;
  * <http://www.apache.org/>.
  */
 
-import java.util.Enumeration;
+import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -301,9 +301,9 @@ public class TemplateURI
     protected void add(int type,
             ParameterParser pp)
     {
-        for(Enumeration e = pp.keys(); e.hasMoreElements(); )
+        for(Iterator it = pp.keySet().iterator(); it.hasNext();)
         {
-            String key = (String) e.nextElement();
+            String key = (String) it.next();
 
             if (!key.equalsIgnoreCase(CGI_ACTION_PARAM) &&
                     !key.equalsIgnoreCase(CGI_SCREEN_PARAM) &&
