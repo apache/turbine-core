@@ -54,16 +54,19 @@ package org.apache.turbine.services.schedule;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.modules.ScheduledJobLoader;
-import org.apache.turbine.services.logging.Logger;
-import org.apache.turbine.services.logging.TurbineLogging;
 
 /**
  * Wrapper for a <code>JobEntry</code> to actually perform the job's action.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class WorkerThread
@@ -74,10 +77,8 @@ public class WorkerThread
      */
     private JobEntry je = null;
 
-    /**
-     * The {@link org.apache.turbine.services.logging.Logger} facility to use.
-     */
-    private Logger logger = null;
+    /** Logging class from commons.logging */
+    private static Log log = LogFactory.getLog(TurbineConstants.SCHEDULER_LOG_FACILITY);
 
     /**
      * Creates a new worker to run the specified <code>JobEntry</code>.
@@ -87,8 +88,6 @@ public class WorkerThread
     public WorkerThread(JobEntry je)
     {
         this.je = je;
-        logger = TurbineLogging.getLogger
-            (TurbineConstants.SCHEDULER_LOG_FACILITY);
     }
 
     /**
@@ -110,8 +109,8 @@ public class WorkerThread
         }
         catch (Exception e)
         {
-            logger.error("Error in WorkerThread for sheduled job #" + 
-                         je.getPrimaryKey() + ", task: " + je.getTask(), e);
+            log.error("Error in WorkerThread for sheduled job #" + 
+                      je.getPrimaryKey() + ", task: " + je.getTask(), e);
         }
         finally
         {
@@ -130,7 +129,7 @@ public class WorkerThread
      */
     private final void logStateChange(String state)
     {
-        logger.debug("Scheduled job #" + je.getPrimaryKey() + ' ' + state + 
-                 ", task: " + je.getTask());
+        log.debug("Scheduled job #" + je.getPrimaryKey() + ' ' + state + 
+                  ", task: " + je.getTask());
     }
 }
