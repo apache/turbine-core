@@ -78,7 +78,7 @@ import org.xml.sax.InputSource;
 public class DTDResolver implements EntityResolver
 {
     private static final String WEB_SITE_DTD =
-            "http://jakarta.apache.org/turbine/dtd/intake.dtd";
+            "http://jakarta.apache.org/turbine/dtd/intake_2_3.dtd";
 
     /** InputSource for <code>intake.dtd</code>. */
     private InputSource intakeDTD = null;
