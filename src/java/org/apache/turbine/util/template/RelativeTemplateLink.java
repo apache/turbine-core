@@ -77,6 +77,7 @@ public class RelativeTemplateLink
 {
     /** the pathinfo key stored in the DynamicURI */
     private static final String TEMPLATE_KEY = "template";
+
     /** cache of the template name for getPage() */
     private String template = null;
 
@@ -126,6 +127,8 @@ public class RelativeTemplateLink
      * This will turn off the execution of res.encodeURL()
      * by making res == null. This is a hack for cases
      * where you don't want to see the session information
+     *
+     * @return instance of RelativeTemplateLink (this)
      */
     public RelativeTemplateLink setEncodeURLOff()
     {
@@ -136,13 +139,13 @@ public class RelativeTemplateLink
     /**
      * Sets the template variable used by the Template Service.
      *
-     * @param t A String with the template name.
-     * @return A TemplateLink.
+     * @param template A String with the template name.
+     * @return instance of RelativeTemplateLink (this)
      */
-    public RelativeTemplateLink setPage(String t)
+    public RelativeTemplateLink setPage(String template)
     {
-        template = t;
-        addPathInfo(TEMPLATE_KEY, t);
+        this.template = template;
+        addPathInfo(TEMPLATE_KEY, template);
         return this;
     }
 
