@@ -113,8 +113,6 @@ public abstract class BaseSecurityService
         extends TurbineBaseService
         implements SecurityService
 {
-    // management of Groups/Role/Permissions
-
     /** The number of threads concurrently reading security information */
     private int readerCount = 0;
 
@@ -995,7 +993,7 @@ public abstract class BaseSecurityService
                     try
                     {
                         globalGroup = getAllGroups()
-                                .getGroup(Group.GLOBAL_GROUP_NAME);
+                                .getGroupByName(Group.GLOBAL_GROUP_NAME);
                     }
                     catch (DataBackendException e)
                     {
@@ -1019,17 +1017,52 @@ public abstract class BaseSecurityService
     public Group getGroup(String name)
             throws DataBackendException, UnknownEntityException
     {
-        GroupSet groups = getAllGroups();
-        Group group = groups.getGroup(name);
-        if (group != null)
-        {
-            return group;
-        }
-        else
+        return getGroupByName(name);
+    }
+
+    /**
+     * Retrieve a Group object with specified name.
+     *
+     * @param name the name of the Group.
+     * @return an object representing the Group with specified name.
+     * @throws DataBackendException if there was an error accessing the
+     *         data backend.
+     * @throws UnknownEntityException if the group does not exist.
+     */
+    public Group getGroupByName(String name)
+            throws DataBackendException, UnknownEntityException
+    {
+        Group group = getAllGroups().getGroupByName(name);
+        if (group == null)
         {
             throw new UnknownEntityException(
                     "The specified group does not exist");
         }
+        return group;
+    }
+
+    /**
+     * Retrieve a Group object with specified Id.
+     *
+     * @param name the name of the Group.
+     *
+     * @return an object representing the Group with specified name.
+     *
+     * @throws UnknownEntityException if the permission does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    public Group getGroupById(int id)
+            throws DataBackendException, UnknownEntityException
+    {
+        Group group = getAllGroups().getGroupById(id);
+        if (group == null)
+        {
+            throw new UnknownEntityException(
+                    "The specified group does not exist");
+        }
+        return group;
     }
 
     /**
@@ -1044,18 +1077,55 @@ public abstract class BaseSecurityService
     public Role getRole(String name)
             throws DataBackendException, UnknownEntityException
     {
-        RoleSet roles = getAllRoles();
-        Role role = roles.getRole(name);
-        if (role != null)
-        {
-            role.setPermissions(getPermissions(role));
-            return role;
-        }
-        else
+        return getRoleByName(name);
+    }
+
+    /**
+     * Retrieve a Role object with specified name.
+     *
+     * @param name the name of the Role.
+     * @return an object representing the Role with specified name.
+     * @throws DataBackendException if there was an error accessing the
+     *         data backend.
+     * @throws UnknownEntityException if the role does not exist.
+     */
+    public Role getRoleByName(String name)
+            throws DataBackendException, UnknownEntityException
+    {
+        Role role = getAllRoles().getRoleByName(name);
+        if (role == null)
         {
             throw new UnknownEntityException(
                     "The specified role does not exist");
         }
+        role.setPermissions(getPermissions(role));
+        return role;
+    }
+
+    /**
+     * Retrieve a Role object with specified Id.
+     *
+     * @param name the name of the Role.
+     *
+     * @return an object representing the Role with specified name.
+     *
+     * @throws UnknownEntityException if the permission does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    public Role getRoleById(int id)
+            throws DataBackendException,
+                   UnknownEntityException
+    {
+        Role role = getAllRoles().getRoleById(id);
+        if (role == null)
+        {
+            throw new UnknownEntityException(
+                    "The specified role does not exist");
+        }
+        role.setPermissions(getPermissions(role));
+        return role;
     }
 
     /**
@@ -1070,17 +1140,53 @@ public abstract class BaseSecurityService
     public Permission getPermission(String name)
             throws DataBackendException, UnknownEntityException
     {
-        PermissionSet permissions = getAllPermissions();
-        Permission permission = permissions.getPermission(name);
-        if (permission != null)
-        {
-            return permission;
-        }
-        else
+        return getPermissionByName(name);
+    }
+
+    /**
+     * Retrieve a Permission object with specified name.
+     *
+     * @param name the name of the Permission.
+     * @return an object representing the Permission with specified name.
+     * @throws DataBackendException if there was an error accessing the
+     *         data backend.
+     * @throws UnknownEntityException if the permission does not exist.
+     */
+    public Permission getPermissionByName(String name)
+            throws DataBackendException, UnknownEntityException
+    {
+        Permission permission = getAllPermissions().getPermissionByName(name);
+        if (permission == null)
         {
             throw new UnknownEntityException(
                     "The specified permission does not exist");
         }
+        return permission;
+    }
+
+    /**
+     * Retrieve a Permission object with specified Id.
+     *
+     * @param name the name of the Permission.
+     *
+     * @return an object representing the Permission with specified name.
+     *
+     * @throws UnknownEntityException if the permission does not
+     *            exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    public Permission getPermissionById(int id)
+            throws DataBackendException,
+                   UnknownEntityException
+    {
+        Permission permission = getAllPermissions().getPermissionById(id);
+        if (permission == null)
+        {
+            throw new UnknownEntityException(
+                    "The specified permission does not exist");
+        }
+        return permission;
     }
 
     /**

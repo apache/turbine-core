@@ -786,6 +786,34 @@ public interface SecurityService
             throws DataBackendException, UnknownEntityException;
 
     /**
+     * Retrieve a Group object with specified name.
+     *
+     * @param name the name of the Group.
+     * @return an object representing the Group with specified name.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if the group does not exist.
+     */
+    Group getGroupByName(String name)
+            throws DataBackendException, UnknownEntityException;
+
+    /**
+     * Retrieve a Group object with specified Id.
+     *
+     * @param name the name of the Group.
+     *
+     * @return an object representing the Group with specified name.
+     *
+     * @exception UnknownEntityException if the permission does not
+     *            exist in the database.
+     * @exception DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    Group getGroupById(int id)
+            throws DataBackendException,
+                   UnknownEntityException;
+
+    /**
      * Retrieve a Role object with specified name.
      *
      * @param name the name of the Role.
@@ -798,6 +826,34 @@ public interface SecurityService
             throws DataBackendException, UnknownEntityException;
 
     /**
+     * Retrieve a Role object with specified name.
+     *
+     * @param name the name of the Role.
+     * @return an object representing the Role with specified name.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if the role does not exist.
+     */
+    Role getRoleByName(String name)
+            throws DataBackendException, UnknownEntityException;
+
+    /**
+     * Retrieve a Role object with specified Id.
+     *
+     * @param name the name of the Role.
+     *
+     * @return an object representing the Role with specified name.
+     *
+     * @exception UnknownEntityException if the permission does not
+     *            exist in the database.
+     * @exception DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    Role getRoleById(int id)
+            throws DataBackendException,
+                   UnknownEntityException;
+
+    /**
      * Retrieve a Permission object with specified name.
      *
      * @param name the name of the Permission.
@@ -808,6 +864,34 @@ public interface SecurityService
      */
     Permission getPermission(String name)
             throws DataBackendException, UnknownEntityException;
+
+    /**
+     * Retrieve a Permission object with specified name.
+     *
+     * @param name the name of the Permission.
+     * @return an object representing the Permission with specified name.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if the permission does not exist.
+     */
+    Permission getPermissionByName(String name)
+            throws DataBackendException, UnknownEntityException;
+
+    /**
+     * Retrieve a Permission object with specified Id.
+     *
+     * @param name the name of the Permission.
+     *
+     * @return an object representing the Permission with specified name.
+     *
+     * @exception UnknownEntityException if the permission does not
+     *            exist in the database.
+     * @exception DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    Permission getPermissionById(int id)
+            throws DataBackendException,
+                   UnknownEntityException;
 
     /**
      * Retrieve a set of Groups that meet the specified Criteria.

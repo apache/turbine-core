@@ -916,11 +916,11 @@ public class LDAPUser extends BaseObject implements User
 
     /**
      * Not implemented.
-     * @return null
+     * @return Empty String
      */
     public String getName()
     {
-        return null;
+        return "";
     }
 
     /**
@@ -928,6 +928,33 @@ public class LDAPUser extends BaseObject implements User
      * @param name the name of the User.
      */
     public void setName(String name)
+    {
+    }
+
+    /**
+     * Not implemented.
+     * @return 0
+     */
+    public int getId()
+    {
+        return 0;
+    }
+            
+    /**
+     * Not implemented.
+     * @return null
+     */
+    public Integer getIdAsObj()
+    {
+        return new Integer(0);
+    }
+
+    /**
+     * Not implemented.
+     *
+     * @param id The id of the User.
+     */
+    public void setId(int id)
     {
     }
 
