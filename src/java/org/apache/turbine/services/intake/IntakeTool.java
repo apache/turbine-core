@@ -362,6 +362,15 @@ public class IntakeTool
         }
     }
 
+    /**
+     * Give derived classes access to the Group Map
+     *
+     * @return the Group Map
+     */
+    protected Map getGroups()
+    {
+        return groups;
+    }
 
     // ****************** Recyclable implementation ************************
 
