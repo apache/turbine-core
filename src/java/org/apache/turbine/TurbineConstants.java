@@ -59,6 +59,8 @@ package org.apache.turbine;
  * the Turbine code base.
  *
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
 public interface TurbineConstants
 {
