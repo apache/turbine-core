@@ -78,6 +78,11 @@ Changes between Turbine 2.1 and 2.2b1.
       added getDateString() method to format date fields to DB.
     </li>
     <li>
+      added VelocityDirectLayout/Screen to make it possible to embed 
+      servlet/JSP outputs into a Velocity template used within Turbine.
+      (patch by raphael.luta@networks.groupvu.com)
+    </li>
+    <li>
       Javadocs improvements.
     </li>
     <li>
