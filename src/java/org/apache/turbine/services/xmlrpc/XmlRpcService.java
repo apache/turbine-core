@@ -172,6 +172,8 @@ public interface XmlRpcService
      * @param destinationLocationProperty
      * @param destinationFileName
      * @throws TurbineException
+     * @deprecated This is not scope of the Service itself but of an
+     *             application which uses the service.
      */
     void send(String serverURL,
             String sourceLocationProperty,
@@ -192,6 +194,8 @@ public interface XmlRpcService
      * @param destinationLocationProperty
      * @param destinationFileName
      * @throws TurbineException
+     * @deprecated This is not scope of the Service itself but of an
+     *             application which uses the service.
      */
     void send(String serverURL,
             String username,
@@ -211,6 +215,8 @@ public interface XmlRpcService
      * @param destinationLocationProperty
      * @param destinationFileName
      * @throws TurbineException
+     * @deprecated This is not scope of the Service itself but of an
+     *             application which uses the service.
      */
     void get(String serverURL,
             String sourceLocationProperty,
@@ -221,7 +227,7 @@ public interface XmlRpcService
 
     /**
      * Method to allow a client to send a file to a server that
-     * rewuires authentication
+     * requires authentication
      *
      * @param serverURL
      * @param username
@@ -231,6 +237,8 @@ public interface XmlRpcService
      * @param destinationLocationProperty
      * @param destinationFileName
      * @throws TurbineException
+     * @deprecated This is not scope of the Service itself but of an
+     *             application which uses the service.
      */
     void get(String serverURL,
             String username,
@@ -249,6 +257,8 @@ public interface XmlRpcService
      * @param sourceLocationProperty
      * @param sourceFileName
      * @throws TurbineException
+     * @deprecated This is not scope of the Service itself but of an
+     *             application which uses the service.
      */
     void remove(String serverURL,
             String sourceLocationProperty,
@@ -265,6 +275,8 @@ public interface XmlRpcService
      * @param sourceLocationProperty
      * @param sourceFileName
      * @throws TurbineException
+     * @deprecated This is not scope of the Service itself but of an
+     *             application which uses the service.
      */
     void remove(String serverURL,
             String username,

@@ -514,6 +514,8 @@ public class TurbineXmlRpcService
      * @param sourceFileName
      * @param destinationLocationProperty
      * @param destinationFileName
+     * @deprecated This is not scope of the Service itself but of an
+     *             application which uses the service.
      */
     public void send(String serverURL,
                      String sourceLocationProperty,
@@ -540,6 +542,8 @@ public class TurbineXmlRpcService
      * @param sourceFileName
      * @param destinationLocationProperty
      * @param destinationFileName
+     * @deprecated This is not scope of the Service itself but of an
+     *             application which uses the service.
      */
     public void send(String serverURL,
                      String username,
@@ -567,6 +571,8 @@ public class TurbineXmlRpcService
      * @param sourceFileName
      * @param destinationLocationProperty
      * @param destinationFileName
+     * @deprecated This is not scope of the Service itself but of an
+     *             application which uses the service.
      */
     public void get(String serverURL,
                     String sourceLocationProperty,
@@ -593,6 +599,8 @@ public class TurbineXmlRpcService
      * @param sourceFileName
      * @param destinationLocationProperty
      * @param destinationFileName
+     * @deprecated This is not scope of the Service itself but of an
+     *             application which uses the service.
      */
     public void get(String serverURL,
                     String username,
@@ -619,6 +627,8 @@ public class TurbineXmlRpcService
      * @param serverURL
      * @param sourceLocationProperty
      * @param sourceFileName
+     * @deprecated This is not scope of the Service itself but of an
+     *             application which uses the service.
      */
     public void remove(String serverURL,
                        String sourceLocationProperty,
@@ -639,6 +649,8 @@ public class TurbineXmlRpcService
      * @param password
      * @param sourceLocationProperty
      * @param sourceFileName
+     * @deprecated This is not scope of the Service itself but of an
+     *             application which uses the service.
      */
     public void remove(String serverURL,
                        String username,
