@@ -66,7 +66,7 @@ import org.apache.turbine.services.security.TurbineSecurity;
  * <code>
  * SecurityCheck mycheck =
  *   new SecurityCheck(data, "Unauthorized to do this!", "WrongPermission");
- * if ( !mycheck.hasPermission("add_user");
+ * if (!mycheck.hasPermission("add_user");
  *   return;
  *</code>
  *
@@ -106,8 +106,8 @@ public class SecurityCheck
         throws Exception
     {
         boolean value = false;
-        if ( data.getACL() == null ||
-             !data.getACL().hasRole(role) )
+        if (data.getACL() == null ||
+             !data.getACL().hasRole(role))
         {
             data.setScreen(failScreen);
             data.setMessage(message);
@@ -129,7 +129,7 @@ public class SecurityCheck
     public boolean hasRole(String role)
         throws Exception
     {
-        return hasRole( TurbineSecurity.getRole(role) );
+        return hasRole(TurbineSecurity.getRole(role));
     }
 
     /**
@@ -143,8 +143,8 @@ public class SecurityCheck
         throws Exception
     {
         boolean value = false;
-        if ( data.getACL() == null ||
-             !data.getACL().hasPermission(permission) )
+        if (data.getACL() == null ||
+             !data.getACL().hasPermission(permission))
         {
             data.setScreen(failScreen);
             data.setMessage(message);
@@ -166,7 +166,7 @@ public class SecurityCheck
     public boolean hasPermission(String permission)
         throws Exception
     {
-        return hasPermission( TurbineSecurity.getPermission(permission) );
+        return hasPermission(TurbineSecurity.getPermission(permission));
     }
 
     /**

@@ -91,7 +91,7 @@ public class IntakeTool
         pullMap = new HashMap((int)(1.25*groupNames.length + 1));
         // omToolKey = TurbineResources.getString("tool.intake.om");
 
-        for (int i=groupNames.length-1; i>=0; i--)
+        for (int i = groupNames.length - 1; i >= 0; i--)
         {
             pullMap.put(groupNames[i], new PullHelper(groupNames[i]));
         }
@@ -106,28 +106,28 @@ public class IntakeTool
 
         String[] groupKeys = data.getParameters().getStrings("intake-grp");
         String[] groupNames = null;
-        if ( groupKeys == null || groupKeys.length == 0 )
+        if (groupKeys == null || groupKeys.length == 0)
         {
             groupNames = TurbineIntake.getGroupNames();
         }
         else
         {
             groupNames = new String[groupKeys.length];
-            for ( int i=groupKeys.length-1; i>=0; i-- )
+            for (int i = groupKeys.length - 1; i >= 0; i--)
             {
                 groupNames[i] = TurbineIntake.getGroupName(groupKeys[i]);
             }
 
         }
 
-        for (int i=groupNames.length-1; i>=0; i--)
+        for (int i = groupNames.length - 1; i >= 0; i--)
         {
             try
             {
                 List foundGroups = TurbineIntake.getGroup(groupNames[i])
                     .getObjects(data);
 
-                if ( foundGroups != null )
+                if (foundGroups != null)
                 {
                     Iterator iter = foundGroups.iterator();
                     while (iter.hasNext())
@@ -157,9 +157,9 @@ public class IntakeTool
     {
         allGroupsSB.setLength(0);
         Iterator i = groups.values().iterator();
-        while ( i.hasNext() )
+        while (i.hasNext())
         {
-            declareGroup( (Group)i.next(), allGroupsSB );
+            declareGroup((Group)i.next(), allGroupsSB);
         }
         return allGroupsSB.toString();
     }
@@ -185,7 +185,7 @@ public class IntakeTool
      */
     public void declareGroup(Group group, StringBuffer sb)
     {
-        if ( !declaredGroups.containsKey(group.getIntakeGroupName()) )
+        if (!declaredGroups.containsKey(group.getIntakeGroupName()))
         {
             declaredGroups.put(group.getIntakeGroupName(), null);
             sb.append("<input type=\"hidden\" name=\"")
@@ -200,7 +200,7 @@ public class IntakeTool
     {
         declaredGroups.clear();
         Iterator i = groups.values().iterator();
-        while ( i.hasNext() )
+        while (i.hasNext())
         {
              ((Group)i.next()).resetDeclared();
         }
@@ -251,7 +251,7 @@ public class IntakeTool
             Group g = null;
 
             String inputKey = TurbineIntake.getGroupKey(groupName) + key;
-            if ( groups.containsKey(inputKey))
+            if (groups.containsKey(inputKey))
             {
                 g = (Group)groups.get(inputKey);
             }
@@ -284,7 +284,7 @@ public class IntakeTool
             {
                 String inputKey = TurbineIntake.getGroupKey(groupName)
                     + obj.getQueryKey();
-                if ( groups.containsKey(inputKey))
+                if (groups.containsKey(inputKey))
                 {
                     g = (Group)groups.get(inputKey);
                 }
@@ -355,7 +355,7 @@ public class IntakeTool
     public void removeAll()
     {
         Object[] allGroups = groups.values().toArray();
-        for (int i=allGroups.length-1; i>=0; i-- )
+        for (int i = allGroups.length - 1; i >= 0; i--)
         {
             Group group = (Group)allGroups[i];
             remove(group);
@@ -399,7 +399,7 @@ public class IntakeTool
     public void dispose()
     {
         Iterator iter = groups.values().iterator();
-        while ( iter.hasNext() )
+        while (iter.hasNext())
         {
             Group g = (Group)iter.next();
             TurbineIntake.releaseGroup(g);

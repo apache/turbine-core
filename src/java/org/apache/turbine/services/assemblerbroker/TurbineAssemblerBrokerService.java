@@ -54,17 +54,19 @@ package org.apache.turbine.services.assemblerbroker;
  * <http://www.apache.org/>.
  */
 
-// JDK Stuff
-import java.util.Vector;
 import java.util.Hashtable;
+import java.util.Vector;
 
-// Turbine Stuff
 import org.apache.turbine.modules.Assembler;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.TurbineBaseService;
+
 import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.TurbineServices;
+
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
+
 import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -115,8 +117,8 @@ public class TurbineAssemblerBrokerService
         {
             try
             {
-                Object o = Class.forName ( names[i] ).newInstance();
-                registerFactory ( type, (AssemblerFactory)o );
+                Object o = Class.forName (names[i]).newInstance();
+                registerFactory (type, (AssemblerFactory)o);
             }
             // these must be passed to the VM
             catch(ThreadDeath e)
@@ -156,7 +158,7 @@ public class TurbineAssemblerBrokerService
         }
         catch(TurbineException e) 
         {
-            throw new InitializationException("AssemblerBrokerService failed to initailize", e);
+            throw new InitializationException("AssemblerBrokerService failed to initialize", e);
         }
         setInit(true);
     }
@@ -164,7 +166,7 @@ public class TurbineAssemblerBrokerService
     /**
      * Register a new AssemblerFactory under a certain type
      */
-    public void registerFactory( String type, AssemblerFactory factory )
+    public void registerFactory(String type, AssemblerFactory factory)
     {
         getFactoryGroup(type).add (factory);
     }
@@ -175,7 +177,7 @@ public class TurbineAssemblerBrokerService
      * classes of type and retrun the first non-null assembly
      * found.  If an assembly was not found return null.
      */
-    public Assembler getAssembler( String type, String name ) 
+    public Assembler getAssembler(String type, String name) 
         throws TurbineException
     {
         Vector facs = getFactoryGroup(type);
@@ -190,11 +192,16 @@ public class TurbineAssemblerBrokerService
             }
             catch (Exception e)
             {
-                throw new TurbineException("Failed to find the "+type+" named "+name, e);
+                throw new TurbineException("Failed to find the " 
+                                           + type 
+                                           +" named "
+                                           + name, e);
             }
 
             if (assembler != null) 
+            {
                 return assembler;
+            }
         }
         return null;
     }

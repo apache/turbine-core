@@ -43,19 +43,13 @@ be a loss.
 <p>
 Early initialization is similar to the constructor. It is used
 to pass some information that the Service will need in it's
-future operation. For example WebMacro Service uses ServletConfig
-object to process it's own configuration options: getRealPath()
-method is used to convert paths to WebMacro.properties and 
-templates from relative to webapp root to absolute paths.
+future operation. 
 UniqueId Service uses the HttpRequest object from the first Turbine
 invocation to determine URL this instance is runnign under, to 
 generate instance ID.
 Early initialization method should process the configuration, store
 some values, but NOT allocate resources. There is still a chance
 that the Service will not be used.
-(Actually WebMacroService does this wrong, because it triggers 
-it's late initializer inside early initializer. This needs
-to be fixed eventually.)
 If the Service is ready to work (i.e. does not need any more objects
 being sent to it), and does not to allocate any resources during
 late initialization, the internal state can be changed so that

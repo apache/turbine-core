@@ -91,7 +91,8 @@ public class DefaultSessionValidator extends SessionValidator
      * set in the tr.props).
      *
      * @see org.apache.turbine.modules.screens.error.InvalidState
-     * @param data Turbine RunData context information.     * @exception Exception, a generic exception.
+     * @param data Turbine RunData context information.
+     * @exception Exception, a generic exception.
      */
     public void doPerform(RunData data) throws Exception
     {

@@ -96,15 +96,16 @@ public abstract class PythonBaseFactory implements AssemblerFactory
         String confName = null;
 
 
-        Log.info ("Screen name for JPython "+name);
+        Log.info ("Screen name for JPython " + name);
 
         try
         {
             String path = TurbineResources.getString (
-                TurbineServices.SERVICE_PREFIX + 
-                    AssemblerBrokerService.SERVICE_NAME + ".python.path")+"/";
-            confName = path+"conf.py";
-            fName = path+subDirectory+"/"+name.toLowerCase()+".py";
+                TurbineServices.SERVICE_PREFIX 
+                + AssemblerBrokerService.SERVICE_NAME 
+                + ".python.path") + "/";
+            confName = path + "conf.py";
+            fName = path + subDirectory + "/" + name.toLowerCase() + ".py";
         }
         catch (Exception e)
         {
@@ -139,23 +140,23 @@ public abstract class PythonBaseFactory implements AssemblerFactory
                 try
                 {
                     // We create an instance of the screen class from the python script
-                    interp.exec("scr = "+name+"()");
+                    interp.exec("scr = " + name + "()");
                 }
                 catch (Throwable e)
                 {
-                    throw new Exception ("\nCannot create an instance of the python class.\n"+
-                                         "You probably gave your class the wrong name.\n"+
-                                         "Your class should have the same name as your filename.\n"+
-                                         "Filenames should be all lowercase and classnames should "+
-                                         "start with a capital.\n"+
-                                         "Expected class name: "+name+"\n");
+                    throw new Exception ("\nCannot create an instance of the python class.\n"
+                                         + "You probably gave your class the wrong name.\n"
+                                         + "Your class should have the same name as your filename.\n"
+                                         + "Filenames should be all lowercase and classnames should "
+                                         + "start with a capital.\n"
+                                         + "Expected class name: " + name + "\n");
                 }
 
 
 
                 // Here we convert the python sceen instance to a java instance.
 
-                assembler = (Assembler)interp.get ("scr",Assembler.class);
+                assembler = (Assembler) interp.get ("scr", Assembler.class);
 
             }
             catch (Exception e)

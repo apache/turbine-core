@@ -74,6 +74,7 @@ import org.apache.turbine.util.RunData;
  * Screen modules.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class ScreenLoader extends GenericLoader
@@ -148,10 +149,10 @@ public class ScreenLoader extends GenericLoader
     }
 
     /**
-     * Pulls out an instance of the object by name.  Name is just the
-     * single name of the object.
+     * Pulls out an instance of the Screen by name.  Name is just the
+     * single name of the Screen.
      *
-     * @param name Name of object instance.
+     * @param name Name of requested Screen.
      * @return A Screen with the specified name, or null.
      * @exception Exception a generic exception.
      */

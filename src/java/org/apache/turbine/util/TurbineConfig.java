@@ -239,7 +239,7 @@ public class TurbineConfig
      * @return An absolute version of the supplied path, or <code>null</code>
      * if the translated path doesn't map to a file or directory.
      */
-    public String getRealPath( String path )
+    public String getRealPath(String path)
     {
         File f = new File(root, path);
         if (DEBUG)
@@ -305,7 +305,7 @@ public class TurbineConfig
      * @return a URL pointing to the resource
      * @exception MalformedURLException
      */
-    public URL getResource( String s )
+    public URL getResource(String s)
         throws MalformedURLException
     {
         return new URL("file://" + getRealPath(s));
@@ -318,7 +318,7 @@ public class TurbineConfig
      * @param s the path to the resource
      * @return an InputStream object from which the resource can be read
      */
-    public InputStream getResourceAsStream( String s )
+    public InputStream getResourceAsStream(String s)
     {
         try
         {
@@ -362,7 +362,7 @@ public class TurbineConfig
      * @param t a Throwable object.
      * @param m a message.
      */
-    public void log( String m, Throwable t )
+    public void log(String m, Throwable t)
     {
         // cannot use Turbine logging yet.
         System.err.println(m);
@@ -444,7 +444,7 @@ public class TurbineConfig
      * implemented and will throw <code>UnsuportedOperationException</code>
      * upon invocation
      */
-    public RequestDispatcher getNamedDispatcher( String s)
+    public RequestDispatcher getNamedDispatcher(String s)
     {
         throw new UnsupportedOperationException();
     }
@@ -456,7 +456,7 @@ public class TurbineConfig
      * implemented and will throw <code>UnsuportedOperationException</code>
      * upon invocation
      */
-    public RequestDispatcher getRequestDispatcher( String s )
+    public RequestDispatcher getRequestDispatcher(String s)
     {
         throw new UnsupportedOperationException();
     }
@@ -545,7 +545,7 @@ public class TurbineConfig
      * implemented and will throw <code>UnsuportedOperationException</code>
      * upon invocation
      */
-    public void removeAttribute( String s )
+    public void removeAttribute(String s)
     {
         throw new UnsupportedOperationException();
     }
@@ -557,7 +557,7 @@ public class TurbineConfig
      * implemented and will throw <code>UnsuportedOperationException</code>
      * upon invocation
      */
-    public void setAttribute( String s, Object o )
+    public void setAttribute(String s, Object o)
     {
         throw new UnsupportedOperationException();
     }

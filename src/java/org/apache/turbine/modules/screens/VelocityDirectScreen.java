@@ -54,18 +54,19 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
-// Turbine/ECS Imports
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.StringUtils;
+
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.services.velocity.TurbineVelocity;
+
 import org.apache.turbine.services.template.TurbineTemplate;
 
-// Velocity Stuff
-import org.apache.velocity.context.Context;
+import org.apache.turbine.services.velocity.TurbineVelocity;
 
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.StringUtils;
+
+import org.apache.velocity.context.Context;
 
 /**
  * Base Velocity Screen.  The buildTemplate() assumes the template

@@ -54,23 +54,15 @@ package org.apache.turbine.modules.navigations;
  * <http://www.apache.org/>.
  */
 
-// Java Core Classes
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-// Turbine Classes
-import org.apache.turbine.modules.Navigation;
-import org.apache.turbine.om.security.Permission;
-import org.apache.turbine.om.security.Role;
-import org.apache.turbine.util.DynamicURI;
-import org.apache.turbine.util.RunData;
-
-// ECS Classes
+import org.apache.ecs.AlignType;
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.ElementContainer;
 import org.apache.ecs.HtmlColor;
-import org.apache.ecs.AlignType;
+
 import org.apache.ecs.html.B;
 import org.apache.ecs.html.BR;
 import org.apache.ecs.html.Font;
@@ -79,10 +71,17 @@ import org.apache.ecs.html.H4;
 import org.apache.ecs.html.HR;
 import org.apache.ecs.html.Input;
 import org.apache.ecs.html.PRE;
-import org.apache.ecs.html.Table;
 import org.apache.ecs.html.TD;
 import org.apache.ecs.html.TR;
+import org.apache.ecs.html.Table;
 
+import org.apache.turbine.modules.Navigation;
+
+import org.apache.turbine.om.security.Permission;
+import org.apache.turbine.om.security.Role;
+
+import org.apache.turbine.util.DynamicURI;
+import org.apache.turbine.util.RunData;
 
 /**
  * This is a sample navigation module.

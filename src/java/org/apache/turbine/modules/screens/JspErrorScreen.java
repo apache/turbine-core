@@ -71,7 +71,7 @@ public class JspErrorScreen extends BaseJspScreen
       * @param data Turbine information.
       * @exception Exception, a generic exception.
       */
-     protected void doBuildTemplate( RunData data )
+     protected void doBuildTemplate(RunData data)
          throws Exception
      {
          String errorTemplate = TurbineResources.getString("template.error",

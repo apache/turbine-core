@@ -141,7 +141,9 @@ public abstract class VelocityActionEvent extends ActionEvent
         }
 
         if (theButton == null)
+        {
             throw new NoSuchMethodException("ActionEvent: The button was null");
+        }
 
         try
         {
