@@ -84,6 +84,7 @@ public class PathConverterTest
 {
     private static TurbineConfig tc = null;
     private static VelocityService vs = null;
+    private static String fileSeperator = System.getProperty("file.separator");
 
     public PathConverterTest(String name)
     {
@@ -117,23 +118,28 @@ public class PathConverterTest
 
         String [] test1 = ep.getStringArray("test1.resource.loader.path");
         assertEquals("No Test1 Property found", 1, test1.length);
-        assertEquals("Test1 Path translation failed", rootPath + "/relative/path" , test1[0]);
+        assertEquals("Test1 Path translation failed", rootPath
+                +fileSeperator+"relative"+fileSeperator+"path" , test1[0]);
 
         String [] test2 = ep.getStringArray("test2.resource.loader.path");
         assertEquals("No Test2 Property found", 1, test2.length);
-        assertEquals("Test2 Path translation failed", rootPath + "/absolute/path" , test2[0]);
+        assertEquals("Test2 Path translation failed", rootPath
+                +fileSeperator+"absolute"+fileSeperator+"path" , test2[0]);
 
         String [] test3 = ep.getStringArray("test3.resource.loader.path");
         assertEquals("No Test3 Property found", 1, test2.length);
-        assertEquals("Test3 Path translation failed", rootPath +"/jar-file.jar!/", test3[0]);
+        assertEquals("Test3 Path translation failed", rootPath
+                +fileSeperator+"jar-file.jar!/", test3[0]);
 
         String [] test4 = ep.getStringArray("test4.resource.loader.path");
         assertEquals("No Test4 Property found", 1, test4.length);
-        assertEquals("Test4 Path translation failed", rootPath + "/jar-file.jar!/with/some/extensions" , test4[0]);
+        assertEquals("Test4 Path translation failed", rootPath
+                +fileSeperator+"jar-file.jar!/with/some/extensions" , test4[0]);
 
         String [] test5 = ep.getStringArray("test5.resource.loader.path");
         assertEquals("No Test5 Property found", 1, test5.length);
-        assertEquals("Test5 Path translation failed", rootPath + "/jar-file.jar" , test5[0]);
+        assertEquals("Test5 Path translation failed", rootPath
+                +fileSeperator+"jar-file.jar" , test5[0]);
 
         String [] test6 = ep.getStringArray("test6.resource.loader.path");
         assertEquals("No Test6 Property found", 1, test6.length);
@@ -141,7 +147,9 @@ public class PathConverterTest
 
         String [] test7 = ep.getStringArray("test7.resource.loader.path");
         assertEquals("No Test7 Property found", 1, test7.length);
-        assertEquals("Test7 Path translation failed", rootPath + "/file/system/reference" , test7[0]);
+        assertEquals("Test7 Path translation failed", rootPath
+                +fileSeperator+"file"+fileSeperator
+                +"system"+fileSeperator+"reference" , test7[0]);
 
         String [] test8 = ep.getStringArray("test8.resource.loader.path");
         assertEquals("No Test8 Property found", 1, test8.length);
