@@ -85,12 +85,11 @@ public abstract class JavaBaseFactory
         Turbine.getConfiguration().getVector(TurbineConstants.MODULE_PACKAGES);
 
     /** Logging */
-    private static Log log = LogFactory.getLog(JavaBaseFactory.class);
+    protected Log log = LogFactory.getLog(this.getClass());
 
     static
     {
         ObjectUtils.addOnce(packages, GenericLoader.getBasePackage());
-        log.debug("Added the following packages: " + packages);
     }
 
     /**
