@@ -78,9 +78,11 @@ public class SchedulerTool implements ApplicationTool
      */
     public void init(Object data)
     {
-        if (!TurbineServices.getInstance().isRegistered(ScheduleService.SERVICE_NAME))
+        if (!TurbineServices.getInstance().isRegistered(
+                ScheduleService.SERVICE_NAME))
         {
-            log.error("You can not use the SchedulerTool unless you enable the Scheduler Service!!!!");
+            log.error("You can not use the SchedulerTool unless you enable "
+                    +"the Scheduler Service!!!!");
         }
     }
 
