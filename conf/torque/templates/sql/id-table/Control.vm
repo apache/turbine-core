@@ -4,7 +4,7 @@
   #if ($appData.MultipleDatabases)
     #set ( $outFile = "${project}-${databaseModel.Name}-idtable.sql" )
   #else
-    #set ( $outFile = "" )
+    #set ( $outFile = "${project}-idtable.sql" )
   #end
 $generator.parse($fname,$outFile,"tables",$databaseModel.Tables)
 #end
