@@ -69,11 +69,25 @@ public interface JspService
     extends Service
 {
     /** The name used to specify this service in Turbine.properties */
-    static final String SERVICE_NAME = "JspService";
+    String SERVICE_NAME = "JspService";
+
     /** The key used to store an instance of RunData in the request */
-    static final String RUNDATA = "rundata";
+    String RUNDATA = "rundata";
+
     /** The key used to store an instance of JspLink in the request */
-    static final String LINK = "link";
+    String LINK = "link";
+
+    /** The default extension of JSPs */
+    String JSP_EXTENSION = "jsp";
+
+    /** Property key for Template Pathes */
+    String TEMPLATE_PATH_KEY = "templates";
+
+    /** Property for Jsp Page Buffer Size */
+    String BUFFER_SIZE_KEY = "buffer.size";
+
+    /** Default Value for Jsp Page Buffer Size */
+    int BUFFER_SIZE_DEFAULT = 8192;
 
     /**
      * Adds some convenience objects to the request.  For example an instance
