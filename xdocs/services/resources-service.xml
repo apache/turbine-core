@@ -4,6 +4,7 @@
  <properties>
   <title>Turbine Services - Resources Service</title>
   <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
  </properties>
 
 <body>
@@ -11,61 +12,76 @@
 <section name="Resources Service">
 
 <p>
-Within Turbine is a class for reading and accessing data in Property
-files. The classes that accomplish this have been borrowed from the Apache
-JServ project. These classes are called ExtendedProperties and are more
-feature complete than the Properties objects that are default in the Java
-Language specification. Turbine comes with a global properties file called
-TurbineResources.properties. This file is used to configure runtime directives
-within Turbine. You can also use this file to store your application specific
-resources or you can uses the Resources Services to create other files
-that are specific to your application.
+Within Turbine was a service for reading and accessing data in Property
+files. The classes that accomplish this have been borrowed from the
+Apache JServ project, moved many time and finally ended up in the <a
+href="http://jakarta.apache.org/commons/sandbox/configuration">commons-configuration</a>
+ sub-project. So we removed the Service itself and now use commons-configuration everywhere.
 </p>
 
 </section>
 
-<section name="Configuration">
+<section name="Configuring Turbine">
+
+<p>
+Turbine gets its configuration file from the servlet container at
+startup time. It is necessary to have an init parameter in the
+servlet section of your web.xml file:
+</p>
 
 <source><![CDATA[
-.
-.
-.
+<init-param>
+    <param-name>properties</param-name>
+    <!-- This is relative to the docBase -->
+    <param-value>
+        /WEB-INF/conf/TurbineResources.properties
+    </param-value>
+</init-param>
 ]]></source>
 
 </section>
 
-<section name="Usage">
+<section name="Accessing properties">
 
 <p>
-To access data that is within the TurbineResources.properties file,
-all you need to do is this:
+Turbine post-2.2 uses commons-configuration all over the place, so if
+you want to access properties files, you can use it in two ways.
+</p>
+
+<p>
+Inside arbitrary code:
 </p>
 
 <source><![CDATA[
+import org.apache.commons.configuration.Configuration;
+import org.apache.turbine.Turbine;
 
-TurbineResources
-    .setPropertiesFileName("d:/path/to/TurbineResources.properties");
+//
+// Access all properties from TurbineResource.properties
+Configuration conf = Turbine.getConfiguration();
 
-String foo = TurbineResources
-    .getString("foo.data","defaultValue");
-
+String myProperty = conf.getString("this.is.my.property");
 ]]></source>
 
 <p>
-The above code sets the properties file name path so that it can be found.
-This only needs to be executed once per instance of the JVM because it
-is a mostly static class and can cache this information. The getString()
-line will retrieve the value out of the properties file that starts with
-"<em>foo.data</em>". If that key value is not found in the properties file,
-then it will return the optional "<em>defaultValue</em>" as the String.
+Inside a service, you can easily access the already subclassed
+property object for your service (that is, with the services.&lt;your service name&gt;
+stripped away from the property:
 </p>
 
-<p>There is also a class, TurbineResourceServices that allows you to use
-the Services functionality to access information within TurbineResources.
-Since this is more work for the programmer, I will leave this as an exercise
-that you can do on your own. It is recommended that you just use the simple
-example above instead.
-</p>
+<source><![CDATA[
+public class myService extends TurbineBaseService
+{
+.
+.
+.
+    Configuration conf = getConfiguration();
+    String myProp = conf.getString("my.property"); // services.myService.my.property
+.
+.
+.
+}
+]]></source>
 
 </section>
 

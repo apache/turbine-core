@@ -6,6 +6,7 @@
   <author email="criley@ekmail.com">Cameron Riley</author>
   <author email="jvanzyl@apache.org">Jason van Zyl</author>
   <author email="jon@latchkey.com">Jon S. Stevens</author>
+  <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
  </properties>
 
 <body>
@@ -97,9 +98,9 @@ The single point of access to all localization resources.
 <li>
 <a href="logging-service.html">Logging Service</a>
 <br/>
-The default Loggin implementation for Turbine, logging can be either
-through an explicite getLogger() method or by standard printing methods
-such as info or debug.
+The Logging Service has been removed and replaced with a commons-logging
+and log4j combination. Here you find some information how to use this
+in Turbine.
 </li>
 
 <li>
@@ -133,9 +134,8 @@ scope or persistant scope within your application.
 <li>
 <a href="resources-service.html">Resources Service</a>
 <br/>
-<b>[TO DO (Configuration)]</b> The Resources Service is the set of classes and
-the functionality that allows for the reading and acccessing data
-from within properties files.
+The Resources Service has been removed and replaced with commons-configuration. You
+find some explanation how to use commons-configuration here.
 </li>
 
 <li>

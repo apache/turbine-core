@@ -5,6 +5,7 @@
   <title>Turbine Services - Logging Service</title>
   <author email="jvanzyl@apache.org">Jason van Zyl</author>
   <author email="jon@latchkey.com">Jon S. Stevens</author>
+  <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
  </properties>
 
 <body>
@@ -12,13 +13,12 @@
 <section name="Logging Service">
 
 <p>
-Turbine's logging service is exceptionally powerful. The reason why it
-is so powerful is because it provides an API which is extensible in that
-any logging system can be configured to run under the covers. Turbine
-provides by default implementations for 4 different logging systems:
-Log4J, Avalon's LogKit, The Servlet API's logging system and a simple
-file logging system. The facility.className is what decides which 
-logger system to use.
+Turbine's logging service is exceptionally powerful. And it was
+proprietary. So we ripped it out post Turbine 2.2 and replaced it with
+<a href="http://jakarta.apache.org/commons/logging">commons-logging</a>
+ backed by <a href="http://jakarta.apache.org/log4j/">Log4j</a>. You
+configure the new logging with a Log4j.properties file which can be
+configured with the log4j.file property in TurbineResource.properties:
 </p>
 
 </section>
@@ -27,66 +27,154 @@ logger system to use.
 
 <source><![CDATA[
 # -------------------------------------------------------------------
-# 
-#  S E R V I C E S
+#
+#  L O G 4 J - L O G G I N G
 #
 # -------------------------------------------------------------------
-# Classes for Turbine Services should be defined here.
-# Format: services.[name].classname=[implementing class]
-#
-# To specify properties of a service use the following syntax:
-# service.[name].[property]=[value]
 
-services.LoggingService.classname=org.apache.turbine.services.logging.TurbineLoggingService
-.
-.
-.
-# -------------------------------------------------------------------
-# 
-#  L O G S
-#
-# -------------------------------------------------------------------
-# This is the configuration for the logging system. In most cases
-# you don't need to modify anything. However, if you wish to add more
-# facilities or modify the existing settings, then you can do so.
-#
-# destination.file: A path relative to the web app root
-# -------------------------------------------------------------------
-services.LoggingService.facilities=system,debug
-services.LoggingService.default=system
-services.LoggingService.loggingConfig=org.apache.turbine.services.logging.PropertiesLoggingConfig
-
-# A facility for system logging.
-services.LoggingService.system.destination.file=/path/to/file.log
-services.LoggingService.system.className=org.apache.turbine.services.logging.FileLogger
-services.LoggingService.system.level=INFO
-
-# A facility for the scheduler service
-# To disable started/stopped messages set the level to ERROR
-services.LoggingService.scheduler.destination.file=/path/to/file.log
-services.LoggingService.scheduler.className=org.apache.turbine.services.logging.FileLogger
-services.LoggingService.scheduler.level=INFO
+log4j.file = /WEB-INF/conf/Log4j.properties
 ]]></source>
+
+</section>
+
+<section name="Log4j Configuration">
+
+<p>
+To use the Logging system, all you need to do is configure some
+loggers in your Log4j.properties. This is an example how to do it:
+</p>
+
+<source><![CDATA[
+# ------------------------------------------------------------------------
+#
+# Logging Configuration
+#
+# $Id$
+#
+# ------------------------------------------------------------------------
+
+#
+# If we don't know the logging facility, put it into the
+# turbine.log
+#
+log4j.rootLogger = INFO, turbine
+
+#
+# Turbine goes into Turbine Log
+#
+log4j.category.org.apache.turbine = INFO, turbine
+log4j.additivity.org.apache.turbine = false
+
+#
+# Torque has its own log file
+#
+log4j.category.org.apache.torque = INFO, torque
+log4j.additivity.org.apache.torque = false
+
+#
+# Velocity Logfile
+#
+log4j.category.velocity = INFO, velocity
+log4j.additivity.velocity = false
+
+#
+# Scheduler Category
+#
+log4j.category.scheduler = INFO, scheduler
+log4j.additivity.scheduler = false
+
+########################################################################
+#
+# Logfile definitions
+#
+########################################################################
+
+#
+# turbine.log
+#
+log4j.appender.turbine = org.apache.log4j.FileAppender
+log4j.appender.turbine.file = ${applicationRoot}/logs/turbine.log
+log4j.appender.turbine.layout = org.apache.log4j.PatternLayout
+log4j.appender.turbine.layout.conversionPattern = %d [%t] %-5p %c - %m%n
+log4j.appender.turbine.append = false
+
+#
+# torque.log
+# 
+log4j.appender.torque = org.apache.log4j.FileAppender
+log4j.appender.torque.file = ${applicationRoot}/logs/torque.log
+log4j.appender.torque.layout = org.apache.log4j.PatternLayout
+log4j.appender.torque.layout.conversionPattern = %d [%t] %-5p %c - %m%n
+log4j.appender.torque.append = false
+
+#
+# Scheduler Output
+#
+log4j.appender.scheduler = org.apache.log4j.FileAppender
+log4j.appender.scheduler.file = ${applicationRoot}/logs/scheduler.log
+log4j.appender.scheduler.layout = org.apache.log4j.PatternLayout
+log4j.appender.scheduler.layout.conversionPattern = %d [%t] %-5p %c - %m%n
+log4j.appender.scheduler.append = false
+
+#
+# Velocity gets configured to write its output onto the velocity
+# category.
+#
+log4j.appender.velocity = org.apache.log4j.FileAppender
+log4j.appender.velocity.file = ${applicationRoot}/logs/velocity.log
+log4j.appender.velocity.layout = org.apache.log4j.PatternLayout
+log4j.appender.velocity.layout.conversionPattern = %d [%t] %-5p %c - %m%n
+log4j.appender.velocity.append = false
+]]></source>
+
+<p>
+Sub Projects like Torque and Velocity get either configured correctly
+by their Services (Velocity by the VelocityService) or already know
+about commons-logging (Torque). 
+</p>
 
 </section>
 
 <section name="Usage">
 
 <p>
-To use the Logging system, all you need to do is configure a facility in
-the TR.props file, what facilities to use for logging and then reference
-a facility in your code. It is also possible to configure a "default"
-logging facility where all log messages go when a facility is not
-specified.
+You use the logging by accessing it via commons-logging. This is an
+example how to do it.
 </p>
 
 <source><![CDATA[
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-Log.info("system", "this is a message that would go to the system facility");
+// Provide a logger with the class name as category. This
+// is recommended because you can split your log files
+// by packages in the Log4j.properties. You can provide
+// any other category name here, though.
+private Log log = LogFactory.getLog(this.getClass());
+
+log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility");
+]]></source>
+
+<p>
+It is recommended for performance reasons that you provide a class wide logger like this:
+</p>
+
+<source><![CDATA[
+package foo;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+public class Bar
+{
+    // Classwide static logger
+    private static Log log = LogFactory.getLog(Bar.class);
+.
+.
+.
+}
 ]]></source>
 
 </section>
-
 </body>
 </document>
