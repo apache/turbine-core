@@ -241,6 +241,16 @@ public abstract class TurbineSecurity
     }
 
     /**
+     * Configure a new user Manager.
+     *
+     * @param userManager An UserManager object
+     */
+    public void setUserManager(UserManager userManager)
+    {
+        getService().setUserManager(userManager);
+    }
+
+    /**
      * Check whether a specified user's account exists.
      *
      * The login name is used for looking up the account.
@@ -325,6 +335,26 @@ public abstract class TurbineSecurity
             throws DataBackendException
     {
         return getService().getUsers(criteria);
+    }
+
+    /**
+     * Retrieve a set of users that meet the specified criteria.
+     *
+     * As the keys for the criteria, you should use the constants that
+     * are defined in {@link User} interface, plus the names
+     * of the custom attributes you added to your user representation
+     * in the data storage. Use verbatim names of the attributes -
+     * without table name prefix in case of DB implementation.
+     *
+     * @param criteria The criteria of selection.
+     * @return a List of users meeting the criteria.
+     * @throws DataBackendException if there is a problem accessing the
+     *         storage.
+     */
+    public static List getUserList(Criteria criteria)
+            throws DataBackendException
+    {
+        return getService().getUserList(criteria);
     }
 
     /**
