@@ -54,8 +54,6 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
-// Turbine Utility Classes
-
 import org.apache.turbine.util.RunData;
 
 /**
