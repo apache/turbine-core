@@ -129,9 +129,9 @@ public interface UploadService
      * org.apache.turbine.util.ParameterParser}.  Otherwise, an {@link
      * org.apache.turbine.modules.Action} may decide to to parse the
      * request by calling {@link #parseRequest(HttpServletRequest,
-            * ParameterParser, String) parseRequest} manually.
+     * ParameterParser, String) parseRequest} manually.
      */
-    String AUTOMATIC_DEFAULT = "false";
+    boolean AUTOMATIC_DEFAULT = false;
 
     /**
      * The request parameter name for overriding 'repository' property
@@ -167,7 +167,7 @@ public interface UploadService
      * value, and use an action + no auto upload to enforce limits.
      *
      */
-    Integer SIZE_MAX_DEFAULT = new Integer(1048576);
+    int SIZE_MAX_DEFAULT = 1048576;
 
     /**
      * The key in UploadService properties in
@@ -181,7 +181,7 @@ public interface UploadService
      * request that will have it's components stored temporarily in
      * memory, instead of disk.
      */
-    Integer SIZE_THRESHOLD_DEFAULT = new Integer(10240);
+    int SIZE_THRESHOLD_DEFAULT = 10240;
 
     /**
      * <p> This method performs parsing the request, and storing the

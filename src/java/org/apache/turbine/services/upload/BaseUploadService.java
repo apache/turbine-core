@@ -131,17 +131,9 @@ public abstract class BaseUploadService
      */
     public int getSizeMax()
     {
-        String sizeMax = getProperties()
-                .getProperty(UploadService.SIZE_MAX_KEY,
-                        UploadService.SIZE_MAX_DEFAULT.toString());
-        try
-        {
-            return Integer.parseInt(sizeMax);
-        }
-        catch (NumberFormatException e)
-        {
-            return UploadService.SIZE_MAX_DEFAULT.intValue();
-        }
+        return getConfiguration().getInt(
+                UploadService.SIZE_MAX_KEY,
+                UploadService.SIZE_MAX_DEFAULT);
     }
 
     /**
@@ -152,17 +144,9 @@ public abstract class BaseUploadService
      */
     public int getSizeThreshold()
     {
-        String sizeThreshold = getProperties()
-                .getProperty(UploadService.SIZE_THRESHOLD_KEY,
-                        UploadService.SIZE_THRESHOLD_DEFAULT.toString());
-        try
-        {
-            return Integer.parseInt(sizeThreshold);
-        }
-        catch (NumberFormatException e)
-        {
-            return UploadService.SIZE_THRESHOLD_DEFAULT.intValue();
-        }
+        return getConfiguration().getInt(
+                UploadService.SIZE_THRESHOLD_KEY,
+                UploadService.SIZE_THRESHOLD_DEFAULT);
     }
 
     /**
@@ -174,9 +158,9 @@ public abstract class BaseUploadService
     public String getRepository()
     {
         // get the reposity value from TR.props
-        String tmpPath = getProperties()
-                .getProperty(UploadService.REPOSITORY_KEY,
-                        UploadService.REPOSITORY_DEFAULT.toString());
+        String tmpPath = getConfiguration().getString(
+                UploadService.REPOSITORY_KEY,
+                UploadService.REPOSITORY_DEFAULT);
 
         // return the expanded path name
         ServletConfig config = Turbine.getTurbineServletConfig();
@@ -195,14 +179,8 @@ public abstract class BaseUploadService
      */
     public boolean getAutomatic()
     {
-        String auto =
-            getConfiguration().getString(
+        return getConfiguration().getBoolean(
                 UploadService.AUTOMATIC_KEY,
-                UploadService.AUTOMATIC_DEFAULT).toLowerCase();
-
-        // True, yes, 1 is "true", everything else is "false".
-        return auto.equals("true")
-            || auto.equals("yes")
-            || auto.equals("1");
+                UploadService.AUTOMATIC_DEFAULT);
     }
 }
