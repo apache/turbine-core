@@ -110,6 +110,11 @@ public class LoginUser
         String username = data.getParameters().getString(CGI_USERNAME, "");
         String password = data.getParameters().getString(CGI_PASSWORD, "");
 
+        if (StringUtils.isEmpty(username))
+        {
+            return;
+        }
+
         try
         {
             // Authenticate the user and get the object.
