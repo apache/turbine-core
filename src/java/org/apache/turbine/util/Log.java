@@ -54,460 +54,233 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.logging.Logger;
-import org.apache.turbine.services.logging.LoggingService;
+import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.TurbineConstants;
 
 /**
- * A facade class for {@link org.apache.turbine.services.logging.LoggingService}.
+ * A facade class for Turbine Logging
  *
- * Use this class to conviniently access the system's configured LoggingSerice.
- * <P>
- * @see org.apache.turbine.services.logging.TurbineLoggingService
+ * Use this class to conveniently access the system logging facility.
+ *
+ * @deprecated Use the commons.logging system for logging
+ *
  * @author <a href="mailto:Tomasz.Zielinski@e-point.pl">Tomasz Zielinski</a>
+ * @author <a href="mailto:hps@intermeta.de>Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
 public class Log
 {
+
     /**
      * This method returns default logger for Turbine System
      *
      * @return The default logger for system.
+     * @deprecated Use the commons.logging system for logging
      */
-    public static Logger getLogger()
+    public static org.apache.commons.logging.Log getLogger()
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        return logger.getLogger();
+        return LogFactory.getLog(TurbineConstants.DEFAULT_LOGGER);
     }
 
     /**
-     * This method returns logger with given name if such logger exsists,
+     * This method returns logger with given name if such logger exists,
      * or the default logger.
-     */
-    public static Logger getLogger(String logName)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        return logger.getLogger(logName);
-    }
-
-    /**
-     * This method sets the log level in default logger
-     */
-    public static void setLogLevel(int level)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.setLogLevel(level);
-    }
-
-    /**
-     * This method sets the log level in the logger of given name
-     */
-    public static void setLogLevel(String logName, int level)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.setLogLevel(logName, level);
-    }
-
-    /**
-     * This method sets format style of the default logger.
-     * Format tokens are described in RunDataFilter implementation.
      *
-     * @see org.apache.turbine.services.logging.BaseRunDataFilter
-     * @param format String describing what information should be extracted from
-     *        RunData
+     * @return The default logger for system.
+     * @deprecated Use the commons.logging system for logging
      */
-    public static void setFormat(String format)
+    public static org.apache.commons.logging.Log getLogger(String logName)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.setFormat(format);
-    }
+        org.apache.commons.logging.Log log = LogFactory.getLog(logName);
 
-    /**
-     * This method sets format style of the given logger.
-     * Format tokens are described in RunDataFilter implementation.
-     *
-     * @see org.apache.turbine.services.logging.BaseRunDataFilter
-     * @param format String describing what information should be extracted from
-     *        RunData
-     */
-    public static void setFormat(String logName, String format)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.setFormat(logName, format);
+        if(log == null)
+        {
+            log = getLogger();
+        }
+        return log;
     }
 
     /**
      * This is a log method with logLevel == DEBUG, printing is done by
      * the default logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void debug(String message)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.debug(message);
+        getLogger().debug(message);
     }
 
     /**
      * This is a log method with logLevel == DEBUG, printing is done by
      * the default logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void debug(String message, Throwable t)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.debug(message, t);
+        getLogger().debug(message, t);
     }
 
     /**
      * This is a log method with logLevel == DEBUG, printing is done by
      * the given logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void debug(String logName ,String message, Throwable t)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.debug(logName, message, t);
+        getLogger(logName).debug(message, t);
     }
 
     /**
      * This is a log method with logLevel == DEBUG, printing is done by
      * the given logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void debug(String logName, String message)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.debug(logName, message);
-    }
-
-    /**
-     * This is a log method with logLevel == DEBUG, printing is done by
-     * the default logger
-     */
-    public static void debug(String message, RunData data)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.debug(message, data);
-    }
-
-    /**
-     * This is a log method with logLevel == DEBUG, printing is done by
-     * the default logger
-     */
-    public static void debug(String message, RunData data, Throwable t)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.debug(message, data, t);
-    }
-
-    /**
-     * This is a log method with logLevel == DEBUG, printing is done by
-     * the given logger
-     */
-    public static void debug(String logName,
-                            String message,
-                            RunData data,
-                            Throwable t)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.debug(logName, message, data, t);
-    }
-
-    /**
-     * This is a log method with logLevel == DEBUG, printing is done by
-     * the given logger
-     */
-    public static void debug(String logName, String message, RunData data)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.debug(logName, message, data);
+        getLogger(logName).debug(message);
     }
 
     /**
      * This is a log method with logLevel == INFO, printing is done by
      * the default logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void info(String message)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.info(message);
+        getLogger().info(message);
     }
 
     /**
      * This is a log method with logLevel == INFO, printing is done by
      * the default logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void info(String message, Throwable t)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.info(message, t);
+        getLogger().info(message, t);
     }
 
     /**
      * This is a log method with logLevel == INFO, printing is done by
      * the given logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void info(String logName, String message)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.info(logName, message);
+        getLogger(logName).info(message);
     }
 
     /**
      * This is a log method with logLevel == INFO, printing is done by
      * the given logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void info(String logName, String message, Throwable t)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.info(logName, message, t);
-    }
-
-    /**
-     * This is a log method with logLevel == INFO, printing is done by
-     * the default logger
-     */
-    public static void info(String message, RunData data)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.info(message, data);
-    }
-
-    /**
-     * This is a log method with logLevel == INFO, printing is done by
-     * the default logger
-     */
-    public static void info(String message, RunData data, Throwable t)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.info(message, data, t);
-    }
-
-    /**
-     * This is a log method with logLevel == INFO, printing is done by
-     * the given logger
-     */
-    public static void info(String logName, String message, RunData data)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.info(logName, message, data);
-    }
-
-    /**
-     * This is a log method with logLevel == INFO, printing is done by
-     * the given logger
-     */
-    public static void info(String logName,
-                            String message,
-                            RunData data,
-                            Throwable t)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.info(logName, message, data, t);
+        getLogger(logName).info(message, t);
     }
 
     /**
      * This is a log method with logLevel == WARN, printing is done by
      * the default logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void warn(String message)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.warn(message);
+        getLogger().warn(message);
     }
 
     /**
      * This is a log method with logLevel == WARN, printing is done by
      * the default logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void warn(String message, Throwable t)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.warn(message, t);
+        getLogger().warn(message, t);
     }
 
     /**
      * This is a log method with logLevel == WARN, printing is done by
      * the given logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void warn(String logName, String message)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.warn(logName, message);
+        getLogger(logName).warn(message);
     }
 
     /**
      * This is a log method with logLevel == WARN, printing is done by
      * the given logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void warn(String logName, String message, Throwable t)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.warn(logName, message, t);
-    }
-
-    /**
-     * This is a log method with logLevel == WARN, printing is done by
-     * the default logger
-     */
-    public static void warn(String message, RunData data)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.warn(message, data);
-    }
-
-    /**
-     * This is a log method with logLevel == WARN, printing is done by
-     * the default logger
-     */
-    public static void warn(String message, RunData data, Throwable t)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.warn(message, data, t);
-    }
-
-    /**
-     * This is a log method with logLevel == WARN, printing is done by
-     * the given logger
-     */
-    public static void warn(String logName, String message, RunData data)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.warn(logName, message, data);
-    }
-
-    /**
-     * This is a log method with logLevel == WARN, printing is done by
-     * the given logger
-     */
-    public static void warn(String logName,
-                            String message,
-                            RunData data,
-                            Throwable t)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.warn(logName, message, data, t);
+        getLogger(logName).warn(message, t);
     }
 
     /**
      * This is a log method with logLevel == ERROR, printing is done by
      * the default logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void error(String message)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.error(message);
+        getLogger().error(message);
     }
 
     /**
      * This is a log method with logLevel == ERROR, printing is done by
      * the default logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void error(String message, Throwable t)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.error(message, t);
+        getLogger().error(message, t);
     }
 
     /**
      * This is a log method with logLevel == ERROR, printing is done by
      * the given logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void error(String logName, String message)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.error(logName, message);
+        getLogger(logName).error(message);
     }
 
     /**
      * This is a log method with logLevel == ERROR, printing is done by
      * the given logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void error(String logName, String message, Throwable t)
     {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.error(logName, message, t);
+        getLogger(logName).error(message, t);
     }
 
     /**
      * This is a log method with logLevel == ERROR, printing is done by
      * the default logger
-     */
-    public static void error(String message, RunData data)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.error(message, data);
-    }
-
-    /**
-     * This is a log method with logLevel == ERROR, printing is done by
-     * the default logger
-     */
-    public static void error(String message, RunData data, Throwable t)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.error(message, data, t);
-    }
-
-    /**
-     * This is a log method with logLevel == ERROR, printing is done by
-     * the given logger
-     */
-    public static void error(String logName, String message, RunData data)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.error(logName, message, data);
-    }
-
-    /**
-     * This is a log method with logLevel == ERROR, printing is done by
-     * the given logger
-     */
-    public static void error(String logName,
-                            String message,
-                            RunData data,
-                            Throwable t)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.error(logName, message, data, t);
-    }
-
-    /**
-     * This is a log method with logLevel == ERROR, printing is done by
-     * the default logger
+     *
+     * @deprecated Use the commons.logging system for logging
      */
     public static void error(Throwable e)
     {
