@@ -55,16 +55,13 @@ package org.apache.turbine.modules.navigations;
  */
 
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.ecs.AlignType;
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.ElementContainer;
 import org.apache.ecs.HtmlColor;
-
 import org.apache.ecs.html.B;
 import org.apache.ecs.html.BR;
 import org.apache.ecs.html.Font;
@@ -76,14 +73,10 @@ import org.apache.ecs.html.PRE;
 import org.apache.ecs.html.TD;
 import org.apache.ecs.html.TR;
 import org.apache.ecs.html.Table;
-
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.modules.Navigation;
-
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
-
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
 
@@ -93,37 +86,45 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
- * @deprecated The use of ECS for the view is deprecated. Use a templating solution.
+ * @deprecated The use of ECS for the view is deprecated. 
+ * Use a templating solution.
  */
-public class DefaultBottomNavigation
-    extends Navigation
+public class DefaultBottomNavigation extends Navigation
 {
+    /** Specify whether to output detailed information */
     private static final boolean DEBUG = false;
+    /** The string to display */
     private static String txt =
-            "Turbine - A Servlet Framework for building Secure Dynamic Websites.";
+        "Turbine - A Servlet Framework for building Secure Dynamic Websites.";
 
     /**
      * Build the Navigation.
      *
      * @param data Turbine information.
      * @return A ConcreteElement.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
-    public ConcreteElement doBuild(RunData data)
-            throws Exception
+    public ConcreteElement doBuild(RunData data) throws Exception
     {
         Form form;
-        form = new Form(
-                new DynamicURI(data,
-                  TurbineConstants.SCREEN_DEFAULT_DEFAULT,
-                  TurbineConstants.ACTION_LOGOUT_DEFAULT,
-                  true).toString(),
-                Form.POST)
-                .addElement(new Input("SUBMIT", "Logout", "Logout"));
-        ElementContainer body = new ElementContainer()
+        form =
+            new Form(
+                new DynamicURI(
+                    data,
+                    TurbineConstants.SCREEN_DEFAULT_DEFAULT,
+                    TurbineConstants.ACTION_LOGOUT_DEFAULT,
+                    true)
+                    .toString(),
+                Form.POST).addElement(
+                new Input("SUBMIT", "Logout", "Logout"));
+        ElementContainer body =
+            new ElementContainer()
                 .addElement(new HR().setSize(1).setNoShade(true))
-                .addElement(new B().addElement(
-                        new Font().setColor(HtmlColor.green).setSize(2).addElement(txt)))
+                .addElement(
+                    new B().addElement(
+                        new Font().setColor(HtmlColor.green).setSize(
+                            2).addElement(
+                            txt)))
                 .addElement(form);
 
         if (DEBUG && data.getUser() != null)
@@ -131,9 +132,9 @@ public class DefaultBottomNavigation
             TD perm = new TD().setVAlign(AlignType.TOP);
             TD temp = new TD().setVAlign(AlignType.TOP);
             java.util.Enumeration ePerm =
-                    data.getUser().getPermStorage().keys();
+                data.getUser().getPermStorage().keys();
             java.util.Enumeration eTemp =
-                    data.getUser().getTempStorage().keys();
+                data.getUser().getTempStorage().keys();
 
             perm.addElement("Perm values:").addElement(new BR());
             temp.addElement("Temp values:").addElement(new BR());
@@ -141,20 +142,17 @@ public class DefaultBottomNavigation
             {
                 String key = (String) ePerm.nextElement();
                 String value = data.getUser().getPerm(key).toString();
-                perm.addElement(key + "=" + value)
-                        .addElement(new BR());
+                perm.addElement(key + "=" + value).addElement(new BR());
             }
             while (eTemp.hasMoreElements())
             {
                 String key = (String) eTemp.nextElement();
                 String value = data.getUser().getTemp(key).toString();
-                temp.addElement(key + "=" + value)
-                        .addElement(new BR());
+                temp.addElement(key + "=" + value).addElement(new BR());
             }
-            body.addElement(new BR()).addElement(new BR())
-                    .addElement(new Table().setBorder(2).setCellPadding(10)
-                    .addElement(new TR()
-                    .addElement(perm).addElement(temp)));
+            body.addElement(new BR()).addElement(new BR()).addElement(
+                new Table().setBorder(2).setCellPadding(10).addElement(
+                    new TR().addElement(perm).addElement(temp)));
         }
         if (DEBUG)
         {
@@ -168,30 +166,37 @@ public class DefaultBottomNavigation
                 String key = (String) keys.nextElement();
                 String[] values = data.getParameters().getStrings(key);
                 if (values.length == 1)
+                {
                     pre.addElement(key + " = " + values[0] + "\n");
+                }
                 else
                 {
                     pre.addElement(key + " = ");
                     for (int i = 0; i < values.length; i++)
+                    {
                         pre.addElement(values[i] + " ");
+                    }
                     pre.addElement("\n");
                 }
             }
-            body.addElement(new B("Query/PathInfo Parameters"))
-                    .addElement(new BR())
-                    .addElement(pre);
+            body
+                .addElement(new B("Query/PathInfo Parameters"))
+                .addElement(new BR())
+                .addElement(pre);
 
             Table table2 = new Table().setBorder(0);
             Map varDebug = data.getVarDebug();
-           
+
             boolean hasValues2 = false;
-            
-			for (Iterator i = varDebug.keySet().iterator();i.hasNext();){
+
+            for (Iterator i = varDebug.keySet().iterator(); i.hasNext();)
+            {
                 String key = (String) i.next();
                 String value = varDebug.get(key).toString();
-                TR tr = new TR()
-                        .addElement(new TD().addElement(new B(key)))
-                        .addElement(new TD().addElement(" = " + value));
+                TR tr =
+                    new TR().addElement(
+                        new TD().addElement(new B(key))).addElement(
+                        new TD().addElement(" = " + value));
                 table2.addElement(tr);
                 hasValues2 = true;
             }
@@ -206,28 +211,32 @@ public class DefaultBottomNavigation
         {
             // Print out user's permissions.
             PRE pre = new PRE();
-            for (Iterator rs = data.getACL().getRoles().iterator(); rs.hasNext();)
+            for (Iterator rs = data.getACL().getRoles().iterator();
+                rs.hasNext();
+                )
             {
                 String roleName = ((Role) rs.next()).getName();
                 pre.addElement(roleName + "\n");
             }
             body
-                    .addElement(new BR())
-                    .addElement(new B("ROLES"))
-                    .addElement(new BR())
-                    .addElement(pre);
+                .addElement(new BR())
+                .addElement(new B("ROLES"))
+                .addElement(new BR())
+                .addElement(pre);
 
             pre = new PRE();
-            for (Iterator ps = data.getACL().getPermissions().iterator(); ps.hasNext();)
+            for (Iterator ps = data.getACL().getPermissions().iterator();
+                ps.hasNext();
+                )
             {
                 String permissionName = ((Permission) ps.next()).getName();
                 pre.addElement(permissionName + "\n");
             }
             body
-                    .addElement(new BR())
-                    .addElement(new B("PERMISSIONS"))
-                    .addElement(new BR())
-                    .addElement(pre);
+                .addElement(new BR())
+                .addElement(new B("PERMISSIONS"))
+                .addElement(new BR())
+                .addElement(pre);
         }
         return body;
     }
