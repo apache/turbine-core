@@ -210,6 +210,22 @@ public class TemplateLink
     }
 
     /**
+     * Sets the eventSubmit_= value for this URL.
+     *
+     * By default it adds the information to the path_info instead
+     * of the query data.
+     *
+     * @param action A String with the event value.
+     * @return A <code>TemplateLink</code> (self).
+     */
+    public TemplateLink setEvent(String action)
+    {
+        log.debug("setEvent(" + action + ")");
+        templateURI.setEvent(action);
+        return this;
+    }
+
+    /**
      * Sets the screen= value for this URL.
      *
      * By default it adds the information to the path_info instead
