@@ -16,10 +16,9 @@ package org.apache.turbine.modules.pages;
  * limitations under the License.
  */
 
-import java.util.Vector;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -27,13 +26,11 @@ import org.apache.ecs.Doctype;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.LayoutLoader;
 import org.apache.turbine.modules.Page;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -210,8 +207,8 @@ public class DefaultPage
     {
         String errMsg =
                 "default.doctype property not set properly in TurbineResources.properties!";
-        Vector doctypeProperty =
-            Turbine.getConfiguration().getVector(TurbineConstants.DEFAULT_DOCUMENT_TYPE_KEY);
+        List doctypeProperty =
+            Turbine.getConfiguration().getList(TurbineConstants.DEFAULT_DOCUMENT_TYPE_KEY);
 
         if (doctypeProperty != null)
         {
@@ -224,7 +221,7 @@ public class DefaultPage
                 }
             case 1:
                 {
-                    String doc = (String) doctypeProperty.firstElement();
+                    String doc = (String) doctypeProperty.get(0);
                     if (doc.equalsIgnoreCase(TurbineConstants.DOCUMENT_TYPE_HTML40TRANSITIONAL))
                     {
                         data.getPage().setDoctype(new Doctype.Html40Transitional());
@@ -247,8 +244,8 @@ public class DefaultPage
                 {
                     data.getPage()
                         .setDoctype(new Doctype()
-                                    .setIdentifier((String) doctypeProperty.elementAt(0))
-                                    .setUri((String) doctypeProperty.elementAt(1)));
+                                    .setIdentifier((String) doctypeProperty.get(0))
+                                    .setUri((String) doctypeProperty.get(1)));
                     break;
                 }
             default:

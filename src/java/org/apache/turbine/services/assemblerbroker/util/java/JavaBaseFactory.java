@@ -17,10 +17,9 @@ package org.apache.turbine.services.assemblerbroker.util.java;
  */
 
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -43,8 +42,8 @@ public abstract class JavaBaseFactory
     implements AssemblerFactory
 {
     /** A vector of packages. */
-    private static Vector packages =
-        Turbine.getConfiguration().getVector(TurbineConstants.MODULE_PACKAGES);
+    private static List packages =
+        Turbine.getConfiguration().getList(TurbineConstants.MODULE_PACKAGES);
 
     /** Logging */
     protected Log log = LogFactory.getLog(this.getClass());

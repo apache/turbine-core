@@ -17,36 +17,32 @@ package org.apache.turbine.services.xmlrpc;
  */
 
 import java.io.InputStream;
-
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
-
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.servlet.ServletConfig;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.xmlrpc.util.FileTransfer;
-import org.apache.turbine.util.TurbineException;
-
 import org.apache.xerces.parsers.SAXParser;
-
 import org.apache.xmlrpc.WebServer;
 import org.apache.xmlrpc.XmlRpc;
 import org.apache.xmlrpc.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcServer;
 import org.apache.xmlrpc.secure.SecureWebServer;
+
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.xmlrpc.util.FileTransfer;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * This is a service which will make an xml-rpc call to a remote
@@ -193,8 +189,8 @@ public class TurbineXmlRpcService
                 // Set the list of clients that can connect
                 // to the xmlrpc server. The accepted client list
                 // will only be consulted if we are paranoid.
-                Vector acceptedClients =
-                        conf.getVector("acceptClient");
+                List acceptedClients =
+                        conf.getList("acceptClient");
 
                 for (int i = 0; i < acceptedClients.size(); i++)
                 {
@@ -211,7 +207,7 @@ public class TurbineXmlRpcService
                 // Set the list of clients that can connect
                 // to the xmlrpc server. The denied client list
                 // will only be consulted if we are paranoid.
-                Vector deniedClients = conf.getVector("denyClient");
+                List deniedClients = conf.getList("denyClient");
 
                 for (int i = 0; i < deniedClients.size(); i++)
                 {
