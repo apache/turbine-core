@@ -278,6 +278,17 @@ public class TurbineURI
     }
 
     /**
+     * Sets the fired eventSubmit= value for this URL.
+     *
+     * @param event The event to fire.
+     *
+     */
+    public void setEvent(String event)
+    {
+        add(PATH_INFO, EVENT_PREFIX + event, event);
+    }
+
+    /**
      * Sets the action= and eventSubmit= values for this URL.
      *
      * By default it adds the information to the path_info instead
@@ -293,7 +304,7 @@ public class TurbineURI
         setAction(action);
         if(StringUtils.isNotEmpty(event))
         {
-            add(PATH_INFO, EVENT_PREFIX + event, event);
+            setEvent(event);
         }
     }
 
