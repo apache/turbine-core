@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <name>jakarta-turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.3-dev</currentVersion>
+  <currentVersion>2.3-rc1</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -29,6 +29,21 @@
     <developerConnection>scm:cvs:ext:${maven.username}@cvs.apache.org:/home/cvs:jakarta-turbine-2</developerConnection>
     <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2/</url>
   </repository>
+
+<releases>
+    <release>
+      <version>2.1</version>
+      <tag>TURBINE_2_1</tag>
+    </release>
+    <release>
+      <version>2.2</version>
+      <tag>TURBINE_2_2_0</tag>
+    </release>
+    <release>
+      <version>2.3-rc1</version>
+      <tag>TURBINE_2_3_RC1</tag>
+    </release>
+  </releases>
 
   <mailingLists>
     <mailingList>
