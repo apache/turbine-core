@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+
+<document>
+  <properties>
+    <title>Extend User Howto</title>
+    <author email="jon@latchkey.com">Jon S. Stevens</author>
+    <author email="dan@chowda.net">Dan A. Bachelder</author>
+  </properties>
+
+  <body>
+
+  <section name="Extend User">
+
+    <p>
+      This is a quick a dirty HOWTO on extending the TurbineUser and
+      its functionality. <br/>
+      All information is based on what I had to do to get this to work
+      under TDK 2.1.
+    </p>
+
+    <p>
+      Define your User in your [PROJECT]-schema.xml file:
+    </p>
+
+    <source><![CDATA[
+
+  <table name="SCARAB_USER" javaName="ScarabUserImpl" alias="TurbineUser"
+         baseClass="org.apache.turbine.om.security.TurbineUser"
+         basePeer="org.apache.turbine.om.security.peer.TurbineUserPeer">
+    <column name="USER_ID" primaryKey="true" required="true"
+            type="INTEGER"/>
+  </table>
+    ]]></source>
+
+    <p>
+      You only need to define the columns in which you are referring to as a
+      foreign key elsewhere in your database. In our case, that is
+      just USER_ID. <br/>
+      This will NOT create a new table in your schema, it simply allows you to
+      make foreign key references to the TURBINE_USER table in you applications
+      schema.
+    </p>
+
+    <p>
+      Any new columns need to be added to the TURBINE_USER def. in the
+      turbine-schema.xml file.
+    </p>
+
+    <p>
+      Create an interface which describes the additional methods you are adding
+      to your User object:
+    </p>
+
+    <source><![CDATA[
+  public interface ScarabUser extends User
+    ]]></source>
+
+    <p>
+      Using TDK 2.1 "ant init" will regenerate your OM layer, including the
+      implementations referenced in the following paragraphs (ScarabUserImpl,
+      ScarabUserImplPeer, BaseScarabUserImpl and  BaseScarabUserImplPeer). <br/>
+      <b>IT WILL ALSO RECREATE YOUR DATABASE TABLES DESTROYING ALL DATA
+      THEREIN.</b>
+    </p>
+
+    <p>
+      Have Torque create an implementation of ScarabUser. You should then fill
+      it with the methods that you defined in ScarabUser. It should extend the
+      Base class and look something like this:
+    </p>
+
+    <source><![CDATA[
+  public class ScarabUserImpl extends BaseScarabUserImpl
+         implements Persistent, ScarabUser
+    ]]></source>
+
+    <p>
+      You may need to add your interface (ScarabUser) to the implements
+      statement manually.
+    </p>
+
+    <p>
+      Have Torque create the appropriate Peer class (mine is empty so far):
+    </p>
+
+    <source><![CDATA[
+  public class ScarabUserImplPeer
+      extends org.tigris.scarab.om.BaseScarabUserImplPeer
+  {
+  }
+    ]]></source>
+
+    <p>
+      In your TurbineResources.properties file modify the following properties
+      to tell Turbine to point at your specific implementations of the User
+      interface:
+    </p>
+
+    <source><![CDATA[
+  services.SecurityService.user.class=org.tigris.scarab.om.ScarabUserImpl
+  services.SecurityService.userPeer.class=org.tigris.scarab.om.ScarabUserImplPeer
+    ]]></source>
+
+    <p>
+      As you can see, it isn't real hard to override Turbine's concept of a User
+      with your own specific implementation. If you wish to rename column names
+      and what not, then you will need to do a bit more work and is beyond the
+      scope of this tutorial.
+    </p>
+
+  </section>
+</body>
+</document>
+

@@ -27,6 +27,7 @@
     <menu name="Howto Guides">
       <item name="Action Events Howto"    href="/howto/action-event-howto.html"/>
       <item name="Criteria Howto"         href="/howto/criteria-howto.html"/>
+      <item name="Extend User Howto"      href="/howto/extend-user-howto.html"/>
       <item name="JBoss Howto"            href="/howto/jboss-howto.html"/>
       <item name="JSP Howto"              href="/howto/jsp-howto.html"/>
       <item name="MS SQL Server Howto"    href="/howto/mssql-howto.html"/>
