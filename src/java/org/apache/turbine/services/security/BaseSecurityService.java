@@ -661,6 +661,16 @@ public abstract class BaseSecurityService
     }
 
     /**
+     * Returns the configured UserManager.
+     *
+     * @return An UserManager object
+     */
+    public UserManager getUserManager()
+    {
+        return userManager;
+    }
+
+    /**
      * Check whether a specified user's account exists.
      *
      * The login name is used for looking up the account.

@@ -377,6 +377,13 @@ public interface SecurityService
             throws UnknownEntityException;
 
     /**
+     * Returns the configured UserManager.
+     *
+     * @return An UserManager object
+     */
+    UserManager getUserManager();
+
+    /**
      * Check whether a specified user's account exists.
      *
      * The login name is used for looking up the account.
