@@ -56,6 +56,7 @@ package org.apache.turbine.services.pull;
 
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
+
 import org.apache.velocity.context.Context;
 
 /**
@@ -67,6 +68,7 @@ import org.apache.velocity.context.Context;
  *
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class TurbinePull
@@ -84,11 +86,11 @@ public abstract class TurbinePull
     }
 
     /**
-     * Get the ToolBox that was created by
-     * Pull Service during early initialization. This
-     * method is used by the various template services
-     * that are available for use in Turbine, but
-     * specifically the TurbineVelocityService.
+     * Get the context containing global tools that will be
+     * use as part of the Turbine Pull Model.
+     *
+     * @return A Context object which contains the 
+     *         Global Tool instances.
      */
     public static final Context getGlobalContext()
     {
@@ -113,8 +115,10 @@ public abstract class TurbinePull
     }
 
     /**
-     * Return the absolute path of resources directory
-     * where tools store resource information.
+     * Return the absolute path of the resources directory
+     * used by application tools.
+     *
+     * @return A directory path in the file system or null.
      */
     public static final String getAbsolutePathToResourcesDirectory()
     {
@@ -124,6 +128,8 @@ public abstract class TurbinePull
     /**
      * Return the resources directory. This is relative
      * to the webapp context.
+     *
+     * @return A directory path to the resources directory relative to the webapp root or null.
      */
     public static final String getResourcesDirectory()
     {
@@ -153,7 +159,7 @@ public abstract class TurbinePull
      * to refresh itself on each request.
      * <p>
      * If there are objects that don't implement
-     * application ApplicationTool then they won't
+     * the ApplicationTool interface, then they won't
      * be refreshed.
      */
     public static final void refreshGlobalTools()
@@ -164,6 +170,8 @@ public abstract class TurbinePull
     /**
      * Shoud we refresh the tools
      * on each request. For development purposes.
+     *
+     * returns true if we should refresh the tools on every request.
      */
     public static final boolean refreshToolsPerRequest()
     {
