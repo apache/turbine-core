@@ -56,7 +56,6 @@ package org.apache.turbine.util;
 
 import java.math.BigDecimal;
 
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.commons.configuration.BaseConfiguration;

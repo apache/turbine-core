@@ -60,7 +60,6 @@ import java.util.Map;
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 
-import org.apache.turbine.om.security.Group;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.factory.FactoryService;
