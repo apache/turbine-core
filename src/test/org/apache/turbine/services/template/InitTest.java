@@ -100,7 +100,7 @@ public class InitTest
     {
 
         // Can we start the service?
-        assertFalse("Could not load Service!", ts == null);
+        assertTrue("Could not load Service!", ts != null);
 
         // Did we register the Velocity Service correctly for "vm" templates?
         VelocityService vs = (VelocityService) TurbineServices
