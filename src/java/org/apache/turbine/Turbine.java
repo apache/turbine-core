@@ -58,14 +58,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
 import java.util.Properties;
-import java.util.Enumeration;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -88,26 +85,19 @@ import org.apache.turbine.modules.PageLoader;
 
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
-
 import org.apache.turbine.services.component.ComponentService;
-
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.template.TurbineTemplate;
-
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.services.rundata.TurbineRunDataFacade;
-
 import org.apache.turbine.services.velocity.VelocityService;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
-
 import org.apache.turbine.util.security.AccessControlList;
-
 import org.apache.turbine.util.template.TemplateInfo;
-
 import org.apache.turbine.util.uri.URIConstants;
 
 /**
@@ -118,12 +108,9 @@ import org.apache.turbine.util.uri.URIConstants;
  * If you need to override something in the <code>doGet()</code> or
  * <code>doPost()</code> methods, edit the TurbineResources.properties file and
  * specify your own classes there.
- *
- * <p> Turbine servlet recognizes the following initialization parameters.
- *
+ * <p>
+ * Turbine servlet recognizes the following initialization parameters.
  * <ul>
- * <li><code>resources</code> the implementation of
- * {@link org.apache.turbine.services.resources.TurbineResources} to be used</li>
  * <li><code>properties</code> the path to TurbineResources.properties file
  * used by the default implementation of <code>ResourceService</code>, relative
  * to the application root.</li>
@@ -132,7 +119,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * support <code>ServletContext.getRealPath(String)</code> method correctly.
  * You can use this parameter to specify the directory within the server's
  * filesystem, that is the base of your web application.</li>
- * </ul><br>
+ * </ul>
  *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
@@ -144,6 +131,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class Turbine
@@ -869,24 +857,6 @@ public class Turbine
     private void loginAction(RunData data)
             throws Exception
     {
-        // If a User is logging in, we should refresh the
-        // session here.  Invalidating session and starting a
-        // new session would seem to be a good method, but I
-        // (JDM) could not get this to work well (it always
-        // required the user to login twice).  Maybe related
-        // to JServ?  If we do not clear out the session, it
-        // is possible a new User may accidently (if they
-        // login incorrectly) continue on with information
-        // associated with the previous User.  Currently the
-        // only keys stored in the session are "turbine.user"
-        // and "turbine.acl".
-
-        for( Enumeration enum = data.getSession().getAttributeNames();
-                enum.hasMoreElements(); )
-        {
-            String attributeName = (String) enum.nextElement();
-            data.getSession().removeAttribute(attributeName);
-        }
         ActionLoader.getInstance().exec(data, data.getAction());
         cleanupTemplateContext(data);
         data.setAction(null);
@@ -898,6 +868,9 @@ public class Turbine
      * <p>
      * This Action must be performed before the Session validation for the
      * session validator to send us back to the Login screen.
+     * <p>
+     * The existing session is invalidated before the logout action is
+     * executed.
      *
      * @param data a RunData object
      *
@@ -906,6 +879,7 @@ public class Turbine
     private void logoutAction(RunData data)
             throws Exception
     {
+        data.getSession().invalidate();
         ActionLoader.getInstance().exec(data, data.getAction());
         cleanupTemplateContext(data);
         data.setAction(null);
