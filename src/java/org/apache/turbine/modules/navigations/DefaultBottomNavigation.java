@@ -204,7 +204,7 @@ public class DefaultBottomNavigation
         {
             // Print out user's permissions.
             PRE pre = new PRE();
-            for (Iterator rs = data.getACL().getRoles().elements(); rs.hasNext();)
+            for (Iterator rs = data.getACL().getRoles().iterator(); rs.hasNext();)
             {
                 String roleName = ((Role) rs.next()).getName();
                 pre.addElement(roleName + "\n");
@@ -216,7 +216,7 @@ public class DefaultBottomNavigation
                     .addElement(pre);
 
             pre = new PRE();
-            for (Iterator ps = data.getACL().getPermissions().elements(); ps.hasNext();)
+            for (Iterator ps = data.getACL().getPermissions().iterator(); ps.hasNext();)
             {
                 String permissionName = ((Permission) ps.next()).getName();
                 pre.addElement(permissionName + "\n");
