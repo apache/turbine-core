@@ -58,11 +58,15 @@ package org.apache.turbine.modules;
 
 import java.util.Vector;
 
+import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.services.TurbineServices;
+
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.services.schedule.JobEntry;
+
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
 
@@ -70,13 +74,15 @@ import org.apache.turbine.util.RunData;
  * ScheduledJobs loader class.
  *
  * @author <a href="mailto:mbryson@mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class ScheduledJobLoader extends GenericLoader
 {
     /** The single instance of this class. */
     private static ScheduledJobLoader instance = new ScheduledJobLoader(
-            TurbineResources.getInt(TurbineConstants.SCHEDULED_JOB_CACHE_SIZE, 10));
+        Turbine.getConfiguration().getInt(TurbineConstants.SCHEDULED_JOB_CACHE_SIZE_KEY, 
+                                          TurbineConstants.SCHEDULED_JOB_CACHE_SIZE_DEFAULT));
 
     /**
      * These constructor's are private to force clients to use getInstance()
@@ -187,8 +193,9 @@ public class ScheduledJobLoader extends GenericLoader
                 // the user a reason for that...
                 // FIX ME: The AssemblerFactories should each add it's own
                 //         string here...
-                Vector packages = TurbineResources.getVector(
-                        TurbineConstants.MODULE_PACKAGES);
+                Vector packages = Turbine.getConfiguration()
+                    .getVector(TurbineConstants.MODULE_PACKAGES);
+
                 ObjectUtils.addOnce(packages, GenericLoader.getBasePackage());
 
                 throw new ClassNotFoundException(

@@ -133,8 +133,11 @@ public interface TurbineConstants
     /** The default size for the screen cache */
     int SCREEN_CACHE_SIZE_DEFAULT = 50;
 
-    /** The size of the schedulder job cache if module caching is on. */
-    String SCHEDULED_JOB_CACHE_SIZE = "scheduledjob.cache.size";
+    /** The key for the schedulder job cache size if module caching is on. */
+    String SCHEDULED_JOB_CACHE_SIZE_KEY = "scheduledjob.cache.size";
+
+    /** The default size of the schedulder job cache if module caching is on. */
+    int SCHEDULED_JOB_CACHE_SIZE_DEFAULT = 10;
 
     /** The packages where Turbine will look for modules. */
     String MODULE_PACKAGES = "module.packages";
