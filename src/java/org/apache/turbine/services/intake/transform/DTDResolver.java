@@ -72,6 +72,7 @@ import org.xml.sax.InputSource;
  *
  * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class DTDResolver implements EntityResolver
@@ -79,8 +80,8 @@ public class DTDResolver implements EntityResolver
     private static final String WEB_SITE_DTD =
             "http://jakarta.apache.org/turbine/dtd/intake.dtd";
 
-    /** InputSource for <code>database.dtd</code>. */
-    private InputSource databaseDTD = null;
+    /** InputSource for <code>intake.dtd</code>. */
+    private InputSource intakeDTD = null;
 
     /** Logging */
     private static Log log = LogFactory.getLog(DTDResolver.class);
@@ -100,12 +101,16 @@ public class DTDResolver implements EntityResolver
             // getResourceAsStream works on linux, maybe others?
             if (dtdStream != null)
             {
-                databaseDTD = new InputSource(dtdStream);
+                intakeDTD = new InputSource(dtdStream);
+            }
+            else
+            {
+                log.warn("Could not located the intake.dtd");
             }
         }
         catch (Exception ex)
         {
-            ex.printStackTrace();
+            log.error("Could not get stream for dtd", ex );
         }
     }
 
@@ -116,7 +121,7 @@ public class DTDResolver implements EntityResolver
      */
     public InputSource resolveEntity(String publicId, String systemId)
     {
-        if (databaseDTD != null && WEB_SITE_DTD.equals(systemId))
+        if (intakeDTD != null && WEB_SITE_DTD.equals(systemId))
         {
             String pkg = getClass().getName()
                     .substring(0, getClass().getName().lastIndexOf("."));
@@ -124,7 +129,7 @@ public class DTDResolver implements EntityResolver
             log.info("Resolver: used intake.dtd from " +
                     pkg + " package ");
 
-            return databaseDTD;
+            return intakeDTD;
         }
         else if (systemId == null)
         {
@@ -153,7 +158,7 @@ public class DTDResolver implements EntityResolver
         }
         catch (IOException ex)
         {
-            ex.printStackTrace();
+            log.error("Could not get InputSource for "+urlString, ex);
         }
         return new InputSource();
     }
