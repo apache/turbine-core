@@ -61,8 +61,8 @@ import org.apache.turbine.services.intake.validator.FileValidator;
 import org.apache.turbine.services.intake.validator.ValidationException;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.util.TurbineRuntimeException;
-import org.apache.turbine.util.parser.ValueParser;
 import org.apache.turbine.util.parser.ParameterParser;
+import org.apache.turbine.util.parser.ValueParser;
 
 /**
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>

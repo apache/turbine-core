@@ -66,9 +66,12 @@ import org.apache.turbine.services.schedule.JobEntry;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
-public class SimpleJob extends ScheduledJob
+public class SimpleJob
+        extends ScheduledJob
 {
-    private static int counter=0;
+    /** The test counter */
+    private static int counter = 0;
+
     /**
      * Run the Jobentry from the scheduler queue.
      *
@@ -83,7 +86,9 @@ public class SimpleJob extends ScheduledJob
         
     }
     /**
-     * @return
+     * Returns the counter value.
+     *
+     * @return The counter value
      */
     public static int getCounter()
     {
@@ -91,11 +96,12 @@ public class SimpleJob extends ScheduledJob
     }
 
     /**
-     * @param i
+     * Sets the counter.
+     *
+     * @param i The new counter value
      */
     public static void setCounter(int i)
     {
         counter = i;
     }
-
 }
