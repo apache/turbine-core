@@ -14,16 +14,6 @@
       <item name="Further Reading"       href="/further-reading.html"/>
     </menu>
     
-    <menu name="Get Involved">
-      <item name="Contributors"          href="/contributors.html"/>
-      <item name="CVS Repos"             href="http://jakarta.apache.org/site/cvsindex.html"/>
-      <item name="FAQ"                   href="/faq.html"/>
-      <item name="Mailing Lists"         href="http://jakarta.apache.org/site/mail.html"/>
-      <item name="Powered by Turbine"    href="/powered.html"/>
-      <item name="License"               href="/license.html"/>
-      <item name="Issue Tracking"        href="/issue-tracking.html"/>
-    </menu>
-
     <menu name="Documentation">
       <item name="Turbine Documentation" href="/turbine-documentation-project.html"/>
       <item name="Core Schema"           href="/turbine-schema.html"/>
@@ -44,7 +34,6 @@
       <item name="Python Howto"           href="/howto/python-howto.html"/>
       <item name="Security Howto"         href="/howto/security-howto.html"/>
       <item name="Sybase Howto"           href="/howto/sybase-howto.html"/>
-      <item name="TDK Howto"              href="/howto/tdk-howto.html"/>
       <item name="Torque Howto"           href="/howto/torque-howto.html"/>
       <item name="Velocity Site Howto"    href="/howto/velocity-site-howto.html"/>
       <item name="Velocity Context Howto" href="/howto/context-howto.html"/>
@@ -52,12 +41,8 @@
     </menu>
 
     <menu name="Development">
-      <item name="Active Developers"     href="/active-developers.html"/>
       <item name="Changes"               href="/changes.html"/>
-      <item name="Coding Specification"  href="/code-standards.html"/>
-      <item name="CVS Branches"          href="/branches.html"/>
       <item name="DB Adapters"           href="/db-adapters.html"/>
-      <item name="Deprecation Rules"     href="/deprecation.html"/>
       <item name="Project Map"           href="/project-map.html"/>
       <item name="Proposals"             href="/proposals.html"/>
       <item name="Todo"                  href="/todo.html"/>
