@@ -215,11 +215,11 @@ href="getting_started.html">Getting Started</a> page, you have seen
 that a newly generated turbine application already contains a few
 files which allow to check the correct setup. If you don't want
 M.E.T.A. to put these files into the skeleton, you can set the <a
-href="properties.html#turbine_setup_demo">turbine.setup.demo</a>
+href="properties.html#turbine_app_setup_demo">turbine.app.setup.demo</a>
 property to false:
 </p>
 <source><![CDATA[
-maven -Dturbine.setup.demo=false turbine:setup
+maven -Dturbine.app.setup.demo=false turbine:setup
 ]]></source>
 </subsection>
 

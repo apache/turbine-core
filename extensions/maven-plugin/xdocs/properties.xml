@@ -91,6 +91,16 @@ configuration files, so be careful!).
 </tr>
 
 <tr>
+<a name="turbine_app_setup_demo" />
+<td>turbine.app.setup.demo</td>
+<td>Yes</td>
+<td>true</td>
+<td>If true, copy the demo images, a default start page and a redirection page into the newly created application. If set to false,
+    no content files are copied into the new application tree. See also the <a href="using_meta.html#Demo_pages">Demo Pages</a> section.
+</td>
+</tr>
+
+<tr>
 <td>turbine.plugin.mode</td>
 <td>Yes</td>
 <td>normal</td>
@@ -112,16 +122,6 @@ configuration files, so be careful!).
 <td>Yes</td>
 <td>setup.properties</td>
 <td>Selects the properties file which is loaded to configure the <a href="goals.html#turbine_setup">turbine:setup</a> goal.</td>
-</tr>
-
-<tr>
-<a name="turbine_setup_demo" />
-<td>turbine.setup.demo</td>
-<td>Yes</td>
-<td>true</td>
-<td>If true, copy the demo images, a default start page and a redirection page into the newly created application. If set to false,
-    no content files are copied into the new application tree.
-</td>
 </tr>
 
   </table>
