@@ -57,8 +57,6 @@ package org.apache.turbine.modules.screens;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
-import org.apache.commons.logging.Log;
-
 import org.apache.ecs.ConcreteElement;
 
 import org.apache.turbine.Turbine;

@@ -54,8 +54,6 @@ package org.apache.turbine.modules.pages;
  * <http://www.apache.org/>.
  */
 
-import org.apache.commons.logging.Log;
-
 import org.apache.turbine.services.template.TurbineTemplate;
 
 import org.apache.turbine.util.RunData;
