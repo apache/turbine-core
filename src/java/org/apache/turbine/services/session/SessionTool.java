@@ -1,13 +1,16 @@
 package org.apache.turbine.services.session;
 
 import java.util.Collection;
+import javax.servlet.http.HttpSession;
 
+import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.pull.ApplicationTool;
 
-import javax.servlet.http.HttpSession;
-import org.apache.turbine.om.security.User;
-
 /**
+ * A pull tool for accessing the SessionService from a velocity template.
+ *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @version $Id$
  */
 public class SessionTool
         implements ApplicationTool
@@ -91,4 +94,15 @@ public class SessionTool
         return TurbineSession.getUserFromSession(session);
     }
 
+    /**
+     * Get a collection of all session on which the given user
+     * is logged in.
+     *
+     * @param user the user
+     * @return Collection of HtttSession objects
+     */
+    public Collection getSessionsForUser(User user)
+    {
+        return TurbineSession.getSessionsForUser(user);
+    }
 }
