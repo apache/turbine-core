@@ -49,11 +49,12 @@ public class DateFormatterTest extends TestCase
         int day = cal.get(Calendar.DAY_OF_MONTH);
         int month = cal.get(Calendar.MONTH) + 1; // zero based
         int year = cal.get(Calendar.YEAR);
-        
-        String ddmmyyyy = "" + day + "/" + month + "/" + year;
+        String dayString = (day < 10 ? "0" : "") + day;
+        String monthString = (month < 10 ? "0" : "") + month;
+        String ddmmyyyy = dayString + "/" + monthString + "/" + year;
         assertEquals(ddmmyyyy, df.format(cal.getTime(), "dd/MM/yyyy"));
         
-        String mmddyyyy = "" + month + "/" + day + "/" + year;
+        String mmddyyyy = "" + monthString + "/" + dayString + "/" + year;
         assertEquals(mmddyyyy, df.format(cal.getTime(), "MM/dd/yyyy"));
     }
 
