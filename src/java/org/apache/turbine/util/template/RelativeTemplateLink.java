@@ -83,7 +83,7 @@ public class RelativeTemplateLink
     private String template = null;
 
     /**
-     * Default constructor
+     * Default constructor.
      * <p>
      * The init method must be called before use.
      */

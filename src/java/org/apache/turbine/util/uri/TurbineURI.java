@@ -104,7 +104,6 @@ public class TurbineURI
 
     /**
      * Empty C'tor. Uses Turbine.getDefaultServerData().
-     *
      */
     public TurbineURI()
     {
@@ -113,7 +112,7 @@ public class TurbineURI
     }
 
     /**
-     * Constructor with a RunData object
+     * Constructor with a RunData object.
      *
      * @param runData A RunData object
      */
@@ -124,7 +123,7 @@ public class TurbineURI
     }
 
     /**
-     * Constructor, set explicit redirection
+     * Constructor, set explicit redirection.
      *
      * @param runData A RunData object
      * @param redirect True if redirection allowed.
@@ -136,7 +135,7 @@ public class TurbineURI
     }
 
     /**
-     * Constructor, set Screen
+     * Constructor, set Screen.
      *
      * @param runData A RunData object
      * @param screen A Screen Name
@@ -148,7 +147,7 @@ public class TurbineURI
     }
 
     /**
-     * Constructor, set Screen, set explicit redirection
+     * Constructor, set Screen, set explicit redirection.
      *
      * @param runData A RunData object
      * @param screen A Screen Name
@@ -161,7 +160,7 @@ public class TurbineURI
     }
 
     /**
-     * Constructor, set Screen and Action
+     * Constructor, set Screen and Action.
      *
      * @param runData A RunData object
      * @param screen A Screen Name
@@ -174,7 +173,7 @@ public class TurbineURI
     }
 
     /**
-     * Constructor, set Screen and Action, set explicit redirection
+     * Constructor, set Screen and Action, set explicit redirection.
      *
      * @param runData A RunData object
      * @param screen A Screen Name
@@ -188,7 +187,7 @@ public class TurbineURI
     }
 
     /**
-     * Constructor with a ServerData object
+     * Constructor with a ServerData object.
      *
      * @param serverData A ServerData object
      */
@@ -199,7 +198,7 @@ public class TurbineURI
     }
 
     /**
-     * Constructor, set explicit redirection
+     * Constructor, set explicit redirection.
      *
      * @param serverData A ServerData object
      * @param redirect True if redirection allowed.
@@ -211,7 +210,7 @@ public class TurbineURI
     }
 
     /**
-     * Constructor, set Screen
+     * Constructor, set Screen.
      *
      * @param serverData A ServerData object
      * @param screen A Screen Name
@@ -223,7 +222,7 @@ public class TurbineURI
     }
 
     /**
-     * Constructor, set Screen, set explicit redirection
+     * Constructor, set Screen, set explicit redirection.
      *
      * @param serverData A ServerData object
      * @param screen A Screen Name
@@ -236,7 +235,7 @@ public class TurbineURI
     }
 
     /**
-     * Constructor, set Screen and Action
+     * Constructor, set Screen and Action.
      *
      * @param serverData A ServerData object
      * @param screen A Screen Name
@@ -249,7 +248,7 @@ public class TurbineURI
     }
 
     /**
-     * Constructor, set Screen and Action, set explicit redirection
+     * Constructor, set Screen and Action, set explicit redirection.
      *
      * @param serverData A ServerData object
      * @param screen A Screen Name
@@ -264,7 +263,7 @@ public class TurbineURI
     }
 
     /**
-     * Constructor, user Turbine.getDefaultServerData(), set Screen and Action
+     * Constructor, user Turbine.getDefaultServerData(), set Screen and Action.
      *
      * @param screen A Screen Name
      * @param action An Action Name
@@ -287,7 +286,6 @@ public class TurbineURI
 
     /**
      * Init the TurbineURI.
-     *
      */
     private void init()
     {
@@ -339,7 +337,6 @@ public class TurbineURI
 
     /**
      * Clears the action= value for this URL.
-     *
      */
     public void clearAction()
     {
@@ -369,7 +366,6 @@ public class TurbineURI
 
     /**
      * Clears the screen= value for this URL.
-     *
      */
     public void clearScreen()
     {
@@ -529,8 +525,7 @@ public class TurbineURI
     }
 
     /**
-     * Adds an existing List of URIParam objects to
-     * the query data.
+     * Adds an existing List of URIParam objects to the query data.
      *
      * @param list A list with URIParam objects.
      */
@@ -543,7 +538,6 @@ public class TurbineURI
      * Is Path Info data set in this URI?
      *
      * @return true if Path Info has values
-     *
      */
     public boolean hasPathInfo()
     {
@@ -572,7 +566,6 @@ public class TurbineURI
      * Is Query data set in this URI?
      *
      * @return true if Query data has values
-     *
      */
     public boolean hasQueryData()
     {
@@ -674,8 +667,7 @@ public class TurbineURI
     }
 
     /**
-     * Add everything needed for a relative link to
-     * the passed StringBuffer
+     * Add everything needed for a relative link to the passed StringBuffer.
      *
      * @param output A Stringbuffer
      */
@@ -751,7 +743,7 @@ public class TurbineURI
     }
 
     /**
-     * toString() simply calls getAbsoluteLink. You should not use this in your
+     * Simply calls getAbsoluteLink(). You should not use this in your
      * code unless you have to. Use getAbsoluteLink.
      *
      * @return This URI as a String
@@ -772,10 +764,9 @@ public class TurbineURI
      */
 
     /**
-     * Returns the Path Info data as a String
+     * Returns the Path Info data as a String.
      *
      * @param output The StringBuffer that should hold the path info.
-     *
      */
     private void getPathInfoAsString(StringBuffer output)
     {
@@ -783,10 +774,9 @@ public class TurbineURI
     }
 
     /**
-     * Returns the Query data as a String
+     * Returns the Query data as a String.
      *
      * @param output The StringBuffer that should hold the query data.
-     *
      */
     private void getQueryDataAsString(StringBuffer output)
     {
@@ -794,13 +784,12 @@ public class TurbineURI
     }
 
     /**
-     * Does the actual encoding for pathInfoAsString and queryDataAsString
+     * Does the actual encoding for pathInfoAsString and queryDataAsString.
      *
      * @param output The Stringbuffer that should contain the information.
      * @param list A Collection
      * @param fieldDelim A char which is used to separate key/value pairs
      * @param valueDelim A char which is used to separate key and value
-     *
      */
     private void doEncode(StringBuffer output, Collection list, char fieldDelim, char valueDelim)
     {
@@ -835,10 +824,10 @@ public class TurbineURI
     }
 
     /**
-     * <p>If the type is PATH_INFO, then add name/value to the pathInfo
+     * If the type is PATH_INFO, then add name/value to the pathInfo
      * hashtable.
-     *
-     * <p>If the type is QUERY_DATA, then add name/value to the queryData
+     * <p>
+     * If the type is QUERY_DATA, then add name/value to the queryData
      * hashtable.
      *
      * @param type Type (PATH_INFO or QUERY_DATA) of insertion.
@@ -888,7 +877,7 @@ public class TurbineURI
 
     /**
      * Method for a quick way to add all the parameters in a
-     * List with URIParam objects
+     * List with URIParam objects.
      *
      * <p>If the type is P (0), then add name/value to the pathInfo
      * hashtable.
@@ -899,7 +888,6 @@ public class TurbineURI
      * @param type Type of insertion (@see #add(char type, String name, String value))
      * @param list A List of URIParam objects
      */
-
     protected void add(int type,
             List list)
     {
@@ -914,7 +902,7 @@ public class TurbineURI
     }
 
     /**
-     * <p>If the type is P (0), then remove name/value from the
+     * If the type is P (0), then remove name/value from the
      * pathInfo hashtable.
      *
      * <p>If the type is Q (1), then remove name/value from the

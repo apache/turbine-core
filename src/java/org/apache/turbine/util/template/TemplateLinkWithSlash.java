@@ -74,7 +74,7 @@ public class TemplateLinkWithSlash
         extends TemplateLink
 {
     /**
-     * Default constructor
+     * Default constructor.
      * <p>
      * The init method must be called before use.
      */

@@ -79,7 +79,7 @@ import org.apache.turbine.Turbine;
 
 /**
  * An implementation of AvalonComponentService which loads all the
- * components given in the TurbineResources.properties File
+ * components given in the TurbineResources.properties File.
  * <p>
  * For component which require the location of the application or
  * context root, there are two ways to get it.

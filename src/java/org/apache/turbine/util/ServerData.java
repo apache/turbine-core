@@ -109,7 +109,6 @@ public class ServerData
         String scriptName,
         String contextPath)
     {
-
         if (log.isDebugEnabled())
         {
             StringBuffer sb = new StringBuffer();
@@ -138,7 +137,6 @@ public class ServerData
      * Copy-Constructor
      *
      * @param serverData A ServerData Object
-     *
      */
     public ServerData(ServerData serverData)
     {
@@ -170,7 +168,6 @@ public class ServerData
      * generates a new Object with the same values as this one.
      *
      * @return A cloned object.
-     *
      */
     public Object clone()
     {
@@ -191,7 +188,7 @@ public class ServerData
     /**
      * Sets the cached serverName.
      *
-     * @param sn A String.
+     * @param serverName the server name.
      */
     public void setServerName(String serverName)
     {
@@ -202,7 +199,7 @@ public class ServerData
     /**
      * Get the server port.
      *
-     * @return An int.
+     * @return the server port.
      */
     public int getServerPort()
     {
@@ -212,7 +209,7 @@ public class ServerData
     /**
      * Sets the cached serverPort.
      *
-     * @param port An int.
+     * @param serverPort the server port.
      */
     public void setServerPort(int serverPort)
     {
@@ -223,7 +220,7 @@ public class ServerData
     /**
      * Get the server scheme.
      *
-     * @return A String.
+     * @return the server scheme.
      */
     public String getServerScheme()
     {
@@ -233,7 +230,7 @@ public class ServerData
     /**
      * Sets the cached serverScheme.
      *
-     * @param ss A String.
+     * @param serverScheme the server scheme.
      */
     public void setServerScheme(String serverScheme)
     {
@@ -244,7 +241,7 @@ public class ServerData
     /**
      * Get the script name
      *
-     * @return A String.
+     * @return the script name.
      */
     public String getScriptName()
     {
@@ -254,7 +251,7 @@ public class ServerData
     /**
      * Set the script name.
      *
-     * @param sname A String.
+     * @param scriptName the script name.
      */
     public void setScriptName(String scriptName)
     {
@@ -265,7 +262,7 @@ public class ServerData
     /**
      * Get the context path.
      *
-     * @return A String.
+     * @return the context path.
      */
     public String getContextPath()
     {
@@ -283,9 +280,8 @@ public class ServerData
         this.contextPath = contextPath;
     }
 
-
     /**
-     * Appends the Host URL to the supplied StringBuffer
+     * Appends the Host URL to the supplied StringBuffer.
      *
      * @param url A StringBuffer object
      */
@@ -306,9 +302,8 @@ public class ServerData
         }
     }
 
-
     /**
-     * Returns this object as an URL
+     * Returns this object as an URL.
      *
      * @return The contents of this object as a String
      */
