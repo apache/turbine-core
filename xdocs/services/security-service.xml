@@ -15,6 +15,14 @@
 The Security Service is for authenticating users and assigning them roles
 and permissions in groups. 
 </p>
+<p>
+In Turbine 2.3 a replacement for the default DBSecurityService is
+provided that makes it possible to map the security service onto an
+pre existing user structure and much easier to extend the TurbineUser 
+table to include additional columns - see <a 
+href="torque-Security-service.html"> Torque Security Service</a> for 
+configuration details. 
+</p>
 
 </section>
 

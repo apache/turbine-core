@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - Avalon Component Service</title>
+  <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
+  <author email="seade@backstagetech.com.au">Scott Eade</author>
+ </properties>
+
+<body>
+
+<section name="Avalon Component Service">
+<p>
+The Avalon Component service loads external modules which implement the
+<a href="http://avalon.apache.org/">Avalon</a> lifecycle interfaces.
+</p>
+<p>
+The only supported component at this point in time is 
+<a href="http://db.apache.org/torque/">Torque</a>, though the
+<a href="http://jakarta.apache.org/turbine/fulcrum/">Fulcrum</a>
+components are likely to be migrated to become Avalon components 
+in the future.
+</p>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+# 
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.AvalonComponentService.classname = org.apache.turbine.services.avaloncomponent.TurbineAvalonComponentService
+.
+.
+.
+# -------------------------------------------------------------------
+#
+#  A V A L O N   C O M P O N E N T   S E R V I C E
+#
+# -------------------------------------------------------------------
+# Components implementing the avalon lifecycle interfaces can be 
+# loaded, configured and initialized by Turbine
+# -------------------------------------------------------------------
+
+services.AvalonComponentService.componentConfiguration = /WEB-INF/conf/componentConfiguration.xml
+services.AvalonComponentService.componentRoles = /WEB-INF/conf/roleConfiguration.xml
+services.AvalonComponentService.lookup = org.apache.torque.avalon.Torque
+]]></source>
+<p>
+In /WEB-INF/conf you should provide componentConfiguration.xml:
+</p>
+<source><![CDATA[
+<componentConfig>
+    <torque>
+       <configfile>/WEB-INF/conf/torque.properties</configfile>
+    </torque>
+</componentConfig>
+]]></source>
+<p>
+and roleConfiguration.xml:
+</p>
+<source><![CDATA[
+<role-list>
+    <role name="org.apache.torque.avalon.Torque"
+          shorthand="torque"
+          default-class="org.apache.torque.avalon.TorqueComponent" />
+</role-list>
+]]></source>
+<p>
+No changes to torque.properties are required.
+</p>
+<p>
+If all goes well you should see the following in your log file when 
+Turbine starts up:
+</p>
+<source><![CDATA[
+...INFO...services.BaseServiceBroker - Added Mapping for Service: AvalonComponentService
+...INFO...services.BaseServiceBroker - Start Initializing service (early): AvalonComponentService
+...INFO...services.avaloncomponent.TurbineAvalonComponentService - Lookup for Component org.apache.torque.avalon.Torque successful
+...INFO...services.BaseServiceBroker - Finish Initializing service (early): AvalonComponentService
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<p>
+If you plan to use the decoupled Torque in your application, you should
+leave the Avalon Component Service configured at all times. It is started at
+early startup time. Once it has initialized all the components, there
+are no application specific methods or services available.
+</p>
+</section>
+
+</body>
+
+</document>
