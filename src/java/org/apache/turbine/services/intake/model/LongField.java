@@ -85,7 +85,7 @@ public class LongField
     }
 
     /**
-     * Sets the default value for an Float Field
+     * Sets the default value for an Long Field
      *
      * @param prop Parameter for the default values
      */
@@ -98,7 +98,7 @@ public class LongField
             return;
         }
 
-        defaultValue = new Float(prop);
+        defaultValue = new Long(prop);
     }
 
     /**
