@@ -1,27 +1,7 @@
 <project>
 
   <postGoal name="java:compile">
-    <!-- copy database.dtd to the right place -->
-    <copy
-      file="${maven.src.dir}/../../../conf/master/TurbineResources.master"
-      todir="${maven.build.dest}/plugin-resources/src/conf"
-    />
-
-    <copy
-      file="${torque.cvs.dir}/src/conf/master/Torque.master"
-      todir="${maven.build.dest}/plugin-resources/src/conf"
-    />
-
-    <!-- copy default.properties to the right place -->
-<!--
-    <copy
-      file="${maven.src.dir}/conf/default.properties"
-      todir="${maven.build.dest}/org/apache/torque"
-    />
-    <copy todir="${maven.build.dest}">
-      <fileset dir="${maven.src.dir}/templates" />
-    </copy>
--->
+    
   </postGoal>
 
 </project>
