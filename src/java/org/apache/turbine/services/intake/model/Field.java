@@ -616,7 +616,7 @@ public abstract class Field
     /**
      * Set the default Value.
      */
-    protected abstract void setDefaultValue(String prop);
+    public abstract void setDefaultValue(String prop);
 
     /**
      * @deprecated Use doSetValue() instead (with no parameters).

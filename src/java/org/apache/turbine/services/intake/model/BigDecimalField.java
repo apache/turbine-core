@@ -94,7 +94,7 @@ public class BigDecimalField
      *
      * @param prop Parameter for the default values
      */
-    protected void setDefaultValue(String prop)
+    public void setDefaultValue(String prop)
     {
         defaultValue = null;
 
