@@ -59,6 +59,7 @@ import java.io.OutputStream;
 import java.security.MessageDigest;
 import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletConfig;
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.torque.util.Criteria;
@@ -146,10 +147,10 @@ public abstract class BaseSecurityService
         {
             return null;
         }
-        String secure = getProperties().getProperty(
+        String secure = getConfiguration().getString(
             SecurityService.SECURE_PASSWORDS_KEY,
             SecurityService.SECURE_PASSWORDS_DEFAULT).toLowerCase();
-        String algorithm = getProperties().getProperty(
+        String algorithm = getConfiguration().getString(
             SecurityService.SECURE_PASSWORDS_ALGORITHM_KEY,
             SecurityService.SECURE_PASSWORDS_ALGORITHM_DEFAULT);
         if (secure.equals("true") || secure.equals("yes"))
@@ -190,11 +191,11 @@ public abstract class BaseSecurityService
     public void init()
         throws InitializationException
     {
-        String userManagerClassName = getProperties().getProperty(
+        String userManagerClassName = getConfiguration().getString(
             SecurityService.USER_MANAGER_KEY,
             SecurityService.USER_MANAGER_DEFAULT);
 
-        String userClassName = getProperties().getProperty(
+        String userClassName = getConfiguration().getString(
             SecurityService.USER_CLASS_KEY,
             SecurityService.USER_CLASS_DEFAULT);
 

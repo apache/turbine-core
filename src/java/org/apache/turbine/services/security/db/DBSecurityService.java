@@ -78,6 +78,7 @@ import org.apache.turbine.om.security.peer.UserGroupRolePeer;
 import org.apache.turbine.om.security.peer.UserPeer;
 import org.apache.turbine.services.security.BaseSecurityService;
 import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.security.AccessControlList;
@@ -1160,7 +1161,7 @@ public class DBSecurityService extends BaseSecurityService
      */
     public Class getUserPeerClass() throws UnknownEntityException
     {
-        String userPeerClassName = getProperties().getProperty(
+        String userPeerClassName = getConfiguration().getString(
                 USER_PEER_CLASS_KEY, USER_PEER_CLASS_DEFAULT);
         try
         {
