@@ -54,8 +54,11 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.configuration.Configuration;
+
+import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -79,9 +82,11 @@ import org.apache.turbine.util.RunData;
  * Turbine servlet.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class DefaultSessionValidator extends SessionValidator
+public class DefaultSessionValidator
+    extends SessionValidator
 {
     /**
      * Execute the action.  The default is to populate the RunData
@@ -92,8 +97,10 @@ public class DefaultSessionValidator extends SessionValidator
      * @param data Turbine RunData context information.
      * @exception Exception, a generic exception.
      */
-    public void doPerform(RunData data) throws Exception
+    public void doPerform(RunData data)
+        throws Exception
     {
+        Configuration conf = Turbine.getConfiguration();
         /*
          * Pull user from session.
          */
@@ -106,21 +113,21 @@ public class DefaultSessionValidator extends SessionValidator
             // only set the message if nothing else has already set it
             // (e.g. the LogoutUser action)
             if (data.getMessage() == null)
-                data.setMessage(TurbineResources.getString(
-                        TurbineConstants.LOGIN_MESSAGE));
+            {
+                data.setMessage(conf.getString(TurbineConstants.LOGIN_MESSAGE));
+            }
+
             // set the screen to be the login page
-            data.setScreen(TurbineResources.getString(
-                    TurbineConstants.SCREEN_LOGIN));
+            data.setScreen(conf.getString(TurbineConstants.SCREEN_LOGIN));
+
             // we're not doing any actions buddy! (except action.login which
             // will have been performed already)
             data.setAction(null);
         }
         else if (!data.hasScreen())
         {
-            data.setMessage(TurbineResources.getString(
-                    TurbineConstants.LOGIN_MESSAGE_NOSCREEN));
-            data.setScreen(TurbineResources.getString(
-                    TurbineConstants.SCREEN_HOMEPAGE));
+            data.setMessage(conf.getString(TurbineConstants.LOGIN_MESSAGE_NOSCREEN));
+            data.setScreen(conf.getString(TurbineConstants.SCREEN_HOMEPAGE));
         }
         else if (data.getParameters().containsKey("_session_access_counter"))
         {
@@ -131,8 +138,7 @@ public class DefaultSessionValidator extends SessionValidator
             {
                 data.getUser().setTemp("prev_screen", data.getScreen());
                 data.getUser().setTemp("prev_parameters", data.getParameters());
-                data.setScreen(TurbineResources.getString(
-                        TurbineConstants.SCREEN_INVALID_STATE));
+                data.setScreen(conf.getString(TurbineConstants.SCREEN_INVALID_STATE));
                 data.setAction("");
             }
         }
