@@ -63,6 +63,7 @@ import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.Vector;
 import javax.servlet.ServletConfig;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -76,7 +77,6 @@ import org.apache.xmlrpc.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcServer;
 import org.apache.xmlrpc.secure.SecureWebServer;
-
 
 /**
  * This is a service which will make an xml-rpc call to a remote
@@ -101,8 +101,8 @@ import org.apache.xmlrpc.secure.SecureWebServer;
  * @version $Id$
  */
 public class TurbineXmlRpcService
-    extends TurbineBaseService
-    implements XmlRpcService
+        extends TurbineBaseService
+        implements XmlRpcService
 {
     /** Logging */
     private static Log log = LogFactory.getLog(TurbineXmlRpcService.class);
@@ -140,7 +140,7 @@ public class TurbineXmlRpcService
      *         stage
      */
     public void init()
-        throws InitializationException
+            throws InitializationException
     {
         try
         {
@@ -148,7 +148,7 @@ public class TurbineXmlRpcService
 
             // setup JSSE System properties from secure.server.options
             Configuration secureServerOptions =
-                getConfiguration().subset("secure.server.option");
+                    getConfiguration().subset("secure.server.option");
             setSystemPropertiesFromConfiguration(secureServerOptions);
 
             // Host and port information for the WebServer
@@ -157,19 +157,19 @@ public class TurbineXmlRpcService
 
             if(port != 0)
             {
-                if (addr != null && addr.length() > 0)
+                if(addr != null && addr.length() > 0)
                 {
                     try
                     {
                         address = InetAddress.getByName(addr);
                     }
-                    catch (UnknownHostException useDefault)
+                    catch(UnknownHostException useDefault)
                     {
                         address = null;
                     }
                 }
 
-                if (getConfiguration().getBoolean("secure.server", false))
+                if(getConfiguration().getBoolean("secure.server", false))
                 {
                     webserver = new SecureWebServer(port, address);
                 }
@@ -181,16 +181,15 @@ public class TurbineXmlRpcService
 
             // Set the XML driver to the correct SAX parser class
             String saxParserClass = getConfiguration().getString("parser",
-                "org.apache.xerces.parsers.SAXParser");
+                    "org.apache.xerces.parsers.SAXParser");
 
-            XmlRpc.setDriver ( saxParserClass );
+            XmlRpc.setDriver(saxParserClass);
 
             // Check if there are any handlers to register at startup
-            Iterator keys = getConfiguration().getKeys("handler");
-            while ( keys.hasNext() )
+            for(Iterator keys = getConfiguration().getKeys("handler"); keys.hasNext();)
             {
-                String handler = (String)keys.next();
-                String handlerName = handler.substring(handler.indexOf(".")+1);
+                String handler = (String) keys.next();
+                String handlerName = handler.substring(handler.indexOf(".") + 1);
                 String handlerClass = getConfiguration().getString(handler);
                 registerHandler(handlerName, handlerClass);
             }
@@ -200,11 +199,11 @@ public class TurbineXmlRpcService
              */
             boolean stateOfParanoia = getConfiguration().getBoolean("paranoid", false);
 
-            if (stateOfParanoia)
+            if(stateOfParanoia)
             {
                 webserver.setParanoid(stateOfParanoia);
                 log.info(XmlRpcService.SERVICE_NAME +
-                         ": Operating in a state of paranoia");
+                        ": Operating in a state of paranoia");
 
                 /*
                  * Only set the accept/deny client lists if we
@@ -219,15 +218,15 @@ public class TurbineXmlRpcService
                  */
                 Vector acceptedClients = getConfiguration().getVector("acceptClient");
 
-                for (int i = 0; i < acceptedClients.size(); i++)
+                for(int i = 0; i < acceptedClients.size(); i++)
                 {
                     String acceptClient = (String) acceptedClients.get(i);
 
-                    if (acceptClient != null && ! acceptClient.equals(""))
+                    if(acceptClient != null && !acceptClient.equals(""))
                     {
                         webserver.acceptClient(acceptClient);
                         log.info(XmlRpcService.SERVICE_NAME +
-                                 ": Accepting client -> " + acceptClient);
+                                ": Accepting client -> " + acceptClient);
                     }
                 }
 
@@ -238,15 +237,15 @@ public class TurbineXmlRpcService
                  */
                 Vector deniedClients = getConfiguration().getVector("denyClient");
 
-                for (int i = 0; i < deniedClients.size(); i++)
+                for(int i = 0; i < deniedClients.size(); i++)
                 {
                     String denyClient = (String) deniedClients.get(i);
 
-                    if (denyClient != null && ! denyClient.equals(""))
+                    if(denyClient != null && !denyClient.equals(""))
                     {
                         webserver.denyClient(denyClient);
                         log.info(XmlRpcService.SERVICE_NAME +
-                                 ": Denying client -> " + denyClient);
+                                ": Denying client -> " + denyClient);
                     }
                 }
             }
@@ -258,20 +257,20 @@ public class TurbineXmlRpcService
                 isModernVersion = true;
                 webserver.start();
             }
-            catch (ClassNotFoundException ignored)
+            catch(ClassNotFoundException ignored)
             {
                 // XmlRpcRequest does not exist in versions 1.1 and lower.
                 // Assume that our WebServer was already started.
             }
             log.debug(XmlRpcService.SERVICE_NAME + ": Using " +
-                      "Apache XML-RPC version " +
-                      (isModernVersion ?
-                       "greater than 1.1" : "1.1 or lower"));
+                    "Apache XML-RPC version " +
+                    (isModernVersion ?
+                    "greater than 1.1" : "1.1 or lower"));
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new InitializationException
-                ("XMLRPCService failed to initialize", e);
+                    ("XMLRPCService failed to initialize", e);
         }
 
         setInit(true);
@@ -298,7 +297,7 @@ public class TurbineXmlRpcService
      */
     void setSystemPropertiesFromConfiguration(Configuration configuration)
     {
-        for( Iterator i = configuration.getKeys();i.hasNext();)
+        for(Iterator i = configuration.getKeys(); i.hasNext();)
         {
             String key = (String) i.next();
             String value = configuration.getString(key);
@@ -317,8 +316,8 @@ public class TurbineXmlRpcService
      * @exception IOException
      */
     public void registerHandler(Object handler)
-        throws XmlRpcException,
-        IOException
+            throws XmlRpcException,
+            IOException
     {
         registerHandler("$default", handler);
     }
@@ -333,8 +332,8 @@ public class TurbineXmlRpcService
      */
     public void registerHandler(String handlerName,
                                 Object handler)
-        throws XmlRpcException,
-        IOException
+            throws XmlRpcException,
+            IOException
     {
         if(webserver != null)
         {
@@ -355,7 +354,7 @@ public class TurbineXmlRpcService
      * @exception TurbineException Couldn't instantiate handler.
      */
     public void registerHandler(String handlerName, String handlerClass)
-        throws TurbineException
+            throws TurbineException
     {
         try
         {
@@ -363,25 +362,25 @@ public class TurbineXmlRpcService
 
             if(webserver != null)
             {
-                webserver.addHandler(handlerName,handler);
+                webserver.addHandler(handlerName, handler);
             }
 
-            server.addHandler(handlerName,handler);
+            server.addHandler(handlerName, handler);
         }
-        // those two errors must be passed to the VM
-        catch( ThreadDeath t )
+                // those two errors must be passed to the VM
+        catch(ThreadDeath t)
         {
             throw t;
         }
-        catch( OutOfMemoryError t )
+        catch(OutOfMemoryError t)
         {
             throw t;
         }
 
-        catch( Throwable t )
+        catch(Throwable t)
         {
             throw new TurbineException
-                ("Failed to instantiate " + handlerClass, t);
+                    ("Failed to instantiate " + handlerClass, t);
         }
     }
 
@@ -449,14 +448,14 @@ public class TurbineXmlRpcService
     public Object executeRpc(URL url,
                              String methodName,
                              Vector params)
-        throws TurbineException
+            throws TurbineException
     {
         try
         {
-            XmlRpcClient client = new XmlRpcClient ( url );
+            XmlRpcClient client = new XmlRpcClient(url);
             return client.execute(methodName, params);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new TurbineException("XML-RPC call failed", e);
         }
@@ -478,19 +477,19 @@ public class TurbineXmlRpcService
      * @exception IOException.
      */
     public Object executeAuthenticatedRpc(URL url,
-                             String username,
-                             String password,
-                             String methodName,
-                             Vector params)
-        throws TurbineException
+                                          String username,
+                                          String password,
+                                          String methodName,
+                                          Vector params)
+            throws TurbineException
     {
         try
         {
-            XmlRpcClient client = new XmlRpcClient ( url );
+            XmlRpcClient client = new XmlRpcClient(url);
             client.setBasicAuthentication(username, password);
             return client.execute(methodName, params);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new TurbineException("XML-RPC call failed", e);
         }
@@ -510,13 +509,13 @@ public class TurbineXmlRpcService
                      String sourceFileName,
                      String destinationLocationProperty,
                      String destinationFileName)
-                     throws Exception
+            throws Exception
     {
         FileTransfer.send(serverURL,
-                          sourceLocationProperty,
-                          sourceFileName,
-                          destinationLocationProperty,
-                          destinationFileName);
+                sourceLocationProperty,
+                sourceFileName,
+                destinationLocationProperty,
+                destinationFileName);
     }
 
     /**
@@ -538,15 +537,15 @@ public class TurbineXmlRpcService
                      String sourceFileName,
                      String destinationLocationProperty,
                      String destinationFileName)
-                     throws Exception
+            throws Exception
     {
         FileTransfer.send(serverURL,
-                          username,
-                          password,
-                          sourceLocationProperty,
-                          sourceFileName,
-                          destinationLocationProperty,
-                          destinationFileName);
+                username,
+                password,
+                sourceLocationProperty,
+                sourceFileName,
+                destinationLocationProperty,
+                destinationFileName);
     }
 
     /**
@@ -563,13 +562,13 @@ public class TurbineXmlRpcService
                     String sourceFileName,
                     String destinationLocationProperty,
                     String destinationFileName)
-                    throws Exception
+            throws Exception
     {
         FileTransfer.get(serverURL,
-                         sourceLocationProperty,
-                         sourceFileName,
-                         destinationLocationProperty,
-                         destinationFileName);
+                sourceLocationProperty,
+                sourceFileName,
+                destinationLocationProperty,
+                destinationFileName);
     }
 
     /**
@@ -591,15 +590,15 @@ public class TurbineXmlRpcService
                     String sourceFileName,
                     String destinationLocationProperty,
                     String destinationFileName)
-                    throws Exception
+            throws Exception
     {
         FileTransfer.get(serverURL,
-                         username,
-                         password,
-                         sourceLocationProperty,
-                         sourceFileName,
-                         destinationLocationProperty,
-                         destinationFileName);
+                username,
+                password,
+                sourceLocationProperty,
+                sourceFileName,
+                destinationLocationProperty,
+                destinationFileName);
     }
 
     /**
@@ -613,11 +612,11 @@ public class TurbineXmlRpcService
     public void remove(String serverURL,
                        String sourceLocationProperty,
                        String sourceFileName)
-                       throws Exception
+            throws Exception
     {
         FileTransfer.remove(serverURL,
-                            sourceLocationProperty,
-                            sourceFileName);
+                sourceLocationProperty,
+                sourceFileName);
     }
 
     /**
@@ -635,13 +634,13 @@ public class TurbineXmlRpcService
                        String password,
                        String sourceLocationProperty,
                        String sourceFileName)
-                       throws Exception
+            throws Exception
     {
         FileTransfer.remove(serverURL,
-                            username,
-                            password,
-                            sourceLocationProperty,
-                            sourceFileName);
+                username,
+                password,
+                sourceLocationProperty,
+                sourceFileName);
     }
 
     /**
@@ -696,7 +695,7 @@ public class TurbineXmlRpcService
         // Stop the XML RPC server.
         webserver.shutdown();
 
-        if (!isModernVersion)
+        if(!isModernVersion)
         {
             // org.apache.xmlrpc.WebServer used to block in a call to
             // ServerSocket.accept() until a socket connection was made.
@@ -705,13 +704,13 @@ public class TurbineXmlRpcService
                 Socket interrupt = new Socket(address, port);
                 interrupt.close();
             }
-            catch (Exception notShutdown)
+            catch(Exception notShutdown)
             {
                 // It's remotely possible we're leaving an open listener
                 // socket around.
                 log.warn(XmlRpcService.SERVICE_NAME +
-                         "It's possible the xmlrpc server was not " +
-                         "shutdown: " + notShutdown.getMessage());
+                        "It's possible the xmlrpc server was not " +
+                        "shutdown: " + notShutdown.getMessage());
             }
         }
 

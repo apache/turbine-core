@@ -57,15 +57,16 @@ package org.apache.turbine.services.pull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.pool.PoolService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
@@ -143,7 +144,7 @@ import org.apache.velocity.context.Context;
  * @version $Id$
  */
 public class TurbinePullService extends TurbineBaseService
-    implements PullService
+        implements PullService
 {
     /** Logging */
     private static Log log = LogFactory.getLog(TurbinePullService.class);
@@ -167,13 +168,13 @@ public class TurbinePullService extends TurbineBaseService
     {
         String toolName;
         String toolClassName;
-        Class  toolClass;
+        Class toolClass;
 
         public ToolData(String toolName, String toolClassName, Class toolClass)
         {
-            this.toolName      = toolName;
+            this.toolName = toolName;
             this.toolClassName = toolClassName;
-            this.toolClass     = toolClass;
+            this.toolClass = toolClass;
         }
     }
 
@@ -213,7 +214,7 @@ public class TurbinePullService extends TurbineBaseService
      * Property tag for application tool resources directory
      */
     private static final String TOOL_RESOURCES_DIR
-        = "tools.resources.dir";
+            = "tools.resources.dir";
 
     /**
      * Default value for the application tool resources
@@ -221,14 +222,14 @@ public class TurbinePullService extends TurbineBaseService
      * is typically WEBAPP/resources.
      */
     private static final String TOOL_RESOURCES_DIR_DEFAULT
-        = "/resources";
+            = "/resources";
 
     /**
      * Property tag for per request tool refreshing
      * (for obvious reasons has no effect for per-request tools)
      */
     private static final String TOOLS_PER_REQUEST_REFRESH =
-        "tools.per.request.refresh";
+            "tools.per.request.refresh";
 
     /**
      * Should we refresh the application tools on
@@ -243,18 +244,18 @@ public class TurbinePullService extends TurbineBaseService
     {
         try
         {
-           /*
-            * Make sure to setInit(true) *inside* initPull()
-            * because Tools may make calls back to the TurbinePull
-            * static methods which may cause a recursive init
-            * thing to happen.
-            */
+            /*
+             * Make sure to setInit(true) *inside* initPull()
+             * because Tools may make calls back to the TurbinePull
+             * static methods which may cause a recursive init
+             * thing to happen.
+             */
             initPull();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new InitializationException(
-                "TurbinePullService failed to initialize", e);
+                    "TurbinePullService failed to initialize", e);
         }
     }
 
@@ -272,7 +273,7 @@ public class TurbinePullService extends TurbineBaseService
          * in the TR.props or default to "/resources".
          */
         resourcesDirectory = conf.getString(TOOL_RESOURCES_DIR,
-                                            TOOL_RESOURCES_DIR_DEFAULT);
+                TOOL_RESOURCES_DIR_DEFAULT);
 
         /*
          * Get absolute path to the resources directory.
@@ -281,20 +282,20 @@ public class TurbinePullService extends TurbineBaseService
          * because a tool might need to know this value
          * for it to initialize correctly.
          */
-         absolutePathToResourcesDirectory =
-             Turbine.getRealPath(resourcesDirectory);
+        absolutePathToResourcesDirectory =
+                Turbine.getRealPath(resourcesDirectory);
 
         /*
          * Should we refresh the tool box on a per
          * request basis.
          */
-         refreshToolsPerRequest = conf.getBoolean(TOOLS_PER_REQUEST_REFRESH);
+        refreshToolsPerRequest = conf.getBoolean(TOOLS_PER_REQUEST_REFRESH);
 
         /*
          * Log the fact that the application tool box will
          * be refreshed on a per request basis.
          */
-        if (refreshToolsPerRequest)
+        if(refreshToolsPerRequest)
             log.info("Pull Model tools will "
                     + "be refreshed on a per request basis.");
 
@@ -319,9 +320,9 @@ public class TurbinePullService extends TurbineBaseService
          *
          * tool.persistent.ui = org.apache.turbine.services.pull.util.PersistentUIManager
          */
-        globalTools     = getTools(GLOBAL_TOOL);
-        requestTools    = getTools(REQUEST_TOOL);
-        sessionTools    = getTools(SESSION_TOOL);
+        globalTools = getTools(GLOBAL_TOOL);
+        requestTools = getTools(REQUEST_TOOL);
+        sessionTools = getTools(SESSION_TOOL);
         persistentTools = getTools(PERSISTENT_TOOL);
 
         /*
@@ -342,19 +343,18 @@ public class TurbinePullService extends TurbineBaseService
         List classes = new ArrayList();
 
         Configuration toolResources =
-            Turbine.getConfiguration().subset(keyPrefix);
+                Turbine.getConfiguration().subset(keyPrefix);
 
         /*
          * There might not be any tools for this prefix
          * so return an empty list.
          */
-        if (toolResources == null)
+        if(toolResources == null)
         {
             return classes;
         }
 
-        Iterator it = toolResources.getKeys();
-        while (it.hasNext())
+        for(Iterator it = toolResources.getKeys(); it.hasNext();)
         {
             String toolName = (String) it.next();
             String toolClassName = toolResources.getString(toolName);
@@ -372,9 +372,9 @@ public class TurbinePullService extends TurbineBaseService
                 classes.add(new ToolData(toolName, toolClassName, toolClass));
 
                 log.info("Instantiated tool class " + toolClassName
-                        + " to add to the context as '$"  + toolName + "'");
+                        + " to add to the context as '$" + toolName + "'");
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error("Cannot find tool class " + toolClassName
                         + ", please check the name of the class.", e);
@@ -412,11 +412,11 @@ public class TurbinePullService extends TurbineBaseService
         // boolean parameter indicates whether get/setPerm is to be used
         // rather than get/setTemp)
         User user = data.getUser();
-        if (user != null)
+        if(user != null)
         {
-            populateWithSessionTools(sessionTools,    context, user, false);
+            populateWithSessionTools(sessionTools, context, user, false);
 
-            if (user.hasLoggedIn())
+            if(user.hasLoggedIn())
             {
                 populateWithSessionTools(persistentTools, context, user, true);
             }
@@ -430,22 +430,21 @@ public class TurbinePullService extends TurbineBaseService
      */
     private void populateWithGlobalTools(Context context)
     {
-        Iterator it = globalTools.iterator();
-        while (it.hasNext())
+        for(Iterator it = globalTools.iterator(); it.hasNext();)
         {
-            ToolData toolData = (ToolData)it.next();
+            ToolData toolData = (ToolData) it.next();
             try
             {
                 Object tool = toolData.toolClass.newInstance();
-                if (tool instanceof ApplicationTool)
+                if(tool instanceof ApplicationTool)
                 {
                     // global tools are init'd with a null data parameter
-                    ((ApplicationTool)tool).init(null);
+                    ((ApplicationTool) tool).init(null);
                 }
                 // put the tool in the context
                 context.put(toolData.toolName, tool);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error(
                         "Could not instantiate tool " + toolData.toolClassName
@@ -464,25 +463,24 @@ public class TurbinePullService extends TurbineBaseService
     {
         // Get the PoolService to fetch object instances from
         PoolService pool = (PoolService)
-            TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
+                TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
 
         // Iterate the tools
-        Iterator it = requestTools.iterator();
-        while (it.hasNext())
+        for(Iterator it = requestTools.iterator(); it.hasNext();)
         {
-            ToolData toolData = (ToolData)it.next();
+            ToolData toolData = (ToolData) it.next();
             try
             {
                 Object tool = pool.getInstance(toolData.toolClass);
-                if (tool instanceof ApplicationTool)
+                if(tool instanceof ApplicationTool)
                 {
                     // request tools are init'd with a RunData object
-                    ((ApplicationTool)tool).init(data);
+                    ((ApplicationTool) tool).init(data);
                 }
                 // put the tool in the context
                 context.put(toolData.toolName, tool);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error(
                         "Could not instantiate tool " + toolData.toolClassName
@@ -507,37 +505,36 @@ public class TurbinePullService extends TurbineBaseService
     {
         // Get the PoolService to fetch object instances from
         PoolService pool = (PoolService)
-            TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
+                TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
 
         // Iterate the tools
-        Iterator it = tools.iterator();
-        while (it.hasNext())
+        for(Iterator it = tools.iterator(); it.hasNext();)
         {
-            ToolData toolData = (ToolData)it.next();
+            ToolData toolData = (ToolData) it.next();
             try
             {
                 // ensure that tool is created only once for a user
                 // by synchronizing against the user object
-                synchronized (user)
+                synchronized(user)
                 {
                     // first try and fetch the tool from the user's
                     // hashtable
                     Object tool = usePerm
-                        ? user.getPerm(toolData.toolClassName)
-                        : user.getTemp(toolData.toolClassName);
+                            ? user.getPerm(toolData.toolClassName)
+                            : user.getTemp(toolData.toolClassName);
 
-                    if (tool == null)
+                    if(tool == null)
                     {
                         // if not there, an instance must be fetched from
                         // the pool
                         tool = pool.getInstance(toolData.toolClass);
-                        if (tool instanceof ApplicationTool)
+                        if(tool instanceof ApplicationTool)
                         {
                             // session tools are init'd with the User object
-                            ((ApplicationTool)tool).init(user);
+                            ((ApplicationTool) tool).init(user);
                         }
                         // store the newly created tool in the user's hashtable
-                        if (usePerm)
+                        if(usePerm)
                         {
                             user.setPerm(toolData.toolClassName, tool);
                         }
@@ -546,16 +543,16 @@ public class TurbinePullService extends TurbineBaseService
                             user.setTemp(toolData.toolClassName, tool);
                         }
                     }
-                    else if (refreshToolsPerRequest
+                    else if(refreshToolsPerRequest
                             && tool instanceof ApplicationTool)
                     {
-                        ((ApplicationTool)tool).refresh();
+                        ((ApplicationTool) tool).refresh();
                     }
                     // put the tool in the context
                     context.put(toolData.toolName, tool);
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 log.error(
                         "Could not instantiate tool " + toolData.toolClassName
@@ -591,13 +588,12 @@ public class TurbinePullService extends TurbineBaseService
      */
     public void refreshGlobalTools()
     {
-        Iterator i = globalTools.iterator();
-        while (i.hasNext())
+        for(Iterator i = globalTools.iterator(); i.hasNext();)
         {
-            ToolData toolData = (ToolData)i.next();
+            ToolData toolData = (ToolData) i.next();
             Object tool = globalContext.get(toolData.toolName);
-            if (tool instanceof ApplicationTool)
-                ((ApplicationTool)tool).refresh();
+            if(tool instanceof ApplicationTool)
+                ((ApplicationTool) tool).refresh();
         }
     }
 
@@ -620,7 +616,7 @@ public class TurbinePullService extends TurbineBaseService
     {
         // Get the PoolService to release object instances to
         PoolService pool = (PoolService)
-            TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
+                TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
 
         // only the request tools can be released - other scoped
         // tools will have continuing references to them
@@ -637,13 +633,12 @@ public class TurbinePullService extends TurbineBaseService
      */
     private void releaseTools(Context context, PoolService pool, List tools)
     {
-        Iterator it = tools.iterator();
-        while (it.hasNext())
+        for(Iterator it = tools.iterator(); it.hasNext();)
         {
-            ToolData toolData = (ToolData)it.next();
+            ToolData toolData = (ToolData) it.next();
             Object tool = context.remove(toolData.toolName);
 
-            if (tool != null)
+            if(tool != null)
             {
                 pool.putInstance(tool);
             }

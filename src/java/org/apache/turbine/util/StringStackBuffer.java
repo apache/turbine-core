@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -84,10 +84,10 @@ public class StringStackBuffer implements Serializable
      * @param s A String.
      * @return A StringStackBuffer.
      */
-    public StringStackBuffer add( String s )
+    public StringStackBuffer add(String s)
     {
-        if ( s != null  &&  !contains(s) )
-             stk.push(s);
+        if(s != null && !contains(s))
+            stk.push(s);
         return this;
     }
 
@@ -98,11 +98,12 @@ public class StringStackBuffer implements Serializable
      * @param s A StringStackBuffer.
      * @return A StringStackBuffer.
      */
-    public StringStackBuffer addAll( StringStackBuffer s )
+    public StringStackBuffer addAll(StringStackBuffer s)
     {
-        Iterator it = s.stk.iterator();
-        while (it.hasNext())
-            add((String)it.next());
+        for(Iterator it = s.stk.iterator(); it.hasNext();)
+        {
+            add((String) it.next());
+        }
         return this;
     }
 
@@ -114,16 +115,16 @@ public class StringStackBuffer implements Serializable
     {
         stk.clear();
     }
-    
+
     /**
      * Does the Stack contain this String?
      *
      * @param s A String.
      * @return True if the Stack contains this String.
      */
-    public boolean contains( String s )
+    public boolean contains(String s)
     {
-        return ( stk.search(s) != -1 );
+        return (stk.search(s) != -1);
     }
 
     /**
@@ -175,26 +176,26 @@ public class StringStackBuffer implements Serializable
      * @return The stack elements--glued together by
      * <code>separator</code>--as a single block of text.
      */
-    public String toString( String separator )
+    public String toString(String separator)
     {
         String s;
-        if ( size() > 0 )
+        if(size() > 0)
         {
-            if ( separator == null )
+            if(separator == null)
             {
                 separator = "";
             }
- 
+
             // Determine what size to pre-allocate for the buffer.
             int totalSize = 0;
-            for (int i = 0; i < stk.size(); i++)
+            for(int i = 0; i < stk.size(); i++)
             {
                 totalSize += get(i).length();
             }
             totalSize += (stk.size() - 1) * separator.length();
 
-            StringBuffer sb = new StringBuffer(totalSize).append( get(0) );
-            for (int i = 1; i < stk.size(); i++)
+            StringBuffer sb = new StringBuffer(totalSize).append(get(0));
+            for(int i = 1; i < stk.size(); i++)
             {
                 sb.append(separator).append(get(i));
             }
@@ -215,30 +216,30 @@ public class StringStackBuffer implements Serializable
     public boolean equals(Object ssbuf)
     {
         boolean isEquiv = false;
-        if ( ssbuf == null || !(ssbuf instanceof StringStackBuffer) ) 
+        if(ssbuf == null || !(ssbuf instanceof StringStackBuffer))
         {
             isEquiv = false;
         }
-    
-        else if ( ssbuf == this ) 
+
+        else if(ssbuf == this)
         {
             isEquiv = true;
         }
-        
-        else if ( this.toString().equals(ssbuf.toString()) )
+
+        else if(this.toString().equals(ssbuf.toString()))
         {
             isEquiv = true;
         }
-        
+
         return isEquiv;
     }
 
     public String[] toStringArray()
     {
         String[] ss = new String[size()];
-        for (int i=0; i<size(); i++) 
+        for(int i = 0; i < size(); i++)
         {
-            ss[i]=get(i);
+            ss[i] = get(i);
         }
         return ss;
     }
