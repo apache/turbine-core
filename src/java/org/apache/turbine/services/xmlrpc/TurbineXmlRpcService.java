@@ -101,6 +101,7 @@ import org.apache.xmlrpc.secure.SecureWebServer;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class TurbineXmlRpcService
@@ -152,7 +153,7 @@ public class TurbineXmlRpcService
             setSystemPropertiesFromConfiguration(secureServerOptions);
 
             // Host and port information for the WebServer
-            String addr = getConfiguration().getString("address", null);
+            String addr = getConfiguration().getString("address", "0.0.0.0");
             port = getConfiguration().getInt("port", 0);
 
             if(port != 0)
@@ -175,7 +176,7 @@ public class TurbineXmlRpcService
                 }
                 else
                 {
-                    webserver = new WebServer(port);
+                    webserver = new WebServer(port, address);
                 }
             }
 
