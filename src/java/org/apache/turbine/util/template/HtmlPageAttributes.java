@@ -59,9 +59,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
+import org.apache.commons.configuration.Configuration;
+
 import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.pull.ApplicationTool;
@@ -157,7 +161,7 @@ public class HtmlPageAttributes
     private Map httpEquivs = new HashMap();
 
     /** Doctype */
-    private static String doctype = null;
+    private String doctype = null;
 
     /**
      * Default constructor. The init method must be called before use
@@ -670,23 +674,30 @@ public class HtmlPageAttributes
      * @return the DOCTYPE tag constructed from the properties in 
      * TurbineResources.properties.
      */
-    public static String getDefaultDoctype()
+    public String getDefaultDoctype()
     {
+	Configuration conf = Turbine.getConfiguration();
         if (doctype == null)
         {
-            String tag = Turbine.getConfiguration().getString(
-                    TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY);
+            String tag = conf.getString(
+                    TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY,
+                    TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_DEFAULT);
+
             if (StringUtils.isEmpty(tag))
             {
                 doctype = "";
             }
             else
             {
-                String identifier = Turbine.getConfiguration().getString(
-                        TurbineConstants.DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY);
-                String uri = Turbine.getConfiguration().getString(
-                        TurbineConstants.DEFAULT_HTML_DOCTYPE_URI_KEY);
-                doctype = getDoctype(tag, identifier, uri);
+                String identifier = conf.getString(
+                        TurbineConstants.DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY,
+                        TurbineConstants.DEFAULT_HTML_DOCTYPE_IDENTIFIER_DEFAULT);
+
+                String uri = conf.getString(
+                        TurbineConstants.DEFAULT_HTML_DOCTYPE_URI_KEY,
+                        TurbineConstants.DEFAULT_HTML_DOCTYPE_URI_DEFAULT);
+
+                doctype = buildDoctype(tag, identifier, uri);
             }
         }
         return doctype;
@@ -700,15 +711,25 @@ public class HtmlPageAttributes
      * @param uri the uri for the doctype declaration.
      * @return the doctype.
      */
-    private static String getDoctype(String tag, String identifier, String uri)
+    private String buildDoctype(String tag, String identifier, String uri)
     {
         StringBuffer doctypeBuf = new StringBuffer("<!DOCTYPE ");
         doctypeBuf.append(tag);
-        doctypeBuf.append(" PUBLIC \"");
-        doctypeBuf.append(identifier);
-        doctypeBuf.append("\" \"");
+
+        if (StringUtils.isNotEmpty(identifier))
+        {
+            doctypeBuf.append(" PUBLIC \"");
+            doctypeBuf.append(identifier);
+            doctypeBuf.append("\" \"");
+        }
+        else
+        {
+            doctypeBuf.append(" SYSTEM \"");
+        }
+
         doctypeBuf.append(uri);
         doctypeBuf.append("\">");
+
         return doctypeBuf.toString();
     }
     
