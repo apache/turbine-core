@@ -145,6 +145,15 @@ public abstract class FieldFactory
                 }
             }
                        );
+        fieldCtors.put("DateString", new FieldFactory.FieldCtor()
+            {
+                 public Field getInstance(XmlField f, Group g)
+                     throws Exception
+                 {
+                     return new DateStringField(f, g);
+                 }
+            }
+                       );
         fieldCtors.put("float", new FieldFactory.FieldCtor()
             {
                 public Field getInstance(XmlField f, Group g)
@@ -184,11 +193,11 @@ public abstract class FieldFactory
         {
             throw new TurbineException("Unsupported type: " + type);
         }
-        else 
+        else
         {
             field = fieldCtor.getInstance(f, g);
         }
-        
+
         return field;
     }
 }
