@@ -116,14 +116,14 @@ public class StringField
             String[] sval = new String[ss.length];
             for (int i = 0; i < ss.length; i++)
             {
-                sval[i] = (StringUtils.isNotEmpty(ss[i])) ? ss[i] : null;
+                sval[i] = (StringUtils.isNotEmpty(ss[i])) ? ss[i] : "";
             }
             setTestValue(sval);
         }
         else
         {
             String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val) ? val : null);
+            setTestValue(StringUtils.isNotEmpty(val) ? val : "");
         }
     }
 
