@@ -117,7 +117,7 @@ public class ScheduledJobLoader
     {
         if (cache())
         {
-            this.put(name, (ScheduledJob) job);
+            this.put(name, job);
         }
     }
 

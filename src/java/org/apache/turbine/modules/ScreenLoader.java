@@ -120,7 +120,7 @@ public class ScreenLoader
     {
         if (cache())
         {
-            this.put(name, (Screen) screen);
+            this.put(name, screen);
         }
     }
 

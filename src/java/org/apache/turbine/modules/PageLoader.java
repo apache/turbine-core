@@ -118,7 +118,7 @@ public class PageLoader
     {
         if (cache())
         {
-            this.put(name, (Page) page);
+            this.put(name, page);
         }
     }
 

@@ -116,7 +116,7 @@ public class ActionLoader
     {
         if (cache())
         {
-            this.put(name, (Action) action);
+            this.put(name, action);
         }
     }
 

@@ -120,7 +120,7 @@ public class LayoutLoader
     {
         if (cache())
         {
-            this.put(name, (Layout) layout);
+            this.put(name, layout);
         }
     }
 
