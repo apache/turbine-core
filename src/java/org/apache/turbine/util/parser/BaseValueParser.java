@@ -299,7 +299,7 @@ public class BaseValueParser
     /**
      * Add a String parameters.  If there are any Strings already
      * associated with the name, append to the array.  This is used
-     * for handling parameters from mulitipart POST requests.
+     * for handling parameters from multipart POST requests.
      *
      * @param name A String with the name.
      * @param value A String with the value.
@@ -1331,9 +1331,13 @@ public class BaseValueParser
         {
             Object value = parameters.get(convert(name));
             if (value != null)
+            {
                 value = ((String[]) value)[0];
+            }
             if (value == null || value.equals("null"))
+            {
                 return null;
+            }
             result = (String) value;
         }
         catch (ClassCastException e)
