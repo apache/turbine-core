@@ -364,6 +364,7 @@
     <dependency>
       <id>avalon-framework</id>
       <version>SNAPSHOT</version>
+      <url>http://jakarta.apache.org/avalon/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
@@ -513,7 +514,7 @@
     <dependency>
       <id>junit</id>
       <version>3.8.1</version>
-      <url>http://www.junit.org</url>
+      <url>http://www.junit.org/</url>
     </dependency>
     <dependency>
       <id>oro</id>
@@ -547,6 +548,7 @@
     <dependency>
       <id>servletapi</id>
       <version>2.3</version>
+      <url>http://java.sun.com/products/servlet/</url>
     </dependency>
     <dependency>
       <id>stratum</id>
@@ -589,6 +591,7 @@
     <dependency>
       <id>xalan</id>
       <version>2.1.0</version>
+      <url>http://xml.apache.org/xalan-j/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
