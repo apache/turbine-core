@@ -465,7 +465,7 @@ public class HtmlPageAttributes
      */
     public HtmlPageAttributes setBackground(String url)
     {
-        this.bodyAttributes.put("backgroup", url);
+        this.bodyAttributes.put("background", url);
         return this;
     }
 

@@ -166,6 +166,9 @@ Changes between Turbine 2.3 and 2.4.
        <em>data.setLayout("DirectResponseLayout");</em> to your action class.
        Thanks to Peter Courcoux for the code.
     </li>
+    <ul>
+      TTWS60: HtmlPageAttributes setBackground sets the incorrect key name.
+    </ul>
   </ul>
 </p>
 </subsection>
