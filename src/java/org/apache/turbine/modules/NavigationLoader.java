@@ -120,7 +120,7 @@ public class NavigationLoader
     {
         if (cache())
         {
-            this.put(name, (Navigation) navigation);
+            this.put(name, navigation);
         }
     }
 
