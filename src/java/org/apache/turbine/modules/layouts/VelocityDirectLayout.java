@@ -103,8 +103,7 @@ public class VelocityDirectLayout
         throws Exception
     {
         // Get the context needed by Velocity.
-        Context context = (Context) data.getTemplateInfo()
-            .getTemplateContext(VelocityService.CONTEXT);
+        Context context = TurbineVelocity.getContext(data);
 
         // variable for the screen in the layout template
         context.put(TurbineConstants.SCREEN_PLACEHOLDER, 

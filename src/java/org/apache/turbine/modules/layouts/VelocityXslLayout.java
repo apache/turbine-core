@@ -115,8 +115,7 @@ public class VelocityXslLayout extends Layout
         throws Exception
     {
         // Get the context needed by Velocity.
-        Context context = (Context) data.getTemplateInfo()
-            .getTemplateContext(VelocityService.CONTEXT);
+        Context context = TurbineVelocity.getContext(data);
 
         data.getResponse().setContentType("text/html");
 
