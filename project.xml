@@ -487,7 +487,7 @@
       </properties>
     </dependency>
     <dependency>
-      <id>xerces</id>
+      <id>xerces:xercesImpl</id>
       <version>2.0.2</version>
       <url>http://xml.apache.org/xerces2-j/</url>
       <properties>
@@ -495,7 +495,7 @@
       </properties>
     </dependency>
     <dependency>
-      <id>xml-apis</id>
+      <id>xerces:xmlParserAPIs</id>
       <version>2.0.2</version>
       <url>http://xml.apache.org/xerces2-j/</url>
       <properties>
