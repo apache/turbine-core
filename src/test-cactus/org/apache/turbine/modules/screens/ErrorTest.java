@@ -36,34 +36,6 @@ public class ErrorTest extends ServletTestCase
 	}
 
 	/**
-	 *  Start the tests.
-	 *
-	 *@param  args  the arguments. Not used
-	 */
-	public static void main(String args[])
-	{
-		junit.awtui.TestRunner.main(new String[] { ErrorTest.class.getName()});
-	}
-
-	/**
-	 *  Creates the test suite.
-	 *
-	 *@return    a test suite (<code>TestSuite</code>) that includes all methods
-	 *      starting with "test"
-	 */
-	public static Test suite()
-	{
-		// All methods starting with "test" will be executed in the test suite.
-		return new TestSuite(ErrorTest.class);
-	}
-
-	protected void setUp() throws Exception
-	{
-		super.setUp();
-
-	}
-
-	/**
 	* After each testXXX test runs, shut down the Turbine servlet.
 	*/
 	protected void tearDown() throws Exception

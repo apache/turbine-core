@@ -117,16 +117,6 @@ public class CSVParserTest
     }
 
     /**
-     * Return a test suite of all our tests.
-     *
-     * @return a <code>Test</code> value
-     */
-    public static Test suite()
-    {
-        return new TestSuite(CSVParserTest.class);
-    }
-
-    /**
      * Tests if you can leave field values empty
      */
     public void testEmptyFieldValues()
