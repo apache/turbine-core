@@ -55,16 +55,12 @@ package org.apache.turbine.services.servlet;
  */
 
 import java.io.InputStream;
-
 import java.net.URL;
 import java.net.MalformedURLException;
-
 import java.util.StringTokenizer;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.Log;
@@ -91,11 +87,6 @@ public class TurbineServletService
     private ServletContext servletContext = null;
     private ServletConfig servletConfig = null;
 
-    private String serverName = null;
-    private String serverPort = null;
-    private String serverScheme = null;
-    private String contextPath = null;
-    
     /**
      * Called during Turbine.init()
      *
@@ -115,48 +106,6 @@ public class TurbineServletService
             Log.error ( "Cannot initialize TurbineServletService." );
             Log.error (e);
         }
-    }
-
-    /**
-     * Setup some standard information about our webapp
-     * that may be of use in other classes of our webapp
-     * that do not have direct access to the RunData
-     * class.
-     */
-    public void init(RunData data)
-    {
-        serverName = data.getRequest().getServerName();
-        serverPort = Integer.toString(data.getRequest().getServerPort());
-        serverScheme = data.getRequest().getScheme();
-
-        /* 
-         * Allow Turbine to work with both 2.2 (and 2.1) and 2.0
-         * Servlet API.
-         */ 
-        Class jsdkClass = HttpServletRequest.class;
-        
-        try
-        {
-            java.lang.reflect.Method meth =
-                jsdkClass.getDeclaredMethod("getContextPath", null);
-            
-            contextPath = (String)meth.invoke(data.getRequest(), null);
-        }
-        catch (Exception ex)
-        {
-            // Ignore a NoSuchMethodException because it means we are
-            // using Servlet API 2.0.  Make sure scriptName is not
-            // null.
-            contextPath = "";
-        }
-
-//        contextPath = data.getRequest().getContextPath();
-
-        Log.debug("[TurbineServletService] serverName: " + serverName);
-        Log.debug("[TurbineServletService] serverScheme: " + serverScheme);
-        Log.debug("[TurbineServletService] serverPort: " + serverPort);
-        Log.debug("[TurbineServletService] contextPath: " + contextPath);
-
         setInit(true);
     }
 
@@ -268,7 +217,7 @@ public class TurbineServletService
      */
     public String getServerScheme()
     {
-        return serverScheme;
+        return Turbine.getServerScheme();
     }
     
     /**
@@ -280,7 +229,7 @@ public class TurbineServletService
      */
     public String getServerName()
     {
-        return serverName;
+        return Turbine.getServerName();
     }
     
     /**
@@ -292,7 +241,7 @@ public class TurbineServletService
      */
     public String getServerPort()
     {
-        return serverPort;
+        return Turbine.getServerPort();
     }
 
     /**
@@ -303,7 +252,7 @@ public class TurbineServletService
      */
     public String getContextPath()
     {
-        return contextPath;
+        return Turbine.getContextPath();
     }
 
     /**
