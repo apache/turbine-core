@@ -560,7 +560,7 @@
     <dependency>
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-cache</artifactId>
-      <version>1.0-alpha-3</version>
+      <version>1.0.5</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-cache</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
@@ -568,8 +568,8 @@
     </dependency>    
     <dependency>
       <groupId>fulcrum</groupId>
-      <artifactId>fulcrum-crypto-api</artifactId>
-      <version>1.0-alpha-4</version>
+      <artifactId>fulcrum-crypto</artifactId>
+      <version>1.0.5</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-crypto</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
@@ -577,31 +577,13 @@
     </dependency>
     <dependency>
       <groupId>fulcrum</groupId>
-      <artifactId>fulcrum-crypto-impl</artifactId>
-      <version>1.0-alpha-4</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-crypto</url>
+      <artifactId>fulcrum-localization</artifactId>
+      <version>1.0.5</version>
+      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-localization</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
-    </dependency>    
-    <dependency>
-      <groupId>fulcrum</groupId>
-      <artifactId>fulcrum-localization-api</artifactId>
-      <version>1.0-alpha-4</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/localization</url>
-      <properties>
-        <war.bundle.jar>true</war.bundle.jar>
-      </properties>
-    </dependency>    
-    <dependency>
-      <groupId>fulcrum</groupId>
-      <artifactId>fulcrum-localization-impl</artifactId>
-      <version>1.0-alpha-4</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/localization</url>
-      <properties>
-        <war.bundle.jar>true</war.bundle.jar>
-      </properties>
-    </dependency>      
+    </dependency>         
     <dependency>
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-intake</artifactId>
@@ -613,40 +595,22 @@
     </dependency>    
     <dependency>
       <groupId>fulcrum</groupId>
-      <artifactId>fulcrum-factory-api</artifactId>
-      <version>1.0-alpha-2</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/factory</url>
+      <artifactId>fulcrum-factory</artifactId>
+      <version>1.0.3</version>
+      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-factory</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
-    </dependency> 
+    </dependency>         
     <dependency>
       <groupId>fulcrum</groupId>
-      <artifactId>fulcrum-factory-impl</artifactId>
-      <version>1.0-alpha-2</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/factory</url>
-      <properties>
-        <war.bundle.jar>true</war.bundle.jar>
-      </properties>
-    </dependency>          
-    <dependency>
-      <groupId>fulcrum</groupId>
-      <artifactId>fulcrum-mimetype-api</artifactId>
-      <version>1.0-alpha-4</version>
+      <artifactId>fulcrum-mimetype</artifactId>
+      <version>1.0.4</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-mimetype</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
-    </dependency>  
-    <dependency>
-      <groupId>fulcrum</groupId>
-      <artifactId>fulcrum-mimetype-impl</artifactId>
-      <version>1.0-alpha-4</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-mimetype</url>
-      <properties>
-        <war.bundle.jar>true</war.bundle.jar>
-      </properties>
-    </dependency>       
+    </dependency>        
     <dependency>
       <groupId>activation</groupId>
       <artifactId>activation</artifactId>
