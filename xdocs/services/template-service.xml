@@ -70,12 +70,12 @@ names are "," separated entities which describe a template screen to be displaye
 </p>
 
 <p>Note: In all of the following examples, it is assumed that you use
-the <a href="/services/velocity-service.html">VelocityService</a> as
+the <a href="services/velocity-service.html">VelocityService</a> as
 your preferred view service. So if you read "Velocity" in the
 following paragraphs, this means "default configured view
 class". Currently, Turbine includes two supported view services,
-<a href="/services/velocity-service.html">Velocity</a> and 
-<a href="/services/jsp-service.html">Java Server Pages (JSP)</a>.
+<a href="services/velocity-service.html">Velocity</a> and 
+<a href="services/jsp-service.html">Java Server Pages (JSP)</a>.
 </p>
 
 <p>
@@ -172,7 +172,7 @@ class". Currently, Turbine includes two supported view services,
 
 <p>
   If you now wonder how a template name is mapped to an actual file name: This is
-  scope of the templating engine. <a href="/services/velocity-service.html">Velocity</a> 
+  scope of the templating engine. <a href="services/velocity-service.html">Velocity</a> 
   e.g. has this wonderful option to load templates from jar archives.
   There is no file but if you tell velocity "get about,directions,Driving.vm" and it
   returns the rendered template. So getting the actual template is not the job of the
