@@ -67,9 +67,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
 /**
@@ -117,7 +117,7 @@ public class TurbineXSLTService
             return;
         }
 
-        path = TurbineResources.getString (
+        path = getConfiguration().getString (
             TurbineServices.SERVICE_PREFIX +
                 XSLTService.SERVICE_NAME + ".path");
 
@@ -128,7 +128,7 @@ public class TurbineXSLTService
             path = path + File.separator;
         }
 
-        caching = TurbineResources.getBoolean (
+        caching = getConfiguration().getBoolean (
             TurbineServices.SERVICE_PREFIX +
                 XSLTService.SERVICE_NAME + ".cache");
 

@@ -57,12 +57,11 @@ package org.apache.turbine.services.schedule;
 import java.util.Vector;
 import javax.servlet.ServletConfig;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.lang.StringUtils;
 import org.apache.torque.om.NumberKey;
 import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.TurbineException;
 
 /**
