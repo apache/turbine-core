@@ -132,7 +132,7 @@ public class ShortField
      * @return the value to use when the field is empty or an Object that
      * wraps the empty value for primitive types.
      */
-    Object getSafeEmptyValue()
+    protected Object getSafeEmptyValue()
     {
         return (null == getEmptyValue()) 
                 ? new Short((short) 0) : getEmptyValue(); 
