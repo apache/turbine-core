@@ -54,111 +54,71 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
+import org.apache.commons.lang.exception.NestableError;
 
 /**
  * Used for wrapping system errors (exceptions) that may occur in the
  * application.
  *
  * @author <a href="mailto:neeme@one.lv">Neeme Praks</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class SystemError
+public class SystemError extends NestableError
 {
-    private Exception e;
-    private String message;
-
     /**
      * Constructor.
      *
-     * @param e An Exception.
+     * @param cause A Throwable object
      */
-    public SystemError(Exception e)
+    public SystemError(Throwable cause)
     {
-        setMessage(e.getMessage());
-        setException(e);
+        super(cause);
     }
 
     /**
      * Constructor.
      *
-     * @param e An Exception.
+     * @param message Error message
+     */
+    public SystemError(String message)
+    {
+        super(message);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param cause A Throwable object
+     * @param message A String.
+     * @deprecated Use SystemError(String,Throwable) instead.
+     */
+    public SystemError(Throwable cause, String message)
+    {
+        super(message, cause);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param cause A Throwable object
      * @param message A String.
      */
-    public SystemError(Exception e, String message)
+    public SystemError(String message, Throwable cause)
     {
-        this(e);
-        setMessage(message);
+        super(message, cause);
     }
 
     /**
      * Constructor.
      *
-     * @param e An Exception.
-     * @param returncode A long.
+     * @param cause A Throwable object
+     * @param returnCode A long.
+     * @deprecated No replacement
      */
-    public SystemError(Exception e, long returncode)
+    public SystemError(Throwable cause, long returnCode)
     {
-        this(e, new Long(returncode).toString());
+        super("Return code = " + Long.toString(returnCode), cause);
     }
 
-    /**
-     * Get the message.
-     *
-     * @return A String.
-     */
-    public String getMessage()
-    {
-        return message;
-    }
-
-    /**
-     * Set the message.
-     *
-     * @param message A String.
-     */
-    public void setMessage(String message)
-    {
-        this.message = message;
-    }
-
-    /**
-     * Get the exception.
-     *
-     * @return An Exception.
-     */
-    public Exception getException()
-    {
-        return e;
-    }
-
-    /**
-     * Set the exception.
-     *
-     * @param e An Exception.
-     */
-    public void setException(Exception e)
-    {
-        this.e = e;
-    }
-
-    /**
-     * Get the stack trace.
-     *
-     * @return A String.
-     */
-    public String getStackTrace()
-    {
-        if (e != null)
-        {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            e.printStackTrace(new PrintWriter(out,true));
-            return out.toString();
-        }
-        else
-        {
-            return "";
-        }
-    }
 }
