@@ -59,7 +59,6 @@ import java.text.ParseException;
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.BooleanValidator;
@@ -76,9 +75,6 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
 public class BooleanField
         extends Field
 {
-    /** Used for logging */
-    private static Log log = LogFactory.getLog(BooleanField.class);
-
     public BooleanField(XmlField field, Group group)
             throws IntakeException
     {

@@ -188,14 +188,8 @@ public abstract class Field
     protected ValueParser parser;
 
     /** Logging */
-    private static final Log log;
-    private static final boolean isDebugEnabled;
-
-    static
-    {
-        log = LogFactory.getLog(Field.class);
-        isDebugEnabled = log.isDebugEnabled();
-    }
+    protected Log log = LogFactory.getLog(this.getClass());
+    protected boolean isDebugEnabled = false;
 
     /**
      * Constructs a field based on data in the xml specification
@@ -210,12 +204,15 @@ public abstract class Field
      */
     public Field(XmlField field, Group group) throws IntakeException
     {
+        isDebugEnabled = log.isDebugEnabled();
+
         this.group = group;
         key = field.getKey();
         name = field.getName();
         displayName = field.getDisplayName();
         displaySize = field.getDisplaySize();
         isMultiValued = field.isMultiValued();
+
         try
         {
             setDefaultValue(field.getDefaultValue());
@@ -226,6 +223,7 @@ public abstract class Field
                     this.getDisplayName() + " to "
                     + field.getDefaultValue(), e);
         }
+
         String validatorClassName = field.getValidator();
         if (validatorClassName == null && field.getRules().size() > 0)
         {
