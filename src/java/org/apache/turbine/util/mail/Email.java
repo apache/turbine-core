@@ -78,6 +78,7 @@ import org.apache.turbine.services.resources.TurbineResources;
  * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
  * @author <a href="mailto:unknown">Regis Koenig</a>
  * @version $Id$
+ * @deprecated Use org.apache.commons.mail.Email instead.
  */
 public abstract class Email
 {

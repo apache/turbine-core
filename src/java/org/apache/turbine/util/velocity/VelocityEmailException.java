@@ -1,4 +1,4 @@
-package org.apache.turbine.util.mail;
+package org.apache.turbine.util.velocity;
 
 /* ====================================================================
  * The Apache Software License, Version 1.1
@@ -54,133 +54,58 @@ package org.apache.turbine.util.mail;
  * <http://www.apache.org/>.
  */
 
-import java.net.URL;
+ import org.apache.turbine.util.TurbineException;
 
 /**
- * This class models an email attachment.  Used by MultiPartEmail.
+ * This exception is thrown if a VelocityEmail/VelocityHtmlEmail can not be
+ * sent using JavaMail.  It will most likly wrap a javax.mail.MessagingException
+ * exception.
  *
- * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
- * @version $Id$
- * @deprecated Use org.apache.commons.mail.EmailAttachment instead.
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  */
-public class EmailAttachment
+public class VelocityEmailException extends TurbineException
 {
-    public final static String ATTACHMENT = javax.mail.Part.ATTACHMENT;
-    public final static String INLINE = javax.mail.Part.INLINE;
-
-    /** The name of this attachment. */
-    private String name = "";
-
-    /** The description of this attachment. */
-    private String description = "";
-
-    /** The full path to this attachment (ie c:/path/to/file.jpg). */
-    private String path = "";
-
-    /** The HttpURI where the file can be got. */
-    private URL url = null;
-
-    /** The disposition. */
-    private String disposition = ATTACHMENT;
-
-
     /**
-     * Get the description.
-     *
-     * @return A String.
+     * Constructs a new <code>VelocityEmailException</code> without specified
+     * detail message.
      */
-    public String getDescription()
+    public VelocityEmailException()
     {
-        return description;
     }
 
     /**
-     * Get the name.
+     * Constructs a new <code>VelocityEmailException</code> with specified
+     * detail message.
      *
-     * @return A String.
+     * @param msg The error message.
      */
-    public String getName()
+    public VelocityEmailException(String msg)
     {
-        return name;
+        super(msg);
     }
 
     /**
-     * Get the path.
+     * Constructs a new <code>VelocityEmailException</code> with specified
+     * nested <code>Throwable</code>.
      *
-     * @return A String.
+     * @param nested The exception or error that caused this exception
+     *               to be thrown.
      */
-    public String getPath()
+    public VelocityEmailException(Throwable nested)
     {
-        return path;
+        super(nested);
     }
 
     /**
-     * Get the URL.
+     * Constructs a new <code>VelocityEmailException</code> with specified
+     * detail message and nested <code>Throwable</code>.
      *
-     * @return A URL.
+     * @param msg    The error message.
+     * @param nested The exception or error that caused this exception
+     *               to be thrown.
      */
-    public URL getURL()
+    public VelocityEmailException(String msg, Throwable nested)
     {
-        return url;
-    }
-
-    /**
-     * Get the disposition.
-     *
-     * @return A String.
-     */
-    public String getDisposition()
-    {
-        return disposition;
-    }
-
-    /**
-     * Set the description.
-     *
-     * @param desc A String.
-     */
-    public void setDescription(String desc)
-    {
-        this.description = desc;
-    }
-
-    /**
-     * Set the name.
-     *
-     * @param name A String.
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    /**
-     * Set the path.
-     *
-     * @param path A String.
-     */
-    public void setPath(String path)
-    {
-        this.path = path;
-    }
-
-    /**
-     * Set the URL.
-     *
-     * @param url A URL.
-     */
-    public void setURL(URL url)
-    {
-        this.url = url;
-    }
-
-    /**
-     * Set the disposition.
-     *
-     * @param disposition A String.
-     */
-    public void setDisposition(String disposition)
-    {
-        this.disposition = disposition;
+        super(msg, nested);
     }
 }

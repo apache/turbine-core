@@ -64,7 +64,7 @@ import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 import org.apache.velocity.context.Context;
 
@@ -132,7 +132,7 @@ public class VelocityDirectScreen extends VelocityScreen
             // attempt to call the error.vm template in the screens
             // directory.
             context.put ("processingException", e.toString());
-            context.put ("stackTrace", StringUtils.stackTrace(e));
+            context.put ("stackTrace", ExceptionUtils.getStackTrace(e));
             templateName = TurbineResources.getString(
                 "template.error", "/error.vm");
             if ((templateName.length() > 0) &&

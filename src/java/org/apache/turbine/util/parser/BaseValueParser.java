@@ -73,13 +73,14 @@ import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.StringKey;
 
 import org.apache.turbine.services.resources.TurbineResources;
 
 import org.apache.turbine.util.DateSelector;
-import org.apache.turbine.util.StringUtils;
 import org.apache.turbine.util.TimeSelector;
 import org.apache.turbine.util.ValueParser;
 import org.apache.turbine.util.pool.Recyclable;
@@ -1174,7 +1175,7 @@ public class BaseValueParser
             {
                 value = ((String[])object)[0];
             }
-            return (StringUtils.isValid(value) ? new NumberKey(value) : null);
+            return (StringUtils.isNotEmpty(value) ? new NumberKey(value) : null);
         }
         catch ( ClassCastException e )
         {
@@ -1199,7 +1200,7 @@ public class BaseValueParser
             {
                 value = ((String[])object)[0];
             }
-            return (StringUtils.isValid(value) ? new StringKey(value) : null);
+            return (StringUtils.isNotEmpty(value) ? new StringKey(value) : null);
         }
         catch ( ClassCastException e )
         {

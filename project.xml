@@ -390,6 +390,14 @@
       </properties>
     </dependency>
     <dependency>
+      <id>commons-email</id>
+      <version>0.1-dev</version>
+      <url>http://jakarta.apache.org/commons/sandbox/email</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>
+    <dependency>
       <id>commons-lang</id>
       <version>1.0.1</version>
       <url>http://jakarta.apache.org/commons/</url>
