@@ -10,6 +10,14 @@
 
 <body>
 
+<section name="Important note">
+<p>
+    The information in this HOWTO pertains to Turbine 2.2.  Please refer 
+    to the <a href="/howto/migrate-from-2_2-howto.html">Migrating from 
+    2.2 to 2.3</a> page for information on migating to Turbine 2.3.
+</p>
+</section>
+
 <section name="Introduction">
 <p>
     This document describes the basic steps needed to migrate an

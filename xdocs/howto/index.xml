@@ -13,21 +13,23 @@
     <p>
       <ul>
         <li><a href="action-event-howto.html">Action Events Howto</a></li>
+        <li><a href="configuration-howto.html">Configuration Howto</a></li>
         <li><a href="extend-user-howto.html">Extend User Howto</a></li>
+        <li><a href="intake-howto.html">Intake Howto</a></li>
         <li><a href="jboss-howto.html">JBoss Howto</a></li>
         <li><a href="jsp-howto.html">JSP Howto</a></li>
-        <li><a href="intake-howto.html">Intake Howto</a></li>
-        <li><a href="migrate-from-2_1-howto.html">Migrating from 2.1</a></li>
+        <li><a href="migrate-from-2_1-howto.html">Migrating from 2.1 to 2.2</a></li>
+        <li><a href="migrate-from-2_2-howto.html">Migrating from 2.2 to 2.3</a></li>
         <li><a href="pullmodel-howto.html">Pull Model Howto</a></li>
         <li><a href="python-howto.html">Python Howto</a></li>
         <li><a href="security-howto.html">Security Howto</a></li>
         <li><a href="services-howto.html">Services Howto</a></li>
         <li><a href="url-rewriting-howto.html">URL rewriting Howto</a></li>
-        <li><a href="velocity-site-howto.html">Velocity Site Howto</a></li>
         <li><a href="context-howto.html">Velocity Context Howto</a></li>
+        <li><a href="velocity-site-howto.html">Velocity Site Howto</a></li>
+        <li><a href="velocityonlylayout-howto.html">VelocityOnlyLayout Howto</a></li>
         <li><a href="hibernate-howto.html">Hibernate OM Howto</a></li>
-        <li><a href="hibernate-howto.html">Configuration Howto</a></li>
-        <li><a href="http://nagoya.apache.org/wiki/apachewiki.cgi?CategoryJakartaTurbine2HowTo">
+        <li><a href="http://nagoya.apache.org/wiki/apachewiki.cgi?search=CategoryJakartaTurbine2HowTo">
             Additional Howtos from the Apache Wiki</a></li>
       </ul>
     </p>
