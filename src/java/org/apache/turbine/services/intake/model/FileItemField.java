@@ -55,6 +55,7 @@ package org.apache.turbine.services.intake.model;
  */
 
 import org.apache.commons.fileupload.FileItem;
+
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.FileValidator;
 import org.apache.turbine.services.intake.validator.ValidationException;

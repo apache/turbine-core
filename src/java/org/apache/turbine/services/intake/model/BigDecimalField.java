@@ -55,7 +55,11 @@ package org.apache.turbine.services.intake.model;
  */
 
 import java.math.BigDecimal;
+
 import java.text.DecimalFormatSymbols;
+
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.NumberValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
@@ -121,28 +125,15 @@ public class BigDecimalField
             BigDecimal[] values = new BigDecimal[inputs.length];
             for (int i = 0; i < inputs.length; i++)
             {
-                if (inputs[i] != null && inputs[i].length() > 0)
-                {
-                    values[i] = canonicalizeDecimalInput(inputs[i]);
-                }
-                else
-                {
-                    values[i] = null;
-                }
+                values[i] = StringUtils.isNotEmpty(inputs[i]) 
+                        ? canonicalizeDecimalInput(inputs[i]) : null;
             }
             setTestValue(values);
         }
         else
         {
-            String s = parser.getString(getKey());
-            if (s != null && s.length() > 0)
-            {
-                setTestValue(canonicalizeDecimalInput(s));
-            }
-            else
-            {
-                setTestValue(null);
-            }
+            String val = parser.getString(getKey());
+            setTestValue(StringUtils.isNotEmpty(val) ? canonicalizeDecimalInput(val) : null);
         }
     }
 

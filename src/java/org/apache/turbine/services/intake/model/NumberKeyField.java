@@ -55,7 +55,11 @@ package org.apache.turbine.services.intake.model;
  */
 
 import java.math.BigDecimal;
+
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.torque.om.NumberKey;
+
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.NumberKeyValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
@@ -120,7 +124,7 @@ public class NumberKeyField
             NumberKey[] values = new NumberKey[inputs.length];
             for (int i = 0; i < inputs.length; i++)
             {
-                if (inputs[i] != null && inputs[i].length() > 0)
+                if (StringUtils.isNotEmpty(inputs[i]))
                 {
                     values[i] = new NumberKey(
                             canonicalizeDecimalInput(inputs[i]));
@@ -135,7 +139,7 @@ public class NumberKeyField
         else
         {
             String val = parser.getString(getKey());
-            if (val != null && val.length() > 0)
+            if (StringUtils.isNotEmpty(val))
             {
                 BigDecimal bd = canonicalizeDecimalInput(val);
                 setTestValue(new NumberKey(bd));
@@ -146,5 +150,4 @@ public class NumberKeyField
             }
         }
     }
-
 }

@@ -56,11 +56,14 @@ package org.apache.turbine.services.intake.model;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
 import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.om.Retrievable;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.intake.IntakeException;
@@ -88,8 +91,14 @@ import org.apache.turbine.util.ValueParser;
  */
 public abstract class Field
 {
+    /** Empty Value */
     private static final String EMPTY = "";
+
+    /** CGI Key for "value if absent" */
     private static final String VALUE_IF_ABSENT_KEY = "_vifa_";
+
+    /** Default Package */
+    public static final String defaultFieldPackage = "org.apache.turbine.services.intake.validator.";
 
     // the following are set from the xml file and are permanent (final)
 
@@ -214,8 +223,7 @@ public abstract class Field
         else if (validatorClassName != null
                 && validatorClassName.indexOf('.') == -1)
         {
-            validatorClassName = "org.apache.turbine.services.intake.validator."
-                    + validatorClassName;
+            validatorClassName = defaultFieldPackage + validatorClassName;
         }
 
         if (validatorClassName != null)
@@ -275,8 +283,8 @@ public abstract class Field
         String propName = field.getMapToProperty();
         Method tmpGetter = null;
         Method tmpSetter = null;
-        if (mapToObject != null && mapToObject.length() != 0
-                && propName != null && propName.length() != 0)
+        if (StringUtils.isNotEmpty(mapToObject)
+                && StringUtils.isNotEmpty(propName))
         {
             try
             {
@@ -454,6 +462,7 @@ public abstract class Field
     public void removeFromRequest()
     {
         parser.remove(getKey());
+        parser.remove(getKey()+ VALUE_IF_ABSENT_KEY);
     }
 
     /**
@@ -603,7 +612,6 @@ public abstract class Field
             {
                 doSetValue();
             }
-
         }
         else
         {
