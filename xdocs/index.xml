@@ -29,9 +29,7 @@
     A couple example web applications that can benefit from using this
     framework include <a
     href="http://www.restorationhardware.com/">e-commerce shopping cart
-    systems</a>, Yahoo style <a href="http://c.clearink.com/">Link
-    Conservatories</a> and <a
-    href="http://tracker.clearink.com/">project</a> / <a
+    systems</a>, Yahoo style link conservatories and project / <a
     href="http://scarab.tigris.org/">bug / issue</a> tracking systems as
     well as cool XML integration applications like <a
     href="http://jakarta.apache.org/jetspeed/">Jetspeed</a>.
@@ -85,8 +83,8 @@
  <p>
     Turbine can be integrated with existing <a
     href="http://jakarta.apache.org/velocity/">Velocity</a>, <a
-    href="http://jakarta.apache.org/">Java Server Pages (JSP)</a> and <a
-    href="http://xml.apache.org/cocoon/">Cocoon</a> technologies by
+    href="http://java.sun.com/products/jsp/">Java Server Pages (JSP)</a>
+    and <a href="http://cocoon.apache.org/">Cocoon</a> technologies by
     specially creating Screens that use Services to parse templates.
     Screens can also be created to read files from other websites as
     well as off disk. This makes it easy to have designers simply put
@@ -132,8 +130,8 @@
     You can find released versions of
     Turbine,
     the <a href="../tdk/index.html">TDK</a>,
-    and <a href="../torque/index.html">Torque</a>
-    <a href="http://jakarta.apache.org/builds/jakarta-turbine/">here</a>.
+    and <a href="http://db.apache.org/torque/">Torque</a> from
+    <a href="http://db.apache.org/torque/status.html">here</a>.
   </p>
 
 </section>
@@ -156,8 +154,8 @@ the current Turbine code.
         We have a <a href="http://jakarta.apache.org/site/mail.html">Turbine mailing
         lists</a> for discussion.</li>
     <li>
-        Access to Turbine CVS is
-        <a href="http://jakarta.apache.org/site/cvsindex.html">available</a></li>
+        You can also access the <a href="cvs-usage.html">Turbine CVS 
+        repository</a></li>
 </ul>
 
 </section>

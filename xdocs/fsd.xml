@@ -108,7 +108,7 @@ Layout module executes the Screen module. This is where the Html of the page is
 generated. <strong>It is entirely possible to call external code here.</strong> For
 example, you can call an EJB to provide you some business data which is then
 transformed using a tool such as <a
-href="http://xml.apache.org/cocoon/">Cocoon</a> to render the business data
+href="http://cocoon.apache.org/">Cocoon</a> to render the business data
 into HTML which is then transfered to the client.
 </p>
 
