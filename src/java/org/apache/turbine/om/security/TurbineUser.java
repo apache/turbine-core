@@ -126,7 +126,7 @@ public class TurbineUser extends SecurityObject implements User
         {
             return ((Integer) getTemp(User.SESSION_ACCESS_COUNTER)).intValue();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return 0;
         }
@@ -143,7 +143,7 @@ public class TurbineUser extends SecurityObject implements User
         {
             return ((Integer) getPerm(User.ACCESS_COUNTER)).intValue();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return 0;
         }
@@ -168,7 +168,7 @@ public class TurbineUser extends SecurityObject implements User
      */
     public java.util.Date getLastAccessDate()
     {
-        if(lastAccessDate == null)
+        if (lastAccessDate == null)
         {
             setLastAccessDate();
         }
@@ -225,7 +225,7 @@ public class TurbineUser extends SecurityObject implements User
                 val = def;
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             val = def;
         }
@@ -279,7 +279,7 @@ public class TurbineUser extends SecurityObject implements User
             }
 
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             val = def;
         }
@@ -313,7 +313,7 @@ public class TurbineUser extends SecurityObject implements User
                 tmp = null;
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
         }
         return tmp;
@@ -330,10 +330,10 @@ public class TurbineUser extends SecurityObject implements User
         try
         {
             tmp = (String) getPerm(User.LAST_NAME);
-            if(tmp.length() == 0)
+            if (tmp.length() == 0)
                 tmp = null;
         }
-        catch(Exception e)
+        catch (Exception e)
         {
         }
         return tmp;
@@ -600,7 +600,7 @@ public class TurbineUser extends SecurityObject implements User
     public void setConfirmed(String value)
     {
         String val = "";
-        if(value != null)
+        if (value != null)
         {
             val = value;
         }
@@ -666,7 +666,7 @@ public class TurbineUser extends SecurityObject implements User
     public void save()
             throws Exception
     {
-        if(TurbineSecurity.accountExists(this))
+        if (TurbineSecurity.accountExists(this))
         {
             TurbineSecurity.saveUser(this);
         }

@@ -97,7 +97,7 @@ public class TurbineRole extends SecurityObject implements Role
      * Returns the set of Permissions associated with this Role.
      *
      * @return A PermissionSet.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public PermissionSet getPermissions()
             throws Exception
