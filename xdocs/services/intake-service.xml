@@ -907,6 +907,8 @@ this, the default is "null".
 if the user does not enter anything. Without the emptyValue parameter, intake
 would assign the null value to the bean field.</p>
 
+</section>
+
  </body>
 
 </document>
