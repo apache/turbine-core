@@ -91,7 +91,7 @@ public abstract class VelocityActionEvent extends ActionEvent
             = new Class [] { RunData.class, Context.class };
 
     /** Indicates whether or not this module has been initialized. */
-	protected boolean initialized = false; 
+    protected boolean initialized = false; 
 
     /**
      * You need to implement this in your classes that extend this
@@ -108,8 +108,8 @@ public abstract class VelocityActionEvent extends ActionEvent
      * 
      * @throws Exception a generic exception.
      */
-	protected abstract void initialize()
-		throws Exception;
+    protected abstract void initialize()
+        throws Exception;
 
     /**
      * This overrides the default Action.perform() to execute the
@@ -124,10 +124,10 @@ public abstract class VelocityActionEvent extends ActionEvent
     {
         try
         {
-        	if(!initialized)
-        	{
-        		initialize();
-        	}
+            if (!initialized)
+            {
+                initialize();
+            }
             executeEvents(data, TurbineVelocity.getContext(data));
         }
         catch (NoSuchMethodException e)
