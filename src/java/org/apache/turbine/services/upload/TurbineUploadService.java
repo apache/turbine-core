@@ -62,8 +62,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.upload.FileItem;
-import org.apache.turbine.util.upload.MultipartStream;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.MultipartStream;
+import org.apache.commons.fileupload.DefaultFileItem;
 
 /**
  * <p> This class is an implementation of {@link UploadService}.
@@ -126,7 +127,7 @@ public class TurbineUploadService
         {
             byte[] boundary = contentType.substring(
                                 contentType.indexOf("boundary=")+9).getBytes();
-            InputStream input = (InputStream)req.getInputStream();
+            InputStream input = req.getInputStream();
 
             MultipartStream multi = new MultipartStream(input, boundary);
             boolean nextPart = multi.skipPreamble();
@@ -288,10 +289,10 @@ public class TurbineUploadService
                                    Map headers,
                                    int requestSize )
     {
-        return FileItem.newInstance(path,
-                                    getFileName(headers),
-                                    getHeader(headers, CONTENT_TYPE),
-                                    requestSize);
+
+        return DefaultFileItem.newInstance(path, getFileName(headers),
+                getHeader(headers, CONTENT_TYPE), requestSize,
+                getSizeThreshold());
     }
 
     /**
