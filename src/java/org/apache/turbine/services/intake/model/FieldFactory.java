@@ -145,6 +145,15 @@ public abstract class FieldFactory
                 }
             }
                        );
+        fieldCtors.put("float", new FieldFactory.FieldCtor()
+            {
+                public Field getInstance(XmlField f, Group g)
+                    throws Exception
+                {
+                    return new FloatField(f, g);
+                }
+            }
+                       );
         return fieldCtors;
     }
 
