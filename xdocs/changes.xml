@@ -176,6 +176,12 @@ Changes between Turbine 2.3 and 2.4.
 <p>
   <ul>
   	<li>
+  	  Removed dependency on deprecated Log4jFactory in favor of Log4jLogger.
+  	</li>  	
+  	<li>
+  	  Removed deprecated ECS Layouts.
+  	</li>    	
+  	<li>
   	  Replaced existing Maven plugin with Hennings' META: Maven Environment for 
   	  Turbine Applications plugin.
   	</li>  
