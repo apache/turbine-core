@@ -65,29 +65,38 @@ package org.apache.turbine.util.uri;
 public interface URIConstants
 {
     /** HTTP protocol. */
-    static final String HTTP = "http";
+    String HTTP = "http";
 
     /** HTTPS protocol. */
-    static final String HTTPS = "https";
+    String HTTPS = "https";
 
     /** HTTP Default Port */
-    static final int HTTP_PORT = 80;
+    int HTTP_PORT = 80;
 
     /** HTTPS Default Port */
-    static final int HTTPS_PORT = 443;
+    int HTTPS_PORT = 443;
+
+    /** FTP Default Control Port */
+    int FTP_PORT = 20;
 
     /** Path Info Data Marker */
-    static final int PATH_INFO = 0;
+    int PATH_INFO = 0;
 
     /** Query Data Marker */
-    static final int QUERY_DATA = 1;
+    int QUERY_DATA = 1;
+
+    /** 
+     * The part of the URI which separates the protocol indicator (i.e. the
+     * scheme) from the rest of the URI. 
+     */
+    String URI_SCHEME_SEPARATOR = "://";
 
     /** CGI parameter for action name */
-    static final String CGI_ACTION_PARAM = "action";
+    String CGI_ACTION_PARAM = "action";
 
     /** CGI parameter for screen name */
-    static final String CGI_SCREEN_PARAM = "screen";
+    String CGI_SCREEN_PARAM = "screen";
 
     /** CGI parameter for template name */
-    static final String CGI_TEMPLATE_PARAM = "template";
+    String CGI_TEMPLATE_PARAM = "template";
 }
