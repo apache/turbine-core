@@ -22,7 +22,7 @@
   <name>jakarta-turbine-2</name>
   <groupId>turbine</groupId>
   <id>turbine</id>
-  <currentVersion>2.4-M1</currentVersion>
+  <currentVersion>2.4-SNAPSHOT</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
