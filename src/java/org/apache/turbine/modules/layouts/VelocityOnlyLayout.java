@@ -79,6 +79,26 @@ import org.apache.velocity.context.Context;
  * screens and navigations there should be relatively few reasons to
  * subclass this Layout.
  *
+ * To get the same functionality as with VelocityECSLayout, you can
+ * use two supplied VelocityMacros, TurbineHtmlHead and TurbineHtmlBodyAttributes
+ * in your templates. These are used to put HtmlPageAttributes into a page
+ * before rendering.
+ *
+ * Use these macros should be used in the Layout template like this:
+ *
+ * ... set things like style sheets, scripts here.
+ * &lt;html&gt;
+ * #TurbineHtmlHead()
+ * &lt;body #TurbineHtmlBodyAttributes() &gt;
+ *  .... your body information
+ * &lt;/body&gt;
+ * &lt;/html&gt;
+ *
+ * As the layout template is rendered _after_ the screen template, you
+ * can of course, add information to the $page tool in your screen
+ * template. This will be added correctly to the &lt;head&gt;...&lt;/head&gt; and
+ * &lt;body&gt; tags.
+ *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>

@@ -27,6 +27,10 @@
       file="${maven.src.dir}/dtd/intake.dtd"
       todir="${maven.build.dest}/org/apache/turbine/services/intake/transform"
     />
+    <copy
+      file="${maven.src.dir}/macros/TurbineMacros.vm"
+      todir="${maven.build.dest}/macros"
+    />
   </postGoal>
 
   <!-- ================================================================== -->
