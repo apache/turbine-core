@@ -576,12 +576,31 @@ book.save();
                 transaction.
             </p>
             <p>
-                <b>
-                    And the solution is...
-                </b>
+                There are a few solutions to this problem.  One would be to fix the torque
+                template responsible for generating the code.  Another would be to implement
+                the methods yourself.  Before exploring either of these options, you need to
+                ask yourself if this problem will even affect you.  If not, don't worry about
+                it.
             </p>
             <p>
-                The solution involves altering a torque template so that the code that
+                Implementing the methods yourself might be the simpliest route for someone
+                new to Turbine and Torque.  This simply involves overriding the addBook()
+                method in the example above with the two lines shown previously.  Of course,
+                You would have to do this for each and every one that Torque generates
+                for you.
+            </p>
+            <p>
+                The same idea applies to the save(dbConn) method.  Simply override that method
+                in your ExtendedTurbineUser class (or whatever you called your class) to perform
+                the operation correctly.  You can get sample code from one of the other classes
+                that Torque generated for you.
+            </p>
+            <p>
+                If you want Torque to generate to code for you, you will have to modify the
+                Object.vm template that Torque uses.
+            </p>
+            <p>
+                The other solution involves altering a torque template so that the code that
                 generates the aspects of the save() method that handle related tables is
                 allowed to execute for the TurbineUserAlias class.  You need to apply the
                 following patch (most likely to the version of Object.vm copied to the
@@ -629,17 +648,26 @@ ${table.JavaName}Peer.doUpdate(($table.JavaName)this, dbCon);
 ]]>
         </source>
             <p>
-                (Note: You will need to manually remove the line wrapping from the above
-                patch).
+                You will need to manually remove the line wrapping from the above
+                patch.  You should also be aware that this patch is old.  It may or may not
+                apply correctly.
             </p>
             <p>
                 Notice how although you can go <code>user.save(dbCon);</code> the
                 TurbineUser record will not be part of the transaction.
             </p>
             <p>
-                It should be noted that I am currently using the code produced by this
-                patched version quite successfully in a production system.
+                I would suggest that you override the methods that do not
+                get generated correctly in your ExtendedTurbineUser class.  Do so ONLY
+                if this problem will affect you.
             </p>
+            <p>
+                The real solution to this problem is in modifing Turbine in such a way to
+                allow Torque to generate the TurbineUser object.  This would elevate the
+                need to extend TurbineUser altogether.  This solution is one not so easily
+                implemented.
+            </p>
+
     </section>
 
   </body>
