@@ -54,7 +54,12 @@ package org.apache.turbine.modules.layouts;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.ecs.ConcreteElement;
+
+import org.apache.turbine.TurbineConstants;
 
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.ScreenLoader;
@@ -69,10 +74,10 @@ import org.apache.turbine.util.template.TemplateNavigation;
 import org.apache.velocity.context.Context;
 
 /**
- * This Layout module allows Velocity templates
- * to be used as layouts.  Since dynamic content is supposed to be primarily
- * located in screens and navigations there should be relatively few reasons
- * to subclass this Layout.
+ * This Layout module allows Velocity templates to be used as layouts.
+ * Since dynamic content is supposed to be primarily located in
+ * screens and navigations there should be relatively few reasons to
+ * subclass this Layout.
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
@@ -82,31 +87,43 @@ import org.apache.velocity.context.Context;
 public class VelocityOnlyLayout
     extends Layout
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(VelocityOnlyLayout.class);
+
+    /** The prefix for lookup up layout pages */
+    private String prefix = TurbineConstants.LAYOUT_PREFIX + "/";
+
     /**
-     * Method called by LayoutLoader.
+     * Build the layout.  Also sets the ContentType and Locale headers
+     * of the HttpServletResponse object.
      *
-     * @param data RunData
-     * @throws Exception generic exception
+     * @param data Turbine information.
+     * @exception Exception a generic exception.
      */
     public void doBuild(RunData data)
         throws Exception
     {
-        // Get the context needed by Velocity
+        // Get the context needed by Velocity.
         Context context = (Context) data.getTemplateInfo()
             .getTemplateContext(VelocityService.CONTEXT);
 
+        String screenName = data.getScreen();
+
+        log.debug("Loading Screen " + screenName);
+
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.
-        ConcreteElement results = ScreenLoader.getInstance()
-            .eval(data, data.getScreen());
+        ConcreteElement results =
+            ScreenLoader.getInstance().eval(data, screenName);
 
         String returnValue = (results == null) ? "" : results.toString();
 
         // variable for the screen in the layout template
-        context.put("screen_placeholder", returnValue);
+        context.put(TurbineConstants.SCREEN_PLACEHOLDER, returnValue);
 
         // variable to reference the navigation screen in the layout template
-        context.put("navigation", new TemplateNavigation(data));
+        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER, 
+                    new TemplateNavigation(data));
 
         // Grab the layout template set in the VelocityPage.
         // If null, then use the default layout template
@@ -117,8 +134,10 @@ public class VelocityOnlyLayout
         data.getResponse().setLocale(data.getLocale());
         data.getResponse().setContentType(data.getContentType());
 
+        log.debug("Now trying to render layout " + templateName);
+
         // Finally, generate the layout template and send it to the browser
         data.getOut().print(TurbineVelocity
-                .handleRequest(context, "layouts" + templateName));
+                .handleRequest(context, prefix + templateName));
     }
 }

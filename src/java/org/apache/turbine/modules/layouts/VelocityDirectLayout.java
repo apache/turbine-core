@@ -54,7 +54,10 @@ package org.apache.turbine.modules.layouts;
  * <http://www.apache.org/>.
  */
 
-// Turbine Classes
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.apache.turbine.TurbineConstants;
 
 import org.apache.turbine.modules.Layout;
 
@@ -71,43 +74,59 @@ import org.apache.velocity.context.Context;
 /**
  * This Layout module allows Velocity templates
  * to be used as layouts. It will stream directly the output of
- * the layout, naviagtions and templates to the output writer.
+ * the layout and navigation templates to the output writer without
+ * using a screen. Use this if you have a large page to output
+ * and won't buffer it in the memory.
  *
  * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
-public class VelocityDirectLayout extends Layout
+public class VelocityDirectLayout
+    extends Layout
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(VelocityDirectLayout.class);
+
+    /** The prefix for lookup up layout pages */
+    private String prefix = TurbineConstants.LAYOUT_PREFIX + "/";
+
     /**
      * Method called by LayoutLoader.
      *
-     * @param data RunData
-     * @throws Exception generic exception
+     * @param data Turbine information.
+     * @exception Exception a generic exception.
      */
-    public void doBuild(RunData data) throws Exception
+    public void doBuild(RunData data)
+        throws Exception
     {
-        // Get the context needed by Velocity
+        // Get the context needed by Velocity.
         Context context = (Context) data.getTemplateInfo()
             .getTemplateContext(VelocityService.CONTEXT);
 
         // variable for the screen in the layout template
-        context.put("screen_placeholder", new TemplateScreen(data));
+        context.put(TurbineConstants.SCREEN_PLACEHOLDER, 
+                    new TemplateScreen(data));
 
         // variable to reference the navigation screen in the layout template
-        context.put("navigation", new TemplateNavigation(data));
+        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER, 
+                    new TemplateNavigation(data));
 
         // Grab the layout template set in the VelocityPage.
         // If null, then use the default layout template
-        // (done by the TemplateInfo object )
+        // (done by the TemplateInfo object)
         String templateName = data.getTemplateInfo().getLayoutTemplate();
 
         // Set the locale and content type
         data.getResponse().setLocale(data.getLocale());
         data.getResponse().setContentType(data.getContentType());
 
+        log.debug("Now trying to render layout " + templateName);
+
         // Finally, generate the layout template and send it to the browser
         TurbineVelocity.handleRequest(context,
-                "layouts" + templateName, data.getOut());
+                prefix + templateName, data.getOut());
     }
 }

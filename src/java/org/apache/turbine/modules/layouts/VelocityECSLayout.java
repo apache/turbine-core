@@ -59,6 +59,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.apache.ecs.ConcreteElement;
 
+import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.ScreenLoader;
 
@@ -77,11 +79,13 @@ import org.apache.velocity.context.Context;
  * screens and navigations there should be relatively few reasons to
  * subclass this Layout.
  *
+ * This class uses ECS to render the layout.
+ *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
- * @deprecated you should use velocity
+ * @deprecated you should use VelocityOnlyLayout
  */
 public class VelocityECSLayout
     extends Layout
@@ -89,13 +93,23 @@ public class VelocityECSLayout
     /** Logging */
     private static Log log = LogFactory.getLog(VelocityECSLayout.class);
 
+    /** The prefix for lookup up layout pages */
+    private String prefix = TurbineConstants.LAYOUT_PREFIX + "/";
+
+    /** Warn only once */
+    private static boolean hasWarned = false;
+
     /**
-     * default constructor
+     * C'tor warns once about deprecation.
      */
     public VelocityECSLayout()
     {
-        log.warn("The VelocityECSLayout is deprecated. "
-                + "Please switch to VelocityOnlyLayout.");
+        if (!hasWarned)
+        {
+            log.warn("The VelocityECSLayout is deprecated. "
+                     + "Please switch to VelocityOnlyLayout.");
+            hasWarned = true;
+        }
     }
 
     /**
@@ -116,27 +130,30 @@ public class VelocityECSLayout
 
         log.debug("Loading Screen " + screenName);
 
-        /*
-         * First, generate the screen and put it in the context so we
-         * can grab it the layout template.
-         */
+        // First, generate the screen and put it in the context so
+        // we can grab it the layout template.
         ConcreteElement results =
             ScreenLoader.getInstance().eval(data, screenName);
 
         String returnValue = (results == null) ? "" : results.toString();
 
-        // Variable for the screen in the layout template.
-        context.put("screen_placeholder", returnValue);
+        // variable for the screen in the layout template
+        context.put(TurbineConstants.SCREEN_PLACEHOLDER, returnValue);
 
-        // Variable to reference the navigation screen in the layout template.
-        context.put("navigation", new TemplateNavigation(data));
+        // variable to reference the navigation screen in the layout template
+        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER, 
+                    new TemplateNavigation(data));
 
-        // Grab the layout template set in the TemplatePage.
+        // Grab the layout template set in the VelocityPage.
+        // If null, then use the default layout template
+        // (done by the TemplateInfo object)
         String templateName = data.getTemplateInfo().getLayoutTemplate();
+
+        log.debug("Now trying to render layout " + templateName);
 
         // Finally, generate the layout template and add it to the body of the
         // Document in the RunData.
-        data.getPage().getBody().addElement(TurbineVelocity.handleRequest(
-                context, "layouts" + templateName));
+        data.getPage().getBody().addElement(TurbineVelocity
+                                            .handleRequest(context, prefix +  templateName));
     }
 }

@@ -54,17 +54,16 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
-// Turbine Utility Classes
-
 import org.apache.turbine.util.RunData;
 
 /**
- * This is an interface that defines what a Layout module is.
+ * This is the base class that defines what a Layout module is.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
-public abstract class Layout extends Assembler
+public abstract class Layout
+    extends Assembler
 {
     /**
      * A subclass must override this method to build itself.
@@ -76,7 +75,7 @@ public abstract class Layout extends Assembler
      * @exception Exception a generic exception.
      */
     protected abstract void doBuild(RunData data)
-            throws Exception;
+        throws Exception;
 
     /**
      * Subclasses can override this method to add additional
@@ -87,7 +86,7 @@ public abstract class Layout extends Assembler
      * @exception Exception a generic exception.
      */
     protected void build(RunData data)
-            throws Exception
+        throws Exception
     {
         doBuild(data);
     }
