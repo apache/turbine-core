@@ -145,15 +145,20 @@ public abstract class BaseTemplateEngineService extends TurbineBaseService
          * throw an exception here if these things aren't set
          * up correctly.
          */
-        configuration.put(DEFAULT_PAGE, config.getString(DEFAULT_PAGE));
-        configuration.put(DEFAULT_SCREEN, config.getString(DEFAULT_SCREEN));
-        configuration.put(DEFAULT_LAYOUT, config.getString(DEFAULT_LAYOUT));
-        configuration.put(DEFAULT_NAVIGATION,
-                          config.getString(DEFAULT_NAVIGATION));
-        configuration.put(DEFAULT_ERROR_SCREEN,
-                          config.getString(DEFAULT_ERROR_SCREEN));
-        configuration.put(DEFAULT_LAYOUT_TEMPLATE,
-                          config.getString(DEFAULT_LAYOUT_TEMPLATE));
+
+        String [] copyParams = {
+            DEFAULT_PAGE,
+            DEFAULT_SCREEN,
+            DEFAULT_LAYOUT,
+            DEFAULT_NAVIGATION,
+            DEFAULT_ERROR_SCREEN,
+            DEFAULT_LAYOUT_TEMPLATE
+        };
+        
+        for(int i = 0; i < copyParams.length; i++)
+        {
+            configuration.put(copyParams[i], config.getString(copyParams[i]));
+        }
     }
 
     /**
