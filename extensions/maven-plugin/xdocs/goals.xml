@@ -13,7 +13,7 @@
     <goals>
       <goal>
         <name>turbine:setup</name>
-        <description>Setup a new Turbine web application</description>
+        <description><a href="using_meta.html#Setting_up_your_application_for_the_first_time">Setup a new Turbine web application</a></description>
       </goal>
       <goal>
         <name>turbine:deploy</name>
@@ -72,7 +72,7 @@ date.
         <description>
 <b>preGoal</b> Copies the schema files from src/schema into the build tree and
 replaces properties on the fly. As torque:init is run before every
-other torque task, this preGoal ensures that all torque tasks work on
+other torque goal, this preGoal ensures that all torque goals work on
 the latest schema file versions.
         </description>
       </goal>
