@@ -55,25 +55,19 @@ package org.apache.turbine.util.velocity;
  */
 
 import java.net.URL;
-
 import java.util.Hashtable;
-
-import javax.activation.DataSource;
-import javax.activation.URLDataSource;
+import javax.mail.MessagingException;
 
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.HtmlEmail;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.services.velocity.TurbineVelocity;
-
 import org.apache.turbine.util.RunData;
 
 import org.apache.velocity.context.Context;
@@ -113,13 +107,16 @@ import org.apache.velocity.context.Context;
  * <p>This class is basically a conversion of the WebMacroHtmlEmail
  * written by Regis Koenig
  *
+ * <p>You can turn on debugging for the JavaMail API by calling
+ * setDebug(true).  The debugging messages will be written to System.out.
+ *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:A.Schild@aarboard.ch">Andre Schild</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class VelocityHtmlEmail
+public class VelocityHtmlEmail extends HtmlEmail
 {
     /** Logging */
     private static Log log = LogFactory.getLog(VelocityHtmlEmail.class);
@@ -142,108 +139,29 @@ public class VelocityHtmlEmail
     /** The map of embedded files. */
     private Hashtable embmap = null;
 
-    /** The HtmlEmail to send */
-    private HtmlEmail htmlEmail = null;
-
-    /** The to name field. */
-    private String toName = null;
-
-    /** The to email field. */
-    private String toEmail = null;
-
-    /** The from name field. */
-    private String fromName = null;
-
-    /** The from email field. */
-    private String fromEmail = null;
-
-    /** The subject of the message. */
-    private String subject = null;
-
     /** Address of outgoing mail server */
     private String mailServer;
 
     /**
-     * Constructor, sets the context object from
-     * the passed RunData object
+     * Constructor, sets the context object from the passed RunData object
      *
      * @param data A Turbine RunData object.
-     * @exception VelocityEmailException
      */
     public VelocityHtmlEmail(RunData data)
-            throws VelocityEmailException
     {
-        try
-        {
-            this.context = TurbineVelocity.getContext(data);
-            embmap = new Hashtable();
-            htmlEmail = new HtmlEmail();
-        }
-        catch (Exception e)
-        {
-            throw new VelocityEmailException(e);
-        }
+        this.context = TurbineVelocity.getContext(data);
+        embmap = new Hashtable();
     }
 
     /**
      * Constructor, sets the context object.
      *
      * @param context A Velocity context object.
-     * @exception VelocityEmailException
      */
     public VelocityHtmlEmail(Context context)
-            throws VelocityEmailException
     {
-        try
-        {
-            this.context = context;
-            embmap = new Hashtable();
-            htmlEmail = new HtmlEmail();
-        }
-        catch (Exception e)
-        {
-            throw new VelocityEmailException(e);
-        }
-    }
-
-    /**
-     * To: name, email
-     *
-     * @param to A String with the TO name.
-     * @param email A String with the TO email.
-     * @return A VelocityEmail (self).
-     */
-    public VelocityHtmlEmail setTo(String to, String email)
-    {
-        this.toName = to;
-        this.toEmail = email;
-        return (this);
-    }
-
-    /**
-     * From: name, email.
-     *
-     * @param from A String with the FROM name.
-     * @param email A String with the FROM email.
-     * @return A VelocityEmail (self).
-     */
-    public VelocityHtmlEmail setFrom(String from, String email)
-    {
-        this.fromName = from;
-        this.fromEmail = email;
-        return (this);
-    }
-
-    /**
-     * Subject.
-     *
-     * @param subject A String with the subject.
-     * @return A VelocityEmail (self).
-     */
-    public VelocityHtmlEmail setSubject(String subject)
-    {
-        this.subject = subject;
-        return (this);
+        this.context = context;
+        embmap = new Hashtable();
     }
 
     /**
@@ -297,7 +215,7 @@ public class VelocityHtmlEmail
     public String getMailServer()
     {
         return StringUtils.isNotEmpty(mailServer) ? mailServer
-            : Turbine.getConfiguration().getString(
+                : Turbine.getConfiguration().getString(
                 TurbineConstants.MAIL_SERVER_KEY,
                 TurbineConstants.MAIL_SERVER_DEFAULT);
     }
@@ -305,47 +223,31 @@ public class VelocityHtmlEmail
     /**
      * Actually send the mail.
      *
-     * @exception VelocityEmailException thrown if mail cannot be sent.
+     * @exception MessagingException thrown if mail cannot be sent.
      */
-    public void send()
-            throws VelocityEmailException
+    public void send() throws MessagingException
     {
+        context.put("mail", this);
+
         try
         {
-            context.put("mail", this);
-
-            String htmlbody = "";
-            String textbody = "";
-
-            // Process the templates.
-            try
+            if (htmlTemplate != null)
             {
-                if (htmlTemplate != null)
-                {
-                    htmlbody = TurbineVelocity.handleRequest(context, htmlTemplate);
-                }
-                if (textTemplate != null)
-                {
-                    textbody = TurbineVelocity.handleRequest(context, textTemplate);
-                }
+                setHtmlMsg(
+                        TurbineVelocity.handleRequest(context, htmlTemplate));
             }
-            catch (Exception e)
+            if (textTemplate != null)
             {
-                throw new VelocityEmailException("Cannot parse template", e);
+                setTextMsg(
+                        TurbineVelocity.handleRequest(context, textTemplate));
             }
-
-            htmlEmail.setFrom(fromEmail, fromName);
-            htmlEmail.addTo(toEmail, toName);
-            htmlEmail.setSubject(subject);
-            htmlEmail.setHtmlMsg(htmlbody);
-            htmlEmail.setTextMsg(textbody);
-            htmlEmail.setHostName(getMailServer());
-            htmlEmail.send();
         }
         catch (Exception e)
         {
-            throw new VelocityEmailException(e);
+            throw new MessagingException("Cannot parse velocity template", e);
         }
+        setHostName(getMailServer());
+        super.send();
     }
 
     /**
@@ -378,8 +280,7 @@ public class VelocityHtmlEmail
         try
         {
             URL url = new URL(surl);
-            cid = htmlEmail.embed(url, name);
-            embmap.put(name, cid);
+            cid = embed(url, name);
         }
         catch (Exception e)
         {
@@ -399,198 +300,6 @@ public class VelocityHtmlEmail
     {
         String cid = (String) embmap.get(filename);
         return "cid:" + cid;
-    }
-
-    /***
-     * Add a recipient TO to the email.
-     *
-     * @param email A String.
-     * @param name A String.
-     * @return An Email.
-     * @exception VelocityEmailException
-     */
-    public VelocityHtmlEmail addTo(String email, String name)
-            throws VelocityEmailException
-    {
-        try
-        {
-            htmlEmail.addTo(email, name);
-        }
-        catch (Exception e)
-        {
-            throw new VelocityEmailException("cannot add to", e);
-        }
-        return this;
-    }
-
-    /***
-     * Add a recipient CC to the email.
-     *
-     * @param email A String.
-     * @param name A String.
-     * @return An Email.
-     * @exception VelocityEmailException
-     */
-    public VelocityHtmlEmail addCc(String email, String name)
-            throws VelocityEmailException
-    {
-
-        try
-        {
-            htmlEmail.addCc(email, name);
-        }
-        catch (Exception e)
-        {
-            throw new VelocityEmailException("cannot add cc", e);
-        }
-
-        return this;
-    }
-
-    /***
-     * Add a blind BCC recipient to the email.
-     *
-     * @param email A String.
-     * @param name A String.
-     * @return An Email.
-     * @exception VelocityEmailException
-     */
-    public VelocityHtmlEmail addBcc(String email, String name)
-            throws VelocityEmailException
-    {
-        try
-        {
-            htmlEmail.addBcc(email, name);
-        }
-        catch (Exception e)
-        {
-            throw new VelocityEmailException("cannot add bcc", e);
-        }
-
-        return this;
-    }
-
-    /***
-     * Add a reply to address to the email.
-     *
-     * @param email A String.
-     * @param name A String.
-     * @return An Email.
-     * @exception VelocityEmailException
-     */
-    public VelocityHtmlEmail addReplyTo(String email, String name)
-            throws VelocityEmailException
-    {
-        try
-        {
-            htmlEmail.addReplyTo(email, name);
-        }
-        catch (Exception e)
-        {
-            throw new VelocityEmailException("cannot add replyTo", e);
-        }
-        return this;
-    }
-
-    /***
-     * Attach an EmailAttachement.
-     *
-     * @param attachment An EmailAttachment.
-     * @return A MultiPartEmail.
-     * @exception VelocityEmailException
-     */
-    public VelocityHtmlEmail attach(EmailAttachment attachment)
-            throws VelocityEmailException
-    {
-        try
-        {
-            htmlEmail.attach(attachment);
-            return this;
-        }
-        catch (Exception e)
-        {
-            throw new VelocityEmailException("Could not attach file", e);
-        }
-    }
-
-    /***
-     * Attach a file located by its URL.  The disposition of the file
-     * is set to mixed.
-     *
-     * @param url The URL of the file (may be any valid URL).
-     * @param name The name field for the attachment.
-     * @param description A description for the attachment.
-     * @return A MultiPartEmail.
-     * @exception VelocityEmailException
-     */
-    public VelocityHtmlEmail attach(URL url, String name, String description)
-            throws VelocityEmailException
-    {
-        return attach(url, name, description, EmailAttachment.ATTACHMENT);
-    }
-
-    /***
-     * Attach a file located by its URL.
-     *
-     * @param url The URL of the file (may be any valid URL).
-     * @param name The name field for the attachment.
-     * @param description A description for the attachment.
-     * @param disposition Either mixed or inline.
-     * @return A MultiPartEmail.
-     * @exception VelocityEmailException
-     */
-    public VelocityHtmlEmail attach(URL url,
-                                    String name,
-                                    String description,
-                                    String disposition)
-            throws VelocityEmailException
-    {
-        return attach(new URLDataSource(url), name, description, disposition);
-    }
-
-    /***
-     * Attach a file specified as a DataSource interface.
-     *
-     * @param ds A DataSource interface for the file.
-     * @param name The name field for the attachment.
-     * @param description A description for the attachment.
-     * @return A MultiPartEmail.
-     * @exception VelocityEmailException
-     */
-    public VelocityHtmlEmail attach(DataSource ds,
-                                    String name,
-                                    String description)
-            throws VelocityEmailException
-    {
-        return attach(ds, name, description, EmailAttachment.ATTACHMENT);
-    }
-
-    /***
-     * Attach a file specified as a DataSource interface.
-     *
-     * @param ds A DataSource interface for the file.
-     * @param name The name field for the attachment.
-     * @param description A description for the attachement.
-     * @param disposition Either mixed or inline.
-     * @return A MultiPartEmail.
-     * @exception VelocityEmailException
-     */
-    public VelocityHtmlEmail attach(DataSource ds,
-                                    String name,
-                                    String description,
-                                    String disposition)
-            throws VelocityEmailException
-    {
-        try
-        {
-            htmlEmail.attach(ds, name, description, disposition);
-        }
-        catch (Exception e)
-        {
-            throw new VelocityEmailException("Could attach " + name, e);
-        }
-
-        return this;
     }
 
 }
