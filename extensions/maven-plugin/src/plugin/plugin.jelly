@@ -300,10 +300,10 @@
     description="Generate a Turbine based Web application (war)"
     prereqs="turbine:check-runtime-environment,java:compile, war:webapp">
 
-    <j:set var="webapp.build" value="target/${pom.id}"/>
-    <j:set var="webapp.build.lib" value="target/${pom.id}/WEB-INF/lib"/>
-    <j:set var="webapp.build.classes" value="target/${pom.id}/WEB-INF/classes"/>
-    <j:set var="webapp.build.webinf" value="target/${pom.id}/WEB-INF"/>
+    <j:set var="webapp.build" value="target/${pom.artifactId}"/>
+    <j:set var="webapp.build.lib" value="target/${pom.artifactId}/WEB-INF/lib"/>
+    <j:set var="webapp.build.classes" value="target/${pom.artifactId}/WEB-INF/classes"/>
+    <j:set var="webapp.build.webinf" value="target/${pom.artifactId}/WEB-INF"/>
 
     <delete file="${maven.build.dir}/${pom.artifactId}.war" />
 
@@ -392,7 +392,7 @@
     <delete file="${maven.build.dir}/${pom.artifactId}.war" />
 
     <j:set var="turbine.target.dir" scope="parent"
-             value="${maven.appserver.home}/webapps/${pom.id}" />
+             value="${maven.appserver.home}/webapps/${pom.artifactId}" />
 
     <echo>Installing to Appserver Directory: ${turbine.target.dir}, Inplace: ${turbine.plugin.mode}</echo>
 
@@ -426,7 +426,7 @@
       <j:when test="${context.getVariable('turbine.plugin.deploy.config.skip') == null || !context.getVariable('turbine.plugin.deploy.config.skip').equalsIgnoreCase('true')}">
         <copy todir="${turbine.target.dir}/WEB-INF/conf" flatten="true" includeEmptyDirs="no">
          <fileset dir="${turbine.plugin.src.conf}">
-            <exclude name="${pom.id}-web.xml"/>
+            <exclude name="${pom.artifactId}-web.xml"/>
           </fileset>
         </copy>
       </j:when>
@@ -672,16 +672,16 @@
   <!--                                                                          -->
   <!-- ======================================================================== -->
   <goal name="turbine:war-webapp">
-    <j:set var="webapp.build" value="target/${pom.id}"/>
-    <j:set var="webapp.build.lib" value="target/${pom.id}/WEB-INF/lib"/>
-    <j:set var="webapp.build.classes" value="target/${pom.id}/WEB-INF/classes"/>
-    <j:set var="webapp.build.webinf" value="target/${pom.id}/WEB-INF"/>
+    <j:set var="webapp.build" value="target/${pom.artifactId}"/>
+    <j:set var="webapp.build.lib" value="target/${pom.artifactId}/WEB-INF/lib"/>
+    <j:set var="webapp.build.classes" value="target/${pom.artifactId}/WEB-INF/classes"/>
+    <j:set var="webapp.build.webinf" value="target/${pom.artifactId}/WEB-INF"/>
 
     <j:choose>
       <j:when test="${context.getVariable('turbine.plugin.deploy.config.skip') == null || !context.getVariable('turbine.plugin.deploy.config.skip').equalsIgnoreCase('true')}">
         <copy todir="${webapp.build.webinf}/conf" flatten="true" includeEmptyDirs="no">
           <fileset dir="${turbine.plugin.src.conf}">
-            <exclude name="**/${pom.id}-web.xml"/>
+            <exclude name="**/${pom.artifactId}-web.xml"/>
           </fileset>
         </copy>
       </j:when>
@@ -1110,7 +1110,7 @@
       <filter token="DATABASE_PACKAGE" value="${turbine.app.om.package}"/>
       <copy filtering="yes" overwrite="yes"
         file="${turbine.plugin.src.schema}/id-table-schema.xml"
-        tofile="${torque.schema.dir}/${pom.id}-id-table-schema.xml"/>
+        tofile="${torque.schema.dir}/${pom.artifactId}-id-table-schema.xml"/>
 
       <!-- If we have different data source for Application and Security, we must
            also set up two ID Table XML files 
@@ -1300,7 +1300,7 @@
     <attainGoal name="torque:sql"/>
     <attainGoal name="torque:id-table-init-sql"/>
 
-    <u:available file="${turbine.plugin.src.schema}/${pom.id}-data.xml">
+    <u:available file="${turbine.plugin.src.schema}/${pom.artifactId}-data.xml">
       <attainGoal name="torque:datasql"/>
     </u:available>
 
