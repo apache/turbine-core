@@ -54,15 +54,16 @@ package org.apache.turbine.services.freemarker;
  * <http://www.apache.org/>.
  */
 
-import java.util.*;
-import java.io.*;
-import org.apache.turbine.Turbine;
-import org.apache.turbine.modules.*;
-import org.apache.turbine.util.*;
-import org.apache.ecs.*;
-import org.apache.turbine.services.*;
-import org.apache.turbine.services.template.*;
-import freemarker.template.*;
+import freemarker.template.SimpleScalar;
+import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateModelException;
+
+import java.util.List;
+
+import org.apache.turbine.util.RunData;
+
+import org.apache.turbine.util.template.TemplateInfo;
 
 /**
  * Returns output of a Navigation module.  Extension of FreeMarker.

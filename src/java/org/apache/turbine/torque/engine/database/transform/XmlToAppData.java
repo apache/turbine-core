@@ -54,15 +54,37 @@ package org.apache.turbine.torque.engine.database.transform;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.services.db.TurbineDB;
-import org.apache.turbine.torque.engine.database.model.*;
-import org.xml.sax.*;
-import org.xml.sax.helpers.DefaultHandler;
-
-import javax.xml.parsers.SAXParserFactory;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.Reader;
+
 import java.util.List;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.turbine.services.db.TurbineDB;
+
+import org.apache.turbine.torque.engine.database.model.AppData;
+import org.apache.turbine.torque.engine.database.model.Column;
+import org.apache.turbine.torque.engine.database.model.Database;
+import org.apache.turbine.torque.engine.database.model.ForeignKey;
+import org.apache.turbine.torque.engine.database.model.IdMethodParameter;
+import org.apache.turbine.torque.engine.database.model.Index;
+import org.apache.turbine.torque.engine.database.model.Inheritance;
+import org.apache.turbine.torque.engine.database.model.Table;
+import org.apache.turbine.torque.engine.database.model.Unique;
+
+import org.xml.sax.AttributeList;
+import org.xml.sax.DocumentHandler;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.Parser;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * A Class that is used to parse an input
