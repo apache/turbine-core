@@ -66,10 +66,10 @@ import org.apache.turbine.util.TurbineConfig;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
-public class FulcrumCacheComponent extends BaseTestCase
+public class FulcrumCacheComponentTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    public FulcrumCacheComponent(String name) throws Exception
+    public FulcrumCacheComponentTest(String name) throws Exception
     {
         super(name);
     }
