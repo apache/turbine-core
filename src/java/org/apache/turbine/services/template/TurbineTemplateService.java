@@ -69,24 +69,23 @@ import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.modules.LayoutLoader;
+import org.apache.turbine.modules.Loader;
 import org.apache.turbine.modules.NavigationLoader;
 import org.apache.turbine.modules.ScreenLoader;
-
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-
+import org.apache.turbine.services.factory.TurbineFactory;
 import org.apache.turbine.services.servlet.TurbineServlet;
-
+import org.apache.turbine.services.template.mapper.TemplateBaseLayoutMapper;
+import org.apache.turbine.services.template.mapper.TemplateBaseMapper;
 import org.apache.turbine.services.template.mapper.TemplateClassMapper;
 import org.apache.turbine.services.template.mapper.TemplateDirectMapper;
 import org.apache.turbine.services.template.mapper.TemplateLayoutMapper;
 import org.apache.turbine.services.template.mapper.TemplateMapper;
 import org.apache.turbine.services.template.mapper.TemplateScreenMapper;
-
 import org.apache.turbine.util.RunData;
-
+import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.uri.URIConstants;
 
 /**
@@ -219,20 +218,38 @@ public class TurbineTemplateService
     /** Represents Page Objects */
     public static final int PAGE_KEY = 0;
 
+    /** Represents Page Objects */
+    public static final String PAGE_NAME = "page";
+
     /** Represents Screen Objects */
     public static final int SCREEN_KEY = 1;
+
+    /** Represents Screen Objects */
+    public static final String SCREEN_NAME = "screen";
 
     /** Represents Layout Objects */
     public static final int LAYOUT_KEY = 2;
 
+    /** Represents Layout Objects */
+    public static final String LAYOUT_NAME = "layout";
+
     /** Represents Navigation Objects */
     public static final int NAVIGATION_KEY = 3;
+
+    /** Represents Navigation Objects */
+    public static final String NAVIGATION_NAME = "navigation";
 
     /** Represents Layout Template Objects */
     public static final int LAYOUT_TEMPLATE_KEY = 4;
 
+    /** Represents Layout Template Objects */
+    public static final String LAYOUT_TEMPLATE_NAME = "layout.template";
+
     /** Represents Screen Template Objects */
     public static final int SCREEN_TEMPLATE_KEY = 5;
+
+    /** Represents Screen Template Objects */
+    public static final String SCREEN_TEMPLATE_NAME = "screen.template";
 
     /** Number of different Template Types that we know of */
     public static final int TEMPLATE_TYPES = 6;
@@ -676,9 +693,11 @@ public class TurbineTemplateService
      * Load and configure the Template mappers for
      * the Template Service.
      *
-     * @param config The current configuration object.
+     * @param conf The current configuration object.
+     * @throws InitializationException A problem occured trying to set up the mappers.
      */
-    private void initTemplateMapper(Configuration config)
+    private void initTemplateMapper(Configuration conf)
+            throws InitializationException
     {
         // Create a registry with the number of Template Types managed by this service.
         // We could use a List object here and extend the number of managed objects
@@ -686,59 +705,102 @@ public class TurbineTemplateService
         // out of the Template Service.
         mapperRegistry = new TemplateMapper [TEMPLATE_TYPES];
 
-        registerMapper(PAGE_KEY,
-            new TemplateDirectMapper(
-                TemplateEngineService.DEFAULT_PAGE,
-                "."));
+        String [] mapperNames = new String [] {
+            PAGE_NAME,SCREEN_NAME, LAYOUT_NAME,
+            NAVIGATION_NAME, LAYOUT_TEMPLATE_NAME, SCREEN_TEMPLATE_NAME
+        };
 
-        registerMapper(SCREEN_KEY,
-            new TemplateClassMapper(
-                useCache,
-                config.getInt(
+        String [] mapperClasses = new String [] {
+            TemplateDirectMapper.class.getName(),
+            TemplateClassMapper.class.getName(),
+            TemplateClassMapper.class.getName(),
+            TemplateClassMapper.class.getName(),
+            TemplateLayoutMapper.class.getName(),
+            TemplateScreenMapper.class.getName()
+        };
+
+        int [] mapperCacheSize = new int [] {
+            0,
+            conf.getInt(
                     TurbineConstants.SCREEN_CACHE_SIZE_KEY,
                     TurbineConstants.SCREEN_CACHE_SIZE_DEFAULT),
-                TemplateEngineService.DEFAULT_SCREEN,
-                ".",
-                ScreenLoader.getInstance()));
-
-        registerMapper(LAYOUT_KEY,
-            new TemplateClassMapper(
-                useCache,
-                config.getInt(
+            conf.getInt(
                     TurbineConstants.LAYOUT_CACHE_SIZE_KEY,
                     TurbineConstants.LAYOUT_CACHE_SIZE_DEFAULT),
-                TemplateEngineService.DEFAULT_LAYOUT,
-                ".",
-                LayoutLoader.getInstance()));
-
-        registerMapper(NAVIGATION_KEY,
-            new TemplateClassMapper(
-                useCache,
-                config.getInt(
+            conf.getInt(
                     TurbineConstants.NAVIGATION_CACHE_SIZE_KEY,
                     TurbineConstants.NAVIGATION_CACHE_SIZE_DEFAULT),
-                TemplateEngineService.DEFAULT_NAVIGATION,
-                ".",
-                NavigationLoader.getInstance()));
-
-        registerMapper(LAYOUT_TEMPLATE_KEY,
-            new TemplateLayoutMapper(
-                useCache,
-                config.getInt(
+            conf.getInt(
                     TurbineConstants.LAYOUT_CACHE_SIZE_KEY,
                     TurbineConstants.LAYOUT_CACHE_SIZE_DEFAULT),
-                TemplateEngineService.DEFAULT_LAYOUT_TEMPLATE,
-                "/",
-                TurbineConstants.LAYOUT_PREFIX));
-
-        registerMapper(SCREEN_TEMPLATE_KEY,
-            new TemplateScreenMapper(
-                useCache,
-                config.getInt(
+            conf.getInt(
                     TurbineConstants.SCREEN_CACHE_SIZE_KEY,
-                    TurbineConstants.SCREEN_CACHE_SIZE_DEFAULT),
-                TemplateEngineService.DEFAULT_SCREEN_TEMPLATE,
-                "/",
-                TurbineConstants.SCREEN_PREFIX));
+                    TurbineConstants.SCREEN_CACHE_SIZE_DEFAULT)
+        };
+
+        String [] mapperDefaultProperty = new String [] {
+            TemplateEngineService.DEFAULT_PAGE,
+            TemplateEngineService.DEFAULT_SCREEN,
+            TemplateEngineService.DEFAULT_LAYOUT,
+            TemplateEngineService.DEFAULT_NAVIGATION,
+            TemplateEngineService.DEFAULT_LAYOUT_TEMPLATE,
+            TemplateEngineService.DEFAULT_SCREEN_TEMPLATE
+        };
+
+        String [] mapperSeparator = 
+                new String [] { ".", ".", ".", ".", "/", "/" };
+
+        Loader [] mapperLoader = new Loader [] { 
+            null,
+            ScreenLoader.getInstance(),
+            LayoutLoader.getInstance(),
+            NavigationLoader.getInstance(),
+            null, null, };
+
+        String [] mapperPrefix = new String [] { 
+            null, null, null, null,
+            TurbineConstants.LAYOUT_PREFIX,
+            TurbineConstants.SCREEN_PREFIX };
+
+        for (int i = 0; i < TEMPLATE_TYPES; i++)
+        {
+            StringBuffer mapperProperty = new StringBuffer();
+            mapperProperty.append("mapper.");
+            mapperProperty.append(mapperNames[i]);
+            mapperProperty.append(".class");
+
+            String mapperClass = 
+                    conf.getString(mapperProperty.toString(), mapperClasses[i]);
+
+            log.info("Using " + mapperClass + " to map " + mapperNames[i] + " elements");
+
+            TemplateMapper tm = null;
+
+            try
+            {
+                tm = (TemplateMapper) TurbineFactory.getInstance(mapperClass);
+            }
+            catch (TurbineException te)
+            {
+                throw new InitializationException("", te);
+            }
+
+            tm.setUseCache(useCache);
+            tm.setCacheSize(mapperCacheSize[i]);
+            tm.setDefaultProperty(mapperDefaultProperty[i]);
+            tm.setSeparator(mapperSeparator[i]);
+
+            if ((mapperLoader[i] != null) && (tm instanceof TemplateClassMapper))
+            {
+                ((TemplateClassMapper) tm).setLoader(mapperLoader[i]);
+            }
+
+            if ((mapperPrefix[i] != null) && (tm instanceof TemplateBaseLayoutMapper))
+            {
+                ((TemplateBaseLayoutMapper) tm).setPrefix(mapperPrefix[i]);
+            }
+
+            registerMapper(i, tm);
+        }
     }
 }
