@@ -57,7 +57,6 @@ package org.apache.turbine.services.db;
 import java.sql.Connection;
 import org.apache.torque.Torque;
 import org.apache.torque.adapter.DB;
-import org.apache.torque.util.BasePeer;
 import org.apache.turbine.services.BaseService;
 
 
@@ -134,7 +133,7 @@ public class TurbinePoolBrokerService extends BaseService
      */
     public void releaseConnection(Connection dbconn) throws Exception
     {
-        BasePeer.closeConnection(dbconn);
+        Torque.closeConnection(dbconn);
     }
 
     /**
