@@ -591,55 +591,6 @@ services.JspService.buffer.size = 8192
 
 # -------------------------------------------------------------------
 #
-#  W E B M A C R O  S E R V I C E
-#
-# the webmacro-service is deprecated. you should use velocity instead!
-# see http://jakarta.apache.org/velocity/migration.html
-#
-# -------------------------------------------------------------------
-
-services.WebMacroService.template.extension=wm
-services.WebMacroService.default.page = WebMacroSitePage
-services.WebMacroService.default.screen=WebMacroSiteScreen
-services.WebMacroService.default.layout = WebMacroSiteLayout
-services.WebMacroService.default.navigation=WebMacroSiteNavigation
-services.WebMacroService.default.error.screen = WebMacroSiteErrorScreen
-services.WebMacroService.default.layout.template = Default.wm
-
-# The location of WebMacro configuration file, relative to webapp
-# root.
-
-services.WebMacroService.properties=/WEB-INF/conf/WebMacro.properties
-
-# The path where WebMacro will look for templates, relative to webapp
-# root.  Use your system's path separator to specify multiple paths.
-
-services.WebMacroService.templates=@TEMPLATE_PATH@
-
-# The class that will act as a template provider in webmacro.  We can
-# use default class from WebMacro (template path above is pushed into
-# WebMacro configuration mechanism, so that class can pick it up), or
-# some other custom class
-
-services.WebMacroService.templates.provider=org.apache.turbine.services.webmacro.TurbineTemplateProvider
-
-# -------------------------------------------------------------------
-#
-#  F R E E M A R K E R  S E R V I C E
-#
-# the freemarker-service is deprecated. you should use velocity instead!
-# see http://jakarta.apache.org/velocity
-# -------------------------------------------------------------------
-
-# The path where FreeMarker will look for templates, relative to
-# webapp root, if supported by the servlet engine.
-#
-# Default: /templates
-
-services.FreeMarkerService.templates=/templates
-
-# -------------------------------------------------------------------
-#
 #  U P L O A D  S E R V I C E
 #
 # -------------------------------------------------------------------

@@ -62,12 +62,6 @@ Provides a persistant Object Storage mechanism within your application.
 </li>
 
 <li>
-<a href="castor-service.html">Castor Service</a>
-<br/>
-Castor is a OR tool that is supported by Turbine.
-</li>
-
-<li>
 <a href="component-service.html">Component Service</a>
 <br/>
 Initializes external components which implement the lifecycle interface, e.g. Torque und Fulcrum.
@@ -85,13 +79,6 @@ This service also provides the brokers for Connection Pooling and Database Map O
 <br/>
 A Service for the instantiation of objects with either the specified loaders or
 default class loaders.
-</li>
-
-<li>
-<a href="freemarker-service.html">FreeMarker Service</a>
-<br/>
-The FreeMarker Service is the set of classes that process FreeMarker
-files inside the Turbine Layout/Navigations and Screen structure.
 </li>
 
 <li>
@@ -214,13 +201,6 @@ a FileItem Object.
 <br/>
 <b>[TO DO]</b> The service for the processing of Velocity Templates from within
 the Turbine Layout/Navigations and Screen structure.
-</li>
-
-<li>
-<a href="webmacro-service.html">WebMacro Service</a>
-<br/>
-<b>[TO DO]</b> The service for the processing of WebMacro Templates from within
-Turbine Layout/Navigations and Screen structure.
 </li>
 
 <li>

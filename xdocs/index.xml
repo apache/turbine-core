@@ -56,8 +56,8 @@
     The point of Turbine is to collect that code into one location and
     make it easy to create re-usable components (such as
     ParameterParsing, Database Connection Pools, Job Scheduling,
-    GlobalCaches, integration with other tools such as Castor, Velocity,
-    Webmacro, etc...) all under a <a href="license.html">license</a>
+    GlobalCaches, integration with other tools such as Torque, Velocity,
+    etc...) all under a <a href="license.html">license</a>
     (Apache) that allows you to create useful websites for your
     customers without worrying about viral code. Turbine is not the end
     all answer, but it sure is a nice way to make your development life
@@ -77,7 +77,7 @@
  </p>
 
  <p>
-    <strong>Integration with Velocity, Webmacro and FreeMarker is well
+    <strong>Integration with Velocity is well
     defined and makes doing applications using these tools painless for
     both the developers and the web designers!</strong>
  </p>
@@ -85,9 +85,7 @@
  <p>
     Turbine can be integrated with existing <a
     href="http://jakarta.apache.org/velocity/">Velocity</a>, <a
-    href="http://www.webmacro.org/">Webmacro</a>, <a
-    href="http://jakarta.apache.org/">Java Server Pages (JSP)</a>, <a
-    href="http://freemarker.sourceforge.net">FreeMarker</a> and <a
+    href="http://jakarta.apache.org/">Java Server Pages (JSP)</a> and <a
     href="http://xml.apache.org/cocoon/">Cocoon</a> technologies by
     specially creating Screens that use Services to parse templates.
     Screens can also be created to read files from other websites as

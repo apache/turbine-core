@@ -51,9 +51,50 @@ Changes between Turbine 2.2-b1 and 2.2-b2.
 </section>
 -->
 
-<section name="Turbine 2.2-rc2">
+<section name="Turbine 2.3-dev">
+
 <p>
-Changes between Turbine 2.2-rc1 and 2.2-rc2.
+Changes between Turbine 2.2 and 2.3-dev.
+</p>
+
+<p>
+</p>
+
+<subsection name="Changes that could break older environments">
+<p>
+  <ul>
+    <li>
+      removed all deprecated java code (incl. support for webmacro, freemarker
+      and castor). Make sure to not get any deprecation warnings before you
+      switch to 2.3!
+    </li>
+  </ul>
+</p>
+</subsection>
+
+
+<subsection name="Other changes">
+<p>
+  <ul>
+    <li>
+    </li>
+  </ul>
+</p>
+</subsection>
+
+<subsection name="Fixed bugs">
+<p>
+  <ul>
+    <li>
+    </li>
+  </ul>
+</p>
+</subsection>
+</section>
+
+<section name="Turbine 2.2 (= 2.2-rc2)">
+<p>
+Changes between Turbine 2.2-rc1 and 2.2.
 </p>
 
 <subsection name="Other changes">
