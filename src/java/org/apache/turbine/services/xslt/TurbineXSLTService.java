@@ -61,17 +61,20 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Hashtable;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.Templates;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
 import org.apache.turbine.services.BaseInitable;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.Log;
-import org.apache.xalan.xslt.StylesheetRoot;
-import org.apache.xalan.xslt.XSLTInputSource;
-import org.apache.xalan.xslt.XSLTProcessor;
-import org.apache.xalan.xslt.XSLTProcessorFactory;
-import org.apache.xalan.xslt.XSLTResultTarget;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
@@ -81,6 +84,7 @@ import org.xml.sax.InputSource;
  * TurbineResources.properties is set) to improve speeds.
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:rubys@us.ibm.com">Sam Ruby</a>
  */
 public class TurbineXSLTService
     extends TurbineBaseService
@@ -102,6 +106,11 @@ public class TurbineXSLTService
      * Cache of compiled StyleSheetRoots.
      */
     protected Hashtable cache = new Hashtable();
+
+    /**
+     * Factory for producing templates and null transformers
+     */
+    private static TransformerFactory tfactory;
     
     /**
      * Initialize the TurbineXSLT Service.  Load the path to search for
@@ -129,6 +138,9 @@ public class TurbineXSLTService
             TurbineServices.SERVICE_PREFIX + 
                 XSLTService.SERVICE_NAME + ".cache");
         
+
+        tfactory = TransformerFactory.newInstance();
+
         setInit(true);
     }
     
@@ -169,21 +181,18 @@ public class TurbineXSLTService
     }
     
     /**
-     * Compile a new StylesheetRoot from an input file.
+     * Compile Templates from an input file.
      */
-    protected StylesheetRoot compileStylesheetRoot (String source) throws Exception
+    protected Templates compileTemplates (String source) throws Exception
     {
-        XSLTProcessor processor = XSLTProcessorFactory.getProcessor();
-        
-        XSLTInputSource xslin = new XSLTInputSource("file:///"+source);
-        StylesheetRoot root = processor.processStylesheet(xslin);
-
+        StreamSource xslin = new StreamSource(new File(source));
+        Templates root = tfactory.newTemplates(xslin);
         return root;
     }
 
     /**
-     * Retrieves a StylesheetRoot.  If caching is switched on the
-     * first attempt is to load the StylesheetRoot from the cache.
+     * Retrieves Templates.  If caching is switched on the
+     * first attempt is to load the Templates from the cache.
      * If caching is switched of or if the Stylesheet is not found
      * in the cache a new StyleSheetRoot is compiled from an input
      * file.
@@ -192,20 +201,20 @@ public class TurbineXSLTService
      * does not attempt to load a StyleSheetRoot from the cache while
      * it is still being compiled.
      */    
-    protected StylesheetRoot getStylesheetRoot(String xslName) throws Exception
+    protected Templates getTemplates(String xslName) throws Exception
     {
         synchronized (cache)
         {
             if (caching && cache.containsKey (xslName))
             {
-                return (StylesheetRoot)cache.get(xslName);
+                return (Templates)cache.get(xslName);
             }
             
             String fn = getFileName (xslName);
             
             if (fn == null) return null;
             
-            StylesheetRoot sr = compileStylesheetRoot (fn);        
+            Templates sr = compileTemplates (fn);        
             
             if (caching)
             {
@@ -217,35 +226,23 @@ public class TurbineXSLTService
         
     }
     
-    protected void transform (String xslName, XSLTProcessor processor, XSLTInputSource xmlin, XSLTResultTarget xmlout) throws Exception
+    protected void transform (String xslName, Source xmlin, Result xmlout) throws Exception
     {
-        StylesheetRoot sr = getStylesheetRoot(xslName);
+        Templates sr = getTemplates(xslName);
+        Transformer transformer;
+
         
         // If there is no stylesheet we just echo the xml
         if (sr == null)
         {
-            String line;
-            BufferedReader br = new BufferedReader (xmlin.getCharacterStream());
-            BufferedWriter bw = new BufferedWriter (xmlout.getCharacterStream());
-            line = br.readLine();
-            while (line != null)
-            {
-                try
-                {
-                    bw.write (line);
-                    line = br.readLine();
-                }
-                finally
-                {
-                    bw.flush();
-                }
-            }
+            transformer = tfactory.newTransformer();
         }
         else
         {
-            processor.setStylesheet (sr);
-            processor.process(xmlin, null, xmlout);
+            transformer = sr.newTransformer();
         }
+
+        transformer.transform(xmlin, xmlout);
     }
     
 
@@ -254,11 +251,10 @@ public class TurbineXSLTService
      */
     public void transform (String xslName, Reader in, Writer out) throws Exception
     {
-        XSLTProcessor processor = XSLTProcessorFactory.getProcessor();
-        XSLTInputSource xmlin = new XSLTInputSource(in);
-        XSLTResultTarget xmlout = new XSLTResultTarget(out);
+        Source xmlin = new StreamSource(in);
+        Result xmlout = new StreamResult(out);
         
-        transform (xslName,processor,xmlin,xmlout);        
+        transform (xslName,xmlin,xmlout);        
     }
     
     /**
@@ -277,11 +273,10 @@ public class TurbineXSLTService
      */
     public void transform (String xslName, org.w3c.dom.Node in, Writer out) throws Exception
     {
-        XSLTProcessor processor = XSLTProcessorFactory.getProcessor();
-        XSLTInputSource xmlin = new XSLTInputSource(in);
-        XSLTResultTarget xmlout = new XSLTResultTarget(out);
+        Source xmlin = new DOMSource(in);
+        Result xmlout = new StreamResult(out);
         
-        transform (xslName,processor,xmlin,xmlout);        
+        transform (xslName,xmlin,xmlout);        
     }
     
     /**
