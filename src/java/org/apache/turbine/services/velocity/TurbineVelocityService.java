@@ -59,25 +59,40 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+
 import java.util.Iterator;
 import java.util.Vector;
+
 import javax.servlet.ServletConfig;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationConverter;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.services.InitializationException;
+
 import org.apache.turbine.services.pull.TurbinePull;
+
 import org.apache.turbine.services.servlet.TurbineServlet;
+
 import org.apache.turbine.services.template.BaseTemplateEngineService;
-import org.apache.turbine.util.Log;
+
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.StringUtils;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
+
 import org.apache.velocity.VelocityContext;
+
 import org.apache.velocity.app.Velocity;
+
 import org.apache.velocity.context.Context;
 
+import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
 
 /**
  * This is a Service that can process Velocity templates from within a
@@ -96,9 +111,11 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:sean@informage.ent">Sean Legassick</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class TurbineVelocityService extends BaseTemplateEngineService
+public class TurbineVelocityService
+    extends BaseTemplateEngineService
     implements VelocityService
 {
     /**
@@ -121,6 +138,9 @@ public class TurbineVelocityService extends BaseTemplateEngineService
      * The prefix used for URIs which are of type <code>absolute</code>.
      */
     private static final String ABSOLUTE_PREFIX = "file://";
+
+    /** Logging */
+    private static Log log = LogFactory.getLog(TurbineVelocityService.class);
 
     /**
      * The context used to the store the context
@@ -162,7 +182,8 @@ public class TurbineVelocityService extends BaseTemplateEngineService
      *
      * @throws InitializationException Something went wrong when starting up.
      */
-    public void init(ServletConfig config) throws InitializationException
+    public void init(ServletConfig config)
+        throws InitializationException
     {
         try
         {
@@ -529,7 +550,7 @@ public class TurbineVelocityService extends BaseTemplateEngineService
         throws TurbineException
     {
         String err = "Error rendering Velocity template: " + filename;
-        Log.error(err + ": " + e.getMessage());
+        log.error(err + ": " + e.getMessage());
         throw new TurbineException(err, e);
     }
 
@@ -539,36 +560,18 @@ public class TurbineVelocityService extends BaseTemplateEngineService
      *
      * @exception InitializationException For any errors during initialization.
      */
-    private void initVelocity() throws InitializationException
+    private void initVelocity()
+        throws InitializationException
     {
         /*
          * Get the configuration for this service.
          */
         Configuration configuration = getConfiguration();
 
-        /*
-         * Now we have to perform a couple of path translations
-         * for our log file and template paths.
-         */
-        String path = Turbine.getRealPath
-            (configuration.getString(Velocity.RUNTIME_LOG, null));
-
-        if (StringUtils.isValid(path))
-        {
-            configuration.setProperty(Velocity.RUNTIME_LOG, path);
-        }
-        else
-        {
-            String msg = VelocityService.SERVICE_NAME + " runtime log file " +
-                "is misconfigured: '" + path + "' is not a valid log file";
-
-            if (TurbineServlet.getServletConfig() instanceof TurbineConfig)
-            {
-                msg += ": TurbineConfig users must use a path relative to " +
-                    "web application root";
-            }
-            throw new Error(msg);
-        }
+        configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, 
+                                  SimpleLog4JLogSystem.class.getName());
+        configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM + ".log4j.category",
+                                  "velocity");
 
         /*
          * Get all the template paths where the velocity runtime should search
@@ -605,7 +608,7 @@ public class TurbineVelocityService extends BaseTemplateEngineService
 
                 for (Iterator j = paths.iterator(); j.hasNext();)
                 {
-                    path = (String) j.next();
+                    String path = (String) j.next();
                     if (path.startsWith(JAR_PREFIX + "file"))
                     {
                         /*
