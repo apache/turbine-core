@@ -17,7 +17,7 @@
 <!-- @version $Id$     -->
 <!-- ==================================================================== -->
 
-<database>
+<database name="@PROJECT@">
   
   <table name="TURBINE_PERMISSION" idMethod="idbroker">
     <column name="PERMISSION_ID" required="true" primaryKey="true" type="INTEGER"/>
@@ -36,7 +36,7 @@
     <column name="OBJECTDATA" type="VARBINARY"/>
   
     <unique>
-        <unique-column name="ROLE_NAME"/>
+      <unique-column name="ROLE_NAME"/>
     </unique>
     
   </table>
@@ -47,7 +47,7 @@
     <column name="OBJECTDATA" type="VARBINARY"/>
     
     <unique>
-        <unique-column name="GROUP_NAME"/>
+      <unique-column name="GROUP_NAME"/>
     </unique>
   
   </table>
