@@ -102,9 +102,9 @@ public class CriteriaTest extends BaseTestCase
         c.add(table, column, (Object)value);
 
         // Verify that the key exists
-        assert(c.containsKey(table, column));
+        assertTrue(c.containsKey(table, column));
 
         // Verify that what we get out is what we put in
-        assert(c.getString(table, column).equals(value));
+        assertTrue(c.getString(table, column).equals(value));
     }
 }
