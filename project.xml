@@ -246,6 +246,12 @@
     </developer>
 -->
     <developer>
+      <name>Eric Pugh</name>
+      <id>dep4b</id>
+      <email>epugh@upstate.com</email>
+      <organization/>
+    </developer>
+    <developer>
       <name>Daniel Rall</name>
       <id>dlr</id>
       <email>dlr@finemaltcoding.com</email>
