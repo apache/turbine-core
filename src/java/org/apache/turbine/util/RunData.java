@@ -69,6 +69,8 @@ import org.apache.ecs.Element;
 import org.apache.ecs.StringElement;
 
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.util.parser.CookieParser;
+import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.template.TemplateInfo;
 

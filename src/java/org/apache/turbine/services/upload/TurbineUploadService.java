@@ -74,8 +74,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.parser.ParameterParser;
 
 /**
  * <p> This class is an implementation of {@link UploadService}.

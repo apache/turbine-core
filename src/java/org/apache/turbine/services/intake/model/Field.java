@@ -76,9 +76,9 @@ import org.apache.turbine.services.intake.xmlmodel.Rule;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.services.localization.Localization;
 import org.apache.turbine.services.localization.LocalizationService;
-import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.SystemError;
-import org.apache.turbine.util.ValueParser;
+import org.apache.turbine.util.parser.ParameterParser;
+import org.apache.turbine.util.parser.ValueParser;
 
 /**
  * Base class for Intake generated input processing classes.

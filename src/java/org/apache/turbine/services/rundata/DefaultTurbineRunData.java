@@ -83,12 +83,11 @@ import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.mimetype.TurbineMimeTypes;
 import org.apache.turbine.services.template.TurbineTemplate;
-
-import org.apache.turbine.util.CookieParser;
 import org.apache.turbine.util.FormMessages;
-import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.SystemError;
+import org.apache.turbine.util.parser.CookieParser;
+import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.pool.Recyclable;
 import org.apache.turbine.util.pool.RecyclableSupport;
 import org.apache.turbine.util.security.AccessControlList;

@@ -60,11 +60,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.turbine.util.CookieParser;
-import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
-
+import org.apache.turbine.util.parser.CookieParser;
+import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.pool.Recyclable;
 
 /**

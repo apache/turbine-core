@@ -60,9 +60,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.servlet.TurbineServlet;
-import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.ServletUtils;
 import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.parser.ParameterParser;
 
 /**
  * <p> This class is a base implementation of

@@ -1,4 +1,4 @@
-package org.apache.turbine.util;
+package org.apache.turbine.util.parser;
 
 /* ====================================================================
  * The Apache Software License, Version 1.1
@@ -54,6 +54,12 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.turbine.util.DynamicURI;
+import org.apache.turbine.util.RunData;
+
 /**
  * CookieParser is an interface to a utility to to get and set values
  * of Cookies on the Client Browser. You can use CookieParser to convert
@@ -80,9 +86,72 @@ package org.apache.turbine.util;
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
  * @version $Id$
- * @deprecated Use org.apache.turbine.util.parser.CookieParser instead.
  */
 public interface CookieParser
-        extends org.apache.turbine.util.parser.CookieParser
+        extends ValueParser
 {
+    int AGE_SESSION = -1;
+    int AGE_DELETE = 0;
+
+    /**
+     * Gets the parsed RunData.
+     *
+     * @return the parsed RunData object or null.
+     * @deprecated. Don't use the Run Data object. use getRequest().
+     */
+    RunData getRunData();
+
+    /**
+     * Gets the Request Object for this parser.
+     *
+     * @return the HttpServletRequest or null.
+     */
+    HttpServletRequest getRequest();
+
+    /**
+     * Sets the RunData to be parsed.
+     * All previous cookies will be cleared.
+     *
+     * @param data the RunData object.
+     * @deprecated. Use setData (HttpServletRequest request, HttpServletResponse response) instead
+     */
+    void setRunData(RunData data);
+
+    /**
+     * Sets Request and Response to be parsed.
+     *
+     * All previous cookies will be cleared.
+     *
+     * @param request The http request from the servlet
+     * @param response The http reponse from the servlet
+     */
+    void setData(HttpServletRequest request,
+            HttpServletResponse response);
+
+    /**
+     * Get the Path where cookies will be stored
+     */
+    DynamicURI getCookiePath();
+
+    /**
+     * Set the path for cookie storage
+     */
+    void setCookiePath(DynamicURI path);
+
+    /**
+     * Set a cookie that will be stored on the client for
+     * the duration of the session.
+     */
+    void set(String name, String value);
+
+    /**
+     * Set a persisten cookie on the client that will expire
+     * after a maximum age (given in seconds).
+     */
+    void set(String name, String value, int seconds_age);
+
+    /**
+     * Remove a previously set cookie from the client machine.
+     */
+    void unset(String name);
 }

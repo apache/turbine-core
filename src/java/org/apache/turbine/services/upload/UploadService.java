@@ -57,8 +57,8 @@ package org.apache.turbine.services.upload;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.turbine.services.Service;
-import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.parser.ParameterParser;
 
 /**
  * <p> This service handles parsing <code>multipart/form-data</code>

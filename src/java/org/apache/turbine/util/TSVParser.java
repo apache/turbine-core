@@ -55,7 +55,7 @@ package org.apache.turbine.util;
  */
 
 import java.io.Reader;
-import java.io.StreamTokenizer;
+
 import java.util.List;
 
 /**
@@ -81,8 +81,10 @@ import java.util.List;
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:martin@mvdb.net">Martin van den Bemt</a>
  * @version $Id$
+ * @deprecated Use org.apache.turbine.util.parser.TSVParser instead.
  */
-public class TSVParser extends DataStreamParser
+public class TSVParser 
+        extends org.apache.turbine.util.parser.TSVParser
 {
     /**
      * Create a new TSVParser instance. Requires a Reader to read the
@@ -121,17 +123,5 @@ public class TSVParser extends DataStreamParser
     public TSVParser(Reader in, List columnNames, String characterEncoding)
     {
         super(in, columnNames, characterEncoding);
-    }
-
-    /**
-     * Initialize the StreamTokenizer instance used to read the lines
-     * from the input reader.
-     * It is now only needed to set the fieldSeparator
-     */
-    protected void initTokenizer(StreamTokenizer tokenizer)
-    {
-        super.initTokenizer(tokenizer);
-        // set the field separator to tabs.
-        super.setFieldSeparator('\t');
     }
 }
