@@ -230,6 +230,12 @@ public class IntakeTool
             this.groupName = groupName;
         }
 
+      /**
+       * populates the object with the default values from the XML File
+       *
+       * @return a Group object with the default values 
+       */
+
         public Group getDefault()
             throws Exception
         {
@@ -262,6 +268,23 @@ public class IntakeTool
             return g;
         }
 
+
+      /**
+       * maps an object to the values from a Retrievable object. 
+       *
+       * If you supply null as the object, it returns the defaults, thus making this superflous:
+       *
+       * #if($!mapobj)
+       * #set ($frm = $intake.myGroup.mapTo($mapobj))
+       * #else
+       * #set ($frm = $intake.myGroup.default)
+       * #end
+       *
+       * @param obj       A retrievable object
+       *
+       * @return an Intake Group
+       *
+       */
 
         public Group mapTo(Retrievable obj)
             throws Exception
