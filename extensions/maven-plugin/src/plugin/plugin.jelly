@@ -502,8 +502,8 @@
   <!--                                                                          -->
   <!-- turbine:install-libs                                                     -->
   <!--                                                                          -->
-  <!-- This moves the source tree around and calls the torque:om goal if        -->
-  <!-- nececssary to merge all the source files before compilation.             -->
+  <!-- When running as inplace application, it is necessary to copy the needed  -->
+  <!-- artifacts from the POM inplace (WEB-INF/lib) for the application         -->
   <!--                                                                          -->
   <!-- ======================================================================== -->
   <goal name="turbine:install-libs"
