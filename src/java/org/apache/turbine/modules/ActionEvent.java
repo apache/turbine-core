@@ -54,15 +54,14 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
-// JDK
 import java.lang.reflect.Method;
+
 import java.util.Enumeration;
 
-// Turbine
 import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
-
 
 /**
  * <p>
@@ -104,6 +103,7 @@ import org.apache.turbine.util.RunData;
  * method naming in your Action class.
  *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens </a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class ActionEvent extends Action
@@ -114,7 +114,7 @@ public abstract class ActionEvent extends Action
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    public abstract void doPerform( RunData data )
+    public abstract void doPerform(RunData data)
         throws Exception;
 
     /** The name of the button to look for. */
@@ -136,7 +136,7 @@ public abstract class ActionEvent extends Action
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    protected void perform( RunData data )
+    protected void perform(RunData data)
         throws Exception
     {
         try
@@ -145,7 +145,7 @@ public abstract class ActionEvent extends Action
         }
         catch (NoSuchMethodException e)
         {
-            doPerform( data );
+            doPerform(data);
         }
     }
 
@@ -162,11 +162,6 @@ public abstract class ActionEvent extends Action
         String theButton = null;
         // Parameter parser.
         ParameterParser pp = data.getParameters();
-        // The arguments to pass to the method to execute.
-        Object[] args = new Object[1];
-        // The arguments to the method to find.
-        Class[] classes = new Class[1];
-        classes[0] = RunData.class;
 
         String button = pp.convert(BUTTON);
 
@@ -182,11 +177,15 @@ public abstract class ActionEvent extends Action
         }
 
         if (theButton == null)
+        {
             throw new NoSuchMethodException("ActionEvent: The button was null");
+        }
 
+        Class[] classes = new Class[] { RunData.class };
         Method method = getClass().getMethod(theButton, classes);
-        args[0] = data;
-        method.invoke(this, args );
+        Object[] args = new Object[] { data };
+
+        method.invoke(this, args);
     }
 
     /**
@@ -229,7 +228,7 @@ public abstract class ActionEvent extends Action
      * @param data The input string.
      * @return A string with the described case.
      */
-    private final String firstLetterCaps( String data )
+    private final String firstLetterCaps(String data)
     {
         String firstLetter = data.substring(0, 1).toUpperCase();
         String restLetters = data.substring(1).toLowerCase();
