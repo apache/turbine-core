@@ -55,7 +55,6 @@ package org.apache.turbine.modules.pages;
  */
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.services.template.TurbineTemplate;
 
@@ -116,9 +115,6 @@ import org.apache.turbine.util.TurbineException;
 public class TemplatePage
     extends DefaultPage
 {
-    /** Logging */
-    private static Log log = LogFactory.getLog(TemplatePage.class);
-
     /**
      * Works with TemplateService to set up default templates and
      * corresponding class modules.

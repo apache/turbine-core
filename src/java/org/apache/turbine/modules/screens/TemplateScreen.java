@@ -86,7 +86,7 @@ public abstract class TemplateScreen
     extends Screen
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(TemplateScreen.class);
+    protected Log log = LogFactory.getLog(this.getClass());
 
     /**
      * This method should be overidden by subclasses that wish to add
