@@ -25,13 +25,13 @@ package org.apache.turbine.services.assemblerbroker;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,7 +54,6 @@ package org.apache.turbine.services.assemblerbroker;
  * <http://www.apache.org/>.
  */
 
-// Turbine Stuff
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.services.Service;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
@@ -65,9 +64,9 @@ import org.apache.turbine.util.TurbineException;
  * See TurbineAssemblerBrokerService for more info.
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @version $Id$
  */
-public interface AssemblerBrokerService
-    extends Service
+public interface AssemblerBrokerService extends Service
 {
     static final String SERVICE_NAME = "AssemblerBrokerService";
 
@@ -80,9 +79,8 @@ public interface AssemblerBrokerService
     static final String SCHEDULEDJOB_TYPE = "scheduledjob";
 
     /** Register an AssemblerFactory class for a given type*/
-    void registerFactory( String type, AssemblerFactory factory );
+    void registerFactory(String type, AssemblerFactory factory);
 
     /** Attempts to load an Assembler of a type with a given name*/
-    Assembler getAssembler( String type, String name ) 
-        throws TurbineException;
+    Assembler getAssembler(String type, String name) throws TurbineException;
 }

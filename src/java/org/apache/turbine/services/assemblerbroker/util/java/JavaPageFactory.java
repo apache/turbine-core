@@ -25,13 +25,13 @@ package org.apache.turbine.services.assemblerbroker.util.java;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -60,12 +60,19 @@ import org.apache.turbine.modules.Assembler;
  * A screen factory that attempts to load a java class from
  * the module packages defined in the TurbineResource.properties.
  *
+ * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
  * @version $Id$
  */
 public class JavaPageFactory extends JavaBaseFactory
 {
-    public Assembler getAssembler( String name )
+    /**
+     * Get an Assembler.
+     *
+     * @param name name of the requested Assembler
+     * @return an Assembler
+     */
+    public Assembler getAssembler(String name)
     {
-        return getAssembler ("pages",name);
+        return getAssembler("pages", name);
     }
 }
