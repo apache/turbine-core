@@ -59,6 +59,7 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.Vector;
 import javax.servlet.ServletConfig;
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.BaseInitable;
 import org.apache.turbine.services.BaseServiceBroker;
 import org.apache.turbine.services.InitializationException;
@@ -93,7 +94,8 @@ import org.apache.velocity.runtime.configuration.Configuration;
  * @author <a href="mailto:jvanzyl@periapt.com@">Jason van Zyl</a>
  * @version $Id$
  */
-public class TurbineResourceService extends TurbineBaseService
+public class TurbineResourceService 
+    extends TurbineBaseService
     implements ResourceService
 {
     /** The container for the generic resources. */
@@ -147,14 +149,16 @@ public class TurbineResourceService extends TurbineBaseService
         // will not have an issue with using it this way. I don't know
         // if this will break other servlet engines, but it probably
         // shouldn't since WAR files are the future anyways.
-        props = ServletUtils.expandRelative(config, props);
-
+        //props = ServletUtils.expandRelative(config, props);
+        props = Turbine.getRealPath(props);
+        
         try
         {
             init(new Configuration(props));
         }
         catch (IOException e)
         {
+            e.printStackTrace();
             throw new InitializationException("Can't load file " + props);
         }
     }
