@@ -245,6 +245,10 @@ Changes between Turbine 2.2 and 2.3-dev.
       service.  Before, it would only recognize changes to the next run
       time.
     </li>
+    <li>
+      Fixed null pointer exception during initialization of IntakeTool when there are
+      no groups defined in intake.xml
+    </li>
   </ul>
 </p>
 </subsection>
