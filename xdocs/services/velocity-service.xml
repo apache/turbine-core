@@ -29,7 +29,7 @@
 # To specify properties of a service use the following syntax:
 # service.[name].[property]=[value]
 
-services.VelocityService.classname=org.apache.turbine.services.cache.TurbineVelocityService
+services.VelocityService.classname = org.apache.turbine.services.TurbineVelocityService
 .
 .
 .
@@ -44,11 +44,11 @@ services.VelocityService.classname=org.apache.turbine.services.cache.TurbineVelo
 # You should specify the path to the templates directories as well as 
 # the path to the log file and they should also be relative to webapp root
 
-services.VelocityService.template.extension=vm
+services.VelocityService.template.extension = vm
 services.VelocityService.default.page = VelocityPage
-services.VelocityService.default.screen=VelocityScreen
+services.VelocityService.default.screen = VelocityScreen
 services.VelocityService.default.layout = VelocityECSLayout
-services.VelocityService.default.navigation=VelocityNavigation
+services.VelocityService.default.navigation = VelocityNavigation
 services.VelocityService.default.error.screen = VelocityErrorScreen
 services.VelocityService.default.layout.template = Default.vm
 
@@ -56,8 +56,8 @@ services.VelocityService.default.layout.template = Default.vm
 # Set this to true to catch Velocity Errors and display them in the log file
 services.VelocityService.catch.errors = true
 
-services.VelocityService.runtime.log=/logs/velocity.log
-#services.VelocityService.input.encoding=UTF-8
+services.VelocityService.runtime.log = /logs/velocity.log
+#services.VelocityService.input.encoding = UTF-8
 services.VelocityService.velocimacro.library = GlobalMacros.vm
 
 services.VelocityService.resource.loader = file
