@@ -1,0 +1,51 @@
+<project name="Torque" default="main" basedir=".">
+
+  <!-- ================================================================== -->
+  <!-- Create torque.jar for stand-alone use outside the context          -->
+  <!-- of the TDK.                                                        -->
+  <!-- ================================================================== -->
+
+  <!--
+    Everything needed is here because I'll probably move this
+    into a separate xml file and use an ant call from here.
+    this build file is getting big! :-)
+  -->
+
+  <target name="main">
+
+    <property name="torque.dir" value="${build.dir}/torque/torque"/>
+    <mkdir dir="${torque.dir}"/>
+    <mkdir dir="${torque.dir}/lib"/>
+
+    <copy todir="${torque.dir}/lib">
+      <fileset dir=".">
+        <include name="ant-*.jar"/>
+      </fileset>
+      <fileset dir="lib">
+        <include name="xerces-*.jar"/>
+        <include name="velocity-*.jar"/>
+        <include name="village-*.jar"/>
+      </fileset>
+    </copy>
+
+    <filter token="TORQUE_HOME" value="."/>
+    <filter token="JARS" value="lib/*.jar"/>
+
+    <copy todir="${torque.dir}" filtering="yes">
+      <fileset dir="conf/torque"/>
+    </copy>
+
+    <jar jarfile="${torque.dir}/lib/torque.jar">
+      <fileset dir="${build.dir}/classes"/>
+    </jar>
+
+    <!-- fix permissions -->
+    <chmod dir="${torque.dir}" perm="ugo+rx" includes="**/*.sh" />
+
+    <zip zipfile="${build.dir}/torque.zip"
+      basedir="${build.dir}/torque"
+    />
+
+    </target>
+
+</project>
