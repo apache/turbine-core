@@ -27,7 +27,7 @@ BLOB =
 CLOB =
 REF =
 
-AUTOINCREMENT = true
+AUTOINCREMENT = IDENTITY (1,1)
 NOTNULL = NOT NULL
 
 removeNotNullWithAutoIncrement = false
