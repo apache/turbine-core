@@ -509,7 +509,7 @@
 
     <j:if test="${context.getVariable('turbine.plugin.target.lib') != null &amp;&amp; context.getVariable('turbine.plugin.target.lib') != ''}">
       <j:forEach var="dep" items="${pom.dependencies}">
-        <j:if test="${dep.getProperty('war.bundle').equalsIgnoreCase('true')}">
+        <j:if test="${dep.getProperty('war.bundle') != null &amp;&amp; dep.getProperty('war.bundle').equalsIgnoreCase('true')}">
           <copy todir="${turbine.plugin.target.lib}"
                 file="${maven.repo.local}/${dep.getArtifactDirectory()}/jars/${dep.getArtifact()}"/>
         </j:if>  
