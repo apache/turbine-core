@@ -129,9 +129,9 @@ public abstract class BaseUploadService
      *
      * @return The maximum upload size.
      */
-    public int getSizeMax()
+    public long getSizeMax()
     {
-        return getConfiguration().getInt(
+        return getConfiguration().getLong(
                 UploadService.SIZE_MAX_KEY,
                 UploadService.SIZE_MAX_DEFAULT);
     }

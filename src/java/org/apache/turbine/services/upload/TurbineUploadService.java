@@ -64,8 +64,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.configuration.Configuration;
 
+import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadException;
 
 import org.apache.commons.logging.Log;
@@ -106,7 +106,7 @@ public class TurbineUploadService
     private static Log log = LogFactory.getLog(TurbineUploadService.class);
 
     /** A File Upload object for the actual uploading */
-    protected FileUpload fileUpload = null;
+    protected DiskFileUpload fileUpload = null;
 
     /** Auto Upload yes? */
     private boolean automatic;
@@ -147,7 +147,7 @@ public class TurbineUploadService
 
         log.debug("Upload Path is now " + repoPath);
 
-        int sizeMax = conf.getInt(
+        long sizeMax = conf.getLong(
                 UploadService.SIZE_MAX_KEY,
                 UploadService.SIZE_MAX_DEFAULT);
 
@@ -165,7 +165,7 @@ public class TurbineUploadService
 
         log.debug("Auto Upload " + automatic);
 
-        fileUpload = new FileUpload();
+        fileUpload = new DiskFileUpload();
         fileUpload.setSizeMax(sizeMax);
         fileUpload.setSizeThreshold(sizeThreshold);
         fileUpload.setRepositoryPath(repoPath);
@@ -179,7 +179,7 @@ public class TurbineUploadService
      *
      * @return The maximum upload size.
      */
-    public int getSizeMax()
+    public long getSizeMax()
     {
         return fileUpload.getSizeMax();
     }
