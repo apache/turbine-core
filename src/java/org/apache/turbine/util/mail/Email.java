@@ -57,15 +57,23 @@ package org.apache.turbine.util.mail;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Vector;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
+
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.configuration.Configuration;
+
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.torque.util.Criteria;
-import org.apache.turbine.services.resources.TurbineResources;
+
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
 
 /**
  * The base class for all email messages.  This class sets the
@@ -78,6 +86,7 @@ import org.apache.turbine.services.resources.TurbineResources;
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
  * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
  * @author <a href="mailto:unknown">Regis Koenig</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  * @deprecated Use org.apache.commons.mail.Email instead.
  */
@@ -92,9 +101,15 @@ public abstract class Email
     public static final String EMAIL_BODY = "email.body";
     public static final String CONTENT_TYPE = "content.type";
 
-    public static final String MAIL_SERVER = "mail.server";
+    /** @deprecated Use TurbineConstants.MAIL_SERVER_KEY */
+    public static final String MAIL_SERVER = TurbineConstants.MAIL_SERVER_KEY;
+
+    /** @deprecated Use TurbineConstants.MAIL_SMTP_FROM */
+    public static final String MAIL_SMTP_FROM = TurbineConstants.MAIL_SMTP_FROM;
+
+    /** Mail Host, for javax.mail */
     public static final String MAIL_HOST = "mail.host";
-    public static final String MAIL_SMTP_FROM = "mail.smtp.from";
+
     public static final String MAIL_TRANSPORT_PROTOCOL = "mail.transport.protocol";
     public static final String SMTP = "SMTP";
     public static final String TEXT_HTML = "text/html";
@@ -135,13 +150,19 @@ public abstract class Email
      */
     private Session getMailSession()
     {
+        Configuration conf = Turbine.getConfiguration();
         Properties properties = System.getProperties();
+
         properties.put(MAIL_TRANSPORT_PROTOCOL, SMTP);
-        properties.put(MAIL_HOST, TurbineResources.getString(MAIL_SERVER));
-        String mailSMTPFrom = TurbineResources.getString(MAIL_SMTP_FROM);
-        if (mailSMTPFrom != null && !mailSMTPFrom.equals(""))
+        properties.put(MAIL_HOST, conf.getString(TurbineConstants.MAIL_SERVER_KEY,
+                                                 TurbineConstants.MAIL_SERVER_DEFAULT));
+
+
+        String mailSMTPFrom = conf.getString(TurbineConstants.MAIL_SMTP_FROM);
+
+        if (StringUtils.isNotEmpty(mailSMTPFrom))
         {
-            properties.put(MAIL_SMTP_FROM, mailSMTPFrom);
+            properties.put(TurbineConstants.MAIL_SMTP_FROM, mailSMTPFrom);
         }
         return Session.getDefaultInstance(properties, null);
     }

@@ -55,18 +55,27 @@ package org.apache.turbine.util.velocity;
  */
 
 import java.net.URL;
+
 import java.util.Hashtable;
+
 import javax.activation.DataSource;
 import javax.activation.URLDataSource;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.HtmlEmail;
-import org.apache.commons.lang.StringUtils;
+
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.services.velocity.TurbineVelocity;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.RunData;
+
 import org.apache.velocity.context.Context;
 
 /**
@@ -107,6 +116,7 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:A.Schild@aarboard.ch">Andre Schild</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class VelocityHtmlEmail
@@ -286,9 +296,10 @@ public class VelocityHtmlEmail
      */
     public String getMailServer()
     {
-        return (StringUtils.isEmpty(mailServer) ?
-                TurbineResources.getString("mail.server", "localhost")
-                : this.mailServer);
+        return StringUtils.isNotEmpty(mailServer) ? mailServer
+            : Turbine.getConfiguration().getString(
+                TurbineConstants.MAIL_SERVER_KEY,
+                TurbineConstants.MAIL_SERVER_DEFAULT);
     }
 
     /**
