@@ -542,13 +542,22 @@
     </dependency>    
     <dependency>
       <groupId>fulcrum</groupId>
-      <artifactId>fulcrum-crypto</artifactId>
-      <version>1.0-alpha-3</version>
+      <artifactId>fulcrum-crypto-api</artifactId>
+      <version>1.0-alpha-4</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-crypto</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
     </dependency>
+    <dependency>
+      <groupId>fulcrum</groupId>
+      <artifactId>fulcrum-crypto-impl</artifactId>
+      <version>1.0-alpha-4</version>
+      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-crypto</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>    
     <dependency>
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-localization-api</artifactId>
