@@ -62,8 +62,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 
-import org.apache.turbine.services.TurbineServices;
-
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 

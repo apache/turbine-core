@@ -55,7 +55,6 @@ package org.apache.turbine.services.pull.tools;
  */
 
 import org.apache.turbine.services.pull.ApplicationTool;
-import org.apache.turbine.util.RunData;
 
 /**
  * This class allows one to specify paths in the setPage method 

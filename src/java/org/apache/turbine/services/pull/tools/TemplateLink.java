@@ -54,8 +54,6 @@ package org.apache.turbine.services.pull.tools;
  * <http://www.apache.org/>.
  */
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -63,7 +61,6 @@ import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.uri.TemplateURI;
-import org.apache.turbine.util.uri.URIConstants;
 
 /**
  * This is a pull to to be used in Templates to convert links in

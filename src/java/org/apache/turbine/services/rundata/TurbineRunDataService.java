@@ -66,7 +66,6 @@ import org.apache.commons.configuration.Configuration;
 
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.pool.PoolService;
 import org.apache.turbine.services.pool.TurbinePool;
 import org.apache.turbine.util.RunData;

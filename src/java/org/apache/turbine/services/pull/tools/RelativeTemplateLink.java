@@ -56,8 +56,6 @@ package org.apache.turbine.services.pull.tools;
 
 import org.apache.turbine.services.pull.ApplicationTool;
 
-import org.apache.turbine.util.RunData;
-
 /**
  * This is exactly the same thing as TemplateLink but it returns a 
  * relative link on toString(). Everything else is identical. This class is

@@ -65,7 +65,6 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.services.pull.TurbinePull;
-import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.uri.DataURI;

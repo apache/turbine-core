@@ -54,8 +54,6 @@ package org.apache.turbine.services.security.torque;
  * <http://www.apache.org/>.
  */
 
-import java.sql.Connection;
-
 import org.apache.torque.om.Persistent;
 
 import org.apache.turbine.om.security.Permission;
@@ -102,7 +100,8 @@ public class TorquePermission
     /**
      * The package private Constructor is used when the PermissionPeerManager
      * has retrieved a list of Database Objects from the peer and
-     * must 'wrap' them into TorquePermission Objects.  You should not use it directly!
+     * must 'wrap' them into TorquePermission Objects.
+     * You should not use it directly!
      *
      * @param obj An Object from the peer
      */

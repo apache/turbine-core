@@ -55,22 +55,17 @@ package org.apache.turbine.modules.screens;
  */
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.apache.ecs.ConcreteElement;
-import org.apache.ecs.StringElement;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.services.template.TurbineTemplate;
-
 import org.apache.turbine.services.velocity.TurbineVelocity;
-
 import org.apache.turbine.util.RunData;
 
 import org.apache.velocity.context.Context;

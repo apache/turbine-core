@@ -54,12 +54,7 @@ package org.apache.turbine.modules.pages;
  * <http://www.apache.org/>.
  */
 
-// Turbine Classes
-
-import org.apache.turbine.services.TurbineServices;
-
 import org.apache.turbine.services.jsp.TurbineJsp;
-
 import org.apache.turbine.util.RunData;
 
 /**
