@@ -97,6 +97,12 @@ public class LDAPSecurityConstants
     static final String LDAP_BASE_SEARCH_KEY = "ldap.basesearch";
 
     /** Property key */
+    static final String LDAP_AUTH_KEY = "ldap.security.authentication";
+
+    /** Property default value */
+    static final String LDAP_AUTH_DEFAULT = "simple";
+
+    /** Property key */
     static final String LDAP_USER_USERID_KEY = "ldap.user.userid";
 
     /** Property key */
@@ -228,6 +234,16 @@ public class LDAPSecurityConstants
         str = str.replace('/', '=');
         str = str.replace('%', ',');
         return str;
+    }
+
+    /**
+     * Get the value of the property for the Authentication
+     * mechanism. Valid values are: none, simple,
+     * @return the value of the property.
+     */
+    public static String getLDAPAuthentication()
+    {
+        return getProperty(LDAP_AUTH_KEY, LDAP_AUTH_DEFAULT);
     }
 
     /**

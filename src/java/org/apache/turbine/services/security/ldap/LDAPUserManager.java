@@ -78,7 +78,9 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * object related tasks on behalf of the
  * {@link org.apache.turbine.services.security.SecurityService}.
  *
- * This implementation uses ldap for retrieving user data.
+ * This implementation uses ldap for retrieving user data. It
+ * expects that the User interface implementation will be castable to
+ * {@link org.apache.turbine.om.BaseObject}.
  *
  * @author <a href="mailto:jon@collab.net">Jon S. Stevens</a>
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
@@ -311,7 +313,6 @@ public class LDAPUserManager implements UserManager
 
     /**
      * This method is not yet implemented.
-     *
      * Saves User data when the session is unbound. The user account is required
      * to exist in the storage.
      *
@@ -366,7 +367,7 @@ public class LDAPUserManager implements UserManager
         catch (NamingException ex)
         {
             throw new DataBackendException(
-                    "The LDAP server specified is unavailable", ex);
+                    "NamingException caught:", ex);
         }
     }
 
@@ -506,8 +507,8 @@ public class LDAPUserManager implements UserManager
         String host = LDAPSecurityConstants.getLDAPHost();
         String port = LDAPSecurityConstants.getLDAPPort();
         String providerURL = new String("ldap://" + host + ":" + port);
-
         String ldapProvider = LDAPSecurityConstants.getLDAPProvider();
+        String authentication = LDAPSecurityConstants.getLDAPAuthentication();
 
         /*
          * creating an initial context using Sun's client
@@ -517,7 +518,7 @@ public class LDAPUserManager implements UserManager
 
         env.put(Context.INITIAL_CONTEXT_FACTORY, ldapProvider);
         env.put(Context.PROVIDER_URL, providerURL);
-        env.put(Context.SECURITY_AUTHENTICATION, "simple");
+        env.put(Context.SECURITY_AUTHENTICATION, authentication);
         env.put(Context.SECURITY_PRINCIPAL, username);
         env.put(Context.SECURITY_CREDENTIALS, password);
 
