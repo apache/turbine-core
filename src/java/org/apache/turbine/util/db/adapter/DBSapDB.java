@@ -60,6 +60,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 /**
  * This is used to connect to SapDB databases.
@@ -186,5 +187,24 @@ public class DBSapDB
         // Tables in SapDB are unlocked when a commit is issued.  The
         // user may have issued a commit but do it here to be sure.
         con.commit();
+    }
+
+    /**
+     * This method is used to format a date string.
+     * This implementation uses the following format:
+     * "{ts '" + date.toString() + "'}"
+     *
+     * The default format provided by DB, prevents SapDB from matching
+     * criteria of the following form:
+     * <code>"WHERE SOME_DATE_FIELD = " + getDateString(Date)</code>
+     *
+     * Whereas, the implementation provided here successfully matches
+     * that criteria.
+     *
+     * @param date the Date object to be formatted as a string.
+     * @return The proper date formated String.  */
+    public String getDateString(Date date)
+    {
+        return "{ts '" + date.toString() + "'}";
     }
 }

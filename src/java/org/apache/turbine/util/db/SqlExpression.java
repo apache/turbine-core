@@ -291,8 +291,7 @@ public class SqlExpression
            else if( criteria instanceof java.util.Date ||
                     criteria instanceof DateKey)
            {
-               Date dt = criteria instanceof Date?(Date) criteria:((DateKey)criteria).getDate();
-               criteria = "{ts '" + new Timestamp(dt.getTime()).toString() + "'}";
+               criteria = db.getDateString((Date)criteria);
            }
            else if( criteria instanceof Boolean )
            {

@@ -58,6 +58,8 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.sql.ConnectionPoolDataSource;
 import org.apache.turbine.util.db.map.IDMethod;
@@ -398,7 +400,20 @@ public abstract class DB implements Serializable, IDMethod
      * This method is used to format any date string.
      * Database can use different default date formats.
      *
+     * @param date the Date object to be formatted as a string.
      * @return The proper date formated String.
+     */
+    public String getDateString(Date date)
+    {
+        return "{ts '" + new Timestamp(date.getTime()).toString() + "'}";
+    }
+
+    /**
+     * This method is used to format any date string.
+     * Database can use different default date formats.
+     *
+     * @return The proper date formated String.
+     * @deprecated use getDateString(Date) instead.
      */
     public String getDateString(String dateString)
     {
