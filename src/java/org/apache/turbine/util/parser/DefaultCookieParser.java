@@ -55,6 +55,7 @@ package org.apache.turbine.util.parser;
  */
 
 import javax.servlet.http.Cookie;
+
 import org.apache.turbine.util.CookieParser;
 import org.apache.turbine.util.DynamicURI;
 import org.apache.commons.logging.Log;
@@ -139,7 +140,7 @@ public class DefaultCookieParser extends BaseValueParser
      *
      * @param data the RunData object.
      */
-    public void setRunData (RunData data)
+    public void setRunData(RunData data)
     {
         clear();
 
@@ -148,18 +149,18 @@ public class DefaultCookieParser extends BaseValueParser
 
         cookiePath = new DynamicURI(data);
 
-        cookiePath = new DynamicURI(data);
-
         Cookie[] cookies = data.getRequest().getCookies();
 
-        log.debug("Number of Cookies " + cookies.length);
+        int cookiesCount = (cookies != null ? cookies.length : 0);
 
-        for (int i = 0; i < cookies.length; i++)
+        log.debug("Number of Cookies " + cookiesCount);
+
+        for(int i = 0; i < cookiesCount; i++)
         {
             String name = convert(cookies[i].getName());
             String value = cookies[i].getValue();
             log.debug("Adding " + name + "=" + value);
-            add(name,value);
+            add(name, value);
         }
 
         this.data = data;
@@ -187,7 +188,7 @@ public class DefaultCookieParser extends BaseValueParser
      */
     public void set(String name, String value)
     {
-        set(name,value,AGE_SESSION);
+        set(name, value, AGE_SESSION);
     }
 
     /**
@@ -196,7 +197,7 @@ public class DefaultCookieParser extends BaseValueParser
      */
     public void set(String name, String value, int seconds_age)
     {
-        if (data == null)
+        if(data == null)
         {
             throw new IllegalStateException("RunData not available");
         }
@@ -212,6 +213,6 @@ public class DefaultCookieParser extends BaseValueParser
      */
     public void unset(String name)
     {
-        set(name," ",AGE_DELETE);
+        set(name, " ", AGE_DELETE);
     }
 }
