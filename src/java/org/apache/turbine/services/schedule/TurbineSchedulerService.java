@@ -76,9 +76,7 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class TurbineSchedulerService
-        extends TurbineBaseService
-        implements ScheduleService
+public class TurbineSchedulerService extends TurbineBaseService implements ScheduleService
 {
     /** Logging */
     private static Log log = LogFactory.getLog(ScheduleService.LOGGER_NAME);
@@ -110,28 +108,31 @@ public class TurbineSchedulerService
      * @throws InitializationException Something went wrong in the init
      *         stage
      */
-    public void init()
-            throws InitializationException
+    public void init() throws InitializationException
     {
         try
         {
+            setEnabled(getConfiguration().getBoolean("enabled", true));
             scheduleQueue = new JobQueue();
             mainLoop = new MainLoop();
 
-            // Load all from cold storage.
-            List jobs = JobEntryPeer.doSelect(new Criteria());
-
-            if (jobs != null && jobs.size() > 0)
+            if (isEnabled())
             {
-                Iterator it = jobs.iterator();
-                while (it.hasNext())
-                {
-                    ((JobEntry) it.next()).calcRunTime();
-                }
-                scheduleQueue.batchLoad(jobs);
 
-                setEnabled(getConfiguration().getBoolean("enabled", true));
-                restart();
+                // Load all from cold storage.
+                List jobs = JobEntryPeer.doSelect(new Criteria());
+
+                if (jobs != null && jobs.size() > 0)
+                {
+                    Iterator it = jobs.iterator();
+                    while (it.hasNext())
+                    {
+                        ((JobEntry) it.next()).calcRunTime();
+                    }
+                    scheduleQueue.batchLoad(jobs);
+
+                    restart();
+                }
             }
 
             setInit(true);
@@ -154,8 +155,7 @@ public class TurbineSchedulerService
      * @param config A ServletConfig.
      * @deprecated use init() instead.
      */
-    public void init(ServletConfig config)
-            throws InitializationException
+    public void init(ServletConfig config) throws InitializationException
     {
         init();
     }
@@ -180,8 +180,7 @@ public class TurbineSchedulerService
      * @return A JobEntry.
      * @exception TurbineException job could not be retreived.
      */
-    public JobEntry getJob(int oid)
-            throws TurbineException
+    public JobEntry getJob(int oid) throws TurbineException
     {
         try
         {
@@ -202,8 +201,7 @@ public class TurbineSchedulerService
      * @param je A JobEntry with the job to add.
      * @throws TurbineException job could not be added
      */
-    public void addJob(JobEntry je)
-            throws TurbineException
+    public void addJob(JobEntry je) throws TurbineException
     {
         updateJob(je);
     }
@@ -214,8 +212,7 @@ public class TurbineSchedulerService
      * @param je A JobEntry with the job to remove.
      * @exception TurbineException job could not be removed
      */
-    public void removeJob(JobEntry je)
-            throws TurbineException
+    public void removeJob(JobEntry je) throws TurbineException
     {
         try
         {
@@ -243,8 +240,7 @@ public class TurbineSchedulerService
      * @param je A JobEntry with the job to modify
      * @throws TurbineException job could not be updated
      */
-    public void updateJob(JobEntry je)
-            throws TurbineException
+    public void updateJob(JobEntry je) throws TurbineException
     {
         try
         {
@@ -384,8 +380,7 @@ public class TurbineSchedulerService
      * @return A JobEntry.
      * @exception TurbineException a generic exception.
      */
-    private synchronized JobEntry nextJob()
-            throws TurbineException
+    private synchronized JobEntry nextJob() throws TurbineException
     {
         try
         {
@@ -420,8 +415,7 @@ public class TurbineSchedulerService
             }
         }
         catch (InterruptedException ex)
-        {
-        }
+        {}
 
         // On interrupt.
         return null;
@@ -432,8 +426,7 @@ public class TurbineSchedulerService
      * so that the main class need not implement Runnable, which would
      * allow others to directly invoke run, which is not supported.
      */
-    protected class MainLoop
-            implements Runnable
+    protected class MainLoop implements Runnable
     {
         /**
          * Method to run the class.
