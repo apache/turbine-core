@@ -57,6 +57,12 @@ Scheduled Jobs to be loaded.
 </li>
 
 <li>
+<a href="crypto-service.html">Crypto Service</a>
+<br/>
+Provides encryption algorithms like MD5 and SHA message digests as well as old-fashioned Unix crypt.
+</li>
+
+<li>
 <a href="cache-service.html">Cache Service</a>
 <br/>
 Provides a persistant Object Storage mechanism within your application.

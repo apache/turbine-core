@@ -293,6 +293,7 @@ use.ssl=true
 # will be initialized. Keep this is mind if you have services
 # that depend on other services during initialization.
 # -------------------------------------------------------------------
+services.CryptoService.classname=org.apache.turbine.services.crypto.TurbineCryptoService
 services.ComponentService.classname=org.apache.turbine.services.component.TurbineComponentService
 services.FactoryService.classname=org.apache.turbine.services.factory.TurbineFactoryService
 services.PoolService.classname=org.apache.turbine.services.pool.TurbinePoolService
@@ -606,6 +607,36 @@ locale.default.country=@LOCALE_DEFAULT_COUNTRY@
 #
 scheduler.enabled=false
 
+# -------------------------------------------------------------------
+#
+#  C R Y P T O   S E R V I C E
+#
+# -------------------------------------------------------------------
+
+#
+# Standard Unix crypt(3) password encryption.
+# 
+services.CryptoService.algorithm.unix  = org.apache.turbine.services.crypto.provider.UnixCrypt
+#
+# This providers allows access to the Java Message Digest encryption algorithms
+#
+services.CryptoService.algorithm.java  = org.apache.turbine.services.crypto.provider.JavaCrypt
+#
+# This is a simple, cleartext "encryption" provider.
+#
+services.CryptoService.algorithm.cleartext  = org.apache.turbine.services.crypto.provider.ClearCrypt
+#
+# Use this provider if you upgrade from Turbine 2.1 to current. It provides bug-to-bug
+# compatibility for passwords created with the old Security Service. See the javadocs for
+# OldJavaCrypt
+#
+services.CryptoService.algorithm.oldjava  = org.apache.turbine.services.crypto.provider.OldJavaCrypt
+#
+# This is the default crypto provider. It implements the normal Java MessageDigest ciphers
+# You need not to have this, it is the default if no algorithms are given. The default
+# provider gives you all the Java MessageDigest Ciphers
+#
+services.CryptoService.algorithm.default  = org.apache.turbine.services.crypto.provider.JavaCrypt
 
 # -------------------------------------------------------------------
 #
