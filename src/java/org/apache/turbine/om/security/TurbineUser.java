@@ -60,9 +60,10 @@ import java.sql.Connection;
 import java.util.Date;
 import java.util.Hashtable;
 import javax.servlet.http.HttpSessionBindingEvent;
-import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.commons.logging.LogFactory;
+
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.ObjectUtils;
 
 /**
@@ -123,7 +124,7 @@ public class TurbineUser extends SecurityObject implements User
         {
             return ((Integer) getTemp(User.SESSION_ACCESS_COUNTER)).intValue();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             return 0;
         }
@@ -140,7 +141,7 @@ public class TurbineUser extends SecurityObject implements User
         {
             return ((Integer) getPerm(User.ACCESS_COUNTER)).intValue();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             return 0;
         }
@@ -165,7 +166,7 @@ public class TurbineUser extends SecurityObject implements User
      */
     public java.util.Date getLastAccessDate()
     {
-        if (lastAccessDate == null)
+        if(lastAccessDate == null)
         {
             setLastAccessDate();
         }
@@ -215,10 +216,10 @@ public class TurbineUser extends SecurityObject implements User
     {
         try
         {
-            Object val = permStorage.get (name);
+            Object val = permStorage.get(name);
             return (val == null ? def : val);
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             return def;
         }
@@ -232,7 +233,7 @@ public class TurbineUser extends SecurityObject implements User
      */
     public Hashtable getPermStorage()
     {
-        if (this.permStorage == null)
+        if(this.permStorage == null)
         {
             this.permStorage = new Hashtable();
         }
@@ -264,12 +265,12 @@ public class TurbineUser extends SecurityObject implements User
         try
         {
             val = tempStorage.get(name);
-            if (val == null)
+            if(val == null)
             {
                 val = def;
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             val = def;
         }
@@ -287,13 +288,13 @@ public class TurbineUser extends SecurityObject implements User
         String tmp = null;
         try
         {
-            tmp = (String) getPerm (User.USERNAME);
-            if ( tmp.length() == 0 )
+            tmp = (String) getPerm(User.USERNAME);
+            if(tmp.length() == 0)
             {
                 tmp = null;
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
         }
         return tmp;
@@ -310,13 +311,13 @@ public class TurbineUser extends SecurityObject implements User
         String tmp = null;
         try
         {
-            tmp = (String) getPerm (User.FIRST_NAME);
-            if (tmp.length() == 0)
+            tmp = (String) getPerm(User.FIRST_NAME);
+            if(tmp.length() == 0)
             {
                 tmp = null;
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
         }
         return tmp;
@@ -333,11 +334,11 @@ public class TurbineUser extends SecurityObject implements User
         String tmp = null;
         try
         {
-            tmp = (String) getPerm (User.LAST_NAME);
-            if (tmp.length() == 0)
+            tmp = (String) getPerm(User.LAST_NAME);
+            if(tmp.length() == 0)
                 tmp = null;
         }
-        catch (Exception e)
+        catch(Exception e)
         {
         }
         return tmp;
@@ -361,7 +362,7 @@ public class TurbineUser extends SecurityObject implements User
      */
     public String getEmail()
     {
-        return (String)getPerm(User.EMAIL);
+        return (String) getPerm(User.EMAIL);
     }
 
     /**
@@ -449,7 +450,7 @@ public class TurbineUser extends SecurityObject implements User
      */
     public void setPassword(String password)
     {
-         setPerm(User.PASSWORD, password);
+        setPerm(User.PASSWORD, password);
     }
 
     /**
@@ -485,7 +486,7 @@ public class TurbineUser extends SecurityObject implements User
      */
     public Hashtable getTempStorage()
     {
-        if (this.tempStorage == null)
+        if(this.tempStorage == null)
         {
             this.tempStorage = new Hashtable();
         }
@@ -512,7 +513,7 @@ public class TurbineUser extends SecurityObject implements User
      */
     private Boolean getHasLoggedIn()
     {
-        return (Boolean) getTemp (User.HAS_LOGGED_IN);
+        return (Boolean) getTemp(User.HAS_LOGGED_IN);
     }
 
     /**
@@ -521,9 +522,9 @@ public class TurbineUser extends SecurityObject implements User
      *
      * @param value Whether someone has logged in or not.
      */
-    public void setHasLoggedIn (Boolean value)
+    public void setHasLoggedIn(Boolean value)
     {
-        setTemp (User.HAS_LOGGED_IN, value);
+        setTemp(User.HAS_LOGGED_IN, value);
     }
 
     /**
@@ -547,7 +548,7 @@ public class TurbineUser extends SecurityObject implements User
      */
     public void setUserName(String username)
     {
-        setPerm (User.USERNAME, username);
+        setPerm(User.USERNAME, username);
     }
 
     /**
@@ -569,7 +570,6 @@ public class TurbineUser extends SecurityObject implements User
     {
         setPerm(User.LAST_NAME, lastName);
     }
-
 
     /**
      * Sets the email address.
@@ -604,7 +604,7 @@ public class TurbineUser extends SecurityObject implements User
     public void setConfirmed(String value)
     {
         String val = "";
-        if (value != null)
+        if(value != null)
         {
             val = value;
         }
@@ -618,7 +618,7 @@ public class TurbineUser extends SecurityObject implements User
      */
     public String getConfirmed()
     {
-        return (String)getPerm(User.CONFIRM_VALUE);
+        return (String) getPerm(User.CONFIRM_VALUE);
     }
 
     /**
@@ -627,9 +627,9 @@ public class TurbineUser extends SecurityObject implements User
      * @exception Exception, a generic exception.
      */
     public void updateLastLogin()
-        throws Exception
+            throws Exception
     {
-        setPerm( User.LAST_LOGIN, new java.util.Date() );
+        setPerm(User.LAST_LOGIN, new java.util.Date());
     }
 
     /**
@@ -653,12 +653,12 @@ public class TurbineUser extends SecurityObject implements User
     {
         try
         {
-            if (hasLoggedIn())
+            if(hasLoggedIn())
             {
                 TurbineSecurity.saveOnSessionUnbind(this);
             }
         }
-        catch ( Exception e )
+        catch(Exception e)
         {
             log.error("TurbineUser.valueUnbobund(): " + e.getMessage(), e);
 
@@ -666,7 +666,7 @@ public class TurbineUser extends SecurityObject implements User
             // goes away before sessions get unbound on servlet container
             // shutdown, print the stcktrace to the container's console.
             ByteArrayOutputStream ostr = new ByteArrayOutputStream();
-            e.printStackTrace(new PrintWriter(ostr,true));
+            e.printStackTrace(new PrintWriter(ostr, true));
             String stackTrace = ostr.toString();
             System.out.println(stackTrace);
         }
@@ -676,9 +676,9 @@ public class TurbineUser extends SecurityObject implements User
      * Saves this object to the data store.
      */
     public void save()
-        throws Exception
+            throws Exception
     {
-        if (TurbineSecurity.accountExists(this))
+        if(TurbineSecurity.accountExists(this))
         {
             TurbineSecurity.saveUser(this);
         }
