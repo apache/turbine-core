@@ -54,8 +54,9 @@ package org.apache.turbine.services.localization;
  * <http://www.apache.org/>.
  */
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -99,6 +100,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:novalidemail@foo.com">Frank Y. Kim</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:leonardr@collab.net">Leonard Richardson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
@@ -107,14 +109,21 @@ public class TurbineLocalizationService
         implements LocalizationService
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(LocalizationTool.class);
+    private static Log log = LogFactory.getLog(TurbineLocalizationService.class);
 
     /**
-     * The ResourceBundles in this service.
+     * The value to pass to <code>MessageFormat</code> if a
+     * <code>null</code> reference is passed to <code>format()</code>.
+     */
+    private static final Object[] NO_ARGS = new Object[0];
+
+    /**
+     * Bundle name keys a Map of the ResourceBundles in this
+     * service (which is in turn keyed by Locale).
      * Key=bundle name
      * Value=Hashtable containing ResourceBundles keyed by Locale.
      */
-    private Hashtable bundles = null;
+    private Map bundles = null;
 
     /**
      * The list of default bundles to search.
@@ -138,7 +147,7 @@ public class TurbineLocalizationService
      */
     public TurbineLocalizationService()
     {
-        bundles = new Hashtable();
+        bundles = new HashMap();
     }
 
     /**
@@ -178,7 +187,7 @@ public class TurbineLocalizationService
             // Using old-style single bundle name property.
             if (bundleNames == null || bundleNames.length <= 0)
             {
-                bundleNames = new String[]{name};
+                bundleNames = new String[] {name};
             }
             else
             {
@@ -196,6 +205,22 @@ public class TurbineLocalizationService
     }
 
     /**
+     * Retrieves the default language (specified in the config file).
+     */
+    public String getDefaultLanguage()
+    {
+        return defaultLanguage;
+    }
+
+    /**
+     * Retrieves the default country (specified in the config file).
+     */
+    public String getDefaultCountry()
+    {
+        return defaultCountry;
+    }
+
+    /**
      * Retrieves the name of the default bundle (as specified in the
      * config file).
      * @see org.apache.turbine.services.localization.LocalizationService#getDefaultBundleName()
@@ -203,6 +228,14 @@ public class TurbineLocalizationService
     public String getDefaultBundleName()
     {
         return (bundleNames.length > 0 ? bundleNames[0] : "");
+    }
+
+    /**
+     * @see org.apache.turbine.services.localization.LocalizationService#getBundleNames()
+     */
+    public String[] getBundleNames()
+    {
+        return (String []) bundleNames.clone();
     }
 
     /**
@@ -302,57 +335,159 @@ public class TurbineLocalizationService
      * This method returns a ResourceBundle for the given bundle name
      * and the given Locale.
      *
-     * @param bundleName Name of bundle.
-     * @param locale A Locale.
+     * @param bundleName Name of bundle (or <code>null</code> for the
+     * default bundle).
+     * @param locale The locale (or <code>null</code> for the locale
+     * indicated by the default language and country).
      * @return A localized ResourceBundle.
      */
     public ResourceBundle getBundle(String bundleName, Locale locale)
     {
         // Assure usable inputs.
-        bundleName = (bundleName == null ? getDefaultBundleName() : bundleName.trim());
+        bundleName = (StringUtils.isEmpty(bundleName) ? getDefaultBundleName() : bundleName.trim());
         if (locale == null)
         {
             locale = getLocale((String) null);
         }
 
-        if (bundles.containsKey(bundleName))
+        // Find/retrieve/cache bundle.
+        ResourceBundle rb = null;
+        Map bundlesByLocale = (Map) bundles.get(bundleName);
+        if (bundlesByLocale != null)
         {
-            Hashtable locales = (Hashtable) bundles.get(bundleName);
+            // Cache of bundles by locale for the named bundle exists.
+            // Check the cache for a bundle corresponding to locale.
+            rb = (ResourceBundle) bundlesByLocale.get(locale);
 
-            if (locales.containsKey(locale))
+            if (rb == null)
             {
-                return (ResourceBundle) locales.get(locale);
-            }
-            else
-            {
-                // Try to create a ResourceBundle for this Locale.
-                ResourceBundle rb = ResourceBundle.getBundle(bundleName,
-                        locale);
-
-                // Cache the ResourceBundle in memory.
-                locales.put(rb.getLocale(), rb);
-
-                return rb;
+                // Not yet cached.
+                rb = cacheBundle(bundleName, locale);
             }
         }
         else
         {
-            // Try to create a ResourceBundle for this Locale.
-            ResourceBundle rb = ResourceBundle.getBundle(bundleName,
-                    locale);
+            rb = cacheBundle(bundleName, locale);
+        }
+        return rb;
+    }
 
-            // Cache the ResourceBundle in memory.
-            Hashtable ht = new Hashtable();
-            ht.put(locale, rb);
+    /**
+     * Caches the named bundle for fast lookups.  This operation is
+     * relatively expesive in terms of memory use, but is optimized
+     * for run-time speed in the usual case.
+     *
+     * @exception MissingResourceException Bundle not found.
+     */
+    private synchronized ResourceBundle cacheBundle(String bundleName,
+                                                    Locale locale)
+        throws MissingResourceException
+    {
+        Map bundlesByLocale = (HashMap) bundles.get(bundleName);
+        ResourceBundle rb = (bundlesByLocale == null ? null :
+                             (ResourceBundle) bundlesByLocale.get(locale));
 
-            // Can't call getLocale(), because that is jdk2.  This
-            // needs to be changed back, since the above approach
-            // caches extra Locale and Bundle objects.
-            // ht.put( rb.getLocale(), rb );
+        if (rb == null)
+        {
+            bundlesByLocale = (bundlesByLocale == null ? new HashMap(3) :
+                               new HashMap(bundlesByLocale));
+            try
+            {
+                rb = ResourceBundle.getBundle(bundleName, locale);
+            }
+            catch (MissingResourceException e)
+            {
+                rb = findBundleByLocale(bundleName, locale, bundlesByLocale);
+                if (rb == null)
+                {
+                    throw (MissingResourceException) e.fillInStackTrace();
+                }
+            }
 
-            bundles.put(bundleName, ht);
+            if (rb != null)
+            {
+                // Cache bundle.
+                bundlesByLocale.put(rb.getLocale(), rb);
 
-            return rb;
+                Map bundlesByName = new HashMap(bundles);
+                bundlesByName.put(bundleName, bundlesByLocale);
+                this.bundles = bundlesByName;
+            }
+        }
+        return rb;
+    }
+
+    /**
+     * <p>Retrieves the bundle most closely matching first against the
+     * supplied inputs, then against the defaults.</p>
+     *
+     * <p>Use case: some clients send a HTTP Accept-Language header
+     * with a value of only the language to use
+     * (i.e. "Accept-Language: en"), and neglect to include a country.
+     * When there is no bundle for the requested language, this method
+     * can be called to try the default country (checking internally
+     * to assure the requested criteria matches the default to avoid
+     * disconnects between language and country).</p>
+     *
+     * <p>Since we're really just guessing at possible bundles to use,
+     * we don't ever throw <code>MissingResourceException</code>.</p>
+     */
+    private ResourceBundle findBundleByLocale(String bundleName, Locale locale,
+                                              Map bundlesByLocale)
+    {
+        ResourceBundle rb = null;
+        if ( !StringUtils.isNotEmpty(locale.getCountry()) &&
+             defaultLanguage.equals(locale.getLanguage()) )
+        {
+            /*
+              log.debug("Requested language '" + locale.getLanguage() +
+              "' matches default: Attempting to guess bundle " +
+              "using default country '" + defaultCountry + '\'');
+            */
+            Locale withDefaultCountry = new Locale(locale.getLanguage(),
+                                                   defaultCountry);
+            rb = (ResourceBundle) bundlesByLocale.get(withDefaultCountry);
+            if (rb == null)
+            {
+                rb = getBundleIgnoreException(bundleName, withDefaultCountry);
+            }
+        }
+        else if ( !StringUtils.isNotEmpty(locale.getLanguage()) &&
+                  defaultCountry.equals(locale.getCountry()) )
+        {
+            Locale withDefaultLanguage = new Locale(defaultLanguage,
+                                                    locale.getCountry());
+            rb = (ResourceBundle) bundlesByLocale.get(withDefaultLanguage);
+            if (rb == null)
+            {
+                rb = getBundleIgnoreException(bundleName, withDefaultLanguage);
+            }
+        }
+
+        if (rb == null && !defaultLocale.equals(locale))
+        {
+            rb = getBundleIgnoreException(bundleName, defaultLocale);
+        }
+
+        return rb;
+    }
+
+    /**
+     * Retrieves the bundle using the
+     * <code>ResourceBundle.getBundle(String, Locale)</code> method,
+     * returning <code>null</code> instead of throwing
+     * <code>MissingResourceException</code>.
+     */
+    private final ResourceBundle getBundleIgnoreException(String bundleName,
+                                                          Locale locale)
+    {
+        try
+        {
+            return ResourceBundle.getBundle(bundleName, locale);
+        }
+        catch (MissingResourceException ignored)
+        {
+            return null;
         }
     }
 
@@ -374,7 +509,7 @@ public class TurbineLocalizationService
             {
                 if (bundleNames.length <= 0)
                 {
-                    bundleNames = new String[]{defaultBundle};
+                    bundleNames = new String[] {defaultBundle};
                 }
             }
         }
@@ -448,12 +583,13 @@ public class TurbineLocalizationService
         if (value == null)
         {
             String loc = locale.toString();
-            log.debug(LocalizationService.SERVICE_NAME +
-                    " noticed missing resource: " +
-                    "bundleName=" + bundleName + ", locale=" + loc +
-                    ", key=" + key);
+            String mesg = LocalizationService.SERVICE_NAME +
+                " noticed missing resource: " +
+                "bundleName=" + bundleName + ", locale=" + loc +
+                ", key=" + key;
+            log.debug(mesg);
             // Text not found in requested or default bundles.
-            throw new MissingResourceException(bundleName, loc, key);
+            throw new MissingResourceException(mesg, bundleName, key);
         }
 
         return value;
