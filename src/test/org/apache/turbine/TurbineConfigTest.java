@@ -60,6 +60,7 @@ import junit.framework.TestSuite;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.util.TurbineConfig;
+import org.apache.turbine.util.*;
 
 /**
  * This testcase verifies that TurbineConfig can be used to startup Turbine in a non
@@ -73,12 +74,12 @@ public class TurbineConfigTest
     extends TestCase
 {
     private static TurbineConfig tc = null;
+    private static TurbineXmlConfig txc = null;
 
     public TurbineConfigTest(String name)
     {
         super(name);
              
-        
     }
 
     public static Test suite()
@@ -98,10 +99,10 @@ public class TurbineConfigTest
         
     }
     
-    public void testTurbineConfigWithconfigurationFile() throws Exception {
+    public void testTurbineXmlConfigWithconfigurationFile() throws Exception {
             String value = "/conf/test/TurbineConfiguration.xml";
-            tc = new TurbineConfig(".", value);
-            ServletContext context = tc.getServletContext();
+            txc = new TurbineXmlConfig(".", value);
+            ServletContext context = txc.getServletContext();
             ServletConfig config = (ServletConfig)tc;
             String confFile= Turbine.findInitParameter(context, config, 
                     TurbineConfig.CONFIGURATION_PATH_KEY, 
