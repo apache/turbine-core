@@ -57,6 +57,9 @@ package org.apache.turbine.services.schedule;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -71,6 +74,8 @@ public class JobEntry
         extends BaseJobEntry
         implements Comparable
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(ScheduleService.LOGGER_NAME);
 
     /** indicates if job is currently running */
     private boolean jobIsActive = false;
@@ -315,6 +320,8 @@ public class JobEntry
             default:
                 // Do nothing.
         }
+
+        log.info("Next runtime for task "+this.getTask()+" is "+this.getNextRunDate());
     }
 
     /**
