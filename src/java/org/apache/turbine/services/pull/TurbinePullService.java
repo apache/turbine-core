@@ -395,9 +395,16 @@ public class TurbinePullService
 
         //
         // Session Tool start right at the session once the user has been set
-        // while persistent and authorized Tools are started when the user has logged in
+        // while persistent and authorized Tools are started when the user has
+        // logged in
         //
         User user = data.getUser();
+
+        // Note: Session tools are cuurently lost after the login action
+        // because the anonymous user is replaced the the real user object.
+        // We should either store the session pull tools in the session or
+        // make Turbine.loginAction() copy the session pull tools into the
+        // new user object.
         populateWithSessionTools(sessionTools, context, data, user, false);
 
         if (!TurbineSecurity.isAnonymousUser(user))
