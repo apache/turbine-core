@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project>
+<!--
+  <extend>${basedir}/../project.xml</extend>
+-->
+  <!-- the version of maven's project object model -->
+  <pomVersion>3</pomVersion>
+
+  <!-- a unique name for this project -->
+  <id>maven-turbine-plugin</id>
+
+  <!-- a short but descriptive name for the project -->
+  <name>Maven Turbine Plugin</name>
+
+  <!-- The version of the project under development, e.g.
+       1.1, 1.2, 2.0-dev -->
+  <currentVersion>2.3-dev</currentVersion>
+
+  <!-- a short description of what the project does -->
+  <shortDescription>
+    Maven Turbine Plugin
+  </shortDescription>
+
+  <!-- the project home page -->
+  <url>http://jakarta.apache.org/turbine/turbine-2/maven-plugin/</url>
+  <issueTrackingUrl>http://jira.werken.com/BrowseProject.jspa?id=10030</issueTrackingUrl>
+  <siteAddress>jakarta.apache.org</siteAddress>
+  <siteDirectory>/www/jakarta.apache.org/turbine/turbine-2/maven-plugin/</siteDirectory>
+  <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-turbine-2/</distributionDirectory>
+
+  <repository>
+    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2/src/maven-plugin/</connection>
+    <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2/src/maven-plugin/</url>
+  </repository>
+
+  <!-- any mailing lists for the project -->
+  <mailingLists/>
+
+  <!-- who the developers are for the project -->
+  <developers>
+   <developer>
+      <name>dIon Gillard</name>
+      <id>dion</id>
+      <email>dion@multitask.com.au</email>
+      <organization>Multitask Consulting</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Martin Poeschl</name>
+      <id>mpoeschl</id>
+      <email>mpoeschl@marmot.at</email>
+      <organization>tucana.at</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <!-- jar files the project is dependent on -->
+  <dependencies/>
+
+  <build>
+    <sourceDirectory>${basedir}/src/main</sourceDirectory>
+    <unitTestSourceDirectory>${basedir}/src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+
+    <resources>
+      <resource>
+        <directory>${basedir}/src/plugin-resources</directory>
+        <targetPath>plugin-resources</targetPath>
+      </resource>
+      <resource>
+        <directory>${basedir}</directory>
+        <includes>
+          <include>plugin.jelly</include>
+          <include>plugin.properties</include>
+          <include>project.properties</include>
+          <include>project.xml</include>
+        </includes>
+      </resource>
+    </resources>
+
+  </build>
+
+</project>
+
