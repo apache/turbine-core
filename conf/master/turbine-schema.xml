@@ -113,15 +113,16 @@
     <column name="PROPERTY" type="VARBINARY"/>
   </table>
 
+<!-- is part of the decoupled torque
   <table name="ID_TABLE">
     <column name="ID_TABLE_ID" autoIncrement="true" required="true" primaryKey="true" type="INTEGER"/>
     <column name="TABLE_NAME" required="true" size="255" type="VARCHAR"/>
     <column name="NEXT_ID" type="INTEGER"/>
     <column name="QUANTITY" type="INTEGER"/>
-    
+
     <unique>
       <unique-column name="TABLE_NAME"/>
-    </unique>        
+    </unique>
   </table>
-
+-->
 </database>
