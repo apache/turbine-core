@@ -79,7 +79,7 @@ public abstract class TurbinePull
      *
      * @return a PullService implementation instance
      */
-    protected static PullService getService()
+    public static PullService getService()
     {
         return (PullService) TurbineServices
                 .getInstance().getService(PullService.SERVICE_NAME);
