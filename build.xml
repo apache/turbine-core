@@ -37,6 +37,7 @@
         <pathelement location="${castor.jar}"/>
         <pathelement location="${freemarker.jar}"/>
         <pathelement location="${webmacro.jar}"/>
+        <pathelement location="${jython.jar}"/>
     </path>
 
   <!-- ================================================================== -->
@@ -122,6 +123,10 @@
                    classname="org.exolab.castor.jdo.Database">
             <classpath refid="classpath"/>
         </available>
+        <available property="jython.present"
+		   classname="org.python.util.PythonInterpreter">
+            <classpath refid="classpath"/>
+        </available>
     </target>
 
     <!-- ================================================================== -->
@@ -198,7 +203,8 @@
     <!-- ================================================================== -->
     <!-- Adds JPython related files to the build directory                  -->
     <!-- ================================================================== -->
-    <target name="prepare-python" depends="prepare">
+    <target name="prepare-python" depends="prepare"
+        if="jython.present">
         <copy todir="${build.src}/org" filtering="yes">
             <fileset dir="${src.java.dir}/org">
                 <include name="**/assemblerbroker/util/python/*.java"/>
@@ -232,7 +238,7 @@
     <!-- Compiles the source directory                                      -->
     <!-- ================================================================== -->
     <target name="compile"
-            depends="prepare, prepare-jsp, prepare-freemarker,
+            depends="prepare, prepare-jsp, prepare-freemarker, prepare-python,
                      prepare-webmacro, prepare-log4java, prepare-castor"
             description="--> compiles the source code">
         <javac srcdir="${build.src}"
