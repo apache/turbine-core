@@ -54,32 +54,24 @@ package org.apache.turbine;
  * <http://www.apache.org/>.
  */
 
-// Java Core Classes
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.File;
 import java.util.Enumeration;
-
-// Java Servlet Classes
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-// Turbine Modules
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.PageLoader;
 import org.apache.turbine.modules.actions.sessionvalidator.SessionValidator;
-
-// Turbine Utility Classes
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.RunDataFactory;
 import org.apache.turbine.util.StringUtils;
 import org.apache.turbine.util.security.AccessControlList;
-
-//Turbine Services
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.logging.LoggingService;
@@ -205,6 +197,10 @@ public class Turbine
                     applicationRoot = config.getServletContext().getRealPath("");
                 }                    
                 
+                // Create any directories that need to be setup for
+                // a running Turbine application.
+                createRuntimeDirectories();
+                
                 // Initalize TurbineServices and init bootstrap services
                 TurbineServices services =
                     (TurbineServices) TurbineServices.getInstance();
@@ -235,6 +231,27 @@ public class Turbine
     }
 
     /**
+     * Create any directories that might be needed during
+     * runtime. Right now this includes:
+     *
+     * i) directories for logging
+     *
+     */
+    private static void createRuntimeDirectories()
+    {
+        // Create the logging directory
+        File logDir = new File(getRealPath("/logs"));
+        
+        if (logDir.exists() == false)
+        {
+            if(logDir.mkdirs() == false)
+            {
+                System.err.println("Cannot create directory for logs!");
+            }
+        }
+    }
+
+    /**
      * Initializes the services which need <code>RunData</code> to
      * initialize themselves (post startup).
      *
@@ -251,7 +268,12 @@ public class Turbine
                     serverName = data.getRequest().getServerName();
                     serverPort = Integer.toString(data.getRequest().getServerPort());
                     serverScheme = data.getRequest().getScheme();
-                    contextPath = applicationRoot;
+                    
+                    // Store the context path for tools like ContentURI and
+                    // the UIManager that use webapp context path information
+                    // for constructing URLs.
+                    contextPath = data.getRequest().getContextPath();
+                    
                     log("Turbine: Starting HTTP initialization of services");
                     TurbineServices.getInstance().initServices(data);
                     log("Turbine: Completed HTTP initialization of services");
