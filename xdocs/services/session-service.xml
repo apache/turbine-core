@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - Session Service</title>
+  <author email="quintonm@bellsouth.net">Quinton McCombs</author>
+ </properties>
+
+<body>
+
+<section name="Overview">
+
+<p>
+    The Session Service was created to allow Turbine based applications
+    to access information about the current sessions in the
+    application's context.  Some of the most obvious uses would include
+    <ul>
+        <li>Count of the active sessions</li>
+        <li>Determine if a given user is already logged in on another
+            session
+        </li>
+        <li>Terminate a session (not implemented yet)</li>
+    </ul>
+</p>
+
+<p>
+    The service is implemented by using a listener configured in
+    your application's deployment descriptor.  The listener class
+    is used by the container to notify the service when sessions
+    are created or destroyed.
+</p>
+
+</section>
+
+<section name="Configuration">
+
+<p>
+    You will need to modify a few files in order to activate the service.
+    The first modification will be in your TurbineResources.properties.
+    See the example below for two settings that need to be present in
+    order for the service to work.
+</p>
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+#
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.SessionService.classname=org.apache.turbine.services.session.TurbineSessionService
+.
+.
+.
+# -------------------------------------------------------------------
+#
+#  S E S S I O N  S E R V I C E
+#
+# -------------------------------------------------------------------
+
+services.SessionService.earlyInit=true
+
+]]></source>
+
+<p>
+    The next modification will be your application's deployment
+    descriptor (web.xml).  Here we will configure the listener class.
+</p>
+
+<source><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+
+    <listener>
+        <listener-class>org.apache.turbine.services.session.SessionListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>MyServletName</servlet-name>
+        <servlet-class>org.apache.turbine.Turbine</servlet-class>
+        <init-param>
+            <param-name>properties</param-name>
+            <param-value>/WEB-INF/conf/TurbineResources.properties</param-value>
+        </init-param>
+    </servlet>
+
+</web-app>
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<p>
+    The Session Service should be accessed through the
+    <code>org.apache.turbine.services.session.TurbineSession</code> class.  This
+    class will provide you with static methods for accessing the service.  See
+    the javadocs for this class for information on the API.
+</p>
+
+</section>
+
+</body>
+</document>

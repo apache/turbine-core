@@ -47,6 +47,7 @@
         <item name="Scheduler Service"   href="/services/scheduler-service.html"/>
         <item name="Security Service"    href="/services/security-service.html"/>
         <item name="Servlet Service"     href="/services/servlet-service.html"/>
+        <item name="Session Service"     href="/services/session-service.html"/>
         <item name="Template Service"    href="/services/template-service.html"/>
         <item name="Unique ID Service"   href="/services/uniqueid-service.html"/>
         <item name="Upload Service"      href="/services/upload-service.html"/>

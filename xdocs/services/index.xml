@@ -162,6 +162,12 @@ without a backend.
 </li>
 
 <li>
+<a href="session-service.html">Session Service</a>
+<br/>
+Provides access to Session information for the current web context.
+</li>
+
+<li>
 <a href="servlet-service.html">Servlet Service</a>
 <br/>
 Encapsulates the information provided by the ServletContext API,
