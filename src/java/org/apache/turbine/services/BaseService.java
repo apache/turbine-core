@@ -68,8 +68,8 @@ import org.apache.commons.configuration.ConfigurationConverter;
  * @version $Id$
  */
 public class BaseService
-    extends BaseInitable
-    implements Service
+        extends BaseInitable
+        implements Service
 {
     /** A reference to the ServiceBroker that instantiated this object. */
     protected ServiceBroker serviceBroker;
@@ -87,7 +87,7 @@ public class BaseService
      *
      * @param broker The ServiceBroker that instantiated this object.
      */
-    public void setServiceBroker( ServiceBroker broker )
+    public void setServiceBroker(ServiceBroker broker)
     {
         this.serviceBroker = broker;
     }
@@ -97,7 +97,7 @@ public class BaseService
      *
      * @param name The name of this Service.
      */
-    public void setName( String name )
+    public void setName(String name)
     {
         this.name = name;
     }

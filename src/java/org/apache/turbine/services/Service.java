@@ -55,8 +55,8 @@ package org.apache.turbine.services;
  */
 
 import java.util.Properties;
-import org.apache.commons.configuration.Configuration;
 
+import org.apache.commons.configuration.Configuration;
 
 /**
  * <code>Services</code> are <code>Initables</code> that have a name,
@@ -70,7 +70,7 @@ import org.apache.commons.configuration.Configuration;
  * @version $Id$
  */
 public interface Service
-    extends Initable
+        extends Initable
 {
     /** The name of this service. */
     static final String SERVICE_NAME = "Service";
@@ -82,7 +82,7 @@ public interface Service
      *
      * @param broker The ServiceBroker that instantiated this object.
      */
-    void setServiceBroker( ServiceBroker broker );
+    void setServiceBroker(ServiceBroker broker);
 
     /**
      * ServiceBroker uses this method to pass a Service its name.
@@ -91,7 +91,7 @@ public interface Service
      *
      * @param name The name of this Service.
      */
-    void setName( String name );
+    void setName(String name);
 
     /**
      * Returns the name of this Service.

@@ -55,6 +55,7 @@ package org.apache.turbine.services;
  */
 
 import javax.servlet.ServletConfig;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -89,7 +90,7 @@ import org.apache.turbine.util.RunData;
  * @version $Id$
  */
 public abstract class TurbineBaseService
-    extends BaseService
+        extends BaseService
 {
     /**
      * Performs early initialization.  Overrides init() method in
@@ -100,16 +101,16 @@ public abstract class TurbineBaseService
      * @exception InitializationException if initialization of this
      * class was not successful.
      */
-    public void init( Object data )
-        throws InitializationException
+    public void init(Object data)
+            throws InitializationException
     {
         if (data instanceof ServletConfig)
         {
-            init((ServletConfig)data);
+            init((ServletConfig) data);
         }
         else if (data instanceof RunData)
         {
-            init((RunData)data);
+            init((RunData) data);
         }
     }
 
@@ -122,8 +123,8 @@ public abstract class TurbineBaseService
      * class was not successful.
      * @deprecated Use init() instead
      */
-    public void init( ServletConfig config )
-        throws InitializationException
+    public void init(ServletConfig config)
+            throws InitializationException
     {
     }
 
@@ -134,8 +135,8 @@ public abstract class TurbineBaseService
      * @exception InitializationException, if initialization of this
      * class was not successful.
      */
-    public void init( RunData data )
-        throws InitializationException
+    public void init(RunData data)
+            throws InitializationException
     {
     }
 
@@ -150,7 +151,7 @@ public abstract class TurbineBaseService
      * class was not successful.
      */
     public void init()
-        throws InitializationException
+            throws InitializationException
     {
         setInit(true);
     }
