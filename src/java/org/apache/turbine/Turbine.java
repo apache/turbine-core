@@ -54,12 +54,13 @@ package org.apache.turbine;
  * <http://www.apache.org/>.
  */
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.Reader;
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
@@ -72,38 +73,30 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationFactory;
 import org.apache.commons.configuration.PropertiesConfiguration;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.lang.exception.ExceptionUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.commons.xo.Mapper;
-
 import org.apache.log4j.PropertyConfigurator;
-
 import org.apache.turbine.modules.PageLoader;
-import org.apache.turbine.pipeline.DefaultPipelineData;
 import org.apache.turbine.pipeline.Pipeline;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.pipeline.TurbinePipeline;
-
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.component.ComponentService;
+import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.template.TurbineTemplate;
-import org.apache.turbine.services.rundata.RunDataService;
-import org.apache.turbine.services.rundata.TurbineRunDataFacade;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.uri.URIConstants;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * Turbine is the main servlet for the entire system. It is <code>final</code>
@@ -199,12 +192,6 @@ public class Turbine
     /** Our internal configuration object */
     private static Configuration configuration = null;
 
-    /** A reference to the Template Service */
-    private TemplateService templateService = null;
-
-    /** A reference to the RunData Service */
-    private RunDataService rundataService = null;
-
     /** Logging class from commons.logging */
     private static Log log = LogFactory.getLog(Turbine.class);
 
@@ -238,10 +225,13 @@ public class Turbine
 
                 configure(config, context);
 
-                templateService = TurbineTemplate.getService();
-                rundataService = TurbineRunDataFacade.getService();
-
-                if (rundataService == null)
+                TemplateService templateService = TurbineTemplate.getService();
+                if (templateService == null)
+                {
+                    throw new TurbineException(
+                            "No Template Service configured!");
+                }
+                if (getRunDataService() == null)
                 {
                     throw new TurbineException(
                             "No RunData Service configured!");
@@ -410,22 +400,19 @@ public class Turbine
 
 		// Retrieve the pipeline class and then initialize it.  The pipeline
         // handles the processing of a webrequest/response cycle.
-	    Class pipelineClass =
-		  Class.forName(
-			  configuration.getString("pipeline.default", STANDARD_PIPELINE));
-  
-		    log.debug("Using Pipeline: " + pipelineClass.getName());
-	    // Turbine's standard Pipeline implementation uses
-	    // descriptors to define what Valves are attached to it.
+
 	    String descriptorPath =
 		  	configuration.getString(
 			  "pipeline.default.descriptor",
 					  TurbinePipeline.CLASSIC_PIPELINE);
-  		  	descriptorPath = getRealPath(descriptorPath);
+  		
+        descriptorPath = getRealPath(descriptorPath);
   
-  		  	log.debug("Using descriptor path: " + descriptorPath);
-	  	Mapper m = new Mapper();
-	  	pipeline = (Pipeline) m.map(descriptorPath, pipelineClass.getName());
+  		log.debug("Using descriptor path: " + descriptorPath);
+        Reader reader = new BufferedReader(new FileReader(descriptorPath));  
+        XStream pipelineMapper = new XStream(new DomDriver()); // does not require XPP3 library
+        pipeline = (Pipeline) pipelineMapper.fromXML(reader);
+            
 	  	log.debug("Initializing pipeline");
 	  
 	  	pipeline.initialize();
@@ -680,9 +667,9 @@ public class Turbine
         boolean requestRedirected = false;
 
         // Placeholder for the RunData object.
-        RunData data = null;
+        //RunData data = null;
         
-        PipelineData pipelineData = new DefaultPipelineData();
+        PipelineData pipelineData = null;//new DefaultPipelineData();
         try
         {
             // Check to make sure that we started up properly.
@@ -711,11 +698,11 @@ public class Turbine
 
             // Get general RunData here...
             // Perform turbine specific initialization below.
-            data = rundataService.getRunData(req, res, getServletConfig());
-            Map runDataMap = new HashMap();
-            runDataMap.put(RunData.class, data);
+            pipelineData = getRunDataService().getRunData(req, res, getServletConfig());
+           // Map runDataMap = new HashMap();
+            //runDataMap.put(RunData.class, data);
             // put the data into the pipeline
-            pipelineData.put(RunData.class, runDataMap);            
+           // pipelineData.put(RunData.class, runDataMap);            
 
             // Stages of Pipeline implementation execution
 			// configurable via attached Valve implementations in a
@@ -734,7 +721,7 @@ public class Turbine
         finally
         {
             // Return the used RunData to the factory for recycling.
-            rundataService.putRunData(data);
+            getRunDataService().putRunData((RunData)pipelineData);
         }
     }
 
@@ -915,7 +902,7 @@ public class Turbine
     }
     
     /**
-     * Get a RunData from the pipelineData. Once RunData is replaced
+     * Get a RunData from the pipelineData. Once RunData is fully replaced
      * by PipelineData this should not be required. 
      * @param pipelineData
      * @return
@@ -923,8 +910,16 @@ public class Turbine
     private RunData getRunData(PipelineData pipelineData)
     {
         RunData data = null;
-        Map runDataMap = (Map) pipelineData.get(RunData.class);
-        data = (RunData)runDataMap.get(RunData.class);
+        data = (RunData)pipelineData;
         return data;
     }
+    
+    /**
+     * Static Helper method for looking up the RunDataService
+     * @return A RunDataService
+     */
+    private static RunDataService getRunDataService(){
+        return (RunDataService) TurbineServices
+        .getInstance().getService(RunDataService.SERVICE_NAME);
+    }    
 }

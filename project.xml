@@ -336,10 +336,6 @@
   <dependencies>
   <!-- t3 -->
     <dependency>
-      <id>commons-xo</id>
-      <version>20040218.104422</version>
-    </dependency>
-    <dependency>
       <groupId>mx4j</groupId>
       <artifactId>mx4j-jmx</artifactId>
       <version>1.1.1</version>
@@ -510,12 +506,7 @@
       <id>commons-fileupload</id>
       <version>1.0</version>
       <url>http://jakarta.apache.org/commons/fileupload/</url>
-    </dependency>
-    <dependency>
-      <id>commons-io</id>
-      <version>0.2-dev.20020717.100545</version>
-      <url>http://jakarta.apache.org/commons/io/</url>
-    </dependency>    
+    </dependency> 
     <dependency>
       <id>commons-lang</id>
       <version>2.0</version>
@@ -523,7 +514,7 @@
     </dependency>
     <dependency>
       <id>commons-logging</id>
-      <version>1.0.3</version>
+      <version>1.0.4</version>
       <url>http://jakarta.apache.org/commons/logging.html</url>
     </dependency>
     <dependency>
@@ -752,6 +743,12 @@
       <version>1.2-b1</version>
       <url>http://xml.apache.org/xmlrpc/</url>
     </dependency>
+    <dependency>
+      <groupId>xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <version>1.0.2</version>
+      <url>http://xstream.codehaus.org/</url>
+    </dependency>    
     
     <dependency>
       <groupId>mockobjects</groupId>
