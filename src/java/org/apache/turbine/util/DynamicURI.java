@@ -383,9 +383,9 @@ public class DynamicURI
         for( Iterator iter = pp.keySet().iterator(); iter.hasNext(); )
         {
             String key = (String) iter.next();
-            if (!key.equalsIgnoreCase("action") &&
-                    !key.equalsIgnoreCase("screen") &&
-                    !key.equalsIgnoreCase("template"))
+            if (!key.equalsIgnoreCase(URIConstants.CGI_ACTION_PARAM) &&
+                    !key.equalsIgnoreCase(URIConstants.CGI_SCREEN_PARAM) &&
+                    !key.equalsIgnoreCase(URIConstants.CGI_TEMPLATE_PARAM))
             {
                 String[] values = pp.getStrings(key);
                 for (int i = 0; i < values.length; i++)
@@ -625,7 +625,7 @@ public class DynamicURI
     public int getServerPort()
     {
         int result = getServerData().getServerPort();
-        return (result==0 ? 80 : result);
+        return (result==0 ? URIConstants.HTTP_PORT : result);
     }
 
     /**
@@ -823,7 +823,7 @@ public class DynamicURI
      */
     public DynamicURI setAction(String action)
     {
-        add(PATH_INFO, "action", action);
+        add(PATH_INFO, URIConstants.CGI_ACTION_PARAM, action);
         return this;
     }
 
@@ -854,7 +854,7 @@ public class DynamicURI
      */
     public DynamicURI setScreen(String screen)
     {
-        add(PATH_INFO, "screen", screen);
+        add(PATH_INFO, URIConstants.CGI_SCREEN_PARAM, screen);
         return this;
     }
 
@@ -985,12 +985,12 @@ public class DynamicURI
         assertInitialized();
         StringBuffer output = new StringBuffer();
         output.append(getServerScheme());
-        output.append("://");
+        output.append(URIConstants.URI_SCHEME_SEPARATOR);
         output.append(getServerName());
         if ((getServerScheme().equals(URIConstants.HTTP)
-                    && getServerPort() != 80)
+                    && getServerPort() != URIConstants.HTTP_PORT)
                 || (getServerScheme().equals(URIConstants.HTTPS)
-                    && getServerPort() != 443)
+                    && getServerPort() != URIConstants.HTTPS_PORT)
         )
         {
             output.append(":");
@@ -1046,13 +1046,13 @@ public class DynamicURI
         HttpServletRequest request = data.getRequest();
 
         output.append(data.getServerScheme());
-        output.append("://");
+        output.append(URIConstants.URI_SCHEME_SEPARATOR);
         output.append(data.getServerName());
 
         if ((data.getServerScheme().equals(HTTP) &&
-                data.getServerPort() != 80) ||
+                data.getServerPort() != URIConstants.HTTP_PORT) ||
                 (data.getServerScheme().equals(HTTPS) &&
-                data.getServerPort() != 443))
+                data.getServerPort() != URIConstants.HTTPS_PORT))
         {
             output.append(":");
             output.append(data.getServerPort());

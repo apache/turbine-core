@@ -257,7 +257,9 @@ public class RelativeDynamicURI extends DynamicURI
      */
     public String toString()
     {
+        assertInitialized();
         StringBuffer output = new StringBuffer();
+        output.append(getContextPath());
         output.append(getScriptName());
         if (this.hasPathInfo)
         {
@@ -269,6 +271,11 @@ public class RelativeDynamicURI extends DynamicURI
             output.append("?");
             output.append(renderQueryString(this.queryData));
         }
+        if (this.reference != null)
+        {
+            output.append("#");
+            output.append(this.getReference());
+        }
 
         // There seems to be a bug in Apache JServ 1.0 where the
         // session id is not appended to the end of the url when a
@@ -277,11 +284,11 @@ public class RelativeDynamicURI extends DynamicURI
         {
             if (this.redirect)
             {
-                return res.encodeRedirectUrl(output.toString());
+                return res.encodeRedirectURL(output.toString());
             }
             else
             {
-                return res.encodeUrl(output.toString());
+                return res.encodeURL(output.toString());
             }
         }
         else
@@ -305,6 +312,7 @@ public class RelativeDynamicURI extends DynamicURI
         StringBuffer output = new StringBuffer();
         HttpServletRequest request = data.getRequest();
 
+        output.append(data.getServerData().getContextPath());
         output.append(data.getServerData().getScriptName());
 
         if (request.getPathInfo() != null)
