@@ -326,6 +326,9 @@ public abstract class BaseSecurityService
         {
             UserManager userManager =
                     (UserManager) Class.forName(userManagerClassName).newInstance();
+
+            userManager.init(conf);
+
             setUserManager(userManager);
         }
         catch (Exception e)

@@ -67,6 +67,8 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
+import org.apache.commons.configuration.Configuration;
+
 import org.apache.torque.util.Criteria;
 
 import org.apache.turbine.om.security.User;
@@ -100,6 +102,15 @@ import org.apache.turbine.util.security.UnknownEntityException;
  */
 public class LDAPUserManager implements UserManager
 {
+    /**
+     * Initializes the UserManager
+     *
+     * @param conf A Configuration object to init this Manager
+     */
+    public void init(Configuration conf)
+    {
+        // GNDN
+    }
 
     /**
      * Check wether a specified user's account exists.

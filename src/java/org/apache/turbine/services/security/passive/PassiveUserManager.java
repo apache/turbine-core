@@ -56,6 +56,8 @@ package org.apache.turbine.services.security.passive;
 
 import java.util.List;
 
+import org.apache.commons.configuration.Configuration;
+
 import org.apache.torque.util.Criteria;
 
 import org.apache.turbine.om.security.User;
@@ -78,6 +80,16 @@ import org.apache.turbine.util.security.UnknownEntityException;
  */
 public class PassiveUserManager implements UserManager
 {
+    /**
+     * Initializes the UserManager
+     *
+     * @param conf A Configuration object to init this Manager
+     */
+    public void init(Configuration conf)
+    {
+        // GNDN
+    }
+
     /**
      * Check whether a specified user's account exists.
      *
