@@ -1,0 +1,18 @@
+<project 
+  xmlns:j="jelly:core"
+  xmlns:m="maven"
+  xmlns:u="jelly:util">
+
+  <!-- Define a post goal for compile to copy intake.dtd into the appropriate
+       location for packaging in the jar file.  -->
+       
+  <postGoal name="java:compile">
+
+    <copy
+      file="${maven.src.dir}/dtd/intake.dtd"
+      todir="${maven.build.dest}/org/apache/turbine/services/intake/transform"
+    />
+
+  </postGoal>
+
+</project>
