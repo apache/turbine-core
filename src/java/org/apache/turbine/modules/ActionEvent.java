@@ -55,11 +55,15 @@ package org.apache.turbine.modules;
  */
 
 import java.lang.reflect.Method;
+
 import java.util.Enumeration;
 
-import org.apache.turbine.services.resources.TurbineResources;
+import org.apache.turbine.Turbine;
+
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
+
+import org.apache.turbine.util.parser.ParserUtils;
 
 /**
  * <p>
@@ -195,12 +199,7 @@ public abstract class ActionEvent extends Action
      */
     protected final String formatString(String input)
     {
-        String fold =
-                TurbineResources.getString(ParameterParser.URL_CASE_FOLDING, "")
-                .toLowerCase();
-        if ((fold == null) ||
-                (fold.length() == 0) ||
-                (!fold.equals(ParameterParser.URL_CASE_FOLDING_NONE)))
+        if (ParserUtils.getUrlFolding() == ParserUtils.URL_CASE_FOLDING_NONE)
         {
             String tmp = input;
 
