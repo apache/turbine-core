@@ -18,10 +18,10 @@
 
   <shortDescription>A servlet based framework.</shortDescription>
   <description>Turbine is a servlet based framework that allows experienced Java developers to quickly build secure web applications. Parts of Turbine can also be used independently of the web portion of Turbine as well. In other words, we strive to make portions of Turbine easily available for use in other applications.</description>
-  <url>http://jakarta.apache.org/turbine/turbine-22/</url>
+  <url>http://jakarta.apache.org/turbine/turbine-2.2.1/</url>
   <issueTrackingUrl>http://issues.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
   <siteAddress>jakarta.apache.org</siteAddress>
-  <siteDirectory>/www/jakarta.apache.org/turbine/turbine-22/</siteDirectory>
+  <siteDirectory>/www/jakarta.apache.org/turbine/turbine-2.2.1/</siteDirectory>
   <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-turbine/turbine-2/</distributionDirectory>
 
   <repository>
