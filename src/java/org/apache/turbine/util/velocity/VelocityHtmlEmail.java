@@ -78,7 +78,10 @@ import org.apache.velocity.context.Context;
  * instance within your templates trough the <code>$mail</code>
  * Velocity variable.
  * <p><code>VelocityHtmlEmail	myEmail= new VelocityHtmlEmail(data);<br>
- *                              context.put("mail", theMessage);</code>
+ *                              context.put("mail", myMail);</code>
+ * <b>or</b>
+ *    <code>VelocityHtmlEmail	myEmail= new VelocityHtmlEmail(context);<br>
+ *                              context.put("mail", myMail);</code>
  *
  *
  * <p>The templates should be located under your Template turbine
@@ -113,14 +116,15 @@ public class VelocityHtmlEmail extends HtmlEmail
      */
     private String textTemplate = null;
 
-    /** The cached rundata object. */
-    private RunData data = null;
+    /** The cached context object. */
+    private Context context = null;
 
     /** The map of embedded files. */
     private Hashtable embmap = null;
 
     /**
-     * Constructor, sets the RunData object.
+     * Constructor, sets the context object from
+     * the passed RunData object
      *
      * @param data A Turbine RunData object.
      * @exception MessagingException.
@@ -129,7 +133,21 @@ public class VelocityHtmlEmail extends HtmlEmail
         throws MessagingException
     {
         super.init();
-        this.data = data;
+        this.context = TurbineVelocity.getContext(data);
+        embmap = new Hashtable();
+    }
+
+    /**
+     * Constructor, sets the context object.
+     *
+     * @param context A Velocity context object.
+     * @exception MessagingException.
+     */
+    public VelocityHtmlEmail(Context context)
+        throws MessagingException
+    {
+        super.init();
+        this.context = context;
         embmap = new Hashtable();
     }
 
@@ -169,7 +187,6 @@ public class VelocityHtmlEmail extends HtmlEmail
     public void send()
         throws MessagingException
     {
-        Context context = getContext(data);
         context.put("mail",this);
 
         String htmlbody = "";
@@ -251,24 +268,4 @@ public class VelocityHtmlEmail extends HtmlEmail
         return "cid:" + cid;
     }
 
-    /**
-     * Return the Context needed by Velocity.
-     *
-     * @param data A Turbine RunData object.
-     * @return A Context.
-     */
-    private static final Context getContext(RunData data)
-    {
-        // Attempt to get it from the RunData first.  If it doesn't
-        // exist, create it and then stuff it into the RunData.
-        Context vc = (Context) data.getTemplateInfo()
-            .getTemplateContext(VelocityService.CONTEXT);
-        if (vc == null)
-        {
-            vc = TurbineVelocity.getContext(data);
-            data.getTemplateInfo()
-                .setTemplateContext(VelocityService.CONTEXT, vc);
-        }
-        return vc;
-    }
 }
