@@ -37,11 +37,14 @@ refer to SQL Server documentation for further details.
 </section>
 <section name="JDBC Driver">
 <p>
-Microsoft does not have a JDBC driver for MS SQL Server. You will need to
-either select from a commercial driver, see
-<a href="http://industry.java.sun.com/products/jdbc/drivers">JDBC(TM)
-Technology - Drivers</a>, the JDBC-ODBC bridge driver from Sun, or a free
-driver from <a href="http://www.freetds.org">FreeTDS</a>.
+Microsoft has a <a
+href="http://www.microsoft.com/sql/downloads/2000/jdbc.asp">JDBC
+driver for MS SQL Server</a> in beta. Alternately, a third party
+commercial driver from <a
+href="http://industry.java.sun.com/products/jdbc/drivers">JDBC(TM)
+Technology - Drivers</a>, the JDBC-ODBC bridge driver from Sun, or the
+free driver from <a href="http://www.freetds.org">FreeTDS</a> can be
+used.
 </p>
 
 <p>
