@@ -4,8 +4,11 @@
 #set ( $fnamekeys= "sql/base/$targetDatabase/tablefk.vm" )
 
 #foreach ($databaseModel in $appData.Databases)
-
+    
     #if ($project)
+        
+        We have a defined project: $project
+        
         #if ($appData.MultipleDatabases)
             #set ( $outFile = "${project}-${databaseModel.Name}-schema.sql" )
         #else

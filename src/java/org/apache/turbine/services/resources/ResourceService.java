@@ -89,7 +89,15 @@ public interface ResourceService extends Service
 {
 
     public String SERVICE_NAME = "ResourceService";
-    
+
+    /**
+     * Set a property in with a key=value pair.
+     *
+     * @param String key
+     * @param String value
+     */
+    public void setProperty(String key, String value);
+
     /**
      * The purpose of this method is to get the configuration resource
      * with the given name as a boolean value.

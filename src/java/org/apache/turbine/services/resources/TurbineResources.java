@@ -113,6 +113,17 @@ public abstract class TurbineResources
     }
 
     /**
+     * Set a property in with a key=value pair.
+     *
+     * @param String key
+     * @param String value
+     */
+    public static void setProperty(String key, String value)
+    {
+        getService().setProperty(key,value);
+    }        
+
+    /**
      * The purpose of this method is to get the configuration resource
      * with the given name as a boolean value.
      *

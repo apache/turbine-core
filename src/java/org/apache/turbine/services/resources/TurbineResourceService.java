@@ -102,6 +102,9 @@ public class TurbineResourceService
     //private GenericResources generic = null;
     private Configuration configuration = null;
 
+    private static final String START_TOKEN="${";
+    private static final String END_TOKEN="}";
+
     /**
      * Performs early initialization.  Overrides init() method in
      * BaseService to detect objects used in Turbine's Service
@@ -133,7 +136,8 @@ public class TurbineResourceService
      *
      * @param config a ServletConfig object
      */
-    public void init(ServletConfig config) throws InitializationException
+    public void init(ServletConfig config) 
+        throws InitializationException
     {
         String props = config.getInitParameter(TurbineServices.PROPERTIES_PATH_KEY);
         
@@ -203,6 +207,47 @@ public class TurbineResourceService
         TurbineServices services = (TurbineServices) TurbineServices.getInstance();
         services.initMapping(mappings);
         services.initServices(properties, true);
+    }
+
+    /**
+     * Set a property in with a key=value pair.
+     *
+     * @param String key
+     * @param String value
+     */
+    public void setProperty(String key, String value)
+    {
+        configuration.setProperty(key,value);
+    }
+
+    protected String interpolate(String base)
+    {
+        if (base == null)
+        {
+            return null;
+        }            
+        
+        int begin = -1;
+        int end = -1;
+        int prec = 0-END_TOKEN.length();
+        String variable = null;
+        StringBuffer result = new StringBuffer();
+        
+        // FIXME: we should probably allow the escaping of the start token
+        while ( ((begin=base.indexOf(START_TOKEN,prec+END_TOKEN.length()))>-1)
+                && ((end=base.indexOf(END_TOKEN,begin))>-1) ) 
+        {
+            result.append(base.substring(prec+END_TOKEN.length(),begin));
+            variable = base.substring(begin+START_TOKEN.length(),end);
+            if (configuration.get(variable)!=null) 
+            {
+                result.append(configuration.get(variable));
+            }
+            prec=end;
+        }
+        result.append(base.substring(prec+END_TOKEN.length(),base.length()));
+        
+        return result.toString();
     }
 
     /**
@@ -414,7 +459,7 @@ public class TurbineResourceService
      */
     public String getString(String name)
     {
-        return getConfiguration().getString(name);
+        return interpolate(getConfiguration().getString(name));
     }
 
     /**
@@ -428,7 +473,7 @@ public class TurbineResourceService
     public String getString(String name,
                                    String def)
     {
-        return getConfiguration().getString(name, def);
+        return interpolate(getConfiguration().getString(name, def));
     }
 
     /**

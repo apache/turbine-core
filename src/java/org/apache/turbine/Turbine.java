@@ -210,7 +210,15 @@ public class Turbine
 
                 // Initialize essential services (Resources & Logging)
                 services.initPrimaryServices(config);
-
+                
+                // Now that TurbineResources is setup, we want to insert
+                // the applicationRoot and webappRoot into the resources
+                // so that ${applicationRoot} and ${webappRoot} can be
+                // use in the TRP.
+                TurbineResources.setProperty(APPLICATION_ROOT, applicationRoot);
+                TurbineResources.setProperty(WEBAPP_ROOT, 
+                    config.getServletContext().getRealPath(""));
+                
                 // Initialize other services that require early init
                 services.initServices(config, false);
             }
