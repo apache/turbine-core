@@ -133,9 +133,26 @@ public class TurbineResourceService
     }
 
     /**
+     * Load all configured components and initialize them. This is
+     * a zero parameter variant which queries the Turbine Servlet
+     * for its config.
+     *
+     * @throws InitializationException Something went wrong in the init
+     *         stage
+     */ 
+    public void init()
+        throws InitializationException
+    {
+        ServletConfig conf = Turbine.getTurbineServletConfig();
+        init(conf);
+    }
+
+    /**
      * This method is called when the Service is initialized
      *
      * @param config a ServletConfig object
+     *
+     * @throws InitializationException Something went wrong when starting up.
      */
     public void init(ServletConfig config)
         throws InitializationException

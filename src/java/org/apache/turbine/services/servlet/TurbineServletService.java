@@ -60,6 +60,7 @@ import java.net.URL;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import org.apache.turbine.Turbine;
+import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.ServletUtils;
@@ -85,9 +86,26 @@ public class TurbineServletService
     private ServletConfig servletConfig = null;
 
     /**
+     * Load all configured components and initialize them. This is
+     * a zero parameter variant which queries the Turbine Servlet
+     * for its config.
+     *
+     * @throws InitializationException Something went wrong in the init
+     *         stage
+     */ 
+    public void init()
+        throws InitializationException
+    {
+        ServletConfig conf = Turbine.getTurbineServletConfig();
+        init(conf);
+    }
+
+    /**
      * Called during Turbine.init()
      *
      * @param config A ServletConfig.
+     *
+     * @throws InitializationException Something went wrong when starting up.
      */
     public void init( ServletConfig servletConfig )
     {

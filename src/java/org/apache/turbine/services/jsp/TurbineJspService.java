@@ -60,6 +60,7 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.configuration.Configuration;
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.jsp.util.JspLink;
 import org.apache.turbine.services.servlet.TurbineServlet;
@@ -90,7 +91,26 @@ public class TurbineJspService extends BaseTemplateEngineService
     private int bufferSize;
 
     /**
+     * Load all configured components and initialize them. This is
+     * a zero parameter variant which queries the Turbine Servlet
+     * for its config.
+     *
+     * @throws InitializationException Something went wrong in the init
+     *         stage
+     */ 
+    public void init()
+        throws InitializationException
+    {
+        ServletConfig conf = Turbine.getTurbineServletConfig();
+        init(conf);
+    }
+
+    /**
      * Performs early initialization of this Turbine service.
+     *
+     * @param config The ServletConfiguration from Turbine
+     *
+     * @throws InitializationException Something went wrong when starting up.
      */
     public void init(ServletConfig config) throws InitializationException
     {

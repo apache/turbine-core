@@ -140,7 +140,27 @@ public class TurbineVelocityService extends BaseTemplateEngineService
     private boolean refreshToolsPerRequest = false;
 
     /**
-     * Performs early initialization of this Turbine service.
+     * Load all configured components and initialize them. This is
+     * a zero parameter variant which queries the Turbine Servlet
+     * for its config.
+     *
+     * @throws InitializationException Something went wrong in the init
+     *         stage
+     */ 
+    public void init()
+        throws InitializationException
+    {
+        ServletConfig conf = Turbine.getTurbineServletConfig();
+        init(conf);
+    }
+
+    /**
+     * Inits the service using servlet parameters to obtain path to the
+     * configuration file.
+     *
+     * @param config The ServletConfiguration from Turbine
+     *
+     * @throws InitializationException Something went wrong when starting up.
      */
     public void init(ServletConfig config) throws InitializationException
     {

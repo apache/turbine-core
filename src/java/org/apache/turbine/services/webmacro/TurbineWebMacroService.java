@@ -58,6 +58,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import javax.servlet.ServletConfig;
 import org.apache.commons.configuration.Configuration;
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
@@ -153,9 +154,27 @@ public class TurbineWebMacroService extends BaseTemplateEngineService
     private String WMTemplateProvider = null;
 
     /**
-     * Performs early initialization of this service.
+     * Load all configured components and initialize them. This is
+     * a zero parameter variant which queries the Turbine Servlet
+     * for its config.
      *
-     * @exception InitializationException Caused by any initialization error.
+     * @throws InitializationException Something went wrong in the init
+     *         stage
+     */ 
+    public void init()
+        throws InitializationException
+    {
+        ServletConfig conf = Turbine.getTurbineServletConfig();
+        init(conf);
+    }
+
+    /**
+     * Inits the service using servlet parameters to obtain path to the
+     * configuration file.
+     *
+     * @param config The ServletConfiguration from Turbine
+     *
+     * @throws InitializationException Something went wrong when starting up.
      */
     public void init(ServletConfig unused) throws InitializationException
     {

@@ -58,6 +58,8 @@ import java.util.Iterator;
 
 import javax.servlet.ServletConfig;
 
+import org.apache.turbine.Turbine;
+
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 
@@ -97,14 +99,19 @@ public class TurbineComponentService
     private Object [] components = null;
 
     /**
-     * Load all configured components and initialize them. Throw an
-     * InitializationException if anything goes wrong.
-     *
-     * @param config The servlet config
+     * Load all configured components and initialize them. This is
+     * a zero parameter variant which queries the Turbine Servlet
+     * for its config.
      *
      * @throws InitializationException Something went wrong in the init
      *         stage
      */ 
+    public void init()
+        throws InitializationException
+    {
+        ServletConfig conf = Turbine.getTurbineServletConfig();
+        init(conf);
+    }
 
     /**
      * Inits the service using servlet parameters to obtain path to the
