@@ -2,5 +2,7 @@ target
 cactus_client.log
 cactus_server.log
 maven.log
-velocity.log
+velocity.log*
 *~
+.classpath
+.project
