@@ -61,11 +61,8 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.Turbine;
 
 /**
- * <p>This is a static class for defining the default Turbine configuration
- * keys used by core Turbine components.</p>
- * <p>It also extends the basic static accessor class to the
- * <code>ResourcesService</code> so that you directly access the
- * properties through this class</p>
+ * This is a static class for defining the default Turbine configuration
+ * keys used by core Turbine components.
  *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
@@ -73,6 +70,7 @@ import org.apache.turbine.Turbine;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
+ * @deprecated as of Turbine 2.2 use Turbine.getConfiguration()
  */
 public abstract class TurbineResources
 {
