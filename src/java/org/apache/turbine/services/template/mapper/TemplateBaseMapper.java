@@ -101,22 +101,6 @@ public abstract class TemplateBaseMapper
     }
 
     /**
-     * C'tor
-     *
-     * @param useCache If true, then the resulting mapper will cache mappings.
-     * @param cacheSize Size of the internal map cache. Must be > 0 if useCache is true.
-     * @param defaultProperty The name of the default property to pull from the TemplateEngine
-     * @param separator The separator for this mapper.
-     */
-    public TemplateBaseMapper(boolean useCache, int cacheSize, String defaultProperty, char separator)
-    {
-        setCacheSize(cacheSize);
-        setUseCache(useCache);
-        setDefaultProperty(defaultProperty);
-        setSeparator(separator);
-    }
-
-    /**
      * Get the CacheSize value.
      * @return the CacheSize value.
      */
