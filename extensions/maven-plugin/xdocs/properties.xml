@@ -318,6 +318,56 @@ the behaviour of the plugin goals.
 <td>Target directory for application libraries when using inplace development.</td>
 </tr>
 
+<a name="skip_properties" />
+<tr>
+<td>turbine.plugin.config.skip</td>
+<td>Yes</td>
+<td>false</td>
+<td>If set to true, the configuration files from the turbine.plugin.src.conf location will be neither deployed nor added to the WAR file.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.images.skip</td>
+<td>Yes</td>
+<td>false</td>
+<td>If set to true, the files from the turbine.plugin.src.images location will be neither deployed nor added to the WAR file.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.pages.skip</td>
+<td>Yes</td>
+<td>false</td>
+<td>If set to true, the files from the turbine.plugin.src.pages location will be neither deployed nor added to the WAR file.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.resources.skip</td>
+<td>Yes</td>
+<td>false</td>
+<td>If set to true, the files from the turbine.plugin.src.resources location will be neither deployed nor added to the WAR file.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.scripts.skip</td>
+<td>Yes</td>
+<td>false</td>
+<td>If set to true, the files from the turbine.plugin.src.scripts location will be neither deployed nor added to the WAR file.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.style.skip</td>
+<td>Yes</td>
+<td>false</td>
+<td>If set to true, the files from the turbine.plugin.src.style location will be neither deployed nor added to the WAR file.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.templates.skip</td>
+<td>Yes</td>
+<td>false</td>
+<td>If set to true, the files from the turbine.plugin.src.templates location will be neither deployed nor added to the WAR file.</td>
+</tr>
+
   </table>
   </p>
 </subsection>
@@ -342,8 +392,28 @@ the behaviour of the plugin goals.
     mode that needs container deployment.
 </td>
 </tr>
-  </table>
-  </p>
+</table>
+</p>
+</subsection>
+
+<subsection name="Special Properties">
+  <p>
+  <table>
+    <tr>
+      <th>Property</th>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+<tr>
+<a name="turbine_target_dir" />
+<td>turbine.target.dir</td>
+<td>Deployment directory of your application</td>
+<td>Available <b>only</b> in <a
+href="goals.html#turbine_deploy">turbine:deploy</a> postGoals to allow
+custom scripts to copy additional files to the deployment target.</td>
+</tr>
+</table>
+</p>
 </subsection>
 </section>
 </body>

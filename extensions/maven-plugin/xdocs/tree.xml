@@ -32,6 +32,7 @@
     <tr>
       <th>normal Mode</th>
       <th>inplace Mode</th>
+      <th>Skip Property</th>
       <th>Function</th>
       <th>Description</th>
     </tr>
@@ -39,6 +40,7 @@
 <tr>
 <td>conf</td>
 <td>WEB-INF/conf</td>
+<td>turbine.plugin.config.skip</td>
 <td>Configuration data for your web application</td>
 <td>This directory contains all the configuration files for your
 application. All files in this directory with the exception of
@@ -52,6 +54,7 @@ will be copied to <code>WEB-INF/web.xml</code>.
 <tr>
 <td>src/images</td>
 <td>images</td>
+<td>turbine.plugin.images.skip</td>
 <td>Graphics and Images for your application</td>
 <td>All files in this directory will be copied to the <code>images</code>
 subdirectory in the root of your application. The plugin creates two image
@@ -61,6 +64,7 @@ files where, which are referenced from the sample default screen</td>
 <tr>
 <td>src/java</td>
 <td>WEB-INF/src</td>
+<td>-</td>
 <td>Java source files</td>
 <td>All files ending on .java in this directory tree get compiled by the
 java compile into class files. All other files get copied as is into the
@@ -71,6 +75,7 @@ java compile into class files. All other files get copied as is into the
 <tr>
 <td>src/resources</td>
 <td>resources</td>
+<td>turbine.plugin.resources.skip</td>
 <td>Misc. Turbine resource files</td>
 <td>All files in this directory will be copied to the <code>resources</code>
 subdirectory in the root of your application.</td>
@@ -80,6 +85,7 @@ subdirectory in the root of your application.</td>
 <tr>
 <td>src/pages</td>
 <td>.</td>
+<td>turbine.plugin.pages.skip</td>
 <td>HTML pages</td>
 <td>All files in this directory will be copied to the root directory of your application.</td>
 </tr>
@@ -88,6 +94,7 @@ subdirectory in the root of your application.</td>
 <tr>
 <td>src/scripts</td>
 <td>scripts</td>
+<td>turbine.plugin.scripts.skip</td>
 <td>JavaScript files for your application</td>
 <td>All files in this directory will be copied to the <code>scripts</code>
 subdirectory in the root of your application.</td>
@@ -96,6 +103,7 @@ subdirectory in the root of your application.</td>
 <tr>
 <td>src/schema</td>
 <td>src/schema</td>
+<td>-</td>
 <td>XML source files for Torque</td>
 <td>This directory contains the definition files for generating the
 peer and object classes for Torque and also DTD and data files to
@@ -107,6 +115,7 @@ schema files description</a> for details.</td>
 <tr>
 <td>src/style</td>
 <td>style</td>
+<td>turbine.plugin.style.skip</td>
 <td>Cascading style sheet files for your application</td>
 <td>All files in this directory will be copied to the <code>style</code>
 subdirectory in the root of your application.</td>
@@ -116,6 +125,7 @@ subdirectory in the root of your application.</td>
 <tr>
 <td>src/templates/layouts</td>
 <td>templates/layouts</td>
+<td>turbine.plugin.templates.skip</td>
 <td>Layout templates for your application</td>
 <td>The templates in this directory are used to position screens and
 navigations on a reponse page. The M.E.T.A. plugin adds a default layout
@@ -130,6 +140,7 @@ Only Layout</a> documentation for an example with navigation.</td>
 <tr>
 <td>src/templates/macros</td>
 <td>templates/macros</td>
+<td>turbine.plugin.templates.skip</td>
 <td>VelociMacros for your application</td>
 <td>Files in this directory should be loaded by the Velocity Service
 to be used as <a
@@ -141,6 +152,7 @@ TurbineResources.properties to load at Turbine startup time.</td>
 <tr>
 <td>src/templates/navigations</td>
 <td>templates/navigations</td>
+<td>turbine.plugin.templates.skip</td>
 <td>Navigation templates for your application</td>
 <td>Put your navigation templates here. If you want to use navigation,
 you need layouts that reference these files. The default configuration
@@ -149,6 +161,8 @@ of a M.E.T.A.-generated Turbine application does not use navigation.</td>
 
 <tr>
 <td>src/templates/screens</td>
+<td>templates/screens</td>
+<td>turbine.plugin.templates.skip</td>
 <td>Screen templates for your application</td>
 <td>Put your screen templates to be rendered as output of your application into this
     subdirectory. M.E.T.A. creates a sample index screen, which is displayed when you
@@ -158,6 +172,7 @@ of a M.E.T.A.-generated Turbine application does not use navigation.</td>
 <tr>
 <td>src/test/</td>
 <td>WEB-INF/test/</td>
+<td>-</td>
 <td>Java test code</td>
 
 <td>Maven expects java classes that contain unit tests in this
@@ -170,6 +185,7 @@ plugin</a> for further information.</td>
 <a name="web_inf_lib"/>
 <td><font color="red">Deployment is used</font></td>
 <td>WEB-INF/lib</td>
+<td>-</td>
 <td>libs directory</td>
 <td>All jar files in the project.xml file of your application, that
 have the <code>war.bundle</code> property set to true will be copied
@@ -178,6 +194,7 @@ into this directory.</td>
 <tr>
 <td><font color="red">Deployment is used</font></td>
 <td>WEB-INF/classes</td>
+<td>-</td>
 <td>classes directory</td>
 <td>All class files and all non-java files from the source tree are
 copied into this sub directory. This is defined in the <a href="http://java.sun.com/products/servlet/docs.html">Sun Servlet API</a>.</td>
@@ -186,6 +203,7 @@ copied into this sub directory. This is defined in the <a href="http://java.sun.
 <a name="logs"/>
 <td><font color="red">Deployment is used</font></td>
 <td>logs</td>
+<td>-</td>
 <td>Log files</td>
 <td>A M.E.T.A. generated application writes a few logfiles which are useful for debugging and runtime diagnosis. These files are put here.</td>
 </tr>
@@ -257,6 +275,26 @@ href="#src_style">style directory in the source tree</a></td>
 href="#src_images">images directory in the source tree</a></td>
 </tr>
 </table>
+</section>
+
+<section name="Skipping parts of the deployment">
+<p>
+When writing an application using this plugin, it is sometimes
+necessary to skip parts of the deployment process.
+The M.E.T.A. plugin allows you to skip parts of the
+deployment by using <a href="properties.html#skip_properties">skip
+properties</a>.
+</p>
+
+<p>You can run your custom deployment or web application generation by
+using a <code>postGoal</code> to the <a
+href="goals.html#turbine_deploy">turbine:deploy</a> or <a
+href="goals.html#turbine_webapp">turbine:webapp</a> goal. In a <a
+href="goals.html#turbine_deploy">turbine:deploy</a> postGoal you can
+access the <a href="properties.html#turbine_target_dir">turbine.target.dir</a> property as the deployment
+location of your application.
+</p>
+
 </section>
 </body>
 </document>
