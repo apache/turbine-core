@@ -184,71 +184,6 @@ public class LDAPSecurityService extends BaseSecurityService
         }
     }
 
-    /** Get the Roles that a user belongs in a specific group.
-      * @param user The user.
-      * @param group The group
-      * @throws DataBackendException if there is a problem with
-      *     the LDAP service.
-      * @return a RoleSet.
-      */
-    private RoleSet getRoles(User user, Group group)
-        throws DataBackendException
-    {
-        Vector roles = new Vector(0);
-
-        try
-        {
-            DirContext ctx = LDAPUserManager.bindAsAdmin();
-
-            String baseSearch = LDAPSecurityConstants.getBaseSearch();
-            String filter = "(& ";
-
-            filter += "(objectclass=turbineUserGroup)";
-            filter += "(turbineUserUniqueId=" + user.getUserName() + ")";
-            filter += "(turbineGroupName=" + group.getName() + ")";
-            filter += ")";
-
-            /*
-             * Create the default search controls.
-             */
-            SearchControls ctls = new SearchControls();
-
-            ctls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-
-            NamingEnumeration answer = ctx.search(baseSearch, filter, ctls);
-
-            while (answer.hasMore())
-            {
-                SearchResult sr = (SearchResult) answer.next();
-                Attributes attribs = sr.getAttributes();
-                Attribute attr = attribs.get("turbineRoleName");
-
-                if (attr != null)
-                {
-                    NamingEnumeration values = attr.getAll();
-
-                    while (values.hasMore())
-                    {
-                        Role role = getNewRole(values.next().toString());
-
-                        roles.add(role);
-                    }
-                }
-                else
-                {
-                    log.error("Role doesn't have a name");
-                }
-            }
-        }
-        catch (NamingException ex)
-        {
-            throw new DataBackendException(
-                    "NamingException caught:", ex);
-        }
-
-        return new RoleSet(roles);
-    }
-
     /*
      * -----------------------------------------------------------------------
      * S E C U R I T Y  M A N A G E M E N T
@@ -608,6 +543,71 @@ public class LDAPSecurityService extends BaseSecurityService
             throw new DataBackendException("NamingException caught", ex);
         }
         return new GroupSet(groups);
+    }
+
+    /** Get the Roles that a user belongs in a specific group.
+      * @param user The user.
+      * @param group The group
+      * @throws DataBackendException if there is a problem with
+      *     the LDAP service.
+      * @return a RoleSet.
+      */
+    private RoleSet getRoles(User user, Group group)
+        throws DataBackendException
+    {
+        Vector roles = new Vector(0);
+
+        try
+        {
+            DirContext ctx = LDAPUserManager.bindAsAdmin();
+
+            String baseSearch = LDAPSecurityConstants.getBaseSearch();
+            String filter = "(& ";
+
+            filter += "(objectclass=turbineUserGroup)";
+            filter += "(turbineUserUniqueId=" + user.getUserName() + ")";
+            filter += "(turbineGroupName=" + group.getName() + ")";
+            filter += ")";
+
+            /*
+             * Create the default search controls.
+             */
+            SearchControls ctls = new SearchControls();
+
+            ctls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+
+            NamingEnumeration answer = ctx.search(baseSearch, filter, ctls);
+
+            while (answer.hasMore())
+            {
+                SearchResult sr = (SearchResult) answer.next();
+                Attributes attribs = sr.getAttributes();
+                Attribute attr = attribs.get("turbineRoleName");
+
+                if (attr != null)
+                {
+                    NamingEnumeration values = attr.getAll();
+
+                    while (values.hasMore())
+                    {
+                        Role role = getNewRole(values.next().toString());
+
+                        roles.add(role);
+                    }
+                }
+                else
+                {
+                    log.error("Role doesn't have a name");
+                }
+            }
+        }
+        catch (NamingException ex)
+        {
+            throw new DataBackendException(
+                    "NamingException caught:", ex);
+        }
+
+        return new RoleSet(roles);
     }
 
     /**
@@ -1153,28 +1153,62 @@ public class LDAPSecurityService extends BaseSecurityService
     /**
      * Revoke all the roles to a user
      * @param user the user.
+     * @throws DataBackendException if there is an error with the data backend.
+     * @throws UnkownEntityException if the role or a permission is not found.
      */
     public void revokeAll(User user)
+        throws DataBackendException, UnknownEntityException
     {
-        // Not implemented yet.
+        Iterator groupsIterator = getAllGroups().elements();
+        while (groupsIterator.hasNext())
+        {
+            Group group = (Group) groupsIterator.next();
+            Iterator rolesIterator = getRoles(user, group).elements();
+            while (rolesIterator.hasNext())
+            {
+                Role role = (Role) rolesIterator.next();
+                revoke(user, group, role);
+            }
+        }
     }
 
     /**
      * Revoke all the permissions to a role.
      * @param role the role.
+     * @throws DataBackendException if there is an error with the data backend.
+     * @throws UnkownEntityException if the role or a permission is not found.
      */
     public void revokeAll(Role role)
+        throws DataBackendException, UnknownEntityException
     {
-        // Not implemented yet.
+        PermissionSet permissions = getPermissions(role);
+        Iterator permIterator = permissions.elements();
+        while (permIterator.hasNext())
+        {
+            Permission perm = (Permission) permIterator.next();
+            revoke(role, perm);
+        }
     }
 
     /**
      * Revoke all the roles to a group.
      * @param group the group.
+     * @throws DataBackendException if there is an error with the data backend.
+     * @throws UnkownEntityException if the role or a permission is not found.
      */
     public void revokeAll(Group group)
+        throws DataBackendException, UnknownEntityException
     {
-        // Not implemented yet.
+        User[] users = getUsers(new Criteria());
+        for(int i = 0; i < users.length; i++)
+        {
+            Iterator rolesIterator = getRoles(users[i], group).elements();
+            while (rolesIterator.hasNext())
+            {
+                Role role = (Role) rolesIterator.next();
+                revoke(users[i], group, role);
+            }
+        }
     }
 
     /**
