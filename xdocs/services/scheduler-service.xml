@@ -250,10 +250,12 @@ package com.mycompany.modules.actions;
 
 
 //Turbine
-import org.apache.turbine.util.RunData;
+import org.apache.turbine.modules.actions.VelocityAction;
 import org.apache.turbine.services.schedule.JobEntry;
 import org.apache.turbine.services.schedule.TurbineScheduler;
-import org.apache.turbine.modules.actions.VelocityAction;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.util.ParameterParser;
+import org.apache.turbine.util.RunData;
 
 
 public class AddScheduledTask extends VelocityAction
@@ -294,7 +296,7 @@ public class AddScheduledTask extends VelocityAction
 
         // Note: The template "SchedulerStatus.vm" is not part of Turbine.
         // It is only here as an example how you might implement this action.
-        setTemplate(schedule,"SchedulerStatus.vm");
+        setTemplate(data, "SchedulerStatus.vm");
 
      }
 }
