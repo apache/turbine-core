@@ -83,9 +83,12 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * and directory server as the data backend.<br>
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
  * @version $Id$
  */
-public interface SecurityService extends Service
+public interface SecurityService
+    extends Service
 {
     /** The name of the service */
     static final String SERVICE_NAME = "SecurityService";
@@ -147,7 +150,8 @@ public interface SecurityService extends Service
      * @throws UnknownEntityException if the system's implementation of User
      *         interface could not be determined.
      */
-    Class getUserClass() throws UnknownEntityException;
+    Class getUserClass()
+        throws UnknownEntityException;
 
     /**
      * Construct a blank User object.
@@ -158,31 +162,33 @@ public interface SecurityService extends Service
      * @return an object implementing User interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    User getUserInstance() throws UnknownEntityException;
+    User getUserInstance()
+        throws UnknownEntityException;
 
     /**
      * Check whether a specified user's account exists.
      *
      * The login name is used for looking up the account.
      *
-     * @param username The user to be checked.
+     * @param userName The user to be checked.
      * @return true if the specified account exists
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    boolean accountExists(String username) throws DataBackendException;
+    boolean accountExists(String userName)
+        throws DataBackendException;
 
     /**
      * Check whether a specified user's account exists.
+     * An User object is used for looking up the account.
      *
-     * The login name is used for looking up the account.
-     *
-     * @param user The name of the user to be checked.
+     * @param user The user object to be checked.
      * @return true if the specified account exists
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    boolean accountExists(User user) throws DataBackendException;
+    boolean accountExists(User user)
+        throws DataBackendException;
 
     /**
      * Authenticates an user, and constructs an User object to represent
@@ -210,8 +216,8 @@ public interface SecurityService extends Service
      *         backend.
      * @throws UnknownEntityException if user account is not present.
      */
-    User getUser(String username) throws DataBackendException,
-                                         UnknownEntityException;
+    User getUser(String username)
+        throws DataBackendException, UnknownEntityException;
 
     /**
      * Retrieve a set of users that meet the specified criteria.
@@ -226,7 +232,8 @@ public interface SecurityService extends Service
      * @return a List of users meeting the criteria.
      * @throws DataBackendException if there is a problem accessing the storage.
      */
-    User[] getUsers(Criteria criteria) throws DataBackendException;
+    User[] getUsers(Criteria criteria)
+        throws DataBackendException;
 
     /**
      * Constructs an User object to represent an anonymous user of the
@@ -236,7 +243,8 @@ public interface SecurityService extends Service
      * @throws UnknownEntityException if the anonymous User object couldn't be
      *         constructed.
      */
-    User getAnonymousUser() throws UnknownEntityException;
+    User getAnonymousUser()
+        throws UnknownEntityException;
 
     /**
      * Saves User's data in the permanent storage. The user account is required
@@ -247,8 +255,8 @@ public interface SecurityService extends Service
      *         exist in the database.
      * @throws DataBackendException if there is a problem accessing the storage.
      */
-    void saveUser(User user) throws UnknownEntityException,
-                                    DataBackendException;
+    void saveUser(User user)
+        throws UnknownEntityException, DataBackendException;
 
     /*-----------------------------------------------------------------------
       Account management
@@ -258,7 +266,7 @@ public interface SecurityService extends Service
      * Creates new user account with specified attributes.
      *
      * @param user the object describing account to be created.
-     * @param password password for the new user
+     * @param password The password to use.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws EntityExistsException if the user account already exists.
@@ -337,9 +345,8 @@ public interface SecurityService extends Service
      * Constructs an AccessControlList for a specific user.
      *
      * @param user the user for whom the AccessControlList are to be retrieved
-     * @return the AccessControlList for the user
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
+     * @return A new AccessControlList object.
+     * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if user account is not present.
      */
     AccessControlList getACL(User user)
@@ -521,27 +528,29 @@ public interface SecurityService extends Service
     /**
      * Retrieve a set of Groups that meet the specified Criteria.
      *
-     * @param criteria of Group selection.
+     * @param criteria a Criteria of Group selection.
      * @return a set of Groups that meet the specified Criteria.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    GroupSet getGroups(Criteria criteria) throws DataBackendException;
+    GroupSet getGroups(Criteria criteria)
+        throws DataBackendException;
 
     /**
      * Retrieve a set of Roles that meet the specified Criteria.
      *
-     * @param criteria of Roles selection.
+     * @param criteria a Criteria of Roles selection.
      * @return a set of Roles that meet the specified Criteria.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    RoleSet getRoles(Criteria criteria) throws DataBackendException;
+    RoleSet getRoles(Criteria criteria)
+        throws DataBackendException;
 
     /**
      * Retrieve a set of Permissions that meet the specified Criteria.
      *
-     * @param criteria of Permissions selection.
+     * @param criteria a Criteria of Permissions selection.
      * @return a set of Permissions that meet the specified Criteria.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
@@ -556,7 +565,8 @@ public interface SecurityService extends Service
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    GroupSet getAllGroups() throws DataBackendException;
+    GroupSet getAllGroups()
+        throws DataBackendException;
 
     /**
      * Retrieves all roles defined in the system.
@@ -565,7 +575,8 @@ public interface SecurityService extends Service
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    RoleSet getAllRoles() throws DataBackendException;
+    RoleSet getAllRoles()
+        throws DataBackendException;
 
     /**
      * Retrieves all permissions defined in the system.
@@ -574,7 +585,8 @@ public interface SecurityService extends Service
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    PermissionSet getAllPermissions() throws DataBackendException;
+    PermissionSet getAllPermissions()
+        throws DataBackendException;
 
     /**
      * Stores Group's attributes. The Groups is required to exist in the system.
@@ -599,7 +611,7 @@ public interface SecurityService extends Service
         throws DataBackendException, UnknownEntityException;
 
     /**
-     * Stores Permission's attributes. The Permissions is required to exist in
+     * Stores Permission's attributes. The Permission is required to exist in
      * the system.
      *
      * @param permission The Permission to be stored.
@@ -629,7 +641,7 @@ public interface SecurityService extends Service
     /**
      * Creates a new role with specified attributes.
      *
-     * @param role the objects describing the group to be created.
+     * @param role The object describing the role to be created.
      * @return the new Role object.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
@@ -641,7 +653,7 @@ public interface SecurityService extends Service
     /**
      * Creates a new permission with specified attributes.
      *
-     * @param permission the objects describing the group to be created.
+     * @param permission The object describing the permission to be created.
      * @return the new Permission object.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
@@ -653,7 +665,7 @@ public interface SecurityService extends Service
     /**
      * Removes a Group from the system.
      *
-     * @param group the object describing group to be removed.
+     * @param group The object describing the group to be removed.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the group does not exist.
@@ -664,7 +676,7 @@ public interface SecurityService extends Service
     /**
      * Removes a Role from the system.
      *
-     * @param role the object describing role to be removed.
+     * @param role The object describing the role to be removed.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the role does not exist.
@@ -675,7 +687,7 @@ public interface SecurityService extends Service
     /**
      * Removes a Permission from the system.
      *
-     * @param permission the object describing permission to be removed.
+     * @param permission The object describing the permission to be removed.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the permission does not exist.
@@ -686,7 +698,7 @@ public interface SecurityService extends Service
     /**
      * Renames an existing Group.
      *
-     * @param group the object describing the group to be renamed.
+     * @param group The object describing the group to be renamed.
      * @param name the new name for the group.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
@@ -698,7 +710,7 @@ public interface SecurityService extends Service
     /**
      * Renames an existing Role.
      *
-     * @param role the object describing the role to be renamed.
+     * @param role The object describing the role to be renamed.
      * @param name the new name for the role.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
@@ -710,7 +722,7 @@ public interface SecurityService extends Service
     /**
      * Renames an existing Permission.
      *
-     * @param permission the object describing the permission to be renamed.
+     * @param permission The object describing the permission to be renamed.
      * @param name the new name for the permission.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.

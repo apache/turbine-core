@@ -71,6 +71,7 @@ import org.apache.turbine.om.security.SecurityObject;
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class PermissionSet implements Serializable
@@ -172,7 +173,7 @@ public class PermissionSet implements Serializable
     }
 
     /**
-     * Compares by name a Permission with the Permissions contained in
+     * Returns a Permission with the given name, if it is contained in
      * this PermissionSet.
      *
      * @param permissionName Name of Permission.
@@ -218,13 +219,13 @@ public class PermissionSet implements Serializable
     }
 
     /**
-     * Returns an Permissions[] of Permissions in this PermissionSet.
+     * Returns an Array of Permissions in this PermissionSet.
      *
-     * @return A Permission[].
+     * @return An Array of Permission Objects.
      */
-    public Permission[] getPermissionsArray()
+    public Permission [] getPermissionsArray()
     {
-        return (Permission[]) set.toArray(new Permission[0]);
+        return (Permission []) set.toArray(new Permission[0]);
     }
 
     /**

@@ -25,13 +25,13 @@ package org.apache.turbine.util.security;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -57,9 +57,10 @@ package org.apache.turbine.util.security;
 import org.apache.turbine.util.TurbineException;
 
 /**
- * Thrown by SecurityService methods to indicate various problems. 
+ * Thrown by SecurityService methods to indicate various problems.
  *
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineSecurityException
@@ -70,7 +71,7 @@ public class TurbineSecurityException
      *
      * @param msg The detail message.
      */
-    public TurbineSecurityException( String msg )
+    public TurbineSecurityException(String msg)
     {
         super(msg);
     }
@@ -80,10 +81,10 @@ public class TurbineSecurityException
      * and nested <code>Throwable</code>.
      *
      * @param msg The detail message.
-     * @param nested the exception or error that caused this exception 
+     * @param nested the exception or error that caused this exception
      *               to be thrown.
      */
-    public TurbineSecurityException( String msg, Throwable nested )
+    public TurbineSecurityException(String msg, Throwable nested)
     {
         super(msg, nested);
     }

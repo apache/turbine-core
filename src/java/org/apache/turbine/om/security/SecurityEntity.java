@@ -25,13 +25,13 @@ package org.apache.turbine.om.security;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -59,12 +59,26 @@ package org.apache.turbine.om.security;
  * with specific entity or resource. The users belonging to the Group may have
  * various Roles. The Permissions to perform actions upon the resource depend
  * on the Roles in the Group that they are assigned.
- * 
+ *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
  * @version $Id$
  */
+
 public interface SecurityEntity
 {
+    /**
+     * Get the Name of the SecurityEntity.
+     *
+     * @return The Name of the SecurityEntity.
+     */
     String getName();
+
+    /**
+     * Sets the Name of the SecurityEntity.
+     *
+     * @param name Name of the SecurityEntity.
+     */
     void setName(String name);
 }

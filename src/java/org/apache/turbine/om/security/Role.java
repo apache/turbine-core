@@ -25,13 +25,13 @@ package org.apache.turbine.om.security;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -64,6 +64,7 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface Role extends SecurityEntity
@@ -72,9 +73,9 @@ public interface Role extends SecurityEntity
      * Returns the set of Permissions associated with this Role.
      *
      * @return A PermissionSet.
-     * @exception Exception, a generic exception.
+     * @exception Exception A generic exception.
      */
-    PermissionSet getPermissions() 
+    PermissionSet getPermissions()
         throws Exception;
 
     /**
@@ -88,12 +89,12 @@ public interface Role extends SecurityEntity
 
     /**
      * Creates a new Role in the system.
-     * 
+     *
      * @param name The name of the new Role.
      * @return An object representing the new Role.
      * @throws TurbineSecurityException if the Role could not be created.
      */
-    Role create( String name ) 
+    Role create(String name)
         throws TurbineSecurityException;
 
     /**
@@ -102,7 +103,7 @@ public interface Role extends SecurityEntity
      * @throws TurbineSecurityException if there is a problem while
      *  saving data.
      */
-    void save() 
+    void save()
         throws TurbineSecurityException;
 
     /**
@@ -110,7 +111,7 @@ public interface Role extends SecurityEntity
      *
      * @throws TurbineSecurityException if the Role could not be removed.
      */
-    void remove() 
+    void remove()
         throws TurbineSecurityException;
 
     /**
@@ -119,7 +120,7 @@ public interface Role extends SecurityEntity
      * @param name The new Role name.
      * @throws TurbineSecurityException if the Role could not be renamed.
      */
-    void rename(String name) 
+    void rename(String name)
         throws TurbineSecurityException;
 
     /**
@@ -129,7 +130,7 @@ public interface Role extends SecurityEntity
      * @throws TurbineSecurityException if there is a problem while assigning
      * the Permission.
      */
-    void grant(Permission permission) 
+    void grant(Permission permission)
         throws TurbineSecurityException;
 
     /**
@@ -139,7 +140,7 @@ public interface Role extends SecurityEntity
      * @throws TurbineSecurityException if there is a problem while assigning
      * the Permissions.
      */
-    void grant(PermissionSet permissionSet) 
+    void grant(PermissionSet permissionSet)
         throws TurbineSecurityException;
 
     /**

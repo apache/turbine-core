@@ -69,6 +69,7 @@ import org.apache.turbine.om.security.Group;
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class GroupSet implements Serializable
@@ -85,7 +86,7 @@ public class GroupSet implements Serializable
     }
 
     /**
-     * Constructs a new GroupSet with specifed contents.
+     * Constructs a new GroupSet with specified contents.
      *
      * If the given collection contains multiple objects that are
      * identical WRT equals() method, some objects will be overwriten.
@@ -213,13 +214,13 @@ public class GroupSet implements Serializable
     }
 
     /**
-     * Returns an Groups[] of Groups in this GroupSet.
+     * Returns an Array of Groups in this GroupSet.
      *
-     * @return A Group[].
+     * @return An Array of Group objects.
      */
-    public Group[] getGroupsArray()
+    public Group [] getGroupsArray()
     {
-        return (Group[]) set.toArray(new Group[0]);
+        return (Group []) set.toArray(new Group[0]);
     }
 
     /**

@@ -68,6 +68,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:jon@collab.net">Jon S. Stevens</a>
  * @author <a href="mailto:cberry@gluecode.com">Craig D. Berry</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface User
@@ -93,7 +94,7 @@ public interface User
 
     /** The 'perm storage' key for the email field. */
     static final String EMAIL = "EMAIL";
-    
+
     /** This is the value that is stored in the database for confirmed users */
     static final String CONFIRM_DATA = "CONFIRMED";
 
@@ -147,7 +148,7 @@ public interface User
     java.util.Date getLastLogin();
 
     /**
-     * Returns the user's password. This method should not be used by 
+     * Returns the user's password. This method should not be used by
      * the application directly, because it's meaning depends upon
      * the implementation of UserManager that manages this particular
      * user object. Some implementations will use this attribute for
@@ -166,7 +167,7 @@ public interface User
      * @param name The object's name.
      * @return An Object with the given name.
      */
-    Object getPerm ( String name );
+    Object getPerm(String name);
 
     /**
      * Get an object from permanent storage; return default if value
@@ -176,7 +177,7 @@ public interface User
      * @param def A default value to return.
      * @return An Object with the given name.
      */
-    Object getPerm ( String name, Object def );
+    Object getPerm(String name, Object def);
 
     /**
      * This should only be used in the case where we want to save the
@@ -200,7 +201,7 @@ public interface User
      * @param name The object's name.
      * @return An Object with the given name.
      */
-    Object getTemp ( String name );
+    Object getTemp(String name);
 
     /**
      * Get an object from temporary storage; return default if value
@@ -210,7 +211,7 @@ public interface User
      * @param def A default value to return.
      * @return An Object with the given name.
      */
-    Object getTemp ( String name, Object def );
+    Object getTemp(String name, Object def);
 
     /**
      * Returns the username for this user.
@@ -265,14 +266,14 @@ public interface User
      * Increments the session hit counter for the user.
      */
     void incrementAccessCounterForSession();
-    
+
     /**
      * Remove an object from temporary storage and return the object.
      *
      * @param name The name of the object to remove.
      * @return An Object.
      */
-    Object removeTemp ( String name );
+    Object removeTemp(String name);
 
     /**
      * Sets the access counter for a user, saved in perm storage.
@@ -298,7 +299,7 @@ public interface User
     /**
      * Set last login date/time.
      *
-     * @param date The last login date.
+     * @param lastLogin The last login date.
      */
     void setLastLogin(java.util.Date lastLogin);
 
@@ -318,16 +319,8 @@ public interface User
      * @param name The object's name.
      * @param value The object.
      */
-    void setPerm ( String name,
-                   Object value );
-
-    /**
-     * This should only be used in the case where we want to save the
-     * data to the database.
-     *
-     * @param stuff A Hashtable.
-     */
-    void setPermStorage(Hashtable stuff);
+    void setPerm(String name,
+                 Object value);
 
     /**
      * This should only be used in the case where we want to save the
@@ -335,7 +328,15 @@ public interface User
      *
      * @param storage A Hashtable.
      */
-    void setTempStorage(Hashtable stuff);
+    void setPermStorage(Hashtable storage);
+
+    /**
+     * This should only be used in the case where we want to save the
+     * data to the database.
+     *
+     * @param storage A Hashtable.
+     */
+    void setTempStorage(Hashtable storage);
 
     /**
      * Put an object into temporary storage.
@@ -343,7 +344,7 @@ public interface User
      * @param name The object's name.
      * @param value The object.
      */
-    void setTemp ( String name, Object value );
+    void setTemp(String name, Object value);
 
     /**
      * Sets the username for this user.
@@ -385,9 +386,7 @@ public interface User
      * in the system by checking the TurbineUserPeer.CONFIRM_VALUE
      * column to see if it is equal to CONFIRM_DATA.
      *
-     * @param user The User object.
      * @return True if the user has been confirmed.
-     * @exception Exception, a generic exception.
      */
     boolean isConfirmed();
 
@@ -408,7 +407,7 @@ public interface User
     /**
      * Updates the last login date in the database.
      *
-     * @exception Exception, a generic exception.
+     * @exception Exception A generic exception.
      */
     void updateLastLogin()
         throws Exception;

@@ -67,11 +67,12 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * {@link org.apache.turbine.services.security.BaseSecurityService}.
  *
  * The responsibilities of this class include loading data of an user from the
- * storage and putting them into the {@link org.apache.turbine.om.security.User}
- * objects, saving those data to the permanent storage, and authenticating
- * users.
+ * storage and putting them into the
+ * {@link org.apache.turbine.om.security.User} objects, saving those data
+ * to the permanent storage, and authenticating users.
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface UserManager
@@ -86,19 +87,21 @@ public interface UserManager
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    boolean accountExists(User user) throws DataBackendException;
+    boolean accountExists(User user)
+        throws DataBackendException;
 
     /**
      * Check whether a specified user's account exists.
      *
      * The login name is used for looking up the account.
      *
-     * @param username The name of the user to be checked.
+     * @param userName The name of the user to be checked.
      * @return true if the specified account exists
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    boolean accountExists(String username) throws DataBackendException;
+    boolean accountExists(String userName)
+        throws DataBackendException;
 
     /**
      * Retrieve a user from persistent storage using username as the
@@ -108,7 +111,8 @@ public interface UserManager
      * @return an User object.
      * @throws UnknownEntityException if the user's record does not
      *         exist in the database.
-     * @throws DataBackendException if there is a problem accessing the storage.
+     * @throws DataBackendException if there is a problem accessing the
+     *         storage.
      */
     User retrieve(String username)
         throws UnknownEntityException, DataBackendException;
@@ -124,7 +128,8 @@ public interface UserManager
      *
      * @param criteria The criteria of selection.
      * @return a List of users meeting the criteria.
-     * @throws DataBackendException if there is a problem accessing the storage.
+     * @throws DataBackendException if there is a problem accessing the
+     *         storage.
      */
     User[] retrieve(Criteria criteria) throws DataBackendException;
 

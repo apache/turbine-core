@@ -69,6 +69,7 @@ import org.apache.turbine.om.security.Role;
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class RoleSet implements Serializable
@@ -87,7 +88,7 @@ public class RoleSet implements Serializable
     }
 
     /**
-     * Constructs a new RoleSet with specifed contents.
+     * Constructs a new RoleSet with specified contents.
      *
      * If the given collection contains multiple objects that are
      * identical WRT equals() method, some objects will be overwriten.
@@ -215,13 +216,13 @@ public class RoleSet implements Serializable
     }
 
     /**
-     * Returns an Roles[] of Roles in this RoleSet.
+     * Returns an Array of Roles in this RoleSet.
      *
-     * @return A Role[].
+     * @return An Array of roles.
      */
-    public Role[] getRolesArray()
+    public Role [] getRolesArray()
     {
-        return (Role[])set.toArray(new Role[0]);
+        return (Role [])set.toArray(new Role[0]);
     }
 
     /**
