@@ -151,8 +151,23 @@ public class Turbine
      */
     private static boolean firstDoGet = true;
 
+    /**
+     * The base from which the Turbine application
+     * will operate.
+     */
     private static String applicationRoot;
-
+    
+    /**
+     * Server information. This information needs to
+     * be made available to processes that do not have
+     * access to RunData and the ServletService doesn't
+     * seem to be working in all cases.
+     */
+    private static String serverName;
+    private static String serverScheme;
+    private static String serverPort;
+    private static String contextPath;
+    
     /**
      * This init method will load the default resources from a
      * properties file.
@@ -224,6 +239,10 @@ public class Turbine
             {
                 if (firstDoGet)
                 {
+                    serverName = data.getRequest().getServerName();
+                    serverPort = Integer.toString(data.getRequest().getServerPort());
+                    serverScheme = data.getRequest().getScheme();
+                    contextPath = applicationRoot;
                     log("Turbine: Starting HTTP initialization of services");
                     TurbineServices.getInstance().initServices(data);
                     log("Turbine: Completed HTTP initialization of services");
@@ -233,6 +252,46 @@ public class Turbine
                }
             }
         }
+    }
+
+    /**
+     * Return the server name.
+     *
+     * @return String server name
+     */
+    public static String getServerName()
+    {
+        return serverName;
+    }
+
+    /**
+     * Return the server scheme.
+     *
+     * @return String server scheme
+     */
+    public static String getServerScheme()
+    {
+        return serverScheme;
+    }
+
+    /**
+     * Return the server port.
+     *
+     * @return String server port
+     */
+    public static String getServerPort()
+    {
+        return serverPort;
+    }
+
+    /**
+     * Return the context path.
+     *
+     * @return String context path
+     */
+    public static String getContextPath()
+    {
+        return contextPath;
     }
 
     /**
