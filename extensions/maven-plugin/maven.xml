@@ -25,5 +25,5 @@
 <!--                                                                          -->
 <!-- ======================================================================== -->
 
-<project default="plugin:deploy"/>
+<project default="plugin:plugin"/>
 
