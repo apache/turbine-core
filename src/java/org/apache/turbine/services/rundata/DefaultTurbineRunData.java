@@ -1433,17 +1433,17 @@ public class DefaultTurbineRunData
     }
 
     /**
-     * Sets the servlet session inforamtion.
+     * Sets the servlet session information.
      *
      * @param sess a session.
-     * @deprecated No replacement.  This method no longer does anything.
+     * @deprecated No replacement. This method no longer does anything.
      */
     public void setSession(HttpSession sess)
     {
     }
 
     /**
-     * Setsthe servlet configuration used during servlet init.
+     * Sets the servlet configuration used during servlet init.
      *
      * @param config a configuration.
      */
