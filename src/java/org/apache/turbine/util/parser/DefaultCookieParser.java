@@ -94,8 +94,8 @@ import org.apache.turbine.util.pool.Recyclable;
  * @version $Id$
  */
 public class DefaultCookieParser
-    extends BaseValueParser
-    implements CookieParser, Recyclable
+        extends BaseValueParser
+        implements CookieParser, Recyclable
 {
     /** Logging */
     private static Log log = LogFactory.getLog(DefaultCookieParser.class);
@@ -136,7 +136,7 @@ public class DefaultCookieParser
      * Gets the parsed RunData.
      *
      * @return the parsed RunData object or null.
-     * @deprecated. Don't use the Run Data object. use getRequest().
+     * @deprecated Don't use the Run Data object. use getRequest().
      */
 
     public RunData getRunData()
@@ -167,7 +167,6 @@ public class DefaultCookieParser
      *
      * @param data the RunData object.
      */
-
     public void setRunData(RunData data)
     {
         setData(data.getRequest(), data.getResponse());
@@ -176,7 +175,7 @@ public class DefaultCookieParser
 
     /**
      * Sets Request and Response to be parsed.
-     *
+     * <p>
      * All previous cookies will be cleared.
      *
      * @param request The http request from the servlet
@@ -212,6 +211,8 @@ public class DefaultCookieParser
 
     /**
      * Get the Path where cookies will be stored
+     *
+     * @return path for cookie storage
      */
     public DynamicURI getCookiePath()
     {
@@ -220,6 +221,8 @@ public class DefaultCookieParser
 
     /**
      * Set the path for cookie storage
+     *
+     * @param path path for cookie storage
      */
     public void setCookiePath(DynamicURI path)
     {
@@ -229,6 +232,9 @@ public class DefaultCookieParser
     /**
      * Set a cookie that will be stored on the client for
      * the duration of the session.
+     *
+     * @param name name of the cookie
+     * @param value value of the cookie
      */
     public void set(String name, String value)
     {
@@ -238,6 +244,10 @@ public class DefaultCookieParser
     /**
      * Set a persisten cookie on the client that will expire
      * after a maximum age (given in seconds).
+     *
+     * @param name name of the cookie
+     * @param value value of the cookie
+     * @param seconds_age max age of the cookie in seconds
      */
     public void set(String name, String value, int seconds_age)
     {
@@ -254,6 +264,8 @@ public class DefaultCookieParser
 
     /**
      * Remove a previously set cookie from the client machine.
+     *
+     * @param name name of the cookie
      */
     public void unset(String name)
     {
