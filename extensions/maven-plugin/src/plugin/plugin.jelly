@@ -448,9 +448,19 @@
   <!-- ======================================================================== -->     
   <goal name="turbine:clean-clean">
     <j:choose>
-      <j:when test="${pluginMode.equalsIgnoreCase('inplace')}">
-        <ant:delete dir="${turbine.plugin.inplace.dir}/WEB-INF/lib"/>
-        <ant:delete dir="${turbine.plugin.inplace.dir}/WEB-INF/classes"/>
+      <j:when test="${context.getVariable('turbine.plugin.mode').equalsIgnoreCase('inplace')}">
+        <ant:delete includeEmptyDirs="yes">
+          <fileset dir="${turbine.plugin.target.lib}">
+            <include name="**/*"/>
+            <exclude name="."/>
+          </fileset>
+        </ant:delete>
+        <ant:delete includeEmptyDirs="yes">
+          <fileset dir="${maven.build.dest}">
+            <include name="**/*"/>
+            <exclude name="."/>
+          </fileset>
+        </ant:delete>
       </j:when>
     </j:choose>
   </goal>    
