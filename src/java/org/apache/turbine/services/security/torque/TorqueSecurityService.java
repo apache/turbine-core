@@ -59,21 +59,26 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.configuration.Configuration;
+
 import org.apache.commons.lang.StringUtils;
 
-import org.apache.turbine.services.InitializationException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import org.apache.turbine.services.security.BaseSecurityService;
-import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.torque.om.NumberKey;
+import org.apache.torque.om.Persistent;
+import org.apache.torque.util.Criteria;
 
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.User;
-
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.security.BaseSecurityService;
+import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.services.security.torque.om.TurbineRolePermissionPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
-
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
@@ -81,16 +86,6 @@ import org.apache.turbine.util.security.GroupSet;
 import org.apache.turbine.util.security.PermissionSet;
 import org.apache.turbine.util.security.RoleSet;
 import org.apache.turbine.util.security.UnknownEntityException;
-
-import org.apache.commons.configuration.Configuration;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.apache.torque.om.Persistent;
-import org.apache.torque.om.NumberKey;
-
-import org.apache.torque.util.Criteria;
 
 /**
  * An implementation of SecurityService that uses torque objects.
@@ -538,13 +533,13 @@ public class TorqueSecurityService
     public GroupSet getGroups(Criteria criteria)
         throws DataBackendException
     {
-        Criteria dbCriteria = new Criteria();
+        Criteria torqueCriteria = new Criteria();
         Iterator keys = criteria.keySet().iterator();
         while (keys.hasNext())
         {
             String key = (String) keys.next();
-            dbCriteria.put(GroupPeerManager.getColumnName(key),
-                           criteria.get(key));
+            torqueCriteria.put(GroupPeerManager.getColumnName(key),
+                    criteria.get(key));
         }
         List groups = new ArrayList(0);
         try
@@ -569,13 +564,13 @@ public class TorqueSecurityService
     public RoleSet getRoles(Criteria criteria)
         throws DataBackendException
     {
-        Criteria dbCriteria = new Criteria();
+        Criteria torqueCriteria = new Criteria();
         Iterator keys = criteria.keySet().iterator();
         while (keys.hasNext())
         {
             String key = (String) keys.next();
-            dbCriteria.put(RolePeerManager.getColumnName(key),
-                           criteria.get(key));
+            torqueCriteria.put(RolePeerManager.getColumnName(key),
+                    criteria.get(key));
         }
         List roles = new ArrayList(0);
         try
@@ -600,13 +595,13 @@ public class TorqueSecurityService
     public PermissionSet getPermissions(Criteria criteria)
         throws DataBackendException
     {
-        Criteria dbCriteria = new Criteria();
+        Criteria torqueCriteria = new Criteria();
         Iterator keys = criteria.keySet().iterator();
         while (keys.hasNext())
         {
             String key = (String) keys.next();
-            dbCriteria.put(PermissionPeerManager.getColumnName(key),
-                           criteria.get(key));
+            torqueCriteria.put(PermissionPeerManager.getColumnName(key),
+                    criteria.get(key));
         }
         List permissions = new ArrayList(0);
         try

@@ -58,17 +58,14 @@ import java.sql.Connection;
 
 import java.util.Iterator;
 
-import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.torque.om.Persistent;
 
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.User;
-
+import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.security.RoleSet;
-
 import org.apache.turbine.util.security.TurbineSecurityException;
-
-import org.apache.torque.om.Persistent;
 
 /**
  * This class represents a Group of Users in the system that are associated

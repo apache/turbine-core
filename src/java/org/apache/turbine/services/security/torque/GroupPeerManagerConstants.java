@@ -54,6 +54,8 @@ package org.apache.turbine.services.security.torque;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.services.security.torque.om.TurbineGroupPeer;
+
 /**
  * Constants for configuring the various columns and bean properties
  * for the used peer.
@@ -80,52 +82,49 @@ package org.apache.turbine.services.security.torque;
 public interface GroupPeerManagerConstants
 {
     /** The key within the security service properties for the group class implementation */
-    public static final String GROUP_CLASS_KEY =
-        "torque.group.class";
+    String GROUP_CLASS_KEY =
+            "torque.group.class";
 
     /** The key within the security service properties for the group peer class implementation */
-    public static final String GROUP_PEER_CLASS_KEY =
-        "torque.groupPeer.class";
+    String GROUP_PEER_CLASS_KEY =
+            "torque.groupPeer.class";
 
     /** Group peer default class */
-    public static final String GROUP_PEER_CLASS_DEFAULT =
-        "org.apache.turbine.services.security.torque.om.TurbineGroupPeer";
+    String GROUP_PEER_CLASS_DEFAULT =
+            TurbineGroupPeer.class.getName();
 
     /** The column name for the login name field. */
-    public static final String GROUP_NAME_COLUMN_KEY =
-        "torque.groupPeer.column.name";
+    String GROUP_NAME_COLUMN_KEY =
+            "torque.groupPeer.column.name";
 
     /** The column name for the id field. */
-    public static final String GROUP_ID_COLUMN_KEY =
+    String GROUP_ID_COLUMN_KEY =
         "torque.groupPeer.column.id";
 
 
     /** The default value for the column name constant for the login name field. */
-    public static final String GROUP_NAME_COLUMN_DEFAULT =
+    String GROUP_NAME_COLUMN_DEFAULT =
         "GROUP_NAME";
 
     /** The default value for the column name constant for the id field. */
-    public static final String GROUP_ID_COLUMN_DEFAULT =
+    String GROUP_ID_COLUMN_DEFAULT =
         "GROUP_ID";
 
 
     /** The property name of the bean property for the login name field. */
-    public static final String GROUP_NAME_PROPERTY_KEY =
+    String GROUP_NAME_PROPERTY_KEY =
         "torque.group.property.name";
 
     /** The property name of the bean property for the id field. */
-    public static final String GROUP_ID_PROPERTY_KEY =
+    String GROUP_ID_PROPERTY_KEY =
         "torque.group.property.id";
 
 
     /** The default value of the bean property for the login name field. */
-    public static final String GROUP_NAME_PROPERTY_DEFAULT =
+    String GROUP_NAME_PROPERTY_DEFAULT =
         "Name";
 
     /** The default value of the bean property for the id field. */
-    public static final String GROUP_ID_PROPERTY_DEFAULT =
+    String GROUP_ID_PROPERTY_DEFAULT =
         "GroupId";
-
-};
-
-
+}

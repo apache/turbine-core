@@ -65,20 +65,17 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.turbine.services.InitializationException;
+import org.apache.torque.om.Persistent;
+import org.apache.torque.util.Criteria;
 
 import org.apache.turbine.om.security.User;
-
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.services.security.UserManager;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
 import org.apache.turbine.util.security.PasswordMismatchException;
 import org.apache.turbine.util.security.UnknownEntityException;
-
-import org.apache.torque.util.Criteria;
-import org.apache.torque.om.Persistent;
-
-import org.apache.turbine.services.security.UserManager;
-import org.apache.turbine.services.security.TurbineSecurity;
 
 /**
  * An UserManager performs {@link org.apache.turbine.om.security.User}
@@ -129,7 +126,7 @@ public class TorqueUserManager
     public boolean accountExists(User user)
         throws DataBackendException
     {
-        return accountExists(user.getUserName());
+        return accountExists(user.getName());
     }
 
     /**
@@ -305,7 +302,7 @@ public class TorqueUserManager
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                                             user.getUserName() + "' does not exist");
+                                             user.getName() + "' does not exist");
         }
 
         try
@@ -373,7 +370,7 @@ public class TorqueUserManager
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                                             user.getUserName() + "' does not exist");
+                                             user.getName() + "' does not exist");
         }
 
         // log.debug("Supplied Pass: " + password);
@@ -413,13 +410,13 @@ public class TorqueUserManager
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                                             user.getUserName() + "' does not exist");
+                                             user.getName() + "' does not exist");
         }
 
         if (!TurbineSecurity.checkPassword(oldPassword, user.getPassword()))
         {
             throw new PasswordMismatchException(
-                "The supplied old password for '" + user.getUserName() +
+                "The supplied old password for '" + user.getName() +
                 "' was incorrect");
         }
         user.setPassword(TurbineSecurity.encryptPassword(newPassword));
@@ -450,7 +447,7 @@ public class TorqueUserManager
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                                             user.getUserName() + "' does not exist");
+                                             user.getName() + "' does not exist");
         }
         user.setPassword(TurbineSecurity.encryptPassword(password));
         // save the changes in the database immediately, to prevent the
@@ -471,7 +468,7 @@ public class TorqueUserManager
     public void createAccount(User user, String initialPassword)
         throws EntityExistsException, DataBackendException
     {
-        if(StringUtils.isEmpty(user.getUserName()))
+        if(StringUtils.isEmpty(user.getName()))
         {
             throw new DataBackendException("Could not create "
                                            + "an user with empty name!");
@@ -480,7 +477,7 @@ public class TorqueUserManager
         if (accountExists(user))
         {
             throw new EntityExistsException("The account '" +
-                                            user.getUserName() + "' already exists");
+                                            user.getName() + "' already exists");
         }
         user.setPassword(TurbineSecurity.encryptPassword(initialPassword));
 
@@ -497,7 +494,7 @@ public class TorqueUserManager
         catch (Exception e)
         {
             throw new DataBackendException("Failed to create account '" +
-                                           user.getUserName() + "'", e);
+                                           user.getName() + "'", e);
         }
     }
 
@@ -515,10 +512,10 @@ public class TorqueUserManager
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                                             user.getUserName() + "' does not exist");
+                                             user.getName() + "' does not exist");
         }
         Criteria criteria = new Criteria();
-        criteria.add(UserPeerManager.getNameColumn(), user.getUserName());
+        criteria.add(UserPeerManager.getNameColumn(), user.getName());
         try
         {
             UserPeerManager.doDelete(criteria);
@@ -526,7 +523,7 @@ public class TorqueUserManager
         catch (Exception e)
         {
             throw new DataBackendException("Failed to remove account '" +
-                                           user.getUserName() + "'", e);
+                                           user.getName() + "'", e);
         }
     }
 }

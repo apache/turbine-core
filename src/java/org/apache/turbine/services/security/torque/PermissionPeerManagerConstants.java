@@ -54,6 +54,8 @@ package org.apache.turbine.services.security.torque;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.services.security.torque.om.TurbinePermissionPeer;
+
 /**
  * Constants for configuring the various columns and bean properties
  * for the used peer.
@@ -80,52 +82,50 @@ package org.apache.turbine.services.security.torque;
 public interface PermissionPeerManagerConstants
 {
     /** The key within the security service properties for the permission class implementation */
-    public static final String PERMISSION_CLASS_KEY =
+    String PERMISSION_CLASS_KEY =
         "torque.permission.class";
 
     /** The key within the security service properties for the permission peer class implementation */
-    public static final String PERMISSION_PEER_CLASS_KEY =
+    String PERMISSION_PEER_CLASS_KEY =
         "torque.permissionPeer.class";
 
     /** Permission peer default class */
-    public static final String PERMISSION_PEER_CLASS_DEFAULT =
-        "org.apache.turbine.services.security.torque.om.TurbinePermissionPeer";
+    String PERMISSION_PEER_CLASS_DEFAULT =
+        TurbinePermissionPeer.class.getName();
 
     /** The column name for the login name field. */
-    public static final String PERMISSION_NAME_COLUMN_KEY =
+    String PERMISSION_NAME_COLUMN_KEY =
         "torque.permissionPeer.column.name";
 
     /** The column name for the id field. */
-    public static final String PERMISSION_ID_COLUMN_KEY =
+    String PERMISSION_ID_COLUMN_KEY =
         "torque.permissionPeer.column.id";
 
 
     /** The default value for the column name constant for the login name field. */
-    public static final String PERMISSION_NAME_COLUMN_DEFAULT =
+    String PERMISSION_NAME_COLUMN_DEFAULT =
         "PERMISSION_NAME";
 
     /** The default value for the column name constant for the id field. */
-    public static final String PERMISSION_ID_COLUMN_DEFAULT =
+    String PERMISSION_ID_COLUMN_DEFAULT =
         "PERMISSION_ID";
 
 
     /** The property name of the bean property for the login name field. */
-    public static final String PERMISSION_NAME_PROPERTY_KEY =
+    String PERMISSION_NAME_PROPERTY_KEY =
         "torque.permission.property.name";
 
     /** The property name of the bean property for the id field. */
-    public static final String PERMISSION_ID_PROPERTY_KEY =
+    String PERMISSION_ID_PROPERTY_KEY =
         "torque.permission.property.id";
 
 
     /** The default value of the bean property for the login name field. */
-    public static final String PERMISSION_NAME_PROPERTY_DEFAULT =
+    String PERMISSION_NAME_PROPERTY_DEFAULT =
         "Name";
 
     /** The default value of the bean property for the id field. */
-    public static final String PERMISSION_ID_PROPERTY_DEFAULT =
+    String PERMISSION_ID_PROPERTY_DEFAULT =
         "PermissionId";
 
-};
-
-
+}

@@ -64,13 +64,11 @@ import java.util.Hashtable;
 
 import javax.servlet.http.HttpSessionBindingEvent;
 
-import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.torque.om.Persistent;
 
 import org.apache.turbine.om.security.User;
-
+import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.security.TurbineSecurityException;
-
-import org.apache.torque.om.Persistent;
 
 /**
  * This is the User class used by the TorqueSecurity Service. It decouples
@@ -153,15 +151,15 @@ public class TorqueUser
      * Stores the object in the database.  If the object is new,
      * it inserts it; otherwise an update is performed.
      *
-     * @param dbName The name under which the object should be stored.
+     * @param torqueName The name under which the object should be stored.
      *
      * @exception Exception This method might throw an exceptions
      */
-    public void save(String dbName)
-        throws Exception
+    public void save(String torqueName)
+            throws Exception
     {
         setObjectdata(ObjectUtils.serializeHashtable(getPermStorage()));
-        super.save(dbName);
+        super.save(torqueName);
     }
 
     /**

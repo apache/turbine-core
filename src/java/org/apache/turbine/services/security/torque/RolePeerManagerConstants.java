@@ -54,6 +54,8 @@ package org.apache.turbine.services.security.torque;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.services.security.torque.om.TurbineRolePeer;
+
 /**
  * Constants for configuring the various columns and bean properties
  * for the used peer.
@@ -89,7 +91,7 @@ public interface RolePeerManagerConstants
 
     /** Role peer default class */
     public static final String ROLE_PEER_CLASS_DEFAULT =
-        "org.apache.turbine.services.security.torque.om.TurbineRolePeer";
+            TurbineRolePeer.class.getName();
 
     /** The column name for the login name field. */
     public static final String ROLE_NAME_COLUMN_KEY =
@@ -126,6 +128,4 @@ public interface RolePeerManagerConstants
     public static final String ROLE_ID_PROPERTY_DEFAULT =
         "RoleId";
 
-};
-
-
+}
