@@ -278,19 +278,16 @@ public class TurbineUploadService
     }
 
     /**
-     * <p> Creates a new instance of {@link
-     * org.apache.turbine.util.upload.FileItem}.
+     * Creates a new instance of {@link
+     * org.apache.commons.fileupload.FileItem}.
      *
      * @param path The path for the FileItem.
      * @param headers The HTTP request headers.
      * @param requestSize The size of the request.
      * @return A newly created <code>FileItem</code>.
      */
-    protected FileItem createItem(String path,
-                                  Map headers,
-                                  int requestSize)
+    protected FileItem createItem(String path, Map headers, int requestSize)
     {
-
         return DefaultFileItem.newInstance(path, getFileName(headers),
                 getHeader(headers, CONTENT_TYPE), requestSize,
                 getSizeThreshold());
@@ -366,7 +363,7 @@ public class TurbineUploadService
     }
 
     /**
-     * <p> Returns a header with specified name.
+     * Returns a header with specified name.
      *
      * @param headers The HTTP request headers.
      * @param name The name of the header to fetch.
