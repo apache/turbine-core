@@ -107,7 +107,7 @@ public class JobEntryTest extends BaseTestCase
      */
     public void testCompareTo()
     {
-        assertTrue(!je1.equals(je2));
+        assertFalse(je1.equals(je2));
         je2.setJobId(je1.getJobId());
         assertTrue(je1.equals(je2));
         
