@@ -54,7 +54,6 @@ package org.apache.turbine.modules.navigations;
  * <http://www.apache.org/>.
  */
 
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -132,25 +131,25 @@ public class DefaultBottomNavigation extends Navigation
         {
             TD perm = new TD().setVAlign(AlignType.TOP);
             TD temp = new TD().setVAlign(AlignType.TOP);
-            java.util.Enumeration ePerm =
-                data.getUser().getPermStorage().keys();
-            java.util.Enumeration eTemp =
-                data.getUser().getTempStorage().keys();
 
             perm.addElement("Perm values:").addElement(new BR());
-            temp.addElement("Temp values:").addElement(new BR());
-            while (ePerm.hasMoreElements())
+            for (Iterator it = data.getUser().getPermStorage().keySet().iterator();
+                 it.hasNext();)
             {
-                String key = (String) ePerm.nextElement();
+                String key = (String) it.next();
                 String value = data.getUser().getPerm(key).toString();
                 perm.addElement(key + "=" + value).addElement(new BR());
             }
-            while (eTemp.hasMoreElements())
+
+            temp.addElement("Temp values:").addElement(new BR());
+            for (Iterator it = data.getUser().getTempStorage().keySet().iterator();
+                 it.hasNext();)
             {
-                String key = (String) eTemp.nextElement();
+                String key = (String) it.next();
                 String value = data.getUser().getTemp(key).toString();
                 temp.addElement(key + "=" + value).addElement(new BR());
             }
+
             body.addElement(new BR()).addElement(new BR()).addElement(
                 new Table().setBorder(2).setCellPadding(10).addElement(
                     new TR().addElement(perm).addElement(temp)));
