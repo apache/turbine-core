@@ -71,6 +71,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.util.ServletUtils;
 
@@ -181,7 +182,9 @@ public class TurbineAvalonComponentService
         this.manager.setLoggerManager(lm);
         this.manager.enableLogging(
                 lm.getLoggerForCategory("org.apache.turbine.services"));
-        this.manager.contextualize(new DefaultContext());
+        DefaultContext context = new DefaultContext();
+        context.put(AvalonComponentService.APP_ROOT, Turbine.getRealPath("/"));
+        this.manager.contextualize(context);
         this.manager.setRoleManager(roles);
         this.manager.configure(sysConfig);
 
