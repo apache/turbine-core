@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -97,7 +97,7 @@ public class FormMessages
                            String fieldName,
                            long returnCode)
     {
-        setMessage(formName, fieldName, String.valueOf(returnCode) );
+        setMessage(formName, fieldName, String.valueOf(returnCode));
     }
 
     /**
@@ -156,7 +156,7 @@ public class FormMessages
      */
     private final Vector getValues(Hashtable table, String key)
     {
-        return (Vector)table.get(key);
+        return (Vector) table.get(key);
     }
 
     /**
@@ -175,16 +175,16 @@ public class FormMessages
             FormMessage[] result = new FormMessage[messages.size()];
             for (int i = 0; i < messages.size(); i++)
             {
-                result[i] = new FormMessage( formName );
+                result[i] = new FormMessage(formName);
                 messageName = (String) messages.elementAt(i);
-                result[i].setMessage( messageName );
+                result[i].setMessage(messageName);
                 fields = getValues(messages_fields, messageName);
                 for (int j = 0; j < fields.size(); j++)
                 {
                     fieldName = (String) fields.elementAt(j);
-                    if (formHasField( formName, fieldName ))
+                    if (formHasField(formName, fieldName))
                     {
-                        result[i].setFieldName( fieldName );
+                        result[i].setFieldName(fieldName);
                     }
                 }
             }
@@ -194,7 +194,7 @@ public class FormMessages
     }
 
     /**
-     * Get form messages for a given form and field. 
+     * Get form messages for a given form and field.
      *
      * @param formName A String with the form name.
      * @param fieldName A String with the field name.
@@ -212,9 +212,9 @@ public class FormMessages
             FormMessage[] result = new FormMessage[messages.size()];
             for (int i = 0; i < messages.size(); i++)
             {
-                result[i] = new FormMessage( formName, fieldName );
+                result[i] = new FormMessage(formName, fieldName);
                 messageName = (String) messages.elementAt(i);
-                result[i].setMessage( messageName );
+                result[i].setMessage(messageName);
             }
             return result;
         }
@@ -232,7 +232,7 @@ public class FormMessages
                                  String fieldName)
     {
         List fields = getValues(forms_fields, formName);
-        for (Iterator iter = fields.iterator(); iter.hasNext(); )
+        for (Iterator iter = fields.iterator(); iter.hasNext();)
         {
             if (fieldName.equals(iter.next().toString()))
             {

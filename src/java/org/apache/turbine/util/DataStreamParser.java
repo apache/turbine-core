@@ -55,8 +55,8 @@ package org.apache.turbine.util;
  */
 
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StreamTokenizer;
 import java.util.ArrayList;
@@ -104,12 +104,12 @@ public abstract class DataStreamParser implements Iterator
     /**
      * The constant for empty fields
      */
-    protected static final String EMPTYFIELDNAME="UNKNOWNFIELD";
+    protected static final String EMPTYFIELDNAME = "UNKNOWNFIELD";
 
     /**
      * The list of column names.
      */
-    private List            columnNames;
+    private List columnNames;
 
     /**
      * The stream tokenizer for reading values from the input reader.
@@ -119,22 +119,22 @@ public abstract class DataStreamParser implements Iterator
     /**
      * The parameter parser holding the values of columns for the current line.
      */
-    private ValueParser     lineValues;
+    private ValueParser lineValues;
 
     /**
      * Indicates whether or not the tokenizer has read anything yet.
      */
-    private boolean         neverRead = true;
+    private boolean neverRead = true;
 
     /**
      * The character encoding of the input
      */
-    private String          characterEncoding;
+    private String characterEncoding;
 
     /**
      * The fieldseperator, which can be almost any char
      */
-    private char            fieldSeparator;
+    private char fieldSeparator;
 
     /**
      * Create a new DataStreamParser instance. Requires a Reader to read the
@@ -146,7 +146,7 @@ public abstract class DataStreamParser implements Iterator
      * @param characterEncoding the character encoding of the input.
      */
     public DataStreamParser(Reader in, List columnNames,
-            String characterEncoding)
+                            String characterEncoding)
     {
         this.columnNames = columnNames;
         this.characterEncoding = characterEncoding;
@@ -157,7 +157,7 @@ public abstract class DataStreamParser implements Iterator
             this.characterEncoding = "US-ASCII";
             try
             {
-                this.characterEncoding = ((InputStreamReader)in).getEncoding();
+                this.characterEncoding = ((InputStreamReader) in).getEncoding();
             }
             catch (ClassCastException e)
             {
@@ -205,7 +205,6 @@ public abstract class DataStreamParser implements Iterator
         tokenizer.ordinaryChar(fieldSeparator);
     }
 
-
     /**
      * Set the list of column names explicitly.
      *
@@ -224,7 +223,7 @@ public abstract class DataStreamParser implements Iterator
      * @exception IOException an IOException occurred.
      */
     public void readColumnNames()
-        throws IOException
+            throws IOException
     {
         columnNames = new ArrayList();
         int lastTtype = 0;
@@ -233,9 +232,9 @@ public abstract class DataStreamParser implements Iterator
         neverRead = false;
         tokenizer.nextToken();
         while (tokenizer.ttype == tokenizer.TT_WORD || tokenizer.ttype == tokenizer.TT_EOL
-               || tokenizer.ttype == '"' || tokenizer.ttype == fieldSeparator)
+                || tokenizer.ttype == '"' || tokenizer.ttype == fieldSeparator)
         {
-            if (tokenizer.ttype !=  fieldSeparator && tokenizer.ttype != tokenizer.TT_EOL)
+            if (tokenizer.ttype != fieldSeparator && tokenizer.ttype != tokenizer.TT_EOL)
             {
                 columnNames.add(tokenizer.sval);
                 fieldCounter++;
@@ -243,15 +242,15 @@ public abstract class DataStreamParser implements Iterator
             else if (tokenizer.ttype == fieldSeparator && lastTtype == fieldSeparator)
             {
                 // we have an empty field name
-                columnNames.add(EMPTYFIELDNAME+fieldCounter);
+                columnNames.add(EMPTYFIELDNAME + fieldCounter);
                 fieldCounter++;
             }
             else if (lastTtype == fieldSeparator && tokenizer.ttype == tokenizer.TT_EOL)
             {
-                columnNames.add(EMPTYFIELDNAME+fieldCounter);
+                columnNames.add(EMPTYFIELDNAME + fieldCounter);
                 break;
             }
-            else if(tokenizer.ttype == tokenizer.TT_EOL)
+            else if (tokenizer.ttype == tokenizer.TT_EOL)
             {
                 break;
             }
@@ -267,7 +266,7 @@ public abstract class DataStreamParser implements Iterator
      * @exception IOException an IOException occurred.
      */
     public boolean hasNextRow()
-        throws IOException
+            throws IOException
     {
         // check for end of line ensures that an empty last line doesn't
         // give a false positive for hasNextRow
@@ -288,26 +287,26 @@ public abstract class DataStreamParser implements Iterator
      * @exception NoSuchElementException there are no more rows in the input.
      */
     public ValueParser nextRow()
-        throws IOException, NoSuchElementException
+            throws IOException, NoSuchElementException
     {
         if (!hasNextRow())
         {
             throw new NoSuchElementException();
-		}
+        }
 
         if (lineValues == null)
         {
             lineValues = new BaseValueParser(characterEncoding);
-		}
+        }
         else
         {
             lineValues.clear();
-		}
+        }
 
         Iterator it = columnNames.iterator();
         tokenizer.nextToken();
         while (tokenizer.ttype == StreamTokenizer.TT_WORD
-               || tokenizer.ttype == '"' || tokenizer.ttype == fieldSeparator)
+                || tokenizer.ttype == '"' || tokenizer.ttype == fieldSeparator)
         {
             int lastTtype = 0;
             // note this means that if there are more values than
@@ -315,21 +314,21 @@ public abstract class DataStreamParser implements Iterator
             if (it.hasNext())
             {
                 String colname = it.next().toString();
-                String colval  = tokenizer.sval;
+                String colval = tokenizer.sval;
                 if (tokenizer.ttype != fieldSeparator && lastTtype != fieldSeparator)
                 {
                     if (DEBUG)
                     {
                         log.debug("DataStreamParser.nextRow(): " +
-                            colname + "=" + colval);
+                                colname + "=" + colval);
                     }
                     lineValues.add(colname, colval);
-                 }
-                 else if (tokenizer.ttype == fieldSeparator && lastTtype != fieldSeparator)
-                 {
+                }
+                else if (tokenizer.ttype == fieldSeparator && lastTtype != fieldSeparator)
+                {
                     lastTtype = tokenizer.ttype;
                     tokenizer.nextToken();
-                    if (tokenizer.ttype != fieldSeparator && tokenizer.sval!=null)
+                    if (tokenizer.ttype != fieldSeparator && tokenizer.sval != null)
                     {
                         lineValues.add(colname, tokenizer.sval);
                     }
@@ -374,7 +373,7 @@ public abstract class DataStreamParser implements Iterator
      *                                   or an IOException occurred.
      */
     public Object next()
-        throws NoSuchElementException
+            throws NoSuchElementException
     {
         Object nextRow = null;
 
@@ -397,7 +396,7 @@ public abstract class DataStreamParser implements Iterator
      * @exception UnsupportedOperationException the operation is not supported.
      */
     public void remove()
-        throws UnsupportedOperationException
+            throws UnsupportedOperationException
     {
         throw new UnsupportedOperationException();
     }

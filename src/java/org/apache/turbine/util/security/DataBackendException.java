@@ -63,7 +63,7 @@ package org.apache.turbine.util.security;
  * @version $Id$
  */
 public class DataBackendException
-    extends TurbineSecurityException
+        extends TurbineSecurityException
 {
     /**
      * Construct an DataBackendException with specified detail message.

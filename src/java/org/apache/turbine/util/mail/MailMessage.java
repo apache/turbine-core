@@ -215,10 +215,10 @@ public class MailMessage
                        boolean d)
     {
         host = h;
-        to = (t == null?null:parseAddressField(t));
-        cc = (cc == null?null:parseAddressField(c));
-        bcc = (bc == null?null:parseAddressField(bc));
-        from = (f == null?null:parseInternetAddress(f));
+        to = (t == null ? null : parseAddressField(t));
+        cc = (cc == null ? null : parseAddressField(c));
+        bcc = (bc == null ? null : parseAddressField(bc));
+        from = (f == null ? null : parseInternetAddress(f));
         subject = s;
         body = b;
         debug = d;
@@ -237,7 +237,7 @@ public class MailMessage
         {
             headers = new Hashtable();
         }
-        headers.put(name,value);
+        headers.put(name, value);
     }
 
     /**
@@ -260,7 +260,7 @@ public class MailMessage
             addressList = new String[v.size()];
             for (int i = 0; i < v.size(); i++)
             {
-                addressList[i] = (String)v.elementAt(i);
+                addressList[i] = (String) v.elementAt(i);
             }
         }
         else
@@ -323,7 +323,7 @@ public class MailMessage
         {
             Vector v = new Vector();
             StringTokenizer st = new StringTokenizer(str, ",", false);
-            while( st.hasMoreTokens() )
+            while (st.hasMoreTokens())
             {
                 v.addElement(st.nextToken());
             }
@@ -379,7 +379,7 @@ public class MailMessage
         else
         {
             int sp = str.lastIndexOf(" ");
-            address = str.substring(sp+1);
+            address = str.substring(sp + 1);
             personal = str.substring(0, sp);
         }
         return parseInternetAddress(address, personal);

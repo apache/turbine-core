@@ -62,7 +62,7 @@ package org.apache.turbine.util.security;
  * @version $Id$
  */
 public class PasswordMismatchException
-    extends TurbineSecurityException
+        extends TurbineSecurityException
 {
     /**
      * Construct an PasswordMismatchException with specified detail message.

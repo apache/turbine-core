@@ -55,6 +55,7 @@ package org.apache.turbine.util.template;
  */
 
 import java.util.Hashtable;
+
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
 
@@ -142,14 +143,14 @@ public class TemplateInfo
      */
     public void setScreenTemplate(String v)
     {
-       data.getParameters().setString("template", v);
+        data.getParameters().setString("template", v);
 
-       /*
-        * We have changed the screen template so
-        * we should now update the layout template
-        * as well. We will use the template service
-        * to help us out.
-        */
+        /*
+         * We have changed the screen template so
+         * we should now update the layout template
+         * as well. We will use the template service
+         * to help us out.
+         */
         try
         {
             setLayoutTemplate(TurbineTemplate.getLayoutTemplateName(v));
@@ -180,7 +181,7 @@ public class TemplateInfo
      */
     public void setLayoutTemplate(String v)
     {
-        setTemp(TemplateInfo.LAYOUT_TEMPLATE,v);
+        setTemp(TemplateInfo.LAYOUT_TEMPLATE, v);
     }
 
     /**
@@ -298,7 +299,7 @@ public class TemplateInfo
     public String getString(String name)
     {
         String value = null;
-        Object object = getTemp(name,null);
+        Object object = getTemp(name, null);
         if (object != null)
         {
             value = (String) object;

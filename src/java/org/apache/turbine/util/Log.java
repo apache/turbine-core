@@ -93,7 +93,7 @@ public class Log
     {
         org.apache.commons.logging.Log log = LogFactory.getLog(logName);
 
-        if(log == null)
+        if (log == null)
         {
             log = getLogger();
         }
@@ -128,7 +128,7 @@ public class Log
      *
      * @deprecated Use the commons.logging system for logging
      */
-    public static void debug(String logName ,String message, Throwable t)
+    public static void debug(String logName, String message, Throwable t)
     {
         getLogger(logName).debug(message, t);
     }

@@ -54,11 +54,11 @@ package org.apache.turbine.util.velocity;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.turbine.util.StringUtils;
 import org.apache.commons.mail.SimpleEmail;
+import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.util.StringUtils;
 import org.apache.velocity.context.Context;
 
 /**
@@ -273,11 +273,12 @@ public class VelocityEmail
      * @exception VelocityEmailException thrown if mail cannot be sent.
      */
     public void send()
-        throws VelocityEmailException
+            throws VelocityEmailException
     {
-        try {
+        try
+        {
             // Process the template.
-            String body = TurbineVelocity.handleRequest(context,template);
+            String body = TurbineVelocity.handleRequest(context, template);
 
             // If the caller desires word-wrapping, do it here
             if (wordWrap > 0)
@@ -293,7 +294,8 @@ public class VelocityEmail
             se.setMsg(body);
             se.send();
         }
-        catch (Exception e){
+        catch (Exception e)
+        {
             throw new VelocityEmailException(e);
         }
     }
@@ -312,7 +314,7 @@ public class VelocityEmail
         }
         catch (Exception e)
         {
-            log.error ("VelocityEmail error", e);
+            log.error("VelocityEmail error", e);
         }
         return "";
     }

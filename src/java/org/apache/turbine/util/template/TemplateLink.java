@@ -76,8 +76,8 @@ import org.apache.turbine.util.ServerData;
  * @version $Id$
  */
 public class TemplateLink
-    extends DynamicURI
-    implements ApplicationTool
+        extends DynamicURI
+        implements ApplicationTool
 {
     /** the pathinfo key stored in the DynamicURI */
     private static final String TEMPLATE_KEY = "template";

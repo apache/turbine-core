@@ -54,46 +54,44 @@ package org.apache.turbine.util.validation;
  * <http://www.apache.org/>.
  */
 
-
 /**
  * @author <a href="mailto:mikeh@ncsa.uiuc.edu">Mike Haberman</a>
  */
 public abstract class InputValidator
 {
     public static final boolean AllowNullInput = true;// allow null
-    public static final int     NoMaxSize      = -1;  // no size restrictions
-    public static final String  EmptyArgv      = "";  // no optional arguments
+    public static final int NoMaxSize = -1;  // no size restrictions
+    public static final String EmptyArgv = "";  // no optional arguments
 
     // default error messages
-    private static String NullInputError       = "Null Input Not Allowed";
+    private static String NullInputError = "Null Input Not Allowed";
     private static String MaxSizeExceededError = "Maximum Size Exceeded";
 
-
-    private boolean allowNullInput; 
-    private int maxSize;            
-    private String argv;            
+    private boolean allowNullInput;
+    private int maxSize;
+    private String argv;
 
     /**
-     * default Constructor, 
-    */
+     * default Constructor,
+     */
     public InputValidator()
     {
-       this(AllowNullInput, NoMaxSize, EmptyArgv);
+        this(AllowNullInput, NoMaxSize, EmptyArgv);
     }
 
     /**
-     * Constructor, 
-     * @param boolean allowNullInput 
-     * @param int maxSize 
-     * @param String argv 
-    */
+     * Constructor,
+     * @param boolean allowNullInput
+     * @param int maxSize
+     * @param String argv
+     */
     public InputValidator(boolean allowNullInput,
-                          int     maxSize,
-                          String  argv)
+                          int maxSize,
+                          String argv)
     {
-       this.allowNullInput = allowNullInput;
-       this.maxSize         = maxSize;
-       this.argv            = argv;
+        this.allowNullInput = allowNullInput;
+        this.maxSize = maxSize;
+        this.argv = argv;
     }
 
     /**
@@ -101,7 +99,7 @@ public abstract class InputValidator
      */
     public void setAllowNullInput(boolean allowNullInput)
     {
-       this.allowNullInput = allowNullInput;
+        this.allowNullInput = allowNullInput;
     }
 
     /**
@@ -109,7 +107,7 @@ public abstract class InputValidator
      */
     public void setMaxSize(int maxSize)
     {
-       this.maxSize = maxSize;
+        this.maxSize = maxSize;
     }
 
     /**
@@ -117,40 +115,39 @@ public abstract class InputValidator
      */
     public void setArgv(String argv)
     {
-       this.argv = argv;
+        this.argv = argv;
     }
 
-
     /**
-     * @param String input, input to be checked 
+     * @param String input, input to be checked
      * @return boolean, whether or not the input is valid
-    */
+     */
     public boolean isValid(String input)
     {
-        try 
+        try
         {
-           checkInput(input);
-           return true;
+            checkInput(input);
+            return true;
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
-           return false;
+            return false;
         }
     }
 
     /**
-     * @param String input, input to be checked 
-     * @return String, error message or null 
-    */
+     * @param String input, input to be checked
+     * @return String, error message or null
+     */
     public String getErrorMessage(String input)
     {
-        try 
+        try
         {
-           checkInput(input);
+            checkInput(input);
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
-           return e.toString();
+            return e.toString();
         }
 
         // there is no error
@@ -158,27 +155,27 @@ public abstract class InputValidator
     }
 
     /**
-     * @param String value 
+     * @param String value
      * @exception Exception, a generic exception.
-    */
-    public void checkInput(String value) 
-        throws Exception
+     */
+    public void checkInput(String value)
+            throws Exception
     {
         int size = 0;
-        if (value != null) 
+        if (value != null)
         {
             value = value.trim();
             size = value.length();
         }
 
-        if (! allowNullInput && value == null)
+        if (!allowNullInput && value == null)
         {
-           throw new Exception(NullInputError);
+            throw new Exception(NullInputError);
         }
 
-        if (maxSize != NoMaxSize && size > maxSize) 
+        if (maxSize != NoMaxSize && size > maxSize)
         {
-           throw new Exception(MaxSizeExceededError);
+            throw new Exception(MaxSizeExceededError);
         }
 
         // allow the subclass to check specifics
@@ -186,15 +183,15 @@ public abstract class InputValidator
     }
 
     /**
-     * @return String, the expected format of the input 
-    */
+     * @return String, the expected format of the input
+     */
     public abstract String getExpectedFormat();
 
     /**
-     * @param String input, input to be checked 
+     * @param String input, input to be checked
      * all subclasses must define this method
-    */
-    protected abstract void check(String input) 
-        throws Exception;
+     */
+    protected abstract void check(String input)
+            throws Exception;
 
 }

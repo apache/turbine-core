@@ -54,7 +54,6 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
-
 /**
  * A fixed length object cache implementing the LRU algorithm.  Convenient for
  * buffering recently used objects.

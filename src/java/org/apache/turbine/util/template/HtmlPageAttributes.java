@@ -219,7 +219,7 @@ public class HtmlPageAttributes
      */
     public String getTitle()
     {
-        if(StringUtils.isEmpty(this.title))
+        if (StringUtils.isEmpty(this.title))
         {
             return "";
         }
@@ -309,7 +309,7 @@ public class HtmlPageAttributes
      */
     public HtmlPageAttributes addStyleSheet(String styleSheetURL)
     {
-        addStyleSheet(styleSheetURL, "screen", null, "text/css" );
+        addStyleSheet(styleSheetURL, "screen", null, "text/css");
         return this;
     }
 
@@ -323,7 +323,7 @@ public class HtmlPageAttributes
      * @return a <code>HtmlPageAttributes</code> (self).
      */
     public HtmlPageAttributes addStyleSheet(String styleSheetURL,
-            String media, String title, String type)
+                                            String media, String title, String type)
     {
         StyleSheet ss = new StyleSheet(styleSheetURL);
         ss.setMedia(media);
@@ -357,9 +357,9 @@ public class HtmlPageAttributes
      */
     public HtmlPageAttributes setStyleSheet(String styleSheetURL, String media)
     {
-        log.info("Use of the setStyleSheet(styleSheetURL,media) method is deprecated.  "+
+        log.info("Use of the setStyleSheet(styleSheetURL,media) method is deprecated.  " +
                 "Please use addStyleSheet(styleSheetURL,media) instead.");
-        return addStyleSheet(styleSheetURL,media,null,"text/css");
+        return addStyleSheet(styleSheetURL, media, null, "text/css");
     }
 
     /**
@@ -568,9 +568,9 @@ public class HtmlPageAttributes
          *
          * @param url URL of the external style sheet
          */
-        public StyleSheet( String url )
+        public StyleSheet(String url)
         {
-            setUrl( url );
+            setUrl(url);
         }
 
         /**

@@ -54,7 +54,7 @@ package org.apache.turbine.util.velocity;
  * <http://www.apache.org/>.
  */
 
- import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * This exception is thrown if a VelocityEmail/VelocityHtmlEmail can not be

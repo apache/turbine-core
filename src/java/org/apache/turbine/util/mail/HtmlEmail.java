@@ -60,12 +60,13 @@ import javax.activation.URLDataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.ecs.Document;
 import org.apache.ecs.ElementContainer;
 import org.apache.ecs.html.Body;
 import org.apache.ecs.html.Html;
 import org.apache.ecs.html.PRE;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * An HTML multipart email.
@@ -104,11 +105,10 @@ public class HtmlEmail extends MultiPartEmail
      * @exception MessagingException.
      */
     public HtmlEmail()
-        throws MessagingException
+            throws MessagingException
     {
         this.init();
     }
-
 
     /**
      * Instantiates a new MimeMultipart object if it isn't already
@@ -120,7 +120,7 @@ public class HtmlEmail extends MultiPartEmail
     {
         if (htmlContent == null)
         {
-           htmlContent = new MimeMultipart();
+            htmlContent = new MimeMultipart();
         }
         return htmlContent;
     }
@@ -133,7 +133,7 @@ public class HtmlEmail extends MultiPartEmail
      * @exception MessagingException.
      */
     public HtmlEmail setTextMsg(String text)
-        throws MessagingException
+            throws MessagingException
     {
         this.text = text;
         return this;
@@ -147,7 +147,7 @@ public class HtmlEmail extends MultiPartEmail
      * @exception MessagingException.
      */
     public HtmlEmail setHtmlMsg(String html)
-        throws MessagingException
+            throws MessagingException
     {
         this.html = html;
         return this;
@@ -161,7 +161,7 @@ public class HtmlEmail extends MultiPartEmail
      * @exception MessagingException.
      */
     public HtmlEmail setHtmlMsg(Document doc)
-        throws MessagingException
+            throws MessagingException
     {
         return setHtmlMsg(doc.toString());
     }
@@ -180,11 +180,11 @@ public class HtmlEmail extends MultiPartEmail
      * @exception MessagingException.
      */
     public Email setMsg(String msg)
-        throws MessagingException
+            throws MessagingException
     {
         setTextMsg(msg);
         setHtmlMsg(new ElementContainer(new Html(new Body()
-            .addElement(new PRE(msg)))).toString());
+                .addElement(new PRE(msg)))).toString());
         return this;
     }
 
@@ -210,7 +210,7 @@ public class HtmlEmail extends MultiPartEmail
      * @exception MessagingException.
      */
     public String embed(URL url, String name)
-        throws MessagingException
+            throws MessagingException
     {
         MimeBodyPart mbp = new MimeBodyPart();
 
@@ -230,7 +230,7 @@ public class HtmlEmail extends MultiPartEmail
      * @exception MessagingException, if there was an error.
      */
     public void send()
-        throws MessagingException
+            throws MessagingException
     {
         MimeBodyPart msgText = null;
         MimeBodyPart msgHtml = null;
@@ -267,7 +267,7 @@ public class HtmlEmail extends MultiPartEmail
         if (msgText != null)
         {
             // add the text
-            if ( charset != null )
+            if (charset != null)
             {
                 msgText.setText(text, charset);
             }

@@ -57,6 +57,7 @@ package org.apache.turbine.util;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.Date;
+
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.ElementContainer;
 import org.apache.ecs.html.Input;
@@ -98,18 +99,18 @@ public class DateSelector
     public static final String DEFAULT_PREFIX = "DateSelector";
 
     /** Suffix for day parameter. */
-    public static final String DAY_SUFFIX   = "_day";
+    public static final String DAY_SUFFIX = "_day";
 
     /** Suffix for month parameter. */
     public static final String MONTH_SUFFIX = "_month";
 
     /** Suffix for year parameter. */
-    public static final String YEAR_SUFFIX  = "_year";
+    public static final String YEAR_SUFFIX = "_year";
 
     private Calendar useDate = null;
     private String selName = null;
     private static final String[] monthName =
-        new DateFormatSymbols().getMonths();
+            new DateFormatSymbols().getMonths();
     private String onChange = null;
     private boolean onChangeSet = false;
     private boolean showDays = true;
@@ -118,7 +119,6 @@ public class DateSelector
     private int firstYear = 0;
     private int lastYear = 0;
     private int selectedYear = 0;
-
 
     /**
      * Constructor defaults to current date and uses the default
@@ -240,7 +240,7 @@ public class DateSelector
      */
     public static Select getMonthSelector(String name)
     {
-        return(getMonthSelector(name, Calendar.getInstance()));
+        return (getMonthSelector(name, Calendar.getInstance()));
     }
 
     /**
@@ -269,7 +269,7 @@ public class DateSelector
             }
             monthSelect.addElement(o);
         }
-        return(monthSelect);
+        return (monthSelect);
     }
 
     /**
@@ -280,7 +280,7 @@ public class DateSelector
      */
     public static Select getDaySelector(String name)
     {
-        return(getDaySelector(name, Calendar.getInstance()));
+        return (getDaySelector(name, Calendar.getInstance()));
     }
 
     /**
@@ -294,7 +294,7 @@ public class DateSelector
     {
         Select daySelect = new Select().setName(name);
 
-        for(int currentDay = 1; currentDay <= 31; currentDay++)
+        for (int currentDay = 1; currentDay <= 31; currentDay++)
         {
             Option o = new Option();
             o.addElement(Integer.toString(currentDay));
@@ -305,7 +305,7 @@ public class DateSelector
             }
             daySelect.addElement(o);
         }
-        return(daySelect);
+        return (daySelect);
     }
 
     /**
@@ -317,7 +317,7 @@ public class DateSelector
      */
     public static Select getYearSelector(String name)
     {
-        return(getYearSelector(name, Calendar.getInstance()));
+        return (getYearSelector(name, Calendar.getInstance()));
     }
 
     /**
@@ -331,7 +331,7 @@ public class DateSelector
     public static Select getYearSelector(String name, Calendar now)
     {
         int startYear = now.get(Calendar.YEAR);
-        return(getYearSelector(name, startYear - 5, startYear + 5, startYear));
+        return (getYearSelector(name, startYear - 5, startYear + 5, startYear));
     }
 
     /**
@@ -346,14 +346,14 @@ public class DateSelector
      */
     public static Select getYearSelector(String name,
                                          int firstYear, int lastYear,
-                                         int selectedYear )
+                                         int selectedYear)
     {
         Select yearSelect = new Select().setName(name);
 
-        for(int currentYear = firstYear;
-            currentYear <= lastYear;
+        for (int currentYear = firstYear;
+             currentYear <= lastYear;
 
-            currentYear++)
+             currentYear++)
         {
             Option o = new Option();
             o.addElement(Integer.toString(currentYear));
@@ -364,9 +364,8 @@ public class DateSelector
             }
             yearSelect.addElement(o);
         }
-        return(yearSelect);
+        return (yearSelect);
     }
-
 
     /**
      * Select the day to be selected if the showDays(false) behavior
@@ -379,7 +378,7 @@ public class DateSelector
     public boolean setYear(int firstYear, int lastYear, int selectedYear)
     {
         if (firstYear <= lastYear && firstYear <= selectedYear
-            && selectedYear <= lastYear)
+                && selectedYear <= lastYear)
         {
             this.useYears = true;
             this.firstYear = firstYear;
@@ -413,7 +412,7 @@ public class DateSelector
      */
     public String output()
     {
-        return(ecsOutput().toString());
+        return (ecsOutput().toString());
     }
 
     /**
@@ -435,7 +434,7 @@ public class DateSelector
      */
     public String toString()
     {
-        return(ecsOutput().toString());
+        return (ecsOutput().toString());
     }
 
     /*
@@ -470,7 +469,7 @@ public class DateSelector
         if (useYears)
         {
             yearSelect = getYearSelector(selName + YEAR_SUFFIX,
-                            firstYear, lastYear, selectedYear);
+                    firstYear, lastYear, selectedYear);
         }
         else
         {

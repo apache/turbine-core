@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,8 +54,9 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.services.pull.ApplicationTool;
 import java.lang.reflect.Method;
+
+import org.apache.turbine.services.pull.ApplicationTool;
 
 /**
  * Utility class to allow the easy inclusion of
@@ -67,8 +68,8 @@ import java.lang.reflect.Method;
  * @version $Id$
  */
 public class ContentURI
-    extends DynamicURI
-    implements ApplicationTool
+        extends DynamicURI
+        implements ApplicationTool
 {
     /** stores the context path for servlet 2.1+ compliant containers */
     private String contextPath;
@@ -78,7 +79,7 @@ public class ContentURI
      *
      * @param data a RunData instance
      */
-    public ContentURI (RunData data)
+    public ContentURI(RunData data)
     {
         super(data);
         init(data);
@@ -87,7 +88,7 @@ public class ContentURI
     /**
      * Default constructor
      */
-    public ContentURI ()
+    public ContentURI()
     {
     }
 
@@ -101,7 +102,7 @@ public class ContentURI
     {
         // we blithely cast to RunData as the runtime error thrown
         // if data is null or another type is appropriate.
-        init((RunData)data);
+        init((RunData) data);
     }
 
     /**
@@ -124,7 +125,7 @@ public class ContentURI
         {
             Class runDataClass = RunData.class;
             Method meth = runDataClass.getDeclaredMethod("getContextPath", null);
-            contextPath = (String)meth.invoke(data, null);
+            contextPath = (String) meth.invoke(data, null);
         }
         catch (Exception e)
         {
@@ -146,15 +147,15 @@ public class ContentURI
     public String getURI(String pathToContent)
     {
         StringBuffer sb = new StringBuffer();
-        sb.append (getServerScheme()); //http
-        sb.append ("://");
-        sb.append (getServerName()); //www.foo.com
-        sb.append (":");
-        sb.append (getServerPort()); //port webserver running on (8080 for TDK)
+        sb.append(getServerScheme()); //http
+        sb.append("://");
+        sb.append(getServerName()); //www.foo.com
+        sb.append(":");
+        sb.append(getServerPort()); //port webserver running on (8080 for TDK)
         //the context for tomcat adds a / so no need to add another
-        sb.append (contextPath); //the tomcat context
-        sb.append ("/");
-        sb.append (pathToContent);
+        sb.append(contextPath); //the tomcat context
+        sb.append("/");
+        sb.append(pathToContent);
         return (sb.toString());
     }
 }

@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -83,7 +83,7 @@ public class FormMessage
      *
      * @param formName A String with the form name.
      */
-    public FormMessage( String formName )
+    public FormMessage(String formName)
     {
         this();
         setFormName(formName);
@@ -95,8 +95,8 @@ public class FormMessage
      * @param formName A String with the form name.
      * @param fieldName A String with the field name.
      */
-    public FormMessage( String formName,
-                        String fieldName )
+    public FormMessage(String formName,
+                       String fieldName)
     {
         this(formName);
         setFieldName(fieldName);
@@ -109,9 +109,9 @@ public class FormMessage
      * @param fieldName A String with the field name.
      * @param message A String with the message.
      */
-    public FormMessage( String formName,
-                        String fieldName,
-                        String message)
+    public FormMessage(String formName,
+                       String fieldName,
+                       String message)
     {
         this(formName, fieldName);
         setMessage(message);
@@ -176,6 +176,6 @@ public class FormMessage
      */
     public void setFieldName(String fieldName)
     {
-        fieldNames.addElement( fieldName );
+        fieldNames.addElement(fieldName);
     }
 }

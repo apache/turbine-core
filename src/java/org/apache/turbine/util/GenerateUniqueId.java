@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -115,7 +115,7 @@ public class GenerateUniqueId
      *
      * @return A String with the new unique id.
      */
-    static synchronized public String getIdentifier ()
+    static synchronized public String getIdentifier()
     {
         StringBuffer sessionId = new StringBuffer();
 
@@ -127,8 +127,8 @@ public class GenerateUniqueId
         // Add maxLen to pad the leading characters with '0'; remove
         // first digit with substring.
         n += maxRandomLen;
-        sessionId.append (Long.toString(n, Character.MAX_RADIX)
-                          .substring(1));
+        sessionId.append(Long.toString(n, Character.MAX_RADIX)
+                .substring(1));
 
         long timeVal = (System.currentTimeMillis() / ticDifference);
 
@@ -138,8 +138,8 @@ public class GenerateUniqueId
         // Padding, see above.
         timeVal += maxSessionLifespanTics;
 
-        sessionId.append (Long.toString (timeVal, Character.MAX_RADIX)
-                          .substring(1));
+        sessionId.append(Long.toString(timeVal, Character.MAX_RADIX)
+                .substring(1));
 
         /*
          * Make the string unique: append the session count since last
@@ -153,8 +153,8 @@ public class GenerateUniqueId
             lastTimeVal = timeVal;
             session_count = 0;
         }
-        sessionId.append (Long.toString (++session_count,
-                                         Character.MAX_RADIX));
+        sessionId.append(Long.toString(++session_count,
+                Character.MAX_RADIX));
 
         return sessionId.toString();
     }
@@ -169,7 +169,7 @@ public class GenerateUniqueId
     {
         if (jsIdent != null && jsIdent.length() > 0)
         {
-            return getIdentifier()+"."+jsIdent;
+            return getIdentifier() + "." + jsIdent;
         }
         return getIdentifier();
     }

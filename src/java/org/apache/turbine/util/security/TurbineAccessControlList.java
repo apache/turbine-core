@@ -60,7 +60,6 @@ import java.util.Map;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
-
 import org.apache.turbine.services.security.TurbineSecurity;
 
 /**
@@ -76,8 +75,8 @@ import org.apache.turbine.services.security.TurbineSecurity;
  * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
  * @version $Id$
  */
-public class TurbineAccessControlList 
-    implements AccessControlList
+public class TurbineAccessControlList
+        implements AccessControlList
 {
     /** The sets of roles that the user has in different groups */
     private Map roleSets;
@@ -239,8 +238,8 @@ public class TurbineAccessControlList
     {
         try
         {
-            return hasRole(TurbineSecurity.getRole(role), 
-                           TurbineSecurity.getGroup(group));
+            return hasRole(TurbineSecurity.getRole(role),
+                    TurbineSecurity.getGroup(group));
         }
         catch (Exception e)
         {
@@ -375,7 +374,7 @@ public class TurbineAccessControlList
         try
         {
             return hasPermission(TurbineSecurity.getPermission(permission),
-                                 TurbineSecurity.getGroup(group));
+                    TurbineSecurity.getGroup(group));
         }
         catch (Exception e)
         {
@@ -395,7 +394,7 @@ public class TurbineAccessControlList
         try
         {
             return hasPermission(
-                TurbineSecurity.getPermission(permission), group);
+                    TurbineSecurity.getPermission(permission), group);
         }
         catch (Exception e)
         {

@@ -56,6 +56,7 @@ package org.apache.turbine.util.db.map;
 
 import java.util.Date;
 import java.util.Hashtable;
+
 import org.apache.torque.Torque;
 import org.apache.torque.map.DatabaseMap;
 import org.apache.torque.map.MapBuilder;
@@ -245,16 +246,16 @@ public class TurbineMapBuilder implements MapBuilder
         return getTableUser() + '.' + getObjectData();
     }
 
-   /**
-    * Column used to store the user's first name.
-    * Override this if using your custom table.
-    *
-    * @return A String.
-    */
-   public String getFirstName()
-   {
+    /**
+     * Column used to store the user's first name.
+     * Override this if using your custom table.
+     *
+     * @return A String.
+     */
+    public String getFirstName()
+    {
         return "FIRST_NAME";
-   }
+    }
 
     /**
      * Fully qualified column used to store the user's last name.
@@ -267,16 +268,16 @@ public class TurbineMapBuilder implements MapBuilder
         return getTableUser() + '.' + getFirstName();
     }
 
-   /**
-    * Column used to store the user's last name.
-    * Override this if using your custom table.
-    *
-    * @return A String.
-    */
-   public String getLastName()
-   {
+    /**
+     * Column used to store the user's last name.
+     * Override this if using your custom table.
+     *
+     * @return A String.
+     */
+    public String getLastName()
+    {
         return "LAST_NAME";
-   }
+    }
 
     /**
      * Fully qualified column used to store the user's last name.
@@ -289,16 +290,16 @@ public class TurbineMapBuilder implements MapBuilder
         return getTableUser() + '.' + getLastName();
     }
 
-   /**
-    * Column used to store the user's data modification time.
-    * Override this if using your custom table.
-    *
-    * @return A String.
-    */
-   public String getModified()
-   {
+    /**
+     * Column used to store the user's data modification time.
+     * Override this if using your custom table.
+     *
+     * @return A String.
+     */
+    public String getModified()
+    {
         return "MODIFIED";
-   }
+    }
 
     /**
      * Fully qualified column used to store the user's data modification time.
@@ -311,16 +312,16 @@ public class TurbineMapBuilder implements MapBuilder
         return getTableUser() + '.' + getModified();
     }
 
-   /**
-    * Column used to store the user's record cration time.
-    * Override this if using your custom table.
-    *
-    * @return A String.
-    */
-   public String getCreated()
-   {
+    /**
+     * Column used to store the user's record cration time.
+     * Override this if using your custom table.
+     *
+     * @return A String.
+     */
+    public String getCreated()
+    {
         return "CREATED";
-   }
+    }
 
     /**
      * Fully qualified column used to store the user's record cration time.
@@ -333,16 +334,16 @@ public class TurbineMapBuilder implements MapBuilder
         return getTableUser() + '.' + getCreated();
     }
 
-   /**
-    * Column used to store the user's email.
-    * Override this if using your custom table.
-    *
-    * @return A String.
-    */
-   public String getEmail()
-   {
+    /**
+     * Column used to store the user's email.
+     * Override this if using your custom table.
+     *
+     * @return A String.
+     */
+    public String getEmail()
+    {
         return "EMAIL";
-   }
+    }
 
     /**
      * Fully qualified column used to store the user's email.
@@ -355,16 +356,16 @@ public class TurbineMapBuilder implements MapBuilder
         return getTableUser() + '.' + getEmail();
     }
 
-   /**
-    * Column used to store the user's confirmation flag.
-    * Override this if using your custom table.
-    *
-    * @return A String.
-    */
-   public String getConfirmValue()
-   {
+    /**
+     * Column used to store the user's confirmation flag.
+     * Override this if using your custom table.
+     *
+     * @return A String.
+     */
+    public String getConfirmValue()
+    {
         return "CONFIRM_VALUE";
-   }
+    }
 
     /**
      * Fully qualified column used to store the user's confirmation flag.
@@ -376,7 +377,6 @@ public class TurbineMapBuilder implements MapBuilder
     {
         return getTableUser() + '.' + getConfirmValue();
     }
-
 
     /**
      * Column used for the unique id to a Role.  Override this if
@@ -443,6 +443,7 @@ public class TurbineMapBuilder implements MapBuilder
     {
         return "PERMISSION_ID";
     }
+
     /**
      * Fully qualified column name for Permission table unique key.
      * Shouldn't need to override this as it uses the above methods.
@@ -670,7 +671,7 @@ public class TurbineMapBuilder implements MapBuilder
      * @exception Exception a generic exception.
      */
     public void doBuild()
-        throws Exception
+            throws Exception
     {
         // Reusable TableMap
         TableMap tMap;
@@ -734,27 +735,27 @@ public class TurbineMapBuilder implements MapBuilder
         // Add RolePermission columns.
         tMap = dbMap.getTable(getTableRolePermission());
         tMap.addForeignPrimaryKey(getPermissionId(),
-                                  integer,
-                                  getTablePermission(),
-                                  getPermissionId());
+                integer,
+                getTablePermission(),
+                getPermissionId());
         tMap.addForeignPrimaryKey(getRoleId(),
-                                  integer,
-                                  getTableRole(),
-                                  getRoleId());
+                integer,
+                getTableRole(),
+                getRoleId());
 
         // Add UserGroupRole columns.
         tMap = dbMap.getTable(getTableUserGroupRole());
         tMap.addForeignPrimaryKey(getUserId(),
-                                  integer,
-                                  getTableUser(),
-                                  getUserId());
+                integer,
+                getTableUser(),
+                getUserId());
         tMap.addForeignPrimaryKey(getGroupId(),
-                                  integer,
-                                  getTableGroup(),
-                                  getGroupId());
+                integer,
+                getTableGroup(),
+                getGroupId());
         tMap.addForeignPrimaryKey(getRoleId(),
-                                  integer,
-                                  getTableRole(),
-                                  getRoleId());
+                integer,
+                getTableRole(),
+                getRoleId());
     }
 }

@@ -54,34 +54,33 @@ package org.apache.turbine.util.validation;
  * <http://www.apache.org/>.
  */
 
-
 /**
  * @author <a href="mailto:mikeh@ncsa.uiuc.edu">Mike Haberman</a>
  */
-public class AlwaysTrueValidator extends InputValidator 
+public class AlwaysTrueValidator extends InputValidator
 {
     /**
-     * default Constructor, 
-    */
+     * default Constructor,
+     */
     public AlwaysTrueValidator()
     {
         super(AllowNullInput, NoMaxSize, EmptyArgv);
     }
 
     /**
-     * @param String input, input to be checked 
-    */
-    protected void check(String input) 
-        throws Exception
+     * @param String input, input to be checked
+     */
+    protected void check(String input)
+            throws Exception
     {
-       // do nothing
+        // do nothing
     }
 
     /**
-     * @return String, the expected format of the input 
-    */
+     * @return String, the expected format of the input
+     */
     public String getExpectedFormat()
     {
-       return "";
-    } 
+        return "";
+    }
 }

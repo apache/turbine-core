@@ -58,6 +58,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.TreeSet;
+
 import org.apache.turbine.om.security.Group;
 
 /**
@@ -205,7 +206,7 @@ public class GroupSet implements Serializable
         while (iter.hasNext())
         {
             Group group = (Group) iter.next();
-            if ( groupName != null && groupName.equals(group.getName()))
+            if (groupName != null && groupName.equals(group.getName()))
             {
                 return group;
             }
@@ -218,9 +219,9 @@ public class GroupSet implements Serializable
      *
      * @return An Array of Group objects.
      */
-    public Group [] getGroupsArray()
+    public Group[] getGroupsArray()
     {
-        return (Group []) set.toArray(new Group[0]);
+        return (Group[]) set.toArray(new Group[0]);
     }
 
     /**

@@ -54,12 +54,10 @@ package org.apache.turbine.util.template;
  * <http://www.apache.org/>.
  */
 
-import org.apache.ecs.ConcreteElement;
-
-import org.apache.turbine.modules.ScreenLoader;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.ecs.ConcreteElement;
+import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -92,7 +90,6 @@ public class TemplateScreen
     /* The name of the screen template. */
     private String screen;
 
-
     /**
      * Constructor
      *
@@ -112,7 +109,7 @@ public class TemplateScreen
      */
     public TemplateScreen setScreen(String screen)
     {
-        this.screen=screen;
+        this.screen = screen;
         return this;
     }
 
@@ -123,12 +120,12 @@ public class TemplateScreen
      */
     public String toString()
     {
-        String returnValue="";
+        String returnValue = "";
 
         try
         {
             ConcreteElement results = ScreenLoader.getInstance()
-                .eval(data, this.screen);
+                    .eval(data, this.screen);
 
             if (results != null)
                 returnValue = results.toString();

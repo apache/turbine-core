@@ -62,7 +62,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-
 import javax.activation.DataSource;
 
 /**
@@ -78,7 +77,7 @@ import javax.activation.DataSource;
  * @deprecated Use org.apache.commons.mail.ByteArrayDataSource instead.
  */
 public class ByteArrayDataSource
-    implements DataSource
+        implements DataSource
 {
     /** Data. */
     private byte[] data;
@@ -87,7 +86,6 @@ public class ByteArrayDataSource
     private String type;
 
     private ByteArrayOutputStream baos;
-
 
     /**
      * Create a datasource from a byte array.
@@ -117,8 +115,8 @@ public class ByteArrayDataSource
             int ch;
 
             ByteArrayOutputStream os = new ByteArrayOutputStream();
-            BufferedInputStream isReader = new BufferedInputStream( is );
-            BufferedOutputStream osWriter = new BufferedOutputStream( os );
+            BufferedInputStream isReader = new BufferedInputStream(is);
+            BufferedOutputStream osWriter = new BufferedOutputStream(os);
 
             while ((ch = isReader.read()) != -1)
             {
@@ -162,7 +160,7 @@ public class ByteArrayDataSource
      */
     public String getContentType()
     {
-        if ( type == null )
+        if (type == null)
             return "application/octet-stream";
         else
             return type;
@@ -175,7 +173,7 @@ public class ByteArrayDataSource
      * @exception IOException.
      */
     public InputStream getInputStream()
-        throws IOException
+            throws IOException
     {
         if (data == null)
             throw new IOException("no data");
@@ -199,7 +197,7 @@ public class ByteArrayDataSource
      * @exception IOException.
      */
     public OutputStream getOutputStream()
-        throws IOException
+            throws IOException
     {
         baos = new ByteArrayOutputStream();
         return baos;

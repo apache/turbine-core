@@ -55,6 +55,7 @@ package org.apache.turbine.util.mail;
  */
 
 import javax.mail.MessagingException;
+
 import org.apache.torque.util.Criteria;
 
 /**
@@ -69,7 +70,7 @@ import org.apache.torque.util.Criteria;
  * @deprecated Use org.apache.commons.mail.SimpleEmail instead.
  */
 public class SimpleEmail
-    extends Email
+        extends Email
 {
     /** the conentet type for body of the message */
     private String contentType = null;
@@ -104,7 +105,7 @@ public class SimpleEmail
      * @exception MessagingException.
      */
     public SimpleEmail(Criteria criteria)
-        throws MessagingException
+            throws MessagingException
     {
         super.init();
         this.initCriteria(criteria);
@@ -119,7 +120,7 @@ public class SimpleEmail
      * @exception MessagingException.
      */
     protected void initCriteria(Criteria criteria)
-        throws MessagingException
+            throws MessagingException
     {
         super.initCriteria(criteria);
 

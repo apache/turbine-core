@@ -62,6 +62,7 @@ import javax.activation.URLDataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMultipart;
+
 import org.apache.torque.util.Criteria;
 
 /**
@@ -98,7 +99,7 @@ public class MultiPartEmail extends Email
      * @exception MessagingException.
      */
     public MultiPartEmail()
-        throws MessagingException
+            throws MessagingException
     {
         this.init();
     }
@@ -125,7 +126,7 @@ public class MultiPartEmail extends Email
      * @exception MessagingException.
      */
     public MultiPartEmail(Criteria criteria)
-        throws MessagingException
+            throws MessagingException
     {
         this.init();
         this.initCriteria(criteria);
@@ -137,7 +138,7 @@ public class MultiPartEmail extends Email
      * @exception MessagingException.
      */
     protected void init()
-        throws MessagingException
+            throws MessagingException
     {
         super.init();
 
@@ -151,7 +152,6 @@ public class MultiPartEmail extends Email
         main = new MimeBodyPart();
         emailBody.addBodyPart(main);
     }
-
 
     /**
      * Uses the criteria to set the fields.
@@ -174,8 +174,8 @@ public class MultiPartEmail extends Email
      * @param criteria A Criteria.
      * @exception MessagingException.
      */
-    protected void initCriteria( Criteria criteria )
-        throws MessagingException
+    protected void initCriteria(Criteria criteria)
+            throws MessagingException
     {
         super.initCriteria(criteria);
 
@@ -207,7 +207,7 @@ public class MultiPartEmail extends Email
         for (int i = 0; i < attachments.size(); i++)
         {
             EmailAttachment attachment =
-                (EmailAttachment) attachments.elementAt(i);
+                    (EmailAttachment) attachments.elementAt(i);
             attach(attachment);
         }
     }
@@ -220,7 +220,7 @@ public class MultiPartEmail extends Email
      * @exception MessagingException.
      */
     public Email setMsg(String msg)
-        throws MessagingException
+            throws MessagingException
     {
         if (charset != null)
         {
@@ -241,7 +241,7 @@ public class MultiPartEmail extends Email
      * @exception MessagingException.
      */
     public MultiPartEmail attach(EmailAttachment attachment)
-        throws MessagingException
+            throws MessagingException
     {
         URL url = attachment.getURL();
         if (url == null)
@@ -258,8 +258,8 @@ public class MultiPartEmail extends Email
         }
 
         return attach(url, attachment.getName(),
-                      attachment.getDescription(),
-                      attachment.getDisposition());
+                attachment.getDescription(),
+                attachment.getDisposition());
     }
 
     /**
@@ -273,7 +273,7 @@ public class MultiPartEmail extends Email
      * @exception MessagingException.
      */
     public MultiPartEmail attach(URL url, String name, String description)
-        throws MessagingException
+            throws MessagingException
     {
         return attach(url, name, description, EmailAttachment.ATTACHMENT);
     }
@@ -292,7 +292,7 @@ public class MultiPartEmail extends Email
                                  String name,
                                  String description,
                                  String disposition)
-        throws MessagingException
+            throws MessagingException
     {
         return attach(new URLDataSource(url), name, description, disposition);
     }
@@ -309,7 +309,7 @@ public class MultiPartEmail extends Email
     public MultiPartEmail attach(DataSource ds,
                                  String name,
                                  String description)
-        throws MessagingException
+            throws MessagingException
     {
         return attach(ds, name, description, EmailAttachment.ATTACHMENT);
     }
@@ -328,7 +328,7 @@ public class MultiPartEmail extends Email
                                  String name,
                                  String description,
                                  String disposition)
-        throws MessagingException
+            throws MessagingException
     {
         MimeBodyPart mbp = new MimeBodyPart();
         emailBody.addBodyPart(mbp);

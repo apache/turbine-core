@@ -54,12 +54,12 @@ package org.apache.turbine.util.template;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.modules.NavigationLoader;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -86,7 +86,6 @@ public class TemplateNavigation
 
     /* The name of the navigation template. */
     private String template;
-
 
     /**
      * Constructor

@@ -56,10 +56,10 @@ package org.apache.turbine.util.parser;
 
 import javax.servlet.http.Cookie;
 
-import org.apache.turbine.util.CookieParser;
-import org.apache.turbine.util.DynamicURI;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.util.CookieParser;
+import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.pool.Recyclable;
 
@@ -155,7 +155,7 @@ public class DefaultCookieParser extends BaseValueParser
 
         log.debug("Number of Cookies " + cookiesCount);
 
-        for(int i = 0; i < cookiesCount; i++)
+        for (int i = 0; i < cookiesCount; i++)
         {
             String name = convert(cookies[i].getName());
             String value = cookies[i].getValue();
@@ -197,7 +197,7 @@ public class DefaultCookieParser extends BaseValueParser
      */
     public void set(String name, String value, int seconds_age)
     {
-        if(data == null)
+        if (data == null)
         {
             throw new IllegalStateException("RunData not available");
         }

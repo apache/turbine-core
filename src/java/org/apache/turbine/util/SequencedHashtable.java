@@ -100,7 +100,7 @@ public class SequencedHashtable extends Hashtable
     /**
      * Creates a new instance with default storage.
      */
-    public SequencedHashtable ()
+    public SequencedHashtable()
     {
         keySequence = new LinkedList();
     }
@@ -110,7 +110,7 @@ public class SequencedHashtable extends Hashtable
      *
      * @param size The storage to allocate up front.
      */
-    public SequencedHashtable (int size)
+    public SequencedHashtable(int size)
     {
         super(size);
         keySequence = new LinkedList();
@@ -119,7 +119,7 @@ public class SequencedHashtable extends Hashtable
     /**
      * Clears all elements.
      */
-    public synchronized void clear ()
+    public synchronized void clear()
     {
         super.clear();
         keySequence.clear();
@@ -132,7 +132,7 @@ public class SequencedHashtable extends Hashtable
      *
      * @return A clone of this instance.
      */
-    public synchronized Object clone ()
+    public synchronized Object clone()
     {
         SequencedHashtable seqHash = (SequencedHashtable) super.clone();
         seqHash.keySequence = (LinkedList) keySequence.clone();
@@ -142,7 +142,7 @@ public class SequencedHashtable extends Hashtable
     /**
      * Returns the key at the specified index.
      */
-    public Object get (int index)
+    public Object get(int index)
     {
         return keySequence.get(index);
     }
@@ -150,7 +150,7 @@ public class SequencedHashtable extends Hashtable
     /**
      * Returns the value at the specified index.
      */
-    public Object getValue (int index)
+    public Object getValue(int index)
     {
         return get(get(index));
     }
@@ -158,7 +158,7 @@ public class SequencedHashtable extends Hashtable
     /**
      * Returns the index of the specified key.
      */
-    public int indexOf (Object key)
+    public int indexOf(Object key)
     {
         return keySequence.indexOf(key);
     }
@@ -166,7 +166,7 @@ public class SequencedHashtable extends Hashtable
     /**
      * Returns a key iterator.
      */
-    public Iterator iterator ()
+    public Iterator iterator()
     {
         return keySequence.iterator();
     }
@@ -174,7 +174,7 @@ public class SequencedHashtable extends Hashtable
     /**
      * Returns the last index of the specified key.
      */
-    public int lastIndexOf (Object key)
+    public int lastIndexOf(Object key)
     {
         return keySequence.lastIndexOf(key);
     }
@@ -210,7 +210,7 @@ public class SequencedHashtable extends Hashtable
      * @return      The previous value for the specified key, or
      *              <code>null</code> if none.
      */
-    public synchronized Object put (Object key, Object value)
+    public synchronized Object put(Object key, Object value)
     {
         Object prevValue = super.put(key, value);
         freshenSequence(key, prevValue);
@@ -240,12 +240,12 @@ public class SequencedHashtable extends Hashtable
      *
      * @param t The key/value pairs to store.
      */
-    public synchronized void putAll (Map t)
+    public synchronized void putAll(Map t)
     {
         Set set = t.entrySet();
-        for (Iterator iter = set.iterator(); iter.hasNext(); )
+        for (Iterator iter = set.iterator(); iter.hasNext();)
         {
-            Map.Entry e = (Map.Entry)iter.next();
+            Map.Entry e = (Map.Entry) iter.next();
             put(e.getKey(), e.getValue());
         }
     }
@@ -257,7 +257,7 @@ public class SequencedHashtable extends Hashtable
      * @return      The previous value coressponding the <code>key</code>, or
      *              <code>null</code> if none existed.
      */
-    public Object remove (int index)
+    public Object remove(int index)
     {
         return remove(index, null);
     }
@@ -269,7 +269,7 @@ public class SequencedHashtable extends Hashtable
      * @return      The previous value coressponding the <code>key</code>, or
      *              <code>null</code> if none existed.
      */
-    public Object remove (Object key)
+    public Object remove(Object key)
     {
         return remove(UNKNOWN_INDEX, key);
     }
@@ -283,7 +283,7 @@ public class SequencedHashtable extends Hashtable
      * @return      The previous value coressponding the <code>key</code>, or
      *              <code>null</code> if none existed.
      */
-    private final synchronized Object remove (int index, Object key)
+    private final synchronized Object remove(int index, Object key)
     {
         if (index == UNKNOWN_INDEX) index = indexOf(key);
         if (key == null) key = get(index);
@@ -294,7 +294,7 @@ public class SequencedHashtable extends Hashtable
     /**
      * Slightly cheaper implementation of <code>values()</code> method.
      */
-    public Collection values ()
+    public Collection values()
     {
         return keySequence;
     }

@@ -54,46 +54,45 @@ package org.apache.turbine.util.validation;
  * <http://www.apache.org/>.
  */
 
-
 /**
  * @author <a href="mailto:mikeh@ncsa.uiuc.edu">Mike Haberman</a>
  * @version $Id$
  *
  *
  */
-public class NotEmpty extends InputValidator 
+public class NotEmpty extends InputValidator
 {
     /**
-     * default Constructor, 
-    */
+     * default Constructor,
+     */
     public NotEmpty()
     {
-       super(false, NoMaxSize, EmptyArgv);
+        super(false, NoMaxSize, EmptyArgv);
     }
 
     /**
-     * @param String input, input to be checked 
-    */
-    protected void check(String input) 
-        throws Exception
+     * @param String input, input to be checked
+     */
+    protected void check(String input)
+            throws Exception
     {
         int size = 0;
-        if (input != null) 
+        if (input != null)
         {
-           size = input.length();
+            size = input.length();
         }
 
         if (size == 0)
         {
-           throw new Exception("input is required");
+            throw new Exception("input is required");
         }
     }
 
     /**
-     * @return String, the expected format of the input 
-    */
+     * @return String, the expected format of the input
+     */
     public String getExpectedFormat()
     {
-       return "anything but the null or empty string";
-    } 
+        return "anything but the null or empty string";
+    }
 }

@@ -56,16 +56,15 @@ package org.apache.turbine.util.velocity;
 
 import java.net.URL;
 import java.util.Hashtable;
-
 import javax.activation.DataSource;
 import javax.activation.URLDataSource;
 
-import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.turbine.util.RunData;
-import org.apache.commons.mail.HtmlEmail;
 import org.apache.commons.mail.EmailAttachment;
+import org.apache.commons.mail.HtmlEmail;
+import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 /**
@@ -496,9 +495,9 @@ public class VelocityHtmlEmail
      * @exception VelocityEmailException
      */
     public VelocityHtmlEmail attach(URL url,
-                                 String name,
-                                 String description,
-                                 String disposition)
+                                    String name,
+                                    String description,
+                                    String disposition)
             throws VelocityEmailException
     {
         return attach(new URLDataSource(url), name, description, disposition);
@@ -514,8 +513,8 @@ public class VelocityHtmlEmail
      * @exception VelocityEmailException
      */
     public VelocityHtmlEmail attach(DataSource ds,
-                                 String name,
-                                 String description)
+                                    String name,
+                                    String description)
             throws VelocityEmailException
     {
         return attach(ds, name, description, EmailAttachment.ATTACHMENT);
@@ -541,9 +540,9 @@ public class VelocityHtmlEmail
         {
             htmlEmail.attach(ds, name, description, disposition);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
-            throw new VelocityEmailException("Could attach "+name, e);
+            throw new VelocityEmailException("Could attach " + name, e);
         }
 
         return this;

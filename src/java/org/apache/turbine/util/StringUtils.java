@@ -54,8 +54,6 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintWriter;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
@@ -151,7 +149,7 @@ public class StringUtils
      * @return True if the values of both strings are the same.
      * @deprecated use org.apache.commons.lang.StringUtils.equals() instead
      */
-    public static boolean equals(String s1, String s2 )
+    public static boolean equals(String s1, String s2)
     {
         return org.apache.commons.lang.StringUtils.equals(s1, s2);
     }
@@ -168,10 +166,10 @@ public class StringUtils
      */
     public static String[] parseObjectKey(String s)
     {
-        String[] p  = new String[3];
+        String[] p = new String[3];
         StringTokenizer st = new StringTokenizer(s, "[]");
         int count = st.countTokens();
-        if ( count > 1)
+        if (count > 1)
         {
             p[0] = st.nextToken();
             p[1] = st.nextToken();
@@ -182,7 +180,6 @@ public class StringUtils
         }
         return p;
     }
-
 
     /**
      * Remove Underscores from a string and replaces first
@@ -256,13 +253,13 @@ public class StringUtils
      */
 
     public static String wrapText(String inString, String newline,
-            int wrapColumn)
+                                  int wrapColumn)
     {
         StringTokenizer lineTokenizer = new StringTokenizer(
                 inString, newline, true);
         StringBuffer stringBuffer = new StringBuffer();
 
-        while (lineTokenizer.hasMoreTokens ())
+        while (lineTokenizer.hasMoreTokens())
         {
             try
             {
@@ -298,7 +295,7 @@ public class StringUtils
      */
 
     protected static String wrapLine(String line, String newline,
-                                      int wrapColumn)
+                                     int wrapColumn)
     {
         StringBuffer wrappedLine = new StringBuffer();
 
@@ -308,7 +305,7 @@ public class StringUtils
 
             if (spaceToWrapAt >= 0)
             {
-                wrappedLine.append(line.substring (0, spaceToWrapAt));
+                wrappedLine.append(line.substring(0, spaceToWrapAt));
                 wrappedLine.append(newline);
                 line = line.substring(spaceToWrapAt + 1);
             }
@@ -324,7 +321,7 @@ public class StringUtils
 
                 if (spaceToWrapAt >= 0)
                 {
-                    wrappedLine.append(line.substring (0, spaceToWrapAt));
+                    wrappedLine.append(line.substring(0, spaceToWrapAt));
                     wrappedLine.append(newline);
                     line = line.substring(spaceToWrapAt + 1);
                 }

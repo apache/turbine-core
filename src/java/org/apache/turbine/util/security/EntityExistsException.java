@@ -63,7 +63,7 @@ package org.apache.turbine.util.security;
  * @version $Id$
  */
 public class EntityExistsException
-    extends TurbineSecurityException
+        extends TurbineSecurityException
 {
     /**
      * Construct an EntityExistsException with specified detail message.

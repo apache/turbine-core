@@ -55,11 +55,8 @@ package org.apache.turbine.util;
  */
 
 import java.io.UnsupportedEncodingException;
-
 import java.math.BigDecimal;
-
 import java.text.DateFormat;
-
 import java.util.Date;
 import java.util.Enumeration;
 
@@ -102,12 +99,12 @@ public interface ValueParser
     /**
      * Set the character encoding that will be used by this ValueParser.
      */
-    void setCharacterEncoding (String s);
+    void setCharacterEncoding(String s);
 
     /**
      * Get the character encoding that will be used by this ValueParser.
      */
-    String getCharacterEncoding ();
+    String getCharacterEncoding();
 
     /**
      * Trims the string data and applies the conversion specified in
@@ -117,7 +114,7 @@ public interface ValueParser
      * @param value A String to be processed.
      * @return A new String converted to lowercase and trimmed.
      */
-    String convert ( String value );
+    String convert(String value);
 
     /**
      * Add a name/value pair into this object.
@@ -125,8 +122,8 @@ public interface ValueParser
      * @param name A String with the name.
      * @param value A double with the value.
      */
-    void add ( String name,
-               double value );
+    void add(String name,
+             double value);
 
     /**
      * Add a name/value pair into this object.
@@ -134,8 +131,8 @@ public interface ValueParser
      * @param name A String with the name.
      * @param value An int with the value.
      */
-    void add ( String name,
-               int value );
+    void add(String name,
+             int value);
 
     /**
      * Add a name/value pair into this object.
@@ -143,8 +140,8 @@ public interface ValueParser
      * @param name A String with the name.
      * @param value An Integer with the value.
      */
-    void add ( String name,
-               Integer value );
+    void add(String name,
+             Integer value);
 
     /**
      * Add a name/value pair into this object.
@@ -152,8 +149,8 @@ public interface ValueParser
      * @param name A String with the name.
      * @param value A long with the value.
      */
-    void add ( String name,
-               long value );
+    void add(String name,
+             long value);
 
     /**
      * Add a name/value pair into this object.
@@ -161,8 +158,8 @@ public interface ValueParser
      * @param name A String with the name.
      * @param value A long with the value.
      */
-    void add ( String name,
-               String value );
+    void add(String name,
+             String value);
 
     /**
      * Add a String parameters.  If there are any Strings already
@@ -172,8 +169,8 @@ public interface ValueParser
      * @param name A String with the name.
      * @param value A String with the value.
      */
-    void append( String name,
-                 String value );
+    void append(String name,
+                String value);
 
     /**
      * Removes the named parameter from the contained hashtable. Wraps to the
@@ -193,7 +190,7 @@ public interface ValueParser
      * @param key An Object with the key to search for.
      * @return True if the object is found.
      */
-    boolean containsKey( Object key );
+    boolean containsKey(Object key);
 
     /**
      * Check for existence of key_day, key_month and key_year
@@ -337,7 +334,7 @@ public interface ValueParser
      * @return An int.
      */
     int getInt(String name,
-               int defaultValue );
+               int defaultValue);
 
     /**
      * Return an int for the given name.  If the name does not exist,
@@ -407,7 +404,7 @@ public interface ValueParser
      * @return A long.
      */
     long getLong(String name,
-                 long defaultValue );
+                 long defaultValue);
 
     /**
      * Return a long for the given name.  If the name does not exist,
@@ -445,7 +442,7 @@ public interface ValueParser
      * @return A byte.
      */
     byte getByte(String name,
-                 byte defaultValue );
+                 byte defaultValue);
 
     /**
      * Return a byte for the given name.  If the name does not exist,
@@ -466,7 +463,7 @@ public interface ValueParser
      * @exception UnsupportedEncodingException.
      */
     byte[] getBytes(String name)
-        throws UnsupportedEncodingException;
+            throws UnsupportedEncodingException;
 
     /**
      * Return a String for the given name.  If the name does not
@@ -489,7 +486,7 @@ public interface ValueParser
      * @param name A String with the name.
      * @return A String.
      */
-    String get (String name);
+    String get(String name);
 
     /**
      * Return a String for the given name.  If the name does not
@@ -623,7 +620,7 @@ public interface ValueParser
      * @exception Exception, a generic exception.
      */
     void setProperties(Object bean)
-        throws Exception;
+            throws Exception;
 
     /**
      * Simple method that attempts to get a toString() representation

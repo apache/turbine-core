@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -108,7 +108,7 @@ public class CSVParser extends DataStreamParser
     {
         super(in, columnNames, null);
     }
-    
+
     /**
      * Create a new CSVParser instance. Requires a Reader to read the
      * comma-separated values from, a list of column names and a
@@ -125,7 +125,7 @@ public class CSVParser extends DataStreamParser
 
     /**
      * Initialize the StreamTokenizer instance used to read the lines
-     * from the input reader. 
+     * from the input reader.
      * It is now only needed to set the fieldSeparator
      */
     protected void initTokenizer(StreamTokenizer tokenizer)

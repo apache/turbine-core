@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -67,19 +67,19 @@ package org.apache.turbine.util;
 public class ServerData
 {
     /** Cached serverName, */
-    private String  serverName = null;
+    private String serverName = null;
 
     /** Cached serverPort. */
     private int serverPort = 80;
 
     /** Cached serverScheme. */
-    private String  serverScheme = null;
+    private String serverScheme = null;
 
     /** Cached script name. */
-    private String  scriptName = null;
-    
+    private String scriptName = null;
+
     /** Cached context path. */
-    private String  contextPath = null;
+    private String contextPath = null;
 
     /**
      * Constructor.
@@ -89,17 +89,17 @@ public class ServerData
      * @param serverScheme The server scheme.
      * @param scriptName The script name.
      */
-    public ServerData( String serverName,
-                       int serverPort,
-                       String serverScheme,
-                       String scriptName,
-		                 String contextPath )
+    public ServerData(String serverName,
+                      int serverPort,
+                      String serverScheme,
+                      String scriptName,
+                      String contextPath)
     {
         this.serverName = serverName;
         this.serverPort = serverPort;
         this.serverScheme = serverScheme;
         this.scriptName = scriptName;
-	     this.contextPath = contextPath;
+        this.contextPath = contextPath;
     }
 
     /**
@@ -109,7 +109,7 @@ public class ServerData
      */
     public String getServerName()
     {
-        if ( this.serverName == null )
+        if (this.serverName == null)
             return "";
         return serverName;
     }
@@ -151,7 +151,7 @@ public class ServerData
      */
     public String getServerScheme()
     {
-        if ( this.serverScheme == null )
+        if (this.serverScheme == null)
             return "";
         return this.serverScheme;
     }
@@ -173,7 +173,7 @@ public class ServerData
      */
     public String getScriptName()
     {
-        if ( this.scriptName == null )
+        if (this.scriptName == null)
             return "";
         return this.scriptName;
     }
@@ -188,14 +188,14 @@ public class ServerData
         this.scriptName = sname;
     }
 
-   /**
+    /**
      * Get the context path.
      *
      * @return A String.
      */
     public String getContextPath()
     {
-        if ( this.contextPath == null )
+        if (this.contextPath == null)
             return "";
         return this.contextPath;
     }

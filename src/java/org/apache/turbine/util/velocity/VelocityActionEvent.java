@@ -56,6 +56,7 @@ package org.apache.turbine.util.velocity;
 
 import java.lang.reflect.Method;
 import java.util.Enumeration;
+
 import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.ParameterParser;
@@ -89,7 +90,7 @@ public abstract class VelocityActionEvent extends ActionEvent
      * @exception Exception, a generic exception.
      */
     public abstract void doPerform(RunData data)
-        throws Exception;
+            throws Exception;
 
     /**
      * This overrides the default Action.perform() to execute the
@@ -100,7 +101,7 @@ public abstract class VelocityActionEvent extends ActionEvent
      * @exception Exception, a generic exception.
      */
     protected void perform(RunData data)
-        throws Exception
+            throws Exception
     {
         try
         {
@@ -130,7 +131,7 @@ public abstract class VelocityActionEvent extends ActionEvent
         String button = pp.convert(BUTTON);
 
         // Loop through and find the button.
-        for (Enumeration e = pp.keys() ; e.hasMoreElements() ;)
+        for (Enumeration e = pp.keys(); e.hasMoreElements();)
         {
             String key = (String) e.nextElement();
             if (key.startsWith(button))
