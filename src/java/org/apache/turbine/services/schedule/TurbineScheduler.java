@@ -89,7 +89,7 @@ public abstract class TurbineScheduler
      * @param je A JobEntry with the job to add.
      * @exception TurbineException job could not be added
      */
-    void addJob(JobEntry je)
+    public static void addJob(JobEntry je)
             throws TurbineException
     {
         getService().addJob(je);
