@@ -54,9 +54,6 @@ package org.apache.turbine;
  * <http://www.apache.org/>.
  */
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.apache.torque.Torque;
 import org.apache.torque.avalon.TorqueComponent;
 import org.apache.turbine.services.TurbineServices;
@@ -76,11 +73,6 @@ public class TorqueLoadTest extends BaseTestCase
     public TorqueLoadTest(String name) throws Exception
     {
         super(name);
-    }
-
-    public static Test suite()
-    {
-        return new TestSuite(TorqueLoadTest.class);
     }
 
     /**

@@ -59,10 +59,6 @@ import java.io.File;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import org.apache.turbine.Turbine;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineXmlConfig;
@@ -85,12 +81,7 @@ public class TurbineConfigTest
     {
         super(name);
     }
-
-    public static Test suite()
-    {
-        return new TestSuite(TurbineConfigTest.class);
-    }
-
+    
     public void testTurbineConfigWithPropertiesFile() throws Exception
     {
         String value = new File("/conf/test/TemplateService.properties").getPath();

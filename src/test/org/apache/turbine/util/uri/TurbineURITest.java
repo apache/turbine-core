@@ -54,11 +54,8 @@ package org.apache.turbine.util.uri;
  * <http://www.apache.org/>.
  */
 
-import junit.framework.TestSuite;
-
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
@@ -114,16 +111,6 @@ public class TurbineURITest extends BaseTestCase
         turi = null;
     }
 
-    /**
-     * Factory method for creating a TestSuite for this class.
-     *
-     * @return the test suite
-     */
-    public static TestSuite suite()
-    {
-        TestSuite suite = new TestSuite(TurbineURITest.class);
-        return suite;
-    }
 
     public void testAddRemove()
     {

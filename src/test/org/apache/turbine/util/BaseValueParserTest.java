@@ -56,11 +56,8 @@ package org.apache.turbine.util;
 
 import java.math.BigDecimal;
 
-import junit.framework.TestSuite;
-
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
@@ -111,17 +108,6 @@ public class BaseValueParserTest extends BaseTestCase
     protected void tearDown()
     {
         parser = null;
-    }
-
-    /**
-     * Factory method for creating a TestSuite for this class.
-     *
-     * @return the test suite
-     */
-    public static TestSuite suite()
-    {
-        TestSuite suite = new TestSuite(BaseValueParserTest.class);
-        return suite;
     }
 
     public void testGetByte()

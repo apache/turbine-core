@@ -82,62 +82,51 @@ public class AccessControlListTest
         super(name);
     }
 
-    public void testSelection()
+    public void testSelection() throws Exception
     {
-         try
-        {
-            doit();
-        }
-        catch( Exception e )
-        {
-            fail( e.getMessage() );
-        }
+    	  ServiceManager serviceManager = TurbineServices.getInstance();
+          serviceManager.setApplicationRoot(".");
+
+          Configuration cfg = new BaseConfiguration();
+
+          cfg.setProperty(PREFIX + "classname",
+                          DBSecurityService.class.getName());
+
+          cfg.setProperty(PREFIX + "acl.class",
+                          TurbineAccessControlList.class.getName());
+
+          // We must run init!
+          cfg.setProperty(PREFIX+"earlyInit", "true");
+
+          /* Ugh */
+
+          cfg.setProperty("services." + FactoryService.SERVICE_NAME + ".classname",
+                          TurbineFactoryService.class.getName());
+
+          serviceManager.setConfiguration(cfg);
+
+          serviceManager.init();
+
+          Class aclClass = TurbineSecurity.getService().getAclClass();
+
+          if(!aclClass.getName().equals(TurbineAccessControlList.class.getName()))
+          {
+              fail("ACL Class is " + aclClass.getName()
+                   + ", expected was " + TurbineAccessControlList.class.getName());
+          }
+
+          Map roles = new HashMap();
+          Map permissions = new HashMap();
+
+          AccessControlList aclTest =
+            TurbineSecurity.getService().getAclInstance(roles, permissions);
+
+          if(aclTest == null)
+          {
+            fail("Security Service failed to deliver a " + aclClass.getName()
+                 + " Object");
+          }
    }
 
-    public void doit()
-        throws Exception
-    {
-        ServiceManager serviceManager = TurbineServices.getInstance();
-        serviceManager.setApplicationRoot(".");
 
-        Configuration cfg = new BaseConfiguration();
-
-        cfg.setProperty(PREFIX + "classname",
-                        DBSecurityService.class.getName());
-
-        cfg.setProperty(PREFIX + "acl.class",
-                        TurbineAccessControlList.class.getName());
-
-        // We must run init!
-        cfg.setProperty(PREFIX+"earlyInit", "true");
-
-        /* Ugh */
-
-        cfg.setProperty("services." + FactoryService.SERVICE_NAME + ".classname",
-                        TurbineFactoryService.class.getName());
-
-        serviceManager.setConfiguration(cfg);
-
-        serviceManager.init();
-
-        Class aclClass = TurbineSecurity.getService().getAclClass();
-
-        if(!aclClass.getName().equals(TurbineAccessControlList.class.getName()))
-        {
-            fail("ACL Class is " + aclClass.getName()
-                 + ", expected was " + TurbineAccessControlList.class.getName());
-        }
-
-        Map roles = new HashMap();
-        Map permissions = new HashMap();
-
-        AccessControlList aclTest =
-          TurbineSecurity.getService().getAclInstance(roles, permissions);
-
-        if(aclTest == null)
-        {
-          fail("Security Service failed to deliver a " + aclClass.getName()
-               + " Object");
-        }
-    }
 }
