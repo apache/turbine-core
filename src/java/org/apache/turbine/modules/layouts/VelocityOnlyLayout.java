@@ -74,48 +74,48 @@ import org.apache.velocity.context.Context;
  * to subclass this Layout.
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
- * @author Dave Bryson<a href="mailto:mbryson@mont.mindspring.com">mbryson@mont.mindspring.com</a>
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  */
 public class VelocityOnlyLayout extends Layout
 {
     /**
      * Method called by LayoutLoader.
      *
-     * @param data
+     * @param data RunData
+     * @throws Exception generic exception
      */
-    public void doBuild( RunData data ) throws Exception
+    public void doBuild(RunData data) throws Exception
     {
-        /* Get the context needed by WebMacro */
-        Context context = TurbineVelocity.getContext( data );
-        /* Screen results */
+        // Get the context needed by Velocity
+        Context context = TurbineVelocity.getContext(data);
+        // Screen results
         String returnValue = "";
 
-        /*
-         * First, generate the screen and put it in the context so
-         * we can grab it the layout template.
-         */
+        // First, generate the screen and put it in the context so
+        // we can grab it the layout template.
         ConcreteElement results = ScreenLoader.getInstance()
             .eval(data, data.getScreen());
         if (results != null)
+        {
             returnValue = results.toString();
+        }
 
-        /* variable for the screen in the layout template */
+        // variable for the screen in the layout template
         context.put("screen_placeholder", returnValue);
 
-        /* variable to reference the navigation screen in the layout template */
-        context.put("navigation", new TemplateNavigation( data ));
+        // variable to reference the navigation screen in the layout template
+        context.put("navigation", new TemplateNavigation(data));
 
-        /* Grab the layout template set in the WebMacroSitePage.
-         * If null, then use the default layout template
-         * (done by the TemplateInfo object )
-         */
+        // Grab the layout template set in the VelocityPage.
+        // If null, then use the default layout template
+        // (done by the TemplateInfo object)
         String templateName = data.getTemplateInfo().getLayoutTemplate();
 
-        /* Set the locale and content type */
+        // Set the locale and content type
         data.getResponse().setLocale(data.getLocale());
         data.getResponse().setContentType(data.getContentType());
 
-        /* Finally, generate the layout template and send it to the browser */
+        // Finally, generate the layout template and send it to the browser
         data.getOut().print(TurbineVelocity
             .handleRequest(context, "layouts" + templateName));
     }
