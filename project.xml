@@ -318,6 +318,7 @@
     <dependency>
       <id>commons-configuration</id>
       <version>20030311.152757</version>
+      <!-- <version>0.8.1</version> -->
       <url>http://jakarta.apache.org/commons/sandbox/configuration/index.html</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
@@ -541,7 +542,7 @@
     </dependency>
     <dependency>
       <id>xmlrpc</id>
-      <version>1.2-a1</version>
+      <version>1.2-a2</version>
       <url>http://xml.apache.org/xmlrpc/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>

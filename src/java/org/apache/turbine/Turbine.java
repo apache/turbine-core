@@ -68,6 +68,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.configuration.Configuration;
+// import org.apache.commons.configuration.ConfigurationFactory;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 import org.apache.commons.lang.StringUtils;
@@ -132,6 +133,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
 public class Turbine
@@ -226,12 +228,8 @@ public class Turbine
             try
             {
                 ServletContext context = config.getServletContext();
-                String trProps =
-                    findInitParameter(context, config,
-                                      TurbineConfig.PROPERTIES_PATH_KEY,
-                                      TurbineConfig.PROPERTIES_PATH_DEFAULT);
 
-                configure(config, context, trProps);
+                configure(config, context);
 
                 templateService = TurbineTemplate.getService();
                 rundataService = TurbineRunDataFacade.getService();
@@ -254,19 +252,26 @@ public class Turbine
         }
     }
 
-    private void configure(ServletConfig config, ServletContext context,
-                           String propsFile)
+    /**
+     * Read the master configuration file in, configure logging
+     * and start up any early services.
+     *
+     * @param config The Servlet Configuration supplied by the container
+     * @param context The Servlet Context supplied by the container
+     *
+     * @throws Exception A problem occured while reading the configuration or performing early startup
+     */
+
+    private void configure(ServletConfig config, ServletContext context)
             throws Exception
     {
-
         // Set the application root. This defaults to the webapp
         // context if not otherwise set. This is to allow 2.1 apps
         // to be developed from CVS. This feature will carry over
         // into 3.0.
-        applicationRoot =
-            findInitParameter(context, config,
-                              APPLICATION_ROOT_KEY,
-                              APPLICATION_ROOT_DEFAULT);
+        applicationRoot = findInitParameter(context, config,
+                APPLICATION_ROOT_KEY,
+                APPLICATION_ROOT_DEFAULT);
 
         webappRoot = config.getServletContext().getRealPath("/");
         // log.info("Web Application root is " + webappRoot);
@@ -286,25 +291,71 @@ public class Turbine
         createRuntimeDirectories(context, config);
 
         //
+        // Now we run the Turbine configuration code. There are two ways
+        // to configure Turbine:
+        //
+        // a) By supplying an web.xml init parameter called "configuration"
+        //
+        // <init-param>
+        //   <param-name>configuration</param-name>
+        //   <param-value>/WEB-INF/conf/turbine.xml</param-value>
+        // </init-param>
+        //
+        // This loads an XML based configuration file.
+        //
+        // b) By supplying an web.xml init parameter called "properties"
+        //
+        // <init-param>
+        //   <param-name>properties</param-name>
+        //   <param-value>/WEB-INF/conf/TurbineResources.properties</param-value>
+        // </init-param>
+        //
+        // This loads a Properties based configuration file. Actually, these are
+        // extended properties as provided by commons-configuration
+        //
+        // If neither a) nor b) is supplied, Turbine will fall back to the
+        // known behaviour of loading a properties file called
+        // /WEB-INF/conf/TurbineResources.properties relative to the
+        // web application root.
+
+        String confFile= findInitParameter(context, config, 
+                TurbineConfig.CONFIGURATION_PATH_KEY, 
+                null);
+
+        String confPath;
+        String confStyle = "unset";
+
+// Remove these comments and uncomment the 0.8.1 version of commons-configuration
+// once this is on ibiblio. Until then, the XML code is not enabled. Don't forget
+// to remove the comment in front of the import above.
+//
+//        if (StringUtils.isNotEmpty(confFile))
+//        {
+//            confPath = getRealPath(confFile);
+//            ConfigurationFactory configurationFactory = new ConfigurationFactory();
+//            configurationFactory.setBasePath(getApplicationRoot());
+//            configurationFactory.setConfigurationFileName(confPath);
+//            configuration = configurationFactory.getConfiguration();
+//            confStyle = "XML";
+//        }
+//        else
+//        {
+            confFile = findInitParameter(context, config,
+                    TurbineConfig.PROPERTIES_PATH_KEY,
+                    TurbineConfig.PROPERTIES_PATH_DEFAULT);
+
+            confPath = getRealPath(confFile);
+
+            // This should eventually be a Configuration
+            // interface so that service and app configuration
+            // can be stored anywhere.
+            configuration = (Configuration) new PropertiesConfiguration(confPath);
+            confStyle = "Properties";
+//        }
+
+        //
         // Set up logging as soon as possible
         //
-
-        // Get the full path to the properties file.
-        if (propsFile == null)
-        {
-            propsFile = TurbineConfig.PROPERTIES_PATH_DEFAULT;
-        }
-
-        String propsPath = getRealPath(propsFile);
-
-        // log.info("Loading Configuration from " + propsPath);
-
-        // This should eventually be a Configuration
-        // interface so that service and app configuration
-        // can be stored anywhere.
-        configuration = (Configuration) new PropertiesConfiguration(propsPath);
-
-
         String log4jFile = configuration.getString(LOG4J_CONFIG_FILE,
                                                    LOG4J_CONFIG_FILE_DEFAULT);
 
@@ -316,7 +367,6 @@ public class Turbine
         // Load the config file above into a Properties object and
         // fix up the Application root
         //
-
         Properties p = new Properties();
         try
         {
@@ -339,6 +389,11 @@ public class Turbine
         System.getProperties().setProperty(LogFactory.class.getName(),
                                            Log4jFactory.class.getName());
 
+
+        // Now report our successful configuration to the world
+        log.info("Loaded configuration  (" + confStyle + ") from " + confFile + " (" + confPath + ")");
+
+        
         setTurbineServletConfig(config);
         setTurbineServletContext(context);
 
