@@ -88,9 +88,9 @@ Changes between Turbine 2.2 and 2.3-dev.
        services, you shouldn't notice any change.
     </li>
     <li>
-       TTWS38: BaseValueParser.getInteger(String name) now returns null if the 
+       TTWS38: BaseValueParser.getInteger(String name) now returns null if the
        key name is not found - the old behaviour was to return new Integer(0).
-       For consistency a similar change was made to getBool() and 
+       For consistency a similar change was made to getBool() and
        getBigInteger().
     </li>
   </ul>
@@ -208,12 +208,18 @@ Changes between Turbine 2.2 and 2.3-dev.
           jakarta.apache.org/turbine/dtd/intake.dtd, then the DTD included
           in the jar file will be used instead of the online version.
         </li>
-        <li>
-          The field object has two new methods to help in creating the HTML
-          input tags for the field.  They are getDisplaySize() and getMaxSize().
-          The display size is set in the xml definition.  The max size is pulled
-          from the maxLength rule (if defined).
-        </li>
+          <li>
+            The field object has two new methods to help in creating the HTML
+            input tags for the field.  They are getDisplaySize() and getMaxSize().
+            The display size is set in the xml definition.  The max size is pulled
+            from the maxLength rule (if defined).
+          </li>
+          <li>
+            The setDefaultValue() method on the Field object is nowe public.  This
+            will allow you to assign a value to a field for display on a form that
+            does come from a mapped object.  Before this change, your only option
+            was to defined the default value in intake.xml.
+          </li>
       </ul>
     </li>
     <li>

@@ -101,7 +101,7 @@ public class DateStringField
      * @param prop Parameter for the default values
      * @throws TurbineRuntimeException the date string could not be parsed.
      */
-    protected void setDefaultValue(String prop)
+    public void setDefaultValue(String prop)
     {
         defaultValue = null;
 
