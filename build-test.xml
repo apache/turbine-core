@@ -234,6 +234,7 @@
     <copy file="${ecs.jar}" todir="${build.dir}/rttest/lib"/>
     <copy file="${activation.jar}" todir="${build.dir}/rttest/lib"/>
     <copy file="${javamail.jar}" todir="${build.dir}/rttest/lib"/>
+    <copy file="${stratum.jar}" todir="${build.dir}/rttest/lib"/>
     
     <war 
       warfile="${out.test.dir}/test.war" 
