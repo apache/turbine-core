@@ -126,6 +126,9 @@ Changes between Turbine 2.2 and 2.3-dev.
     <li>
       VelocityLayout is now the proposed default layout.
       VelocityECSLayout might go away post-2.3.
+      See <a href="http://nagoya.apache.org/wiki/apachewiki.cgi?JakartaTurbine2/VelocityOnlyLayout">
+      Moving to VelocityOnlyLayout</a> to see what changes need to be made to your
+      application(s).
     </li>
     <li>
       TurbineException, TurbineRuntimeException, and TurbineError all extend
