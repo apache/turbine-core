@@ -54,7 +54,7 @@ package org.apache.turbine.services.assemblerbroker.util.python;
  * <http://www.apache.org/>.
  */
 
-// Turbine Classes
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Assembler;
 
 /**
@@ -64,9 +64,11 @@ import org.apache.turbine.modules.Assembler;
  * of its subclasses.
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class PythonPageFactory extends PythonBaseFactory
+public class PythonPageFactory
+        extends PythonBaseFactory
 {
     /**
      * Get an Assembler.
@@ -75,8 +77,9 @@ public class PythonPageFactory extends PythonBaseFactory
      * @return an Assembler
      * @throws Exception generic exception
      */
-    public Assembler getAssembler(String name) throws Exception
+    public Assembler getAssembler(String name)
+        throws Exception
     {
-        return getAssembler("pages", name);
+        return getAssembler(TurbineConstants.PAGE_PREFIX, name);
     }
 }

@@ -320,4 +320,6 @@ public interface TurbineConstants
     /** Prefix for action related classes and templates */
     String ACTION_PREFIX = "actions";
 
+    /** Prefix for page related classes and templates */
+    String PAGE_PREFIX = "pages";
 }
