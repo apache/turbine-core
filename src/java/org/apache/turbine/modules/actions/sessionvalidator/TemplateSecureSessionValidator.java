@@ -177,7 +177,8 @@ public class TemplateSecureSessionValidator
         // browsers back button and submitting stale data.
         // FIXME!! a template needs to be written to use this with templates.
 
-        if (data.getParameters().containsKey("_session_access_counter"))
+        if (data.getParameters().containsKey("_session_access_counter")
+                && !TurbineSecurity.isAnonymousUser(data.getUser()))
         {
             // See comments in screens.error.InvalidState.
             if (data.getParameters().getInt("_session_access_counter") 
