@@ -63,6 +63,9 @@ import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateNavigation;
 import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 // Velocity Stuff
 import org.apache.velocity.context.Context;
@@ -80,6 +83,13 @@ import org.apache.velocity.context.Context;
  */
 public class VelocityECSLayout extends Layout
 {
+    private static Log log = LogFactory.getLog(VelocityECSLayout.class);
+
+    public VelocityECSLayout()
+    {
+        log.warn("The VelocityECSLayout is deprecated.  Please switch to VelocityOnlyLayout.");
+    }
+
     /**
      * Build the layout.  Also sets the ContentType and Locale headers
      * of the HttpServletResponse object.
