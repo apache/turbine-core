@@ -57,7 +57,7 @@ configuration files, so be careful!).
 
 <tr>
 <td>turbine.app.flavor</td>
-<td>No</td>
+<td>Yes</td>
 <td>turbine-2.3</td>
 <td>Defines the dependencies and the release version of Turbine that the new application should use. Currently supported versions are:<br/>
     <ul>
@@ -65,6 +65,19 @@ configuration files, so be careful!).
     <li>turbine-2.3.1-dev</li>
     </ul>
     See the <a href="flavors.html">Flavors page</a> for more information.</td>
+</tr>
+
+<tr>
+<a name="turbine_app_om_layer" />
+<td>turbine.app.om.layer</td>
+<td>Yes</td>
+<td>torque</td>
+<td>Defines the OM layer which is configured and used with Turbine to access database information. Currently supported settings are:<br/>
+    <ul>
+    <li>none - don't configure an OM layer</li>
+    <li>torque - configure Torque</li>
+    </ul>
+    See the <a href="using_meta.html#OM_Layers">OM Layer Configuration</a> for more information.</td>
 </tr>
 
 <tr>
@@ -94,6 +107,7 @@ configuration files, so be careful!).
 </tr>
 
 <tr>
+<a name="turbine_setup_properties" />
 <td>turbine.setup.properties</td>
 <td>Yes</td>
 <td>setup.properties</td>
@@ -101,6 +115,7 @@ configuration files, so be careful!).
 </tr>
 
 <tr>
+<a name="turbine_setup_demo" />
 <td>turbine.setup.demo</td>
 <td>Yes</td>
 <td>true</td>

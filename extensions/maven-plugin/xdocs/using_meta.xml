@@ -186,6 +186,28 @@ maven -Dturbine.setup.properties=helloworld.properties turbine:setup
 ]]></source>
 </subsection>
 
+<subsection name="OM Layers">
+<p>
+Turbine supports the retrieval of information from databases through
+various OM layers. The most popular is <a
+href="http://db.apache.org/torque/">Torque</a> and Turbine itself uses
+Torque for the <a
+href="http://jakarta.apache.org/turbine/turbine-2.3/services/security-service.html">Security
+Service</a> and the <a
+href="http://jakarta.apache.org/turbine/turbine-2.3/services/scheduler-service.html">Scheduler
+Service</a>. With the M.E.T.A. plugin, different OM layers can be
+configured. The default is to use Torque. The OM layer is configured
+by setting the <a
+href="properties.html#turbine_app_om_layer">turbine.app.om.layer</a>
+property. Currently supported settings are:<br/>
+
+<ul>
+<li>torque - Configure Torque</li>
+<li>none - don't use an OM layer</li>
+</ul>
+</p>
+</subsection>
+
 <subsection name="Demo pages">
 <p>
 In the &quot;helloworld&quot; example from the <a
