@@ -53,16 +53,14 @@ package org.apache.turbine;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-import javax.servlet.*;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.apache.turbine.Turbine;
-import org.apache.turbine.util.TurbineConfig;
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationFactory;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.turbine.util.TurbineConfig;
+import org.apache.turbine.util.TurbineXmlConfig;
+
 
 /**
  * Tests that the ConfigurationFactory and regular old properties methods both work.
@@ -76,6 +74,7 @@ public class ConfigurationTest
     extends TestCase
 {
     private static TurbineConfig tc = null;
+    private static TurbineXmlConfig txc = null;
 
     public ConfigurationTest(String name)
     {
@@ -94,8 +93,8 @@ public class ConfigurationTest
     
     public void testCreateTurbineWithConfigurationXML() throws Exception
        {
-           tc = new TurbineConfig(".", "/conf/test/TurbineConfiguration.xml");
-           tc.initialize();
+           txc = new TurbineXmlConfig(".", "/conf/test/TurbineConfiguration.xml");
+           txc.initialize();
          
            Configuration configuration = Turbine.getConfiguration();
            assertTrue("Make sure we have values", !configuration.isEmpty());
