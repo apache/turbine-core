@@ -416,6 +416,13 @@ Changes between Turbine 2.2 and 2.3-dev.
       package is unmaintained. We use the new AvalonComponentService to
       initialize Torque. 
     </li>
+    <li>
+      ActionEvent and VelocityActionEvent can "ignore" eventSubmit_&lt;xxx&gt; events if they 
+      contain an empty or a zero value. This behaviour is controlled by the "action.eventsubmit.needsvalue"
+      property that defaults to "off", which  means no change from the pre-2.3 behaviour. The new behaviour
+      is  useful if you have multiple event fields in a form and only one should be selected 
+      (e.g. by a client side java script application).
+    </li>
   </ul>
 </p>
 </subsection>
