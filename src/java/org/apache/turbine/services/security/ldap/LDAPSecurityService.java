@@ -75,6 +75,7 @@ import org.apache.turbine.util.Log;
 import org.apache.turbine.util.db.Criteria;
 
 import org.apache.turbine.util.security.AccessControlList;
+import org.apache.turbine.util.security.TurbineAccessControlList;
 import org.apache.turbine.util.security.GroupSet;
 import org.apache.turbine.util.security.RoleSet;
 import org.apache.turbine.util.security.PermissionSet;
@@ -92,6 +93,7 @@ import org.apache.turbine.services.security.BaseSecurityService;
  * @author <a href="mailto:tadewunmi@gluecode.com">Tracy M. Adewunmi </a>
  * @author <a href="mailto:lflournoy@gluecode.com">Leonard J. Flournoy </a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
  * @version $Id$
  */
 public class LDAPSecurityService extends BaseSecurityService
@@ -121,7 +123,7 @@ public class LDAPSecurityService extends BaseSecurityService
          */
         Hashtable roles = new Hashtable();
         Hashtable permissions = new Hashtable();
-        return new AccessControlList(roles, permissions);
+        return new TurbineAccessControlList(roles, permissions);
     }
 
     /*
