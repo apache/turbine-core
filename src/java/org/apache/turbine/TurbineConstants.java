@@ -220,11 +220,11 @@ public interface TurbineConstants
     /** Session Timeout Default Value */
     int SESSION_TIMEOUT_DEFAULT = -1;
 
-    /**
-     * Indicate whether this Turbine application is using SSL.
-     * Used for creating dynamic URIs.
-     */
-    String USE_SSL = "use.ssl";
+    /** Indicate whether this Turbine application is using SSL. */
+    String USE_SSL_KEY = "use.ssl";
+
+    /** Default value for the SSL key */
+    boolean USE_SSL_DEFAULT = true;
 
     /**
      * Should the PP fold the case of everything. Possible values are

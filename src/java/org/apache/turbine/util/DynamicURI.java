@@ -55,14 +55,20 @@ package org.apache.turbine.util;
  */
 
 import java.net.URLEncoder;
+
 import java.util.Enumeration;
 import java.util.Vector;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ecs.html.A;
-import org.apache.turbine.services.resources.TurbineResources;
+
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.util.parser.ParserUtils;
+import org.apache.turbine.util.uri.URIConstants;
 
 /**
  * This creates a Dynamic URI for use within the Turbine system
@@ -88,11 +94,11 @@ import org.apache.turbine.util.parser.ParserUtils;
  */
 public class DynamicURI
 {
-    /** HTTP protocol. */
-    public static final String HTTP = "http";
+    /** @deprecated Use URIConstants.HTTP */
+    public static final String HTTP = URIConstants.HTTP;
 
-    /** HTTPS protocol. */
-    public static final String HTTPS = "https";
+    /** @deprecated Use URIConstants.HTTPS */
+    public static final String HTTPS = URIConstants.HTTPS;
 
     /** The ServerData object. */
     protected ServerData sd = null;
@@ -928,12 +934,14 @@ public class DynamicURI
      */
     public DynamicURI setSecure(int port)
     {
-        boolean isSSL = TurbineResources.getBoolean("use.ssl", true);
-        if (isSSL)
-        {
-            setServerScheme(DynamicURI.HTTPS);
-            setServerPort(port);
-        }
+        boolean useSSL = 
+            Turbine.getConfiguration()
+            .getBoolean(TurbineConstants.USE_SSL_KEY,
+                        TurbineConstants.USE_SSL_DEFAULT);
+
+        setServerScheme(useSSL ? URIConstants.HTTPS : URIConstants.HTTP);
+        setServerPort(port);
+
         return this;
     }
 
