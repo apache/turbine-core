@@ -24,9 +24,22 @@ in the future.
 
 </section>
 
+<section name="Dependencies">
+
+<p>
+Don't forget to update the dependencies of your project to match
+those defined for Turbine and the components you are loading:
+<ul>
+<li><a href="../dependencies.html">Turbine Dependencies</a></li>
+<li><a href="http://db.apache.org/torque/dependencies.html">Torque Dependencies</a></li>
+</ul>
+</p>
+
+</section>
+
 <section name="Configuration">
 
-<source><![CDATA[
+	<source><![CDATA[
 # -------------------------------------------------------------------
 # 
 #  S E R V I C E S
