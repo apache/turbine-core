@@ -25,13 +25,13 @@ package org.apache.turbine.om;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -56,13 +56,8 @@ package org.apache.turbine.om;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.StringUtils;
-import org.apache.turbine.util.ParameterParser;
-import org.apache.turbine.util.Log;
-import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.pull.ApplicationTool;
+import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.pool.Recyclable;
 
 /**
@@ -71,32 +66,30 @@ import org.apache.turbine.util.pool.Recyclable;
  * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
  * @version $Id$
  */
-public class OMTool 
-    implements ApplicationTool, Recyclable
+public class OMTool implements ApplicationTool, Recyclable
 {
     // private RunData data;
     private HashMap omMap;
 
     // note the following could be a static attribute to reduce memory
     // footprint. Might require a service to front load the
-    // PullHelpers to avoid MT issues. A multiple write is not so bad 
+    // PullHelpers to avoid MT issues. A multiple write is not so bad
     // though
 
     /** The cache of PullHelpers. **/
     private static Map pullMap = new HashMap();
 
     /**
-     *  The Factory responsible for retrieving the 
+     *  The Factory responsible for retrieving the
      *  objects from storage
      */
     private RetrieverFactory omFactory;
 
-    public OMTool()
-        throws Exception
+    public OMTool()throws Exception
     {
         omMap = new HashMap();
         String className = TurbineResources.getString("tool.om.factory");
-        //        RetrieverFactory omFactory = 
+        //        RetrieverFactory omFactory =
         //            (RetrieverFactory)Class.forName(className).newInstance();
     }
 
@@ -135,11 +128,11 @@ public class OMTool
             Object om = null;
 
             String inputKey = omName + key;
-            if ( omMap.containsKey(inputKey) ) 
+            if (omMap.containsKey(inputKey))
             {
                 om = omMap.get(inputKey);
             }
-            else 
+            else
             {
                 om = omFactory.getInstance(omName).retrieve(key);
                 omMap.put(inputKey, om);
@@ -149,27 +142,25 @@ public class OMTool
         }
     }
 
-    public Object get(String omName)
-        throws Exception
+    public Object get(String omName) throws Exception
     {
-        if ( !pullMap.containsKey(omName) ) 
+        if (!pullMap.containsKey(omName))
         {
             // MT could overwrite a PullHelper, but that is not a problem
-            // should still synchronize to avoid two threads adding at 
+            // should still synchronize to avoid two threads adding at
             // same time
             synchronized (this.getClass())
             {
                 pullMap.put(omName, new OMTool.PullHelper(omName));
             }
         }
-        
+
         return pullMap.get(omName);
     }
 
-    public Object get(String omName, String key)
-        throws Exception
+    public Object get(String omName, String key) throws Exception
     {
-        return ((OMTool.PullHelper)get(omName)).setKey(key);
+        return ((OMTool.PullHelper) get(omName)).setKey(key);
     }
 
 
@@ -205,9 +196,8 @@ public class OMTool
      */
     public void dispose()
     {
-        omMap.clear(); 
+        omMap.clear();
         // data = null;
-
         disposed = true;
     }
 
@@ -219,7 +209,6 @@ public class OMTool
     {
         return disposed;
     }
-
 }
 
 

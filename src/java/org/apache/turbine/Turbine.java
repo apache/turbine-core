@@ -54,35 +54,24 @@ package org.apache.turbine;
  * <http://www.apache.org/>.
  */
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.File;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.io.IOException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.stratum.component.ComponentLoader;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.stratum.lifecycle.Configurable;
-import org.apache.stratum.lifecycle.Initializable;
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.PageLoader;
-import org.apache.turbine.modules.actions.sessionvalidator.SessionValidator;
-import org.apache.turbine.util.DynamicURI;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.resources.TurbineResources;
+import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.RunDataFactory;
 import org.apache.turbine.util.StringUtils;
 import org.apache.turbine.util.security.AccessControlList;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.services.logging.LoggingService;
-import org.apache.turbine.services.servlet.TurbineServlet;
-import org.apache.turbine.services.template.TurbineTemplate;
 
 /**
  * Turbine is the main servlet for the entire system. It is <code>final</code>
@@ -193,11 +182,11 @@ public class Turbine
     {
         super.init(config);
 
-        synchronized ( this.getClass() )
+        synchronized (this.getClass())
         {
-            if(!firstInit)
+            if (!firstInit)
             {
-                log ("Double initializaton of Turbine was attempted!");
+                log("Double initializaton of Turbine was attempted!");
                 return;
             }
             // executing init will trigger some static initializers, so we have
@@ -212,9 +201,11 @@ public class Turbine
                 // into 3.0.
                 applicationRoot = config.getInitParameter(APPLICATION_ROOT);
 
-                if (applicationRoot == null || applicationRoot.equals("webContext"))
+                if (applicationRoot == null
+                        || applicationRoot.equals("webContext"))
                 {
-                    applicationRoot = config.getServletContext().getRealPath("");
+                    applicationRoot = config.getServletContext()
+                            .getRealPath("");
                 }
 
                 // Set the webapp root. The applicationRoot and the
@@ -247,7 +238,7 @@ public class Turbine
 
                 log ("Turbine: init() Ready to Rumble!");
             }
-            catch ( Exception e )
+            catch (Exception e)
             {
                 // save the exception to complain loudly later :-)
                 initFailure = e;
@@ -269,7 +260,7 @@ public class Turbine
 
         if (logDir.exists() == false)
         {
-            if(logDir.mkdirs() == false)
+            if (logDir.mkdirs() == false)
             {
                 System.err.println("Cannot create directory for logs!");
             }
@@ -291,16 +282,16 @@ public class Turbine
                 serverName = data.getRequest().getServerName();
                 serverPort = Integer.toString(data.getRequest().getServerPort());
                 serverScheme = data.getRequest().getScheme();
-                
+
                 // Store the context path for tools like ContentURI and
                 // the UIManager that use webapp context path information
                 // for constructing URLs.
                 contextPath = data.getRequest().getContextPath();
-                
+
                 log("Turbine: Starting HTTP initialization of services");
                 TurbineServices.getInstance().initServices(data);
                 log("Turbine: Completed HTTP initialization of services");
-                
+
                 // Mark that we're done.
                 firstDoGet = false;
             }
@@ -368,10 +359,8 @@ public class Turbine
      * @exception IOException a servlet exception.
      * @exception ServletException a servlet exception.
      */
-    public final void doGet (HttpServletRequest req,
-                       HttpServletResponse res)
-        throws IOException,
-               ServletException
+    public final void doGet(HttpServletRequest req, HttpServletResponse res)
+        throws IOException, ServletException
     {
         // set to true if the request is to be redirected by the page
         boolean requestRedirected = false;
@@ -388,8 +377,7 @@ public class Turbine
 
             // Get general RunData here...
             // Perform turbine specific initialization below.
-            data = RunDataFactory.getRunData( req, res,
-                                              getServletConfig() );
+            data = RunDataFactory.getRunData(req, res, getServletConfig());
 
             // If this is the first invocation, perform some
             // initialization.  Certain services need RunData to initialize
@@ -411,15 +399,15 @@ public class Turbine
             }
 
             // Fill in the screen and action variables.
-            data.setScreen ( data.getParameters().getString("screen") );
-            data.setAction ( data.getParameters().getString("action") );
+            data.setScreen(data.getParameters().getString("screen"));
+            data.setAction(data.getParameters().getString("action"));
 
             // Special case for login and logout, this must happen before the
             // session validator is executed in order either to allow a user to
             // even login, or to ensure that the session validator gets to
             // mandate its page selection policy for non-logged in users
             // after the logout has taken place.
-            if ( data.hasAction()
+            if (data.hasAction()
                     && data.getAction().equalsIgnoreCase(TurbineResources
                             .getString("action.login"))
                     || data.getAction().equalsIgnoreCase(TurbineResources
@@ -442,13 +430,13 @@ public class Turbine
                     String[] names = data.getSession().getValueNames();
                     if (names != null)
                     {
-                        for (int i=0; i< names.length; i++)
+                        for (int i = 0; i < names.length; i++)
                         {
                             data.getSession().removeValue(names[i]);
                         }
                     }
                 }
-                ActionLoader.getInstance().exec ( data, data.getAction() );
+                ActionLoader.getInstance().exec(data, data.getAction());
                 data.setAction(null);
             }
 
@@ -461,7 +449,7 @@ public class Turbine
             // TurbineResources.properties...screen.homepage; or, you
             // can specify your own SessionValidator action.
             ActionLoader.getInstance().exec(
-                data,TurbineResources.getString("action.sessionvalidator") );
+                data, TurbineResources.getString("action.sessionvalidator"));
 
             // Put the Access Control List into the RunData object, so
             // it is easily available to modules.  It is also placed
@@ -469,7 +457,7 @@ public class Turbine
             // out the ACL to force it to be rebuilt based on more
             // information.
             ActionLoader.getInstance().exec(
-                data,TurbineResources.getString("action.accesscontroller"));
+                data, TurbineResources.getString("action.accesscontroller"));
 
             // Start the execution phase. DefaultPage will execute the
             // appropriate action as well as get the Layout from the
@@ -506,7 +494,7 @@ public class Turbine
 
             // If a module has set data.acl = null, remove acl from
             // the session.
-            if ( data.getACL() == null )
+            if (data.getACL() == null)
             {
                 try
                 {
@@ -519,14 +507,14 @@ public class Turbine
             }
 
             // handle a redirect request
-            requestRedirected = ((data.getRedirectURI() != null) 
+            requestRedirected = ((data.getRedirectURI() != null)
                 && (data.getRedirectURI().length() > 0));
             if (requestRedirected)
             {
                 if (data.getResponse().isCommitted())
                 {
                     requestRedirected = false;
-                    log ("redirect requested, response already committed: " + 
+                    log("redirect requested, response already committed: " +
                          data.getRedirectURI());
                 }
                 else
@@ -539,29 +527,29 @@ public class Turbine
             {
                 try
                 {
-                    if ( data.isPageSet() == false &&
-                        data.isOutSet() == false )
-                        throw new Exception ( "Nothing to output" );
+                    if (data.isPageSet() == false && data.isOutSet() == false)
+                    {
+                        throw new Exception("Nothing to output");
+                    }
 
                     // We are all done! if isPageSet() output that way
                     // otherwise, data.getOut() has already been written
                     // to the data.getOut().close() happens below in the
                     // finally.
-                    if ( data.isPageSet() && data.isOutSet() == false )
+                    if (data.isPageSet() && data.isOutSet() == false)
                     {
                         // Modules can override these.
+                        data.getResponse().setLocale(data.getLocale());
                         data.getResponse()
-                            .setLocale( data.getLocale() );
-                        data.getResponse()
-                            .setContentType( data.getContentType() );
+                                .setContentType(data.getContentType());
 
                         // Set the status code.
-                        data.getResponse().setStatus ( data.getStatusCode() );
+                        data.getResponse().setStatus(data.getStatusCode());
                         // Output the Page.
-                        data.getPage().output (data.getOut());
+                        data.getPage().output(data.getOut());
                     }
                 }
-                catch ( Exception e )
+                catch (Exception e)
                 {
                     // The output stream was probably closed by the client
                     // end of things ie: the client clicked the Stop
@@ -571,7 +559,7 @@ public class Turbine
                 }
             }
         }
-        catch ( Exception e )
+        catch (Exception e)
         {
             handleException(data, res, e);
         }
@@ -594,12 +582,10 @@ public class Turbine
      * @exception IOException a servlet exception.
      * @exception ServletException a servlet exception.
      */
-    public final void doPost (HttpServletRequest req,
-                        HttpServletResponse res)
-        throws IOException,
-               ServletException
+    public final void doPost(HttpServletRequest req, HttpServletResponse res)
+        throws IOException, ServletException
     {
-        doGet ( req, res );
+        doGet(req, res);
     }
 
     /**
@@ -623,14 +609,14 @@ public class Turbine
      *
      * @param data A Turbine RunData object.
      * @param res Servlet response.
-     * @param e The exception to report.
+     * @param t The exception to report.
      */
     private final void handleException(RunData data,
                                  HttpServletResponse res,
                                  Throwable t)
     {
         // make sure that the stack trace makes it the log
-        Log.error("Turbine.handleException: "+t.getMessage());
+        Log.error("Turbine.handleException: " + t.getMessage());
         Log.error(t);
 
         String mimeType = "text/plain";
@@ -638,55 +624,59 @@ public class Turbine
         {
             // This is where we capture all exceptions and show the
             // Error Screen.
-            data.setStackTrace(StringUtils.stackTrace(t),t);
+            data.setStackTrace(StringUtils.stackTrace(t), t);
 
             // setup the screen
-            data.setScreen(TurbineResources
-                           .getString("screen.error"));
+            data.setScreen(TurbineResources.getString("screen.error"));
 
             // do more screen setup for template execution if needed
             if (data.getTemplateInfo() != null)
-                data.getTemplateInfo()
-                    .setScreenTemplate(TurbineResources
-                                       .getString("template.error"));
+            {
+                data.getTemplateInfo().setScreenTemplate(TurbineResources
+                        .getString("template.error"));
+            }
 
             // Make sure to not execute an action.
-            data.setAction ("");
+            data.setAction("");
 
-            PageLoader.getInstance()
-                .exec(data,
+            PageLoader.getInstance().exec(data,
                       TurbineResources.getString("page.default",
                       "DefaultPage"));
 
-            data.getResponse().setContentType( data.getContentType() );
-            data.getResponse().setStatus ( data.getStatusCode() );
-            if( data.isPageSet() )
-                data.getOut().print ( data.getPage().toString() );
+            data.getResponse().setContentType(data.getContentType());
+            data.getResponse().setStatus(data.getStatusCode());
+            if (data.isPageSet())
+            {
+                data.getOut().print(data.getPage().toString());
+            }
         }
         // Catch this one because it occurs if some code hasn't been
         // completely re-compiled after a change..
-        catch ( java.lang.NoSuchFieldError e )
+        catch (java.lang.NoSuchFieldError e)
         {
             try
             {
-                data.getResponse().setContentType( mimeType );
-                data.getResponse().setStatus ( 200 );
+                data.getResponse().setContentType(mimeType);
+                data.getResponse().setStatus(200);
             }
-            catch (Exception ignored) {}
+            catch (Exception ignored)
+            {
+            }
 
             try
             {
-                data.getOut().print ("java.lang.NoSuchFieldError: " +
-                                     "Please recompile all of your " +
-                                     "source code.");
+                data.getOut().print("java.lang.NoSuchFieldError: "
+                        + "Please recompile all of your source code.");
             }
-            catch (IOException ignored) {}
+            catch (IOException ignored)
+            {
+            }
 
-            log ( data.getStackTrace() );
-            org.apache.turbine.util.Log.error ( e.getMessage(), e );
+            log(data.getStackTrace());
+            org.apache.turbine.util.Log.error(e.getMessage(), e);
         }
         // Attempt to do *something* at this point...
-        catch ( Throwable reallyScrewedNow )
+        catch (Throwable reallyScrewedNow)
         {
             StringBuffer msg = new StringBuffer();
             msg.append("Horrible Exception: ");
@@ -700,13 +690,15 @@ public class Turbine
             }
             try
             {
-                res.setContentType( mimeType );
-                res.setStatus ( 200 );
-                res.getWriter().print (msg.toString());
+                res.setContentType(mimeType);
+                res.setStatus(200);
+                res.getWriter().print(msg.toString());
             }
-            catch (Exception ignored) {}
-            org.apache.turbine.util.Log.error (
-                    reallyScrewedNow.getMessage(), reallyScrewedNow );
+            catch (Exception ignored)
+            {
+            }
+            org.apache.turbine.util.Log.error(
+                    reallyScrewedNow.getMessage(), reallyScrewedNow);
         }
     }
 
@@ -729,8 +721,8 @@ public class Turbine
      * information. This can be used by an app being
      * developed in a standard CVS layout.
      *
-     * @param String path
-     * @param String path translated to the application root
+     * @param path path translated to the application root
+     * @return the real path
      */
     public static String getRealPath(String path)
     {
@@ -744,7 +736,8 @@ public class Turbine
 
     /**
      * logs message using turbine's logging facility
-     * @param msg   message to be logged
+     *
+     * @param msg message to be logged
      */
     public void log(String msg)
     {
@@ -754,8 +747,9 @@ public class Turbine
     /**
      * Writes an explanatory message and a stack trace
      * for a given <code>Throwable</code> exception
-     * @param message 		the message
-     * @param t			the error
+     *
+     * @param message the message
+     * @param t	the error
      */
 
     public void log(String message, Throwable t)
