@@ -343,7 +343,7 @@
     </dependency>
     <dependency>
       <id>commons-lang</id>
-      <version>1.0-dev</version>
+      <version>1.0-dev-20020716</version>
       <url>http://jakarta.apache.org/commons/</url>
     </dependency>
     <dependency>
@@ -404,14 +404,14 @@
     <dependency>
       <id>xml-xerces</id>
       <type>required</type>
-      <version>2.0.0</version>
-      <jar>xercesImpl-2.0.0.jar</jar>
+      <version>2.0.2</version>
+      <jar>xercesImpl-2.0.2.jar</jar>
     </dependency>
     <dependency>
       <id>xml-apis</id>
       <type>required</type>
-      <version>2.0.0</version>
-      <jar>xmlParserAPIs-2.0.0.jar</jar>
+      <version>2.0.2</version>
+      <jar>xmlParserAPIs-2.0.2.jar</jar>
     </dependency>
     <dependency>
       <id>xalan</id>
