@@ -75,7 +75,8 @@ import org.apache.commons.configuration.Configuration;
 
 import org.apache.commons.lang.StringUtils;
 
-xoimport org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
