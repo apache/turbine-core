@@ -84,6 +84,7 @@ import org.apache.log4j.PropertyConfigurator;
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.PageLoader;
 
+import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.component.ComponentService;
@@ -185,9 +186,6 @@ public class Turbine
      * This might differ from the application root.
      */
     private static String webappRoot;
-
-    /** instance of turbine services */
-    private static TurbineServices serviceManager = null;
 
     /** Our internal configuration object */
     private static Configuration configuration = null;
@@ -325,8 +323,6 @@ public class Turbine
         String confPath;
         String confStyle = "unset";
 
-
-
         if (StringUtils.isNotEmpty(confFile))
         {
             confPath = getRealPath(confFile);
@@ -395,10 +391,7 @@ public class Turbine
         setTurbineServletConfig(config);
         setTurbineServletContext(context);
 
-        // Get the instance of the service manager
-        serviceManager = (TurbineServices) TurbineServices.getInstance();
-
-        serviceManager.setApplicationRoot(applicationRoot);
+        getServiceManager().setApplicationRoot(applicationRoot);
 
         // We want to set a few values in the configuration so
         // that ${variable} interpolation will work for
@@ -420,13 +413,13 @@ public class Turbine
                                   AvalonComponentService.SERVICE_NAME + ".earlyInit",
                                   Boolean.TRUE);
 
-        serviceManager.setConfiguration(configuration);
+        getServiceManager().setConfiguration(configuration);
 
         // Initialize the service manager. Services
         // that have its 'earlyInit' property set to
         // a value of 'true' will be started when
         // the service manager is initialized.
-        serviceManager.init();
+        getServiceManager().init();
     }
 
     /**
@@ -661,7 +654,7 @@ public class Turbine
     public final void destroy()
     {
         // Shut down all Turbine Services.
-        serviceManager.shutdownServices();
+        getServiceManager().shutdownServices();
         System.gc();
 
         log.info("Turbine: Done shutting down!");
@@ -1130,5 +1123,15 @@ public class Turbine
         }
 
         return new File(getApplicationRoot(), path).getAbsolutePath();
+    }
+
+    /**
+     * Return an instance of the currently configured Service Manager
+     *
+     * @return A service Manager instance
+     */
+    private ServiceManager getServiceManager()
+    {
+        return TurbineServices.getInstance();
     }
 }
