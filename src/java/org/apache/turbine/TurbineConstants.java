@@ -243,17 +243,17 @@ public interface TurbineConstants
      */
     String DEFAULT_DOCUMENT_TYPE = "default.doctype";
 
-    /** Key for the Path to the TurbineResources.properties File */ 
-    String APPLICATION_ROOT_KEY = "applicationRoot";
-
-    /** Default Value for the Path to the TurbineResources.properties File */ 
-    String APPLICATION_ROOT_DEFAULT = "/WEB-INF/conf/TurbineResources.properties";
-  
     /** If this value is set as applicationRoot, then the webContext is used
      * as application root
      */
     String WEB_CONTEXT = "webContext";
 
+    /** Key for the Path to the TurbineResources.properties File */ 
+    String APPLICATION_ROOT_KEY = "applicationRoot";
+
+    /** Default Value for the Path to the TurbineResources.properties File */ 
+    String APPLICATION_ROOT_DEFAULT = WEB_CONTEXT;
+  
     /** This is the key used in the Turbine.properties to access resources 
      * relative to the Web Application root. It might differ from the 
      * Application root, but the normal case is, that the webapp root
