@@ -100,6 +100,15 @@ configuration files, so be careful!).
 <td>Selects the properties file which is loaded to configure the <a href="goals.html#turbine_setup">turbine:setup</a> goal.</td>
 </tr>
 
+<tr>
+<td>turbine.setup.demo</td>
+<td>Yes</td>
+<td>true</td>
+<td>If true, copy the demo images, a default start page and a redirection page into the newly created application. If set to false,
+    no content files are copied into the new application tree.
+</td>
+</tr>
+
   </table>
 </p>
 </subsection>
