@@ -15,10 +15,10 @@
 <body>
 
 <!--
-<section name="Turbine 2.2-b2">
+<section name="Turbine CURRENT_RELEASE">
 
 <p>
-Changes between Turbine 2.2-b1 and 2.2-b2.
+Changes between Turbine LAST_RELEASE and CURRENT_RELEASE.
 </p>
 
 <p>
@@ -54,10 +54,10 @@ Changes between Turbine 2.2-b1 and 2.2-b2.
 </section>
 -->
 
-<section name="Turbine 2.3-dev">
+<section name="Turbine 2.3">
 
 <p>
-Changes between Turbine 2.2 and 2.3-dev.
+Changes between Turbine 2.2 and 2.3.
 </p>
 
 <subsection name="Building">
