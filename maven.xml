@@ -30,7 +30,7 @@
   xmlns:m="maven"
   xmlns:u="jelly:util"
   xmlns:maven="jelly:maven"
-  default="multiproject:install">
+  default="turbine:build">
 
   
   <!-- ================================================================== -->
@@ -124,7 +124,7 @@
   <!-- Generate the Torque Implementations for Schedule   -->
   <!-- and Security Site                                  -->
   <!-- ================================================== -->
-  <!--spostGoal name="site">
+  <!--postGoal name="site">
      <maven:reactor
       basedir="${basedir}/src/torque"
       includes="project.xml"
@@ -137,4 +137,12 @@
       <fileset dir="${basedir}/src/torque/target/docs"/>
     </copy>
   </postGoal-->  
+  
+  <goal name="turbine:build" description="Build all Turbine components">
+  	<attainGoal name="jar"/>
+  	<attainGoal name="multiproject:artifact"/>  	
+  </goal>
+  <goal name="turbine:clean" description="Clean all Turbine components" prereqs="clean">
+  	<attainGoal name="multiproject:clean"/>  	
+  </goal>  
 </project>
