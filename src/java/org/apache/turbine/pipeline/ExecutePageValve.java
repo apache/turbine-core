@@ -89,12 +89,12 @@ public class ExecutePageValve
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke(RunData data, ValveContext context)
+    public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
         try
         {
-            executePage(data);
+            executePage((RunData)pipelineData.get(RunData.class));
         }
         catch (Exception e)
         {
@@ -102,7 +102,7 @@ public class ExecutePageValve
         }
 
         // Pass control to the next Valve in the Pipeline
-        context.invokeNext(data);
+        context.invokeNext(pipelineData);
     }
 
     /**

@@ -144,11 +144,13 @@ public class DefaultACLCreationValveTest extends BaseTestCase
         
         
         Pipeline pipeline = new TurbinePipeline();
+        PipelineData pipelineData = new DefaultPipelineData();
+        pipelineData.put(RunData.class,runData);
 
         DefaultACLCreationValve valve = new DefaultACLCreationValve();
         pipeline.addValve(valve);
 
-        pipeline.invoke(runData);
+        pipeline.invoke(pipelineData);
         User user = runData.getUser();
         assertNotNull(user);
         assertEquals("username",user.getName());

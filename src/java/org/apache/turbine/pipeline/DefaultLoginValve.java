@@ -95,12 +95,12 @@ public class DefaultLoginValve
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke(RunData data, ValveContext context)
+    public void invoke(PipelineData data, ValveContext context)
         throws IOException, TurbineException
     {
         try
-        { 
-            process(data);
+        {             
+            process((RunData)data.get(RunData.class));
         }
         catch (Exception e)
         {

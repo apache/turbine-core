@@ -143,11 +143,13 @@ public class DetermineActionValveTest extends BaseTestCase
         
         //URIConstants.CGI_ACTION_PARAM
         Pipeline pipeline = new TurbinePipeline();
+        PipelineData pipelineData = new DefaultPipelineData();
+        pipelineData.put(RunData.class,runData);
 
         DetermineActionValve valve = new DetermineActionValve();
         pipeline.addValve(valve);
 
-        pipeline.invoke(runData);
+        pipeline.invoke(pipelineData);
         assertEquals("TestAction",runData.getAction());
 
 

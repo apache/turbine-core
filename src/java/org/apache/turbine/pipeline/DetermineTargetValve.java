@@ -82,16 +82,17 @@ public class DetermineTargetValve
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke( RunData data, ValveContext context )
+    public void invoke( PipelineData pipelineData, ValveContext context )
         throws IOException, TurbineException
     {
-        if ( ! data.hasScreen() )
+        RunData runData = (RunData)pipelineData.get(RunData.class);
+        if ( ! runData.hasScreen() )
         {
-            String target = data.getParameters().getString(URIConstants.CGI_SCREEN_PARAM);
+            String target = runData.getParameters().getString(URIConstants.CGI_SCREEN_PARAM);
 
             if ( target != null )
             {
-                data.setScreen( target );
+                runData.setScreen( target );
                 
                 log.debug( "Set screen target from request parameter" );
             }
@@ -109,10 +110,10 @@ public class DetermineTargetValve
         
         if ( log.isDebugEnabled() )
         {
-            log.debug( "Screen Target is now: " + data.getScreen() );
+            log.debug( "Screen Target is now: " + runData.getScreen() );
         }
 
         // Pass control to the next Valve in the Pipeline
-        context.invokeNext( data );
+        context.invokeNext( pipelineData );
     }
 }

@@ -69,6 +69,8 @@ import junit.framework.TestCase;
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.DefaultPipelineData;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.util.RunData;
@@ -117,6 +119,13 @@ public abstract class BaseTestCase
         RunData runData = rds.getRunData(request, response, config);        
         return runData;
     }
+    protected PipelineData getPipelineData(HttpServletRequest request,HttpServletResponse response,ServletConfig config) throws Exception {
+       PipelineData pipelineData = new DefaultPipelineData();
+       RunData runData = getRunData(request,response,config);
+       pipelineData.put(RunData.class,runData);
+       return pipelineData;
+    }
+    
     
     protected MockHttpServletRequest getMockRequest(){
         EnhancedMockHttpServletRequest request = new EnhancedMockHttpServletRequest();

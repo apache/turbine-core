@@ -89,7 +89,7 @@ class SimpleValve
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke(RunData data, ValveContext context)
+    public void invoke(PipelineData data, ValveContext context)
         throws IOException, TurbineException
     {
         // Perform our actions

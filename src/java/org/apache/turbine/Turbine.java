@@ -82,9 +82,10 @@ import org.apache.commons.xo.Mapper;
 
 import org.apache.log4j.PropertyConfigurator;
 
-import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.PageLoader;
+import org.apache.turbine.pipeline.DefaultPipelineData;
 import org.apache.turbine.pipeline.Pipeline;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.pipeline.TurbinePipeline;
 
 import org.apache.turbine.services.ServiceManager;
@@ -95,13 +96,11 @@ import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.services.rundata.TurbineRunDataFacade;
-import org.apache.turbine.services.velocity.VelocityService;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.template.TemplateInfo;
 import org.apache.turbine.util.uri.URIConstants;
 
 /**
@@ -679,6 +678,8 @@ public class Turbine
 
         // Placeholder for the RunData object.
         RunData data = null;
+        
+        PipelineData pipelineData = new DefaultPipelineData();
         try
         {
             // Check to make sure that we started up properly.
@@ -686,11 +687,6 @@ public class Turbine
             {
                 throw initFailure;
             }
-
-            // Get general RunData here...
-            // Perform turbine specific initialization below.
-            data = rundataService.getRunData(req, res, getServletConfig());
-
             // If this is the first invocation, perform some
             // initialization.  Certain services need RunData to initialize
             // themselves.
@@ -698,7 +694,6 @@ public class Turbine
             {
                 synchronized (Turbine.class)
                 {
-
                     // Store the context path for tools like ContentURI and
                     // the UIManager that use webapp context path information
                     // for constructing URLs.
@@ -709,12 +704,19 @@ public class Turbine
                     log.info("Turbine: first Request successful");
                 }
 
-            }
+            }            
+
+            // Get general RunData here...
+            // Perform turbine specific initialization below.
+            data = rundataService.getRunData(req, res, getServletConfig());
+            
+            // put the data into the pipeline
+            pipelineData.put(RunData.class,data);            
 
             // Stages of Pipeline implementation execution
 			// configurable via attached Valve implementations in a
 			// XML properties file.
-			pipeline.invoke(data);
+			pipeline.invoke(pipelineData);
   
         }
         catch (Exception e)
@@ -744,69 +746,6 @@ public class Turbine
             throws IOException, ServletException
     {
         doGet(req, res);
-    }
-
-    /**
-     * This method is executed if the configured Login action should be
-     * executed by Turbine.
-     * <p>
-     * This Action must be performed before the Session validation or we
-     * get sent in an endless loop back to the Login screen before
-     * the action can be performed
-     *
-     * @param data a RunData object
-     *
-     * @throws Exception A problem while logging in occured.
-     */
-    private void loginAction(RunData data)
-            throws Exception
-    {
-        ActionLoader.getInstance().exec(data, data.getAction());
-        cleanupTemplateContext(data);
-        data.setAction(null);
-    }
-
-    /**
-     * This method is executed if the configured Logout action should be
-     * executed by Turbine.
-     * <p>
-     * This Action must be performed before the Session validation for the
-     * session validator to send us back to the Login screen.
-     * <p>
-     * The existing session is invalidated before the logout action is
-     * executed.
-     *
-     * @param data a RunData object
-     *
-     * @throws Exception A problem while logging out occured.
-     */
-    private void logoutAction(RunData data)
-            throws Exception
-    {
-        ActionLoader.getInstance().exec(data, data.getAction());
-        cleanupTemplateContext(data);
-        data.setAction(null);
-        data.getSession().invalidate();
-    }
-
-    /**
-     * cleans the Velocity Context if available.
-     *
-     * @param data A RunData Object
-     *
-     * @throws Exception A problem while cleaning out the Template Context occured.
-     */
-    private void cleanupTemplateContext(RunData data)
-            throws Exception
-    {
-        // This is Velocity specific and shouldn't be done here.
-        // But this is a band aid until we get real listeners
-        // here.
-        TemplateInfo ti = data.getTemplateInfo();
-        if (ti != null)
-        {
-            ti.removeTemp(VelocityService.CONTEXT);
-        }
     }
 
     /**

@@ -144,11 +144,13 @@ public class DetermineTargetValveTest extends BaseTestCase
         RunData runData = getRunData(request,response,config);
         
         Pipeline pipeline = new TurbinePipeline();
+        PipelineData pipelineData = new DefaultPipelineData();
+        pipelineData.put(RunData.class,runData);
 
         DetermineTargetValve valve = new DetermineTargetValve();
         pipeline.addValve(valve);
 
-        pipeline.invoke(runData);
+        pipeline.invoke(pipelineData);
         assertEquals("TestScreen",runData.getScreen());
 
 
@@ -166,11 +168,13 @@ public class DetermineTargetValveTest extends BaseTestCase
         RunData runData = getRunData(request,response,config);
         
         Pipeline pipeline = new TurbinePipeline();
+        PipelineData pipelineData = new DefaultPipelineData();
+        pipelineData.put(RunData.class,runData);
 
         DetermineTargetValve valve = new DetermineTargetValve();
         pipeline.addValve(valve);
 
-        pipeline.invoke(runData);
+        pipeline.invoke(pipelineData);
         assertEquals("",runData.getScreen());
 
 

@@ -86,7 +86,7 @@ public class DefaultSessionValidationValve
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke(RunData data, ValveContext context)
+    public void invoke(PipelineData data, ValveContext context)
         throws IOException, TurbineException
     {
         try
@@ -100,7 +100,7 @@ public class DefaultSessionValidationValve
             // TurbineResources.properties...screen.homepage; or, you
             // can specify your own SessionValidator action.
             ActionLoader.getInstance().exec(
-                    data, Turbine.getConfiguration().getString(ACTION_SESSION_VALIDATOR_KEY,
+                    (RunData)data.get(RunData.class), Turbine.getConfiguration().getString(ACTION_SESSION_VALIDATOR_KEY,
                             ACTION_SESSION_VALIDATOR_DEFAULT));
         }
         catch (Exception e)

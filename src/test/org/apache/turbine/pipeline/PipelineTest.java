@@ -96,7 +96,7 @@ public class PipelineTest extends TestCase
         valve.setValue("bar");
         pipeline.addValve(valve);
 
-        pipeline.invoke(new DefaultTurbineRunData());
+        pipeline.invoke(new DefaultPipelineData());
 
         assertEquals("foobar", writer.toString());
     }

@@ -79,8 +79,8 @@ public abstract class AbstractValve
     }
 
     /**
-     * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
+     * @see org.apache.turbine.Valve#invoke(PipelineData, ValveContext)
      */
-    public abstract void invoke(RunData data, ValveContext context)
+    public abstract void invoke(PipelineData data, ValveContext context)
         throws IOException, TurbineException;
 }

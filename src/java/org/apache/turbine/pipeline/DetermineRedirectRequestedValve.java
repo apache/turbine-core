@@ -82,12 +82,12 @@ public class DetermineRedirectRequestedValve
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke(RunData data, ValveContext context)
+    public void invoke(PipelineData data, ValveContext context)
         throws IOException, TurbineException
     {
         try
         {
-            redirectRequested(data);
+            redirectRequested((RunData)data.get(RunData.class));
         }
         catch (Exception e)
         {
