@@ -76,7 +76,7 @@ Changes between Turbine LAST_RELEASE and CURRENT_RELEASE.
 <section name="Turbine 2.3">
 
 <p>
-Changes between Turbine 2.3 and 2.3.1.
+Changes between Turbine 2.3 and 2.3.1-rc1.
 </p>
 
 <subsection name="Changes that could break older environments">
