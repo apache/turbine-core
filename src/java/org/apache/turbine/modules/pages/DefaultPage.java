@@ -255,6 +255,11 @@ public class DefaultPage
         {
             switch(doctypeProperty.size())
             {
+            case 0:
+                {
+                    // Don't add a doctype.
+                    break;
+                }
             case 1:
                 {
                     String doc = (String) doctypeProperty.firstElement();
@@ -282,15 +287,6 @@ public class DefaultPage
                         .setDoctype(new Doctype()
                                     .setIdentifier((String) doctypeProperty.elementAt(0))
                                     .setUri((String) doctypeProperty.elementAt(1)));
-                    break;
-                }
-            case 3:
-                {
-                    // Ignore first string as the tag value is provided by ECS.
-                    data.getPage()
-                        .setDoctype(new Doctype()
-                                    .setIdentifier((String) doctypeProperty.elementAt(1))
-                                    .setUri((String) doctypeProperty.elementAt(2)));
                     break;
                 }
             default:

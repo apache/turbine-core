@@ -79,9 +79,21 @@ $page.DefaultDoctype
 ]]>
 </source>
 <p>
-    to your templates to pick up the default doctype definition from
-    TurbineResources.properties and make it available as $page.DefaultDoctype.
+    to your layout templates to pick up the default doctype definition from
+    TurbineResources.properties thus:
 </p>
+<source>
+<![CDATA[
+# Set the components of the default Doctype for use in html documents.
+#
+# Defaults: There are no defaults - if default.html.doctype.root.element is not
+#           set then no default doctype will be available.
+
+default.html.doctype.root.element=HTML
+default.html.doctype.identifier=-//W3C//DTD HTML 4.01 Transitional//EN
+default.html.doctype.url=http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd
+]]>
+</source>
 <p>
     Add the line
 </p>

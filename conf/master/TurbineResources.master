@@ -161,14 +161,23 @@ screen.error=@SCREEN_ERROR@
 
 screen.invalidstate=@SCREEN_INVALID_STATE@
 
-# Set the default Doctype.  The default Doctype can be set by using
-# the single strings: Html40Strict, Html40Transitional, or
-# Html40Frameset.  Additionally the default can be supplied as two
-# strings separated by a comma giving the DTD and URI.
+# Set the default Doctype if you use the deprecated VelocityECSLayout.  The 
+# default Doctype can be set by using the single strings: Html40Strict, 
+# Html40Transitional, or Html40Frameset.  Additionally the default can be 
+# supplied as two strings separated by a comma giving the DTD and URI.
 #
 # Default: ignored if not set to some value.
 
-default.doctype=Html40Transitional
+#default.doctype=Html40Transitional
+
+# Set the components of the default Doctype for use in html documents.
+#
+# Defaults: There are no defaults - if default.html.doctype.root.element is not
+#           set then no default doctype will be available.
+
+default.html.doctype.root.element=HTML
+default.html.doctype.identifier=-//W3C//DTD HTML 4.01 Transitional//EN
+default.html.doctype.url=http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd
 
 # This is the default action to log a user in.  If you write your own
 # implementation of the login action, make sure that you change this
