@@ -63,8 +63,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.pool.Recyclable;
+import org.apache.turbine.util.uri.DataURI;
 import org.apache.turbine.util.uri.URI;
-import org.apache.turbine.util.uri.TurbineURI;
 
 /**
  * CookieParser is used to get and set values of Cookies on the Client
@@ -189,7 +189,7 @@ public class DefaultCookieParser
         String enc = request.getCharacterEncoding();
         setCharacterEncoding(enc != null ? enc : "US-ASCII");
 
-        cookiePath = new TurbineURI(data);
+        cookiePath = new DataURI(data);
 
         Cookie[] cookies = request.getCookies();
 
@@ -213,7 +213,6 @@ public class DefaultCookieParser
      * Get the Path where cookies will be stored
      *
      * @return path for cookie storage
-     * @deprecated Will be replaced by {@link org.apache.turbine.util.uri.TurbineURI} getCookiePath()
      */
     public URI getCookiePath()
     {
@@ -224,7 +223,6 @@ public class DefaultCookieParser
      * Set the path for cookie storage
      *
      * @param path path for cookie storage
-     * @deprecated Will be replaced by setCookiePath({@link org.apache.turbine.util.uri.TurbineURI})
      */
     public void setCookiePath(URI cookiePath)
     {
