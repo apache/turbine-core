@@ -40,8 +40,7 @@ services.MyServiceName.earlyInit = true
 
     <p>
       If you look at the examples of the simple services like
-      db/TurbinePoolBrokerService or servlet/TurbineServletService you'll
-      get on speed pretty fast.
+      servlet/TurbineServletService you'll get on speed pretty fast.
     </p>
 </section>
 
