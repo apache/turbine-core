@@ -59,6 +59,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -135,7 +136,7 @@ public class JobEntry
                     String task)
             throws TurbineException
     {
-        if (task == null || task.length() == 0)
+        if (StringUtils.isEmpty(task))
         {
             throw new TurbineException("Error in JobEntry. " +
                     "Bad Job parameter. Task not set.");
@@ -397,17 +398,3 @@ public class JobEntry
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
