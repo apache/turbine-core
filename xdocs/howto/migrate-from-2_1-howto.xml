@@ -57,14 +57,14 @@
 <section name="Transactions and obtaining database connections">
 <p>
     org.apache.turbine.util.db.DBConnection is gone. The replacement
-    is javax.sql.Connection. This was a wrapper class from the
+    is java.sql.Connection. This was a wrapper class from the
     Connection object. It was returned when you asked for a database
     connection. The new version of Torque will simply return a
     Connection object.
 </p>
 <p>
     org.apache.turbine.services.db.TurbineDB is gone. The replacement
-    is org.apache.turbine.Turbine. This was mainly used to obtain
+    is org.apache.torque.Torque. This was mainly used to obtain
     database connections and the name of the default database. All
     of this functionality is in the new class.
 </p>
