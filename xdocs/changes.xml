@@ -87,6 +87,12 @@ Changes between Turbine 2.2 and 2.3-dev.
        is deprecated and might be removed later. If you're using the supplied
        services, you shouldn't notice any change.
     </li>
+    <li>
+       TTWS38: BaseValueParser.getInteger(String name) now returns null if the 
+       key name is not found - the old behaviour was to return new Integer(0).
+       For consistency a similar change was made to getBool() and 
+       getBigInteger().
+    </li>
   </ul>
 </p>
 </subsection>
