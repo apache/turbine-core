@@ -54,7 +54,10 @@ package org.apache.turbine.services.security;
  * <http://www.apache.org/>.
  */
 
+import java.util.List;
+
 import org.apache.torque.util.Criteria;
+
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;

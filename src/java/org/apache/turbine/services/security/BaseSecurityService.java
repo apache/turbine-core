@@ -55,13 +55,18 @@ package org.apache.turbine.services.security;
  */
 
 import java.util.Map;
+
 import javax.servlet.ServletConfig;
 
 import org.apache.commons.configuration.Configuration;
+
 import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.torque.util.Criteria;
+
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
@@ -115,10 +120,7 @@ public abstract class BaseSecurityService
     /** Holds a list of all roles in the systems, for speeding up the access */
     private RoleSet allRoles = null;
 
-    /**
-     * Holds a list of all permissions in the systems, for speeding up the
-     * access
-     */
+    /** Holds a list of all permissions in the systems, for speeding up the access */
     private PermissionSet allPermissions = null;
 
     /** The number of threads concurrently reading security information */
@@ -718,7 +720,7 @@ public abstract class BaseSecurityService
      */
     public User getAuthenticatedUser(String username, String password)
             throws DataBackendException, UnknownEntityException,
-            PasswordMismatchException
+                   PasswordMismatchException
     {
         return userManager.retrieve(username, password);
     }
@@ -866,9 +868,9 @@ public abstract class BaseSecurityService
      * @throws DataBackendException if there is a problem accessing the storage.
      */
     public void changePassword(User user, String oldPassword,
-                               String newPassword)
+            String newPassword)
             throws PasswordMismatchException, UnknownEntityException,
-            DataBackendException
+                   DataBackendException
     {
         userManager.changePassword(user, oldPassword, newPassword);
     }
