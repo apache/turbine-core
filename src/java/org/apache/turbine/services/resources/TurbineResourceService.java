@@ -56,6 +56,7 @@ package org.apache.turbine.services.resources;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
 import javax.servlet.ServletConfig;
@@ -471,7 +472,7 @@ public class TurbineResourceService
      * @return The value of the resource as a string.
      */
     public String getString(String name,
-                                   String def)
+                            String def)
     {
         return interpolate(getConfiguration().getString(name, def));
     }
@@ -485,7 +486,17 @@ public class TurbineResourceService
      */
     public String[] getStringArray(String name)
     {
-        return getConfiguration().getStringArray(name);
+        String[] std = getConfiguration().getStringArray(name);
+
+        if (std != null) 
+        {
+            for(int i=0; i<std.length; i++) 
+            {
+                std[i]=interpolate(std[i]);
+            }
+        }
+        
+        return std;
     }
 
     /**
@@ -497,7 +508,20 @@ public class TurbineResourceService
      */
     public Vector getVector(String name)
     {
-        return getConfiguration().getVector(name);
+        Vector std = getConfiguration().getVector(name);
+        
+        if (std != null) 
+        {
+            Vector newstd = new Vector();
+            Enumeration en = std.elements();
+            while (en.hasMoreElements()) 
+            {
+                newstd.addElement(interpolate((String)en.nextElement()));
+            }
+            std = newstd;
+        }
+        
+        return std;
     }
 
     /**
@@ -509,9 +533,23 @@ public class TurbineResourceService
      * @return The value of the resource as a vector.
      */
     public Vector getVector(String name,
-                                   Vector def)
+                            Vector def)
     {
-        return getConfiguration().getVector(name, def);
+        Vector std = getVector(name); 
+        if (std == null) 
+        {
+            if (def != null) 
+            {
+                std = new Vector();
+                Enumeration en = def.elements();
+                while (en.hasMoreElements()) 
+                {
+                    std.addElement(interpolate((String)en.nextElement()));
+                }
+            }
+        }
+
+        return std;
     }
 
     /**
