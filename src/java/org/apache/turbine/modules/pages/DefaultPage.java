@@ -56,13 +56,22 @@ package org.apache.turbine.modules.pages;
 
 import java.util.Vector;
 
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.ecs.Doctype;
+
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.LayoutLoader;
 import org.apache.turbine.modules.Page;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -92,7 +101,7 @@ import org.apache.turbine.util.RunData;
  * For example if data.getParameters().getString("template") returns
  * /about_us/directions/driving.wm, the search follows
  * about_us.directions.Driving, about_us.directions.Default,
- * about_us.Default, Default, WebMacroSiteScreen.
+ * about_us.Default, Default, VelocitySiteScreen.
  *
  * <p>
  *
@@ -112,13 +121,18 @@ import org.apache.turbine.util.RunData;
  * <p>
  *
  * The code is an almost a complete clone of the FreeMarkerSitePage
- * written by John McNally.  I've only modified it for WebMacro use.
+ * written by John McNally.  I've only modified it for Template use.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class DefaultPage extends Page
+public class DefaultPage
+    extends Page
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(DefaultPage.class);
+
     /**
      * Builds the Page.
      *
@@ -140,7 +154,10 @@ public class DefaultPage extends Page
         }
 
         // if a redirect was setup in data, don't do anything else
-        if ((data.getRedirectURI() != null) && (data.getRedirectURI().length() > 0)) return;
+        if (StringUtils.isNotEmpty(data.getRedirectURI()))
+        {
+            return;
+        }
 
         // Set the default doctype from the value given in
         // TurbineResources.properties.
@@ -150,12 +167,16 @@ public class DefaultPage extends Page
         // associated class modules.  It does nothing here.
         doBuildAfterAction(data);
 
+        String screenName = data.getScreen();
+
+        log.debug("Building " + screenName);
+
         // Ask the Screen for its Layout and then execute the Layout.
         // The Screen can override the getLayout() method to re-define
         // the Layout depending on data passed in via the
         // data.parameters object.
         ScreenLoader sl = ScreenLoader.getInstance();
-        Screen aScreen = sl.getInstance(data.getScreen());
+        Screen aScreen = sl.getInstance(screenName);
         String layout = aScreen.getLayout(data);
 
         // If the Layout has been set to be null, attempt to execute
@@ -166,7 +187,7 @@ public class DefaultPage extends Page
         }
         else
         {
-            ScreenLoader.getInstance().exec(data, data.getScreen());
+            ScreenLoader.getInstance().exec(data, screenName);
         }
 
         // Do any post build actions (overridable by subclasses -
@@ -225,41 +246,47 @@ public class DefaultPage extends Page
             throws Exception
     {
         String errMsg =
-                "default.doctype property not set properly in TurbineResources.";
-        Vector doctypeProperty =
-                TurbineResources.getVector("default.doctype", null);
-        if (doctypeProperty != null && doctypeProperty.size() > 0)
+                "default.doctype property not set properly in TurbineResources.properties!";
+        Vector doctypeProperty = 
+            Turbine.getConfiguration().getVector(TurbineConstants.DEFAULT_DOCUMENT_TYPE_KEY);
+
+        if (doctypeProperty != null)
         {
-            if (doctypeProperty.size() == 1)
+            switch(doctypeProperty.size())
             {
-                String doc = (String) doctypeProperty.firstElement();
-                if (doc.equalsIgnoreCase("Html40Transitional"))
+            case 1:
                 {
-                    data.getPage().setDoctype(new Doctype.Html40Transitional());
+                    String doc = (String) doctypeProperty.firstElement();
+                    if (doc.equalsIgnoreCase(TurbineConstants.DOCUMENT_TYPE_HTML40TRANSITIONAL))
+                    {
+                        data.getPage().setDoctype(new Doctype.Html40Transitional());
+                    }
+                    else if (doc.equalsIgnoreCase(TurbineConstants.DOCUMENT_TYPE_HTML40STRICT))
+                    {
+                        data.getPage().setDoctype(new Doctype.Html40Strict());
+                    }
+                    else if (doc.equalsIgnoreCase(TurbineConstants.DOCUMENT_TYPE_HTML40FRAMESET))
+                    {
+                        data.getPage().setDoctype(new Doctype.Html40Frameset());
+                    }
+                    else
+                    {
+                        throw new Exception(errMsg);
+                    }
+                    break;
                 }
-                else if (doc.equalsIgnoreCase("Html40Strict"))
+            case 2:
                 {
-                    data.getPage().setDoctype(new Doctype.Html40Strict());
+                    data.getPage()
+                        .setDoctype(new Doctype()
+                                    .setIdentifier((String) doctypeProperty.elementAt(0))
+                                    .setUri((String) doctypeProperty.elementAt(1)));
+                    break;
                 }
-                else if (doc.equalsIgnoreCase("Html40Frameset"))
-                {
-                    data.getPage().setDoctype(new Doctype.Html40Frameset());
-                }
-                else
-                {
+            default:
+                {                
                     throw new Exception(errMsg);
                 }
-            }
-            else if (doctypeProperty.size() == 2)
-            {
-                data.getPage().setDoctype(
-                        new Doctype()
-                        .setIdentifier((String) doctypeProperty.elementAt(0))
-                        .setUri((String) doctypeProperty.elementAt(1)));
-            }
-            else
-            {
-                throw new Exception(errMsg);
             }
         }
     }
