@@ -1,0 +1,57 @@
+<!ELEMENT dataset (
+    TurbineUser|
+    TurbinePermission|
+    TurbineRole|
+    TurbineGroup|
+    TurbineRolePermission|
+    TurbineUserGroupRole)*>
+<!ATTLIST dataset
+    name CDATA #REQUIRED
+>
+
+<!ELEMENT TurbineUser EMPTY>
+<!ATTLIST TurbineUser
+    UserId CDATA #REQUIRED
+    UserName CDATA #REQUIRED
+    Password CDATA #REQUIRED
+    FirstName CDATA #REQUIRED
+    LastName CDATA #REQUIRED
+    Email CDATA #IMPLIED
+    Confirmed CDATA #IMPLIED
+    Modified CDATA #IMPLIED
+    CreateDate CDATA #IMPLIED
+    LastLogin CDATA #IMPLIED
+    Objectdata CDATA #IMPLIED
+>
+
+<!ELEMENT TurbinePermission EMPTY>
+<!ATTLIST TurbinePermission
+    PermissionId CDATA #REQUIRED
+    Name CDATA #REQUIRED
+>
+
+<!ELEMENT TurbineRole EMPTY>
+<!ATTLIST TurbineRole
+    RoleId CDATA #REQUIRED
+    Name CDATA #REQUIRED
+>
+
+<!ELEMENT TurbineGroup EMPTY>
+<!ATTLIST TurbineGroup
+    GroupId CDATA #REQUIRED
+    Name CDATA #REQUIRED
+>
+
+<!ELEMENT TurbineRolePermission EMPTY>
+<!ATTLIST TurbineRolePermission
+    RoleId CDATA #REQUIRED
+    PermissionId CDATA #REQUIRED
+>
+
+<!ELEMENT TurbineUserGroupRole EMPTY>
+<!ATTLIST TurbineUserGroupRole
+    UserId CDATA #REQUIRED
+    GroupId CDATA #REQUIRED
+    RoleId CDATA #REQUIRED
+>
+
