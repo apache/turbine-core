@@ -72,6 +72,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:jh@byteaction.de">J&uuml;rgen Hoffmann</a>
  * @version $Id$
  */
 public class DoubleValidator
@@ -146,25 +147,28 @@ public class DoubleValidator
 
         double d = 0.0D;
 
-        try
+        if ((required) || ((testValue != null) && (testValue.length() > 0)))
         {
-            d = Double.parseDouble(testValue);
-        }
-        catch (RuntimeException e)
-        {
-            errorMessage = invalidNumberMessage;
-            throw new ValidationException(invalidNumberMessage);
-        }
-
-        if (d < minValue)
-        {
-            errorMessage = minValueMessage;
-            throw new ValidationException(minValueMessage);
-        }
-        if (d > maxValue)
-        {
-            errorMessage = maxValueMessage;
-            throw new ValidationException(maxValueMessage);
+            try
+            {
+                d = Double.parseDouble(testValue);
+            }
+            catch (RuntimeException e)
+            {
+                errorMessage = invalidNumberMessage;
+                throw new ValidationException(invalidNumberMessage);
+            }
+            
+            if (d < minValue)
+            {
+                errorMessage = minValueMessage;
+                throw new ValidationException(minValueMessage);
+            }
+            if (d > maxValue)
+            {
+                errorMessage = maxValueMessage;
+                throw new ValidationException(maxValueMessage);
+            }
         }
     }
 

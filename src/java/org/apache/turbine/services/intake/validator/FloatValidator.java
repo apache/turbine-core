@@ -72,6 +72,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:jh@byteaction.de">J&uuml;rgen Hoffmann</a>
  * @version $Id$
  */
 public class FloatValidator
@@ -144,26 +145,29 @@ public class FloatValidator
     {
         super.assertValidity(testValue);
 
-        float f = 0.0f;
-        try
+        if ((required) || ((testValue != null) && (testValue.length() > 0)))
         {
-            f = Float.parseFloat(testValue);
-        }
-        catch (RuntimeException e)
-        {
-            errorMessage = invalidNumberMessage;
-            throw new ValidationException(invalidNumberMessage);
-        }
-
-        if (f < minValue)
-        {
-            errorMessage = minValueMessage;
-            throw new ValidationException(minValueMessage);
-        }
-        if (f > maxValue)
-        {
-            errorMessage = maxValueMessage;
-            throw new ValidationException(maxValueMessage);
+            float f = 0.0f;
+            try
+            {
+                f = Float.parseFloat(testValue);
+            }
+            catch (RuntimeException e)
+            {
+                errorMessage = invalidNumberMessage;
+                throw new ValidationException(invalidNumberMessage);
+            }
+            
+            if (f < minValue)
+            {
+                errorMessage = minValueMessage;
+                throw new ValidationException(minValueMessage);
+            }
+            if (f > maxValue)
+            {
+                errorMessage = maxValueMessage;
+                throw new ValidationException(maxValueMessage);
+            }
         }
     }
 
