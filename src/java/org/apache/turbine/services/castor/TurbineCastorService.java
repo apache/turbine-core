@@ -60,7 +60,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Properties;
+import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.Log;
@@ -152,27 +152,26 @@ public class TurbineCastorService
     }
 
     /**
-     * Checks the properties and hands the mapping file to Castor.
+     * Checks the Configuration and hands the mapping file to Castor.
      *
      * @exception IOException, if there were problems to get the
      * logfile.
      * @exception MappingException, if the mapping file is invalid.
      * @exception Exception, if no databasefile or databasename is
-     * given in the properties.
+     * given in the configuration.
      */
     private void initCastor ()
         throws IOException,
                MappingException,
                Exception
     {
-        Properties props = getProperties();
+        Configuration conf = getConfiguration();
 
-        String logprefix = props.getProperty (LOGPREFIX_PROPERTY);
-        if (logprefix == null)
-        {
-            logprefix = DEFAULT_LOGPREFIX;
-        }
-        String logfile = props.getProperty (LOGFILE_PROPERTY);
+        String logprefix = conf.getString(LOGPREFIX_PROPERTY,
+                                          DEFAULT_LOGPREFIX);
+        
+        String logfile = conf.getString(LOGFILE_PROPERTY);
+        
         if (logfile == null)
         {
             Log.warn ("CastorService no LogFile property specified");
@@ -182,13 +181,13 @@ public class TurbineCastorService
             logger = new Logger (new FileWriter (logfile)).setPrefix(logprefix);
         }
 
-        databasename = props.getProperty (DATABASENAME_PROPERTY);
+        databasename = conf.getString(DATABASENAME_PROPERTY);
         if (databasename == null)
         {
             throw new Exception ("TurbineCastor: missing databasename propertiy");
         }
 
-        databasefile = props.getProperty (DATABASEFILE_PROPERTY);
+        databasefile = conf.getString(DATABASEFILE_PROPERTY);
         if (databasefile == null)
         {
             throw new Exception ("TurbineCastor: missing databasefile propertiy");
