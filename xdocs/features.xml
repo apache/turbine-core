@@ -39,7 +39,7 @@ contributed</a> to Turbine over the last 2+ years.</strong>
     </li>
     <li>
         Utility code for working with Velocity and WebMacro, such as a
-        SelectorBox class for building &lt;select> boxes</li>
+        SelectorBox class for building <code>select</code> boxes</li>
     <li>
         Single Entry Point Servlet model for optimal security and control</li>
     <li>
