@@ -68,7 +68,7 @@ import org.apache.velocity.context.Context;
  * the TR.props file.
  *
  * These tools can have global scope, request scope,
- * session scope (i.e. stored in user temp hashmap)
+ * authorized or session scope (i.e. stored in user temp hashmap)
  * or persistent scope (i.e. stored in user perm hashmap)
  *
  * The standard way of referencing these global
@@ -105,6 +105,9 @@ public interface PullService
     /** Property Key for the session tools */
     String SESSION_TOOL = "tool.session";
 
+    /** Property Key for the authorized tools */
+    String AUTHORIZED_TOOL = "tool.authorized";
+
     /** Property Key for the persistent tools */
     String PERSISTENT_TOOL = "tool.persistent";
 
@@ -131,7 +134,7 @@ public interface PullService
     Context getGlobalContext();
 
     /**
-     * Populate the given context with all request, session
+     * Populate the given context with all request, session, authorized
      * and persistent scope tools (it is assumed that the context
      * already wraps the global context, and thus already contains
      * the global tools).

@@ -89,7 +89,7 @@ import org.apache.velocity.context.Context;
  * tool.<scope>.<id> = <classname>
  *
  * <scope>      is the tool scope: global, request, session
- *             or persistent (see below for more details)
+ *              authorized or persistent (see below for more details)
  * <id>         is the name of the tool in the context
  *
  * You can configure the tools in this way:
@@ -133,10 +133,14 @@ import org.apache.velocity.context.Context;
  *              stored in the user's temporary hashtable. Tool should be
  *              threadsafe.
  *
- *  persistent: tool is instantitated once for each use session, and
- *              is stored in the user's permanent hashtable. This means
- *              for a logged in user the tool will be persisted in the
- *              user's objectdata. Tool should be threadsafe and
+ *  authorized: tool is instantiated once for each user session once the
+ *              user logs in. After this, it is a normal session tool.
+ *
+ *  persistent: tool is instantitated once for each user session once
+ *              the user logs in and is is stored in the user's permanent 
+ *              hashtable. 
+ *              This means for a logged in user the tool will be persisted
+ *              in the user's objectdata. Tool should be threadsafe and
  *              Serializable.
  *
  * Defaults: none
@@ -194,6 +198,9 @@ public class TurbinePullService
 
     /** Internal list of session tools */
     private List sessionTools;
+
+    /** Internal list of authorized tools */
+    private List authorizedTools;
 
     /** Internal list of persistent tools */
     private List persistentTools;
@@ -283,8 +290,9 @@ public class TurbinePullService
         Configuration conf = Turbine.getConfiguration();
 
         // Grab each list of tools that are to be used (for global scope,
-        // request scope, session scope and persistent scope tools).
-        // They are specified respectively in the TR.props like this:
+        // request scope, authorized scope, session scope and persistent 
+        // scope tools). They are specified respectively in the TR.props 
+        // like this:
         //
         // tool.global.ui = org.apache.turbine.util.pull.UIManager
         // tool.global.mm = org.apache.turbine.util.pull.MessageManager
@@ -301,6 +309,8 @@ public class TurbinePullService
         requestTools    = getTools(conf.subset(REQUEST_TOOL));
         log.debug("Session Tools:");
         sessionTools    = getTools(conf.subset(SESSION_TOOL));
+        log.debug("Authorized Tools:");
+        authorizedTools = getTools(conf.subset(AUTHORIZED_TOOL));
         log.debug("Persistent Tools:");
         persistentTools = getTools(conf.subset(PERSISTENT_TOOL));
 
@@ -363,7 +373,7 @@ public class TurbinePullService
     }
 
     /**
-     * Populate the given context with all request, session
+     * Populate the given context with all request, session, authorized
      * and persistent scope tools (it is assumed that the context
      * already wraps the global context, and thus already contains
      * the global tools).
@@ -392,6 +402,7 @@ public class TurbinePullService
 
             if (user.hasLoggedIn())
             {
+                populateWithSessionTools(authorizedTools, context, data, user, false);
                 populateWithSessionTools(persistentTools, context, data, user, true);
             }
         }
