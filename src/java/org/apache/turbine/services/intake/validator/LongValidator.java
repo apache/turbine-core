@@ -72,6 +72,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:jh@byteaction.de">J&uuml;rgen Hoffmann</a>
  * @version $Id$
  */
 public class LongValidator
@@ -144,26 +145,29 @@ public class LongValidator
     {
         super.assertValidity(testValue);
 
-        long l = 0L;
-        try
+        if ((required) || ((testValue != null) && (testValue.length() > 0)))
         {
-            l = Long.parseLong(testValue);
-        }
-        catch (RuntimeException e)
-        {
-            errorMessage = invalidNumberMessage;
-            throw new ValidationException(invalidNumberMessage);
-        }
-
-        if (l < minValue)
-        {
-            errorMessage = minValueMessage;
-            throw new ValidationException(minValueMessage);
-        }
-        if (l > maxValue)
-        {
-            errorMessage = maxValueMessage;
-            throw new ValidationException(maxValueMessage);
+            long l = 0L;
+            try
+            {
+                l = Long.parseLong(testValue);
+            }
+            catch (RuntimeException e)
+            {
+                errorMessage = invalidNumberMessage;
+                throw new ValidationException(invalidNumberMessage);
+            }
+            
+            if (l < minValue)
+            {
+                errorMessage = minValueMessage;
+                throw new ValidationException(minValueMessage);
+            }
+            if (l > maxValue)
+            {
+                errorMessage = maxValueMessage;
+                throw new ValidationException(maxValueMessage);
+            }
         }
     }
 

@@ -73,6 +73,7 @@ import java.util.Map;
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:jh@byteaction.de">J&uuml;rgen Hoffmann</a>
  * @version $Id$
  */
 public class BigDecimalValidator
@@ -142,26 +143,29 @@ public class BigDecimalValidator
     {
         super.assertValidity(testValue);
 
-        BigDecimal bd = null;
-        try
+        if ((required) || ((testValue != null) && (testValue.length() > 0)))
         {
-            bd = new BigDecimal(testValue);
-        }
-        catch (RuntimeException e)
-        {
-            errorMessage = invalidNumberMessage;
-            throw new ValidationException(invalidNumberMessage);
-        }
+            BigDecimal bd = null;
+            try
+            {
+                bd = new BigDecimal(testValue);
+            }
+            catch (RuntimeException e)
+            {
+                errorMessage = invalidNumberMessage;
+                throw new ValidationException(invalidNumberMessage);
+            }
 
-        if (minValue != null && bd.compareTo(minValue) < 0)
-        {
-            errorMessage = minValueMessage;
-            throw new ValidationException(minValueMessage);
-        }
-        if (maxValue != null && bd.compareTo(maxValue) > 0)
-        {
-            errorMessage = maxValueMessage;
-            throw new ValidationException(maxValueMessage);
+            if (minValue != null && bd.compareTo(minValue) < 0)
+            {
+                errorMessage = minValueMessage;
+                throw new ValidationException(minValueMessage);
+            }
+            if (maxValue != null && bd.compareTo(maxValue) > 0)
+            {
+                errorMessage = maxValueMessage;
+                throw new ValidationException(maxValueMessage);
+            }
         }
     }
 
