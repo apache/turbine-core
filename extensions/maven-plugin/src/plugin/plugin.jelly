@@ -35,6 +35,7 @@
 
     <u:available file="setup.properties">
       <u:properties file="setup.properties"/>
+      <echo>Loaded Setup Properties from file</echo>
     </u:available>
 
     <attainGoal name="turbine:check-setup-environment"/>
@@ -286,11 +287,11 @@
   <!-- ======================================================================== -->
   <goal name="turbine:deploy"
     description="Deploys the Application into a local web container for testing"
-    prereqs="java:jar, turbine:check-runtime-environment">
+    prereqs="turbine:check-runtime-environment">
 
-    <echo>Located Application Server at ${maven.appserver.home}</echo>
+    <echo>Located Application Server at ${maven.appserver.home} (${maven.appserver.name})</echo>
 
-    <attainGoal name="java:jar"/>
+    <attainGoal name="jar:jar"/>
 
     <delete file="${maven.build.dir}/${pom.artifactId}.war" />
 
@@ -522,17 +523,17 @@
     <define:taglib uri="http://jakarta.apache.org/turbine/meta/taglib">
       <define:tag name="requiredPropertyMissing">
         <fail>
- --------------------------------------------------------------------------
- | Plugin Configuration Error                                             |
- --------------------------------------------------------------------------
+--------------------------------------------------------------------------
+| Plugin Configuration Error                                             |
+--------------------------------------------------------------------------
 
-  A required property is missing a value.
+ A required property is missing a value.
 
-  Property name: ${propname}
+ Property name: ${propname}
 
-  Errors must be corrected before using this plugin.
+ Errors must be corrected before using this plugin.
 
- --------------------------------------------------------------------------
+--------------------------------------------------------------------------
         </fail>
       </define:tag>
 
@@ -590,6 +591,20 @@
     <j:if test="${context.getVariable('torque.database') == null || context.getVariable('torque.database') == ''}">
       <meta:requiredPropertyMissing propname="torque.database" />
     </j:if>
+
+    <j:set var="inPlace" value="${turbine.app.inplace}"/>
+    <j:choose>
+      <j:when test="${inPlace.equalsIgnoreCase('true')}">
+        <j:if test="${context.getVariable('turbine.app.inplace.dir') == null || context.getVariable('turbine.app.inplace.dir') == ''}">
+          <meta:requiredPropertyMissing propname="turbine.app.inplace.dir" />
+        </j:if>
+      </j:when>
+      <j:otherwise>
+        <j:if test="${context.getVariable('maven.appserver.home') == null || context.getVariable('maven.appserver.home') == ''}">
+          <meta:requiredPropertyMissing propname="maven.appserver.home" />
+        </j:if>
+      </j:otherwise>
+    </j:choose>
   </goal>
 
   <goal name="turbine:check-setup-environment"
@@ -606,14 +621,14 @@
 
     <j:if test="${context.getVariable('flavorExists') != 'true'}">
         <fail>
- --------------------------------------------------------------------------
- | Flavor not found Error                                                 |
- --------------------------------------------------------------------------
+--------------------------------------------------------------------------
+| Flavor not found Error                                                 |
+--------------------------------------------------------------------------
 
-  The requested flavor ${turbine.app.flavor} was not found in the
-  current version ($plugin.version) of M.E.T.A.
+ The requested flavor ${turbine.app.flavor} was not found in the
+ current version ($plugin.version) of M.E.T.A.
 
- --------------------------------------------------------------------------
+--------------------------------------------------------------------------
         </fail>
     </j:if>
 
