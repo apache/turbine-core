@@ -69,7 +69,7 @@ import org.apache.commons.configuration.Configuration;
  * @author <a href="epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
-public class TurbineTest extends ServletTestCase
+public class TurbineTest2 extends ServletTestCase
 {
     private Configuration configuration = null;
     private Turbine turbine = null;
@@ -79,7 +79,7 @@ public class TurbineTest extends ServletTestCase
      *
      * @param name the testcase's name.
      */
-    public TurbineTest(String name)
+    public TurbineTest2(String name)
     {
         super(name);
     }
@@ -91,7 +91,7 @@ public class TurbineTest extends ServletTestCase
      */
     public static void main(String args[])
     {
-        TestRunner.main(new String[] { TurbineTest.class.getName()});
+        TestRunner.main(new String[] { TurbineTest2.class.getName()});
     }
 
     /**
@@ -103,7 +103,7 @@ public class TurbineTest extends ServletTestCase
     public static Test suite()
     {
         // All methods starting with "test" will be executed in the test suite.
-        return new TestSuite(TurbineTest.class);
+        return new TestSuite(TurbineTest2.class);
     }
 
     /**
@@ -158,24 +158,29 @@ public class TurbineTest extends ServletTestCase
 
     /**
      * Simple test that verify that turbine can start up with a
-     * TR.props
+     * configuration.xml file
      * @throws Exception
      */
-    public void testCreateTurbineWithTRProps() throws Exception
+    public void testCreateTurbineWithConfigurationXML() throws Exception
     {
         config.setInitParameter(
-            "properties",
-            "WEB-INF/conf/TurbineComplete.properties");
+            "configuration",
+            "WEB-INF/conf/TurbineConfiguration.xml");
 
+  
         turbine.init(config);
         assertNotNull("Make sure turbine loaded", turbine);
+
         configuration = turbine.getConfiguration();
         assertTrue("Make sure we have values", !configuration.isEmpty());
         assertEquals(
             "Read a config value",
             "lower",
             configuration.getString("url.case.folding"));
-    }
 
-  
+        assertEquals(
+            "Read in an overridden config value",
+            "WEB-INF/conf/specialIntake.xml",
+            configuration.getString("services.IntakeService.xml.path"));
+    }
 }
