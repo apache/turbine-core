@@ -53,6 +53,23 @@ Changes between Turbine LAST_RELEASE and CURRENT_RELEASE.
 </subsection>
 </section>
 -->
+<section name="Turbine 2.4">
+<p>
+Changes between Turbine 2.3 and 2.4.
+</p>
+
+<subsection name="Avalonized Components">
+<p>
+  <ul>
+    <li>
+	   The localization service within Turbine has been deprecated in favor
+	   of the Fulcrum Localization service.  The localization pull tool has
+	   been updated to reflect this.
+    </li>
+  </ul>
+</p>
+</subsection>
+</section>
 
 <section name="Turbine 2.3">
 
