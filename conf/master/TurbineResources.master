@@ -808,7 +808,7 @@ services.SecurityService.userPeer.class=org.apache.turbine.om.security.peer.Turb
 #
 # This is the class that implements UserManager interface.
 # Override this setting if you want your User information stored
-# on a different medium (LADP directory is a good example).
+# on a different medium (LDAP directory is a good example).
 # Default implementation uses Peers and a relational database .
 #
 
