@@ -183,8 +183,16 @@ public abstract class Field
     private Object[] valArray;
     /** The object containing the field data. */
     protected ValueParser parser;
+
     /** Logging */
-    private static Log log = LogFactory.getLog(Field.class);
+    private static final Log log;
+    private static final boolean isDebugEnabled;
+
+    static
+    {
+        log = LogFactory.getLog(Field.class);
+        isDebugEnabled = log.isDebugEnabled();
+    }
 
     /**
      * Constructs a field based on data in the xml specification
@@ -353,6 +361,10 @@ public abstract class Field
 
         if (pp.containsKey(getKey()))
         {
+            if (isDebugEnabled)
+            {
+                log.debug(name + ": Found our Key in the request, setting Value");
+            }
             setFlag = true;
             validate();
         }
@@ -586,10 +598,22 @@ public abstract class Field
      */
     protected boolean validate()
     {
+        log.debug(name + ": validate()");
+
         if (isMultiValued)
         {
             stringValues = parser.getStrings(getKey());
 
+            if (isDebugEnabled)
+            {
+                log.debug(name + ": Multi-Valued");
+                for (int i = 0; i < stringValues.length; i++)
+                {
+                    log.debug(name + ": " + i + ". Wert: " + stringValues[i]);
+                }
+            }
+
+            
             if (validator != null)
             {
                 // set the test value as a String[] which might be replaced by
@@ -616,6 +640,12 @@ public abstract class Field
         else
         {
             stringValue = parser.getString(getKey());
+
+            if (isDebugEnabled)
+            {
+                log.debug(name + ": Single Valued, Value is " + stringValue);
+            }
+
             if (validator != null)
             {
                 // set the test value as a String which might be replaced by
@@ -625,10 +655,12 @@ public abstract class Field
                 try
                 {
                     validator.assertValidity(stringValue);
+                    log.debug(name + ": Value is ok");
                     doSetValue();
                 }
                 catch (ValidationException ve)
                 {
+                    log.debug(name + ": Value failed validation!");
                     setMessage(ve.getMessage());
                 }
             }
@@ -819,6 +851,11 @@ public abstract class Field
      */
     public void setProperty(Object obj) throws IntakeException
     {
+        if (isDebugEnabled)
+        {
+            log.debug(name + ".setProperty(" + obj.getClass().getName() + ")");
+        }
+
         if (!isValid())
         {
             throw new IntakeException(
@@ -827,6 +864,12 @@ public abstract class Field
         if (isSet())
         {
             valArray[0] = getTestValue();
+
+            if (isDebugEnabled)
+            {
+                log.debug(name + ": Property is set, value is " + valArray[0]);
+            }
+
             try
             {
                 setter.invoke(obj, valArray);
@@ -845,6 +888,13 @@ public abstract class Field
             {
                 throwSetGetException("setter", obj, this.getDisplayName(),
                         this.group.getIntakeGroupName(), e);
+            }
+        }
+        else
+        {
+            if (isDebugEnabled)
+            {
+                log.debug(name+ ": Property is not set, skipping");
             }
         }
     }
