@@ -31,71 +31,74 @@ import org.apache.turbine.services.security.TurbineSecurity;
 public class LDAPSecurityConstants
 {
     /** Property key */
-    static final String LDAP_ADMIN_USERNAME_KEY = "ldap.admin.username";
+    public static final String LDAP_ADMIN_USERNAME_KEY = "ldap.admin.username";
 
     /** Property key */
-    static final String LDAP_ADMIN_PASSWORD_KEY = "ldap.admin.password";
+    public static final String LDAP_ADMIN_PASSWORD_KEY = "ldap.admin.password";
 
     /** Property key */
-    static final String LDAP_HOST_KEY = "ldap.host";
+    public static final String LDAP_HOST_KEY = "ldap.host";
 
     /** Property default value */
-    static final String LDAP_HOST_DEFAULT = "localhost";
+    public static final String LDAP_HOST_DEFAULT = "localhost";
 
     /** Property key */
-    static final String LDAP_PORT_KEY = "ldap.port";
+    public static final String LDAP_PORT_KEY = "ldap.port";
 
     /** Property default value */
-    static final String LDAP_PORT_DEFAULT = "389";
+    public static final String LDAP_PORT_DEFAULT = "389";
 
     /** Property key */
-    static final String LDAP_PROVIDER_KEY = "ldap.provider";
+    public static final String LDAP_PROVIDER_KEY = "ldap.provider";
 
     /** Property default value */
-    static final String LDAP_PROVIDER_DEFAULT =
+    public static final String LDAP_PROVIDER_DEFAULT =
             "com.sun.jndi.ldap.LdapCtxFactory";
 
     /** Property key */
-    static final String LDAP_BASE_SEARCH_KEY = "ldap.basesearch";
+    public static final String LDAP_BASE_SEARCH_KEY = "ldap.basesearch";
 
     /** Property key */
-    static final String LDAP_AUTH_KEY = "ldap.security.authentication";
+    public static final String LDAP_AUTH_KEY = "ldap.security.authentication";
 
     /** Property default value */
-    static final String LDAP_AUTH_DEFAULT = "simple";
+    public static final String LDAP_AUTH_DEFAULT = "simple";
 
     /** Property key */
-    static final String LDAP_USER_USERID_KEY = "ldap.user.userid";
-
-    /** Property key */
-    static final String LDAP_USER_USERNAME_KEY = "ldap.user.username";
+    public static final String LDAP_USER_USERID_KEY = "ldap.user.userid";
 
     /** Property default value */
-    static final String LDAP_USER_USERNAME_DEFAULT = "turbineUserUniqueId";
+    public static final String LDAP_USER_USERID_DEFAULT = "uid";
 
     /** Property key */
-    static final String LDAP_USER_FIRSTNAME_KEY = "ldap.user.firstname";
+    public static final String LDAP_USER_USERNAME_KEY = "ldap.user.username";
 
     /** Property default value */
-    static final String LDAP_USER_FIRSTNAME_DEFAULT = "turbineUserFirstName";
+    public static final String LDAP_USER_USERNAME_DEFAULT = "turbineUserUniqueId";
 
     /** Property key */
-    static final String LDAP_USER_LASTNAME_KEY = "ldap.user.lastname";
+    public static final String LDAP_USER_FIRSTNAME_KEY = "ldap.user.firstname";
 
     /** Property default value */
-    static final String LDAP_USER_LASTNAME_DEFAULT = "turbineUserLastName";
+    public static final String LDAP_USER_FIRSTNAME_DEFAULT = "turbineUserFirstName";
 
     /** Property key */
-    static final String LDAP_USER_EMAIL_KEY = "ldap.user.email";
+    public static final String LDAP_USER_LASTNAME_KEY = "ldap.user.lastname";
 
     /** Property default value */
-    static final String LDAP_USER_EMAIL_DEFAULT = "turbineUserMailAddress";
+    public static final String LDAP_USER_LASTNAME_DEFAULT = "turbineUserLastName";
 
     /** Property key */
-    static final String LDAP_USER_PASSWORD_KEY = "ldap.user.password";
+    public static final String LDAP_USER_EMAIL_KEY = "ldap.user.email";
 
     /** Property default value */
-    static final String LDAP_USER_PASSWORD_DEFAULT = "userPassword";
+    public static final String LDAP_USER_EMAIL_DEFAULT = "turbineUserMailAddress";
+
+    /** Property key */
+    public static final String LDAP_USER_PASSWORD_KEY = "ldap.user.password";
+
+    /** Property default value */
+    public static final String LDAP_USER_PASSWORD_DEFAULT = "userPassword";
 
     /**
      * Get all the properties for the security service.
@@ -214,7 +217,7 @@ public class LDAPSecurityConstants
      */
     public static String getUserIdAttribute()
     {
-        return getProperty(LDAP_USER_USERID_KEY);
+        return getProperty(LDAP_USER_USERID_KEY, LDAP_USER_USERID_DEFAULT);
     }
 
     /**
