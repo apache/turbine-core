@@ -1008,21 +1008,20 @@ url.case.folding=lower
 
 # -------------------------------------------------------------------
 #
-#  S U B S Y S T E M S
+#  C O M P O N E N T S
 #
 # -------------------------------------------------------------------
-# Subsystems implementing the lifecycle interfaces can be loaded,
+# Components implementing the lifecycle interfaces can be loaded,
 # configured and initialized by Turbine
 # -------------------------------------------------------------------
 
-subsystem.name = torque
-subsystem.name = fulcrum
+component.name = torque
+component.torque.classname = org.apache.torque.Torque
+component.torque.config = ${webappRoot}/WEB-INF/conf/Torque.properties
 
-subsystem.torque.classname = org.apache.torque.Torque
-subsystem.torque.config = /WEB-INF/conf/Torque.properties
-
-subsystem.fulcrum.classname = org.apache.fulcrum.Fulcrum
-subsystem.fulcrum.config = /WEB-INF/conf/Fulcrum.properties
+component.name = fulcrum
+component.fulcrum.classname = org.apache.fulcrum.Fulcrum
+component.fulcrum.config = ${webappRoot}/WEB-INF/conf/Fulcrum.properties
 
 # -------------------------------------------------------------------
 #

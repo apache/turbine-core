@@ -64,6 +64,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.stratum.component.ComponentLoader;
 import org.apache.stratum.configuration.Configuration;
 import org.apache.stratum.configuration.PropertiesConfiguration;
 import org.apache.stratum.lifecycle.Configurable;
@@ -239,8 +240,10 @@ public class Turbine
                 // Initialize other services that require early init
                 services.initServices(config, false);
 
-                // Initialize subsystems like torque and fulcrum
-                loadSubsystems();
+                // Initialize components like torque and fulcrum
+                ComponentLoader loader = new ComponentLoader(
+                        TurbineResources.getConfiguration());
+                loader.load();
 
                 log ("Turbine: init() Ready to Rumble!");
             }
@@ -824,50 +827,5 @@ public class Turbine
     {
         services.notice(message);
         services.error(t);
-    }
-
-    /**
-     * load subsystems like torque and fulcrum.
-     */
-    private void loadSubsystems()
-    {
-        // name of the subsystem
-        String sysName = null;
-        // name of the class to load
-        String sysClassName;
-        // name of the config file used to configure the subsystem
-        String sysConfig;
-
-        // get name of all subsystems to be loaded
-        Vector systems = TurbineResources.getVector("subsystem.name");
-
-        for (int i = 0; i < systems.size(); i++)
-        {
-            try
-            {
-                sysName = (String) systems.get(i);
-                sysClassName = TurbineResources.getString("subsystem."
-                        + sysName + ".classname");
-                sysConfig = TurbineServlet.getRealPath(
-                        TurbineResources.getString("subsystem."+ sysName
-                        + ".config"));
-
-                Log.note("loading subsystem " + sysName + " - class: "
-                        + sysClassName + " with config: " + sysConfig);
-
-                Object sys = Class.forName(sysClassName).newInstance();
-
-                // configure subsystem using the defined config file
-                ((Configurable) sys).configure( (Configuration)
-                        new PropertiesConfiguration(sysConfig));
-
-                // initialize subsystem
-                ((Initializable) sys).initialize();
-            }
-            catch (Exception ex)
-            {
-                Log.error(StringUtils.makeString(sysName) + " could not be initialized!", ex);
-            }
-        }
     }
 }
