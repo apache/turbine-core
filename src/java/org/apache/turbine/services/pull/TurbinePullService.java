@@ -419,7 +419,11 @@ public class TurbinePullService extends TurbineBaseService
         if (user != null)
         {
             populateWithSessionTools(sessionTools,    context, user, false);
-            populateWithSessionTools(persistentTools, context, user, true);
+
+            if (user.hasLoggedIn())
+            {
+                populateWithSessionTools(persistentTools, context, user, true);
+            }
         }
     }
 
