@@ -310,13 +310,13 @@ lookup code as described below:
 <table width="100%">
 
 <tr>
-    <td>$navigation.setTemplate("/default_top.vm")</td>
+    <td>$navigation.setTemplate("default_top.vm")</td>
 </tr>
 <tr>
     <td>$screen_placeholder</td>
 </tr>
 <tr>
-    <td>$navigation.setTemplate("/default_bottom.vm")</td>
+    <td>$navigation.setTemplate("default_bottom.vm")</td>
 </tr>
 
 </table>
