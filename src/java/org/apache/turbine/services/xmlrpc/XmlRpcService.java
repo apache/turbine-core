@@ -54,7 +54,7 @@ package org.apache.turbine.services.xmlrpc;
  * <http://www.apache.org/>.
  */
 
-import helma.xmlrpc.XmlRpcException;
+import org.apache.xmlrpc.XmlRpcException;
 import java.util.Vector;
 import java.io.IOException;
 import java.io.InputStream;

@@ -54,12 +54,12 @@ package org.apache.turbine.services.xmlrpc;
  * <http://www.apache.org/>.
  */
 
-import helma.xmlrpc.WebServer;
-import helma.xmlrpc.XmlRpc;
-import helma.xmlrpc.XmlRpcClient;
-import helma.xmlrpc.XmlRpcException;
-import helma.xmlrpc.XmlRpcServer;
-import helma.xmlrpc.secure.SecureWebServer;
+import org.apache.xmlrpc.WebServer;
+import org.apache.xmlrpc.XmlRpc;
+import org.apache.xmlrpc.XmlRpcClient;
+import org.apache.xmlrpc.XmlRpcException;
+import org.apache.xmlrpc.XmlRpcServer;
+import org.apache.xmlrpc.secure.SecureWebServer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -624,7 +624,7 @@ public class TurbineXmlRpcService
      */
     public void shutdown()
     {
-        // Stop the XML RPC server.  helma.xmlrpc.WebServer blocks in a call to
+        // Stop the XML RPC server.  org.apache.xmlrpc.WebServer blocks in a call to
         // ServerSocket.accept() until a socket connection is made.
         webserver.shutdown();
         try

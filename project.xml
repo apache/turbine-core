@@ -400,8 +400,8 @@
       <url>http://share.whichever.com/index.php?SCREEN=village</url>
     </dependency>
     <dependency>
-      <id>xmlrpc-helma</id>
-      <version>1.0</version>
+      <id>xmlrpc</id>
+      <version>1.1</version>
     </dependency>
     <dependency>
       <id>xml-xerces</id>

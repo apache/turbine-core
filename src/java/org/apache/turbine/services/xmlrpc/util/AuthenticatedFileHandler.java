@@ -53,7 +53,7 @@ package org.apache.turbine.services.xmlrpc.util;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-import helma.xmlrpc.AuthenticatedXmlRpcHandler;
+import org.apache.xmlrpc.AuthenticatedXmlRpcHandler;
 import java.util.Vector;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
