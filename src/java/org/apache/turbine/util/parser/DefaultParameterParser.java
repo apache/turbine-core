@@ -63,6 +63,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.upload.TurbineUpload;
+import org.apache.turbine.services.upload.UploadService;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.pool.Recyclable;
@@ -89,12 +90,13 @@ import org.apache.turbine.util.pool.Recyclable;
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class DefaultParameterParser
-        extends BaseValueParser
-        implements ParameterParser,
-        Recyclable
+    extends BaseValueParser
+    implements ParameterParser,
+               Recyclable
 {
     /** Logging */
     private static Log log = LogFactory.getLog(DefaultParameterParser.class);
@@ -109,6 +111,12 @@ public class DefaultParameterParser
      */
     private byte[] uploadData = null;
 
+    /** Turbine Upload Service reference */
+    private static UploadService uploadService = null;
+
+    /** Do we have an upload Service? */
+    private static boolean uploadServiceIsAvailable = false;
+
     /**
      * Create a new empty instance of ParameterParser.  Uses the
      * default character encoding (US-ASCII).
@@ -120,6 +128,7 @@ public class DefaultParameterParser
     public DefaultParameterParser()
     {
         super();
+        configureUploadService();
     }
 
     /**
@@ -134,7 +143,23 @@ public class DefaultParameterParser
      */
     public DefaultParameterParser(String characterEncoding)
     {
-        super(characterEncoding);
+        super (characterEncoding);
+        configureUploadService();
+    }
+
+    /**
+     * Checks for availability of the Upload Service. We do this
+     * check only once at Startup, because the getService() call
+     * is really expensive and we don't have to run it every time
+     * we process a request.
+     */
+    private void configureUploadService()
+    {
+        uploadServiceIsAvailable = TurbineUpload.isAvailable();
+        if (uploadServiceIsAvailable)
+        {
+            uploadService = TurbineUpload.getService();
+        }
     }
 
     /**
@@ -183,8 +208,11 @@ public class DefaultParameterParser
         String tmp = null;
 
         tmp = req.getHeader("Content-type");
-        if (TurbineUpload.getAutomatic() &&
-                tmp != null && tmp.startsWith("multipart/form-data"))
+
+        if (uploadServiceIsAvailable
+            && uploadService.getAutomatic() 
+            && tmp != null 
+            && tmp.startsWith("multipart/form-data"))
         {
             try
             {
@@ -212,23 +240,23 @@ public class DefaultParameterParser
         try
         {
             StringTokenizer st = new StringTokenizer(req.getPathInfo(), "/");
-            boolean name = true;
+            boolean isNameTok = true;
             String pathPart = null;
             while (st.hasMoreTokens())
             {
-                if (name == true)
+                if (isNameTok)
                 {
                     tmp = URLDecoder.decode(st.nextToken());
-                    name = false;
+                    isNameTok = false;
                 }
                 else
                 {
                     pathPart = URLDecoder.decode(st.nextToken());
-                    if (tmp.length() != 0)
+                    if (tmp.length() > 0)
                     {
                         add(convert(tmp), pathPart);
                     }
-                    name = true;
+                    isNameTok = true;
                 }
             }
         }

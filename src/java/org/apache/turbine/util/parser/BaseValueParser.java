@@ -57,11 +57,16 @@ package org.apache.turbine.util.parser;
 import java.beans.IndexedPropertyDescriptor;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+
 import java.io.UnsupportedEncodingException;
+
 import java.lang.reflect.Method;
+
 import java.math.BigDecimal;
+
 import java.text.DateFormat;
 import java.text.ParseException;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
@@ -69,12 +74,16 @@ import java.util.GregorianCalendar;
 import java.util.Hashtable;
 
 import org.apache.commons.lang.StringUtils;
+
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.StringKey;
+
 import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.DateSelector;
 import org.apache.turbine.util.TimeSelector;
 import org.apache.turbine.util.ValueParser;
+
 import org.apache.turbine.util.pool.Recyclable;
 import org.apache.turbine.util.pool.RecyclableSupport;
 
@@ -105,6 +114,7 @@ import org.apache.turbine.util.pool.RecyclableSupport;
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class BaseValueParser
@@ -116,6 +126,7 @@ public class BaseValueParser
      * Random access storage for parameter data.
      */
     protected Hashtable parameters = new Hashtable();
+
     /**
      * The character encoding to use when converting to byte arrays
      */
@@ -129,21 +140,11 @@ public class BaseValueParser
      *
      * @param value A String to be processed.
      * @return A new String converted to lowercase and trimmed.
+     * @deprecated Use ParserUtils.convertAndTrim(value).
      */
     public static String convertAndTrim(String value)
     {
-        String tmp = value.trim();
-        String fold =
-                TurbineResources.getString(URL_CASE_FOLDING, "")
-                .toLowerCase();
-        if ((fold == null) ||
-                (fold.equals("")) ||
-                (fold.equals(URL_CASE_FOLDING_LOWER)))
-            return (tmp.toLowerCase());
-        else if (fold.equals(URL_CASE_FOLDING_UPPER))
-            return (tmp.toUpperCase());
-
-        return (tmp);
+        return ParserUtils.convertAndTrim(value);
     }
 
     /**
@@ -180,7 +181,9 @@ public class BaseValueParser
     {
         setCharacterEncoding(characterEncoding);
         if (!isDisposed())
+        {
             super.recycle();
+        }
     }
 
     /**
@@ -326,7 +329,7 @@ public class BaseValueParser
      */
     public String convert(String value)
     {
-        return convertAndTrim(value);
+        return ParserUtils.convertAndTrim(value);
     }
 
     /**
@@ -339,7 +342,7 @@ public class BaseValueParser
      */
     public boolean containsKey(Object key)
     {
-        return parameters.containsKey(convert((String) key));
+        return parameters.containsKey(convert((String)key));
     }
 
     /**
@@ -408,13 +411,14 @@ public class BaseValueParser
         {
             String tmp = getString(name);
             if (tmp.equalsIgnoreCase("1") ||
-                    tmp.equalsIgnoreCase("true") ||
-                    tmp.equalsIgnoreCase("on"))
+                tmp.equalsIgnoreCase("true") ||
+                tmp.equalsIgnoreCase("on"))
             {
                 value = true;
             }
-            if (tmp.equalsIgnoreCase("0") ||
-                    tmp.equalsIgnoreCase("false"))
+            if (tmp.equalsIgnoreCase ("0") ||
+                tmp.equalsIgnoreCase ("false") ||
+                tmp.equalsIgnoreCase ("off"))
             {
                 value = false;
             }
@@ -450,18 +454,14 @@ public class BaseValueParser
 
     /**
      * Return a Boolean for the given name.  If the name does not
-     * exist, return <code>null</code>.
+     * exist, return false.
      *
      * @param name A String with the name.
      * @return A Boolean.
      */
     public Boolean getBool(String name)
     {
-        if (containsKey(name))
-        {
-            return new Boolean(getBoolean(name));
-        }
-        return null;
+        return new Boolean(getBoolean(name, false));
     }
 
     /**
@@ -480,7 +480,9 @@ public class BaseValueParser
         {
             Object object = parameters.get(convert(name));
             if (object != null)
+            {
                 value = Double.valueOf(((String[]) object)[0]).doubleValue();
+            }
         }
         catch (NumberFormatException exception)
         {
@@ -568,14 +570,14 @@ public class BaseValueParser
 
     /**
      * Return a BigDecimal for the given name.  If the name does not
-     * exist, return <code>null</code>.
+     * exist, return 0.0.
      *
      * @param name A String with the name.
      * @return A BigDecimal.
      */
     public BigDecimal getBigDecimal(String name)
     {
-        return getBigDecimal(name, null);
+        return getBigDecimal(name, new BigDecimal(0.0));
     }
 
     /**
@@ -594,7 +596,9 @@ public class BaseValueParser
             String[] temp = (String[]) object;
             value = new BigDecimal[temp.length];
             for (int i = 0; i < temp.length; i++)
+            {
                 value[i] = new BigDecimal(temp[i]);
+            }
         }
         return value;
     }
@@ -615,7 +619,9 @@ public class BaseValueParser
         {
             Object object = parameters.get(convert(name));
             if (object != null)
+            {
                 value = Integer.valueOf(((String[]) object)[0]).intValue();
+            }
         }
         catch (NumberFormatException exception)
         {
@@ -666,18 +672,14 @@ public class BaseValueParser
 
     /**
      * Return an Integer for the given name.  If the name does not
-     * exist, return <code>null</code>.
+     * exist, return 0.
      *
      * @param name A String with the name.
      * @return An Integer.
      */
     public Integer getInteger(String name)
     {
-        if (containsKey(name))
-        {
-            return new Integer(getInt(name));
-        }
-        return null;
+        return new Integer(getInt(name, 0));
     }
 
     /**
@@ -696,7 +698,9 @@ public class BaseValueParser
             String[] temp = (String[]) object;
             value = new int[temp.length];
             for (int i = 0; i < temp.length; i++)
+            {
                 value[i] = Integer.parseInt(temp[i]);
+            }
         }
         return value;
     }
@@ -717,7 +721,9 @@ public class BaseValueParser
             String[] temp = (String[]) object;
             value = new Integer[temp.length];
             for (int i = 0; i < temp.length; i++)
+            {
                 value[i] = Integer.valueOf(temp[i]);
+            }
         }
         return value;
     }
@@ -774,7 +780,9 @@ public class BaseValueParser
             String[] temp = (String[]) object;
             value = new long[temp.length];
             for (int i = 0; i < temp.length; i++)
+            {
                 value[i] = Long.parseLong(temp[i]);
+            }
         }
         return value;
     }
@@ -795,7 +803,9 @@ public class BaseValueParser
             String[] temp = (String[]) object;
             value = new Long[temp.length];
             for (int i = 0; i < temp.length; i++)
+            {
                 value[i] = Long.valueOf(temp[i]);
+            }
         }
         return value;
     }
@@ -850,7 +860,9 @@ public class BaseValueParser
     {
         String tempStr = getString(name);
         if (tempStr != null)
+        {
             return tempStr.getBytes(characterEncoding);
+        }
         return null;
     }
 
@@ -908,12 +920,9 @@ public class BaseValueParser
                             String defaultValue)
     {
         String value = getString(name);
-        if (value == null ||
-                value.length() == 0 ||
-                value.equals("null"))
-            return defaultValue;
-        else
-            return value;
+
+        return (StringUtils.isEmpty(value) || value.equals("null")) 
+            ? defaultValue : value;
     }
 
     /**
@@ -944,7 +953,9 @@ public class BaseValueParser
         String[] value = null;
         Object object = parameters.get(convert(name));
         if (object != null)
+        {
             value = ((String[]) object);
+        }
         return value;
     }
 
@@ -960,11 +971,9 @@ public class BaseValueParser
                                String[] defaultValue)
     {
         String[] value = getStrings(name);
-        if (value == null ||
-                value.length == 0)
-            return defaultValue;
-        else
-            return value;
+
+        return (value == null || value.length == 0)
+            ? defaultValue : value;
     }
 
     /**
