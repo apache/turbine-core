@@ -61,6 +61,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.om.Retrievable;
 import org.apache.turbine.services.intake.model.Group;
 import org.apache.turbine.services.pull.ApplicationTool;
@@ -73,6 +74,7 @@ import org.apache.turbine.util.pool.Recyclable;
  * The main class through which Intake is accessed.
  *
  * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
@@ -85,12 +87,15 @@ public class IntakeTool
     /** Constant for default key */
     public static final String DEFAULT_KEY = "_0";
 
+    /** Constant for the hidden fieldname */
+    public static final String INTAKE_GRP = "intake-grp";
+
     /** Groups from intake.xml */
     private HashMap groups;
 
     /** ValueParser instance */
     private ValueParser pp;
-
+  
     HashMap declaredGroups = new HashMap();
     StringBuffer allGroupsSB = new StringBuffer(256);
     StringBuffer groupSB = new StringBuffer(128);
@@ -125,7 +130,7 @@ public class IntakeTool
     {
         this.pp = ((RunData) runData).getParameters();
 
-        String[] groupKeys = pp.getStrings("intake-grp");
+        String[] groupKeys = pp.getStrings(INTAKE_GRP);
         String[] groupNames = null;
         if (groupKeys == null || groupKeys.length == 0)
         {
@@ -146,7 +151,7 @@ public class IntakeTool
             try
             {
                 List foundGroups = TurbineIntake.getGroup(groupNames[i])
-                        .getObjects(pp);
+                    .getObjects(pp);
 
                 if (foundGroups != null)
                 {
@@ -220,7 +225,8 @@ public class IntakeTool
         {
             declaredGroups.put(group.getIntakeGroupName(), null);
             sb.append("<input type=\"hidden\" name=\"")
-                    .append("intake-grp\" value=\"")
+                    .append(INTAKE_GRP)
+                    .append("\" value=\"")
                     .append(group.getGID())
                     .append("\"/>\n");
         }
@@ -422,6 +428,18 @@ public class IntakeTool
     {
         groups.remove(group.getObjectKey());
         group.removeFromRequest();
+
+        String[] groupKeys = pp.getStrings(INTAKE_GRP);
+
+        pp.remove(INTAKE_GRP);
+
+        for (int i = 0; i < groupKeys.length; i++)
+        {
+            if (!groupKeys[i].equals(group.getGID()))
+            {
+                pp.add(INTAKE_GRP, groupKeys[i]);
+            }
+        }
 
         try
         {
