@@ -232,8 +232,7 @@ public abstract class DB implements Serializable, IDMethod
     public abstract char getStringDelimiter();
 
     /**
-     * Returns the constant from the {@link
-     * org.apache.torque.adapter.IDMethod} interface denoting which
+     * Returns the constant from the {@see IDMethod} interface denoting which
      * type of primary key generation method this type of RDBMS uses.
      */
     public abstract String getIDMethodType();

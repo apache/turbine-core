@@ -25,13 +25,13 @@ package org.apache.turbine.util.db.adapter;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -114,7 +114,7 @@ public class DBOracle
     }
 
     /**
-     * @see org.apache.torque.adapter.DB#getIDMethodType()
+     * @see DB#getIDMethodType()
      */
     public String getIDMethodType()
     {
@@ -132,7 +132,7 @@ public class DBOracle
      * @param sequenceName The name of the sequence (should be of type
      * <code>String</code>).
      * @return SQL to retreive the next database key.
-     * @see org.apache.torque.adapter.DB#getIDMethodSQL()
+     * @see DB#getIDMethodSQL(Object)
      */
     public String getIDMethodSQL(Object sequenceName)
     {
@@ -206,7 +206,7 @@ public class DBOracle
     *
     * @return false.
     */
-    
+
     public boolean escapeText()
     {
         return false;

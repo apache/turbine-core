@@ -58,8 +58,7 @@ import org.apache.turbine.util.db.adapter.DB;
 import org.apache.turbine.util.db.map.IDMethod;
 
 /**
- * A factory which instantiates {@link
- * org.apache.torque.oid.IdGenerator} implementations.
+ * A factory which instantiates {@link IdGenerator} implementations.
  *
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @version $Id$
@@ -68,7 +67,7 @@ public class IDGeneratorFactory
 {
     /**
      * The list of ID generation method types which have associated
-     * {@link org.apache.torque.oid.IdGenerator} implementations.
+     * {@link IdGenerator} implementations.
      */
     public static final String[] ID_GENERATOR_METHODS =
     {
@@ -76,10 +75,9 @@ public class IDGeneratorFactory
     };
 
     /**
-     * Factory method which instantiates {@link
-     * org.apache.torque.oid.IdGenerator} implementations based on the
-     * return value of the provided adapter's {@link
-     * org.apache.torque.adapter.DB#getIDMethodType()} method.
+     * Factory method which instantiates {@link IdGenerator} implementations
+     * based on the return value of the provided adapter's {@link
+     * DB#getIDMethodType()} method.
      * Returns <code>null</code> for unknown types.
      *
      * @param dbAdapter The type of adapter to create an ID generator
