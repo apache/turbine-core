@@ -81,6 +81,7 @@ public class TemplateLink
 {
     /** the pathinfo key stored in the DynamicURI */
     private static final String TEMPLATE_KEY = "template";
+
     /** cache of the template name for getPage() */
     private String template = null;
 
@@ -114,7 +115,7 @@ public class TemplateLink
     }
 
     /**
-     * This will initialise a TemplateLink object that was
+     * This will initialize a TemplateLink object that was
      * constructed with the default constructor (ApplicationTool
      * method).
      *
@@ -122,9 +123,11 @@ public class TemplateLink
      */
     public void init(Object data)
     {
-        // we just blithely cast to RunData as if another object
-        // or null is passed in we'll throw an appropriate runtime
-        // exception.
+        if(!(data instanceof RunData) || data == null)
+        {
+            throw new IllegalArgumentException(
+                    "Argument must be an instance of RunData");
+        }
         super.init((RunData) data);
     }
 
@@ -140,6 +143,8 @@ public class TemplateLink
      * This will turn off the execution of res.encodeURL()
      * by making res == null. This is a hack for cases
      * where you don't want to see the session information
+     *
+     * @return instance of TemplateLink
      */
     public TemplateLink setEncodeURLOff()
     {
@@ -150,13 +155,13 @@ public class TemplateLink
     /**
      * Sets the template variable used by the Template Service.
      *
-     * @param t A String with the template name.
+     * @param template A String with the template name.
      * @return A TemplateLink.
      */
-    public TemplateLink setPage(String t)
+    public TemplateLink setPage(String template)
     {
-        template = t;
-        addPathInfo(TEMPLATE_KEY, t);
+        this.template = template;
+        addPathInfo(TEMPLATE_KEY, template);
         return this;
     }
 
@@ -180,6 +185,7 @@ public class TemplateLink
      */
     public String toString()
     {
+        assertInitialized();
         String output = super.toString();
 
         // This was added to allow multilple $link variables in one
