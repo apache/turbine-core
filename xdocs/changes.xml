@@ -146,6 +146,10 @@ Changes between Turbine 2.2 and 2.3-dev.
         </li>
       </ul>
     </li>
+    <li>
+        All deprecated calls to the old org.apache.turbine.util.Log have
+        been replaced with calls to org.apache.commons.logging.Log.
+    </li>
   </ul>
 </p>
 </subsection>
