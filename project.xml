@@ -192,6 +192,19 @@
       <email>mailto:kav@kav.dk</email>
       <organization/>
     </developer>
+    -->
+
+    <developer>
+      <name>Quinton McCombs</name>
+      <id>quintonm</id>
+      <email>quintonm@bellsouth.net</email>
+      <organization>NEqualsOne</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+    <!--
     <developer>
       <name>Paul O'Leary</name>
       <id/>
@@ -321,13 +334,6 @@
     <td></td>
     <td>Apprentice</td>
     -->
-    <developer>
-      <name>Quinton McCombs</name>
-      <id>quintonm</id>
-      <email>quintonm@bellsouth.net</email>
-      <organization>NEqualsOne</organization>
-    </developer>
-  </developers>
 
   <contributors>
     <contributor>
@@ -378,7 +384,7 @@
     <dependency>
       <id>commons-configuration</id>
       <version>SNAPSHOT</version>
-      <url>http://jakarta.apache.org/commons/</url>
+      <url>http://jakarta.apache.org/commons/sandbox/configuration/index.html</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
@@ -394,7 +400,7 @@
     <dependency>
       <id>commons-lang</id>
       <version>1.0.1</version>
-      <url>http://jakarta.apache.org/commons/</url>
+      <url>http://jakarta.apache.org/commons/lang.html</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
@@ -402,15 +408,15 @@
     <dependency>
       <id>commons-logging</id>
       <version>1.0.2</version>
-      <url>http://jakarta.apache.org/commons/</url>
+      <url>http://jakarta.apache.org/commons/logging.html</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
     </dependency>
       <dependency>
         <id>commons-pool</id>
-        <version>1.0</version>
-        <url>http://jakarta.apache.org/commons/</url>
+        <version>1.0.1</version>
+        <url>http://jakarta.apache.org/commons/pool.html</url>
         <properties>
           <war.bundle.jar>true</war.bundle.jar>
         </properties>
@@ -418,6 +424,7 @@
     <dependency>
       <id>cryptix</id>
       <version>3.2.0</version>
+      <url>http://www.cryptix.org/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
@@ -608,7 +615,7 @@
     <integrationUnitTestSourceDirectory/>
     <integrationUnitTest/>
     <aspectSourceDirectory/>
-    <resources/>
+    <testResources/>
 
     <jars/>
   </build>
