@@ -55,15 +55,15 @@ package org.apache.turbine.services.rundata;
  */
 
 // Java Servlet Classes
+
 import javax.servlet.ServletConfig;
-import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-// Turbine Utility Classes
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.CookieParser;
 import org.apache.turbine.util.ParameterParser;
+import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.pool.Recyclable;
 
@@ -84,7 +84,7 @@ import org.apache.turbine.util.pool.Recyclable;
  * @version $Id$
  */
 public interface TurbineRunData extends RunData,
-                                        Recyclable
+        Recyclable
 {
     /**
      * Gets the parameter parser without parsing the parameters.

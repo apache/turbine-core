@@ -55,12 +55,13 @@ package org.apache.turbine.services.crypto;
  */
 
 import java.security.NoSuchAlgorithmException;
+
 import org.apache.turbine.services.Service;
 
 /**
- * The Crypto Service manages the availability of various crypto 
+ * The Crypto Service manages the availability of various crypto
  * sources. It provides a consistent interface to things like the
- * various java.security Message Digest stuff or the Unix Crypt 
+ * various java.security Message Digest stuff or the Unix Crypt
  * algorithm.
  *
  * It contains no actual crypto code so it should be fine to import/export
@@ -71,8 +72,8 @@ import org.apache.turbine.services.Service;
  *
  */
 
-public interface CryptoService 
-    extends Service
+public interface CryptoService
+        extends Service
 {
     /** The name of the service */
     static final String SERVICE_NAME = "CryptoService";
@@ -90,5 +91,5 @@ public interface CryptoService
      */
 
     CryptoAlgorithm getCryptoAlgorithm(String algorithm)
-        throws NoSuchAlgorithmException;
+            throws NoSuchAlgorithmException;
 }

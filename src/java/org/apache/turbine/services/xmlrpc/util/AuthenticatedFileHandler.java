@@ -53,11 +53,13 @@ package org.apache.turbine.services.xmlrpc.util;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-import org.apache.xmlrpc.AuthenticatedXmlRpcHandler;
+
 import java.util.Vector;
+
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.TurbineException;
+import org.apache.xmlrpc.AuthenticatedXmlRpcHandler;
 
 /**
  * An authenticated Handler for use with the XML-RPC service that will deal
@@ -72,8 +74,8 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:john@zenplex.com">John Thorhauer</a>
  */
 public class AuthenticatedFileHandler
-    extends FileHandler
-    implements  AuthenticatedXmlRpcHandler
+        extends FileHandler
+        implements AuthenticatedXmlRpcHandler
 {
     /**
      * Default Constructor
@@ -86,33 +88,33 @@ public class AuthenticatedFileHandler
      * Handles all requests for an Authenticated file transfer.
      */
     public Object execute(String method, Vector params, String username, String password)
-        throws TurbineException
+            throws TurbineException
     {
         Object obj = null;
 
         // Authenticate the user and get the object.
         User user = null;
-        user = TurbineSecurity.getAuthenticatedUser( username, password );
+        user = TurbineSecurity.getAuthenticatedUser(username, password);
 
         if (user != null)
         {
             if (method.equals("send"))
             {
-                obj = new Boolean(this.send((String)params.elementAt(0),
-                          (String)params.elementAt(1),
-                          (String)params.elementAt(2)));
+                obj = new Boolean(this.send((String) params.elementAt(0),
+                        (String) params.elementAt(1),
+                        (String) params.elementAt(2)));
             }
 
             if (method.equals("get"))
             {
-                obj = this.get((String)params.elementAt(0),
-                         (String)params.elementAt(1));
+                obj = this.get((String) params.elementAt(0),
+                        (String) params.elementAt(1));
             }
 
             if (method.equals("remove"))
             {
-                this.remove((String)params.elementAt(0),
-                            (String)params.elementAt(1));
+                this.remove((String) params.elementAt(0),
+                        (String) params.elementAt(1));
                 obj = new Boolean("true");
             }
         }
@@ -121,6 +123,6 @@ public class AuthenticatedFileHandler
             obj = new Boolean("false");
         }
 
-        return (Object)obj;
+        return (Object) obj;
     }
 }

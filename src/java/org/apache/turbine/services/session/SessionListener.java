@@ -55,10 +55,9 @@ package org.apache.turbine.services.session;
  */
 
 import java.io.Serializable;
-
+import javax.servlet.http.HttpSessionActivationListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import javax.servlet.http.HttpSessionActivationListener;
 
 /**
  * This class is a listener for both session creation and destruction,
@@ -90,7 +89,7 @@ import javax.servlet.http.HttpSessionActivationListener;
  * @see javax.servlet.http.HttpSessionListener
  */
 public class SessionListener
-    implements HttpSessionListener, HttpSessionActivationListener, Serializable
+        implements HttpSessionListener, HttpSessionActivationListener, Serializable
 {
     // ---- HttpSessionListener implementation -----------------------------
 

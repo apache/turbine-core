@@ -55,6 +55,7 @@ package org.apache.turbine.modules;
  */
 
 // Turbine Utility Classes
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -73,8 +74,8 @@ public abstract class Page extends Assembler
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    protected abstract void doBuild( RunData data )
-        throws Exception;
+    protected abstract void doBuild(RunData data)
+            throws Exception;
 
     /**
      * Subclasses can override this method to add additional
@@ -84,9 +85,9 @@ public abstract class Page extends Assembler
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    protected void build( RunData data )
-        throws Exception
+    protected void build(RunData data)
+            throws Exception
     {
-        doBuild( data );
+        doBuild(data);
     }
 }

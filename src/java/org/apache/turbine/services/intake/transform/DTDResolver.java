@@ -110,7 +110,7 @@ public class DTDResolver implements EntityResolver
         }
         catch (Exception ex)
         {
-            log.error("Could not get stream for dtd", ex );
+            log.error("Could not get stream for dtd", ex);
         }
     }
 
@@ -158,7 +158,7 @@ public class DTDResolver implements EntityResolver
         }
         catch (IOException ex)
         {
-            log.error("Could not get InputSource for "+urlString, ex);
+            log.error("Could not get InputSource for " + urlString, ex);
         }
         return new InputSource();
     }

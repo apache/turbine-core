@@ -88,7 +88,7 @@ public interface UserManager
      *         backend.
      */
     boolean accountExists(User user)
-        throws DataBackendException;
+            throws DataBackendException;
 
     /**
      * Check whether a specified user's account exists.
@@ -101,7 +101,7 @@ public interface UserManager
      *         backend.
      */
     boolean accountExists(String userName)
-        throws DataBackendException;
+            throws DataBackendException;
 
     /**
      * Retrieve a user from persistent storage using username as the
@@ -115,7 +115,7 @@ public interface UserManager
      *         storage.
      */
     User retrieve(String username)
-        throws UnknownEntityException, DataBackendException;
+            throws UnknownEntityException, DataBackendException;
 
     /**
      * Retrieve a set of users that meet the specified criteria.
@@ -148,8 +148,8 @@ public interface UserManager
      * @throws DataBackendException if there is a problem accessing the storage.
      */
     User retrieve(String username, String password)
-        throws PasswordMismatchException, UnknownEntityException,
-               DataBackendException;
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException;
 
     /**
      * Save an User object to persistent storage. User's record is
@@ -161,7 +161,7 @@ public interface UserManager
      * @throws DataBackendException if there is a problem accessing the storage.
      */
     void store(User user)
-        throws UnknownEntityException, DataBackendException;
+            throws UnknownEntityException, DataBackendException;
 
     /**
      * Saves User data when the session is unbound. The user account is required
@@ -175,8 +175,8 @@ public interface UserManager
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public void saveOnSessionUnbind( User user )
-        throws UnknownEntityException, DataBackendException;
+    public void saveOnSessionUnbind(User user)
+            throws UnknownEntityException, DataBackendException;
 
     /**
      * Authenticate an User with the specified password. If authentication
@@ -191,8 +191,8 @@ public interface UserManager
      * @throws DataBackendException if there is a problem accessing the storage.
      */
     void authenticate(User user, String password)
-        throws PasswordMismatchException, UnknownEntityException,
-               DataBackendException;
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException;
 
     /**
      * Creates new user account with specified attributes.
@@ -204,7 +204,7 @@ public interface UserManager
      * @throws EntityExistsException if the user account already exists.
      */
     void createAccount(User user, String initialPassword)
-        throws EntityExistsException, DataBackendException;
+            throws EntityExistsException, DataBackendException;
 
     /**
      * Removes an user account from the system.
@@ -215,7 +215,7 @@ public interface UserManager
      * @throws UnknownEntityException if the user account is not present.
      */
     void removeAccount(User user)
-        throws UnknownEntityException, DataBackendException;
+            throws UnknownEntityException, DataBackendException;
 
     /**
      * Change the password for an User.
@@ -230,8 +230,8 @@ public interface UserManager
      */
     void changePassword(User user, String oldPassword,
                         String newPassword)
-        throws PasswordMismatchException, UnknownEntityException,
-               DataBackendException;
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException;
 
     /**
      * Forcibly sets new password for an User.
@@ -248,5 +248,5 @@ public interface UserManager
      * @throws DataBackendException if there is a problem accessing the storage.
      */
     void forcePassword(User user, String password)
-        throws UnknownEntityException, DataBackendException;
+            throws UnknownEntityException, DataBackendException;
 }

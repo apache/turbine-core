@@ -54,9 +54,8 @@ package org.apache.turbine.services.xmlrpc.util;
  * <http://www.apache.org/>.
  */
 
-import java.util.Vector;
-
 import java.net.URL;
+import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -88,7 +87,7 @@ public class FileTransfer
                             String sourceFileName,
                             String destinationLocationProperty,
                             String destinationFileName)
-                            throws TurbineException
+            throws TurbineException
     {
         try
         {
@@ -98,7 +97,7 @@ public class FileTransfer
              * fileContents
              */
             params.add(FileHandler.readFileContents(
-                sourceLocationProperty, sourceFileName));
+                    sourceLocationProperty, sourceFileName));
 
             /*
              * property in TR.props which refers to the directory
@@ -112,7 +111,7 @@ public class FileTransfer
             params.add(destinationFileName);
 
             Boolean b = (Boolean) TurbineXmlRpc.executeRpc(
-                new URL (serverURL), "file.send", params);
+                    new URL(serverURL), "file.send", params);
 
         }
         catch (Exception e)
@@ -142,7 +141,7 @@ public class FileTransfer
                             String sourceFileName,
                             String destinationLocationProperty,
                             String destinationFileName)
-                            throws TurbineException
+            throws TurbineException
     {
         try
         {
@@ -152,7 +151,7 @@ public class FileTransfer
              * fileContents
              */
             params.add(FileHandler.readFileContents(
-                sourceLocationProperty, sourceFileName));
+                    sourceLocationProperty, sourceFileName));
 
             /*
              * property in TR.props which refers to the directory
@@ -166,11 +165,11 @@ public class FileTransfer
             params.add(destinationFileName);
 
             Boolean b = (Boolean) TurbineXmlRpc.executeAuthenticatedRpc(
-                                  new URL (serverURL),
-                                  username,
-                                  password,
-                                  "file.send",
-                                  params);
+                    new URL(serverURL),
+                    username,
+                    password,
+                    "file.send",
+                    params);
 
         }
         catch (Exception e)
@@ -195,7 +194,7 @@ public class FileTransfer
                            String sourceFileName,
                            String destinationLocationProperty,
                            String destinationFileName)
-                           throws TurbineException
+            throws TurbineException
     {
 
         try
@@ -214,14 +213,14 @@ public class FileTransfer
             params.add(sourceFileName);
 
             String fileContents = (String) TurbineXmlRpc.executeRpc(
-                new URL (serverURL), "file.get", params);
+                    new URL(serverURL), "file.get", params);
 
             /*
              * Now we have the file contents, we can write
              * them out to disk.
              */
             FileHandler.writeFileContents(fileContents,
-                destinationLocationProperty, destinationFileName);
+                    destinationLocationProperty, destinationFileName);
         }
         catch (Exception e)
         {
@@ -249,7 +248,7 @@ public class FileTransfer
                            String sourceFileName,
                            String destinationLocationProperty,
                            String destinationFileName)
-                           throws TurbineException
+            throws TurbineException
     {
 
         try
@@ -268,18 +267,18 @@ public class FileTransfer
             params.add(sourceFileName);
 
             String fileContents = (String) TurbineXmlRpc.executeAuthenticatedRpc(
-                                            new URL (serverURL),
-                                            username,
-                                            password,
-                                            "file.get",
-                                            params);
+                    new URL(serverURL),
+                    username,
+                    password,
+                    "file.get",
+                    params);
 
             /*
              * Now we have the file contents, we can write
              * them out to disk.
              */
             FileHandler.writeFileContents(fileContents,
-                destinationLocationProperty, destinationFileName);
+                    destinationLocationProperty, destinationFileName);
         }
         catch (Exception e)
         {
@@ -299,7 +298,7 @@ public class FileTransfer
     public static void remove(String serverURL,
                               String sourceLocationProperty,
                               String sourceFileName)
-                              throws TurbineException
+            throws TurbineException
     {
         try
         {
@@ -316,7 +315,7 @@ public class FileTransfer
              */
             params.add(sourceFileName);
 
-            TurbineXmlRpc.executeRpc(new URL (serverURL), "file.remove", params);
+            TurbineXmlRpc.executeRpc(new URL(serverURL), "file.remove", params);
         }
         catch (Exception e)
         {
@@ -340,7 +339,7 @@ public class FileTransfer
                               String password,
                               String sourceLocationProperty,
                               String sourceFileName)
-                              throws TurbineException
+            throws TurbineException
     {
         try
         {
@@ -357,11 +356,11 @@ public class FileTransfer
              */
             params.add(sourceFileName);
 
-            TurbineXmlRpc.executeAuthenticatedRpc(new URL (serverURL),
-                                    username,
-                                    password,
-                                    "file.remove",
-                                    params);
+            TurbineXmlRpc.executeAuthenticatedRpc(new URL(serverURL),
+                    username,
+                    password,
+                    "file.remove",
+                    params);
         }
         catch (Exception e)
         {

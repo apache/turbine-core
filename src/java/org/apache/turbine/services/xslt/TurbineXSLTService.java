@@ -81,8 +81,8 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * @author <a href="mailto:rubys@us.ibm.com">Sam Ruby</a>
  */
 public class TurbineXSLTService
-    extends TurbineBaseService
-    implements XSLTService
+        extends TurbineBaseService
+        implements XSLTService
 
 {
     /**
@@ -117,21 +117,20 @@ public class TurbineXSLTService
             return;
         }
 
-        path = getConfiguration().getString (
-            TurbineServices.SERVICE_PREFIX +
+        path = getConfiguration().getString(
+                TurbineServices.SERVICE_PREFIX +
                 XSLTService.SERVICE_NAME + ".path");
 
-        path = TurbineServlet.getRealPath (path);
+        path = TurbineServlet.getRealPath(path);
 
-        if (!path.endsWith("/") && !path.endsWith ("\\"))
+        if (!path.endsWith("/") && !path.endsWith("\\"))
         {
             path = path + File.separator;
         }
 
-        caching = getConfiguration().getBoolean (
-            TurbineServices.SERVICE_PREFIX +
+        caching = getConfiguration().getBoolean(
+                TurbineServices.SERVICE_PREFIX +
                 XSLTService.SERVICE_NAME + ".cache");
-
 
         tfactory = TransformerFactory.newInstance();
 
@@ -147,17 +146,17 @@ public class TurbineXSLTService
     protected String getFileName(String templateName)
     {
         // First we chop of the existing extension
-        int colon = templateName.lastIndexOf (".");
+        int colon = templateName.lastIndexOf(".");
         if (colon > 0)
         {
             templateName = templateName.substring(0, colon);
         }
 
         // Now we try to find the file ...
-        File f = new File (path+templateName + ".xsl");
+        File f = new File(path + templateName + ".xsl");
         if (f.exists())
         {
-            return path+templateName+".xsl";
+            return path + templateName + ".xsl";
         }
         else
         {
@@ -199,7 +198,7 @@ public class TurbineXSLTService
     {
         synchronized (cache)
         {
-            if (caching && cache.containsKey (xslName))
+            if (caching && cache.containsKey(xslName))
             {
                 return (Templates) cache.get(xslName);
             }
@@ -212,7 +211,7 @@ public class TurbineXSLTService
 
             if (caching)
             {
-                cache.put(xslName,sr);
+                cache.put(xslName, sr);
             }
 
             return sr;
@@ -240,7 +239,6 @@ public class TurbineXSLTService
         transformer.transform(xmlin, xmlout);
     }
 
-
     /**
      * Execute an xslt
      */
@@ -250,7 +248,7 @@ public class TurbineXSLTService
         Source xmlin = new StreamSource(in);
         Result xmlout = new StreamResult(out);
 
-        transform(xslName,xmlin,xmlout);
+        transform(xslName, xmlin, xmlout);
     }
 
     /**
@@ -259,10 +257,9 @@ public class TurbineXSLTService
     public String transform(String xslName, Reader in) throws Exception
     {
         StringWriter sw = new StringWriter();
-        transform(xslName,in,sw);
+        transform(xslName, in, sw);
         return sw.toString();
     }
-
 
     /**
      * Execute an xslt
@@ -273,7 +270,7 @@ public class TurbineXSLTService
         Source xmlin = new DOMSource(in);
         Result xmlout = new StreamResult(out);
 
-        transform(xslName,xmlin,xmlout);
+        transform(xslName, xmlin, xmlout);
     }
 
     /**
@@ -283,7 +280,7 @@ public class TurbineXSLTService
             throws Exception
     {
         StringWriter sw = new StringWriter();
-        transform(xslName,in,sw);
+        transform(xslName, in, sw);
         return sw.toString();
     }
 

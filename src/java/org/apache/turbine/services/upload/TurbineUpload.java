@@ -55,6 +55,7 @@ package org.apache.turbine.services.upload;
  */
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.TurbineException;
@@ -81,8 +82,8 @@ public abstract class TurbineUpload
      */
     public static UploadService getService()
     {
-        return (UploadService)TurbineServices.getInstance().
-            getService(UploadService.SERVICE_NAME);
+        return (UploadService) TurbineServices.getInstance().
+                getService(UploadService.SERVICE_NAME);
     }
 
     /**
@@ -99,21 +100,21 @@ public abstract class TurbineUpload
         {
             upload = getService();
         }
-        catch(org.apache.turbine.services.InstantiationException ie)
+        catch (org.apache.turbine.services.InstantiationException ie)
         {
             // If the service couldn't be instantiated, it obviously
             // can't be used for automatic uploading.
             return false;
         }
         String auto = upload.getProperties()
-            .getProperty(UploadService.AUTOMATIC_KEY,
-                         UploadService.AUTOMATIC_DEFAULT.toString())
-            .toLowerCase();
-        if(auto.equals("true") || auto.equals("yes") || auto.equals("1"))
+                .getProperty(UploadService.AUTOMATIC_KEY,
+                        UploadService.AUTOMATIC_DEFAULT.toString())
+                .toLowerCase();
+        if (auto.equals("true") || auto.equals("yes") || auto.equals("1"))
         {
             return true;
         }
-        if(auto.equals("false") || auto.equals("no") || auto.equals("0"))
+        if (auto.equals("false") || auto.equals("no") || auto.equals("0"))
         {
             return false;
         }
@@ -166,9 +167,9 @@ public abstract class TurbineUpload
      * @exception TurbineException If there are problems reading/parsing
      * the request or storing files.
      */
-    public static void parseRequest( HttpServletRequest req,
-                                     ParameterParser params )
-        throws TurbineException
+    public static void parseRequest(HttpServletRequest req,
+                                    ParameterParser params)
+            throws TurbineException
     {
         UploadService upload = getService();
         upload.parseRequest(req, params, upload.getRepository());
@@ -188,10 +189,10 @@ public abstract class TurbineUpload
      * @exception TurbineException If there are problems reading/parsing
      * the request or storing files.
      */
-    public static void parseRequest( HttpServletRequest req,
-                                     ParameterParser params,
-                                     String path )
-        throws TurbineException
+    public static void parseRequest(HttpServletRequest req,
+                                    ParameterParser params,
+                                    String path)
+            throws TurbineException
     {
         UploadService upload = getService();
         upload.parseRequest(req, params, path);

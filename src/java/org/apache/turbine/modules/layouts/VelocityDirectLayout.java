@@ -55,13 +55,12 @@ package org.apache.turbine.modules.layouts;
  */
 
 // Turbine Classes
+
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateNavigation;
 import org.apache.turbine.util.template.TemplateScreen;
-
-// Velocity Stuff
 import org.apache.velocity.context.Context;
 
 /**
@@ -103,6 +102,6 @@ public class VelocityDirectLayout extends Layout
 
         // Finally, generate the layout template and send it to the browser
         TurbineVelocity.handleRequest(context,
-            "layouts" + templateName, data.getOut());
+                "layouts" + templateName, data.getOut());
     }
 }

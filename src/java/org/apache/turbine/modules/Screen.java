@@ -55,19 +55,18 @@ package org.apache.turbine.modules;
  */
 
 // Turbine Utility Classes
-import org.apache.turbine.util.RunData;
 
-// ECS Classe
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.Entities;
 import org.apache.ecs.filter.CharacterFilter;
+import org.apache.turbine.util.RunData;
 
 /**
  * This is an interface that defines the Screen modules.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
-*/
+ */
 public abstract class Screen extends Assembler
 {
     private static final CharacterFilter filter = htmlFilter();
@@ -82,8 +81,8 @@ public abstract class Screen extends Assembler
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    protected abstract ConcreteElement doBuild( RunData data )
-        throws Exception;
+    protected abstract ConcreteElement doBuild(RunData data)
+            throws Exception;
 
     /**
      * Subclasses can override this method to add additional
@@ -93,10 +92,10 @@ public abstract class Screen extends Assembler
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    protected ConcreteElement build( RunData data )
-        throws Exception
+    protected ConcreteElement build(RunData data)
+            throws Exception
     {
-        return doBuild( data );
+        return doBuild(data);
     }
 
     /**
@@ -124,7 +123,7 @@ public abstract class Screen extends Assembler
      * @param data Turbine information.
      * @param layout The layout name.
      */
-    public void setLayout( RunData data, String layout )
+    public void setLayout(RunData data, String layout)
     {
         data.setLayout(layout);
     }

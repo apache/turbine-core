@@ -56,6 +56,7 @@ package org.apache.turbine.services.velocity;
 
 import java.io.OutputStream;
 import java.io.Writer;
+
 import org.apache.turbine.services.Service;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
@@ -84,7 +85,7 @@ public interface VelocityService extends Service
      * @exception Exception, a generic exception.
      */
     String handleRequest(Context context, String template)
-        throws Exception;
+            throws Exception;
 
     /**
      * Process the request and fill in the template with the values
@@ -100,7 +101,7 @@ public interface VelocityService extends Service
     void handleRequest(Context context,
                        String filename,
                        OutputStream out)
-        throws TurbineException;
+            throws TurbineException;
 
     /**
      * Process the request and fill in the template with the values
@@ -116,7 +117,7 @@ public interface VelocityService extends Service
     void handleRequest(Context context,
                        String filename,
                        Writer writer)
-        throws TurbineException;
+            throws TurbineException;
 
     /**
      * Create an empty WebContext object.

@@ -53,25 +53,26 @@ package org.apache.turbine.services.security.ldap;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
+
 import java.util.Hashtable;
 import java.util.Vector;
+import javax.naming.AuthenticationException;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.AuthenticationException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
+
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.security.UserManager;
 import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.services.security.UserManager;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
 import org.apache.turbine.util.security.PasswordMismatchException;
 import org.apache.turbine.util.security.UnknownEntityException;
-
 
 /**
  * A UserManager performs {@link org.apache.turbine.om.security.User}
@@ -121,7 +122,7 @@ public class LDAPUserManager implements UserManager
      * @throws DataBackendException Error accessing the data backend.
      */
     public boolean accountExists(String username)
-        throws DataBackendException
+            throws DataBackendException
     {
         try
         {
@@ -146,7 +147,7 @@ public class LDAPUserManager implements UserManager
      * @exception DataBackendException Error accessing the data backend.
      */
     public User retrieve(String username)
-        throws UnknownEntityException, DataBackendException
+            throws UnknownEntityException, DataBackendException
     {
         try
         {
@@ -166,7 +167,7 @@ public class LDAPUserManager implements UserManager
             SearchControls ctls = new SearchControls();
 
             NamingEnumeration answer =
-                ctx.search(userBaseSearch, filter, ctls);
+                    ctx.search(userBaseSearch, filter, ctls);
 
             if (answer.hasMore())
             {
@@ -182,7 +183,7 @@ public class LDAPUserManager implements UserManager
             else
             {
                 throw new UnknownEntityException("The given user: "
-                    + username + "\n does not exist.");
+                        + username + "\n does not exist.");
             }
         }
         catch (NamingException ex)
@@ -209,7 +210,7 @@ public class LDAPUserManager implements UserManager
      * @throws DataBackendException Error accessing the data backend.
      */
     public User[] retrieve(Criteria criteria)
-        throws DataBackendException
+            throws DataBackendException
     {
 
         Vector users = new Vector(0);
@@ -229,7 +230,7 @@ public class LDAPUserManager implements UserManager
             SearchControls ctls = new SearchControls();
 
             NamingEnumeration answer =
-                ctx.search(userBaseSearch, filter, ctls);
+                    ctx.search(userBaseSearch, filter, ctls);
 
             while (answer.hasMore())
             {
@@ -267,7 +268,7 @@ public class LDAPUserManager implements UserManager
      * @exception DataBackendException Error accessing the data backend.
      */
     public User retrieve(String username, String password)
-        throws PasswordMismatchException,
+            throws PasswordMismatchException,
             UnknownEntityException, DataBackendException
     {
         User user = retrieve(username);
@@ -287,12 +288,12 @@ public class LDAPUserManager implements UserManager
      *
      */
     public void store(User user)
-        throws UnknownEntityException, DataBackendException
+            throws UnknownEntityException, DataBackendException
     {
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '"
-                + user.getUserName() + "' does not exist");
+                    + user.getUserName() + "' does not exist");
         }
 
         try
@@ -324,13 +325,13 @@ public class LDAPUserManager implements UserManager
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public void saveOnSessionUnbind( User user )
-        throws UnknownEntityException, DataBackendException
+    public void saveOnSessionUnbind(User user)
+            throws UnknownEntityException, DataBackendException
     {
-        if(!accountExists(user))
+        if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                user.getUserName() + "' does not exist");
+                    user.getUserName() + "' does not exist");
         }
     }
 
@@ -348,7 +349,7 @@ public class LDAPUserManager implements UserManager
      * @exception DataBackendException Error accessing the data backend.
      */
     public void authenticate(User user, String password)
-        throws PasswordMismatchException,
+            throws PasswordMismatchException,
             UnknownEntityException,
             DataBackendException
     {
@@ -385,7 +386,7 @@ public class LDAPUserManager implements UserManager
      * @exception DataBackendException Error accessing the data backend.
      */
     public void changePassword(User user, String oldPass, String newPass)
-        throws PasswordMismatchException,
+            throws PasswordMismatchException,
             UnknownEntityException, DataBackendException
     {
         throw new DataBackendException(
@@ -408,7 +409,7 @@ public class LDAPUserManager implements UserManager
      * @exception DataBackendException Error accessing the data backend.
      */
     public void forcePassword(User user, String password)
-        throws UnknownEntityException, DataBackendException
+            throws UnknownEntityException, DataBackendException
     {
         throw new DataBackendException(
                 "The method forcePassword has no implementation.");
@@ -423,12 +424,12 @@ public class LDAPUserManager implements UserManager
      * @throws EntityExistsException if the user account already exists.
      */
     public void createAccount(User user, String initialPassword)
-        throws EntityExistsException, DataBackendException
+            throws EntityExistsException, DataBackendException
     {
         if (accountExists(user))
         {
             throw new EntityExistsException("The account '"
-                + user.getUserName() + "' already exist");
+                    + user.getUserName() + "' already exist");
         }
 
         try
@@ -455,12 +456,12 @@ public class LDAPUserManager implements UserManager
      * @throws UnknownEntityException if the user account is not present.
      */
     public void removeAccount(User user)
-        throws UnknownEntityException, DataBackendException
+            throws UnknownEntityException, DataBackendException
     {
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '"
-                + user.getUserName() + "' does not exist");
+                    + user.getUserName() + "' does not exist");
         }
 
         try
@@ -485,7 +486,7 @@ public class LDAPUserManager implements UserManager
      * @return a new DirContext.
      */
     public static DirContext bindAsAdmin()
-        throws NamingException
+            throws NamingException
     {
         String adminUser = LDAPSecurityConstants.getAdminUsername();
         String adminPassword = LDAPSecurityConstants.getAdminPassword();
@@ -502,7 +503,7 @@ public class LDAPUserManager implements UserManager
      * @return a new DirContext.
      */
     public static DirContext bind(String username, String password)
-        throws NamingException
+            throws NamingException
     {
         String host = LDAPSecurityConstants.getLDAPHost();
         String port = LDAPSecurityConstants.getLDAPPort();
@@ -534,7 +535,7 @@ public class LDAPUserManager implements UserManager
      * @throws DataBackendException if there is an error creating the
      */
     private LDAPUser createLDAPUser()
-        throws DataBackendException
+            throws DataBackendException
     {
         try
         {

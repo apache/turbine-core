@@ -55,26 +55,29 @@ package org.apache.turbine.services.security.ldap;
  */
 
 import java.util.Hashtable;
-import java.util.Vector;
 import java.util.Iterator;
+import java.util.Vector;
+import javax.naming.NameAlreadyBoundException;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.NameAlreadyBoundException;
-import javax.naming.directory.Attributes;
 import javax.naming.directory.Attribute;
-import javax.naming.directory.BasicAttributes;
+import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.BasicAttributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
-import org.apache.turbine.om.security.User;
 import org.apache.turbine.om.security.TurbineGroup;
 import org.apache.turbine.om.security.TurbinePermission;
 import org.apache.turbine.om.security.TurbineRole;
+import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.BaseSecurityService;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.security.AccessControlList;
@@ -84,9 +87,6 @@ import org.apache.turbine.util.security.GroupSet;
 import org.apache.turbine.util.security.PermissionSet;
 import org.apache.turbine.util.security.RoleSet;
 import org.apache.turbine.util.security.UnknownEntityException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 
 /**
  * An implementation of SecurityService that uses LDAP as a backend.
@@ -124,7 +124,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @return an AccessControlList for a specific user.
      */
     public AccessControlList getACL(User user)
-        throws DataBackendException, UnknownEntityException
+            throws DataBackendException, UnknownEntityException
     {
         if (!TurbineSecurity.accountExists(user))
         {
@@ -201,14 +201,14 @@ public class LDAPSecurityService extends BaseSecurityService
      *         is not present.
      */
     public synchronized void grant(User user, Group group, Role role)
-        throws DataBackendException, UnknownEntityException
+            throws DataBackendException, UnknownEntityException
     {
         try
         {
             lockExclusive();
 
-            String userName  = user.getUserName();
-            String roleName  = role.getName();
+            String userName = user.getUserName();
+            String roleName = role.getName();
             String groupName = group.getName();
 
             if (!accountExists(user))
@@ -231,15 +231,15 @@ public class LDAPSecurityService extends BaseSecurityService
 
             // Make the distinguished name.
             String dn = "turbineGroupName=" + groupName + ","
-                + LDAPSecurityConstants.getUserNameAttribute()
-                + "=" + userName + ","
-                + LDAPSecurityConstants.getBaseSearch();
+                    + LDAPSecurityConstants.getUserNameAttribute()
+                    + "=" + userName + ","
+                    + LDAPSecurityConstants.getBaseSearch();
 
 
             // Connect to LDAP.
             DirContext ctx = LDAPUserManager.bindAsAdmin();
 
-             // Make the attributes.
+            // Make the attributes.
             Attributes attrs = new BasicAttributes();
 
             attrs.put(new BasicAttribute("turbineRoleName", roleName));
@@ -281,14 +281,14 @@ public class LDAPSecurityService extends BaseSecurityService
      *         not present.
      */
     public synchronized void revoke(User user, Group group, Role role)
-        throws DataBackendException, UnknownEntityException
+            throws DataBackendException, UnknownEntityException
     {
         try
         {
             lockExclusive();
 
-            String userName  = user.getUserName();
-            String roleName  = role.getName();
+            String userName = user.getUserName();
+            String roleName = role.getName();
             String groupName = group.getName();
 
             if (!accountExists(user))
@@ -311,9 +311,9 @@ public class LDAPSecurityService extends BaseSecurityService
 
             // Make the distinguished name.
             String dn = "turbineGroupName=" + groupName + ","
-                + LDAPSecurityConstants.getUserNameAttribute()
-                + "=" + userName + ","
-                + LDAPSecurityConstants.getBaseSearch();
+                    + LDAPSecurityConstants.getUserNameAttribute()
+                    + "=" + userName + ","
+                    + LDAPSecurityConstants.getBaseSearch();
 
             // Make the attributes.
             Attributes attrs = new BasicAttributes();
@@ -346,7 +346,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws UnknownEntityException if role or permission is not present.
      */
     public synchronized void grant(Role role, Permission permission)
-        throws DataBackendException, UnknownEntityException
+            throws DataBackendException, UnknownEntityException
     {
         try
         {
@@ -369,7 +369,7 @@ public class LDAPSecurityService extends BaseSecurityService
 
             // Make the distinguished name.
             String dn = "turbineRoleName=" + roleName + ","
-                + LDAPSecurityConstants.getBaseSearch();
+                    + LDAPSecurityConstants.getBaseSearch();
 
             // Make the attributes.
             Attributes attrs = new BasicAttributes();
@@ -402,7 +402,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws UnknownEntityException if role or permission is not present.
      */
     public synchronized void revoke(Role role, Permission permission)
-        throws DataBackendException, UnknownEntityException
+            throws DataBackendException, UnknownEntityException
     {
         try
         {
@@ -425,7 +425,7 @@ public class LDAPSecurityService extends BaseSecurityService
 
             // Make the distinguished name.
             String dn = "turbineRoleName=" + roleName + ","
-                + LDAPSecurityConstants.getBaseSearch();
+                    + LDAPSecurityConstants.getBaseSearch();
 
             // Make the attributes.
             Attributes attrs = new BasicAttributes();
@@ -506,7 +506,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws DataBackendException if there is problem with the Backend.
      */
     public GroupSet getGroups(Criteria criteria)
-        throws DataBackendException
+            throws DataBackendException
     {
         Vector groups = new Vector();
 
@@ -546,14 +546,14 @@ public class LDAPSecurityService extends BaseSecurityService
     }
 
     /** Get the Roles that a user belongs in a specific group.
-      * @param user The user.
-      * @param group The group
-      * @throws DataBackendException if there is a problem with
-      *     the LDAP service.
-      * @return a RoleSet.
-      */
+     * @param user The user.
+     * @param group The group
+     * @throws DataBackendException if there is a problem with
+     *     the LDAP service.
+     * @return a RoleSet.
+     */
     private RoleSet getRoles(User user, Group group)
-        throws DataBackendException
+            throws DataBackendException
     {
         Vector roles = new Vector(0);
 
@@ -669,7 +669,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws DataBackendException if there is a problem with the Backend.
      */
     public PermissionSet getPermissions(Criteria criteria)
-        throws DataBackendException
+            throws DataBackendException
     {
         Vector permissions = new Vector();
 
@@ -722,7 +722,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @return a PermissionSet.
      */
     public PermissionSet getPermissions(Role role)
-        throws DataBackendException, UnknownEntityException
+            throws DataBackendException, UnknownEntityException
     {
         Hashtable permissions = new Hashtable();
 
@@ -807,7 +807,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws UnknownEntityException if the permission does not exist.
      */
     public void savePermission(Permission permission)
-        throws DataBackendException, UnknownEntityException
+            throws DataBackendException, UnknownEntityException
     {
         // Not implemented yet.
     }
@@ -822,7 +822,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws EntityExistsException if the group already exists.
      */
     public synchronized Group addGroup(Group group)
-        throws DataBackendException, EntityExistsException
+            throws DataBackendException, EntityExistsException
     {
         try
         {
@@ -838,7 +838,7 @@ public class LDAPSecurityService extends BaseSecurityService
 
             // Make the distinguished name.
             String dn = "turbineGroupName=" + groupName + ","
-                + LDAPSecurityConstants.getBaseSearch();
+                    + LDAPSecurityConstants.getBaseSearch();
 
             // Make the attributes.
             Attributes attrs = new BasicAttributes();
@@ -876,7 +876,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws EntityExistsException if the role already exists.
      */
     public synchronized Role addRole(Role role)
-        throws DataBackendException, EntityExistsException
+            throws DataBackendException, EntityExistsException
     {
         try
         {
@@ -892,7 +892,7 @@ public class LDAPSecurityService extends BaseSecurityService
 
             // Make the distinguished name.
             String dn = "turbineRoleName=" + roleName + ","
-                + LDAPSecurityConstants.getBaseSearch();
+                    + LDAPSecurityConstants.getBaseSearch();
 
             // Make the attributes.
             Attributes attrs = new BasicAttributes();
@@ -931,7 +931,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws EntityExistsException if the permission already exists.
      */
     public synchronized Permission addPermission(Permission permission)
-        throws DataBackendException, EntityExistsException
+            throws DataBackendException, EntityExistsException
     {
         try
         {
@@ -947,7 +947,7 @@ public class LDAPSecurityService extends BaseSecurityService
 
             // Make the distinguished name.
             String dn = "turbinePermissionName=" + permName + ","
-                + LDAPSecurityConstants.getBaseSearch();
+                    + LDAPSecurityConstants.getBaseSearch();
 
             // Make the attributes.
             Attributes attrs = new BasicAttributes();
@@ -983,7 +983,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws UnknownEntityException if the group does not exist.
      */
     public synchronized void removeGroup(Group group)
-        throws DataBackendException, UnknownEntityException
+            throws DataBackendException, UnknownEntityException
     {
         try
         {
@@ -999,7 +999,7 @@ public class LDAPSecurityService extends BaseSecurityService
 
             // Make the distinguished name.
             String dn = "turbineGroupName=" + groupName + ","
-                + LDAPSecurityConstants.getBaseSearch();
+                    + LDAPSecurityConstants.getBaseSearch();
 
             DirContext ctx = LDAPUserManager.bindAsAdmin();
 
@@ -1027,7 +1027,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws UnknownEntityException if the role does not exist.
      */
     public synchronized void removeRole(Role role)
-        throws DataBackendException, UnknownEntityException
+            throws DataBackendException, UnknownEntityException
     {
         try
         {
@@ -1043,7 +1043,7 @@ public class LDAPSecurityService extends BaseSecurityService
 
             // Make the distinguished name.
             String dn = "turbineRoleName=" + roleName + ","
-                + LDAPSecurityConstants.getBaseSearch();
+                    + LDAPSecurityConstants.getBaseSearch();
 
             DirContext ctx = LDAPUserManager.bindAsAdmin();
 
@@ -1071,7 +1071,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws UnknownEntityException if the permission does not exist.
      */
     public synchronized void removePermission(Permission permission)
-        throws DataBackendException, UnknownEntityException
+            throws DataBackendException, UnknownEntityException
     {
         try
         {
@@ -1087,7 +1087,7 @@ public class LDAPSecurityService extends BaseSecurityService
 
             // Make the distinguished name.
             String dn = "turbinePermissionName=" + permName + ","
-                + LDAPSecurityConstants.getBaseSearch();
+                    + LDAPSecurityConstants.getBaseSearch();
 
             DirContext ctx = LDAPUserManager.bindAsAdmin();
 
@@ -1116,7 +1116,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws UnknownEntityException if the group does not exist.
      */
     public synchronized void renameGroup(Group group, String name)
-        throws DataBackendException, UnknownEntityException
+            throws DataBackendException, UnknownEntityException
     {
         // Not implemented yet.
     }
@@ -1130,7 +1130,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws UnknownEntityException if the role does not exist.
      */
     public synchronized void renameRole(Role role, String name)
-        throws DataBackendException, UnknownEntityException
+            throws DataBackendException, UnknownEntityException
     {
         // Not implemented yet.
     }
@@ -1144,8 +1144,8 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws UnknownEntityException if the permission does not exist.
      */
     public synchronized void renamePermission(Permission permission,
-        String name)
-        throws DataBackendException, UnknownEntityException
+                                              String name)
+            throws DataBackendException, UnknownEntityException
     {
         // Not implemented yet.
     }
@@ -1157,7 +1157,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws UnkownEntityException if the role or a permission is not found.
      */
     public void revokeAll(User user)
-        throws DataBackendException, UnknownEntityException
+            throws DataBackendException, UnknownEntityException
     {
         Iterator groupsIterator = getAllGroups().elements();
         while (groupsIterator.hasNext())
@@ -1179,7 +1179,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws UnkownEntityException if the role or a permission is not found.
      */
     public void revokeAll(Role role)
-        throws DataBackendException, UnknownEntityException
+            throws DataBackendException, UnknownEntityException
     {
         PermissionSet permissions = getPermissions(role);
         Iterator permIterator = permissions.elements();
@@ -1197,10 +1197,10 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws UnkownEntityException if the role or a permission is not found.
      */
     public void revokeAll(Group group)
-        throws DataBackendException, UnknownEntityException
+            throws DataBackendException, UnknownEntityException
     {
         User[] users = getUsers(new Criteria());
-        for(int i = 0; i < users.length; i++)
+        for (int i = 0; i < users.length; i++)
         {
             Iterator rolesIterator = getRoles(users[i], group).elements();
             while (rolesIterator.hasNext())
@@ -1219,7 +1219,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws DataBackendException if there is an error with LDAP
      */
     public boolean checkExists(Role role)
-        throws DataBackendException
+            throws DataBackendException
     {
         RoleSet roleSet = getRoles(new Criteria());
 
@@ -1234,7 +1234,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws DataBackendException if there is an error with LDAP
      */
     public boolean checkExists(Group group)
-        throws DataBackendException
+            throws DataBackendException
     {
         GroupSet groupSet = getGroups(new Criteria());
 
@@ -1249,7 +1249,7 @@ public class LDAPSecurityService extends BaseSecurityService
      * @throws DataBackendException if there is an error with LDAP
      */
     public boolean checkExists(Permission permission)
-        throws DataBackendException
+            throws DataBackendException
     {
         PermissionSet permissionSet = getPermissions(new Criteria());
 

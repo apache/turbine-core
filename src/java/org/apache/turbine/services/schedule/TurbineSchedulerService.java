@@ -118,15 +118,15 @@ public class TurbineSchedulerService
             // Load all from cold storage.
             List jobs = JobEntryPeer.doSelect(new Criteria());
 
-            if(jobs != null && jobs.size() > 0)
+            if (jobs != null && jobs.size() > 0)
             {
                 Iterator it = jobs.iterator();
-                while(it.hasNext())
+                while (it.hasNext())
                 {
                     ((JobEntry) it.next()).calcRunTime();
                 }
                 scheduleQueue.batchLoad(jobs);
-                if(getConfiguration().getBoolean("enabled", true))
+                if (getConfiguration().getBoolean("enabled", true))
                 {
                     restart();
                 }
@@ -134,7 +134,7 @@ public class TurbineSchedulerService
 
             setInit(true);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             String errorMessage = "Could not initialize the scheduler service";
             log.error(errorMessage, e);
@@ -165,7 +165,7 @@ public class TurbineSchedulerService
      */
     public void shutdown()
     {
-        if(getThread() != null)
+        if (getThread() != null)
         {
             getThread().interrupt();
         }
@@ -186,7 +186,7 @@ public class TurbineSchedulerService
             JobEntry je = JobEntryPeer.retrieveByPK(oid);
             return scheduleQueue.getJob(je);
         }
-        catch(TorqueException e)
+        catch (TorqueException e)
         {
             String errorMessage = "Error retrieving job from persistent storage.";
             log.error(errorMessage, e);
@@ -225,16 +225,16 @@ public class TurbineSchedulerService
             scheduleQueue.remove(je);
 
             // restart the scheduler
-            if(enabled)
+            if (enabled)
             {
                 restart();
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             String errorMessage = "Problem removing Scheduled Job: " + je.getTask();
             log.error(errorMessage, e);
-            throw new TurbineException( errorMessage, e);
+            throw new TurbineException(errorMessage, e);
         }
     }
 
@@ -252,7 +252,7 @@ public class TurbineSchedulerService
             je.calcRunTime();
 
             // Update the queue.
-            if(je.isNew())
+            if (je.isNew())
             {
                 scheduleQueue.add(je);
             }
@@ -263,16 +263,16 @@ public class TurbineSchedulerService
 
             je.save();
 
-            if(enabled)
+            if (enabled)
             {
                 restart();
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             String errorMessage = "Problem updating Scheduled Job: " + je.getTask();
             log.error(errorMessage, e);
-            throw new TurbineException( errorMessage, e);
+            throw new TurbineException(errorMessage, e);
         }
     }
 
@@ -311,7 +311,7 @@ public class TurbineSchedulerService
     {
         log.info("Stopping job scheduler");
         Thread thread = getThread();
-        if(thread != null)
+        if (thread != null)
         {
             thread.interrupt();
         }
@@ -348,7 +348,7 @@ public class TurbineSchedulerService
     {
         log.info("Starting job scheduler");
         enabled = true;
-        if(thread == null)
+        if (thread == null)
         {
             // Create the the housekeeping thread of the scheduler. It will wait
             // for the time when the next task needs to be started, and then
@@ -379,12 +379,12 @@ public class TurbineSchedulerService
     {
         try
         {
-            while(!Thread.interrupted())
+            while (!Thread.interrupted())
             {
                 // Grab the next job off the queue.
                 JobEntry je = scheduleQueue.getNext();
 
-                if(je == null)
+                if (je == null)
                 {
                     // Queue must be empty. Wait on it.
                     wait();
@@ -394,7 +394,7 @@ public class TurbineSchedulerService
                     long now = System.currentTimeMillis();
                     long when = je.getNextRuntime();
 
-                    if(when > now)
+                    if (when > now)
                     {
                         // Wait till next runtime.
                         wait(when - now);
@@ -409,7 +409,7 @@ public class TurbineSchedulerService
                 }
             }
         }
-        catch(InterruptedException ex)
+        catch (InterruptedException ex)
         {
         }
 
@@ -433,10 +433,10 @@ public class TurbineSchedulerService
             String taskName = null;
             try
             {
-                while(enabled)
+                while (enabled)
                 {
                     JobEntry je = nextJob();
-                    if(je != null)
+                    if (je != null)
                     {
                         taskName = je.getTask();
 
@@ -451,9 +451,9 @@ public class TurbineSchedulerService
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                log.error("Error running a Scheduled Job: "+taskName, e);
+                log.error("Error running a Scheduled Job: " + taskName, e);
                 enabled = false;
             }
             finally

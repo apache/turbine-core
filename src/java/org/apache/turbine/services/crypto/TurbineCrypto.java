@@ -59,9 +59,9 @@ import java.security.NoSuchAlgorithmException;
 import org.apache.turbine.services.TurbineServices;
 
 /**
- * This is a facade class for the CryptoService. 
+ * This is a facade class for the CryptoService.
  *
- * Here are the static methods that call related methods of the 
+ * Here are the static methods that call related methods of the
  * various implementations of the Crypto Security Service, according
  * to the settings in TurbineResources.
  *
@@ -82,7 +82,7 @@ public abstract class TurbineCrypto
     public static CryptoService getService()
     {
         return (CryptoService) TurbineServices.getInstance()
-            .getService(CryptoService.SERVICE_NAME);
+                .getService(CryptoService.SERVICE_NAME);
     }
 
     /**
@@ -97,7 +97,7 @@ public abstract class TurbineCrypto
      *
      */
     public static CryptoAlgorithm getCryptoAlgorithm(String algo)
-        throws NoSuchAlgorithmException
+            throws NoSuchAlgorithmException
     {
         return getService().getCryptoAlgorithm(algo);
     }

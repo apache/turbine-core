@@ -65,7 +65,7 @@ import org.apache.turbine.services.resources.TurbineResources;
  * @version $Id$
  */
 public class CachedObject
-    implements java.io.Serializable
+        implements java.io.Serializable
 {
 
     /** Cache the object with the Default TTL */
@@ -79,7 +79,7 @@ public class CachedObject
 
     /** Default age (30 minutes). */
     private long defaultage =
-        TurbineResources.getLong("cachedobject.defaultage", 1800000);
+            TurbineResources.getLong("cachedobject.defaultage", 1800000);
 
     /** When created. **/
     protected long created = 0;
@@ -89,7 +89,6 @@ public class CachedObject
 
     /** Is this object stale/expired? */
     private boolean stale = false;
-
 
     /**
      * Constructor; sets the object to expire in the default time (30
@@ -205,7 +204,7 @@ public class CachedObject
      */
     public synchronized boolean isStale()
     {
-        if(expires == FOREVER)
+        if (expires == FOREVER)
         {
             return false;
         }

@@ -57,15 +57,12 @@ package org.apache.turbine.modules.pages;
 import java.util.Vector;
 
 import org.apache.ecs.Doctype;
-
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.LayoutLoader;
 import org.apache.turbine.modules.Page;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
-
 import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.util.RunData;
 
 /**
@@ -129,7 +126,7 @@ public class DefaultPage extends Page
      * @exception Exception, a generic exception.
      */
     public void doBuild(RunData data)
-        throws Exception
+            throws Exception
     {
         // Template pages can use this to set up the context, so it is
         // available to the Action and Screen.  It does nothing here.
@@ -139,7 +136,7 @@ public class DefaultPage extends Page
         // can re-define the template definition.
         if (data.hasAction())
         {
-            ActionLoader.getInstance().exec (data, data.getAction());
+            ActionLoader.getInstance().exec(data, data.getAction());
         }
 
         // if a redirect was setup in data, don't do anything else
@@ -165,11 +162,11 @@ public class DefaultPage extends Page
         // the Screen that has been defined.
         if (layout != null)
         {
-            LayoutLoader.getInstance().exec (data, layout);
+            LayoutLoader.getInstance().exec(data, layout);
         }
         else
         {
-            ScreenLoader.getInstance().exec (data, data.getScreen());
+            ScreenLoader.getInstance().exec(data, data.getScreen());
         }
 
         // Do any post build actions (overridable by subclasses -
@@ -186,7 +183,7 @@ public class DefaultPage extends Page
      * @exception Exception, a generic exception.
      */
     protected void doBuildBeforeAction(RunData data)
-        throws Exception
+            throws Exception
     {
     }
 
@@ -198,7 +195,7 @@ public class DefaultPage extends Page
      * @exception Exception, a generic exception.
      */
     protected void doBuildAfterAction(RunData data)
-        throws Exception
+            throws Exception
     {
     }
 
@@ -210,7 +207,7 @@ public class DefaultPage extends Page
      * @exception Exception, a generic exception.
      */
     protected void doPostBuild(RunData data)
-        throws Exception
+            throws Exception
     {
     }
 
@@ -225,17 +222,17 @@ public class DefaultPage extends Page
      * @exception Exception, a generic exception.
      */
     private void setDefaultDoctype(RunData data)
-        throws Exception
+            throws Exception
     {
-        String errMsg = 
-            "default.doctype property not set properly in TurbineResources.";
-        Vector doctypeProperty = 
-            TurbineResources.getVector("default.doctype", null);
+        String errMsg =
+                "default.doctype property not set properly in TurbineResources.";
+        Vector doctypeProperty =
+                TurbineResources.getVector("default.doctype", null);
         if (doctypeProperty != null && doctypeProperty.size() > 0)
         {
             if (doctypeProperty.size() == 1)
             {
-                String doc = (String)doctypeProperty.firstElement();
+                String doc = (String) doctypeProperty.firstElement();
                 if (doc.equalsIgnoreCase("Html40Transitional"))
                 {
                     data.getPage().setDoctype(new Doctype.Html40Transitional());
@@ -256,9 +253,9 @@ public class DefaultPage extends Page
             else if (doctypeProperty.size() == 2)
             {
                 data.getPage().setDoctype(
-                    new Doctype()
-                        .setIdentifier((String)doctypeProperty.elementAt(0))
-                        .setUri((String)doctypeProperty.elementAt(1)));
+                        new Doctype()
+                        .setIdentifier((String) doctypeProperty.elementAt(0))
+                        .setUri((String) doctypeProperty.elementAt(1)));
             }
             else
             {

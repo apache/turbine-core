@@ -57,19 +57,18 @@ package org.apache.turbine.services.crypto.provider;
 import java.security.MessageDigest;
 
 import org.apache.commons.codec.base64.Base64;
-
 import org.apache.turbine.services.crypto.CryptoAlgorithm;
 
 /**
  * Implements the normal java.security.MessageDigest stream cipers.
- * Base64 strings returned by this provider are correctly padded to 
+ * Base64 strings returned by this provider are correctly padded to
  * multiples of four bytes. If you run into interoperability problems
- * with other languages, especially perl and the Digest::MD5 module, 
+ * with other languages, especially perl and the Digest::MD5 module,
  * note that the md5_base64 function from this package incorrectly drops
  * the pad bytes. Use the MIME::Base64 package instead.
  *
  * If you upgrade from Turbine 2.1 and suddently your old stored passwords
- * no longer work, please take a look at the OldJavaCrypt provider for 
+ * no longer work, please take a look at the OldJavaCrypt provider for
  * bug-to-bug compatibility.
  *
  * This provider can be used as the default crypto algorithm provider.
@@ -78,8 +77,8 @@ import org.apache.turbine.services.crypto.CryptoAlgorithm;
  * @version $Id$
  */
 
-public class JavaCrypt 
-    implements CryptoAlgorithm
+public class JavaCrypt
+        implements CryptoAlgorithm
 {
 
     /** The default cipher */
@@ -87,7 +86,6 @@ public class JavaCrypt
 
     /** The cipher to use for encryption */
     private String cipher = null;
-
 
     /**
      * C'tor
@@ -140,7 +138,7 @@ public class JavaCrypt
      */
 
     public String encrypt(String value)
-        throws Exception
+            throws Exception
     {
         MessageDigest md = MessageDigest.getInstance(cipher);
 

@@ -58,6 +58,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineServices;
@@ -83,8 +84,8 @@ import org.apache.turbine.util.pool.Recyclable;
  * @version $Id$
  */
 public class TurbinePoolService
-    extends TurbineFactoryService
-    implements PoolService
+        extends TurbineFactoryService
+        implements PoolService
 {
     /**
      * The property specifying the pool capacity.
@@ -204,7 +205,7 @@ public class TurbinePoolService
          * @return an instance or null.
          */
         public Object poll(Object[] params, String[] signature)
-            throws TurbineException
+                throws TurbineException
         {
             Object instance = pool.poll();
             if (instance != null)
@@ -223,7 +224,7 @@ public class TurbinePoolService
                             Method recycle = getRecycle(signature);
                             if (recycle == null)
                             {
-                                synchronized(this)
+                                synchronized (this)
                                 {
                                     /* Make a synchronized recheck. */
                                     recycle = getRecycle(signature);
@@ -231,18 +232,18 @@ public class TurbinePoolService
                                     {
                                         Class clazz = instance.getClass();
                                         recycle = clazz.getMethod("recycle",
-                                            TurbinePoolService.this.getSignature(
-                                                clazz,params,signature));
+                                                TurbinePoolService.this.getSignature(
+                                                        clazz, params, signature));
                                         ArrayList cache = recyclers != null ?
-                                            (ArrayList) recyclers.clone() :
-                                            new ArrayList();
+                                                (ArrayList) recyclers.clone() :
+                                                new ArrayList();
                                         cache.add(
-                                            new Recycler(recycle,signature));
+                                                new Recycler(recycle, signature));
                                         recyclers = cache;
                                     }
                                 }
                             }
-                            recycle.invoke(instance,params);
+                            recycle.invoke(instance, params);
                         }
                         else
                         {
@@ -252,7 +253,7 @@ public class TurbinePoolService
                     catch (Exception x)
                     {
                         throw new TurbineException(
-                            "Recycling failed for " + instance.getClass().getName(),x);
+                                "Recycling failed for " + instance.getClass().getName(), x);
                     }
                 }
             }
@@ -350,14 +351,14 @@ public class TurbinePoolService
      * @throws InitializationException if initialization fails.
      */
     public void init()
-        throws InitializationException
+            throws InitializationException
     {
         Configuration conf = getConfiguration();
         if (conf != null)
         {
             try
             {
-                int capacity = conf.getInt(POOL_CAPACITY,DEFAULT_POOL_CAPACITY);
+                int capacity = conf.getInt(POOL_CAPACITY, DEFAULT_POOL_CAPACITY);
                 if (capacity <= 0)
                 {
                     throw new IllegalArgumentException("Capacity must be >0");
@@ -367,7 +368,7 @@ public class TurbinePoolService
             catch (Exception x)
             {
                 throw new InitializationException(
-                    "Failed to initialize TurbinePoolService",x);
+                        "Failed to initialize TurbinePoolService", x);
             }
         }
         setInit(true);
@@ -382,11 +383,11 @@ public class TurbinePoolService
      * @throws TurbineException if recycling fails.
      */
     public Object getInstance(String className)
-        throws TurbineException
+            throws TurbineException
     {
-        Object instance = pollInstance(className,null,null);
+        Object instance = pollInstance(className, null, null);
         return instance == null ?
-            getFactory().getInstance(className) : instance;
+                getFactory().getInstance(className) : instance;
     }
 
     /**
@@ -401,11 +402,11 @@ public class TurbinePoolService
      */
     public Object getInstance(String className,
                               ClassLoader loader)
-        throws TurbineException
+            throws TurbineException
     {
-        Object instance = pollInstance(className,null,null);
+        Object instance = pollInstance(className, null, null);
         return instance == null ?
-            getFactory().getInstance(className,loader) : instance;
+                getFactory().getInstance(className, loader) : instance;
     }
 
     /**
@@ -424,11 +425,11 @@ public class TurbinePoolService
     public Object getInstance(String className,
                               Object[] params,
                               String[] signature)
-        throws TurbineException
+            throws TurbineException
     {
-        Object instance = pollInstance(className,params,signature);
+        Object instance = pollInstance(className, params, signature);
         return instance == null ?
-            getFactory().getInstance(className,params,signature) : instance;
+                getFactory().getInstance(className, params, signature) : instance;
     }
 
     /**
@@ -449,11 +450,11 @@ public class TurbinePoolService
                               ClassLoader loader,
                               Object[] params,
                               String[] signature)
-        throws TurbineException
+            throws TurbineException
     {
-        Object instance = pollInstance(className,params,signature);
+        Object instance = pollInstance(className, params, signature);
         return instance == null ?
-            getFactory().getInstance(className,loader,params,signature) : instance;
+                getFactory().getInstance(className, loader, params, signature) : instance;
     }
 
     /**
@@ -464,7 +465,7 @@ public class TurbinePoolService
      * @throws TurbineException if test fails.
      */
     public boolean isLoaderSupported(String className)
-        throws TurbineException
+            throws TurbineException
     {
         return getFactory().isLoaderSupported(className);
     }
@@ -478,11 +479,11 @@ public class TurbinePoolService
      * @throws TurbineException if recycling fails.
      */
     public Object getInstance(Class clazz)
-        throws TurbineException
+            throws TurbineException
     {
-        Object instance = pollInstance(clazz.getName(),null,null);
+        Object instance = pollInstance(clazz.getName(), null, null);
         return instance == null ?
-            super.getInstance(clazz) : instance;
+                super.getInstance(clazz) : instance;
     }
 
     /**
@@ -498,11 +499,11 @@ public class TurbinePoolService
     public Object getInstance(Class clazz,
                               Object params[],
                               String signature[])
-        throws TurbineException
+            throws TurbineException
     {
-        Object instance = pollInstance(clazz.getName(),params,signature);
+        Object instance = pollInstance(clazz.getName(), params, signature);
         return instance == null ?
-            super.getInstance(clazz,params,signature) : instance;
+                super.getInstance(clazz, params, signature) : instance;
     }
 
     /**
@@ -525,7 +526,7 @@ public class TurbinePoolService
             {
                 pool = new PoolBuffer(getCapacity(className));
                 repository = (HashMap) repository.clone();
-                repository.put(className,pool);
+                repository.put(className, pool);
                 poolRepository = repository;
 
                 if (instance instanceof ArrayCtorRecyclable)
@@ -559,7 +560,7 @@ public class TurbinePoolService
                 try
                 {
                     capacity = conf.getInt(
-                        POOL_CAPACITY + '.' + className,poolCapacity);
+                            POOL_CAPACITY + '.' + className, poolCapacity);
                     if (capacity <= 0)
                     {
                         capacity = poolCapacity;
@@ -589,8 +590,8 @@ public class TurbinePoolService
     {
         HashMap repository = poolRepository;
         repository = repository != null ?
-            (HashMap) repository.clone() : new HashMap();
-        repository.put(className,new PoolBuffer(capacity));
+                (HashMap) repository.clone() : new HashMap();
+        repository.put(className, new PoolBuffer(capacity));
         poolRepository = repository;
     }
 
@@ -641,10 +642,10 @@ public class TurbinePoolService
     private Object pollInstance(String className,
                                 Object[] params,
                                 String[] signature)
-        throws TurbineException
+            throws TurbineException
     {
         PoolBuffer pool = (PoolBuffer) poolRepository.get(className);
-        return pool != null ? pool.poll(params,signature) : null;
+        return pool != null ? pool.poll(params, signature) : null;
     }
 
     /**
@@ -655,6 +656,6 @@ public class TurbinePoolService
     private FactoryService getFactory()
     {
         return (FactoryService) TurbineServices.
-            getInstance().getService(FactoryService.SERVICE_NAME);
+                getInstance().getService(FactoryService.SERVICE_NAME);
     }
 }

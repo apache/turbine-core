@@ -55,23 +55,17 @@ package org.apache.turbine.services.component;
  */
 
 import java.util.Iterator;
-
 import javax.servlet.ServletConfig;
-
-import org.apache.turbine.Turbine;
-
-import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.TurbineBaseService;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.stratum.component.ComponentLoader;
-
 import org.apache.stratum.lifecycle.Disposable;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
 
 /**
  * An implementation of ComponentService which loads all the
@@ -81,10 +75,9 @@ import org.apache.stratum.lifecycle.Disposable;
  * @version $Id$
  */
 
-
 public class TurbineComponentService
-    extends TurbineBaseService
-    implements ComponentService
+        extends TurbineBaseService
+        implements ComponentService
 {
 
     /** Logging */
@@ -100,7 +93,7 @@ public class TurbineComponentService
     private static String COMPONENT = "component";
 
     /** List of Components that was initialized */
-    private Object [] components = null;
+    private Object[] components = null;
 
     /**
      * Load all configured components and initialize them. This is
@@ -111,12 +104,12 @@ public class TurbineComponentService
      *         stage
      */
     public void init()
-        throws InitializationException
+            throws InitializationException
     {
         ServletConfig config = Turbine.getTurbineServletConfig();
         Configuration loaderConf = new BaseConfiguration();
 
-        String [] names = getConfiguration().getStringArray(NAME);
+        String[] names = getConfiguration().getStringArray(NAME);
 
         for (int i = 0; i < names.length; i++)
         {
@@ -127,7 +120,7 @@ public class TurbineComponentService
             String subProperty = COMPONENT + "." + key;
             Configuration subConf = getConfiguration().subset(key);
 
-            for (Iterator it = subConf.getKeys(); it.hasNext(); )
+            for (Iterator it = subConf.getKeys(); it.hasNext();)
             {
                 String subKey = (String) it.next();
                 Object subVal = subConf.getProperty(subKey);
@@ -136,12 +129,12 @@ public class TurbineComponentService
                 {
                     log.debug("Fixing up " + subVal);
                     subVal =
-                        config.getServletContext().getRealPath((String) subVal);
+                            config.getServletContext().getRealPath((String) subVal);
                     log.debug("Now: " + subVal);
                 }
 
                 loaderConf.addProperty(subProperty + "." + subKey,
-                                       subVal);
+                        subVal);
             }
 
             log.info("Added " + key + " as a component");
@@ -170,7 +163,7 @@ public class TurbineComponentService
      * @deprecated use init() instead.
      */
     public void init(ServletConfig config)
-        throws InitializationException
+            throws InitializationException
     {
         init();
     }

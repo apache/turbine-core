@@ -54,20 +54,14 @@ package org.apache.turbine.modules.actions;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.TurbineConstants;
-
-import org.apache.turbine.modules.Action;
-
-import org.apache.turbine.om.security.User;
-
-import org.apache.turbine.services.resources.TurbineResources;
-
-import org.apache.turbine.services.security.TurbineSecurity;
-
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.modules.Action;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.resources.TurbineResources;
+import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.RunData;
-
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.TurbineSecurityException;
 
@@ -99,7 +93,7 @@ public class LoginUser extends Action
      * @exception Exception a generic exception.
      */
     public void doPerform(RunData data)
-        throws Exception
+            throws Exception
     {
         // This prevents a db hit on second Action call during page
         // generation.  Turbine removes everything from the Session
@@ -151,11 +145,11 @@ public class LoginUser extends Action
                 log.error(e);
             }
             data.setMessage(TurbineResources.getString(
-                TurbineConstants.LOGIN_ERROR));
+                    TurbineConstants.LOGIN_ERROR));
             // Retrieve an anonymous user.
-            data.setUser (TurbineSecurity.getAnonymousUser());
+            data.setUser(TurbineSecurity.getAnonymousUser());
             String loginTemplate = TurbineResources.getString(
-                TurbineConstants.TEMPLATE_LOGIN);
+                    TurbineConstants.TEMPLATE_LOGIN);
 
             if (loginTemplate != null && loginTemplate.length() > 0)
             {
@@ -164,7 +158,7 @@ public class LoginUser extends Action
             else
             {
                 data.setScreen(TurbineResources.getString(
-                    TurbineConstants.SCREEN_LOGIN));
+                        TurbineConstants.SCREEN_LOGIN));
             }
         }
     }

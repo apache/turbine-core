@@ -69,7 +69,7 @@ import java.util.StringTokenizer;
  * @version $Id$
  */
 public class LocaleTokenizer
-    implements Iterator
+        implements Iterator
 {
     /**
      * Separates elements of the <code>Accept-Language</code> HTTP
@@ -110,16 +110,16 @@ public class LocaleTokenizer
 
             // Record and cut off any quality value that comes after a
             // semi-colon.
-            if ( (index = element.indexOf(QUALITY_SEPARATOR)) != -1 )
+            if ((index = element.indexOf(QUALITY_SEPARATOR)) != -1)
             {
                 String q = element.substring(index);
                 element = element.substring(0, index);
-                if ( (index = q.indexOf('=')) != -1 )
+                if ((index = q.indexOf('=')) != -1)
                 {
                     try
                     {
                         acceptLang.quality =
-                            Float.valueOf(q.substring(index + 1));
+                                Float.valueOf(q.substring(index + 1));
                     }
                     catch (NumberFormatException useDefault)
                     {
@@ -131,7 +131,7 @@ public class LocaleTokenizer
 
             // Create a Locale from the language.  A dash may separate the
             // language from the country.
-            if ( (index = element.indexOf('-')) == -1 )
+            if ((index = element.indexOf('-')) == -1)
             {
                 // No dash means no country.
                 acceptLang.locale = new Locale(element, "");
@@ -139,7 +139,7 @@ public class LocaleTokenizer
             else
             {
                 acceptLang.locale = new Locale(element.substring(0, index),
-                                               element.substring(index + 1));
+                        element.substring(index + 1));
             }
 
             locales.add(acceptLang);
@@ -179,7 +179,7 @@ public class LocaleTokenizer
     public final void remove()
     {
         throw new UnsupportedOperationException(getClass().getName() +
-                                                " does not support remove()");
+                " does not support remove()");
     }
 
     /**
@@ -201,7 +201,7 @@ public class LocaleTokenizer
 
         public final int compareTo(Object acceptLang)
         {
-            return quality.compareTo( ((AcceptLanguage) acceptLang).quality );
+            return quality.compareTo(((AcceptLanguage) acceptLang).quality);
         }
     }
 }

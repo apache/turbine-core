@@ -58,7 +58,6 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.turbine.Turbine;
 
 /**
@@ -101,7 +100,7 @@ public abstract class TurbineResources
      */
     public static void setProperty(String key, String value)
     {
-        Turbine.getConfiguration().setProperty(key,value);
+        Turbine.getConfiguration().setProperty(key, value);
     }
 
     /**
@@ -113,7 +112,7 @@ public abstract class TurbineResources
      */
     public static boolean getBoolean(String name)
     {
-        return Turbine.getConfiguration().getBoolean (name);
+        return Turbine.getConfiguration().getBoolean(name);
     }
 
     /**
@@ -319,7 +318,7 @@ public abstract class TurbineResources
     public static Vector getVector(String name,
                                    Vector def)
     {
-        return Turbine.getConfiguration().getVector(name,def);
+        return Turbine.getConfiguration().getVector(name, def);
     }
 
     /**

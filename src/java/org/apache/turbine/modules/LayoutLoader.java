@@ -57,13 +57,9 @@ package org.apache.turbine.modules;
 import java.util.Vector;
 
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.services.TurbineServices;
-
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
-
 import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
 
@@ -78,7 +74,7 @@ public class LayoutLoader extends GenericLoader
 {
     /** The single instance of this class. */
     private static LayoutLoader instance = new LayoutLoader(
-        TurbineResources.getInt(TurbineConstants.LAYOUT_CACHE_SIZE, 10));
+            TurbineResources.getInt(TurbineConstants.LAYOUT_CACHE_SIZE, 10));
 
     /**
      * These ctor's are private to force clients to use getInstance()
@@ -118,7 +114,7 @@ public class LayoutLoader extends GenericLoader
      * @exception Exception a generic exception.
      */
     public void exec(RunData data, String name)
-        throws Exception
+            throws Exception
     {
         // Execute layout
         getInstance(name).build(data);
@@ -133,26 +129,26 @@ public class LayoutLoader extends GenericLoader
      * @exception Exception a generic exception.
      */
     public Layout getInstance(String name)
-        throws Exception
+            throws Exception
     {
         Layout layout = null;
 
         if (cache() && this.containsKey(name))
         {
-            layout = (Layout) this.get (name);
+            layout = (Layout) this.get(name);
         }
         else
         {
             // We get the broker service
             AssemblerBrokerService ab =
-                (AssemblerBrokerService)TurbineServices.getInstance()
-                .getService (AssemblerBrokerService.SERVICE_NAME);
+                    (AssemblerBrokerService) TurbineServices.getInstance()
+                    .getService(AssemblerBrokerService.SERVICE_NAME);
 
             try
             {
                 // Attempt to load the screen
                 layout = (Layout) ab.getAssembler(
-                    AssemblerBrokerService.LAYOUT_TYPE,name);
+                        AssemblerBrokerService.LAYOUT_TYPE, name);
             }
             catch (ClassCastException cce)
             {
@@ -169,14 +165,14 @@ public class LayoutLoader extends GenericLoader
                 // FIX ME: The AssemblerFactories should each add it's own
                 //         string here...
                 Vector packages = TurbineResources.getVector(
-                    TurbineConstants.MODULE_PACKAGES);
+                        TurbineConstants.MODULE_PACKAGES);
                 ObjectUtils.addOnce(packages,
-                                     GenericLoader.getBasePackage());
+                        GenericLoader.getBasePackage());
 
                 throw new ClassNotFoundException(
-                    "\n\n\tRequested Layout not found: " + name + "\n" +
-                    "\tTurbine looked in the following modules.packages " +
-                    "path: \n\t" + packages.toString() + "\n");
+                        "\n\n\tRequested Layout not found: " + name + "\n" +
+                        "\tTurbine looked in the following modules.packages " +
+                        "path: \n\t" + packages.toString() + "\n");
             }
             else if (cache())
             {

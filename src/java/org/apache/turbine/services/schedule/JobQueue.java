@@ -91,7 +91,7 @@ public class JobQueue
      */
     public JobEntry getNext()
     {
-        if(queue.size() > 0)
+        if (queue.size() > 0)
         {
             return (JobEntry) queue.elementAt(0);
         }
@@ -111,12 +111,12 @@ public class JobQueue
     {
         int index = -1;
 
-        if(je != null)
+        if (je != null)
         {
             index = queue.indexOf(je);
         }
 
-        if(index < 0)
+        if (index < 0)
         {
             return null;
         }
@@ -133,7 +133,7 @@ public class JobQueue
      */
     public Vector list()
     {
-        if(queue != null && queue.size() > 0)
+        if (queue != null && queue.size() > 0)
         {
             return (Vector) queue.clone();
         }
@@ -162,7 +162,7 @@ public class JobQueue
      */
     public synchronized void batchLoad(List jobEntries)
     {
-        if(jobEntries != null)
+        if (jobEntries != null)
         {
             queue.addAll(jobEntries);
             sortQueue();

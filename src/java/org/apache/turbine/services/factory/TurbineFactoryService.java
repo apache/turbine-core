@@ -61,6 +61,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -76,8 +77,8 @@ import org.apache.turbine.util.pool.ObjectInputStreamForContext;
  * @version $Id$
  */
 public class TurbineFactoryService
-    extends TurbineBaseService
-    implements FactoryService
+        extends TurbineBaseService
+        implements FactoryService
 {
     /**
      * The property specifying a set of additional class loaders.
@@ -153,14 +154,14 @@ public class TurbineFactoryService
                     try
                     {
                         classLoaders.add(
-                            loadClass((String) loaders.get(i)).newInstance());
+                                loadClass((String) loaders.get(i)).newInstance());
                     }
                     catch (Exception x)
                     {
                         throw new InitializationException(
-                            "No such class loader '" +
+                                "No such class loader '" +
                                 (String) loaders.get(i) +
-                                    "' for TurbinbeFactoryService",x);
+                                "' for TurbinbeFactoryService", x);
                     }
                 }
             }
@@ -176,7 +177,7 @@ public class TurbineFactoryService
                  * instantiate it by using the service when needed.
                  */
                 objectFactories.put(
-                    key.substring(OBJECT_FACTORY.length()),factory);
+                        key.substring(OBJECT_FACTORY.length()), factory);
             }
         }
         setInit(true);
@@ -190,12 +191,12 @@ public class TurbineFactoryService
      * @throws TurbineException if instantiation fails.
      */
     public Object getInstance(String className)
-        throws TurbineException
+            throws TurbineException
     {
         if (className == null)
         {
             throw new TurbineException(
-                new NullPointerException("String className"));
+                    new NullPointerException("String className"));
         }
 
         Factory factory = getFactory(className);
@@ -209,7 +210,7 @@ public class TurbineFactoryService
             catch (ClassNotFoundException x)
             {
                 throw new TurbineException(
-                    "Instantiation failed for class " + className,x);
+                        "Instantiation failed for class " + className, x);
             }
             return getInstance(clazz);
         }
@@ -232,12 +233,12 @@ public class TurbineFactoryService
      */
     public Object getInstance(String className,
                               ClassLoader loader)
-        throws TurbineException
+            throws TurbineException
     {
         if (className == null)
         {
             throw new TurbineException(
-                new NullPointerException("String className"));
+                    new NullPointerException("String className"));
         }
 
         Factory factory = getFactory(className);
@@ -248,12 +249,12 @@ public class TurbineFactoryService
                 Class clazz;
                 try
                 {
-                    clazz = loadClass(className,loader);
+                    clazz = loadClass(className, loader);
                 }
                 catch (ClassNotFoundException x)
                 {
                     throw new TurbineException(
-                        "Instantiation failed for class " + className,x);
+                            "Instantiation failed for class " + className, x);
                 }
                 return getInstance(clazz);
             }
@@ -282,12 +283,12 @@ public class TurbineFactoryService
     public Object getInstance(String className,
                               Object[] params,
                               String[] signature)
-        throws TurbineException
+            throws TurbineException
     {
         if (className == null)
         {
             throw new TurbineException(
-                new NullPointerException("String className"));
+                    new NullPointerException("String className"));
         }
 
         Factory factory = getFactory(className);
@@ -301,13 +302,13 @@ public class TurbineFactoryService
             catch (ClassNotFoundException x)
             {
                 throw new TurbineException(
-                    "Instantiation failed for class " + className,x);
+                        "Instantiation failed for class " + className, x);
             }
-            return getInstance(clazz,params,signature);
+            return getInstance(clazz, params, signature);
         }
         else
         {
-            return factory.getInstance(params,signature);
+            return factory.getInstance(params, signature);
         }
     }
 
@@ -330,12 +331,12 @@ public class TurbineFactoryService
                               ClassLoader loader,
                               Object[] params,
                               String[] signature)
-        throws TurbineException
+            throws TurbineException
     {
         if (className == null)
         {
             throw new TurbineException(
-                new NullPointerException("String className"));
+                    new NullPointerException("String className"));
         }
 
         Factory factory = getFactory(className);
@@ -346,23 +347,23 @@ public class TurbineFactoryService
                 Class clazz;
                 try
                 {
-                    clazz = loadClass(className,loader);
+                    clazz = loadClass(className, loader);
                 }
                 catch (ClassNotFoundException x)
                 {
                     throw new TurbineException(
-                        "Instantiation failed for class " + className,x);
+                            "Instantiation failed for class " + className, x);
                 }
-                return getInstance(clazz,params,signature);
+                return getInstance(clazz, params, signature);
             }
             else
             {
-                return getInstance(className,params,signature);
+                return getInstance(className, params, signature);
             }
         }
         else
         {
-            return factory.getInstance(loader,params,signature);
+            return factory.getInstance(loader, params, signature);
         }
     }
 
@@ -374,11 +375,11 @@ public class TurbineFactoryService
      * @throws TurbineException if test fails.
      */
     public boolean isLoaderSupported(String className)
-        throws TurbineException
+            throws TurbineException
     {
         Factory factory = getFactory(className);
         return factory != null ?
-            factory.isLoaderSupported() : true;
+                factory.isLoaderSupported() : true;
     }
 
     /**
@@ -389,7 +390,7 @@ public class TurbineFactoryService
      * @throws TurbineException if instantiation fails.
      */
     protected Object getInstance(Class clazz)
-        throws TurbineException
+            throws TurbineException
     {
         try
         {
@@ -398,7 +399,7 @@ public class TurbineFactoryService
         catch (Exception x)
         {
             throw new TurbineException(
-                "Instantiation failed for " + clazz.getName(),x);
+                    "Instantiation failed for " + clazz.getName(), x);
         }
     }
 
@@ -416,18 +417,18 @@ public class TurbineFactoryService
     protected Object getInstance(Class clazz,
                                  Object params[],
                                  String signature[])
-        throws TurbineException
+            throws TurbineException
     {
         /* Try to construct. */
         try
         {
-            Class[] sign = getSignature(clazz,params,signature);
+            Class[] sign = getSignature(clazz, params, signature);
             return clazz.getConstructor(sign).newInstance(params);
         }
         catch (Exception x)
         {
             throw new TurbineException(
-                "Instantiation failed for " + clazz.getName(),x);
+                    "Instantiation failed for " + clazz.getName(), x);
         }
     }
 
@@ -445,7 +446,7 @@ public class TurbineFactoryService
     protected Class[] getSignature(Class clazz,
                                    Object params[],
                                    String signature[])
-        throws ClassNotFoundException
+            throws ClassNotFoundException
     {
         if (signature != null)
         {
@@ -453,7 +454,7 @@ public class TurbineFactoryService
             ClassLoader tempLoader;
             ClassLoader loader = clazz.getClassLoader();
             Class[] sign = new Class[signature.length];
-            for (int i= 0; i < signature.length; i++)
+            for (int i = 0; i < signature.length; i++)
             {
                 /* Check primitive types. */
                 sign[i] = getPrimitiveClass(signature[i]);
@@ -466,14 +467,14 @@ public class TurbineFactoryService
                         sign[i] = loader.loadClass(signature[i]);
                         tempLoader = sign[i].getClassLoader();
                         if ((params[i] != null) &&
-                            (tempLoader != null) &&
-                            !tempLoader.equals(params[i].getClass().getClassLoader()))
+                                (tempLoader != null) &&
+                                !tempLoader.equals(params[i].getClass().getClassLoader()))
                         {
                             /*
                              * The class uses a different class loader,
                              * switch the parameter.
                              */
-                            params[i] = switchObjectContext(params[i],loader);
+                            params[i] = switchObjectContext(params[i], loader);
                         }
                     }
                     else
@@ -501,11 +502,11 @@ public class TurbineFactoryService
                                          ClassLoader loader)
     {
         ByteArrayOutputStream bout =
-            new ByteArrayOutputStream();
+                new ByteArrayOutputStream();
         try
         {
             ObjectOutputStream out =
-                new ObjectOutputStream(bout);
+                    new ObjectOutputStream(bout);
             out.writeObject(object);
             out.flush();
         }
@@ -517,9 +518,9 @@ public class TurbineFactoryService
         try
         {
             ByteArrayInputStream bin =
-                new ByteArrayInputStream(bout.toByteArray());
+                    new ByteArrayInputStream(bout.toByteArray());
             ObjectInputStreamForContext in =
-                new ObjectInputStreamForContext(bin,loader);
+                    new ObjectInputStreamForContext(bin, loader);
 
             return in.readObject();
         }
@@ -537,24 +538,26 @@ public class TurbineFactoryService
      * @throws ClassNotFoundException if the class was not found.
      */
     protected Class loadClass(String className)
-        throws ClassNotFoundException
+            throws ClassNotFoundException
     {
         ClassLoader loader = this.getClass().getClassLoader();
         try
         {
             return loader != null ?
-                loader.loadClass(className) : Class.forName(className);
+                    loader.loadClass(className) : Class.forName(className);
         }
         catch (ClassNotFoundException x)
         {
             /* Go through additional loaders. */
             for (Iterator i = classLoaders.iterator(); i.hasNext();)
             {
-                  try
-                  {
-                      return ((ClassLoader) i.next()).loadClass(className);
-                  }
-                  catch (ClassNotFoundException xx) { }
+                try
+                {
+                    return ((ClassLoader) i.next()).loadClass(className);
+                }
+                catch (ClassNotFoundException xx)
+                {
+                }
             }
 
             /* Give up. */
@@ -572,10 +575,10 @@ public class TurbineFactoryService
      */
     protected Class loadClass(String className,
                               ClassLoader loader)
-        throws ClassNotFoundException
+            throws ClassNotFoundException
     {
         return loader != null ?
-            loader.loadClass(className) : loadClass(className);
+                loader.loadClass(className) : loadClass(className);
     }
 
     /**
@@ -586,7 +589,7 @@ public class TurbineFactoryService
      * @throws TurbineException if instantiation of the factory fails.
      */
     protected Factory getFactory(String className)
-        throws TurbineException
+            throws TurbineException
     {
         HashMap factories = objectFactories;
         Object factory = factories.get(className);
@@ -607,11 +610,11 @@ public class TurbineFactoryService
                 catch (ClassCastException x)
                 {
                     throw new TurbineException(
-                        "Incorrect factory " + (String) factory +
-                            " for class " + className,x);
+                            "Incorrect factory " + (String) factory +
+                            " for class " + className, x);
                 }
                 factories = (HashMap) factories.clone();
-                factories.put(className,factory);
+                factories.put(className, factory);
                 objectFactories = factories;
             }
             return (Factory) factory;

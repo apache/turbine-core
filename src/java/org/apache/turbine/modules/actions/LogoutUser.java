@@ -55,17 +55,11 @@ package org.apache.turbine.modules.actions;
  */
 
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.modules.Action;
-
 import org.apache.turbine.om.security.User;
-
 import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.services.security.TurbineSecurity;
-
 import org.apache.turbine.util.RunData;
-
 import org.apache.turbine.util.security.AccessControlList;
 
 /**
@@ -95,7 +89,7 @@ public class LogoutUser extends Action
      * @exception Exception, a generic exception.
      */
     public void doPerform(RunData data)
-        throws Exception
+            throws Exception
     {
         User user = data.getUser();
 
@@ -112,7 +106,7 @@ public class LogoutUser extends Action
         }
 
         data.setMessage(TurbineResources.getString(
-            TurbineConstants.LOGOUT_MESSAGE));
+                TurbineConstants.LOGOUT_MESSAGE));
 
         // This will cause the acl to be removed from the session in
         // the Turbine servlet code.
@@ -138,7 +132,7 @@ public class LogoutUser extends Action
                 .equals("LogoutUser"))
         {
             data.setScreen(TurbineResources.getString(
-                TurbineConstants.SCREEN_HOMEPAGE));
+                    TurbineConstants.SCREEN_HOMEPAGE));
         }
     }
 }

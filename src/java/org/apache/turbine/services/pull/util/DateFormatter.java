@@ -124,7 +124,7 @@ public class DateFormatter
     {
         String result = null;
 
-        if(StringUtils.isEmpty(dateFormatString) || theDate == null)
+        if (StringUtils.isEmpty(dateFormatString) || theDate == null)
         {
             result = "";
         }

@@ -72,6 +72,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import javax.servlet.ServletConfig;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.pool.KeyedObjectPool;
@@ -364,7 +365,7 @@ public class TurbineIntakeService
         }
 
         List classNames = group.getMapToObjects();
-        for(Iterator iter2 = classNames.iterator();iter2.hasNext();)
+        for (Iterator iter2 = classNames.iterator(); iter2.hasNext();)
         {
             String className = (String) iter2.next();
             if (!getterMap.containsKey(className))

@@ -55,10 +55,8 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  */
 
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.security.TurbineSecurity;
-
 import org.apache.turbine.util.RunData;
 
 /**
@@ -103,10 +101,10 @@ public class TemplateSessionValidator extends SessionValidator
 
         // make sure we have some way to return a response
         if (!data.hasScreen() &&
-             data.getTemplateInfo().getScreenTemplate() == null)
+                data.getTemplateInfo().getScreenTemplate() == null)
         {
             String template = TurbineResources.getString(
-                TurbineConstants.TEMPLATE_HOMEPAGE);
+                    TurbineConstants.TEMPLATE_HOMEPAGE);
 
             if (template != null)
             {
@@ -115,7 +113,7 @@ public class TemplateSessionValidator extends SessionValidator
             else
             {
                 data.setScreen(TurbineResources.getString(
-                    TurbineConstants.SCREEN_HOMEPAGE));
+                        TurbineConstants.SCREEN_HOMEPAGE));
             }
         }
         // the session_access_counter can be placed as a hidden field in
@@ -125,24 +123,24 @@ public class TemplateSessionValidator extends SessionValidator
         {
             // See comments in screens.error.InvalidState.
             if (data.getParameters().getInt("_session_access_counter") <
-                (((Integer)data.getUser().getTemp("_session_access_counter"))
-                .intValue() - 1))
+                    (((Integer) data.getUser().getTemp("_session_access_counter"))
+                    .intValue() - 1))
             {
                 if (data.getTemplateInfo().getScreenTemplate() != null)
                 {
                     data.getUser().setTemp("prev_template",
-                        data.getTemplateInfo().getScreenTemplate()
-                        .replace('/', ','));
+                            data.getTemplateInfo().getScreenTemplate()
+                            .replace('/', ','));
                     data.getTemplateInfo().setScreenTemplate(
-                        TurbineResources.getString(
-                        TurbineConstants.TEMPLATE_INVALID_STATE));
+                            TurbineResources.getString(
+                                    TurbineConstants.TEMPLATE_INVALID_STATE));
                 }
                 else
                 {
                     data.getUser().setTemp("prev_screen",
-                        data.getScreen().replace('/', ','));
+                            data.getScreen().replace('/', ','));
                     data.setScreen(TurbineResources.getString(
-                        TurbineConstants.SCREEN_INVALID_STATE));
+                            TurbineConstants.SCREEN_INVALID_STATE));
                 }
                 data.getUser().setTemp("prev_parameters", data.getParameters());
                 data.setAction("");

@@ -189,8 +189,8 @@ public class XmlToAppData extends DefaultHandler
         }
         if ("required-message".equals(currElement) && cdata.length() > 0)
         {
-            log.warn("The required-message element is deprecated!  "+
-                    "You should update your intake.xml file to use the "+
+            log.warn("The required-message element is deprecated!  " +
+                    "You should update your intake.xml file to use the " +
                     "'required' rule instead.");
             currField.setIfRequiredMessage(cdata);
         }

@@ -54,18 +54,13 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
-
 import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.services.template.TurbineTemplate;
-
 import org.apache.turbine.services.velocity.TurbineVelocity;
-
 import org.apache.turbine.util.RunData;
-import org.apache.commons.lang.exception.ExceptionUtils;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -100,11 +95,11 @@ public class VelocityDirectScreen extends VelocityScreen
         // This will already be properly set and will not be null
         // because of TemplateSessionValidator.
         String templateName = TurbineTemplate.getScreenTemplateName(
-            data.getTemplateInfo().getScreenTemplate());
+                data.getTemplateInfo().getScreenTemplate());
 
         // Template service adds the leading slash, but make it sure.
         if ((templateName.length() > 0) &&
-            (templateName.charAt(0) != '/'))
+                (templateName.charAt(0) != '/'))
         {
             templateName = '/' + templateName;
         }
@@ -116,14 +111,14 @@ public class VelocityDirectScreen extends VelocityScreen
             if (getLayout(data) == null)
             {
                 TurbineVelocity.handleRequest(context,
-                    "screens" + templateName,
-                    data.getResponse().getOutputStream());
+                        "screens" + templateName,
+                        data.getResponse().getOutputStream());
             }
             else
             {
                 TurbineVelocity.handleRequest(context,
-                    "screens" + templateName,
-                    data.getOut());
+                        "screens" + templateName,
+                        data.getOut());
             }
         }
         catch (Exception e)
@@ -131,18 +126,18 @@ public class VelocityDirectScreen extends VelocityScreen
             // If there is an error, build a $processingException and
             // attempt to call the error.vm template in the screens
             // directory.
-            context.put ("processingException", e.toString());
-            context.put ("stackTrace", ExceptionUtils.getStackTrace(e));
+            context.put("processingException", e.toString());
+            context.put("stackTrace", ExceptionUtils.getStackTrace(e));
             templateName = TurbineResources.getString(
-                "template.error", "/error.vm");
+                    "template.error", "/error.vm");
             if ((templateName.length() > 0) &&
-                (templateName.charAt(0) != '/'))
+                    (templateName.charAt(0) != '/'))
             {
                 templateName = '/' + templateName;
             }
             TurbineVelocity.handleRequest(context,
-                "screens" + templateName,
-                data.getOut());
+                    "screens" + templateName,
+                    data.getOut());
         }
 
         // package the response in an ECS element

@@ -62,6 +62,7 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.Vector;
 import javax.servlet.ServletConfig;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationConverter;
 import org.apache.commons.logging.Log;
@@ -98,14 +99,14 @@ import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
  * @version $Id$
  */
 public class TurbineVelocityService
-    extends BaseTemplateEngineService
-    implements VelocityService
+        extends BaseTemplateEngineService
+        implements VelocityService
 {
     /**
      * The generic resource loader path property in velocity.
      */
     private static final String RESOURCE_LOADER_PATH =
-        ".resource.loader.path";
+            ".resource.loader.path";
 
     /**
      * Default character set to use if not specified in the RunData object.
@@ -151,7 +152,7 @@ public class TurbineVelocityService
      *         stage
      */
     public void init()
-        throws InitializationException
+            throws InitializationException
     {
         try
         {
@@ -191,7 +192,7 @@ public class TurbineVelocityService
         catch (Exception e)
         {
             throw new InitializationException(
-                "Failed to initialize TurbineVelocityService", e);
+                    "Failed to initialize TurbineVelocityService", e);
         }
     }
 
@@ -205,7 +206,7 @@ public class TurbineVelocityService
      * @deprecated use init() instead.
      */
     public void init(ServletConfig config)
-        throws InitializationException
+            throws InitializationException
     {
         init();
     }
@@ -235,12 +236,12 @@ public class TurbineVelocityService
          * exist, create it and then stuff it into the data.
          */
         Context context = (Context)
-            data.getTemplateInfo().getTemplateContext(VelocityService.CONTEXT);
+                data.getTemplateInfo().getTemplateContext(VelocityService.CONTEXT);
 
         if (context == null)
         {
             context = getContext();
-            context.put ( "data", data );
+            context.put("data", data);
 
             if (pullModelActive)
             {
@@ -254,7 +255,7 @@ public class TurbineVelocityService
             }
 
             data.getTemplateInfo().setTemplateContext(
-                VelocityService.CONTEXT, context);
+                    VelocityService.CONTEXT, context);
         }
         return context;
     }
@@ -271,7 +272,7 @@ public class TurbineVelocityService
      *         wrapped into a TurbineException and rethrown.
      */
     public String handleRequest(Context context, String filename)
-        throws TurbineException
+            throws TurbineException
     {
         String results = null;
         ByteArrayOutputStream bytes = null;
@@ -282,7 +283,7 @@ public class TurbineVelocityService
             String charset = decodeRequest(context, filename, bytes);
             results = bytes.toString(charset);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             renderingError(filename, e);
         }
@@ -292,7 +293,7 @@ public class TurbineVelocityService
             {
                 if (bytes != null) bytes.close();
             }
-            catch(IOException ignored)
+            catch (IOException ignored)
             {
             }
         }
@@ -314,7 +315,7 @@ public class TurbineVelocityService
     public void handleRequest(Context context,
                               String filename,
                               OutputStream output)
-        throws TurbineException
+            throws TurbineException
     {
         decodeRequest(context, filename, output);
     }
@@ -334,12 +335,11 @@ public class TurbineVelocityService
     public void handleRequest(Context context,
                               String filename,
                               Writer writer)
-        throws TurbineException
+            throws TurbineException
     {
         String encoding = getEncoding(context);
         decodeRequest(context, filename, encoding, writer);
     }
-
 
     /**
      * Process the request and fill in the template with the values
@@ -358,7 +358,7 @@ public class TurbineVelocityService
     private String decodeRequest(Context context,
                                  String filename,
                                  OutputStream output)
-        throws TurbineException
+            throws TurbineException
     {
         /*
          * This is for development.
@@ -388,7 +388,7 @@ public class TurbineVelocityService
                 Velocity.mergeTemplate(filename, context, writer);
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             renderingError(filename, e);
         }
@@ -454,7 +454,7 @@ public class TurbineVelocityService
         }
         else
         {
-           encoding = null;
+            encoding = null;
         }
         return encoding;
     }
@@ -477,7 +477,7 @@ public class TurbineVelocityService
                                String filename,
                                String encoding,
                                Writer writer)
-        throws TurbineException
+            throws TurbineException
     {
         /*
          * This is for development.
@@ -498,7 +498,7 @@ public class TurbineVelocityService
                 Velocity.mergeTemplate(filename, context, writer);
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             renderingError(filename, e);
         }
@@ -530,7 +530,7 @@ public class TurbineVelocityService
      *                             information to <code>e</code>.
      */
     private static final void renderingError(String filename, Exception e)
-        throws TurbineException
+            throws TurbineException
     {
         String err = "Error rendering Velocity template: " + filename;
         log.error(err + ": " + e.getMessage());
@@ -544,7 +544,7 @@ public class TurbineVelocityService
      * @exception InitializationException For any errors during initialization.
      */
     private void initVelocity()
-        throws InitializationException
+            throws InitializationException
     {
         /*
          * Get the configuration for this service.
@@ -552,9 +552,9 @@ public class TurbineVelocityService
         Configuration configuration = getConfiguration();
 
         configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS,
-                                  SimpleLog4JLogSystem.class.getName());
+                SimpleLog4JLogSystem.class.getName());
         configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM
-                                  + ".log4j.category", "velocity");
+                + ".log4j.category", "velocity");
 
         /*
          * Get all the template paths where the velocity runtime should search
@@ -563,7 +563,7 @@ public class TurbineVelocityService
          */
         String key;
         Vector keys = new Vector();
-        for (Iterator i = configuration.getKeys(); i.hasNext(); )
+        for (Iterator i = configuration.getKeys(); i.hasNext();)
         {
             key = (String) i.next();
             if (key.endsWith(RESOURCE_LOADER_PATH))
@@ -580,10 +580,10 @@ public class TurbineVelocityService
         int ind;
         Vector paths;
         String entry;
-        for (Iterator i = keys.iterator(); i.hasNext(); )
+        for (Iterator i = keys.iterator(); i.hasNext();)
         {
             key = (String) i.next();
-            paths = configuration.getVector(key,null);
+            paths = configuration.getVector(key, null);
             if (paths != null)
             {
                 Velocity.clearProperty(key);
@@ -602,7 +602,7 @@ public class TurbineVelocityService
                         if (ind >= 0)
                         {
                             entry = path.substring(ind);
-                            path = path.substring(9,ind);
+                            path = path.substring(9, ind);
                         }
                         else
                         {
@@ -610,12 +610,12 @@ public class TurbineVelocityService
                             path = path.substring(9);
                         }
                         path = JAR_PREFIX + "file:"
-                            + Turbine.getRealPath(path) + entry;
+                                + Turbine.getRealPath(path) + entry;
                     }
                     else if (path.startsWith(ABSOLUTE_PREFIX))
                     {
                         path = path.substring(ABSOLUTE_PREFIX.length(),
-                                              path.length());
+                                path.length());
                     }
                     else if (!path.startsWith(JAR_PREFIX))
                     {
@@ -623,7 +623,7 @@ public class TurbineVelocityService
                         path = Turbine.getRealPath(path);
                     }
                     // Put the translated paths back to the configuration.
-                    configuration.addProperty(key,path);
+                    configuration.addProperty(key, path);
                 }
             }
         }
@@ -633,7 +633,7 @@ public class TurbineVelocityService
                     .getExtendedProperties(configuration));
             Velocity.init();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             /*
              * This will be caught and rethrown by the init() method.
@@ -641,7 +641,7 @@ public class TurbineVelocityService
              * up somewhere above this try/catch
              */
             throw new InitializationException(
-                "Failed to set up TurbineVelocityService", e);
+                    "Failed to set up TurbineVelocityService", e);
         }
     }
 

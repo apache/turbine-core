@@ -60,11 +60,12 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.turbine.util.ParameterParser;
-import org.apache.turbine.util.TurbineException;
+
+import org.apache.commons.fileupload.DefaultFileItem;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.MultipartStream;
-import org.apache.commons.fileupload.DefaultFileItem;
+import org.apache.turbine.util.ParameterParser;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * <p> This class is an implementation of {@link UploadService}.
@@ -87,7 +88,7 @@ import org.apache.commons.fileupload.DefaultFileItem;
  * @version $Id$
  */
 public class TurbineUploadService
-    extends BaseUploadService
+        extends BaseUploadService
 {
     /**
      * <p> Processes an <a href="http://rf.cx/rfc1867.html">RFC
@@ -100,38 +101,38 @@ public class TurbineUploadService
      * @exception TurbineException If there are problems reading/parsing
      * the request or storing files.
      */
-    public void parseRequest( HttpServletRequest req,
-                              ParameterParser params,
-                              String path )
-        throws TurbineException
+    public void parseRequest(HttpServletRequest req,
+                             ParameterParser params,
+                             String path)
+            throws TurbineException
     {
         String contentType = req.getHeader(CONTENT_TYPE);
-        if(!contentType.startsWith(MULTIPART_FORM_DATA))
+        if (!contentType.startsWith(MULTIPART_FORM_DATA))
         {
             throw new TurbineException("the request doesn't contain a " +
-                MULTIPART_FORM_DATA + " stream");
+                    MULTIPART_FORM_DATA + " stream");
         }
         int requestSize = req.getContentLength();
-        if(requestSize == -1)
+        if (requestSize == -1)
         {
             throw new TurbineException("the request was rejected because " +
-                "it's size is unknown");
+                    "it's size is unknown");
         }
-        if(requestSize > TurbineUpload.getSizeMax())
+        if (requestSize > TurbineUpload.getSizeMax())
         {
             throw new TurbineException("the request was rejected because " +
-                "it's size exceeds allowed range");
+                    "it's size exceeds allowed range");
         }
 
         try
         {
             byte[] boundary = contentType.substring(
-                                contentType.indexOf("boundary=")+9).getBytes();
+                    contentType.indexOf("boundary=") + 9).getBytes();
             InputStream input = req.getInputStream();
 
             MultipartStream multi = new MultipartStream(input, boundary);
             boolean nextPart = multi.skipPreamble();
-            while(nextPart)
+            while (nextPart)
             {
                 Map headers = parseHeaders(multi.readHeaders());
                 String fieldName = getFieldName(headers);
@@ -139,13 +140,13 @@ public class TurbineUploadService
                 {
                     String subContentType = getHeader(headers, CONTENT_TYPE);
                     if (subContentType != null && subContentType
-                                                .startsWith(MULTIPART_MIXED))
+                            .startsWith(MULTIPART_MIXED))
                     {
                         // Multiple files.
                         byte[] subBoundary =
-                            subContentType.substring(
-                                subContentType
-                                .indexOf("boundary=")+9).getBytes();
+                                subContentType.substring(
+                                        subContentType
+                                .indexOf("boundary=") + 9).getBytes();
                         multi.setBoundary(subBoundary);
                         boolean nextSubPart = multi.skipPreamble();
                         while (nextSubPart)
@@ -154,7 +155,7 @@ public class TurbineUploadService
                             if (getFileName(headers) != null)
                             {
                                 FileItem item = createItem(path, headers,
-                                                           requestSize);
+                                        requestSize);
                                 OutputStream os = item.getOutputStream();
                                 try
                                 {
@@ -182,7 +183,7 @@ public class TurbineUploadService
                         {
                             // A single file.
                             FileItem item = createItem(path, headers,
-                                                       requestSize);
+                                    requestSize);
                             OutputStream os = item.getOutputStream();
                             try
                             {
@@ -198,7 +199,7 @@ public class TurbineUploadService
                         {
                             // A form field.
                             FileItem item = createItem(path, headers,
-                                                       requestSize);
+                                    requestSize);
                             OutputStream os = item.getOutputStream();
                             try
                             {
@@ -209,7 +210,7 @@ public class TurbineUploadService
                                 os.close();
                             }
                             params.append(getFieldName(headers),
-                                          new String(item.get()));
+                                    new String(item.get()));
                         }
                     }
                 }
@@ -221,10 +222,10 @@ public class TurbineUploadService
                 nextPart = multi.readBoundary();
             }
         }
-        catch(IOException e)
+        catch (IOException e)
         {
             throw new TurbineException("Processing of " + MULTIPART_FORM_DATA
-                                       + " request failed", e);
+                    + " request failed", e);
         }
     }
 
@@ -238,11 +239,11 @@ public class TurbineUploadService
     {
         String fileName = null;
         String cd = getHeader(headers, CONTENT_DISPOSITION);
-        if(cd.startsWith(FORM_DATA) || cd.startsWith("attachment"))
+        if (cd.startsWith(FORM_DATA) || cd.startsWith("attachment"))
         {
             int start = cd.indexOf("filename=\"");
             int end = cd.indexOf('"', start + 10);
-            if(start != -1 && end != -1 && (start + 10) != end)
+            if (start != -1 && end != -1 && (start + 10) != end)
             {
                 String str = cd.substring(start + 10, end).trim();
                 if (str.length() > 0)
@@ -264,11 +265,11 @@ public class TurbineUploadService
     {
         String fieldName = null;
         String cd = getHeader(headers, CONTENT_DISPOSITION);
-        if(cd != null && cd.startsWith(FORM_DATA))
+        if (cd != null && cd.startsWith(FORM_DATA))
         {
             int start = cd.indexOf("name=\"");
             int end = cd.indexOf('"', start + 6);
-            if(start != -1 && end != -1)
+            if (start != -1 && end != -1)
             {
                 fieldName = cd.substring(start + 6, end);
             }
@@ -285,9 +286,9 @@ public class TurbineUploadService
      * @param requestSize The size of the request.
      * @return A newly created <code>FileItem</code>.
      */
-    protected FileItem createItem( String path,
-                                   Map headers,
-                                   int requestSize )
+    protected FileItem createItem(String path,
+                                  Map headers,
+                                  int requestSize)
     {
 
         return DefaultFileItem.newInstance(path, getFileName(headers),
@@ -306,7 +307,7 @@ public class TurbineUploadService
      * <code>encapsulation</code>.
      * @return The parsed HTTP request headers.
      */
-    protected Map parseHeaders( String headerPart )
+    protected Map parseHeaders(String headerPart)
     {
         Map headers = new HashMap();
         char buffer[] = new char[MAX_HEADER_SIZE];
@@ -318,14 +319,14 @@ public class TurbineUploadService
         {
             while (!done)
             {
-                i=0;
+                i = 0;
                 // Copy a single line of characters into the buffer,
                 // omitting trailing CRLF.
-                while (i<2 || buffer[i-2] != '\r' || buffer[i-1] != '\n')
+                while (i < 2 || buffer[i - 2] != '\r' || buffer[i - 1] != '\n')
                 {
                     buffer[i++] = headerPart.charAt(j++);
                 }
-                header = new String(buffer, 0, i-2);
+                header = new String(buffer, 0, i - 2);
                 if (header.equals(""))
                 {
                     done = true;
@@ -338,16 +339,16 @@ public class TurbineUploadService
                         continue;
                     }
                     headerName = header.substring(0, header.indexOf(':'))
-                        .trim().toLowerCase();
+                            .trim().toLowerCase();
                     headerValue =
-                        header.substring(header.indexOf(':') + 1).trim();
+                            header.substring(header.indexOf(':') + 1).trim();
                     if (getHeader(headers, headerName) != null)
                     {
                         // More that one heder of that name exists,
                         // append to the list.
                         headers.put(headerName,
-                                    getHeader(headers, headerName) + ',' +
-                                    headerValue);
+                                getHeader(headers, headerName) + ',' +
+                                headerValue);
                     }
                     else
                     {
@@ -356,7 +357,7 @@ public class TurbineUploadService
                 }
             }
         }
-        catch(IndexOutOfBoundsException e)
+        catch (IndexOutOfBoundsException e)
         {
             // Headers were malformed. continue with all that was
             // parsed.
@@ -372,8 +373,8 @@ public class TurbineUploadService
      * @return The value of specified header, or a comma-separated
      * list if there were multiple headers of that name.
      */
-    protected final String getHeader( Map headers, String name )
+    protected final String getHeader(Map headers, String name)
     {
-        return (String)headers.get(name.toLowerCase());
+        return (String) headers.get(name.toLowerCase());
     }
 }

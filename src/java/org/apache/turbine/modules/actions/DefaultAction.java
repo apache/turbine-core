@@ -55,9 +55,8 @@ package org.apache.turbine.modules.actions;
  */
 
 // Turbine Modules
-import org.apache.turbine.modules.Action;
 
-// Turbine Utility Classes
+import org.apache.turbine.modules.Action;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -74,9 +73,9 @@ public class DefaultAction extends Action
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    public void doPerform( RunData data )
-        throws Exception
+    public void doPerform(RunData data)
+            throws Exception
     {
-        data.setMessage( data.getScreen() + " has been executed!" );
+        data.setMessage(data.getScreen() + " has been executed!");
     }
 }

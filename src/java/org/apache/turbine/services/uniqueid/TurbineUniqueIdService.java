@@ -54,14 +54,14 @@ package org.apache.turbine.services.uniqueid;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.Turbine;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.GenerateUniqueId;
-import org.apache.turbine.services.TurbineBaseService;
-import org.apache.java.security.MD5;
 import org.apache.java.lang.Bytes;
+import org.apache.java.security.MD5;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.util.GenerateUniqueId;
+import org.apache.turbine.util.RunData;
 
 /**
  * <p> This is an implementation of {@link UniqueIdService}.
@@ -70,8 +70,8 @@ import org.apache.java.lang.Bytes;
  * @version $Id$
  */
 public class TurbineUniqueIdService
-    extends TurbineBaseService
-    implements UniqueIdService
+        extends TurbineBaseService
+        implements UniqueIdService
 {
     /** Logging */
     private static Log log = LogFactory.getLog(TurbineUniqueIdService.class);
@@ -98,20 +98,20 @@ public class TurbineUniqueIdService
     public void init()
     {
         StringBuffer url = new StringBuffer();
-        url.append ( Turbine.getServerScheme() );
-        url.append ( "://" );
-        url.append ( Turbine.getServerName() );
-        if ( (Turbine.getServerScheme().equals("http") &&
-              Turbine.getServerPort() != "80") ||
-             (Turbine.getServerScheme().equals("https") &&
-              Turbine.getServerPort() != "443")
-             )
+        url.append(Turbine.getServerScheme());
+        url.append("://");
+        url.append(Turbine.getServerName());
+        if ((Turbine.getServerScheme().equals("http") &&
+                Turbine.getServerPort() != "80") ||
+                (Turbine.getServerScheme().equals("https") &&
+                Turbine.getServerPort() != "443")
+        )
         {
-            url.append (":");
-            url.append ( Turbine.getServerPort() );
+            url.append(":");
+            url.append(Turbine.getServerPort());
         }
 
-        url.append ( Turbine.getScriptName() );
+        url.append(Turbine.getScriptName());
         turbineURL = url.toString();
 
         MD5 md5 = new MD5();
@@ -155,7 +155,7 @@ public class TurbineUniqueIdService
     public String getUniqueId()
     {
         int current;
-        synchronized(TurbineUniqueIdService.class)
+        synchronized (TurbineUniqueIdService.class)
         {
             current = counter++;
         }
@@ -163,9 +163,9 @@ public class TurbineUniqueIdService
 
         // If you manage to get more than 100 million of ids, you'll
         // start getting ids longer than 8 characters.
-        if(current < 100000000)
+        if (current < 100000000)
         {
-            id = ("00000000"+id).substring(id.length());
+            id = ("00000000" + id).substring(id.length());
         }
         return id;
     }

@@ -60,11 +60,12 @@ import java.util.Iterator;
 import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -102,7 +103,7 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
         {
             contextPropsList = new Hashtable();
 
-            for(Iterator contextKeys = TurbineResources.getKeys("context.");contextKeys.hasNext();)
+            for (Iterator contextKeys = TurbineResources.getKeys("context."); contextKeys.hasNext();)
             {
                 String key = (String) contextKeys.next();
                 int start = key.indexOf(".") + 1;
@@ -113,7 +114,7 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
                 if (contextPropsList.containsKey(contextName))
                 {
                     contextProps = (Properties)
-                        contextPropsList.get(contextName);
+                            contextPropsList.get(contextName);
                 }
                 else
                 {
@@ -121,7 +122,7 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
                 }
 
                 contextProps.put(
-                    key.substring(end + 1),TurbineResources.getString(key));
+                        key.substring(end + 1), TurbineResources.getString(key));
 
                 contextPropsList.put(contextName, contextProps);
             }
@@ -133,18 +134,18 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
             log.error("Failed to initialize JDNI contexts!", e);
 
             throw new InitializationException(
-                "Failed to initialize JDNI contexts!");
+                    "Failed to initialize JDNI contexts!");
         }
     }
 
     /**
-      * Places the contexts defined in the TurbineResources instance
-      * (if any) into the data.contexts Hashtable.
-      *
-      * @param data The RunData object for the current request.
-      * @exception InitializationException, if there was a problem
-      * during initialization.
-      */
+     * Places the contexts defined in the TurbineResources instance
+     * (if any) into the data.contexts Hashtable.
+     *
+     * @param data The RunData object for the current request.
+     * @exception InitializationException, if there was a problem
+     * during initialization.
+     */
     public void init(RunData data) throws InitializationException
     {
         try
@@ -166,23 +167,23 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
         }
         catch (Exception e)
         {
-            log.error("Failed to initialize JDNI contexts!",e);
+            log.error("Failed to initialize JDNI contexts!", e);
 
             throw new InitializationException(
-                "Failed to initialize JDNI contexts!");
+                    "Failed to initialize JDNI contexts!");
         }
     }
 
     /**
-      * Return the Context with the specified name.  The Context is
-      * constructed using the properties for the context with the
-      * specified name; ie. those properties that start with
-      * "services.servicename.properties.name.".
-      *
-      * @param contextName The name of the context.
-      * @return The context with the specified name, or null if no
-      * context exists with that name.
-      */
+     * Return the Context with the specified name.  The Context is
+     * constructed using the properties for the context with the
+     * specified name; ie. those properties that start with
+     * "services.servicename.properties.name.".
+     *
+     * @param contextName The name of the context.
+     * @return The context with the specified name, or null if no
+     * context exists with that name.
+     */
     public Context getContext(String contextName)
     {
         // Get just the properties for the context with the specified

@@ -55,8 +55,8 @@ package org.apache.turbine.modules;
  */
 
 // Turbine Scheduler Classes
-import org.apache.turbine.services.schedule.JobEntry;
 
+import org.apache.turbine.services.schedule.JobEntry;
 
 /**
  * All Scheduled jobs should extend this.  The class that extends
@@ -74,6 +74,6 @@ public abstract class ScheduledJob extends Assembler
      *
      * @param job The job to run.
      */
-    public abstract void run( JobEntry job )
-        throws Exception;
+    public abstract void run(JobEntry job)
+            throws Exception;
 }

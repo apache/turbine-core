@@ -64,7 +64,7 @@ import org.apache.turbine.services.crypto.CryptoAlgorithm;
  */
 
 public class UnixCrypt
-    implements CryptoAlgorithm
+        implements CryptoAlgorithm
 {
 
     /** The seed to use */
@@ -72,9 +72,8 @@ public class UnixCrypt
 
     /** standard Unix crypt chars (64) */
     private static final char[] SALT_CHARS =
-        (("abcdefghijklmnopqrstuvwxyz"
-          + "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./").toCharArray());
-
+            (("abcdefghijklmnopqrstuvwxyz"
+            + "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./").toCharArray());
 
     /**
      * C'tor
@@ -88,7 +87,7 @@ public class UnixCrypt
     /**
      * This class never uses anything but
      * UnixCrypt, so it is just a dummy
-     * (Fixme: Should we throw an exception if 
+     * (Fixme: Should we throw an exception if
      * something is requested that we don't support?
      *
      * @param cipher    Cipher (ignored)
@@ -123,7 +122,7 @@ public class UnixCrypt
      */
 
     public String encrypt(String value)
-        throws Exception
+            throws Exception
     {
         if (seed == null)
         {
@@ -131,11 +130,11 @@ public class UnixCrypt
             int numSaltChars = SALT_CHARS.length;
 
             seed = (new StringBuffer())
-                .append(SALT_CHARS[Math.abs(randomGenerator.nextInt()) 
-                                   % numSaltChars])
-                .append(SALT_CHARS[Math.abs(randomGenerator.nextInt()) 
-                                   % numSaltChars])
-                .toString();
+                    .append(SALT_CHARS[Math.abs(randomGenerator.nextInt())
+                    % numSaltChars])
+                    .append(SALT_CHARS[Math.abs(randomGenerator.nextInt())
+                    % numSaltChars])
+                    .toString();
         }
 
         /* UnixCrypt seems to be a really widespread name... */

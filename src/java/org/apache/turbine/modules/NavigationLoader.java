@@ -57,15 +57,10 @@ package org.apache.turbine.modules;
 import java.util.Vector;
 
 import org.apache.ecs.ConcreteElement;
-
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.services.TurbineServices;
-
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
-
 import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
 
@@ -80,7 +75,7 @@ public class NavigationLoader extends GenericLoader
 {
     /** The single instance of this class. */
     private static NavigationLoader instance = new NavigationLoader(
-        TurbineResources.getInt(TurbineConstants.NAVIGATION_CACHE_SIZE, 10));
+            TurbineResources.getInt(TurbineConstants.NAVIGATION_CACHE_SIZE, 10));
 
     /**
      * These ctor's are private to force clients to use getInstance()
@@ -110,7 +105,7 @@ public class NavigationLoader extends GenericLoader
     {
         if (cache())
         {
-            this.put (name, (Navigation) navigation);
+            this.put(name, (Navigation) navigation);
         }
     }
 
@@ -126,7 +121,7 @@ public class NavigationLoader extends GenericLoader
      * @exception Exception a generic exception.
      */
     public ConcreteElement eval(RunData data, String name)
-        throws Exception
+            throws Exception
     {
         // Execute Navigation
         return getInstance(name).build(data);
@@ -140,7 +135,7 @@ public class NavigationLoader extends GenericLoader
      * @exception Exception a generic exception.
      */
     public void exec(RunData data, String name)
-        throws Exception
+            throws Exception
     {
         this.eval(data, name);
     }
@@ -154,7 +149,7 @@ public class NavigationLoader extends GenericLoader
      * @exception Exception a generic exception.
      */
     public Navigation getInstance(String name)
-        throws Exception
+            throws Exception
     {
         Navigation navigation = null;
 
@@ -166,14 +161,14 @@ public class NavigationLoader extends GenericLoader
         {
             // We get the broker service
             AssemblerBrokerService ab =
-                (AssemblerBrokerService)TurbineServices.getInstance()
-                .getService (AssemblerBrokerService.SERVICE_NAME);
+                    (AssemblerBrokerService) TurbineServices.getInstance()
+                    .getService(AssemblerBrokerService.SERVICE_NAME);
 
             try
             {
                 // Attempt to load the screen
                 navigation = (Navigation) ab.getAssembler(
-                    AssemblerBrokerService.NAVIGATION_TYPE,name);
+                        AssemblerBrokerService.NAVIGATION_TYPE, name);
             }
             catch (ClassCastException cce)
             {
@@ -190,14 +185,14 @@ public class NavigationLoader extends GenericLoader
                 // FIX ME: The AssemblerFactories should each add it's own
                 //         string here...
                 Vector packages = TurbineResources.getVector(
-                    TurbineConstants.MODULE_PACKAGES);
+                        TurbineConstants.MODULE_PACKAGES);
                 ObjectUtils.addOnce(packages,
-                                     GenericLoader.getBasePackage());
+                        GenericLoader.getBasePackage());
 
                 throw new ClassNotFoundException(
-                    "\n\n\tRequested Navigation not found: " + name + "\n" +
-                    "\tTurbine looked in the following modules.packages " +
-                    "path: \n\t" + packages.toString() + "\n");
+                        "\n\n\tRequested Navigation not found: " + name + "\n" +
+                        "\tTurbine looked in the following modules.packages " +
+                        "path: \n\t" + packages.toString() + "\n");
             }
             else if (cache())
             {

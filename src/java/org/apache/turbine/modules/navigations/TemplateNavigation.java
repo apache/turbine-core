@@ -55,10 +55,10 @@ package org.apache.turbine.modules.navigations;
  */
 
 // Turbine/ECS Imports
+
 import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.modules.Navigation;
 import org.apache.turbine.util.RunData;
-
 
 /**
  * Base Template Navigation.
@@ -76,8 +76,8 @@ public abstract class TemplateNavigation extends Navigation
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    protected abstract void doBuildTemplate( RunData data )
-        throws Exception;
+    protected abstract void doBuildTemplate(RunData data)
+            throws Exception;
 
     /**
      * This Builds the WebMacro/FreeMarker/etc template.
@@ -86,8 +86,8 @@ public abstract class TemplateNavigation extends Navigation
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
-    public abstract ConcreteElement buildTemplate( RunData data )
-        throws Exception;
+    public abstract ConcreteElement buildTemplate(RunData data)
+            throws Exception;
 
     /**
      * Calls doBuildTemplate() and then buildTemplate().
@@ -96,8 +96,8 @@ public abstract class TemplateNavigation extends Navigation
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
-    protected ConcreteElement doBuild( RunData data )
-        throws Exception
+    protected ConcreteElement doBuild(RunData data)
+            throws Exception
     {
         doBuildTemplate(data);
         return buildTemplate(data);

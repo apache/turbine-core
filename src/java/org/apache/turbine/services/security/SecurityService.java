@@ -55,6 +55,7 @@ package org.apache.turbine.services.security;
  */
 
 import java.util.Map;
+
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
@@ -95,7 +96,7 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * @version $Id$
  */
 public interface SecurityService
-    extends Service
+        extends Service
 {
     /** The name of the service */
     static final String SERVICE_NAME = "SecurityService";
@@ -111,7 +112,7 @@ public interface SecurityService
      * (org.apache.turbine.om.security.DBUser)
      */
     static final String USER_CLASS_DEFAULT
-        = TurbineUser.class.getName();
+            = TurbineUser.class.getName();
 
     /**
      * The key within services' properties for the GROUP
@@ -124,7 +125,7 @@ public interface SecurityService
      *(org.apache.fulcrum.security.impl.db.DBGroup)
      */
     static final String GROUP_CLASS_DEFAULT
-        = TurbineGroup.class.getName();
+            = TurbineGroup.class.getName();
 
     /**
      * The key within services' properties for the PERMISSION
@@ -137,7 +138,7 @@ public interface SecurityService
      * (org.apache.fulcrum.security.impl.db.DBPermission)
      */
     static final String PERMISSION_CLASS_DEFAULT
-        = TurbinePermission.class.getName();
+            = TurbinePermission.class.getName();
 
     /**
      * The key within services' properties for the ROLE
@@ -150,7 +151,7 @@ public interface SecurityService
      * (org.apache.fulcrum.security.impl.db.DBRole)
      */
     static final String ROLE_CLASS_DEFAULT
-        = TurbineRole.class.getName();
+            = TurbineRole.class.getName();
 
     /**
      * The key within services' properties for the
@@ -163,7 +164,7 @@ public interface SecurityService
      * (org.apache.turbine.util.security.TurbineAccessControlList)
      */
     static final String ACL_CLASS_DEFAULT
-        = TurbineAccessControlList.class.getName();
+            = TurbineAccessControlList.class.getName();
 
     /**
      * the key within services's properties for user implementation
@@ -176,7 +177,7 @@ public interface SecurityService
      * (org.apache.turbine.services.security.DBUserManager)
      */
     static final String USER_MANAGER_DEFAULT
-        = DBUserManager.class.getName();
+            = DBUserManager.class.getName();
 
     /**
      * the key within services's properties for secure passwords flag
@@ -192,7 +193,7 @@ public interface SecurityService
      * (secure.passwords.algorithm)
      */
     static final String SECURE_PASSWORDS_ALGORITHM_KEY
-        = "secure.passwords.algorithm";
+            = "secure.passwords.algorithm";
 
     /** the default algorithm for password encryption (SHA) */
     static final String SECURE_PASSWORDS_ALGORITHM_DEFAULT = "SHA";
@@ -210,7 +211,7 @@ public interface SecurityService
      *         interface could not be determined.
      */
     Class getUserClass()
-        throws UnknownEntityException;
+            throws UnknownEntityException;
 
     /**
      * Construct a blank User object.
@@ -222,7 +223,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the object could not be instantiated.
      */
     User getUserInstance()
-        throws UnknownEntityException;
+            throws UnknownEntityException;
 
     /**
      * Construct a blank User object.
@@ -236,7 +237,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the object could not be instantiated.
      */
     User getUserInstance(String userName)
-        throws UnknownEntityException;
+            throws UnknownEntityException;
 
     /**
      * Returns the Class object for the implementation of Group interface
@@ -247,7 +248,7 @@ public interface SecurityService
      *         interface could not be determined.
      */
     Class getGroupClass()
-        throws UnknownEntityException;
+            throws UnknownEntityException;
 
     /**
      * Construct a blank Group object.
@@ -259,7 +260,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the object could not be instantiated.
      */
     Group getGroupInstance()
-        throws UnknownEntityException;
+            throws UnknownEntityException;
 
     /**
      * Construct a blank Group object.
@@ -273,7 +274,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the object could not be instantiated.
      */
     Group getGroupInstance(String groupName)
-        throws UnknownEntityException;
+            throws UnknownEntityException;
 
     /**
      * Returns the Class object for the implementation of Permission interface
@@ -284,7 +285,7 @@ public interface SecurityService
      *         interface could not be determined.
      */
     Class getPermissionClass()
-        throws UnknownEntityException;
+            throws UnknownEntityException;
 
     /**
      * Construct a blank Permission object.
@@ -296,7 +297,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the object could not be instantiated.
      */
     Permission getPermissionInstance()
-        throws UnknownEntityException;
+            throws UnknownEntityException;
 
     /**
      * Construct a blank Permission object.
@@ -310,7 +311,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the object could not be instantiated.
      */
     Permission getPermissionInstance(String permName)
-        throws UnknownEntityException;
+            throws UnknownEntityException;
 
     /**
      * Returns the Class object for the implementation of Role interface
@@ -321,7 +322,7 @@ public interface SecurityService
      *         interface could not be determined.
      */
     Class getRoleClass()
-        throws UnknownEntityException;
+            throws UnknownEntityException;
 
     /**
      * Construct a blank Role object.
@@ -333,7 +334,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the object could not be instantiated.
      */
     Role getRoleInstance()
-        throws UnknownEntityException;
+            throws UnknownEntityException;
 
     /**
      * Construct a blank Role object.
@@ -347,7 +348,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the object could not be instantiated.
      */
     Role getRoleInstance(String roleName)
-        throws UnknownEntityException;
+            throws UnknownEntityException;
 
     /**
      * Returns the Class object for the implementation of AccessControlList interface
@@ -358,7 +359,7 @@ public interface SecurityService
      *         interface could not be determined.
      */
     Class getAclClass()
-        throws UnknownEntityException;
+            throws UnknownEntityException;
 
     /**
      * Construct a new ACL object.
@@ -373,7 +374,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the object could not be instantiated.
      */
     AccessControlList getAclInstance(Map roles, Map permissions)
-        throws UnknownEntityException;
+            throws UnknownEntityException;
 
     /**
      * Check whether a specified user's account exists.
@@ -386,7 +387,7 @@ public interface SecurityService
      *         backend.
      */
     boolean accountExists(String userName)
-        throws DataBackendException;
+            throws DataBackendException;
 
     /**
      * Check whether a specified user's account exists.
@@ -398,7 +399,7 @@ public interface SecurityService
      *         backend.
      */
     boolean accountExists(User user)
-        throws DataBackendException;
+            throws DataBackendException;
 
     /**
      * Authenticates an user, and constructs an User object to represent
@@ -413,8 +414,8 @@ public interface SecurityService
      * @throws PasswordMismatchException if the supplied password was incorrect.
      */
     User getAuthenticatedUser(String username, String password)
-        throws DataBackendException, UnknownEntityException,
-               PasswordMismatchException;
+            throws DataBackendException, UnknownEntityException,
+            PasswordMismatchException;
 
     /**
      * Constructs an User object to represent a registered user of the
@@ -427,7 +428,7 @@ public interface SecurityService
      * @throws UnknownEntityException if user account is not present.
      */
     User getUser(String username)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Retrieve a set of users that meet the specified criteria.
@@ -443,7 +444,7 @@ public interface SecurityService
      * @throws DataBackendException if there is a problem accessing the storage.
      */
     User[] getUsers(Criteria criteria)
-        throws DataBackendException;
+            throws DataBackendException;
 
     /**
      * Constructs an User object to represent an anonymous user of the
@@ -454,7 +455,7 @@ public interface SecurityService
      *         constructed.
      */
     User getAnonymousUser()
-        throws UnknownEntityException;
+            throws UnknownEntityException;
 
     /**
      * Saves User's data in the permanent storage. The user account is required
@@ -466,7 +467,7 @@ public interface SecurityService
      * @throws DataBackendException if there is a problem accessing the storage.
      */
     void saveUser(User user)
-        throws UnknownEntityException, DataBackendException;
+            throws UnknownEntityException, DataBackendException;
 
     /**
      * Saves User data when the session is unbound. The user account is required
@@ -480,8 +481,8 @@ public interface SecurityService
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public void saveOnSessionUnbind( User user )
-        throws UnknownEntityException, DataBackendException;
+    public void saveOnSessionUnbind(User user)
+            throws UnknownEntityException, DataBackendException;
 
     /*-----------------------------------------------------------------------
       Account management
@@ -497,7 +498,7 @@ public interface SecurityService
      * @throws EntityExistsException if the user account already exists.
      */
     void addUser(User user, String password)
-        throws DataBackendException, EntityExistsException;
+            throws DataBackendException, EntityExistsException;
 
     /**
      * Removes an user account from the system.
@@ -508,7 +509,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the user account is not present.
      */
     void removeUser(User user)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /*-----------------------------------------------------------------------
       Management of passwords
@@ -570,8 +571,8 @@ public interface SecurityService
      */
     void changePassword(User user, String oldPassword,
                         String newPassword)
-        throws PasswordMismatchException, UnknownEntityException,
-               DataBackendException;
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException;
 
     /**
      * Forcibly sets new password for an User.
@@ -589,7 +590,7 @@ public interface SecurityService
      *            storage.
      */
     void forcePassword(User user, String password)
-        throws UnknownEntityException, DataBackendException;
+            throws UnknownEntityException, DataBackendException;
 
     /*-----------------------------------------------------------------------
       Retrieval of security information
@@ -604,7 +605,7 @@ public interface SecurityService
      * @throws UnknownEntityException if user account is not present.
      */
     AccessControlList getACL(User user)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Retrieves all permissions associated with a role.
@@ -616,7 +617,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the role is not present.
      */
     PermissionSet getPermissions(Role role)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /*-----------------------------------------------------------------------
       Manipulation of security information
@@ -634,7 +635,7 @@ public interface SecurityService
      *         present.
      */
     void grant(User user, Group group, Role role)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Revoke a Role in a Group from an User.
@@ -648,7 +649,7 @@ public interface SecurityService
      *         present.
      */
     void revoke(User user, Group group, Role role)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Revokes all roles from an User.
@@ -661,7 +662,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the account is not present.
      */
     void revokeAll(User user)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Grants a Role a Permission
@@ -673,7 +674,7 @@ public interface SecurityService
      * @throws UnknownEntityException if role or permission is not present.
      */
     void grant(Role role, Permission permission)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Revokes a Permission from a Role.
@@ -685,7 +686,7 @@ public interface SecurityService
      * @throws UnknownEntityException if role or permission is not present.
      */
     void revoke(Role role, Permission permission)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Revokes all permissions from a Role.
@@ -698,7 +699,7 @@ public interface SecurityService
      * @throws  UnknownEntityException if the Role is not present.
      */
     void revokeAll(Role role)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /*-----------------------------------------------------------------------
       Retrieval & storage of SecurityObjects
@@ -737,7 +738,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the group does not exist.
      */
     Group getGroup(String name)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Retrieve a Role object with specified name.
@@ -749,7 +750,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the role does not exist.
      */
     Role getRole(String name)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Retrieve a Permission object with specified name.
@@ -761,7 +762,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the permission does not exist.
      */
     Permission getPermission(String name)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Retrieve a set of Groups that meet the specified Criteria.
@@ -772,7 +773,7 @@ public interface SecurityService
      *         backend.
      */
     GroupSet getGroups(Criteria criteria)
-        throws DataBackendException;
+            throws DataBackendException;
 
     /**
      * Retrieve a set of Roles that meet the specified Criteria.
@@ -783,7 +784,7 @@ public interface SecurityService
      *         backend.
      */
     RoleSet getRoles(Criteria criteria)
-        throws DataBackendException;
+            throws DataBackendException;
 
     /**
      * Retrieve a set of Permissions that meet the specified Criteria.
@@ -794,7 +795,7 @@ public interface SecurityService
      *         backend.
      */
     PermissionSet getPermissions(Criteria criteria)
-        throws DataBackendException;
+            throws DataBackendException;
 
     /**
      * Retrieves all groups defined in the system.
@@ -804,7 +805,7 @@ public interface SecurityService
      *         backend.
      */
     GroupSet getAllGroups()
-        throws DataBackendException;
+            throws DataBackendException;
 
     /**
      * Retrieves all roles defined in the system.
@@ -814,7 +815,7 @@ public interface SecurityService
      *         backend.
      */
     RoleSet getAllRoles()
-        throws DataBackendException;
+            throws DataBackendException;
 
     /**
      * Retrieves all permissions defined in the system.
@@ -824,7 +825,7 @@ public interface SecurityService
      *         backend.
      */
     PermissionSet getAllPermissions()
-        throws DataBackendException;
+            throws DataBackendException;
 
     /**
      * Stores Group's attributes. The Groups is required to exist in the system.
@@ -835,7 +836,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the group does not exist.
      */
     void saveGroup(Group group)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Stores Role's attributes. The Roles is required to exist in the system.
@@ -846,7 +847,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the role does not exist.
      */
     void saveRole(Role role)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Stores Permission's attributes. The Permission is required to exist in
@@ -858,7 +859,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the permission does not exist.
      */
     void savePermission(Permission permission)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /*-----------------------------------------------------------------------
       Group/Role/Permission management
@@ -874,7 +875,7 @@ public interface SecurityService
      * @throws EntityExistsException if the group already exists.
      */
     Group addGroup(Group group)
-        throws DataBackendException, EntityExistsException;
+            throws DataBackendException, EntityExistsException;
 
     /**
      * Creates a new role with specified attributes.
@@ -886,7 +887,7 @@ public interface SecurityService
      * @throws EntityExistsException if the role already exists.
      */
     Role addRole(Role role)
-        throws DataBackendException, EntityExistsException;
+            throws DataBackendException, EntityExistsException;
 
     /**
      * Creates a new permission with specified attributes.
@@ -898,7 +899,7 @@ public interface SecurityService
      * @throws EntityExistsException if the permission already exists.
      */
     Permission addPermission(Permission permission)
-        throws DataBackendException, EntityExistsException;
+            throws DataBackendException, EntityExistsException;
 
     /**
      * Removes a Group from the system.
@@ -909,7 +910,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the group does not exist.
      */
     void removeGroup(Group group)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Removes a Role from the system.
@@ -920,7 +921,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the role does not exist.
      */
     void removeRole(Role role)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Removes a Permission from the system.
@@ -931,7 +932,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the permission does not exist.
      */
     void removePermission(Permission permission)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Renames an existing Group.
@@ -943,7 +944,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the group does not exist.
      */
     void renameGroup(Group group, String name)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Renames an existing Role.
@@ -955,7 +956,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the role does not exist.
      */
     void renameRole(Role role, String name)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 
     /**
      * Renames an existing Permission.
@@ -967,5 +968,5 @@ public interface SecurityService
      * @throws UnknownEntityException if the permission does not exist.
      */
     void renamePermission(Permission permission, String name)
-        throws DataBackendException, UnknownEntityException;
+            throws DataBackendException, UnknownEntityException;
 }

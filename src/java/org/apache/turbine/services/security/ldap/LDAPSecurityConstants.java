@@ -55,8 +55,8 @@ package org.apache.turbine.services.security.ldap;
  */
 
 import java.util.Properties;
-import org.apache.turbine.services.security.TurbineSecurity;
 
+import org.apache.turbine.services.security.TurbineSecurity;
 
 /**
  * <p>This is a static class for defining the default ldap confiquration
@@ -91,7 +91,7 @@ public class LDAPSecurityConstants
 
     /** Property default value */
     static final String LDAP_PROVIDER_DEFAULT =
-        "com.sun.jndi.ldap.LdapCtxFactory";
+            "com.sun.jndi.ldap.LdapCtxFactory";
 
     /** Property key */
     static final String LDAP_BASE_SEARCH_KEY = "ldap.basesearch";
@@ -271,7 +271,7 @@ public class LDAPSecurityConstants
     public static String getFirstNameAttribute()
     {
         return getProperty(LDAP_USER_FIRSTNAME_KEY,
-            LDAP_USER_FIRSTNAME_DEFAULT);
+                LDAP_USER_FIRSTNAME_DEFAULT);
     }
 
     /**

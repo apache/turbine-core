@@ -55,12 +55,10 @@ package org.apache.turbine.modules.screens;
  */
 
 // Turbine
-import org.apache.turbine.util.RunData;
 
-// Velocity
 import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
-
 
 /**
  * VelocitySecureScreen
@@ -85,9 +83,9 @@ public abstract class VelocitySecureScreen extends VelocityScreen
      * @param context Context for web pages.
      * @exception Exception, a generic exception.
      */
-    protected abstract void doBuildTemplate( RunData data,
-                                             Context context )
-        throws Exception;
+    protected abstract void doBuildTemplate(RunData data,
+                                            Context context)
+            throws Exception;
 
     /**
      * This method overrides the method in WebMacroSiteScreen to
@@ -96,11 +94,11 @@ public abstract class VelocitySecureScreen extends VelocityScreen
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    protected void doBuildTemplate( RunData data ) throws Exception
+    protected void doBuildTemplate(RunData data) throws Exception
     {
-        if ( isAuthorized( data ) )
+        if (isAuthorized(data))
         {
-            doBuildTemplate( data, TurbineVelocity.getContext( data ) );
+            doBuildTemplate(data, TurbineVelocity.getContext(data));
         }
     }
 
@@ -114,6 +112,6 @@ public abstract class VelocitySecureScreen extends VelocityScreen
      * @return True if the user is authorized to access the screen.
      * @exception Exception, a generic exception.
      */
-    protected abstract boolean isAuthorized( RunData data )
-        throws Exception;
+    protected abstract boolean isAuthorized(RunData data)
+            throws Exception;
 }

@@ -55,16 +55,13 @@ package org.apache.turbine.modules.layouts;
  */
 
 // ECS Classes
-import org.apache.ecs.ConcreteElement;
 
-// Turbine Classes
+import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateNavigation;
-
-// Velocity Stuff
 import org.apache.velocity.context.Context;
 
 /**
@@ -94,7 +91,7 @@ public class VelocityOnlyLayout extends Layout
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.
         ConcreteElement results = ScreenLoader.getInstance()
-            .eval(data, data.getScreen());
+                .eval(data, data.getScreen());
         if (results != null)
         {
             returnValue = results.toString();
@@ -117,6 +114,6 @@ public class VelocityOnlyLayout extends Layout
 
         // Finally, generate the layout template and send it to the browser
         data.getOut().print(TurbineVelocity
-            .handleRequest(context, "layouts" + templateName));
+                .handleRequest(context, "layouts" + templateName));
     }
 }

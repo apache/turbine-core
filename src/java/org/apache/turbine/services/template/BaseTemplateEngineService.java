@@ -55,9 +55,9 @@ package org.apache.turbine.services.template;
  */
 
 import java.util.Hashtable;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.TurbineBaseService;
-
 
 /**
  * The base implementation of Turbine {@link
@@ -68,7 +68,7 @@ import org.apache.turbine.services.TurbineBaseService;
  * @version $Id$
  */
 public abstract class BaseTemplateEngineService extends TurbineBaseService
-    implements TemplateEngineService
+        implements TemplateEngineService
 {
     /**
      * A Map containing the configuration for the template
@@ -105,7 +105,7 @@ public abstract class BaseTemplateEngineService extends TurbineBaseService
      */
     public String[] getAssociatedFileExtensions()
     {
-        return (String []) configuration.get(TEMPLATE_EXTENSIONS);
+        return (String[]) configuration.get(TEMPLATE_EXTENSIONS);
     }
 
     /**
@@ -128,14 +128,14 @@ public abstract class BaseTemplateEngineService extends TurbineBaseService
          * here, should have to do this.
          */
         String[] fileExtensionAssociations =
-            config.getStringArray(TEMPLATE_EXTENSIONS);
+                config.getStringArray(TEMPLATE_EXTENSIONS);
 
         if (fileExtensionAssociations == null ||
-            fileExtensionAssociations.length == 0)
+                fileExtensionAssociations.length == 0)
         {
             fileExtensionAssociations = new String[1];
             fileExtensionAssociations[0] = config.getString(
-                DEFAULT_TEMPLATE_EXTENSION, defaultExt);
+                    DEFAULT_TEMPLATE_EXTENSION, defaultExt);
         }
 
         configuration.put(TEMPLATE_EXTENSIONS, fileExtensionAssociations);
@@ -146,7 +146,7 @@ public abstract class BaseTemplateEngineService extends TurbineBaseService
          * up correctly.
          */
 
-        String [] copyParams = {
+        String[] copyParams = {
             DEFAULT_PAGE,
             DEFAULT_SCREEN,
             DEFAULT_LAYOUT,
@@ -154,7 +154,7 @@ public abstract class BaseTemplateEngineService extends TurbineBaseService
             DEFAULT_ERROR_SCREEN,
             DEFAULT_LAYOUT_TEMPLATE
         };
-        
+
         for (int i = 0; i < copyParams.length; i++)
         {
             configuration.put(copyParams[i], config.getString(copyParams[i]));

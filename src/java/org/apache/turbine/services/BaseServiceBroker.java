@@ -244,7 +244,7 @@ public abstract class BaseServiceBroker
          * There's no point in retrieving an ordered set
          * of keys if they aren't kept in order :-)
          */
-        for(Iterator keys = configuration.getKeys(); keys.hasNext();)
+        for (Iterator keys = configuration.getKeys(); keys.hasNext();)
         {
             String key = (String) keys.next();
             String[] keyParts = StringUtils.split(key, ".");
@@ -357,7 +357,7 @@ public abstract class BaseServiceBroker
         if (report)
         {
             // Throw exceptions
-            for(Iterator names = getServiceNames(); names.hasNext();)
+            for (Iterator names = getServiceNames(); names.hasNext();)
             {
                 doInitService((String) names.next());
             }
@@ -365,7 +365,7 @@ public abstract class BaseServiceBroker
         else
         {
             // Eat exceptions
-            for(Iterator names = getServiceNames(); names.hasNext();)
+            for (Iterator names = getServiceNames(); names.hasNext();)
             {
                 try
                 {
@@ -453,13 +453,13 @@ public abstract class BaseServiceBroker
 
         ArrayList reverseServicesList = new ArrayList();
 
-        for(Iterator serviceNames = getServiceNames(); serviceNames.hasNext();)
+        for (Iterator serviceNames = getServiceNames(); serviceNames.hasNext();)
         {
             serviceName = (String) serviceNames.next();
             reverseServicesList.add(0, serviceName);
         }
 
-        for(Iterator serviceNames = reverseServicesList.iterator(); serviceNames.hasNext();)
+        for (Iterator serviceNames = reverseServicesList.iterator(); serviceNames.hasNext();)
         {
             serviceName = (String) serviceNames.next();
             log.info("Shutting down service: " + serviceName);
@@ -484,7 +484,7 @@ public abstract class BaseServiceBroker
             service = getServiceInstance(name);
             if (!service.getInit())
             {
-                synchronized(service.getClass())
+                synchronized (service.getClass())
                 {
                     if (!service.getInit())
                     {

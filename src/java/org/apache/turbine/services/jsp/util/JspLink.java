@@ -1,5 +1,5 @@
 package org.apache.turbine.services.jsp.util;
-    
+
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -25,13 +25,13 @@ package org.apache.turbine.services.jsp.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -65,7 +65,7 @@ import org.apache.turbine.util.RunData;
  * <code>
  * <jsp:useBean id="link" class="JspLink" scope="request"/%>
  * <%= link.setPage("index.jsp").setPathInfo("key", "value") %>
- * This would return: 
+ * This would return:
  *     http://foo.com/myapp/servlet/Turbine/key/value/template/index.jsp
  * </code>
  *
@@ -76,13 +76,13 @@ import org.apache.turbine.util.RunData;
 public class JspLink extends DynamicURI
 {
     /**
-        Constructor
-    */
+     Constructor
+     */
     public JspLink(RunData data)
     {
         super(data);
     }
-    
+
     /**
      * Returns the URI
      * @return String the uri http://foo.com/...
@@ -95,7 +95,7 @@ public class JspLink extends DynamicURI
         // WebMacro template
         removePathInfo();
         removeQueryData();
-        
+
         return output;
     }
 
@@ -106,6 +106,6 @@ public class JspLink extends DynamicURI
      */
     public JspLink setPage(String t)
     {
-        return (JspLink) addPathInfo("template",t);
+        return (JspLink) addPathInfo("template", t);
     }
 }

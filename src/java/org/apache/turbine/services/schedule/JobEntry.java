@@ -59,7 +59,6 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -136,7 +135,7 @@ public class JobEntry
                     String task)
             throws TurbineException
     {
-        if(task == null || task.length() == 0)
+        if (task == null || task.length() == 0)
         {
             throw new TurbineException("Error in JobEntry. " +
                     "Bad Job parameter. Task not set.");
@@ -163,7 +162,7 @@ public class JobEntry
     public int compareTo(Object je)
     {
         int result = -1;
-        if(je instanceof JobEntry)
+        if (je instanceof JobEntry)
         {
             result = getJobId() - ((JobEntry) je).getJobId();
         }
@@ -243,7 +242,7 @@ public class JobEntry
         Calendar schedrun = Calendar.getInstance();
         Calendar now = Calendar.getInstance();
 
-        switch(evaluateJobType())
+        switch (evaluateJobType())
         {
             case SECOND:
                 // SECOND (every so many seconds...)
@@ -265,7 +264,7 @@ public class JobEntry
                 schedrun.set(Calendar.HOUR_OF_DAY, getHour());
                 schedrun.set(Calendar.DAY_OF_WEEK, getWeekDay());
 
-                if(now.before(schedrun))
+                if (now.before(schedrun))
                 {
                     // Scheduled time has NOT expired.
                     runtime = schedrun.getTime().getTime();
@@ -285,7 +284,7 @@ public class JobEntry
                 schedrun.set(Calendar.HOUR_OF_DAY, getHour());
                 schedrun.set(Calendar.DAY_OF_MONTH, getDayOfMonth());
 
-                if(now.before(schedrun))
+                if (now.before(schedrun))
                 {
                     // Scheduled time has NOT expired.
                     runtime = schedrun.getTime().getTime();
@@ -305,7 +304,7 @@ public class JobEntry
                 schedrun.set(Calendar.HOUR_OF_DAY, getHour());
 
                 // Scheduled time has NOT expired.
-                if(now.before(schedrun))
+                if (now.before(schedrun))
                 {
                     runtime = schedrun.getTime().getTime();
                 }
@@ -321,7 +320,7 @@ public class JobEntry
                 // Do nothing.
         }
 
-        log.info("Next runtime for task "+this.getTask()+" is "+this.getNextRunDate());
+        log.info("Next runtime for task " + this.getTask() + " is " + this.getNextRunDate());
     }
 
     /**
@@ -339,19 +338,19 @@ public class JobEntry
     {
 
         // First start by checking if it's a day of the month job.
-        if(getDayOfMonth() < 0)
+        if (getDayOfMonth() < 0)
         {
             // Not a day of the month job... check weekday.
-            if(getWeekDay() < 0)
+            if (getWeekDay() < 0)
             {
                 // Not a weekday job...check if by the hour.
-                if(getHour() < 0)
+                if (getHour() < 0)
                 {
                     // Not an hourly job...check if it is by the minute
-                    if(getMinute() < 0)
+                    if (getMinute() < 0)
                     {
                         // Not a by the minute job so must be by the second
-                        if(getSecond() < 0)
+                        if (getSecond() < 0)
                             throw new TurbineException("Error in JobEntry. Bad Job parameter.");
 
                         return SECOND;
@@ -360,7 +359,7 @@ public class JobEntry
                     {
                         // Must be a job run by the minute so we need minutes and
                         // seconds.
-                        if(getMinute() < 0 || getSecond() < 0)
+                        if (getMinute() < 0 || getSecond() < 0)
                             throw new TurbineException("Error in JobEntry. Bad Job parameter.");
 
                         return MINUTE;
@@ -370,7 +369,7 @@ public class JobEntry
                 {
                     // Must be a daily job by hours minutes, and seconds.  In
                     // this case, we need the minute, second, and hour params.
-                    if(getMinute() < 0 || getHour() < 0 || getSecond() < 0)
+                    if (getMinute() < 0 || getHour() < 0 || getSecond() < 0)
                         throw new TurbineException("Error in JobEntry. Bad Job parameter.");
 
                     return DAILY;
@@ -380,7 +379,7 @@ public class JobEntry
             {
                 // Must be a weekday job.  In this case, we need
                 // minute, second, and hour params
-                if(getMinute() < 0 || getHour() < 0 || getSecond() < 0)
+                if (getMinute() < 0 || getHour() < 0 || getSecond() < 0)
                     throw new TurbineException("Error in JobEntry. Bad Job parameter.");
 
                 return WEEK_DAY;
@@ -390,7 +389,7 @@ public class JobEntry
         {
             // Must be a day of the month job.  In this case, we need
             // minute, second, and hour params
-            if(getMinute() < 0 || getHour() < 0)
+            if (getMinute() < 0 || getHour() < 0)
                 throw new TurbineException("Error in JobEntry. Bad Job parameter.");
 
             return DAY_OF_MONTH;

@@ -55,18 +55,16 @@ package org.apache.turbine.modules;
  */
 
 // Java Core Classes
+
 import java.util.Vector;
 
-// Turbine Utility Classes
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+import org.apache.turbine.services.resources.TurbineResources;
+import org.apache.turbine.services.schedule.JobEntry;
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
-
-//Turbine Schedule Classes
-import org.apache.turbine.services.schedule.JobEntry;
 
 /**
  * ScheduledJobs loader class.
@@ -78,7 +76,7 @@ public class ScheduledJobLoader extends GenericLoader
 {
     /** The single instance of this class. */
     private static ScheduledJobLoader instance = new ScheduledJobLoader(
-        TurbineResources.getInt(TurbineConstants.SCHEDULED_JOB_CACHE_SIZE, 10));
+            TurbineResources.getInt(TurbineConstants.SCHEDULED_JOB_CACHE_SIZE, 10));
 
     /**
      * These constructor's are private to force clients to use getInstance()
@@ -104,10 +102,10 @@ public class ScheduledJobLoader extends GenericLoader
      * @param name Name of object.
      * @param job Job to be associated with name.
      */
-    private void addInstance( String name, ScheduledJob job )
+    private void addInstance(String name, ScheduledJob job)
     {
-        if ( cache() )
-            this.put( name, (ScheduledJob) job );
+        if (cache())
+            this.put(name, (ScheduledJob) job);
     }
 
     /**
@@ -117,8 +115,8 @@ public class ScheduledJobLoader extends GenericLoader
      * @param name Name of object that will execute the job.
      * @exception Exception a generic exception.
      */
-    public void exec( JobEntry job, String name )
-        throws Exception
+    public void exec(JobEntry job, String name)
+            throws Exception
     {
         // Execute job
         getInstance(name).run(job);
@@ -139,7 +137,7 @@ public class ScheduledJobLoader extends GenericLoader
      * @exception Exception a generic exception.
      */
     public void exec(RunData data, String name)
-        throws Exception
+            throws Exception
     {
         throw new Exception("RunData objects not accepted for Scheduled jobs");
     }
@@ -153,27 +151,27 @@ public class ScheduledJobLoader extends GenericLoader
      * @exception Exception a generic exception.
      */
     public ScheduledJob getInstance(String name)
-        throws Exception
+            throws Exception
     {
         ScheduledJob job = null;
 
         // Check if the screen is already in the cache
-        if ( cache() && this.containsKey( name ) )
+        if (cache() && this.containsKey(name))
         {
-            job = (ScheduledJob) this.get( name );
+            job = (ScheduledJob) this.get(name);
         }
         else
         {
             // We get the broker service
             AssemblerBrokerService ab =
-                (AssemblerBrokerService)TurbineServices.getInstance()
-                .getService (AssemblerBrokerService.SERVICE_NAME);
+                    (AssemblerBrokerService) TurbineServices.getInstance()
+                    .getService(AssemblerBrokerService.SERVICE_NAME);
 
             try
             {
                 // Attempt to load the screen
                 job = (ScheduledJob) ab.getAssembler(
-                    AssemblerBrokerService.SCHEDULEDJOB_TYPE,name);
+                        AssemblerBrokerService.SCHEDULEDJOB_TYPE, name);
             }
             catch (ClassCastException cce)
             {
@@ -190,18 +188,18 @@ public class ScheduledJobLoader extends GenericLoader
                 // FIX ME: The AssemblerFactories should each add it's own
                 //         string here...
                 Vector packages = TurbineResources.getVector(
-                    TurbineConstants.MODULE_PACKAGES);
-                ObjectUtils.addOnce( packages, GenericLoader.getBasePackage() );
+                        TurbineConstants.MODULE_PACKAGES);
+                ObjectUtils.addOnce(packages, GenericLoader.getBasePackage());
 
                 throw new ClassNotFoundException(
-                    "\n\n\tRequested ScheduledJob not found: " + name + "\n" +
-                    "\tTurbine looked in the following modules.packages " +
-                    "path: \n\t" + packages.toString() + "\n");
+                        "\n\n\tRequested ScheduledJob not found: " + name + "\n" +
+                        "\tTurbine looked in the following modules.packages " +
+                        "path: \n\t" + packages.toString() + "\n");
             }
-            else if ( cache() )
+            else if (cache())
             {
                 // The new instance is added to the cache
-                addInstance( name, job );
+                addInstance(name, job);
             }
         }
         return job;

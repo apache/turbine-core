@@ -55,6 +55,7 @@ package org.apache.turbine.modules;
  */
 
 // Turbine Utility Classes
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -72,7 +73,7 @@ public abstract class Action extends Assembler
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    public abstract void doPerform( RunData data ) throws Exception;
+    public abstract void doPerform(RunData data) throws Exception;
 
     /**
      * Subclasses can override this method to add additional
@@ -82,8 +83,8 @@ public abstract class Action extends Assembler
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    protected void perform( RunData data ) throws Exception
+    protected void perform(RunData data) throws Exception
     {
-        doPerform( data );
+        doPerform(data);
     }
 }

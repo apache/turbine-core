@@ -55,10 +55,10 @@ package org.apache.turbine.modules.pages;
  */
 
 // Turbine Classes
-import org.apache.turbine.util.RunData;
+
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.jsp.JspService;
-
+import org.apache.turbine.util.RunData;
 
 /**
  * Extends TemplatePage to add some convenience objects to the request.
@@ -74,8 +74,8 @@ public class JspPage extends TemplatePage
      */
     protected void doBuildBeforeAction(RunData data) throws Exception
     {
-        JspService jsp = (JspService)TurbineServices.getInstance()
-            .getService(JspService.SERVICE_NAME);
+        JspService jsp = (JspService) TurbineServices.getInstance()
+                .getService(JspService.SERVICE_NAME);
 
         jsp.addDefaultObjects(data);
         try
@@ -83,7 +83,7 @@ public class JspPage extends TemplatePage
             //We try to set the buffer size from defaults
             data.getResponse().setBufferSize(jsp.getDefaultBufferSize());
         }
-        catch (IllegalStateException ise )
+        catch (IllegalStateException ise)
         {
             //If the response was already commited, we die silently
             //No logger here?

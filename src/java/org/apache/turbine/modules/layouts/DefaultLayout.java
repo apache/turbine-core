@@ -55,17 +55,15 @@ package org.apache.turbine.modules.layouts;
  */
 
 // Turbine Classes
-import org.apache.turbine.modules.Layout;
-import org.apache.turbine.modules.NavigationLoader;
-import org.apache.turbine.modules.ScreenLoader;
-import org.apache.turbine.util.RunData;
 
-// ECS Classes
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.HtmlColor;
 import org.apache.ecs.html.Font;
 import org.apache.ecs.html.P;
-
+import org.apache.turbine.modules.Layout;
+import org.apache.turbine.modules.NavigationLoader;
+import org.apache.turbine.modules.ScreenLoader;
+import org.apache.turbine.util.RunData;
 
 /**
  * This is an example Layout module that is executed by default.
@@ -90,7 +88,7 @@ public class DefaultLayout extends Layout
     {
         // Execute the Top Navigation portion for this Layout.
         ConcreteElement topNav =
-            NavigationLoader.getInstance().eval(data, "DefaultTopNavigation");
+                NavigationLoader.getInstance().eval(data, "DefaultTopNavigation");
 
         if (topNav != null)
         {
@@ -101,13 +99,13 @@ public class DefaultLayout extends Layout
         if (data.getMessage() != null)
         {
             data.getPage().getBody().addElement(new P())
-                .addElement(new Font().setColor(HtmlColor.red)
+                    .addElement(new Font().setColor(HtmlColor.red)
                     .addElement(data.getMessageAsHTML()));
         }
 
         // Now execute the Screen portion of the page.
         ConcreteElement screen = ScreenLoader.getInstance()
-            .eval(data, data.getScreen());
+                .eval(data, data.getScreen());
 
         if (screen != null)
         {
@@ -124,7 +122,7 @@ public class DefaultLayout extends Layout
 
         // Execute the Bottom Navigation portion for this Layout.
         ConcreteElement bottomNav = NavigationLoader.getInstance().eval(data,
-            "DefaultBottomNavigation");
+                "DefaultBottomNavigation");
 
         if (bottomNav != null)
         {

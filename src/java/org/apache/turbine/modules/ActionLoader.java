@@ -57,13 +57,9 @@ package org.apache.turbine.modules;
 import java.util.Vector;
 
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.services.TurbineServices;
-
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
-
 import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
 
@@ -78,7 +74,7 @@ public class ActionLoader extends GenericLoader
 {
     /** The single instance of this class. */
     private static ActionLoader instance = new ActionLoader(
-        TurbineResources.getInt(TurbineConstants.ACTION_CACHE_SIZE, 20));
+            TurbineResources.getInt(TurbineConstants.ACTION_CACHE_SIZE, 20));
 
     /**
      * These ctor's are private to force clients to use getInstance()
@@ -120,7 +116,7 @@ public class ActionLoader extends GenericLoader
      * @exception Exception a generic exception.
      */
     public void exec(RunData data, String name)
-        throws Exception
+            throws Exception
     {
         // Execute action
         getInstance(name).perform(data);
@@ -135,7 +131,7 @@ public class ActionLoader extends GenericLoader
      * @exception Exception a generic exception.
      */
     public Action getInstance(String name)
-        throws Exception
+            throws Exception
     {
         Action action = null;
 
@@ -147,14 +143,14 @@ public class ActionLoader extends GenericLoader
         {
             // We get the broker service
             AssemblerBrokerService ab =
-                (AssemblerBrokerService)TurbineServices.getInstance()
-                .getService(AssemblerBrokerService.SERVICE_NAME);
+                    (AssemblerBrokerService) TurbineServices.getInstance()
+                    .getService(AssemblerBrokerService.SERVICE_NAME);
 
             try
             {
                 // Attempt to load the screen
                 action = (Action) ab.getAssembler(
-                    AssemblerBrokerService.ACTION_TYPE,name);
+                        AssemblerBrokerService.ACTION_TYPE, name);
             }
             catch (ClassCastException cce)
             {
@@ -171,14 +167,14 @@ public class ActionLoader extends GenericLoader
                 // FIX ME: The AssemblerFactories should each add it's own
                 //         string here...
                 Vector packages = TurbineResources.getVector(
-                    TurbineConstants.MODULE_PACKAGES);
+                        TurbineConstants.MODULE_PACKAGES);
                 ObjectUtils.addOnce(packages,
-                                     GenericLoader.getBasePackage());
+                        GenericLoader.getBasePackage());
 
                 throw new ClassNotFoundException(
-                    "\n\n\tRequested Action not found: " + name + "\n" +
-                    "\tTurbine looked in the following modules.packages " +
-                    "path: \n\t" + packages.toString() + "\n");
+                        "\n\n\tRequested Action not found: " + name + "\n" +
+                        "\tTurbine looked in the following modules.packages " +
+                        "path: \n\t" + packages.toString() + "\n");
             }
             else if (cache())
             {

@@ -10,6 +10,6 @@ package org.apache.turbine.services.schedule;
  *  long as it does not already exist in the output directory.
  */
 public class JobEntryPeer
-    extends org.apache.turbine.services.schedule.BaseJobEntryPeer
+        extends org.apache.turbine.services.schedule.BaseJobEntryPeer
 {
 }

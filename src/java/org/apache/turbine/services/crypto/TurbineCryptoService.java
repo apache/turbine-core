@@ -54,19 +54,16 @@ package org.apache.turbine.services.crypto;
  * <http://www.apache.org/>.
  */
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-import java.security.NoSuchAlgorithmException;
-
 import org.apache.commons.configuration.Configuration;
-
-import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.factory.FactoryService;
 import org.apache.turbine.services.BaseService;
+import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineServices;
-
 import org.apache.turbine.services.crypto.provider.JavaCrypt;
+import org.apache.turbine.services.factory.FactoryService;
 
 /**
  * An implementation of CryptoService that uses either supplied crypto
@@ -78,19 +75,19 @@ import org.apache.turbine.services.crypto.provider.JavaCrypt;
  *
  */
 
-public class TurbineCryptoService 
-    extends BaseService
-    implements CryptoService
+public class TurbineCryptoService
+        extends BaseService
+        implements CryptoService
 {
     /** Key Prefix for our algorithms */
-    private static final String ALGORITHM = "algorithm"; 
+    private static final String ALGORITHM = "algorithm";
 
     /** Default Key */
     private static final String DEFAULT_KEY = "default";
 
     /** Default Encryption Class */
-    private static final String DEFAULT_CLASS = 
-        JavaCrypt.class.getName();
+    private static final String DEFAULT_CLASS =
+            JavaCrypt.class.getName();
 
     /** Names of the registered algorithms and the wanted classes */
     private Hashtable algos = null;
@@ -98,17 +95,16 @@ public class TurbineCryptoService
     /** A factory to construct CryptoAlgorithm objects  */
     private FactoryService factoryService = null;
 
-
     /**
      * There is not much to initialize here. This runs
      * as early init method.
      *
      * @throws InitializationException Something went wrong in the init
      *         stage
-     */ 
+     */
 
     public void init()
-        throws InitializationException
+            throws InitializationException
     {
         this.algos = new Hashtable();
 
@@ -129,21 +125,21 @@ public class TurbineCryptoService
             {
                 String key = (String) it.next();
                 String val = conf.getString(key);
-                // Log.debug("Registered " + val 
+                // Log.debug("Registered " + val
                 //            + " for Crypto Algorithm " + key);
                 algos.put(key, val);
             }
         }
 
-        try 
+        try
         {
             factoryService = (FactoryService) TurbineServices.getInstance().
-                getService(FactoryService.SERVICE_NAME);
+                    getService(FactoryService.SERVICE_NAME);
         }
         catch (Exception e)
         {
             throw new InitializationException(
-                "Failed to get a Factory object: ", e);
+                    "Failed to get a Factory object: ", e);
         }
 
         setInit(true);
@@ -162,7 +158,7 @@ public class TurbineCryptoService
      */
 
     public CryptoAlgorithm getCryptoAlgorithm(String algo)
-        throws NoSuchAlgorithmException
+            throws NoSuchAlgorithmException
     {
         String cryptoClass = (String) algos.get(algo);
         CryptoAlgorithm ca = null;
@@ -175,19 +171,19 @@ public class TurbineCryptoService
         if (cryptoClass == null || cryptoClass.equalsIgnoreCase("none"))
         {
             throw new NoSuchAlgorithmException(
-                         "TurbineCryptoService: No Algorithm for " 
-                         + algo + " found");
+                    "TurbineCryptoService: No Algorithm for "
+                    + algo + " found");
         }
 
-        try 
+        try
         {
             ca = (CryptoAlgorithm) factoryService.getInstance(cryptoClass);
         }
         catch (Exception e)
         {
             throw new NoSuchAlgorithmException(
-                         "TurbineCryptoService: Error instantiating "
-                         + cryptoClass + " for " + algo);
+                    "TurbineCryptoService: Error instantiating "
+                    + cryptoClass + " for " + algo);
         }
 
         ca.setCipher(algo);

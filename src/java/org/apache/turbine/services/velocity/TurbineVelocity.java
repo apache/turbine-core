@@ -56,6 +56,7 @@ package org.apache.turbine.services.velocity;
 
 import java.io.OutputStream;
 import java.io.Writer;
+
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -86,8 +87,8 @@ public abstract class TurbineVelocity
      */
     protected static VelocityService getService()
     {
-        return (VelocityService)TurbineServices
-            .getInstance().getService(VelocityService.SERVICE_NAME);
+        return (VelocityService) TurbineServices
+                .getInstance().getService(VelocityService.SERVICE_NAME);
     }
 
     /**
@@ -102,7 +103,7 @@ public abstract class TurbineVelocity
      * @exception Exception, a generic exception.
      */
     public static String handleRequest(Context context, String template)
-        throws Exception
+            throws Exception
     {
         return getService().handleRequest(context, template);
     }
@@ -118,9 +119,9 @@ public abstract class TurbineVelocity
      * @exception Exception, a generic exception.
      */
     public static void handleRequest(Context context,
-                              String template,
-                              OutputStream out)
-        throws Exception
+                                     String template,
+                                     OutputStream out)
+            throws Exception
     {
         getService().handleRequest(context, template, out);
     }
@@ -136,9 +137,9 @@ public abstract class TurbineVelocity
      * @exception Exception, a generic exception.
      */
     public static void handleRequest(Context context,
-                              String template,
-                              Writer writer)
-        throws Exception
+                                     String template,
+                                     Writer writer)
+            throws Exception
     {
         getService().handleRequest(context, template, writer);
     }

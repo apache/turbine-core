@@ -25,13 +25,13 @@ package org.apache.turbine.services.cache;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,6 +55,7 @@ package org.apache.turbine.services.cache;
  */
 
 import java.io.IOException;
+
 import org.apache.turbine.services.Service;
 
 /**
@@ -64,7 +65,7 @@ import org.apache.turbine.services.Service;
  * @version $Id$
  */
 public interface GlobalCacheService
-    extends Service
+        extends Service
 {
     static final String SERVICE_NAME = "GlobalCacheService";
 
@@ -77,7 +78,7 @@ public interface GlobalCacheService
      * the cache.
      */
     CachedObject getObject(String id)
-        throws ObjectExpiredException;
+            throws ObjectExpiredException;
 
     /**
      * Adds an object to the cache.
@@ -99,7 +100,7 @@ public interface GlobalCacheService
      * @return int representing current cache size in number of bytes
      */
     int getCacheSize()
-        throws IOException;
+            throws IOException;
 
     /**
      * Returns the number of objects in the cache.

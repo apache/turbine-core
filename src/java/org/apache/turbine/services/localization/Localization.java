@@ -57,6 +57,7 @@ package org.apache.turbine.services.localization;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 
@@ -155,7 +156,7 @@ public abstract class Localization
      */
     public static String getString(String key, String lang)
     {
-        return getString(getDefaultBundleName(), new Locale(lang, ""),key);
+        return getString(getDefaultBundleName(), new Locale(lang, ""), key);
     }
 
     /**

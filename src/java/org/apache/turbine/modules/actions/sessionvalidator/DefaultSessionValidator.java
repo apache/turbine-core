@@ -55,9 +55,7 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  */
 
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.util.RunData;
 
 /**
@@ -109,10 +107,10 @@ public class DefaultSessionValidator extends SessionValidator
             // (e.g. the LogoutUser action)
             if (data.getMessage() == null)
                 data.setMessage(TurbineResources.getString(
-                    TurbineConstants.LOGIN_MESSAGE));
+                        TurbineConstants.LOGIN_MESSAGE));
             // set the screen to be the login page
             data.setScreen(TurbineResources.getString(
-                TurbineConstants.SCREEN_LOGIN));
+                    TurbineConstants.SCREEN_LOGIN));
             // we're not doing any actions buddy! (except action.login which
             // will have been performed already)
             data.setAction(null);
@@ -120,21 +118,21 @@ public class DefaultSessionValidator extends SessionValidator
         else if (!data.hasScreen())
         {
             data.setMessage(TurbineResources.getString(
-                TurbineConstants.LOGIN_MESSAGE_NOSCREEN));
+                    TurbineConstants.LOGIN_MESSAGE_NOSCREEN));
             data.setScreen(TurbineResources.getString(
-                TurbineConstants.SCREEN_HOMEPAGE));
+                    TurbineConstants.SCREEN_HOMEPAGE));
         }
         else if (data.getParameters().containsKey("_session_access_counter"))
         {
             // See comments in screens.error.InvalidState.
             if (data.getParameters().getInt("_session_access_counter") <
-                 (((Integer)data.getUser().getTemp("_session_access_counter"))
-                 .intValue() - 1))
+                    (((Integer) data.getUser().getTemp("_session_access_counter"))
+                    .intValue() - 1))
             {
                 data.getUser().setTemp("prev_screen", data.getScreen());
                 data.getUser().setTemp("prev_parameters", data.getParameters());
                 data.setScreen(TurbineResources.getString(
-                    TurbineConstants.SCREEN_INVALID_STATE));
+                        TurbineConstants.SCREEN_INVALID_STATE));
                 data.setAction("");
             }
         }

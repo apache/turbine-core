@@ -55,11 +55,9 @@ package org.apache.turbine.modules;
  */
 
 import java.lang.reflect.Method;
-
 import java.util.Enumeration;
 
 import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 
@@ -115,7 +113,7 @@ public abstract class ActionEvent extends Action
      * @exception Exception a generic exception.
      */
     public abstract void doPerform(RunData data)
-        throws Exception;
+            throws Exception;
 
     /** The name of the button to look for. */
     protected static final String BUTTON = "eventSubmit_";
@@ -137,7 +135,7 @@ public abstract class ActionEvent extends Action
      * @exception Exception a generic exception.
      */
     protected void perform(RunData data)
-        throws Exception
+            throws Exception
     {
         try
         {
@@ -156,7 +154,7 @@ public abstract class ActionEvent extends Action
      * @exception Exception a generic exception.
      */
     public void executeEvents(RunData data)
-        throws Exception
+            throws Exception
     {
         // Name of the button.
         String theButton = null;
@@ -166,7 +164,7 @@ public abstract class ActionEvent extends Action
         String button = pp.convert(BUTTON);
 
         // Loop through and find the button.
-        for (Enumeration e = pp.keys() ; e.hasMoreElements() ;)
+        for (Enumeration e = pp.keys(); e.hasMoreElements();)
         {
             String key = (String) e.nextElement();
             if (key.startsWith(button))
@@ -181,9 +179,9 @@ public abstract class ActionEvent extends Action
             throw new NoSuchMethodException("ActionEvent: The button was null");
         }
 
-        Class[] classes = new Class[] { RunData.class };
+        Class[] classes = new Class[]{RunData.class};
         Method method = getClass().getMethod(theButton, classes);
-        Object[] args = new Object[] { data };
+        Object[] args = new Object[]{data};
 
         method.invoke(this, args);
     }
@@ -198,18 +196,18 @@ public abstract class ActionEvent extends Action
     protected final String formatString(String input)
     {
         String fold =
-            TurbineResources.getString(ParameterParser.URL_CASE_FOLDING, "")
-            .toLowerCase();
+                TurbineResources.getString(ParameterParser.URL_CASE_FOLDING, "")
+                .toLowerCase();
         if ((fold == null) ||
-            (fold.length()==0) ||
-            (! fold.equals(ParameterParser.URL_CASE_FOLDING_NONE)))
+                (fold.length() == 0) ||
+                (!fold.equals(ParameterParser.URL_CASE_FOLDING_NONE)))
         {
             String tmp = input;
 
             // Chop off suffixes (for image type)
             if (input.endsWith(".x") || input.endsWith(".y"))
             {
-               tmp = tmp.substring(0, input.length() - 2);
+                tmp = tmp.substring(0, input.length() - 2);
             }
             // Chop off the prefixes.
             tmp = tmp.substring(BUTTON_LENGTH + METHOD_NAME_LENGTH);

@@ -54,15 +54,15 @@ package org.apache.turbine.services.upload;
  * <http://www.apache.org/>.
  */
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.ParameterParser;
-import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.ServletUtils;
-import org.apache.turbine.Turbine;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * <p> This class is a base implementation of
@@ -75,8 +75,8 @@ import org.apache.turbine.Turbine;
  * @version $Id$
  */
 public abstract class BaseUploadService
-    extends TurbineBaseService
-    implements UploadService
+        extends TurbineBaseService
+        implements UploadService
 {
     /**
      * A maximum lenght of a single header line that will be
@@ -93,12 +93,12 @@ public abstract class BaseUploadService
     public void init()
     {
         String path = getProperties()
-            .getProperty(UploadService.REPOSITORY_KEY,
-                         UploadService.REPOSITORY_DEFAULT.toString());
-        if(!path.startsWith("/"))
+                .getProperty(UploadService.REPOSITORY_KEY,
+                        UploadService.REPOSITORY_DEFAULT.toString());
+        if (!path.startsWith("/"))
         {
             String realPath = TurbineServlet.getRealPath(path);
-            if(realPath != null)
+            if (realPath != null)
             {
                 path = realPath;
             }
@@ -118,10 +118,10 @@ public abstract class BaseUploadService
      * @exception TurbineException If there are problems reading/parsing
      * the request or storing files.
      */
-    public abstract void parseRequest( HttpServletRequest req,
-                                       ParameterParser params,
-                                       String path )
-        throws TurbineException;
+    public abstract void parseRequest(HttpServletRequest req,
+                                      ParameterParser params,
+                                      String path)
+            throws TurbineException;
 
     /**
      * <p> Retrieves the value of <code>size.max</code> property of the
@@ -132,13 +132,13 @@ public abstract class BaseUploadService
     public int getSizeMax()
     {
         String sizeMax = getProperties()
-            .getProperty(UploadService.SIZE_MAX_KEY,
-                         UploadService.SIZE_MAX_DEFAULT.toString());
+                .getProperty(UploadService.SIZE_MAX_KEY,
+                        UploadService.SIZE_MAX_DEFAULT.toString());
         try
         {
             return Integer.parseInt(sizeMax);
         }
-        catch(NumberFormatException e)
+        catch (NumberFormatException e)
         {
             return UploadService.SIZE_MAX_DEFAULT.intValue();
         }
@@ -153,13 +153,13 @@ public abstract class BaseUploadService
     public int getSizeThreshold()
     {
         String sizeThreshold = getProperties()
-            .getProperty(UploadService.SIZE_THRESHOLD_KEY,
-                         UploadService.SIZE_THRESHOLD_DEFAULT.toString());
+                .getProperty(UploadService.SIZE_THRESHOLD_KEY,
+                        UploadService.SIZE_THRESHOLD_DEFAULT.toString());
         try
         {
             return Integer.parseInt(sizeThreshold);
         }
-        catch(NumberFormatException e)
+        catch (NumberFormatException e)
         {
             return UploadService.SIZE_THRESHOLD_DEFAULT.intValue();
         }
@@ -175,13 +175,12 @@ public abstract class BaseUploadService
     {
         // get the reposity value from TR.props
         String tmpPath = getProperties()
-            .getProperty(UploadService.REPOSITORY_KEY,
-                         UploadService.REPOSITORY_DEFAULT.toString());
+                .getProperty(UploadService.REPOSITORY_KEY,
+                        UploadService.REPOSITORY_DEFAULT.toString());
 
         // return the expanded path name
         ServletConfig config = Turbine.getTurbineServletConfig();
         return ServletUtils.expandRelative(config, tmpPath);
-
 
     }
 }

@@ -93,7 +93,7 @@ public interface PoolService extends FactoryService
      * @throws TurbineException if recycling fails.
      */
     Object getInstance(Class clazz)
-        throws TurbineException;
+            throws TurbineException;
 
     /**
      * Gets an instance of a specified class either from the pool
@@ -108,7 +108,7 @@ public interface PoolService extends FactoryService
     Object getInstance(Class clazz,
                        Object params[],
                        String signature[])
-        throws TurbineException;
+            throws TurbineException;
 
     /**
      * Puts a used object back to the pool. Objects implementing

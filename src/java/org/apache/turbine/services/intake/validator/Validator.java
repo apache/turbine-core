@@ -80,7 +80,7 @@ public interface Validator
      * testValue did not pass the validation tests.
      */
     void assertValidity(String testValue)
-        throws ValidationException;
+            throws ValidationException;
 
     /**
      * Get the last error message resulting from invalid input.

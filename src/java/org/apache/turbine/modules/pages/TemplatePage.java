@@ -55,9 +55,9 @@ package org.apache.turbine.modules.pages;
  */
 
 // Turbine Classes
+
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
-
 
 /**
  * When building sites using templates, Screens need only be defined
@@ -121,7 +121,7 @@ public class TemplatePage extends DefaultPage
     protected void doBuildAfterAction(RunData data) throws Exception
     {
         /*
-         * Either template or screen should be guaranteed by 
+         * Either template or screen should be guaranteed by
          * the SessionValidator
          * It is occasionally better to specify the screen instead of template
          * in cases where multiple Screens map to one template.  The template
@@ -140,8 +140,8 @@ public class TemplatePage extends DefaultPage
             /*
              * Get the layout template and the correct Screen.
              */
-            String layoutTemplate = 
-                TurbineTemplate.getLayoutTemplateName(template);
+            String layoutTemplate =
+                    TurbineTemplate.getLayoutTemplateName(template);
             data.getTemplateInfo().setLayoutTemplate(layoutTemplate);
 
             String screen = TurbineTemplate.getScreenName(template);
@@ -149,9 +149,9 @@ public class TemplatePage extends DefaultPage
             if (screen == null)
             {
                 throw new Exception("Screen could not be determined. \n" +
-                    "No matches were found by TemplateService and the \n" +
-                    "services.TemplateService.default.screen property\n" +
-                    "was not set.");
+                        "No matches were found by TemplateService and the \n" +
+                        "services.TemplateService.default.screen property\n" +
+                        "was not set.");
             }
             data.setScreen(screen);
         }

@@ -54,6 +54,7 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.intake.IntakeException;
@@ -63,7 +64,6 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.TurbineRuntimeException;
 import org.apache.turbine.util.ValueParser;
-import org.apache.commons.fileupload.FileItem;
 
 /**
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>

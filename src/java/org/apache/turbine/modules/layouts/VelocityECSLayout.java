@@ -55,18 +55,15 @@ package org.apache.turbine.modules.layouts;
  */
 
 // ECS Classes
-import org.apache.ecs.ConcreteElement;
 
-// Turbine Classes
-import org.apache.turbine.modules.Layout;
-import org.apache.turbine.modules.ScreenLoader;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.template.TemplateNavigation;
-import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-// Velocity Stuff
+import org.apache.ecs.ConcreteElement;
+import org.apache.turbine.modules.Layout;
+import org.apache.turbine.modules.ScreenLoader;
+import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.template.TemplateNavigation;
 import org.apache.velocity.context.Context;
 
 /**
@@ -91,7 +88,7 @@ public class VelocityECSLayout extends Layout
     public VelocityECSLayout()
     {
         log.warn("The VelocityECSLayout is deprecated. "
-           + "Please switch to VelocityOnlyLayout.");
+                + "Please switch to VelocityOnlyLayout.");
     }
 
     /**
@@ -112,7 +109,7 @@ public class VelocityECSLayout extends Layout
         // First, generate the screen and put it in the context so we
         // can grab it the layout template.
         ConcreteElement results = ScreenLoader.getInstance()
-            .eval(data, data.getScreen());
+                .eval(data, data.getScreen());
 
         if (results != null)
         {

@@ -67,7 +67,6 @@ import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.RunData;
 
-
 /**
  * This service provides a method for mapping templates to their
  * appropriate Screens or Navigations.  It also allows templates to
@@ -109,7 +108,7 @@ import org.apache.turbine.util.RunData;
  * @version $Id$
  */
 public class TurbineTemplateService extends TurbineBaseService
-    implements TemplateService
+        implements TemplateService
 {
     /**
      * The default file extension used as a registry key when a
@@ -260,7 +259,7 @@ public class TurbineTemplateService extends TurbineBaseService
      */
     public String getDefaultPageName(String template)
     {
-        return getDefaultModuleName(template,PAGE_KEY);
+        return getDefaultModuleName(template, PAGE_KEY);
     }
 
     /**
@@ -273,7 +272,7 @@ public class TurbineTemplateService extends TurbineBaseService
      */
     public String getDefaultScreenName(String template)
     {
-        return getDefaultModuleName(template,SCREEN_KEY);
+        return getDefaultModuleName(template, SCREEN_KEY);
     }
 
     /**
@@ -286,7 +285,7 @@ public class TurbineTemplateService extends TurbineBaseService
      */
     public String getDefaultLayoutName(String template)
     {
-        return getDefaultModuleName(template,LAYOUT_KEY);
+        return getDefaultModuleName(template, LAYOUT_KEY);
     }
 
     /**
@@ -299,7 +298,7 @@ public class TurbineTemplateService extends TurbineBaseService
      */
     public String getDefaultNavigationName(String template)
     {
-        return getDefaultModuleName(template,NAVIGATION_KEY);
+        return getDefaultModuleName(template, NAVIGATION_KEY);
     }
 
     /**
@@ -313,13 +312,13 @@ public class TurbineTemplateService extends TurbineBaseService
     public String getDefaultLayoutTemplateName(String template)
     {
         String layoutTemplate =
-            getDefaultModuleName(template,LAYOUT_TEMPLATE_KEY);
+                getDefaultModuleName(template, LAYOUT_TEMPLATE_KEY);
         if ((layoutTemplate != null) &&
-            (layoutTemplate.indexOf('.') < 0))
+                (layoutTemplate.indexOf('.') < 0))
         {
-          int dotIndex = template.lastIndexOf('.');
-          layoutTemplate += dotIndex >= 0 ?
-              template.substring(dotIndex) : '.' + defaultExtension;
+            int dotIndex = template.lastIndexOf('.');
+            layoutTemplate += dotIndex >= 0 ?
+                    template.substring(dotIndex) : '.' + defaultExtension;
         }
         return layoutTemplate;
     }
@@ -335,7 +334,7 @@ public class TurbineTemplateService extends TurbineBaseService
     {
         String template = data.getParameters().get("template");
         return template != null ?
-            getDefaultPageName(template) : getDefaultPage();
+                getDefaultPageName(template) : getDefaultPage();
     }
 
     /**
@@ -349,7 +348,7 @@ public class TurbineTemplateService extends TurbineBaseService
     {
         String template = data.getParameters().get("template");
         return template != null ?
-            getDefaultLayoutName(template) : getDefaultLayout();
+                getDefaultLayoutName(template) : getDefaultLayout();
     }
 
     /**
@@ -361,9 +360,9 @@ public class TurbineTemplateService extends TurbineBaseService
      * @exception Exception, a generic exception.
      */
     public String getScreenName(String template)
-        throws Exception
+            throws Exception
     {
-        return getCachedName(template,SCREEN_KEY);
+        return getCachedName(template, SCREEN_KEY);
     }
 
     /**
@@ -375,9 +374,9 @@ public class TurbineTemplateService extends TurbineBaseService
      * @exception Exception, a generic exception.
      */
     public String getLayoutName(String template)
-        throws Exception
+            throws Exception
     {
-        return getCachedName(template,LAYOUT_KEY);
+        return getCachedName(template, LAYOUT_KEY);
     }
 
     /**
@@ -389,9 +388,9 @@ public class TurbineTemplateService extends TurbineBaseService
      * @exception Exception, a generic exception.
      */
     public String getNavigationName(String template)
-        throws Exception
+            throws Exception
     {
-        return getCachedName(template,NAVIGATION_KEY);
+        return getCachedName(template, NAVIGATION_KEY);
     }
 
     /**
@@ -403,9 +402,9 @@ public class TurbineTemplateService extends TurbineBaseService
      * @exception Exception, a generic exception.
      */
     public String getScreenTemplateName(String template)
-        throws Exception
+            throws Exception
     {
-        return getCachedName(template,SCREEN_TEMPLATE_KEY);
+        return getCachedName(template, SCREEN_TEMPLATE_KEY);
     }
 
     /**
@@ -417,9 +416,9 @@ public class TurbineTemplateService extends TurbineBaseService
      * @exception Exception, a generic exception.
      */
     public String getLayoutTemplateName(String template)
-        throws Exception
+            throws Exception
     {
-        return getCachedName(template,LAYOUT_TEMPLATE_KEY);
+        return getCachedName(template, LAYOUT_TEMPLATE_KEY);
     }
 
     /**
@@ -451,7 +450,7 @@ public class TurbineTemplateService extends TurbineBaseService
     {
         for (int i = 0; i < templatePaths.length; i++)
         {
-            if (new File(templatePaths[i],template).exists())
+            if (new File(templatePaths[i], template).exists())
             {
                 return true;
             }
@@ -472,7 +471,7 @@ public class TurbineTemplateService extends TurbineBaseService
          * Map implementations.
          */
         HashMap registry = templateEngineRegistry != null ?
-            (HashMap) templateEngineRegistry.clone() : new HashMap();
+                (HashMap) templateEngineRegistry.clone() : new HashMap();
 
         String[] exts = service.getAssociatedFileExtensions();
 
@@ -497,7 +496,7 @@ public class TurbineTemplateService extends TurbineBaseService
         {
             int dotIndex = template.lastIndexOf('.');
             String ext = dotIndex == -1 ?
-                defaultExtension : template.substring(dotIndex + 1);
+                    defaultExtension : template.substring(dotIndex + 1);
             return (TemplateEngineService) registry.get(ext);
         }
         else
@@ -520,7 +519,7 @@ public class TurbineTemplateService extends TurbineBaseService
     {
         TemplateEngineService tes = getTemplateEngineService(template);
         return tes != null ?
-            (String) tes.getTemplateEngineServiceConfiguration().
+                (String) tes.getTemplateEngineServiceConfiguration().
                 get(defaultNameProperties[key]) : null;
     }
 
@@ -536,7 +535,7 @@ public class TurbineTemplateService extends TurbineBaseService
      */
     protected String getCachedName(String template,
                                    int key)
-        throws Exception
+            throws Exception
     {
         /*
          * Add a default extension if missing.
@@ -573,7 +572,7 @@ public class TurbineTemplateService extends TurbineBaseService
                 break;
 
             default:
-                found = getParsedModuleName(template,key);
+                found = getParsedModuleName(template, key);
         }
 
         /*
@@ -581,7 +580,7 @@ public class TurbineTemplateService extends TurbineBaseService
          */
         if (useCache)
         {
-            templateNameCache[key].put(template,found);
+            templateNameCache[key].put(template, found);
         }
 
         return found;
@@ -597,13 +596,13 @@ public class TurbineTemplateService extends TurbineBaseService
      */
     protected String getParsedModuleName(String template,
                                          int key)
-        throws Exception
+            throws Exception
     {
         /*
          * Parse the template name and change it into a package.
          */
         StringBuffer pckage = new StringBuffer();
-        int i = parseTemplatePath(template,pckage);
+        int i = parseTemplatePath(template, pckage);
         if (pckage.charAt(0) == '/')
         {
             pckage.deleteCharAt(0);
@@ -615,7 +614,7 @@ public class TurbineTemplateService extends TurbineBaseService
             {
                 if (pckage.charAt(j) == '/')
                 {
-                    pckage.setCharAt(j,'.');
+                    pckage.setCharAt(j, '.');
                 }
             }
         }
@@ -627,7 +626,7 @@ public class TurbineTemplateService extends TurbineBaseService
         {
             if (pckage.charAt(j) == '.')
             {
-                pckage.delete(j,pckage.length());
+                pckage.delete(j, pckage.length());
                 break;
             }
         }
@@ -690,7 +689,7 @@ public class TurbineTemplateService extends TurbineBaseService
         /*
          * Not found, return the default module name.
          */
-        return getDefaultModuleName(template,key);
+        return getDefaultModuleName(template, key);
     }
 
     /**
@@ -701,25 +700,25 @@ public class TurbineTemplateService extends TurbineBaseService
      * @exception Exception, a generic exception.
      */
     protected String getParsedScreenTemplateName(String template)
-        throws Exception
+            throws Exception
     {
         /*
          * Parse the template name.
          */
         StringBuffer path = new StringBuffer();
-        parseTemplatePath(template,path);
+        parseTemplatePath(template, path);
         if (path.charAt(0) != '/')
         {
-            path.insert(0,'/');
+            path.insert(0, '/');
         }
-        path.insert(0,"screens");
+        path.insert(0, "screens");
 
         /* Let the template engine service to check its existance. */
         TemplateEngineService tes = getTemplateEngineService(template);
         if ((tes == null) || !tes.templateExists(path.toString()))
         {
             throw new Exception(
-                "Screen template '" + template + "' not found");
+                    "Screen template '" + template + "' not found");
         }
         return path.substring(7);
     }
@@ -732,19 +731,19 @@ public class TurbineTemplateService extends TurbineBaseService
      * @exception Exception, a generic exception.
      */
     protected String getParsedLayoutTemplateName(String template)
-        throws Exception
+            throws Exception
     {
         /*
          * Parse the template name.
          */
         StringBuffer path = new StringBuffer();
-        int i = parseTemplatePath(template,path);
+        int i = parseTemplatePath(template, path);
         if (path.charAt(0) != '/')
         {
-            path.insert(0,'/');
+            path.insert(0, '/');
             i++;
         }
-        path.insert(0,"layouts");
+        path.insert(0, "layouts");
         i += 7;
 
         /*
@@ -756,7 +755,7 @@ public class TurbineTemplateService extends TurbineBaseService
         if (tes == null)
         {
             throw new Exception(
-                "Layout template '" + template + "' not found");
+                    "Layout template '" + template + "' not found");
         }
 
         String defaultLayout = getDefaultLayoutTemplateName(template);
@@ -786,7 +785,7 @@ public class TurbineTemplateService extends TurbineBaseService
             if (defaultLayout == null)
             {
                 throw new Exception(
-                    "Layout template '" + template + "' not found");
+                        "Layout template '" + template + "' not found");
             }
 
             path.setLength(i);
@@ -834,7 +833,7 @@ public class TurbineTemplateService extends TurbineBaseService
      */
     private int parseTemplatePath(String template,
                                   StringBuffer buffer)
-        throws Exception
+            throws Exception
     {
         char c;
         int j = 0;
@@ -848,7 +847,7 @@ public class TurbineTemplateService extends TurbineBaseService
             if (c == ',')
             {
                 c = '/';
-                buffer.setCharAt(j,c);
+                buffer.setCharAt(j, c);
             }
             if (c == '/')
             {
@@ -857,7 +856,7 @@ public class TurbineTemplateService extends TurbineBaseService
                 {
                     c = buffer.charAt(j + 1);
                     if ((c == '/') ||
-                        (c == ','))
+                            (c == ','))
                     {
                         buffer.deleteCharAt(j);
                         len--;
@@ -868,10 +867,10 @@ public class TurbineTemplateService extends TurbineBaseService
             j++;
         }
         if ((len == 0) ||
-            (ind >= (len - 1)))
+                (ind >= (len - 1)))
         {
             throw new Exception(
-                "Syntax error in template name '" + template + '\'');
+                    "Syntax error in template name '" + template + '\'');
         }
         return ind;
     }
@@ -889,21 +888,21 @@ public class TurbineTemplateService extends TurbineBaseService
         /*
          * Get the default extension to use if nothing else is applicable.
          */
-        defaultExtension = config.getString("default.extension",NO_FILE_EXT);
+        defaultExtension = config.getString("default.extension", NO_FILE_EXT);
         defaultTemplate = "Default." + defaultExtension;
 
         /*
          * Check to see if we are going to be caching modules.
          */
-        useCache = getConfiguration().getBoolean("module.cache",true);
+        useCache = getConfiguration().getBoolean("module.cache", true);
 
         if (useCache)
         {
-            int screenSize = config.getInt("screen.cache.size",5);
-            int screenTemplateSize = config.getInt("screen.cache.size",50);
-            int layoutSize = config.getInt("layout.cache.size",5);
-            int layoutTemplateSize = config.getInt("layout.cache.size",5);
-            int navigationSize = config.getInt("navigation.cache.size",10);
+            int screenSize = config.getInt("screen.cache.size", 5);
+            int screenTemplateSize = config.getInt("screen.cache.size", 50);
+            int layoutSize = config.getInt("layout.cache.size", 5);
+            int layoutTemplateSize = config.getInt("layout.cache.size", 5);
+            int navigationSize = config.getInt("navigation.cache.size", 10);
 
             /*
              * Create hashtables for each object type,
@@ -911,15 +910,15 @@ public class TurbineTemplateService extends TurbineBaseService
              */
             templateNameCache[PAGE_KEY] = null;
             templateNameCache[SCREEN_KEY] =
-                new Hashtable((int) (1.25 * screenSize) + 1);
+                    new Hashtable((int) (1.25 * screenSize) + 1);
             templateNameCache[SCREEN_TEMPLATE_KEY] =
-                new Hashtable((int) (1.25 * screenTemplateSize) + 1);
+                    new Hashtable((int) (1.25 * screenTemplateSize) + 1);
             templateNameCache[LAYOUT_KEY] =
-                new Hashtable((int) (1.25 * layoutSize) + 1);
+                    new Hashtable((int) (1.25 * layoutSize) + 1);
             templateNameCache[LAYOUT_TEMPLATE_KEY] =
-                new Hashtable((int) (1.25 * layoutTemplateSize) + 1);
+                    new Hashtable((int) (1.25 * layoutTemplateSize) + 1);
             templateNameCache[NAVIGATION_KEY] =
-                new Hashtable((int) (1.25 * navigationSize) + 1);
+                    new Hashtable((int) (1.25 * navigationSize) + 1);
         }
     }
 }

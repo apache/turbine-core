@@ -90,14 +90,14 @@ public class InitContextsAction extends Action
         // instance.
 
         Hashtable contextPropsList = new Hashtable();
-        for(Iterator contextKeys = TurbineResources.getKeys("context."); contextKeys.hasNext();)
+        for (Iterator contextKeys = TurbineResources.getKeys("context."); contextKeys.hasNext();)
         {
             String key = (String) contextKeys.next();
             int start = key.indexOf(".") + 1;
             int end = key.indexOf(".", start);
             String contextName = key.substring(start, end);
             Properties contextProps = null;
-            if(contextPropsList.containsKey(contextName))
+            if (contextPropsList.containsKey(contextName))
             {
                 contextProps =
                         (Properties) contextPropsList.get(contextName);
@@ -110,7 +110,7 @@ public class InitContextsAction extends Action
                     TurbineResources.getString(key));
             contextPropsList.put(contextName, contextProps);
         }
-        for(Iterator contextPropsKeys = contextPropsList.keySet().iterator(); contextPropsKeys.hasNext();)
+        for (Iterator contextPropsKeys = contextPropsList.keySet().iterator(); contextPropsKeys.hasNext();)
         {
             String key = (String) contextPropsKeys.next();
             Properties contextProps =

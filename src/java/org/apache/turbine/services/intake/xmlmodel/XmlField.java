@@ -123,7 +123,7 @@ public class XmlField
         setMultiValued(attrib.getValue("multiValued"));
 
         String mapObj = attrib.getValue("mapToObject");
-        if(mapObj != null && mapObj.length() != 0)
+        if (mapObj != null && mapObj.length() != 0)
         {
             setMapToObject(mapObj);
         }
@@ -235,7 +235,7 @@ public class XmlField
      */
     public boolean isMultiValued()
     {
-        if(multiValued != null && multiValued.equals("true"))
+        if (multiValued != null && multiValued.equals("true"))
         {
             return true;
         }
@@ -275,7 +275,7 @@ public class XmlField
      */
     public String getMapToProperty()
     {
-        if(mapToProperty == null)
+        if (mapToProperty == null)
         {
             return getName();
         }
@@ -339,7 +339,7 @@ public class XmlField
     public void setGroup(XmlGroup parent)
     {
         this.parent = parent;
-        if(mapToObject != null && mapToObject.length() != 0)
+        if (mapToObject != null && mapToObject.length() != 0)
         {
             mapToObject = parent.getAppData().getBasePackage() + mapToObject;
         }
@@ -429,35 +429,35 @@ public class XmlField
         result.append(" key=\"" + key + "\"");
         result.append(" type=\"" + type + "\"");
 
-        if(displayName != null)
+        if (displayName != null)
         {
             result.append(" displayName=\"" + displayName + "\"");
         }
-        if(mapToObject != null)
+        if (mapToObject != null)
         {
             result.append(" mapToObject=\"" + mapToObject + "\"");
         }
-        if(mapToProperty != null)
+        if (mapToProperty != null)
         {
             result.append(" mapToProperty=\"" + mapToProperty + "\"");
         }
-        if(validator != null)
+        if (validator != null)
         {
             result.append(" validator=\"" + validator + "\"");
         }
-        if(defaultValue != null)
+        if (defaultValue != null)
         {
             result.append(" defaultValue=\"" + defaultValue + "\"");
         }
 
-        if(rules.size() == 0)
+        if (rules.size() == 0)
         {
             result.append(" />\n");
         }
         else
         {
             result.append(">\n");
-            for(Iterator i = rules.iterator(); i.hasNext();)
+            for (Iterator i = rules.iterator(); i.hasNext();)
             {
                 result.append(i.next());
             }

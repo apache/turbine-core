@@ -55,6 +55,7 @@ package org.apache.turbine.services.cache;
  */
 
 import java.io.IOException;
+
 import org.apache.turbine.services.TurbineServices;
 
 /**
@@ -77,10 +78,9 @@ public abstract class TurbineGlobalCache
      */
     protected static GlobalCacheService getService()
     {
-        return (GlobalCacheService)TurbineServices
-            .getInstance().getService(GlobalCacheService.SERVICE_NAME);
+        return (GlobalCacheService) TurbineServices
+                .getInstance().getService(GlobalCacheService.SERVICE_NAME);
     }
-
 
     /**
      * Gets a cached object given its id (a String).
@@ -91,7 +91,7 @@ public abstract class TurbineGlobalCache
      * the cache.
      */
     public static CachedObject getObject(String id)
-        throws ObjectExpiredException
+            throws ObjectExpiredException
     {
         return getService().getObject(id);
     }
@@ -103,7 +103,7 @@ public abstract class TurbineGlobalCache
      * @param o The object to add to the cache.
      */
     public static void addObject(String id,
-                          CachedObject o)
+                                 CachedObject o)
     {
         getService().addObject(id, o);
     }
@@ -123,7 +123,7 @@ public abstract class TurbineGlobalCache
      * @return int representing current cache size in number of bytes
      */
     public static int getCacheSize()
-        throws IOException
+            throws IOException
     {
         return getService().getCacheSize();
     }

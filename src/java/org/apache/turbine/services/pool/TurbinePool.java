@@ -25,13 +25,13 @@ package org.apache.turbine.services.pool;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,8 +54,8 @@ package org.apache.turbine.services.pool;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * This is a static accessor to common pooling tasks.
@@ -74,7 +74,7 @@ public abstract class TurbinePool
      * @throws TurbineException if recycling fails.
      */
     public static Object getInstance(String className)
-        throws TurbineException
+            throws TurbineException
     {
         return getService().getInstance(className);
     }
@@ -91,9 +91,9 @@ public abstract class TurbinePool
      */
     public static Object getInstance(String className,
                                      ClassLoader loader)
-        throws TurbineException
+            throws TurbineException
     {
-        return getService().getInstance(className,loader);
+        return getService().getInstance(className, loader);
     }
 
     /**
@@ -112,9 +112,9 @@ public abstract class TurbinePool
     public static Object getInstance(String className,
                                      Object[] params,
                                      String[] signature)
-        throws TurbineException
+            throws TurbineException
     {
-        return getService().getInstance(className,params,signature);
+        return getService().getInstance(className, params, signature);
     }
 
     /**
@@ -135,9 +135,9 @@ public abstract class TurbinePool
                                      ClassLoader loader,
                                      Object[] params,
                                      String[] signature)
-        throws TurbineException
+            throws TurbineException
     {
-        return getService().getInstance(className,loader,params,signature);
+        return getService().getInstance(className, loader, params, signature);
     }
 
     /**
@@ -149,9 +149,9 @@ public abstract class TurbinePool
      * @throws TurbineException if recycling fails.
      */
     public static Object getInstance(Class clazz)
-        throws TurbineException
+            throws TurbineException
     {
-        return getService().getInstance(clazz);        
+        return getService().getInstance(clazz);
     }
 
     /**
@@ -167,9 +167,9 @@ public abstract class TurbinePool
     public static Object getInstance(Class clazz,
                                      Object params[],
                                      String signature[])
-        throws TurbineException
+            throws TurbineException
     {
-        return getService().getInstance(clazz,params,signature);        
+        return getService().getInstance(clazz, params, signature);
     }
 
     /**
@@ -183,7 +183,7 @@ public abstract class TurbinePool
      */
     public static boolean putInstance(Object instance)
     {
-        return getService().putInstance(instance);        
+        return getService().putInstance(instance);
     }
 
     /**
@@ -194,6 +194,6 @@ public abstract class TurbinePool
     protected static PoolService getService()
     {
         return (PoolService) TurbineServices.
-            getInstance().getService(PoolService.SERVICE_NAME);
+                getInstance().getService(PoolService.SERVICE_NAME);
     }
 }

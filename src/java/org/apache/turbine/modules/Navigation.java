@@ -55,12 +55,11 @@ package org.apache.turbine.modules;
  */
 
 // Turbine Utility Classes
-import org.apache.turbine.util.RunData;
 
-// ECS Classes
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.Entities;
 import org.apache.ecs.filter.CharacterFilter;
+import org.apache.turbine.util.RunData;
 
 /**
  * This is an interface that defines what a Navigation module is.
@@ -81,8 +80,8 @@ public abstract class Navigation extends Assembler
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    protected abstract ConcreteElement doBuild( RunData data )
-        throws Exception;
+    protected abstract ConcreteElement doBuild(RunData data)
+            throws Exception;
 
     /**
      * Subclasses can override this method to add additional
@@ -92,10 +91,10 @@ public abstract class Navigation extends Assembler
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    protected ConcreteElement build( RunData data )
-        throws Exception
+    protected ConcreteElement build(RunData data)
+            throws Exception
     {
-        return doBuild( data );
+        return doBuild(data);
     }
 
     /**
