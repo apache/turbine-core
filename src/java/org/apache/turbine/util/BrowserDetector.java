@@ -3,7 +3,7 @@ package org.apache.turbine.util;
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -41,11 +41,17 @@ package org.apache.turbine.util;
  * @author <a href="mailto:mospaw@polk-county.com">Chris Mospaw</a>
  * @author <a href="mailto:bgriffin@cddb.com">Benjamin Elijah Griffin</a>
  * @version $Id$
- * @deprecated This class will be removed after the 2.3 release. Please
- *             use BrowserDetector from <a href="http://jakarta.apache.org/commons/">commons-http</a>.
  */
 public class BrowserDetector
 {
+    public static final String MSIE = "MSIE";
+    public static final String OPERA = "Opera";
+    public static final String MOZILLA = "Mozilla";
+
+    public static final String WINDOWS = "Windows";
+    public static final String UNIX = "Unix";
+    public static final String MACINTOSH = "Macintosh";
+
     /** The user agent string. */
     private String userAgentString = "";
 
@@ -72,14 +78,6 @@ public class BrowserDetector
     /** Whether or not file upload works in this browser. */
     private boolean fileUploadOK = false;
 
-    /** Constants used by this class. */
-    public static final String MSIE = "MSIE";
-    public static final String OPERA = "Opera";
-    public static final String MOZILLA = "Mozilla";
-    public static final String WINDOWS = "Windows";
-    public static final String UNIX = "Unix";
-    public static final String MACINTOSH = "Macintosh";
-
     /**
      * Constructor used to initialize this class.
      *
@@ -98,8 +96,7 @@ public class BrowserDetector
      */
     public BrowserDetector(RunData data)
     {
-        this.userAgentString =
-                data.getRequest().getHeader("User-Agent");
+        this.userAgentString = data.getUserAgent();
         parse();
     }
 
@@ -189,9 +186,15 @@ public class BrowserDetector
             // string.
             String agentSubstring = null;
             if (versionEndIndex < 0)
-                agentSubstring = userAgentString.substring(versionStartIndex + 1);
+            {
+                agentSubstring 
+                        = userAgentString.substring(versionStartIndex + 1);
+            }
             else
-                agentSubstring = userAgentString.substring(versionStartIndex + 1, versionEndIndex);
+            {
+                agentSubstring = userAgentString
+                        .substring(versionStartIndex + 1, versionEndIndex);
+            }
             browserVersion = toFloat(agentSubstring);
         }
         catch (NumberFormatException e)
@@ -203,15 +206,15 @@ public class BrowserDetector
         if (userAgentString.indexOf(MSIE) != -1)
         {
             // Ex: Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)
-            versionStartIndex = (userAgentString.indexOf(MSIE) +
-                    MSIE.length() + 1);
-            versionEndIndex = userAgentString.indexOf(";",
-                    versionStartIndex);
+            versionStartIndex = (userAgentString.indexOf(MSIE) 
+                    + MSIE.length() + 1);
+            versionEndIndex = userAgentString.indexOf(";", versionStartIndex);
 
             browserName = MSIE;
             try
             {
-                browserVersion = toFloat(userAgentString.substring(versionStartIndex, versionEndIndex));
+                browserVersion = toFloat(userAgentString
+                        .substring(versionStartIndex, versionEndIndex));
             }
             catch (NumberFormatException e)
             {
@@ -230,15 +233,15 @@ public class BrowserDetector
         if (userAgentString.indexOf(OPERA) != -1)
         {
             //Ex: Mozilla/4.0 (Windows NT 4.0;US) Opera 3.61  [en]
-            versionStartIndex = (userAgentString.indexOf(OPERA) +
-                    OPERA.length() + 1);
-            versionEndIndex = userAgentString.indexOf(" ",
-                    versionStartIndex);
+            versionStartIndex = (userAgentString.indexOf(OPERA) 
+                    + OPERA.length() + 1);
+            versionEndIndex = userAgentString.indexOf(" ", versionStartIndex);
 
             browserName = OPERA;
             try
             {
-                browserVersion = toFloat(userAgentString.substring(versionStartIndex, versionEndIndex));
+                browserVersion = toFloat(userAgentString
+                        .substring(versionStartIndex, versionEndIndex));
             }
             catch (NumberFormatException e)
             {
@@ -254,10 +257,10 @@ public class BrowserDetector
 
 
         // Try to figure out what platform.
-        if ((userAgentString.indexOf("Windows") != -1) ||
-                (userAgentString.indexOf("WinNT") != -1) ||
-                (userAgentString.indexOf("Win98") != -1) ||
-                (userAgentString.indexOf("Win95") != -1))
+        if ((userAgentString.indexOf("Windows") != -1)
+                || (userAgentString.indexOf("WinNT") != -1)
+                || (userAgentString.indexOf("Win98") != -1)
+                || (userAgentString.indexOf("Win95") != -1))
         {
             browserPlatform = WINDOWS;
         }
@@ -350,13 +353,14 @@ public class BrowserDetector
     }
 
     /**
-     * Helper method to conver String to a float.
+     * Helper method to convert String to a float.
      *
      * @param s A String.
      * @return The String converted to float.
      */
-    private float toFloat(String s)
+    private static final float toFloat(String s)
     {
         return Float.valueOf(s).floatValue();
     }
+
 }

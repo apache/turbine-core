@@ -3,7 +3,7 @@ package org.apache.turbine.util;
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -17,18 +17,17 @@ package org.apache.turbine.util;
  */
 
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * This class provides utilities for handling some semi-trivial
- * HTTP stuff that would othterwize be handled elsewhere.
+ * This class provides utilities for handling some semi-trivial HTTP stuff that
+ * would othterwise be handled elsewhere.
  *
  * @author <a href="mailto:magnus@handpoint.com">Magnús Þór Torfason</a>
  * @version $Id$
- * @deprecated This class will be removed after the 2.3 release. Please
- *             use HttpUtils from <a href="http://jakarta.apache.org/commons/">commons-http</a>.
  */
 public class HttpUtils
 {
@@ -45,8 +44,8 @@ public class HttpUtils
     }
 
     /**
-     * Formats a java Date according to rfc 1123, the rfc
-     * standard for dates in http.
+     * Formats a java Date according to rfc 1123, the rfc standard for dates in
+     * http.
      *
      * @param date The Date to format
      * @return A String represeentation of the date
@@ -60,9 +59,9 @@ public class HttpUtils
     }
 
     /**
-     * This method sets the required expiration headers in the response
-     * for a given RunData object.  This method attempts to set all
-     * relevant headers, both for HTTP 1.0 and HTTP 1.1.
+     * This method sets the required expiration headers in the response for a
+     * given RunData object.  This method attempts to set all relevant headers,
+     * both for HTTP 1.0 and HTTP 1.1.
      *
      * @param data The RunData object we are setting cache information for.
      * @param expiry The number of seconds untill the document should expire,
@@ -70,18 +69,19 @@ public class HttpUtils
      */
     public static void setCacheHeaders(RunData data, int expiry)
     {
-        if (expiry == 0)
+        if (0 == expiry)
         {
             data.getResponse().setHeader("Pragma", "no-cache");
             data.getResponse().setHeader("Cache-Control", "no-cache");
-            data.getResponse().setHeader(
-                    "Expires", formatHttpDate(new Date()));
+            data.getResponse().setHeader("Expires",
+                    formatHttpDate(new Date()));
         }
         else
         {
             Date expiryDate = new Date(System.currentTimeMillis() + expiry);
-            data.getResponse().setHeader(
-                    "Expires", formatHttpDate(expiryDate));
+            data.getResponse().setHeader("Expires",
+                    formatHttpDate(expiryDate));
         }
     }
+
 }
