@@ -54,6 +54,8 @@ package org.apache.turbine.services.intake.xmlmodel;
  * <http://www.apache.org/>.
  */
 
+import java.io.Serializable;
+
 import org.apache.turbine.services.intake.validator.Constraint;
 
 import org.xml.sax.Attributes;
@@ -65,7 +67,7 @@ import org.xml.sax.Attributes;
  * @version $Id$
  */
 public class Rule
-        implements Constraint, java.io.Serializable
+        implements Constraint, Serializable
 {
     private String name;
     private String value;

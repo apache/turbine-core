@@ -91,7 +91,7 @@ public interface ServiceBroker
     boolean isRegistered(String serviceName);
 
     /**
-     * Performs early initialization of specified service.
+     * Performs early initialization of the specified service.
      *
      * @param name The name of the service.
      * @exception InitializationException if the service is unknown

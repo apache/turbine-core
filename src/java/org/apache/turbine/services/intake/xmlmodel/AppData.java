@@ -54,6 +54,8 @@ package org.apache.turbine.services.intake.xmlmodel;
  * <http://www.apache.org/>.
  */
 
+import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -70,7 +72,7 @@ import org.xml.sax.Attributes;
  * @version $Id$
  */
 public class AppData
-        implements java.io.Serializable
+        implements Serializable
 {
     /** List of groups */
     private List inputs;
@@ -159,7 +161,7 @@ public class AppData
                 StringBuffer qualifiedGroupName = new StringBuffer();
 
                 qualifiedGroupName.append(groupPrefix)
-                        .append(":")
+                        .append(':')
                         .append(group.getName());
 
                 if (qualifiedGroupName.toString().equals(groupName))

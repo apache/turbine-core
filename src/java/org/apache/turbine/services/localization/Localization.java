@@ -1,3 +1,4 @@
+
 package org.apache.turbine.services.localization;
 
 /* ====================================================================
@@ -56,6 +57,7 @@ package org.apache.turbine.services.localization;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.turbine.services.TurbineServices;

@@ -56,9 +56,11 @@ package org.apache.turbine.services.mimetype;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.util.Locale;
 
 import org.apache.commons.configuration.Configuration;
+
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.mimetype.util.CharSetMap;

@@ -65,13 +65,20 @@ public interface Retrievable
     /**
      * get an id that differentiates this object from others
      * of its class.
+     *
+     * @return The id value
      */
     String getQueryKey();
 
     /**
      * set an id that differentiates this object from others
      * of its class.
+     *
+     * @param key The new id value
+     *
+     * @throws Exception A problem occured while setting the id.
      */
-    void setQueryKey(String key) throws Exception;
+    void setQueryKey(String key)
+        throws Exception;
 
 }

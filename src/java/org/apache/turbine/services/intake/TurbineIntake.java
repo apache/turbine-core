@@ -55,6 +55,7 @@ package org.apache.turbine.services.intake;
  */
 
 import java.beans.IntrospectionException;
+
 import java.lang.reflect.Method;
 
 import org.apache.turbine.services.TurbineServices;

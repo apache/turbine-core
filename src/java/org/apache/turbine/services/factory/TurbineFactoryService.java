@@ -57,12 +57,14 @@ package org.apache.turbine.services.factory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.commons.configuration.Configuration;
+
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.TurbineException;
@@ -161,7 +163,7 @@ public class TurbineFactoryService
                         throw new InitializationException(
                                 "No such class loader '" +
                                 (String) loaders.get(i) +
-                                "' for TurbinbeFactoryService", x);
+                                "' for TurbineFactoryService", x);
                     }
                 }
             }
@@ -232,7 +234,7 @@ public class TurbineFactoryService
      * @throws TurbineException if instantiation fails.
      */
     public Object getInstance(String className,
-                              ClassLoader loader)
+            ClassLoader loader)
             throws TurbineException
     {
         if (className == null)
@@ -281,8 +283,8 @@ public class TurbineFactoryService
      * @throws TurbineException if instantiation fails.
      */
     public Object getInstance(String className,
-                              Object[] params,
-                              String[] signature)
+            Object[] params,
+            String[] signature)
             throws TurbineException
     {
         if (className == null)
@@ -328,9 +330,9 @@ public class TurbineFactoryService
      * @throws TurbineException if instantiation fails.
      */
     public Object getInstance(String className,
-                              ClassLoader loader,
-                              Object[] params,
-                              String[] signature)
+            ClassLoader loader,
+            Object[] params,
+            String[] signature)
             throws TurbineException
     {
         if (className == null)
@@ -415,8 +417,8 @@ public class TurbineFactoryService
      * @throws TurbineException if instantiation fails.
      */
     protected Object getInstance(Class clazz,
-                                 Object params[],
-                                 String signature[])
+            Object params[],
+            String signature[])
             throws TurbineException
     {
         /* Try to construct. */
@@ -444,8 +446,8 @@ public class TurbineFactoryService
      * @throws ClassNotFoundException if any of the classes is not found.
      */
     protected Class[] getSignature(Class clazz,
-                                   Object params[],
-                                   String signature[])
+            Object params[],
+            String signature[])
             throws ClassNotFoundException
     {
         if (signature != null)
@@ -499,7 +501,7 @@ public class TurbineFactoryService
      * @param loader the loader of the new context.
      */
     protected Object switchObjectContext(Object object,
-                                         ClassLoader loader)
+            ClassLoader loader)
     {
         ByteArrayOutputStream bout =
                 new ByteArrayOutputStream();
@@ -574,7 +576,7 @@ public class TurbineFactoryService
      * @throws ClassNotFoundException if the class was not found.
      */
     protected Class loadClass(String className,
-                              ClassLoader loader)
+            ClassLoader loader)
             throws ClassNotFoundException
     {
         return loader != null ?

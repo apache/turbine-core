@@ -84,7 +84,7 @@ public class InstantiationException extends TurbineRuntimeException
      * and nested Throwable.
      *
      * @param msg The detail message.
-     * @param t the exception or error that caused this exception
+     * @param nested the exception or error that caused this exception
      *               to be thrown.
      */
     public InstantiationException(String msg, Throwable t)

@@ -57,6 +57,7 @@ package org.apache.turbine.services.crypto.provider;
 import java.security.MessageDigest;
 
 import org.apache.commons.codec.base64.Base64;
+
 import org.apache.turbine.services.crypto.CryptoAlgorithm;
 
 /**

@@ -54,7 +54,11 @@ package org.apache.turbine.services.intake.xmlmodel;
  * <http://www.apache.org/>.
  */
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -468,16 +472,15 @@ public class XmlField
     }
 
     // this methods are called during serialization
-    private void writeObject(java.io.ObjectOutputStream stream)
-            throws java.io.IOException
+    private void writeObject(ObjectOutputStream stream)
+            throws IOException
     {
         stream.defaultWriteObject();
     }
 
-    private void readObject(java.io.ObjectInputStream stream)
-            throws java.io.IOException, ClassNotFoundException
+    private void readObject(ObjectInputStream stream)
+            throws IOException, ClassNotFoundException
     {
         stream.defaultReadObject();
     }
-
 }
