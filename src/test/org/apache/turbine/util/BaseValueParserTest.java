@@ -56,15 +56,17 @@ package org.apache.turbine.util;
 
 import java.math.BigDecimal;
 
-import org.apache.turbine.services.ServiceManager;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.util.parser.ParserUtils;
-import org.apache.turbine.util.parser.BaseValueParser;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.BaseConfiguration;
-
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.commons.configuration.Configuration;
+
+import org.apache.turbine.services.ServiceManager;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.test.BaseTestCase;
+import org.apache.turbine.util.parser.BaseValueParser;
+import org.apache.turbine.util.parser.ParserUtils;
 
 /**
  * Testing of the BaseValueParser class
@@ -72,7 +74,7 @@ import junit.framework.TestSuite;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class BaseValueParserTest extends TestCase
+public class BaseValueParserTest extends BaseTestCase
 {
     private BaseValueParser parser;
 
@@ -82,6 +84,7 @@ public class BaseValueParserTest extends TestCase
      * @param testName name of the test being executed
      */
     public BaseValueParserTest(String testName)
+            throws Exception
     {
         super(testName);
 

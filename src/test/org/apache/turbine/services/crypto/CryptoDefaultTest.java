@@ -55,7 +55,6 @@ package org.apache.turbine.services.crypto;
  */
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.commons.configuration.BaseConfiguration;
@@ -63,19 +62,20 @@ import org.apache.commons.configuration.Configuration;
 
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
-
 import org.apache.turbine.services.factory.FactoryService;
 import org.apache.turbine.services.factory.TurbineFactoryService;
+import org.apache.turbine.test.BaseTestCase;
 
 public class CryptoDefaultTest
-    extends TestCase
+    extends BaseTestCase
 {
     private static final String PREFIX = "services." +
         CryptoService.SERVICE_NAME + '.';
 
     private static final String preDefinedInput = "Oeltanks";
 
-    public CryptoDefaultTest( String name )
+    public CryptoDefaultTest(String name)
+            throws Exception
     {
         super(name);
 

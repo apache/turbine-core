@@ -55,24 +55,26 @@ package org.apache.turbine;
  */
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.turbine.Turbine;
+import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 
 /**
  * Can we call "destroy" unconditionally on our Turbine Servlet, even if
  * it hasn't configured?
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class DestroyTest
-    extends TestCase
+    extends BaseTestCase
 {
     private static TurbineConfig tc = null;
 
     public DestroyTest(String name)
+            throws Exception
     {
         super(name);
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");

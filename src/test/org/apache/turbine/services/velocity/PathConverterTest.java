@@ -55,21 +55,17 @@ package org.apache.turbine.services.velocity;
  */
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.apache.commons.collections.ExtendedProperties;
 import org.apache.commons.configuration.Configuration;
 
-import org.apache.commons.collections.ExtendedProperties;
-
-import org.apache.turbine.services.TurbineServices;
-
-import org.apache.turbine.services.velocity.VelocityService;
-import org.apache.turbine.services.velocity.TurbineVelocityService;
-
-import org.apache.turbine.util.TurbineConfig;
-
 import org.apache.turbine.Turbine;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.velocity.TurbineVelocityService;
+import org.apache.turbine.services.velocity.VelocityService;
+import org.apache.turbine.test.BaseTestCase;
+import org.apache.turbine.util.TurbineConfig;
 
 /**
  * Tests startup of the Velocity Service and translation of various
@@ -80,13 +76,14 @@ import org.apache.turbine.Turbine;
  */
 
 public class PathConverterTest
-    extends TestCase
+    extends BaseTestCase
 {
     private static TurbineConfig tc = null;
     private static VelocityService vs = null;
     private static String fileSeperator = System.getProperty("file.separator");
 
     public PathConverterTest(String name)
+            throws Exception
     {
         super(name);
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");

@@ -54,6 +54,18 @@ package org.apache.turbine.test;
  * <http://www.apache.org/>.
  */
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.Properties;
+
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.impl.Log4jFactory;
+
+import org.apache.log4j.PropertyConfigurator;
+
+import org.apache.turbine.Turbine;
+
 import junit.framework.TestCase;
 
 /**
@@ -61,15 +73,38 @@ import junit.framework.TestCase;
  * case implementations are used to automate testing via JUnit.
  *
  * @author <a href="mailto:celkins@scardini.com">Christopher Elkins</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public abstract class BaseTestCase extends TestCase
+public abstract class BaseTestCase
+        extends TestCase
 {
-    /**
-     * Creates a new instance.
-     */
+    File log4jFile = new File("conf/test/Log4j.properties");
+
     public BaseTestCase(String name)
+            throws Exception
     {
         super(name);
+
+        Properties p = new Properties();
+        try
+        {
+            p.load(new FileInputStream(log4jFile));
+            p.setProperty(Turbine.APPLICATION_ROOT_KEY, new File(".").getAbsolutePath());
+            PropertyConfigurator.configure(p);
+
+        }
+        catch (FileNotFoundException fnf)
+        {
+            System.err.println("Could not open Log4J configuration file "
+                    + log4jFile);
+        }
+
+        //
+        // Set up Commons Logging to use the Log4J Logging
+        //
+        System.getProperties().setProperty(LogFactory.class.getName(),
+                Log4jFactory.class.getName());
     }
 }
+

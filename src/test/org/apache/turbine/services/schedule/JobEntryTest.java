@@ -55,8 +55,9 @@ package org.apache.turbine.services.schedule;
  */
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import org.apache.turbine.test.BaseTestCase;
 
 /**
  * Unit testing for Job Entries.  Ensure that removing NumberKey from TurbineNonPersistentScheduler 
@@ -65,13 +66,14 @@ import junit.framework.TestSuite;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
-public class JobEntryTest extends TestCase
+public class JobEntryTest extends BaseTestCase
 {
 
     private JobEntry je1;
     private JobEntry je2;
 
     public JobEntryTest(String name)
+            throws Exception
     {
         super(name);
 

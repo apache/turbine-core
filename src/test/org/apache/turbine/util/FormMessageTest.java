@@ -54,12 +54,13 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
-import junit.framework.TestCase;
+import org.apache.turbine.test.BaseTestCase;
 
 public class FormMessageTest
-    extends TestCase
+    extends BaseTestCase
 {
     public FormMessageTest(String name)
+            throws Exception
     {
         super(name);
     }
