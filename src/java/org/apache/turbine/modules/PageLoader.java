@@ -56,12 +56,16 @@ package org.apache.turbine.modules;
 
 import java.util.Vector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 
 import org.apache.turbine.services.TurbineServices;
 
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
@@ -74,13 +78,20 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class PageLoader extends GenericLoader
+public class PageLoader
+    extends GenericLoader
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(PageLoader.class);
+
     /** The single instance of this class. */
     private static PageLoader instance =
         new PageLoader(Turbine.getConfiguration()
                        .getInt(TurbineConstants.PAGE_CACHE_SIZE_KEY, 
                                TurbineConstants.PAGE_CACHE_SIZE_DEFAULT));
+
+    /** The Assembler Broker Service */
+    private static AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
 
     /**
      * These ctor's are private to force clients to use getInstance()
@@ -129,8 +140,8 @@ public class PageLoader extends GenericLoader
     }
 
     /**
-     * Pulls out an instance of the object by name.  Name is just the
-     * single name of the object.
+     * Pulls out an instance of the page by name.  Name is just the
+     * single name of the page.
      *
      * @param name Name of object instance.
      * @return A Page with the specified name, or null.
@@ -141,22 +152,24 @@ public class PageLoader extends GenericLoader
     {
         Page page = null;
 
+        // Check if the screen is already in the cache
         if (cache() && this.containsKey(name))
         {
             page = (Page) this.get(name);
+            log.debug("Found Page " + name + " in the cache!");
         }
         else
         {
-            // We get the broker service
-            AssemblerBrokerService ab =
-                    (AssemblerBrokerService) TurbineServices.getInstance()
-                    .getService(AssemblerBrokerService.SERVICE_NAME);
+            log.debug("Loading Page " + name + " from the Assembler Broker");
 
             try
             {
-                // Attempt to load the screen
-                page = (Page) ab.getAssembler(
+                if (ab != null)
+                {
+                    // Attempt to load the screen
+                    page = (Page) ab.getAssembler(
                         AssemblerBrokerService.PAGE_TYPE, name);
+                }
             }
             catch (ClassCastException cce)
             {
@@ -170,8 +183,8 @@ public class PageLoader extends GenericLoader
             {
                 // If we did not find a screen we should try and give
                 // the user a reason for that...
-                // FIX ME: The AssemblerFactories should each add
-                //         it's own string here...
+                // FIX ME: The AssemblerFactories should each add it's
+                // own string here...
                 Vector packages = Turbine.getConfiguration()
                     .getVector(TurbineConstants.MODULE_PACKAGES);
 
@@ -179,9 +192,9 @@ public class PageLoader extends GenericLoader
                         GenericLoader.getBasePackage());
 
                 throw new ClassNotFoundException(
-                        "\n\n\tRequested Page not found: " + name + "\n" +
-                        "\tTurbine looked in the following modules.packages " +
-                        "path: \n\t" + packages.toString() + "\n");
+                        "\n\n\tRequested Page not found: " + name +
+                        "\n\tTurbine looked in the following " +
+                        "modules.packages path: \n\t" + packages.toString() + "\n");
             }
             else if (cache())
             {
