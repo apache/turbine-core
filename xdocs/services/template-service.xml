@@ -71,12 +71,12 @@ names are "," separated entities which describe a template screen to be displaye
 </p>
 
 <p>Note: In all of the following examples, it is assumed that you use
-the <a href="services/velocity-service.html">VelocityService</a> as
+the <a href="velocity-service.html">VelocityService</a> as
 your preferred view service. So if you read "Velocity" in the
 following paragraphs, this means "default configured view
 class". Currently, Turbine includes two supported view services,
-<a href="services/velocity-service.html">Velocity</a> and
-<a href="services/jsp-service.html">Java Server Pages (JSP)</a>.
+<a href="velocity-service.html">Velocity</a> and
+<a href="jsp-service.html">Java Server Pages (JSP)</a>.
 </p>
 
 <p>
