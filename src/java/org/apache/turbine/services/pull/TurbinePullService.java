@@ -137,8 +137,8 @@ import org.apache.velocity.context.Context;
  *              user logs in. After this, it is a normal session tool.
  *
  *  persistent: tool is instantitated once for each user session once
- *              the user logs in and is is stored in the user's permanent 
- *              hashtable. 
+ *              the user logs in and is is stored in the user's permanent
+ *              hashtable.
  *              This means for a logged in user the tool will be persisted
  *              in the user's objectdata. Tool should be threadsafe and
  *              Serializable.
@@ -151,7 +151,7 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class TurbinePullService 
+public class TurbinePullService
         extends TurbineBaseService
         implements PullService
 {
@@ -228,7 +228,7 @@ public class TurbinePullService
             }
 
             initPullService();
-            // Make sure to setInit(true) because Tools may 
+            // Make sure to setInit(true) because Tools may
             // make calls back to the TurbinePull static methods
             // which causes an init loop.
             setInit(true);
@@ -261,7 +261,7 @@ public class TurbinePullService
 
         // Should we refresh the tool box on a per
         // request basis.
-        refreshToolsPerRequest = 
+        refreshToolsPerRequest =
             conf.getBoolean(
                 TOOLS_PER_REQUEST_REFRESH_KEY,
                 TOOLS_PER_REQUEST_REFRESH_DEFAULT);
@@ -286,15 +286,15 @@ public class TurbinePullService
     private void initPullTools()
         throws Exception
     {
-        // And for reasons I never really fully understood, 
+        // And for reasons I never really fully understood,
         // the tools directive is toplevel without the service
         // prefix. This is brain-damaged but for legacy reasons we
         // keep this. So this is the global turbine configuration:
         Configuration conf = Turbine.getConfiguration();
 
         // Grab each list of tools that are to be used (for global scope,
-        // request scope, authorized scope, session scope and persistent 
-        // scope tools). They are specified respectively in the TR.props 
+        // request scope, authorized scope, session scope and persistent
+        // scope tools). They are specified respectively in the TR.props
         // like this:
         //
         // tool.global.ui = org.apache.turbine.util.pull.UIManager
@@ -393,21 +393,17 @@ public class TurbinePullService
         // boolean parameter indicates whether get/setPerm is to be used
         // rather than get/setTemp)
 
-        // 
+        //
         // Session Tool start right at the session once the user has been set
-        // while persistent and authorized Tools are started when the user has logged in 
+        // while persistent and authorized Tools are started when the user has logged in
         //
         User user = data.getUser();
+        populateWithSessionTools(sessionTools, context, data, user, false);
 
         if (!TurbineSecurity.isAnonymousUser(user))
         {
-            populateWithSessionTools(sessionTools, context, data, user, false);
-
-            if (user.hasLoggedIn())
-            {
-                populateWithSessionTools(authorizedTools, context, data, user, false);
-                populateWithSessionTools(persistentTools, context, data, user, true);
-            }
+            populateWithSessionTools(authorizedTools, context, data, user, false);
+            populateWithSessionTools(persistentTools, context, data, user, true);
         }
     }
 
@@ -433,7 +429,7 @@ public class TurbinePullService
             }
             catch (Exception e)
             {
-                log.error("Could not instantiate global tool " 
+                log.error("Could not instantiate global tool "
                     + toolData.toolName + " from a "
                     + toolData.toolClassName + " object", e);
             }
@@ -456,7 +452,7 @@ public class TurbinePullService
             {
                 // Fetch Object through the Pool.
                 Object tool = pool.getInstance(toolData.toolClass);
-                
+
                 // request tools are init'd with a RunData object
                 initTool(tool, data);
 
@@ -465,7 +461,7 @@ public class TurbinePullService
             }
             catch (Exception e)
             {
-                log.error("Could not instantiate request tool " 
+                log.error("Could not instantiate request tool "
                     + toolData.toolName + " from a "
                     + toolData.toolClassName + " object", e);
             }
@@ -485,7 +481,7 @@ public class TurbinePullService
      * permanent storage (as opposed to the temporary storage).
      */
     private void populateWithSessionTools(List tools, Context context,
-        RunData data, User user, 
+        RunData data, User user,
         boolean usePerm)
     {
         // Iterate the tools
@@ -525,22 +521,22 @@ public class TurbinePullService
                         }
                     }
 
-                    // *NOT* else 
+                    // *NOT* else
                     if(tool != null)
                     {
                         // This is a semantics change. In the old
                         // Turbine, Session tools were initialized and
                         // then refreshed every time they were pulled
                         // into the context if "refreshToolsPerRequest"
-                        // was wanted. 
-                        // 
-                        // RunDataApplicationTools now have a parameter 
+                        // was wanted.
+                        //
+                        // RunDataApplicationTools now have a parameter
                         // for refresh. If it is not refreshed immediately
                         // after init(), the parameter value will be undefined
                         // until the 2nd run. So we refresh all the session
                         // tools on every run, even if we just init'ed it.
                         //
-                        
+
                         if (refreshToolsPerRequest)
                         {
                             refreshTool(tool, data);
@@ -558,7 +554,7 @@ public class TurbinePullService
             }
             catch (Exception e)
             {
-                log.error("Could not instantiate session tool " 
+                log.error("Could not instantiate session tool "
                     + toolData.toolName + " from a "
                     + toolData.toolClassName + " object", e);
             }
@@ -646,7 +642,7 @@ public class TurbinePullService
             }
         }
     }
-    
+
     /**
      * Initialized a given Tool with the passed init Object
      *
