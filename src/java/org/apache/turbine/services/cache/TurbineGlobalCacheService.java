@@ -57,14 +57,16 @@ package org.apache.turbine.services.cache;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
 import org.apache.commons.configuration.Configuration;
+
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.resources.TurbineResources;
 
 /**
  * This Service functions as a Global Cache.  A global cache is a good
@@ -94,6 +96,7 @@ import org.apache.turbine.services.resources.TurbineResources;
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
  * @author <a href="mailto:john@zenplex.com">John Thorhauer</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineGlobalCacheService
@@ -124,7 +127,8 @@ public class TurbineGlobalCacheService
      * Default = 5 seconds
      */
     public static final long DEFAULT_CACHE_CHECK_FREQUENCY =
-            TurbineResources.getLong("cache.check.frequency", 5000); // 5 seconds
+            Turbine.getConfiguration()
+            .getLong("cache.check.frequency", 5000); // 5 seconds
 
     /** The cache. **/
     private Hashtable cache = null;

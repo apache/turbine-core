@@ -55,14 +55,16 @@ package org.apache.turbine.services.pull.util;
  */
 
 import java.io.FileInputStream;
+
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.services.pull.TurbinePull;
-import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.ContentURI;
 import org.apache.turbine.util.RunData;
@@ -103,6 +105,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:james_coltman@majorband.co.uk">James Coltman</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class UIManager implements ApplicationTool
@@ -383,8 +386,9 @@ public class UIManager implements ApplicationTool
      */
     public void setSkin()
     {
-        this.skinName = TurbineResources.getString(SKIN_PROPERTY,
-                SKIN_PROPERTY_DEFAULT);
+        this.skinName = Turbine.getConfiguration()
+                .getString(SKIN_PROPERTY,
+                           SKIN_PROPERTY_DEFAULT);
     }
 
     /**

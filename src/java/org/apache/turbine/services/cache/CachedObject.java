@@ -54,7 +54,9 @@ package org.apache.turbine.services.cache;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.services.resources.TurbineResources;
+import java.io.Serializable;
+
+import org.apache.turbine.Turbine;
 
 /**
  * Wrapper for an object you want to store in a cache for a period of
@@ -65,7 +67,7 @@ import org.apache.turbine.services.resources.TurbineResources;
  * @version $Id$
  */
 public class CachedObject
-        implements java.io.Serializable
+        implements Serializable
 {
 
     /** Cache the object with the Default TTL */
@@ -79,7 +81,8 @@ public class CachedObject
 
     /** Default age (30 minutes). */
     private long defaultage =
-            TurbineResources.getLong("cachedobject.defaultage", 1800000);
+            Turbine.getConfiguration()
+            .getLong("cachedobject.defaultage", 1800000);
 
     /** When created. **/
     protected long created = 0;

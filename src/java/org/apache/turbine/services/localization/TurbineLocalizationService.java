@@ -58,14 +58,19 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.configuration.Configuration;
+
 import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -94,6 +99,8 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:novalidemail@foo.com">Frank Y. Kim</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
 public class TurbineLocalizationService
         extends TurbineBaseService
@@ -140,15 +147,17 @@ public class TurbineLocalizationService
     public void init()
             throws InitializationException
     {
+        Configuration conf = Turbine.getConfiguration();
+
         initBundleNames(null);
 
         Locale jvmDefault = Locale.getDefault();
-        defaultLanguage = TurbineResources
-                .getString("locale.default.language",
-                        jvmDefault.getLanguage()).trim();
-        defaultCountry = TurbineResources
-                .getString("locale.default.country",
-                        jvmDefault.getCountry()).trim();
+
+        defaultLanguage = conf.getString("locale.default.language",
+                jvmDefault.getLanguage()).trim();
+        defaultCountry = conf.getString("locale.default.country",
+                jvmDefault.getCountry()).trim();
+
         defaultLocale = new Locale(defaultLanguage, defaultCountry);
         setInit(true);
     }
@@ -160,9 +169,9 @@ public class TurbineLocalizationService
      */
     protected void initBundleNames(String[] ignored)
     {
-        bundleNames =
-                TurbineResources.getStringArray("locale.default.bundles");
-        String name = TurbineResources.getString("locale.default.bundle");
+        Configuration conf = Turbine.getConfiguration();
+        bundleNames = conf.getStringArray("locale.default.bundles");
+        String name = conf.getString("locale.default.bundle");
 
         if (name != null && name.length() > 0)
         {
