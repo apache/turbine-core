@@ -614,6 +614,18 @@ scheduler.enabled=false
 # -------------------------------------------------------------------
 
 #
+# This is the class that implements the UserManager interface to
+# manage User objects. Default is the UserManager from the
+# DBSecurityService. 
+# Override this setting if you want your User information stored
+# on a different medium (LDAP directory is a good example).
+#
+# Adjust this setting if you change the Setting of the SecurityService class (see above).
+
+# Default: org.apache.turbine.services.security.db.DBUserManager
+services.SecurityService.user.manager = org.apache.turbine.services.security.db.DBUserManager
+
+#
 # This is the class that implements the User interface.
 # You want to override this setting only if you want your User
 # implementation to provide application specific addtional
@@ -623,8 +635,17 @@ scheduler.enabled=false
 #
 # Default: org.apache.turbine.om.security.TurbineUser
 #
-
 services.SecurityService.user.class=org.apache.turbine.om.security.TurbineUser
+
+#
+# This is the class that implements the ACL interface.
+# You want to override this setting only if you want your ACL
+# implementation to provide application specific addtional
+# functionality.
+#
+
+# Default: org.apache.fulcrum.security.impl.TurbineAccessControlList
+services.SecurityService.acl.class = org.apache.fulcrum.security.impl.TurbineAccessControlList
 
 #
 # This setting is DBSecurityService specific - this class is consulted for the names
@@ -633,21 +654,9 @@ services.SecurityService.user.class=org.apache.turbine.om.security.TurbineUser
 # it's peer class must implement org.apache.turbine.om.security.peer.UserPeer interface,
 # and you need to specify the name of the peer class here.
 #
-# Defalut: org.apache.turbine.om.security.peer.TurbineUserPeer
+# Default: org.apache.turbine.om.security.peer.TurbineUserPeer
 #
 services.SecurityService.userPeer.class=org.apache.turbine.om.security.peer.TurbineUserPeer
-
-#
-# This is the class that implements UserManager interface.
-# Override this setting if you want your User information stored
-# on a different medium (LDAP directory is a good example).
-# Default implementation uses Peers and a relational database.
-#
-# For LDAP use:
-# services.SecurityService.user.manager=org.apache.turbine.services.security.ldap.LDAPUserManager
-#
-
-services.SecurityService.user.manager=org.apache.turbine.services.security.db.DBUserManager
 
 #
 # This is used by the SecurityService to make the password checking
@@ -672,9 +681,17 @@ services.SecurityService.secure.passwords=false
 
 services.SecurityService.secure.passwords.algorithm=SHA
 
-#
 # Configuration for the LDAP Security Service implementation
-#
+
+#services.SecurityService.ldap.security.athentication=simple
+#services.SecurityService.ldap.port=<LDAP PORT>
+#services.SecurityService.ldap.host=<LDAP HOST>
+#services.SecurityService.ldap.admin.username=<ADMIN USERNAME>
+#services.SecurityService.ldap.admin.password=<ADMIN PASSWORD>
+#services.SecurityService.ldap.user.basesearch=<SEARCH PATTERN>
+#services.SecurityService.ldap.user.search.filter=<SEARCH FILTER>
+#services.SecurityService.ldap.dn.attribute=userPrincipalName
+#services.SecurityService.ldap.provider=com.sun.jndi.ldap.LdapCtxFactory
 
 #
 # This property specifies the type of security authentication
