@@ -88,6 +88,7 @@
 
     <filter token="TURBINE_PLUGIN_SRC_CONF"    value="${turbine.plugin.src.conf}"/>
     <filter token="TURBINE_PLUGIN_SRC_JAVA"    value="${turbine.plugin.src.java}"/>
+    <filter token="TURBINE_PLUGIN_SRC_COMPILE" value="${turbine.plugin.src.compile}"/>
     <filter token="TURBINE_PLUGIN_SRC_TEST"    value="${turbine.plugin.src.test}"/>
     <filter token="TURBINE_PLUGIN_SRC_PROPS"   value="${turbine.plugin.src.props}"/>
 
@@ -597,7 +598,8 @@
   <!-- nececssary to merge all the source files before compilation.             -->
   <!--                                                                          -->
   <!-- ======================================================================== -->
-  <goal name="turbine:java-compile">
+  <goal name="turbine:java-compile"
+    prereqs="turbine:check-runtime-environment">
 
     <j:if test="${turbine.plugin.torque.use}">
       <attainGoal name="turbine:torque-om-check"/>
@@ -607,9 +609,11 @@
       <pathelement location="${pom.build.SourceDirectory}"/>
     </path>
 
-    <copy todir="${pom.build.SourceDirectory}" filtering="no">
-      <fileset dir="${turbine.plugin.src.java}"/>
-    </copy>
+    <j:if test="${!context.getVariable('turbine.plugin.mode').equalsIgnoreCase('inplace')}">
+      <copy todir="${pom.build.SourceDirectory}" filtering="no">
+        <fileset dir="${turbine.plugin.src.java}"/>
+      </copy>
+    </j:if>
 
     <j:if test="${turbine.plugin.torque.use}">
       <j:if test="${turbineInternalOmUpToDate != 'true'}">
