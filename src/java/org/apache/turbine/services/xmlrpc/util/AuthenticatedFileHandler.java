@@ -57,6 +57,7 @@ import org.apache.xmlrpc.AuthenticatedXmlRpcHandler;
 import java.util.Vector;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * An authenticated Handler for use with the XML-RPC service that will deal
@@ -85,7 +86,7 @@ public class AuthenticatedFileHandler
      * Handles all requests for an Authenticated file transfer.
      */
     public Object execute(String method, Vector params, String username, String password)
-        throws Exception
+        throws TurbineException
     {
         Object obj = null;
 

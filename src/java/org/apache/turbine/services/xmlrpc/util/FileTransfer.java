@@ -61,6 +61,7 @@ import java.net.URL;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.xmlrpc.TurbineXmlRpc;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * Test class for FileHandler.
@@ -87,7 +88,7 @@ public class FileTransfer
                             String sourceFileName,
                             String destinationLocationProperty,
                             String destinationFileName)
-                            throws Exception
+                            throws TurbineException
     {
         try
         {
@@ -117,7 +118,7 @@ public class FileTransfer
         catch (Exception e)
         {
             log.error("Error sending file to server:", e);
-            throw new Exception(e.toString());
+            throw new TurbineException(e);
         }
     }
 
@@ -132,6 +133,7 @@ public class FileTransfer
      * @param sourceFileName
      * @param destinationLocationProperty
      * @param destinationFileName
+     * @throws TurbineException
      */
     public static void send(String serverURL,
                             String username,
@@ -140,7 +142,7 @@ public class FileTransfer
                             String sourceFileName,
                             String destinationLocationProperty,
                             String destinationFileName)
-                            throws Exception
+                            throws TurbineException
     {
         try
         {
@@ -174,7 +176,7 @@ public class FileTransfer
         catch (Exception e)
         {
             log.error("Error sending file to server:", e);
-            throw new Exception(e.toString());
+            throw new TurbineException(e);
         }
     }
 
@@ -186,13 +188,14 @@ public class FileTransfer
      * @param sourceFileName
      * @param destinationLocationProperty
      * @param destinationFileName
+     * @throws TurbineException
      */
     public static void get(String serverURL,
                            String sourceLocationProperty,
                            String sourceFileName,
                            String destinationLocationProperty,
                            String destinationFileName)
-                           throws Exception
+                           throws TurbineException
     {
 
         try
@@ -223,7 +226,7 @@ public class FileTransfer
         catch (Exception e)
         {
             log.error("Error getting file from server:", e);
-            throw new Exception(e.toString());
+            throw new TurbineException(e);
         }
     }
 
@@ -246,7 +249,7 @@ public class FileTransfer
                            String sourceFileName,
                            String destinationLocationProperty,
                            String destinationFileName)
-                           throws Exception
+                           throws TurbineException
     {
 
         try
@@ -281,7 +284,7 @@ public class FileTransfer
         catch (Exception e)
         {
             log.error("Error getting file from server:", e);
-            throw new Exception(e.toString());
+            throw new TurbineException(e);
         }
     }
 
@@ -296,7 +299,7 @@ public class FileTransfer
     public static void remove(String serverURL,
                               String sourceLocationProperty,
                               String sourceFileName)
-                              throws Exception
+                              throws TurbineException
     {
         try
         {
@@ -318,7 +321,7 @@ public class FileTransfer
         catch (Exception e)
         {
             log.error("Error removing file from server:", e);
-            throw new Exception(e.toString());
+            throw new TurbineException(e);
         }
     }
 
@@ -337,7 +340,7 @@ public class FileTransfer
                               String password,
                               String sourceLocationProperty,
                               String sourceFileName)
-                              throws Exception
+                              throws TurbineException
     {
         try
         {
@@ -363,7 +366,7 @@ public class FileTransfer
         catch (Exception e)
         {
             log.error("Error removing file from server:", e);
-            throw new Exception(e.toString());
+            throw new TurbineException(e);
         }
     }
 }
