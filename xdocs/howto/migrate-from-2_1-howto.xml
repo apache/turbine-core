@@ -1,0 +1,242 @@
+<?xml version="1.0"?>
+
+<document>
+
+ <properties>
+  <title>Migrating from 2.1 to 2.2</title>
+  <author email="quintonm@bellsouth.net">Quinton McCombs</author>
+ </properties>
+
+<body>
+
+<section name="Getting Started">
+<p>
+    This document describes the basic steps needed to migrate an
+    application written for Turbine 2.1 to Turbine 2.2 using the
+    decoupled Torque. This does not cover moving any of your services
+    to Fulcrum. It is a good idea to convert some or all of the
+    services over to Fulcrum (if you really want to) after you get
+    everything working under T2.2.
+</p>
+<p>
+    You will find that migrating to 2.2 is not all that difficult.
+    Of course, this depends quite a bit on how much of Turbine your
+    application actually uses. Most of the pain in figuring out
+    this migration process has been documented in the mailing list
+    archives.
+</p>
+<p>
+    Start off with deleting all of the objects that Torque generated
+    for you. I am talking about om.map.* and om.Base*. You will be
+    able to regenerate them later during the migration process.
+</p>
+<p>
+    You will want to get the source versions of Torque and Turbine
+    if you do not already have them. The migration will not require
+    you to modify any code. You will need to compare the properties
+    files in jakarta-turbine-2/conf to those used by your app. Apply
+    changes to your version as needed.
+</p>
+
+</section>
+
+<section name="Import Statements">
+<p>
+    Many of your import statments will need to be changed. This is
+    due to the decoupled version of Torque. This will take care of
+    most of the changes due to refactoring. There will still be a
+    few cases (discussed later) where the methods have been changed and/or
+    moved to different classes.
+</p>
+<p>
+    <a href="http://jakarta.apache.org/turbine/torque/changes.html#Torque%203.0-b3">
+    [Here]</a> is list of the most common import changes.
+</p>
+</section>
+
+<section name="Transactions and obtaining database connections">
+<p>
+    org.apache.turbine.util.db.DBConnection is gone. The replacement
+    is javax.sql.Connection. This was a wrapper class from the
+    Connection object. It was returned when you asked for a database
+    connection. The new version of Torque will simply return a
+    Connection object.
+</p>
+<p>
+    org.apache.turbine.services.db.TurbineDB is gone. The replacement
+    is org.apache.turbine.Turbine. This was mainly used to obtain
+    database connections and the name of the default database. All
+    of this functionality is in the new class.
+</p>
+<p>
+    Below is an example of how you might have been obtaining database
+    connections in verion 2.1.
+</p>
+
+<source>
+<![CDATA[
+DBConnection dbConn = null;
+try
+{
+   dbConn = TurbineDB.getConnection();
+   // Do something with the connection here...
+}
+catch (Exception e)
+{
+   // Either from obtaining the connection or from your application code.
+}
+finally
+{
+   try
+   {
+       TurbineDB.releaseConnection(dbConn);
+   }
+   catch (Exception e)
+   {
+       // Error releasing database connection back to pool.
+   }
+}
+]]>
+</source>
+<p>
+    Using the new version of Torque this would be rewritten as follows.
+</p>
+<source>
+<![CDATA[
+Connection conn = null;
+try
+{
+   conn = Torque.getConnection();
+   // Do something with the connection here...
+}
+catch (Exception e)
+{
+   // Either from obtaining the connection or from your application code.
+}
+finally
+{
+   try
+   {
+       Torque.closeConnection(conn);
+   }
+   catch (Exception e)
+   {
+       // Error releasing database connection back to pool.
+   }
+}
+]]>
+</source>
+<p>
+    Support for transactions has been moved from org.apache.turbine.om.BasePeer
+    into org.apache.torque.util.Transaction. The method names have changed
+    slightly as well. Here is an example of using transactions in 2.1.
+</p>
+<source>
+<![CDATA[
+DBConnection dbConn = null;
+try
+{
+   dbConn = BasePeer.beginTrasaction(TurbineDB.getDefaultDB?());
+   someObject.save(dbConn);
+   someOtherObject.save(dbConn);
+   BasePeer.commitTransaction(dbConn);
+}
+catch (Exception e)
+{
+   // Either from obtaining the connection or from your application code.
+   BasePeer?.rollbackTransaction(dbConn);
+}
+]]>
+</source>
+<p>
+    This would now be written as shown below.
+</p>
+<source>
+<![CDATA[
+Connection conn = null;
+try
+{
+  conn = Transaction.begin(Torque.getDefaultDB());
+  someObject.save(conn);
+  someOtherObject.save(conn);
+  Transaction.commit(conn);
+}
+catch (Exception e)
+{
+   // Either from obtaining the connection or from your application code.
+   Transaction.rollback(conn);
+}
+]]>
+</source>
+</section>
+
+<section name="Extending Turbine User">
+<p>
+    See
+    <a href="http://jakarta.apache.org/turbine/turbine-2/howto/extend-user-howto.html">
+    Extending Turbine User How-To</a> for this information.
+</p>
+</section>
+
+<section name="Changes to the OM classes">
+<p>
+    Read over the Torque Schema Reference to find out what to change
+    in your project-schema.xml file. The main changes are the
+    deprecation of sequence and autoIncrement methods and javaType
+    (Torque can now object types).
+</p>
+<p>
+    If you used inheritance, you will run need to specify
+    abstract="true" for the tables which have abstract base
+    classes. When you do this, you will need to implement the
+    copy() method in your subclasses. An example is provided below.
+</p>
+<source>
+<![CDATA[
+public <base class> copy() throws TorqueException
+{
+    return copyInto(new <sub class>());
+}
+]]>
+</source>
+<p>
+    Atributes defined as primary keys are no longer generated
+    as NumberKey objects. They are now Integer or int (depending
+    on the javaType specified in project-schema.xml).
+</p>
+<p>
+    If you have a turbine-schema.xml file in your WEB-INF/conf
+    directory, the project-om ant task will generate all of the
+    Turbine*, BaseTurbine*, and map.Turbine* objects for you.
+    These will not be used by Turbine. They will only confuse
+    you. The best thing to do for this is to rename your
+    turbine-schema.xml file to something like turbine-schema.nogenerate.
+</p>
+</section>
+
+<section name="XML-RPC service">
+<p>
+    My TurbineResources.properties did not have settings to
+    configure the secure options. This caused initialization
+    of the service to fail. To fix this, I simply obtained all
+    of the configuration settings from the TurbineResources.properties
+    included with the source version.
+</p>
+<p>
+    The service does not listen on the loopback interface by default
+    any longer. There were no other changes that are required to get
+    this service up and running under T2.2.
+</p>
+</section>
+
+<section name="Other services">
+<p>
+    Intake, Security, and Scheduler all work without a problem
+    after migrating to T2.2.
+</p>
+</section>
+
+</body>
+</document>
+
+
