@@ -78,13 +78,13 @@ import org.apache.avalon.framework.activity.Initializable;
 import org.apache.turbine.Turbine;
 
 /**
- * A class used for initalization of Turbine without a servlet container.
+ * A class used for initialization of Turbine without a servlet container.
  * <p>
  * If you need to use Turbine outside of a servlet container, you can
- * use this class for initalization of the Turbine servlet.
+ * use this class for initialization of the Turbine servlet.
  * <p>
  * <blockquote><code><pre>
- * TurbineConfig config = new TurbineConfig(".", "/conf/TurbineResources.properties");
+ * TurbineConfig config = new TurbineConfig(".", "conf/TurbineResources.properties");
  * </pre></code></blockquote>
  * <p>
  * All paths referenced in TurbineResources.properties and the path to
@@ -132,13 +132,13 @@ public class TurbineConfig
             "/WEB-INF/conf/TurbineResources.properties";
 
     /** Filenames are looked up in this directory. */
-    private File root;
+    protected File root;
 
     /** Servlet container (or emulator) attributes. */
-    private Map attributes;
+    protected Map attributes;
 
     /** Turbine servlet initialization parameters. */
-    private Map initParams;
+    protected Map initParams;
 
     /** The Turbine servlet instance used for initialization. */
     private Turbine turbine;
@@ -253,8 +253,8 @@ public class TurbineConfig
     public String getRealPath(String path)
     {
         String result = null;
-
         File f = new File(root, path);
+
         if (log.isDebugEnabled())
         {
             StringBuffer sb = new StringBuffer();
