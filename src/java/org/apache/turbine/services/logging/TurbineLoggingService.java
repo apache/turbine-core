@@ -195,7 +195,7 @@ public class TurbineLoggingService
 
             //add webappRoot manually - cos logging is a primary
             //service and so it is not yet defined
-            String webappRoot = context.getRealPath("");
+            String webappRoot = context.getRealPath("/");
             resources.setProperty(Turbine.WEBAPP_ROOT,webappRoot);
 
         }

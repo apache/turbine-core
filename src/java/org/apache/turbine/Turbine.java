@@ -207,14 +207,14 @@ public class Turbine
                         || applicationRoot.equals("webContext"))
                 {
                     applicationRoot = config.getServletContext()
-                            .getRealPath("");
+                            .getRealPath("/");
                 }
 
                 // Set the webapp root. The applicationRoot and the
                 // webappRoot will be the same when the application is
                 // deployed, but during development they may have
                 // different values.
-                webappRoot = config.getServletContext().getRealPath("");
+                webappRoot = config.getServletContext().getRealPath("/");
 
                 // Create any directories that need to be setup for
                 // a running Turbine application.
