@@ -210,4 +210,20 @@
 
   </goal>
 
+  <!-- ================================================== -->
+  <!-- Generate the Maven Turbine Plugin Site             -->
+  <!-- ================================================== -->
+  <postGoal name="site">
+     <maven:reactor
+      basedir="${basedir}/src/maven-plugin"
+      includes="project.xml"
+      excludes="examples/*"
+      goals="clean,site"
+      banner="Building"
+      ignoreFailures="false"
+    />
+    <copy todir="${maven.build.dir}/docs/maven-turbine-plugin">
+      <fileset dir="${basedir}/src/maven-plugin/target/docs"/>
+    </copy>
+  </postGoal>
 </project>

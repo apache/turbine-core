@@ -98,7 +98,16 @@ Changes between Turbine 2.3 and 2.4.
   </ul>
 </p>
 </subsection>
-
+<subsection name="Other changes">
+<p>
+  <ul>
+    <li>
+	 Added to website documentation the Maven Plugin for Turbine.  Now has goals to
+	 help with inplace development of Turbine apps.
+    </li>
+  </ul>
+</p>
+</subsection>
 </section>
 
 <section name="Turbine 2.3">
