@@ -58,7 +58,10 @@ import java.io.File;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.Hashtable;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
@@ -68,9 +71,15 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.turbine.services.TurbineBaseService;
+import org.apache.commons.configuration.Configuration;
+
+import org.apache.commons.lang.StringUtils;
+
+xoimport org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.servlet.TurbineServlet;
+
+import org.w3c.dom.Node;
 
 /**
  * Implementation of the Turbine XSLT Service.  It transforms xml with a given
@@ -99,7 +108,7 @@ public class TurbineXSLTService
     /**
      * Cache of compiled StyleSheetRoots.
      */
-    protected Hashtable cache = new Hashtable();
+    protected Map cache = new HashMap();
 
     /**
      * Factory for producing templates and null transformers
@@ -111,26 +120,21 @@ public class TurbineXSLTService
      * xsl files and initiates the cache.
      */
     public void init()
+        throws InitializationException
     {
-        if (getInit())
+        Configuration conf = getConfiguration();
+
+        path = TurbineServlet.getRealPath(conf.getString(STYLESHEET_PATH, null));
+
+        if (StringUtils.isNotEmpty(path))
         {
-            return;
+            if (!path.endsWith("/") && !path.endsWith ("\\"))
+            {
+                path=path + File.separator;
+            }
         }
 
-        path = getConfiguration().getString(
-                TurbineServices.SERVICE_PREFIX +
-                XSLTService.SERVICE_NAME + ".path");
-
-        path = TurbineServlet.getRealPath(path);
-
-        if (!path.endsWith("/") && !path.endsWith("\\"))
-        {
-            path = path + File.separator;
-        }
-
-        caching = getConfiguration().getBoolean(
-                TurbineServices.SERVICE_PREFIX +
-                XSLTService.SERVICE_NAME + ".cache");
+        caching = conf.getBoolean(STYLESHEET_CACHING);
 
         tfactory = TransformerFactory.newInstance();
 
@@ -264,8 +268,8 @@ public class TurbineXSLTService
     /**
      * Execute an xslt
      */
-    public void transform(String xslName, org.w3c.dom.Node in, Writer out)
-            throws Exception
+    public void transform (String xslName, Node in, Writer out)
+        throws Exception
     {
         Source xmlin = new DOMSource(in);
         Result xmlout = new StreamResult(out);
@@ -276,8 +280,8 @@ public class TurbineXSLTService
     /**
      * Execute an xslt
      */
-    public String transform(String xslName, org.w3c.dom.Node in)
-            throws Exception
+    public String transform (String xslName, Node in)
+        throws Exception
     {
         StringWriter sw = new StringWriter();
         transform(xslName, in, sw);
