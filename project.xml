@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+c<?xml version="1.0" encoding="UTF-8"?>
 
 <project>
   <pomVersion>3</pomVersion>
   <name>jakarta-turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.3</currentVersion>
+  <currentVersion>2.4-dev</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
