@@ -43,18 +43,21 @@
     <mkdir dir="${weppappDirectory}/templates/app/navigations"/>
     <mkdir dir="${weppappDirectory}/templates/app/layouts"/>
 
-    <copy todir="${weppappDirectory}" filtering="true">
-      <fileset dir="${plugin.resources}/src/test"/>
-    </copy>
+    <copy todir="${weppappDirectory}/WEB-INF" filtering="true"
+          file="${plugin.resources}/src/conf/web.xml"
+    />
+    <copy tofile="${weppappDirectory}/WEB-INF/conf/TurbineResources.properties"
+          filtering="true"
+          file="${plugin.resources}/src/conf/TurbineResources.master"
+    />
+    <copy tofile="${weppappDirectory}/WEB-INF/conf/Torque.properties"
+          filtering="true"
+          file="${plugin.resources}/src/conf/Torque.master"
+    />
 
     <!-- Starter POM and POM properties. -->
     <copy todir="${basedir}" filtering="true">
       <fileset dir="${plugin.resources}/src/pom"/>
-    </copy>
-
-    <!-- Starter conf files to be placed in the JAR. -->
-    <copy todir="${basedir}/src/conf">
-      <fileset dir="${plugin.resources}/src/conf"/>
     </copy>
   </goal>
 
