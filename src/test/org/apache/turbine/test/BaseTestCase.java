@@ -58,6 +58,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Properties;
+import java.util.Vector;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -67,9 +68,12 @@ import junit.framework.TestCase;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.turbine.Turbine;
+import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.util.RunData;
+
+import com.mockobjects.servlet.MockHttpServletRequest;
 
 /**
  * Base functionality to be extended by all Apache Turbine test cases.  Test
@@ -112,6 +116,26 @@ public abstract class BaseTestCase
                     RunDataService.SERVICE_NAME);
         RunData runData = rds.getRunData(request, response, config);        
         return runData;
+    }
+    
+    protected MockHttpServletRequest getMockRequest(){
+        EnhancedMockHttpServletRequest request = new EnhancedMockHttpServletRequest();
+        EnhancedMockHttpSession session = new EnhancedMockHttpSession();
+        session.setupGetAttribute(User.SESSION_KEY, null);
+        request.setupServerName("bob");
+        request.setupGetProtocol("http");
+        request.setupScheme("scheme");
+        request.setupPathInfo("damn");
+        request.setupGetServletPath("damn2");
+        request.setupGetContextPath("wow");
+        request.setupGetContentType("html/text");
+        request.setupAddHeader("Content-type", "html/text");
+        request.setupAddHeader("Accept-Language", "en-US");  
+        Vector v = new Vector();
+        request.setupGetParameterNames(v.elements());
+        request.setSession(session);
+        return request;
+    
     }
 }
 

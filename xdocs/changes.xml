@@ -102,7 +102,8 @@ Changes between Turbine 2.3 and 2.4.
   <ul>
     <li>
        Fixed problem in Intake with the "remove" method in IntakeTool that is 
-       triggered by a "removeAll".</br>
+       triggered by a "removeAll".
+       <br/>
        When there is more than one instance of a group and a "removeAll" is
        done the "remove" method is called for each of the instances of the
        group. If a mutiply instantiated group is the last one to be removed,
@@ -184,6 +185,10 @@ Changes between Turbine 2.3 and 2.4.
 <subsection name="Other changes">
 <p>
   <ul>
+    <li>
+     Refactored how Turbine sets up it's ServerData object.  Removed the use
+     of RunData from the process.
+    </li>   	
   	<li>
   	  Removed dependency on deprecated Log4jFactory in favor of Log4jLogger.
   	</li>  	
