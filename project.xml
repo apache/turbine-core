@@ -357,7 +357,7 @@
     </dependency>
     <dependency>
       <id>commons-configuration</id>
-      <version>1.0-dev</version>
+      <version>1.0-dev-2</version>
       <url>http://jakarta.apache.org/commons/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
@@ -372,9 +372,25 @@
       </properties>
     </dependency>
     <dependency>
+      <id>commons-logging</id>
+      <version>1.0.2</version>
+      <url>http://jakarta.apache.org/commons/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>
+    <dependency>
       <id>ecs</id>
       <version>1.4.1</version>
       <url>http://jakarta.apache.org/ecs/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>
+    <dependency>
+      <id>log4j</id>
+      <version>1.2.7</version>
+      <url>http://jakarta.apache.org/log4j/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
