@@ -54,8 +54,6 @@ package org.apache.turbine.services.uniqueid;
  * <http://www.apache.org/>.
  */
 
-// Turbine stuff.
-
 import org.apache.turbine.services.Service;
 
 /**
@@ -68,7 +66,7 @@ import org.apache.turbine.services.Service;
 public interface UniqueIdService
         extends Service
 {
-    static final String SERVICE_NAME = "UniqueIdService";
+    String SERVICE_NAME = "UniqueIdService";
 
     /**
      * <p> Returs an identifer of this Turbine instance that is unique

@@ -54,7 +54,6 @@ package org.apache.turbine.services.jsp;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.services.Service;
 import org.apache.turbine.services.TurbineServices;
 
 import org.apache.turbine.util.RunData;
