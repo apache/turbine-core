@@ -55,21 +55,31 @@ package org.apache.turbine.services.xmlrpc;
  */
 
 import java.io.InputStream;
+
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
+
 import java.util.Iterator;
 import java.util.Vector;
+
 import javax.servlet.ServletConfig;
 
 import org.apache.commons.configuration.Configuration;
+
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.xmlrpc.util.FileTransfer;
 import org.apache.turbine.util.TurbineException;
+
+import org.apache.xerces.parsers.SAXParser;
+
 import org.apache.xmlrpc.WebServer;
 import org.apache.xmlrpc.XmlRpc;
 import org.apache.xmlrpc.XmlRpcClient;
@@ -141,21 +151,24 @@ public class TurbineXmlRpcService
     public void init()
             throws InitializationException
     {
+        Configuration conf = getConfiguration();
+
         try
         {
             server = new XmlRpcServer();
 
             // setup JSSE System properties from secure.server.options
             Configuration secureServerOptions =
-                    getConfiguration().subset("secure.server.option");
+                    conf.subset("secure.server.option");
+
             if (secureServerOptions != null)
             {
                 setSystemPropertiesFromConfiguration(secureServerOptions);
             }
 
             // Host and port information for the WebServer
-            String addr = getConfiguration().getString("address", "0.0.0.0");
-            port = getConfiguration().getInt("port", 0);
+            String addr = conf.getString("address", "0.0.0.0");
+            port = conf.getInt("port", 0);
 
             if (port != 0)
             {
@@ -171,7 +184,9 @@ public class TurbineXmlRpcService
                     }
                 }
 
-                if (getConfiguration().getBoolean("secure.server", false))
+                log.debug("Port: " + port + ", Address: " + address);
+
+                if (conf.getBoolean("secure.server", false))
                 {
                     webserver = new SecureWebServer(port, address);
                 }
@@ -182,24 +197,26 @@ public class TurbineXmlRpcService
             }
 
             // Set the XML driver to the correct SAX parser class
-            String saxParserClass = getConfiguration().getString("parser",
-                    "org.apache.xerces.parsers.SAXParser");
+            String saxParserClass = 
+                    conf.getString("parser", SAXParser.class.getName());
 
             XmlRpc.setDriver(saxParserClass);
 
             // Check if there are any handlers to register at startup
-            for (Iterator keys = getConfiguration().getKeys("handler"); keys.hasNext();)
+            for (Iterator keys = conf.getKeys("handler"); keys.hasNext();)
             {
-                String handler = (String) keys.next();
-                String handlerName = handler.substring(handler.indexOf(".") + 1);
-                String handlerClass = getConfiguration().getString(handler);
+                String handler      = (String) keys.next();
+                String handlerName  = handler.substring(handler.indexOf('.')+1);
+                String handlerClass = conf.getString(handler);
+
+                log.debug("Found Handler " + handler + " as " + handlerName + " / " + handlerClass);
+
                 registerHandler(handlerName, handlerClass);
             }
 
-            /*
-             * Turn on paranoia for the webserver if requested.
-             */
-            boolean stateOfParanoia = getConfiguration().getBoolean("paranoid", false);
+            // Turn on paranoia for the webserver if requested.
+            boolean stateOfParanoia =
+                    conf.getBoolean("paranoid", false);
 
             if (stateOfParanoia)
             {
@@ -207,24 +224,21 @@ public class TurbineXmlRpcService
                 log.info(XmlRpcService.SERVICE_NAME +
                         ": Operating in a state of paranoia");
 
-                /*
-                 * Only set the accept/deny client lists if we
-                 * are in a state of paranoia as they will just
-                 * be ignored so there's no point in setting them.
-                 */
+                // Only set the accept/deny client lists if we
+                // are in a state of paranoia as they will just
+                // be ignored so there's no point in setting them.
 
-                /*
-                 * Set the list of clients that can connect
-                 * to the xmlrpc server. The accepted client list
-                 * will only be consulted if we are paranoid.
-                 */
-                Vector acceptedClients = getConfiguration().getVector("acceptClient");
+                // Set the list of clients that can connect
+                // to the xmlrpc server. The accepted client list
+                // will only be consulted if we are paranoid.
+                Vector acceptedClients =
+                        conf.getVector("acceptClient");
 
                 for (int i = 0; i < acceptedClients.size(); i++)
                 {
                     String acceptClient = (String) acceptedClients.get(i);
 
-                    if (acceptClient != null && !acceptClient.equals(""))
+                    if (StringUtils.isNotEmpty(acceptClient))
                     {
                         webserver.acceptClient(acceptClient);
                         log.info(XmlRpcService.SERVICE_NAME +
@@ -232,18 +246,16 @@ public class TurbineXmlRpcService
                     }
                 }
 
-                /*
-                 * Set the list of clients that can connect
-                 * to the xmlrpc server. The denied client list
-                 * will only be consulted if we are paranoid.
-                 */
-                Vector deniedClients = getConfiguration().getVector("denyClient");
+                // Set the list of clients that can connect
+                // to the xmlrpc server. The denied client list
+                // will only be consulted if we are paranoid.
+                Vector deniedClients = conf.getVector("denyClient");
 
                 for (int i = 0; i < deniedClients.size(); i++)
                 {
                     String denyClient = (String) deniedClients.get(i);
 
-                    if (denyClient != null && !denyClient.equals(""))
+                    if (StringUtils.isNotEmpty(denyClient))
                     {
                         webserver.denyClient(denyClient);
                         log.info(XmlRpcService.SERVICE_NAME +
@@ -293,7 +305,7 @@ public class TurbineXmlRpcService
      * Create System properties using the key-value pairs in a given
      * Configuration.  This is used to set system properties and the
      * URL https connection handler needed by JSSE to enable SSL
-     * between XMLRPC client and server.
+     * between XML-RPC client and server.
      *
      * @param configuration the Configuration defining the System
      * properties to be set
@@ -336,6 +348,11 @@ public class TurbineXmlRpcService
         }
 
         server.addHandler(handlerName, handler);
+        
+        log.debug("Registered Handler " + handlerName + " as " 
+                + handler.getClass().getName() 
+                + ", Server: " + server 
+                + ", Webserver: " + webserver);
     }
 
     /**
@@ -543,7 +560,7 @@ public class TurbineXmlRpcService
     }
 
     /**
-     * Method to allow a client to get a file to a server.
+     * Method to allow a client to get a file from a server.
      *
      * @param serverURL
      * @param sourceLocationProperty

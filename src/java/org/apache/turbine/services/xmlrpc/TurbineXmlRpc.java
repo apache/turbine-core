@@ -55,7 +55,9 @@ package org.apache.turbine.services.xmlrpc;
  */
 
 import java.io.InputStream;
+
 import java.net.URL;
+
 import java.util.Vector;
 
 import org.apache.turbine.services.TurbineServices;
@@ -108,7 +110,7 @@ public abstract class TurbineXmlRpc
      * @exception TurbineException
      */
     public static Object executeAuthenticatedRpc(URL url, String username,
-                                                 String password, String methodName, Vector params)
+            String password, String methodName, Vector params)
             throws TurbineException
     {
         return getService().executeAuthenticatedRpc(url, username, password,
