@@ -56,30 +56,50 @@ package org.apache.turbine.services.rundata;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Vector;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.ecs.Document;
 import org.apache.ecs.Element;
 import org.apache.ecs.StringElement;
+
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.om.security.User;
+
 import org.apache.turbine.services.mimetype.TurbineMimeTypes;
+
 import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.services.template.TurbineTemplate;
+
 import org.apache.turbine.util.CookieParser;
 import org.apache.turbine.util.FormMessages;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.SystemError;
+
 import org.apache.turbine.util.pool.Recyclable;
+
 import org.apache.turbine.util.pool.RecyclableSupport;
+
 import org.apache.turbine.util.security.AccessControlList;
+
 import org.apache.turbine.util.template.TemplateInfo;
 
 /**
@@ -101,6 +121,7 @@ import org.apache.turbine.util.template.TemplateInfo;
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:bhoeneis@ee.ethz.ch">Bernie Hoeneisen</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class DefaultTurbineRunData
@@ -108,54 +129,28 @@ public class DefaultTurbineRunData
         implements TurbineRunData,
         Recyclable
 {
-    /**
-     * The default locale.
-     */
-    private static Locale defaultLocale;
+    /** The default locale. */
+    private static Locale defaultLocale = null;
 
-    /**
-     * The default locale checked flag.
-     */
-    private static boolean defaultLocaleChecked;
+    /** The default charset. */
+    private static String defaultCharSet = null;
 
-    /**
-     * The default charset.
-     */
-    private static String defaultCharSet;
-
-    /**
-     * The default charset checked flag.
-     */
-    private static boolean defaultCharSetChecked;
-
-    /**
-     * A reference to the GET/POST data parser.
-     */
+    /** A reference to the GET/POST data parser. */
     private ParameterParser parameters;
 
-    /**
-     * A reference to a cookie parser.
-     */
+    /** A reference to a cookie parser. */
     public CookieParser cookies;
 
-    /**
-     * The servlet request interface.
-     */
+    /** The servlet request interface. */
     private HttpServletRequest req;
 
-    /**
-     * The servlet response interface.
-     */
+    /** The servlet response interface. */
     private HttpServletResponse res;
 
-    /**
-     * The servlet session information.
-     */
+    /** The servlet session information. */
     private HttpSession session;
 
-    /**
-     * The servlet configuration.
-     */
+    /** The servlet configuration. */
     private ServletConfig config;
 
     /**
@@ -165,19 +160,13 @@ public class DefaultTurbineRunData
      */
     private ServletContext servletContext;
 
-    /**
-     * The access control list.
-     */
+    /** The access control list. */
     private AccessControlList acl;
 
-    /**
-     *  Determines if there is information in the document or not.
-     */
+    /** Determines if there is information in the document or not. */
     private boolean pageSet;
 
-    /**
-     * This creates an ECS Document.
-     */
+    /** This creates an ECS Document. */
     private Document page;
 
     /**
@@ -244,9 +233,7 @@ public class DefaultTurbineRunData
      */
     private Locale locale;
 
-    /**
-     * The HTTP charset.
-     */
+    /** The HTTP charset. */
     private String charSet;
 
     /**
@@ -311,6 +298,9 @@ public class DefaultTurbineRunData
      */
     private Hashtable varDebug = new Hashtable();
 
+    /** Logging */
+    private static Log log = LogFactory.getLog(DefaultTurbineRunData.class);
+
     /**
      * Attempts to get the User object from the session.  If it does
      * not exist, it returns null.
@@ -353,29 +343,27 @@ public class DefaultTurbineRunData
      * Gets the default locale defined by properties named
      * "locale.default.lang" and "locale.default.country".
      *
-     * @return the default locale or null.
+     * This changed from earlier Turbine versions that you can
+     * rely on getDefaultLocale() to never return null.
+     *
+     * @return A Locale object. 
      */
     protected static Locale getDefaultLocale()
     {
-        if (!defaultLocaleChecked)
+        if (defaultLocale == null)
         {
             /* Get the default locale and cache it in a static variable. */
-            String lang = TurbineResources.getString("locale.default.language");
-            String country = TurbineResources.getString("locale.default.country");
-            if (lang != null)
-            {
-                defaultLocale = country != null ?
-                        new Locale(lang, country) : new Locale(lang, "");
-            }
-            else if (country != null)
-            {
-                defaultLocale = new Locale("", country);
-            }
-            else
-            {
-                defaultLocale = null;
-            }
-            defaultLocaleChecked = true;
+            String lang = Turbine.getConfiguration()
+                .getString(TurbineConstants.LOCALE_DEFAULT_LANGUAGE_KEY,
+                    TurbineConstants.LOCALE_DEFAULT_LANGUAGE_DEFAULT);
+
+            String country = Turbine.getConfiguration()
+                .getString(TurbineConstants.LOCALE_DEFAULT_COUNTRY_KEY,
+                    TurbineConstants.LOCALE_DEFAULT_COUNTRY_DEFAULT);
+
+
+            // We ensure that lang and country is never null
+            defaultLocale =  new Locale(lang, country);
         }
         return defaultLocale;
     }
@@ -389,29 +377,42 @@ public class DefaultTurbineRunData
      */
     protected String getDefaultCharSet()
     {
-        if (!defaultCharSetChecked)
+        log.debug("getDefaultCharSet()");
+
+        if (defaultCharSet == null)
         {
             /* Get the default charset and cache it in a static variable. */
-            defaultCharSet = TurbineResources.
-                    getString("locale.default.charset");
-            defaultCharSetChecked = true;
+            defaultCharSet = Turbine.getConfiguration()
+                .getString(TurbineConstants.LOCALE_DEFAULT_CHARSET_KEY,
+                    TurbineConstants.LOCALE_DEFAULT_CHARSET_DEFAULT);
+            log.debug("defaultCharSet = " + defaultCharSet + " (From Properties)");
         }
 
         String charset = defaultCharSet;
-        if (charset == null)
+
+        if (StringUtils.isEmpty(charset))
         {
+            log.debug("charset is empty!");
             /* Default charset isn't specified, get the locale specific one. */
             Locale locale = this.locale;
             if (locale == null)
             {
                 locale = getDefaultLocale();
+                log.debug("Locale was null, is now " + locale + " (from getDefaultLocale())");
             }
-            if ((locale != null) &&
-                    !locale.equals(Locale.US))
+
+            log.debug("Locale is " + locale);
+
+            if (!locale.equals(Locale.US))
             {
+                log.debug("We have US Locale!");
                 charset = TurbineMimeTypes.getCharSet(locale);
+
+                log.debug("Charset now " + charset);
             }
         }
+
+        log.debug("Returning default Charset of " + charset);
         return charset;
     }
 
@@ -613,9 +614,8 @@ public class DefaultTurbineRunData
      */
     public boolean hasAction()
     {
-        return (this.action != null &&
-                this.action.length() > 0 &&
-                !this.action.equalsIgnoreCase("null"));
+        return (StringUtils.isNotEmpty(this.action)
+          && !this.action.equalsIgnoreCase("null"));
     }
 
     /**
@@ -699,7 +699,7 @@ public class DefaultTurbineRunData
      * method allows for a layout to be modified from within a
      * template. For example;
      *
-     *    $data.setLayoutTemplate("/NewLayout.vm")
+     *    $data.setLayoutTemplate("NewLayout.vm")
      *
      * @param layout a layout template.
      */
@@ -1043,10 +1043,6 @@ public class DefaultTurbineRunData
         if (locale == null)
         {
             locale = getDefaultLocale();
-            if (locale == null)
-            {
-                locale = Locale.getDefault();
-            }
         }
         return locale;
     }
@@ -1072,12 +1068,18 @@ public class DefaultTurbineRunData
      */
     public String getCharSet()
     {
-        String charset = this.charSet;
-        if (charset == null)
+      
+        log.debug("getCharSet()");
+
+        if (StringUtils.isEmpty(charSet))
         {
-            charset = getDefaultCharSet();
+            log.debug("Charset was null!");
+            return getDefaultCharSet();
         }
-        return charset;
+        else
+        {
+            return charSet;
+        }
     }
 
     /**
@@ -1085,9 +1087,10 @@ public class DefaultTurbineRunData
      *
      * @param charset the name of the new charset.
      */
-    public void setCharSet(String charset)
+    public void setCharSet(String charSet)
     {
-        this.charSet = charset;
+        log.debug("setCharSet(" + charSet + ")");
+        this.charSet = charSet;
     }
 
     /**
@@ -1103,31 +1106,22 @@ public class DefaultTurbineRunData
      */
     public String getContentType()
     {
-        String ct = this.contentType;
-        if (ct != null)
+        if (StringUtils.isNotEmpty(contentType))
         {
-            String charset = this.charSet;
-            if (charset == null)
+            if (StringUtils.isEmpty(charSet))
             {
-                if (ct.startsWith("text/"))
+                if (contentType.startsWith("text/"))
                 {
-                    charset = getDefaultCharSet();
-                    if (charset != null)
-                    {
-                        ct += "; charset=" + charset;
-                    }
+                    return contentType + "; charset=" + getDefaultCharSet();
                 }
             }
             else
             {
-                ct += "; charset=" + charset;
+                return contentType + "; charset=" + charSet;
             }
         }
-        else
-        {
-            ct = "";
-        }
-        return ct;
+
+        return "";
     }
 
     /**
@@ -1317,18 +1311,20 @@ public class DefaultTurbineRunData
     }
 
     /**
-     * Get the user agent for the request.
+     * Get the user agent for the request. The semantics here
+     * are muddled because RunData caches the value after the
+     * first invocation. This is different e.g. from getCharSet().
      *
      * @return a string.
      */
     public String getUserAgent()
     {
-        if (this.userAgent == null)
+        if (StringUtils.isEmpty(userAgent))
         {
-            this.userAgent = this.getRequest().getHeader("User-Agent");
+            userAgent = this.getRequest().getHeader("User-Agent");
         }
 
-        return this.userAgent;
+        return userAgent;
     }
 
     /**
@@ -1520,9 +1516,9 @@ public class DefaultTurbineRunData
      *
      * @param ss a string.
      */
-    protected void setServerScheme(String ss)
+    protected void setServerScheme(String serverScheme)
     {
-        getServerData().setServerScheme(ss);
+        getServerData().setServerScheme(serverScheme);
     }
 
     /**
@@ -1530,9 +1526,9 @@ public class DefaultTurbineRunData
      *
      * @param sn a string.
      */
-    protected void setServerName(String sn)
+    protected void setServerName(String serverName)
     {
-        getServerData().setServerName(sn);
+        getServerData().setServerName(serverName);
     }
 
     /**
@@ -1550,9 +1546,9 @@ public class DefaultTurbineRunData
      *
      * @param cp a string.
      */
-    protected void setContextPath(String cp)
+    protected void setContextPath(String contextPath)
     {
-        getServerData().setContextPath(cp);
+        getServerData().setContextPath(contextPath);
     }
 
     /**
@@ -1560,8 +1556,8 @@ public class DefaultTurbineRunData
      *
      * @param sn a string.
      */
-    protected void setScriptName(String sn)
+    protected void setScriptName(String scriptName)
     {
-        getServerData().setScriptName(sn);
+        getServerData().setScriptName(scriptName);
     }
 }
