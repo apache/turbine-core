@@ -56,8 +56,15 @@ package org.apache.turbine.modules.actions.sessionvalidator;
 
 import org.apache.commons.configuration.Configuration;
 
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+
+import org.apache.turbine.services.security.TurbineSecurity;
 
 import org.apache.turbine.util.RunData;
 
@@ -88,6 +95,9 @@ import org.apache.turbine.util.RunData;
 public class DefaultSessionValidator
     extends SessionValidator
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(DefaultSessionValidator.class);
+
     /**
      * Execute the action.  The default is to populate the RunData
      * object and, if the user is unknown, to force a login screen (as
@@ -101,18 +111,24 @@ public class DefaultSessionValidator
         throws Exception
     {
         Configuration conf = Turbine.getConfiguration();
-        /*
-         * Pull user from session.
-         */
+
+        // Pull user from session.
         data.populate();
 
-        // Make sure the User object exists in the Session and that
-        // the user has logged into the system.
-        if ((data.getUser() == null) || (!data.getUser().hasLoggedIn()))
+        // The user may have not logged in, so create a "guest/anonymous" user.
+        if (data.getUser() == null)
+        {
+            log.debug("Fixing up empty User Object!");
+            data.setUser(TurbineSecurity.getAnonymousUser());
+            data.save();
+        }
+
+        // Make sure the User has logged into the system.
+        if (!data.getUser().hasLoggedIn())
         {
             // only set the message if nothing else has already set it
-            // (e.g. the LogoutUser action)
-            if (data.getMessage() == null)
+            // (e.g. the LogoutUser action).
+            if (StringUtils.isEmpty(data.getMessage()))
             {
                 data.setMessage(conf.getString(TurbineConstants.LOGIN_MESSAGE));
             }
@@ -120,16 +136,18 @@ public class DefaultSessionValidator
             // set the screen to be the login page
             data.setScreen(conf.getString(TurbineConstants.SCREEN_LOGIN));
 
-            // we're not doing any actions buddy! (except action.login which
+            // We're not doing any actions buddy! (except action.login which
             // will have been performed already)
             data.setAction(null);
         }
-        else if (!data.hasScreen())
+
+        if (!data.hasScreen())
         {
             data.setMessage(conf.getString(TurbineConstants.LOGIN_MESSAGE_NOSCREEN));
             data.setScreen(conf.getString(TurbineConstants.SCREEN_HOMEPAGE));
         }
-        else if (data.getParameters().containsKey("_session_access_counter"))
+
+        if (data.getParameters().containsKey("_session_access_counter"))
         {
             // See comments in screens.error.InvalidState.
             if (data.getParameters().getInt("_session_access_counter") <
