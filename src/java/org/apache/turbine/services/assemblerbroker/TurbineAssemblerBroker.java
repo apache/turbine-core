@@ -68,6 +68,7 @@ import org.apache.turbine.util.TurbineException;
  * See TurbineAssemblerBrokerService for more info.
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class TurbineAssemblerBroker
@@ -76,7 +77,7 @@ public abstract class TurbineAssemblerBroker
      * Utility method for accessing the service
      * implementation
      *
-     * @return a VelocityService implementation instance
+     * @return An AssemblerBroker implementation instance
      */
     public static AssemblerBrokerService getService()
     {
@@ -105,8 +106,7 @@ public abstract class TurbineAssemblerBroker
      *
      * @throws TurbineException If a problem locating the Assember occured.
      */
-    public static Assembler getAssembler(String type,
-        String name)
+    public static Assembler getAssembler(String type, String name)
         throws TurbineException
     {
         return getService().getAssembler(type, name);

@@ -54,10 +54,15 @@ package org.apache.turbine.services.assemblerbroker;
  * <http://www.apache.org/>.
  */
 
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -71,19 +76,19 @@ import org.apache.turbine.util.TurbineException;
  * by adding them to the TurbineResources.properties file.
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineAssemblerBrokerService
-    extends TurbineBaseService
-    implements AssemblerBrokerService
-
+        extends TurbineBaseService
+        implements AssemblerBrokerService
 {
-    /** the log */
+    /** Logging */
     private static Log log
             = LogFactory.getLog(TurbineAssemblerBrokerService.class);
 
-    /** A structure that holds the registered AssemblerFactories*/
-    private Hashtable factories = null;
+    /** A structure that holds the registered AssemblerFactories */
+    private Map factories = null;
 
     /**
      * Get a list of AssemblerFactories of a certain type
@@ -91,13 +96,13 @@ public class TurbineAssemblerBrokerService
      * @param type type of Assembler
      * @return list of AssemblerFactories
      */
-    private Vector getFactoryGroup(String type)
+    private List getFactoryGroup(String type)
     {
         if (!factories.containsKey(type))
         {
             factories.put(type, new Vector());
         }
-        return (Vector) factories.get(type);
+        return (List) factories.get(type);
     }
 
     /**
@@ -109,17 +114,16 @@ public class TurbineAssemblerBrokerService
     private void registerFactories(String type)
         throws TurbineException
     {
-        log.debug("registerFactories: key = " + type);
+        List names = getConfiguration().getVector(type);
 
-        String[] names = getConfiguration().getStringArray(type);
+        log.info("Registering " + names.size() + " " + type + " factories.");
 
-        log.info("Registering " + names.length + " " + type + " factories.");
-
-        for (int i = 0; i < names.length; i++)
+        for (Iterator it = names.iterator(); it.hasNext(); )
         {
+            String factory = (String) it.next();
             try
             {
-                Object o = Class.forName(names[i]).newInstance();
+                Object o = Class.forName(factory).newInstance();
                 registerFactory(type, (AssemblerFactory) o);
             }
             // these must be passed to the VM
@@ -136,20 +140,21 @@ public class TurbineAssemblerBrokerService
             catch (Throwable t)
             {
                 throw new TurbineException("Failed registering " + type
-                        + " factories", t);
+                        + " factory: " + factory, t);
             }
         }
     }
 
     /**
      * Initializes the AssemblerBroker and loads the AssemblerFactory
-     * classes registerd in TurbineResources.Properties.
+     * classes registered in TurbineResources.Properties.
      *
      * @throws InitializationException
      */
-    public void init() throws InitializationException
+    public void init()
+        throws InitializationException
     {
-        factories = new Hashtable();
+        factories = new HashMap();
         try
         {
             registerFactories(AssemblerBrokerService.ACTION_TYPE);
@@ -192,27 +197,24 @@ public class TurbineAssemblerBrokerService
     public Assembler getAssembler(String type, String name)
         throws TurbineException
     {
-        Vector facs = getFactoryGroup(type);
+        List facs = getFactoryGroup(type);
 
-        for (int i = 0; i < facs.size(); i++)
+        Assembler assembler = null;
+        for (Iterator it = facs.iterator(); (assembler == null) && it.hasNext();)
         {
-            AssemblerFactory fac = (AssemblerFactory) facs.get(i);
-            Assembler assembler = null;
+            AssemblerFactory fac = (AssemblerFactory) it.next();
             try
             {
                 assembler = fac.getAssembler(name);
             }
             catch (Exception e)
             {
-                throw new TurbineException("Failed to find the " + type
-                        + " named " + name, e);
-            }
-
-            if (assembler != null)
-            {
-                return assembler;
+                throw new TurbineException("Failed to load an assembler for "
+                                           + name + " from the " 
+                                           + type + " factory "
+                                           + fac.getClass().getName(), e);
             }
         }
-        return null;
+        return assembler;
     }
 }
