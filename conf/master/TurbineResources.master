@@ -566,7 +566,7 @@ services.PullService.tools.per.request.refresh=true
 tool.request.link=org.apache.turbine.util.template.TemplateLink
 tool.request.page=org.apache.turbine.util.template.TemplatePageAttributes
 tool.request.content=org.apache.turbine.util.ContentURI
-#tool.request.flux=org.apache.turbine.flux.tools.FluxTool
+tool.request.flux=org.apache.turbine.flux.tools.FluxTool
 
 # These are intake tools.
 #tool.request.om=org.apache.turbine.om.OMTool
