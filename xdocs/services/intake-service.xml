@@ -17,8 +17,8 @@ Intake uses an xml specification to perform web form input validation
 and mapping input data to a bean's properties.  In other words, Intake
 will allow a web application to take web form input, validate it and
 then map the data to an object. Tools like the <a
-href="../torque.html">Torque</a> help provide mapping of Objects to the
-database and Intake helps map web form data to Objects.
+href="http://db.apache.org/torque/">Torque</a> help provide mapping of 
+Objects to the database and Intake helps map web form data to Objects.
 </p>
 
 <p>
