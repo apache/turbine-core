@@ -56,8 +56,8 @@ package org.apache.turbine.services.uniqueid;
 
 import java.security.MessageDigest;
 
-import org.apache.commons.codec.base64.Base64;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -107,7 +107,7 @@ public class TurbineUniqueIdService
             
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte [] bytesId = md.digest(url.getBytes("UTF-8"));
-            turbineId = new String(Base64.encode(bytesId));
+            turbineId = new String(Base64.encodeBase64(bytesId));
             
             log.info("This is Turbine instance running at: " + url);
             log.info("The instance id is #" + turbineId);
