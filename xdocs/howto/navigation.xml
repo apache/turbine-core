@@ -32,18 +32,23 @@
       <item name="Services"              href="/services/index.html"/>
       <item name="Howtos"                href="/howto/index.html">
         <item name="Action Events Howto" href="/howto/action-event-howto.html"/>
+        <item name="Configuration Howto"   href="/howto/configuration-howto.html"/>
         <item name="Extend User Howto"   href="/howto/extend-user-howto.html"/>
+        <item name="Hibernate OM Howto"  href="/howto/hibernate-howto.html"/>
+        <item name="Intake Howto"        href="/howto/intake-howto.html"/>
         <item name="JBoss Howto"         href="/howto/jboss-howto.html"/>
         <item name="JSP Howto"           href="/howto/jsp-howto.html"/>
-        <item name="Intake Howto"        href="/howto/intake-howto.html"/>
+        <item name="Migrating 2.1 to 2.2" href="/howto/migrate-from-2_1-howto.html"/>
+        <item name="Migrating 2.2 to 2.3" href="/howto/migrate-from-2_2-howto.html"/>
         <item name="Pull Model Howto"    href="/howto/pullmodel-howto.html"/>
         <item name="Python Howto"        href="/howto/python-howto.html"/>
         <item name="Security Howto"      href="/howto/security-howto.html"/>
         <item name="Services Howto"      href="/howto/services-howto.html"/>
-        <item name="Migrating from 2.1"  href="/howto/migrate-from-2_1-howto.html"/>
         <item name="URL rewriting Howto" href="/howto/url-rewriting-howto.html"/>
-        <item name="Velocity Site Howto" href="/howto/velocity-site-howto.html"/>
         <item name="Velocity Context Howto" href="/howto/context-howto.html"/>
+        <item name="Velocity Site Howto" href="/howto/velocity-site-howto.html"/>
+        <item name="VelocityOnlyLayout Howto" href="/howto/velocityonlylayout-howto.html"/>
+        <item name="Wiki Howtos" href="http://nagoya.apache.org/wiki/apachewiki.cgi?search=CategoryJakartaTurbine2HowTo"/>
       </item>
     </menu>
 
