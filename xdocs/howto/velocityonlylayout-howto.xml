@@ -45,7 +45,7 @@ tool.request.page = org.apache.turbine.util.template.HtmlPageAttributes
 </p>
 <source>
 <![CDATA[
-services.VelocityService?.default.layout = VelocityOnlyLayout
+services.VelocityService.default.layout = VelocityOnlyLayout
 ]]>
 </source>
 
@@ -55,15 +55,15 @@ services.VelocityService?.default.layout = VelocityOnlyLayout
 <p>
   <ul>
   	<li>$page.addAttribute(attribute,value) has been replaced with 
-  	    $page.addBodyAttribute?(attribute,value)</li>
+  	    $page.addBodyAttribute(attribute,value)</li>
   	<li>$page.setScript(url) has been replaced with 
   	    $page.addScript(url)</li>
-  	<li>$page.setStyleSheet?(url) has been replaced with 
-  	    $page.addStyleSheet?(url)</li>
+  	<li>$page.setStyleSheet(url) has been replaced with 
+  	    $page.addStyleSheet(url)</li>
   	<li>$page.setStyle(styleText) has been replaced with 
   	    $page.addStyle(styleText)</li>
-  	<li>$page.setStyleSheet?(url,media) has been replaced with 
-  	    $page.addStyleSheet?(url,media,title,type)</li>
+  	<li>$page.setStyleSheet(url,media) has been replaced with 
+  	    $page.addStyleSheet(url,media,title,type)</li>
   </ul>
 </p>
 <p>
@@ -75,13 +75,25 @@ services.VelocityService?.default.layout = VelocityOnlyLayout
 </p>
 <source>
 <![CDATA[
-services.VelocityService?.velocimacro.library = macros/TurbineMacros?.vm
+services.VelocityService.velocimacro.library = macros/TurbineMacros.vm
 ]]>
 </source>
 <p>
     to your TurbineResources.properties and it will pick up the 
     TurbineMacros.vm in your Turbine jar. An example of how to use 
     these macros follows.
+</p>
+<p>
+    Add the line
+</p>
+<source>
+<![CDATA[
+	$page.DefaultDoctype
+]]>
+</source>
+<p>
+    to your templates to pick up the default doctype definition from
+    TurbineResources.properties.
 </p>
 <p>
     Here is a sample layout template that you can use:
@@ -91,14 +103,15 @@ services.VelocityService?.velocimacro.library = macros/TurbineMacros?.vm
     ## Set defaults for all pages using this layout.  Anything set here can
     ## be overridden in the screen template.
     $page.setTitle("My default page title");
-    $page.setHttpEquiv?("Content-Style-Type","text/css")
-    $page.addStyleSheet?($content.getURI("myStyleSheet?.css"))
-    $page.addScript($content.getURI("globalJavascriptCode?.js"))
+    $page.setHttpEquiv("Content-Style-Type","text/css")
+    $page.addStyleSheet($content.getURI("myStyleSheet.css"))
+    $page.addScript($content.getURI("globalJavascriptCode.js"))
     ## build the HTML, HEAD, and BODY tags dynamically
 
+	$page.DefaultDoctype
     <html>
-      #TurbineHtmlHead?()
-      <body #TurbineHtmlBodyAttributes?() >
+      #TurbineHtmlHead()
+      <body #TurbineHtmlBodyAttributes() >
       $navigation.setTemplate("default_header.vm")
       $screen_placeholder
       $navigation.setTemplate("default_footer.vm")
@@ -116,38 +129,39 @@ services.VelocityService?.velocimacro.library = macros/TurbineMacros?.vm
     ## Set defaults for all pages using this layout.  Anything set here can
     ## be overridden in the screen template.
     $page.setTitle("My default page title");
-    $page.setHttpEquiv?("Content-Style-Type","text/css")
-    $page.addStyleSheet?($content.getURI("myStyleSheet?.css"))
-    $page.addScript($content.getURI("globalJavascriptCode?.js"))
+    $page.setHttpEquiv("Content-Style-Type","text/css")
+    $page.addStyleSheet($content.getURI("myStyleSheet.css"))
+    $page.addScript($content.getURI("globalJavascriptCode.js"))
     ## build the HTML, HEAD, and BODY tags dynamically
 
+	$page.DefaultDoctype
     <html>
       <head>
-        #if( $page.Title != "" )
+        #if($page.Title != "")
         <title>$page.Title</title>
         #end
-        #foreach($metaTag in $page.MetaTags?.keySet())
-        <meta name="$metaTag" content="$page.MetaTags?.get($metaTag)">
+        #foreach($metaTag in $page.MetaTags.keySet())
+        <meta name="$metaTag" content="$page.MetaTags.get($metaTag)">
         #end
-        #foreach($httpEquiv in $page.HttpEquivs?.keySet())
-        <meta http-equiv="$httpEquiv" content="$page.HttpEquivs?.get($httpEquiv)">
+        #foreach($httpEquiv in $page.HttpEquivs.keySet())
+        <meta http-equiv="$httpEquiv" content="$page.HttpEquivs.get($httpEquiv)">
         #end
-        #foreach( $styleSheet in $page.StyleSheets? )
+        #foreach($styleSheet in $page.StyleSheets)
           <link rel="stylesheet" href="$styleSheet.Url"
             #if($styleSheet.Type != "" ) type="$styleSheet.Type" #end
             #if($styleSheet.Media != "") media="$styleSheet.Media" #end
             #if($styleSheet.Title != "") title="$styleSheet.Title" #end
           >
         #end
-        #foreach( $script in $page.Scripts )
-          <script type="text/javascript" src="$script" language="JavaScript?"></script>
+        #foreach($script in $page.Scripts)
+          <script type="text/javascript" src="$script" language="JavaScript"></script>
         #end
       </head>
 
       ## Construct the body tag.  Iterate through the body attributes to build the opening tag
       <body
-        #foreach( $attributeName in $page.BodyAttributes?.keySet() )
-          $attributeName = "$page.BodyAttributes?.get($attributeName)"
+        #foreach($attributeName in $page.BodyAttributes.keySet())
+          $attributeName = "$page.BodyAttributes.get($attributeName)"
         #end
       >
 
