@@ -128,7 +128,10 @@ public class BaseValueParser
     /** Logging */
     private static Log log = LogFactory.getLog(BaseValueParser.class);
 
-    /** Random access storage for parameter data. */
+    /**
+     * Random access storage for parameter data.  The keys must always be
+     * Strings.  The values will be arrays of Strings.
+     */
     private Map parameters = new HashMap();
 
     /** The character encoding to use when converting to byte arrays */
@@ -425,25 +428,8 @@ public class BaseValueParser
      */
     public boolean getBoolean(String name, boolean defaultValue)
     {
-        boolean value = defaultValue;
-        Object object = parameters.get(convert(name));
-        if (object != null)
-        {
-            String tmp = getString(name);
-            if (tmp.equalsIgnoreCase("1") ||
-                tmp.equalsIgnoreCase("true") ||
-                tmp.equalsIgnoreCase("on"))
-            {
-                value = true;
-            }
-            if (tmp.equalsIgnoreCase ("0") ||
-                tmp.equalsIgnoreCase ("false") ||
-                tmp.equalsIgnoreCase ("off"))
-            {
-                value = false;
-            }
-        }
-        return value;
+        Boolean result = getBooleanObject(name);
+        return (result==null ? defaultValue : result.booleanValue());
     }
 
     /**
@@ -459,16 +445,72 @@ public class BaseValueParser
     }
 
     /**
+     * Returns a Boolean object for the given name.  If the parameter
+     * does not exist or can not be parsed as a boolean, null is returned.
+     * <p>
+     * Valid values for true: true, on, 1, yes<br>
+     * Valid values for false: false, off, 0, no<br>
+     * <p>
+     * The string is compared without reguard to case.
+     *
+     * @param name A String with the name.
+     * @return A Boolean.
+     */
+    public Boolean getBooleanObject(String name)
+    {
+        Boolean result = null;
+        String value = getString(name);
+        if (StringUtils.isNotEmpty(value))
+        {
+            if (value.equals("1") ||
+                    value.equalsIgnoreCase("true") ||
+                    value.equalsIgnoreCase("yes") ||
+                    value.equalsIgnoreCase("on"))
+            {
+                result = Boolean.TRUE;
+            }
+            if (value.equals("0") ||
+                    value.equalsIgnoreCase("false") ||
+                    value.equalsIgnoreCase("no") ||
+                    value.equalsIgnoreCase("off"))
+            {
+                result = Boolean.FALSE;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns a Boolean object for the given name.  If the parameter
+     * does not exist or can not be parsed as a boolean, null is returned.
+     * <p>
+     * Valid values for true: true, on, 1, yes<br>
+     * Valid values for false: false, off, 0, no<br>
+     * <p>
+     * The string is compared without reguard to case.
+     *
+     * @param name A String with the name.
+     * @param defaultValue The default value.
+     * @return A Boolean.
+     */
+    public Boolean getBooleanObject(String name, Boolean defaultValue)
+    {
+        Boolean result = getBooleanObject(name);
+        return (result==null ? defaultValue : result);
+    }
+
+    /**
      * Return a Boolean for the given name.  If the name does not
      * exist, return defaultValue.
      *
      * @param name A String with the name.
      * @param defaultValue The default value.
      * @return A Boolean.
+     * @deprecated use {@link #getBooleanObject} instead
      */
     public Boolean getBool(String name, boolean defaultValue)
     {
-        return new Boolean(getBoolean(name, defaultValue));
+        return getBooleanObject(name, new Boolean(defaultValue));
     }
 
     /**
@@ -477,10 +519,11 @@ public class BaseValueParser
      *
      * @param name A String with the name.
      * @return A Boolean.
+     * @deprecated use {@link #getBooleanObject(String)} instead
      */
     public Boolean getBool(String name)
     {
-        return new Boolean(getBoolean(name, false));
+        return getBooleanObject(name, Boolean.FALSE);
     }
 
     /**
@@ -493,13 +536,13 @@ public class BaseValueParser
      */
     public double getDouble(String name, double defaultValue)
     {
-        double value = defaultValue;
+        double result = defaultValue;
         try
         {
-            Object object = parameters.get(convert(name));
-            if (object != null)
+            String value = getString(name);
+            if (StringUtils.isNotEmpty(value))
             {
-                value = Double.valueOf(((String[]) object)[0]).doubleValue();
+                result = Double.valueOf(value).doubleValue();
             }
         }
         catch (NumberFormatException e)
@@ -507,7 +550,7 @@ public class BaseValueParser
             log.error("Parameter ("
                     + name + ") could not be converted to a double", e);
         }
-        return value;
+        return result;
     }
 
     /**
@@ -523,6 +566,113 @@ public class BaseValueParser
     }
 
     /**
+     * Return an array of doubles for the given name.  If the name does
+     * not exist, return null.
+     *
+     * @param name A String with the name.
+     * @return A double[].
+     */
+    public double[] getDoubles(String name)
+    {
+        double[] result = null;
+        String value[] = getStrings(name);
+        if (value != null)
+        {
+            result = new double[value.length];
+            for (int i = 0; i < value.length; i++)
+            {
+                if (StringUtils.isNotEmpty(value[i]))
+                {
+                    try
+                    {
+                        result[i] = Double.parseDouble(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        log.error("Parameter (" + name
+                                + ") could not be converted to a double", e);
+
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Return a Double for the given name.  If the name does not
+     * exist, return defaultValue.
+     *
+     * @param name A String with the name.
+     * @param defaultValue The default value.
+     * @return A double.
+     */
+    public Double getDoubleObject(String name, Double defaultValue)
+    {
+        Double result = getDoubleObject(name);
+        return (result==null ? defaultValue : result);
+    }
+
+    /**
+     * Return a Double for the given name.  If the name does not
+     * exist, return null.
+     *
+     * @param name A String with the name.
+     * @return A double.
+     */
+    public Double getDoubleObject(String name)
+    {
+        Double result = null;
+        String value = getString(name);
+        if (StringUtils.isNotEmpty(value))
+        {
+            try
+            {
+                result = new Double(value);
+            }
+            catch(NumberFormatException e)
+            {
+                log.error("Parameter ("
+                        + name + ") could not be converted to a Double", e);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Return an array of doubles for the given name.  If the name does
+     * not exist, return null.
+     *
+     * @param name A String with the name.
+     * @return A double[].
+     */
+    public Double[] getDoubleObjects(String name)
+    {
+        Double[] result = null;
+        String value[] = getStrings(convert(name));
+        if (value != null)
+        {
+            result = new Double[value.length];
+            for (int i = 0; i < value.length; i++)
+            {
+                if (StringUtils.isNotEmpty(value[i]))
+                {
+                    try
+                    {
+                        result[i] = Double.valueOf(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        log.error("Parameter (" + name
+                                + ") could not be converted to an Double", e);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
      * Return a float for the given name.  If the name does not
      * exist, return defaultValue.
      *
@@ -532,19 +682,21 @@ public class BaseValueParser
      */
     public float getFloat(String name, float defaultValue)
     {
-        float value = defaultValue;
+        float result = defaultValue;
         try
         {
-            Object object = parameters.get(convert(name));
-            if (object != null)
-                value = Float.valueOf(((String[]) object)[0]).floatValue();
+            String value = getString(name);
+            if (StringUtils.isNotEmpty(value))
+            {
+                result = Float.valueOf(value).floatValue();
+            }
         }
         catch (NumberFormatException e)
         {
             log.error("Parameter ("
                     + name + ") could not be converted to a float", e);
         }
-        return value;
+        return result;
     }
 
     /**
@@ -560,8 +712,115 @@ public class BaseValueParser
     }
 
     /**
+     * Return an array of floats for the given name.  If the name does
+     * not exist, return null.
+     *
+     * @param name A String with the name.
+     * @return A float[].
+     */
+    public float[] getFloats(String name)
+    {
+        float[] result = null;
+        String value[] = getStrings(name);
+        if (value != null)
+        {
+            result = new float[value.length];
+            for (int i = 0; i < value.length; i++)
+            {
+                if (StringUtils.isNotEmpty(value[i]))
+                {
+                    try
+                    {
+                        result[i] = Float.parseFloat(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        log.error("Parameter (" + name
+                                + ") could not be converted to a float", e);
+
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Return a Float for the given name.  If the name does not
+     * exist, return defaultValue.
+     *
+     * @param name A String with the name.
+     * @param defaultValue The default value.
+     * @return A Float.
+     */
+    public Float getFloatObject(String name, Float defaultValue)
+    {
+        Float result = getFloatObject(name);
+        return (result==null ? defaultValue : result);
+    }
+
+    /**
+     * Return a float for the given name.  If the name does not
+     * exist, return null.
+     *
+     * @param name A String with the name.
+     * @return A Float.
+     */
+    public Float getFloatObject(String name)
+    {
+        Float result = null;
+        String value = getString(name);
+        if (StringUtils.isNotEmpty(value))
+        {
+            try
+            {
+                result = new Float(value);
+            }
+            catch(NumberFormatException e)
+            {
+                log.error("Parameter ("
+                        + name + ") could not be converted to a Float", e);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Return an array of floats for the given name.  If the name does
+     * not exist, return null.
+     *
+     * @param name A String with the name.
+     * @return A float[].
+     */
+    public Float[] getFloatObjects(String name)
+    {
+        Float[] result = null;
+        String value[] = getStrings(convert(name));
+        if (value != null)
+        {
+            result = new Float[value.length];
+            for (int i = 0; i < value.length; i++)
+            {
+                if (StringUtils.isNotEmpty(value[i]))
+                {
+                    try
+                    {
+                        result[i] = Float.valueOf(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        log.error("Parameter (" + name
+                                + ") could not be converted to an Float", e);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
      * Return a BigDecimal for the given name.  If the name does not
-     * exist, return 0.0.
+     * exist, return defaultValue.
      *
      * @param name A String with the name.
      * @param defaultValue The default value.
@@ -569,17 +828,13 @@ public class BaseValueParser
      */
     public BigDecimal getBigDecimal(String name, BigDecimal defaultValue)
     {
-        BigDecimal value = defaultValue;
+        BigDecimal result = defaultValue;
         try
         {
-            Object object = parameters.get(convert(name));
-            if (object != null)
+            String value = getString(name);
+            if (StringUtils.isNotEmpty(value))
             {
-                String temp = ((String[]) object)[0];
-                if (temp.length() > 0)
-                {
-                    value = new BigDecimal(((String[]) object)[0]);
-                }
+                result = new BigDecimal(value);
             }
         }
         catch (NumberFormatException e)
@@ -587,7 +842,7 @@ public class BaseValueParser
             log.error("Parameter ("
                     + name + ") could not be converted to a BigDecimal", e);
         }
-        return value;
+        return result;
     }
 
     /**
@@ -611,18 +866,20 @@ public class BaseValueParser
      */
     public BigDecimal[] getBigDecimals(String name)
     {
-        BigDecimal[] value = null;
-        Object object = getStrings(convert(name));
-        if (object != null)
+        BigDecimal[] result = null;
+        String value[] = getStrings(name);
+        if (value != null)
         {
-            String[] temp = (String[]) object;
-            value = new BigDecimal[temp.length];
-            for (int i = 0; i < temp.length; i++)
+            result = new BigDecimal[value.length];
+            for (int i = 0; i < value.length; i++)
             {
-                value[i] = new BigDecimal(temp[i]);
+                if(StringUtils.isNotEmpty(value[i]))
+                {
+                    result[i] = new BigDecimal(value[i]);
+                }
             }
         }
-        return value;
+        return result;
     }
 
     /**
@@ -635,13 +892,13 @@ public class BaseValueParser
      */
     public int getInt(String name, int defaultValue)
     {
-        int value = defaultValue;
+        int result = defaultValue;
         try
         {
-            Object object = parameters.get(convert(name));
-            if (object != null)
+            String value = getString(name);
+            if (StringUtils.isNotEmpty(value))
             {
-                value = Integer.valueOf(((String[]) object)[0]).intValue();
+                result = Integer.valueOf(value).intValue();
             }
         }
         catch (NumberFormatException e)
@@ -649,7 +906,7 @@ public class BaseValueParser
             log.error("Parameter ("
                     + name + ") could not be converted to an integer", e);
         }
-        return value;
+        return result;
     }
 
     /**
@@ -674,7 +931,7 @@ public class BaseValueParser
      */
     public Integer getInteger(String name, int defaultValue)
     {
-        return new Integer(getInt(name, defaultValue));
+        return getIntObject(name, new Integer(defaultValue));
     }
 
     /**
@@ -685,10 +942,11 @@ public class BaseValueParser
      * @param name A String with the name.
      * @param def The default value.
      * @return An Integer.
+     * @deprecated use {@link #getIntObject} instead
      */
     public Integer getInteger(String name, Integer def)
     {
-        return new Integer(getInt(name, def.intValue()));
+        return getIntObject(name, def);
     }
 
     /**
@@ -697,10 +955,11 @@ public class BaseValueParser
      *
      * @param name A String with the name.
      * @return An Integer.
+     * @deprecated use {@link #getIntObject} instead
      */
     public Integer getInteger(String name)
     {
-        return new Integer(getInt(name, 0));
+        return getIntObject(name, new Integer(0));
     }
 
     /**
@@ -712,18 +971,68 @@ public class BaseValueParser
      */
     public int[] getInts(String name)
     {
-        int[] value = null;
-        Object object = getStrings(convert(name));
-        if (object != null)
+        int[] result = null;
+        String value[] = getStrings(name);
+        if (value != null)
         {
-            String[] temp = (String[]) object;
-            value = new int[temp.length];
-            for (int i = 0; i < temp.length; i++)
+            result = new int[value.length];
+            for (int i = 0; i < value.length; i++)
             {
-                value[i] = Integer.parseInt(temp[i]);
+                if (StringUtils.isNotEmpty(value[i]))
+                {
+                    try
+                    {
+                        result[i] = Integer.parseInt(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        log.error("Parameter (" + name
+                                + ") could not be converted to an integer", e);
+                    }
+                }
             }
         }
-        return value;
+        return result;
+    }
+
+    /**
+     * Return an Integer for the given name.  If the name does not exist,
+     * return defaultValue.
+     *
+     * @param name A String with the name.
+     * @param defaultValue The default value.
+     * @return An Integer.
+     */
+    public Integer getIntObject(String name, Integer defaultValue)
+    {
+        Integer result = getIntObject(name);
+        return (result==null ? defaultValue : result);
+    }
+
+    /**
+     * Return an Integer for the given name.  If the name does not exist,
+     * return null.
+     *
+     * @param name A String with the name.
+     * @return An Integer.
+     */
+    public Integer getIntObject(String name)
+    {
+        Integer result = null;
+        String value = getString(name);
+        if (StringUtils.isNotEmpty(value))
+        {
+            try
+            {
+                result = new Integer(value);
+            }
+            catch(NumberFormatException e)
+            {
+                log.error("Parameter ("
+                        + name + ") could not be converted to a Integer", e);
+            }
+        }
+        return result;
     }
 
     /**
@@ -733,20 +1042,43 @@ public class BaseValueParser
      * @param name A String with the name.
      * @return An Integer[].
      */
-    public Integer[] getIntegers(String name)
+    public Integer[] getIntObjects(String name)
     {
-        Integer[] value = null;
-        Object object = getStrings(convert(name));
-        if (object != null)
+        Integer[] result = null;
+        String value[] = getStrings(convert(name));
+        if (value != null)
         {
-            String[] temp = (String[]) object;
-            value = new Integer[temp.length];
-            for (int i = 0; i < temp.length; i++)
+            result = new Integer[value.length];
+            for (int i = 0; i < value.length; i++)
             {
-                value[i] = Integer.valueOf(temp[i]);
+                if (StringUtils.isNotEmpty(value[i]))
+                {
+                    try
+                    {
+                        result[i] = Integer.valueOf(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        log.error("Parameter (" + name
+                                + ") could not be converted to an Integer", e);
+                    }
+                }
             }
         }
-        return value;
+        return result;
+    }
+
+    /**
+     * Return an array of Integers for the given name.  If the name
+     * does not exist, return null.
+     *
+     * @param name A String with the name.
+     * @return An Integer[].
+     * @deprecated use {@link #getIntObjects} instead
+     */
+    public Integer[] getIntegers(String name)
+    {
+        return getIntObjects(name);
     }
 
     /**
@@ -759,19 +1091,21 @@ public class BaseValueParser
      */
     public long getLong(String name, long defaultValue)
     {
-        long value = defaultValue;
+        long result = defaultValue;
         try
         {
-            Object object = parameters.get(convert(name));
-            if (object != null)
-                value = Long.valueOf(((String[]) object)[0]).longValue();
+            String value = getString(name);
+            if (StringUtils.isNotEmpty(value))
+            {
+                result = Long.valueOf(value).longValue();
+            }
         }
         catch (NumberFormatException e)
         {
             log.error("Parameter ("
                     + name + ") could not be converted to a long", e);
         }
-        return value;
+        return result;
     }
 
     /**
@@ -795,18 +1129,29 @@ public class BaseValueParser
      */
     public long[] getLongs(String name)
     {
-        long[] value = null;
-        Object object = getStrings(convert(name));
-        if (object != null)
+        long[] result = null;
+        String value[] = getStrings(name);
+        if (value != null)
         {
-            String[] temp = (String[]) object;
-            value = new long[temp.length];
-            for (int i = 0; i < temp.length; i++)
+            result = new long[value.length];
+            for (int i = 0; i < value.length; i++)
             {
-                value[i] = Long.parseLong(temp[i]);
+                if (StringUtils.isNotEmpty(value[i]))
+                {
+                    try
+                    {
+                        result[i] = Long.parseLong(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        log.error("Parameter (" + name
+                                + ") could not be converted to a long", e);
+
+                    }
+                }
             }
         }
-        return value;
+        return result;
     }
 
     /**
@@ -818,18 +1163,68 @@ public class BaseValueParser
      */
     public Long[] getLongObjects(String name)
     {
-        Long[] value = null;
-        Object object = getStrings(convert(name));
-        if (object != null)
+        Long[] result = null;
+        String value[] = getStrings(convert(name));
+        if (value != null)
         {
-            String[] temp = (String[]) object;
-            value = new Long[temp.length];
-            for (int i = 0; i < temp.length; i++)
+            result = new Long[value.length];
+            for (int i = 0; i < value.length; i++)
             {
-                value[i] = Long.valueOf(temp[i]);
+                if (StringUtils.isNotEmpty(value[i]))
+                {
+                    try
+                    {
+                        result[i] = Long.valueOf(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        log.error("Parameter (" + name
+                                + ") could not be converted to a Long", e);
+                    }
+                }
             }
         }
-        return value;
+        return result;
+    }
+
+    /**
+     * Return a Long for the given name.  If the name does
+     * not exist, return null.
+     *
+     * @param name A String with the name.
+     * @return A Long.
+     */
+    public Long getLongObject(String name)
+    {
+        Long result = null;
+        String value = getString(name);
+        if (StringUtils.isNotEmpty(value))
+        {
+            try
+            {
+                result = new Long(value);
+            }
+            catch(NumberFormatException e)
+            {
+                log.error("Parameter ("
+                        + name + ") could not be converted to a Long", e);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Return a Long for the given name.  If the name does
+     * not exist, return the default value.
+     *
+     * @param name A String with the name.
+     * @param defaultValue The default value.
+     * @return A Long.
+     */
+    public Long getLongObject(String name, Long defaultValue)
+    {
+        Long result = getLongObject(name);
+        return (result==null ? defaultValue : result);
     }
 
     /**
@@ -842,19 +1237,21 @@ public class BaseValueParser
      */
     public byte getByte(String name, byte defaultValue)
     {
-        byte value = defaultValue;
+        byte result = defaultValue;
         try
         {
-            Object object = parameters.get(convert(name));
-            if (object != null)
-                value = Byte.valueOf(((String[]) object)[0]).byteValue();
+            String value = getString(name);
+            if (StringUtils.isNotEmpty(value))
+            {
+                result = Byte.valueOf(value).byteValue();
+            }
         }
         catch (NumberFormatException e)
         {
             log.error("Parameter ("
                     + name + ") could not be converted to a byte", e);
         }
-        return value;
+        return result;
     }
 
     /**
@@ -881,12 +1278,53 @@ public class BaseValueParser
     public byte[] getBytes(String name)
             throws UnsupportedEncodingException
     {
-        String tempStr = getString(name);
-        if (tempStr != null)
+        byte result[] = null;
+        String value = getString(name);
+        if (StringUtils.isNotEmpty(value))
         {
-            return tempStr.getBytes(characterEncoding);
+            result = value.getBytes(getCharacterEncoding());
         }
-        return null;
+        return result;
+    }
+
+    /**
+     * Return a byte for the given name.  If the name does not exist,
+     * return defaultValue.
+     *
+     * @param name A String with the name.
+     * @param defaultValue The default value.
+     * @return A byte.
+     */
+    public Byte getByteObject(String name, Byte defaultValue)
+    {
+        Byte result = getByteObject(name);
+        return (result==null ? defaultValue : result);
+    }
+
+    /**
+     * Return a byte for the given name.  If the name does not exist,
+     * return 0.
+     *
+     * @param name A String with the name.
+     * @return A byte.
+     */
+    public Byte getByteObject(String name)
+    {
+        Byte result = null;
+        String value = getString(name);
+        if (StringUtils.isNotEmpty(value))
+        {
+            try
+            {
+                result = new Byte(value);
+            }
+            catch(NumberFormatException e)
+            {
+                log.error("Parameter ("
+                        + name + ") could not be converted to a Byte", e);
+            }
+        }
+        return result;
     }
 
     /**
@@ -945,8 +1383,7 @@ public class BaseValueParser
     {
         String value = getString(name);
 
-        return (StringUtils.isEmpty(value) || value.equals("null"))
-            ? defaultValue : value;
+        return (StringUtils.isEmpty(value) ? defaultValue : value );
     }
 
     /**
@@ -974,13 +1411,7 @@ public class BaseValueParser
      */
     public String[] getStrings(String name)
     {
-        String[] value = null;
-        Object object = parameters.get(convert(name));
-        if (object != null)
-        {
-            value = ((String[]) object);
-        }
-        return value;
+        return (String[]) parameters.get(convert(name));
     }
 
     /**
@@ -1024,18 +1455,7 @@ public class BaseValueParser
      */
     public Object getObject(String name)
     {
-        try
-        {
-            Object value = null;
-            Object object = parameters.get(convert(name));
-            if (object != null)
-                value = ((Object[]) object)[0];
-            return value;
-        }
-        catch (ClassCastException e)
-        {
-            return null;
-        }
+        return getString(name);
     }
 
     /**
@@ -1047,14 +1467,7 @@ public class BaseValueParser
      */
     public Object[] getObjects(String name)
     {
-        try
-        {
-            return (Object[]) parameters.get(convert(name));
-        }
-        catch (ClassCastException e)
-        {
-            return null;
-        }
+        return getStrings(name);
     }
 
     /**
@@ -1189,23 +1602,21 @@ public class BaseValueParser
      */
     public NumberKey getNumberKey(String name)
     {
+        NumberKey result = null;
         try
         {
-            String value = null;
-            Object object = parameters.get(convert(name));
-            if (object != null)
+            String value = getString(name);
+            if (StringUtils.isNotEmpty(value))
             {
-                value = ((String[]) object)[0];
+                result = new NumberKey(value);
             }
-            return (StringUtils.isNotEmpty(value) ?
-                    new NumberKey(value) : null);
         }
         catch (ClassCastException e)
         {
             log.error("Parameter ("
                     + name + ") could not be converted to a NumberKey", e);
-            return null;
         }
+        return result;
     }
 
     /**
@@ -1217,22 +1628,21 @@ public class BaseValueParser
      */
     public StringKey getStringKey(String name)
     {
+        StringKey result = null;
         try
         {
-            String value = null;
-            Object object = parameters.get(convert(name));
-            if (object != null)
+            String value = getString(name);
+            if (StringUtils.isNotEmpty(value))
             {
-                value = ((String[]) object)[0];
+                result = new StringKey(value);
             }
-            return (StringUtils.isNotEmpty(value) ? new StringKey(value) : null);
         }
         catch (ClassCastException e)
         {
             log.error("Parameter ("
                     + name + ") could not be converted to a StringKey", e);
-            return null;
         }
+        return result;
     }
 
     /**
