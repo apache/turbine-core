@@ -24,6 +24,10 @@ import org.apache.torque.util.Criteria;
  * This class is used to send simple internet email messages without
  * attachments.
  *
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:unknown">Regis Koenig</a>
  * @version $Id$
  * @deprecated Use org.apache.commons.mail.SimpleEmail instead.
  */

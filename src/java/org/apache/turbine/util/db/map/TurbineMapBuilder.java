@@ -30,6 +30,8 @@ import org.apache.torque.map.TableMap;
  * probably will want to implement this class on your own.  It is then
  * defined within the TurbineResources.properties file.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
 public class TurbineMapBuilder implements MapBuilder

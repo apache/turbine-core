@@ -50,6 +50,9 @@ import org.apache.ecs.html.Select;
  * The above element container would use the onChange setting and may
  * hide the selected day if set via showDays().<br>
  *
+ * @author <a href="mailto:ekkerbj@netscape.net">Jeffrey D. Brekke</a>
+ * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
+ * @author <a href="mailto:leon@clearink.com">Leon Atkinson</a>
  * @version $Id$
  */
 public class DateSelector

@@ -34,6 +34,10 @@ import org.apache.turbine.util.parser.DefaultParameterParser;
  * Creates instances of RunData for use within Turbine or 3rd party
  * applications.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:burton@relativity.yi.org">Kevin A. Burton</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  * @deprecated This factory tries to be the RunData Service if no RunData Service is
  * configured. RunData Service is now mandatory for Turbine so use it directly without

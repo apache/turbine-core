@@ -31,6 +31,9 @@ import org.apache.turbine.util.uri.URIConstants;
  * system.  You can also use it as a placeholder for this information
  * if you are only emulating a servlet system.
  *
+ * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class ServerData

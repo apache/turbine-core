@@ -33,6 +33,8 @@ import javax.activation.DataSource;
  * - a byte array<br>
  * - a String<br>
  *
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
  * @version $Id$
  * @deprecated Use org.apache.commons.mail.ByteArrayDataSource instead.
  */

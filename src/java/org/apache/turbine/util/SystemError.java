@@ -22,6 +22,8 @@ import org.apache.commons.lang.exception.NestableError;
  * Used for wrapping system errors (exceptions) that may occur in the
  * application.
  *
+ * @author <a href="mailto:neeme@one.lv">Neeme Praks</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class SystemError extends NestableError

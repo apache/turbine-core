@@ -43,6 +43,7 @@ import java.util.Map;
  *
  * @todo Make this class enforce the lifecycle contracts
  *
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
 public class TurbineXmlConfig

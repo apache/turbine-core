@@ -23,6 +23,7 @@ import java.util.Vector;
  * relates to a specific form and field.  Used together with
  * FormMessages class.
  *
+ * @author <a href="mailto:neeme@one.lv">Neeme Praks</a>
  * @version $Id$
  */
 public class FormMessage

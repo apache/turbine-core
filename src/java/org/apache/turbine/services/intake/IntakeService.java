@@ -34,6 +34,9 @@ import org.apache.turbine.services.intake.model.Group;
  * </pre></code></blockquote>
  * </p>
  *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public interface IntakeService

@@ -40,6 +40,10 @@ import org.apache.torque.util.Criteria;
  * then you can call setMsg() to set the message and call the
  * different attach() methods.
  *
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:unknown">Regis Koenig</a>
  * @version $Id$
  * @deprecated Use org.apache.commons.mail.MultiPartEmail instead.
  */

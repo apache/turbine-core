@@ -19,6 +19,9 @@ package org.apache.turbine.util.db;
 /**
  * Models a specific column in a specific table.
  *
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @version $Id$
  * @deprecated Use <a href="http://db.apache.org/torque/">Torque</a>.
  */
 public class TableColumn

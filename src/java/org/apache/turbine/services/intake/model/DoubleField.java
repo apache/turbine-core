@@ -25,6 +25,7 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
 /**
  * Creates Double Field objects.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class DoubleField

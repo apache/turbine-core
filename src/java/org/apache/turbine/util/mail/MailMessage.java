@@ -60,6 +60,7 @@ import javax.mail.internet.MimeMessage;
  * sm.send();
  * </pre>
  *
+ * @author <a href="mailto:david@i2a.com">David Duddleston</a>
  * @version $Id$
  * @deprecated Use org.apache.commons.mail.MailMessage instead.
  */

@@ -26,6 +26,7 @@ import java.util.Vector;
  * form and field.  Allows to query for messages by form name and
  * field name.  Used together with FormMessage class.
  *
+ * @author <a href="mailto:neeme@one.lv">Neeme Praks</a>
  * @version $Id$
  */
 public class FormMessages

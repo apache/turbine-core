@@ -24,6 +24,8 @@ import org.apache.ecs.filter.CharacterFilter;
  * Some filter methods that have been orphaned in the Screen class.
  *
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

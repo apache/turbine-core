@@ -25,6 +25,9 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
 /**
  * Processor for int fields.
  *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class IntegerField

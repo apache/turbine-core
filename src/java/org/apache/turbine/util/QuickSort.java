@@ -20,6 +20,7 @@ package org.apache.turbine.util;
  * QuickSort - adapted from Doug Lea's Public Domain collection
  * library.
  *
+ * @author <a href="mailto:mbryson@mindspring.com">Dave Bryson</a>
  * @version $Id$
  * @deprecated This class will be removed after the 2.3 release. It is
  *             not part of the Web Framework scope. If you need it, please

@@ -29,6 +29,8 @@ import org.apache.turbine.util.uri.URIConstants;
 /**
  * This is where common Servlet manipulation routines should go.
  *
+ * @author <a href="mailto:gonzalo.diethelm@sonda.com">Gonzalo Diethelm</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class ServletUtils
