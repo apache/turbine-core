@@ -1,4 +1,0 @@
-2003-10-24 15:47:03,068 INFO  com.werken.werkz.jelly.PostGoalTag - Running post goal: java:compile
-2003-10-24 15:47:04,320 INFO  org.apache.maven.cli.App - Total time: 16 seconds
-2003-10-24 15:47:04,320 INFO  org.apache.maven.cli.App - Finished at: Fri Oct 24 15:47:04 CEST 2003
-2003-10-24 15:47:04,320 INFO  org.apache.maven.cli.App - 
