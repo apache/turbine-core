@@ -93,31 +93,6 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
     /** The column name for the visitor id field. */
     private static final String USER_ID_COLUMN = mapBuilder.getUserId();
 
-    /** The column name for the login name field */
-    private static final String USERNAME_COLUMN = mapBuilder.getUsername();
-
-    /** The key name for the first name field. */
-    private static final String FIRST_NAME_COLUMN = mapBuilder.getFirstName();
-
-    /** The key name for the last name field. */
-    private static final String LAST_NAME_COLUMN = mapBuilder.getLastName();
-
-    /** The column name for the modified field. */
-    private static final String MODIFIED_COLUMN = mapBuilder.getModified();
-
-    /** The column name for the created field. */
-    private static final String CREATED_COLUMN = mapBuilder.getCreated();
-
-    /** The column name for the last_login field. */
-    private static final String LAST_LOGIN_COLUMN = mapBuilder.getLastLogin();
-
-    /** The column name for the email field. */
-    private static final String EMAIL_COLUMN = mapBuilder.getEmail();
-
-    /** The column name for the confirm_value field. */
-    private static final String CONFIRM_VALUE_COLUMN
-            = mapBuilder.getConfirmValue();
-
     /** This is the value that is stored in the database for confirmed users. */
     public static final String CONFIRM_DATA
             = org.apache.turbine.om.security.User.CONFIRM_DATA;
@@ -162,9 +137,6 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
 
     /** The key name for the object_data field. */
     public static final String OBJECT_DATA = mapBuilder.getUser_ObjectData();
-
-    /** The Oracle sequence name for this peer. */
-    private static final String SEQUENCE_NAME = mapBuilder.getSequenceUser();
 
     /** The schema. */
     private static Schema schema = initTableSchema(TABLE_NAME);

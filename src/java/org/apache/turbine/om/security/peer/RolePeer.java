@@ -101,9 +101,6 @@ public class RolePeer extends BasePeer
     /** The column name for the ObjectData field */
     public static final String OBJECTDATA = mapBuilder.getRole_ObjectData();
 
-    /** The Oracle sequence name for this peer. */
-    private static final String SEQUENCE_NAME = mapBuilder.getSequenceRole();
-
     /**
      * Retrieves/assembles a RoleSet based on the Criteria passed in
      *
