@@ -83,7 +83,7 @@ public interface ScheduleService
      *
      * @param oid The int id for the job.
      * @return A JobEntry.
-     * @exception TurbineException a generic exception.
+     * @exception TurbineException could not retreive job
      */
     public JobEntry getJob(int oid)
             throws TurbineException;
@@ -92,7 +92,7 @@ public interface ScheduleService
      * Add a new job to the queue.
      *
      * @param je A JobEntry with the job to add.
-     * @exception TurbineException a generic exception.
+     * @throws TurbineException job could not be added
      */
     public void addJob(JobEntry je)
             throws TurbineException;
@@ -101,7 +101,7 @@ public interface ScheduleService
      * Modify a Job.
      *
      * @param je A JobEntry with the job to modify
-     * @exception TurbineException a generic exception.
+     * @throws TurbineException job could not be updated
      */
     public void updateJob(JobEntry je)
             throws TurbineException;
@@ -110,7 +110,7 @@ public interface ScheduleService
      * Remove a job from the queue.
      *
      * @param je A JobEntry with the job to remove.
-     * @exception TurbineException a generic exception.
+     * @exception TurbineException job could not be removed
      */
     public void removeJob(JobEntry je)
             throws TurbineException;
