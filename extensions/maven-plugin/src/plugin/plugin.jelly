@@ -430,7 +430,8 @@
 
     <copy todir="${turbine.target.dir}/WEB-INF/classes" filtering="no">
       <fileset dir="${pom.build.SourceDirectory}">
-        <exclude name="**/*java"/>
+        <exclude name="**/*.java"/>
+        <exclude name="report.${torque.project}.om.generation"/>
       </fileset>
     </copy>
 
@@ -628,7 +629,7 @@
 
     <j:if test="${turbine.plugin.torque.use}">
       <j:if test="${turbineInternalOmUpToDate != 'true'}">
-        <echo>Building OM Source files from Schema ...</echo>
+        <echo>Building OM Source files from Schema...</echo>
         <attainGoal name="torque:om"/>
       </j:if>
     </j:if>
