@@ -359,50 +359,80 @@
       <id>commons-collections</id>
       <version>2.0</version>
       <url>http://jakarta.apache.org/commons/collections.html</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>commons-configuration</id>
       <version>1.0-dev</version>
       <url>http://jakarta.apache.org/commons/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>commons-lang</id>
       <version>1.0</version>
       <url>http://jakarta.apache.org/commons/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>ecs</id>
       <version>1.4.1</version>
       <url>http://jakarta.apache.org/ecs/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>regexp</id>
       <version>1.3-dev</version>
       <url>http://jakarta.apache.org/regexp/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>javamail</id>
       <version>1.2</version>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>jaf:activation</id>
       <version>1.0.2</version>
       <url>http://java.sun.com/products/javabeans/glasgow/jaf.html</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>jdbc</id>
       <version>2.0</version>
       <url>http://java.sun.com/products/jdbc/download.html#spec</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>jndi</id>
       <version>1.2.1</version>
       <url>http://java.sun.com/products/jndi/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>log4j</id>
       <version>1.2.6</version>
       <url>http://jakarta.apache.org/log4j/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>servletapi</id>
@@ -412,63 +442,66 @@
       <id>stratum</id>
       <version>1.0-b3</version>
       <url>http://jakarta.apache.org/turbine/stratum/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>torque</id>
       <version>3.0-rc1</version>
       <url>http://jakarta.apache.org/turbine/torque/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>velocity</id>
       <version>1.3</version>
       <url>http://jakarta.apache.org/velocity/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>village</id>
       <version>1.5.3</version>
       <url>http://share.whichever.com/index.php?SCREEN=village</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>xmlrpc</id>
       <version>1.2-a1</version>
       <url>http://xml.apache.org/xmlrpc/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>xerces</id>
       <version>2.0.2</version>
       <url>http://xml.apache.org/xerces2-j/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>xml-apis</id>
       <version>2.0.2</version>
       <url>http://xml.apache.org/xerces2-j/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
     <dependency>
       <id>xalan</id>
       <version>2.1.0</version>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
     </dependency>
-    <!-- ********************************** -->
-    <!-- THESE DEPENDENCIES ARE FOR TESTING -->
-    <!-- ********************************** -->
 
-    <dependency>
-      <id>commons-httpclient</id>
-      <version>1.0</version>
-      <url>http://jakarta.apache.org/commons/</url>
-    </dependency>
-    <dependency>
-      <id>httpunit</id>
-      <version>1.3</version>
-    </dependency>
-    <dependency>
-      <id>jtidy</id>
-      <version>4aug2000r7-dev</version>
-    </dependency>
-    <dependency>
-      <id>junit</id>
-      <version>3.8.1</version>
-      <url>http://www.junit.org/</url>
-    </dependency>
     <!-- *********************************** -->
     <!-- THESE ARE THE OPTIONAL DEPENDENCIES -->
     <!-- *********************************** -->
@@ -490,6 +523,7 @@
       <version>2.1</version>
     </dependency>
   </dependencies>
+
   <build>
     <sourceDirectory>src/java</sourceDirectory>
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
@@ -500,17 +534,9 @@
       </includes>
     </unitTest>
 
-    <integrationUnitTestSourceDirectory>src/rttest</integrationUnitTestSourceDirectory>
-
-    <integrationUnitTest>
-      <includes>
-        <include>**/FileHandlerTest.java</include>
-        <include>include = **/*Test.java</include>
-      </includes>
-    </integrationUnitTest>
-
+    <integrationUnitTestSourceDirectory/>
+    <integrationUnitTest/>
     <aspectSourceDirectory/>
-
     <jarResources/>
 
     <jars/>
