@@ -406,11 +406,14 @@ public class IntakeTool
 
             pp.remove(INTAKE_GRP);
 
-            for (int i = 0; i < groupKeys.length; i++)
+            if (groupKeys != null)
             {
-                if (!groupKeys[i].equals(group.getGID()))
+                for (int i = 0; i < groupKeys.length; i++)
                 {
-                    pp.add(INTAKE_GRP, groupKeys[i]);
+                    if (!groupKeys[i].equals(group.getGID()))
+                    {
+                        pp.add(INTAKE_GRP, groupKeys[i]);
+                    }
                 }
             }
             
