@@ -57,9 +57,6 @@ package org.apache.turbine.services.intake.model;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.DateStringValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
@@ -78,11 +75,16 @@ import org.apache.turbine.util.TurbineRuntimeException;
 public class DateStringField
         extends Field
 {
-    /** Used for logging */
-    private static Log log = LogFactory.getLog(DateStringField.class);
-
+    /** date format */
     private DateFormat df = null;
 
+    /**
+     * Constructor.
+     *
+     * @param field xml field definition object
+     * @param group xml group definition object
+     * @throws IntakeException thrown by superclass
+     */
     public DateStringField(XmlField field, Group group)
             throws IntakeException
     {
@@ -99,7 +101,6 @@ public class DateStringField
      * Sets the default value for a DateString field
      *
      * @param prop Parameter for the default values
-     * @throws TurbineRuntimeException the date string could not be parsed.
      */
     public void setDefaultValue(String prop)
     {
@@ -116,8 +117,8 @@ public class DateStringField
         }
         catch (ParseException e)
         {
-            throw new TurbineRuntimeException("Could not parse " + prop +
-                    " into a valid Date", e);
+            throw new TurbineRuntimeException("Could not parse " + prop
+                    + " into a valid Date", e);
         }
     }
 
@@ -150,8 +151,9 @@ public class DateStringField
                     }
                     catch (ParseException e)
                     {
-                        // do nothing.  By the time this method is called, the validator will
-                        // have already ensured that the string can be parsed.
+                        // do nothing.  By the time this method is called,
+                        // the validator will have already ensured that the
+                        // string can be parsed.
                     }
                 }
                 else
@@ -172,8 +174,9 @@ public class DateStringField
                 }
                 catch (ParseException e)
                 {
-                    // do nothing.  By the time this method is called, the validator will
-                    // have already ensured that the string can be parsed.
+                    // do nothing. By the time this method is called, the
+                    // validator will have already ensured that the string
+                    // can be parsed.
                 }
             }
             else
@@ -187,6 +190,7 @@ public class DateStringField
      * Parses a test date string using the Validator if is exists and
      * is an instance of DateStringValidator.  Otherwise, DateFormat.parse()
      * is used.
+     *
      * @param dateString The string date to parse
      * @return A <code>Date</code> object
      * @throws ParseException The date could not be parsed.
@@ -207,6 +211,11 @@ public class DateStringField
         return date;
     }
 
+    /**
+     * returns a String representation
+     *
+     * @return a String representation
+     */
     public String toString()
     {
         String s = null;

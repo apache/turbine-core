@@ -54,8 +54,6 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.StringKey;
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
@@ -69,9 +67,14 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
 public class StringKeyField
         extends Field
 {
-    /** Used for logging */
-    private static Log log = LogFactory.getLog(StringKeyField.class);
 
+    /**
+     * Constructor.
+     *
+     * @param field xml field definition object
+     * @param group xml group definition object
+     * @throws IntakeException thrown by superclass
+     */
     public StringKeyField(XmlField field, Group group)
             throws IntakeException
     {
