@@ -42,7 +42,7 @@ services.SecurityService.user.manager = org.apache.turbine.services.security.tor
 ]]></source>
 
 <p>
-See the <a href="/services/security-service.html">Security Service</a> page
+See the <a href="security-service.html">Security Service</a> page
 for details of these and other properties that may also need to be configured.
 </p>
 

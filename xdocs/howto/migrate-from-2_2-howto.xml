@@ -160,7 +160,7 @@ import org.apache.commons.logging.LogFactory;
     In order to make the Turbine jar smaller, some things have been moved to 
     commons. There are in fact a raft of new dependencies that you should 
     ensure you use as part of your application - see: 
-    <a href="dependencies.html">Dependencies</a>.
+    <a href="../dependencies.html">Dependencies</a>.
 </p>
 </section>
 
