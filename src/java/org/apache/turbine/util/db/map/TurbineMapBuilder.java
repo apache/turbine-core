@@ -56,10 +56,10 @@ package org.apache.turbine.util.db.map;
 
 import java.util.Date;
 import java.util.Hashtable;
+import org.apache.torque.Torque;
 import org.apache.torque.map.DatabaseMap;
 import org.apache.torque.map.MapBuilder;
 import org.apache.torque.map.TableMap;
-import org.apache.turbine.services.db.TurbineDB;
 
 /**
  * Default Builder for Database/Table/Column Maps within the Turbine
@@ -878,7 +878,7 @@ public class TurbineMapBuilder implements MapBuilder
         java.util.Date date = new Date();
 
         // Get default map.
-        dbMap = TurbineDB.getDatabaseMap();
+        dbMap = Torque.getDatabaseMap();
 
         // Add tables.
         dbMap.addTable(getTableUser());
