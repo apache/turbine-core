@@ -95,6 +95,15 @@ Changes between Turbine 2.3 and 2.4.
        can later be enabled with field.setRequired(true) (i.e. you should 
        do this rather than using the deprecated required-message element).
     </li>
+    <li>
+       Intake was fixed so that DateString will use the "formatn" (where n 
+       &gt;= 1) rules to parse the input and then the "format" rule to format 
+       it (the "format" rule is also used to parse the date if there are no
+       "formatn" rules or they are not able to parse it).  In order to 
+       retrieve the correctly formatted DateString value you need to use
+       <em>$group.foo.StringValue</em> rather than <em>$group.foo.Value</em> 
+       (you can do this for all values, not just DateString).
+    </li>
   </ul>
 </p>
 </subsection>
