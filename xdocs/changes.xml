@@ -24,6 +24,10 @@
 
   <body>
     <release version="2.4-M2" date="in cvs">
+      <action dev="epugh" type="remove">
+        Remove Merlin service.  When the replacement for Merlin (Metro) is released, then
+        add back in support.
+      </action>          
       <action dev="epugh" type="update">
         Use RELEASED versions of Fulcrum components!
       </action>            

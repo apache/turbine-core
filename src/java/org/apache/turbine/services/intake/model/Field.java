@@ -56,15 +56,11 @@ package org.apache.turbine.services.intake.model;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
 import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.fulcrum.localization.Localization;
-
 import org.apache.turbine.om.Retrievable;
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.TurbineIntake;
@@ -74,7 +70,7 @@ import org.apache.turbine.services.intake.validator.ValidationException;
 import org.apache.turbine.services.intake.validator.Validator;
 import org.apache.turbine.services.intake.xmlmodel.Rule;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
-
+import org.apache.turbine.services.localization.Localization;
 import org.apache.turbine.util.SystemError;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.parser.ValueParser;
