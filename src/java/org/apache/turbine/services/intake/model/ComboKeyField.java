@@ -111,7 +111,7 @@ public class ComboKeyField
             ComboKey[] values = new ComboKey[inputs.length];
             for (int i = 0; i < inputs.length; i++)
             {
-                values[i] = StringUtils.isNotEmpty(inputs[i]) 
+                values[i] = StringUtils.isNotEmpty(inputs[i])
                         ? new ComboKey(inputs[i]) : null;
             }
             setTestValue(values);

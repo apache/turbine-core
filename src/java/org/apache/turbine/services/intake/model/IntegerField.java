@@ -121,7 +121,7 @@ public class IntegerField
             Integer[] values = new Integer[inputs.length];
             for (int i = 0; i < inputs.length; i++)
             {
-                values[i] = StringUtils.isNotEmpty(inputs[i]) 
+                values[i] = StringUtils.isNotEmpty(inputs[i])
                         ? new Integer(inputs[i]) : null;
             }
             setTestValue(values);
