@@ -38,8 +38,8 @@
     </mailingList>
     <mailingList>
       <name>Turbine Developer List</name>
-      <subscribe>mailto:turbine-dev-subscribe@jakarta.apache.org</subscribe>
-      <unsubscribe>mailto:turbine-dev-unsubscribe@jakarta.apache.org</unsubscribe>
+      <subscribe>turbine-dev-subscribe@jakarta.apache.org</subscribe>
+      <unsubscribe>turbine-dev-unsubscribe@jakarta.apache.org</unsubscribe>
       <archive>http://archives.apache.org/eyebrowse/SummarizeList?listName=turbine-dev@jakarta.apache.org</archive>
     </mailingList>
   </mailingLists>
