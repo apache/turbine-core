@@ -129,7 +129,7 @@ public class LDAPSecurityService extends BaseSecurityService
         if (!TurbineSecurity.accountExists(user))
         {
             throw new UnknownEntityException("The account '"
-                    + user.getUserName() + "' does not exist");
+                    + user.getName() + "' does not exist");
         }
         try
         {
@@ -174,7 +174,7 @@ public class LDAPSecurityService extends BaseSecurityService
         catch (Exception e)
         {
             throw new DataBackendException("Failed to build ACL for user '"
-                    + user.getUserName() + "'", e);
+                    + user.getName() + "'", e);
         }
         finally
         {
@@ -207,7 +207,7 @@ public class LDAPSecurityService extends BaseSecurityService
         {
             lockExclusive();
 
-            String userName = user.getUserName();
+            String userName = user.getName();
             String roleName = role.getName();
             String groupName = group.getName();
 
@@ -231,7 +231,7 @@ public class LDAPSecurityService extends BaseSecurityService
 
             // Make the distinguished name.
             String dn = "turbineGroupName=" + groupName + ","
-                    + LDAPSecurityConstants.getUserNameAttribute()
+                    + LDAPSecurityConstants.getNameAttribute()
                     + "=" + userName + ","
                     + LDAPSecurityConstants.getBaseSearch();
 
@@ -287,7 +287,7 @@ public class LDAPSecurityService extends BaseSecurityService
         {
             lockExclusive();
 
-            String userName = user.getUserName();
+            String userName = user.getName();
             String roleName = role.getName();
             String groupName = group.getName();
 
@@ -311,7 +311,7 @@ public class LDAPSecurityService extends BaseSecurityService
 
             // Make the distinguished name.
             String dn = "turbineGroupName=" + groupName + ","
-                    + LDAPSecurityConstants.getUserNameAttribute()
+                    + LDAPSecurityConstants.getNameAttribute()
                     + "=" + userName + ","
                     + LDAPSecurityConstants.getBaseSearch();
 
@@ -565,7 +565,7 @@ public class LDAPSecurityService extends BaseSecurityService
             String filter = "(& ";
 
             filter += "(objectclass=turbineUserGroup)";
-            filter += "(turbineUserUniqueId=" + user.getUserName() + ")";
+            filter += "(turbineUserUniqueId=" + user.getName() + ")";
             filter += "(turbineGroupName=" + group.getName() + ")";
             filter += ")";
 

@@ -149,7 +149,7 @@ public class LDAPUser extends BaseObject implements User
         }
 
         // Set the Username.
-        attrName = LDAPSecurityConstants.getUserNameAttribute();
+        attrName = LDAPSecurityConstants.getNameAttribute();
         if (attrName != null)
         {
             attr = attribs.get(attrName);
@@ -239,10 +239,10 @@ public class LDAPUser extends BaseObject implements User
         }
 
         // Set the Username.
-        attrName = LDAPSecurityConstants.getUserNameAttribute();
+        attrName = LDAPSecurityConstants.getNameAttribute();
         if (attrName != null)
         {
-            Object value = getUserName();
+            Object value = getName();
 
             if (value != null)
             {
@@ -318,9 +318,9 @@ public class LDAPUser extends BaseObject implements User
      */
     public String getDN()
     {
-        String filterAttribute = LDAPSecurityConstants.getUserNameAttribute();
+        String filterAttribute = LDAPSecurityConstants.getNameAttribute();
         String userBaseSearch = LDAPSecurityConstants.getBaseSearch();
-        String userName = getUserName();
+        String userName = getName();
 
         String dn = filterAttribute + "=" + userName + "," + userBaseSearch;
 
@@ -547,17 +547,11 @@ public class LDAPUser extends BaseObject implements User
      * the user is considered logged in.
      *
      * @return A String with the username.
+     * @deprecated Use getName() instead
      */
     public String getUserName()
     {
-        String tmp = null;
-
-        tmp = (String) getPerm(User.USERNAME);
-        if (tmp != null && tmp.length() == 0)
-        {
-            tmp = null;
-        }
-        return tmp;
+        return getName();
     }
 
     /**
@@ -915,12 +909,21 @@ public class LDAPUser extends BaseObject implements User
     }
 
     /**
-     * Not implemented.
-     * @return Empty String
+     * Returns the username for this user.  If this is defined, then
+     * the user is considered logged in.
+     *
+     * @return A String with the username.
      */
     public String getName()
     {
-        return "";
+        String tmp = null;
+
+        tmp = (String) getPerm(User.USERNAME);
+        if (tmp != null && tmp.length() == 0)
+        {
+            tmp = null;
+        }
+        return tmp;
     }
 
     /**

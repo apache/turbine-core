@@ -601,14 +601,14 @@ public class UserPeerManager
 
         criteria.addSelectColumn(getIdColumn());
 
-        criteria.add(getNameColumn(), user.getUserName());
+        criteria.add(getNameColumn(), user.getName());
 
         List results = BasePeer.doSelect(criteria);
 
         if (results.size() > 1)
         {
             throw new DataBackendException("Multiple users named '" +
-                                           user.getUserName() + "' exist!");
+                                           user.getName() + "' exist!");
         }
         return (results.size() == 1);
     }
@@ -846,8 +846,22 @@ public class UserPeerManager
      * @param obj The object to use for getting the name
      *
      * @return A string containing the name
+     *
+     * @deprecated use getName(obj)
      */
     public static String getUserName(Persistent obj)
+    {
+        return getName(obj);
+    }
+
+    /**
+     * Invokes getName() on the supplied base object
+     *
+     * @param obj The object to use for getting the name
+     *
+     * @return A string containing the name
+     */
+    public static String getName(Persistent obj)
     {
         String name = null;
 

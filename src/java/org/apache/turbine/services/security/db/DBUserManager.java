@@ -128,7 +128,7 @@ public class DBUserManager
     public boolean accountExists(User user)
             throws DataBackendException
     {
-        return accountExists(user.getUserName());
+        return accountExists(user.getName());
     }
 
     /**
@@ -310,7 +310,7 @@ public class DBUserManager
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                    user.getUserName() + "' does not exist");
+                    user.getName() + "' does not exist");
         }
 
         Criteria criteria = TurbineUserPeer.buildCriteria(user);
@@ -347,7 +347,7 @@ public class DBUserManager
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                    user.getUserName() + "' does not exist");
+                    user.getName() + "' does not exist");
         }
         Criteria crit = new Criteria();
         if (!((Persistent) user).isNew())
@@ -402,7 +402,7 @@ public class DBUserManager
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                    user.getUserName() + "' does not exist");
+                    user.getName() + "' does not exist");
         }
 
         // log.debug("Supplied Pass: " + password);
@@ -442,13 +442,13 @@ public class DBUserManager
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                    user.getUserName() + "' does not exist");
+                    user.getName() + "' does not exist");
         }
 
         if (!TurbineSecurity.checkPassword(oldPassword, user.getPassword()))
         {
             throw new PasswordMismatchException(
-                    "The supplied old password for '" + user.getUserName() +
+                    "The supplied old password for '" + user.getName() +
                     "' was incorrect");
         }
         user.setPassword(TurbineSecurity.encryptPassword(newPassword));
@@ -479,7 +479,7 @@ public class DBUserManager
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                    user.getUserName() + "' does not exist");
+                    user.getName() + "' does not exist");
         }
         user.setPassword(TurbineSecurity.encryptPassword(password));
         // save the changes in the database immediately, to prevent the
@@ -500,7 +500,7 @@ public class DBUserManager
     public void createAccount(User user, String initialPassword)
             throws EntityExistsException, DataBackendException
     {
-        if (StringUtils.isEmpty(user.getUserName()))
+        if (StringUtils.isEmpty(user.getName()))
         {
             throw new DataBackendException("Could not create "
                     + "an user with empty name!");
@@ -509,7 +509,7 @@ public class DBUserManager
         if (accountExists(user))
         {
             throw new EntityExistsException("The account '" +
-                    user.getUserName() + "' already exists");
+                    user.getName() + "' already exists");
         }
         user.setPassword(TurbineSecurity.encryptPassword(initialPassword));
 
@@ -528,7 +528,7 @@ public class DBUserManager
         catch (Exception e)
         {
             throw new DataBackendException("Failed to create account '" +
-                    user.getUserName() + "'", e);
+                    user.getName() + "'", e);
         }
     }
 
@@ -546,10 +546,10 @@ public class DBUserManager
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
-                    user.getUserName() + "' does not exist");
+                    user.getName() + "' does not exist");
         }
         Criteria criteria = new Criteria();
-        criteria.add(TurbineUserPeer.USERNAME, user.getUserName());
+        criteria.add(TurbineUserPeer.USERNAME, user.getName());
         try
         {
             TurbineUserPeer.doDelete(criteria);
@@ -557,7 +557,7 @@ public class DBUserManager
         catch (Exception e)
         {
             throw new DataBackendException("Failed to remove account '" +
-                    user.getUserName() + "'", e);
+                    user.getName() + "'", e);
         }
     }
 }

@@ -286,19 +286,7 @@ public class TurbineUser extends SecurityObject implements User
      */
     public String getUserName()
     {
-        String tmp = null;
-        try
-        {
-            tmp = (String) getPerm(User.USERNAME);
-            if(tmp.length() == 0)
-            {
-                tmp = null;
-            }
-        }
-        catch(Exception e)
-        {
-        }
-        return tmp;
+        return getName();
     }
 
     /**
