@@ -65,6 +65,7 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
  * @version $Id$
  */
 public abstract class FieldFactory
@@ -112,12 +113,12 @@ public abstract class FieldFactory
         }
         );
         fieldCtors.put("NumberKey", new FieldFactory.FieldCtor()
-        {
+        {       
             public Field getInstance(XmlField f, Group g)
                     throws IntakeException
-            {
+            {   
                 return new NumberKeyField(f, g);
-            }
+            }   
         }
         );
         fieldCtors.put("ComboKey", new FieldFactory.FieldCtor()
@@ -171,6 +172,24 @@ public abstract class FieldFactory
                     throws IntakeException
             {
                 return new DoubleField(f, g);
+            }
+        }
+        );
+        fieldCtors.put("short", new FieldFactory.FieldCtor()
+        {
+            public Field getInstance(XmlField f, Group g)
+                    throws IntakeException
+            {
+                return new ShortField(f, g);
+            }
+        }
+        );
+        fieldCtors.put("long", new FieldFactory.FieldCtor()
+        {
+            public Field getInstance(XmlField f, Group g)
+                    throws IntakeException
+            {
+                return new LongField(f, g);
             }
         }
         );
