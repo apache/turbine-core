@@ -90,57 +90,57 @@ import org.apache.turbine.util.security.DataBackendException;
 public class TurbineUserPeer extends BasePeer implements UserPeer
 {
     /** The mapBuilder for this Peer. */
-    private static final TurbineMapBuilder mapBuilder = (TurbineMapBuilder)
+    private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
             getMapBuilder(TurbineMapBuilder.class.getName());
 
     // column names
     /** The column name for the visitor id field. */
-    private static final String USER_ID_COLUMN = mapBuilder.getUserId();
+    private static final String USER_ID_COLUMN = MAP_BUILDER.getUserId();
 
     /** This is the value that is stored in the database for confirmed users. */
     public static final String CONFIRM_DATA
             = org.apache.turbine.om.security.User.CONFIRM_DATA;
 
     /** The column name for the visitor id field. */
-    private static final String OBJECT_DATA_COLUMN = mapBuilder.getObjectData();
+    private static final String OBJECT_DATA_COLUMN = MAP_BUILDER.getObjectData();
 
     /** The table name for this peer. */
-    private static final String TABLE_NAME = mapBuilder.getTableUser();
+    private static final String TABLE_NAME = MAP_BUILDER.getTableUser();
 
     // Criteria Keys
     /** The key name for the visitor id field. */
-    public static final String USER_ID = mapBuilder.getUser_UserId();
+    public static final String USER_ID = MAP_BUILDER.getUser_UserId();
 
     /** The key name for the username field. */
-    public static final String USERNAME = mapBuilder.getUser_Username();
+    public static final String USERNAME = MAP_BUILDER.getUser_Username();
 
     /** The key name for the password field. */
-    public static final String PASSWORD = mapBuilder.getUser_Password();
+    public static final String PASSWORD = MAP_BUILDER.getUser_Password();
 
     /** The key name for the first name field. */
-    public static final String FIRST_NAME = mapBuilder.getUser_FirstName();
+    public static final String FIRST_NAME = MAP_BUILDER.getUser_FirstName();
 
     /** The key name for the last name field. */
-    public static final String LAST_NAME = mapBuilder.getUser_LastName();
+    public static final String LAST_NAME = MAP_BUILDER.getUser_LastName();
 
     /** The key name for the modified field. */
-    public static final String MODIFIED = mapBuilder.getUser_Modified();
+    public static final String MODIFIED = MAP_BUILDER.getUser_Modified();
 
     /** The key name for the created field. */
-    public static final String CREATED = mapBuilder.getUser_Created();
+    public static final String CREATED = MAP_BUILDER.getUser_Created();
 
     /** The key name for the email field. */
-    public static final String EMAIL = mapBuilder.getUser_Email();
+    public static final String EMAIL = MAP_BUILDER.getUser_Email();
 
     /** The key name for the last_login field. */
-    public static final String LAST_LOGIN = mapBuilder.getUser_LastLogin();
+    public static final String LAST_LOGIN = MAP_BUILDER.getUser_LastLogin();
 
     /** The key name for the confirm_value field. */
     public static final String CONFIRM_VALUE
-            = mapBuilder.getUser_ConfirmValue();
+            = MAP_BUILDER.getUser_ConfirmValue();
 
     /** The key name for the object_data field. */
-    public static final String OBJECT_DATA = mapBuilder.getUser_ObjectData();
+    public static final String OBJECT_DATA = MAP_BUILDER.getUser_ObjectData();
 
     /** The schema. */
     private static Schema schema = initTableSchema(TABLE_NAME);
@@ -592,6 +592,6 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
      */
     protected static TableMap getTableMap()
     {
-        return mapBuilder.getDatabaseMap().getTable(TABLE_NAME);
+        return MAP_BUILDER.getDatabaseMap().getTable(TABLE_NAME);
     }
 }

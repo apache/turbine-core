@@ -70,20 +70,20 @@ import org.apache.turbine.util.db.map.TurbineMapBuilder;
 public class UserGroupRolePeer extends BasePeer
 {
     /** The map builder for this Peer. */
-    private static final TurbineMapBuilder mapBuilder = (TurbineMapBuilder)
+    private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
             getMapBuilder(TurbineMapBuilder.class.getName());
 
     /** The table name for this peer. */
-    public static final String TABLE_NAME = mapBuilder.getTableUserGroupRole();
+    public static final String TABLE_NAME = MAP_BUILDER.getTableUserGroupRole();
 
     /** The column name for the visitor id field. */
-    public static final String USER_ID = mapBuilder.getUserGroupRole_UserId();
+    public static final String USER_ID = MAP_BUILDER.getUserGroupRole_UserId();
 
     /** The column name for the group id field. */
-    public static final String GROUP_ID = mapBuilder.getUserGroupRole_GroupId();
+    public static final String GROUP_ID = MAP_BUILDER.getUserGroupRole_GroupId();
 
     /** The column name for the role id field. */
-    public static final String ROLE_ID = mapBuilder.getUserGroupRole_RoleId();
+    public static final String ROLE_ID = MAP_BUILDER.getUserGroupRole_RoleId();
 
     /**
      * Get the name of this table.

@@ -85,23 +85,23 @@ import org.apache.turbine.util.security.GroupSet;
 public class GroupPeer extends BasePeer
 {
     /** The map builder for this Peer. */
-    private static final TurbineMapBuilder mapBuilder = (TurbineMapBuilder)
+    private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
             getMapBuilder(TurbineMapBuilder.class.getName());
 
     /** The table name for this peer. */
-    private static final String TABLE_NAME = mapBuilder.getTableGroup();
+    private static final String TABLE_NAME = MAP_BUILDER.getTableGroup();
 
     /** The column name for the Group id field. */
-    public static final String GROUP_ID = mapBuilder.getGroup_GroupId();
+    public static final String GROUP_ID = MAP_BUILDER.getGroup_GroupId();
 
     /** The column name for the name field. */
-    public static final String NAME = mapBuilder.getGroup_Name();
+    public static final String NAME = MAP_BUILDER.getGroup_Name();
 
     /** The column name for the ObjectData field */
-    public static final String OBJECTDATA = mapBuilder.getGroup_ObjectData();
+    public static final String OBJECTDATA = MAP_BUILDER.getGroup_ObjectData();
 
     /** The Oracle sequence name for this peer. */
-    private static final String SEQUENCE_NAME = mapBuilder.getSequenceGroup();
+    private static final String SEQUENCE_NAME = MAP_BUILDER.getSequenceGroup();
 
     /**
      * Retrieves/assembles a GroupSet of all of the Groups.
