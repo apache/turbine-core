@@ -62,6 +62,8 @@ import org.apache.ecs.html.Style;
 import org.apache.ecs.html.Script;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Template context tool that will set various attributes of the HTML
@@ -77,11 +79,15 @@ import org.apache.turbine.util.RunData;
  * $page.setStyleSheet("/style.css");
  *
  * @author <a href="mailto:sean@somacity.com">Sean Legassick</a>
+ * @deprecated Use HtmlPageAttributes along with VelocityOnlyLayout instead
  * @version $Id$
  */
 public class TemplatePageAttributes
     implements ApplicationTool
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TemplatePageAttributes.class);
+
     /** The RunData object. */
     private RunData data = null;
 
@@ -114,6 +120,8 @@ public class TemplatePageAttributes
      */
     public void init(Object data)
     {
+        log.warn("This class is deprecated.  Use HtmlPageAttributes instead.");
+
         // we blithely cast to RunData as the runtime error thrown
         // if data is null or not RunData is appropriate.
         this.data = (RunData) data;
