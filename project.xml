@@ -522,6 +522,15 @@
       <id>jython</id>
       <version>2.1</version>
     </dependency>
+
+   <!-- Needed for the Testcases -->
+
+    <dependency>
+      <id>junit</id>
+      <version>3.8.1</version>
+      <url>http://www.junit.org</url>
+    </dependency>
+
   </dependencies>
 
   <build>
