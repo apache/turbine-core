@@ -143,4 +143,26 @@ public abstract class TurbineSession
                 .getInstance().getService(SessionService.SERVICE_NAME);
     }
 
+    /**
+     * Gets the User object of the the specified HttpSession.
+     *
+     * @param session
+     * @return
+     */
+    public static User getUserFromSession(HttpSession session)
+    {
+        return getService().getUserFromSession(session);
+    }
+
+    /**
+     * Gets the HttpSession by the session identifier
+     *
+     * @param sessionId
+     * @return
+     */
+    public static HttpSession getSession(String sessionId)
+    {
+        return getService().getSession(sessionId);
+    }
+
 }

@@ -122,4 +122,20 @@ public interface SessionService extends Service
      */
     Collection getActiveUsers();
 
+    /**
+     * Gets the User object of the the specified HttpSession.
+     *
+     * @param session
+     * @return
+     */
+    public User getUserFromSession(HttpSession session);
+
+    /**
+     * Gets the HttpSession by the session identifier
+     *
+     * @param sessionId
+     * @return
+     */
+    public HttpSession getSession(String sessionId);
+
 }

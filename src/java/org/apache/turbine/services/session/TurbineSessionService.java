@@ -60,6 +60,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 import javax.servlet.http.HttpSession;
+
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineBaseService;
 
@@ -147,21 +148,39 @@ public class TurbineSessionService
         Vector users = new Vector();
 
         // loop through the active sessions to find the user
-        for (Iterator iter = activeSessions.values().iterator(); iter.hasNext();)
+        for(Iterator iter = activeSessions.values().iterator(); iter.hasNext();)
         {
             HttpSession session = (HttpSession) iter.next();
-            Object attribute = session.getAttribute(User.SESSION_KEY);
-            if (attribute != null)
+            User tmpUser = getUserFromSession(session);
+            if(tmpUser != null && tmpUser.hasLoggedIn())
             {
-                User tmpUser = (User) attribute;
-                if (tmpUser.hasLoggedIn())
-                {
-                    users.add(tmpUser);
-                }
+                users.add(tmpUser);
             }
         }
 
         return users;
+    }
+
+    /**
+     * Gets the User object of the the specified HttpSession.
+     *
+     * @param session
+     * @return
+     */
+    public User getUserFromSession(HttpSession session)
+    {
+        return (User) session.getAttribute(User.SESSION_KEY);
+    }
+
+    /**
+     * Gets the HttpSession by the session identifier
+     *
+     * @param sessionId
+     * @return
+     */
+    public HttpSession getSession(String sessionId)
+    {
+        return (HttpSession) this.activeSessions.get(sessionId);
     }
 
     /******************************************************
