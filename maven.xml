@@ -31,7 +31,14 @@
       file="scheduler-schema.xml"
       tofile="${torque.schema.dir}/scheduler-schema.xml"
       filtering="yes"/>
+
     <attainGoal name="torque:om"/>
+
+    <!-- Hack for Maven bug when compiling with a clean target. -->
+    <j:if test="${sourcesPresent != 'true'}">
+      <j:set var="sourcesPresent" value="true"/>
+      <path id="maven.compile.src.set" location="target/src"/>
+    </j:if>
 
   </preGoal>
 
