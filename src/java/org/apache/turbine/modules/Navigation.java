@@ -60,7 +60,7 @@ import org.apache.turbine.util.InputFilterUtils;
 import org.apache.turbine.util.RunData;
 
 /**
- * This is an interface that defines what a Navigation module is.
+ * This is the base class that defines what a Navigation module is.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
