@@ -85,7 +85,7 @@ public class StringKeyField extends Field
     protected String getDefaultValidator()
     {
         return
-            "org.apache.fulcrum.intake.validator.DefaultValidator";
+            "org.apache.turbine.services.intake.validator.DefaultValidator";
     }
 
     /**
