@@ -1,159 +1,501 @@
 <?xml version="1.0"?>
 
-<project name="turbine-2" default="maven:jar" basedir=".">
+<!-- Build file for Turbine -->
 
-  <!-- Give user a chance to override without editing this file
-       (and without typing -D each time they invoke a target) -->
+<project name="Turbine" default="jar" basedir=".">
 
-  <!-- Allow any user specific values to override the defaults -->
-  <property file="${user.home}/build.properties" />
-  <!-- Allow user defaults for this project -->
-  <property file="build.properties" />
-  <!-- Set default values for the build -->
-  <property file="project.properties" />
+    <!-- Give user a chance to override without editing this file
+         (and without typing -D each time they invoke a target) -->
+    <property file="${user.home}/build.properties" />
+    <property file="build.properties" />
 
-  <!-- maven:start -->
+    <!-- Set default values for the build -->
+    <property file="default.properties" />
+
+    <!-- Construct compile classpath -->
+    <path id="classpath">
+        <pathelement location="${activation.jar}"/>
+        <pathelement location="${commons-collections.jar}"/>
+        <pathelement location="${commons-configuration.jar}"/>
+        <pathelement location="${commons-lang.jar}"/>
+        <pathelement location="${ecs.jar}"/>
+        <pathelement location="${regexp.jar}"/>
+        <pathelement location="${jdbc.jar}"/>
+        <pathelement location="${jndi.jar}"/>
+        <pathelement location="${jta.jar}"/>
+        <pathelement location="${log4j.jar}"/>
+        <pathelement location="${javamail.jar}"/>
+        <pathelement location="${oro.jar}"/>
+        <pathelement location="${servlet.jar}"/>
+        <pathelement location="${stratum.jar}"/>
+        <pathelement location="${torque.jar}"/>
+        <pathelement location="${velocity.jar}"/>
+        <pathelement location="${village.jar}"/>
+        <pathelement location="${xalan.jar}"/>
+        <pathelement location="${xerces.jar}"/>
+        <pathelement location="${xmlParserAPIs.jar}"/>
+        <pathelement location="${xmlrpc.jar}"/>
+        <pathelement location="${castor.jar}"/>
+        <pathelement location="${freemarker.jar}"/>
+        <pathelement location="${webmacro.jar}"/>
+        <pathelement location="${jython.jar}"/>
+    </path>
+
+  <!-- ================================================================== -->
+  <!-- U P D A T E  J A R S                                               -->
+  <!-- ================================================================== -->
+
+  <!-- Build classpath -->
+  <path id="update.classpath">
+    <pathelement location="tdk.jar"/>
+  </path>
+
+  <target
+    name="update-jars" 
+    description="Update the jars from jakarta site" 
+    depends="update-jars-proxy,update-jars-noproxy">
+  </target>
+
+  <target name="prepare.httpget">    
+    <taskdef 
+      name="httpget" 
+      className="org.apache.tdk.task.Get">
+      <classpath refid="update.classpath"/>
+    </taskdef>
+  </target>
+
+  <target name="update-jars-noproxy" unless="proxy.host" depends="prepare.httpget">
+    <httpget
+      baseUrl="http://jakarta.apache.org/turbine/jars/"
+      dest="${lib.repo}"
+      dependencyFile="deps.list"
+    />
+  </target>    
+
+  <target name="update-jars-proxy" if="proxy.host" depends="prepare.httpget">
+    <httpget
+      baseUrl="http://jakarta.apache.org/turbine/jars/"
+      dest="${lib.repo}"
+      dependencyFile="deps.list"
+      proxyHost="${proxy.host}"
+      proxyPort="${proxy.port}"
+    />
+  </target>    
+
+    <!-- ================================================================== -->
+    <!-- Prints useful build environment values                             -->
+    <!-- ================================================================== -->
+    <target name="env" depends="check_for_optional_packages">
+        <echo message="lib.repo = ${lib.repo}"/>
+        <echo message="java.home = ${java.home}"/>
+        <echo message="user.home = ${user.home}"/>
+        <echo message="java.class.path = ${java.class.path}"/>
+        <echo message=""/>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Help on usage                                                      -->
+    <!-- ================================================================== -->
+    <target name="usage">
+        <echo message="use -projecthelp to see the available targets"/>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Check to see what optional dependencies are available              -->
+    <!-- ================================================================== -->
+    <target name="check_for_optional_packages">
+        <available property="jsdk2.2.present"
+                   classname="javax.servlet.jsp.PageContext">
+            <classpath refid="classpath"/>
+        </available>
+        <available property="webmacro.present"
+                   classname="org.webmacro.WebMacro">
+            <classpath refid="classpath"/>
+        </available>
+        <available property="freemarker.present"
+                   classname="freemarker.template.Template">
+            <classpath refid="classpath"/>
+        </available>
+        <available property="log4java.present"
+                   classname="org.apache.log4j.Category">
+            <classpath refid="classpath"/>
+        </available>
+        <available property="castor.present"
+                   classname="org.exolab.castor.jdo.Database">
+            <classpath refid="classpath"/>
+        </available>
+        <available property="jython.present"
+		   classname="org.python.util.PythonInterpreter">
+            <classpath refid="classpath"/>
+        </available>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Prepares the build directory                                       -->
+    <!-- ================================================================== -->
+    <target name="prepare" depends="env">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.dest}"/>
+        <mkdir dir="${build.src}"/>
+
+        <copy todir="${build.src}/org" filtering="yes">
+            <fileset dir="${src.java.dir}/org">
+                <include name="**/*.java"/>
+                <include name="**/*.properties"/>
+                <include name="**/package.html"/>
+
+                <exclude name="**/torque/output/**"/>
+                <exclude name="**/*Jsp*.java"/>
+                <exclude name="**/jsp/**"/>
+                <exclude name="**/*FreeMarker*.java"/>
+                <exclude name="**/freemarker/**"/>
+                <exclude name="**/*WebMacro*.java"/>
+                <exclude name="**/webmacro/**"/>
+                <exclude name="**/assemblerbroker/util/python/*.java"/>
+                <exclude name="**/samples/newtorque/input/**/*.java"/>
+                <exclude name="**/*Test.java"/>
+                <exclude name="**/test/**"/>
+                <exclude name="**/services/logging/Log4JavaLogger.java"/>
+                <exclude name="**/services/castor/*.java"/>
+            </fileset>
+        </copy>
+        <available classname="org.apache.velocity.anakia.AnakiaTask"
+            property="AnakiaTask.present"/>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Adds Jsp related files to the build directory                      -->
+    <!-- ================================================================== -->
+    <target name="prepare-jsp" depends="prepare" if="jsdk2.2.present">
+        <copy todir="${build.src}/org" filtering="yes">
+            <fileset dir="${src.java.dir}/org">
+                <include name="**/*Jsp*.java"/>
+                <include name="**/jsp/**"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Adds Webmacro related files to the build directory                 -->
+    <!-- ================================================================== -->
+    <target name="prepare-webmacro" depends="prepare"
+        if="webmacro.present">
+        <copy todir="${build.src}/org" filtering="yes">
+            <fileset dir="${src.java.dir}/org">
+                <include name="**/*WebMacro*.java"/>
+                <include name="**/webmacro/**"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Adds Freemarker related files to the build directory               -->
+    <!-- ================================================================== -->
+    <target name="prepare-freemarker" depends="prepare"
+        if="freemarker.present">
+        <copy todir="${build.src}/org" filtering="yes">
+            <fileset dir="${src.java.dir}/org">
+                <include name="**/*FreeMarker*.java"/>
+                <include name="**/freemarker/**"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Adds JPython related files to the build directory                  -->
+    <!-- ================================================================== -->
+    <target name="prepare-python" depends="prepare"
+        if="jython.present">
+        <copy todir="${build.src}/org" filtering="yes">
+            <fileset dir="${src.java.dir}/org">
+                <include name="**/assemblerbroker/util/python/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Adds log4java files to the build directory                         -->
+    <!-- ================================================================== -->
+    <target name="prepare-log4java" depends="prepare" if="log4java.present">
+        <copy todir="${build.src}/org" filtering="yes">
+            <fileset dir="${src.java.dir}/org">
+                <include name="**/services/logging/Log4JavaLogger.java"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Adds castor files to the build directory                           -->
+    <!-- ================================================================== -->
+    <target name="prepare-castor" depends="prepare" if="castor.present">
+        <copy todir="${build.src}/org" filtering="yes">
+            <fileset dir="${src.java.dir}/org">
+                <include name="**/services/castor/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Compiles the source directory                                      -->
+    <!-- ================================================================== -->
+    <target name="compile"
+            depends="prepare, prepare-jsp, prepare-freemarker, prepare-python,
+                     prepare-webmacro, prepare-log4java, prepare-castor"
+            description="--> compiles the source code">
+
+        <javac srcdir="${build.src}"
+            destdir="${build.dest}"
+            excludes="**/package.html,**/*Test.java"
+            debug="${debug}"
+            deprecation="${deprecation}"
+            optimize="${optimize}">
+
+            <classpath refid="classpath"/>
+        </javac>
+
+        <!-- copy database.dtd to the right place -->
+        <copy file="${src.dtd.dir}/database.dtd"
+              todir="${build.dest}/org/apache/turbine/torque/engine/database/transform"/>
+        <!-- copy intake.dtd to the right place -->
+        <copy file="${src.dtd.dir}/intake.dtd"
+           todir="${build.dest}/org/apache/turbine/services/intake/transform"/>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Compiles the source directory and creates a .jar file              -->
+    <!-- ================================================================== -->
+    <target name="jar"
+            depends="compile"
+            description="--> generates the turbine.jar file (default)">
+        <jar jarfile="${build.dir}/${final.name}.jar"
+            basedir="${build.dest}"
+            excludes="**/package.html,**/*Test.class"/>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- jars the source directory                                          -->
+    <!-- ================================================================== -->
+    <target name="jarsrc"
+            depends="prepare"
+            description="--> generates the turbine.src.jar file containing source only">
+        <jar jarfile="${build.dir}/${final.name}.src.jar"
+            basedir="${build.src}"
+            excludes="**/package.html,**/*Test.java"/>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Creates the API documentation                                      -->
+    <!-- ================================================================== -->
+    <target name="javadocs"
+            depends="prepare"
+            description="--> generates the API documentation">
+        <mkdir dir="${javadoc.destdir}"/>
+        <javadoc
+            sourcepath="${build.src}"
+            packagenames="org.apache.turbine.*,org.apache.java.*,org.apache.jserv.*"
+            destdir="${javadoc.destdir}"
+            author="true"
+            private="true"
+            version="true"
+            use="true"
+            windowtitle="${name} ${version} API"
+            doctitle="${name} ${version} API"
+            bottom="Copyright &amp;copy; ${year} Apache Software Foundation. All Rights Reserved."
+        >
+            <classpath refid="classpath"/>
+    </javadoc>
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Package                                                            -->
+    <!-- ================================================================== -->
+    <target name="package" depends="jar,javadocs">
+        <mkdir dir="${final.dir}"/>
+        <mkdir dir="${final.dir}/src"/>
+        <mkdir dir="${final.dir}/conf"/>
+ 
+        <copy file="${conf.dir}/TurbineResources.properties" 
+              tofile="${final.dir}/conf/TurbineResources.properties"/>
   
-  <!-- ================================================================== -->
-  <!-- D E L E G A T O R S                                                -->
-  <!-- ================================================================== -->
+        <copy todir="${final.dir}/src">
+            <fileset dir="${src.dir}">
+               <exclude name="**/CVS/*"/>
+               <exclude name="tlds/**"/>
+               <exclude name="sql/**"/>
+            </fileset> 
+        </copy>
 
-    <target name="maven:gump-descriptor">
-      <ant antfile="${maven.home}/plugins/core/build.xml" target="gump-descriptor"/>
+        <copy todir="${final.dir}/docs">
+            <fileset dir="docs">
+                <exclude name="**/dist/**"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${final.dir}">
+            <fileset dir=".">
+               <include name="build*.xml"/>
+               <include name="deps.list"/>
+               <include name="default.properties"/>
+               <include name="build.properties.sample"/>
+               <include name="tdk.jar"/>
+            </fileset>
+        </copy>
+
+        <copy file="${build.dir}/${final.name}.jar"
+              tofile="${final.dir}/${final.name}.jar"/>
     </target>
 
-    <target name="maven:maven-update">
-      <ant antfile="${maven.home}/plugins/core/build.xml" target="maven-update"/>
+    <!-- ================================================================== -->
+    <!-- Packages the distribution with ZIP                                 -->
+    <!-- ================================================================== -->
+    <target name="package-zip"
+            depends="package"
+            description="--> generates the Turbine distribution as .zip">
+        <delete file="${final.name}.zip"/>
+        <zip zipfile="${final.name}.zip" basedir="."
+             includes="**/${final.name}/**"/>
     </target>
 
-    <target name="maven:update-jars">
-      <ant antfile="${maven.home}/plugins/core/build.xml" target="update-jars"/>
+    <!-- ================================================================== -->
+    <!-- Packages the distribution with TAR-GZIP                            -->
+    <!-- ================================================================== -->
+    <target name="package-tgz"
+            depends="package"
+            description="--> generates the Turbine distribution as .tar.gz">
+        <delete file="${final.name}.tar"/>
+        <delete file="${final.name}.tar.gz"/>
+        <tar tarfile="${final.name}.tar" basedir="."
+             includes="**/${final.name}/**"/>
+        <gzip zipfile="${final.name}.tar.gz"
+                  src="${final.name}.tar"/>
     </target>
 
-    <target name="maven:jar">
-      <ant antfile="${maven.home}/plugins/core/build.xml" target="jar"/>
+    <!-- ================================================================== -->
+    <!-- Packages the distribution with ZIP and TAG-GZIP                    -->
+    <!-- ================================================================== -->
+    <target name="package-all"
+            depends="package-zip, package-tgz"
+            description="--> generates the .tar.gz and .zip distributions">
     </target>
 
-    <target name="maven:docs-quick">
-      <ant antfile="${maven.home}/plugins/docs/build.xml" target="docs-quick"/>
+    <!-- ================================================================== -->
+    <!-- Same as package-all. It is just here for compatibility.            -->
+    <!-- ================================================================== -->
+    <target name="dist" depends="package-all">
     </target>
 
-    <target name="maven:run-singletest">
-      <ant antfile="${maven.home}/plugins/test/build.xml" target="run-singletest"/>
+    <!-- ================================================================== -->
+    <!-- Cleans up the build directory                                      -->
+    <!-- ================================================================== -->
+    <target name="clean" description="--> cleans up the build directory">
+        <delete dir="${build.dir}"/>
     </target>
 
-    <target name="maven:compile">
-      <ant antfile="${maven.home}/plugins/core/build.xml" target="compile"/>
+    <!-- ================================================================== -->
+    <!-- Make Turbine documentation                                         -->
+    <!-- ================================================================== -->
+    <target name="check_for_jdom">
+        <available property="jdom.present"
+           classname="org.jdom.JDOMException">
+            <classpath>
+                <pathelement location="${jakarta.site2}/lib/${jdom.jar}"/>
+            </classpath>
+        </available>
+    </target>
+    <target depends="check_for_jdom" name="docs-prepare-error"
+            unless="jdom.present">
+        <echo>
+            The Jakarta-Site2 module is not present! Please check
+            to make sure that you have checked it out from CVS.
+
+            &lt;http://jakarta.apache.org/site/jakarta-site2.html&gt;
+        </echo>
     </target>
 
-    <target name="maven:fo">
-      <ant antfile="${maven.home}/plugins/docs/build.xml" target="fo"/>
+    <target name="docs"
+            depends="docs-prepare-error"
+            description="--> generates the HTML documentation"
+            if="jdom.present">
+
+        <taskdef name="anakia"
+            classname="org.apache.velocity.anakia.AnakiaTask">
+            <classpath>
+                <fileset dir="${jakarta.site2}/lib">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </taskdef>
+
+        <anakia basedir="${docs.src}" destdir="${docs.dest}/"
+             extension=".html" style="./site.vsl"
+             projectFile="stylesheets/project.xml"
+             excludes="**/stylesheets/** empty.xml"
+             includes="**/*.xml"
+             lastModifiedCheck="true"
+             templatePath="${jakarta.site2}/xdocs/stylesheets">
+        </anakia>
+
+        <copy todir="${docs.dest}/images" filtering="no">
+            <fileset dir="${docs.src}/images">
+                <include name="**/*.gif"/>
+                <include name="**/*.jpeg"/>
+                <include name="**/*.jpg"/>
+            </fileset>
+        </copy>
+        <!-- In case we have CSS someday
+        <copy todir="${docs.dest}" filtering="no">
+            <fileset dir="${docs.src}">
+                <include name="**/*.css"/>
+            </fileset>
+        </copy>
+        -->
+
     </target>
 
-    <target name="maven:cvs-change-log">
-      <ant antfile="${maven.home}/plugins/docs/build.xml" target="cvs-change-log"/>
+    <!-- ================================================================== -->
+    <!-- Create torque.jar for stand-alone use outside the context          -->
+    <!-- of the TDK.                                                        -->
+    <!-- ================================================================== -->
+    <target name="torque"
+            depends="compile"
+            description="--> generates the torque distribution">
+        <ant antfile="build-torque.xml">
+          <property name="build.dir" value="${build.dir}"/>
+        </ant>
     </target>
 
-    <target name="maven:war">
-      <ant antfile="${maven.home}/plugins/j2ee/build.xml" target="war"/>
+    <!-- ================================================================== -->
+    <!-- Create intake.jar for stand-alone use outside the context          -->
+    <!-- of the TDK.                                                        -->
+    <!-- ================================================================== -->
+    <target name="intake"
+            depends="compile"
+            description="--> generates the intake distribution">
+        <ant antfile="build-intake.xml">
+          <property name="build.dir" value="${build.dir}"/>
+        </ant>
     </target>
 
-    <target name="maven:generate-reactor">
-      <ant antfile="${maven.home}/plugins/reactor/build.xml" target="generate-reactor"/>
+    <!-- ================================================================== -->
+    <!-- Create the Turbine SQL for all the supported DBs.                  -->
+    <!-- ================================================================== -->
+    <target name="turbine-sql"
+            depends="compile"
+            description="--> generates the Turbine SQL for all the supported DBs">
+        <ant antfile="build-turbine-sql.xml"/>
     </target>
 
-    <target name="maven:cross-ref">
-      <ant antfile="${maven.home}/plugins/docs/build.xml" target="cross-ref"/>
-    </target>
+    <!-- ================================================================== -->
+    <!-- I N S T A L L  J A R                                               -->
+    <!-- ================================================================== -->
 
-    <target name="maven:deploy-site">
-      <ant antfile="${maven.home}/plugins/docs/build.xml" target="deploy-site"/>
+    <target name="install-jar" depends="jar"
+            description="--> Installs .jar file in ${lib.repo}">
+      <copy todir="${lib.repo}" filtering="no">
+        <fileset dir="${build.dir}">
+          <include name="${final.name}.jar"/>
+        </fileset>
+      </copy>
     </target>
-
-    <target name="maven:ear">
-      <ant antfile="${maven.home}/plugins/j2ee/build.xml" target="ear"/>
-    </target>
-
-    <target name="maven:install-jar">
-      <ant antfile="${maven.home}/plugins/core/build.xml" target="install-jar"/>
-    </target>
-
-    <target name="maven:task-list">
-      <ant antfile="${maven.home}/plugins/docs/build.xml" target="task-list"/>
-    </target>
-
-    <target name="maven:docs">
-      <ant antfile="${maven.home}/plugins/docs/build.xml" target="docs"/>
-    </target>
-
-    <target name="maven:site">
-      <ant antfile="${maven.home}/plugins/docs/build.xml" target="site"/>
-    </target>
-
-    <target name="maven:deploy-dist">
-      <ant antfile="${maven.home}/plugins/core/build.xml" target="deploy-dist"/>
-    </target>
-
-    <target name="maven:javadocs">
-      <ant antfile="${maven.home}/plugins/docs/build.xml" target="javadocs"/>
-    </target>
-
-    <target name="maven:announce">
-      <ant antfile="${maven.home}/plugins/core/build.xml" target="announce"/>
-    </target>
-
-    <target name="maven:check-source">
-      <ant antfile="${maven.home}/plugins/core/build.xml" target="check-source"/>
-    </target>
-
-    <target name="maven:dist">
-      <ant antfile="${maven.home}/plugins/core/build.xml" target="dist"/>
-    </target>
-
-    <target name="maven:dist-build">
-      <ant antfile="${maven.home}/plugins/core/build.xml" target="dist-build"/>
-    </target>
-
-    <target name="maven:metrics">
-      <ant antfile="${maven.home}/plugins/metrics/build.xml" target="metrics"/>
-    </target>
-
-    <target name="maven:clean">
-      <ant antfile="${maven.home}/plugins/core/build.xml" target="clean"/>
-    </target>
-
-    <target name="maven:env">
-      <ant antfile="${maven.home}/plugins/core/build.xml" target="env"/>
-    </target>
-
-    <target name="maven:test">
-      <ant antfile="${maven.home}/plugins/test/build.xml" target="test"/>
-    </target>
-
-    <target name="maven:pdf">
-      <ant antfile="${maven.home}/plugins/docs/build.xml" target="pdf"/>
-    </target>
-
-    <target name="maven:iutest">
-      <ant antfile="${maven.home}/plugins/iutest/build.xml" target="iutest"/>
-    </target>
-
-    <target name="maven:activity-log">
-      <ant antfile="${maven.home}/plugins/docs/build.xml" target="activity-log"/>
-    </target>
-
-    <target name="maven:verify-project">
-      <ant antfile="${maven.home}/plugins/core/build.xml" target="verify-project"/>
-    </target>
-
-    <target name="maven:validate-pom">
-      <ant antfile="${maven.home}/plugins/core/build.xml" target="validate-pom"/>
-    </target>
-
-    <target name="maven:validate-war">
-      <ant antfile="${maven.home}/plugins/j2ee/build.xml" target="validate-war"/>
-    </target>
-
-  <!-- maven:end -->
 
 </project>
