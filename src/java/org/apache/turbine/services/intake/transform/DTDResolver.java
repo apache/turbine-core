@@ -163,8 +163,3 @@ public class DTDResolver implements EntityResolver
         return new InputSource();
     }
 }
-
-
-
-
-

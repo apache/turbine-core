@@ -56,7 +56,9 @@ package org.apache.turbine.services.crypto.provider;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
+
 import java.security.MessageDigest;
+
 import javax.mail.internet.MimeUtility;
 
 import org.apache.turbine.services.crypto.CryptoAlgorithm;

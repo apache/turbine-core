@@ -60,7 +60,7 @@ import org.apache.turbine.services.crypto.CryptoAlgorithm;
  * This is a dummy for "cleartext" encryption. It goes through
  * the notions of the CryptoAlgorithm interface but actually does
  * nothing. It can be used as a replacement for the "encrypt = no"
- * setting in TurbineResources.
+ * setting in the TR.props.
  *
  * Can be used as the default crypto algorithm
  *

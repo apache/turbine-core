@@ -109,7 +109,7 @@ public class WorkerThread
         }
         catch (Exception e)
         {
-            log.error("Error in WorkerThread for sheduled job #" +
+            log.error("Error in WorkerThread for scheduled job #" +
                     je.getPrimaryKey() + ", task: " + je.getTask(), e);
         }
         finally

@@ -58,7 +58,7 @@ import org.apache.turbine.util.TurbineException;
 
 /**
  * Factory is an interface for object factories. Object factories
- * can be registered to the Factory Service to support customized
+ * can be registered with the Factory Service to support customized
  * functionality during instantiation of specific classes that
  * the service itself cannot provide. Examples include
  * instantiation of XML parsers and secure sockets requiring
@@ -71,7 +71,7 @@ public interface Factory
 {
     /**
      * Initializes the factory. This method is called by
-     * the Factory Service before the factory is taken into use.
+     * the Factory Service before the factory is used.
      *
      * @param className the name of the production class
      * @throws TurbineException if initialization fails.

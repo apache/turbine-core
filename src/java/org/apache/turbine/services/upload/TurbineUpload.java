@@ -111,7 +111,6 @@ public abstract class TurbineUpload
         return true;
     }
 
-
     /**
      * Retrieves the value of the 'automatic' property of {@link
      * UploadService}. This reports whether the Upload Service
@@ -129,6 +128,7 @@ public abstract class TurbineUpload
         // Short circuit evaluation of the && operator!
         return isAvailable() && getService().getAutomatic();
     }
+
     /**
      * <p> Retrieves the value of 'size.max' property of {@link
      * UploadService}.

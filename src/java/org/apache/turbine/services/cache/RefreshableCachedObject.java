@@ -67,6 +67,7 @@ package org.apache.turbine.services.cache;
  * cached object, and resetting its expire time.
  *
  * @author <a href="mailto:nissim@nksystems.com">Nissim Karpenstein</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class RefreshableCachedObject
@@ -110,13 +111,21 @@ public class RefreshableCachedObject
         lastAccess = System.currentTimeMillis();
     }
 
-    /** sets the timeToLive member (in milliseconds) */
-    public synchronized void setTTL(long l)
+    /**
+     * Sets the timeToLive value
+     *
+     * @param timeToLive the new Value in milliseconds
+     */
+    public synchronized void setTTL(long timeToLive)
     {
-        timeToLive = l;
+        this.timeToLive = timeToLive;
     }
 
-    /** gets the timeToLive member (in milliseconds) */
+    /**
+     * Gets the timeToLive value.
+     *
+     * @return The current timeToLive value (in milliseconds)
+     */
     public synchronized long getTTL()
     {
         return timeToLive;

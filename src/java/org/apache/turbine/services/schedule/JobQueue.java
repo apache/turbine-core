@@ -227,4 +227,3 @@ public class JobQueue
         Collections.sort(queue, aComparator);
     }
 }
-

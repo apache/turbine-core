@@ -430,7 +430,7 @@ public class BaseValueParser
     public boolean getBoolean(String name, boolean defaultValue)
     {
         Boolean result = getBooleanObject(name);
-        return (result==null ? defaultValue : result.booleanValue());
+        return (result == null ? defaultValue : result.booleanValue());
     }
 
     /**

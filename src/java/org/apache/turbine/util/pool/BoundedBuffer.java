@@ -88,7 +88,9 @@ public class BoundedBuffer
             throws IllegalArgumentException
     {
         if (capacity <= 0)
+        {
             throw new IllegalArgumentException();
+        }
 
         array_ = new Object[capacity];
         emptySlots_ = capacity;
