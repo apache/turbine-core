@@ -266,6 +266,10 @@ Changes between Turbine 2.2 and 2.3-dev.
         The Pull Service got a new scope: authorized tools. These are like Session Tools but only
         available after the user logged in.
     </li>
+    <li>
+        The Pull Service got a new type of tools: RunDataApplicationTools. These tools get the
+        current RunData object passed at every refresh().
+    </li>
   </ul>
 </p>
 </subsection>

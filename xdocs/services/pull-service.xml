@@ -177,6 +177,7 @@ threadsafe, then the request scope will be appropriate.
 
 <p>
 Tools can implement the org.apache.turbine.services.pull.ApplicationTool
+or the org.apache.turbine.services.pull.RunDataApplicationTool
 interface. This will provide a hook for the service to initialise them
 through the 'init' method and, except for request scope tools, to be
 refreshed through the 'refresh' method. The type of the init argument 
@@ -191,7 +192,8 @@ If you activate the RefreshToolsPerRequest property, every tool is
 refreshed on each request. On Request Tools this makes no difference,
 because here, the refresh() is never called (they're instantiated on
 every request).  All other scopes get a call to refresh() on every
-request.
+request. If you chose to implement the RunDataApplicationTool interface,
+you get the current RunData object passed to your tool.
 </p>
 
 <p>
