@@ -195,7 +195,7 @@ public class TemplatePageAttributes
 
     /**
      * Sets a HttpEquiv META tag in the HEAD of the page, usage:
-     * <br><code>setHttpEquiv("refresh", "5; http://localhost/nextpage.html")</code>
+     * <br><code>setHttpEquiv("refresh", "5; URL=http://localhost/nextpage.html")</code>
      * <br><code>setHttpEquiv("Expires", "Tue, 20 Aug 1996 14:25:27 GMT")</code>
      *
      * @param httpEquiv The value to use for the http-equiv attribute.
