@@ -77,6 +77,10 @@ scheduledjob.cache.size=10
 # module named "Login", then you would specify the path to your
 # modules before the others.
 #
+# Note: org.apache.turbine.modules will always be added to the search 
+# path.  If it is not explictly added here, it will be added to the
+# end.
+#
 # Default: org.apache.turbine.modules
 # -------------------------------------------------------------------
 
