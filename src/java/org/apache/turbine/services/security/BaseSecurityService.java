@@ -757,6 +757,7 @@ public abstract class BaseSecurityService
      * @return a List of users meeting the criteria.
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
+     * @deprecated Use <a href="#getUserList">getUserList</a> instead.
      */
     public User[] getUsers(Criteria criteria)
             throws DataBackendException
