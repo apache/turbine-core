@@ -69,7 +69,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
  * @author <a href="mailto:jon@collab.net">Jon S. Stevens</a>
- * @version $Id$
+ * @deprecated Use LocaleTokenizer instead.
  */
 public class LocaleDetector
 {
