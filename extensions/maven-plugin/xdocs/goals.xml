@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ * Copyright 2001-2004 The Apache Software Foundation.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ -->
+	
+<document>
+
+  <properties>
+    <title>Maven Turbine Plug-in Goals</title>
+  </properties>
+
+  <body>
+    <goals>
+      <goal>
+        <name>turbine:base</name>
+        <description>
+          Setup the environment to start developing a Turbine base application
+          from scratch.
+          <p>
+           You must specify the package that you want the code to be
+           generated into, e.g.
+          </p>
+          <source>maven -Dpackage=com.mycompany.project genapp</source>
+        </description>
+      </goal>
+      <goal>
+        <name>turbine:sample</name>
+        <description>
+          Generate an simple application (like the TDK).
+        </description>
+      </goal>
+      <goal>
+        <name>turbine:inplace</name>
+        <description>
+		  Builds an inplace exploded WAR webapp.  Run this the first time to 
+		  setup your inplace development.  Also runs the eclipse plugin to
+		  update your .project and .classpath files.  This faciliates using Eclipse
+		  and Turbine baseds apps together.
+        </description>
+      </goal>      
+      <goal>
+        <name>turbine:inplace-clean</name>
+        <description>
+          Cleans an inplace exploded WAR webapp.  Note, this deletes any
+          files in the 'src/WEB-INF/classes' and 'src/WEB-INF/lib' directories!
+        </description>
+      </goal>      
+    </goals>
+  </body>
+</document>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?>
+<!DOCTYPE dataset SYSTEM "file://turbine-security-data.dtd">
+
+<!-- ==================================================================== -->
+<!--                                                                      -->
+<!-- Default Values for Admin and normal User                             -->
+<!--                                                                      -->
+<!-- @version $Id$ -->
+<!--                                                                      -->
+<!-- ==================================================================== -->
+
+<dataset name="all">
+
+  <TurbineUser UserId="1"
+               UserName="admin"
+               Password="password"
+               FirstName=""
+               LastName="Admin"/>
+
+  <TurbineUser UserId="2"
+               UserName="user"
+               Password="password"
+               FirstName=""
+               LastName="User"/>
+
+  <!-- Turbine Permissions -->
+
+  <TurbinePermission PermissionId="1" Name="TurbineAdmin"/>
+  <TurbinePermission PermissionId="2" Name="Turbine"/>
+
+  <!-- Turbine Roles -->
+
+  <TurbineRole RoleId="1" Name="TurbineAdmin"/>
+  <TurbineRole RoleId="2" Name="TurbineUser"/>
+
+ <!-- Turbine Groups -->
+
+  <TurbineGroup GroupId="1" Name="global"/>
+  <TurbineGroup GroupId="2" Name="Turbine"/>
+
+  <TurbineRolePermission RoleId="1" PermissionId="1"/>
+  <TurbineRolePermission RoleId="2" PermissionId="2"/>
+
+  <!-- Associate Users, Groups, and Roles -->
+
+  <TurbineUserGroupRole UserId="1" GroupId="2" RoleId="1"/>
+  <TurbineUserGroupRole UserId="2" GroupId="2" RoleId="2"/>
+
+</dataset>
