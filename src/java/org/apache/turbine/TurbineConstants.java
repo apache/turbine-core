@@ -65,217 +65,218 @@ public interface TurbineConstants
     /**
      * The logging facility which captures output from Peers.
      */
-    public static final String SQL_LOG_FACILITY = "sql";
+    String SQL_LOG_FACILITY = "sql";
 
     /**
      * The logging facility which captures output from the SchedulerService.
      */
-    public static final String SCHEDULER_LOG_FACILITY = "scheduler";
+    String SCHEDULER_LOG_FACILITY = "scheduler";
 
     /**
      * SMTP server Turbine uses to send mail.
      */
-    public static final String MAIL_SERVER_KEY = "mail.server";
+    String MAIL_SERVER_KEY = "mail.server";
 
     /**
      * Property that controls whether Turbine modules are
      * cached or not.
      */
-    public static final String MODULE_CACHE = "module.cache";
+    String MODULE_CACHE = "module.cache";
 
     /**
      * The size of the actions cache if module caching is on.
      */
-    public static final String ACTION_CACHE_SIZE = "action.cache.size";
+    String ACTION_CACHE_SIZE = "action.cache.size";
 
     /**
      * The size of the layout cache if module caching is on.
      */
-    public static final String LAYOUT_CACHE_SIZE = "layout.cache.size";
+    String LAYOUT_CACHE_SIZE = "layout.cache.size";
 
     /**
      * The size of the navigation cache if module caching is on.
      */
-    public static final String NAVIGATION_CACHE_SIZE = "navigation.cache.size";
+    String NAVIGATION_CACHE_SIZE = "navigation.cache.size";
 
     /**
      * The size of the actions page if module caching is on.
      */
-    public static final String PAGE_CACHE_SIZE = "page.cache.size";
+    String PAGE_CACHE_SIZE = "page.cache.size";
 
     /**
      * The size of the actions cache if module caching is on.
      */
-    public static final String SCREEN_CACHE_SIZE = "screen.cache.size";
+    String SCREEN_CACHE_SIZE = "screen.cache.size";
 
     /**
      * The size of the actions cache if module caching is on.
      */
-    public static final String SCHEDULED_JOB_CACHE_SIZE = "scheduledjob.cache.size";
+    String SCHEDULED_JOB_CACHE_SIZE = 
+      "scheduledjob.cache.size";
 
     /**
      * The packages where Turbine will look for modules.
      * This is effectively Turbine's classpath.
      */
-    public static final String MODULE_PACKAGES = "module.packages";
+    String MODULE_PACKAGES = "module.packages";
 
     /**
      * JDBC database driver.
      */
-    public static final String DB_DRIVER = "database.default.driver";
+    String DB_DRIVER = "database.default.driver";
 
     /**
      * JDBC database URL.
      */
-    public static final String DB_URL = "database.default.url";
+    String DB_URL = "database.default.url";
 
     /**
      * JDBC username.
      */
-    public static final String DB_USERNAME = "database.default.username";
+    String DB_USERNAME = "database.default.username";
 
     /**
      * JDBC password.
      */
-    public static final String DB_PASSWORD = "database.default.password";
+    String DB_PASSWORD = "database.default.password";
 
     /**
      * Maximum number of connections to pool.
      */
-    public static final String DB_MAXCONNECTIONS = "database.maxConnections";
+    String DB_MAXCONNECTIONS = "database.maxConnections";
 
     /**
      * Expiry time of database connections.
      */
-    public static final String DB_EXPIRYTIME = "database.expiryTime";
+    String DB_EXPIRYTIME = "database.expiryTime";
 
     /**
      * How long a connection request will wait before giving up.
      */
-    public static final String DB_CONNECTION_WAIT_TIMEOUT = "database.connectionWaitTimeout";
+    String DB_CONNECTION_WAIT_TIMEOUT = "database.connectionWaitTimeout";
 
     /**
      * How often the PoolBrokerServer logs the status of the pool.
      */
-    public static final String DB_CONNECTION_LOG_INTERVAL = "database.logInterval";
+    String DB_CONNECTION_LOG_INTERVAL = "database.logInterval";
 
     /**
      * Database adaptor.
      */
-    public static final String DB_ADAPTOR = "database.adaptor";
+    String DB_ADAPTOR = "database.adaptor";
 
     /**
      * Indicates that the id broker will generate more ids
      * if the demand is high.
      */
-    public static final String DB_IDBROKER_CLEVERQUANTITY = "database.idbroker.cleverquantity";
+    String DB_IDBROKER_CLEVERQUANTITY = "database.idbroker.cleverquantity";
 
     /**
      * Home page template.
      */
-    public static final String TEMPLATE_HOMEPAGE = "template.homepage";
+    String TEMPLATE_HOMEPAGE = "template.homepage";
 
     /**
      * Login template.
      */
-    public static final String TEMPLATE_LOGIN = "template.login";
+    String TEMPLATE_LOGIN = "template.login";
 
     /**
      * Login error template.
      */
-    public static final String TEMPLATE_ERROR = "template.error";
+    String TEMPLATE_ERROR = "template.error";
 
     /**
      * Home page screen.
      */
-    public static final String SCREEN_HOMEPAGE = "screen.homepage";
+    String SCREEN_HOMEPAGE = "screen.homepage";
 
     /**
      * Login screen.
      */
-    public static final String SCREEN_LOGIN = "screen.login";
+    String SCREEN_LOGIN = "screen.login";
 
     /**
      * Login error screen.
      */
-    public static final String SCREEN_ERROR = "screen.error";
-    public static final String SCREEN_INVALID_STATE = "screen.invalidstate";
-    public static final String TEMPLATE_INVALID_STATE = "template.invalidstate";
+    String SCREEN_ERROR = "screen.error";
+    String SCREEN_INVALID_STATE = "screen.invalidstate";
+    String TEMPLATE_INVALID_STATE = "template.invalidstate";
 
     /**
      * Action to perform when a user logs in.
      */
-    public static final String ACTION_LOGIN = "action.login";
+    String ACTION_LOGIN = "action.login";
 
     /**
      * Action to perform when a user logs out.
      */
-    public static final String ACTION_LOGOUT = "action.logout";
+    String ACTION_LOGOUT = "action.logout";
 
     /**
      * Actions that performs session validation.
      */
-    public static final String ACTION_SESSION_VALIDATOR = "action.sessionvalidator";
+    String ACTION_SESSION_VALIDATOR = "action.sessionvalidator";
 
     /**
      * I don't think this is being used, is it?
      */
-    public static final String ACTION_ACCESS_CONTROLLER = "action.accesscontroller";
+    String ACTION_ACCESS_CONTROLLER = "action.accesscontroller";
 
     /**
      * Default layout.
      */
-    public static final String LAYOUT_DEFAULT = "layout.default";
+    String LAYOUT_DEFAULT = "layout.default";
 
     /**
      * Default page.
      */
-    public static final String PAGE_DEFAULT = "page.default";
+    String PAGE_DEFAULT = "page.default";
 
     /**
      * Map building. This will probably be Torque generated at
      * some point.
      */
-    public static final String MAPS_BUILDER = "database.maps.builder";
+    String MAPS_BUILDER = "database.maps.builder";
 
     /**
      * Message to display upon successful login.
      */
-    public static final String LOGIN_MESSAGE = "login.message";
+    String LOGIN_MESSAGE = "login.message";
 
     /**
      * Message to display when a user fails to login.
      */
-    public static final String LOGIN_ERROR = "login.error";
+    String LOGIN_ERROR = "login.error";
 
     /**
      * Message to display when screens variable invalid.
      */
-    public static final String LOGIN_MESSAGE_NOSCREEN = "login.message.noscreen";
+    String LOGIN_MESSAGE_NOSCREEN = "login.message.noscreen";
 
     /**
      * Message to display when a user logs out.
      */
-    public static final String LOGOUT_MESSAGE = "logout.message";
+    String LOGOUT_MESSAGE = "logout.message";
 
     /**
      * Indicate whether this Turbine application is using SSL.
      * Used for creating dynamic URIs.
      */
-    public static final String USE_SSL = "use.ssl";
+    String USE_SSL = "use.ssl";
 
     /**
      * Should the PP fold the case of everything. Possible values are
      * "upper", "lower" and "none".
      */
-    public static final String PP_URL_CASE_FOLDING = "url.case.folding";
+    String PP_URL_CASE_FOLDING = "url.case.folding";
 
     /**
      * Default document type.
      */
-    public static final String DEFAULT_DOCUMENT_TYPE = "default.doctype";
+    String DEFAULT_DOCUMENT_TYPE = "default.doctype";
 
-    public static final String APPLICATION_ROOT = "applicationRoot";
-    public static final String WEBAPP_ROOT = "webappRoot";
-    public static final String WEB_CONTEXT = "webContext";
+    String APPLICATION_ROOT = "applicationRoot";
+    String WEBAPP_ROOT = "webappRoot";
+    String WEB_CONTEXT = "webContext";
 }
