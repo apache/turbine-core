@@ -217,7 +217,7 @@ public class FileHandler
 
         StringBuffer sb = new StringBuffer();
         sb.append(location);
-        sb.append(tmpF.separator);
+        sb.append(File.separator);
         sb.append(fileName);
 
         String file = TurbineServlet.getRealPath(sb.toString());
