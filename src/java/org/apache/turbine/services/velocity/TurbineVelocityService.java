@@ -70,6 +70,7 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.configuration.Configuration;
 
+import org.apache.turbine.Turbine;
 import org.apache.turbine.util.ContentURI;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.RunData;
@@ -118,11 +119,6 @@ public class TurbineVelocityService extends BaseTemplateEngineService
      * Default character set to use if not specified in the RunData object.
      */
     private static final String DEFAULT_CHAR_SET = "ISO-8859-1";
-
-    /**
-     * The prefix used for URIs which are of type <code>absolute</code>.
-     */
-    private static final String ABSOLUTE_PREFIX = "file://";
 
     /**
      * The context used to the store the context
@@ -532,8 +528,9 @@ public class TurbineVelocityService extends BaseTemplateEngineService
          * Now we have to perform a couple of path translations
          * for our log file and template paths.
          */
-        String path = TurbineServlet.getRealPath
+        String path = Turbine.getRealPath
             (configuration.getString(Velocity.RUNTIME_LOG, null));
+            
         if (StringUtils.isValid(path))
         {
             configuration.setProperty(Velocity.RUNTIME_LOG, path);
@@ -542,6 +539,7 @@ public class TurbineVelocityService extends BaseTemplateEngineService
         {
             String msg = VelocityService.SERVICE_NAME + " runtime log file " +
                 "is misconfigured: '" + path + "' is not a valid log file";
+            
             if (TurbineServlet.getServletConfig() instanceof TurbineConfig)
             {
                 msg += ": TurbineConfig users must use a path relative to " +
@@ -604,23 +602,14 @@ public class TurbineVelocityService extends BaseTemplateEngineService
                             path = path.substring(9);
                         }
                         path = "jar:file:" +
-                            TurbineServlet.getRealPath(path) + entry;
-                    }
-                    else if (path.startsWith(ABSOLUTE_PREFIX))
-                    {
-                        path = path.substring (ABSOLUTE_PREFIX.length(),
-                                               path.length());
+                            Turbine.getRealPath(path) + entry;
                     }
                     else if (!path.startsWith("jar:"))
                     {
-                        /*
-                         * But we don't translate remote jar URLs.
-                         */
-                        path = TurbineServlet.getRealPath(path);
+                        // But we don't translate remote jar URLs.
+                        path = Turbine.getRealPath(path);
                     }
-                    /*
-                     *  Put the translated paths back to the configuration.
-                     */
+                    // Put the translated paths back to the configuration.
                     configuration.addProperty(key,path);
                 }
             }
