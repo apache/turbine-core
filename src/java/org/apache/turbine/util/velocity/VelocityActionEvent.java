@@ -138,11 +138,12 @@ public abstract class VelocityActionEvent extends ActionEvent
         ParameterParser pp = data.getParameters();
 
         String button = pp.convert(BUTTON);
+        String key = null;
 
         // Loop through and find the button.
         for (Iterator it = pp.keySet().iterator(); it.hasNext();)
         {
-            String key = (String) it.next();
+            key = (String) it.next();
             if (key.startsWith(button))
             {
                 if (considerKey(key, pp))
@@ -188,6 +189,10 @@ public abstract class VelocityActionEvent extends ActionEvent
         {
             Throwable t = ite.getTargetException();
             log.error("Invokation of " + method , t);
+        }
+        finally
+        {
+            pp.remove(key);
         }
     }
 }
