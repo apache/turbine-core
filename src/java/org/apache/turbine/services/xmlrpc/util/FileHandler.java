@@ -61,11 +61,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+
 import javax.mail.internet.MimeUtility;
+
+import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.turbine.services.resources.TurbineResources;
+
+import org.apache.turbine.Turbine;
+
 import org.apache.turbine.services.servlet.TurbineServlet;
 
 /**
@@ -93,6 +98,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  *
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class FileHandler
@@ -194,11 +200,24 @@ public class FileHandler
     public static String readFileContents(String targetLocationProperty,
                                           String fileName)
     {
+        String location = 
+          Turbine.getConfiguration().getString(targetLocationProperty);
+
+        if (StringUtils.isEmpty(location))
+        {
+          log.error("Could not load Property for location "
+              + targetLocationProperty);
+          return null;
+        }
+
         File tmpF = new File(".");
 
-        String file = TurbineServlet.getRealPath(
-                TurbineResources.getString(targetLocationProperty) +
-                tmpF.separator + fileName);
+        StringBuffer sb = new StringBuffer();
+        sb.append(location);
+        sb.append(tmpF.separator);
+        sb.append(fileName);
+
+        String file = TurbineServlet.getRealPath(sb.toString());
 
         StringWriter sw = null;
         BufferedReader reader = null;
@@ -255,24 +274,33 @@ public class FileHandler
                                             String targetLocationProperty,
                                             String fileName)
     {
+        String location = 
+          Turbine.getConfiguration().getString(targetLocationProperty);
+
+        if (StringUtils.isEmpty(location))
+        {
+          log.error("Could not load Property for location "
+              + targetLocationProperty);
+          return false;
+        }
+
         /*
          * The target location is always within the webapp to
          * make the application fully portable. So use the TurbineServlet
          * service to map the target location in the webapp space.
          */
-        File targetLocation = new File(
-                TurbineServlet.getRealPath(
-                        TurbineResources.getString(
-                                targetLocationProperty)));
 
-        if (targetLocation.exists() == false)
+        File targetLocation = new File(
+            TurbineServlet.getRealPath(location));
+
+        if (!targetLocation.exists())
         {
             /*
              * If the target location doesn't exist then
              * attempt to create the target location and any
              * necessary parent directories as well.
              */
-            if (targetLocation.mkdirs() == false)
+            if (!targetLocation.mkdirs())
             {
                 log.error("[FileHandler] Could not create target location: " +
                         targetLocation + ". Cannot transfer file from client.");
@@ -338,15 +366,24 @@ public class FileHandler
     public static void remove(String sourceLocationProperty,
                               String sourceFileName)
     {
+        String location = 
+          Turbine.getConfiguration().getString(sourceLocationProperty);
+
+        if (StringUtils.isEmpty(location))
+        {
+          log.error("Could not load Property for location " 
+              + sourceLocationProperty);
+          return;
+        }
+
         /*
          * The target location is always within the webapp to
          * make the application fully portable. So use the TurbineServlet
          * service to map the target location in the webapp space.
          */
-        File sourceFile = new File(
-                TurbineServlet.getRealPath(
-                        TurbineResources.getString(sourceLocationProperty) +
-                "/" + sourceFileName));
+        File sourceFile = 
+            new File(TurbineServlet.getRealPath(sourceLocationProperty 
+                         + "/" + sourceFileName));
 
         if (sourceFile.exists())
         {
