@@ -59,14 +59,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Properties;
 
-import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.impl.Log4jFactory;
-
-import org.apache.log4j.PropertyConfigurator;
-
-import org.apache.turbine.Turbine;
+import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.TestCase;
+
+import org.apache.log4j.PropertyConfigurator;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.rundata.RunDataService;
+import org.apache.turbine.util.RunData;
 
 /**
  * Base functionality to be extended by all Apache Turbine test cases.  Test
@@ -100,11 +103,15 @@ public abstract class BaseTestCase
                     + log4jFile);
         }
 
-        //
-        // Set up Commons Logging to use the Log4J Logging
-        //
-        System.getProperties().setProperty(LogFactory.class.getName(),
-                Log4jFactory.class.getName());
+
+    }
+    
+    protected RunData getRunData(HttpServletRequest request,HttpServletResponse response,ServletConfig config) throws Exception {
+        RunDataService rds =
+            (RunDataService) TurbineServices.getInstance().getService(
+                    RunDataService.SERVICE_NAME);
+        RunData runData = rds.getRunData(request, response, config);        
+        return runData;
     }
 }
 

@@ -54,19 +54,19 @@ package org.apache.turbine.modules;
  */
 
 import java.util.Vector;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.test.EnhancedMockHttpSession;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
+
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockServletConfig;
 /**
@@ -138,9 +138,9 @@ public class ActionLoaderTest extends BaseTestCase {
 	 * @throws Exception If something goes wrong with the unit test
 	 */
 	public void testDoPerformBubblesException() throws Exception {
-		RunData data = getRunData();
+		RunData data = getRunData(request,response,config);
+		data.setAction("VelocityActionThrowsException");
 		try {
-			String defaultPage = "VelocityPage";
 			ActionLoader.getInstance().exec(data, data.getAction());
 			fail("Should have thrown an exception");
 		} catch (Exception e) {
@@ -156,12 +156,12 @@ public class ActionLoaderTest extends BaseTestCase {
 	public void testActionEventBubblesException() throws Exception {
 		// can't seem to figure out how to setup the Mock Request with the right parameters...
 		request.setupAddParameter("eventSubmit_doCauseexception", "foo");
-		RunData data = getRunData();
+		RunData data = getRunData(request,response,config);
+		data.setAction("VelocityActionThrowsException");
 		data.getParameters().add("eventSubmit_doCauseexception", "foo");
 		assertTrue(
 			data.getParameters().containsKey("eventSubmit_doCauseexception"));
 		try {
-			String defaultPage = "VelocityPage";
 			ActionLoader.getInstance().exec(data, data.getAction());
 			fail("Should have bubbled out an exception thrown by the action.");
 		} catch (Exception e) {
@@ -179,9 +179,9 @@ public class ActionLoaderTest extends BaseTestCase {
 	public void testDoPerformDoesntBubbleException() throws Exception {
 		Turbine.getConfiguration().setProperty("action.event.bubbleexception",Boolean.FALSE);
 		assertFalse(Turbine.getConfiguration().getBoolean("action.event.bubbleexception"));
-		RunData data = getRunData();
+		RunData data = getRunData(request,response,config);
+		data.setAction("VelocityActionThrowsException");
 		try {
-			String defaultPage = "VelocityPage";
 			ActionLoader.getInstance().exec(data, data.getAction());
 		
 		} catch (Exception e) {
@@ -199,20 +199,20 @@ public class ActionLoaderTest extends BaseTestCase {
 		// can't seem to figure out how to setup the Mock Request with the right parameters...
 		Turbine.getConfiguration().setProperty("action.event.bubbleexception",Boolean.FALSE);
 		request.setupAddParameter("eventSubmit_doCauseexception", "foo");
-		RunData data = getRunData();
+		RunData data = getRunData(request,response,config);
+		data.setAction("VelocityActionThrowsException");
 		data.getParameters().add("eventSubmit_doCauseexception", "foo");
 		assertTrue(
 			data.getParameters().containsKey("eventSubmit_doCauseexception"));
 		
 		try {
-			String defaultPage = "VelocityPage";
 			ActionLoader.getInstance().exec(data, data.getAction());			
 		} catch (Exception e) {
 			fail("Should NOT have thrown an exception:" + e.getMessage());
 		}
 	}
 	public void testNonexistentActionCausesError() throws Exception {
-		RunData data = getRunData();
+	    RunData data = getRunData(request,response,config);
 		data.setAction("ImaginaryAction");
 		try {
 			PageLoader.getInstance().exec(data, "boo");
@@ -221,12 +221,5 @@ public class ActionLoaderTest extends BaseTestCase {
 			//good
 		}
 	}
-	private RunData getRunData() throws Exception {
-		RunDataService rds =
-			(RunDataService) TurbineServices.getInstance().getService(
-				RunDataService.SERVICE_NAME);
-		RunData runData = rds.getRunData(request, response, config);
-		runData.setAction("VelocityActionThrowsException");
-		return runData;
-	}
+	
 }

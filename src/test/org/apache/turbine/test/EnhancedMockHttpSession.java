@@ -62,6 +62,9 @@ import com.mockobjects.servlet.MockHttpSession;
  */
 public class EnhancedMockHttpSession extends MockHttpSession
 {
+    private boolean isNew = true;
+    private int maxInactiveInterval =0;
+    
     /**
      *
      */
@@ -75,8 +78,17 @@ public class EnhancedMockHttpSession extends MockHttpSession
      */
     public boolean isNew()
     {
-        return true;
+        return isNew;
     }
+    
+    public void setMaxInactiveInterval(int maxInactiveInterval){
+        this.maxInactiveInterval =maxInactiveInterval;
+    }
+    
+    public int getMaxInactiveInterval(){
+        return maxInactiveInterval;
+    }
+    
     /**
      * The underlying mock objects throws an Assert failure if we don't have
      * an attribute.  However, in Turbine, getting a null is okay, it just 
