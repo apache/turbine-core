@@ -769,7 +769,7 @@ public abstract class BaseSecurityService
             throws UnknownEntityException
     {
         User user = getUserInstance();
-        user.setUserName("");
+        user.setName("");
         return user;
     }
 
@@ -785,7 +785,7 @@ public abstract class BaseSecurityService
     public boolean isAnonymousUser(User user)
     {
         // Either just null, the name is null or the name is the empty string
-        return (user == null) || StringUtils.isEmpty(user.getUserName());
+        return (user == null) || StringUtils.isEmpty(user.getName());
     }
 
     /**
