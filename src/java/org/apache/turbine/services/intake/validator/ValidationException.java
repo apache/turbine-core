@@ -1,7 +1,5 @@
 package org.apache.turbine.services.intake.validator;
 
-import org.apache.turbine.services.intake.IntakeException;
-
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -55,6 +53,8 @@ import org.apache.turbine.services.intake.IntakeException;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
+
+import org.apache.turbine.services.intake.IntakeException;
 
 /**
  * An Exception to mark a failed validation

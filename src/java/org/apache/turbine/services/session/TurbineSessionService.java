@@ -60,17 +60,17 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Vector;
 import javax.servlet.http.HttpSession;
-
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.om.security.TurbineUser;
 import org.apache.turbine.services.TurbineBaseService;
 
 /**
- * The SessionService allows access to the current sessions of the current context.
+ * The SessionService allows access to the current sessions of the current
+ * context.
  * The session objects that are cached by this service are obtained through
  * a listener.  The listener must be configured in your web.xml file.
  *
- * Access to this service should be through org.apache.turbine.session.TurbineSession
+ * Access to this service should be through
+ * org.apache.turbine.session.TurbineSession
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$

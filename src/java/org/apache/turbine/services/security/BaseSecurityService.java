@@ -64,13 +64,13 @@ import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.crypto.TurbineCrypto;
-import org.apache.turbine.services.crypto.CryptoService;
-import org.apache.turbine.services.crypto.CryptoAlgorithm;
-import org.apache.turbine.services.factory.FactoryService;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.crypto.CryptoAlgorithm;
+import org.apache.turbine.services.crypto.CryptoService;
+import org.apache.turbine.services.crypto.TurbineCrypto;
+import org.apache.turbine.services.factory.FactoryService;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
@@ -78,7 +78,6 @@ import org.apache.turbine.util.security.GroupSet;
 import org.apache.turbine.util.security.PasswordMismatchException;
 import org.apache.turbine.util.security.PermissionSet;
 import org.apache.turbine.util.security.RoleSet;
-import org.apache.turbine.util.security.TurbineAccessControlList;
 import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
@@ -113,7 +112,10 @@ public abstract class BaseSecurityService
     /** Holds a list of all roles in the systems, for speeding up the access */
     private RoleSet allRoles = null;
 
-    /** Holds a list of all permissions in the systems, for speeding up the access */
+    /**
+     * Holds a list of all permissions in the systems, for speeding up the
+     * access
+     */
     private PermissionSet allPermissions = null;
 
     /** The number of threads concurrently reading security information */

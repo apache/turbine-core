@@ -54,13 +54,10 @@ package org.apache.turbine.services.localization;
  * <http://www.apache.org/>.
  */
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import org.apache.turbine.services.Service;
-import org.apache.turbine.services.ServiceBroker;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
 
 /**

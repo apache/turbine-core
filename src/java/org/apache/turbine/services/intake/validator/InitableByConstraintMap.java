@@ -56,8 +56,6 @@ package org.apache.turbine.services.intake.validator;
 
 import java.util.Map;
 
-import org.apache.turbine.services.intake.IntakeException;
-
 /**
  * This interface marks a bean/class that can have its properties set
  * by values in a Map.

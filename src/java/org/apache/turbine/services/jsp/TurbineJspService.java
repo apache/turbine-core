@@ -60,7 +60,6 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.configuration.Configuration;
-import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.jsp.util.JspLink;
 import org.apache.turbine.services.servlet.TurbineServlet;
@@ -202,7 +201,7 @@ public class TurbineJspService extends BaseTemplateEngineService
                 dispatcher.include(data.getRequest(), data.getResponse());
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             // as JSP service is in Alpha stage, let's try hard to send the
             // error message to the browser, to speed up debugging
@@ -212,7 +211,7 @@ public class TurbineJspService extends BaseTemplateEngineService
                         + filename);
                 e.printStackTrace(data.getOut());
             }
-            catch(IOException ignored)
+            catch (IOException ignored)
             {
             }
 

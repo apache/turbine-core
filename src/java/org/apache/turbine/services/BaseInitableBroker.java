@@ -56,11 +56,8 @@ package org.apache.turbine.services;
 
 import java.util.Hashtable;
 import java.util.Stack;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.turbine.util.TurbineException;
 
 /**
  * A generic implementation of <code>InitableBroker</code>.
@@ -203,7 +200,7 @@ public abstract class BaseInitableBroker
      *
      * @param className The name of the Initable requested.
      * @return An instance of the requested Initable.
-     * @exception InstantiationException, if there was a problem
+     * @exception InstantiationException if there was a problem
      * during instantiation or initialization of the Initable.
      */
     public Initable getInitable(String className)
@@ -249,7 +246,7 @@ public abstract class BaseInitableBroker
      * then returned.
      *
      * @param className The name of the class to be instantiated.
-     * @exception InstantiationException, if the requested class can't
+     * @exception InstantiationException if the requested class can't
      * be instantiated.
      */
     protected Initable getInitableInstance(String className)

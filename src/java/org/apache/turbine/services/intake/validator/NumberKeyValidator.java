@@ -55,9 +55,7 @@ package org.apache.turbine.services.intake.validator;
  */
 
 import java.util.Map;
-
 import org.apache.torque.om.NumberKey;
-import org.apache.turbine.services.intake.IntakeException;
 
 /**
  * Validates numbers with the following constraints in addition to those

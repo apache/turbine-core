@@ -55,14 +55,12 @@ package org.apache.turbine.services.intake.validator;
  */
 
 import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
-import org.apache.turbine.services.intake.IntakeException;
 
 /**
  * A validator that will compare a testValue against the following

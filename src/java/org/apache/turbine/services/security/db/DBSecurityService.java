@@ -59,7 +59,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -69,10 +68,6 @@ import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
-import org.apache.turbine.om.security.SecurityObject;
-import org.apache.turbine.om.security.TurbineGroup;
-import org.apache.turbine.om.security.TurbinePermission;
-import org.apache.turbine.om.security.TurbineRole;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.om.security.peer.GroupPeer;
 import org.apache.turbine.om.security.peer.PermissionPeer;
@@ -140,7 +135,7 @@ public class DBSecurityService
         if (!TurbineSecurity.accountExists(user))
         {
             throw new UnknownEntityException("The account '"
-                                             + user.getUserName() + "' does not exist");
+                    + user.getUserName() + "' does not exist");
         }
         try
         {
@@ -180,12 +175,12 @@ public class DBSecurityService
         }
         catch (Exception e)
         {
-            throw new DataBackendException("Failed to build ACL for user '" +
-                                           user.getUserName() + "'" , e);
+            throw new DataBackendException("Failed to build ACL for user '"
+                    + user.getUserName() + "'" , e);
         }
         finally
         {
-            // notify the state modifiers that we are done creating the snapshot.
+            // notify the state modifiers that we are done creating the snapshot
             unlockShared();
         }
     }

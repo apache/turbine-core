@@ -54,24 +54,12 @@ package org.apache.turbine.services;
  * <http://www.apache.org/>.
  */
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.PrintWriter;
-
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Stack;
-
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -207,8 +195,8 @@ public abstract class BaseServiceBroker
      * that can be used by application specific
      * services.
      *
-     * @param String name of service object
-     * @param Object value of service object
+     * @param name name of service object
+     * @param value value of service object
      */
     public void setServiceObject(String name, Object value)
     {
@@ -262,8 +250,8 @@ public abstract class BaseServiceBroker
             String key = (String)keys.next();
             String [] keyParts = StringUtils.split(key, ".");
 
-            if ((keyParts.length == 3) 
-                && (keyParts[0] + ".").equals(SERVICE_PREFIX) 
+            if ((keyParts.length == 3)
+                && (keyParts[0] + ".").equals(SERVICE_PREFIX)
                 && ("." + keyParts[2]).equals(CLASSNAME_SUFFIX))
             {
                 String serviceKey = keyParts[1];
@@ -318,7 +306,6 @@ public abstract class BaseServiceBroker
      * @param name The name of the service (generally the
      * <code>SERVICE_NAME</code> constant of the service's interface
      * definition).
-     * @param data An object to use for initialization activities.
      * @exception InitializationException Initialization of this
      * service was not successful.
      */
@@ -490,7 +477,7 @@ public abstract class BaseServiceBroker
      *
      * @param name The name of the Service requested.
      * @return An instance of requested Service.
-     * @exception InstantiationException, if the service is unknown or
+     * @exception InstantiationException if the service is unknown or
      * can't be initialized.
      */
     public Service getService(String name)
@@ -640,7 +627,7 @@ public abstract class BaseServiceBroker
     /**
      * Set the application root.
      *
-     * @param String application root
+     * @param applicationRoot application root
      */
     public void setApplicationRoot(String applicationRoot)
     {

@@ -1,11 +1,5 @@
 package org.apache.turbine.services.intake.validator;
 
-import java.util.Map;
-import java.util.Vector;
-import java.util.Iterator;
-import java.math.BigDecimal;
-import java.text.ParseException;
-
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -59,6 +53,11 @@ import java.text.ParseException;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
+
+import java.text.ParseException;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Vector;
 
 /**
  * Validator for boolean field types.<br><br>

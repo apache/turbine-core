@@ -58,7 +58,6 @@ import java.sql.Connection;
 import org.apache.torque.Torque;
 import org.apache.torque.adapter.DB;
 import org.apache.torque.map.DatabaseMap;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.TurbineException;
 
 /**

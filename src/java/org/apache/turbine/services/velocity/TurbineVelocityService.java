@@ -59,39 +59,22 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-
 import java.util.Iterator;
 import java.util.Vector;
-
 import javax.servlet.ServletConfig;
-
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationConverter;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.services.InitializationException;
-
 import org.apache.turbine.services.pull.TurbinePull;
-
-import org.apache.turbine.services.servlet.TurbineServlet;
-
 import org.apache.turbine.services.template.BaseTemplateEngineService;
-
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
-
 import org.apache.velocity.VelocityContext;
-
 import org.apache.velocity.app.Velocity;
-
 import org.apache.velocity.context.Context;
-
 import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
 
 /**
@@ -322,7 +305,7 @@ public class TurbineVelocityService
      *
      * @param context A Context.
      * @param filename A String with the filename of the template.
-     * @param out A OutputStream where we will write the process template as
+     * @param output A OutputStream where we will write the process template as
      * a String.
      *
      * @throws TurbineException Any exception trown while processing will be
@@ -365,7 +348,7 @@ public class TurbineVelocityService
      *
      * @param context A Context.
      * @param filename A String with the filename of the template.
-     * @param out A OutputStream where we will write the process template as
+     * @param output A OutputStream where we will write the process template as
      * a String.
      * @return The character encoding applied to the resulting String.
      *
@@ -570,8 +553,8 @@ public class TurbineVelocityService
 
         configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS,
                                   SimpleLog4JLogSystem.class.getName());
-        configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM + ".log4j.category",
-                                  "velocity");
+        configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM
+                                  + ".log4j.category", "velocity");
 
         /*
          * Get all the template paths where the velocity runtime should search
@@ -580,7 +563,7 @@ public class TurbineVelocityService
          */
         String key;
         Vector keys = new Vector();
-        for (Iterator i = configuration.getKeys(); i.hasNext();)
+        for (Iterator i = configuration.getKeys(); i.hasNext(); )
         {
             key = (String) i.next();
             if (key.endsWith(RESOURCE_LOADER_PATH))
@@ -597,7 +580,7 @@ public class TurbineVelocityService
         int ind;
         Vector paths;
         String entry;
-        for (Iterator i = keys.iterator(); i.hasNext();)
+        for (Iterator i = keys.iterator(); i.hasNext(); )
         {
             key = (String) i.next();
             paths = configuration.getVector(key,null);
@@ -626,13 +609,13 @@ public class TurbineVelocityService
                             entry = "!/";
                             path = path.substring(9);
                         }
-                        path = JAR_PREFIX + "file:" +
-                            Turbine.getRealPath(path) + entry;
+                        path = JAR_PREFIX + "file:"
+                            + Turbine.getRealPath(path) + entry;
                     }
                     else if (path.startsWith(ABSOLUTE_PREFIX))
                     {
-                        path = path.substring (ABSOLUTE_PREFIX.length(),
-                                               path.length());
+                        path = path.substring(ABSOLUTE_PREFIX.length(),
+                                              path.length());
                     }
                     else if (!path.startsWith(JAR_PREFIX))
                     {
@@ -667,7 +650,7 @@ public class TurbineVelocityService
      * will do its own searching to determine whether
      * a template exists or not.
      *
-     * @param String template to search for
+     * @param template String template to search for
      * @return boolean
      */
     public boolean templateExists(String template)

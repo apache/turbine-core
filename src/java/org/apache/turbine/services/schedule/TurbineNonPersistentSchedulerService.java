@@ -60,8 +60,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.ObjectKey;
-import org.apache.turbine.Turbine;
-import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.resources.TurbineResources;
 
 /**
@@ -100,7 +98,8 @@ public class TurbineNonPersistentSchedulerService
     extends TurbineSchedulerService
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(TurbineNonPersistentSchedulerService.class);
+    private static Log log = LogFactory.getLog(
+        TurbineNonPersistentSchedulerService.class);
 
     /**
      * Constructor.
@@ -120,14 +119,14 @@ public class TurbineNonPersistentSchedulerService
      */
     public void init()
     {
-        if ( getInit() )
+        if (getInit())
         {
             return;
         }
 
         try
         {
-            log.info ( "TurbineNonPersistentSchedulerService init()....starting!");
+            log.info("TurbineNonPersistentSchedulerService init()....starting!");
 
             scheduleQueue = new JobQueue();
             mainLoop = new MainLoop();
@@ -138,23 +137,24 @@ public class TurbineNonPersistentSchedulerService
             // for the scheduleQueue
             if (!jobProps.isEmpty())
             {
-                for (int i=0;i<jobProps.size();i++)
+                for (int i = 0; i < jobProps.size(); i++)
                 {
                     String jobName = (String)jobProps.elementAt(i);
                     String jobPrefix = "scheduler.job." + jobName ;
 
-                    if ( (TurbineResources.getString(jobPrefix + ".ID", null)) == null)
+                    if ((TurbineResources.getString(jobPrefix + ".ID", null))
+                        == null)
                     {
                         throw new Exception(
-                        "There is an error in the TurbineResources.properties file. \n" +
-                        jobPrefix + ".ID is not found.\n");
+                        "There is an error in the TurbineResources.properties file. \n"
+                        + jobPrefix + ".ID is not found.\n");
                     }
 
-                    int sec =  TurbineResources.getInt(jobPrefix + ".SECOND", -1);
-                    int min =  TurbineResources.getInt(jobPrefix + ".MINUTE", -1);
-                    int hr  =  TurbineResources.getInt(jobPrefix + ".HOUR", -1);
-                    int wkday =  TurbineResources.getInt(jobPrefix + ".WEEKDAY", -1);
-                    int dayOfMonth =  TurbineResources.getInt(jobPrefix + ".DAY_OF_MONTH", -1);
+                    int sec = TurbineResources.getInt(jobPrefix + ".SECOND", -1);
+                    int min = TurbineResources.getInt(jobPrefix + ".MINUTE", -1);
+                    int hr  = TurbineResources.getInt(jobPrefix + ".HOUR", -1);
+                    int wkday = TurbineResources.getInt(jobPrefix + ".WEEKDAY", -1);
+                    int dayOfMonth = TurbineResources.getInt(jobPrefix + ".DAY_OF_MONTH", -1);
 
                     JobEntry je = new JobEntry(sec,
                                                min,
@@ -167,18 +167,19 @@ public class TurbineNonPersistentSchedulerService
                 }
             }
 
-            if ( jobs != null && jobs.size() > 0 )
+            if (jobs != null && jobs.size() > 0)
             {
                 scheduleQueue.batchLoad(jobs);
                 restart();
             }
 
             setInit(true);
-            log.info ( "TurbineNonPersistentSchedulerService init()....finished!");
+            log.info("TurbineNonPersistentSchedulerService init()....finished!");
         }
         catch (Exception e)
         {
-            log.error ( "Cannot initialize TurbineNonPersistentSchedulerService!: " + e );
+            log.error("Cannot initialize TurbineNonPersistentSchedulerService!: "
+                + e );
         }
     }
 
@@ -261,7 +262,7 @@ public class TurbineNonPersistentSchedulerService
         catch(Exception e)
         {
             // Log problems.
-            log.error ( "Problem updating Scheduled Job: " + e);
+            log.error("Problem updating Scheduled Job: " + e);
         }
         // Update the queue.
        scheduleQueue.modify(je);

@@ -72,10 +72,9 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.stratum.lifecycle.Initializable;
 import org.apache.stratum.lifecycle.Disposable;
+import org.apache.stratum.lifecycle.Initializable;
 import org.apache.turbine.Turbine;
-import org.apache.turbine.services.TurbineServices;
 
 /**
  * A class used for initalization of Turbine without a servlet container.

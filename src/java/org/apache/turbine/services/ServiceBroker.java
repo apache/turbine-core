@@ -54,7 +54,6 @@ package org.apache.turbine.services;
  * <http://www.apache.org/>.
  */
 
-import java.util.Properties;
 import org.apache.commons.configuration.Configuration;
 
 
@@ -96,8 +95,7 @@ public interface ServiceBroker
      * Performs early initialization of specified service.
      *
      * @param name The name of the service.
-     * @param data An Object to use for initialization activities.
-     * @exception InitializationException, if the service is unknown
+     * @exception InitializationException if the service is unknown
      * or can't be initialized.
      */
     void initService(String name)
@@ -126,7 +124,7 @@ public interface ServiceBroker
      *
      * @param name The name of the Service requested.
      * @return An instance of requested Service.
-     * @exception InstantiationException, if the service is unknown or
+     * @exception InstantiationException if the service is unknown or
      * can't be initialized.
      */
     Service getService(String name)

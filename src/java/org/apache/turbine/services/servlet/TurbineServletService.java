@@ -59,11 +59,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-import org.apache.turbine.Turbine;
-import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.TurbineBaseService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.ServletUtils;
 
 /**
@@ -132,9 +131,9 @@ public class TurbineServletService
      * @return an URL object or null is the uri is malformed or
      * can't be resolved
      */
-    public URL getResource( String uri )
+    public URL getResource(String uri)
     {
-        if ( servletContext == null)
+        if (servletContext == null)
         {
             return null;
         }
@@ -143,7 +142,7 @@ public class TurbineServletService
 
         try
         {
-            url = getServletContext().getResource( uri );
+            url = getServletContext().getResource(uri);
             // work-around for Websphere 3.52
             if (url != null && url.toString().startsWith("classloader:"))
             {
@@ -154,7 +153,7 @@ public class TurbineServletService
                 url = new URL("file:" + getServletContext().getRealPath(uri));
             }
         }
-        catch ( MalformedURLException e)
+        catch (MalformedURLException e)
         {
             //if the URL is wrong, return null
         }
@@ -169,14 +168,15 @@ public class TurbineServletService
      * @param uri the URI to resolve
      * @return an InputStream on the URI content or null
      */
-    public InputStream getResourceAsStream( String uri )
+    public InputStream getResourceAsStream(String uri)
     {
-        if ( servletContext == null) return null;
+        if (servletContext == null)
+        {
+            return null;
+        }
 
         InputStream is = null;
-
-        is = servletContext.getResourceAsStream( uri );
-
+        is = servletContext.getResourceAsStream(uri);
         return is;
     }
 
@@ -188,15 +188,15 @@ public class TurbineServletService
      * @param uri the URI to resolve
      * @return the full system path of this URI
      */
-    public String getRealPath( String uri )
+    public String getRealPath(String uri)
     {
-        if ( getServletContext() == null || uri == null )
+        if (getServletContext() == null || uri == null)
         {
             return null;
         }
         else
         {
-            return getServletContext().getRealPath( uri );
+            return getServletContext().getRealPath(uri);
         }
     }
 
@@ -278,7 +278,7 @@ public class TurbineServletService
      * @param path The String containing a path or path list.
      * @return A String with the expanded path or path list.
      */
-    public String expandRelative( String path )
+    public String expandRelative(String path)
     {
         return ServletUtils.expandRelative(getServletConfig(), path);
     }

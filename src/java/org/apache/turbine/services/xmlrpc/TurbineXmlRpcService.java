@@ -54,29 +54,28 @@ package org.apache.turbine.services.xmlrpc;
  * <http://www.apache.org/>.
  */
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.Iterator;
+import java.util.Vector;
+import javax.servlet.ServletConfig;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.xmlrpc.util.FileTransfer;
+import org.apache.turbine.util.TurbineException;
 import org.apache.xmlrpc.WebServer;
 import org.apache.xmlrpc.XmlRpc;
 import org.apache.xmlrpc.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcServer;
 import org.apache.xmlrpc.secure.SecureWebServer;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.Vector;
-import javax.servlet.ServletConfig;
-import org.apache.commons.configuration.Configuration;
-import org.apache.turbine.Turbine;
-import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.xmlrpc.util.FileTransfer;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.turbine.util.TurbineException;
 
 
 /**
@@ -314,8 +313,8 @@ public class TurbineXmlRpcService
      * Register an Object as a default handler for the service.
      *
      * @param handler The handler to use.
-     * @exception XmlRpcException.
-     * @exception IOException.
+     * @exception XmlRpcException
+     * @exception IOException
      */
     public void registerHandler(Object handler)
         throws XmlRpcException,
