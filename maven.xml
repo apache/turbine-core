@@ -2,6 +2,7 @@
   xmlns:j="jelly:core"
   xmlns:m="maven"
   xmlns:u="jelly:util"
+  xmlns:maven="jelly:maven"
   default="java:jar">
 
   <!-- Define a post goal for compile to copy intake.dtd into the appropriate
@@ -37,51 +38,81 @@
   <!-- Build Peers for the Scheduler                      -->
   <!-- ================================================== -->
   <goal name="scheduler-om">
-    <uptodate
-      property="schedulerGenerated"
-      srcfile="${torque.schema.dir}/scheduler-schema.xml"
-      targetfile="${maven.prepareSourceDirectory}/report.turbine.scheduler.generation"/>
+  
+    <j:set var="torque.project" value="scheduler"/>
+    <j:set var="torque.schema.om.includes" value="scheduler-schema.xml"/>
+    <j:set var="torque.targetPackage" value="${scheduler.package}"/>
+    <filter token="DATABASE_DEFAULT" value="${scheduler.database.name}"/>
+    <filter token="EXTRA_USER_COLUMNS" value="${scheduler.extra.user.columns}"/>
+    <copy
+      file="src/schema/scheduler-schema.xml"
+      tofile="${torque.schema.dir}/scheduler-schema.xml"
+      filtering="yes"/>
 
-    <j:if test="${schedulerGenerated != 'true'}">
-   
-      <j:set var="torque.project" value="scheduler"/>
-      <j:set var="torque.schema.om.includes" value="scheduler-schema.xml"/>
-      <j:set var="torque.targetPackage" value="${scheduler.package}"/>
-      <filter token="DATABASE_DEFAULT" value="${scheduler.database.name}"/>
-      <filter token="EXTRA_USER_COLUMNS" value="${scheduler.extra.user.columns}"/>
-      <copy
-        file="src/schema/scheduler-schema.xml"
-        tofile="${torque.schema.dir}/scheduler-schema.xml"
-        filtering="yes"/>
+    <attainGoal name="torque:om"/>
 
-      <attainGoal name="torque:om"/>
-
-    </j:if>
   </goal>
 
   <!-- ================================================== -->
   <!-- Build Peers for Torque Security                    -->
   <!-- ================================================== -->
   <goal name="torque-security-om">
-    <uptodate
-      property="securityGenerated"
-      srcfile="${torque.schema.dir}/turbine-schema.xml"
-      targetfile="${maven.prepareSourceDirectory}/report.turbine.security.generation"/>
 
-    <j:if test="${securityGenerated != 'true'}">
-   
-      <j:set var="torque.project" value="torque-security"/>
-      <j:set var="torque.schema.om.includes" value="torque-security-schema.xml"/>
-      <j:set var="torque.targetPackage" value="${torque.security.package}"/>
-      <filter token="DATABASE_DEFAULT" value="${torque.security.database.name}"/>
-      <copy
-        file="src/schema/torque-security-schema.xml"
-        tofile="${torque.schema.dir}/torque-security-schema.xml"
-        filtering="yes"/>
+    <j:set var="torque.project" value="torque-security"/>
+    <j:set var="torque.schema.om.includes" value="torque-security-schema.xml"/>
+    <j:set var="torque.targetPackage" value="${torque.security.package}"/>
+    <filter token="DATABASE_DEFAULT" value="${torque.security.database.name}"/>
+    <copy
+      file="src/schema/torque-security-schema.xml"
+      tofile="${torque.schema.dir}/torque-security-schema.xml"
+      filtering="yes"/>
 
-      <attainGoal name="torque:om"/>
+    <attainGoal name="torque:om"/>
 
-    </j:if>
+  </goal>
+
+  <!-- ================================================== -->
+  <!-- Perform the nightly build process                  -->
+  <!-- ================================================== -->
+  <goal name="nightly:build"
+      description="Build distribution snapshots">
+
+    <cvs command="-q update -Pd"/>
+    <attainGoal name="clean"/>
+    <maven:snapshot project="${pom}"/>
+
+    <j:set var="maven.final.name" value="${snapshotSignature}-${pom.currentVersion}"/>
+    <attainGoal name="dist:build"/>
+
+  </goal>
+
+  <!-- ================================================== -->
+  <!-- Deploy the nightly build process                   -->
+  <!-- ================================================== -->
+  <goal name="nightly:deploy"
+     prereqs="nightly:build"
+     description="Deploy the nightly builds">
+
+    <m:user-check user="${maven.username}"/>
+
+    <echo>
+       deploymentAddress = ${pom.siteAddress}
+       deploymentDirectory = ${turbine.nightly.dist.dir}
+    </echo>
+
+    <j:set var="dist.dir"
+       value="${pom.getPluginContext('maven-dist-plugin').getVariable('maven.dist.dir')}"/>
+
+    <!-- Make sure the destination directory exists before trying to copy -->
+    <exec dir="." executable="${maven.ssh.executable}">
+       <arg line="${pom.siteAddress} -l ${maven.username} 'mkdir -p ${turbine.nightly.dist.dir}'"/>
+    </exec>
+
+    <exec dir="${dist.dir}" executable="${maven.scp.executable}">
+      <arg value="*"/>
+      <arg value="${maven.username}@${pom.siteAddress}:${turbine.nightly.dist.dir}"/>
+    </exec>
+
   </goal>
 
 </project>
