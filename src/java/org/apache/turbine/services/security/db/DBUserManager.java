@@ -188,21 +188,21 @@ public class DBUserManager
     }
 
     /**
-     * Retrieve a set of users that meet the specified criteria.
+     * Retrieve a list of users that meet the specified criteria.
      *
      * As the keys for the criteria, you should use the constants that
      * are defined in {@link User} interface, plus the names
      * of the custom attributes you added to your user representation
      * in the data storage. Use verbatim names of the attributes -
-     * without table name prefix in case of DB implementation.
+     * without table name prefix in case of Torque implementation.
      *
      * @param criteria The criteria of selection.
      * @return a List of users meeting the criteria.
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
      */
-    public User[] retrieve(Criteria criteria)
-            throws DataBackendException
+    public List retrieveList(Criteria criteria)
+        throws DataBackendException
     {
         Iterator keys = criteria.keySet().iterator();
         while (keys.hasNext())
@@ -231,7 +231,27 @@ public class DBUserManager
         {
             throw new DataBackendException("Failed to retrieve users", e);
         }
-        return (User[]) users.toArray(new User[0]);
+        return users;
+    }
+
+    /**
+     * Retrieve a set of users that meet the specified criteria.
+     *
+     * As the keys for the criteria, you should use the constants that
+     * are defined in {@link User} interface, plus the names
+     * of the custom attributes you added to your user representation
+     * in the data storage. Use verbatim names of the attributes -
+     * without table name prefix in case of DB implementation.
+     *
+     * @param criteria The criteria of selection.
+     * @return a List of users meeting the criteria.
+     * @throws DataBackendException if there is a problem accessing the
+     *         storage.
+     */
+    public User[] retrieve(Criteria criteria)
+            throws DataBackendException
+    {
+        return (User [])retrieveList(criteria).toArray(new User[0]);
     }
 
     /**
