@@ -55,14 +55,12 @@ package org.apache.turbine.modules;
  */
 
 import java.lang.reflect.Method;
-
 import java.util.Enumeration;
 
-import org.apache.turbine.Turbine;
+import org.apache.commons.lang.StringUtils;
 
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
-
 import org.apache.turbine.util.parser.ParserUtils;
 
 /**
@@ -227,8 +225,6 @@ public abstract class ActionEvent extends Action
      */
     private final String firstLetterCaps(String data)
     {
-        String firstLetter = data.substring(0, 1).toUpperCase();
-        String restLetters = data.substring(1).toLowerCase();
-        return firstLetter + restLetters;
+        return StringUtils.capitalise(StringUtils.lowerCase(data));
     }
 }
