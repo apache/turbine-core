@@ -43,10 +43,7 @@
       <archive>http://archives.apache.org/eyebrowse/SummarizeList?listName=turbine-dev@jakarta.apache.org</archive>
     </mailingList>
   </mailingLists>
-  <repository>
-    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2</connection>
-    <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2/</url>
-  </repository>
+
   <developers>
     <developer>
       <name>Jeff Brekke</name>
