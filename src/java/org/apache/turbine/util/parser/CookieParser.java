@@ -94,28 +94,11 @@ public interface CookieParser
     int AGE_DELETE = 0;
 
     /**
-     * Gets the parsed RunData.
-     *
-     * @return the parsed RunData object or null.
-     * @deprecated. Don't use the Run Data object. use getRequest().
-     */
-    RunData getRunData();
-
-    /**
      * Gets the Request Object for this parser.
      *
      * @return the HttpServletRequest or null.
      */
     HttpServletRequest getRequest();
-
-    /**
-     * Sets the RunData to be parsed.
-     * All previous cookies will be cleared.
-     *
-     * @param data the RunData object.
-     * @deprecated. Use setData (HttpServletRequest request, HttpServletResponse response) instead
-     */
-    void setRunData(RunData data);
 
     /**
      * Sets Request and Response to be parsed.

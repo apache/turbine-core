@@ -134,17 +134,6 @@ public class DefaultCookieParser
     }
 
     /**
-     * Gets the parsed RunData.
-     *
-     * @return the parsed RunData object or null.
-     * @deprecated Don't use the Run Data object. use getRequest().
-     */
-    public RunData getRunData()
-    {
-        return data;
-    }
-
-    /**
      * Gets the Request Object for this parser.
      *
      * @return the HttpServletRequest or null.

@@ -64,8 +64,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Set;
 
-import org.apache.torque.om.NumberKey;
-import org.apache.torque.om.StringKey;
 
 /**
  * ValueParser is a base interface for classes that need to parse
@@ -88,33 +86,6 @@ import org.apache.torque.om.StringKey;
  */
 public interface ValueParser
 {
-    /**
-     * The Key for the Case folding.
-     *
-     * @deprecated Use ParserUtils.URL_CASE_FOLDING_KEY
-     */
-    String URL_CASE_FOLDING = ParserUtils.URL_CASE_FOLDING_KEY;
-
-    /**
-     * No Case folding.
-     *
-     * @deprecated Use ParserUtils.URL_CASE_FOLDING_NONE_VALUE
-     */
-    String URL_CASE_FOLDING_NONE = ParserUtils.URL_CASE_FOLDING_NONE_VALUE;
-
-    /**
-     * Fold Keys to lower case.
-     *
-     * @deprecated Use ParserUtils.URL_CASE_FOLDING_LOWER_VALUE
-     */
-    String URL_CASE_FOLDING_LOWER = ParserUtils.URL_CASE_FOLDING_LOWER_VALUE;
-
-    /**
-     * Fold Keys to upper case.
-     *
-     * @deprecated Use ParserUtils.URL_CASE_FOLDING_UPPER_VALUE
-     */
-    String URL_CASE_FOLDING_UPPER = ParserUtils.URL_CASE_FOLDING_UPPER_VALUE;
 
     /**
      * Clear all name/value pairs out of this object.
@@ -231,14 +202,6 @@ public interface ValueParser
     boolean containsDateSelectorKeys(String key);
 
     /**
-     * Get an enumerator for the parameter keys.
-     *
-     * @return An <code>enumerator</code> of the keys.
-     * @deprecated use {@link #keySet} instead.
-     */
-    Enumeration keys();
-
-    /**
      * Gets the keys.
      *
      * @return A <code>Set</code> of the keys.
@@ -270,27 +233,6 @@ public interface ValueParser
      * @return A boolean.
      */
     boolean getBoolean(String name);
-
-    /**
-     * Return a Boolean for the given name.  If the name does not
-     * exist, return defaultValue.
-     *
-     * @param name A String with the name.
-     * @param defaultValue The default value.
-     * @return A Boolean.
-     * @deprecated use {@link #getBooleanObject} instead
-     */
-    Boolean getBool(String name, boolean defaultValue);
-
-    /**
-     * Return a Boolean for the given name.  If the name does not
-     * exist, return false.
-     *
-     * @param name A String with the name.
-     * @return A Boolean.
-     * @deprecated use {@link #getBooleanObject} instead
-     */
-    Boolean getBool(String name);
 
     /**
      * Returns a Boolean object for the given name.  If the parameter
@@ -500,39 +442,6 @@ public interface ValueParser
     Integer getIntObject(String name);
 
     /**
-     * Return an Integer for the given name.  If the name does not
-     * exist, return defaultValue.
-     *
-     * @param name A String with the name.
-     * @param defaultValue The default value.
-     * @return An Integer.
-     * @deprecated use {@link #getIntObject} instead
-     */
-    Integer getInteger(String name, int defaultValue);
-
-    /**
-     * Return an Integer for the given name.  If the name does not
-     * exist, return defaultValue.  You cannot pass in a null here for
-     * the default value.
-     *
-     * @param name A String with the name.
-     * @param defaultValue The default value.
-     * @return An Integer.
-     * @deprecated use {@link #getIntObject} instead
-     */
-    Integer getInteger(String name, Integer defaultValue);
-
-    /**
-     * Return an Integer for the given name.  If the name does not
-     * exist, return <code>null</code>.
-     *
-     * @param name A String with the name.
-     * @return An Integer.
-     * @deprecated use {@link #getIntObject} instead
-     */
-    Integer getInteger(String name);
-
-    /**
      * Return an array of ints for the given name.  If the name does
      * not exist, return null.
      *
@@ -540,16 +449,6 @@ public interface ValueParser
      * @return An int[].
      */
     int[] getInts(String name);
-
-    /**
-     * Return an array of Integers for the given name.  If the name
-     * does not exist, return null.
-     *
-     * @param name A String with the name.
-     * @return An Integer[].
-     * @deprecated use {@link #getIntObjects} instead
-     */
-    Integer[] getIntegers(String name);
 
     /**
      * Return an array of Integers for the given name.  If the name
@@ -787,26 +686,6 @@ public interface ValueParser
      * @return A Date.
      */
     Date getDate(String name, DateFormat df);
-
-    /**
-     * Return an NumberKey for the given name.  If the name does not
-     * exist, return null.
-     *
-     * @param name A String with the name.
-     * @return An NumberKey.
-     * @deprecated no replacement
-     */
-    NumberKey getNumberKey(String name);
-
-    /**
-     * Return an NumberKey for the given name.  If the name does not
-     * exist, return null.
-     *
-     * @param name A String with the name.
-     * @return An StringKey.
-     * @deprecated no replacement
-     */
-    StringKey getStringKey(String name);
 
     /**
      * Uses bean introspection to set writable properties of bean from
