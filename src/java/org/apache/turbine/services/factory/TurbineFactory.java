@@ -54,7 +54,7 @@ package org.apache.turbine.services.factory;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.services.Service;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -64,16 +64,22 @@ import org.apache.turbine.util.TurbineException;
  * and can be tested with the isLoaderSupported method.
  *
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public interface FactoryService
-        extends Service
+public abstract class TurbineFactory
 {
     /**
-     * The key under which this service is stored in TurbineServices.
+     * Utility method for accessing the service
+     * implementation
+     *
+     * @return An AssemblerBroker implementation instance
      */
-    String SERVICE_NAME = "FactoryService";
-
+    public static FactoryService getService()
+    {
+        return (FactoryService) TurbineServices.getInstance()
+                .getService(FactoryService.SERVICE_NAME);
+    }
     /**
      * Gets an instance of a named class.
      *
@@ -81,9 +87,12 @@ public interface FactoryService
      * @return the instance.
      * @throws TurbineException if instantiation fails.
      */
-    Object getInstance(String className)
-            throws TurbineException;
-
+    public static Object getInstance(String className)
+            throws TurbineException
+    {
+        return getService().getInstance(className);
+    }
+    
     /**
      * Gets an instance of a named class using a specified class loader.
      *
@@ -95,9 +104,13 @@ public interface FactoryService
      * @return the instance.
      * @throws TurbineException if instantiation fails.
      */
-    Object getInstance(String className,
+    public static Object getInstance(String className,
             ClassLoader loader)
-            throws TurbineException;
+            throws TurbineException
+    {
+        return getService().getInstance(className,
+                loader);
+    }
 
     /**
      * Gets an instance of a named class.
@@ -110,10 +123,15 @@ public interface FactoryService
      * @return the instance.
      * @throws TurbineException if instantiation fails.
      */
-    Object getInstance(String className,
+    public static Object getInstance(String className,
             Object[] params,
             String[] signature)
-            throws TurbineException;
+            throws TurbineException
+    {
+        return getService().getInstance(className,
+                params,
+                signature);
+    }
 
     /**
      * Gets an instance of a named class using a specified class loader.
@@ -130,11 +148,18 @@ public interface FactoryService
      * @return the instance.
      * @throws TurbineException if instantiation fails.
      */
-    Object getInstance(String className,
+    public static Object getInstance(String className,
             ClassLoader loader,
             Object[] params,
             String[] signature)
-            throws TurbineException;
+            throws TurbineException
+    {
+        return getService().getInstance(className,
+                loader,
+                params,
+                signature);
+    }
+            
 
     /**
      * Tests if specified class loaders are supported for a named class.
@@ -143,8 +168,11 @@ public interface FactoryService
      * @return true if class loaders are supported, false otherwise.
      * @throws TurbineException if test fails.
      */
-    boolean isLoaderSupported(String className)
-            throws TurbineException;
+    public static boolean isLoaderSupported(String className)
+            throws TurbineException
+    {
+        return getService().isLoaderSupported(className);
+    }
 
     /**
      * Gets the signature classes for parameters of a method of a class.
@@ -159,8 +187,11 @@ public interface FactoryService
      * @deprecated This is just a temporary workaround for decoupling the
      * Pool and Factory Service. Please do not use.
      */
-    Class[] getSignature(Class clazz,
+    public static Class[] getSignature(Class clazz,
             Object params[],
             String signature[])
-            throws ClassNotFoundException;
+            throws ClassNotFoundException
+    {
+        return getService().getSignature(clazz, params, signature);
+    }
 }
