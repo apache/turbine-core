@@ -134,7 +134,7 @@ public class LocalizationToolTest extends BaseTestCase
     }
     public void setUp() throws Exception
     {
-        tc = new TurbineConfig(".", "/conf/test/TestLocalization.properties");
+        tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
     }
     public void tearDown() throws Exception
