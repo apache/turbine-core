@@ -27,7 +27,7 @@
 
     <section name="Introduction">
       <p>
-        This is a HOWTO on implementing Hibernate as the database OM layer.  The motivating factors for extending TurbineUser
+        This is a HOWTO on implementing Hibernate as the database OM layer.  The motivating factors for using Hibernate
         are:
         <ol>
           <li>
