@@ -228,7 +228,10 @@ public abstract class ActionEvent extends Action
             method = getClass().getMethod(theButton, methodParams);
             Object[] methodArgs = new Object[] { data };
 
-            log.debug("Invoking " + method);
+            if (log.isDebugEnabled())
+            {
+                log.debug("Invoking " + method);
+            }
 
             method.invoke(this, methodArgs);
         }

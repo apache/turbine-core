@@ -166,16 +166,23 @@ public abstract class VelocityActionEvent extends ActionEvent
             method = getClass().getMethod(theButton, methodParams);
             Object[] methodArgs = new Object[] { data, context };
 
-            log.debug("Invoking " + method);
+            if (log.isDebugEnabled())
+            {
+                log.debug("Invoking " + method);
+            }
 
             method.invoke(this, methodArgs);
         }
         catch (NoSuchMethodException nsme)
         {
             // Attempt to execute things the old way..
-            log.debug("Couldn't locate the Event ( " + theButton 
-                    + "), running executeEvents() in "
-                    + super.getClass().getName());
+            if (log.isDebugEnabled())
+            {
+                log.debug("Couldn't locate the Event ( " + theButton 
+                        + "), running executeEvents() in "
+                        + super.getClass().getName());
+            }
+
             super.executeEvents(data);
         }
         catch (InvocationTargetException ite)
