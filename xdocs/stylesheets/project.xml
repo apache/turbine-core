@@ -16,7 +16,6 @@
     </menu>
     
     <menu name="Documentation">
-      <item name="Turbine Documentation" href="/turbine-documentation-project.html"/>
       <item name="Core Schema"           href="/turbine-schema.html"/>
       <item name="J2EE Integration"      href="/j2ee-integration.html"/>
       <item name="Model 2+1"             href="/model2+1.html"/>
