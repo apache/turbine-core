@@ -61,6 +61,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.Writer;
 import javax.servlet.ServletConfig;
 
 import org.apache.velocity.Template;
@@ -293,6 +294,28 @@ public class TurbineVelocityService extends BaseTemplateEngineService
 
     /**
      * Process the request and fill in the template with the values
+     * you set in the Context.
+     *
+     * @param context A Context.
+     * @param filename A String with the filename of the template.
+     * @param writer A Writer where we will write the process template as
+     * a String.
+     *
+     * @throws TurbineException Any exception trown while processing will be
+     *         wrapped into a TurbineException and rethrown.
+     */
+    public void handleRequest(Context context,
+                              String filename,
+                              Writer writer)
+        throws TurbineException
+    {
+        String encoding = getEncoding(context);
+        decodeRequest(context, filename, encoding, writer);
+    }
+
+
+    /**
+     * Process the request and fill in the template with the values
      * you set in the Context. Apply the character and template
      * encodings from RunData to the result.
      *
@@ -319,25 +342,10 @@ public class TurbineVelocityService extends BaseTemplateEngineService
         }
 
         /*
-         * Get the chracter and template encodings from the RunData object.
+         * Get the character and template encodings from the RunData object.
          */
-        String charset;
-        String encoding;
-        Object data = context.get("data");
-        if ((data != null) && (data instanceof RunData))
-        {
-            charset = ((RunData) data).getCharSet();
-            if (charset == null)
-            {
-                charset = DEFAULT_CHAR_SET;
-            }
-            encoding = ((RunData) data).getTemplateEncoding();
-        }
-        else
-        {
-            charset = DEFAULT_CHAR_SET;
-            encoding = null;
-        }
+        String charset = getCharSet(context);
+        String encoding = getEncoding(context);
 
         OutputStreamWriter writer = null;
 
@@ -346,10 +354,6 @@ public class TurbineVelocityService extends BaseTemplateEngineService
             writer = new OutputStreamWriter(output, charset);
             if (encoding != null)
             {
-                /*
-                 * Request based encoding is supported in Velocity 1.1.
-                 */
-                // Velocity.mergeTemplate(filename, encoding, context, writer);
                 Velocity.mergeTemplate(filename, encoding, context, writer);
             }
             else
@@ -379,6 +383,114 @@ public class TurbineVelocityService extends BaseTemplateEngineService
         }
 
         return charset;
+    }
+
+    /**
+     * Retrieve the required charset from the Turbine RunData in the context
+     *
+     * @param context A Context.
+     * @return The character set applied to the resulting String.
+     */
+    private String getCharSet(Context context)
+    {
+        String charset;
+        Object data = context.get("data");
+        if ((data != null) && (data instanceof RunData))
+        {
+            charset = ((RunData) data).getCharSet();
+            if (charset == null)
+            {
+                charset = DEFAULT_CHAR_SET;
+            }
+        }
+        else
+        {
+            charset = DEFAULT_CHAR_SET;
+        }
+
+        return charset;
+    }
+
+    /**
+     * Retrieve the required encoding from the Turbine RunData in the context
+     *
+     * @param context A Context.
+     * @return The encoding applied to the resulting String.
+     */
+    private String getEncoding(Context context)
+    {
+        String encoding;
+        Object data = context.get("data");
+        if ((data != null) && (data instanceof RunData))
+        {
+            encoding = ((RunData) data).getTemplateEncoding();
+        }
+        else
+        {
+           encoding = null;
+        }
+        return encoding;
+    }
+
+    /**
+     * Process the request and fill in the template with the values
+     * you set in the Context.
+     *
+     * @param context A Context.
+     * @param filename A String with the filename of the template.
+     * @param encoding The encoding to use with the template
+     * @param writer A Writer where we will write the process template as
+     * a String. This writer charset should be compatible with the selected
+     * encoding
+     *
+     * @throws TurbineException Any exception trown while processing will be
+     *         wrapped into a TurbineException and rethrown.
+     */
+    private void decodeRequest(Context context,
+                               String filename,
+                               String encoding,
+                               Writer writer)
+        throws TurbineException
+    {
+        /*
+         * This is for development.
+         */
+        if (pullModelActive && refreshToolsPerRequest)
+        {
+            TurbinePull.refreshGlobalTools();
+        }
+
+        try
+        {
+            if (encoding != null)
+            {
+                Velocity.mergeTemplate(filename, encoding, context, writer);
+            }
+            else
+            {
+                Velocity.mergeTemplate(filename, context, writer);
+            }
+        }
+        catch(Exception e)
+        {
+            renderingError(filename, e);
+        }
+        finally
+        {
+            try
+            {
+                if (writer != null)
+                {
+                    writer.flush();
+                }
+            }
+            catch (Exception ignored)
+            {
+                /*
+                 * do nothing.
+                 */
+            }
+        }
     }
 
     /**
