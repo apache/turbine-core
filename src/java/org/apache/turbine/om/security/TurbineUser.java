@@ -68,7 +68,7 @@ import org.apache.turbine.util.ObjectUtils;
 
 /**
  * A generic implementation of User interface.
- *
+ * <p>
  * This basic implementation contains the functionality that is
  * expected to be common among all User implementations.
  * You are welcome to extend this class if you wish to have
@@ -103,6 +103,7 @@ public class TurbineUser extends SecurityObject implements User
 
     /**
      * Constructor.
+     * <p>
      * Create a new User and set the createDate.
      */
     public TurbineUser()
@@ -278,10 +279,10 @@ public class TurbineUser extends SecurityObject implements User
     }
 
     /**
-     * Returns the username for this user.  If this is defined, then
-     * the user is considered logged in.
+     * Returns the username for this user.
      *
      * @return A String with the username.
+     * @deprecated use {@link #getName} instead.
      */
     public String getUserName()
     {
@@ -301,8 +302,7 @@ public class TurbineUser extends SecurityObject implements User
     }
 
     /**
-     * Returns the first name for this user.  If this is defined, then
-     * the user is considered logged in.
+     * Returns the first name for this user.
      *
      * @return A String with the user's first name.
      */
@@ -324,8 +324,7 @@ public class TurbineUser extends SecurityObject implements User
     }
 
     /**
-     * Returns the last name for this user.  If this is defined, then
-     * the user is considered logged in.
+     * Returns the last name for this user.
      *
      * @return A String with the user's last name.
      */
@@ -545,6 +544,7 @@ public class TurbineUser extends SecurityObject implements User
      * Sets the username for this user.
      *
      * @param username The user's username.
+     * @deprecated use {@link #setName} instead
      */
     public void setUserName(String username)
     {
@@ -624,7 +624,7 @@ public class TurbineUser extends SecurityObject implements User
     /**
      * Updates the last login date in the database.
      *
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public void updateLastLogin()
             throws Exception
@@ -708,6 +708,28 @@ public class TurbineUser extends SecurityObject implements User
     public void save(String dbname) throws Exception
     {
         throw new Exception("not implemented");
+    }
+
+    /**
+     * Returns the name of this user.  This will be the user name/
+     * login name.
+     *
+     * @return The name of the user.
+     */
+    public String getName()
+    {
+        return (String) getPerm(User.USERNAME);
+    }
+
+    /**
+     * Sets the name of this user.  This will be the user name/
+     * login name.
+     *
+     * @param name The name of the object.
+     */
+    public void setName(String name)
+    {
+        setPerm(User.USERNAME, name);
     }
 
 }
