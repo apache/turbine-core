@@ -111,6 +111,7 @@ public class TurbineJspService extends BaseTemplateEngineService
      * @param config The ServletConfiguration from Turbine
      *
      * @throws InitializationException Something went wrong when starting up.
+     * @deprecated use init() instead.
      */
     public void init(ServletConfig config) throws InitializationException
     {

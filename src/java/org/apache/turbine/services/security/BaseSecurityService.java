@@ -60,6 +60,7 @@ import java.security.MessageDigest;
 import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletConfig;
 import org.apache.torque.util.Criteria;
+import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
@@ -175,8 +176,24 @@ public abstract class BaseSecurityService
 
     /**
      * Initializes the SecurityService, locating the apropriate UserManager
+     * This is a zero parameter variant which queries the Turbine Servlet
+     * for its config.
+     *
+     * @throws InitializationException Something went wrong in the init
+     *         stage
+     */ 
+    public void init()
+        throws InitializationException
+    {
+        ServletConfig conf = Turbine.getTurbineServletConfig();
+        init(conf);
+    }
+
+    /**
+     * Initializes the SecurityService, locating the apropriate UserManager
      *
      * @param config a ServletConfig, to enforce early initialization
+     * @deprecated use init() instead.
      */
     public void init(ServletConfig config)
         throws InitializationException

@@ -106,6 +106,7 @@ public class TurbineServletService
      * @param config A ServletConfig.
      *
      * @throws InitializationException Something went wrong when starting up.
+     * @deprecated use init() instead.
      */
     public void init( ServletConfig servletConfig )
     {

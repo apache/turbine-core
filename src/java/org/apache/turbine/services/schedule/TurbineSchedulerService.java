@@ -58,6 +58,7 @@ import java.util.List;
 import java.util.Vector;
 import javax.servlet.ServletConfig;
 import org.apache.torque.util.Criteria;
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.resources.TurbineResources;
@@ -97,6 +98,21 @@ public class TurbineSchedulerService
     }
 
     /**
+     * Initializes the SchedulerService.
+     * This is a zero parameter variant which queries the Turbine Servlet
+     * for its config.
+     *
+     * @throws InitializationException Something went wrong in the init
+     *         stage
+     */ 
+    public void init()
+        throws InitializationException
+    {
+        ServletConfig conf = Turbine.getTurbineServletConfig();
+        init(conf);
+    }
+
+    /**
      * Called the first time the Service is used.<br>
      *
      * Load all the jobs from cold storage.  Add jobs to the queue
@@ -104,6 +120,7 @@ public class TurbineSchedulerService
      * thread.
      *
      * @param config A ServletConfig.
+     * @deprecated use init() instead.
      */
     public void init(ServletConfig config)
         throws InitializationException

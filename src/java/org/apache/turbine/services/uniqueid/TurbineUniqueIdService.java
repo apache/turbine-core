@@ -54,6 +54,7 @@ package org.apache.turbine.services.uniqueid;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.Turbine;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.GenerateUniqueId;
@@ -79,28 +80,34 @@ public class TurbineUniqueIdService
     protected static int counter;
 
     /**
+     * @deprecated Use init() instead
+     */
+    public void init(RunData data)
+    {
+        init();
+    }
+
+    /**
      * <p> Initializes the service upon first Turbine.doGet()
      * invocation.
-     *
-     * @param data A Turbine RunData object.
      */
-    public void init( RunData data )
+    public void init()
     {
         StringBuffer url = new StringBuffer();
-        url.append ( data.getServerScheme() );
+        url.append ( Turbine.getServerScheme() );
         url.append ( "://" );
-        url.append ( data.getServerName() );
-        if ( (data.getServerScheme().equals("http") &&
-              data.getServerPort() != 80) ||
-             (data.getServerScheme().equals("https") &&
-              data.getServerPort() != 443)
+        url.append ( Turbine.getServerName() );
+        if ( (Turbine.getServerScheme().equals("http") &&
+              Turbine.getServerPort() != "80") ||
+             (Turbine.getServerScheme().equals("https") &&
+              Turbine.getServerPort() != "443")
              )
         {
             url.append (":");
-            url.append ( data.getServerPort() );
+            url.append ( Turbine.getServerPort() );
         }
 
-        url.append ( data.getServerData().getScriptName() );
+        url.append ( Turbine.getScriptName() );
         turbineURL = url.toString();
 
         MD5 md5 = new MD5();

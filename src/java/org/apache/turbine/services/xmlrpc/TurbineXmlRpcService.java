@@ -71,6 +71,7 @@ import java.util.Iterator;
 import java.util.Vector;
 import javax.servlet.ServletConfig;
 import org.apache.commons.configuration.Configuration;
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.xmlrpc.util.FileTransfer;
@@ -129,7 +130,24 @@ public class TurbineXmlRpcService
     protected int port = 0;
 
     /**
+     * This function initializes the XmlRpcService.This is
+     * a zero parameter variant which queries the Turbine Servlet
+     * for its config.
+     *
+     * @throws InitializationException Something went wrong in the init
+     *         stage
+     */ 
+    public void init()
+        throws InitializationException
+    {
+        ServletConfig conf = Turbine.getTurbineServletConfig();
+        init(conf);
+    }
+
+    /**
      * This function initializes the XmlRpcService.
+     *
+     * @deprecated Use init() instead.
      */
     public void init(ServletConfig config) throws InitializationException
     {
