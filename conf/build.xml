@@ -2,7 +2,7 @@
 
 <!-- Build configuration file for Turbine -->
 
-<project name="tr-props-maker" default="tr-props-with-db-values" basedir=".">
+<project name="tr-props-maker" default="tr-props" basedir=".">
 
   <!-- Give user a chance to override without editing this file
       (and without typing -D each time it compiles it -->
@@ -12,9 +12,8 @@
   <property name="master.home" value="./master"/>
   <property name="conf.home" value="."/>
   <property name="target.dir" value="."/>
-    
+
   <property file="${conf.home}/master/meta.properties"/>
-  <property file="${conf.home}/database/${database.type}"/>
   <property file="${conf.home}/view/${view.type}"/>
 
   <property name="master" value="${master.home}/TurbineResources.master"/>
@@ -24,35 +23,13 @@
   <property name="fulcrum.copy" value="${target.dir}/Fulcrum.properties"/>
 
   <!-- =================================================================== -->
-  <!-- T R  P R O P S  W I T H  D B  V A L U E S                           -->
+  <!-- T R   P R O P S                                                     -->
   <!-- =================================================================== -->
-  <!-- Target used to generated TR.props file for storage in CVS, or for   -->
-  <!-- those who wish to generate their own TR.props file outside the      -->
-  <!-- use of the TDK.                                                     -->
+  <!-- Target used to generate TR.props.                                   -->
   <!-- =================================================================== -->
 
-  <target name="tr-props-with-db-values" depends="configure,configure-db">
-
-    <echo message="Creating TurbineResources ..."/>
-    <delete file="${copy}"/>
-    <delete file="${fulcrum.copy}"/>
-    
-    <copy file="${master}" tofile="${copy}" filtering="on"/>
-    <copy file="${fulcrum.master}" tofile="${fulcrum.copy}" filtering="on"/>
-
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- T R  P R O P S  W I T H O U T  D B  V A L U E S                     -->
-  <!-- =================================================================== -->
-  <!-- Target used to generate TR.props file for use in the TDK,           -->
-  <!-- specifically in conjunction with the generation of sample           -->
-  <!-- applications. The database values must be set by the user           -->
-  <!-- before the sample app is generated and the values plugged           -->
-  <!-- into the TR.props for the generated sample app.                     -->
-  <!-- =================================================================== -->
-
-  <target name="tr-props-without-db-values" depends="configure">
+  <target name="tr-props" depends="configure"
+          description="==> generate the properties files">
 
     <echo message="Creating TurbineResources ..."/>
     <delete file="${copy}"/>
@@ -61,35 +38,6 @@
     <copy file="${master}" tofile="${copy}" filtering="on"/>
     <copy file="${fulcrum.master}" tofile="${fulcrum.copy}" filtering="on"/>
 
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- C O N F I G U R E  D A T A B A S E  P R O P E R T I E S             -->
-  <!-- =================================================================== -->
-  <!-- Target to configure the database properties. Done separately so     -->
-  <!-- so that generating a standard TR.props for storage in CVS will      -->
-  <!-- will be a full example including all database related properties.   -->
-  <!-- But in the TDK we don't want the database properties set initially  -->
-  <!-- because these are set by the user in the project properties file    -->
-  <!-- before  the example app is generated. The database properties       -->
-  <!-- are taken from the project properties file and inserted into        -->
-  <!-- TR.props file while the example app is generated. This allows       -->
-  <!-- the database properties to be set in one location as opposed to     -->
-  <!-- requiring the user to change them in the project properties         -->
-  <!-- file and the TR.props file of the generated app.                    -->
-  <!-- =================================================================== -->
-
-  <target name="configure-db">
-    
-    <filter token="DATABASE_DRIVER" value="${database.driver}"/>
-    <filter token="DATABASE_URL" value="${database.url}"/>
-    <filter token="DATABASE_ADAPTOR" value="${database.adaptor}"/>
-    <filter token="DATABASE_USER" value="${database.user}"/>
-    <filter token="DATABASE_PASSWORD" value="${database.password}"/>
-    <filter token="DATABASE_NAME" value="${database.name}"/>
-    <filter token="DATABASE_DEFAULT" value="default"/>
-    <filter token="PROJECT" value="${project}"/>
-  
   </target>
 
   <!-- =================================================================== -->
@@ -98,17 +46,17 @@
   <!-- Target used to set the standard values of properties in             -->
   <!-- TR.props file.                                                      -->
   <!-- =================================================================== -->
-  
+
   <target name="configure">
-        
+
     <filter token="TURBINE_LOG" value="${turbine.log}"/>
-        
+
     <filter token="MAIL_SERVER" value="${mail.server}"/>
     <filter token="MAIL_SMTP_FROM" value="${mail.smtp.from}"/>
-        
+
     <filter token="MODULE_CACHE" value="${module.cache}"/>
     <filter token="MODULE_PACKAGES" value="${module.packages}"/>
-        
+
     <filter token="TEMPLATE_HOMEPAGE" value="${template.hompage}"/>
     <filter token="TEMPLATE_LOGIN" value="${template.login}"/>
 
@@ -140,7 +88,5 @@
     <filter token="LOCALE_DEFAULT_COUNTRY" value="${locale.default.country}"/>
 
     <filter token="INCLUDE_FILE" value="${include.file}"/>
-    
   </target>
-
 </project>
