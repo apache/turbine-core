@@ -26,6 +26,7 @@
         <li><a href="velocity-site-howto.html">Velocity Site Howto</a></li>
         <li><a href="context-howto.html">Velocity Context Howto</a></li>
         <li><a href="hibernate-howto.html">Hibernate OM Howto</a></li>
+        <li><a href="hibernate-howto.html">Configuration Howto</a></li>
         <li><a href="http://nagoya.apache.org/wiki/apachewiki.cgi?CategoryJakartaTurbine2HowTo">
             Additional Howtos from the Apache Wiki</a></li>
       </ul>
