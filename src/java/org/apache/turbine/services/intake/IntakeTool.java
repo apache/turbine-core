@@ -140,8 +140,7 @@ public class IntakeTool
 
                 if (foundGroups != null)
                 {
-                    Iterator iter = foundGroups.iterator();
-                    while (iter.hasNext())
+                    for (Iterator iter = foundGroups.iterator();iter.hasNext();)
                     {
                         Group group = (Group) iter.next();
                         groups.put(group.getObjectKey(), group);
@@ -157,8 +156,7 @@ public class IntakeTool
 
     public void addGroupsToParameters(ValueParser vp)
     {
-        Iterator i = groups.values().iterator();
-        while (i.hasNext())
+        for(Iterator i = groups.values().iterator();i.hasNext();)
         {
             Group group = (Group) i.next();
             if (!declaredGroups.containsKey(group.getIntakeGroupName()))
@@ -183,8 +181,7 @@ public class IntakeTool
     public String declareGroups()
     {
         allGroupsSB.setLength(0);
-        Iterator i = groups.values().iterator();
-        while (i.hasNext())
+        for(Iterator i = groups.values().iterator();i.hasNext();)
         {
             declareGroup((Group) i.next(), allGroupsSB);
         }
@@ -222,8 +219,7 @@ public class IntakeTool
     public void newForm()
     {
         declaredGroups.clear();
-        Iterator i = groups.values().iterator();
-        while (i.hasNext())
+        for(Iterator i = groups.values().iterator();i.hasNext();)
         {
             ((Group) i.next()).resetDeclared();
         }
@@ -371,8 +367,7 @@ public class IntakeTool
     public boolean isAllValid()
     {
         boolean allValid = true;
-        Iterator iter = groups.values().iterator();
-        while (iter.hasNext())
+        for(Iterator iter = groups.values().iterator();iter.hasNext();)
         {
             Group group = (Group) iter.next();
             allValid &= group.isAllValid();
@@ -478,8 +473,7 @@ public class IntakeTool
      */
     public void dispose()
     {
-        Iterator iter = groups.values().iterator();
-        while (iter.hasNext())
+        for(Iterator iter = groups.values().iterator();iter.hasNext();)
         {
             Group g = (Group) iter.next();
 

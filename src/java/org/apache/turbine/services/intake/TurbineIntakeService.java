@@ -364,8 +364,7 @@ public class TurbineIntakeService
         }
 
         List classNames = group.getMapToObjects();
-        Iterator iter2 = classNames.iterator();
-        while (iter2.hasNext())
+        for(Iterator iter2 = classNames.iterator();iter2.hasNext();)
         {
             String className = (String) iter2.next();
             if (!getterMap.containsKey(className))

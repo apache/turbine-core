@@ -62,7 +62,6 @@ import org.apache.ecs.AlignType;
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.ElementContainer;
 import org.apache.ecs.HtmlColor;
-
 import org.apache.ecs.html.B;
 import org.apache.ecs.html.BR;
 import org.apache.ecs.html.Font;
@@ -74,12 +73,9 @@ import org.apache.ecs.html.PRE;
 import org.apache.ecs.html.TD;
 import org.apache.ecs.html.TR;
 import org.apache.ecs.html.Table;
-
 import org.apache.turbine.modules.Navigation;
-
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
-
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
 
@@ -93,8 +89,8 @@ import org.apache.turbine.util.RunData;
 public class DefaultBottomNavigation extends Navigation
 {
     private static final boolean DEBUG = false;
-    private static String txt = 
-       "Turbine - A Servlet Framework for building Secure Dynamic Websites.";
+    private static String txt =
+            "Turbine - A Servlet Framework for building Secure Dynamic Websites.";
 
     /**
      * Build the Navigation.
@@ -103,124 +99,122 @@ public class DefaultBottomNavigation extends Navigation
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
-    public ConcreteElement doBuild( RunData data )
-        throws Exception
+    public ConcreteElement doBuild(RunData data)
+            throws Exception
     {
-        Form form; 
+        Form form;
         form = new Form(
-            new DynamicURI(data,"DefaultScreen","LogoutUser",true).toString(),
-            Form.POST)
+                new DynamicURI(data, "DefaultScreen", "LogoutUser", true).toString(),
+                Form.POST)
                 .addElement(new Input("SUBMIT", "Logout", "Logout"));
         ElementContainer body = new ElementContainer()
-            .addElement(new HR().setSize(1).setNoShade(true))
-            .addElement(new B().addElement(
-               new Font().setColor(HtmlColor.green).setSize(2).addElement(txt)))
-            .addElement(form);
+                .addElement(new HR().setSize(1).setNoShade(true))
+                .addElement(new B().addElement(
+                        new Font().setColor(HtmlColor.green).setSize(2).addElement(txt)))
+                .addElement(form);
 
-        if (DEBUG  &&  data.getUser() != null)
+        if(DEBUG && data.getUser() != null)
         {
             TD perm = new TD().setVAlign(AlignType.TOP);
             TD temp = new TD().setVAlign(AlignType.TOP);
-            java.util.Enumeration ePerm = 
-                data.getUser().getPermStorage().keys();
-            java.util.Enumeration eTemp = 
-                data.getUser().getTempStorage().keys();
+            java.util.Enumeration ePerm =
+                    data.getUser().getPermStorage().keys();
+            java.util.Enumeration eTemp =
+                    data.getUser().getTempStorage().keys();
 
-            perm.addElement("Perm values:").addElement( new BR() );
-            temp.addElement("Temp values:").addElement( new BR() );
-            while ( ePerm.hasMoreElements() )
+            perm.addElement("Perm values:").addElement(new BR());
+            temp.addElement("Temp values:").addElement(new BR());
+            while(ePerm.hasMoreElements())
             {
                 String key = (String) ePerm.nextElement();
                 String value = data.getUser().getPerm(key).toString();
-                perm.addElement( key + "=" + value )
-                    .addElement( new BR() );
+                perm.addElement(key + "=" + value)
+                        .addElement(new BR());
             }
-            while ( eTemp.hasMoreElements() )
+            while(eTemp.hasMoreElements())
             {
                 String key = (String) eTemp.nextElement();
                 String value = data.getUser().getTemp(key).toString();
-                temp.addElement( key + "=" + value )
-                    .addElement( new BR() );
+                temp.addElement(key + "=" + value)
+                        .addElement(new BR());
             }
             body.addElement(new BR()).addElement(new BR())
-                .addElement(new Table().setBorder(2).setCellPadding(10)
-                .addElement(new TR()
-                    .addElement(perm).addElement(temp) ));
+                    .addElement(new Table().setBorder(2).setCellPadding(10)
+                    .addElement(new TR()
+                    .addElement(perm).addElement(temp)));
         }
-        if (DEBUG)
+        if(DEBUG)
         {
             // If there are GET/POST/PATH_INFO variables put them into
             // a <PRE></PRE> tag so that they can be displayed on the
             // page. This is of course only for example purposes.
             PRE pre = new PRE();
             Enumeration keys = data.getParameters().keys();
-            while ( keys.hasMoreElements() )
+            while(keys.hasMoreElements())
             {
                 String key = (String) keys.nextElement();
                 String[] values = data.getParameters().getStrings(key);
-                if (values.length == 1)
+                if(values.length == 1)
                     pre.addElement(key + " = " + values[0] + "\n");
                 else
                 {
                     pre.addElement(key + " = ");
-                    for (int i=0; i<values.length; i++)
+                    for(int i = 0; i < values.length; i++)
                         pre.addElement(values[i] + " ");
                     pre.addElement("\n");
                 }
             }
-            body.addElement( new B("Query/PathInfo Parameters") )
-                .addElement( new BR() )
-                .addElement(pre);
+            body.addElement(new B("Query/PathInfo Parameters"))
+                    .addElement(new BR())
+                    .addElement(pre);
 
             Table table2 = new Table().setBorder(0);
             Hashtable varDebug = data.getVarDebug();
             keys = varDebug.keys();
             boolean hasValues2 = false;
-            while ( keys.hasMoreElements() )
+            while(keys.hasMoreElements())
             {
                 String key = (String) keys.nextElement();
                 String value = varDebug.get(key).toString();
                 TR tr = new TR()
-                    .addElement ( new TD().addElement(new B(key)) )
-                    .addElement ( new TD().addElement(" = " + value ) );
+                        .addElement(new TD().addElement(new B(key)))
+                        .addElement(new TD().addElement(" = " + value));
                 table2.addElement(tr);
                 hasValues2 = true;
             }
-            if ( hasValues2 )
+            if(hasValues2)
             {
-                body.addElement (new H4().addElement("Debugging Data:"));
-                body.addElement (table2);
+                body.addElement(new H4().addElement("Debugging Data:"));
+                body.addElement(table2);
             }
         }
 
-        if (DEBUG && data.getACL() != null)
+        if(DEBUG && data.getACL() != null)
         {
             // Print out user's permissions.
             PRE pre = new PRE();
-            Iterator rs = data.getACL().getRoles().elements();
-            while ( rs.hasNext() )
+            for(Iterator rs = data.getACL().getRoles().elements(); rs.hasNext();)
             {
-                String roleName =  ((Role)rs.next()).getName();
+                String roleName = ((Role) rs.next()).getName();
                 pre.addElement(roleName + "\n");
             }
             body
-                .addElement( new BR() )
-                .addElement( new B("ROLES") )
-                .addElement( new BR() )
-                .addElement(pre);
+                    .addElement(new BR())
+                    .addElement(new B("ROLES"))
+                    .addElement(new BR())
+                    .addElement(pre);
 
             pre = new PRE();
-            Iterator ps = data.getACL().getPermissions().elements();
-            while ( ps.hasNext() )
+            for(Iterator ps = data.getACL().getPermissions().elements(); ps.hasNext();)
             {
-                String permissionName =  ((Permission)ps.next()).getName();
+                String permissionName = ((Permission) ps.next()).getName();
                 pre.addElement(permissionName + "\n");
             }
             body
-                .addElement( new BR() )
-                .addElement( new B("PERMISSIONS") )
-                .addElement( new BR() )
-                .addElement(pre);
+                    .addElement(new BR())
+                    .addElement(new B("PERMISSIONS"))
+                    .addElement(new BR())
+                    .addElement(pre);
 
         }
 

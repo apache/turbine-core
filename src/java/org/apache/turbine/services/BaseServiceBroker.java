@@ -57,6 +57,7 @@ package org.apache.turbine.services;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
+
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
@@ -83,7 +84,7 @@ import org.apache.commons.logging.LogFactory;
  * @version $Id$
  */
 public abstract class BaseServiceBroker
-    implements ServiceBroker
+        implements ServiceBroker
 {
     /**
      * Mapping of Service names to class names.
@@ -243,12 +244,10 @@ public abstract class BaseServiceBroker
          * There's no point in retrieving an ordered set
          * of keys if they aren't kept in order :-)
          */
-        Iterator keys = configuration.getKeys();
-
-        while(keys.hasNext())
+        for(Iterator keys = configuration.getKeys(); keys.hasNext();)
         {
-            String key = (String)keys.next();
-            String [] keyParts = StringUtils.split(key, ".");
+            String key = (String) keys.next();
+            String[] keyParts = StringUtils.split(key, ".");
 
             if ((keyParts.length == 3)
                 && (keyParts[0] + ".").equals(SERVICE_PREFIX)
@@ -257,10 +256,10 @@ public abstract class BaseServiceBroker
                 String serviceKey = keyParts[1];
                 log.info("Added Mapping for Service: " + serviceKey);
 
-                if (! mapping.containsKey(serviceKey))
+                if(!mapping.containsKey(serviceKey))
                 {
                     mapping.setProperty(serviceKey,
-                                        configuration.getString(key));
+                            configuration.getString(key));
                 }
             }
         }
@@ -310,14 +309,14 @@ public abstract class BaseServiceBroker
      * service was not successful.
      */
     public synchronized void initService(String name)
-        throws InitializationException
+            throws InitializationException
     {
         // Calling getServiceInstance(name) assures that the Service
         // implementation has its name and broker reference set before
         // initialization.
         Service instance = getServiceInstance(name);
 
-        if (!instance.getInit())
+        if(!instance.getInit())
         {
             // this call might result in an indirect recursion
             instance.init();
@@ -336,10 +335,10 @@ public abstract class BaseServiceBroker
         {
             initServices(false);
         }
-        catch (InstantiationException notThrown)
+        catch(InstantiationException notThrown)
         {
         }
-        catch (InitializationException notThrown)
+        catch(InitializationException notThrown)
         {
         }
     }
@@ -353,13 +352,12 @@ public abstract class BaseServiceBroker
      * @param report <code>true</code> if you want exceptions thrown.
      */
     public void initServices(boolean report)
-        throws InstantiationException, InitializationException
+            throws InstantiationException, InitializationException
     {
-        Iterator names = getServiceNames();
-        if (report)
+        if(report)
         {
             // Throw exceptions
-            while (names.hasNext())
+            for(Iterator names = getServiceNames(); names.hasNext();)
             {
                 doInitService((String) names.next());
             }
@@ -367,19 +365,19 @@ public abstract class BaseServiceBroker
         else
         {
             // Eat exceptions
-            while (names.hasNext())
+            for(Iterator names = getServiceNames(); names.hasNext();)
             {
                 try
                 {
                     doInitService((String) names.next());
                 }
-                // In case of an exception, file an error message; the
-                // system may be still functional, though.
-                catch (InstantiationException e)
+                        // In case of an exception, file an error message; the
+                        // system may be still functional, though.
+                catch(InstantiationException e)
                 {
                     log.error(e);
                 }
-                catch (InitializationException e)
+                catch(InitializationException e)
                 {
                     log.error(e);
                 }
@@ -393,10 +391,10 @@ public abstract class BaseServiceBroker
      * to prevent duplication of code.
      */
     private void doInitService(String name)
-        throws InstantiationException, InitializationException
+            throws InstantiationException, InitializationException
     {
         // Only start up services that have their earlyInit flag set.
-        if (getConfiguration(name).getBoolean("earlyInit", false))
+        if(getConfiguration(name).getBoolean("earlyInit", false))
         {
             log.info("Start Initializing service (early): " + name);
             initService(name);
@@ -417,10 +415,10 @@ public abstract class BaseServiceBroker
         try
         {
             Service service = getServiceInstance(name);
-            if (service != null && service.getInit())
+            if(service != null && service.getInit())
             {
                 service.shutdown();
-                if (service.getInit() && service instanceof BaseService)
+                if(service.getInit() && service instanceof BaseService)
                 {
                     // BaseService::shutdown() does this by default,
                     // but could've been overriden poorly.
@@ -428,11 +426,11 @@ public abstract class BaseServiceBroker
                 }
             }
         }
-        catch (InstantiationException e)
+        catch(InstantiationException e)
         {
             // Assuming harmless -- log the error and continue.
             log.error("Shutdown of a nonexistent Service '"
-                      + name + "' was requested", e);
+                    + name + "' was requested", e);
         }
     }
 
@@ -444,7 +442,6 @@ public abstract class BaseServiceBroker
     {
         log.info("Shutting down all services!");
 
-        Iterator serviceNames = getServiceNames();
         String serviceName = null;
 
         /*
@@ -456,15 +453,13 @@ public abstract class BaseServiceBroker
 
         ArrayList reverseServicesList = new ArrayList();
 
-        while (serviceNames.hasNext())
+        for(Iterator serviceNames = getServiceNames(); serviceNames.hasNext();)
         {
             serviceName = (String) serviceNames.next();
             reverseServicesList.add(0, serviceName);
         }
 
-        serviceNames = reverseServicesList.iterator();
-
-        while (serviceNames.hasNext())
+        for(Iterator serviceNames = reverseServicesList.iterator(); serviceNames.hasNext();)
         {
             serviceName = (String) serviceNames.next();
             log.info("Shutting down service: " + serviceName);
@@ -481,17 +476,17 @@ public abstract class BaseServiceBroker
      * can't be initialized.
      */
     public Service getService(String name)
-        throws InstantiationException
+            throws InstantiationException
     {
         Service service;
         try
         {
             service = getServiceInstance(name);
-            if (!service.getInit())
+            if(!service.getInit())
             {
-                synchronized (service.getClass())
+                synchronized(service.getClass())
                 {
-                    if (!service.getInit())
+                    if(!service.getInit())
                     {
                         log.info("Start Initializing service (late): " + name);
                         service.init();
@@ -499,21 +494,21 @@ public abstract class BaseServiceBroker
                     }
                 }
             }
-            if (!service.getInit())
+            if(!service.getInit())
             {
                 // this exception will be caught & rethrown by this very method.
                 // getInit() returning false indicates some initialization issue,
                 // which in turn prevents the InitableBroker from passing a
                 // reference to a working instance of the initable to the client.
                 throw new InitializationException(
-                    "init() failed to initialize service " + name);
+                        "init() failed to initialize service " + name);
             }
             return service;
         }
-        catch (InitializationException e)
+        catch(InitializationException e)
         {
             throw new InstantiationException("Service " + name +
-                                             " failed to initialize", e);
+                    " failed to initialize", e);
         }
     }
 
@@ -535,56 +530,56 @@ public abstract class BaseServiceBroker
      * can't be initialized.
      */
     protected Service getServiceInstance(String name)
-        throws InstantiationException
+            throws InstantiationException
     {
         Service service = (Service) services.get(name);
 
-        if (service == null)
+        if(service == null)
         {
             String className = mapping.getString(name);
-            if (StringUtils.isEmpty(className))
+            if(StringUtils.isEmpty(className))
             {
                 throw new InstantiationException(
-                    "ServiceBroker: unknown service " + name + " requested");
+                        "ServiceBroker: unknown service " + name + " requested");
             }
             try
             {
                 service = (Service) services.get(className);
 
-                if (service == null)
+                if(service == null)
                 {
                     try
                     {
                         service = (Service) Class.forName(className).newInstance();
                     }
-                    // those two errors must be passed to the VM
-                    catch (ThreadDeath t)
+                            // those two errors must be passed to the VM
+                    catch(ThreadDeath t)
                     {
                         throw t;
                     }
-                    catch (OutOfMemoryError t)
+                    catch(OutOfMemoryError t)
                     {
                         throw t;
                     }
-                    catch (Throwable t)
+                    catch(Throwable t)
                     {
                         // Used to indicate error condition.
                         String msg = null;
 
-                        if (t instanceof NoClassDefFoundError)
+                        if(t instanceof NoClassDefFoundError)
                         {
                             msg = "A class referenced by " + className +
-                                " is unavailable. Check your jars and classes.";
+                                    " is unavailable. Check your jars and classes.";
                         }
-                        else if (t instanceof ClassNotFoundException)
+                        else if(t instanceof ClassNotFoundException)
                         {
                             msg = "Class " + className +
-                                " is unavailable. Check your jars and classes.";
+                                    " is unavailable. Check your jars and classes.";
                         }
-                        else if (t instanceof ClassCastException)
+                        else if(t instanceof ClassCastException)
                         {
                             msg = "Class " + className +
-                                " doesn't implement the Service interface";
+                                    " doesn't implement the Service interface";
                         }
                         else
                         {
@@ -595,15 +590,15 @@ public abstract class BaseServiceBroker
                     }
                 }
             }
-            catch (ClassCastException e)
+            catch(ClassCastException e)
             {
                 throw new InstantiationException("ServiceBroker: Class "
-                    + className + " does not implement Service interface.", e);
+                        + className + " does not implement Service interface.", e);
             }
-            catch (InstantiationException e)
+            catch(InstantiationException e)
             {
                 throw new InstantiationException(
-                    "Failed to instantiate service " + name, e);
+                        "Failed to instantiate service " + name, e);
             }
             service.setServiceBroker(this);
             service.setName(name);

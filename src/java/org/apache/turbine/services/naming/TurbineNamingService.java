@@ -100,10 +100,9 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
         // instance.
         try
         {
-            Iterator contextKeys = TurbineResources.getKeys("context.");
             contextPropsList = new Hashtable();
 
-            while (contextKeys.hasNext())
+            for(Iterator contextKeys = TurbineResources.getKeys("context.");contextKeys.hasNext();)
             {
                 String key = (String) contextKeys.next();
                 int start = key.indexOf(".") + 1;

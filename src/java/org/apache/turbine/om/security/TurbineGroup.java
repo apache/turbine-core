@@ -56,6 +56,7 @@ package org.apache.turbine.om.security;
 
 import java.sql.Connection;
 import java.util.Iterator;
+
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.security.RoleSet;
 import org.apache.turbine.util.security.TurbineSecurityException;
@@ -175,8 +176,7 @@ public class TurbineGroup extends SecurityObject implements Group
     public void grant(User user, RoleSet roleSet)
             throws TurbineSecurityException
     {
-        Iterator roles = roleSet.elements();
-        while(roles.hasNext())
+        for(Iterator roles = roleSet.elements(); roles.hasNext();)
         {
             TurbineSecurity.grant(user, this, (Role) roles.next());
         }
@@ -206,8 +206,7 @@ public class TurbineGroup extends SecurityObject implements Group
     public void revoke(User user, RoleSet roleSet)
             throws TurbineSecurityException
     {
-        Iterator roles = roleSet.elements();
-        while (roles.hasNext())
+        for(Iterator roles = roleSet.elements(); roles.hasNext();)
         {
             TurbineSecurity.revoke(user, this, (Role) roles.next());
         }

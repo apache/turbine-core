@@ -54,17 +54,13 @@ package org.apache.turbine.modules.actions;
  * <http://www.apache.org/>.
  */
 
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
-
 import javax.naming.InitialContext;
 
 import org.apache.turbine.modules.Action;
-
 import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.util.RunData;
 
 /**
@@ -84,7 +80,7 @@ public class InitContextsAction extends Action
      * @exception Exception, a generic exception.
      */
     public void doPerform(RunData data)
-        throws Exception
+            throws Exception
     {
         // Context properties are specified in lines in the properties
         // file that begin with "context.contextname.", allowing
@@ -93,34 +89,32 @@ public class InitContextsAction extends Action
         // used by the InitialContext class to create a new context
         // instance.
 
-        Iterator contextKeys = TurbineResources.getKeys("context.");
         Hashtable contextPropsList = new Hashtable();
-        while (contextKeys.hasNext())
+        for(Iterator contextKeys = TurbineResources.getKeys("context."); contextKeys.hasNext();)
         {
             String key = (String) contextKeys.next();
             int start = key.indexOf(".") + 1;
             int end = key.indexOf(".", start);
             String contextName = key.substring(start, end);
             Properties contextProps = null;
-            if (contextPropsList.containsKey(contextName))
+            if(contextPropsList.containsKey(contextName))
             {
                 contextProps =
-                    (Properties) contextPropsList.get(contextName);
+                        (Properties) contextPropsList.get(contextName);
             }
             else
             {
                 contextProps = new Properties();
             }
             contextProps.put(key.substring(end + 1),
-                             TurbineResources.getString(key));
+                    TurbineResources.getString(key));
             contextPropsList.put(contextName, contextProps);
         }
-        Enumeration contextPropsKeys = contextPropsList.keys();
-        while (contextPropsKeys.hasMoreElements())
+        for(Iterator contextPropsKeys = contextPropsList.keySet().iterator(); contextPropsKeys.hasNext();)
         {
-            String key = (String) contextPropsKeys.nextElement();
+            String key = (String) contextPropsKeys.next();
             Properties contextProps =
-                (Properties) contextPropsList.get(key);
+                    (Properties) contextPropsList.get(key);
             InitialContext context = new InitialContext(contextProps);
             data.getJNDIContexts().put(key, context);
         }

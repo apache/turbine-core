@@ -56,6 +56,7 @@ package org.apache.turbine.om.security;
 
 import java.sql.Connection;
 import java.util.Iterator;
+
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.security.PermissionSet;
 import org.apache.turbine.util.security.TurbineSecurityException;
@@ -84,7 +85,7 @@ public class TurbineRole extends SecurityObject implements Role
      *
      * @param name The name of the new object.
      */
-    public TurbineRole( String name )
+    public TurbineRole(String name)
     {
         super(name);
     }
@@ -99,7 +100,7 @@ public class TurbineRole extends SecurityObject implements Role
      * @exception Exception, a generic exception.
      */
     public PermissionSet getPermissions()
-        throws Exception
+            throws Exception
     {
         return permissionSet;
     }
@@ -123,8 +124,8 @@ public class TurbineRole extends SecurityObject implements Role
      * @return An object representing the new Role.
      * @throws TurbineSecurityException if the Role could not be created.
      */
-    public Role create( String name )
-        throws TurbineSecurityException
+    public Role create(String name)
+            throws TurbineSecurityException
     {
         //Role role = new Role(name);
         Role role = new TurbineRole(name);
@@ -139,7 +140,7 @@ public class TurbineRole extends SecurityObject implements Role
      *  saving data.
      */
     public void save()
-        throws TurbineSecurityException
+            throws TurbineSecurityException
     {
         TurbineSecurity.saveRole(this);
     }
@@ -172,7 +173,7 @@ public class TurbineRole extends SecurityObject implements Role
      * @throws TurbineSecurityException if the Role could not be removed.
      */
     public void remove()
-        throws TurbineSecurityException
+            throws TurbineSecurityException
     {
         TurbineSecurity.removeRole(this);
     }
@@ -184,7 +185,7 @@ public class TurbineRole extends SecurityObject implements Role
      * @throws TurbineSecurityException if the Role could not be renamed.
      */
     public void rename(String name)
-        throws TurbineSecurityException
+            throws TurbineSecurityException
     {
         TurbineSecurity.renameRole(this, name);
     }
@@ -197,7 +198,7 @@ public class TurbineRole extends SecurityObject implements Role
      * the Permission.
      */
     public void grant(Permission permission)
-        throws TurbineSecurityException
+            throws TurbineSecurityException
     {
         TurbineSecurity.grant(this, permission);
     }
@@ -210,12 +211,11 @@ public class TurbineRole extends SecurityObject implements Role
      * the Permissions.
      */
     public void grant(PermissionSet permissionSet)
-        throws TurbineSecurityException
+            throws TurbineSecurityException
     {
-        Iterator permissions = permissionSet.elements();
-        while(permissions.hasNext())
+        for(Iterator permissions = permissionSet.elements(); permissions.hasNext();)
         {
-            TurbineSecurity.grant(this, (Permission)permissions.next());
+            TurbineSecurity.grant(this, (Permission) permissions.next());
         }
     }
 
@@ -227,7 +227,7 @@ public class TurbineRole extends SecurityObject implements Role
      * the Permission.
      */
     public void revoke(Permission permission)
-        throws TurbineSecurityException
+            throws TurbineSecurityException
     {
         TurbineSecurity.revoke(this, permission);
     }
@@ -240,12 +240,11 @@ public class TurbineRole extends SecurityObject implements Role
      * the Permissions.
      */
     public void revoke(PermissionSet permissionSet)
-        throws TurbineSecurityException
+            throws TurbineSecurityException
     {
-        Iterator permissions = permissionSet.elements();
-        while(permissions.hasNext())
+        for(Iterator permissions = permissionSet.elements(); permissions.hasNext();)
         {
-            TurbineSecurity.revoke(this, (Permission)permissions.next());
+            TurbineSecurity.revoke(this, (Permission) permissions.next());
         }
     }
 }
