@@ -94,6 +94,9 @@ displayName:    An optional name for the field that can be used for display
 
                 Default: name
 
+displaySize:    An optional size value to use when create the HTML input tag
+                for this field.
+
 type:           Type of data contained in the field.
 
                 Default: "String"
@@ -157,6 +160,7 @@ Used in:        group
   key CDATA #REQUIRED
   name CDATA #REQUIRED
   displayName CDATA #IMPLIED
+  displaySize CDATA #IMPLIED
   type ( boolean | BigDecimal | int  | float | FileItem
        | String | DateString  | StringKey | NumberKey
        | ComboKey | double ) "String"
