@@ -284,28 +284,25 @@ public class Turbine
      */
     public final void init(RunData data)
     {
-        if (firstDoGet)
+        synchronized (Turbine.class)
         {
-            synchronized (Turbine.class)
+            if (firstDoGet)
             {
-                if (firstDoGet)
-                {
-                    serverName = data.getRequest().getServerName();
-                    serverPort = Integer.toString(data.getRequest().getServerPort());
-                    serverScheme = data.getRequest().getScheme();
-
-                    // Store the context path for tools like ContentURI and
-                    // the UIManager that use webapp context path information
-                    // for constructing URLs.
-                    contextPath = data.getRequest().getContextPath();
-
-                    log("Turbine: Starting HTTP initialization of services");
-                    TurbineServices.getInstance().initServices(data);
-                    log("Turbine: Completed HTTP initialization of services");
-
-                    // Mark that we're done.
-                    firstDoGet = false;
-               }
+                serverName = data.getRequest().getServerName();
+                serverPort = Integer.toString(data.getRequest().getServerPort());
+                serverScheme = data.getRequest().getScheme();
+                
+                // Store the context path for tools like ContentURI and
+                // the UIManager that use webapp context path information
+                // for constructing URLs.
+                contextPath = data.getRequest().getContextPath();
+                
+                log("Turbine: Starting HTTP initialization of services");
+                TurbineServices.getInstance().initServices(data);
+                log("Turbine: Completed HTTP initialization of services");
+                
+                // Mark that we're done.
+                firstDoGet = false;
             }
         }
     }
@@ -397,7 +394,10 @@ public class Turbine
             // If this is the first invocation, perform some
             // initialization.  Certain services need RunData to initialize
             // themselves.
-            init(data);
+            if (firstDoGet)
+            {
+                init(data);
+            }
 
             // set the session timeout if specified in turbine's properties
             // file if this is a new session
@@ -413,11 +413,6 @@ public class Turbine
             // Fill in the screen and action variables.
             data.setScreen ( data.getParameters().getString("screen") );
             data.setAction ( data.getParameters().getString("action") );
-
-            // Get the instance of the Session Validator.
-            SessionValidator sessionValidator = (SessionValidator)ActionLoader
-                .getInstance().getInstance(TurbineResources.getString(
-                    "action.sessionvalidator"));
 
             // Special case for login and logout, this must happen before the
             // session validator is executed in order either to allow a user to
