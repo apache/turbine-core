@@ -78,10 +78,10 @@ public class FloatValidator
         extends NumberValidator
 {
     /* Init the minValue to that for a Float */
-    private float minValue = Float.MIN_VALUE;
+    private float minValue = Float.NEGATIVE_INFINITY;
 
     /* Init the maxValue to that for a Float */
-    private float maxValue = Float.MAX_VALUE;
+    private float maxValue = Float.POSITIVE_INFINITY;
 
     /**
      * Constructor to use when initialising Object

@@ -78,10 +78,10 @@ public class DoubleValidator
         extends NumberValidator
 {
     /* Init the minValue to that for a Double */
-    private double minValue = Double.MIN_VALUE;
+    private double minValue = Double.NEGATIVE_INFINITY;
 
     /* Init the maxValue to that for a Double */
-    private double maxValue = Double.MAX_VALUE;
+    private double maxValue = Double.POSITIVE_INFINITY;
 
     /**
      * Constructor to use when initialising Object
