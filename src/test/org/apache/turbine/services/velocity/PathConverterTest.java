@@ -102,7 +102,7 @@ public class PathConverterTest
     {
 
         // Can we start the service?
-        assertTrue("Could not load Service!", vs != null);
+        assertNotNull("Could not load Service!", vs);
     }
 
     public void testPathTranslation()
