@@ -398,6 +398,14 @@
       <url>http://jakarta.apache.org/avalon/</url>
     </dependency>
     <dependency>
+      <id>fulcrum-localization</id>
+      <version>1.0-alpha-3</version>
+      <url>http://jakarta.apache.org/turbine/fulcrum/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>    
+    <dependency>
       <id>jaf:activation</id>
       <version>1.0.2</version>
       <url>http://java.sun.com/products/javabeans/glasgow/jaf.html</url>
@@ -489,6 +497,17 @@
       <version>1.2-b1</version>
       <url>http://xml.apache.org/xmlrpc/</url>
     </dependency>
+    
+    <dependency>
+      <groupId>mockobjects</groupId>
+      <artifactId>mockobjects-jdk1.4-j2ee1.3</artifactId>
+      <version>0.09</version>
+    </dependency> 
+    <dependency>
+      <groupId>mockobjects</groupId>
+      <artifactId>mockobjects-core</artifactId>
+      <version>0.09</version>
+    </dependency>     
   </dependencies>
 
   <build>

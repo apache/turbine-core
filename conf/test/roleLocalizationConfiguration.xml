@@ -1,0 +1,9 @@
+<!-- This configuration file for Avalon components is used for testing the TorqueComponent -->
+
+<role-list>
+    <role
+        name="org.apache.fulcrum.localization.LocalizationService"
+        shorthand="localization"
+        default-class="org.apache.fulcrum.localization.DefaultLocalizationService"/>
+</role-list>
+

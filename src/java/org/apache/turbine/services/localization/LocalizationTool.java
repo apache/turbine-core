@@ -1,5 +1,4 @@
 package org.apache.turbine.services.localization;
-
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -53,20 +52,22 @@ package org.apache.turbine.services.localization;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-
 import java.util.Locale;
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
+import org.apache.turbine.services.InstantiationException;
+import org.apache.avalon.framework.component.ComponentException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.fulcrum.localization.LocalizationService;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
-
 /**
  * A pull tool which provides lookups for localized text by delegating
- * to the configured <code>LocalizationService</code>.
+ * to the configured Fulcrum <code>LocalizationService</code>.
  *
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @author <a href="mailto:jon@collab.net">Jon Stevens</a>
  */
@@ -74,23 +75,33 @@ public class LocalizationTool implements ApplicationTool
 {
     /** Logging */
     private static Log log = LogFactory.getLog(LocalizationTool.class);
-
+    /** Fulcrum Localization component */
+    private LocalizationService localizationService;
     /**
      * The language and country information parsed from the request's
      * <code>Accept-Language</code> header.  Reset on each request.
      */
     protected Locale locale;
-
+    
     /**
-     * The bundle for this request.
+     * Lazy load the LocalizationService.
+     * @return a fulcrum LocalizationService
      */
-    private ResourceBundle bundle;
-
-    /**
-     * The name of the bundle for this tool to use.
-     */
-    private String bundleName;
-
+    public LocalizationService getLocalizationService()
+    {
+        if (localizationService == null)
+        {
+            AvalonComponentService acs =
+                (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
+                try {
+            localizationService = (LocalizationService)acs.lookup(LocalizationService.ROLE);
+                }
+                catch (ComponentException ce) {
+                    throw new InstantiationException("Problem looking up Localization Service:"+ce.getMessage());
+                }
+        }
+        return localizationService;
+    }
     /**
      * Creates a new instance.  Used by <code>PullService</code>.
      */
@@ -98,7 +109,6 @@ public class LocalizationTool implements ApplicationTool
     {
         refresh();
     }
-
     /**
      * <p>Performs text lookups for localization.</p>
      *
@@ -116,7 +126,7 @@ public class LocalizationTool implements ApplicationTool
     {
         try
         {
-            return Localization.getString(getBundleName(null), getLocale(), key);
+            return getLocalizationService().getString(getBundleName(null), getLocale(), key);
         }
         catch (MissingResourceException noKey)
         {
@@ -124,7 +134,6 @@ public class LocalizationTool implements ApplicationTool
             return null;
         }
     }
-
     /**
      * Gets the current locale.
      *
@@ -134,7 +143,6 @@ public class LocalizationTool implements ApplicationTool
     {
         return locale;
     }
-
     /**
      * The return value of this method is used to set the name of the
      * bundle used by this tool.  Useful as a hook for using a
@@ -146,12 +154,9 @@ public class LocalizationTool implements ApplicationTool
      */
     protected String getBundleName(Object data)
     {
-        return Localization.getDefaultBundleName();
+        return getLocalizationService().getDefaultBundleName();
     }
-
-
     // ApplicationTool implmentation
-
     /**
      * Sets the request to get the <code>Accept-Language</code> header
      * from (reset on each request).
@@ -162,18 +167,14 @@ public class LocalizationTool implements ApplicationTool
         {
             // Pull necessary information out of RunData while we have
             // a reference to it.
-            locale = Localization.getLocale(((RunData) data).getRequest());
-            bundleName = getBundleName(data);
+            locale = getLocalizationService().getLocale(((RunData) data).getRequest());
         }
     }
-
     /**
      * No-op.
      */
     public void refresh()
     {
         locale = null;
-        bundle = null;
-        bundleName = null;
     }
 }

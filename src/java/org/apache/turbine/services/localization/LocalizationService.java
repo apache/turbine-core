@@ -71,6 +71,7 @@ import org.apache.turbine.services.Service;
  * <a href="http://www.math.fu-berlin.de/~rene/www/java/tutorial/i18n/message/messageFormat.html">dealing with concatenated messages</a>
  * using <code>MessageFormat</code> and properties files.</p>
  *
+ * @deprecated Use the Fulcrum Localization component instead.
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:leonardr@collab.net">Leonard Richardson</a>
