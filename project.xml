@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <name>jakarta-turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.2-rc2-dev</currentVersion>
+  <currentVersion>2.2-rc2</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -22,7 +22,7 @@
   <issueTrackingUrl>http://issues.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
   <siteAddress>jakarta.apache.org</siteAddress>
   <siteDirectory>/www/jakarta.apache.org/turbine/turbine-2/</siteDirectory>
-  <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-turbine-2/</distributionDirectory>
+  <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-turbine/turbine-2/</distributionDirectory>
 
   <repository>
     <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2</connection>
@@ -448,7 +448,7 @@
     </dependency>
     <dependency>
       <id>torque</id>
-      <version>3.0-rc1</version>
+      <version>3.0-rc2</version>
       <url>http://jakarta.apache.org/turbine/torque/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
@@ -464,7 +464,7 @@
     </dependency>
     <dependency>
       <id>village</id>
-      <version>1.5.3</version>
+      <version>2.0-dev-20021111</version>
       <url>http://share.whichever.com/index.php?SCREEN=village</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
