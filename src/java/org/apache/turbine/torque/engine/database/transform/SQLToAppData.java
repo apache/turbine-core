@@ -25,13 +25,13 @@ package org.apache.turbine.torque.engine.database.transform;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -76,10 +76,11 @@ import org.apache.turbine.torque.engine.sql.Token;
  * sql tokens and the parses these to create the AppData
  * class. SQLToAppData is in effect a simplified sql parser.
  *
- * 
+ *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
 public class SQLToAppData
 {
@@ -146,7 +147,7 @@ public class SQLToAppData
      */
     private void err (String name) throws ParseException
     {
-        throw new ParseException (name + " at [ line: " + token.getLine() + 
+        throw new ParseException (name + " at [ line: " + token.getLine() +
             " col: "+token.getCol()+" ]");
     }
 
@@ -187,7 +188,7 @@ public class SQLToAppData
         {
             Create_Table_Column(tbl);
         }
-        
+
         if (tbl.getPrimaryKey().size() == 1)
         {
             tbl.setIdMethod("idbroker");
@@ -196,8 +197,8 @@ public class SQLToAppData
         {
             tbl.setIdMethod("none");
         }
-        	
-        
+
+
         appDataDB.addTable (tbl);
     }
 
@@ -212,7 +213,7 @@ public class SQLToAppData
         // PRIMARY/FOREIGN/UNIQUE
         if (token.getStr().equals(","))
             next();
-        
+
         if (token.getStr().toUpperCase().equals("PRIMARY"))
             Create_Table_Column_Primary (tbl);
         else if (token.getStr().toUpperCase().equals("FOREIGN"))
@@ -281,7 +282,7 @@ public class SQLToAppData
 
         next(); // skip the )
     }
-    
+
     /**
      * Parses FOREIGN KEY (BAR) REFERENCES TABLE (BAR) statement
      */
@@ -418,7 +419,7 @@ public class SQLToAppData
             columnSize = columnSize + columnPrecision;
         col.setTypeFromString (columnType,columnSize);
         tbl.addColumn (col);
-        
+
         if ( inEnum )
         {
             col.setNotNull(true);
@@ -434,7 +435,7 @@ public class SQLToAppData
                 if (token.getStr().toUpperCase().equals("NOT"))
                 {
                     next();
-                    if (!token.getStr().toUpperCase().equals("NULL")) 
+                    if (!token.getStr().toUpperCase().equals("NULL"))
                         err ("NULL expected after NOT");
                     col.setNotNull(true);
                     next();
@@ -442,7 +443,7 @@ public class SQLToAppData
                 else if (token.getStr().toUpperCase().equals("PRIMARY"))
                 {
                     next();
-                    if (!token.getStr().toUpperCase().equals("KEY")) 
+                    if (!token.getStr().toUpperCase().equals("KEY"))
                         err ("KEY expected after PRIMARY");
                     col.setPrimaryKey(true);
                     next();

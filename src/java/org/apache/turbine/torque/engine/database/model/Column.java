@@ -71,6 +71,7 @@ import org.xml.sax.Attributes;
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
 public class Column
 {
@@ -104,7 +105,7 @@ public class Column
      */
     public Column()
     {
-		this(null);
+        this(null);
     }
 
     /**
@@ -433,7 +434,7 @@ public class Column
         if (referrers == null)
         {
             referrers = new ArrayList(5);
-		}
+        }
         referrers.add(fk);
     }
 
@@ -445,7 +446,7 @@ public class Column
         if (referrers == null)
         {
             referrers = new ArrayList(5);
-		}
+        }
         return referrers;
     }
 
@@ -516,21 +517,21 @@ public class Column
         if (size != null)
         {
             result.append(" size=\"").append(size).append('"');
-		}
+        }
 
         if (defaultValue != null)
         {
             result.append(" default=\"").append(defaultValue).append('"');
-		}
+        }
 
         if (isInheritance())
         {
-			result.append(" inheritance=\"").append(inheritanceType)
-	            .append('"');
-	    }
+            result.append(" inheritance=\"").append(inheritanceType)
+                .append('"');
+        }
 
-	    // Close the column.
-	    result.append(" />\n");
+        // Close the column.
+        result.append(" />\n");
 
         return result.toString();
     }
@@ -647,7 +648,7 @@ public class Column
         if (size != null)
         {
             this.size = size;
-        }            
+        }
 
         if (tn.indexOf ("CHAR") != -1)
         {

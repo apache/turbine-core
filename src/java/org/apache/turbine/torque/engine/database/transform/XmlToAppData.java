@@ -88,6 +88,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
 public class XmlToAppData extends DefaultHandler
 {

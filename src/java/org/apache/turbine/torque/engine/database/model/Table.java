@@ -72,6 +72,7 @@ import org.apache.turbine.util.db.map.IDMethod;
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
 public class Table implements IDMethod
 {
@@ -283,7 +284,7 @@ public class Table implements IDMethod
         if (referrers == null)
         {
             referrers = new ArrayList(5);
-		}
+        }
         referrers.add(fk);
     }
 
@@ -841,7 +842,7 @@ public class Table implements IDMethod
     public boolean hasPrimaryKey()
     {
         return (getPrimaryKey().size() > 0);
-    }        
+    }
 
     /**
      * Returns all parts of the primary key, separated by commas.

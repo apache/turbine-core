@@ -88,6 +88,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
  * @author <a href="mailto:fedor.karpelevitch@home.com">Fedor Karpelevitch</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
 public class XmlToData extends DefaultHandler implements EntityResolver
 {

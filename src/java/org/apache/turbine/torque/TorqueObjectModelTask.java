@@ -63,8 +63,9 @@ import org.apache.velocity.VelocityContext;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
-public class TorqueObjectModelTask 
+public class TorqueObjectModelTask
     extends TorqueDataModelTask
 {
     /**

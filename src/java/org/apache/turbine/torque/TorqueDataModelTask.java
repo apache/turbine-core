@@ -77,6 +77,7 @@ import org.apache.turbine.torque.engine.database.transform.XmlToAppData;
  *
  * @author <a href="mailto:jvanzyl@zenplex.com">Jason van Zyl</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @deprecated use turbine-torque
  */
 public class TorqueDataModelTask
     extends TexenTask
@@ -91,7 +92,7 @@ public class TorqueDataModelTask
      * Fileset of XML schemas which represent our data models.
      */
     protected Vector filesets = new Vector();
-    
+
     /**
      * Data models that we collect. One from each XML schema file.
      */
@@ -110,7 +111,7 @@ public class TorqueDataModelTask
      * in a lot of cases they won't be.
      */
     protected Hashtable dataModelDbMap;
-    
+
     /**
      * Hashtable containing the names of all the databases
      * in our collection of schemas.
@@ -133,7 +134,7 @@ public class TorqueDataModelTask
         //!! Make all these references files not strings.
         this.sqldbmap = project.resolveFile(sqldbmap).toString();
     }
-    
+
     /**
      * Get the sqldbmap.
      *
@@ -142,7 +143,7 @@ public class TorqueDataModelTask
     public String getSqlDbMap()
     {
         return sqldbmap;
-    }        
+    }
 
     /**
      * Return the data models that have been
@@ -153,7 +154,7 @@ public class TorqueDataModelTask
     public Vector getDataModels()
     {
         return dataModels;
-    }        
+    }
 
     /**
      * Return the data model to database name map.
@@ -163,7 +164,7 @@ public class TorqueDataModelTask
     public Hashtable getDataModelDbMap()
     {
         return dataModelDbMap;
-    }        
+    }
 
     /**
      *  Get the xml schema describing the application
@@ -190,7 +191,7 @@ public class TorqueDataModelTask
     /**
      * Adds a set of files (nested fileset attribute).
      */
-    public void addFileset(FileSet set) 
+    public void addFileset(FileSet set)
     {
         filesets.addElement(set);
     }
@@ -205,12 +206,12 @@ public class TorqueDataModelTask
         throws Exception
     {
         XmlToAppData xmlParser;
-    
+
         if (xmlFile == null && filesets.isEmpty())
         {
             throw new BuildException("You must specify an XML schema or " +
                 "fileset of XML schemas!");
-        }            
+        }
 
         if (xmlFile != null)
         {
@@ -221,11 +222,11 @@ public class TorqueDataModelTask
             xmlParser.parseFile(xmlFile);
             ad.setName(grokName(xmlFile));
             dataModels.addElement(ad);
-        } 
-        else 
-        { 
+        }
+        else
+        {
             // Deal with the filesets.
-            for (int i = 0; i < filesets.size(); i++) 
+            for (int i = 0; i < filesets.size(); i++)
             {
                 FileSet fs = (FileSet) filesets.elementAt(i);
                 DirectoryScanner ds = fs.getDirectoryScanner(project);
@@ -245,11 +246,11 @@ public class TorqueDataModelTask
                 }
             }
         }
-        
+
         Iterator i = dataModels.iterator();
         databaseNames = new Hashtable();
-        dataModelDbMap = new Hashtable();        
-        
+        dataModelDbMap = new Hashtable();
+
         // Different datamodels may state the same database
         // names, we just want the unique names of databases.
         while (i.hasNext())
@@ -262,16 +263,16 @@ public class TorqueDataModelTask
 
         // Create a new Velocity context.
         context = new VelocityContext();
-        
+
         // Place our set of data models into the context along
         // with the names of the databases as a convenience for
-        // now. 
+        // now.
         context.put("dataModels", dataModels);
         context.put("databaseNames", databaseNames);
-    
+
         return context;
     }
- 
+
     /**
      * Gets a name to use for the application's data model.
      *

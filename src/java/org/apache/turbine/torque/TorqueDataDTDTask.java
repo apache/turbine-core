@@ -60,8 +60,9 @@ package org.apache.turbine.torque;
  *
  * @author <a href="mailto:fedor.karpelevitch@home.com"> Fedor Karpelevitch </a>
  * @version  $Id$
+ * @deprecated use turbine-torque
  */
-public class TorqueDataDTDTask 
+public class TorqueDataDTDTask
     extends TorqueDataModelTask
 {
 }

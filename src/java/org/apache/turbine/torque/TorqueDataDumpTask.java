@@ -76,6 +76,7 @@ import org.apache.turbine.torque.engine.database.transform.XmlToAppData;
  *
  * @author   <a href="mailto:fedor.karpelevitch@home.com">  Fedor Karpelevitch  </a>
  * @version  $Id$
+ * @deprecated use turbine-torque
  */
 public class TorqueDataDumpTask extends TexenTask
 {

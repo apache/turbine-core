@@ -61,6 +61,7 @@ import org.xml.sax.Attributes;
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
 public class IdMethodParameter
 {

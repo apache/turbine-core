@@ -68,6 +68,7 @@ import org.xml.sax.Attributes;
  * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
  * @author <a href="mailto:mpoeschl@marmot.at>Martin Poeschl</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
 public class Database
 {
@@ -145,7 +146,7 @@ public class Database
      */
     public String getBaseClass()
     {
-        if ( baseClass == null ) 
+        if ( baseClass == null )
         {
             return "BaseObject";
         }
@@ -167,7 +168,7 @@ public class Database
      */
     public String getBasePeer()
     {
-        if ( basePeer == null ) 
+        if ( basePeer == null )
         {
             return "BasePeer";
         }
