@@ -54,8 +54,6 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
-import org.apache.commons.logging.Log;
-
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.ecs.ConcreteElement;
