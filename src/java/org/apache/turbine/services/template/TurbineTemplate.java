@@ -174,26 +174,61 @@ public abstract class TurbineTemplate
         return getService().getDefaultLayoutTemplate();
     }
 
+    /**
+     * Registers the provided template engine for use by the
+     * <code>TemplateService</code>.
+     *
+     * @param service The <code>TemplateEngineService</code> to register.
+     */
     public static final void registerTemplateEngineService(TemplateEngineService service)
     {
         getService().registerTemplateEngineService(service);
     }
 
+    /**
+     * Translates the supplied template paths into their Turbine-canonical
+     * equivalent (probably absolute paths).
+     *
+     * @param templatePaths An array of template paths.
+     * @return An array of translated template paths.
+     */
     public static final String[] translateTemplatePaths(String[] templatePaths)
     {
         return getService().translateTemplatePaths(templatePaths);
     }
 
+    /**
+     * Delegates to the appropriate {@link
+     * org.apache.turbine.services.template.TemplateEngineService} to
+     * check the existance of the specified template.
+     *
+     * @param template The template to check for the existance of.
+     * @param templatePaths The paths to check for the template.
+     */
     public static final boolean templateExists(String template, String[] templatePaths)
     {
         return getService().templateExists(template, templatePaths);
     }
 
+    /**
+     * Find the default page module name for the given request.
+     *
+     * @param data The encapsulation of the request to retrieve the
+     *             default page for.
+     * @return The default page module name.
+     */
     public static final String getDefaultPageName(RunData data)
     {
         return getService().getDefaultPageName(data);
     }
 
+    /**
+     * Find the default layout module name for the given request.
+     *
+     * @param data The encapsulation of the request to retrieve the
+     *             default layout for.
+     * @return The default layout module name.
+     */
     public static final String getDefaultLayoutName(RunData data)
     {
         return getService().getDefaultLayoutName(data);
