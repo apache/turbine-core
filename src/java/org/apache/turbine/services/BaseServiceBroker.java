@@ -89,7 +89,7 @@ public abstract class BaseServiceBroker
     /**
      * Mapping of Service names to class names.
      */
-    protected Configuration mapping = (Configuration) new BaseConfiguration();
+    protected Configuration mapping = new BaseConfiguration();
 
     /**
      * A repository of Service instances.
