@@ -60,10 +60,12 @@ import org.apache.xmlrpc.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcException;
 import org.apache.xmlrpc.XmlRpcServer;
 import org.apache.xmlrpc.secure.SecureWebServer;
+import org.apache.xmlrpc.secure.SecurityTool;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Vector;
@@ -102,17 +104,29 @@ public class TurbineXmlRpcService
     extends TurbineBaseService
     implements XmlRpcService
 {
+    /**
+     * Whether a version of Apache's XML-RPC library greater than 1.1
+     * is available.
+     */
+    protected boolean isModernVersion = false;
+
     /** The standalone xmlrpc server. */
-    private WebServer webserver = null;
+    protected WebServer webserver = null;
 
     /** The encapsulated xmlrpc server. */
-    private XmlRpcServer server = null;
+    protected XmlRpcServer server = null;
+
+    /**
+     * The address to listen on.  The default of <code>null</code>
+     * indicates all network interfaces on a multi-homed host.
+     */
+    private InetAddress address = null;
 
     /** The xmlrpc client. */
     private XmlRpcClient client = null;
 
     /** The port to listen on. */
-    private int port = 0;
+    protected int port = 0;
 
     /**
      * This function initializes the XmlRpcService.
@@ -123,34 +137,32 @@ public class TurbineXmlRpcService
         {
             server = new XmlRpcServer();
 
-            // Set the port for the service
+            // setup JSSE System properties from secure.server.options
+            Configuration secureServerOptions =
+                getConfiguration().subset("secure.server.option");
+            setSystemPropertiesFromConfiguration(secureServerOptions);
+
+            // Host and port information for the WebServer
+            String addr = getConfiguration().getString("address", null);
             port = getConfiguration().getInt("port", 0);
 
             if(port != 0)
             {
+                if (addr != null && addr.length() > 0)
+                {
+                    try
+                    {
+                        address = InetAddress.getByName(addr);
+                    }
+                    catch (UnknownHostException useDefault)
+                    {
+                        address = null;
+                    }
+                }
+
                 if (getConfiguration().getBoolean("secure.server", false))
                 {
-                    // Get the values for the JSSE system properties
-                    // that we must set for use in the SecureWebServer
-                    // and the URL https connection handler that is
-                    // used in XmlRpcClient.
-
-                    Configuration secureServerOptions =
-                        getConfiguration().subset("secure.server.option");
-
-                    Iterator i = secureServerOptions.getKeys();
-
-                    while (i.hasNext())
-                    {
-                        String option = (String) i.next();
-                        String value = secureServerOptions.getString(option);
-
-                        Log.debug("JSSE option: " + option + " => " + value);
-
-                        System.setProperty(option, value);
-                    }
-
-                    webserver = new SecureWebServer(port);
+                    webserver = new SecureWebServer(port, address);
                 }
                 else
                 {
@@ -229,7 +241,23 @@ public class TurbineXmlRpcService
                     }
                 }
             }
-            webserver.start();
+            // If we have a XML-RPC JAR whose version is greater than the
+            // 1.1 series, the WebServer must be explicitly start()'d.
+            try
+            {
+                Class.forName("org.apache.xmlrpc.XmlRpcRequest");
+                isModernVersion = true;
+                webserver.start();
+            }
+            catch (ClassNotFoundException ignored)
+            {
+                // XmlRpcRequest does not exist in versions 1.1 and lower.
+                // Assume that our WebServer was already started.
+            }
+            Log.debug(XmlRpcService.SERVICE_NAME + ": Using " +
+                      "Apache XML-RPC version " +
+                      (isModernVersion ?
+                       "greater than 1.1" : "1.1 or lower"));
         }
         catch (Exception e)
         {
@@ -238,6 +266,28 @@ public class TurbineXmlRpcService
         }
 
         setInit(true);
+    }
+
+    /**
+     * Create System properties using the key-value pairs in a given
+     * Configuration.  This is used to set system properties and the
+     * URL https connection handler needed by JSSE to enable SSL
+     * between XMLRPC client and server.
+     *
+     * @param configuration the Configuration defining the System
+     * properties to be set
+     */
+    void setSystemPropertiesFromConfiguration(Configuration configuration)
+    {
+        for( Iterator i = configuration.getKeys();i.hasNext();)
+        {
+            String key = (String) i.next();
+            String value = configuration.getString(key);
+            
+            Log.debug("JSSE option: " + key + " => " + value);
+
+            System.setProperty(key, value);
+        }
     }
 
     /**
@@ -625,17 +675,26 @@ public class TurbineXmlRpcService
      */
     public void shutdown()
     {
-        // Stop the XML RPC server.  org.apache.xmlrpc.WebServer blocks in a call to
-        // ServerSocket.accept() until a socket connection is made.
+        // Stop the XML RPC server.
         webserver.shutdown();
-        try
+
+        if (!isModernVersion)
         {
-            Socket interrupt = new Socket(InetAddress.getLocalHost(), port);
-            interrupt.close();
-        }
-        catch (Exception ignored)
-        {
-            // Remotely possible we're leaving an open listener socket around.
+            // org.apache.xmlrpc.WebServer used to block in a call to
+            // ServerSocket.accept() until a socket connection was made.
+            try
+            {
+                Socket interrupt = new Socket(address, port);
+                interrupt.close();
+            }
+            catch (Exception notShutdown)
+            {
+                // It's remotely possible we're leaving an open listener
+                // socket around.
+                Log.warn(XmlRpcService.SERVICE_NAME +
+                         "It's possible the xmlrpc server was not " +
+                         "shutdown: " + notShutdown.getMessage());
+            }
         }
 
         setInit(false);

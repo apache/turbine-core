@@ -806,8 +806,16 @@ services.SecurityService.secure.passwords.algorithm=SHA
 
 services.XmlRpcService.parser=org.apache.xerces.parsers.SAXParser
 
-# This property specifies which port the server part of the XmlRpc
-# should listen, if it is active.
+# This property specifies which network interface the server part of
+# XmlRpc should bind to (if it is active).  If not specified, the
+# server will bind to all addresses configured for your host.
+#
+# Default: 127.0.0.1
+
+#services.XmlRpcService.address=127.0.0.1
+
+# This property specifies which TCP port the web server part of
+# XmlRpc should listen on (if it is active).
 #
 # Default: 12345
 
