@@ -100,7 +100,7 @@ public class BaseValueParserTest extends ServletTestCase
          *  properties file to be used.:
          */
         config.setInitParameter("properties",
-                "/WEB-INF/conf/TurbineCacheTest.properties");
+                "/WEB-INF/conf/TurbineComplete.properties");
         turbine = new Turbine();
         turbine.init(config);
         theBaseValueParser = new BaseValueParser();

@@ -99,7 +99,7 @@ public class CSVParserTest
         super.setUp();
 
         config.setInitParameter("properties",
-                                "/WEB-INF/conf/TurbineDefault.properties");
+                                "/WEB-INF/conf/TurbineComplete.properties");
         turbine = new Turbine();
         turbine.init(config);
     }
