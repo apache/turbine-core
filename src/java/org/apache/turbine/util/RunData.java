@@ -73,7 +73,7 @@ import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.template.TemplateInfo;
 
 /**
- * RunData is an interface to run-rime information that is passed
+ * RunData is an interface to run-time information that is passed
  * within Turbine. This provides the threading mechanism for the
  * entire system because multiple requests can potentially come in
  * at the same time.  Thus, there is only one RunData implementation
