@@ -137,7 +137,6 @@ public class TSVParserTest
         String values = "field1\tfield2\tfield3\tfield4\nvalue11\t\tvalue13\t\nvalue21\t\tvalue23\t";
         CharArrayReader reader = new CharArrayReader(values.toCharArray());
         TSVParser parser = new TSVParser(reader);
-        StringBuffer sb = new StringBuffer();
         try
         {
             parser.readColumnNames();
@@ -175,7 +174,6 @@ public class TSVParserTest
         String values = "field1\tfield2\tfield3\tfield4\nvalue11\tvalue12\tvalue13\tvalue14\nvalue21\tvalue22\tvalue23\tvalue24";
         CharArrayReader reader = new CharArrayReader(values.toCharArray());
         TSVParser parser = new TSVParser(reader);
-        StringBuffer sb = new StringBuffer();
         try
         {
             parser.readColumnNames();
@@ -206,7 +204,6 @@ public class TSVParserTest
         String values = "field1\t\tfield3\t\nvalue11\tvalue12\tvalue13\tvalue14\tvalue21\tvalue22\tvalue23\tvalue24";
         CharArrayReader reader = new CharArrayReader(values.toCharArray());
         TSVParser parser = new TSVParser(reader);
-        StringBuffer sb = new StringBuffer();
         try
         {
             parser.readColumnNames();

@@ -134,7 +134,6 @@ public class CSVParserTest
         String values = "field1,field2,field3,field4\nvalue11,,value13,\nvalue21,,value23,";
         CharArrayReader reader = new CharArrayReader(values.toCharArray());
         CSVParser parser = new CSVParser(reader);
-        StringBuffer sb = new StringBuffer();
         try
         {
             parser.readColumnNames();
@@ -172,7 +171,6 @@ public class CSVParserTest
         String values = "field1,field2,field3,field4\nvalue11,value12,value13,value14\nvalue21,value22,value23,value24";
         CharArrayReader reader = new CharArrayReader(values.toCharArray());
         CSVParser parser = new CSVParser(reader);
-        StringBuffer sb = new StringBuffer();
         try
         {
             parser.readColumnNames();
@@ -203,7 +201,6 @@ public class CSVParserTest
         String values = "field1,,field3,\nvalue11,value12,value13,value14\nvalue21,value22,value23,value24";
         CharArrayReader reader = new CharArrayReader(values.toCharArray());
         CSVParser parser = new CSVParser(reader);
-        StringBuffer sb = new StringBuffer();
         try
         {
             parser.readColumnNames();
