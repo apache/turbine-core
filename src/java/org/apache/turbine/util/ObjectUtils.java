@@ -24,10 +24,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.Vector;
+import java.util.List;
 
 /**
  * This is where common Object manipulation routines should go.
@@ -59,11 +58,11 @@ public abstract class ObjectUtils
      * @param o The object.
      * @deprecated No replacement
      */
-    public static void addOnce(Vector v, Object o)
+    public static void addOnce(List l, Object o)
     {
-        if (!v.contains(o))
+        if (!l.contains(o))
         {
-            v.addElement(o);
+            l.add(o);
         }
     }
 
