@@ -611,7 +611,7 @@ public class TorqueUser
      *
      * @param storage A Hashtable.
      */
-    public void setPermStorage(Hashtable storage)
+    public void setPermStorage(Hashtable permStorage)
     {
         if (permStorage != null)
         {
@@ -640,7 +640,7 @@ public class TorqueUser
      *
      * @param storage A Hashtable.
      */
-    public void setTempStorage(Hashtable storage)
+    public void setTempStorage(Hashtable tempStorage)
     {
         if (tempStorage != null)
         {
