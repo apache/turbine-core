@@ -13,8 +13,17 @@
 <section name="Torque Database Schema Reference">
 
 <p>
-The Torque Database Schema Reference attempts to explain what the different elements 
-and attributes are when defining your own database schema. In addition I will attempt to 
+  <b>
+   Torque was developed as part of the Turbine Framework (version 2.1).
+   It is now decoupled and can be used by itself. Starting with Turbine 2.2
+   the coupled version of Torque is deprecated. You should upgrade to use the
+   <a href="http://jakarta.apache.org/turbine/torque">decoupled version</a>.
+  </b>
+</p>
+
+<p>
+The Torque Database Schema Reference attempts to explain what the different elements
+and attributes are when defining your own database schema. In addition I will attempt to
 explain what attributes mean what in the different databases currently supported.
 </p>
 
@@ -27,10 +36,10 @@ Some of the following examples are taken from the project-schema.xml document in
     <subsection name="Element: database">
     <p>The database element and its relevant attributes.</p>
     <source><![CDATA[
-    <database name="MY_DATABASE" 
-            defaultIdMethod="idbroker" 
-            package="com.myapp.om" 
-            baseClass="com.myapp.om.BaseClass" 
+    <database name="MY_DATABASE"
+            defaultIdMethod="idbroker"
+            package="com.myapp.om"
+            baseClass="com.myapp.om.BaseClass"
             basePeer="com.myapp.om.BasePeer"
             defaultJavaNamingMethod="underscore">
       <table name="SIMPLE">
@@ -78,13 +87,13 @@ Some of the following examples are taken from the project-schema.xml document in
     Java class or method name respectively when creating the OM java
     objects. defaultJavaNamingMethod can contain 3 different values:
         <ul>
-	    <li>nochange - Indicates no change is performed.</li>
-	    <li>underscore - Underscores are removed, First letter is
-		      capitalized, first letter after an underscore
-		      is capitalized, the rest of the letters are
-		      converted to lowercase.</li>
-	    <li>javaname - Same as underscore, but no letters are converted
-		      to lowercase.</li>
+        <li>nochange - Indicates no change is performed.</li>
+        <li>underscore - Underscores are removed, First letter is
+              capitalized, first letter after an underscore
+              is capitalized, the rest of the letters are
+              converted to lowercase.</li>
+        <li>javaname - Same as underscore, but no letters are converted
+              to lowercase.</li>
        </ul>
     </p>
     </subsection>
@@ -96,7 +105,7 @@ Some of the following examples are taken from the project-schema.xml document in
     </subsection>
     <subsection name="Attribute: baseClass">
     <p>
-    The base class to use when generating the Object Model. 
+    The base class to use when generating the Object Model.
     This class does not have to extend org.apache.turbine.om.BaseObject.
     </p>
     </subsection>
@@ -106,11 +115,11 @@ Some of the following examples are taken from the project-schema.xml document in
     Unlike baseClass, basePeer should extend BasePeer at some point in the chain, ie - it needs to be the superclass.
     </p>
     </subsection>
-    
+
     <subsection name="Element: table">
     <p>The table element and its relevant attributes</p>
     <source><![CDATA[
-    <table name="MY_TABLE" 
+    <table name="MY_TABLE"
             javaName="table"
             idMethod="idbroker"
             skipSql="false"
@@ -138,7 +147,7 @@ Some of the following examples are taken from the project-schema.xml document in
             defaultJavaNamingMethod attribute of the database
             element</li>
         </ul>
-        
+
     </p>
     <p>
     The table element can contain the following elements:
@@ -155,7 +164,7 @@ Some of the following examples are taken from the project-schema.xml document in
     <p>
     This is the java class name to use when generating the Table or column. If this is missing the java name is generated
     in the following manner:<br/>
-    Underscores are removed, first letter and first letter after each underscore is uppercased, 
+    Underscores are removed, first letter and first letter after each underscore is uppercased,
     all other letters are lowercased. So YOUR_TABLE_NAME would become YourTableName.
     </p>
     </subsection>
@@ -187,7 +196,7 @@ Some of the following examples are taken from the project-schema.xml document in
             <li>inheritance - ?</li>
             <li>inputValidator - ?</li>
         </ul>
-        
+
     </p>
     <p>
     The column element can contain the following elements:
@@ -212,7 +221,7 @@ Some of the following examples are taken from the project-schema.xml document in
             <li>class - ?</li>
             <li>extends - ?</li>
         </ul>
-        
+
     </p>
     </subsection>
     <subsection name="Element: foreign-key">
@@ -228,7 +237,7 @@ Some of the following examples are taken from the project-schema.xml document in
         <ul>
             <li>foreignTable - the name of the table being referenced</li>
         </ul>
-        
+
     </p>
     <p>
     The foreign-key element can contain the following elements:
@@ -237,7 +246,7 @@ Some of the following examples are taken from the project-schema.xml document in
     </ul>
     </p>
     </subsection>
-    
+
     <subsection name="Element: reference">
     <p>The reference element and its relevant attributes</p>
     <source><![CDATA[
@@ -250,11 +259,11 @@ Some of the following examples are taken from the project-schema.xml document in
             <li>local - the local reference</li>
             <li>foreign - the foreign key reference</li>
         </ul>
-        
+
     </p>
     </subsection>
 </section>
-    
+
 
 </body>
 </document>

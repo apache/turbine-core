@@ -12,10 +12,19 @@
 <section name="What is Torque?">
 
 <p>
+  <b>
+   Torque was developed as part of the Turbine Framework (version 2.1).
+   It is now decoupled and can be used by itself. Starting with Turbine 2.2
+   the coupled version of Torque is deprecated. You should upgrade to use the
+   <a href="http://jakarta.apache.org/turbine/torque">decoupled version</a>.
+  </b>
+</p>
+
+<p>
   Torque is a utility packaged with Turbine
   that generates all the database resources required by your web
   application. Torque uses a single XML database schema to generate the SQL for
-  your target database and Turbine's Peer-based object relation model representing 
+  your target database and Turbine's Peer-based object relation model representing
   your XML database schema. Additionally, an HTML document describing the database
   can be generated if you wish to make a browseable version of the database
   schema.
@@ -24,8 +33,8 @@
 <p>
   Torque is currently deployed in two forms: a stand-alone version and a version
   that is bundled with the Turbine Developer's Kit.
-  Both versions are identical in function, but have slightly different 
-  configurations. 
+  Both versions are identical in function, but have slightly different
+  configurations.
 </p>
 
 </section>
@@ -219,21 +228,21 @@ user system:
   <table name="TURBINE_PERMISSION" idMethod="idbroker">
     <column name="PERMISSION_ID" required="true" primaryKey="true" type="INTEGER"/>
     <column name="PERMISSION_NAME" required="true" size="99" type="VARCHAR" javaName="Name"/>
-  
+
     <unique>
       <unique-column name="PERMISSION_NAME"/>
-    </unique>        
-    
+    </unique>
+
   </table>
 
   <table name="TURBINE_ROLE_PERMISSION">
     <column name="ROLE_ID" required="true" primaryKey="true" type="INTEGER"/>
     <column name="PERMISSION_ID" required="true" primaryKey="true" type="INTEGER"/>
-    
+
     <foreign-key foreignTable="TURBINE_ROLE">
       <reference local="ROLE_ID" foreign="ROLE_ID"/>
     </foreign-key>
-    
+
     <foreign-key foreignTable="TURBINE_PERMISSION">
       <reference local="PERMISSION_ID" foreign="PERMISSION_ID"/>
     </foreign-key>
@@ -243,7 +252,7 @@ user system:
 ]]></source>
 
 <p>
-Please refer to <a href="torque-schema-ref.html">Torque Schema Reference</a> 
+Please refer to <a href="torque-schema-ref.html">Torque Schema Reference</a>
 to find out more about the the different elements and attributes.
 </p>
 
@@ -384,7 +393,7 @@ This is what the HTML description of the database looks like:
 <section name="The Object Relational Map">
 
 <p>
-  
+
   The OM/Peer (Torque) system can map a class hierarchy into a single table.
   This is 1 of 3 methods generally described in object-relational mapping
   designs.  Its benefits include that it does not require joins in order to
@@ -400,17 +409,17 @@ This is what the HTML description of the database looks like:
 <section name="A Class Hierarchy">
 
 <source>
-       A     
-       |     
-     -----  
-    |     | 
-    B     C  
-    |        
-    D        
+       A
+       |
+     -----
+    |     |
+    B     C
+    |
+    D
 </source>
 
 <p>
-  
+
   There are two ways that are built into the torque generated Peers in order
   to specify what class a particular row in the table A represents.  A row
   will need to have some information that can distinguish the class.  You
@@ -464,7 +473,7 @@ com.mycompany.project.om.D
 
 <p>
   where in the above we are using NULL (or any other value) to stand for class
-  "A".  An numeric column could also be used for the key.  Using the above 
+  "A".  An numeric column could also be used for the key.  Using the above
   method, torque will cache a copy of each class, so the Class.forName is only
   done during APeer's initial load into memory.
 </p>
@@ -475,7 +484,7 @@ com.mycompany.project.om.D
 
 <p>
   The following example comes from <a href="http://scarab.tigris.org">Scarab</a>
-  (an issue tracking system). In Scarab a class hierarchy definition is 
+  (an issue tracking system). In Scarab a class hierarchy definition is
   described in a few tables, this provides for an evolving hierarchy.  This
   arrangement can be provided for using the following extensions.  In the
   xml specification, the column responsible for determining the class
@@ -483,11 +492,11 @@ com.mycompany.project.om.D
 </p>
 
 <source><![CDATA[
-<table name="SCARAB_ISSUE_ATTRIBUTE_VALUE" idMethod="none" 
+<table name="SCARAB_ISSUE_ATTRIBUTE_VALUE" idMethod="none"
         javaName="AttributeValue">
-    <column name="ISSUE_ID" primaryKey="true" required="true" 
+    <column name="ISSUE_ID" primaryKey="true" required="true"
             type="INTEGER"/>
-    <column name="ATTRIBUTE_ID" primaryKey="true" required="true" 
+    <column name="ATTRIBUTE_ID" primaryKey="true" required="true"
             type="INTEGER" inheritance="single"/>
     <column name="OPTION_ID" required="false" type="INTEGER"/>
 ...
@@ -507,7 +516,7 @@ com.mycompany.project.om.D
 <p>
   It might be interesting to note that the column responsible for the determining
   the class is also a primary and foreign key.  Marking the column this way
-  will cause torque to generate an BaseAttributeValuePeer.getOMClass method.The 
+  will cause torque to generate an BaseAttributeValuePeer.getOMClass method.The
   code in this method will be attempting to create a class from the information
   provided in column which is an integer.  This is obviously wrong, but it
   gives us a method to override to provide the correct information.
@@ -518,19 +527,19 @@ com.mycompany.project.om.D
 </p>
 
 <source><![CDATA[
-/** 
- * Get the className appropriate for a row in the 
+/**
+ * Get the className appropriate for a row in the
  * SCARAB_ISSUE_ATTRIBUTE_VALUE table
  */
-public static Class getOMClass(Record record, int offset) 
+public static Class getOMClass(Record record, int offset)
     throws Exception
 {
     NumberKey attId = new NumberKey(record.getValue(offset-1 + 2)
                                         .asString());
     Attribute attribute = Attribute.getInstance(attId);
-    String className = attribute.getAttributeType().getJavaClassName(); 
+    String className = attribute.getAttributeType().getJavaClassName();
 
-    TurbineGlobalCacheService tgcs = 
+    TurbineGlobalCacheService tgcs =
         (TurbineGlobalCacheService)TurbineServices
         .getInstance().getService(GlobalCacheService.SERVICE_NAME);
 
@@ -549,9 +558,9 @@ public static Class getOMClass(Record record, int offset)
 }
 ]]></source>
 
-<p>  
+<p>
   where in the above method, we use the foreign key(s) to traverse
-  the tables to get the class information.  Then we cache the Class to 
+  the tables to get the class information.  Then we cache the Class to
   avoid the inefficiency of Class.forName on each row.  (We also cache
   the contents of the class hierarchy tables, since the dataset is
   quite small and static.)
