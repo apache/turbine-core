@@ -31,17 +31,19 @@ Some of the following examples are taken from the project-schema.xml document in
             defaultIdMethod="idBroker" 
             package="com.myapp.om" 
             baseClass="com.myapp.om.BaseClass" 
-            basePeer="com.myapp.om.BasePeer">
+            basePeer="com.myapp.om.BasePeer"
+            defaultJavaNamingMethod="underscore">
       <table name="SIMPLE">
         <!-- table info goes here -->
       </table>
     </database>]]>
     </source>
     <p>
-    The database element has 5 attributes associated with it, they are:
+    The database element has 6 attributes associated with it, they are:
         <ul>
             <li>name - The name of the database being referenced</li>
             <li>defaultIdMethod - How will the primary keys be created, defaults to "none"</li>
+            <li>defaultJavaNamingMethod - indicates how a schema table or column name is mapped to a java class or method name respectively</li>
             <li>package - used for OM Peer generation</li>
             <li>baseClass - used for OM generation</li>
             <li>basePeer - used for OM Peer generation</li>
@@ -67,6 +69,23 @@ Some of the following examples are taken from the project-schema.xml document in
             <li>sequence - deprecated, please use native</li>
             <li>none - Typically used if you do not want IDs generated</li>
         </ul>
+    </p>
+    </subsection>
+    <subsection name="Attribute: defaultJavaNameMethod">
+    <p>
+    This attribute determines how table or column names, from the
+    name attribute of the table or column element, are converted to a
+    Java class or method name respectively when creating the OM java
+    objects. defaultJavaNameMethod can contain 3 different values:
+        <ul>
+	    <li>nochange - Indicates no change is performed.</li>
+	    <li>underscore - Underscores are removed, First letter is
+		      capitalized, first letter after an underscore
+		      is capitalized, the rest of the letters are
+		      converted to lowercase.</li>
+	    <li>javaname - Same as underscore, but no letters are converted
+		      to lowercase.</li>
+       </ul>
     </p>
     </subsection>
     <subsection name="Attribute: package">
@@ -96,12 +115,13 @@ Some of the following examples are taken from the project-schema.xml document in
             idMethod="idbroker"
             skipSql="false"
             baseClass="com.myapp.om.table.BaseClass"
-            basePeer="com.myapp.om.table.BasePeer">
+            basePeer="com.myapp.om.table.BasePeer"
+            javaNamingMethod="underscore">
         <!-- column information here -->
     </table>]]>
     </source>
     <p>
-    The table element has 8 attributes associated with it, they are:
+    The table element has 9 attributes associated with it, they are:
         <ul>
             <li>name - The name of the database being referenced</li>
             <li>javaName - How this table will be referenced in java</li>
@@ -111,6 +131,12 @@ Some of the following examples are taken from the project-schema.xml document in
             <li>alias - The table alias</li>
             <li>baseClass - used for OM Peer generation</li>
             <li>basePeer - used for OM Peer generation</li>
+
+            <li>javaNamingMethod - Specifies how the name attribute is
+            converted to the Java class name of the coresponding OM
+            object.  this attribute overides the
+            defaultJavaNamingMethod attribute of the database
+            element</li>
         </ul>
         
     </p>
@@ -141,13 +167,14 @@ Some of the following examples are taken from the project-schema.xml document in
             primaryKey="true"
             required="true"
             size="4"
-            type="VARCHAR">
+            type="VARCHAR"
+            javaNamingMethod="underscore">
         <!-- inheritance info if necessary -->
     </column>
             ]]>
     </source>
     <p>
-    The column element has 8 attributes associated with it, they are:
+    The column element has 9 attributes associated with it, they are:
         <ul>
             <li>name - The name of the column being referenced</li>
             <li>javaName - How this column will be referred to in Java</li>
