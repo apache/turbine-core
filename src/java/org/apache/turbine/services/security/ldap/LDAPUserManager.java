@@ -54,8 +54,10 @@ package org.apache.turbine.services.security.ldap;
  * <http://www.apache.org/>.
  */
 
+import java.util.List;
 import java.util.Hashtable;
 import java.util.Vector;
+
 import javax.naming.AuthenticationException;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -66,6 +68,7 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
 import org.apache.torque.util.Criteria;
+
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.services.security.UserManager;
@@ -212,8 +215,27 @@ public class LDAPUserManager implements UserManager
     public User[] retrieve(Criteria criteria)
             throws DataBackendException
     {
+        return (User [])retrieveList(criteria).toArray(new User[0]);
+    }
 
-        Vector users = new Vector(0);
+    /**
+     * Retrieve a list of users that meet the specified criteria.
+     *
+     * As the keys for the criteria, you should use the constants that
+     * are defined in {@link User} interface, plus the names
+     * of the custom attributes you added to your user representation
+     * in the data storage. Use verbatim names of the attributes -
+     * without table name prefix in case of Torque implementation.
+     *
+     * @param criteria The criteria of selection.
+     * @return a List of users meeting the criteria.
+     * @throws DataBackendException if there is a problem accessing the
+     *         storage.
+     */
+    public List retrieveList(Criteria criteria)
+            throws DataBackendException
+    {
+        List users = new Vector(0);
 
         try
         {
@@ -248,8 +270,7 @@ public class LDAPUserManager implements UserManager
             throw new DataBackendException(
                     "The LDAP server specified is unavailable", ex);
         }
-
-        return (User[]) users.toArray(new User[users.size()]);
+        return users;
     }
 
     /**

@@ -137,6 +137,23 @@ public interface UserManager
     User[] retrieve(Criteria criteria) throws DataBackendException;
 
     /**
+     * Retrieve a list of users that meet the specified criteria.
+     *
+     * As the keys for the criteria, you should use the constants that
+     * are defined in {@link User} interface, plus the names
+     * of the custom attributes you added to your user representation
+     * in the data storage. Use verbatim names of the attributes -
+     * without table name prefix in case of DB implementation.
+     *
+     * @param criteria The criteria of selection.
+     * @return a List of users meeting the criteria.
+     * @throws DataBackendException if there is a problem accessing the
+     *         storage.
+     */
+    List retrieveList(Criteria criteria)
+        throws DataBackendException;
+
+    /**
      * Retrieve a user from persistent storage using username as the
      * key, and authenticate the user. The implementation may chose
      * to authenticate to the server as the user whose data is being
