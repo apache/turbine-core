@@ -84,7 +84,6 @@ import org.apache.turbine.util.security.GroupSet;
  * @version $Id$
  *
  */
-
 public class GroupPeerManager
     implements GroupPeerManagerConstants
 {
@@ -140,35 +139,29 @@ public class GroupPeerManager
             //
             groupObject = getPersistenceClass(); // Default from Peer, can be overridden
 
-            groupObjectName = (String) conf
-                .getString(GROUP_CLASS_KEY,
-                           groupObject.getName());
+            groupObjectName = conf.getString(GROUP_CLASS_KEY,
+                    groupObject.getName());
 
             groupObject = Class.forName(groupObjectName); // Maybe the user set a new value...
 
-            /* If any of the following Field queries fails, the group subsystem is unusable. So check
-             * this right here at init time, which saves us much time and hassle if it fails...
-             */
+            // If any of the following Field queries fails, the group subsystem 
+            // is unusable. So check this right here at init time, which saves 
+            // us much time and hassle if it fails...
+            nameColumn = (String) groupPeerClass.getField(conf
+                    .getString(GROUP_NAME_COLUMN_KEY, GROUP_NAME_COLUMN_DEFAULT)
+                    ).get(null);
 
-            nameColumn       = (String) groupPeerClass.getField((String) conf
-                                                               .getString(GROUP_NAME_COLUMN_KEY,
-                                                                          GROUP_NAME_COLUMN_DEFAULT)
-                                                               ).get(null);
+            idColumn = (String) groupPeerClass.getField(conf
+                    .getString(GROUP_ID_COLUMN_KEY, GROUP_ID_COLUMN_DEFAULT)
+                    ).get(null);
 
-            idColumn         = (String) groupPeerClass.getField((String) conf
-                                                               .getString(GROUP_ID_COLUMN_KEY,
-                                                                          GROUP_ID_COLUMN_DEFAULT)
-                                                               ).get(null);
+            namePropDesc = new PropertyDescriptor(conf
+                    .getString(GROUP_NAME_PROPERTY_KEY, 
+                    GROUP_NAME_PROPERTY_DEFAULT), groupObject);
 
-
-            namePropDesc       = new PropertyDescriptor((String) conf.getString(GROUP_NAME_PROPERTY_KEY,
-                                                                               GROUP_NAME_PROPERTY_DEFAULT),
-                                                        groupObject);
-
-            idPropDesc         = new PropertyDescriptor((String) conf.getString(GROUP_ID_PROPERTY_KEY,
-                                                                               GROUP_ID_PROPERTY_DEFAULT),
-                                                        groupObject);
-
+            idPropDesc = new PropertyDescriptor(conf
+                    .getString(GROUP_ID_PROPERTY_KEY, 
+                    GROUP_ID_PROPERTY_DEFAULT), groupObject);
         }
         catch (Exception e)
         {

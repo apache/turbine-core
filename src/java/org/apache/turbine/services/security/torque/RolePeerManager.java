@@ -150,9 +150,8 @@ public class RolePeerManager
 
             roleObject = getPersistenceClass();
 
-            roleObjectName =
-              (String) conf.getString(ROLE_CLASS_KEY,
-                                      roleObject.getName());
+            roleObjectName = conf.getString(ROLE_CLASS_KEY, 
+                    roleObject.getName());
 
             // Maybe the user set a new value...
             roleObject = Class.forName(roleObjectName);
@@ -162,28 +161,24 @@ public class RolePeerManager
              * which saves us much time and hassle if it fails...
              */
 
-            nameColumn =
-              (String) rolePeerClass.getField(
-                  (String) conf.getString(ROLE_NAME_COLUMN_KEY,
-                                          ROLE_NAME_COLUMN_DEFAULT)
-                  ).get(null);
+            nameColumn = (String) rolePeerClass.getField(
+                    conf.getString(ROLE_NAME_COLUMN_KEY,
+                                   ROLE_NAME_COLUMN_DEFAULT)
+                    ).get(null);
 
             idColumn = (String) rolePeerClass.getField(
-                (String) conf.getString(ROLE_ID_COLUMN_KEY,
-                                        ROLE_ID_COLUMN_DEFAULT)
-                ).get(null);
+                    conf.getString(ROLE_ID_COLUMN_KEY,
+                                   ROLE_ID_COLUMN_DEFAULT)
+                    ).get(null);
 
-
-            namePropDesc =
-                new PropertyDescriptor(
-                    (String) conf.getString(ROLE_NAME_PROPERTY_KEY,
-                                            ROLE_NAME_PROPERTY_DEFAULT),
+            namePropDesc = new PropertyDescriptor(
+                    conf.getString(ROLE_NAME_PROPERTY_KEY,
+                                   ROLE_NAME_PROPERTY_DEFAULT),
                     roleObject);
 
-            idPropDesc =
-                new PropertyDescriptor(
-                    (String) conf.getString(ROLE_ID_PROPERTY_KEY,
-                                            ROLE_ID_PROPERTY_DEFAULT),
+            idPropDesc = new PropertyDescriptor(
+                    conf.getString(ROLE_ID_PROPERTY_KEY,
+                                   ROLE_ID_PROPERTY_DEFAULT),
                     roleObject);
 
         }
