@@ -54,6 +54,8 @@ package org.apache.turbine.services.session;
  * <http://www.apache.org/>.
  */
 
+import java.io.Serializable;
+
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import javax.servlet.http.HttpSessionActivationListener;
@@ -88,7 +90,7 @@ import javax.servlet.http.HttpSessionActivationListener;
  * @see javax.servlet.http.HttpSessionListener
  */
 public class SessionListener
-        implements HttpSessionListener, HttpSessionActivationListener
+    implements HttpSessionListener, HttpSessionActivationListener, Serializable
 {
     // ---- HttpSessionListener implementation -----------------------------
 
