@@ -87,8 +87,8 @@ import javax.servlet.http.HttpServletResponse;
 public interface CookieParser
         extends ValueParser
 {
-    static final int AGE_SESSION = -1;
-    static final int AGE_DELETE = 0;
+    int AGE_SESSION = -1;
+    int AGE_DELETE = 0;
 
     /**
      * Gets the parsed RunData.
@@ -123,7 +123,7 @@ public interface CookieParser
      * @param response The http reponse from the servlet
      */
     void setData(HttpServletRequest request,
-                 HttpServletResponse response);
+            HttpServletResponse response);
 
     /**
      * Get the Path where cookies will be stored

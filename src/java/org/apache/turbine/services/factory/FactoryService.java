@@ -71,7 +71,7 @@ public interface FactoryService extends Service
     /**
      * The key under which this service is stored in TurbineServices.
      */
-    static final String SERVICE_NAME = "FactoryService";
+    String SERVICE_NAME = "FactoryService";
 
     /**
      * Gets an instance of a named class.

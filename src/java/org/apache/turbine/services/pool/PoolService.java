@@ -77,12 +77,12 @@ public interface PoolService extends FactoryService
     /**
      * The key under which this service is stored in TurbineServices.
      */
-    static final String SERVICE_NAME = "PoolService";
+    String SERVICE_NAME = "PoolService";
 
     /**
      * The default pool capacity.
      */
-    static final int DEFAULT_POOL_CAPACITY = 128;
+    int DEFAULT_POOL_CAPACITY = 128;
 
     /**
      * Gets an instance of a specified class either from the pool
@@ -106,8 +106,8 @@ public interface PoolService extends FactoryService
      * @throws TurbineException if recycling fails.
      */
     Object getInstance(Class clazz,
-                       Object params[],
-                       String signature[])
+            Object params[],
+            String signature[])
             throws TurbineException;
 
     /**
