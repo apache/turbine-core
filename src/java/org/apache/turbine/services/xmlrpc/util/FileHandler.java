@@ -191,7 +191,9 @@ public class FileHandler
         String file = TurbineServlet.getRealPath(
             TurbineResources.getString(targetLocationProperty) + 
                 "/" + fileName);
-        
+
+        StringWriter sw = null;
+        BufferedReader reader = null;
         try
         {
             /*
@@ -199,9 +201,10 @@ public class FileHandler
              * velocity ContentResource class.
              */
             
-            StringWriter sw = new StringWriter();
+            //StringWriter sw = new StringWriter();
+            sw = new StringWriter();
             
-            BufferedReader reader = new BufferedReader(
+            reader = new BufferedReader(
                 new InputStreamReader(
                     new FileInputStream(file)));
             
@@ -221,6 +224,18 @@ public class FileHandler
                 "of the request file.", ioe);
             
             return null;
+        }
+        finally
+        {
+            try
+            {
+                sw.close();
+                reader.close();
+            }
+            catch (Exception e)
+            {
+                
+            }
         }
     }
 
@@ -307,10 +322,9 @@ public class FileHandler
          * make the application fully portable. So use the TurbineServlet
          * service to map the target location in the webapp space.
          */
-        
         File sourceFile = new File(
-            TurbineServlet.getRealPath(
-                TurbineResources.getString(sourceLocationProperty) +
+           TurbineServlet.getRealPath(
+               TurbineResources.getString(sourceLocationProperty) +
                     "/" + sourceFileName));
 
         if (sourceFile.exists())
