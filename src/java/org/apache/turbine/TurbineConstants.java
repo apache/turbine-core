@@ -243,6 +243,24 @@ public interface TurbineConstants
      */
     String DEFAULT_DOCUMENT_TYPE = "default.doctype";
 
+    /** Default Language property */
+    String LOCALE_DEFAULT_LANGUAGE_KEY = "locale.default.language";
+
+    /** Default value for Language property */
+    String LOCALE_DEFAULT_LANGUAGE_DEFAULT = "en";
+
+    /** Default Country property */
+    String LOCALE_DEFAULT_COUNTRY_KEY = "locale.default.country";
+
+    /** Default value for Country property */
+    String LOCALE_DEFAULT_COUNTRY_DEFAULT = "US";
+
+    /** Default Charset property */
+    String LOCALE_DEFAULT_CHARSET_KEY = "locale.default.charset";
+
+    /** Default value for Charset property */
+    String LOCALE_DEFAULT_CHARSET_DEFAULT = "ISO-8859-1";
+
     /** If this value is set as applicationRoot, then the webContext is used
      * as application root
      */
