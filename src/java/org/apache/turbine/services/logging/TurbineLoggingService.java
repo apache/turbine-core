@@ -116,7 +116,8 @@ public class TurbineLoggingService
      * Inits the service using servlet parameters to obtain path to the
      * configuration file. Change relatives paths.
      */
-    public void init(ServletConfig config) throws InitializationException
+    public void init(ServletConfig config) 
+        throws InitializationException
     {
         context = config.getServletContext();
 
