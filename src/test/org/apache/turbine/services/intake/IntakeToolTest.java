@@ -60,6 +60,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.fulcrum.intake.model.Group;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.avaloncomponent.MerlinComponentService;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
@@ -140,6 +141,12 @@ public class IntakeToolTest extends BaseTestCase
     {
         tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
+        
+		MerlinComponentService merlin =
+			(MerlinComponentService) TurbineServices.getInstance().getService(MerlinComponentService.SERVICE_NAME);
+						
+		merlin.lookup("/fulcrum/intake");
+						
     }
     public void tearDown() throws Exception
     {
