@@ -139,7 +139,7 @@ public class TurbineNonPersistentSchedulerService
             scheduleQueue = new JobQueue();
             mainLoop = new MainLoop();
 
-            List jobProps = conf.getVector("scheduler.jobs");
+            List jobProps = conf.getList("scheduler.jobs");
             List jobs = new Vector();
             // If there are scheduler.jobs defined then set up a job vector
             // for the scheduleQueue
