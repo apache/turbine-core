@@ -54,13 +54,20 @@ package org.apache.turbine.services.schedule;
  * <http://www.apache.org/>.
  */
 
+import java.util.List;
 import java.util.Vector;
+
 import javax.servlet.ServletConfig;
 
+import org.apache.commons.configuration.Configuration;
+
 import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.torque.om.NumberKey;
+
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.util.TurbineException;
 
@@ -73,7 +80,7 @@ import org.apache.turbine.util.TurbineException;
  * An example is given below.  The job names are the class names that
  * extend ScheduledJob.
  *
- *<PRE>
+ * <PRE>
  *
  * services.SchedulerService.scheduler.jobs=scheduledJobName,scheduledJobName2
  *
@@ -127,23 +134,25 @@ public class TurbineNonPersistentSchedulerService
     public void init()
             throws InitializationException
     {
+        Configuration conf = getConfiguration();
+
         try
         {
             scheduleQueue = new JobQueue();
             mainLoop = new MainLoop();
 
-            Vector jobProps = getConfiguration().getVector("scheduler.jobs");
-            Vector jobs = new Vector();
+            List jobProps = conf.getVector("scheduler.jobs");
+            List jobs = new Vector();
             // If there are scheduler.jobs defined then set up a job vector
             // for the scheduleQueue
             if (!jobProps.isEmpty())
             {
                 for (int i = 0; i < jobProps.size(); i++)
                 {
-                    String jobName = (String) jobProps.elementAt(i);
+                    String jobName = (String) jobProps.get(i);
                     String jobPrefix = "scheduler.job." + jobName;
 
-                    String jobId = getConfiguration().getString(jobPrefix + ".ID", null);
+                    String jobId = conf.getString(jobPrefix + ".ID", null);
                     if (StringUtils.isEmpty(jobId))
                     {
                         throw new Exception(
@@ -151,11 +160,11 @@ public class TurbineNonPersistentSchedulerService
                                 + jobPrefix + ".ID is not found.\n");
                     }
 
-                    int sec = getConfiguration().getInt(jobPrefix + ".SECOND", -1);
-                    int min = getConfiguration().getInt(jobPrefix + ".MINUTE", -1);
-                    int hr = getConfiguration().getInt(jobPrefix + ".HOUR", -1);
-                    int wkday = getConfiguration().getInt(jobPrefix + ".WEEKDAY", -1);
-                    int dayOfMonth = getConfiguration().getInt(jobPrefix + ".DAY_OF_MONTH", -1);
+                    int sec = conf.getInt(jobPrefix + ".SECOND", -1);
+                    int min = conf.getInt(jobPrefix + ".MINUTE", -1);
+                    int hr = conf.getInt(jobPrefix + ".HOUR", -1);
+                    int wkday = conf.getInt(jobPrefix + ".WEEKDAY", -1);
+                    int dayOfMonth = conf.getInt(jobPrefix + ".DAY_OF_MONTH", -1);
 
                     JobEntry je = new JobEntry(
                             sec,
@@ -165,7 +174,7 @@ public class TurbineNonPersistentSchedulerService
                             dayOfMonth,
                             jobName);
                     je.setJobId(Integer.parseInt(jobId));
-                    jobs.addElement(je);
+                    jobs.add(je);
 
                 }
             }
@@ -173,11 +182,10 @@ public class TurbineNonPersistentSchedulerService
             if (jobs != null && jobs.size() > 0)
             {
                 scheduleQueue.batchLoad(jobs);
-                if (getConfiguration().getBoolean("enabled", true))
-                {
-                    restart();
-                }
             }
+
+            setEnabled(getConfiguration().getBoolean("enabled", true));
+            restart();
 
             setInit(true);
         }
@@ -210,7 +218,7 @@ public class TurbineNonPersistentSchedulerService
      *
      * @param oid The int id for the job.
      * @return A JobEntry.
-     * @exception TurbineException could not retreive job
+     * @exception TurbineException could not retrieve job
      */
     public JobEntry getJob(int oid)
             throws TurbineException
@@ -241,11 +249,7 @@ public class TurbineNonPersistentSchedulerService
     {
         // Remove from the queue.
         scheduleQueue.remove(je);
-
-        if (isEnabled())
-        {
-            restart();
-        }
+        restart();
     }
 
     /**
@@ -263,10 +267,7 @@ public class TurbineNonPersistentSchedulerService
 
             // Update the queue.
             scheduleQueue.modify(je);
-            if (isEnabled())
-            {
-                restart();
-            }
+            restart();
         }
         catch (Exception e)
         {
