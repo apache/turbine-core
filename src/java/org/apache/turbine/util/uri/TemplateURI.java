@@ -58,9 +58,9 @@ import java.util.Enumeration;
 
 import org.apache.commons.lang.StringUtils;
 
-import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
+import org.apache.turbine.util.parser.ParameterParser;
 
 /**
  * This class allows you to keep all the information needed for a single
