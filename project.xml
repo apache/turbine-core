@@ -457,6 +457,7 @@
     <dependency>
       <id>javamail</id>
       <version>1.3</version>
+      <url>http://java.sun.com/products/javamail/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
@@ -464,7 +465,7 @@
     <dependency>
       <id>jdbc</id>
       <version>2.0</version>
-      <url>http://java.sun.com/products/jdbc/download.html#spec</url>
+      <url>http://java.sun.com/products/jdbc/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
