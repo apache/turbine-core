@@ -170,6 +170,63 @@ public class LDAPUserManager implements UserManager
     }
 
     /**
+     * Retrieve a user from persistent storage using the primary key
+     *
+     * @param key The primary key object
+     * @return an User object.
+     * @throws UnknownEntityException if the user's record does not
+     *         exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *         storage.
+     */
+    public User retrieveById(Object key)
+            throws UnknownEntityException, DataBackendException
+    {
+        try
+        {
+            DirContext ctx = bindAsAdmin();
+
+            /*
+             * Define the search.
+             */
+            StringBuffer userBaseSearch = new StringBuffer();
+            userBaseSearch.append(LDAPSecurityConstants.getUserIdAttribute());
+            userBaseSearch.append("=");
+            userBaseSearch.append(String.valueOf(key));
+            userBaseSearch.append(",");
+            userBaseSearch.append(LDAPSecurityConstants.getBaseSearch());
+
+            /*
+             * Create the default search controls.
+             */
+            NamingEnumeration answer =
+                    ctx.search(userBaseSearch.toString(), (Attributes)null);
+
+            if (answer.hasMore())
+            {
+                SearchResult sr = (SearchResult) answer.next();
+                Attributes attribs = sr.getAttributes();
+                LDAPUser ldapUser = createLDAPUser();
+
+                ldapUser.setLDAPAttributes(attribs);
+                ldapUser.setTemp("turbine.user", ldapUser);
+
+                return ldapUser;
+            }
+            else
+            {
+                throw new UnknownEntityException("No user exists for the key: "
+                        + String.valueOf(key) + "\n");
+            }
+        }
+        catch (NamingException ex)
+        {
+            throw new DataBackendException(
+                    "The LDAP server specified is unavailable", ex);
+        }
+    }
+
+    /**
      * This is currently not implemented to behave as expected.  It
      * ignores the Criteria argument and returns all the users.
      *
