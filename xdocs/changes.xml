@@ -4,13 +4,6 @@
 
 <properties>
   <title>2.x Changes</title>
-  <author email="jvanzyl@apache.org">Jason van Zyl</author>
-  <author email="jmcnally@apache.org">John D. McNally</author>
-  <author email="mpoeschl@marmot.at">Martin Poeschl</author>
-  <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
-  <author email="quintonm@bellsouth.net">Quinton McCombs</author>
-  <author email="epugh@upstate.com">Eric Pugh</author>
-  <author email="seade@backstagetech.com.au">Scott Eade</author>
 </properties>
 
 <body>
@@ -76,6 +69,12 @@ Changes between Turbine 2.3 and 2.3.1.
 <subsection name="Fixed bugs">
 <p>
   <ul>
+    <li>
+       Intake now handles multiValued="true" on type="int" fields correctly.
+       The get/set methods of the underlying object need to deal with an array
+       of ints.  The intake processing for other primitive types has also been 
+       updated, though not tested to the same extent as int.
+    </li>
     <li>
        The intake validators were fixed so that fields with required=false 
        rules no longer attempt to execute the remaining rules when no

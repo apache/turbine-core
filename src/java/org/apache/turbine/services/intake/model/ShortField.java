@@ -23,14 +23,13 @@ import org.apache.turbine.services.intake.validator.ShortValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 
 /**
- * Creates Short Field objects.
+ * Processor for short fields.
  *
  * @version $Id$
  */
 public class ShortField
         extends Field
 {
-
     /**
      * Constructor.
      *
@@ -115,18 +114,21 @@ public class ShortField
         if (isMultiValued)
         {
             String[] inputs = parser.getStrings(getKey());
-            Short[] values = new Short[inputs.length];
+            short[] values = new short[inputs.length];
             for (int i = 0; i < inputs.length; i++)
             {
                 values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? new Short(inputs[i]) : (Short) getEmptyValue();
+                        ? new Short(inputs[i]).shortValue() 
+                        : ((Short) getEmptyValue()).shortValue();
             }
             setTestValue(values);
         }
         else
         {
             String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val) ? new Short(val) : (Short) getEmptyValue());
+            setTestValue(StringUtils.isNotEmpty(val) 
+                    ? new Short(val) : (Short) getEmptyValue());
         }
     }
+    
 }
