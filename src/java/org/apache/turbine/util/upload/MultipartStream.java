@@ -108,7 +108,6 @@ import java.io.OutputStream;
  *    } catch(IOException) {
  *          // a read or write error occurred
  *    }
- *
  * </pre>
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>

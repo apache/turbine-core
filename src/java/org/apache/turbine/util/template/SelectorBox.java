@@ -81,7 +81,7 @@ import org.apache.ecs.html.Select;
  *
  *     Object[] names = new Object[allRoles.length];
  *     Object[] values = new Object[allRoles.length];
- *     for ( int i=0;i<allRoles.length; i++ )
+ *     for ( int i=0;i&lt;allRoles.length; i++ )
  *     {
  *         names[i] = new Integer(allRoles[i].getPrimaryKey()).toString();
  *         values[i] = allRoles[i].getName();

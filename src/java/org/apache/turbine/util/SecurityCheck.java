@@ -63,12 +63,12 @@ import org.apache.turbine.services.security.TurbineSecurity;
  *
  * Sample usage:<br>
  *
- * <code>
+ * <pre><code>
  * SecurityCheck mycheck =
  *   new SecurityCheck(data, "Unauthorized to do this!", "WrongPermission");
  * if (!mycheck.hasPermission("add_user");
  *   return;
- *</code>
+ *</code></pre>
  *
  * @author <a href="mailto:mbryson@mindspring.com">Dave Bryson</a>
  * @version $Id$

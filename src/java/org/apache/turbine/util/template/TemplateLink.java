@@ -67,7 +67,7 @@ import org.apache.turbine.util.ServerData;
  *
  * <p><code>
  * $link.setPage("index.wm").addPathInfo("hello","world")
- * This would return: http://foo.com/Turbine/template/index.wm/hello/world
+ * </code><br />This would return: <code>http://foo.com/Turbine/template/index.wm/hello/world
  * </code>
  *
  * @author <a href="mbryson@mont.mindspring.com">Dave Bryson</a>

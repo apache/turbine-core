@@ -70,13 +70,14 @@ import org.apache.turbine.util.RunData;
  * page.  It is automatically placed in the Template context as
  * '$page'.  Here's an example of some uses:
  *
- * <p>
+ * <p><pre><code>
  * $page.setBgColor("#ffffff");
  * $page.setBgColor("white");
  * $page.setBackground("/images/standardbg.jpeg");
  * $page.setTitle("This is the title!");
  * $page.setKeywords("turbine, cool, servlet framework");
  * $page.setStyleSheet("/style.css");
+ * </code></pre></p>
  *
  * @author <a href="mailto:sean@somacity.com">Sean Legassick</a>
  * @deprecated Use HtmlPageAttributes along with VelocityOnlyLayout instead

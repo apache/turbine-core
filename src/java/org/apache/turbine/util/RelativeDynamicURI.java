@@ -74,7 +74,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * The above call to getA() would return the String:
  *
- * &lt;AHREF="/servlets/Turbine/screen=UserScreen&amp;amp;user=jon"&gt;ClickHere&lt;/A&gt;
+ * &lt;A HREF="/servlets/Turbine/screen=UserScreen&amp;amp;user=jon"&gt;ClickHere&lt;/A&gt;
  *
  * @author <a href="mailto:dfaller@raleigh.ibm.com">David S. Faller</a>
  */

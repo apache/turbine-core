@@ -64,7 +64,7 @@ import org.apache.turbine.util.RunData;
  *
  * <p><code>
  * $link.setPage("index.wm").addPathInfo("hello","world")
- * This would return: /myapp/servlet/myapp/template/index.wm/hello/world
+ * </code><br />This would return: <code>/myapp/servlet/myapp/template/index.wm/hello/world
  * </code>
  *
  * @author <a href="jmcnally@collab.net">John D. McNally</a>
