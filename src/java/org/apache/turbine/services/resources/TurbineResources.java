@@ -58,7 +58,11 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.commons.configuration.Configuration;
+
 import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+
+import org.apache.turbine.services.security.SecurityService;
 
 /**
  * This is a static class for defining the default Turbine configuration
@@ -74,21 +78,50 @@ import org.apache.turbine.Turbine;
  */
 public abstract class TurbineResources
 {
-    public static final String MAIL_SERVER_KEY = "mail.server";
-    public static final String MODULE_CACHE_KEY = "module.cache";
-    public static final String MODULE_PACKAGES_KEY = "module.packages";
-    public static final String ACTION_CACHE_SIZE_KEY = "action.cache.size";
-    public static final String LAYOUT_CACHE_SIZE_KEY = "layout.cache.size";
-    public static final String NAVIGATION_CACHE_SIZE_KEY = "navigation.cache.size";
-    public static final String PAGE_CACHE_SIZE_KEY = "page.cache.size";
-    public static final String SCREEN_CACHE_SIZE_KEY = "screen.cache.size";
-    public static final String USER_CLASS_KEY = "user.class";
+    /** @deprecated Use the corresponding constant from TurbineConstants */
+    public static final String MAIL_SERVER_KEY = TurbineConstants.MAIL_SERVER_KEY;
+
+    /** @deprecated Use the corresponding constant from TurbineConstants */
+    public static final String MODULE_CACHE_KEY = TurbineConstants.MODULE_CACHE_KEY;
+
+    /** @deprecated Use the corresponding constant from TurbineConstants */
+    public static final String MODULE_PACKAGES_KEY = TurbineConstants.MODULE_PACKAGES;
+
+    /** @deprecated Use the corresponding constant from TurbineConstants */
+    public static final String ACTION_CACHE_SIZE_KEY = TurbineConstants.ACTION_CACHE_SIZE_KEY;
+
+    /** @deprecated Use the corresponding constant from TurbineConstants */
+    public static final String LAYOUT_CACHE_SIZE_KEY = TurbineConstants.LAYOUT_CACHE_SIZE_KEY;
+
+    /** @deprecated Use the corresponding constant from TurbineConstants */
+    public static final String NAVIGATION_CACHE_SIZE_KEY = TurbineConstants.NAVIGATION_CACHE_SIZE_KEY;
+
+    /** @deprecated Use the corresponding constant from TurbineConstants */
+    public static final String PAGE_CACHE_SIZE_KEY = TurbineConstants.PAGE_CACHE_SIZE_KEY;
+
+    /** @deprecated Use the corresponding constant from TurbineConstants */
+    public static final String SCREEN_CACHE_SIZE_KEY = TurbineConstants.SCREEN_CACHE_SIZE_KEY;
+
+    /** @deprecated Use the corresponding constant from SecurityService */
+    public static final String USER_CLASS_KEY = SecurityService.USER_CLASS_KEY;
+
+    /** @deprecated No longer used */
     public static final String MAX_FILE_SIZE_KEY = "max.file.size.bytes";
+
+    /** @deprecated No longer used */
     public static final String FILE_SERVER = "file.server";
-    public static final String LOGIN_MESSAGE = "login.message";
-    public static final String LOGIN_ERROR = "login.error";
-    public static final String LOGIN_MESSAGE_NOSCREEN = "login.message.noscreen";
-    public static final String LOGOUT_MESSAGE = "logout.message";
+
+    /** @deprecated Use the corresponding constant from TurbineConstants */
+    public static final String LOGIN_MESSAGE = TurbineConstants.LOGIN_MESSAGE;
+
+    /** @deprecated Use the corresponding constant from TurbineConstants */
+    public static final String LOGIN_ERROR = TurbineConstants.LOGIN_ERROR;
+
+    /** @deprecated Use the corresponding constant from TurbineConstants */
+    public static final String LOGIN_MESSAGE_NOSCREEN = TurbineConstants.LOGIN_MESSAGE_NOSCREEN;
+
+    /** @deprecated Use the corresponding constant from TurbineConstants */
+    public static final String LOGOUT_MESSAGE = TurbineConstants.LOGOUT_MESSAGE;
 
     /**
      * Set a property in with a key=value pair.
