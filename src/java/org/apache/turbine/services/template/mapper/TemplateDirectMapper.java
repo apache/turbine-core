@@ -79,18 +79,6 @@ public class TemplateDirectMapper
     }
 
     /**
-     * C'tor
-     *
-     * @param defaultProperty The name of the default property to pull from the TemplateEngine
-     * @param separator The separator for this Mapper.
-     */
-    public TemplateDirectMapper(String defaultProperty, char separator)
-    {
-        // Never cache, cacheSize isn't used.
-        super(false, 0, defaultProperty, separator);
-    }
-
-    /**
      * Strip off a possible extension, replace all "," with "."
      *
      * about,directions,Driving.vm --> about.directions.Driving

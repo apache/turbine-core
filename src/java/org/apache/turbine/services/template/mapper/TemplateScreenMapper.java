@@ -83,24 +83,6 @@ public class TemplateScreenMapper
     }
 
     /**
-     * C'tor
-     *
-     * @param useCache If true, then the resulting mapper will cache mappings.
-     * @param cacheSize Size of the internal map cache. Must be > 0 if useCache is true.
-     * @param defaultProperty The name of the default property to pull from the TemplateEngine
-     * @param separator The separator for this mapper.
-     * @param prefix A prefix used to provide various hierarchies for screens, layouts, navigation...
-     */
-    public TemplateScreenMapper(boolean useCache,
-        int cacheSize,
-        String defaultProperty,
-        char separator,
-        String prefix)
-    {
-        super(useCache, cacheSize, defaultProperty, separator, prefix);
-    }
-
-    /**
      * Check, whether the provided name exists. Returns null
      * if the screen does not exist.
      *
