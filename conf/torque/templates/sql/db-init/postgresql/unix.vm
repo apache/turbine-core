@@ -1,4 +1,6 @@
 #!/bin/sh
 
-dropdb $databaseName
-createdb $databaseName
+#foreach ($databaseModel in $appData.Databases)
+dropdb $databaseModel.Name
+createdb $databaseModel.Name
+#end
