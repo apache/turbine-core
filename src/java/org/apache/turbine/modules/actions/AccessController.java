@@ -54,11 +54,16 @@ package org.apache.turbine.modules.actions;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.TurbineSecurityException;
+
+import org.apache.turbine.om.security.User;
 
 /**
  * This action doPerforms an Access Control List and places it into
@@ -96,6 +101,10 @@ import org.apache.turbine.util.security.TurbineSecurityException;
 public class AccessController
         extends Action
 {
+
+    /** Logging */
+    private static Log log = LogFactory.getLog(AccessController.class);
+
     /**
      * If there is a user and the user is logged in, doPerform will
      * set the RunData ACL.  The list is first sought from the current
@@ -110,17 +119,23 @@ public class AccessController
     public void doPerform(RunData data)
             throws TurbineSecurityException
     {
-        if (!TurbineSecurity.isAnonymousUser(data.getUser())
-            && data.getUser().hasLoggedIn())
+        User user = data.getUser();
+
+        if (!TurbineSecurity.isAnonymousUser(user)
+            && user.hasLoggedIn())
         {
+            log.debug("Fetching ACL for " + user.getName());
             AccessControlList acl = (AccessControlList)
                     data.getSession().getAttribute(
                             AccessControlList.SESSION_KEY);
             if (acl == null)
             {
-                acl = TurbineSecurity.getACL(data.getUser());
+                log.debug("No ACL found in Session, building fresh ACL");
+                acl = TurbineSecurity.getACL(user);
                 data.getSession().setAttribute(
                         AccessControlList.SESSION_KEY, acl);
+
+                log.debug("ACL is " + acl);
             }
             data.setACL(acl);
         }
