@@ -3,7 +3,7 @@ package org.apache.turbine.modules.layouts;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -92,7 +92,7 @@ public class JspLayout
                 new JspScreenPlaceholder(data));
 
         // variable to reference the navigations in the layout template
-        data.getRequest().setAttribute("navigation", 
+        data.getRequest().setAttribute("navigation",
             new JspNavigation(data));
 
         // Grab the layout template set in the TemplatePage.

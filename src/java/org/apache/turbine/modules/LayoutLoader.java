@@ -3,7 +3,7 @@ package org.apache.turbine.modules;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -86,9 +86,9 @@ public class LayoutLoader
     private static Log log = LogFactory.getLog(LayoutLoader.class);
 
     /** The single instance of this class. */
-    private static LayoutLoader instance = 
+    private static LayoutLoader instance =
         new LayoutLoader(Turbine.getConfiguration()
-                         .getInt(TurbineConstants.LAYOUT_CACHE_SIZE_KEY, 
+                         .getInt(TurbineConstants.LAYOUT_CACHE_SIZE_KEY,
                                  TurbineConstants.LAYOUT_CACHE_SIZE_DEFAULT));
 
     /** The Assembler Broker Service */

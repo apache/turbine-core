@@ -3,7 +3,7 @@ package org.apache.turbine.modules;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -90,7 +90,7 @@ public class NavigationLoader
     /** The single instance of this class. */
     private static NavigationLoader instance =
         new NavigationLoader(Turbine.getConfiguration()
-                         .getInt(TurbineConstants.NAVIGATION_CACHE_SIZE_KEY, 
+                         .getInt(TurbineConstants.NAVIGATION_CACHE_SIZE_KEY,
                                  TurbineConstants.NAVIGATION_CACHE_SIZE_DEFAULT));
 
     /** The Assembler Broker Service */
@@ -228,7 +228,7 @@ public class NavigationLoader
                         GenericLoader.getBasePackage());
 
                 throw new ClassNotFoundException(
-                        "\n\n\tRequested Navigation not found: " + name + 
+                        "\n\n\tRequested Navigation not found: " + name +
                         "\n\tTurbine looked in the following " +
                         "modules.packages path: \n\t" + packages.toString() + "\n");
             }

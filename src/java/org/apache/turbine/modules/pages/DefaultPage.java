@@ -3,7 +3,7 @@ package org.apache.turbine.modules.pages;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -248,7 +248,7 @@ public class DefaultPage
     {
         String errMsg =
                 "default.doctype property not set properly in TurbineResources.properties!";
-        Vector doctypeProperty = 
+        Vector doctypeProperty =
             Turbine.getConfiguration().getVector(TurbineConstants.DEFAULT_DOCUMENT_TYPE_KEY);
 
         if (doctypeProperty != null)
@@ -285,7 +285,7 @@ public class DefaultPage
                     break;
                 }
             default:
-                {                
+                {
                     throw new TurbineException(errMsg);
                 }
             }

@@ -3,7 +3,7 @@ package org.apache.turbine.modules.screens;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -139,7 +139,7 @@ public class VelocityScreen
         Context context = TurbineVelocity.getContext(data);
 
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
-        String templateName 
+        String templateName
             = TurbineTemplate.getScreenTemplateName(screenTemplate);
 
         // The Template Service could not find the Screen
