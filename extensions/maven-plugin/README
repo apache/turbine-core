@@ -100,6 +100,31 @@ The task reads an optional "setup.properties" file in the current
 directory which can contain additional properties for setting up and
 configuring the application.
 
+turbine:deploy
+==============
+
+Installs the web application into your container. There are two ways
+of deployment: inplace and container. Which one is the right one for
+you depends on your application and appserver layout and your
+development environment.
+
+inplace deployment: You must set the "turbine.app.inplace" property to
+                    "true". Now the META plugin will copy your build
+                    web application tree into a subdirectory in your
+                    current source tree. Default is "src/webapp", so
+                    the web application will show up right next to
+                    your src/java source tree.
+
+container deployment: The turbine.app.inplace property must be set to
+                      "false". Your application will be copied into
+                      the webapps subdirectory of the container that
+                      you've specified with the maven specific
+                      maven.appserver.home property (which is used in
+                      other plugins, too). Your application will be
+                      put into a subdirectory which has the name of
+                      your project id (<id> tag in your project.xml).
+
+
 META Properties
 ---------------
 
@@ -149,8 +174,37 @@ Function:	Defines whether to create the new application in the
 Type:		boolean (true/false)
 Default:	"true" (use a subdirectory)
 
+turbine.app.inplace (turbine:deploy)
+
+Function:	Defines whether a web application should be
+		treated as an inplace application (the source tree
+		is located in the web application) or it should be
+		copied into the application tree.
+Type:		boolean (true/false)
+Default:	"false" (copy the application tree into the web server)
+
+turbine.app.inplace.dir
+
+Function:	Defines where an inplace editing application is put.
+		This property is only used, when inplace deployment is
+		used (turbine.app.inplace is true).
+Type:		String
+Default:        src/webapp (The compiled web application is put
+		into your development tree in the src/webapp 
+		subdirectory).
+
 Properties from other plugins
 -----------------------------
+
+maven.appserver.home (turbine:deploy)
+
+Plugin:		appserver
+Function:	Defines the root directory of the application server
+                used for testing and/or deploying of the  application
+		if you use container deployment(turbine.app.inplace is
+		true)
+Type:		String
+Default:	not set
 
 maven.appserver.name (turbine:setup)
 
@@ -205,6 +259,7 @@ Function:	Set an URL which can be used by the Torque plugin
                 requested database
 Type:		String
 Default:	not set
+
 
 
 

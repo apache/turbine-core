@@ -53,4 +53,8 @@
     <attainGoal name="turbine:war-webapp"/>
   </postGoal>
 
+  <postGoal name="clean:clean">
+    <!-- Run the Turbine Plugin post-clean Target -->
+    <attainGoal name="turbine:clean-clean"/>
+  </postGoal>
 </project>

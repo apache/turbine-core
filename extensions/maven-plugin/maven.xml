@@ -25,9 +25,5 @@
 <!--                                                                          -->
 <!-- ======================================================================== -->
 
-<project
-  default="plugin:deploy"
-  xmlns:j="jelly:core"
-  xmlns:u="jelly:util"
-  xmlns:m="maven"/>
+<project default="plugin:deploy"/>
 
