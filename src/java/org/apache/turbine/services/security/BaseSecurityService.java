@@ -1046,10 +1046,8 @@ public abstract class BaseSecurityService
     /**
      * Retrieve a Group object with specified Id.
      *
-     * @param name the name of the Group.
-     *
+     * @param id the id of the Group.
      * @return an object representing the Group with specified name.
-     *
      * @throws UnknownEntityException if the permission does not
      *            exist in the database.
      * @throws DataBackendException if there is a problem accessing the
@@ -1107,11 +1105,8 @@ public abstract class BaseSecurityService
 
     /**
      * Retrieve a Role object with specified Id.
-     *
-     * @param name the name of the Role.
-     *
+     * @param id the id of the Role.
      * @return an object representing the Role with specified name.
-     *
      * @throws UnknownEntityException if the permission does not
      *            exist in the database.
      * @throws DataBackendException if there is a problem accessing the
@@ -1171,10 +1166,8 @@ public abstract class BaseSecurityService
     /**
      * Retrieve a Permission object with specified Id.
      *
-     * @param name the name of the Permission.
-     *
+     * @param id the id of the Permission.
      * @return an object representing the Permission with specified name.
-     *
      * @throws UnknownEntityException if the permission does not
      *            exist in the database.
      * @throws DataBackendException if there is a problem accessing the
