@@ -3,24 +3,24 @@
 
   <!-- the version of maven's project object model -->
   <pomVersion>3</pomVersion>
-  
+
   <!-- a unique name for this project -->
   <id>app</id>
-  
+
   <!-- a short but descriptive name for the project -->
   <name>Maven example projects</name>
-  
+
   <!-- The version of the project under development, e.g.
        1.1, 1.2, 2.0-dev -->
   <currentVersion>1.0</currentVersion>
-  
+
   <!-- details about the organization that 'owns' the project -->
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
     <logo>http://jakarta.apache.org/turbine/maven/images/jakarta-logo-blue.gif</logo>
   </organization>
-  
+
   <!-- the year the project started -->
   <inceptionYear>2002</inceptionYear>
   <package>@PACKAGE@</package>
@@ -48,14 +48,14 @@
 
   <!-- any mailing lists for the project -->
   <mailingLists/>
-  
+
   <!-- who the developers are for the project -->
   <developers>
    <developer>
-      <name>Jason van Zyl</name>
-      <id>jvanzyl</id>
-      <email>jason@zenplex.com</email>
-      <organization>Zenplex</organization>
+      <name>Full Name</name>
+      <id>userId</id>
+      <email>me@mycompany</email>
+      <organization>mycompany</organization>
       <roles>
         <role>Java Developer</role>
       </roles>
@@ -64,7 +64,7 @@
 
   <!-- jar files the project is dependent on -->
   <dependencies/>
-  
+
   <!-- build information for the project -->
   <build>
     <nagEmailAddress>turbine-maven-dev@jakarta.apache.org</nagEmailAddress>
@@ -89,7 +89,4 @@
       </resource>
     </resources>
   </build>
-
-
 </project>
-

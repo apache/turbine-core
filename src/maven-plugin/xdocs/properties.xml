@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<document>
+
+  <properties>
+    <title>Maven Turbine Plug-in Properties</title>
+    <author email="mpoeschl@marmot.at">Martin Poeschl</author>
+  </properties>
+
+  <body>
+    <section name="Application Generation Settings">
+      <table>
+        <tr><th>Property</th><th>Optional?</th><th>Description</th><th>Default</th></tr>
+        <tr>
+          <td>package</td>
+          <td>No</td>
+          <td>
+            Specifies the name of the Java package that code will be
+            generated for.
+          </td>
+        </tr>
+      </table>
+    </section>
+  </body>
+</document>
