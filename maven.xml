@@ -28,7 +28,6 @@
 
 <project
   xmlns:j="jelly:core"
-  xmlns:m="maven"
   xmlns:u="jelly:util"
   xmlns:maven="jelly:maven"
   default="jar:jar">
@@ -198,7 +197,7 @@
      prereqs="nightly:build"
      description="Deploy the nightly builds">
 
-    <m:user-check user="${maven.username}"/>
+    <user-check user="${maven.username}"/>
 
     <echo>
        deploymentAddress = ${pom.siteAddress}
