@@ -58,11 +58,13 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.pool.PoolService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.apache.turbine.services.pool.TurbinePool;
 import org.apache.turbine.services.rundata.DefaultTurbineRunData;
-import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.services.rundata.TurbineRunData;
+import org.apache.turbine.services.rundata.TurbineRunDataFacade;
 import org.apache.turbine.util.parser.DefaultCookieParser;
 import org.apache.turbine.util.parser.DefaultParameterParser;
 
@@ -73,6 +75,7 @@ import org.apache.turbine.util.parser.DefaultParameterParser;
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @author <a href="mailto:burton@relativity.yi.org">Kevin A. Burton</a>
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  * @deprecated This factory tries to be the RunData Service if no RunData Service is
  * configured. RunData Service is now mandatory for Turbine so use it directly without
@@ -80,6 +83,9 @@ import org.apache.turbine.util.parser.DefaultParameterParser;
  */
 public class RunDataFactory
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(RunDataFactory.class);
+
     /**
      * A flag for the RunData Service.
      */
@@ -97,7 +103,7 @@ public class RunDataFactory
                                      HttpServletResponse res,
                                      ServletConfig config)
             throws TurbineException,
-            IllegalArgumentException
+                   IllegalArgumentException
     {
         // NOTE: getRunData( HttpServletRequest req,
         // HttpServletResponse res ) has been deprecated 3-3-2000.
@@ -127,21 +133,18 @@ public class RunDataFactory
         {
             try
             {
-                RunDataService service = (RunDataService)
-                        TurbineServices.getInstance().getService(RunDataService.SERVICE_NAME);
-                return service.getRunData(req, res, config);
+                return TurbineRunDataFacade.getRunData(req, res, config);
             }
             catch (Exception x)
             {
+                log.info("No Run Data Service available, not trying again!");
                 tryRunDataService = false;
             }
         }
 
         // Failed, create a default implementation using the Pool Service.
-        PoolService pool = (PoolService)
-                TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
-        TurbineRunData data = (TurbineRunData)
-                pool.getInstance(DefaultTurbineRunData.class);
+        TurbineRunData data =
+                (TurbineRunData) TurbinePool.getInstance(DefaultTurbineRunData.class);
 
         // Cache some information that will be used elsewhere.
         data.setRequest(req);
@@ -160,23 +163,7 @@ public class RunDataFactory
 
         // data.setOut(data.getResponse().getWriter());
 
-        // Allow Turbine to work with both 2.2 (and 2.1) and 2.0
-        // Servlet API.
-        String contextPath = null;
-        Class jsdkClass = HttpServletRequest.class;
-        try
-        {
-            java.lang.reflect.Method meth =
-                    jsdkClass.getDeclaredMethod("getContextPath", null);
-            contextPath = (String) meth.invoke(req, null);
-        }
-        catch (Exception ex)
-        {
-            // Ignore a NoSuchMethodException because it means we are
-            // using Servlet API 2.0.  Make sure scriptName is not
-            // null.
-            contextPath = "";
-        }
+        String contextPath = req.getContextPath();
 
         String scriptName = contextPath + data.getRequest().getServletPath();
 
@@ -214,9 +201,7 @@ public class RunDataFactory
         {
             try
             {
-                RunDataService service = (RunDataService)
-                        TurbineServices.getInstance().getService(RunDataService.SERVICE_NAME);
-                service.putRunData(data);
+                 TurbineRunDataFacade.putRunData(data);
                 return;
             }
             catch (Exception x)
@@ -225,8 +210,6 @@ public class RunDataFactory
         }
 
         // Failed, use the Pool Service instead.
-        PoolService pool = (PoolService)
-                TurbineServices.getInstance().getService(PoolService.SERVICE_NAME);
-        pool.putInstance(data);
+        TurbinePool.putInstance(data);
     }
 }
