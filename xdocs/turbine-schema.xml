@@ -27,6 +27,16 @@
 
 <body>
 
+<section name="Turbine and Torque">
+<p>
+This document is for the DBSecurityService. If you look for
+documentation about the schema for the <a
+href="services/torque-security-service.html">TorqueSecurityService</a>
+or the Scheduler Service, please look at the <a
+href="torque/index.html">Torque Report</a>.
+</p>
+</section>
+
 <section name="Turbine Schema">
 <p>
 The naming scheme is that the Turbine specific tables are prefixed with

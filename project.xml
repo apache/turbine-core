@@ -426,7 +426,7 @@
     <dependency>
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>
-      <version>1.1</version>
+      <version>1.2</version>
       <url>http://jakarta.apache.org/commons/pool/</url>
       <type>jar</type>
     </dependency>
@@ -611,7 +611,7 @@
     <dependency>
       <groupId>commons-dbcp</groupId>
       <artifactId>commons-dbcp</artifactId>
-      <version>1.1</version>
+      <version>1.2.1</version>
       <url>http://jakarta.apache.org/commons/dbcp/</url>
       <type>jar</type>
     </dependency>
@@ -624,6 +624,13 @@
     </dependency>
 
     <!-- Ah well. And then there is maven...  -->
+
+    <dependency>
+      <groupId>torque</groupId>
+      <artifactId>maven-torque-plugin</artifactId>
+      <version>3.1.1</version>
+      <type>plugin</type>
+    </dependency>
 
     <dependency>
       <groupId>maven</groupId>
@@ -674,6 +681,7 @@
     <report>maven-jcoverage-plugin</report>
     <report>maven-simian-plugin</report>
     <report>maven-junit-report-plugin</report>
+    <report>maven-torque-plugin</report>
 <!--
     <report>maven-linkcheck-plugin</report>
 ===========================================================
