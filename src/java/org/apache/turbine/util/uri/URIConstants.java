@@ -64,31 +64,30 @@ package org.apache.turbine.util.uri;
 
 public interface URIConstants
 {
-  /** HTTP protocol. */
-  static final String HTTP = "http";
+    /** HTTP protocol. */
+    static final String HTTP = "http";
 
-  /** HTTPS protocol. */
-  static final String HTTPS = "https";
+    /** HTTPS protocol. */
+    static final String HTTPS = "https";
 
-  /** HTTP Default Port */
-  static final int HTTP_PORT = 80;
+    /** HTTP Default Port */
+    static final int HTTP_PORT = 80;
 
-  /** HTTPS Default Port */
-  static final int HTTPS_PORT = 443;
+    /** HTTPS Default Port */
+    static final int HTTPS_PORT = 443;
 
-  /** Path Info Data Marker */
-  static final int PATH_INFO = 0;
+    /** Path Info Data Marker */
+    static final int PATH_INFO = 0;
 
-  /** Query Data Marker */
-  static final int QUERY_DATA = 1;
+    /** Query Data Marker */
+    static final int QUERY_DATA = 1;
 
-  /** CGI parameter for action name */
-  static final String CGI_ACTION_PARAM = "action";
+    /** CGI parameter for action name */
+    static final String CGI_ACTION_PARAM = "action";
 
-  /** CGI parameter for screen name */
-  static final String CGI_SCREEN_PARAM = "screen";
+    /** CGI parameter for screen name */
+    static final String CGI_SCREEN_PARAM = "screen";
 
-  /** CGI parameter for template name */
-  static final String CGI_TEMPLATE_PARAM = "template";
-
+    /** CGI parameter for template name */
+    static final String CGI_TEMPLATE_PARAM = "template";
 }
