@@ -22,6 +22,7 @@
     <depend project="jakarta-ant"/>
     <depend project="xml-xerces"/>
 
+    <depend project="commons-codec"/>
     <depend project="commons-collections"/>
     <depend project="commons-configuration"/>
     <depend project="commons-lang"/>
