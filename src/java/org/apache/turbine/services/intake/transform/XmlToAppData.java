@@ -53,14 +53,14 @@ public class XmlToAppData extends DefaultHandler
     /** Logging */
     private static Log log = LogFactory.getLog(XmlToAppData.class);
 
-    private AppData app;
-    private XmlGroup currGroup;
-    private XmlField currField;
-    private Rule currRule;
+    private AppData app = null;
+    private XmlGroup currGroup = null;
+    private XmlField currField = null;
+    private Rule currRule = null;
 
     private StringBuffer charBuffer = null;
 
-    private static SAXParserFactory saxFactory;
+    private static SAXParserFactory saxFactory = null;
 
     static
     {
@@ -82,9 +82,9 @@ public class XmlToAppData extends DefaultHandler
      *
      * @param xmlFile The input file to parse.
      * @return AppData populated by <code>xmlFile</code>.
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @throws IOException
+     * @throws ParserConfigurationException When a serious parser configuration problem occurs.
+     * @throws SAXException When a problem parsing the XML file occurs.
+     * @throws IOException When an I/O error occurs.
      */
     public AppData parseFile(String xmlFile)
             throws ParserConfigurationException, SAXException, IOException
@@ -109,6 +109,8 @@ public class XmlToAppData extends DefaultHandler
     /**
      * EntityResolver implementation. Called by the XML parser
      *
+     * @param publicId The public identifer, which might be null.
+     * @param systemId The system identifier provided in the XML document.
      * @return an InputSource for the database.dtd file
      */
     public InputSource resolveEntity(String publicId, String systemId)
@@ -118,6 +120,10 @@ public class XmlToAppData extends DefaultHandler
 
     /**
      * Handles opening elements of the xml file.
+     * @param uri The current namespace URI.
+     * @param localName The local name (without prefix), or the empty string if Namespace processing is not being performed.
+     * @param rawName The qualified name (with prefix), or the empty string if qualified names are not available.
+     * @param attributes The specified or defaulted attributes.
      */
     public void startElement(String uri, String localName,
                              String rawName, Attributes attributes)
@@ -143,8 +149,10 @@ public class XmlToAppData extends DefaultHandler
     }
 
     /**
-     * Handles the character data, which we are using to specify the
-     * error message.
+     * Handles the character data, which we are using to specify the error message.
+     * @param mesgArray The characters.
+     * @param start The start position in the character array.
+     * @param length The number of characters to use from the character array.
      */
     public void characters(char[] mesgArray, int start, int length)
     {
@@ -153,8 +161,10 @@ public class XmlToAppData extends DefaultHandler
 
     /**
      * Handles closing Elements of the XML file
+     * @param uri The current namespace URI.
+     * @param localName The local name (without prefix), or the empty string if Namespace processing is not being performed.
+     * @param rawName The qualified name (with prefix), or the empty string if qualified names are not available.
      */
-
     public void endElement(String uri, String localName,
             String rawName)
     {
@@ -183,10 +193,15 @@ public class XmlToAppData extends DefaultHandler
      */
     public void warning(SAXParseException spe)
     {
-        log.warn("Parser Exception: " +
-                "Line " + spe.getLineNumber() +
-                " Row: " + spe.getColumnNumber() +
-                " Msg: " + spe.getMessage());
+        StringBuffer sb = new StringBuffer(64);
+        sb.append("Parser Exception: Line ");
+        sb.append(spe.getLineNumber());
+        sb.append(" Row ");
+        sb.append(spe.getColumnNumber());
+        sb.append(" Msg: ");
+        sb.append(spe.getMessage());
+
+        log.warn(sb.toString());
     }
 
     /**
@@ -196,10 +211,15 @@ public class XmlToAppData extends DefaultHandler
      */
     public void error(SAXParseException spe)
     {
-        log.error("Parser Exception: " +
-                "Line " + spe.getLineNumber() +
-                " Row: " + spe.getColumnNumber() +
-                " Msg: " + spe.getMessage());
+        StringBuffer sb = new StringBuffer(64);
+        sb.append("Parser Exception: Line ");
+        sb.append(spe.getLineNumber());
+        sb.append(" Row ");
+        sb.append(spe.getColumnNumber());
+        sb.append(" Msg: ");
+        sb.append(spe.getMessage());
+
+        log.error(sb.toString());
     }
 
     /**
@@ -209,9 +229,14 @@ public class XmlToAppData extends DefaultHandler
      */
     public void fatalError(SAXParseException spe)
     {
-        log.fatal("Parser Exception: " +
-                "Line " + spe.getLineNumber() +
-                " Row: " + spe.getColumnNumber() +
-                " Msg: " + spe.getMessage());
+        StringBuffer sb = new StringBuffer(64);
+        sb.append("Parser Exception: Line ");
+        sb.append(spe.getLineNumber());
+        sb.append(" Row ");
+        sb.append(spe.getColumnNumber());
+        sb.append(" Msg: ");
+        sb.append(spe.getMessage());
+
+        log.fatal(sb.toString());
     }
 }
