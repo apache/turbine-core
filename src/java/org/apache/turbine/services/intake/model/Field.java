@@ -371,14 +371,16 @@ public abstract class Field
             }
         }
 
-        if (pp.containsKey(getKey()) 
-                &&  StringUtils.isNotEmpty(pp.getString(getKey())))
+        if (pp.containsKey(getKey()))
         {
             if (isDebugEnabled)
             {
                 log.debug(name + ": Found our Key in the request, setting Value");
             }
-            setFlag = true;
+            if (StringUtils.isNotEmpty(pp.getString(getKey())))
+            {
+                setFlag = true;
+            }
             validate();
         }
         else if (pp.containsKey(getValueIfAbsent()) &&
@@ -473,7 +475,7 @@ public abstract class Field
     public void setRequired(boolean v, String message)
     {
         this.required = v;
-        if (v && !setFlag)
+        if (v && (!setFlag || null == getTestValue()))
         {
             validFlag = false;
             this.message = message;
