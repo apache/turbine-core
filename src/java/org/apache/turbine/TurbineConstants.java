@@ -277,4 +277,5 @@ public interface TurbineConstants
 
     public static final String APPLICATION_ROOT = "applicationRoot";
     public static final String WEBAPP_ROOT = "webappRoot";
+    public static final String WEB_CONTEXT = "webContext";
 }

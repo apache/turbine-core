@@ -57,6 +57,7 @@ package org.apache.turbine;
 import java.io.File;
 import java.io.IOException;
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -148,6 +149,16 @@ public class Turbine
     private static String applicationRoot;
 
     /**
+     * Servlet config for this Turbine webapp.
+     */
+    private static ServletConfig servletConfig;
+
+    /**
+     * Servlet context for this Turbine webapp.
+     */
+    private static ServletContext servletContext;
+
+    /**
      * The webapp root where the Turbine application
      * is running.
      */
@@ -168,6 +179,7 @@ public class Turbine
     private static String serverName;
     private static String serverScheme;
     private static String serverPort;
+    private static String scriptName;
     private static String contextPath;
 
     /**
@@ -197,6 +209,8 @@ public class Turbine
 
             try
             {
+                ServletContext context = config.getServletContext();
+
                 // Set the application root. This defaults to the webapp
                 // context if not otherwise set. This is to allow 2.1 apps
                 // to be developed from CVS. This feature will carry over
@@ -204,17 +218,26 @@ public class Turbine
                 applicationRoot = config.getInitParameter(APPLICATION_ROOT);
 
                 if (applicationRoot == null
-                        || applicationRoot.equals("webContext"))
+                    || applicationRoot.equals(WEB_CONTEXT))
                 {
                     applicationRoot = config.getServletContext()
                             .getRealPath("/");
                 }
+
+                // Set the applicationRoot for this webapp.
+                setApplicationRoot(applicationRoot);
 
                 // Set the webapp root. The applicationRoot and the
                 // webappRoot will be the same when the application is
                 // deployed, but during development they may have
                 // different values.
                 webappRoot = config.getServletContext().getRealPath("/");
+
+                //
+                // Save Context and Config for later
+                //
+                setTurbineServletConfig(config);
+                setTurbineServletContext(context);
 
                 // Create any directories that need to be setup for
                 // a running Turbine application.
@@ -276,14 +299,12 @@ public class Turbine
         {
             if (firstDoGet)
             {
-                serverName = data.getRequest().getServerName();
-                serverPort = Integer.toString(data.getRequest().getServerPort());
-                serverScheme = data.getRequest().getScheme();
-
-                // Store the context path for tools like ContentURI and
-                // the UIManager that use webapp context path information
-                // for constructing URLs.
-                contextPath = data.getRequest().getContextPath();
+                // All we want to do here is save some servlet
+                // information so that services and processes
+                // that don't have direct access to a RunData
+                // object can still know something about
+                // the servlet environment.
+                saveServletInfo(data);
 
                 log("Turbine: Starting HTTP initialization of services");
                 TurbineServices.getInstance().initServices(data);
@@ -326,6 +347,18 @@ public class Turbine
     }
 
     /**
+     * Get the script name. This is the initial script name.
+     * Actually this is probably not needed any more. I'll
+     * check. jvz.
+     *
+     * @return String initial script name.
+     */
+    public static String getScriptName()
+    {
+        return scriptName;
+    }
+
+    /**
      * Return the context path.
      *
      * @return String context path
@@ -333,6 +366,46 @@ public class Turbine
     public static String getContextPath()
     {
         return contextPath;
+    }
+
+    /**
+     * Set the servlet config for this turbine webapp.
+     *
+     * @param s New servlet config
+     */
+    public static void setTurbineServletConfig(ServletConfig s)
+    {
+        servletConfig = s;
+    }
+
+    /**
+     * Get the servlet config for this turbine webapp.
+     *
+     * @return ServletConfig
+     */
+    public static ServletConfig getTurbineServletConfig()
+    {
+        return servletConfig;
+    }
+
+    /**
+     * Set the servlet context for this turbine webapp.
+     *
+     * @param s New servlet context.
+     */
+    public static void setTurbineServletContext(ServletContext s)
+    {
+        servletContext = s;
+    }
+
+    /**
+     * Get the servlet context for this turbine webapp.
+     *
+     * @return ServletContext
+     */
+    public static ServletContext getTurbineServletContext()
+    {
+        return servletContext;
     }
 
     /**
@@ -697,6 +770,36 @@ public class Turbine
             org.apache.turbine.util.Log.error(
                     reallyScrewedNow.getMessage(), reallyScrewedNow);
         }
+    }
+
+    /**
+     * Save some information about this servlet so that
+     * it can be utilized by object instances that do not
+     * have direct access to RunData.
+     *
+     * @param data
+     */
+    public static synchronized void saveServletInfo(RunData data)
+    {
+        serverName = data.getRequest().getServerName();
+        serverPort = new Integer(data.getRequest().getServerPort()).toString();
+        serverScheme = data.getRequest().getScheme();
+        scriptName = applicationRoot + data.getRequest().getServletPath();
+
+        // Store the context path for tools like ContentURI and
+        // the UIManager that use webapp context path information
+        // for constructing URLs.
+        contextPath = data.getRequest().getContextPath();
+    }
+
+    /**
+     * Set the application root for the webapp.
+     *
+     * @param val New app root.
+     */
+    public static void setApplicationRoot(String val)
+    {
+        applicationRoot = val;
     }
 
     /**
