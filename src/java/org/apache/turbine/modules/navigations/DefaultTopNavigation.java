@@ -54,8 +54,6 @@ package org.apache.turbine.modules.navigations;
  * <http://www.apache.org/>.
  */
 
-// Turbine Classes
-
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.HtmlColor;
 import org.apache.ecs.html.B;
@@ -73,7 +71,6 @@ import org.apache.turbine.util.RunData;
  */
 public class DefaultTopNavigation extends Navigation
 {
-    private static final boolean DEBUG = false;
     private static String txt =
             "Turbine - A Servlet Framework for building Secure Dynamic Websites.";
 
@@ -82,7 +79,7 @@ public class DefaultTopNavigation extends Navigation
      *
      * @param data Turbine information.
      * @return A ConcreteElement.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public ConcreteElement doBuild(RunData data)
             throws Exception
