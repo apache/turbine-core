@@ -531,6 +531,12 @@ public class TurbinePullService
                         // into the context if "refreshToolsPerRequest"
                         // was wanted. 
                         // 
+                        // RunDataApplicationTools now have a parameter 
+                        // for refresh. If it is not refreshed immediately
+                        // after init(), the parameter value will be undefined
+                        // until the 2nd run. So we refresh all the session
+                        // tools on every run, even if we just init'ed it.
+                        //
                         
                         if (refreshToolsPerRequest)
                         {
@@ -649,6 +655,10 @@ public class TurbinePullService
         {
             ((ApplicationTool) tool).init(param);
         }
+        else if (tool instanceof RunDataApplicationTool)
+        {
+            ((RunDataApplicationTool) tool).init(param);
+        }
     }
 
     /**
@@ -662,6 +672,10 @@ public class TurbinePullService
         if (tool instanceof ApplicationTool)
         {
             ((ApplicationTool) tool).refresh();
+        }
+        else if (tool instanceof RunDataApplicationTool)
+        {
+            ((RunDataApplicationTool) tool).refresh(data);
         }
     }
 }
