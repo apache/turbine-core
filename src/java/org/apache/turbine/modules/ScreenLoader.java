@@ -56,11 +56,18 @@ package org.apache.turbine.modules;
 
 import java.util.Vector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.ecs.ConcreteElement;
+
+import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.services.TurbineServices;
+
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
 
@@ -72,11 +79,22 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class ScreenLoader extends GenericLoader
+public class ScreenLoader
+    extends GenericLoader
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(ScreenLoader.class);
+
     /** The single instance of this class. */
-    private static ScreenLoader instance = new ScreenLoader(
-            TurbineResources.getInt(TurbineConstants.SCREEN_CACHE_SIZE, 50));
+    private static ScreenLoader instance =
+        new ScreenLoader(Turbine.getConfiguration()
+                         .getInt(TurbineConstants.SCREEN_CACHE_SIZE_KEY, 
+                                 TurbineConstants.SCREEN_CACHE_SIZE_DEFAULT));
+    
+    /** The Assembler Broker Service */
+    private static AssemblerBrokerService ab = 
+        (AssemblerBrokerService) TurbineServices.getInstance()
+        .getService(AssemblerBrokerService.SERVICE_NAME);
 
     /**
      * These ctor's are private to force clients to use getInstance()
@@ -160,19 +178,20 @@ public class ScreenLoader extends GenericLoader
         if (cache() && this.containsKey(name))
         {
             screen = (Screen) this.get(name);
+            log.debug("Found " + name + " in the cache!");
         }
         else
         {
-            // We get the broker service
-            AssemblerBrokerService ab =
-                    (AssemblerBrokerService) TurbineServices.getInstance()
-                    .getService(AssemblerBrokerService.SERVICE_NAME);
+            log.debug("Loading Screen " + name + " from the Assembler Broker");
 
             try
             {
-                // Attempt to load the screen
-                screen = (Screen) ab
-                        .getAssembler(AssemblerBrokerService.SCREEN_TYPE, name);
+                if (ab != null)
+                {
+                    // Attempt to load the screen
+                    screen = 
+                        (Screen) ab.getAssembler(AssemblerBrokerService.SCREEN_TYPE, name);
+                }
             }
             catch (ClassCastException cce)
             {
@@ -188,8 +207,9 @@ public class ScreenLoader extends GenericLoader
                 // the user a reason for that...
                 // FIX ME: The AssemblerFactories should each add it's
                 // own string here...
-                Vector packages = TurbineResources
-                        .getVector(TurbineConstants.MODULE_PACKAGES);
+                Vector packages = Turbine.getConfiguration()
+                    .getVector(TurbineConstants.MODULE_PACKAGES);
+
                 ObjectUtils.addOnce(packages,
                         GenericLoader.getBasePackage());
 

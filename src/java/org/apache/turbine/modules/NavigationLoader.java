@@ -57,10 +57,14 @@ package org.apache.turbine.modules;
 import java.util.Vector;
 
 import org.apache.ecs.ConcreteElement;
+
+import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.services.TurbineServices;
+
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
 
@@ -69,13 +73,17 @@ import org.apache.turbine.util.RunData;
  * Navigation modules.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class NavigationLoader extends GenericLoader
+public class NavigationLoader
+    extends GenericLoader
 {
     /** The single instance of this class. */
-    private static NavigationLoader instance = new NavigationLoader(
-            TurbineResources.getInt(TurbineConstants.NAVIGATION_CACHE_SIZE, 10));
+    private static NavigationLoader instance =
+        new NavigationLoader(Turbine.getConfiguration()
+                         .getInt(TurbineConstants.NAVIGATION_CACHE_SIZE_KEY, 
+                                 TurbineConstants.NAVIGATION_CACHE_SIZE_DEFAULT));
 
     /**
      * These ctor's are private to force clients to use getInstance()
@@ -184,8 +192,9 @@ public class NavigationLoader extends GenericLoader
                 // the user a reason for that...
                 // FIX ME: The AssemblerFactories should each add it's own
                 //         string here...
-                Vector packages = TurbineResources.getVector(
-                        TurbineConstants.MODULE_PACKAGES);
+                Vector packages = Turbine.getConfiguration()
+                    .getVector(TurbineConstants.MODULE_PACKAGES);
+
                 ObjectUtils.addOnce(packages,
                         GenericLoader.getBasePackage());
 
