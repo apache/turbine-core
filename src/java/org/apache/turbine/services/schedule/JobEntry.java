@@ -563,26 +563,6 @@ public class JobEntry extends BaseObject
         long obj1Time = this.getNextRuntime();
         long obj2Time = ((JobEntry)je).getNextRuntime();
         if (obj1Time > obj2Time)
-            return 1;
-        else if (obj1Time < obj2Time)
-            return -1;
-        else
-            return 0;
-    }
-
-    /**
-     * Used for ordering Jobentries
-     * Note: this comparator imposes orderings that are inconsistent with
-     * equals.
-     *
-     * @param je The first <code>JobEntry</code> object.
-     * @return An <code>int</code> indicating the result of the comparison.
-     */
-    public int compareTo(Object je)
-    {
-        long obj1Time = this.getNextRuntime();
-        long obj2Time = ((JobEntry)je).getNextRuntime();
-        if (obj1Time > obj2Time)
         {
             return 1;
         }
