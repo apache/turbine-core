@@ -55,10 +55,9 @@ package org.apache.turbine.util;
  */
 
 import java.net.URLEncoder;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
