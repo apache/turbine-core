@@ -114,18 +114,21 @@ public class FloatField
         if (isMultiValued)
         {
             String[] inputs = parser.getStrings(getKey());
-            Float[] values = new Float[inputs.length];
+            float[] values = new float[inputs.length];
             for (int i = 0; i < inputs.length; i++)
             {
                 values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? new Float(inputs[i]) : (Float) getEmptyValue();
+                        ? new Float(inputs[i]).floatValue() 
+                        : ((Float) getEmptyValue()).floatValue();
             }
             setTestValue(values);
         }
         else
         {
             String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val) ? new Float(val) : getEmptyValue());
+            setTestValue(StringUtils.isNotEmpty(val) 
+                    ? new Float(val) : getEmptyValue());
         }
     }
+    
 }

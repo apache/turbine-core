@@ -23,7 +23,7 @@ import org.apache.turbine.services.intake.validator.LongValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 
 /**
- * Creates Short Field objects.
+ * Processor for long fields.
  *
  * @version $Id$
  */
@@ -114,18 +114,21 @@ public class LongField
         if (isMultiValued)
         {
             String[] inputs = parser.getStrings(getKey());
-            Long[] values = new Long[inputs.length];
+            long[] values = new long[inputs.length];
             for (int i = 0; i < inputs.length; i++)
             {
                 values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? new Long(inputs[i]) : (Long) getEmptyValue();
+                        ? new Long(inputs[i]).longValue() 
+                        : ((Long) getEmptyValue()).longValue();
             }
             setTestValue(values);
         }
         else
         {
             String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val) ? new Long(val) : (Long) getEmptyValue());
+            setTestValue(StringUtils.isNotEmpty(val) 
+                    ? new Long(val) : (Long) getEmptyValue());
         }
     }
+    
 }
