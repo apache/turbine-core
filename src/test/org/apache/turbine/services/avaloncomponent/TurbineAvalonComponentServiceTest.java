@@ -93,7 +93,7 @@ public class TurbineAvalonComponentServiceTest extends TestCase
         cfg.setProperty(PREFIX + "componentConfiguration",
                 "src/test/componentConfiguration.xml");
         cfg.setProperty(PREFIX + "componentRoles",
-                "src/test/ComponentRoles.xml");
+                "src/test/componentRoles.xml");
         serviceManager.setConfiguration(cfg);
 
         try
