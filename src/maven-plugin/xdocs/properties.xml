@@ -17,6 +17,7 @@
             Specifies the name of the Java package that code will be
             generated for.
           </td>
+          <td/>
         </tr>
       </table>
     </section>
