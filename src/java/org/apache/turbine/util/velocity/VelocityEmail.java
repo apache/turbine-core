@@ -149,7 +149,7 @@ public class VelocityEmail extends SimpleEmail
     /** Address of outgoing mail server */
     private String mailServer;
 
-    /** The template to process, relative to WM's template directory. */
+    /** The template to process, relative to Velocity template directory. */
     private String template = null;
 
     /** Velocity context */
