@@ -470,12 +470,16 @@ public class BaseValueParser
             {
                 result = Boolean.TRUE;
             }
-            if (value.equals("0") ||
+            else if (value.equals("0") ||
                     value.equalsIgnoreCase("false") ||
                     value.equalsIgnoreCase("no") ||
                     value.equalsIgnoreCase("off"))
             {
                 result = Boolean.FALSE;
+            }
+            else
+            {
+                logConvertionFailure(name, value, "Boolean");
             }
         }
         return result;
@@ -538,18 +542,17 @@ public class BaseValueParser
     public double getDouble(String name, double defaultValue)
     {
         double result = defaultValue;
-        try
+        String value = getString(name);
+        if (StringUtils.isNotEmpty(value))
         {
-            String value = getString(name);
-            if (StringUtils.isNotEmpty(value))
+            try
             {
                 result = Double.valueOf(value).doubleValue();
             }
-        }
-        catch (NumberFormatException e)
-        {
-            log.error("Parameter ("
-                    + name + ") could not be converted to a double", e);
+            catch (NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "Double");
+            }
         }
         return result;
     }
@@ -590,9 +593,7 @@ public class BaseValueParser
                     }
                     catch (NumberFormatException e)
                     {
-                        log.error("Parameter (" + name
-                                + ") could not be converted to a double", e);
-
+                        logConvertionFailure(name, value[i], "Double");
                     }
                 }
             }
@@ -633,8 +634,7 @@ public class BaseValueParser
             }
             catch(NumberFormatException e)
             {
-                log.error("Parameter ("
-                        + name + ") could not be converted to a Double", e);
+                logConvertionFailure(name, value, "Double");
             }
         }
         return result;
@@ -664,8 +664,7 @@ public class BaseValueParser
                     }
                     catch (NumberFormatException e)
                     {
-                        log.error("Parameter (" + name
-                                + ") could not be converted to an Double", e);
+                        logConvertionFailure(name, value[i], "Double");
                     }
                 }
             }
@@ -684,18 +683,17 @@ public class BaseValueParser
     public float getFloat(String name, float defaultValue)
     {
         float result = defaultValue;
-        try
+        String value = getString(name);
+        if (StringUtils.isNotEmpty(value))
         {
-            String value = getString(name);
-            if (StringUtils.isNotEmpty(value))
+            try
             {
                 result = Float.valueOf(value).floatValue();
             }
-        }
-        catch (NumberFormatException e)
-        {
-            log.error("Parameter ("
-                    + name + ") could not be converted to a float", e);
+            catch (NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "Float");
+            }
         }
         return result;
     }
@@ -736,9 +734,7 @@ public class BaseValueParser
                     }
                     catch (NumberFormatException e)
                     {
-                        log.error("Parameter (" + name
-                                + ") could not be converted to a float", e);
-
+                        logConvertionFailure(name, value[i], "Float");
                     }
                 }
             }
@@ -779,8 +775,7 @@ public class BaseValueParser
             }
             catch(NumberFormatException e)
             {
-                log.error("Parameter ("
-                        + name + ") could not be converted to a Float", e);
+                logConvertionFailure(name, value, "Float");
             }
         }
         return result;
@@ -810,8 +805,7 @@ public class BaseValueParser
                     }
                     catch (NumberFormatException e)
                     {
-                        log.error("Parameter (" + name
-                                + ") could not be converted to an Float", e);
+                        logConvertionFailure(name, value[i], "Float");
                     }
                 }
             }
@@ -830,18 +824,17 @@ public class BaseValueParser
     public BigDecimal getBigDecimal(String name, BigDecimal defaultValue)
     {
         BigDecimal result = defaultValue;
-        try
+        String value = getString(name);
+        if (StringUtils.isNotEmpty(value))
         {
-            String value = getString(name);
-            if (StringUtils.isNotEmpty(value))
+            try
             {
                 result = new BigDecimal(value);
             }
-        }
-        catch (NumberFormatException e)
-        {
-            log.error("Parameter ("
-                    + name + ") could not be converted to a BigDecimal", e);
+            catch (NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "BigDecimal");
+            }
         }
         return result;
     }
@@ -876,7 +869,14 @@ public class BaseValueParser
             {
                 if(StringUtils.isNotEmpty(value[i]))
                 {
-                    result[i] = new BigDecimal(value[i]);
+                    try
+                    {
+                        result[i] = new BigDecimal(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        logConvertionFailure(name, value[i], "BigDecimal");
+                    }
                 }
             }
         }
@@ -894,18 +894,17 @@ public class BaseValueParser
     public int getInt(String name, int defaultValue)
     {
         int result = defaultValue;
-        try
+        String value = getString(name);
+        if (StringUtils.isNotEmpty(value))
         {
-            String value = getString(name);
-            if (StringUtils.isNotEmpty(value))
+            try
             {
                 result = Integer.valueOf(value).intValue();
             }
-        }
-        catch (NumberFormatException e)
-        {
-            log.error("Parameter ("
-                    + name + ") could not be converted to an integer", e);
+            catch (NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "Integer");
+            }
         }
         return result;
     }
@@ -987,8 +986,7 @@ public class BaseValueParser
                     }
                     catch (NumberFormatException e)
                     {
-                        log.error("Parameter (" + name
-                                + ") could not be converted to an integer", e);
+                        logConvertionFailure(name, value[i], "Integer");
                     }
                 }
             }
@@ -1029,8 +1027,7 @@ public class BaseValueParser
             }
             catch(NumberFormatException e)
             {
-                log.error("Parameter ("
-                        + name + ") could not be converted to a Integer", e);
+                logConvertionFailure(name, value, "Integer");
             }
         }
         return result;
@@ -1060,8 +1057,7 @@ public class BaseValueParser
                     }
                     catch (NumberFormatException e)
                     {
-                        log.error("Parameter (" + name
-                                + ") could not be converted to an Integer", e);
+                        logConvertionFailure(name, value[i], "Integer");
                     }
                 }
             }
@@ -1093,18 +1089,17 @@ public class BaseValueParser
     public long getLong(String name, long defaultValue)
     {
         long result = defaultValue;
-        try
+        String value = getString(name);
+        if (StringUtils.isNotEmpty(value))
         {
-            String value = getString(name);
-            if (StringUtils.isNotEmpty(value))
+            try
             {
                 result = Long.valueOf(value).longValue();
             }
-        }
-        catch (NumberFormatException e)
-        {
-            log.error("Parameter ("
-                    + name + ") could not be converted to a long", e);
+            catch (NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "Long");
+            }
         }
         return result;
     }
@@ -1145,9 +1140,7 @@ public class BaseValueParser
                     }
                     catch (NumberFormatException e)
                     {
-                        log.error("Parameter (" + name
-                                + ") could not be converted to a long", e);
-
+                        logConvertionFailure(name, value[i], "Long");
                     }
                 }
             }
@@ -1179,8 +1172,7 @@ public class BaseValueParser
                     }
                     catch (NumberFormatException e)
                     {
-                        log.error("Parameter (" + name
-                                + ") could not be converted to a Long", e);
+                        logConvertionFailure(name, value[i], "Long");
                     }
                 }
             }
@@ -1207,8 +1199,7 @@ public class BaseValueParser
             }
             catch(NumberFormatException e)
             {
-                log.error("Parameter ("
-                        + name + ") could not be converted to a Long", e);
+                logConvertionFailure(name, value, "Long");
             }
         }
         return result;
@@ -1239,18 +1230,17 @@ public class BaseValueParser
     public byte getByte(String name, byte defaultValue)
     {
         byte result = defaultValue;
-        try
+        String value = getString(name);
+        if (StringUtils.isNotEmpty(value))
         {
-            String value = getString(name);
-            if (StringUtils.isNotEmpty(value))
+            try
             {
                 result = Byte.valueOf(value).byteValue();
             }
-        }
-        catch (NumberFormatException e)
-        {
-            log.error("Parameter ("
-                    + name + ") could not be converted to a byte", e);
+            catch (NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "Byte");
+            }
         }
         return result;
     }
@@ -1321,8 +1311,7 @@ public class BaseValueParser
             }
             catch(NumberFormatException e)
             {
-                log.error("Parameter ("
-                        + name + ") could not be converted to a Byte", e);
+                logConvertionFailure(name, value, "Byte");
             }
         }
         return result;
@@ -1337,22 +1326,23 @@ public class BaseValueParser
      */
     public String getString(String name)
     {
+        String result = null;
         try
         {
-            String value = null;
-            Object object = parameters.get(convert(name));
-            if (object != null)
-                value = ((String[]) object)[0];
+            Object value = parameters.get(convert(name));
+            if (value != null)
+                value = ((String[]) value)[0];
             if (value == null || value.equals("null"))
                 return null;
-            return value;
+            result = (String) value;
         }
         catch (ClassCastException e)
         {
-            log.error("Parameter ("
-                    + name + ") could not be converted to a String", e);
-            return null;
+            log.fatal("Parameter ("
+                    + name + ") wasn not stored as a String", e);
         }
+
+        return result;
     }
 
     /**
@@ -1483,27 +1473,24 @@ public class BaseValueParser
      */
     public Date getDate(String name, DateFormat df, Date defaultValue)
     {
-        Date date = null;
+        Date result = defaultValue;
+        String value = getString(name);
 
-        if (containsKey(name))
+        if (StringUtils.isNotEmpty(value))
         {
             try
             {
                 // Reject invalid dates.
                 df.setLenient(false);
-                date = df.parse(getString(name));
+                result = df.parse(value);
             }
             catch (ParseException e)
             {
-                log.error("Parameter ("
-                        + name + ") could not be parsed into a date", e);
-                date = defaultValue;
+                logConvertionFailure(name, value, "Date");
             }
         }
-        else
-            date = defaultValue;
 
-        return date;
+        return result;
     }
 
     /**
@@ -1534,8 +1521,7 @@ public class BaseValueParser
             }
             catch (IllegalArgumentException e)
             {
-                log.error("Parameter ("
-                        + name + ") could not be parsed into a date", e);
+                logConvertionFailure(name, "n/a", "Date");
             }
         }
         else if (containsTimeSelectorKeys(name))
@@ -1568,8 +1554,7 @@ public class BaseValueParser
             }
             catch (IllegalArgumentException e)
             {
-                log.error("Parameter ("
-                        + name + ") could not be parsed into a date", e);
+                logConvertionFailure(name, "n/a", "Date");
             }
         }
         else
@@ -1824,5 +1809,20 @@ public class BaseValueParser
         }
 
         setter.invoke(bean, args);
+    }
+
+    /**
+     * Writes a log message about a convertion failure.
+     *
+     * @param paramName name of the parameter which could not be converted
+     * @param value value of the parameter
+     * @param type target data type.
+     */
+    private void logConvertionFailure(String paramName,
+                                      String value, String type)
+    {
+        log.warn("Parameter (" + paramName
+                + ") with value of ("
+                + value + ") could not be converted to a " + type);
     }
 }
