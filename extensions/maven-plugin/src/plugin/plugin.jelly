@@ -43,9 +43,6 @@
         <u:properties file="${turbine.setup.properties}" />
     </u:available>
 
-    <echo>Package:        ${turbine.app.package}
-    </echo>
-
     <attainGoal name="turbine:check-setup-environment"/>
 
     <filter token="TURBINE_APP_NAME"           value="${turbine.app.name}"/>
@@ -728,7 +725,7 @@
 --------------------------------------------------------------------------
 
  The requested flavor ${turbine.app.flavor} was not found in the
- current version (${plugin.version}) of M.E.T.A.
+ current version (${plugin.currentVersion}) of M.E.T.A.
 
 --------------------------------------------------------------------------
         </fail>
@@ -751,7 +748,7 @@
 --------------------------------------------------------------------------
 
  The requested mode ${turbine.app.plugin.mode} was not found in the
- current version (${plugin.version}) of M.E.T.A.
+ current version (${plugin.currentVersion}) of M.E.T.A.
 
 --------------------------------------------------------------------------
         </fail>
