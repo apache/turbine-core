@@ -376,6 +376,13 @@
       </properties>
     </dependency>
     <dependency>
+      <id>commons-beanutils</id>
+      <version>1.6.1</version>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>
+    <dependency>
       <id>commons-codec</id>
       <version>1.0-dev</version>
       <properties>
@@ -408,7 +415,7 @@
     </dependency>
     <dependency>
       <id>commons-fileupload</id>
-      <version>1.0-dev</version>
+      <version>1.0-beta-1</version>
       <url>http://jakarta.apache.org/commons/fileupload/index.html</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
