@@ -199,30 +199,19 @@ public interface TurbineConstants
     /** Default value for the Default Page */
     String PAGE_DEFAULT_DEFAULT = "DefaultPage";
 
-    /**
-     * Map building. This will probably be Torque generated at
-     * some point.
-     */
-    String MAPS_BUILDER = "database.maps.builder";
+    /** Default value for the Default Screen */
+    String SCREEN_DEFAULT_DEFAULT = "DefaultScreen";
 
-    /**
-     * Message to display upon successful login.
-     */
+    /** Message to display upon successful login. */
     String LOGIN_MESSAGE = "login.message";
 
-    /**
-     * Message to display when a user fails to login.
-     */
+    /** Message to display when a user fails to login. */
     String LOGIN_ERROR = "login.error";
 
-    /**
-     * Message to display when screens variable invalid.
-     */
+    /** Message to display when screens variable invalid. */
     String LOGIN_MESSAGE_NOSCREEN = "login.message.noscreen";
 
-    /**
-     * Message to display when a user logs out.
-     */
+    /** Message to display when a user logs out. */
     String LOGOUT_MESSAGE = "logout.message";
 
     /** Session Timeout */
@@ -243,9 +232,7 @@ public interface TurbineConstants
      */
     String PP_URL_CASE_FOLDING = "url.case.folding";
 
-    /**
-     * Default document type.
-     */
+    /** Default document type. */
     String DEFAULT_DOCUMENT_TYPE = "default.doctype";
 
     /** Default Language property */
