@@ -61,12 +61,9 @@ import org.apache.turbine.services.intake.validator.IntegerValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 
 /**
+ * Processor for int fields.
+ *
  * @deprecated Use the Fulcrum Intake component instead.
- * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
- * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
- * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
- * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
- * @version $Id$
  */
 public class IntegerField
         extends Field
@@ -155,11 +152,12 @@ public class IntegerField
         if (isMultiValued)
         {
             String[] inputs = parser.getStrings(getKey());
-            Integer[] values = new Integer[inputs.length];
+            int[] values = new int[inputs.length];
             for (int i = 0; i < inputs.length; i++)
             {
                 values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? new Integer(inputs[i]) : (Integer) getEmptyValue();
+                        ? new Integer(inputs[i]).intValue() 
+                        : ((Integer) getEmptyValue()).intValue();
             }
             setTestValue(values);
         }
@@ -169,4 +167,5 @@ public class IntegerField
             setTestValue(StringUtils.isNotEmpty(val) ? new Integer(val) : (Integer) getEmptyValue());
         }
     }
+    
 }
