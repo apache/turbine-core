@@ -72,21 +72,7 @@ public interface Group extends SecurityEntity
     /**
      * The name of the <a href="#global">global group</a>
      */
-    static final String GLOBAL_GROUP_NAME = "global";
-
-    /**
-     * Returns the name of this object.
-     *
-     * @return The name of the object.
-     */
-    String getName();
-
-    /**
-     * Sets the name of this object.
-     *
-     * @param name The name of the object.
-     */
-    void setName(String name);
+    String GLOBAL_GROUP_NAME = "global";
 
     /**
      * Makes changes made to the Group attributes permanent.
