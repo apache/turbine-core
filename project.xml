@@ -49,12 +49,6 @@
   </repository>
   <developers>
     <developer>
-      <name>Gary Bartlett</name>
-      <id/>
-      <email/>
-      <organization>gary_a_bartlett@yahoo.com</organization>
-    </developer>
-    <developer>
       <name>Jeff Brekke</name>
       <id>brekke</id>
       <email>ekkerbj@yahoo.com</email>
@@ -73,29 +67,12 @@
       <organization/>
     </developer>
     <developer>
-      <name>Youngho Cho</name>
-      <id/>
-      <email>youngho@nannet.co.kr</email>
-      <organization/>
-    </developer>
-    <developer>
-      <name>Frank Conradie</name>
-      <id/>
-      <email>frank@opticode.co.za</email>
-      <organization/>
-    </developer>
-    <developer>
-      <name>Gonzalo A. Diethelm</name>
-      <id/>
-      <email>gonzalo.diethelm@iname.com</email>
-      <organization/>
-    </developer>
-    <developer>
       <name>Eric Dobbs</name>
-      <id/>
+      <id>dobbs</id>
       <email>dobbs@apache.org</email>
       <organization/>
     </developer>
+<!--
     <developer>
       <name>David Duddleston</name>
       <id/>
@@ -114,12 +91,14 @@
       <email>hjnet@163.net</email>
       <organization/>
     </developer>
+-->
     <developer>
       <name>Fedor Karpelevitch</name>
       <id>fedor</id>
       <email>fedor@karpelevitch.net</email>
       <organization/>
     </developer>
+    <!--
     <developer>
       <name>Nissim Karpenstein</name>
       <id/>
@@ -174,12 +153,14 @@
       <email>bmclaugh@algx.net</email>
       <organization/>
     </developer>
+-->
     <developer>
       <name>John McNally</name>
       <id>jmcnally</id>
       <email>jmcnally@collab.net</email>
       <organization>CollabNet, Inc.</organization>
     </developer>
+<!--
     <developer>
       <name>Leon Messerschmidt</name>
       <id/>
@@ -216,12 +197,14 @@
       <email>Giacomo.Pati@pwr.ch</email>
       <organization/>
     </developer>
+-->
     <developer>
       <name>Martin Poeschl</name>
       <id>mpoeschl</id>
       <email>mpoeschl@marmot.at</email>
-      <organization>Tucana</organization>
+      <organization>tucana.at</organization>
     </developer>
+<!--
     <developer>
       <name>Mark Porter</name>
       <id/>
@@ -240,6 +223,7 @@
       <email>ilkka.priha@simsoft.fi</email>
       <organization/>
     </developer>
+-->
     <developer>
       <name>Daniel Rall</name>
       <id>dlr</id>
@@ -341,6 +325,30 @@
     -->
 
   </developers>
+
+  <contributors>
+    <contributor>
+      <name>Gary Bartlett</name>
+      <email>gary_a_bartlett@yahoo.com</email>
+    </contributor>
+
+    <contributor>
+      <name>Youngho Cho</name>
+      <email>youngho@nannet.co.kr</email>
+    </contributor>
+
+    <contributor>
+      <name>Frank Conradie</name>
+      <email>frank@opticode.co.za</email>
+    </contributor>
+
+    <contributor>
+      <name>Gonzalo A. Diethelm</name>
+      <email>gonzalo.diethelm@iname.com</email>
+    </contributor>
+
+  </contributors>
+
   <dependencies>
     <dependency>
       <id>ant</id>
