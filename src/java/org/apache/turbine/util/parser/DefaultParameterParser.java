@@ -56,13 +56,17 @@ package org.apache.turbine.util.parser;
 
 import java.net.URLDecoder;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.Hashtable;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.fileupload.FileItem;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.services.upload.TurbineUpload;
 import org.apache.turbine.services.upload.UploadService;
 import org.apache.turbine.util.ParameterParser;
@@ -108,7 +112,7 @@ public class DefaultParameterParser
     private byte[] uploadData = null;
 
     /** Map of request parameters to FileItem[]'s */
-    private Hashtable fileParameters = new Hashtable();
+    private Map fileParameters = new HashMap();
 
     /** Turbine Upload Service reference */
     private static UploadService uploadService = null;
@@ -187,25 +191,25 @@ public class DefaultParameterParser
      * There are convenience methods for retrieving the data as a
      * number of different datatypes.  The PATH_INFO data must be a
      * URLEncoded() string.
-     *
-     * <p>To add name/value pairs to this set of parameters, use the
+     * <p>
+     * To add name/value pairs to this set of parameters, use the
      * <code>add()</code> methods.
      *
-     * @param req An HttpServletRequest.
+     * @param request An HttpServletRequest.
      */
-    public void setRequest(HttpServletRequest req)
+    public void setRequest(HttpServletRequest request)
     {
         clear();
 
         uploadData = null;
 
-        String enc = req.getCharacterEncoding();
+        String enc = request.getCharacterEncoding();
         setCharacterEncoding(enc != null ? enc : "US-ASCII");
 
         // String object re-use at its best.
         String tmp = null;
 
-        tmp = req.getHeader("Content-type");
+        tmp = request.getHeader("Content-type");
 
         if (uploadServiceIsAvailable
                 && uploadService.getAutomatic()
@@ -214,7 +218,7 @@ public class DefaultParameterParser
         {
             try
             {
-                TurbineUpload.parseRequest(req, this);
+                TurbineUpload.parseRequest(request, this);
             }
             catch (TurbineException e)
             {
@@ -222,13 +226,14 @@ public class DefaultParameterParser
             }
         }
 
-        Enumeration names = req.getParameterNames();
+        Enumeration names = request.getParameterNames();
         if (names != null)
         {
             while (names.hasMoreElements())
             {
                 tmp = (String) names.nextElement();
-                fileParameters.put(convert(tmp), req.getParameterValues(tmp));
+                fileParameters.put(convert(tmp),
+                        request.getParameterValues(tmp));
             }
         }
 
@@ -236,7 +241,8 @@ public class DefaultParameterParser
         // if they are query string data.
         try
         {
-            StringTokenizer st = new StringTokenizer(req.getPathInfo(), "/");
+            StringTokenizer st =
+                    new StringTokenizer(request.getPathInfo(), "/");
             boolean isNameTok = true;
             String pathPart = null;
             while (st.hasMoreTokens())
@@ -265,7 +271,7 @@ public class DefaultParameterParser
             // and should be caught later.
         }
 
-        this.request = req;
+        this.request = request;
     }
 
     /**
