@@ -75,7 +75,7 @@ public abstract class TurbineScheduler
      *
      * @param oid The int id for the job.
      * @return A JobEntry.
-     * @exception TurbineException a generic exception.
+     * @exception TurbineException job could not be retrieved
      */
     public static JobEntry getJob(int oid)
             throws TurbineException
@@ -87,7 +87,7 @@ public abstract class TurbineScheduler
      * Add a new job to the queue.
      *
      * @param je A JobEntry with the job to add.
-     * @exception TurbineException a generic exception.
+     * @exception TurbineException job could not be added
      */
     void addJob(JobEntry je)
             throws TurbineException
@@ -96,10 +96,10 @@ public abstract class TurbineScheduler
     }
 
     /**
-     * Modify a Job.
+     * Add or update a job
      *
      * @param je A JobEntry with the job to modify
-     * @exception TurbineException a generic exception.
+     * @exception TurbineException job could not be updated
      */
     public static void updateJob(JobEntry je)
             throws TurbineException
@@ -111,7 +111,7 @@ public abstract class TurbineScheduler
      * Remove a job from the queue.
      *
      * @param je A JobEntry with the job to remove.
-     * @exception TurbineException a generic exception.
+     * @exception TurbineException job could not be removed
      */
     public static void removeJob(JobEntry je)
             throws TurbineException
