@@ -5,6 +5,7 @@
  <properties>
   <title>Action Events Howto</title>
   <author email="jon@latchkey.com">Jon S. Stevens</author>
+  <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
  </properties>
 
 <body>
@@ -101,6 +102,13 @@ Thus, the convention is this:
 <p>
 If you follow these conventions, then you should be ok with your method
 naming in your Action class.
+</p>
+
+<p>
+There is a property in the TurbineResources.properties file, called "action.eventsubmit.needsvalue".
+If you set this to "true", only the events that contain a non-empty, non-zero value will be
+executed. This is useful if you have a form with multiple, different events, that need to be executed
+and the form is submitted by client-side code, e.g. JavaScript.
 </p>
 
 </section>

@@ -59,6 +59,11 @@ import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.parser.ParserUtils;
@@ -109,6 +114,9 @@ import org.apache.turbine.util.parser.ParserUtils;
  */
 public abstract class ActionEvent extends Action
 {
+    /** Logging */
+    protected Log log = LogFactory.getLog(this.getClass());
+
     /**
      * You need to implement this in your classes that extend this class.
      *
@@ -129,6 +137,26 @@ public abstract class ActionEvent extends Action
     /** The length of the button to look for. */
     protected static final int LENGTH = BUTTON.length();
 
+    /** 
+     * If true, the eventSubmit_do<xxx> variable must contain
+     * a not null value to be executed.
+     */
+    private boolean submitValueKey = false;
+    
+    /**
+     * C'tor
+     */
+    public ActionEvent()
+    {
+        super();
+        
+        submitValueKey = Turbine.getConfiguration()
+                .getBoolean(TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_KEY,
+                        TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_DEFAULT);
+
+        log.debug("Need Submit Value: " + submitValueKey);
+    }
+    
     /**
      * This overrides the default Action.perform() to execute the
      * doEvent() method. If that fails, then it will execute the
@@ -172,8 +200,11 @@ public abstract class ActionEvent extends Action
             String key = (String) it.next();
             if (key.startsWith(button))
             {
-                theButton = formatString(key);
-                break;
+                if (considerKey(key, pp))
+                {
+                    theButton = formatString(key);
+                    break;
+                }
             }
         }
 
@@ -223,6 +254,59 @@ public abstract class ActionEvent extends Action
         }
         return tmp;
     }
+
+    /**
+     * Checks whether the selected key really is a valid event.
+     *
+     * @param key The selected key
+     * @param pp The parameter parser to look for the key value
+     *
+     * @return true if this key is really an ActionEvent Key
+     */
+    protected boolean considerKey(String key, ParameterParser pp)
+    {
+        if (!submitValueKey)
+        {
+            log.debug("No Value required, accepting " + key);
+            return true;
+        }
+        else
+        {
+            // If the action.eventsubmit.needsvalue key is true, 
+            // events with a "0" or empty value are ignored.
+            // This can be used if you have multiple eventSubmit_do<xxx>
+            // fields in your form which are selected by client side code, 
+            // e.g. JavaScript.
+            //
+            // If this key is unset or missing, nothing changes for the
+            // current behaviour.
+            //
+            String keyValue = pp.getString(key);
+            log.debug("Key Value is " + keyValue);
+            if (StringUtils.isEmpty(keyValue))
+            {
+                log.debug("Key is empty, rejecting " + key);
+                return false;
+            }
+
+            try
+            {
+                if (Integer.parseInt(keyValue) != 0)
+                {
+                    log.debug("Integer != 0, accepting " + key);
+                    return true;
+                }
+            }
+            catch (NumberFormatException nfe)
+            {
+                // Not a number. So it might be a
+                // normal Key like "continue" or "exit". Accept
+                // it.
+                log.debug("Not a number, accepting " + key);
+                return true;
+            }
+        }
+        log.debug("Rejecting " + key);
+        return false;
+    }
 }
-
-

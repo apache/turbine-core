@@ -59,7 +59,6 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.services.velocity.TurbineVelocity;
@@ -83,14 +82,11 @@ import org.apache.velocity.context.Context;
  *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class VelocityActionEvent extends ActionEvent
 {
-
-    /** Use this to get the right class even when extended */
-    private Log log = LogFactory.getLog(this.getClass());
-    
     /**
      * You need to implement this in your classes that extend this
      * class.
@@ -145,8 +141,11 @@ public abstract class VelocityActionEvent extends ActionEvent
             String key = (String) it.next();
             if (key.startsWith(button))
             {
-                theButton = formatString(key);
-                break;
+                if (considerKey(key, pp))
+                {
+                    theButton = formatString(key);
+                    break;
+                }
             }
         }
 
@@ -177,7 +176,7 @@ public abstract class VelocityActionEvent extends ActionEvent
         catch (NoSuchMethodException nsme)
         {
             // Attempt to execute things the old way..
-            log.debug("Couldn't locate the Event, running executeEvents() in "
+            log.debug("Couldn't locate the Event ( " + theButton + "), running executeEvents() in "
                     + super.getClass().getName());
             super.executeEvents(data);
         }
