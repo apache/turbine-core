@@ -358,7 +358,7 @@ public class TorqueSecurityService
                              ((Persistent) role).getPrimaryKey());
                 criteria.add(TurbineRolePermissionPeer.PERMISSION_ID,
                              ((Persistent) permission).getPrimaryKey());
-                TurbineUserGroupRolePeer.doInsert(criteria);
+                TurbineRolePermissionPeer.doInsert(criteria);
                 return;
             }
         }
