@@ -1,0 +1,310 @@
+<?xml version="1.0"?>
+
+<project name="test" default="test" basedir=".">
+
+  <!-- Allow any user specific values to override the defaults -->
+  <property file="${user.home}/build.properties" />
+  <property file="build.properties" />
+  <property file="default.properties" />
+
+  <!-- Construct compile/run-time classpath -->
+  <path id="test-classpath">
+    <pathelement location="${junit.jar}"/>
+    <pathelement location="${cactus.jar}"/>
+    <pathelement location="${cactus-ant.jar}"/>
+    <pathelement location="${httpunit.jar}"/>
+    <pathelement location="${tidy.jar}"/>
+    <pathelement location="${log4j.jar}"/>
+    <pathelement location="${servlet.jar}"/>
+    <pathelement location="${velocity.jar}"/>
+    <pathelement location="${commons-collections.jar}"/>
+    <pathelement location="${httpclient.jar}"/>
+    <pathelement path="${build.dest}"/>
+  </path>
+
+  <!-- ================================================================== -->
+  <!-- C O M P I L E  T E S T S                                           -->
+  <!-- ================================================================== -->
+
+  <target
+    name="compile"
+    description="==> compiles the test source code">
+    
+    <ant antfile="build.xml" target="compile"/>
+
+    <copy todir="${build.src}/org">
+      <fileset dir="${test.dir}/org"/>
+      <fileset dir="${rttest.dir}/org"/>
+    </copy>
+
+    <javac srcdir="${build.src}"
+      destdir="${build.dest}"
+      includes="**/*Test.java"
+      excludes="**/package.html"
+      debug="${debug}"
+      deprecation="${deprecation}"
+      optimize="${optimize}">
+      <classpath refid="test-classpath"/>
+    </javac>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- U N I T  T E S T S                                                 -->
+  <!-- ================================================================== -->
+
+  <target 
+    name="test" 
+    depends="compile"
+    description="runs (junit) unit tests">
+    
+    <echo>
+      Running all JUnit tests
+    </echo>
+    
+    <delete dir="${test.reportsDirectory}"/>
+    <mkdir dir="${test.reportsDirectory}"/>
+    
+    <junit printSummary="yes" haltonerror="yes">
+      <formatter type="plain"/>
+      <classpath refid="test-classpath"/>
+      <batchtest todir="${test.reportsDirectory}">
+        <fileset dir="${build.dest}">
+          <include name="**/*Test.class"/>
+          <exclude name="**/*ServletTest.class"/>
+    
+          <exclude name="**/FileHandlerTest.class"/>
+          <exclude name="**/TurbineCacheTest.class"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <!-- ================================================================== -->
+  <!-- S E R V L E T  T E S T S                                           -->
+  <!-- ================================================================== -->
+
+  <target 
+    name="test-servlet"
+    depends="compile,prepare-tests-tomcat-40"
+    description="--> runs turbine servlet tests">
+
+    <taskdef 
+      name="RunServerTests" 
+      className="org.apache.cactus.ant.RunServerTestsTask">
+      <classpath refid="test-classpath"/>
+    </taskdef>
+ 
+    <!--
+      
+      Start the servlet engine, wait for it to be started, run the
+      unit tests, stop the servlet engine, wait for it to be stopped.
+      The servlet engine is stopped if the tests fail for any reason 
+    
+    -->
+ 
+    <RunServerTests 
+      testURL="http://localhost:${test.port}/test"
+      startTarget="start-tomcat-40"
+      stopTarget="stop-tomcat-40"
+      testTarget="turbine-servlet-tests"/>
+ 
+  </target>
+
+  <target 
+    name="turbine-servlet-tests">
+    
+    <junit 
+      printsummary="no" 
+      haltonfailure="yes" 
+      haltonerror="yes" 
+      fork="yes" 
+      dir="./">
+      
+      <classpath refid="test-classpath"/>
+
+      <sysproperty key="java.compiler" value="NONE" />
+      <sysproperty key="java.net.namelookup.cache" value="0" />
+      <sysproperty key="sun.net.inetaddr.ttl" value="0" />
+
+      <formatter type="plain" usefile="false"/>
+      <batchtest>
+        <fileset dir="${build.dest}">
+          <include name="**/*ServletTest.class"/>
+	  <include name="**/TurbineCacheTest.class"/> 
+          
+          <!-- NEEDS TO BE FIXED -->
+          <exclude name="**/FileHandlerTest.class"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- S T A R T  T O M C A T  4 . 0                                       -->
+  <!-- =================================================================== -->
+  <target 
+    name="start-tomcat-40">
+ 
+    <java 
+      classname="org.apache.catalina.startup.Bootstrap" 
+      fork="yes">
+      
+      <jvmarg value="-Dcatalina.home=${tomcat.home.40}"/>
+      <arg value="-config"/>
+      <arg value="${out.tomcat40.full.dir}/conf/server.xml"/>
+      <arg value="start"/>
+      <classpath>
+        <pathelement location="${java.home}/../lib/tools.jar"/>
+        <fileset dir="${tomcat.home.40}">
+          <include name="bin/bootstrap.jar"/>                  
+        </fileset>
+      </classpath>
+    </java>
+ 
+  </target>
+ 
+  <!-- =================================================================== -->
+  <!-- S T O P  T O M C A T  4 . 0                                         -->
+  <!-- =================================================================== -->
+  <target 
+    name="stop-tomcat-40">
+ 
+    <java 
+      classname="org.apache.catalina.startup.Bootstrap" 
+      fork="yes">
+      <jvmarg value="-Dcatalina.home=${tomcat.home.40}"/>
+      <arg value="stop"/>
+      <classpath>
+        <fileset dir="${tomcat.home.40}">
+          <include name="bin/bootstrap.jar"/>
+          <include name="server/catalina.jar"/>
+        </fileset>
+      </classpath>
+    </java>
+ 
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Display a warning message if the needed servlet engine home         -->
+  <!-- property is not set                                                 -->
+  <!-- =================================================================== -->
+  <target 
+    name="check-tests-tomcat-40"
+    depends="testwar"
+    unless="tomcat.home.40">
+ 
+    <echo>
+      
+      *********************************************************
+      WARNING : The 'tomcat.home.40' property has not been set.
+                No test will be run on that servlet engine.
+      *********************************************************
+    
+    </echo>
+ 
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- C R E A T E  T E S T  W A R  F I L E                                -->
+  <!-- =================================================================== -->
+  <target 
+    name="testwar" 
+    depends="compile">
+
+    <!-- Make sure the directory for the war exist -->
+    <delete dir="${out.test.dir}"/>
+    <mkdir dir="${out.test.dir}"/>
+
+    <!-- Create the WEB-INF/lib directory that will be used
+         with the testapp -->
+    
+    <mkdir dir="${build.dir}/rttest/lib"/>
+    <copy file="${cactus.jar}" todir="${build.dir}/rttest/lib"/>
+    <copy file="${httpunit.jar}" todir="${build.dir}/rttest/lib"/>
+    <copy file="${tidy.jar}" todir="${build.dir}/rttest/lib"/>
+    <copy file="${commons-collections.jar}" todir="${build.dir}/rttest/lib"/>
+    <copy file="${junit.jar}" todir="${build.dir}/rttest/lib"/>
+    <copy file="${log4j.jar}" todir="${build.dir}/rttest/lib"/>
+    <copy file="${velocity.jar}" todir="${build.dir}/rttest/lib"/>
+    <copy file="${httpclient.jar}" todir="${build.dir}/rttest/lib"/>
+    <copy file="${xmlrpc.jar}" todir="${build.dir}/rttest/lib"/>
+    <copy file="${xalan.jar}" todir="${build.dir}/rttest/lib"/>
+    <copy file="${xerces.jar}" todir="${build.dir}/rttest/lib"/>
+    <copy file="${ecs.jar}" todir="${build.dir}/rttest/lib"/>
+    <copy file="${activation.jar}" todir="${build.dir}/rttest/lib"/>
+    <copy file="${javamail.jar}" todir="${build.dir}/rttest/lib"/>
+    
+    <war 
+      warfile="${out.test.dir}/test.war" 
+      webxml="${conf.test.dir}/web.xml">
+      
+      <lib dir="${build.dir}/rttest/lib"/>
+      
+      <!-- We want to test Turbine's core classes -->
+      <classes dir="${build.dest}"/>
+
+      <fileset dir="${webapp.dir}">
+        <exclude name="**/CVS/*"/>
+        <exclude name="**/WEB-INF/web.xml"/>
+      </fileset>
+    </war>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepare directories and variables for running the tests             -->
+  <!-- =================================================================== -->
+
+  <target 
+    name="prepare-tests-tomcat-40" 
+    depends="check-tests-tomcat-40" 
+    if="tomcat.home.40">
+    
+    <echo message="tomcat.home.40 = ${tomcat.home.40}"/>
+
+    <property name="out.tomcat40.dir" value="${out.test.dir}/tomcat40"/>
+    <property name="conf.tomcat40.dir" value="${conf.test.dir}/tomcat40"/>
+    <property name="out.tomcat40.full.dir" value="${basedir}/${out.tomcat40.dir}"/>
+ 
+    <filter token="out.tomcat40.full.dir" value="${out.tomcat40.full.dir}"/>
+    <filter token="test.port" value="${test.port}"/>
+ 
+    <!-- Create work and conf directories and copy configuration files -->
+    <mkdir dir="${out.tomcat40.dir}/conf"/>
+    <mkdir dir="${out.tomcat40.dir}/work"/>
+    <mkdir dir="${out.tomcat40.dir}/webapps"/>
+ 
+    <!-- Delete some config file so that they will be copied every time -->
+    <delete file="${out.tomcat40.dir}/conf/server.xml"/>
+ 
+    <!-- Remove the auto deployed webapp so that it is redeployed every -->
+    <!-- time.                                                          -->
+    <delete dir="${out.tomcat40.dir}/webapps/test"/>
+ 
+    <!-- Copy the default tomcat web.xml to our test conf/ directory. -->
+    <!-- This is needed otherwise tomcat does not start.              -->
+    <copy 
+      file="${tomcat.home.40}/conf/web.xml"
+      tofile="${out.tomcat40.dir}/conf/web.xml" 
+      filtering="on"/>
+ 
+    <copy 
+      file="${conf.tomcat40.dir}/server.xml"
+      tofile="${out.tomcat40.dir}/conf/server.xml" 
+      filtering="on"/>
+ 
+    <!-- Copy the war file -->
+    <copy 
+      file="${out.test.dir}/test.war" 
+      tofile="${out.tomcat40.dir}/webapps/test.war"/>
+
+    <!-- As this classes directory will be used to run the client side
+         of Cactus, we need to copy the cactus.properties -->
+    <copy 
+      todir="${build.dest}" 
+      file="${conf.test.dir}/cactus.properties" 
+      filtering="on"/>
+
+  </target>
+
+</project>

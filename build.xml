@@ -21,7 +21,6 @@
         <pathelement location="${jdbc.jar}"/>
         <pathelement location="${jndi.jar}"/>
         <pathelement location="${jta.jar}"/>
-        <pathelement location="${junit.jar}"/>
         <pathelement location="${log4j.jar}"/>
         <pathelement location="${javamail.jar}"/>
         <pathelement location="${oro.jar}"/>
@@ -40,6 +39,7 @@
     <!-- Prints useful build environment values                             -->
     <!-- ================================================================== -->
     <target name="env" depends="check_for_optional_packages">
+        <echo message="lib.repo = ${lib.repo}"/>
         <echo message="java.home = ${java.home}"/>
         <echo message="user.home = ${user.home}"/>
         <echo message="java.class.path = ${java.class.path}"/>
@@ -59,10 +59,6 @@
     <target name="check_for_optional_packages">
         <available property="jsdk2.2.present"
                    classname="javax.servlet.jsp.PageContext">
-            <classpath refid="classpath"/>
-        </available>
-        <available property="junit.present"
-                   classname="junit.framework.TestCase">
             <classpath refid="classpath"/>
         </available>
         <available property="webmacro.present"
@@ -166,18 +162,6 @@
     </target>
 
     <!-- ================================================================== -->
-    <!-- Adds testcase files to the build directory                         -->
-    <!-- ================================================================== -->
-    <target name="prepare-tests" depends="prepare" if="junit.present">
-        <copy todir="${build.src}/org" filtering="yes">
-            <fileset dir="${src.java.dir}/org">
-                <include name="**/*Test.java"/>
-                <include name="**/test/**"/>
-            </fileset>
-        </copy>
-    </target>
-
-    <!-- ================================================================== -->
     <!-- Adds log4java files to the build directory                         -->
     <!-- ================================================================== -->
     <target name="prepare-log4java" depends="prepare" if="log4java.present">
@@ -208,7 +192,7 @@
             description="--> compiles the source code">
         <javac srcdir="${build.src}"
             destdir="${build.dest}"
-            excludes="**/package.html"
+            excludes="**/package.html,**/*Test.java"
             debug="${debug}"
             deprecation="${deprecation}"
             optimize="${optimize}">
@@ -232,7 +216,7 @@
             description="--> generates the turbine.jar file (default)">
         <jar jarfile="${build.dir}/${final.name}.jar"
             basedir="${build.dest}"
-            excludes="**/package.html"/>
+            excludes="**/package.html,**/*Test.class"/>
     </target>
 
     <!-- ================================================================== -->
@@ -243,7 +227,7 @@
             description="--> generates the turbine.src.jar file containing source only">
         <jar jarfile="${build.dir}/${final.name}.src.jar"
             basedir="${build.src}"
-            excludes="**/package.html"/>
+            excludes="**/package.html,**/*Test.java"/>
     </target>
 
     <!-- ================================================================== -->
@@ -403,51 +387,6 @@
         </copy>
         -->
 
-    </target>
-
-    <!-- ================================================================== -->
-    <!-- Compile testcases                                                  -->
-    <!-- ================================================================== -->
-    <target name="compile-tests" depends="prepare-tests, compile"
-            if="junit.present"/>
-
-    <!-- ================================================================== -->
-    <!-- Run testcases                                                      -->
-    <!-- ================================================================== -->
-    <target name="run-tests" depends="compile-tests" if="junit.present"
-            description="--> runs all available testcases">
-        <junit printsummary="no" haltonfailure="yes">
-            <classpath>
-                <pathelement location="${build.dest}"/>
-                <path refid="classpath"/>
-                <pathelement path="${classpath}"/>
-            </classpath>
-
-            <formatter type="plain" usefile="false"/>
-
-            <batchtest>
-                <fileset dir="${build.src}">
-                    <include name="**/*Test.java"/>
-                </fileset>
-            </batchtest>
-        </junit>
-    </target>
-
-    <!-- ================================================================== -->
-    <!-- Run an single testcase                                             -->
-    <!-- ================================================================== -->
-    <target name="run-singletest" if="testcase" depends="compile-tests">
-        <junit printsummary="no" haltonfailure="yes">
-            <classpath>
-                <pathelement location="${build.dest}"/>
-                <path refid="classpath" />
-                <pathelement path="${classpath}"/>
-            </classpath>
-
-            <formatter type="plain" usefile="false"/>
-
-            <test name="${testcase}"/>
-        </junit>
     </target>
 
     <!-- ================================================================== -->

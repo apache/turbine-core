@@ -68,6 +68,7 @@ import org.apache.turbine.services.cache.CachedObject;
 import org.apache.turbine.services.cache.ObjectExpiredException;
 import org.apache.turbine.services.cache.Refreshable;
 import org.apache.turbine.services.cache.RefreshableCachedObject;
+import org.apache.turbine.Turbine;
 
 /**
  * TurbineCacheTest
@@ -77,6 +78,7 @@ import org.apache.turbine.services.cache.RefreshableCachedObject;
  */
 public class TurbineCacheTest extends ServletTestCase {
     
+    private Turbine turbine = null;
     private static final String cacheKey = new String("CacheKey");
     private static final String cacheKey_2 = new String("CacheKey_2");
     private static final long TURBINE_CACHE_REFRESH = 5000; // in millis
@@ -112,6 +114,31 @@ public class TurbineCacheTest extends ServletTestCase {
     {
         // All methods starting with "test" will be executed in the test suite.
         return new TestSuite( TurbineCacheTest.class );
+    }
+
+    /**
+     * This setup will be running server side.  We startup Turbine and
+     * get our test port from the properties.  This gets run before
+     * each testXXX test.
+     */
+    protected void setUp()
+        throws Exception
+    {
+        super.setUp();
+        config.setInitParameter("properties",
+                "/WEB-INF/conf/TurbineCacheTest.properties");
+        turbine = new Turbine();
+        turbine.init(config);
+    }
+
+    /**
+     * After each testXXX test runs, shut down the Turbine servlet.
+     */
+    protected void tearDown()
+        throws Exception
+    {
+        turbine.destroy();
+        super.tearDown();
     }
     
     /**
