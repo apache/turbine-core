@@ -235,7 +235,6 @@ public class TemplateURI
     /**
      * Constructor, user Turbine.getDefaultServerData(), set Template and Action
      *
-     * @param serverData A ServerData object
      * @param template A Template Name
      * @param action An Action Name
      */
