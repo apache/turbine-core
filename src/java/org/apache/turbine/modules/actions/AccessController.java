@@ -90,6 +90,7 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class AccessController
