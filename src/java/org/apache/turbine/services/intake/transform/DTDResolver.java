@@ -25,13 +25,13 @@ package org.apache.turbine.services.intake.transform;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -59,6 +59,7 @@ import java.io.InputStream;
 import java.net.URL;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
+import org.apache.turbine.util.Log;
 
 /**
  * A resolver to get the database.dtd file for the XML parser from the jar.
@@ -67,12 +68,17 @@ import org.xml.sax.InputSource;
  * Bug 4337703</a>
  *
  * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class DTDResolver implements EntityResolver
 {
-    /** InputSource for database.dtd */
-    InputSource databaseDTD = null;
+    private static final String WEB_SITE_DTD =
+            "http://jakarta.apache.org/turbine/dtd/intake_2_2_1.dtd";
+
+    /** InputSource for intake.dtd */
+    InputSource intakeDTD = null;
 
     /**
      * constructor
@@ -81,20 +87,24 @@ public class DTDResolver implements EntityResolver
     {
         try
         {
-            InputStream dtdStream = 
+            InputStream dtdStream =
                 getClass().getResourceAsStream("intake.dtd");
-            
+
             // getResource was buggy on many systems including Linux,
-            // OSX, and some versions of windows in jdk1.3.  
+            // OSX, and some versions of windows in jdk1.3.
             // getResourceAsStream works on linux, maybe others?
             if (dtdStream != null)
             {
-                databaseDTD = new InputSource(dtdStream);
+                intakeDTD = new InputSource(dtdStream);
+            }
+            else
+            {
+                Log.warn("Could not locate intake.dtd in classpath");
             }
         }
         catch (Exception ex)
         {
-            ex.printStackTrace();
+            Log.error("Could not get stream for intake.dtd", ex );
         }
     }
 
@@ -105,26 +115,35 @@ public class DTDResolver implements EntityResolver
      */
     public InputSource resolveEntity(String publicId, String systemId)
     {
-        if (databaseDTD != null &&
-            "http://jakarta.apache.org/turbine/dtd/intake.dtd".equals(systemId))
+        if (intakeDTD != null && WEB_SITE_DTD.equals(systemId))
         {
-            System.out.println("Resolver: used intake.dtd");
-            return databaseDTD;
+            String pkg = getClass().getName()
+                    .substring(0, getClass().getName().lastIndexOf("."));
+
+            Log.info("Resolver: used intake.dtd from " +
+                    pkg + " package ");
+
+            return intakeDTD;
+        }
+        else if (systemId == null)
+        {
+            Log.info("Resolver: used intake.dtd from Jakarta Web site");
+            return getInputSource(WEB_SITE_DTD);
         }
         else
         {
-            System.out.println("Resolver: used " + systemId);
+            Log.info("Resolver: used System DTD for " + systemId);
             return getInputSource(systemId);
         }
     }
 
     /**
-     * get an InputSource for an URL String
+     * Retrieves a XML input source for the specified URL.
      *
-     * @param urlString
-     * @return an InputSource for the URL String
+     * @param urlString The URL of the input source.
+     * @return <code>InputSource</code> for the URL.
      */
-    public InputSource getInputSource(String urlString)
+    private InputSource getInputSource(String urlString)
     {
         try
         {
@@ -133,7 +152,7 @@ public class DTDResolver implements EntityResolver
         }
         catch (IOException ex)
         {
-            ex.printStackTrace();
+            Log.error("Could not get InputSource for "+urlString, ex);
         }
         return new InputSource();
     }

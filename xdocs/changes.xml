@@ -64,7 +64,7 @@ Changes between Turbine 2.2 and 2.2.1.
 <p>
   <ul>
     <li>
-       TTWS38: BaseValueParser.getInteger(String name) now returns null if the 
+       TTWS38: BaseValueParser.getInteger(String name) now returns null if the
        key name is not found - the old behaviour was to return new Integer(0).
     </li>
   </ul>
@@ -76,6 +76,13 @@ Changes between Turbine 2.2 and 2.2.1.
   <ul>
     <li>
       Added how-to for migrating from 2.1
+    </li>
+    <li>
+        The DTD resolved for intake will now look for intake.dtd on the
+        class path when the DTD in the XMl file is
+        http://jakarta.apache.org/turbine/dtd/intake_2_2_1.dtd.  The application
+        functions in the same way.  This was done to allow XML editors to use
+        the correct version of the DTD.
     </li>
   </ul>
 </p>
