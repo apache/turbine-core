@@ -157,6 +157,8 @@ public class TemplateLink
      * This will turn off the execution of res.encodeURL()
      * by making res == null. This is a hack for cases
      * where you don't want to see the session information
+     *
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink setEncodeURLOff()
     {
@@ -167,7 +169,7 @@ public class TemplateLink
     /**
      * Sets the template variable used by the Template Service.
      *
-     * @param t A String with the template name.
+     * @param template A String with the template name.
      * @return A TemplateLink.
      */
     public TemplateLink setPage(String template)
@@ -196,6 +198,7 @@ public class TemplateLink
      * of the query data.
      *
      * @param action A String with the action value.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink setAction(String action)
     {
@@ -212,6 +215,7 @@ public class TemplateLink
      *
      * @param action A String with the action value.
      * @param event A string with the event name.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink setActionEvent(String action, String event)
     {
@@ -227,6 +231,7 @@ public class TemplateLink
      * of the query data.
      *
      * @param screen A String with the screen value.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink setScreen(String screen)
     {
@@ -239,11 +244,12 @@ public class TemplateLink
      * Sets a reference anchor (#ref).
      *
      * @param reference A String containing the reference.
-     * @return A DynamicURI (self).
+     * @return A <code>TemplateLink</code> (self).
      */
-    public void setReference(String reference)
+    public TemplateLink setReference(String reference)
     {
         templateURI.setReference(reference);
+        return this;
     }
 
     /**
@@ -270,6 +276,7 @@ public class TemplateLink
      * object to the path_info string.
      *
      * @param pp A ParameterParser.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink addPathInfo(ParameterParser pp)
     {
@@ -282,6 +289,7 @@ public class TemplateLink
      *
      * @param name A String with the name to add.
      * @param value An Object with the value to add.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink addPathInfo(String name, Object value)
     {
@@ -294,6 +302,7 @@ public class TemplateLink
      *
      * @param name A String with the name to add.
      * @param value A String with the value to add.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink addPathInfo(String name, String value)
     {
@@ -306,6 +315,7 @@ public class TemplateLink
      *
      * @param name A String with the name to add.
      * @param value A double with the value to add.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink addPathInfo(String name, double value)
     {
@@ -318,6 +328,7 @@ public class TemplateLink
      *
      * @param name A String with the name to add.
      * @param value An int with the value to add.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink addPathInfo(String name, int value)
     {
@@ -330,6 +341,7 @@ public class TemplateLink
      *
      * @param name A String with the name to add.
      * @param value A long with the value to add.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink addPathInfo(String name, long value)
     {
@@ -342,6 +354,7 @@ public class TemplateLink
      *
      * @param name A String with the name to add.
      * @param value An Object with the value to add.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink addQueryData(String name, Object value)
     {
@@ -354,6 +367,7 @@ public class TemplateLink
      *
      * @param name A String with the name to add.
      * @param value A String with the value to add.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink addQueryData(String name, String value)
     {
@@ -366,6 +380,7 @@ public class TemplateLink
      *
      * @param name A String with the name to add.
      * @param value A double with the value to add.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink addQueryData(String name, double value)
     {
@@ -378,6 +393,7 @@ public class TemplateLink
      *
      * @param name A String with the name to add.
      * @param value An int with the value to add.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink addQueryData(String name, int value)
     {
@@ -390,6 +406,7 @@ public class TemplateLink
      *
      * @param name A String with the name to add.
      * @param value A long with the value to add.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink addQueryData(String name, long value)
     {
@@ -402,6 +419,7 @@ public class TemplateLink
      * object to the query string.
      *
      * @param pp A ParameterParser.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink addQueryData(ParameterParser pp)
     {
@@ -411,6 +429,8 @@ public class TemplateLink
 
     /**
      * Removes all the path info elements.
+     *
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink removePathInfo()
     {
@@ -422,6 +442,7 @@ public class TemplateLink
      * Removes a name=value pair from the path info.
      *
      * @param name A String with the name to be removed.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink removePathInfo(String name)
     {
@@ -431,6 +452,8 @@ public class TemplateLink
 
     /**
      * Removes all the query string elements.
+     *
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink removeQueryData()
     {
@@ -442,6 +465,7 @@ public class TemplateLink
      * Removes a name=value pair from the query string.
      *
      * @param name A String with the name to be removed.
+     * @return A <code>TemplateLink</code> (self).
      */
     public TemplateLink removeQueryData(String name)
     {
