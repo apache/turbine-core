@@ -336,9 +336,11 @@ public abstract class BaseServiceBroker implements ServiceBroker
         }
         catch (InstantiationException notThrown)
         {
+            log.debug("Caught non fatal exception", notThrown);
         }
         catch (InitializationException notThrown)
         {
+            log.debug("Caught non fatal exception", notThrown);
         }
     }
 
