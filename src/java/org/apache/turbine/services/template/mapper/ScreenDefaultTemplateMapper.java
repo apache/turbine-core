@@ -78,19 +78,19 @@ import org.apache.turbine.services.template.TurbineTemplate;
  * @version $Id$
  */
 
-public class TemplateScreenDefaultMapper
-    extends TemplateBaseLayoutMapper
-    implements TemplateMapper
+public class ScreenDefaultTemplateMapper
+    extends BaseTemplateMapper
+    implements Mapper
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(TemplateScreenDefaultMapper.class);
+    private static Log log = LogFactory.getLog(ScreenDefaultTemplateMapper.class);
 
     /**
      * Default C'tor. If you use this C'tor, you must use
      * the bean setter to set the various properties needed for
      * this mapper before first usage.
      */
-    public TemplateScreenDefaultMapper()
+    public ScreenDefaultTemplateMapper()
     {
     }
 

@@ -56,64 +56,49 @@ package org.apache.turbine.services.template.mapper;
 
 import org.apache.commons.lang.StringUtils;
 
-import org.apache.turbine.services.template.TemplateEngineService;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.services.template.TurbineTemplate;
 
 /**
- * This is a pretty simple mapper which returns template pathes for
- * a supplied template name. This path can be used by the TemplateEngine
- * to access a certain resource to actually render the template.
+ * The most primitive mapper. It is used for the page objects in the
+ * Template service. It never caches and simply returns what is given to it.
  *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-
-public class TemplateScreenMapper
-    extends TemplateBaseLayoutMapper
-    implements TemplateMapper
+public class DirectMapper
+    extends BaseMapper
+    implements Mapper
 {
     /**
      * Default C'tor. If you use this C'tor, you must use
      * the bean setter to set the various properties needed for
      * this mapper before first usage.
      */
-    public TemplateScreenMapper()
+    public DirectMapper()
     {
     }
 
     /**
-     * Check, whether the provided name exists. Returns null
-     * if the screen does not exist.
+     * Strip off a possible extension, replace all "," with "."
+     *
+     * about,directions,Driving.vm --> about.directions.Driving
      *
      * @param template The template name.
-     * @return The matching screen name.
+     * @return A class name for the given template.
      */
     public String doMapping(String template)
     {
-        String [] components = StringUtils.split(template, String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR));
+        String [] components
+            = StringUtils.split(template, String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR));
 
-        // Last element decides, which template Service to use...
-        TemplateEngineService tes =
-            TurbineTemplate.getTemplateEngineService(components[components.length - 1]);
+        String className = components[components.length - 1];
 
-        String templatePackage = StringUtils.join(components, String.valueOf(separator));
+        // Strip off a possible Extension
+        int dotIndex = className.lastIndexOf(TemplateService.EXTENSION_SEPARATOR);
+        className = (dotIndex < 0) ? className : className.substring(0, dotIndex);
+        components[components.length -1] = className;
 
-        // But the Templating service must look for the name with prefix
-        StringBuffer testPath = new StringBuffer();
-        if (StringUtils.isNotEmpty(prefix))
-        {
-            testPath.append(prefix);
-            testPath.append(separator);
-        }
-        testPath.append(templatePackage);
-
-        return (tes != null && tes.templateExists(testPath.toString()))
-            ? templatePackage
-            : null;
+        // Class names are always separated by "."
+        return StringUtils.join(components, String.valueOf(separator));
     }
 }
-
-
-
-

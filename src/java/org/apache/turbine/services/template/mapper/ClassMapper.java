@@ -54,60 +54,87 @@ package org.apache.turbine.services.template.mapper;
  * <http://www.apache.org/>.
  */
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+
+import org.apache.turbine.modules.Loader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.turbine.services.template.TemplateEngineService;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.services.template.TurbineTemplate;
 
 /**
- * This mapper is responsible for the lookup of templates for the Layout
- * It tries to look in various packages for a match:
+ * This mapper tries to map Template names to class names. If no direct match
+ * is found, it tries matches "upwards" in the package hierarchy until either
+ * a match is found or the root is hit. Then it returns the name of the
+ * default class from the TemplateEngineService.
  *
- * 1. about,directions,Driving.vm      &lt;- exact match
- * 2. about,directions,Default.vm      &lt;- package match, Default name
- * 3. about,Default.vm                 &lt;- stepping up in the hierarchy
- * 4. Default.vm                       &lt;- The name configured as default.layout.template
- *                                        in the corresponding Templating Engine
-
+ * 1. about.directions.Driving     &lt;- direct matching the template to the class name
+ * 2. about.directions.Default     &lt;- matching the package, class name is Default
+ * 3. about.Default                &lt;- stepping up in the package hierarchy, looking for Default
+ * 4. Default                      &lt;- Class called "Default" without package
+ * 5. VelocityScreen               &lt;- The class configured by the Service (VelocityService) to
+ *
+ * Please note, that no actual packages are searched. This is the scope of the
+ * TemplateEngine Loader which is passed at construction time.
  *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 
-public class TemplateLayoutMapper
-    extends TemplateBaseLayoutMapper
-    implements TemplateMapper
+public class ClassMapper
+    extends BaseMapper
+    implements Mapper
 {
+    /** The loader for actually trying out the package names */
+    private Loader loader = null;
+
     /** Logging */
-    private static Log log = LogFactory.getLog(TemplateLayoutMapper.class);
+    private static Log log = LogFactory.getLog(ClassMapper.class);
 
     /**
      * Default C'tor. If you use this C'tor, you must use
      * the bean setter to set the various properties needed for
      * this mapper before first usage.
      */
-    public TemplateLayoutMapper()
+    public ClassMapper()
     {
     }
 
     /**
-     * Look for a given Template, then try the
-     * defaults until we hit the root.
+     * Get the Loader value.
+     * @return the Loader value.
+     */
+    public Loader getLoader()
+    {
+        return loader;
+    }
+
+    /**
+     * Set the Loader value.
+     * @param loader The new Loader value.
+     */
+    public void setLoader(Loader loader)
+    {
+        this.loader = loader;
+        log.debug("Loader is " + this.loader);
+    }
+
+    /**
+     * Strip off a possible extension, replace all "," with "."
+     * Look through the given package path until a match is found.
      *
      * @param template The template name.
-     * @return The parsed module name.
+     * @return A class name for the given template.
      */
     public String doMapping(String template)
     {
         log.debug("doMapping(" + template + ")");
+
         // Copy our elements into an array
         List components
             = new ArrayList(Arrays.asList(StringUtils.split(
@@ -117,60 +144,47 @@ public class TemplateLayoutMapper
 
         // This method never gets an empty string passed.
         // So this is never < 0
-        String templateName = (String) components.get(componentSize);
+        String className = (String) components.get(componentSize);
         components.remove(componentSize--);
 
-        log.debug("templateName is " + templateName);
+        log.debug("className is " + className);
 
-        // Last element decides, which template Service to use...
-        TemplateEngineService tes = TurbineTemplate.getTemplateEngineService(templateName);
-
-        if (tes == null)
-        {
-            return null;
-        }
-
-        String defaultName =
-            TurbineTemplate.getDefaultLayoutTemplateName(templateName); // We're, after all, a Layout Template Mapper...
+        // Strip off a possible Extension
+        int dotIndex = className.lastIndexOf(TemplateService.EXTENSION_SEPARATOR);
+        className = (dotIndex < 0) ? className : className.substring(0, dotIndex);
 
         // This is an optimization. If the name we're looking for is
         // already the default name for the template, don't do a "first run"
         // which looks for an exact match.
-        boolean firstRun = !templateName.equals(defaultName);
+        boolean firstRun = !className.equals(TemplateService.DEFAULT_NAME);
 
         for(;;)
         {
-            String templatePackage = StringUtils.join(components.iterator(), String.valueOf(separator));
-
-            log.debug("templatePackage is now: " + templatePackage);
-
+            String pkg = StringUtils.join(components.iterator(), String.valueOf(separator));
             StringBuffer testName = new StringBuffer();
+
+            log.debug("classPackage is now: " + pkg);
 
             if (!components.isEmpty())
             {
-                testName.append(templatePackage);
+                testName.append(pkg);
                 testName.append(separator);
             }
 
             testName.append((firstRun)
-                ? templateName
-                : defaultName);
+                ? className
+                : TemplateService.DEFAULT_NAME);
 
-            // But the Templating service must look for the name with prefix
-            StringBuffer templatePath = new StringBuffer();
-            if (StringUtils.isNotEmpty(prefix))
+            log.debug("Looking for " + testName);
+            try
             {
-                templatePath.append(prefix);
-                templatePath.append(separator);
-            }
-            templatePath.append(testName);
-
-            log.debug("Looking for " + templatePath);
-
-            if (tes.templateExists(templatePath.toString()))
-            {
+                loader.getAssembler(testName.toString());
                 log.debug("Found it, returning " + testName);
                 return testName.toString();
+            }
+            catch (Exception e)
+            {
+                // Not found. Go on.
             }
 
             if (firstRun)
@@ -179,16 +193,10 @@ public class TemplateLayoutMapper
             }
             else
             {
-                // We're no longer on the first Run (so we
-                // already tested the "Default" template)
-                // and the package is empty (we've hit the
-                // root. So we now break the endless loop.
                 if (components.isEmpty())
                 {
                     break; // for(;;)
                 }
-                // We still have components. Remove the
-                // last one and go through the loop again.
                 components.remove(componentSize--);
             }
         }
@@ -197,3 +205,7 @@ public class TemplateLayoutMapper
         return getDefaultName(template);
     }
 }
+
+
+
+

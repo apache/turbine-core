@@ -54,89 +54,95 @@ package org.apache.turbine.services.template.mapper;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.services.template.TurbineTemplate;
+
 /**
- * To separate out the various map and search policies for class
- * names and template names, we use classes that implement this
- * interface.
+ * This is a mapper like the BaseMapper but it returns its
+ * results with the extension of the template names passed or (if no
+ * extension is passed), the default extension.
  *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 
-public interface TemplateMapper
+public abstract class BaseTemplateMapper
+    extends BaseMapper
 {
+    /** A prefix which is used to separate the various template types (screen, layouts, navigation) */
+    protected String prefix = "";
+
     /**
-     * Mapper initialization.
+     * Default C'tor. If you use this C'tor, you must use
+     * the bean setter to set the various properties needed for
+     * this mapper before first usage.
      */
-    void init();
+    public BaseTemplateMapper()
+    {
+        super();
+    }
 
     /**
-     * Get the CacheSize value.
-     * @return the CacheSize value.
+     * Get the Prefix value.
+     * @return the Prefix value.
      */
-    int getCacheSize();
+    public String getPrefix()
+    {
+        return prefix;
+    }
 
     /**
-     * Set the CacheSize value.
-     * @param cacheSize The new CacheSize value.
+     * Set the Prefix value.
+     * @param prefix The new Prefix value.
      */
-    void setCacheSize(int cacheSize);
+    public void setPrefix(String prefix)
+    {
+        this.prefix = prefix;
+    }
 
     /**
-     * Get the UseCache value.
-     * @return the UseCache value.
-     */
-    boolean isUseCache();
-
-    /**
-     * Set the UseCache value.
-     * @param newUseCache The new UseCache value.
-     */
-    void setUseCache(boolean useCache);
-
-    /**
-     * Get the DefaultProperty value.
-     * @return the DefaultProperty value.
-     */
-    String getDefaultProperty();
-
-    /**
-     * Set the DefaultProperty value.
-     * @param defaultProperty The new DefaultProperty value.
-     */
-    void setDefaultProperty(String defaultProperty);
-
-    /**
-     * Get the Separator value.
-     * @return the Separator value.
-     */
-    char getSeparator();
-
-    /**
-     * Set the Separator value.
-     * @param separator The new Separator value.
-     */
-    void setSeparator(char separator);
-
-
-    /**
-     * Returns the default name for the supplied template
-     * name. Must never return null.
+     * Returns the default name for the passed Template.
+     * If the template has no extension, the default extension
+     * is added.
+     * If the template is empty, the default template is
+     * returned.
      *
      * @param template The template name.
      *
-     * @return The default name for this template.
+     * @return the mapped default name for the template.
      */
-    String getDefaultName(String template);
+    public String getDefaultName(String template)
+    {
+        String res = super.getDefaultName(template);
 
-    /**
-     * Return the first match name for the given template name.
-     * This method might return null if no possible match can
-     * be found.
-     *
-     * @param template The template name.
-     *
-     * @return The first matching class or template name.
-     */
-    String getMappedName(String template);
+        // Does the Template Name component have an extension?
+        String [] components
+            = StringUtils.split(res, String.valueOf(separator));
+
+        if (components[components.length -1 ].indexOf(TemplateService.EXTENSION_SEPARATOR) < 0)
+        {
+            StringBuffer resBuf = new StringBuffer();
+            resBuf.append(res);
+            String [] templateComponents = StringUtils.split(template, String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR));
+
+            // Only the extension of the Template name component is interesting...
+            int dotIndex = templateComponents[templateComponents.length -1].lastIndexOf(TemplateService.EXTENSION_SEPARATOR);
+            if (dotIndex < 0)
+            {
+                if (StringUtils.isNotEmpty(TurbineTemplate.getDefaultExtension()))
+                {
+                    resBuf.append(TemplateService.EXTENSION_SEPARATOR);
+                    resBuf.append(TurbineTemplate.getDefaultExtension());
+                }
+            }
+            else
+            {
+                resBuf.append(templateComponents[templateComponents.length -1].substring(dotIndex));
+            }
+            res = resBuf.toString();
+        }
+        return res;
+    }
 }
