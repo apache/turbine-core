@@ -75,6 +75,12 @@ public interface IDMethod
     public static final String AUTO_INCREMENT = "autoincrement";
 
     /**
+     * Key generation via auto-increment.
+     * @deprecated Use AUTO_INCREMENT now.
+     */
+    public static final String AUTOINCREMENT = AUTO_INCREMENT;
+
+    /**
      * Key generation via sequences.
      */
     public static final String SEQUENCE = "sequence";
