@@ -93,11 +93,14 @@ import org.apache.xmlrpc.secure.SecureWebServer;
  * String name = (String)xs.executeRpc(url, "examples.getStateName", vec);
  * </pre></code></blockquote>
  *
+ * <p>TODO: Handle XmlRpc.setDebug(boolean)</p>
+ *
  * @author <a href="mailto:josh@stonecottage.com">Josh Lucas</a>
  * @author <a href="mailto:magnus@handtolvur.is">Magnús Þór Torfason</a>
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
  * @version $Id$
  */
 public class TurbineXmlRpcService
@@ -124,9 +127,6 @@ public class TurbineXmlRpcService
      * indicates all network interfaces on a multi-homed host.
      */
     private InetAddress address = null;
-
-    /** The xmlrpc client. */
-    private XmlRpcClient client = null;
 
     /** The port to listen on. */
     protected int port = 0;
@@ -312,12 +312,8 @@ public class TurbineXmlRpcService
      * Register an Object as a default handler for the service.
      *
      * @param handler The handler to use.
-     * @exception XmlRpcException
-     * @exception IOException
      */
     public void registerHandler(Object handler)
-            throws XmlRpcException,
-            IOException
     {
         registerHandler("$default", handler);
     }
@@ -327,13 +323,9 @@ public class TurbineXmlRpcService
      *
      * @param handlerName The name the handler is registered under.
      * @param handler The handler to use.
-     * @exception XmlRpcException
-     * @exception IOException
      */
     public void registerHandler(String handlerName,
                                 Object handler)
-            throws XmlRpcException,
-            IOException
     {
         if(webserver != null)
         {
@@ -473,8 +465,7 @@ public class TurbineXmlRpcService
      * @param methodName A String with the method name.
      * @param params A Vector with the parameters.
      * @return An Object.
-     * @exception XmlRpcException.
-     * @exception IOException.
+     * @throws TurbineException
      */
     public Object executeAuthenticatedRpc(URL url,
                                           String username,
@@ -509,7 +500,7 @@ public class TurbineXmlRpcService
                      String sourceFileName,
                      String destinationLocationProperty,
                      String destinationFileName)
-            throws Exception
+            throws TurbineException
     {
         FileTransfer.send(serverURL,
                 sourceLocationProperty,
@@ -537,7 +528,7 @@ public class TurbineXmlRpcService
                      String sourceFileName,
                      String destinationLocationProperty,
                      String destinationFileName)
-            throws Exception
+            throws TurbineException
     {
         FileTransfer.send(serverURL,
                 username,
@@ -562,7 +553,7 @@ public class TurbineXmlRpcService
                     String sourceFileName,
                     String destinationLocationProperty,
                     String destinationFileName)
-            throws Exception
+            throws TurbineException
     {
         FileTransfer.get(serverURL,
                 sourceLocationProperty,
@@ -590,7 +581,7 @@ public class TurbineXmlRpcService
                     String sourceFileName,
                     String destinationLocationProperty,
                     String destinationFileName)
-            throws Exception
+            throws TurbineException
     {
         FileTransfer.get(serverURL,
                 username,
@@ -612,7 +603,7 @@ public class TurbineXmlRpcService
     public void remove(String serverURL,
                        String sourceLocationProperty,
                        String sourceFileName)
-            throws Exception
+            throws TurbineException
     {
         FileTransfer.remove(serverURL,
                 sourceLocationProperty,
@@ -634,7 +625,7 @@ public class TurbineXmlRpcService
                        String password,
                        String sourceLocationProperty,
                        String sourceFileName)
-            throws Exception
+            throws TurbineException
     {
         FileTransfer.remove(serverURL,
                 username,
