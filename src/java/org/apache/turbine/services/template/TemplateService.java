@@ -92,13 +92,13 @@ public interface TemplateService
     String DEFAULT_EXTENSION_VALUE = "";
 
     /** Character that separates a Template Name from the Extension */
-    public static final char EXTENSION_SEPARATOR = '.';
+    char EXTENSION_SEPARATOR = '.';
 
     /** Character that separates the various Template Parts */
-    public static final char TEMPLATE_PARTS_SEPARATOR = ',';
+    char TEMPLATE_PARTS_SEPARATOR = ',';
 
     /** "Default" name for Classes and Templates */
-    public static final String DEFAULT_NAME = "Default";
+    String DEFAULT_NAME = "Default";
 
     /**
      * Returns true if the Template Service has caching activated
