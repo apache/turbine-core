@@ -8,38 +8,41 @@
 
 <body>
 
+<section name="Work to do for the current release">
 <p>
 This file is intended to collect ideas, problems and work
 to do with the current Turbine code. 
+</p>
 
-<section name="Work to do for the current release">
+<subsection name="Work to do for the current release">
 <p>
   <ul>
     <li>Bring all the jars up to date, get all needed jars on ibiblio</li>
   </ul>
 </p>
-</section>
+</subsection>
 
-<section name="Stuff that needs to be looked into (current release or next release)">
+<subsection name="Stuff that needs to be looked into (current release or next release)">
 <p>
   <ul>
-    <li>Googlezation of URLs (<a href="http://marc.theaimsgroup.com/?l=turbine-user&m=103008672127247&w=2">See here</a>)</li>
+    <li>Googlezation of URLs (<a href="http://marc.theaimsgroup.com/?l=turbine-user&amp;m=103008672127247&amp;w=2">See here</a>)</li>
     <li>Make sure that pull tools get refreshed correctly under all circumstances</li>
     <li>Check lifetimes of authorized and session tools if the application is not the standard login-logout application</li>
     <li>Move AvalonComponentService to the Fortress container (suggested by the avalon-dev list)</li>
   </ul>
 </p>
-</section>
+</subsection>
 
-<section name="Blue Skying for future Turbine releases">
+<subsection name="Blue Skying for future Turbine releases">
 <p>
   <ul>
     <li>Move forward to a component based architecture (avalonization)</li>
     <li>"Steal" the pipeline from the Turbine 3 code base</li>
     <li>Decouple the code base into core, components and toolbox</li>
-  </il>
+  </ul>
 </p>
-</section>
+</subsection>
 
+</section>
 </body>
 </document>
