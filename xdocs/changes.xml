@@ -113,6 +113,19 @@ Changes between Turbine 2.2 and 2.3-dev.
 <p>
   <ul>
     <li>
+	 Fixed bugs in TurbineUser.  Added cactus test to validate the fixes.
+    </li>
+    <li>
+	 Changed scheduler so that if it is NOT enabled, then it doesn't attempt
+	 to connect to the database and retrieve jobs.  Add a cactus test to test
+	 the fix.
+    </li>  
+    <li>
+	 Changed scheduler so that if it is NOT enabled, then it doesn't attempt
+	 to connect to the database and retrieve jobs.  Add a cactus test to test
+	 the fix.
+    </li>
+    <li>
       A new pull tool is available in the session scope called $sessionData.
       This tool can be used to store data that will persist for the duration
       of the session.  This should be used instead of the getTemp() and
