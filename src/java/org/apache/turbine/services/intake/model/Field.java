@@ -900,7 +900,7 @@ public abstract class Field
         }
         else
         {
-            valArray[0] = getEmptyValue();
+            valArray[0] = getSafeEmptyValue();
             if (isDebugEnabled)
             {
                 log.debug(name + ": Property is not set, using emptyValue " + valArray[0]);
@@ -967,6 +967,21 @@ public abstract class Field
     public Object getEmptyValue()
     {
         return emptyValue;
+    }
+
+    /**
+     * Provides access to emptyValue such that the value returned will be 
+     * acceptable as an argument parameter to Method.invoke.  Subclasses
+     * that deal with primitive types should ensure that they return an 
+     * appropriate value wrapped in the object wrapper class for the 
+     * primitive type.
+     *   
+     * @return the value to use when the field is empty or an Object that
+     * wraps the empty value for primitive types.
+     */
+    Object getSafeEmptyValue()
+    {
+        return getEmptyValue();
     }
 
     /**
