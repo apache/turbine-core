@@ -258,7 +258,7 @@ public class DefaultCookieParser
 
         Cookie cookie = new Cookie(name, value);
         cookie.setMaxAge(seconds_age);
-        cookie.setPath(cookiePath.getScriptName());
+        cookie.setPath(cookiePath.getContextPath()+cookiePath.getScriptName());
         response.addCookie (cookie);
     }
 
