@@ -31,4 +31,15 @@ As of Turbine 2.3, you must also have the Torque plugin for Maven installed
 to build Turbine.  Information on how to install the plugin is available
 at http://db.apache.org/torque/maven-howto.html.
 
+During the build process, you may run into a few unsatisfied dependencies.
+These particular jar files are from Sun and can not be downloaded with Maven.
+You will need to download these yourself from the URL's listed below and
+manually copy the jar files into your local maven repository
+($MAVEN_HOME/repository).
+
+http://java.sun.com/products/javabeans/glasgow/jaf.html
+http://java.sun.com/products/javamail/
+http://java.sun.com/products/jdbc/
+http://java.sun.com/products/jndi/
+
 -The Turbine Team
