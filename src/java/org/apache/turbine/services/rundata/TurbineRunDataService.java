@@ -154,9 +154,9 @@ public class TurbineRunDataService
             String[] config;
             String[] plist = new String[]
             {
-                RUN_DATA,
-                PARAMETER_PARSER,
-                COOKIE_PARSER
+                RUN_DATA_KEY,
+                PARAMETER_PARSER_KEY,
+                COOKIE_PARSER_KEY
             };
             for (Iterator i = conf.getKeys(); i.hasNext();)
             {
