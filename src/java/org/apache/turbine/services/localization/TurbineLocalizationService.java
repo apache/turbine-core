@@ -95,7 +95,8 @@ import org.apache.turbine.util.RunData;
  * <li>getBundle("MyBundleName", Locale)</li>
  * <li>etc.</li>
  * </ul></p>
- *
+ * 
+ * @deprecated Use the Fulcrum Localization component instead.
  * @author <a href="mailto:jm@mediaphil.de">Jonas Maurus</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:novalidemail@foo.com">Frank Y. Kim</a>

@@ -1,9 +1,8 @@
-package org.apache.turbine.services;
-
+package org.apache.turbine.test;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2002 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,43 +53,31 @@ package org.apache.turbine.services;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.util.TurbineRuntimeException;
+import com.mockobjects.servlet.MockHttpServletRequest;
 
 /**
- * Thrown by <code>InitableBroker</code> and
- * <code>ServiceBroker</code> classes to indicate problems with
- * instatiation of requested objects.
- * 
- * Make sure you don't confuse this exception with the java.lang.InstantiationException.
+ * Extension to the basic MockHttpServletRequest to provide some extra parameters
+ * required by Turbine.
  *
- * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
- * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
- * @see org.apache.turbine.services.Initable
  */
-public class InstantiationException extends TurbineRuntimeException
+public class EnhancedMockHttpServletRequest extends MockHttpServletRequest
 {
     /**
-     * Construct an InstantiationException with specified detail
-     * message.
      *
-     * @param msg The detail message.
      */
-    public InstantiationException(String msg)
+    public EnhancedMockHttpServletRequest()
     {
-        super(msg);
+        super();
+        // TODO Auto-generated constructor stub
+    }
+    public int getServerPort(){
+      return 8080;
     }
 
-    /**
-     * Construct an InstantiatioException with specified detail message
-     * and nested Throwable.
-     *
-     * @param msg The detail message.
-     * @param nested the exception or error that caused this exception
-     *               to be thrown.
-     */
-    public InstantiationException(String msg, Throwable t)
-    {
-        super(msg, t);
+    public String getCharacterEncoding(){
+    return "US-ASCII";
     }
+
 }
