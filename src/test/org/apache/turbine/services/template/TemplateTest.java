@@ -18,9 +18,9 @@ package org.apache.turbine.services.template;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.test.BaseTestCase;
-import org.apache.turbine.util.TurbineConfig;
+import org.apache.turbine.test.BaseTurbineTest;
 
 /**
  * Tests all the various template mappings for Screen and Layout
@@ -31,17 +31,14 @@ import org.apache.turbine.util.TurbineConfig;
  */
 
 public class TemplateTest
-    extends BaseTestCase
+    extends BaseTurbineTest
 {
-    private static TurbineConfig tc = null;
     private static TemplateService ts = null;
 
     public TemplateTest(String name)
             throws Exception
     {
-        super(name);
-        tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
-        tc.initialize();
+        super(name, "/conf/test/TemplateService.properties");
 
         ts = (TemplateService) TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
     }

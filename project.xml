@@ -395,7 +395,7 @@
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
-      <version>1.0.3</version>
+      <version>1.0.4</version>
       <url>http://jakarta.apache.org/commons/logging.html</url>
       <type>jar</type>
     </dependency>
@@ -616,6 +616,14 @@
       <excludes>
         <exclude>**/test/*.java</exclude>
       </excludes>
+      <resources>
+        <resource>
+          <directory>conf/test</directory>
+          <includes>
+            <include>commons-logging.properties</include>
+          </includes>
+        </resource>
+      </resources>
     </unitTest>
     <integrationUnitTestSourceDirectory/>
     <integrationUnitTest/>

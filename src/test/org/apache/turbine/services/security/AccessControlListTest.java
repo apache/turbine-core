@@ -26,7 +26,6 @@ import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.factory.FactoryService;
 import org.apache.turbine.services.factory.TurbineFactoryService;
-import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.services.security.db.DBSecurityService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.security.AccessControlList;

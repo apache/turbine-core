@@ -19,26 +19,18 @@ package org.apache.turbine.services.security;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.security.SecurityService;
-import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.test.BaseTurbineHsqlTest;
 import org.apache.turbine.util.security.AccessControlList;
 
-import org.apache.turbine.test.BaseTurbineTest;
-import org.apache.turbine.test.HsqlDB;
-
 public class TestSecurityACL
-        extends BaseTurbineTest
+        extends BaseTurbineHsqlTest
 {
-    private HsqlDB hsqlDB = null;
-
     public TestSecurityACL(String name)
             throws Exception
     {
-        super(name);
-        hsqlDB = new HsqlDB("jdbc:hsqldb:.", Turbine.getRealPath("conf/test/create-db.sql"));
+        super(name, "conf/test/TurbineResources.properties");
     }
 
     public static Test suite()

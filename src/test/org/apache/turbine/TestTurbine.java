@@ -32,8 +32,9 @@ public class TestTurbine
         extends BaseTurbineTest
 {
     public TestTurbine(String name)
+            throws Exception
     {
-        super(name);
+        super(name, "conf/test/TurbineResources.properties");
     }
 
     public static Test suite()

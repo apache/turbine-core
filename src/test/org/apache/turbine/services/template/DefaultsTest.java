@@ -20,8 +20,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.test.BaseTestCase;
-import org.apache.turbine.util.TurbineConfig;
+import org.apache.turbine.test.BaseTurbineTest;
 
 /**
  * Tests all the various defaults for the Template Service.
@@ -30,17 +29,14 @@ import org.apache.turbine.util.TurbineConfig;
  * @version $Id$
  */
 public class DefaultsTest
-    extends BaseTestCase
+    extends BaseTurbineTest
 {
-    private static TurbineConfig tc = null;
-    private static TemplateService ts = null;
-
+	private TemplateService ts = null;
+		
     public DefaultsTest(String name)
             throws Exception
     {
-        super(name);
-        tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
-        tc.initialize();
+        super(name, "/conf/test/TemplateService.properties");
 
         ts = (TemplateService) TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
     }

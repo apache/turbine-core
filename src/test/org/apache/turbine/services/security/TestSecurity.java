@@ -23,21 +23,18 @@ import junit.framework.TestSuite;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.security.SecurityService;
-import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.util.security.GroupSet;
-import org.apache.turbine.util.security.PasswordMismatchException;
-import org.apache.turbine.util.security.PermissionSet;
-import org.apache.turbine.util.security.RoleSet;
-import org.apache.turbine.util.security.TurbineAccessControlList;
-import org.apache.turbine.util.security.UnknownEntityException;
-
 import org.apache.turbine.services.security.torque.TorqueGroup;
 import org.apache.turbine.services.security.torque.TorquePermission;
 import org.apache.turbine.services.security.torque.TorqueRole;
 import org.apache.turbine.services.security.torque.TorqueUser;
 import org.apache.turbine.test.BaseTurbineTest;
 import org.apache.turbine.test.HsqlDB;
+import org.apache.turbine.util.security.GroupSet;
+import org.apache.turbine.util.security.PasswordMismatchException;
+import org.apache.turbine.util.security.PermissionSet;
+import org.apache.turbine.util.security.RoleSet;
+import org.apache.turbine.util.security.TurbineAccessControlList;
+import org.apache.turbine.util.security.UnknownEntityException;
 
 public class TestSecurity
         extends BaseTurbineTest
@@ -47,7 +44,7 @@ public class TestSecurity
     public TestSecurity(String name)
             throws Exception
     {
-        super(name);
+        super(name, "conf/test/TurbineResources.properties");
         hsqlDB = new HsqlDB("jdbc:hsqldb:.", Turbine.getRealPath("conf/test/create-db.sql"));
     }
 

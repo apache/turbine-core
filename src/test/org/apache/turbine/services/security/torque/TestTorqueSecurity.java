@@ -37,7 +37,7 @@ public class TestTorqueSecurity
     public TestTorqueSecurity(String name)
             throws Exception
     {
-        super(name);
+        super(name, "conf/test/TurbineResources.properties");
         hsqlDB = new HsqlDB("jdbc:hsqldb:.", Turbine.getRealPath("conf/test/create-db.sql"));
     }
 

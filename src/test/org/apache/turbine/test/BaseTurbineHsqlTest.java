@@ -16,41 +16,31 @@ package org.apache.turbine.test;
  * limitations under the License.
  */
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.turbine.Turbine;
-import org.apache.turbine.util.TurbineConfig;
+
+import org.apache.turbine.test.HsqlDB;
 
 /**
  * A base class to implement tests that need a running
- * Turbine framework on it.
+ * Turbine framework on it and an initialized Hsql Database
  *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 
-public abstract class BaseTurbineTest
-        extends BaseTestCase
+public abstract class BaseTurbineHsqlTest
+        extends BaseTurbineTest
 {
-    private File log4jFile = new File("conf/test/Log4j.properties");
+    private static HsqlDB hsqlDB = null;
 
-    private static TurbineConfig turbineConfig = null;
-    
-    public BaseTurbineTest(String name, String config)
+    public BaseTurbineHsqlTest(String name, String config)
             throws Exception
     {
-        super(name);
+        super(name, config);
 
-        if (turbineConfig == null)
+        if (hsqlDB == null)
         {
-            Map initParams = new HashMap();
-            initParams.put(TurbineConfig.PROPERTIES_PATH_KEY, config); // "conf/test/TurbineResources.properties"
-            initParams.put(Turbine.LOGGING_ROOT_KEY, "target/test-logs");
-
-            turbineConfig = new TurbineConfig(".", initParams);
-            turbineConfig.initialize();
+            hsqlDB = new HsqlDB("jdbc:hsqldb:.", Turbine.getRealPath("conf/test/create-db.sql"));
         }
     }
 }
