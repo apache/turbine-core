@@ -104,8 +104,7 @@ public class VelocityOnlyLayout
         throws Exception
     {
         // Get the context needed by Velocity.
-        Context context = (Context) data.getTemplateInfo()
-            .getTemplateContext(VelocityService.CONTEXT);
+        Context context = TurbineVelocity.getContext(data);
 
         String screenName = data.getScreen();
 
