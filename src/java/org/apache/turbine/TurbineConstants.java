@@ -199,6 +199,12 @@ public interface TurbineConstants
     /** Default value for the access controller. (org.apache.modules.actions.AccessController) */
     String ACTION_ACCESS_CONTROLLER_DEFAULT = "AccessController";
 
+    /** Select whether an Action Event must have a non-zero value */
+    String ACTION_EVENTSUBMIT_NEEDSVALUE_KEY = "action.eventsubmit.needsvalue";
+
+    /** Default value for action.eventsubmit.needsvalue */
+    boolean ACTION_EVENTSUBMIT_NEEDSVALUE_DEFAULT = false;
+
     /** Default layout. */
     String LAYOUT_DEFAULT = "layout.default";
 
