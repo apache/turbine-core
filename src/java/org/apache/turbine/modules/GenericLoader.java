@@ -68,6 +68,7 @@ import org.apache.turbine.util.RunData;
  * that is required to be called a Loader.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class GenericLoader extends Hashtable
@@ -75,7 +76,7 @@ public abstract class GenericLoader extends Hashtable
     /** @serial This can be serialized */
     private boolean reload = false;
     /** @serial This can be serialized */
-    private boolean CACHE = true;
+    private boolean isCaching = true;
     /** Base packages path for Turbine */
     private static final String TURBINE_PACKAGE = "org.apache.turbine.modules";
 
@@ -85,7 +86,7 @@ public abstract class GenericLoader extends Hashtable
     public GenericLoader()
     {
         super ();
-        CACHE = TurbineResources
+        isCaching = TurbineResources
             .getBoolean(TurbineConstants.MODULE_CACHE, true);
     }
 
@@ -95,7 +96,7 @@ public abstract class GenericLoader extends Hashtable
     public GenericLoader(int i)
     {
         super (i);
-        CACHE = TurbineResources
+        isCaching = TurbineResources
             .getBoolean(TurbineConstants.MODULE_CACHE, true);
     }
 
@@ -106,7 +107,7 @@ public abstract class GenericLoader extends Hashtable
      */
     public boolean cache()
     {
-        return this.CACHE;
+        return this.isCaching;
     }
 
     /**
