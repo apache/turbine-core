@@ -54,9 +54,14 @@ package org.apache.turbine.util.template;
  * <http://www.apache.org/>.
  */
 
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
 
@@ -66,11 +71,50 @@ import org.apache.turbine.util.RunData;
  * page for you.  You must use this tool in your layout template to retrieve
  * the attributes.
  *
- * Here's an example of some uses:
+ * The set/add methods are can be used from a screen template, action, screen
+ * class, layour template, or anywhere else.  The get methods should be used in
+ * your layout template(s) to construct the appropriate HTML tags.
  *
- * <p>
- * $page.setTitle("This is the title!");
- * $page.setStyleSheet("/style.css");
+ * Example usage of this tool to build the HEAD and BODY tags in your layout
+ * templates:
+ *  ## Set defaults for all pages using this layout.  Anything set here can
+ *  ## be overridden in the screen template.
+ *  $page.setTitle("My default page title");
+ *  $page.setHttpEquiv("Content-Style-Type","text/css")
+ *  $page.addStyleSheet($content.getURI("myStyleSheet.css"))
+ *  $page.addScript($content.getURI("globalJavascriptCode.js"))
+ *
+ *  ## build the HTML, HEAD, and BODY tags dynamically
+ *  <html>
+ *    <head>
+ *      #if( $page.Title != "" )
+ *      <title>$page.Title</title>
+ *      #end
+ *      #foreach($metaTag in $page.MetaTags.keySet())
+ *      <meta name="$metaTag" content="$page.MetaTags.get($metaTag)">
+ *      #end
+ *      #foreach($httpEquiv in $page.HttpEquivs.keySet())
+ *      <meta http-equiv="$httpEquiv" content="$page.HttpEquivs.get($httpEquiv)">
+ *      #end
+ *      #foreach( $styleSheet in $page.StyleSheets )
+ *      <link href='$styleSheet' type="text/css" rel="stylesheet">
+ *      #end
+ *      #foreach( $script in $page.Scripts )
+ *        <script type="text/javascript" src="$script" language="JavaScript"></script>
+ *      #end
+ *    </head>
+ *
+ *    ## Construct the body tag.  Iterate through the body attributes to build the opening tag
+ *    <body
+ *      #foreach( $attributeName in $page.BodyAttributes.keySet() )
+ *        $attributeName = "$page.BodyAttributes.get($attributeName)"
+ *      #end
+ *     >
+ *
+ * Example usages of this tool in your screen templates:
+ *   $page.addScript($content.getURI("myJavascript.js")
+ *   $page.setTitle("My page title")
+ *   $page.setHttpEquiv("refresh","5; URL=http://localhost/nextpage.html")
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
@@ -78,17 +122,29 @@ import org.apache.turbine.util.RunData;
 public class HtmlPageAttributes
         implements ApplicationTool
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(HtmlPageAttributes.class);
+
     /** The title */
     private String title;
 
     /** Body Attributes */
-    private Hashtable bodyAttributes;
+    private Map bodyAttributes = new HashMap();
 
     /** Script references */
-    private Vector scripts;
+    private List scripts = new Vector();
 
     /** Stylesheet references */
-    private Vector styleSheets;
+    private List styleSheets = new Vector();
+
+    /** Inline styles */
+    private List styles = new Vector();
+
+    /** Meta tags for the HEAD */
+    private Map metaTags = new HashMap();
+
+    /** http-equiv tags */
+    private Map httpEquivs = new HashMap();
 
     /**
      * Default constructor. The init method must be called before use
@@ -116,33 +172,12 @@ public class HtmlPageAttributes
     public void init(Object data)
     {
         this.title = null;
-
-        if(this.bodyAttributes == null)
-        {
-            this.bodyAttributes = new Hashtable();
-        }
-        else
-        {
-            this.bodyAttributes.clear();
-        }
-
-        if(this.scripts == null)
-        {
-            this.scripts = new Vector();
-        }
-        else
-        {
-            this.scripts.clear();
-        }
-
-        if(this.styleSheets == null)
-        {
-            this.styleSheets = new Vector();
-        }
-        else
-        {
-            this.styleSheets.clear();
-        }
+        this.bodyAttributes.clear();
+        this.scripts.clear();
+        this.styleSheets.clear();
+        this.styles.clear();
+        this.metaTags.clear();
+        this.httpEquivs.clear();
     }
 
     /**
@@ -156,9 +191,11 @@ public class HtmlPageAttributes
     /**
      * Set the title in the page.  This returns an empty String so
      * that the template doesn't complain about getting a null return
-     * value.
+     * value.  Subsequent calls to this method will replace the current
+     * title.
      *
      * @param title A String with the title.
+     * @return a <code>HtmlPageAttributes</code> (self).
      */
     public HtmlPageAttributes setTitle(String title)
     {
@@ -175,7 +212,7 @@ public class HtmlPageAttributes
      */
     public String getTitle()
     {
-        if(title == null)
+        if(StringUtils.isEmpty(this.title))
         {
             return "";
         }
@@ -187,7 +224,22 @@ public class HtmlPageAttributes
      *
      * @param name A String.
      * @param value A String.
-     * @return A TemplatePageAttributes (self).
+     * @return a <code>HtmlPageAttributes</code> (self).
+     * @deprecated Use addBodyAttribute instead.
+     */
+    public HtmlPageAttributes addAttribute(String name, String value)
+    {
+        log.info("Use of the addAttribute(name,value) method is deprecated.  Please use " +
+                "addBodyAttribute(name,value) instead.");
+        return addBodyAttribute(name, value);
+    }
+
+    /**
+     * Adds an attribute to the BODY tag.
+     *
+     * @param name A String.
+     * @param value A String.
+     * @return a <code>HtmlPageAttributes</code> (self).
      */
     public HtmlPageAttributes addBodyAttribute(String name, String value)
     {
@@ -200,7 +252,7 @@ public class HtmlPageAttributes
      *
      * @return the map
      */
-    public Hashtable getBodyAttributes()
+    public Map getBodyAttributes()
     {
         return this.bodyAttributes;
     }
@@ -209,7 +261,7 @@ public class HtmlPageAttributes
      * Adds a script reference
      *
      * @param scriptURL
-     * @return
+     * @return a <code>HtmlPageAttributes</code> (self).
      */
     public HtmlPageAttributes addScript(String scriptURL)
     {
@@ -218,11 +270,26 @@ public class HtmlPageAttributes
     }
 
     /**
+     * Adds a script reference
+     *
+     * @param scriptURL
+     * @return a <code>HtmlPageAttributes</code> (self).
+     * @deprecated Use addScript instead
+     */
+    public HtmlPageAttributes setScript(String scriptURL)
+    {
+        log.info("Use of the setScript(scriptURL) method is deprecated.  Please use " +
+                "addScript(scriptURL) instead.");
+        return addScript(scriptURL);
+    }
+
+    /**
      * Returns a collection of script URLs
      *
-     * @return
+     * @return list of String objects constainings URLs of javascript files
+     * to include
      */
-    public Vector getScripts()
+    public List getScripts()
     {
         return this.scripts;
     }
@@ -230,8 +297,8 @@ public class HtmlPageAttributes
     /**
      * Adds a style sheet reference
      *
-     * @param styleSheetURL
-     * @return
+     * @param styleSheetURL URL of the style sheet
+     * @return a <code>HtmlPageAttributes</code> (self).
      */
     public HtmlPageAttributes addStyleSheet(String styleSheetURL)
     {
@@ -240,13 +307,198 @@ public class HtmlPageAttributes
     }
 
     /**
+     * Adds a style sheet reference
+     *
+     * @param styleSheetURL
+     * @return a <code>HtmlPageAttributes</code> (self).
+     * @deprecated use addStyleSheet instead
+     */
+    public HtmlPageAttributes setStyleSheet(String styleSheetURL)
+    {
+        log.info("Use of the setStyleSheet(styleSheetURL) method is deprecated.  Please use " +
+                "addStyleSheet(styleSheetURL) instead.");
+        return addStyleSheet(styleSheetURL);
+    }
+
+    /**
      * Returns a collection of script URLs
      *
-     * @return
+     * @return list of String objects containing URLS to style sheets
      */
-    public Vector getStyleSheets()
+    public List getStyleSheets()
     {
         return this.styleSheets;
+    }
+
+    /**
+     * Adds a STYLE element to the HEAD of the page with the provided content.
+     *
+     * @param styleText The contents of the <code>style</code> tag.
+     * @return a <code>HtmlPageAttributes</code> (self).
+     * @deprecated use addStyle instead
+     */
+    public HtmlPageAttributes setStyle(String styleText)
+    {
+        log.info("Use of the setStyle(styleText) method is deprecated.  Please use " +
+                "addStyle(styleText) instead.");
+        return addStyle(styleText);
+    }
+
+    /**
+     * Adds a STYLE element to the HEAD of the page with the provided content.
+     *
+     * @param styleText The contents of the <code>style</code> tag.
+     * @return a <code>HtmlPageAttributes</code> (self).
+     */
+    public HtmlPageAttributes addStyle(String styleText)
+    {
+        this.styles.add(styleText);
+        return this;
+    }
+
+    /**
+     * Returns a collection of styles
+     *
+     * @return list of String objects containing the contents of style tags
+     */
+    public List getStyles()
+    {
+        return this.styles;
+    }
+
+    /**
+     * Set a keywords META tag in the HEAD of the page.
+     *
+     * @param keywords A String.
+     * @return a <code>HtmlPageAttributes</code> (self).
+     */
+    public HtmlPageAttributes setKeywords(String keywords)
+    {
+        this.metaTags.put("keywords", keywords);
+        return this;
+    }
+
+    /**
+     * Sets a HttpEquiv META tag in the HEAD of the page, usage:
+     * <br><code>setHttpEquiv("refresh", "5; URL=http://localhost/nextpage.html")</code>
+     * <br><code>setHttpEquiv("Expires", "Tue, 20 Aug 1996 14:25:27 GMT")</code>
+     *
+     * @param httpEquiv The value to use for the http-equiv attribute.
+     * @param content   The text for the content attribute of the meta tag.
+     * @return a <code>HtmlPageAttributes</code> (self).
+     */
+    public HtmlPageAttributes setHttpEquiv(String httpEquiv, String content)
+    {
+        this.httpEquivs.put(httpEquiv, content);
+        return this;
+    }
+
+    /**
+     * Add a description META tag to the HEAD of the page.
+     *
+     * @param description A String.
+     * @return a <code>HtmlPageAttributes</code> (self).
+     */
+    public HtmlPageAttributes setDescription(String description)
+    {
+        this.metaTags.put("description", description);
+        return this;
+    }
+
+    /**
+     * Set the background image for the BODY tag.
+     *
+     * @param url A String.
+     * @return a <code>HtmlPageAttributes</code> (self).
+     */
+    public HtmlPageAttributes setBackground(String url)
+    {
+        this.bodyAttributes.put("backgroup", url);
+        return this;
+    }
+
+    /**
+     * Set the background color for the BODY tag.  You can use either
+     * color names or color values (e.g. "white" or "#ffffff" or
+     * "ffffff").
+     *
+     * @param color A String.
+     * @return a <code>HtmlPageAttributes</code> (self).
+     */
+    public HtmlPageAttributes setBgColor(String color)
+    {
+        this.bodyAttributes.put("BGCOLOR", color);
+        return this;
+    }
+
+    /**
+     * Set the text color for the BODY tag.  You can use either color
+     * names or color values (e.g. "white" or "#ffffff" or "ffffff").
+     *
+     * @param color A String.
+     * @return a <code>HtmlPageAttributes</code> (self).
+     */
+    public HtmlPageAttributes setTextColor(String color)
+    {
+        this.bodyAttributes.put("TEXT", color);
+        return this;
+    }
+
+    /**
+     * Set the link color for the BODY tag.  You can use either color
+     * names or color values (e.g. "white" or "#ffffff" or "ffffff").
+     *
+     * @param color A String.
+     * @return a <code>HtmlPageAttributes</code> (self).
+     */
+    public HtmlPageAttributes setLinkColor(String color)
+    {
+        this.bodyAttributes.put("LINK", color);
+        return this;
+    }
+
+    /**
+     * Set the visited link color for the BODY tag.
+     *
+     * @param color A String.
+     * @return a <code>HtmlPageAttributes</code> (self).
+     */
+    public HtmlPageAttributes setVlinkColor(String color)
+    {
+        this.bodyAttributes.put("VLINK", color);
+        return this;
+    }
+
+    /**
+     * Set the active link color for the BODY tag.
+     *
+     * @param color A String.
+     * @return a <code>HtmlPageAttributes</code> (self).
+     */
+    public HtmlPageAttributes setAlinkColor(String color)
+    {
+        this.bodyAttributes.put("ALINK", color);
+        return this;
+    }
+
+    /**
+     * Gets the map of http equiv tags
+     *
+     * @return Map of http equiv names to the contents
+     */
+    public Map getHttpEquivs()
+    {
+        return this.httpEquivs;
+    }
+
+    /**
+     * Gets the map of meta tags
+     *
+     * @return Map of http equiv names to the contents
+     */
+    public Map getMetaTags()
+    {
+        return this.metaTags;
     }
 
     /**
