@@ -133,6 +133,7 @@ public interface TurbineRunData
      * Sets the servlet session information.
      *
      * @param sess a session.
+     * @deprecated No replacement. This method no longer does anything.
      */
     void setSession(HttpSession sess);
 
