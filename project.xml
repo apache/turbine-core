@@ -570,7 +570,7 @@
   </dependencies>
 
   <build>
-    <sourceDirectory>target/src</sourceDirectory>
+    <sourceDirectory>src/java</sourceDirectory>
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
 
     <unitTest>
