@@ -55,7 +55,7 @@
       CREATE_USER_ID as a foreign key in the RDF table.
      </p>
      <source><![CDATA[
-  <table name="NEWAPP_USER" javaName="NewappUser" alias="TurbineUser"
+  <table name="TURBINE_USER" javaName="NewappUser" alias="TurbineUser"
     baseClass="org.mycompany.newapp.om.TurbineUserAdapter"
     basePeer="org.mycompany.newapp.om.TurbineUserPeerAdapter">
     <!-- Unique identifier -->
