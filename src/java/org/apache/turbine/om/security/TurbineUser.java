@@ -653,12 +653,12 @@ public class TurbineUser extends SecurityObject implements User
     {
         try
         {
-            if(hasLoggedIn())
+            if (hasLoggedIn())
             {
                 TurbineSecurity.saveOnSessionUnbind(this);
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             log.error("TurbineUser.valueUnbobund(): " + e.getMessage(), e);
 
