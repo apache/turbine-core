@@ -58,7 +58,7 @@ import java.util.Locale;
 
 import org.apache.fulcrum.mimetype.MimeTypeService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.MerlinComponentService;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 /**
@@ -76,11 +76,11 @@ public class FulcrumMimetypeComponentTest extends BaseTestCase
     }
     public void testComponent() throws Exception
     {
-        MerlinComponentService merlin =
-            (MerlinComponentService) TurbineServices.getInstance().getService(
-		MerlinComponentService.SERVICE_NAME);
-        MimeTypeService mimeTypeService =
-            (MimeTypeService) merlin.lookup("/fulcrum/mimetype");
+        AvalonComponentService acs =
+            (AvalonComponentService) TurbineServices.getInstance().getService(
+                    AvalonComponentService.SERVICE_NAME);
+        MimeTypeService mimeTypeService = (MimeTypeService) acs.lookup(MimeTypeService.class.getName());
+
         Locale locale = new Locale("en", "US");
         String s = mimeTypeService.getCharSet(locale);
         assertEquals("ISO-8859-1", s);
