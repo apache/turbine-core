@@ -55,25 +55,29 @@ package org.apache.turbine.services.jsp;
  */
 
 import org.apache.turbine.services.Service;
+import org.apache.turbine.services.TurbineServices;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
-
 /**
- * Implementations of the JspService interface.
+ * Facade class for the Jsp Service.
  *
- * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  */
-public interface JspService
-    extends Service 
+public abstract class TurbineJsp
 {
-    /** The name used to specify this service in Turbine.properties */
-    static final String SERVICE_NAME = "JspService";
-    /** The key used to store an instance of RunData in the request */
-    static final String RUNDATA = "rundata";
-    /** The key used to store an instance of JspLink in the request */
-    static final String LINK = "link";
+    /**
+     * Utility method for accessing the service 
+     * implementation
+     *
+     * @return a JspService implementation instance
+     */
+    protected static JspService getService()
+    {
+        return (JspService) TurbineServices
+            .getInstance().getService(JspService.SERVICE_NAME);
+    }
     
     /**
      * Adds some convenience objects to the request.  For example an instance
@@ -81,7 +85,10 @@ public interface JspService
      *
      * @param data the turbine rundata object
      */
-    void addDefaultObjects(RunData data);
+    public static void addDefaultObjects(RunData data)
+    {
+        getService().addDefaultObjects(data);
+    }
 
     /**
      * executes the JSP given by templateName.
@@ -92,8 +99,11 @@ public interface JspService
      *
      * @throws TurbineException If a problem occured while executing the JSP
      */    
-    void handleRequest(RunData data, String templateName, boolean isForward)
-        throws TurbineException;
+    public static void handleRequest(RunData data, String templateName, boolean isForward)
+        throws TurbineException
+    {
+        getService().handleRequest(data, templateName, isForward);
+    }
 
     /**
      * executes the JSP given by templateName.
@@ -103,15 +113,21 @@ public interface JspService
      *
      * @throws TurbineException If a problem occured while executing the JSP
      */    
-    void handleRequest(RunData data, String templateName)
-        throws TurbineException;
+    public static void handleRequest(RunData data, String templateName)
+        throws TurbineException
+    {
+        getService().handleRequest(data, templateName);
+    }
 
     /**
      * Returns the default buffer size of the JspService
      *
      * @return The default buffer size.
      */
-    int getDefaultBufferSize();
+    public static int getDefaultBufferSize()
+    {
+        return getService().getDefaultBufferSize();
+    }
 
     /**
      * Searchs for a template in the default.template path[s] and 
@@ -122,6 +138,8 @@ public interface JspService
      *
      * @return the template with a relative path
      */
-    String getRelativeTemplateName(String template);
-
+    public static String getRelativeTemplateName(String template)
+    {
+        return getService().getRelativeTemplateName(template);
+    }
 }
