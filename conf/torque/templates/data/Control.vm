@@ -4,7 +4,7 @@
 #foreach ($dataModel in $dataModels)
 #foreach ($database in $dataModel.Databases)
     #if ($project)
-        #if ($appData.MultipleDatabases)
+        #if ($dataModel.MultipleDatabases)
             #set ( $outFile = "${project}-${database.Name}-data.dtd" )
         #else
             #set ( $outFile = "${project}-data.dtd" )
