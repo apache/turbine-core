@@ -324,14 +324,14 @@
       </properties>
     </dependency>
 	<dependency>
-      <id>commons-digester</id> 
-	  <version>1.5</version> 
-	  <url>http://jakarta.apache.org/commons/digester/index.html</url> 
+      <id>commons-digester</id>
+	  <version>1.5</version>
+	  <url>http://jakarta.apache.org/commons/digester/index.html</url>
 	  <properties>
-	    <war.bundle.jar>true</war.bundle.jar> 
+	    <war.bundle.jar>true</war.bundle.jar>
 	  </properties>
 	</dependency>
-    
+
     <dependency>
       <id>commons-email</id>
       <version>20030310.165926</version>
@@ -387,7 +387,7 @@
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
-    </dependency>    
+    </dependency>
     <dependency>
       <id>ecs</id>
       <version>1.4.1</version>
@@ -534,7 +534,7 @@
     </dependency>
     <dependency>
       <id>xalan</id>
-      <version>2.1.0</version>
+      <version>2.5.1</version>
       <url>http://xml.apache.org/xalan-j/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
@@ -542,7 +542,7 @@
     </dependency>
     <dependency>
       <id>xerces:xercesImpl</id>
-      <version>2.0.2</version>
+      <version>2.4.0</version>
       <url>http://xml.apache.org/xerces2-j/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
