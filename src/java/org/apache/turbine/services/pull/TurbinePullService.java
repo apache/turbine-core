@@ -402,8 +402,11 @@ public class TurbinePullService
 
         if (!TurbineSecurity.isAnonymousUser(user))
         {
-            populateWithSessionTools(authorizedTools, context, data, user, false);
-            populateWithSessionTools(persistentTools, context, data, user, true);
+            if (user.hasLoggedIn())
+            {
+                populateWithSessionTools(authorizedTools, context, data, user, false);
+                populateWithSessionTools(persistentTools, context, data, user, true);
+            }
         }
     }
 
