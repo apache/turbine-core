@@ -102,7 +102,6 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.template.TemplateInfo;
 import org.apache.turbine.util.uri.URIConstants;
 
@@ -160,11 +159,6 @@ public class Turbine
      * so we use this flag to prevent it.
      */
     private static boolean firstInit = true;
-    
-    /**
-     * Whether to use the TurbinePipeline or not.
-     */
-    private static boolean usePipeline = true;
     
 	/**
 	 * The pipeline to use when processing requests.
@@ -416,31 +410,31 @@ public class Turbine
         configuration.setProperty(APPLICATION_ROOT_KEY, applicationRoot);
         configuration.setProperty(WEBAPP_ROOT_KEY, webappRoot);
 
-        usePipeline = Turbine.getConfiguration().getBoolean("turbine.pipeline.use", Boolean.TRUE).booleanValue();
+        
 
-		if (usePipeline) {
-		    Class pipelineClass =
-			  Class.forName(
-				  configuration.getString("pipeline.default", STANDARD_PIPELINE));
+		// Retrieve the pipeline class and then initialize it.  The pipeline
+        // handles the processing of a webrequest/response cycle.
+	    Class pipelineClass =
+		  Class.forName(
+			  configuration.getString("pipeline.default", STANDARD_PIPELINE));
   
 		    log.debug("Using Pipeline: " + pipelineClass.getName());
-		    // Turbine's standard Pipeline implementation uses
-		    // descriptors to define what Valves are attached to it.
-		    String descriptorPath =
-			  	configuration.getString(
-				  "pipeline.default.descriptor",
+	    // Turbine's standard Pipeline implementation uses
+	    // descriptors to define what Valves are attached to it.
+	    String descriptorPath =
+		  	configuration.getString(
+			  "pipeline.default.descriptor",
 					  TurbinePipeline.CLASSIC_PIPELINE);
   		  	descriptorPath = getRealPath(descriptorPath);
   
   		  	log.debug("Using descriptor path: " + descriptorPath);
-  		  	Mapper m = new Mapper();
-  		  	pipeline = (Pipeline) m.map(descriptorPath, pipelineClass.getName());
-  		  	log.debug("Initializing pipeline");
-		  
-  		  	pipeline.initialize();
-		}
-        
+	  	Mapper m = new Mapper();
+	  	pipeline = (Pipeline) m.map(descriptorPath, pipelineClass.getName());
+	  	log.debug("Initializing pipeline");
+	  
+	  	pipeline.initialize();
 
+        
         //
         // Be sure, that our essential services get run early
         //
@@ -736,178 +730,12 @@ public class Turbine
             {
                 init(data);
             }
-            if(usePipeline)
-            {    
-				// Stages of Pipeline implementation execution
-				// configurable via attached Valve implementations in a
-				// XML properties file.
-				pipeline.invoke(data);
-            }
-            else 
-            {
-                // set the session timeout if specified in turbine's properties
-                // file if this is a new session
-                if (data.getSession().isNew())
-               {
-                	int timeout = configuration.getInt(SESSION_TIMEOUT_KEY,
-                                                   SESSION_TIMEOUT_DEFAULT);
 
-                	if (timeout != SESSION_TIMEOUT_DEFAULT)
-                   {
-                    	data.getSession().setMaxInactiveInterval(timeout);
-                	}
-            	}
-
-            	// Fill in the screen and action variables.
-            	data.setScreen(data.getParameters().getString(URIConstants.CGI_SCREEN_PARAM));
-            	data.setAction(data.getParameters().getString(URIConstants.CGI_ACTION_PARAM));
-
-            	// Special case for login and logout, this must happen before the
-            	// session validator is executed in order either to allow a user to
-            	// even login, or to ensure that the session validator gets to
-            	// mandate its page selection policy for non-logged in users
-            	// after the logout has taken place.
-            	if (data.hasAction())
-               {
-                	String action = data.getAction();
-                	log.debug("action = " + action);
-
-                	if (action.equalsIgnoreCase(
-                        configuration.getString(ACTION_LOGIN_KEY,
-                                                ACTION_LOGIN_DEFAULT)))
-                   {
-                    	loginAction(data);
-                	}
-                	else if (action.equalsIgnoreCase(
-                        configuration.getString(ACTION_LOGOUT_KEY,
-                                                ACTION_LOGOUT_DEFAULT)))
-                   {
-                    logoutAction(data);
-                	}
-            	}
-            
-            	// This is where the validation of the Session information
-            	// is performed if the user has not logged in yet, then
-            	// the screen is set to be Login. This also handles the
-            	// case of not having a screen defined by also setting the
-            	// screen to Login. If you want people to go to another
-            	// screen other than Login, you need to change that within
-            	// TurbineResources.properties...screen.homepage; or, you
-            	// can specify your own SessionValidator action.
-            	ActionLoader.getInstance().exec(
-                    data, configuration.getString(ACTION_SESSION_VALIDATOR_KEY,
-                        ACTION_SESSION_VALIDATOR_DEFAULT));
-
-            	// Put the Access Control List into the RunData object, so
-            	// it is easily available to modules.  It is also placed
-            	// into the session for serialization.  Modules can null
-            	// out the ACL to force it to be rebuilt based on more
-            	// information.
-           		ActionLoader.getInstance().exec(
-                    data, configuration.getString(ACTION_ACCESS_CONTROLLER_KEY,
-                        ACTION_ACCESS_CONTROLLER_DEFAULT));
-
-            	// Start the execution phase. DefaultPage will execute the
-            	// appropriate action as well as get the Layout from the
-            	// Screen and then execute that. The Layout is then
-            	// responsible for executing the Navigation and Screen
-            	// modules.
-            	//
-            	// Note that by default, this cannot be overridden from
-            	// parameters passed in via post/query data. This is for
-            	// security purposes.  You should really never need more
-            	// than just the default page.  If you do, add logic to
-            	// DefaultPage to do what you want.
-
-            	String defaultPage = (templateService == null)
-                    ? null :templateService.getDefaultPageName(data);
-
-            	if (defaultPage == null)
-               {
-                	/*
-                 	* In this case none of the template services are running.
-                 	* The application may be using ECS for views, or a
-                 	* decendent of RawScreen is trying to produce output.
-                 	* If there is a 'page.default' property in the TR.props
-                 	* then use that, otherwise return DefaultPage which will
-                 	* handle ECS view scenerios and RawScreen scenerios. The
-                 	* app developer can still specify the 'page.default'
-                 	* if they wish but the DefaultPage should work in
-                 	* most cases.
-                 	*/
-                	defaultPage = configuration.getString(PAGE_DEFAULT_KEY,
-                        PAGE_DEFAULT_DEFAULT);
-            	}
-
-            	PageLoader.getInstance().exec(data, defaultPage);
-
-            	// If a module has set data.acl = null, remove acl from
-            	// the session.
-            	if (data.getACL() == null)
-               {
-                	try
-                	{
-                    	data.getSession().removeAttribute(
-                            AccessControlList.SESSION_KEY);
-                	}
-                	catch (IllegalStateException ignored)
-                	{
-                	}
-            	}
-
-            	// handle a redirect request
-            	requestRedirected = ((data.getRedirectURI() != null)
-                                 && (data.getRedirectURI().length() > 0));
-            	if (requestRedirected)
-               {
-                	if (data.getResponse().isCommitted())
-                   {
-                    	requestRedirected = false;
-                    	log.warn("redirect requested, response already committed: " +
-                             data.getRedirectURI());
-                	}
-                	else
-                   {
-                    	data.getResponse().sendRedirect(data.getRedirectURI());
-                	}
-            	}
-
-            		if (!requestRedirected)
-               {
-                	try
-                	{
-                    	if (data.isPageSet() == false && data.isOutSet() == false)
-                       {
-                        	throw new Exception("Nothing to output");
-                    	}
-
-                    	// We are all done! if isPageSet() output that way
-                    	// otherwise, data.getOut() has already been written
-                    	// to the data.getOut().close() happens below in the
-                    	// finally.
-                    	if (data.isPageSet() && data.isOutSet() == false)
-                       {
-                        	// Modules can override these.
-                        	data.getResponse().setLocale(data.getLocale());
-                        	data.getResponse().setContentType(
-                                data.getContentType());
-
-                        	// Set the status code.
-                        	data.getResponse().setStatus(data.getStatusCode());
-                        	// Output the Page.
-                        	data.getPage().output(data.getOut());
-                    	}
-                	}
-                	catch (Exception e)
-                	{
-                    	// The output stream was probably closed by the client
-                    	// end of things ie: the client clicked the Stop
-                    	// button on the browser, so ignore any errors that
-                    	// result.
-                    	log.debug("Output stream closed? ", e);
-                	}
-            	}
-            }
+            // Stages of Pipeline implementation execution
+			// configurable via attached Valve implementations in a
+			// XML properties file.
+			pipeline.invoke(data);
+  
         }
         catch (Exception e)
         {
