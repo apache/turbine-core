@@ -493,7 +493,7 @@ public class IDBroker
             long thenLong = lastTime.getTime();
             long nowLong = now.getTime();
             int timeLapse = (int)(nowLong-thenLong);
-            if ( timeLapse < sleepPeriod )
+            if ( timeLapse < sleepPeriod && timeLapse > 0 )
             {
                 Log.info("Unscheduled retrieval of more ids for table: " +
                          tableName);
