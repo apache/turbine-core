@@ -52,27 +52,15 @@ package org.apache.turbine.services;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-import java.util.Vector;
-import javax.servlet.ServletConfig;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.fulcrum.cache.DefaultGlobalCacheService;
 import org.apache.fulcrum.crypto.CryptoService;
 import org.apache.fulcrum.factory.FactoryService;
 import org.apache.fulcrum.intake.IntakeService;
 import org.apache.fulcrum.localization.LocalizationService;
 import org.apache.fulcrum.mimetype.MimeTypeService;
-import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
-import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.test.BaseTestCase;
-import org.apache.turbine.test.EnhancedMockHttpServletRequest;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
-import com.mockobjects.servlet.MockHttpServletResponse;
-import com.mockobjects.servlet.MockHttpSession;
-import com.mockobjects.servlet.MockServletConfig;
 /**
  * Unit test for verifing that we can load all the appropriate components from the
  * appropriate Container.  For now that is just ECM (AvalonComponentService)
