@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?>
+<!DOCTYPE dataset SYSTEM "file://@TURBINE_APP_NAME@-data.dtd">
+
 <!-- 
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
@@ -17,13 +19,5 @@
  */
  -->
 
-<!-- ======================================================================== -->
-<!--                                                                          -->
-<!--  maven Buildfile                                                         -->
-<!--                                                                          -->
-<!-- $Id$ -->
-<!--                                                                          -->
-<!-- ======================================================================== -->
-
-<project default="plugin:plugin"/>
+<dataset name="all"/>
 
