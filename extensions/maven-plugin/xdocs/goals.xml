@@ -2,36 +2,45 @@
 
 <document>
   <properties>
-    <title>Maven Environment for Turbine Applications (META) Goals</title>
+    <title>Maven Environment for Turbine Applications (M.E.T.A.) Goals</title>
     <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
   </properties>
   <body>
     <section name="Public goals">
-      <p>These are the visible goals of the META plugin, that you can use for building and
+      <p>These are the visible goals of the M.E.T.A. plugin, that you can use for building and
          deploying your application.
      </p>
     <goals>
       <goal>
+        <a name="turbine_setup"/>
         <name>turbine:setup</name>
         <description><a href="using_meta.html#Setting_up_your_application_for_the_first_time">Setup a new Turbine web application</a></description>
       </goal>
       <goal>
+        <a name="turbine_deploy"/>
         <name>turbine:deploy</name>
         <description>Deploys the Application into a local web container for testing</description>
       </goal>
       <goal>
+        <a name="turbine_sql"/>
         <name>turbine:sql</name>
         <description>Build the SQL files necessary for the application</description>
       </goal>
       <goal>
+        <a name="turbine_webapp"/>
         <name>turbine:webapp</name>
         <description>Generate a Turbine based Web application (war)</description>
+      </goal>
+      <goal>
+        <a name="turbine_install_libs"/>
+        <name>turbine:install-libs</name>
+        <description> Updates the libraries for an inplace application</description>
       </goal>
     </goals>
     </section>
     <section name="Callback goals">
-      <p>These goals are called from the META-installed maven.xml file in your application. They
-         hook into other plugins and allow META to integrate with the regular maven build process.
+      <p>These goals are called from the M.E.T.A.-installed maven.xml file in your application. They
+         hook into other plugins and allow M.E.T.A. to integrate with the regular maven build process.
      </p>
     <goals>
       <goal>
@@ -53,6 +62,14 @@ src/java gets copied into target/src and the auto-generated classes
 are mixed in correctly.<br/>
 Also runs the om generation goals if the peer classes are out of
 date.
+        </description>
+      </goal>
+      <goal>
+        <name>turbine:java-compile</name>
+        <description>
+<b>postGoal</b> For an inplace application, this updates the needed
+libraries in the <a href="tree.html#web_inf_lib">library location</a> of
+an inplace application. 
         </description>
       </goal>
       <goal>
@@ -97,7 +114,7 @@ tree.
       <p>There are a few more goals in this plugin which are for internal use and you should never
          need to call them directly.<br/>
          These goals might change from relase to release (or even between
-         releases). They're not public and their function outside the META plugin.jelly 
+         releases). They're not public and their function outside the M.E.T.A. plugin.jelly 
          file is undefined.
      </p>
     <goals>

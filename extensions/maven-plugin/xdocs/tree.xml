@@ -26,18 +26,19 @@
   <body>
   <section name="Development tree">
   <p>
-The development tree is prebuilt by the META plugin and conforms to the
-<a href="http://maven.apache.org/reference/dirlayout.html">maven common directory layout</a>.</p>
-
+  The actual tree layout is different in each M.E.T.A. <a href="modes.html">Mode</a>.
+  </p>
   <table>
     <tr>
-      <th>Path</th>
+      <th>normal Mode</th>
+      <th>inplace Mode</th>
       <th>Function</th>
       <th>Description</th>
     </tr>
 <a name="conf"/>
 <tr>
 <td>conf</td>
+<td>WEB-INF/conf</td>
 <td>Configuration data for your web application</td>
 <td>This directory contains all the configuration files for your
 application. All files in this directory with the exception of
@@ -50,6 +51,7 @@ will be copied to <code>WEB-INF/web.xml</code>.
 <a name="src_images"/>
 <tr>
 <td>src/images</td>
+<td>images</td>
 <td>Graphics and Images for your application</td>
 <td>All files in this directory will be copied to the <code>images</code>
 subdirectory in the root of your application. The plugin creates two image
@@ -58,6 +60,7 @@ files where, which are referenced from the sample default screen</td>
 
 <tr>
 <td>src/java</td>
+<td>WEB-INF/src</td>
 <td>Java source files</td>
 <td>All files ending on .java in this directory tree get compiled by the
 java compile into class files. All other files get copied as is into the
@@ -67,12 +70,14 @@ java compile into class files. All other files get copied as is into the
 <a name="src_scripts"/>
 <tr>
 <td>src/scripts</td>
+<td>scripts</td>
 <td>JavaScript files for your application</td>
 <td>All files in this directory will be copied to the <code>scripts</code>
 subdirectory in the root of your application.</td>
 </tr>
 
 <tr>
+<td>src/schema</td>
 <td>src/schema</td>
 <td>XML source files for Torque</td>
 <td>This directory contains the definition files for generating the
@@ -84,6 +89,7 @@ schema files description</a> for details.</td>
 <a name="src_style"/>
 <tr>
 <td>src/style</td>
+<td>style</td>
 <td>Cascading style sheet files for your application</td>
 <td>All files in this directory will be copied to the <code>style</code>
 subdirectory in the root of your application.</td>
@@ -92,9 +98,10 @@ subdirectory in the root of your application.</td>
 <a name="src_templates"/>
 <tr>
 <td>src/templates/layouts</td>
+<td>templates/layouts</td>
 <td>Layout templates for your application</td>
 <td>The templates in this directory are used to position screens and
-navigations on a reponse page. The META plugin adds a default layout
+navigations on a reponse page. The M.E.T.A. plugin adds a default layout
 page here which just returns the current screen. If you want to use
 navigation elements with your application, you must either add your
 own custom layout pages or change the default layout to contain
@@ -105,6 +112,7 @@ Only Layout</a> documentation for an example with navigation.</td>
 
 <tr>
 <td>src/templates/macros</td>
+<td>templates/macros</td>
 <td>VelociMacros for your application</td>
 <td>Files in this directory should be loaded by the Velocity Service
 to be used as <a
@@ -115,22 +123,24 @@ TurbineResources.properties to load at Turbine startup time.</td>
 
 <tr>
 <td>src/templates/navigations</td>
+<td>templates/navigations</td>
 <td>Navigation templates for your application</td>
 <td>Put your navigation templates here. If you want to use navigation,
 you need layouts that reference these files. The default configuration
-of a META-generated Turbine application does not use navigation.</td>
+of a M.E.T.A.-generated Turbine application does not use navigation.</td>
 </tr>
 
 <tr>
 <td>src/templates/screens</td>
 <td>Screen templates for your application</td>
 <td>Put your screen templates to be rendered as output of your application into this
-    subdirectory. META creates a sample index screen, which is displayed when you
+    subdirectory. M.E.T.A. creates a sample index screen, which is displayed when you
     deploy the application without changing this page.</td>
 </tr>
 
 <tr>
 <td>src/test/</td>
+<td>WEB-INF/test/</td>
 <td>Java test code</td>
 
 <td>Maven expects java classes that contain unit tests in this
@@ -139,13 +149,38 @@ correct function of your application. See the <a
 href="http://maven.apache.org/reference/plugins/test/">Maven test
 plugin</a> for further information.</td>
 </tr>
+<tr>
+<a name="web_inf_lib"/>
+<td><font color="red">Deployment is used</font></td>
+<td>WEB-INF/lib</td>
+<td>libs directory</td>
+<td>All jar files in the project.xml file of your application, that
+have the <code>war.bundle</code> property set to true will be copied
+into this directory.</td>
+</tr>
+<tr>
+<td><font color="red">Deployment is used</font></td>
+<td>WEB-INF/classes</td>
+<td>classes directory</td>
+<td>All class files and all non-java files from the source tree are
+copied into this sub directory. This is defined in the <a href="http://java.sun.com/products/servlet/docs.html">Sun Servlet API</a>.</td>
+</tr>
+<tr>
+<a name="logs"/>
+<td><font color="red">Deployment is used</font></td>
+<td>logs</td>
+<td>Log files</td>
+<td>A M.E.T.A. generated application writes a few logfiles which are useful for debugging and runtime diagnosis. These files are put here.</td>
+</tr>
 </table>
 </section>
 
 <section name="Deployment tree">
 <p>
-This is the layout of a compiled META application in the web container
-or inplace deployment directory.
+This is the layout of a compiled M.E.T.A. application in the web container when
+deployed to a web container. This applies only to modes where deployment is used,
+not to inplace development modes.
+
 </p>
 
   <table>
@@ -178,7 +213,7 @@ copied into this sub directory. This is defined in the <a href="http://java.sun.
 <a name="logs"/>
 <td>logs</td>
 <td>Log files</td>
-<td>A META generated application writes a few logfiles which are useful for debugging and runtime diagnosis. These files are put here.</td>
+<td>A M.E.T.A. generated application writes a few logfiles which are useful for debugging and runtime diagnosis. These files are put here.</td>
 </tr>
 <tr>
 <td>templates</td>

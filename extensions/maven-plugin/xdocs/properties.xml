@@ -9,18 +9,19 @@
 <a name="setup_properties"/>
 <section name="Setup Properties">
     <p>
-META uses two sets of plugin properties to configure your Turbine
+M.E.T.A. uses two sets of plugin properties to configure your Turbine
 application. The first set is called the &quot;Setup Properties&quot;,
-because they're only read by the turbine:setup goal which is run when
-creating the skeleton of your application. These parameters are used
-in various places and transformed into your turbine specific
+because they're only read by the <a
+href="goals.html#turbine_setup">turbine:setup</a> goal which is run
+when creating the skeleton of your application. These parameters are
+used in various places and transformed into your turbine specific
 configuration files. Once you've set up your application, these
 parameter are no longer used. If you change these, you must rerun the
-turbine:setup goal (which might result in losing other changes to your
+<a href="goals.html#turbine_setup">turbine:setup</a> goal (which might result in losing other changes to your
 configuration files, so be careful!).
 </p>
 
-<subsection name="META Plugin">
+<subsection name="M.E.T.A. Plugin">
   <p>
   <table>
     <tr>
@@ -34,7 +35,7 @@ configuration files, so be careful!).
 <td>turbine.app.name</td>
 <td>No</td>
 <td><b>no default value</b></td>
-<td>Name of the new application. <font color="red">Must be set for turbine:setup, else the goal fails!</font></td>
+<td>Name of the new application. <font color="red">Must be set for <a href="goals.html#turbine_setup">turbine:setup</a>, else the goal fails!</font></td>
 </tr>
 
 <tr>
@@ -57,6 +58,29 @@ configuration files, so be careful!).
       <li>true: Create the skeleton for the new application in a subdirectory. Name of the subdirectory is ${turbine.app.name}.</li>
       <li>false: Create the skeleton in the current directory.</li>
     </ul></td>
+</tr>
+
+<tr>
+<td>turbine.plugin.mode</td>
+<td>Yes</td>
+<td>normal</td>
+<td>Selects the <a href="modes.html">development mode</a> for your application.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.inplace.dir</td>
+<td>Yes</td>
+<td>.</td>
+<td>Selects the location of the web application tree relative to to
+    the root of your application when using <a
+    href="modes.html#inplace">inplace</a> development.</td>
+</tr>
+
+<tr>
+<td>turbine.setup.properties</td>
+<td>Yes</td>
+<td>setup.properties</td>
+<td>Selects the properties file which is loaded to configure the <a href="goals.html#turbine_setup">turbine:setup</a> goal.</td>
 </tr>
 
   </table>
@@ -139,14 +163,14 @@ configuration files, so be careful!).
 
 <section name="Properties">
     <p>
-These properties are used at setup time and get copied into the META
+These properties are used at setup time and get copied into the M.E.T.A.
 generated <a
 href="config.html#project_properties">project.properties</a>
-file. They're used by various META goals and can be changed to modify
+file. They're used by various M.E.T.A. goals and can be changed to modify
 the behaviour of the plugin goals.
 </p>
 
-<subsection name="META Plugin">
+<subsection name="M.E.T.A. Plugin">
   <p>
   <table>
     <tr>
@@ -194,24 +218,82 @@ the behaviour of the plugin goals.
 </tr>
 
 <tr>
-<td>turbine.app.inplace</td>
+<td>turbine.plugin.base.dir</td>
 <td>Yes</td>
-<td>false</td>
-<td>Defines whether a web application should be
-    treated as an inplace application (the source tree
-    is located in the web application) or it should be
-    copied into the application tree.
-</td>
+<td>.</td>
+<td>Relative location of the web application tree to the application root when using inplace development.</td>
 </tr>
+
 <tr>
-<td>turbine.app.inplace.dir</td>
+<td>turbine.plugin.src.images</td>
 <td>Yes</td>
-<td>src/webapp</td>
-<td>Location of the deployment directory inside an application. This
-    property is only used when inplace deployment is
-    selected (turbine.app.inplace is true).
-</td>
+<td>depends on development mode, see <a href="tree.html">Directory tree reference</a></td>
+<td>Directory where image files are kept.</td>
 </tr>
+
+<tr>
+<td>turbine.plugin.src.resources</td>
+<td>Yes</td>
+<td>depends on development mode, see <a href="tree.html">Directory tree reference</a></td>
+<td>Directory where misc. Turbine resources are kept.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.src.schema</td>
+<td>Yes</td>
+<td>depends on development mode, see <a href="tree.html">Directory tree reference</a></td>
+<td>Directory where Torque schema files are kept.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.src.scripts</td>
+<td>Yes</td>
+<td>depends on development mode, see <a href="tree.html">Directory tree reference</a></td>
+<td>Directory where Javascript files are kept.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.src.style</td>
+<td>Yes</td>
+<td>depends on development mode, see <a href="tree.html">Directory tree reference</a></td>
+<td>Directory where cascading style sheets are kept.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.src.templates</td>
+<td>Yes</td>
+<td>depends on development mode, see <a href="tree.html">Directory tree reference</a></td>
+<td>Directory where Velocity template files are kept.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.src.conf</td>
+<td>Yes</td>
+<td>depends on development mode, see <a href="tree.html">Directory tree reference</a></td>
+<td>Directory where application and Turbine configuration files are kept.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.src.java</td>
+<td>Yes</td>
+<td>depends on development mode, see <a href="tree.html">Directory tree reference</a></td>
+<td>Directory where the Java source tree is located.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.src.test</td>
+<td>Yes</td>
+<td>depends on development mode, see <a href="tree.html">Directory tree reference</a></td>
+<td>Directory where Java source code for test classes is kept.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.target.lib</td>
+<td>Yes</td>
+<td>depends on development mode, see <a href="tree.html">Directory tree reference</a></td>
+<td>Target directory for application libraries when using inplace development.</td>
+</tr>
+
   </table>
   </p>
 </subsection>
@@ -232,8 +314,8 @@ the behaviour of the plugin goals.
 <td>Yes</td>
 <td>not set</td>
 <td>Defines the root directory of your application server used for
-    testing and/or deploying of the application if you use container
-    deployment (turbine.app.inplace is true).
+    testing and/or deploying of the application if you use a development
+    mode that needs container deployment.
 </td>
 </tr>
   </table>

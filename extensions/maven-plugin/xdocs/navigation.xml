@@ -13,10 +13,11 @@
       <item href="/index.html" name="Home"/>
       <item href="/installation.html" name="Installation"/>
       <item href="/getting_started.html" name="Getting Started"/>
-      <item href="/using_meta.html" name="Using META"/>
+      <item href="/using_meta.html" name="Using M.E.T.A."/>
       <item href="/tree.html" name="Directory tree reference"/>
       <item href="/config.html" name="Configuration file reference"/>
       <item href="/schema.html" name="Schema file reference"/>
+      <item href="/modes.html" name="Application development modes"/>
       <item href="/flavors.html" name="Flavors of Turbine applications"/>
       <item href="/goals.html" name="Goals"/>
       <item href="/properties.html" name="Properties"/>

@@ -19,7 +19,7 @@
 	
 <document>
   <properties>
-    <title>Maven Environment for Turbine Applications (META)</title>
+    <title>Maven Environment for Turbine Applications (M.E.T.A.)</title>
     <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
   </properties>
 
@@ -28,9 +28,11 @@
 
 <subsection name="Prepare your build.properties">
 <p>
-To be able to install your applications into a servlet container, you must either
-use inplace deployment or add the location of your web container to your build.properties (If you're writing
-web applications with maven, this is a good idea anyway). You should add a line like this:
+M.E.T.A can install your application into a servlet container, if you
+supply its location (If you're writing web applications with maven,
+this is a good idea anyway). To do so, add the following line to your
+personal <code>build.properties</code> file which is normally located
+in your home directory.
 
 <source><![CDATA[
 For Unix:
@@ -40,17 +42,22 @@ For Windows:
 maven.appserver.home = C:/Program Files/Apache Software Foundation/Tomcat-5.0.24
 ]]></source>
 
-Please make sure that you do not add the webapp subdirectory to this
-property! <br/>
-On Windows, you must use the slash (&quot;/&quot;), not the backslash for the directory pathes!
+<font color="red">
+<ul>
+<li>Please make sure that you do not append the <code>webapp</code> subdirectory. This property should contain the root of your application server!</li>
+<li>If you are using Windows, you must still use the slash (&quot;/&quot;), not the backslash for the directory paths!</li>
+</ul>
+</font>
 </p>
 </subsection>
 
 <subsection name="Hello World">
 <p>
-Ready to rock? Ok, let's do it. Enter the following command:
+<a href="http://www.ultimatequeen.co.uk/Songs/killers.htm#letme">Hello everybody. Feeling good? Are you ready to rock? Are you ready to roll? OK, let's do it.</a><br/>
+Enter the following command:
 </p>
 
+<a name="singlecommand" />
 <source><![CDATA[
 maven -Dturbine.app.name=helloworld turbine:setup
 ]]></source>
@@ -60,31 +67,61 @@ This produces some maven output and creates a
 subdirectory in your current directory called
 &quot;helloworld&quot;. It should have a directory structure like
 this:</p>
-<p><center>
-<img src="images/dirtree.png" width="310" height="429"/><br/>
-</center></p>
+
+<source><![CDATA[
+helloworld
+|-- conf
+`-- src
+    |-- images
+    |-- java
+    |   `-- org
+    |       `-- apache
+    |           `-- turbine
+    |               `-- app
+    |                   `-- helloworld
+    |                       `-- modules
+    |                           |-- actions
+    |                           |-- layouts
+    |                           |-- navigations
+    |                           |-- pages
+    |                           `-- screens
+    |-- resources
+    |-- schema
+    |-- scripts
+    |-- style
+    |-- templates
+    |   |-- layouts
+    |   |-- macros
+    |   |-- navigations
+    |   `-- screens
+    `-- test
+]]></source>
+
 <p>
-Now enter this subdirectory. META has set up the skeleton of your
-application for you. It even contains a welcome page to show you that
-everything is fine. Lets compile and deploy the application to your
-web container to check this out:
+M.E.T.A. has set up the skeleton of your application. It even
+contains a welcome page to show you that everything is fine.</p>
+
+<p>
+<font color="red">Enter the <code>helloworld</code> directory</font>.<br/>
+Compile and deploy the application to your web container:
 
 <source><![CDATA[
 maven turbine:deploy
 ]]></source>
 
-Restart your web comtainer or force it to reload its applications.<br/>
-Point your browser to the deployed application (if you use Tomcat
+Restart your web container or force it to reload its applications.<br/>
+Point your browser to the deployed application (if you use <a href="http://jakarta.apache.org/tomcat/">Tomcat</a>
 running on your local machine, this would be
-http://localhost:8080/helloworld/app/). It should look like this:</p>
+<a href="http://localhost:8080/helloworld/app/">http://localhost:8080/helloworld/app/</a>).</p>
 
-<p><center>
-<img src="images/helloworld.png" width="722" height="525"/><br/>
-</center></p>
+<p>The result should look like this:
+<center><img src="images/helloworld.png" width="722" height="525"/><br/></center>
+</p>
+
 <p>
-You've successfully installed and run your very first Turbine
-application! The gory details about the META plugin are found on the
-<a href="using_meta.html">Using META</a> page.</p>
+You have successfully installed and run your very first Turbine
+application! The gory details about the M.E.T.A. plugin are found on the
+<a href="using_meta.html">Using M.E.T.A.</a> page.</p>
 </subsection>
 </section>
 </body>
