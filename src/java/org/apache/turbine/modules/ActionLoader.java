@@ -63,8 +63,6 @@ import org.apache.turbine.services.TurbineServices;
 
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
 
-import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
 

@@ -84,8 +84,6 @@ import org.apache.turbine.om.security.User;
 
 import org.apache.turbine.services.mimetype.TurbineMimeTypes;
 
-import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.services.template.TurbineTemplate;
 
 import org.apache.turbine.util.CookieParser;
