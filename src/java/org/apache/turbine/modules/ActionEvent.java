@@ -198,7 +198,7 @@ public abstract class ActionEvent extends Action
      */
     protected final String formatString(String input)
     {
-        if (ParserUtils.getUrlFolding() == ParserUtils.URL_CASE_FOLDING_NONE)
+        if (ParserUtils.getUrlFolding() != ParserUtils.URL_CASE_FOLDING_NONE)
         {
             String tmp = input;
 
