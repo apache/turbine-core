@@ -58,7 +58,6 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 import org.apache.turbine.services.Service;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -74,7 +73,7 @@ import org.apache.velocity.context.Context;
  * @version $Id$
  */
 public interface VelocityService
-    extends Service
+        extends Service
 {
     /** The Service Name */
     static final String SERVICE_NAME = "VelocityService";
@@ -95,10 +94,10 @@ public interface VelocityService
      * @param context A Context.
      * @param template A String with the filename of the template.
      * @return The process template as a String.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     String handleRequest(Context context, String template)
-        throws Exception;
+            throws Exception;
 
     /**
      * Process the request and fill in the template with the values
@@ -111,10 +110,8 @@ public interface VelocityService
      * @throws TurbineException Any exception trown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
-    void handleRequest(Context context,
-        String filename,
-        OutputStream out)
-        throws TurbineException;
+    void handleRequest(Context context, String filename, OutputStream out)
+            throws TurbineException;
 
     /**
      * Process the request and fill in the template with the values
@@ -127,10 +124,8 @@ public interface VelocityService
      * @throws TurbineException Any exception trown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
-    void handleRequest(Context context,
-        String filename,
-        Writer writer)
-        throws TurbineException;
+    void handleRequest(Context context, String filename, Writer writer)
+            throws TurbineException;
 
     /**
      * Create an empty WebContext object.

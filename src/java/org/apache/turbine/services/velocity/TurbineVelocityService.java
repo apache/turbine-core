@@ -59,7 +59,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -68,7 +67,6 @@ import javax.servlet.ServletConfig;
 import org.apache.commons.collections.ExtendedProperties;
 
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.PropertiesConfiguration;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -76,21 +74,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.Turbine;
-
 import org.apache.turbine.services.InitializationException;
-
 import org.apache.turbine.services.pull.TurbinePull;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 import org.apache.velocity.VelocityContext;
-
 import org.apache.velocity.app.Velocity;
-
 import org.apache.velocity.context.Context;
-
 import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
 
 /**
@@ -120,8 +112,8 @@ import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
  * @version $Id$
  */
 public class TurbineVelocityService
-    extends BaseTemplateEngineService
-    implements VelocityService
+        extends BaseTemplateEngineService
+        implements VelocityService
 {
     /** The generic resource loader path property in velocity.*/
     private static final String RESOURCE_LOADER_PATH = ".resource.loader.path";
@@ -147,7 +139,10 @@ public class TurbineVelocityService
     /** Is the pullModelActive? */
     private boolean pullModelActive = false;
 
-    /** Should we refresh the tools on a per request basis? (This is useful for development) */
+    /**
+     * Should we refresh the tools on a per request basis? (This is
+     * useful for development)
+     */
     private boolean refreshToolsPerRequest = false;
 
 
@@ -160,7 +155,7 @@ public class TurbineVelocityService
      *         stage
      */
     public void init()
-        throws InitializationException
+            throws InitializationException
     {
         try
         {
@@ -213,7 +208,7 @@ public class TurbineVelocityService
      * @deprecated use init() instead.
      */
     public void init(ServletConfig config)
-        throws InitializationException
+            throws InitializationException
     {
         init();
     }
@@ -343,10 +338,9 @@ public class TurbineVelocityService
      * @throws TurbineException Any exception trown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
-    public void handleRequest(Context context,
-        String filename,
-        OutputStream output)
-        throws TurbineException
+    public void handleRequest(Context context, String filename,
+                              OutputStream output)
+            throws TurbineException
     {
         String charset  = getCharSet(context);
         OutputStreamWriter writer = null;
@@ -389,10 +383,8 @@ public class TurbineVelocityService
      * @throws TurbineException Any exception trown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
-    public void handleRequest(Context context,
-        String filename,
-        Writer writer)
-        throws TurbineException
+    public void handleRequest(Context context, String filename, Writer writer)
+            throws TurbineException
     {
         try
         {
@@ -426,15 +418,14 @@ public class TurbineVelocityService
      *
      * @param context A Context.
      * @param filename A String with the filename of the template.
-     * @param output A OutputStream where we will write the process template as
+     * @param writer A OutputStream where we will write the process template as
      * a String.
      *
      * @throws Exception A problem occured.
      */
-    private void executeRequest(Context context,
-        String filename,
-        Writer writer)
-        throws Exception
+    private void executeRequest(Context context, String filename,
+                                Writer writer)
+            throws Exception
     {
         String encoding = getEncoding(context);
 
@@ -499,7 +490,7 @@ public class TurbineVelocityService
      *                             information to <code>e</code>.
      */
     private static final void renderingError(String filename, Exception e)
-        throws TurbineException
+            throws TurbineException
     {
         String err = "Error rendering Velocity template: " + filename;
         log.error(err, e);
@@ -520,9 +511,9 @@ public class TurbineVelocityService
         Configuration configuration = getConfiguration();
 
         configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS,
-            SimpleLog4JLogSystem.class.getName());
+                SimpleLog4JLogSystem.class.getName());
         configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM
-            + ".log4j.category", "velocity");
+                + ".log4j.category", "velocity");
 
         Velocity.setExtendedProperties(createVelocityProperties(configuration));
         Velocity.init();
@@ -542,7 +533,7 @@ public class TurbineVelocityService
      */
 
     public ExtendedProperties createVelocityProperties(Configuration conf)
-        throws Exception
+            throws Exception
     {
         // This bugger is public, because we want to run some Unit tests
         // on it.

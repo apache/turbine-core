@@ -59,6 +59,7 @@ import java.io.Writer;
 
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
+
 import org.apache.velocity.context.Context;
 
 /**
@@ -98,9 +99,9 @@ public abstract class TurbineVelocity
      * object.
      *
      * @param context A Context.
-     * @param templateFilePath The path for the template files.
+     * @param template The path for the template files.
      * @return A String.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public static String handleRequest(Context context, String template)
             throws Exception
@@ -113,13 +114,12 @@ public abstract class TurbineVelocity
      * you set in the Context.
      *
      * @param context A Context.
-     * @param filename A String with the filename of the template.
+     * @param template A String with the filename of the template.
      * @param out A OutputStream where we will write the process template as
      * a String.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
-    public static void handleRequest(Context context,
-                                     String template,
+    public static void handleRequest(Context context, String template,
                                      OutputStream out)
             throws Exception
     {
@@ -131,10 +131,10 @@ public abstract class TurbineVelocity
      * you set in the Context.
      *
      * @param context A Context.
-     * @param filename A String with the filename of the template.
+     * @param template A String with the filename of the template.
      * @param writer A Writer where we will write the process template as
      * a String.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public static void handleRequest(Context context,
                                      String template,
