@@ -3,7 +3,7 @@ package org.apache.turbine.modules.actions.sessionvalidator;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -67,6 +67,7 @@ import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.security.TurbineSecurity;
 
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * SessionValidator that requires login for use with Template Services
@@ -106,10 +107,11 @@ public class TemplateSecureSessionValidator
      *
      * @see DefaultSessionValidator
      * @param data Turbine information.
-     * @exception Exception a generic exception.
+     * @throws TurbineException The anonymous user could not be obtained
+     *         from the security service
      */
     public void doPerform(RunData data)
-        throws Exception
+            throws TurbineException
     {
         Configuration conf = Turbine.getConfiguration();
 
@@ -128,7 +130,7 @@ public class TemplateSecureSessionValidator
         if (!data.getUser().hasLoggedIn())
         {
             log.debug("User is not logged in!");
-            
+
             // only set the message if nothing else has already set it
             // (e.g. the LogoutUser action).
             if (StringUtils.isEmpty(data.getMessage()))
@@ -137,7 +139,7 @@ public class TemplateSecureSessionValidator
             }
 
             // Set the screen template to the login page.
-            String loginTemplate = 
+            String loginTemplate =
                 conf.getString(TurbineConstants.TEMPLATE_LOGIN);
 
             log.debug("Sending User to the Login Screen (" + loginTemplate + ")");
@@ -149,7 +151,7 @@ public class TemplateSecureSessionValidator
         }
 
         log.debug("Login Check finished!");
-        
+
         // Make sure we have some way to return a response.
         if (!data.hasScreen() &&
             StringUtils.isEmpty(data.getTemplateInfo().getScreenTemplate()))
