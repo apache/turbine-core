@@ -84,11 +84,12 @@ import org.apache.turbine.util.RunData;
  *
  * Localization.getString(str)
  *
+ * @deprecated Use the Fulcrum Localization component instead.
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
-public abstract class Localization
+public class Localization
 {
     /**
      * Fetches the localized text from the specified bundle, ignoring
