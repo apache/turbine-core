@@ -447,7 +447,7 @@ public class TurbineVelocityService
     {
         String encoding = getEncoding(context);
 
-        if (encoding != null)
+        if (encoding == null)
         {
           encoding = DEFAULT_CHAR_SET;
         }
