@@ -46,6 +46,8 @@
         <item name="RunData Service"     href="/services/rundata-service.html"/>
         <item name="Scheduler Service"   href="/services/scheduler-service.html"/>
         <item name="Security Service"    href="/services/security-service.html"/>
+        <item name="Torque Security Service"    href="/services/torque-security-service.html"/>
+        <item name="Torque Security Service Schema"    href="/services/torque-security-schema.html"/>
         <item name="Servlet Service"     href="/services/servlet-service.html"/>
         <item name="Session Service"     href="/services/session-service.html"/>
         <item name="Template Service"    href="/services/template-service.html"/>
