@@ -55,16 +55,27 @@ package org.apache.turbine.services.template;
  */
 
 import java.io.File;
+
 import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.Map;
 
 import org.apache.commons.configuration.Configuration;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.modules.LayoutLoader;
 import org.apache.turbine.modules.NavigationLoader;
 import org.apache.turbine.modules.ScreenLoader;
+
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
+
 import org.apache.turbine.services.servlet.TurbineServlet;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -105,10 +116,12 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class TurbineTemplateService extends TurbineBaseService
-        implements TemplateService
+public class TurbineTemplateService
+    extends TurbineBaseService
+    implements TemplateService
 {
     /**
      * The default file extension used as a registry key when a
@@ -138,24 +151,16 @@ public class TurbineTemplateService extends TurbineBaseService
         TemplateEngineService.DEFAULT_LAYOUT_TEMPLATE
     };
 
-    /**
-     * The hashtables used to cache template object names.
-     */
-    private Hashtable[] templateNameCache = new Hashtable[6];
+    /** The hashtables used to cache template object names. */
+    private Map[] templateNameCache = new HashMap[6];
 
-    /**
-     * Flag set if cache is to be used.
-     */
+    /** Flag set if cache is to be used. */
     private boolean useCache = false;
 
-    /**
-     * Default extension for templates.
-     */
+    /** Default extension for templates. */
     private String defaultExtension;
 
-    /**
-     * Default template with the default extension.
-     */
+    /** Default template with the default extension. */
     private String defaultTemplate;
 
     /**
@@ -168,6 +173,12 @@ public class TurbineTemplateService extends TurbineBaseService
      */
     private HashMap templateEngineRegistry;
 
+    /** Logging */
+    private static Log log = LogFactory.getLog(TurbineTemplateService.class);
+
+    /**
+     * C'tor
+     */
     public TurbineTemplateService()
     {
     }
@@ -870,7 +881,7 @@ public class TurbineTemplateService extends TurbineBaseService
                 (ind >= (len - 1)))
         {
             throw new Exception(
-                    "Syntax error in template name '" + template + '\'');
+                "Syntax error in template name '" + template + '\'');
         }
         return ind;
     }
@@ -894,31 +905,42 @@ public class TurbineTemplateService extends TurbineBaseService
         /*
          * Check to see if we are going to be caching modules.
          */
-        useCache = getConfiguration().getBoolean("module.cache", true);
+        useCache = Turbine.getConfiguration().getBoolean(TurbineConstants.MODULE_CACHE_KEY,
+                                                         TurbineConstants.MODULE_CACHE_DEFAULT);
+
+        log.debug("useCache: " + useCache);
 
         if (useCache)
         {
-            int screenSize = config.getInt("screen.cache.size", 5);
-            int screenTemplateSize = config.getInt("screen.cache.size", 50);
-            int layoutSize = config.getInt("layout.cache.size", 5);
-            int layoutTemplateSize = config.getInt("layout.cache.size", 5);
-            int navigationSize = config.getInt("navigation.cache.size", 10);
+            int screenSize     = config.getInt(TurbineConstants.SCREEN_CACHE_SIZE_KEY,
+                                               TurbineConstants.SCREEN_CACHE_SIZE_DEFAULT);
+            int layoutSize     = config.getInt(TurbineConstants.LAYOUT_CACHE_SIZE_KEY,
+                                               TurbineConstants.LAYOUT_CACHE_SIZE_DEFAULT);
+            int navigationSize = config.getInt(TurbineConstants.NAVIGATION_CACHE_SIZE_KEY,
+                                               TurbineConstants.NAVIGATION_CACHE_SIZE_DEFAULT);
+
+            log.debug("screenSize: "     + screenSize);
+            log.debug("layoutSize: "     + layoutSize);
+            log.debug("navigationSize: " + navigationSize);
 
             /*
              * Create hashtables for each object type,
              * the first one for pages is not used.
              */
             templateNameCache[PAGE_KEY] = null;
+
             templateNameCache[SCREEN_KEY] =
-                    new Hashtable((int) (1.25 * screenSize) + 1);
+                new HashMap((int) (1.25 * screenSize) + 1);
             templateNameCache[SCREEN_TEMPLATE_KEY] =
-                    new Hashtable((int) (1.25 * screenTemplateSize) + 1);
+                new HashMap((int) (1.25 * screenSize) + 1);
+
             templateNameCache[LAYOUT_KEY] =
-                    new Hashtable((int) (1.25 * layoutSize) + 1);
+                new HashMap((int) (1.25 * layoutSize) + 1);
             templateNameCache[LAYOUT_TEMPLATE_KEY] =
-                    new Hashtable((int) (1.25 * layoutTemplateSize) + 1);
+                new HashMap((int) (1.25 * layoutSize) + 1);
+
             templateNameCache[NAVIGATION_KEY] =
-                    new Hashtable((int) (1.25 * navigationSize) + 1);
+                new HashMap((int) (1.25 * navigationSize) + 1);
         }
     }
 }
