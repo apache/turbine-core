@@ -340,11 +340,11 @@
     </dependency>
     <dependency>
       <name>commons-configuration</name>
-      <version>1.0</version>
+      <version>1.0-dev</version>
     </dependency>
     <dependency>
       <name>commons-lang</name>
-      <version>0.1</version>
+      <version>0.1-dev</version>
     </dependency>
     <dependency>
       <name>ecs</name>
@@ -393,7 +393,7 @@
     </dependency>
     <dependency>
       <name>village</name>
-      <version>1.5.3-dev.jar</version>
+      <version>1.5.3-dev</version>
     </dependency>
     <dependency>
       <name>xmlrpc-helma</name>
@@ -440,7 +440,7 @@
     </dependency>
     <dependency>
       <name>jtidy</name>
-      <version>04aug2000r7-dev</version>
+      <version>4aug2000r7-dev</version>
     </dependency>
     <dependency>
       <name>junit</name>
