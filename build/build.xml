@@ -6,7 +6,7 @@
 
     <!-- Give user a chance to override without editing this file
          (and without typing -D each time they invoke a target) -->
-    <property file="${user.home}/.ant.properties" />
+    <property file="${user.home}/build.properties" />
     <property file=".ant.properties" />
 
     <!-- Set default values for the build -->
