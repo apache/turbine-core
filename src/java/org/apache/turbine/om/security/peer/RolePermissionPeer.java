@@ -56,7 +56,6 @@ package org.apache.turbine.om.security.peer;
 
 import org.apache.torque.util.BasePeer;
 import org.apache.torque.util.Criteria;
-import org.apache.torque.map.MapBuilder;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
 
 /**
@@ -72,30 +71,28 @@ import org.apache.turbine.util.db.map.TurbineMapBuilder;
  */
 public class RolePermissionPeer extends BasePeer
 {
-    private static final TurbineMapBuilder mapBuilder =
-        (TurbineMapBuilder) getMapBuilder("org.apache.turbine.util.db.map.TurbineMapBuilder");
+    /** The mapBuilder for this Peer. */
+    private static final TurbineMapBuilder mapBuilder = (TurbineMapBuilder)
+            getMapBuilder("org.apache.turbine.util.db.map.TurbineMapBuilder");
 
     /** The table name for this peer. */
-    public static final String TABLE_NAME =
-        mapBuilder.getTableRolePermission();
+    public static final String TABLE_NAME = mapBuilder.getTableRolePermission();
 
     /** The column name for the permission id field. */
-    public static final String PERMISSION_ID =
-        mapBuilder.getRolePermission_PermissionId();
+    public static final String PERMISSION_ID
+            = mapBuilder.getRolePermission_PermissionId();
 
     /** The column name for the role id field. */
-    public static final String ROLE_ID =
-        mapBuilder.getRolePermission_RoleId();
+    public static final String ROLE_ID = mapBuilder.getRolePermission_RoleId();
 
 
     /**
      * Deletes the mappings for a role_id.
      *
      * @param role_id An int with the role id.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
-    public static void deleteRole(int role_id)
-        throws Exception
+    public static void deleteRole(int role_id) throws Exception
     {
         Criteria criteria = new Criteria();
         criteria.add(ROLE_ID, role_id);
@@ -105,11 +102,10 @@ public class RolePermissionPeer extends BasePeer
     /**
      * Deletes the mappings for a permission_id.
      *
-     * @param permission An int with the permission id.
-     * @exception Exception, a generic exception.
+     * @param permission_id An int with the permission id.
+     * @exception Exception a generic exception.
      */
-    public static void deletePermission(int permission_id)
-        throws Exception
+    public static void deletePermission(int permission_id) throws Exception
     {
         Criteria criteria = new Criteria();
         criteria.add(PERMISSION_ID, permission_id);

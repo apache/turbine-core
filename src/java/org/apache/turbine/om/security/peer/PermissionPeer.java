@@ -87,26 +87,27 @@ import com.workingdogs.village.Record;
  */
 public class PermissionPeer extends BasePeer
 {
-    private static final TurbineMapBuilder mapBuilder =
-        (TurbineMapBuilder) getMapBuilder("org.apache.turbine.util.db.map.TurbineMapBuilder");
+    /** The mapBuilder for this Peer. */
+    private static final TurbineMapBuilder mapBuilder = (TurbineMapBuilder)
+            getMapBuilder("org.apache.turbine.util.db.map.TurbineMapBuilder");
 
     /** The table name for this peer. */
     private static final String TABLE_NAME = mapBuilder.getTablePermission();
 
     /** The column name for the permission id field. */
-    public static final String PERMISSION_ID =
-        mapBuilder.getPermission_PermissionId();
+    public static final String PERMISSION_ID
+            = mapBuilder.getPermission_PermissionId();
 
     /** The column name for the name field. */
     public static final String NAME = mapBuilder.getPermission_Name();
 
     /** The column name for the ObjectData field */
-    public static final String OBJECTDATA =
-        mapBuilder.getPermission_ObjectData();
+    public static final String OBJECTDATA
+            = mapBuilder.getPermission_ObjectData();
 
     /** The Oracle sequence name for this peer. */
-    private static final String SEQUENCE_NAME =
-        mapBuilder.getSequencePermission();
+    private static final String SEQUENCE_NAME
+            = mapBuilder.getSequencePermission();
 
 
     /**
@@ -114,7 +115,7 @@ public class PermissionPeer extends BasePeer
      *
      * @param criteria The criteria to use.
      * @return A PermissionSet.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public static PermissionSet retrieveSet(Criteria criteria)
         throws Exception
@@ -133,16 +134,16 @@ public class PermissionPeer extends BasePeer
      *
      * @param role The role to query permissions of.
      * @return A set of permissions associated with the Role.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
-    public static PermissionSet retrieveSet( Role role )
-        throws Exception
+    public static PermissionSet retrieveSet(Role role)
+            throws Exception
     {
         Criteria criteria = new Criteria();
         criteria.add(RolePermissionPeer.ROLE_ID,
-                     ((TurbineRole)role).getPrimaryKey());
+                ((TurbineRole) role).getPrimaryKey());
         criteria.addJoin(RolePermissionPeer.PERMISSION_ID,
-                         PermissionPeer.PERMISSION_ID);
+                PermissionPeer.PERMISSION_ID);
         return retrieveSet(criteria);
     }
 
@@ -150,12 +151,12 @@ public class PermissionPeer extends BasePeer
      * Issues a select based on a criteria.
      *
      * @param criteria Object containing data that is used to create
-     * the SELECT statement.
+     *        the SELECT statement.
      * @return Vector containing Permission objects.
-     * @exception Exception, a generic exception.
+     * @exception TorqueException a generic exception.
      */
     public static List doSelect(Criteria criteria)
-        throws TorqueException
+            throws TorqueException
     {
         try
         {
@@ -163,8 +164,8 @@ public class PermissionPeer extends BasePeer
                     .addSelectColumn(NAME)
                     .addSelectColumn(OBJECTDATA);
 
-            if (criteria.getOrderByColumns() == null ||
-                criteria.getOrderByColumns().size() == 0)
+            if (criteria.getOrderByColumns() == null
+                    || criteria.getOrderByColumns().size() == 0)
             {
                 criteria.addAscendingOrderByColumn(NAME);
             }
@@ -185,12 +186,13 @@ public class PermissionPeer extends BasePeer
             List results = new ArrayList();
 
             // Populate the object(s).
-            for ( int i=0; i<rows.size(); i++ )
+            for (int i = 0; i < rows.size(); i++)
             {
                 Permission obj = TurbineSecurity.getNewPermission(null);
                 Record row = (Record) rows.get(i);
-                ((SecurityObject) obj).setPrimaryKey(new NumberKey(row.getValue(1).asInt()));
-                ((SecurityObject) obj).setName( row.getValue(2).asString() );
+                ((SecurityObject) obj).setPrimaryKey(
+                        new NumberKey(row.getValue(1).asInt()));
+                ((SecurityObject) obj).setName(row.getValue(2).asString());
                 byte[] objectData = (byte[]) row.getValue(3).asBytes();
                 Map temp = (Map) ObjectUtils.deserialize(objectData);
                 if (temp != null)
@@ -210,16 +212,19 @@ public class PermissionPeer extends BasePeer
 
     /**
      * Builds a criteria object based upon an Permission object
+     *
+     * @param permission object to build the criteria
+     * @return the Criteria
      */
-    public static Criteria buildCriteria( Permission permission )
+    public static Criteria buildCriteria(Permission permission)
     {
         Criteria criteria = new Criteria();
-        if ( !((BaseObject)permission).isNew() )
+        if (!((BaseObject) permission).isNew())
         {
             criteria.add(PERMISSION_ID,
-                         ((BaseObject)permission).getPrimaryKey());
+                    ((BaseObject) permission).getPrimaryKey());
         }
-        criteria.add(NAME, ((SecurityObject)permission).getName());
+        criteria.add(NAME, ((SecurityObject) permission).getName());
 
         /*
          * This is causing the the removal and updating of
@@ -242,16 +247,15 @@ public class PermissionPeer extends BasePeer
      * Issues an update based on a criteria.
      *
      * @param criteria Object containing data that is used to create
-     * the UPDATE statement.
-     * @exception Exception, a generic exception.
+     *        the UPDATE statement.
+     * @exception TorqueException a generic exception.
      */
     public static void doUpdate(Criteria criteria)
         throws TorqueException
     {
         Criteria selectCriteria = new Criteria(2);
-        selectCriteria.put( PERMISSION_ID,
-                            criteria.remove(PERMISSION_ID) );
-        BasePeer.doUpdate( selectCriteria, criteria );
+        selectCriteria.put(PERMISSION_ID, criteria.remove(PERMISSION_ID));
+        BasePeer.doUpdate(selectCriteria, criteria);
     }
 
     /**
@@ -262,21 +266,21 @@ public class PermissionPeer extends BasePeer
      * @return <code>true</code> if given Permission exists in the system.
      * @throws DataBackendException when more than one Permission with
      *         the same name exists.
-     * @throws Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
-    public static boolean checkExists( Permission permission )
+    public static boolean checkExists(Permission permission)
         throws DataBackendException, Exception
     {
         Criteria criteria = new Criteria();
         criteria.addSelectColumn(PERMISSION_ID);
-        criteria.add(NAME, ((SecurityObject)permission).getName());
+        criteria.add(NAME, ((SecurityObject) permission).getName());
         List results = BasePeer.doSelect(criteria);
-        if(results.size() > 1)
+        if (results.size() > 1)
         {
-            throw new DataBackendException("Multiple permissions named '" +
-                ((SecurityObject)permission).getName() + "' exist!");
+            throw new DataBackendException("Multiple permissions named '"
+                    + ((SecurityObject) permission).getName() + "' exist!");
         }
-        return (results.size()==1);
+        return (results.size() == 1);
     }
 
     /**
@@ -292,14 +296,15 @@ public class PermissionPeer extends BasePeer
     /**
      * Returns the full name of a column.
      *
+     * @param name name of a column
      * @return A String with the full name of the column.
      */
-    public static String getColumnName (String name)
+    public static String getColumnName(String name)
     {
         StringBuffer sb = new StringBuffer();
-        sb.append (TABLE_NAME);
-        sb.append (".");
-        sb.append (name);
+        sb.append(TABLE_NAME);
+        sb.append(".");
+        sb.append(name);
         return sb.toString();
     }
 
@@ -311,18 +316,17 @@ public class PermissionPeer extends BasePeer
      * @param all Vector A in C = (A - B).
      * @return Vector C in C = (A - B).
      */
-    public static final Vector getDifference(Vector some,
-                                             Vector all)
+    public static final Vector getDifference(Vector some, Vector all)
     {
-        Vector clone = (Vector)all.clone();
-        for (Enumeration e = some.elements() ; e.hasMoreElements() ;)
+        Vector clone = (Vector) all.clone();
+        for (Enumeration e = some.elements(); e.hasMoreElements();)
         {
             Permission tmp = (Permission) e.nextElement();
-            for (Enumeration f = clone.elements() ; f.hasMoreElements() ;)
+            for (Enumeration f = clone.elements(); f.hasMoreElements();)
             {
                 Permission tmp2 = (Permission) f.nextElement();
-                if (((BaseObject)tmp).getPrimaryKey() ==
-                    ((BaseObject)tmp2).getPrimaryKey())
+                if (((BaseObject) tmp).getPrimaryKey()
+                        == ((BaseObject) tmp2).getPrimaryKey())
                 {
                     clone.removeElement(tmp2);
                     break;

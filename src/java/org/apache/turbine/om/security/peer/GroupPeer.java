@@ -105,18 +105,20 @@ public class GroupPeer extends BasePeer
     /**
      * Retrieves/assembles a GroupSet of all of the Groups.
      *
-     * @param criteria The criteria to use.
      * @return A GroupSet.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
-    public static GroupSet retrieveSet()
-        throws Exception
+    public static GroupSet retrieveSet() throws Exception
     {
         return retrieveSet(new Criteria());
     }
 
     /**
      * Retrieves/assembles a GroupSet based on the Criteria passed in
+     *
+     * @param criteria The criteria to use.
+     * @throws Exception a generic exception.
+     * @return a GroupSet
      */
     public static GroupSet retrieveSet(Criteria criteria) throws Exception
     {
@@ -132,13 +134,12 @@ public class GroupPeer extends BasePeer
     /**
      * Issues a select based on a criteria.
      *
-     * @param Criteria object containing data that is used to create
-     * the SELECT statement.
+     * @param criteria object containing data that is used to create
+     *        the SELECT statement.
      * @return Vector containing Group objects.
-     * @exception Exception, a generic exception.
+     * @exception TorqueException a generic exception.
      */
-    public static List doSelect(Criteria criteria)
-        throws TorqueException
+    public static List doSelect(Criteria criteria) throws TorqueException
     {
         try
         {
@@ -146,8 +147,8 @@ public class GroupPeer extends BasePeer
                     .addSelectColumn(NAME)
                     .addSelectColumn(OBJECTDATA);
 
-            if (criteria.getOrderByColumns() == null ||
-                criteria.getOrderByColumns().size() == 0)
+            if (criteria.getOrderByColumns() == null
+                    || criteria.getOrderByColumns().size() == 0)
             {
                 criteria.addAscendingOrderByColumn(NAME);
             }
@@ -168,11 +169,12 @@ public class GroupPeer extends BasePeer
             List results = new ArrayList();
 
             // Populate the object(s).
-            for ( int i = 0; i < rows.size(); i++ )
+            for (int i = 0; i < rows.size(); i++)
             {
                 Group obj = TurbineSecurity.getNewGroup(null);
                 Record row = (Record) rows.get(i);
-                ((SecurityObject) obj).setPrimaryKey(new NumberKey(row.getValue(1).asInt()));
+                ((SecurityObject) obj).setPrimaryKey(
+                        new NumberKey(row.getValue(1).asInt()));
                 ((SecurityObject) obj).setName(row.getValue(2).asString());
                 byte[] objectData = (byte[]) row.getValue(3).asBytes();
                 Map temp = (Map) ObjectUtils.deserialize(objectData);
@@ -194,41 +196,41 @@ public class GroupPeer extends BasePeer
     /**
      * Issues an update based on a criteria.
      *
-     * @param Criteria object containing data that is used to create
-     * the UPDATE statement.
-     * @exception Exception, a generic exception.
+     * @param criteria object containing data that is used to create
+     *        the UPDATE statement.
+     * @exception TorqueException a generic exception.
      */
     public static void doUpdate(Criteria criteria)
         throws TorqueException
     {
         Criteria selectCriteria = new Criteria(2);
-        selectCriteria.put( GROUP_ID, criteria.remove(GROUP_ID) );
-        BasePeer.doUpdate( selectCriteria, criteria );
+        selectCriteria.put(GROUP_ID, criteria.remove(GROUP_ID));
+        BasePeer.doUpdate(selectCriteria, criteria);
     }
 
     /**
      * Checks if a Group is defined in the system. The name
      * is used as query criteria.
      *
-     * @param permission The Group to be checked.
+     * @param group The Group to be checked.
      * @return <code>true</code> if given Group exists in the system.
      * @throws DataBackendException when more than one Group with
      *         the same name exists.
-     * @throws Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
-    public static boolean checkExists( Group group )
+    public static boolean checkExists(Group group)
         throws DataBackendException, Exception
     {
         Criteria criteria = new Criteria();
         criteria.addSelectColumn(GROUP_ID);
-        criteria.add(NAME, ((SecurityObject)group).getName());
+        criteria.add(NAME, ((SecurityObject) group).getName());
         List results = BasePeer.doSelect(criteria);
         if (results.size() > 1)
         {
-            throw new DataBackendException("Multiple groups named '" +
-                ((TurbineGroup)group).getName() + "' exist!");
+            throw new DataBackendException("Multiple groups named '"
+                    + ((TurbineGroup) group).getName() + "' exist!");
         }
-        return (results.size()==1);
+        return (results.size() == 1);
     }
 
     /**
@@ -244,27 +246,31 @@ public class GroupPeer extends BasePeer
     /**
      * Returns the full name of a column.
      *
+     * @param name name of the column
      * @return A String with the full name of the column.
      */
-    public static String getColumnName (String name)
+    public static String getColumnName(String name)
     {
         StringBuffer sb = new StringBuffer();
-        sb.append (TABLE_NAME);
-        sb.append (".");
-        sb.append (name);
+        sb.append(TABLE_NAME);
+        sb.append(".");
+        sb.append(name);
         return sb.toString();
     }
 
     /**
      * Builds a criteria object based upon an Group object
+     *
+     * @param group object to build the Criteria
+     * @return the Criteria
      */
-    public static Criteria buildCriteria( Group group )
+    public static Criteria buildCriteria(Group group)
     {
         Criteria criteria = new Criteria();
-        criteria.add(NAME, ((SecurityObject)group).getName());
-        if ( !((BaseObject)group).isNew() )
+        criteria.add(NAME, ((SecurityObject) group).getName());
+        if (!((BaseObject) group).isNew())
         {
-            criteria.add(GROUP_ID, ((BaseObject)group).getPrimaryKey());
+            criteria.add(GROUP_ID, ((BaseObject) group).getPrimaryKey());
         }
         // Causing the removal and updating of a group to
         // crap out.

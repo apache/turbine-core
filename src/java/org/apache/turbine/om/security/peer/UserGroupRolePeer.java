@@ -55,7 +55,6 @@ package org.apache.turbine.om.security.peer;
  */
 
 import org.apache.torque.util.BasePeer;
-import org.apache.torque.map.MapBuilder;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
 
 /**
@@ -70,8 +69,8 @@ import org.apache.turbine.util.db.map.TurbineMapBuilder;
 public class UserGroupRolePeer extends BasePeer
 {
     /** The map builder for this Peer. */
-    private static final TurbineMapBuilder
-        mapBuilder = (TurbineMapBuilder) getMapBuilder("org.apache.turbine.util.db.map.TurbineMapBuilder");
+    private static final TurbineMapBuilder mapBuilder = (TurbineMapBuilder)
+            getMapBuilder("org.apache.turbine.util.db.map.TurbineMapBuilder");
 
     /** The table name for this peer. */
     public static final String TABLE_NAME = mapBuilder.getTableUserGroupRole();
@@ -98,14 +97,15 @@ public class UserGroupRolePeer extends BasePeer
     /**
      * Returns the full name of a column.
      *
+     * @param name name of a column
      * @return A String with the full name of the column.
      */
-    public static String getColumnName (String name)
+    public static String getColumnName(String name)
     {
         StringBuffer sb = new StringBuffer();
-        sb.append (TABLE_NAME);
-        sb.append (".");
-        sb.append (name);
+        sb.append(TABLE_NAME);
+        sb.append(".");
+        sb.append(name);
         return sb.toString();
     }
 }

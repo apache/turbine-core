@@ -25,13 +25,13 @@ package org.apache.turbine.om.security.peer;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -60,11 +60,11 @@ package org.apache.turbine.om.security.peer;
  * The purpose of this class is to decouple DBSecurityService from
  * the default User implementation and it's related Peer class.
  *
- * @author <a href="mailto:leandro@ibnetwork.com.br">Leandro Rodrigo Saad Cruz</a>  
+ * @author <a href="mailto:leandro@ibnetwork.com.br">Leandro Rodrigo Saad Cruz</a>
  * @version $Id$
  */
-public interface UserPeer 
-{ 
+public interface UserPeer
+{
     /** The key name for the visitor id field. */
     public static String USERNAME = "LOGIN_NAME";
 
@@ -72,10 +72,10 @@ public interface UserPeer
     public static String USER_ID = "USER_ID";
 
     /**
-     *          
-     * Returns the full name of a column.   
-     * 
-     * @return A String with the full name of the column.            
-     */          
-    public String getFullColumnName(String name);
+     * Returns the full name of a column.
+     *
+     * @param name name of a column
+     * @return A String with the full name of the column.
+     */
+    String getFullColumnName(String name);
 }
