@@ -58,6 +58,9 @@ import java.lang.reflect.Method;
 
 import java.util.Iterator;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
@@ -84,6 +87,10 @@ import org.apache.velocity.context.Context;
  */
 public abstract class VelocityActionEvent extends ActionEvent
 {
+
+    /** Use this to get the right class even when extended */
+    private Log log = LogFactory.getLog(this.getClass());
+    
     /**
      * You need to implement this in your classes that extend this
      * class.
@@ -145,7 +152,8 @@ public abstract class VelocityActionEvent extends ActionEvent
 
         if (theButton == null)
         {
-            throw new NoSuchMethodException("ActionEvent: The button was null");
+            throw new NoSuchMethodException(
+                    "ActionEvent: The button was null");
         }
 
         try
@@ -161,11 +169,16 @@ public abstract class VelocityActionEvent extends ActionEvent
             Method method = getClass().getMethod(theButton, classes);
             args[0] = data;
             args[1] = context;
+
+            log.debug("Invoking " + method);
+
             method.invoke(this, args);
         }
         catch (NoSuchMethodException nsme)
         {
             // Attempt to execute things the old way..
+            log.debug("Couldn't locate the Event, running executeEvents() in "
+                    + super.getClass().getName());
             super.executeEvents(data);
         }
     }
