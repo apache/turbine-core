@@ -22,7 +22,7 @@
   <pomVersion>3</pomVersion>
   <name>jakarta-turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.3.1</currentVersion>
+  <currentVersion>2.3.2-dev</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -556,7 +556,7 @@
     <dependency>
       <groupId>torque</groupId>
       <artifactId>torque</artifactId>
-      <version>3.1</version>
+      <version>3.1.1</version>
       <url>http://db.apache.org/torque/</url>
       <type>jar</type>
     </dependency>
