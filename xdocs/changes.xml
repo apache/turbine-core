@@ -107,6 +107,10 @@ Changes between Turbine 2.2 and 2.3-dev.
       here</a>
     </li>
     <li>
+      TTWS34: Implemented the following functions in LDAPUserManager:
+      store(), createAccount() and removeAccount().
+    </li>
+    <li>
       added new Logging code which uses commons-logging everywhere.
     </li>
     <li>
@@ -156,9 +160,9 @@ Changes between Turbine 2.2 and 2.3-dev.
         </li>
         <li>
           intake.dtd is now packaged in the turbine.jar file.  If your
-          intake.xml file validates against 
+          intake.xml file validates against
           jakarta.apache.org/turbine/dtd/intake.dtd, then the DTD included
-          in the jar file will be used instead of the online version. 
+          in the jar file will be used instead of the online version.
         </li>
       </ul>
     </li>
