@@ -121,7 +121,7 @@ public class BooleanField
             Boolean[] values = new Boolean[inputs.length];
             for (int i = 0; i < inputs.length; i++)
             {
-                values[i] = StringUtils.isNotEmpty(inputs[i]) 
+                values[i] = StringUtils.isNotEmpty(inputs[i])
                         ? getBoolean(inputs[i]) : null;
             }
             setTestValue(values);

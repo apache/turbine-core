@@ -149,7 +149,7 @@ public class DateStringField
             {
                 try
                 {
-                    values[i] = StringUtils.isNotEmpty(inputs[i]) 
+                    values[i] = StringUtils.isNotEmpty(inputs[i])
                             ? getDate(inputs[i]) : null;
                 }
                 catch (ParseException e)
