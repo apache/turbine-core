@@ -72,6 +72,7 @@ import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.LayoutLoader;
 import org.apache.turbine.modules.Loader;
 import org.apache.turbine.modules.NavigationLoader;
+import org.apache.turbine.modules.PageLoader;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -776,7 +777,7 @@ public class TurbineTemplateService
         char [] mapperSeparator = new char [] { '.', '.', '.', '.', '/', '/', '/' };
 
         Loader [] mapperLoader = new Loader [] { 
-            null,
+            PageLoader.getInstance(),
             ScreenLoader.getInstance(),
             LayoutLoader.getInstance(),
             NavigationLoader.getInstance(),
