@@ -22,7 +22,7 @@
   <pomVersion>3</pomVersion>
   <name>jakarta-turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.3.1-rc3-dev</currentVersion>
+  <currentVersion>2.3.1</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -42,10 +42,10 @@
     well. In other words, we strive to make portions of Turbine easily
     available for use in other applications.
   </description>
-  <url>http://jakarta.apache.org/turbine/turbine-2.3/</url>
+  <url>http://jakarta.apache.org/turbine/turbine/turbine-2.3.1/</url>
   <issueTrackingUrl>http://issues.apache.org/scarab/issues</issueTrackingUrl>
   <siteAddress>jakarta.apache.org</siteAddress>
-  <siteDirectory>/www/jakarta.apache.org/turbine/turbine-2.3/</siteDirectory>
+  <siteDirectory>/www/jakarta.apache.org/turbine/turbine/turbine-2.3.1/</siteDirectory>
   <distributionSite>www.apache.org</distributionSite>
   <distributionDirectory>/www/www.apache.org/dist/java-repository/</distributionDirectory>
 
@@ -83,6 +83,10 @@
     <version>
       <name>2.3.1-RC2</name>
       <tag>TURBINE_2_3_1_RC2</tag>
+    </version>
+    <version>
+      <name>2.3.1</name>
+      <tag>TURBINE_2_3_1</tag>
     </version>
   </versions>
 
@@ -631,14 +635,6 @@
       <version>3.1.1</version>
       <type>plugin</type>
     </dependency>
-
-    <dependency>
-      <groupId>maven</groupId>
-      <artifactId>maven-pmd-plugin</artifactId>
-      <version>1.6</version>
-      <type>plugin</type>
-    </dependency>
-
   </dependencies>
 
   <build>
@@ -668,7 +664,7 @@
     <aspectSourceDirectory/>
   </build>
 
-  <reports>
+  <reports>    
     <report>maven-jdepend-plugin</report>
     <report>maven-checkstyle-plugin</report>
     <report>maven-changes-plugin</report>
@@ -677,19 +673,11 @@
     <report>maven-file-activity-plugin</report>
     <report>maven-javadoc-plugin</report>
     <report>maven-jxr-plugin</report>
-    <report>maven-pmd-plugin</report>
-    <report>maven-jcoverage-plugin</report>
-    <report>maven-simian-plugin</report>
     <report>maven-junit-report-plugin</report>
-    <report>maven-torque-plugin</report>
-<!--
-    <report>maven-linkcheck-plugin</report>
-===========================================================
-Help wanted. The tasklist plugin simply crashes the report
-build, no matter where in the report sequence it is put.
-Looks like a maven bug. 
-===========================================================
+    <report>maven-license-plugin</report>
     <report>maven-tasklist-plugin</report>
--->
+    <report>maven-pmd-plugin</report>
+    <report>maven-simian-plugin</report>
+    <report>maven-jcoverage-plugin</report>
   </reports>
 </project>
