@@ -94,9 +94,12 @@ import org.apache.turbine.services.template.TurbineTemplate;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.RunDataFactory;
+import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
 
 import org.apache.turbine.util.security.AccessControlList;
+
+import org.apache.turbine.util.uri.URIConstants;
 
 /**
  * Turbine is the main servlet for the entire system. It is <code>final</code>
@@ -167,6 +170,9 @@ public class Turbine
      */
     private static boolean firstDoGet = true;
 
+    /** Keep all the properties of the web server in a convenient data structure */
+    private static ServerData serverData = null;
+
     /**
      * The base from which the Turbine application
      * will operate.
@@ -198,18 +204,6 @@ public class Turbine
 
     /** Logging class from commons.logging */
     private static Log log = LogFactory.getLog(Turbine.class);
-
-    /**
-     * Server information. This information needs to
-     * be made available to processes that do not have
-     * access to RunData and the ServletService doesn't
-     * seem to be working in all cases.
-     */
-    private static String serverName;
-    private static String serverScheme;
-    private static String serverPort;
-    private static String scriptName;
-    private static String contextPath;
 
     /**
      * This init method will load the default resources from a
@@ -502,7 +496,7 @@ public class Turbine
      */
     public static String getServerName()
     {
-        return serverName;
+        return getDefaultServerData().getServerName();
     }
 
     /**
@@ -512,7 +506,7 @@ public class Turbine
      */
     public static String getServerScheme()
     {
-        return serverScheme;
+        return getDefaultServerData().getServerScheme();
     }
 
     /**
@@ -522,7 +516,7 @@ public class Turbine
      */
     public static String getServerPort()
     {
-        return serverPort;
+        return Integer.toString(getDefaultServerData().getServerPort());
     }
 
     /**
@@ -534,7 +528,7 @@ public class Turbine
      */
     public static String getScriptName()
     {
-        return scriptName;
+        return getDefaultServerData().getScriptName();
     }
 
     /**
@@ -544,7 +538,32 @@ public class Turbine
      */
     public static String getContextPath()
     {
-        return contextPath;
+        return getDefaultServerData().getContextPath();
+    }
+
+    /**
+     * Return all the Turbine Servlet information (Server Name, Port,
+     * Scheme in a ServerData structure. This is generated from the
+     * values set when initializing the Turbine and may not be correct
+     * if you're running in a clustered structure. This might be used
+     * if you need a DataURI and have no RunData object handy-
+     *
+     * @return An initialized ServerData object
+     *
+     */
+    public static ServerData getDefaultServerData()
+    {
+        if(serverData == null)
+        {
+            log.error("ServerData Information requested from Turbine before first request!");
+            // Will be overwritten once the first request is run;
+            serverData = new ServerData(null,
+                                        URIConstants.HTTP_PORT,
+                                        URIConstants.HTTP,
+                                        null,
+                                        null);
+        }
+        return serverData;
     }
 
     /**
@@ -958,15 +977,14 @@ public class Turbine
      */
     public static synchronized void saveServletInfo(RunData data)
     {
-        serverName = data.getRequest().getServerName();
-        serverPort = new Integer(data.getRequest().getServerPort()).toString();
-        serverScheme = data.getRequest().getScheme();
-        scriptName = applicationRoot + data.getRequest().getServletPath();
-
         // Store the context path for tools like ContentURI and
         // the UIManager that use webapp context path information
         // for constructing URLs.
-        contextPath = data.getRequest().getContextPath();
+
+        //
+        // Bundle all the information above up into a convenient structure
+        //
+        serverData = (ServerData) data.getServerData().clone();
     }
 
     /**
