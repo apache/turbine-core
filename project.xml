@@ -13,21 +13,11 @@
   <package>org.apache.turbine</package>
   <gumpRepositoryId>jakarta</gumpRepositoryId>
   <shortDescription>A servlet based framework.</shortDescription>
-
-  <description>
-    Turbine is a servlet based framework that allows experienced
-    Java developers to quickly build secure web applications. Parts
-    of Turbine can also be used independently of the web portion of
-    Turbine as well. In other words, we strive to make portions of
-    Turbine easily available for use in other applications.
-  </description>
-
+  <description>Turbine is a servlet based framework that allows experienced Java developers to quickly build secure web applications. Parts of Turbine can also be used independently of the web portion of Turbine as well. In other words, we strive to make portions of Turbine easily available for use in other applications.</description>
   <url>http://jakarta.apache.org/turbine/turbine-2/</url>
-  <cvsWebUrl>http://cvs.apache.org/viewcvs/jakarta-turbine-2/</cvsWebUrl>
   <issueTrackingUrl>http://nagoya.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
   <siteAddress>jakarta.apache.org</siteAddress>
   <siteDirectory>/www/jakarta.apache.org/turbine/turbine-2/</siteDirectory>
-
   <mailingLists>
     <mailingList>
       <name>Turbine User List</name>
@@ -42,7 +32,10 @@
       <archive>http://nagoya.apache.org/eyebrowse/SummarizeList?listName=turbine-dev@jakarta.apache.org</archive>
     </mailingList>
   </mailingLists>
-
+  <repository>
+    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2</connection>
+    <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2/</url>
+  </repository>
   <developers>
     <developer>
       <name>Gary Bartlett</name>
@@ -242,7 +235,6 @@
       <email>dlr@finemaltcoding.com</email>
       <organization>CollabNet, Inc.</organization>
     </developer>
-
     <!--
     <td>Cameron Riley</td>
     <td><a href="mailto:criley@ekmail.com">criley@ekmail.com</a></td>
@@ -255,6 +247,7 @@
     <td></td>
     <td>Master</td>
     -->
+
     <developer>
       <name>Kurt Schrader</name>
       <id>kschrader</id>
@@ -280,7 +273,6 @@
       <email>jon@latchkey.com</email>
       <organization>CollabNet, Inc.</organization>
     </developer>
-
     <!--
     <td>George Stewart</td>
     <td><a href="mailto:georgestewart@yahoo.com">georgestewart@yahoo.com</a></td>
@@ -324,172 +316,160 @@
       <email>jason@zenplex.com</email>
       <organization>Zenplex</organization>
     </developer>
-
     <!--
     <td>Scott Weaver</td>
     <td><a href="mailto:sweaver@rippe.com">sweaver@rippe.com</a></td>
     <td></td>
     <td>Apprentice</td>
     -->
-  </developers>
 
+  </developers>
   <dependencies>
     <dependency>
-      <name>commons-collections</name>
+      <id>commons-collections</id>
       <version>1.0</version>
     </dependency>
     <dependency>
-      <name>commons-configuration</name>
+      <id>commons-configuration</id>
       <version>1.0-dev</version>
     </dependency>
     <dependency>
-      <name>commons-lang</name>
+      <id>commons-lang</id>
       <version>0.1-dev</version>
     </dependency>
     <dependency>
-      <name>ecs</name>
+      <id>ecs</id>
       <version>1.4.1</version>
     </dependency>
     <dependency>
-      <name>regexp</name>
+      <id>regexp</id>
       <version>1.3-dev</version>
     </dependency>
     <dependency>
-      <name>javamail</name>
+      <id>javamail</id>
       <version>1.2</version>
     </dependency>
     <dependency>
-      <name>jaf</name>
+      <id>jaf</id>
       <version>1.0.1</version>
       <jar>activation-1.0.1.jar</jar>
     </dependency>
     <dependency>
-      <name>jdbc</name>
+      <id>jdbc</id>
       <version>2.0</version>
     </dependency>
     <dependency>
-      <name>jndi</name>
+      <id>jndi</id>
       <version>1.2.1</version>
     </dependency>
     <dependency>
-      <name>log4j</name>
+      <id>log4j</id>
       <version>1.1.3</version>
     </dependency>
     <dependency>
-      <name>servletapi</name>
+      <id>servletapi</id>
       <version>2.2</version>
     </dependency>
     <dependency>
-      <name>stratum</name>
+      <id>stratum</id>
       <version>1.0-b2-dev</version>
     </dependency>
     <dependency>
-      <name>torque</name>
+      <id>torque</id>
       <version>3.0-b2-dev</version>
     </dependency>
     <dependency>
-      <name>velocity</name>
+      <id>velocity</id>
       <version>1.3-dev</version>
     </dependency>
     <dependency>
-      <name>village</name>
+      <id>village</id>
       <version>1.5.3-dev</version>
     </dependency>
     <dependency>
-      <name>xmlrpc-helma</name>
+      <id>xmlrpc-helma</id>
       <version>1.0</version>
     </dependency>
     <dependency>
-      <name>xml-xerces</name>
+      <id>xml-xerces</id>
       <type>required</type>
       <version>2.0.0</version>
       <jar>xercesImpl-2.0.0.jar</jar>
     </dependency>
     <dependency>
-      <name>xml-apis</name>
+      <id>xml-apis</id>
       <type>required</type>
       <version>2.0.0</version>
       <jar>xmlParserAPIs-2.0.0.jar</jar>
     </dependency>
     <dependency>
-      <name>xml-xalan2</name>
+      <id>xalan</id>
       <type>required</type>
       <version>2.1.0</version>
       <jar>xalan-2.1.0.jar</jar>
     </dependency>
-
     <!-- ********************************** -->
     <!-- THESE DEPENDENCIES ARE FOR TESTING -->
     <!-- ********************************** -->
 
     <dependency>
-      <name>commons-httpclient</name>
+      <id>commons-httpclient</id>
       <version>1.0</version>
     </dependency>
     <dependency>
-      <name>httpunit</name>
+      <id>httpunit</id>
       <version>1.3</version>
     </dependency>
     <dependency>
-      <name>cactus</name>
+      <id>cactus</id>
       <version>1.2</version>
     </dependency>
     <dependency>
-      <name>cactus-ant</name>
+      <id>cactus-ant</id>
       <version>1.2</version>
     </dependency>
     <dependency>
-      <name>jtidy</name>
+      <id>jtidy</id>
       <version>4aug2000r7-dev</version>
     </dependency>
     <dependency>
-      <name>junit</name>
+      <id>junit</id>
       <version>3.7</version>
     </dependency>
-
     <!-- *********************************** -->
     <!-- THESE ARE THE OPTIONAL DEPENDENCIES -->
     <!-- *********************************** -->
 
     <dependency>
-      <name>castor</name>
+      <id>castor</id>
       <version>0.9.3</version>
     </dependency>
     <dependency>
-      <name>webmacro</name>
+      <id>webmacro</id>
       <version>0.94</version>
     </dependency>
     <dependency>
-      <name>freemarker</name>
+      <id>freemarker</id>
       <version>1.5.3</version>
     </dependency>
     <dependency>
-      <name>jython</name>
+      <id>jython</id>
       <version>2.1</version>
     </dependency>
   </dependencies>
-
   <build>
-    <sourceDirectories>
-      <sourceDirectory>src/java</sourceDirectory>
-    </sourceDirectories>
-
+    <sourceDirectory>src/java</sourceDirectory>
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
     <unitTestPatterns>
       <unitTestPattern>include = **/*Test.java</unitTestPattern>
     </unitTestPatterns>
-
     <integrationUnitTestSourceDirectory>src/rttest</integrationUnitTestSourceDirectory>
     <integrationUnitTestPatterns>
       <integrationUnitTestPattern>exclude = **/FileHandlerTest.java</integrationUnitTestPattern>
       <integrationUnitTestPattern>include = **/*Test.java</integrationUnitTestPattern>
     </integrationUnitTestPatterns>
-
-    <aspectSourceDirectories></aspectSourceDirectories>
-
+    <aspectSourceDirectory/>
     <jarResources/>
-
     <jars/>
-
   </build>
 </project>
