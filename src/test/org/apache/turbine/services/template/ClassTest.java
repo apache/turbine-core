@@ -59,12 +59,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.turbine.services.TurbineServices;
-
-import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.services.template.TemplateEngineService;
-
-import org.apache.turbine.services.velocity.VelocityService;
-
 import org.apache.turbine.util.TurbineConfig;
 
 /**
