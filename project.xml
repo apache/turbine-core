@@ -383,7 +383,7 @@
     </dependency>
     <dependency>
       <id>commons-configuration</id>
-      <version>1.0-dev-2</version>
+      <version>SNAPSHOT</version>
       <url>http://jakarta.apache.org/commons/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
