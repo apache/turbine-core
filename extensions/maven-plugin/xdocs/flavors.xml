@@ -19,14 +19,14 @@
 
 <document>
   <properties>
-    <title>Flavors</title>
+    <title>Flavors reference</title>
     <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
   </properties>
   <body>
 <section name="Flavors">
     <p>
     There is more than just one version of Turbine. You might have to build one application using
-    a released version of Turbine (currently 2.3) and the next should use a developer version or
+    a released version of Turbine (currently 2.3.1) and the next should use a developer version or
     even a &quot;bleeding edge&quot; snapshot release of the Turbine code. Whatever you want to use,
     the M.E.T.A. plugin helps you selecting the right skeleton for your code.
     </p>
@@ -35,14 +35,14 @@
 <p>
 The default flavor for a new application in <a
 href="using_meta.html#Ad_hoc_setup">ad hoc setup</a> mode is the
-current stable Turbine release (&quot;turbine-2.3&quot;). If you want
+current stable Turbine release (&quot;turbine-2.3.1&quot;). If you want
 to use a different flavor, you must either supply it on the command
 line or in your setup.properties file.</p>
 
 <source><![CDATA[
-Generate a Turbine 2.3.1-dev skeleton:
+Generate a Turbine 2.3 skeleton:
 
-maven -Dturbine.app.name=<application name> -Dturbine.app.flavor=turbine-2.3.1-dev turbine:setup
+maven -Dturbine.app.name=<application name> -Dturbine.app.flavor=turbine-2.3 turbine:setup
 ]]></source>
 
 </subsection>
@@ -100,6 +100,14 @@ directories:
     <td>pages</td>
     <td>Other files, e.g. HTML pages, that should be put into your application root.</td>
   </tr>
+  <tr>
+    <td>props</td>
+    <td>Files that should go in the application classpath (the
+        <code>WEB-INF/classes</code> directory). e.g. the
+        <code>commons-logging.properties</code> that can be used with
+        Turbine 2.3.1 and beyond.
+    </td>
+  </tr>
 </table>
 
 There is also a directory called  <code>common</code> which contains
@@ -122,6 +130,13 @@ Subdirectories can be omitted if there are no flavor specific files.
 To add a new flavor, you must add at least a flavor specific <code>maven</code>
 subdirectory as <code>flavor/&lt;your flavor name&gt;/maven</code>  which contains the
 template for the maven POM (<code>project.xml</code>).
+</p>
+
+<p>
+The tricky part of setting up a new flavor happens when you do
+<b>not</b> need a file from the <code>common</code> directory for your
+new flavor. In that case, you must copy this file from the <code>common</code>
+sub-tree into all other flavors and then remove it from there.
 </p>
 </subsection>
 </section>

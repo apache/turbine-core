@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
@@ -19,7 +19,7 @@
 
 <document>
   <properties>
-    <title>Maven Environment for Turbine Applications (M.E.T.A.)</title>
+    <title>Using M.E.T.A.</title>
     <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
   </properties>
 
@@ -34,9 +34,9 @@ The M.E.T.A. plugin can operate in different modes. Currently it supports the fo
 <ul>
 <li><b>normal</b> - Your application is developed outside the container tree. It must be deployed to the
 container by running the <a href="goals.html#turbine_deploy">turbine:deploy</a> goal.</li>
-<li><b>inplace</b> - The source code and the class files are kept together . Your web container will access
+<li><b>inplace</b> - The source code and the class files are kept together. Your web container will access
 the files in the development location and no explicit deployment to the container is necessary.
-This mode is similar to developing with the old <a href="http://jakarta.apache.org/turbine/tdk/">Turbine Development Kit</a>.</li>
+This mode is similar to developing with the deprecated <a href="http://jakarta.apache.org/turbine/tdk/">Turbine Development Kit</a>.</li>
 </ul>
 
 Modes are discussed on the <a href="modes.html">Modes</a> page.</p>
@@ -85,7 +85,7 @@ Development cycle for java code
                    |
                    | yes
                    V
-               maven turbine:webapp - bind a war file
+               maven turbine:war - bind a war file
                    |
                    V
                Ship application

@@ -19,7 +19,7 @@
 
 <document>
   <properties>
-    <title>Properties</title>
+    <title>Properties reference</title>
     <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
   </properties>
   <body>
@@ -58,11 +58,11 @@ configuration files, so be careful!).
 <tr>
 <td>turbine.app.flavor</td>
 <td>Yes</td>
-<td>turbine-2.3</td>
+<td>turbine-2.3.1</td>
 <td>Defines the dependencies and the release version of Turbine that the new application should use. Currently supported versions are:<br/>
     <ul>
     <li>turbine-2.3</li>
-    <li>turbine-2.3.1-dev</li>
+    <li>turbine-2.3.1</li>
     </ul>
     See the <a href="flavors.html">Flavors page</a> for more information.</td>
 </tr>
@@ -277,6 +277,13 @@ the behaviour of the plugin goals.
 <td>Yes</td>
 <td>depends on development mode, see <a href="tree.html">Directory tree reference</a></td>
 <td>Directory where files that should go into the root of the web application are kept.</td>
+</tr>
+
+<tr>
+<td>turbine.plugin.src.props</td>
+<td>Yes</td>
+<td>depends on development mode, see <a href="tree.html">Directory tree reference</a></td>
+<td>Directory where files that should go into the WEB-INF/classes directory of the web application are kept.</td>
 </tr>
 
 <tr>
