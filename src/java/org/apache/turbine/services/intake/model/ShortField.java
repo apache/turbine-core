@@ -65,6 +65,7 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
  *
  * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  */
 public class ShortField
@@ -119,6 +120,22 @@ public class ShortField
         }
 
         emptyValue = new Short(prop);
+    }
+
+    /**
+     * Provides access to emptyValue such that the value returned will be 
+     * acceptable as an argument parameter to Method.invoke.  Subclasses
+     * that deal with primitive types should ensure that they return an 
+     * appropriate value wrapped in the object wrapper class for the 
+     * primitive type.
+     *   
+     * @return the value to use when the field is empty or an Object that
+     * wraps the empty value for primitive types.
+     */
+    Object getSafeEmptyValue()
+    {
+        return (null == getEmptyValue()) 
+                ? new Short((short) 0) : getEmptyValue(); 
     }
 
     /**
