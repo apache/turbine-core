@@ -133,10 +133,12 @@ public abstract class BaseSecurityService
      * @param password the password to process
      * @return processed password
      */
-    public String encryptPassword( String password )
+    public String encryptPassword(String password)
     {
-        if(password == null)
+        if (password == null)
+        {
             return null;
+        }
         String secure = getProperties().getProperty(
             SecurityService.SECURE_PASSWORDS_KEY,
             SecurityService.SECURE_PASSWORDS_DEFAULT).toLowerCase();
@@ -151,19 +153,22 @@ public abstract class BaseSecurityService
                 // We need to use unicode here, to be independent of platform's
                 // default encoding. Thanks to SGawin for spotting this.
                 byte[] digest = md.digest(password.getBytes("UTF-8"));
-                ByteArrayOutputStream bas = new ByteArrayOutputStream(digest.length + digest.length / 3 + 1);
+                ByteArrayOutputStream bas = new ByteArrayOutputStream(
+                        digest.length + digest.length / 3 + 1);
                 OutputStream encodedStream = MimeUtility.encode(bas, "base64");
                 encodedStream.write(digest);
                 return bas.toString();
             }
             catch (Exception e)
             {
-                Log.error("Unable to encrypt password."+e.getMessage());
+                Log.error("Unable to encrypt password." + e.getMessage());
                 Log.error(e);
 
                 return null;
             }
-        } else {
+        }
+        else
+        {
             return password;
         }
     }
@@ -188,7 +193,7 @@ public abstract class BaseSecurityService
         {
             userClass = Class.forName(userClassName);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             throw new InitializationException(
                 "BaseSecurityService.init: Failed create a Class object for User implementation", e);
@@ -196,19 +201,16 @@ public abstract class BaseSecurityService
 
         try
         {
-            userManager =  (UserManager)Class.
-                forName(userManagerClassName).newInstance();
+            userManager = (UserManager) Class.forName(userManagerClassName)
+                        .newInstance();
             setInit(true);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             throw new InitializationException(
-                "BaseSecurityService.init: Failed to instantiate UserManager" ,e);
+                "BaseSecurityService.init: Failed to instantiate UserManager", e);
         }
-
     }
-
-
 
     /**
      * Return a Class object representing the system's chosen implementation of
@@ -221,7 +223,7 @@ public abstract class BaseSecurityService
     public Class getUserClass()
         throws UnknownEntityException
     {
-        if ( userClass == null )
+        if (userClass == null)
         {
             throw new UnknownEntityException(
                 "Failed to create a Class object for User implementation");
@@ -244,9 +246,9 @@ public abstract class BaseSecurityService
         User user;
         try
         {
-            user = (User)getUserClass().newInstance();
+            user = (User) getUserClass().newInstance();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             throw new UnknownEntityException("Failed instantiate an User implementation object", e);
         }
@@ -260,9 +262,10 @@ public abstract class BaseSecurityService
      *
      * @param user The user to be checked.
      * @return true if the specified account exists
-     * @throws DataBackendException if there was an error accessing the data backend.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
      */
-    public boolean accountExists( User user )
+    public boolean accountExists(User user)
         throws DataBackendException
     {
         return userManager.accountExists(user);
@@ -275,9 +278,10 @@ public abstract class BaseSecurityService
      *
      * @param usename The name of the user to be checked.
      * @return true if the specified account exists
-     * @throws DataBackendException if there was an error accessing the data backend.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
      */
-    public boolean accountExists( String username )
+    public boolean accountExists(String username)
         throws DataBackendException
     {
         return userManager.accountExists(username);
@@ -297,7 +301,7 @@ public abstract class BaseSecurityService
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public User getAuthenticatedUser( String username, String password )
+    public User getAuthenticatedUser(String username, String password)
         throws DataBackendException, UnknownEntityException,
                PasswordMismatchException
     {
@@ -364,7 +368,7 @@ public abstract class BaseSecurityService
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public void saveUser( User user )
+    public void saveUser(User user)
         throws UnknownEntityException, DataBackendException
     {
         userManager.store(user);
@@ -377,7 +381,7 @@ public abstract class BaseSecurityService
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws EntityExistsException if the user account already exists.
      */
-    public void addUser( User user, String password )
+    public void addUser(User user, String password)
         throws DataBackendException, EntityExistsException
     {
         userManager.createAccount(user, password);
@@ -390,7 +394,7 @@ public abstract class BaseSecurityService
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the user account is not present.
      */
-    public void removeUser( User user )
+    public void removeUser(User user)
         throws DataBackendException, UnknownEntityException
     {
         // revoke all roles form the user
@@ -412,7 +416,7 @@ public abstract class BaseSecurityService
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public void changePassword( User user, String oldPassword, String newPassword )
+    public void changePassword(User user, String oldPassword, String newPassword)
         throws PasswordMismatchException, UnknownEntityException,
                DataBackendException
     {
@@ -434,10 +438,10 @@ public abstract class BaseSecurityService
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public void forcePassword( User user, String password )
+    public void forcePassword(User user, String password)
         throws UnknownEntityException, DataBackendException
     {
-        userManager.forcePassword( user, password );
+        userManager.forcePassword(user, password);
     }
 
     /**
@@ -472,13 +476,13 @@ public abstract class BaseSecurityService
      */
     protected void lockExclusive()
     {
-        while(readerCount>0)
+        while (readerCount > 0)
         {
             try
             {
                this.wait();
             }
-            catch(InterruptedException e)
+            catch (InterruptedException e)
             {
             }
         }
@@ -504,11 +508,11 @@ public abstract class BaseSecurityService
      */
     public Group getGlobalGroup()
     {
-        if(globalGroup == null)
+        if (globalGroup == null)
         {
             synchronized(BaseSecurityService.class)
             {
-                if(globalGroup == null)
+                if (globalGroup == null)
                 {
                     try
                     {
@@ -532,12 +536,12 @@ public abstract class BaseSecurityService
      * @param name the name of the Group.
      * @return an object representing the Group with specified name.
      */
-    public Group getGroup( String name )
+    public Group getGroup(String name)
         throws DataBackendException, UnknownEntityException
     {
         GroupSet groups = getAllGroups();
         Group group = groups.getGroup(name);
-        if(group != null)
+        if (group != null)
         {
             return group;
         }
@@ -553,12 +557,12 @@ public abstract class BaseSecurityService
      * @param name the name of the Role.
      * @return an object representing the Role with specified name.
      */
-    public Role getRole( String name )
+    public Role getRole(String name)
         throws DataBackendException, UnknownEntityException
     {
         RoleSet roles = getAllRoles();
         Role role = roles.getRole(name);
-        if(role != null)
+        if (role != null)
         {
             role.setPermissions(getPermissions(role));
             return role;
@@ -575,12 +579,12 @@ public abstract class BaseSecurityService
      * @param name the name of the Permission.
      * @return an object representing the Permission with specified name.
      */
-    public Permission getPermission( String name )
+    public Permission getPermission(String name)
         throws DataBackendException, UnknownEntityException
     {
         PermissionSet permissions = getAllPermissions();
         Permission permission = permissions.getPermission(name);
-        if(permission != null)
+        if (permission != null)
         {
             return permission;
         }
@@ -599,13 +603,13 @@ public abstract class BaseSecurityService
     public GroupSet getAllGroups()
         throws DataBackendException
     {
-        if(allGroups == null)
+        if (allGroups == null)
         {
             synchronized(this)
             {
-                if(allGroups == null)
+                if (allGroups == null)
                 {
-                    allGroups = getGroups( new Criteria() );
+                    allGroups = getGroups(new Criteria());
                 }
             }
         }
@@ -621,13 +625,13 @@ public abstract class BaseSecurityService
     public RoleSet getAllRoles()
         throws DataBackendException
     {
-        if(allRoles == null)
+        if (allRoles == null)
         {
             synchronized(this)
             {
-                if(allRoles == null)
+                if (allRoles == null)
                 {
-                    allRoles = getRoles( new Criteria() );
+                    allRoles = getRoles(new Criteria());
                 }
             }
         }
@@ -643,13 +647,13 @@ public abstract class BaseSecurityService
     public PermissionSet getAllPermissions()
         throws DataBackendException
     {
-        if(allPermissions == null)
+        if (allPermissions == null)
         {
             synchronized(this)
             {
-                if(allPermissions == null)
+                if (allPermissions == null)
                 {
-                    allPermissions = getPermissions( new Criteria() );
+                    allPermissions = getPermissions(new Criteria());
                 }
             }
         }
