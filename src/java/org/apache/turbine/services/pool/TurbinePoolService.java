@@ -62,10 +62,14 @@ import java.util.Iterator;
 
 import org.apache.commons.configuration.Configuration;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.factory.FactoryService;
-import org.apache.turbine.services.factory.TurbineFactoryService;
+import org.apache.turbine.services.factory.TurbineFactory;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.pool.ArrayCtorRecyclable;
 import org.apache.turbine.util.pool.BoundedBuffer;
@@ -83,16 +87,21 @@ import org.apache.turbine.util.pool.Recyclable;
  * a dispose method, when they are returned to the pool.
  *
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbinePoolService
-        extends TurbineFactoryService
+        extends TurbineBaseService
         implements PoolService
 {
-    /**
-     * The property specifying the pool capacity.
-     */
-    public static final String POOL_CAPACITY = "pool.capacity";
+    /** Are we currently debugging the pool recycling? */
+    private boolean debugPool = false;
+
+    /** Internal Reference to the Factory */
+    private FactoryService factoryService;
+
+    /** Logging */
+    private static Log log = LogFactory.getLog(TurbinePoolService.class);
 
     /**
      * An inner class for class specific pools.
@@ -104,14 +113,10 @@ public class TurbinePoolService
          */
         private class Recycler
         {
-            /**
-             * The method.
-             */
+            /** The recycle method. */
             private final Method recycle;
 
-            /**
-             * The signature.
-             */
+            /** The signature. */
             private final String[] signature;
 
             /**
@@ -123,7 +128,8 @@ public class TurbinePoolService
             public Recycler(Method rec, String[] sign)
             {
                 recycle = rec;
-                signature = (sign != null) && (sign.length > 0) ? sign : null;
+                signature = ((sign != null) && (sign.length > 0))
+                        ? sign : null;
             }
 
             /**
@@ -165,23 +171,17 @@ public class TurbinePoolService
             }
         }
 
-        /**
-         * A buffer for class instances.
-         */
+        /** A buffer for class instances. */
         private BoundedBuffer pool;
 
-        /**
-         * A flag to determine if a more efficient recycler is implemented.
-         */
+        /** A flag to determine if a more efficient recycler is implemented. */
         private boolean arrayCtorRecyclable;
 
-        /**
-         * A cache for recycling methods.
-         */
+        /** A cache for recycling methods. */
         private ArrayList recyclers;
 
         /**
-         * Contructs a new pool buffer with a specific capacity.
+         * Constructs a new pool buffer with a specific capacity.
          *
          * @param capacity a capacity.
          */
@@ -209,6 +209,16 @@ public class TurbinePoolService
         public Object poll(Object[] params, String[] signature)
                 throws TurbineException
         {
+            // If we're debugging the recycling code, we want different
+            // objects to be used when pulling from the pool. Ensure that
+            // each pool fills up at least to half its capacity.
+            if (debugPool && (pool.size() < (pool.capacity() / 2)))
+            {
+                log.debug("Size: " + pool.size() 
+                        + ", capacity: " + pool.capacity());
+                return null;
+            }
+
             Object instance = pool.poll();
             if (instance != null)
             {
@@ -234,11 +244,11 @@ public class TurbinePoolService
                                     {
                                         Class clazz = instance.getClass();
                                         recycle = clazz.getMethod("recycle",
-                                                TurbinePoolService.this.getSignature(
+                                                factoryService.getSignature(
                                                         clazz, params, signature));
-                                        ArrayList cache = recyclers != null ?
-                                                (ArrayList) recyclers.clone() :
-                                                new ArrayList();
+                                        ArrayList cache = recyclers != null
+                                                ? (ArrayList) recyclers.clone()
+                                                : new ArrayList();
                                         cache.add(
                                                 new Recycler(recycle, signature));
                                         recyclers = cache;
@@ -356,23 +366,32 @@ public class TurbinePoolService
             throws InitializationException
     {
         Configuration conf = getConfiguration();
-        if (conf != null)
+
+        int capacity = conf.getInt(POOL_CAPACITY_KEY,
+                DEFAULT_POOL_CAPACITY);
+
+        if (capacity <= 0)
         {
-            try
-            {
-                int capacity = conf.getInt(POOL_CAPACITY, DEFAULT_POOL_CAPACITY);
-                if (capacity <= 0)
-                {
-                    throw new IllegalArgumentException("Capacity must be >0");
-                }
-                poolCapacity = capacity;
-            }
-            catch (Exception x)
-            {
-                throw new InitializationException(
-                        "Failed to initialize TurbinePoolService", x);
-            }
+            throw new IllegalArgumentException("Capacity must be >0");
         }
+        poolCapacity = capacity;
+
+        debugPool = conf.getBoolean(POOL_DEBUG_KEY,
+                POOL_DEBUG_DEFAULT);
+        
+        if (debugPool)
+        {
+            log.info("Activated Pool Debugging!");
+        }
+
+        factoryService = TurbineFactory.getService();
+        
+        if (factoryService == null)
+        {
+            throw new InitializationException("Factory Service is not configured"
+                    + " but required for the Pool Service!");
+        }
+        
         setInit(true);
     }
 
@@ -388,8 +407,9 @@ public class TurbinePoolService
             throws TurbineException
     {
         Object instance = pollInstance(className, null, null);
-        return instance == null ?
-                getFactory().getInstance(className) : instance;
+        return (instance == null)
+                ? factoryService.getInstance(className)
+                : instance;
     }
 
     /**
@@ -407,8 +427,9 @@ public class TurbinePoolService
             throws TurbineException
     {
         Object instance = pollInstance(className, null, null);
-        return instance == null ?
-                getFactory().getInstance(className, loader) : instance;
+        return (instance == null)
+                ? factoryService.getInstance(className, loader)
+                : instance;
     }
 
     /**
@@ -430,8 +451,9 @@ public class TurbinePoolService
             throws TurbineException
     {
         Object instance = pollInstance(className, params, signature);
-        return instance == null ?
-                getFactory().getInstance(className, params, signature) : instance;
+        return (instance == null)
+                ? factoryService.getInstance(className, params, signature)
+                : instance;
     }
 
     /**
@@ -455,8 +477,9 @@ public class TurbinePoolService
             throws TurbineException
     {
         Object instance = pollInstance(className, params, signature);
-        return instance == null ?
-                getFactory().getInstance(className, loader, params, signature) : instance;
+        return (instance == null)
+                ? factoryService.getInstance(className, loader, params, signature)
+                : instance;
     }
 
     /**
@@ -465,11 +488,12 @@ public class TurbinePoolService
      * @param className the name of the class.
      * @return true if class loaders are supported, false otherwise.
      * @throws TurbineException if test fails.
+     * @deprecated Use TurbineFactory.isLoaderSupported(className);
      */
     public boolean isLoaderSupported(String className)
             throws TurbineException
     {
-        return getFactory().isLoaderSupported(className);
+        return factoryService.isLoaderSupported(className);
     }
 
     /**
@@ -484,8 +508,9 @@ public class TurbinePoolService
             throws TurbineException
     {
         Object instance = pollInstance(clazz.getName(), null, null);
-        return instance == null ?
-                super.getInstance(clazz) : instance;
+        return (instance == null)
+                ? factoryService.getInstance(clazz.getName()) 
+                : instance;
     }
 
     /**
@@ -504,8 +529,9 @@ public class TurbinePoolService
             throws TurbineException
     {
         Object instance = pollInstance(clazz.getName(), params, signature);
-        return instance == null ?
-                super.getInstance(clazz, params, signature) : instance;
+        return (instance == null)
+                ? factoryService.getInstance(clazz.getName(), params, signature)
+                : instance;
     }
 
     /**
@@ -555,23 +581,13 @@ public class TurbinePoolService
         if (pool == null)
         {
             /* Check class specific capacity. */
-            int capacity = poolCapacity;
+            int capacity;
+
             Configuration conf = getConfiguration();
-            if (conf != null)
-            {
-                try
-                {
-                    capacity = conf.getInt(
-                            POOL_CAPACITY + '.' + className, poolCapacity);
-                    if (capacity <= 0)
-                    {
-                        capacity = poolCapacity;
-                    }
-                }
-                catch (Exception x)
-                {
-                }
-            }
+            capacity = conf.getInt(
+                    POOL_CAPACITY_KEY + '.' + className,
+                    poolCapacity);
+            capacity = (capacity <= 0) ? poolCapacity : capacity;
             return capacity;
         }
         else
@@ -591,8 +607,11 @@ public class TurbinePoolService
                             int capacity)
     {
         HashMap repository = poolRepository;
-        repository = repository != null ?
-                (HashMap) repository.clone() : new HashMap();
+        repository = (repository != null)
+                ? (HashMap) repository.clone() : new HashMap();
+        
+        capacity = (capacity <= 0) ? poolCapacity : capacity;
+
         repository.put(className, new PoolBuffer(capacity));
         poolRepository = repository;
     }
@@ -605,7 +624,7 @@ public class TurbinePoolService
     public int getSize(String className)
     {
         PoolBuffer pool = (PoolBuffer) poolRepository.get(className);
-        return pool != null ? pool.size() : 0;
+        return (pool != null) ? pool.size() : 0;
     }
 
     /**
@@ -647,17 +666,6 @@ public class TurbinePoolService
             throws TurbineException
     {
         PoolBuffer pool = (PoolBuffer) poolRepository.get(className);
-        return pool != null ? pool.poll(params, signature) : null;
-    }
-
-    /**
-     * Gets the factory service.
-     *
-     * @return the factory service.
-     */
-    private FactoryService getFactory()
-    {
-        return (FactoryService) TurbineServices.
-                getInstance().getService(FactoryService.SERVICE_NAME);
+        return (pool != null) ? pool.poll(params, signature) : null;
     }
 }
