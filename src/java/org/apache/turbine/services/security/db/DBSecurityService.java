@@ -85,7 +85,6 @@ import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.db.Criteria;
 import org.apache.turbine.util.security.AccessControlList;
-import org.apache.turbine.util.security.TurbineAccessControlList;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
 import org.apache.turbine.util.security.GroupSet;
@@ -170,7 +169,7 @@ public class DBSecurityService extends BaseSecurityService
                 // put the Set into permissions(group)
                 permissions.put(group, groupPermissions);
             }
-            return new TurbineAccessControlList(roles, permissions);
+            return new AccessControlList(roles, permissions);
         }
         catch(Exception e)
         {

@@ -75,7 +75,6 @@ import org.apache.turbine.util.Log;
 import org.apache.turbine.util.db.Criteria;
 
 import org.apache.turbine.util.security.AccessControlList;
-import org.apache.turbine.util.security.TurbineAccessControlList;
 import org.apache.turbine.util.security.GroupSet;
 import org.apache.turbine.util.security.RoleSet;
 import org.apache.turbine.util.security.PermissionSet;
@@ -123,7 +122,7 @@ public class LDAPSecurityService extends BaseSecurityService
          */
         Hashtable roles = new Hashtable();
         Hashtable permissions = new Hashtable();
-        return new TurbineAccessControlList(roles, permissions);
+        return new AccessControlList(roles, permissions);
     }
 
     /*

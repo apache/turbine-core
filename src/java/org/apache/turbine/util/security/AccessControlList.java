@@ -67,8 +67,9 @@ import org.apache.turbine.om.security.Role;
 import org.apache.turbine.services.security.TurbineSecurity;
 
 /**
- * This is the interface for a control class that makes it easy to find out if a
- * particular User has a given Permission. 
+ * This is a control class that makes it easy to find out if a
+ * particular User has a given Permission.  It also determines if a
+ * User has a a particular Role.
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
@@ -77,9 +78,36 @@ import org.apache.turbine.services.security.TurbineSecurity;
  * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
  * @version $Id$
  */
-public interface AccessControlList extends Serializable
+public class AccessControlList implements Serializable
 {
+    /** The sets of roles that the user has in different groups */
+    private Map roleSets;
+
+    /** The sets of permissions that the user has in different groups */
+    private Map permissionSets;
+
     public static java.lang.String SESSION_KEY = "turbine.AccessControlList";
+
+    /**
+     * Constructs a new AccessControlList.
+     *
+     * This class follows 'immutable' pattern - it's objects can't be modified
+     * once they are created. This means that the permissions the users have are
+     * in effect form the moment they log in to the moment they log out, and 
+     * changes made to the security settings in that time are not reflected
+     * in the state of this object. If you need to reset an user's permissions
+     * you need to invalidate his session. <br>
+     * The objects that constructs an AccessControlList must supply hashtables 
+     * of role/permission sets keyed with group objects. <br>
+     *
+     * @param roleSets a hashtable containing RoleSet objects keyed with Group objects
+     * @param permissionSets a hashtable containing PermissionSet objects keyed with Group objects
+     */
+    public AccessControlList( Map roleSets, Map permissionSets )
+    {
+        this.roleSets = roleSets;
+        this.permissionSets = permissionSets;
+    }
 
     /**
      * Retrieves a set of Roles an user is assigned in a Group.
@@ -87,8 +115,12 @@ public interface AccessControlList extends Serializable
      * @param group the Group 
      * @return the set of Roles this user has within the Group.
      */
-
-    public RoleSet getRoles( Group group );
+    public RoleSet getRoles( Group group )
+    {
+        if(group == null)
+            return null;
+        return (RoleSet)roleSets.get(group);
+    }
 
     /**
      * Retrieves a set of Roles an user is assigned in the global Group.
@@ -96,8 +128,10 @@ public interface AccessControlList extends Serializable
      * @param group the Group 
      * @return the set of Roles this user has within the global Group.
      */
-
-    public RoleSet getRoles();
+    public RoleSet getRoles()
+    {
+        return getRoles(TurbineSecurity.getGlobalGroup());
+    }
 
     /**
      * Retrieves a set of Permissions an user is assigned in a Group.
@@ -105,9 +139,12 @@ public interface AccessControlList extends Serializable
      * @param group the Group 
      * @return the set of Permissions this user has within the Group.
      */
-
-    public PermissionSet getPermissions( Group group );
-
+    public PermissionSet getPermissions( Group group )
+    {
+        if(group == null)
+            return null;
+        return (PermissionSet)permissionSets.get(group);
+    }
 
     /**
      * Retrieves a set of Permissions an user is assigned in the global Group.
@@ -115,7 +152,10 @@ public interface AccessControlList extends Serializable
      * @param group the Group 
      * @return the set of Permissions this user has within the global Group.
      */
-    public PermissionSet getPermissions();
+    public PermissionSet getPermissions()
+    {
+        return getPermissions(TurbineSecurity.getGlobalGroup());
+    }
 
     /**
      * Checks if the user is assigned a specific Role in the Group.
@@ -124,8 +164,13 @@ public interface AccessControlList extends Serializable
      * @param group the Group
      * @return <code>true</code> if the user is assigned the Role in the Group.
      */
-
-    public boolean hasRole( Role role, Group group );
+    public boolean hasRole( Role role, Group group )
+    {
+        RoleSet set = getRoles(group);
+        if(set == null || role == null)
+            return false;
+        return set.contains(role);
+    }
 
     /**
      * Checks if the user is assigned a specific Role in any of the given 
@@ -136,8 +181,27 @@ public interface AccessControlList extends Serializable
      * @return <code>true</code> if the user is assigned the Role in any of 
      *         the given Groups.
      */
-
-    public boolean hasRole( Role role, GroupSet groupset );
+    public boolean hasRole( Role role, GroupSet groupset )
+    {
+        if(role == null)
+        {
+            return false;
+        }
+        Iterator groups = groupset.elements();
+        while(groups.hasNext()) 
+        {
+            Group group = (Group)groups.next();
+            RoleSet roles = getRoles(group);
+            if(roles != null) 
+            {
+                if(roles.contains(role))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     /**
      * Checks if the user is assigned a specific Role in the Group.
@@ -146,8 +210,17 @@ public interface AccessControlList extends Serializable
      * @param group the Group
      * @return <code>true</code> if the user is assigned the Role in the Group.
      */
-
-    public boolean hasRole( String role, String group );
+    public boolean hasRole( String role, String group )
+    {
+        try
+        {
+            return hasRole(TurbineSecurity.getRole(role), TurbineSecurity.getGroup(group));
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
 
     /**
      * Checks if the user is assigned a specifie Role in any of the given 
@@ -158,8 +231,36 @@ public interface AccessControlList extends Serializable
      * @return <code>true</code> if the user is assigned the Role in any of 
      *         the given Groups.
      */
-
-    public boolean hasRole( String rolename, GroupSet groupset );
+    public boolean hasRole( String rolename, GroupSet groupset )
+    {
+        Role role;
+        try
+        {
+            role = TurbineSecurity.getRole(rolename);
+        }
+        catch(TurbineSecurityException e)
+        {
+            return false;
+        }
+        if(role == null)
+        {
+            return false;
+        }
+        Iterator groups = groupset.elements();
+        while(groups.hasNext()) 
+        {
+            Group group = (Group)groups.next();
+            RoleSet roles = getRoles(group);
+            if(roles != null) 
+            {
+                if(roles.contains(role))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     /**
      * Checks if the user is assigned a specific Role in the global Group.
@@ -168,8 +269,10 @@ public interface AccessControlList extends Serializable
      * @param group the Group
      * @return <code>true</code> if the user is assigned the Role in the global Group.
      */
-
-    public boolean hasRole( Role role );
+    public boolean hasRole( Role role )
+    {
+        return hasRole(role, TurbineSecurity.getGlobalGroup());
+    }
 
     /**
      * Checks if the user is assigned a specific Role in the global Group.
@@ -178,8 +281,17 @@ public interface AccessControlList extends Serializable
      * @param group the Group
      * @return <code>true</code> if the user is assigned the Role in the global Group.
      */
-
-    public boolean hasRole( String role );
+    public boolean hasRole( String role )
+    {
+        try
+        {
+            return hasRole(TurbineSecurity.getRole(role));
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
 
     /**
      * Checks if the user is assigned a specific Permission in the Group.
@@ -188,8 +300,13 @@ public interface AccessControlList extends Serializable
      * @param group the Group
      * @return <code>true</code> if the user is assigned the Permission in the Group.
      */
-
-    public boolean hasPermission( Permission permission, Group group );
+    public boolean hasPermission( Permission permission, Group group )
+    {
+        PermissionSet set = getPermissions(group);
+        if(set == null || permission == null)
+            return false;
+        return set.contains(permission);
+    }
 
     /**
      * Checks if the user is assigned a specific Permission in any of the given 
@@ -200,7 +317,27 @@ public interface AccessControlList extends Serializable
      * @return <code>true</code> if the user is assigned the Permission in any 
      *         of the given Groups.
      */
-    public boolean hasPermission( Permission permission, GroupSet groupset );
+    public boolean hasPermission( Permission permission, GroupSet groupset )
+    {
+        if(permission == null)
+        {
+            return false;
+        }
+        Iterator groups = groupset.elements();
+        while(groups.hasNext()) 
+        {
+            Group group = (Group)groups.next();
+            PermissionSet permissions = getPermissions(group);
+            if(permissions != null) 
+            {
+                if(permissions.contains(permission))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     /**
      * Checks if the user is assigned a specific Permission in the Group.
@@ -209,8 +346,18 @@ public interface AccessControlList extends Serializable
      * @param group the Group
      * @return <code>true</code> if the user is assigned the Permission in the Group.
      */
-
-    public boolean hasPermission( String permission, String group );
+    public boolean hasPermission( String permission, String group )
+    {
+        try
+        {
+            return hasPermission(TurbineSecurity.getPermission(permission), 
+                                 TurbineSecurity.getGroup(group));
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
 
     /**
      * Checks if the user is assigned a specific Permission in the Group.
@@ -219,8 +366,18 @@ public interface AccessControlList extends Serializable
      * @param group the Group
      * @return <code>true</code> if the user is assigned the Permission in the Group.
      */
-
-    public boolean hasPermission( String permission, Group group );
+    public boolean hasPermission( String permission, Group group )
+    {
+        try
+        {
+            return hasPermission(
+                TurbineSecurity.getPermission(permission), group);
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
 
     /**
      * Checks if the user is assigned a specifie Permission in any of the given 
@@ -231,8 +388,36 @@ public interface AccessControlList extends Serializable
      * @return <code>true</code> if the user is assigned the Permission in any 
      *         of the given Groups.
      */
-
-    public boolean hasPermission( String permissionName, GroupSet groupset );
+    public boolean hasPermission( String permissionName, GroupSet groupset )
+    {
+        Permission permission;
+        try
+        {
+            permission = TurbineSecurity.getPermission(permissionName);
+        }
+        catch(TurbineSecurityException e)
+        {
+            return false;
+        }
+        if(permission == null)
+        {
+            return false;
+        }
+        Iterator groups = groupset.elements();
+        while(groups.hasNext()) 
+        {
+            Group group = (Group)groups.next();
+            PermissionSet permissions = getPermissions(group);
+            if(permissions != null) 
+            {
+                if(permissions.contains(permission))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     /**
      * Checks if the user is assigned a specific Permission in the global Group.
@@ -241,8 +426,10 @@ public interface AccessControlList extends Serializable
      * @param group the Group
      * @return <code>true</code> if the user is assigned the Permission in the global Group.
      */
-
-    public boolean hasPermission( Permission permission );
+    public boolean hasPermission( Permission permission )
+    {
+        return hasPermission(permission, TurbineSecurity.getGlobalGroup());
+    }
 
     /**
      * Checks if the user is assigned a specific Permission in the global Group.
@@ -251,8 +438,17 @@ public interface AccessControlList extends Serializable
      * @param group the Group
      * @return <code>true</code> if the user is assigned the Permission in the global Group.
      */
-
-    public boolean hasPermission( String permission );
+    public boolean hasPermission( String permission )
+    {
+        try
+        {
+            return hasPermission(TurbineSecurity.getPermission(permission));
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
 
     /**
      * Returns all groups definded in the system.
@@ -262,6 +458,15 @@ public interface AccessControlList extends Serializable
      * because you can't call static methods of TurbineSecurity class
      * from within WebMacro/Velocity template
      */
-    public Group[] getAllGroups();
-
+    public Group[] getAllGroups()
+    {
+        try 
+        {
+            return TurbineSecurity.getAllGroups().getGroupsArray();
+        }
+        catch(TurbineSecurityException e) 
+        {
+            return new Group[0];
+        }
+    }
 }
