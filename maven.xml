@@ -35,20 +35,50 @@
   </preGoal>
 
   <!-- ================================================== -->
-  <!-- Build Peers for the Scheduler                      -->
+  <!-- Create the SQL necessary for the Databases         -->
   <!-- ================================================== -->
-  <goal name="scheduler-om">
-  
-    <j:set var="torque.project" value="scheduler"/>
-    <j:set var="torque.schema.om.includes" value="scheduler-schema.xml"/>
-    <j:set var="torque.targetPackage" value="${scheduler.package}"/>
+
+  <preGoal name="torque:sql">
+    <attainGoal name="copy-om"/>
+  </preGoal>
+
+  <!-- ================================================== -->
+  <!-- Prepare the OM Sources for Torque                  -->
+  <!-- ================================================== -->
+
+  <goal name="copy-om">
+    <attainGoal name="copy-scheduler-om"/>
+    <attainGoal name="copy-torque-security-om"/>
+  </goal>
+
+  <goal name="copy-scheduler-om">
     <filter token="DATABASE_DEFAULT" value="${scheduler.database.name}"/>
     <filter token="EXTRA_USER_COLUMNS" value="${scheduler.extra.user.columns}"/>
     <copy
       file="src/schema/scheduler-schema.xml"
       tofile="${torque.schema.dir}/scheduler-schema.xml"
       filtering="yes"/>
+  </goal>
 
+  <goal name="copy-torque-security-om">
+    <filter token="DATABASE_DEFAULT" value="${torque.security.database.name}"/>
+    <copy
+      file="src/schema/torque-security-schema.xml"
+      tofile="${torque.schema.dir}/torque-security-schema.xml"
+      filtering="yes"/>
+  </goal>
+  
+
+  <!-- ================================================== -->
+  <!-- Build Peers for the Scheduler                      -->
+  <!-- ================================================== -->
+  <goal name="scheduler-om">
+
+    <attainGoal name="copy-scheduler-om"/>
+
+    <j:set var="torque.project" value="scheduler"/>
+    <j:set var="torque.schema.om.includes" value="scheduler-schema.xml"/>
+    <j:set var="torque.targetPackage" value="${scheduler.package}"/>
     <attainGoal name="torque:om"/>
 
   </goal>
@@ -58,15 +88,11 @@
   <!-- ================================================== -->
   <goal name="torque-security-om">
 
+    <attainGoal name="copy-torque-security-om"/>
+
     <j:set var="torque.project" value="torque-security"/>
     <j:set var="torque.schema.om.includes" value="torque-security-schema.xml"/>
     <j:set var="torque.targetPackage" value="${torque.security.package}"/>
-    <filter token="DATABASE_DEFAULT" value="${torque.security.database.name}"/>
-    <copy
-      file="src/schema/torque-security-schema.xml"
-      tofile="${torque.schema.dir}/torque-security-schema.xml"
-      filtering="yes"/>
-
     <attainGoal name="torque:om"/>
 
   </goal>
