@@ -57,31 +57,31 @@ package org.apache.turbine.services.intake.validator;
 import java.util.Map;
 
 /**
- * Validates Integers with the following constraints in addition to those
+ * Validates Shorts with the following constraints in addition to those
  * listed in NumberValidator and DefaultValidator.
  *
  * <table>
  * <tr><th>Name</th><th>Valid Values</th><th>Default Value</th></tr>
- * <tr><td>minValue</td><td>greater than Integer.MIN_VALUE</td>
+ * <tr><td>minValue</td><td>greater than Short.MIN_VALUE</td>
  * <td>&nbsp;</td></tr>
- * <tr><td>maxValue</td><td>less than Integer.MAX_VALUE</td>
+ * <tr><td>maxValue</td><td>less than Short.MAX_VALUE</td>
  * <td>&nbsp;</td></tr>
  * <tr><td>invalidNumberMessage</td><td>Some text</td>
- * <td>Entry was not a valid number</td></tr>
+ * <td>Entry was not a valid Short</td></tr>
  * </table>
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
  * @version $Id$
  */
-public class IntegerValidator
+public class ShortValidator
         extends NumberValidator
 {
-    /* Init the minValue to that for a Integer */
-    private int minValue = Integer.MIN_VALUE;
+    /* Init the minValue to that for a Short */
+    private short minValue = Short.MIN_VALUE;
 
-    /* Init the maxValue to that for a Integer */
-    private int maxValue = Integer.MAX_VALUE;
+    /* Init the maxValue to that for a Short */
+    private short maxValue = Short.MAX_VALUE;
 
     /**
      * Constructor to use when initialising Object
@@ -89,17 +89,17 @@ public class IntegerValidator
      * @param paramMap
      * @throws InvalidMaskException
      */
-    public IntegerValidator(Map paramMap)
+    public ShortValidator(Map paramMap)
             throws InvalidMaskException
     {
-        invalidNumberMessage = "Entry was not a valid Integer";
+        invalidNumberMessage = "Entry was not a valid Short";
         init(paramMap);
     }
 
     /**
      * Default Constructor
      */
-    public IntegerValidator()
+    public ShortValidator()
     {
     }
 
@@ -118,7 +118,7 @@ public class IntegerValidator
         if (constraint != null)
         {
             String param = constraint.getValue();
-            minValue = Integer.parseInt(param);
+            minValue = Short.parseShort(param);
             minValueMessage = constraint.getMessage();
         }
 
@@ -126,7 +126,7 @@ public class IntegerValidator
         if (constraint != null)
         {
             String param = constraint.getValue();
-            maxValue = Integer.parseInt(param);
+            maxValue = Short.parseShort(param);
             maxValueMessage = constraint.getMessage();
         }
     }
@@ -144,10 +144,10 @@ public class IntegerValidator
     {
         super.assertValidity(testValue);
 
-        int i = 0;
+        short s = 0;
         try
         {
-            i = Integer.parseInt(testValue);
+            s = Short.parseShort(testValue);
         }
         catch (RuntimeException e)
         {
@@ -155,12 +155,12 @@ public class IntegerValidator
             throw new ValidationException(invalidNumberMessage);
         }
 
-        if (i < minValue)
+        if (s < minValue)
         {
             errorMessage = minValueMessage;
-
+            throw new ValidationException(minValueMessage);
         }
-        if (i > maxValue)
+        if (s > maxValue)
         {
             errorMessage = maxValueMessage;
             throw new ValidationException(maxValueMessage);
@@ -177,7 +177,7 @@ public class IntegerValidator
      *
      * @return value of minValue.
      */
-    public int getMinValue()
+    public short getMinValue()
     {
         return minValue;
     }
@@ -187,7 +187,7 @@ public class IntegerValidator
      *
      * @param minValue  Value to assign to minValue.
      */
-    public void setMinValue(int minValue)
+    public void setMinValue(short minValue)
     {
         this.minValue = minValue;
     }
@@ -197,7 +197,7 @@ public class IntegerValidator
      *
      * @return value of maxValue.
      */
-    public int getMaxValue()
+    public short getMaxValue()
     {
         return maxValue;
     }
@@ -207,7 +207,7 @@ public class IntegerValidator
      *
      * @param maxValue  Value to assign to maxValue.
      */
-    public void setMaxValue(int maxValue)
+    public void setMaxValue(short maxValue)
     {
         this.maxValue = maxValue;
     }
