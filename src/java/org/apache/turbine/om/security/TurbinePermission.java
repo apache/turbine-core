@@ -84,33 +84,17 @@ public class TurbinePermission extends SecurityObject implements Permission
      *
      * @param name The name of the new object.
      */
-    public TurbinePermission( String name )
+    public TurbinePermission(String name)
     {
         super(name);
     }
 
     /**
-     * Creates a new Permission in the system.
-     *
-     * @param name The name of the new Permission.
-     * @return An object representing the new Permission.
-     * @throws TurbineSecurityException if the Permission could not be created.
-     * @deprecated Please use the createPermission method in TurbineSecurity.
-     */
-    public static Permission create( String name )
-        throws TurbineSecurityException
-    {
-        return TurbineSecurity.createPermission(name);
-    }
-
-    /**
      * Makes changes made to the Permission attributes permanent.
      *
-     * @throws TurbineSecurityException if there is a problem while
-     *  saving data.
+     * @throws TurbineSecurityException if there is a problem while saving data.
      */
-    public void save()
-        throws TurbineSecurityException
+    public void save() throws TurbineSecurityException
     {
         TurbineSecurity.savePermission(this);
     }
@@ -142,8 +126,7 @@ public class TurbinePermission extends SecurityObject implements Permission
      *
      * @throws TurbineSecurityException if the Permission could not be removed.
      */
-    public void remove()
-        throws TurbineSecurityException
+    public void remove() throws TurbineSecurityException
     {
         TurbineSecurity.removePermission(this);
     }
@@ -154,8 +137,7 @@ public class TurbinePermission extends SecurityObject implements Permission
      * @param name The new Permission name.
      * @throws TurbineSecurityException if the Permission could not be renamed.
      */
-    public void rename(String name)
-        throws TurbineSecurityException
+    public void rename(String name) throws TurbineSecurityException
     {
         TurbineSecurity.renamePermission(this, name);
     }

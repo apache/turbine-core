@@ -91,35 +91,9 @@ public class TurbineGroup extends SecurityObject implements Group
      *
      * @param name The name of the new object.
      */
-    public TurbineGroup( String name )
+    public TurbineGroup(String name)
     {
         super(name);
-    }
-
-    /**
-     * Provides a reference to the Group object that represents the
-     * <a href="#global">global group</a>.
-     *
-     * @return a Group object that represents the global group.
-     * @deprecated Please use the method in TurbineSecurity now.
-     */
-    public static Group getGlobalGroup()
-    {
-        return TurbineSecurity.getGlobalGroup();
-    }
-
-    /**
-     * Creates a new Group in the system.
-     *
-     * @param name The name of the new Group.
-     * @return An object representing the new Group.
-     * @throws TurbineSecurityException if the Group could not be created.
-     * @deprecated Please use the createGroup method in TurbineSecurity now.
-     */
-    public static Group create( String name )
-        throws TurbineSecurityException
-    {
-        return TurbineSecurity.createGroup(name);
     }
 
     // These following methods are wrappers around TurbineSecurity
@@ -127,11 +101,9 @@ public class TurbineGroup extends SecurityObject implements Group
     /**
      * Makes changes made to the Group attributes permanent.
      *
-     * @throws TurbineSecurityException if there is a problem while
-     *  saving data.
+     * @throws TurbineSecurityException if there is a problem while saving data.
      */
-    public void save()
-        throws TurbineSecurityException
+    public void save() throws TurbineSecurityException
     {
         TurbineSecurity.saveGroup(this);
     }
@@ -163,8 +135,7 @@ public class TurbineGroup extends SecurityObject implements Group
      *
      * @throws TurbineSecurityException if the Group could not be removed.
      */
-    public void remove()
-        throws TurbineSecurityException
+    public void remove() throws TurbineSecurityException
     {
         TurbineSecurity.removeGroup(this);
     }
@@ -175,8 +146,7 @@ public class TurbineGroup extends SecurityObject implements Group
      * @param name The new Group name.
      * @throws TurbineSecurityException if the Group could not be renamed.
      */
-    public void rename(String name)
-        throws TurbineSecurityException
+    public void rename(String name) throws TurbineSecurityException
     {
         TurbineSecurity.renameGroup(this, name);
     }
@@ -189,8 +159,7 @@ public class TurbineGroup extends SecurityObject implements Group
      * @throws TurbineSecurityException if there is a problem while assigning
      * the Role.
      */
-    public void grant(User user, Role role)
-        throws TurbineSecurityException
+    public void grant(User user, Role role) throws TurbineSecurityException
     {
         TurbineSecurity.grant(user, this, role);
     }
@@ -204,12 +173,12 @@ public class TurbineGroup extends SecurityObject implements Group
      * the Roles.
      */
     public void grant(User user, RoleSet roleSet)
-        throws TurbineSecurityException
+            throws TurbineSecurityException
     {
         Iterator roles = roleSet.elements();
         while(roles.hasNext())
         {
-            TurbineSecurity.grant(user, this, (Role)roles.next());
+            TurbineSecurity.grant(user, this, (Role) roles.next());
         }
     }
 
@@ -221,8 +190,7 @@ public class TurbineGroup extends SecurityObject implements Group
      * @throws TurbineSecurityException if there is a problem while unassigning
      * the Role.
      */
-    public void revoke(User user, Role role)
-        throws TurbineSecurityException
+    public void revoke(User user, Role role) throws TurbineSecurityException
     {
         TurbineSecurity.revoke(user, this, role);
     }
@@ -236,13 +204,12 @@ public class TurbineGroup extends SecurityObject implements Group
      * the Roles.
      */
     public void revoke(User user, RoleSet roleSet)
-        throws TurbineSecurityException
+            throws TurbineSecurityException
     {
         Iterator roles = roleSet.elements();
-        while(roles.hasNext())
+        while (roles.hasNext())
         {
-            TurbineSecurity.revoke(user, this, (Role)roles.next());
+            TurbineSecurity.revoke(user, this, (Role) roles.next());
         }
     }
 }
-
