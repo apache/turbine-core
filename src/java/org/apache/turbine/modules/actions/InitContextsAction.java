@@ -97,7 +97,8 @@ public class InitContextsAction
         // instance.
 
         Hashtable contextPropsList = new Hashtable();
-        for (Iterator contextKeys = conf.getKeys("context."); contextKeys.hasNext();)
+        for (Iterator contextKeys = conf.getKeys("context."); 
+                contextKeys.hasNext();)
         {
             String key = (String) contextKeys.next();
             int start = key.indexOf(".") + 1;
@@ -106,8 +107,7 @@ public class InitContextsAction
             Properties contextProps = null;
             if (contextPropsList.containsKey(contextName))
             {
-                contextProps =
-                        (Properties) contextPropsList.get(contextName);
+                contextProps = (Properties) contextPropsList.get(contextName);
             }
             else
             {
@@ -117,11 +117,11 @@ public class InitContextsAction
                              conf.getString(key));
             contextPropsList.put(contextName, contextProps);
         }
-        for (Iterator contextPropsKeys = contextPropsList.keySet().iterator(); contextPropsKeys.hasNext();)
+        for (Iterator contextPropsKeys = contextPropsList.keySet().iterator(); 
+                contextPropsKeys.hasNext();)
         {
             String key = (String) contextPropsKeys.next();
-            Properties contextProps =
-                    (Properties) contextPropsList.get(key);
+            Properties contextProps = (Properties) contextPropsList.get(key);
             InitialContext context = new InitialContext(contextProps);
             data.getJNDIContexts().put(key, context);
         }

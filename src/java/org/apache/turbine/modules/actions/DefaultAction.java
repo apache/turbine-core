@@ -71,7 +71,7 @@ public class DefaultAction extends Action
      * Execute the action.
      *
      * @param data Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     public void doPerform(RunData data)
             throws Exception

@@ -96,7 +96,8 @@ public class TemplateSecureSessionValidator
     extends SessionValidator
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(TemplateSecureSessionValidator.class);
+    private static Log log = LogFactory.getLog(
+            TemplateSecureSessionValidator.class);
 
     /**
      * doPerform is virtually identical to DefaultSessionValidator
@@ -142,7 +143,8 @@ public class TemplateSecureSessionValidator
             String loginTemplate =
                 conf.getString(TurbineConstants.TEMPLATE_LOGIN);
 
-            log.debug("Sending User to the Login Screen (" + loginTemplate + ")");
+            log.debug("Sending User to the Login Screen (" 
+                    + loginTemplate + ")");
             data.getTemplateInfo().setScreenTemplate(loginTemplate);
 
             // We're not doing any actions buddy! (except action.login which
@@ -153,10 +155,11 @@ public class TemplateSecureSessionValidator
         log.debug("Login Check finished!");
 
         // Make sure we have some way to return a response.
-        if (!data.hasScreen() &&
-            StringUtils.isEmpty(data.getTemplateInfo().getScreenTemplate()))
+        if (!data.hasScreen() && StringUtils.isEmpty(
+                data.getTemplateInfo().getScreenTemplate()))
         {
-            String template = conf.getString(TurbineConstants.TEMPLATE_HOMEPAGE);
+            String template = conf.getString(
+                    TurbineConstants.TEMPLATE_HOMEPAGE);
 
             if (StringUtils.isNotEmpty(template))
             {
@@ -164,7 +167,8 @@ public class TemplateSecureSessionValidator
             }
             else
             {
-                data.setScreen(conf.getString(TurbineConstants.SCREEN_HOMEPAGE));
+                data.setScreen(conf.getString(
+                        TurbineConstants.SCREEN_HOMEPAGE));
             }
         }
 
@@ -176,22 +180,24 @@ public class TemplateSecureSessionValidator
         if (data.getParameters().containsKey("_session_access_counter"))
         {
             // See comments in screens.error.InvalidState.
-            if (data.getParameters().getInt("_session_access_counter") <
-                    (((Integer) data.getUser().getTemp("_session_access_counter"))
-                    .intValue() - 1))
+            if (data.getParameters().getInt("_session_access_counter") 
+                    < (((Integer) data.getUser().getTemp(
+                    "_session_access_counter")).intValue() - 1))
             {
                 if (data.getTemplateInfo().getScreenTemplate() != null)
                 {
                     data.getUser().setTemp("prev_template",
-                                           data.getTemplateInfo().getScreenTemplate()
-                                           .replace('/', ','));
-                    data.getTemplateInfo().setScreenTemplate(conf.getString(TurbineConstants.TEMPLATE_INVALID_STATE));
+                            data.getTemplateInfo().getScreenTemplate()
+                            .replace('/', ','));
+                    data.getTemplateInfo().setScreenTemplate(conf.getString(
+                            TurbineConstants.TEMPLATE_INVALID_STATE));
                 }
                 else
                 {
                     data.getUser().setTemp("prev_screen",
                                            data.getScreen().replace('/', ','));
-                    data.setScreen(conf.getString(TurbineConstants.SCREEN_INVALID_STATE));
+                    data.setScreen(conf.getString(
+                            TurbineConstants.SCREEN_INVALID_STATE));
                 }
                 data.getUser().setTemp("prev_parameters", data.getParameters());
                 data.setAction("");

@@ -75,7 +75,7 @@ public abstract class TemplateNavigation
      * information to the context.
      *
      * @param data Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected abstract void doBuildTemplate(RunData data)
             throws Exception;
@@ -85,7 +85,7 @@ public abstract class TemplateNavigation
      *
      * @param data Turbine information.
      * @return A ConcreteElement.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     public abstract ConcreteElement buildTemplate(RunData data)
             throws Exception;
@@ -95,7 +95,7 @@ public abstract class TemplateNavigation
      *
      * @param data Turbine information.
      * @return A ConcreteElement.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected ConcreteElement doBuild(RunData data)
             throws Exception

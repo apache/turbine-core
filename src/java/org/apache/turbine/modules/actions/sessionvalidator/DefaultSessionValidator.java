@@ -145,20 +145,22 @@ public class DefaultSessionValidator
 
         if (!data.hasScreen())
         {
-            data.setMessage(conf.getString(TurbineConstants.LOGIN_MESSAGE_NOSCREEN));
+            data.setMessage(conf.getString(
+                    TurbineConstants.LOGIN_MESSAGE_NOSCREEN));
             data.setScreen(conf.getString(TurbineConstants.SCREEN_HOMEPAGE));
         }
 
         if (data.getParameters().containsKey("_session_access_counter"))
         {
             // See comments in screens.error.InvalidState.
-            if (data.getParameters().getInt("_session_access_counter") <
-                    (((Integer) data.getUser().getTemp("_session_access_counter"))
-                    .intValue() - 1))
+            if (data.getParameters().getInt("_session_access_counter") 
+                    < (((Integer) data.getUser().getTemp(
+                    "_session_access_counter")).intValue() - 1))
             {
                 data.getUser().setTemp("prev_screen", data.getScreen());
                 data.getUser().setTemp("prev_parameters", data.getParameters());
-                data.setScreen(conf.getString(TurbineConstants.SCREEN_INVALID_STATE));
+                data.setScreen(conf.getString(
+                        TurbineConstants.SCREEN_INVALID_STATE));
                 data.setAction("");
             }
         }

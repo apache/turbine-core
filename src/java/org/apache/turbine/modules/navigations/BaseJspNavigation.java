@@ -79,7 +79,8 @@ public class BaseJspNavigation
     /**
      * Method to be overidden by subclasses to include data in beans, etc.
      *
-     * @param data, the Rundata object
+     * @param data the Rundata object
+     * @throws Exception a generic exception.
      */
     protected void doBuildTemplate(RunData data)
         throws Exception
@@ -89,8 +90,9 @@ public class BaseJspNavigation
     /**
      * Method that sets up beans and forward the request to the JSP.
      *
-     * @param RunData
+     * @param data the Rundata object
      * @return null - the JSP sends the information
+     * @throws Exception a generic exception.
      */
     public ConcreteElement buildTemplate(RunData data)
         throws Exception

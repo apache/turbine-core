@@ -80,7 +80,7 @@ public abstract class VelocitySecureAction extends VelocityAction
      *
      * @param data Turbine information.
      * @param context Context for web pages.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     public abstract void doPerform(RunData data, Context context)
             throws Exception;
@@ -90,7 +90,7 @@ public abstract class VelocitySecureAction extends VelocityAction
      * perform a security check first.
      *
      * @param data Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected void perform(RunData data) throws Exception
     {
@@ -103,12 +103,11 @@ public abstract class VelocitySecureAction extends VelocityAction
     /**
      * Implement this method to perform the security check needed.
      * You should set the template in this method that you want the
-     * user to be sent to if they're unauthorized.  See the
-     * WebMacroSecurityCheck utility.
+     * user to be sent to if they're unauthorized.
      *
      * @param data Turbine information.
      * @return True if the user is authorized to access the screen.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected abstract boolean isAuthorized(RunData data)
             throws Exception;

@@ -76,7 +76,7 @@ public abstract class VelocityAction extends VelocityActionEvent
      * action.
      *
      * @param data Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     public void doPerform(RunData data)
             throws Exception
@@ -90,7 +90,7 @@ public abstract class VelocityAction extends VelocityActionEvent
      *
      * @param data Turbine information.
      * @param context Context for web pages.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     public abstract void doPerform(RunData data,
                                    Context context)
@@ -102,7 +102,7 @@ public abstract class VelocityAction extends VelocityActionEvent
      * themselves!
      *
      * @param data Turbine information.
-     * @exception Exception, a generic exception.
+     * @throws Exception a generic exception.
      */
     protected void perform(RunData data)
             throws Exception
@@ -126,7 +126,7 @@ public abstract class VelocityAction extends VelocityActionEvent
     /**
      * Return the Context needed by Velocity.
      *
-     * @param RunData data
+     * @param data Turbine information.
      * @return Context, a context for web pages.
      */
     protected Context getContext(RunData data)
