@@ -56,8 +56,11 @@ package org.apache.turbine.modules.screens.error;
 
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.ElementContainer;
+
 import org.apache.ecs.html.A;
+
 import org.apache.turbine.modules.Screen;
+
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
@@ -74,9 +77,11 @@ import org.apache.turbine.util.RunData;
  * value and redirect you to this screen.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class InvalidState extends Screen
+public class InvalidState
+    extends Screen
 {
     /**
      * Build the Screen.
@@ -103,9 +108,12 @@ public class InvalidState extends Screen
         ParameterParser pp;
         pp = (ParameterParser) data.getUser().getTemp("prev_parameters");
         pp.remove("_session_access_counter");
-        message.addElement(new A().setHref(
-                new DynamicURI(data, (String) data.getUser().getTemp("prev_screen"))
-                .addPathInfo(pp).toString()).addElement("here"));
+
+        DynamicURI back = new DynamicURI(data, (String) data.getUser().getTemp("prev_screen"));
+        back.addPathInfo(pp);
+
+        message.addElement(new A().setHref(back.toString()).addElement("here"));
+
         message.addElement(" to return the the screen you were working on.");
 
         body.addElement(message);
