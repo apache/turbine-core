@@ -430,7 +430,7 @@
     </dependency>
     <dependency>
       <id>xmlrpc</id>
-      <version>1.2-dev</version>
+      <version>1.2-a1</version>
       <url>http://xml.apache.org/xmlrpc/</url>
     </dependency>
     <dependency>
