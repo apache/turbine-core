@@ -128,7 +128,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
     protected Hashtable serviceObjects = new Hashtable();
 
     /** Logging */
-    private Log log = LogFactory.getLog(this.getClass());
+    private static Log log = LogFactory.getLog(BaseServiceBroker.class);
 
     /**
      * Application root path as set by the
