@@ -59,11 +59,13 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.Set;
+
+import org.apache.turbine.util.parser.ParserUtils;
 
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.StringKey;
 
-import org.apache.turbine.util.parser.ParserUtils;
 
 /**
  * ValueParser is a base interface for classes that need to parse
@@ -217,15 +219,22 @@ public interface ValueParser
      */
     boolean containsDateSelectorKeys(String key);
 
-    /*
-     * Get an enumerator for the parameter keys. Wraps to the
-     * contained <code>Hashtable.keys()</code>.
+    /**
+     * Get an enumerator for the parameter keys.
      *
      * @return An <code>enumerator</code> of the keys.
+     * @deprecated use {@link #keySet} instead.
      */
     Enumeration keys();
 
-    /*
+    /**
+     * Gets the keys.
+     *
+     * @return A <code>Set</code> of the keys.
+     */
+    Set keySet();
+
+    /**
      * Returns all the available parameter names.
      *
      * @return A object array with the keys.
