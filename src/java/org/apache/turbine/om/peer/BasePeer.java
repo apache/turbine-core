@@ -937,6 +937,13 @@ public abstract class BasePeer
             {
                 tableName = columnName.substring(parenPos + 1,
                                                  columnName.indexOf('.') );
+                // functions may contain qualifiers so only take the last
+                // word as the table name.
+                int lastSpace = tableName.lastIndexOf(' ');
+                if ( lastSpace != -1 ) 
+                {
+                    tableName = tableName.substring(lastSpace+1);
+                }
             }
             String tableName2 = criteria.getTableForAlias(tableName);
             if ( tableName2 != null )
