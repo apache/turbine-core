@@ -63,8 +63,6 @@ import org.apache.ecs.ConcreteElement;
 
 import org.apache.turbine.modules.NavigationLoader;
 
-import org.apache.turbine.services.TurbineServices;
-
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.template.TurbineTemplate;
 
@@ -159,8 +157,6 @@ public class TemplateNavigation
             }
             log.error(returnValue, e);
         }
-
-        log.debug("Returning " + returnValue);
 
         return returnValue;
     }
