@@ -133,7 +133,7 @@ page here which just returns the current screen. If you want to use
 navigation elements with your application, you must either add your
 own custom layout pages or change the default layout to contain
 navigation elements.  See the <a
-href="http://jakarta.apache.org/turbine/turbine-2.3/howto/velocityonlylayout-howto.html">Velocity
+href="http://jakarta.apache.org/turbine/turbine/turbine-2.3.1/howto/velocityonlylayout-howto.html">Velocity
 Only Layout</a> documentation for an example with navigation.</td>
 </tr>
 
