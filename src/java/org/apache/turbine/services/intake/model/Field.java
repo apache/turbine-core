@@ -890,38 +890,38 @@ public abstract class Field
         if (isSet())
         {
             valArray[0] = getTestValue();
-
             if (isDebugEnabled)
             {
                 log.debug(name + ": Property is set, value is " + valArray[0]);
             }
-
-            try
-            {
-                setter.invoke(obj, valArray);
-            }
-            catch (IllegalAccessException e)
-            {
-                throwSetGetException("setter", obj, this.getDisplayName(),
-                        this.group.getIntakeGroupName(), e);
-            }
-            catch (IllegalArgumentException e)
-            {
-                throwSetGetException("setter", obj, this.getDisplayName(),
-                        this.group.getIntakeGroupName(), e);
-            }
-            catch (InvocationTargetException e)
-            {
-                throwSetGetException("setter", obj, this.getDisplayName(),
-                        this.group.getIntakeGroupName(), e);
-            }
         }
         else
         {
+            valArray[0] = getEmptyValue();
             if (isDebugEnabled)
             {
-                log.debug(name+ ": Property is not set, skipping");
+                log.debug(name + ": Property is not set, using emptyValue " + valArray[0]);
             }
+        }
+
+        try
+        {
+            setter.invoke(obj, valArray);
+        }
+        catch (IllegalAccessException e)
+        {
+            throwSetGetException("setter", obj, this.getDisplayName(),
+                    this.group.getIntakeGroupName(), e);
+        }
+        catch (IllegalArgumentException e)
+        {
+            throwSetGetException("setter", obj, this.getDisplayName(),
+                    this.group.getIntakeGroupName(), e);
+        }
+        catch (InvocationTargetException e)
+        {
+            throwSetGetException("setter", obj, this.getDisplayName(),
+                    this.group.getIntakeGroupName(), e);
         }
     }
 
