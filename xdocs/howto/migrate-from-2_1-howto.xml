@@ -182,8 +182,9 @@ catch (Exception e)
 <p>
     Read over the Torque Schema Reference to find out what to change
     in your project-schema.xml file. The main changes are the
-    deprecation of sequence and autoIncrement methods and javaType
-    (Torque can now object types).
+    deprecation of sequence and autoIncrement idMethods and the 
+    addition of the javaType attribute to column elements 
+    (Torque can now work with object types).
 </p>
 <p>
     If you used inheritance, you will run need to specify
