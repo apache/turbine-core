@@ -54,12 +54,18 @@ package org.apache.turbine.modules.navigations;
  * <http://www.apache.org/>.
  */
 
-// Turbine/Village/ECS Imports
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
+
+import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.services.velocity.TurbineVelocity;
+
 import org.apache.turbine.util.RunData;
+
 import org.apache.velocity.context.Context;
 
 /**
@@ -71,10 +77,18 @@ import org.apache.velocity.context.Context;
  * doBuildTemplate( data , context) method.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class VelocityNavigation extends TemplateNavigation
+public class VelocityNavigation
+        extends TemplateNavigation
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(VelocityNavigation.class);
+
+    /** The prefix for lookup up navigation pages */
+    private String prefix = TurbineConstants.NAVIGATION_PREFIX + "/";
+
     /**
      * Velocity Navigations extending this class should overide this
      * method to perform any particular business logic and add
@@ -120,15 +134,8 @@ public class VelocityNavigation extends TemplateNavigation
 
         StringElement output = new StringElement();
         output.setFilterState(false);
-
-        // Usually adds the leading slash, but make it sure.
-        if ((templateName.length() > 0) &&
-                (templateName.charAt(0) != '/'))
-        {
-            templateName = '/' + templateName;
-        }
         output.addElement(TurbineVelocity
-                .handleRequest(context, "navigations" + templateName));
+                .handleRequest(context, prefix + templateName));
         return output;
     }
 

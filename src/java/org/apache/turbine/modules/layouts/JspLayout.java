@@ -54,14 +54,12 @@ package org.apache.turbine.modules.layouts;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Layout;
-
 import org.apache.turbine.services.TurbineServices;
-
 import org.apache.turbine.services.jsp.TurbineJsp;
 import org.apache.turbine.services.jsp.util.JspNavigation;
 import org.apache.turbine.services.jsp.util.JspScreenPlaceholder;
-
 import org.apache.turbine.util.RunData;
 
 /**
@@ -75,6 +73,9 @@ import org.apache.turbine.util.RunData;
 public class JspLayout
     extends Layout
 {
+    /** The prefix for lookup up layout pages */
+    private String prefix = TurbineConstants.LAYOUT_PREFIX + "/";
+
     /**
      * Method called by LayoutLoader.
      *
@@ -88,16 +89,18 @@ public class JspLayout
         data.declareDirectResponse();
 
         // variable to reference the screen in the layout template
-        data.getRequest().setAttribute("screen_placeholder",
-                new JspScreenPlaceholder(data));
+        data.getRequest()
+            .setAttribute(TurbineConstants.SCREEN_PLACEHOLDER,
+                          new JspScreenPlaceholder(data));
 
         // variable to reference the navigations in the layout template
-        data.getRequest().setAttribute("navigation",
+        data.getRequest().setAttribute(
+            TurbineConstants.NAVIGATION_PLACEHOLDER,
             new JspNavigation(data));
 
         // Grab the layout template set in the TemplatePage.
         String templateName = data.getTemplateInfo().getLayoutTemplate();
 
-        TurbineJsp.handleRequest(data, "/layouts" + templateName, true);
+        TurbineJsp.handleRequest(data, prefix + templateName, true);
     }
 }
