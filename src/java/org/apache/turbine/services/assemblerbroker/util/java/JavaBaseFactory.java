@@ -141,7 +141,7 @@ public abstract class JavaBaseFactory
                     // This means trouble!
                     // Alternatively we can throw this exception so
                     // that it will appear on the client browser
-                    log.error(cce);
+                    log.error("Could not load "+className, cce);
                     break; // for()
                 }
                 catch (InstantiationException ine)
@@ -149,7 +149,7 @@ public abstract class JavaBaseFactory
                     // This means trouble!
                     // Alternatively we can throw this exception so
                     // that it will appear on the client browser
-                    log.error(ine);
+                    log.error("Could not load "+className, ine);
                     break; // for()
                 }
                 catch (IllegalAccessException ilae)
@@ -157,7 +157,7 @@ public abstract class JavaBaseFactory
                     // This means trouble!
                     // Alternatively we can throw this exception so
                     // that it will appear on the client browser
-                    log.error(ilae);
+                    log.error("Could not load "+className, ilae);
                     break; // for()
                 }
                 // With ClassCastException, InstantiationException we hit big problems
