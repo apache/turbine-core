@@ -56,6 +56,7 @@ package org.apache.turbine.services.jsp.util;
 
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.uri.URIConstants;
 
 /**
  * A customized version of the DynamicURI to be used in JSP templates.
@@ -70,13 +71,18 @@ import org.apache.turbine.util.RunData;
  * </code>
  *
  * @author <a href="john.mcnally@clearink.com">John McNally</a>
- * @author Dave Bryson<a href="mbryson@mont.mindspring.com">mbryson@mont.mindspring.com</a>
+ * @author <a href="mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author Jon S. Stevens <a href="mailto:jon@latchkey.com">jon@latchkey.com</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
-public class JspLink extends DynamicURI
+public class JspLink
+    extends DynamicURI
 {
     /**
-     Constructor
+     * Constructor
+     *
+     * @param data A Rundata Object
      */
     public JspLink(RunData data)
     {
@@ -92,7 +98,7 @@ public class JspLink extends DynamicURI
         String output = super.toString();
 
         // This was added to allow multilple $link variables in one
-        // WebMacro template
+        // JSP template
         removePathInfo();
         removeQueryData();
 
@@ -106,6 +112,6 @@ public class JspLink extends DynamicURI
      */
     public JspLink setPage(String t)
     {
-        return (JspLink) addPathInfo("template", t);
+        return (JspLink) addPathInfo(URIConstants.CGI_TEMPLATE_PARAM, t);
     }
 }
