@@ -25,13 +25,13 @@ package org.apache.turbine.services.assemblerbroker;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -58,15 +58,10 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 import org.apache.turbine.modules.Assembler;
-
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
-
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
-
-import org.apache.turbine.services.resources.TurbineResources;
-
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -109,7 +104,7 @@ public class TurbineAssemblerBrokerService
                      "."+
                      type;
 
-        String[] names = TurbineResources.getStringArray(key);
+        String[] names = getConfiguration().getStringArray(key);
 
 //        Log.info ("Registering " + names.length + " " + type + " factories.");
 
@@ -129,7 +124,7 @@ public class TurbineAssemblerBrokerService
             {
                 throw e;
             }
-            // when using Class.forName(), NoClassDefFoundErrors are likely 
+            // when using Class.forName(), NoClassDefFoundErrors are likely
             // to happen (missing jar files)
             catch (Throwable t)
             {
@@ -147,7 +142,7 @@ public class TurbineAssemblerBrokerService
         throws InitializationException
     {
         factories = new Hashtable();
-        try 
+        try
         {
             registerFactories (AssemblerBrokerService.ACTION_TYPE);
             registerFactories (AssemblerBrokerService.SCREEN_TYPE);
@@ -156,7 +151,7 @@ public class TurbineAssemblerBrokerService
             registerFactories (AssemblerBrokerService.PAGE_TYPE);
             registerFactories (AssemblerBrokerService.SCHEDULEDJOB_TYPE);
         }
-        catch(TurbineException e) 
+        catch(TurbineException e)
         {
             throw new InitializationException("AssemblerBrokerService failed to initialize", e);
         }
@@ -177,7 +172,7 @@ public class TurbineAssemblerBrokerService
      * classes of type and retrun the first non-null assembly
      * found.  If an assembly was not found return null.
      */
-    public Assembler getAssembler(String type, String name) 
+    public Assembler getAssembler(String type, String name)
         throws TurbineException
     {
         Vector facs = getFactoryGroup(type);
@@ -192,13 +187,13 @@ public class TurbineAssemblerBrokerService
             }
             catch (Exception e)
             {
-                throw new TurbineException("Failed to find the " 
-                                           + type 
+                throw new TurbineException("Failed to find the "
+                                           + type
                                            +" named "
                                            + name, e);
             }
 
-            if (assembler != null) 
+            if (assembler != null)
             {
                 return assembler;
             }

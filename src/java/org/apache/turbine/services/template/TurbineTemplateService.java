@@ -55,22 +55,17 @@ package org.apache.turbine.services.template;
  */
 
 import java.io.File;
-
 import java.util.HashMap;
 import java.util.Hashtable;
 
-import org.apache.turbine.modules.ScreenLoader;
+import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.modules.LayoutLoader;
 import org.apache.turbine.modules.NavigationLoader;
-
-import org.apache.turbine.util.RunData;
-
-import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.resources.TurbineResources;
+import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.servlet.TurbineServlet;
-
-import org.apache.commons.configuration.Configuration;
+import org.apache.turbine.util.RunData;
 
 
 /**
@@ -900,7 +895,7 @@ public class TurbineTemplateService extends TurbineBaseService
         /*
          * Check to see if we are going to be caching modules.
          */
-        useCache = TurbineResources.getBoolean("module.cache",true);
+        useCache = getConfiguration().getBoolean("module.cache",true);
 
         if (useCache)
         {
