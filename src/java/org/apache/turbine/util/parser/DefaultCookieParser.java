@@ -169,8 +169,8 @@ public class DefaultCookieParser
      */
     public void setRunData(RunData data)
     {
-        setData(data.getRequest(), data.getResponse());
         this.data = data;
+        setData(data.getRequest(), data.getResponse());
     }
 
     /**
