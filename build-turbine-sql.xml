@@ -15,7 +15,8 @@
 
     <taskdef name="torque-sql" classname="org.apache.turbine.torque.TorqueSQLTask">
       <classpath>
-        <fileset dir="bin">
+        <!-- FIXME: Use the build.dir property from default.properties -->
+        <fileset dir="target">
           <include name="*.jar"/>
         </fileset>
         <pathelement location="${velocity.jar}"/>
