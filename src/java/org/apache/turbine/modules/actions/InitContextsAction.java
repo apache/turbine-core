@@ -57,15 +57,13 @@ package org.apache.turbine.modules.actions;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
-
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import org.apache.commons.configuration.Configuration;
 
 import org.apache.turbine.Turbine;
-
 import org.apache.turbine.modules.Action;
-
 import org.apache.turbine.util.RunData;
 
 /**
@@ -76,7 +74,7 @@ import org.apache.turbine.util.RunData;
  * @version $Id$
  */
 public class InitContextsAction
-    extends Action
+        extends Action
 {
     /**
      * This action will place the contexts defined in the
@@ -84,10 +82,10 @@ public class InitContextsAction
      * Hashtable.
      *
      * @param data The RunData object for the current request.
-     * @exception Exception, a generic exception.
+     * @exception NamingException could not create InitialContext
      */
     public void doPerform(RunData data)
-            throws Exception
+            throws NamingException
     {
         Configuration conf = Turbine.getConfiguration();
 
