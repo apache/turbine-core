@@ -39,7 +39,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.commons.logging.impl.Log4jFactory;
 
 import org.apache.log4j.PropertyConfigurator;
 
@@ -225,12 +224,6 @@ public class Turbine
     private void configure(ServletConfig config, ServletContext context)
             throws Exception
     {
-        //
-        // Set up Commons Logging to use the Log4J Logging
-        //
-        System.getProperties().setProperty(LogFactory.class.getName(),
-                                           Log4jFactory.class.getName());
-
         // Set the application root. This defaults to the webapp
         // context if not otherwise set. This is to allow 2.1 apps
         // to be developed from CVS. This feature will carry over
@@ -321,30 +314,30 @@ public class Turbine
         String log4jFile = configuration.getString(LOG4J_CONFIG_FILE,
                                                    LOG4J_CONFIG_FILE_DEFAULT);
 
-        log4jFile = getRealPath(log4jFile);
-
-        //
-        // Load the config file above into a Properties object and
-        // fix up the Application root
-        //
-        Properties p = new Properties();
-        try
+        if (StringUtils.isNotEmpty(log4jFile) &&
+                !log4jFile.equalsIgnoreCase("none"))
         {
-            p.load(new FileInputStream(log4jFile));
-            p.setProperty(APPLICATION_ROOT_KEY, getApplicationRoot());
-            PropertyConfigurator.configure(p);
+            log4jFile = getRealPath(log4jFile);
 
             //
-            // Rebuild our log object with a configured commons-logging
-            log = LogFactory.getLog(this.getClass());
-
-            log.info("Configured log4j from " + log4jFile);
-        }
-        catch (FileNotFoundException fnf)
-        {
-            System.err.println("Could not open Log4J configuration file "
-                               + log4jFile + ": ");
-            fnf.printStackTrace();
+            // Load the config file above into a Properties object and
+            // fix up the Application root
+            //
+            Properties p = new Properties();
+            try
+            {
+                p.load(new FileInputStream(log4jFile));
+                p.setProperty(APPLICATION_ROOT_KEY, getApplicationRoot());
+                PropertyConfigurator.configure(p);
+            
+                log.info("Configured log4j from " + log4jFile);
+            }
+            catch (FileNotFoundException fnf)
+            {
+                System.err.println("Could not open Log4J configuration file "
+                        + log4jFile + ": ");
+                fnf.printStackTrace();
+            }
         }
 
         // Now report our successful configuration to the world
