@@ -115,7 +115,7 @@
     </dependency>
 
     <dependency>
-      <name>ecs</name>
+      <name>jakarta-ecs</name>
       <type>required</type>
       <version>1.4.1</version>
       <jar>ecs-1.4.1.jar</jar>
