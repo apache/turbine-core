@@ -73,32 +73,35 @@ import javax.servlet.ServletContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.stratum.lifecycle.Disposable;
-import org.apache.stratum.lifecycle.Initializable;
+import org.apache.avalon.framework.activity.Disposable;
+import org.apache.avalon.framework.activity.Initializable;
 import org.apache.turbine.Turbine;
 
 /**
  * A class used for initalization of Turbine without a servlet container.
- *
+ * <p>
  * If you need to use Turbine outside of a servlet container, you can
- * use this class for initalization of the Turbine servlet.<br>
- *
+ * use this class for initalization of the Turbine servlet.
+ * <p>
  * <blockquote><code><pre>
  * TurbineConfig config = new TurbineConfig(".", "/conf/TurbineResources.properties");
  * </pre></code></blockquote>
- *
+ * <p>
  * All paths referenced in TurbineResources.properties and the path to
  * the properties file itself (the second argument) will be resolved
  * relative to the directory given as the first argument of the constructor,
  * here - the directory where application was started. Don't worry about
  * discarding the references to objects created above. They are not needed,
  * once everything is initialized.
- *
+ * <p>
  * In order to initialize the Services Framework outside of the Turbine Servlet,
  * you need to call the <code>init()</code> method. By default, this will
  * initialize the Resource and Logging Services and any other services you
  * have defined in your TurbineResources.properties file.
  *
+ * @todo Make this class enforce the lifecycle contracts
+ *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
@@ -106,10 +109,7 @@ import org.apache.turbine.Turbine;
  * @version $Id$
  */
 public class TurbineConfig
-        implements ServletConfig,
-        ServletContext,
-        Initializable,
-        Disposable
+        implements ServletConfig, ServletContext, Initializable, Disposable
 {
     /**
      * Servlet initialization parameter name for the path to
@@ -245,6 +245,8 @@ public class TurbineConfig
      */
     public String getRealPath(String path)
     {
+        String result = null;
+
         File f = new File(root, path);
         if (log.isDebugEnabled())
         {
@@ -262,11 +264,14 @@ public class TurbineConfig
 
         if (f.exists())
         {
-          return f.getPath();
+          result = f.getPath();
+        }
+        else
+        {
+            log.error("getRealPath(\"" + path + "\") is undefined, returning null");
         }
 
-        log.error("getRealPath(\"" + path + "\") is undefined, returning null");
-        return null;
+        return result;
     }
 
     /**
@@ -354,7 +359,7 @@ public class TurbineConfig
      *
      * @param e an Exception.
      * @param m a message.
-     * @deprecated
+     * @deprecated use log(String,Throwable) instead
      */
     public void log(Exception e, String m)
     {
