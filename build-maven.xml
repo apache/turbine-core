@@ -49,6 +49,11 @@
     </target>
 
     <target 
+      name="maven:iutest">
+      <ant antfile="${maven.home}/build-iutest.xml" target="test"/>
+    </target>
+
+    <target 
       name="maven:singletest">
       <ant antfile="${maven.home}/build-test.xml" target="run-singletest"/>
     </target>

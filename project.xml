@@ -327,14 +327,13 @@
       <unitTestClassEntry>exclude = **/TurbineCacheTest.class</unitTestClassEntry>
     </unitTestClassEntries>
 
-    <!-- Runtime unit test classes -->
-    <runtimeTestClassEntries>
-      <runtimeTestClassEntry>exclude = **/*Test.class</runtimeTestClassEntry>
-      <runtimeTestClassEntry>exclude = **/FileHandlerTest.class</runtimeTestClassEntry>
-      <runtimeTestClassEntry>include = **/*ServletTest.class</runtimeTestClassEntry>
-      <runtimeTestClassEntry>include = **/TurbineCacheTest.class</runtimeTestClassEntry>
-      <runtimeTestClassEntry>include = **/BaseValueParserTest.class</runtimeTestClassEntry>
-    </runtimeTestClassEntries>
+    <!-- Integration unit test classes -->
+    <integrationUnitTestClassEntries>
+      <integrationUnitTestClassEntry>exclude = **/FileHandlerTest.class</integrationUnitTestClassEntry>
+      <integrationUnitTestClassEntry>include = **/*ServletTest.class</integrationUnitTestClassEntry>
+      <integrationUnitTestClassEntry>include = **/TurbineCacheTest.class</integrationUnitTestClassEntry>
+      <integrationUnitTestClassEntry>include = **/BaseValueParserTest.class</integrationUnitTestClassEntry>
+    </integrationUnitTestClassEntries>
 
     <!-- J A R  R E S O U R C E S -->
     <!-- Resources that are packaged up inside the JAR file -->
