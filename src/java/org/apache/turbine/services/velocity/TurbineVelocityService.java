@@ -301,7 +301,7 @@ public class TurbineVelocityService
             writer = new OutputStreamWriter(bytes, charset);
 
             executeRequest(context, filename, writer);
-            // Writer got flushed in executeRequest!
+            writer.flush();
             results = bytes.toString(charset);
         }
         catch (Exception e)
