@@ -57,4 +57,10 @@
     <!-- Run the Turbine Plugin post-clean Target -->
     <attainGoal name="turbine:clean-clean"/>
   </postGoal>
+
+  <postGoal name="java:compile">
+    <!-- Install the libraries for inplace development -->
+    <attainGoal name="turbine:install-libs"/>
+  </postGoal>
+
 </project>
