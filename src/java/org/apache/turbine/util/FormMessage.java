@@ -178,4 +178,19 @@ public class FormMessage
     {
         fieldNames.addElement(fieldName);
     }
+
+    /**
+     * Write out the contents of the message in a friendly manner.
+     *
+     */
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer("formName:" + getFormName() + ", fieldNames:");
+        for (int i = 0; i< getFieldNames().length; i++){
+            sb.append(getFieldNames()[i] + " ");
+        }
+        sb.append(", message:" + getMessage());
+
+        return sb.toString();
+    }
 }
