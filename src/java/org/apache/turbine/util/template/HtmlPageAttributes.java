@@ -70,51 +70,54 @@ import org.apache.turbine.util.RunData;
  * HTML page.  This tool does not automatically make the changes in the HTML
  * page for you.  You must use this tool in your layout template to retrieve
  * the attributes.
- *
+ * <p>
  * The set/add methods are can be used from a screen template, action, screen
  * class, layour template, or anywhere else.  The get methods should be used in
  * your layout template(s) to construct the appropriate HTML tags.
- *
+ *<p>
  * Example usage of this tool to build the HEAD and BODY tags in your layout
  * templates:
- *  ## Set defaults for all pages using this layout.  Anything set here can
- *  ## be overridden in the screen template.
- *  $page.setTitle("My default page title");
- *  $page.setHttpEquiv("Content-Style-Type","text/css")
- *  $page.addStyleSheet($content.getURI("myStyleSheet.css"))
- *  $page.addScript($content.getURI("globalJavascriptCode.js"))
- *
- *  ## build the HTML, HEAD, and BODY tags dynamically
- *  <html>
- *    <head>
- *      #if( $page.Title != "" )
- *      <title>$page.Title</title>
- *      #end
- *      #foreach($metaTag in $page.MetaTags.keySet())
- *      <meta name="$metaTag" content="$page.MetaTags.get($metaTag)">
- *      #end
- *      #foreach($httpEquiv in $page.HttpEquivs.keySet())
- *      <meta http-equiv="$httpEquiv" content="$page.HttpEquivs.get($httpEquiv)">
- *      #end
- *      #foreach( $styleSheet in $page.StyleSheets )
- *      <link href='$styleSheet' type="text/css" rel="stylesheet">
- *      #end
- *      #foreach( $script in $page.Scripts )
- *        <script type="text/javascript" src="$script" language="JavaScript"></script>
- *      #end
- *    </head>
- *
- *    ## Construct the body tag.  Iterate through the body attributes to build the opening tag
- *    <body
- *      #foreach( $attributeName in $page.BodyAttributes.keySet() )
- *        $attributeName = "$page.BodyAttributes.get($attributeName)"
- *      #end
- *     >
- *
- * Example usages of this tool in your screen templates:
- *   $page.addScript($content.getURI("myJavascript.js")
- *   $page.setTitle("My page title")
- *   $page.setHttpEquiv("refresh","5; URL=http://localhost/nextpage.html")
+ * <p>
+ *  <code>
+ *  ## Set defaults for all pages using this layout.  Anything set here can<br>
+ *  ## be overridden in the screen template.<br>
+ *  $page.setTitle("My default page title");<br>
+ *  $page.setHttpEquiv("Content-Style-Type","text/css")<br>
+ *  $page.addStyleSheet($content.getURI("myStyleSheet.css"))<br>
+ *  $page.addScript($content.getURI("globalJavascriptCode.js"))<br>
+ *  <br>
+ *  ## build the HTML, HEAD, and BODY tags dynamically<br>
+ *  &lthtml&gt<br>
+ *    &lthead&gt<br>
+ *      #if( $page.Title != "" )<br>
+ *      &lttitle&gt$page.Title&lt/title&gt<br>
+ *      #end<br>
+ *      #foreach($metaTag in $page.MetaTags.keySet())<br>
+ *      &ltmeta name="$metaTag" content="$page.MetaTags.get($metaTag)"&gt<br>
+ *      #end<br>
+ *      #foreach($httpEquiv in $page.HttpEquivs.keySet())<br>
+ *      &ltmeta http-equiv="$httpEquiv" content="$page.HttpEquivs.get($httpEquiv)"&gt<br>
+ *      #end<br>
+ *      #foreach( $styleSheet in $page.StyleSheets )<br>
+ *      &ltlink href='$styleSheet' type="text/css" rel="stylesheet"&gt<br>
+ *      #end<br>
+ *      #foreach( $script in $page.Scripts )<br>
+ *        &ltscript type="text/javascript" src="$script" language="JavaScript"&gt&lt/script&gt<br>
+ *      #end<br>
+ *    &lt/head&gt<br>
+ *<br>
+ *    ## Construct the body tag.  Iterate through the body attributes to build the opening tag<br>
+ *    &ltbody<br>
+ *      #foreach( $attributeName in $page.BodyAttributes.keySet() )<br>
+ *        $attributeName = "$page.BodyAttributes.get($attributeName)"<br>
+ *      #end<br>
+ *     &gt
+ * </code>
+ * <p>
+ * Example usages of this tool in your screen templates:<br>
+ *   <code>$page.addScript($content.getURI("myJavascript.js")<br>
+ *   $page.setTitle("My page title")<br>
+ *   $page.setHttpEquiv("refresh","5; URL=http://localhost/nextpage.html")</code>
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
