@@ -289,4 +289,7 @@ public interface TurbineConstants
     
     /** Default Value for the Logging Directory, relative to the webroot */
     String LOGGING_ROOT_DEFAULT = "/logs";
+
+    /** Key for loading the UUID Generator with a constant value */
+    String UUID_ADDRESS_KEY = "uuid.address";
 }
