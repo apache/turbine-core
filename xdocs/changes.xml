@@ -113,6 +113,26 @@ Changes between Turbine 2.2 and 2.3-dev.
 <p>
   <ul>
     <li>
+      A new pull tool is available in the session scope called $sessionData.
+      This tool can be used to store data that will persist for the duration
+      of the session.  This should be used instead of the getTemp() and
+      setTemp() methods in TurbineUser.
+    </li>
+    <li>
+      The use of getPerm() and setPerm() methods in Turbine user have been
+      deprecated.  See the Extending Turbine User how-to for using additional
+      database columns for storage if you are using the DBSecurityService.
+      You can also switch to the TorqueSecurityService where it is much easier
+      to use additional columns.
+    </li>
+    <li>
+      Perm scope pull tools have been deprecated.  If you use these type of
+      tools, you need to switch to authorized scope pull tools.  These tools
+      are initialized with a user object.  Any state information that you were
+      storing in the tools itself, you will now need to store in the user
+      object.
+    </li>
+    <li>
       Turbine used to remove all data from the session before executing
       the login action.  This no longer happens.  Instead, the session
       is invalidated before calling to logout action.
