@@ -1,0 +1,7 @@
+<project>
+
+  <postGoal name="java:compile">
+    
+  </postGoal>
+
+</project>

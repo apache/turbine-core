@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <title>Changes</title>
+    <author email="epugh@upstate.com">Eric Pugh</author>
+  </properties>
+
+  <body>
+
+    <release version="2.4-dev" date="in CVS">
+      <action dev="epugh" type="add">
+        Added goals turbine:inplace-war and turbine:inplace-clean to facilate inplace editing
+        of war files.
+      </action>     	
+      <action dev="epugh" type="add">
+        Put various *.master files directly in the plugin resouces directory.
+      </action>    
+      <action dev="epugh" type="update">
+        Allow the plugin to compile by adding required empty directories.
+      </action>
+    </release>
+
+  </body>
+</document>
+

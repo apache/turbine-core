@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <title>Maven Turbine Plug-in</title>
+    <author email="mpoeschl@marmot.at">Martin Poeschl</author>
+    <author email="epugh@upstate.com">Eric Pugh</author>
+  </properties>
+
+  <body>
+    <section name="Maven Turbine Plug-in">
+     
+      <p>
+        This plugin is for working with Turbine.
+      </p>
+      <p>
+		It has goals to help you setup your base Turbine environment.  Additionally it has 
+		goals to help you with inplace code/build/compile development.
+      </p>
+     
+     
+
+    </section>
+  </body>
+</document>

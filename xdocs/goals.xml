@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <title>Maven Turbine Plug-in Goals</title>
+    <author email="mpoeschl@marmot.at">Martin Poeschl</author>
+    <author email="epugh@upstate.com">Eric Pugh</author>
+  </properties>
+  <body>
+    <goals>
+      <goal>
+        <name>turbine:base</name>
+        <description>
+          Setup the environment to start developing a Turbine base application
+          from scratch.
+          <p>
+           You must specify the package that you want the code to be
+           generated into, e.g.
+          </p>
+          <source>maven -Dpackage=com.mycompany.project genapp</source>
+        </description>
+      </goal>
+      <goal>
+        <name>turbine:sample</name>
+        <description>
+          Generate an simple application (like the TDK).
+        </description>
+      </goal>
+      <goal>
+        <name>turbine:inplace</name>
+        <description>
+		  Builds an inplace exploded WAR webapp.  Run this the first time to 
+		  setup your inplace development.  Also runs the eclipse plugin to
+		  update your .project and .classpath files.  This faciliates using Eclipse
+		  and Turbine baseds apps together.
+        </description>
+      </goal>      
+      <goal>
+        <name>turbine:inplace-clean</name>
+        <description>
+          Cleans an inplace exploded WAR webapp.  Note, this deletes any
+          files in the 'src/WEB-INF/classes' and 'src/WEB-INF/lib' directories!
+        </description>
+      </goal>      
+    </goals>
+  </body>
+</document>
