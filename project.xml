@@ -379,6 +379,14 @@
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
     </dependency>
+      <dependency>
+        <id>commons-pool</id>
+        <version>1.0</version>
+        <url>http://jakarta.apache.org/commons/</url>
+        <properties>
+          <war.bundle.jar>true</war.bundle.jar>
+        </properties>
+      </dependency>
     <dependency>
       <id>ecs</id>
       <version>1.4.1</version>
