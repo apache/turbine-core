@@ -63,6 +63,7 @@ import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.ScreenLoader;
 
 import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.velocity.VelocityService;
 
 import org.apache.turbine.util.RunData;
 
@@ -108,7 +109,8 @@ public class VelocityECSLayout
         throws Exception
     {
         // Get the context needed by Velocity.
-        Context context = TurbineVelocity.getContext(data);
+        Context context = (Context) data.getTemplateInfo()
+            .getTemplateContext(VelocityService.CONTEXT);
 
         String screenName = data.getScreen();
 

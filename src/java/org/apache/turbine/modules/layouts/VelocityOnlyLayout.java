@@ -60,6 +60,7 @@ import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.ScreenLoader;
 
 import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.velocity.VelocityService;
 
 import org.apache.turbine.util.RunData;
 
@@ -91,7 +92,8 @@ public class VelocityOnlyLayout
         throws Exception
     {
         // Get the context needed by Velocity
-        Context context = TurbineVelocity.getContext(data);
+        Context context = (Context) data.getTemplateInfo()
+            .getTemplateContext(VelocityService.CONTEXT);
 
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.
