@@ -342,7 +342,7 @@
     </dependency>
     <dependency>
       <id>commons-fileupload</id>
-      <version>1.0-rc1</version>
+      <version>1.0</version>
       <url>http://jakarta.apache.org/commons/fileupload/index.html</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
