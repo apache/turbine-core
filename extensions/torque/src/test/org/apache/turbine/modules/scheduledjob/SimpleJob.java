@@ -1,4 +1,4 @@
-package org.apache.turbine.services.schedule;
+package org.apache.turbine.modules.scheduledjob;
 
 /* ====================================================================
  * The Apache Software License, Version 1.1
@@ -54,63 +54,54 @@ package org.apache.turbine.services.schedule;
  * <http://www.apache.org/>.
  */
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import org.apache.turbine.test.BaseTestCase;
+import org.apache.turbine.modules.ScheduledJob;
+import org.apache.turbine.services.schedule.JobEntry;
 
 /**
- * Unit testing for Job Entries.  Ensure that removing NumberKey from TurbineNonPersistentScheduler 
- * still works.
+ * Simple job for use with unit testing of the scheduler service.  This
+ * job merely increments a static counter variable when it is run.  You 
+ * can check the counter to verify the job has run.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
-public class JobEntryTest extends BaseTestCase
+public class SimpleJob
+        extends ScheduledJob
 {
+    /** The test counter */
+    private static int counter = 0;
 
-    private JobEntry je1;
-    private JobEntry je2;
-
-    public JobEntryTest(String name)
+    /**
+     * Run the Jobentry from the scheduler queue.
+     *
+     * @param job The job to run.
+     * @throws java.lang.Exception generic exception
+     */
+    public void run(JobEntry job)
             throws Exception
     {
-        super(name);
-
-        // Add a new job entry
-        je1 = new JobEntry();
-        je1.setJobId(1);
-        je1.setSecond(0);
-        je1.setMinute(1);
-        je1.setHour(-1);
-        je1.setDayOfMonth(-1);
-        je1.setWeekDay(-1);
-        je1.setTask("SimpleJob");
-
-        je2 = new JobEntry();
-        je2.setJobId(2);
-        je2.setSecond(0);
-        je2.setMinute(1);
-        je2.setHour(-1);
-        je2.setDayOfMonth(-1);
-        je2.setWeekDay(-1);
-        je2.setTask("SimpleJob");
+        counter++;
+        System.out.println("\n\nI AM RUNNING!\n\n");
+        
     }
-
-    public static Test suite()
+    /**
+     * Returns the counter value.
+     *
+     * @return The counter value
+     */
+    public static int getCounter()
     {
-        return new TestSuite(JobEntryTest.class);
+        return counter;
     }
 
     /**
-     * Tests the ability to enable and disable the service.
+     * Sets the counter.
+     *
+     * @param i The new counter value
      */
-    public void testCompareTo()
+    public static void setCounter(int i)
     {
-        assertFalse(je1.equals(je2));
-        je2.setJobId(je1.getJobId());
-        assertTrue(je1.equals(je2));
-        
+        counter = i;
     }
-
 }

@@ -1,4 +1,4 @@
-package org.apache.turbine.services.schedule;
+package org.apache.turbine.services.security.torque;
 
 /* ====================================================================
  * The Apache Software License, Version 1.1
@@ -54,82 +54,77 @@ package org.apache.turbine.services.schedule;
  * <http://www.apache.org/>.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.turbine.modules.ScheduledJobLoader;
+import org.apache.turbine.services.security.torque.om.TurbineGroupPeer;
 
 /**
- * Wrapper for a <code>JobEntry</code> to actually perform the job's action.
+ * Constants for configuring the various columns and bean properties
+ * for the used peer.
  *
- * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
- * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * <pre>
+ * Default is:
+ *
+ * security.torque.groupPeer.class = org.apache.turbine.services.security.torque.om.TurbineGroupPeer
+ * security.torque.groupPeer.column.name       = GROUP_NAME
+ * security.torque.groupPeer.column.id         = GROUP_ID
+ *
+ * security.torque.group.class = org.apache.turbine.services.security.torque.om.TurbineGroup
+ * security.torque.group.property.name       = Name
+ * security.torque.group.property.id         = GroupId
+ *
+ * </pre>
+ * If security.torque.group.class is unset, then the value of the constant CLASSNAME_DEFAULT
+ * from the configured Peer is used.
+ *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
- * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class WorkerThread
-        implements Runnable
+
+public interface GroupPeerManagerConstants
 {
-    /**
-     * The <code>JobEntry</code> to run.
-     */
-    private JobEntry je = null;
+    /** The key within the security service properties for the group class implementation */
+    String GROUP_CLASS_KEY =
+            "torque.group.class";
 
-    /** Logging */
-    private static Log log = LogFactory.getLog(ScheduleService.LOGGER_NAME);
+    /** The key within the security service properties for the group peer class implementation */
+    String GROUP_PEER_CLASS_KEY =
+            "torque.groupPeer.class";
 
-    /**
-     * Creates a new worker to run the specified <code>JobEntry</code>.
-     *
-     * @param je The <code>JobEntry</code> to create a worker for.
-     */
-    public WorkerThread(JobEntry je)
-    {
-        this.je = je;
-    }
+    /** Group peer default class */
+    String GROUP_PEER_CLASS_DEFAULT =
+            TurbineGroupPeer.class.getName();
 
-    /**
-     * Run the job.
-     */
-    public void run()
-    {
-        if (je == null || je.isActive())
-        {
-            return;
-        }
+    /** The column name for the login name field. */
+    String GROUP_NAME_COLUMN_KEY =
+            "torque.groupPeer.column.name";
 
-        try
-        {
-            if (!je.isActive())
-            {
-                je.setActive(true);
-                logStateChange("started");
-                ScheduledJobLoader.getInstance().exec(je, je.getTask());
-            }
-        }
-        catch (Exception e)
-        {
-            log.error("Error in WorkerThread for scheduled job #" +
-                    je.getPrimaryKey() + ", task: " + je.getTask(), e);
-        }
-        finally
-        {
-            if (je.isActive())
-            {
-                je.setActive(false);
-                logStateChange("completed");
-            }
-        }
-    }
+    /** The column name for the id field. */
+    String GROUP_ID_COLUMN_KEY =
+        "torque.groupPeer.column.id";
 
-    /**
-     * Macro to log <code>JobEntry</code> status information.
-     *
-     * @param state The new state of the <code>JobEntry</code>.
-     */
-    private final void logStateChange(String state)
-    {
-        log.debug("Scheduled job #" + je.getPrimaryKey() + ' ' + state +
-                ", task: " + je.getTask());
-    }
+
+    /** The default value for the column name constant for the login name field. */
+    String GROUP_NAME_COLUMN_DEFAULT =
+        "GROUP_NAME";
+
+    /** The default value for the column name constant for the id field. */
+    String GROUP_ID_COLUMN_DEFAULT =
+        "GROUP_ID";
+
+
+    /** The property name of the bean property for the login name field. */
+    String GROUP_NAME_PROPERTY_KEY =
+        "torque.group.property.name";
+
+    /** The property name of the bean property for the id field. */
+    String GROUP_ID_PROPERTY_KEY =
+        "torque.group.property.id";
+
+
+    /** The default value of the bean property for the login name field. */
+    String GROUP_NAME_PROPERTY_DEFAULT =
+        "Name";
+
+    /** The default value of the bean property for the id field. */
+    String GROUP_ID_PROPERTY_DEFAULT =
+        "GroupId";
 }

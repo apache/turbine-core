@@ -164,8 +164,7 @@ public class TurbineNonPersistentSchedulerService
                     int wkday = conf.getInt(jobPrefix + ".WEEKDAY", -1);
                     int dayOfMonth = conf.getInt(jobPrefix + ".DAY_OF_MONTH", -1);
 
-                    JobEntry je = new JobEntry(
-                            sec,
+                    JobEntryTorque je = new JobEntryTorque(sec,
                             min,
                             hr,
                             wkday,
@@ -221,7 +220,7 @@ public class TurbineNonPersistentSchedulerService
     public JobEntry getJob(int oid)
             throws TurbineException
     {
-        JobEntry je = new JobEntry();
+        JobEntryTorque je = new JobEntryTorque();
         je.setJobId(oid);
         return scheduleQueue.getJob(je);
     }
