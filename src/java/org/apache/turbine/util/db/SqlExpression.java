@@ -100,7 +100,7 @@ public class SqlExpression
     public static String buildInnerJoin( String column,
                                          String relatedColumn )
     {
-        // 'db' can be null because 'ignoreCase' is null.
+        // 'db' can be null because 'ignoreCase' is false.
         return buildInnerJoin( column, relatedColumn, false, null );
     }
 
