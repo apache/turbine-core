@@ -72,7 +72,8 @@ import org.apache.ecs.html.P;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
- * @deprecated The use of ECS for the view is deprecated. Use a templating solution.
+ * @deprecated The use of ECS for the view is deprecated.
+ *             Use a templating solution.
  */
 public class DefaultLayout extends Layout
 {
@@ -83,22 +84,21 @@ public class DefaultLayout extends Layout
      * defaults to 'white'</em></p>
      *
      * @param data Turbine information.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
-    public void doBuild( RunData data ) throws Exception
+    public void doBuild(RunData data) throws Exception
     {
         // Execute the Top Navigation portion for this Layout.
         ConcreteElement topNav =
             NavigationLoader.getInstance().eval(data, "DefaultTopNavigation");
 
-        if ( topNav != null)
+        if (topNav != null)
         {
-            data.getPage().getBody().addElement( topNav );
+            data.getPage().getBody().addElement(topNav);
         }
 
-        // If an Action has defined a message, attempt to display it
-        // here.
-        if ( data.getMessage() != null )
+        // If an Action has defined a message, attempt to display it here.
+        if (data.getMessage() != null)
         {
             data.getPage().getBody().addElement(new P())
                 .addElement(new Font().setColor(HtmlColor.red)
@@ -111,7 +111,7 @@ public class DefaultLayout extends Layout
 
         if (screen != null)
         {
-            data.getPage().getBody().addElement( screen );
+            data.getPage().getBody().addElement(screen);
         }
 
         // The screen should have attempted to set a Title for itself,
@@ -123,12 +123,12 @@ public class DefaultLayout extends Layout
         data.getPage().getBody().setBgColor(HtmlColor.white);
 
         // Execute the Bottom Navigation portion for this Layout.
-        ConcreteElement bottomNav =
-        NavigationLoader.getInstance().eval ( data, "DefaultBottomNavigation" );
+        ConcreteElement bottomNav = NavigationLoader.getInstance().eval(data,
+            "DefaultBottomNavigation");
 
-        if ( bottomNav != null)
+        if (bottomNav != null)
         {
-            data.getPage().getBody().addElement( bottomNav );
+            data.getPage().getBody().addElement(bottomNav);
         }
     }
 }

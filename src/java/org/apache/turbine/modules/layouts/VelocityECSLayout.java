@@ -66,7 +66,6 @@ import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
 // Velocity Stuff
 import org.apache.velocity.context.Context;
 
@@ -83,11 +82,16 @@ import org.apache.velocity.context.Context;
  */
 public class VelocityECSLayout extends Layout
 {
+    /** the log */
     private static Log log = LogFactory.getLog(VelocityECSLayout.class);
 
+    /**
+     * default constructor
+     */
     public VelocityECSLayout()
     {
-        log.warn("The VelocityECSLayout is deprecated.  Please switch to VelocityOnlyLayout.");
+        log.warn("The VelocityECSLayout is deprecated. "
+           + "Please switch to VelocityOnlyLayout.");
     }
 
     /**
@@ -97,18 +101,16 @@ public class VelocityECSLayout extends Layout
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    public void doBuild( RunData data ) throws Exception
+    public void doBuild(RunData data) throws Exception
     {
-        /* Get the context needed by Velocity. */
-        Context context = TurbineVelocity.getContext( data );
+        // Get the context needed by Velocity.
+        Context context = TurbineVelocity.getContext(data);
 
-        /* Screen results. */
+        // Screen results.
         String returnValue = "";
 
-        /*
-         * First, generate the screen and put it in the context so we
-         * can grab it the layout template.
-         */
+        // First, generate the screen and put it in the context so we
+        // can grab it the layout template.
         ConcreteElement results = ScreenLoader.getInstance()
             .eval(data, data.getScreen());
 
@@ -117,26 +119,18 @@ public class VelocityECSLayout extends Layout
             returnValue = results.toString();
         }
 
-        /* Variable for the screen in the layout template. */
+        // Variable for the screen in the layout template.
         context.put("screen_placeholder", returnValue);
 
-        /*
-         * Variable to reference the navigation screen in the layout
-         * template.
-         */
-        context.put("navigation", new TemplateNavigation( data ));
+        // Variable to reference the navigation screen in the layout template.
+        context.put("navigation", new TemplateNavigation(data));
 
-        /*
-         * Grab the layout template set in the TemplatePage.
-         */
+        // Grab the layout template set in the TemplatePage.
         String templateName = data.getTemplateInfo().getLayoutTemplate();
 
-        /*
-         * Finally, generate the layout template and add it to the
-         * body of the Document in the RunData.
-         */
-        data.getPage().getBody().addElement(
-            TurbineVelocity.handleRequest(
+        // Finally, generate the layout template and add it to the body of the
+        // Document in the RunData.
+        data.getPage().getBody().addElement(TurbineVelocity.handleRequest(
                 context, "layouts" + templateName));
     }
 }

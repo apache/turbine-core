@@ -74,25 +74,23 @@ public class JspLayout extends Layout
     /**
      * Method called by LayoutLoader.
      *
-     * @param RunData
-     * @return processed template in a String
+     * @param data RunData
+     * @throws Exception generic exception
      */
     public void doBuild(RunData data) throws Exception
     {
         data.getResponse().setContentType("text/html");
         data.declareDirectResponse();
         // variable to reference the screen in the layout template
-        data.getRequest()
-            .setAttribute("screen_placeholder",
+        data.getRequest().setAttribute("screen_placeholder",
                 new JspScreenPlaceholder(data));
         // variable to reference the navigations in the layout template
-        data.getRequest()
-            .setAttribute("navigation", new JspNavigation(data));
+        data.getRequest().setAttribute("navigation", new JspNavigation(data));
 
         // Grab the layout template set in the TemplatePage.
         String templateName = data.getTemplateInfo().getLayoutTemplate();
         // Finally, generate the layout template and output to the response
-        JspService jsp = (JspService)TurbineServices.getInstance()
+        JspService jsp = (JspService) TurbineServices.getInstance()
             .getService(JspService.SERVICE_NAME);
         jsp.handleRequest(data, "/layouts" + templateName, true);
     }
