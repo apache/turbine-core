@@ -1,14 +1,13 @@
-<pipeline>
-  <name>TurbineClassicPipeline</name>
+<org.apache.turbine.pipeline.TurbinePipeline>
   <valves>
-    <valve className="org.apache.turbine.pipeline.DetermineActionValve"/>
-    <valve className="org.apache.turbine.pipeline.DetermineTargetValve"/>   
-    <valve className="org.apache.turbine.pipeline.DefaultSessionTimeoutValve"/>   
-    <valve className="org.apache.turbine.pipeline.DefaultLoginValve"/>
-    <valve className="org.apache.turbine.pipeline.DefaultSessionValidationValve"/>
-    <valve className="org.apache.turbine.pipeline.DefaultACLCreationValve"/>
-    <valve className="org.apache.turbine.pipeline.ExecutePageValve"/>
-    <valve className="org.apache.turbine.pipeline.CleanUpValve"/>
-    <valve className="org.apache.turbine.pipeline.DetermineRedirectRequestedValve"/>
+    <org.apache.turbine.pipeline.DetermineActionValve/>
+    <org.apache.turbine.pipeline.DetermineTargetValve/>   
+    <org.apache.turbine.pipeline.DefaultSessionTimeoutValve/>   
+    <org.apache.turbine.pipeline.DefaultLoginValve/>
+    <org.apache.turbine.pipeline.DefaultSessionValidationValve/>
+    <org.apache.turbine.pipeline.DefaultACLCreationValve/>
+    <org.apache.turbine.pipeline.ExecutePageValve/>
+    <org.apache.turbine.pipeline.CleanUpValve/>
+    <org.apache.turbine.pipeline.DetermineRedirectRequestedValve/>    
   </valves>
-</pipeline>
+</org.apache.turbine.pipeline.TurbinePipeline>
