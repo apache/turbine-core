@@ -507,18 +507,6 @@
     <!-- *********************************** -->
 
     <dependency>
-      <id>castor</id>
-      <version>0.9.3</version>
-    </dependency>
-    <dependency>
-      <id>webmacro</id>
-      <version>0.94</version>
-    </dependency>
-    <dependency>
-      <id>freemarker</id>
-      <version>1.5.3</version>
-    </dependency>
-    <dependency>
       <id>jython</id>
       <version>2.1</version>
     </dependency>
