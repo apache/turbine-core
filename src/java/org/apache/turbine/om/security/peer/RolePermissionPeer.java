@@ -72,18 +72,18 @@ import org.apache.turbine.util.db.map.TurbineMapBuilder;
 public class RolePermissionPeer extends BasePeer
 {
     /** The map builder for this Peer. */
-    private static final TurbineMapBuilder mapBuilder = (TurbineMapBuilder)
+    private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
             getMapBuilder(TurbineMapBuilder.class.getName());
 
     /** The table name for this peer. */
-    public static final String TABLE_NAME = mapBuilder.getTableRolePermission();
+    public static final String TABLE_NAME = MAP_BUILDER.getTableRolePermission();
 
     /** The column name for the permission id field. */
     public static final String PERMISSION_ID
-            = mapBuilder.getRolePermission_PermissionId();
+            = MAP_BUILDER.getRolePermission_PermissionId();
 
     /** The column name for the role id field. */
-    public static final String ROLE_ID = mapBuilder.getRolePermission_RoleId();
+    public static final String ROLE_ID = MAP_BUILDER.getRolePermission_RoleId();
 
 
     /**

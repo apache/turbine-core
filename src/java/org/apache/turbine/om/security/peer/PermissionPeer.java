@@ -88,26 +88,26 @@ import com.workingdogs.village.Record;
 public class PermissionPeer extends BasePeer
 {
     /** The map builder for this Peer. */
-    private static final TurbineMapBuilder mapBuilder = (TurbineMapBuilder)
+    private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
             getMapBuilder(TurbineMapBuilder.class.getName());
 
     /** The table name for this peer. */
-    private static final String TABLE_NAME = mapBuilder.getTablePermission();
+    private static final String TABLE_NAME = MAP_BUILDER.getTablePermission();
 
     /** The column name for the permission id field. */
     public static final String PERMISSION_ID
-            = mapBuilder.getPermission_PermissionId();
+            = MAP_BUILDER.getPermission_PermissionId();
 
     /** The column name for the name field. */
-    public static final String NAME = mapBuilder.getPermission_Name();
+    public static final String NAME = MAP_BUILDER.getPermission_Name();
 
     /** The column name for the ObjectData field */
     public static final String OBJECTDATA
-            = mapBuilder.getPermission_ObjectData();
+            = MAP_BUILDER.getPermission_ObjectData();
 
     /** The Oracle sequence name for this peer. */
     private static final String SEQUENCE_NAME
-            = mapBuilder.getSequencePermission();
+            = MAP_BUILDER.getSequencePermission();
 
 
     /**

@@ -86,20 +86,20 @@ import com.workingdogs.village.Record;
 public class RolePeer extends BasePeer
 {
     /** The map builder for this Peer. */
-    private static final TurbineMapBuilder mapBuilder = (TurbineMapBuilder)
+    private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
             getMapBuilder(TurbineMapBuilder.class.getName());
 
     /** The table name for this peer. */
-    private static final String TABLE_NAME = mapBuilder.getTableRole();
+    private static final String TABLE_NAME = MAP_BUILDER.getTableRole();
 
     /** The column name for the role id field. */
-    public static final String ROLE_ID = mapBuilder.getRole_RoleId();
+    public static final String ROLE_ID = MAP_BUILDER.getRole_RoleId();
 
     /** The column name for the name field. */
-    public static final String NAME = mapBuilder.getRole_Name();
+    public static final String NAME = MAP_BUILDER.getRole_Name();
 
     /** The column name for the ObjectData field */
-    public static final String OBJECTDATA = mapBuilder.getRole_ObjectData();
+    public static final String OBJECTDATA = MAP_BUILDER.getRole_ObjectData();
 
     /**
      * Retrieves/assembles a RoleSet based on the Criteria passed in
