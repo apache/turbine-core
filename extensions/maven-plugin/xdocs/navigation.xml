@@ -22,9 +22,7 @@
   </title>
   <body>
     <links>
-      <item href="http://jakarta.apache.org/turbine/" name="Turbine"/>
-      <item href="http://db.apache.org/torque/" name="Torque"/>
-      <item href="http://maven.apache.org/" name="Maven"/>
+      <item name="Turbine"                 href="http://jakarta.apache.org/turbine/"/>
     </links>
     <menu name="Overview">
       <item href="/index.html" name="Home"/>

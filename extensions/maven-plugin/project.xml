@@ -21,7 +21,7 @@
 <!--                                                                     -->
 <!--  Maven project.xml Datei                                            -->
 <!--                                                                     -->
-<!-- $Id$        -->
+<!-- $Id$            -->
 <!--                                                                     -->
 <!-- =================================================================== -->
 
@@ -30,14 +30,13 @@
   <id>maven-turbine-plugin</id>
   <name>Maven Environment for Turbine Applications Plugin</name>
   <groupId>turbine</groupId>
-  <currentVersion>1.2-dev</currentVersion>
+  <currentVersion>1.2-rc1</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
     <logo>/images/jakarta.png</logo>
   </organization>
-  <inceptionYear>2003</inceptionYear>
-  <package>org.apache.turbine</package>
+  <inceptionYear>2004</inceptionYear>
   <logo>/images/blue-logo.gif</logo>
   <description>
     The Maven Environment for Turbine Applications (M.E.T.A.) is a replacement
@@ -45,13 +44,14 @@
     defined setup for starting new Turbine applications.
   </description>
   <shortDescription>Maven Environment for Turbine Applications</shortDescription>
-  <url>http://jakarta.apache.org/turbine/turbine-2.3/maven-turbine-plugin/</url>
+  <url>http://jakarta.apache.org/turbine/meta/</url>
   <issueTrackingUrl>http://issues.apache.org/scarab/issues</issueTrackingUrl>
   <siteAddress>jakarta.apache.org</siteAddress>
-  <siteDirectory>/www/jakarta.apache.org/turbine/turbine-2.3/maven-turbine-plugin/</siteDirectory>
-  <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-turbine-2/</distributionDirectory>
+  <siteDirectory>/www/jakarta.apache.org/turbine/meta/</siteDirectory>
+  <distributionDirectory>/www/www.apache.org/dist/jakarta/turbine/</distributionDirectory>
   <repository>
-    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2/extensions/maven-plugin/</connection>
+    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2/extensions/maven-plugin</connection>
+    <developerConnection>scm:cvs:ext:${maven.username}@cvs.apache.org:/home/cvs:jakarta-turbine-2/extensions/maven-plugin</developerConnection>
     <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2/extensions/maven-plugin/</url>
   </repository>
   <mailingLists>
@@ -89,6 +89,12 @@
       <timezone>2</timezone>
     </developer>
   </developers>
+  <versions>
+    <version>
+      <name>1.2-rc1</name>
+      <tag>META_1_2_RC1</tag>
+    </version>
+  </versions>
 
   <contributors>
     <contributor>
@@ -100,11 +106,20 @@
     </contributor>      
   </contributors>
 
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <!-- ======================================================================== -->
   <!--                                                                          -->
   <!-- M.E.T.A. itself has no dependencies on any jars.                         -->
   <!--                                                                          -->
   <!-- ======================================================================== -->
+  <dependencies/>
 
   <build>
     <resources>

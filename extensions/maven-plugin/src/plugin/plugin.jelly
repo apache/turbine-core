@@ -89,6 +89,7 @@
     <filter token="TURBINE_PLUGIN_SRC_CONF"    value="${turbine.plugin.src.conf}"/>
     <filter token="TURBINE_PLUGIN_SRC_JAVA"    value="${turbine.plugin.src.java}"/>
     <filter token="TURBINE_PLUGIN_SRC_TEST"    value="${turbine.plugin.src.test}"/>
+    <filter token="TURBINE_PLUGIN_SRC_PROPS"   value="${turbine.plugin.src.props}"/>
 
     <filter token="TURBINE_PLUGIN_TARGET_LIB"  value="${turbine.plugin.target.lib}"/>
 
@@ -155,6 +156,7 @@
     <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.style}"/>
     <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.images}"/>
     <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.pages}"/>
+    <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.props}"/>
     <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.resources}"/>
 
     <mkdir dir="${turbine.plugin.root.dir}/${turbine.plugin.src.java}/${appDir}" />
@@ -203,6 +205,11 @@
     <meta:copyFlavorFile tofile="${turbine.plugin.root.dir}/${maven.war.webxml}" filtering="true"
                                 flavor="${turbine.app.flavor}"
                                 fromfile="conf/application-web.xml" />
+
+    <meta:copyFlavorDir  todir="${turbine.plugin.root.dir}/${turbine.plugin.src.props}" filtering="true"
+                                flavor="${turbine.app.flavor}"
+                                frompath="props"
+                                include="**/*" />
 
     <meta:copyFlavorFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.conf}/${turbine.app.name}.properties" filtering="true"
                                 flavor="${turbine.app.flavor}"
@@ -427,6 +434,7 @@
         <copy todir="${turbine.target.dir}/WEB-INF/conf" flatten="true" includeEmptyDirs="no">
          <fileset dir="${turbine.plugin.src.conf}">
             <exclude name="${pom.artifactId}-web.xml"/>
+            <exclude name="commons-logging.properties"/>
           </fileset>
         </copy>
       </j:when>
@@ -571,6 +579,7 @@
           <fileset dir="${maven.build.dest}">
             <include name="**/*"/>
             <exclude name="."/>
+            <exclude name="**/*.properties"/>
           </fileset>
         </ant:delete>
       </j:when>
@@ -682,6 +691,7 @@
         <copy todir="${webapp.build.webinf}/conf" flatten="true" includeEmptyDirs="no">
           <fileset dir="${turbine.plugin.src.conf}">
             <exclude name="**/${pom.artifactId}-web.xml"/>
+            <exclude name="commons-logging.properties"/>
           </fileset>
         </copy>
       </j:when>
