@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?>
+<!DOCTYPE app-data SYSTEM "http://jakarta.apache.org/turbine/dtd/database.dtd">
+
+<!-- ==================================================================== -->
+<!--                                                                      -->
+<!-- T U R B I N E  P R O J E C T  S C H E M A                            -->
+<!--                                                                      -->
+<!-- ==================================================================== -->
+<!-- This is an example Turbine project schema.                           -->
+<!-- ==================================================================== -->
+
+<app-data>
+
+<!-- 
+    Note: the name= attribute in the database tag represents what
+          you would use to map to a specific database named in the
+          TurbineResources.properties file. If you just want to use
+          the defaults, please do not specify a name= attribute.
+
+          The benefit is that you can have one database talking to
+          one system and another talking to an entirely different
+          system.
+
+    Example:
+        database.INTERPLANETARY.driver=org.postgresql.Driver
+        database.INTERPLANETARY.url=jdbc:postgresql:test
+        database.INTERPLANETARY.username=graeme
+        database.INTERPLANETARY.password=password
+
+        database.SIMPLE.driver=org.postgresql.Driver
+        database.SIMPLE.url=jdbc:postgresql:foo
+        database.SIMPLE.username=foo
+        database.SIMPLE.password=bar
+-->
+
+<database name="SIMPLE">
+  <table name="SIMPLE">
+    <column name="ROWID" required="true" autoIncrement="true"
+            primaryKey="true" type="INTEGER"/>
+    <column name="NAME" required="true" size="255" type="VARCHAR"/>
+    <column name="SPECIES" type="INTEGER" default="-2"/>
+    <column name="PLANET" type="INTEGER" default="-1"/>
+  </table>
+</database>  
+
+<database name="INTERPLANETARY">  
+  <table name="CIVILIZATION">
+    <column name="CIV_ID" required="true" autoIncrement="true"
+            primaryKey="true" type="INTEGER"/>
+    <column name="NAME" required="true" type="LONGVARCHAR"/>
+  </table>
+
+  <table name="CIV_PEOPLE">
+    <column name="CIV_ID" required="true" primaryKey="true" 
+            type="INTEGER"/>
+    <column name="PEOPLE_ID" required="true" primaryKey="true" type="INTEGER"/>
+
+    <foreign-key foreignTable="CIVILIZATION">
+        <reference local="CIV_ID" foreign="CIV_ID"/>
+    </foreign-key>
+    <foreign-key foreignTable="PEOPLE">
+        <reference local="PEOPLE_ID" foreign="PEOPLE_ID"/>
+    </foreign-key>
+  </table>
+
+  <table name="PEOPLE">
+    <column name="PEOPLE_ID" required="true" autoIncrement="true"
+            primaryKey="true" type="INTEGER"/>
+    <column name="NAME" required="true" size="255" type="VARCHAR"/>
+    <column name="SPECIES" type="INTEGER" default="-2"/>
+    <column name="PLANET" type="INTEGER" default="-1"/>
+  </table>
+</database>  
+
+</app-data>

@@ -1,0 +1,6 @@
+#foreach ($fk in $table.ForeignKeys)
+ALTER TABLE $table.Name
+    ADD CONSTRAINT $fk.LocalColumnNames FOREIGN KEY ($fk.LocalColumnNames)
+    REFERENCES $fk.ForeignTableName ($fk.ForeignColumnNames);
+
+#end

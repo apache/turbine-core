@@ -1,0 +1,12 @@
+db2=default
+interbase=default
+mysql=default
+postgresql=default
+hypersonic=default
+oracle=default
+db2=default
+interbase=default
+sybase=default
+mssql=default
+sapdb=default
+secure.passwords=false

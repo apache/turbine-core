@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+
+<document>
+
+ <properties>
+  <title>The Turbine Documentation Project</title>
+  <author email="criley@ekmail.com">Cameron Riley</author>
+  <author email="jon@latchkey.com">Jon S. Stevens</author>
+ </properties>
+
+<body>
+
+<section name="Turbine Documentation Project">
+
+<p>
+The Turbine Documentation Project is the process of documenting Turbine, inside
+and out, for the user community. Opensource projects live and die by their
+community participation, as a software project is more than just source code,
+other components such as documentation have an important role in the process.
+As Software Engineers tend towards the habit of communicating in code,
+documentation is often skimped on, which can alienate the new or less
+experienced user. This component of the Turbine project will formalise the
+common and shared knowledge of the Turbine community into documentation for
+Software Engineers, Students, Hobbyists and interested passers-by alike. This
+however requires participation from all members of the Turbine User community.
+</p>
+
+</section>
+
+<section name="What Can I do to Contribute?">
+
+<p>
+Turbine can always improve it's documentation, there are many area's that always
+need attention;
+</p>
+
+<ul>
+<li>Correct Errors.</li>
+<li>Correct spelling mistakes.</li>
+<li>Replace out of date information.</li>
+<li>Improve existing documentation.</li>
+<li>Add new documentation.</li>
+</ul>
+
+<p>
+There are more specific and immediate documentation needs in the TODO section
+below. If you are looking for an aspect of Turbine to start learn and document
+immediately, the ToDo is a good start. Documenting has the added advantage, that
+it is an excellent way to learn Turbine in detail and become an advanced Turbine
+user!
+</p>
+
+</section>
+
+<section name="Documentation ToDo List">
+
+<ul>
+<li>Fix spelling and grammatical errors.</li>
+</ul>
+
+<ul>
+<li>Turbine and Security - There needs to be more documentation on Security
+management.</li>
+<li>Turbine and LDAP - Security with LDAP</li>
+<li>Turbine and Javascript - Loading js files through ContentURI</li> 
+<li>Turbine and JSP - Needs jsp examples.</li>
+<li>Turbine and Python - Needs Python examples.</li>
+<li>Turbine and Frames - Needs to be in it's own document.</li>
+</ul>
+
+<ul>
+<li>Screens and Actions - How the Default Screen and Action work.</li> 
+<li>Pull Howto</li>
+<li>Torque Howto - including OM description</li> 
+<li>Intake Howto</li>
+<li>Advanced Criteria - needs more description of comparitors and Criterion.
+</li> 
+<li>Services - All the services need documentation.</li>
+</ul>
+
+<p>
+TDK Howto - Howto or tutorial describing initial app to creating your own
+schema, om/peer classes, business objects through to Velocity Templates.
+</p>
+
+<p>
+Plus more .....
+</p>
+
+</section>
+
+<section name="Website Documentation">
+
+<p>
+The website documentation is the main component outside of the source code and
+javadocs. If there are ommisions on the website that you think need to be
+documented or written in, please go ahead and do it.
+</p>
+
+</section>
+
+<section name="Turbine and TDK Feature Documentation">
+
+<p>
+Turbine is a complex system with numerous features  The features that make up
+Turbine all need documenting.
+</p>
+
+</section>
+
+<section name="Turbine and TDK Internal Workings Documentation">
+
+<p>
+How the components at the source level work, such as the Assemblers, Services,
+Actions and Screens, Connection Pooling etc.
+</p>
+
+</section>
+
+<section name="Turbine and TDK Tutorials">
+
+<p>
+How to use Turbine with other technologies such as JSP, JBoss etc etc How to use
+Torque, how to get a tdk project up and running. How to use the objects in
+Turbine for your projects such As Peers and Criteria.
+</p>
+
+</section>
+
+<section name="Filtering Mailing Lists">
+
+<p>
+Monitor mailing lists for common discussions and modify into a format that is
+sutiable for the Turbine Website and xdocs directory, plus adding a few choice
+comments. From there it can be improved.
+</p>
+
+</section>
+
+<section name="Javadocing Source Code">
+
+<p>
+Javadocing the source code where it is missing, incomplete or can be described
+better. As this is an opensource project the source code is open to all who wish
+to view it, having well documented, clean, understandable code is important.
+</p>
+
+</section>
+
+<section name="Getting Started">
+
+<p>
+To get started, read all the current documentation and find an area that you
+know a bit about. If that area isnt covered, you can improve Turbine by
+documenting it. Write up the document, no matter how skeletal and email it to
+the Turbine-Users-List, making sure your are subscribed first. All documentation
+of any kind is greatly appreciated.
+</p>
+
+<p>
+The documentation is maintained as XML in the /jakarta-turbine/xdocs directory,
+and are transformed to HTML for the website documentation.
+</p>
+
+</section>
+
+<section name="Building the Docs">
+
+<p>
+To build the HTML docs you need to <a
+href="http://jakarta.apache.org/site/jakarta-site2.html">check out the
+jakarta-site2 project from CVS</a>.
+</p>
+
+<p>
+To check that the xml document you have built is validated, run it through the
+build process. To do this cd to the build directory and execute the
+<strong>docs</strong> target:
+</p>
+
+<source><![CDATA[
+ant docs
+]]></source>
+
+<p>
+This will transform all the XML files in the /jakarta-turbine/xdocs directory to
+HTML in the docs directory. Any validation erros will be thrown while processing
+giving a line number for the XML file where the XML is incorrect. Usually it is
+something minor like an unclosed tag or a spelling error in a tag.
+</p>
+
+<p>
+If you are a committer, don't forget to check in the html-files and update the
+web-site. Log into apache.org and type:
+</p>
+
+<source><![CDATA[
+umask 002
+cd /www/jakarta.apache.org/turbine
+cvs update
+]]></source>
+
+<p>
+That will update the live website. The umask line you can put into your
+.cshrc/.tcshrc/.bashrc so that you only have to do it once.
+</p>
+
+</section>
+
+</body>
+</document>

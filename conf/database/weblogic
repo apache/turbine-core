@@ -1,0 +1,2 @@
+databse.driver=weblogic.jdbc.pool.Driver
+database.adaptor=DBWeblogic

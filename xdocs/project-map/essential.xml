@@ -1,0 +1,268 @@
+<?xml version="1.0"?>
+<document>
+    <properties>
+        <title>Project map - Core</title>
+        <author email="rafal@apache.org">Rafal Krzewski</author>
+    </properties>
+    
+    <body>
+        <section name="Essential services">
+            <p><a href="#Service framework">Service framework</a></p>
+            <p><a href="#Resource service">Resource service</a></p>
+            <p><a href="#Logging service">Logging service</a></p>
+            <p><a href="#Servlet service">Servlet service</a></p>
+            <p><a href="#Security service">Security service</a></p>
+            <p><a href="#Scheduler service">Scheduler service</a></p>
+        </section>
+
+        <section name="Service framework">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+            <p></p>
+            <ul>
+                <li><code>org.apache.turbine.services.BaseInitable</code></li>
+                <li><code>org.apache.turbine.services.BaseInitableBroker</code></li>
+                <li><code>org.apache.turbine.services.BaseService</code></li>
+                <li><code>org.apache.turbine.services.BaseServiceBroker</code></li>
+                <li><code>org.apache.turbine.services.Initable</code></li>
+                <li><code>org.apache.turbine.services.InitableBroker</code></li>
+                <li><code>org.apache.turbine.services.InitializationException</code></li>
+                <li><code>org.apache.turbine.services.InstantiationException</code></li>
+                <li><code>org.apache.turbine.services.Service</code></li>
+                <li><code>org.apache.turbine.services.ServiceBroker</code></li>
+                <li><code>org.apache.turbine.services.TurbineBaseService</code></li>
+                <li><code>org.apache.turbine.services.TurbineServices</code></li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+                <li>Rafal Krzewski</li>
+                <li>Ilkka Priha</li>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <p>None</p>
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+
+        <section name="Resource service">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+
+            <p>Service</p>
+            <ul>
+                <li><code>org.apache.turbine.services.resources.ResourceService</code></li>
+                <li><code>org.apache.turbine.services.resources.TurbineResourceService</code></li>
+                <li><code>org.apache.turbine.services.resources.TurbineResources</code></li>
+           </ul>
+
+            <p><b>People</b></p>
+            <ul>
+                <li>Rafal Krzewski</li>
+                <li>Raphael Luta</li>
+                <li>Jason van Zyl</li>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <p>None</p>
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+
+        <section name="Logging service">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+
+            <p>Service</p>
+            <ul>
+                <li><code>org.apache.turbine.services.logging.BaseLogger</code></li>
+                <li><code>org.apache.turbine.services.logging.BaseRunDataFilter</code></li>
+                <li><code>org.apache.turbine.services.logging.FileLogger</code></li>
+                <li><code>org.apache.turbine.services.logging.Log4JavaLogger</code></li>
+                <li><code>org.apache.turbine.services.logging.LogWriter</code></li>
+                <li><code>org.apache.turbine.services.logging.Logger</code></li>
+                <li><code>org.apache.turbine.services.logging.LoggingConfig</code></li>
+                <li><code>org.apache.turbine.services.logging.LoggingService</code></li>
+                <li><code>org.apache.turbine.services.logging.PropertiesLoggingConfig</code></li>
+                <li><code>org.apache.turbine.services.logging.RunDataFilter</code></li>
+                <li><code>org.apache.turbine.services.logging.ServletLogger</code></li>
+                <li><code>org.apache.turbine.services.logging.ServletLoggingService</code></li>
+                <li><code>org.apache.turbine.services.logging.TurbineLogging</code></li>
+                <li><code>org.apache.turbine.services.logging.TurbineLoggingService</code></li>
+            </ul>
+            <p>Facade class</p>
+            <ul>
+                <li><code>org.apache.turbine.util.Log</code></li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+                <li>Rafal Krzewski</li>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <p>None</p>
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+
+        <section name="Servlet service">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+
+            <p></p>
+            <ul>
+                <li><code>org.apache.turbine.services.servlet.ServletService</code></li>
+                <li><code>org.apache.turbine.services.servlet.TurbineServlet</code></li>
+                <li><code>org.apache.turbine.services.servlet.TurbineServletService</code></li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+                <li>Jason van Zyl</li>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <p>None</p>
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+
+        <section name="Security service">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+
+            <p>Service</p>
+            <ul>
+                <li><code>org.apache.turbine.services.security.BaseSecurityService</code></li>
+                <li><code>org.apache.turbine.services.security.db.DBSecurityService</code></li>
+                <li><code>org.apache.turbine.services.security.db.DBUserManager</code></li>
+                <li><code>org.apache.turbine.services.security.ldap.util.ParseExceptionMessage</code></li>
+                <li><code>org.apache.turbine.services.security.ldap.LDAPSecurityConstants</code></li>
+                <li><code>org.apache.turbine.services.security.ldap.LDAPSecurityService</code></li>
+                <li><code>org.apache.turbine.services.security.ldap.LDAPUser</code></li>
+                <li><code>org.apache.turbine.services.security.ldap.LDAPUserManager</code></li>
+                <li><code>org.apache.turbine.services.security.passive.PassiveUserManager</code></li>
+                <li><code>org.apache.turbine.services.security.SecurityService</code></li>
+                <li><code>org.apache.turbine.services.security.TurbineSecurity</code></li>
+                <li><code>org.apache.turbine.services.security.UserManager</code></li>
+            </ul>
+            <p>DB implementation persistent objects</p>
+            <ul>
+                <li><code>org.apache.turbine.om.security.Group</code></li>
+                <li><code>org.apache.turbine.om.security.Permission</code></li>
+                <li><code>org.apache.turbine.om.security.Role</code></li>
+                <li><code>org.apache.turbine.om.security.SecurityObject</code></li>
+                <li><code>org.apache.turbine.om.security.TurbineUser</code></li>
+                <li><code>org.apache.turbine.om.security.User</code></li>
+                <li><code>org.apache.turbine.om.security.peer.RolePeer</code></li>
+                <li><code>org.apache.turbine.om.security.peer.GroupPeer</code></li>
+                <li><code>org.apache.turbine.om.security.peer.PermissionPeer</code></li>
+                <li><code>org.apache.turbine.om.security.peer.RolePermissionPeer</code></li>
+                <li><code>org.apache.turbine.om.security.peer.TurbineUserPeer</code></li>
+                <li><code>org.apache.turbine.om.security.peer.UserGroupRolePeer</code></li>
+                <li><code>org.apache.turbine.om.security.peer.UserPeer</code></li>
+            </ul>
+            <p>Utility classes</p>
+            <ul>
+                <li><code>org.apache.turbine.util.security.AccessControlException</code></li>
+                <li><code>org.apache.turbine.util.security.AccessControlList</code></li>
+                <li><code>org.apache.turbine.util.security.DataBackendException</code></li>
+                <li><code>org.apache.turbine.util.security.EntityExistsException</code></li>
+                <li><code>org.apache.turbine.util.security.GroupSet</code></li>
+                <li><code>org.apache.turbine.util.security.PasswordMismatchException</code></li>
+                <li><code>org.apache.turbine.util.security.PermissionSet</code></li>
+                <li><code>org.apache.turbine.util.security.RoleSet</code></li>
+                <li><code>org.apache.turbine.util.security.TurbineSecurityException</code></li>
+                <li><code>org.apache.turbine.util.security.UnknownEntityException</code></li>
+            </ul>
+            <p>Runtime checks</p>
+            <ul>
+                <li><code>org.apache.turbine.util.SecurityCheck</code></li>
+                <li><code>org.apache.turbine.util.template.TemplateSecurityCheck</code></li>
+            </ul>
+            <p>Security info manipulation</p>
+            <ul>
+                <li><code>org.apache.turbine.modules.actions.LoginUser</code></li>
+                <li><code>org.apache.turbine.modules.actions.LogoutUser</code></li>
+                <li><code>org.apache.turbine.modules.actions.AccessController</code></li>
+                <li><code>org.apache.turbine.modules.actions.sessionvalidator.SessionValidator</code></li>
+                <li><code>org.apache.turbine.modules.actions.sessionvalidator.DefaultSessionValidator</code></li>
+                <li><code>org.apache.turbine.modules.actions.sessionvalidator.TemplateSecureSessionValidator</code></li>
+                <li><code>org.apache.turbine.modules.actions.sessionvalidator.TemplateSessionValidator</code></li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+                <li>Rafal Krzewski</li>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <p>None</p>
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+
+        <section name="Scheduler service">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+
+            <p>Service</p>
+            <ul>
+                <li><code>org.apache.turbine.services.schedule.ScheduleService</code></li>
+                <li><code>org.apache.turbine.services.schedule.TurbineNonPersistentSchedulerService</code></li>
+                <li><code>org.apache.turbine.services.schedule.TurbineSchedulerService</code></li>
+            </ul>
+            <p>Utility classes</p>
+            <ul>
+                <li><code>org.apache.turbine.services.schedule.JobEntry</code></li>
+                <li><code>org.apache.turbine.services.schedule.JobEntryPeer</code></li>
+                <li><code>org.apache.turbine.services.schedule.JobQueue</code></li>
+                <li><code>org.apache.turbine.services.schedule.WorkerThread</code></li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+                <li>Dave Bryson</li>
+                <li>John Thorhauer</li>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <p>None</p>
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+
+    </body>
+</document>

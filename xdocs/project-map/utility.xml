@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<document>
+    <properties>
+        <title>Project map - Core</title>
+        <author email="rafal@apache.org">Rafal Krzewski</author>
+    </properties>
+    
+    <body>
+        <section name="Overview">
+            <p><a href="#Important contstants">Important constants</a></p>
+            <p><a href="#Exceptions">Exceptions</a></p>
+            <p><a href="#Turbine startup outside servlet container">Turbine startup outside servlet container</a></p>
+            <p><a href="#Data manipulation">Data manipulation</a></p>
+            <p><a href="#Parsers">Parsers</a></p>
+            <p><a href="#Adopded external classes">Adopted external classes</a></p>
+            <p><a href="#Quicksort"></a>Quicksort</p>
+        </section>
+
+        <section name="Important constants">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+
+            <ul>
+                <li>org.apache.turbine.TurbineConstants</li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <ul>
+            <li>Do we really need Quicksort, when we are JDK 1.2?</li>
+            </ul>    
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+
+        <section name="Exceptions">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+            <ul>
+                <li>org.apache.turbine.util.TurbineException</li>
+                <li>org.apache.turbine.util.TurbineRuntimeException</li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <ul>
+            <li>Do we really need Quicksort, when we are JDK 1.2?</li>
+            </ul>    
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+
+        <section name="Turbine startup outside servlet container">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+            <ul>
+                <li>org.apache.turbine.util.TurbineConfig</li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <ul>
+            <li>Do we really need Quicksort, when we are JDK 1.2?</li>
+            </ul>    
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+
+        <section name="Data manipulation">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+            <ul>
+                <li>org.apache.turbine.util.ObjectUtils</li>
+                <li>org.apache.turbine.util.ServletUtils</li>
+                <li>org.apache.turbine.util.StringStackBuffer</li>
+                <li>org.apache.turbine.util.StringUtils</li>
+                <li>org.apache.turbine.util.HttpUtils</li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <ul>
+            </ul>    
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+
+        <section name="Parsers">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+            <ul>
+                <li>org.apache.turbine.util.CookieParser</li>
+                <li>org.apache.turbine.util.CSVParser</li>
+                <li>org.apache.turbine.util.DataStreamParser</li>
+                <li>org.apache.turbine.util.ValueParser</li>
+                <li>org.apache.turbine.util.TSVParser</li>
+                <li>org.apache.turbine.util.ParameterParser</li>
+                <li>org.apache.turbine.util.parser.BaseValueParser</li>
+                <li>org.apache.turbine.util.parser.DefaultCookieParser</li>
+                <li>org.apache.turbine.util.parser.DefaultParameterParser</li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <ul>
+            </ul>    
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+
+        <section name="Adopted external classes">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+            <ul>
+                <li>org.apache.java.lang.Bytes</li>
+                <li>org.apache.java.security.MD5</li>
+                <li>org.apache.java.security.MessageDigest</li>
+                <li>org.apache.jserv.JServUtils</li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <ul>
+            </ul>    
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+
+        <section name="Quicksort">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+            <ul>
+                <li>org.apache.turbine.util.Comparable</li>
+                <li>org.apache.turbine.util.QuickSort</li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <ul>
+            <li>Do we really need Quicksort, when we are JDK 1.2?</li>
+            </ul>    
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+    </body>
+</document>

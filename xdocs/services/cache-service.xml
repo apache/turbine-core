@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - Global Cache Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="Global Cache Service">
+
+<p>
+The Global Cache Service provides an object cache that you can call
+from anywhere in your application to temporarily store objects. An example
+of its use may be to store the names of Countries that you use throughout
+your application to populate a look up list. If you normally store the
+information about Countries in a database, you can increase the performance
+of your application by using the Cache and decreasing the number of hits
+against the database.
+</p>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+# 
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.GlobalCacheService.classname=org.apache.turbine.services.cache.TurbineGlobalCacheService
+.
+.
+.
+
+# -------------------------------------------------------------------
+#
+#  C A C H E   S E R V I C E
+#
+# -------------------------------------------------------------------
+
+# Interval at which the cache will be checked. The default is
+# 5000ms or 5 seconds.
+
+services.GlobalCacheService.cache.check.frequency = 5000
+
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<source><![CDATA[
+
+GlobalCacheService gs = null;
+try
+{
+    /*
+     * Look for the item in the cache.
+     * If it doesn't exist or the item is stale,
+     * the cache will throw an exception.
+     */
+    gs = (GlobalCacheService)TurbineServices.getInstance()
+        .getService(GlobalCacheService.SERVICE_NAME);
+
+    CachedObject obj = gs.getObject("cached_object");
+
+    data.setMessage( data.getScreen() + " Got " +
+        obj.getContents().toString() + " from global cache!" );
+}
+catch(ObjectExpiredException gone)
+{
+    /*
+     * Add the item to the cache.
+     */
+    gs.addObject("cached_object",
+        new CachedObject("in_the_cache",5000));
+
+    data.setMessage( data.getScreen() +
+        " Refreshed/or added new item to" +
+        " the cache! Expires in 5 seconds" );
+}
+
+]]></source>
+
+<p>
+You can also place an expiration time on your objects so the Service will
+automatically remove them when they expire. If you don't specify an expiration
+time, the Service uses the default time set by the property
+<em>cache.check.frequency</em> in the TurbineResources.properties
+file. To see an example, look at the file <strong>TestGlobalCache.java</strong>
+located in the actions folder.
+</p>
+
+</section>
+
+</body>
+</document>

@@ -1,0 +1,3 @@
+database.driver=org.hsql.jdbcDriver
+database.url=jdbc:HypersonicSQL:C:\TurbineDB\turbine
+database.adaptor=DBHypersonicSQL

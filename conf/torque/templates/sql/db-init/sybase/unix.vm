@@ -1,0 +1,9 @@
+USE MASTER
+;
+
+DROP DATABASE $databaseName
+;
+
+CREATE DATABASE $databaseName
+ON $sybaseDatadev = $sybaseDatasize
+LOG ON $sybaseLogdev = $sybaseLogsize

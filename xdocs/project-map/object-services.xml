@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<document>
+    <properties>
+        <title>Project map - Core</title>
+        <author email="rafal@apache.org">Rafal Krzewski</author>
+    </properties>
+    
+    <body>
+        <section name="Object services">
+            <p><a href="#Factory service">Factory service</a></p>
+            <p><a href="#Object pool service">Object pool service</a></p>
+            <p><a href="#Global cache service">Global cache service</a></p>
+        </section>
+
+        <section name="Factory service">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+
+            <p>service</p>
+            <ul>
+                <li>org.apache.turbine.services.factory.FactoryService</li>
+                <li>org.apache.turbine.services.factory.TurbineFactoryService</li>
+            </ul>
+
+            <p>utility classes</p>
+            <ul>
+                <li>org.apache.turbine.services.factory.Factory</li>
+            </ul>
+    
+            <p><b>People</b></p>
+            <ul>
+                <li>Ilkka Priha</li>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <p>None</p>
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+
+        <section name="Object pool service">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+
+            <p>service</p>
+            <ul>
+                <li>org.apache.turbine.services.pool.PoolService</li>
+                <li>org.apache.turbine.services.pool.TurbinePoolService</li>
+                <li>org.apache.turbine.services.pool.TurbinePool</li>
+            </ul>
+            <p>utility classes</p>
+            <ul>
+                <li>org.apache.turbine.util.pool.ArrayCtorRecyclable</li>
+                <li>org.apache.turbine.util.pool.BoundedBuffer</li>
+                <li>org.apache.turbine.util.pool.InitableRecyclable</li>
+                <li>org.apache.turbine.util.pool.ObjectInputStreamForContext</li>
+                <li>org.apache.turbine.util.pool.Recyclable</li>
+                <li>org.apache.turbine.util.pool.RecyclableSupport</li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+                <li>Ilkka Priha</li>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <p>None</p>
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+
+        <section name="Global cache service">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+
+            <p>service</p>
+            <ul>
+                <li>org.apache.turbine.services.cache.GlobalCacheService</li>
+                <li>org.apache.turbine.services.cache.TurbineGlobalCache</li>
+                <li>org.apache.turbine.services.cache.TurbineGlobalCacheService</li>
+            </ul>
+            <p>utility classes</p>
+            <ul>
+                <li>org.apache.turbine.services.cache.CachedObject</li>
+                <li>org.apache.turbine.services.cache.ObjectExpiredException</li>
+                <li>org.apache.turbine.services.cache.Refreshable</li>
+                <li>org.apache.turbine.services.cache.RefreshableCachedObject</li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+                <li>Dave Bryson</li>
+                <li>John Thorhauer</li>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <p>None</p>
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+    </body>
+</document>

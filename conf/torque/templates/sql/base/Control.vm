@@ -1,0 +1,37 @@
+#set ( $basepath = "sql/base/$targetDatabase" )
+#set ( $dbprops = $properties.load("$generator.TemplatePath/sql/base/$targetDatabase/db.props") )
+#set ( $fname= "sql/base/$targetDatabase/table.vm" )
+#set ( $fnamekeys= "sql/base/$targetDatabase/tablefk.vm" )
+
+#foreach ($databaseModel in $appData.Databases)
+
+    #if ($project)
+        #if ($appData.MultipleDatabases)
+            #set ( $outFile = "${project}-${databaseModel.Name}-schema.sql" )
+        #else
+            #set ( $outFile = "${project}-schema.sql" )
+        #end
+
+        #foreach ($tbl in $databaseModel.Tables)
+            #if (!$tbl.isSkipSql())
+                $generator.parse($fname,$outFile,"table",$tbl)
+            #end
+        #end
+        #foreach ($tbl in $databaseModel.Tables)
+            #if (!$tbl.isSkipSql())
+                $generator.parse($fnamekeys,$outFile,"tablefk",$tbl)
+            #end
+        #end    
+    #else
+        #foreach ($tbl in $databaseModel.Tables)
+            #if (!$tbl.isSkipSql())
+                $generator.parse($fname,"","table",$tbl)
+            #end
+        #end
+        #foreach ($tbl in $databaseModel.Tables)
+            #if (!$tbl.isSkipSql())
+                $generator.parse($fnamekeys,"","tablefk",$tbl)
+            #end
+        #end    
+    #end
+#end

@@ -1,0 +1,10 @@
+#set ( $fname = "sql/id-table/idtable.$targetDatabase" )
+
+#foreach ($databaseModel in $appData.Databases)
+  #if ($appData.MultipleDatabases)
+    #set ( $outFile = "${project}-${databaseModel.Name}-idtable.sql" )
+  #else
+    #set ( $outFile = "" )
+  #end
+$generator.parse($fname,$outFile,"tables",$databaseModel.Tables)
+#end

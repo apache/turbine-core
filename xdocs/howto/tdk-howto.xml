@@ -1,0 +1,427 @@
+<?xml version="1.0"?>
+
+<document>
+
+ <properties>
+  <title>Turbine Development Kit Howto</title>
+  <author email="kschrade@engin.umich.edu">Kurt Schrader</author>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="Introduction">
+<p>
+The Turbine Development Kit allows you to begin developing on/evaluating
+Turbine and its diverse set of components almost immediately.  It includes
+almost everything needed to begin Turbine development.  Installing it
+should be the first step in your evaluation of Turbine.
+</p>
+
+<p>
+Much of this getting started guide has been put together using information
+found elsewhere on the website.  It should not be seen as a replacement for
+reading the plethora of information available about Turbine, as new users seem
+to always do. It simply attempts to get a first time user up and running with
+the TDK quickly and with a general knowledge of how it works.  As usual, please
+be sure that you have scoured the entire website for information before asking
+questions on the mailing list.  Also, it is suggested that you read this entire
+guide before attemping to install the TDK.
+</p>
+
+</section>
+
+<section name="Prerequisites to using the TDK">
+<p>
+Before using the TDK, you are going to need to have a Java Software
+Development Kit supporting Java version 1.2 or later installed on your machine.
+Sun's Java SDK can be downloaded from their website located
+<a href="http://java.sun.com/j2se/1.3/">here.</a>
+</p>
+
+<p>
+You must have Ant installed on your machine in order to do
+anything. If you do not have Ant installed, you can find out
+how to install Ant 
+<a href="http://jakarta.apache.org/ant/manual/install.html">here</a>.
+</p>
+
+<p>
+In order to do anything interesting with the TDK, you are also going to need a
+database that is compatable with the JDBC standard.  The TDK currently comes
+with drivers for Hypersonic, InstantDB, MySQL, Postgres and SAPDB. Other drivers can be 
+downloaded from the vendor's websites located here:
+</p>
+
+<ul>
+  <li>
+    <a href="http://technet.oracle.com/software/tech/java/sqlj_jdbc/software_index.htm">Oracle JDBC Drivers</a>.
+  </li>
+  <li>
+    <a href="http://www.sybase.com/products/eaimiddleware/jconnectforjdbc/">Sybase JDBC Drivers</a>.
+  </li>
+</ul>
+
+<p>
+Simply download these drivers to any directory for now.  We will make use
+of them later.
+</p>
+
+</section>
+
+<section name="Fully Supported Platform/Database Combinations">
+
+<p>
+  Not every platform/database combination has been thoroughly tested
+  so your particular setup may require some leg work for full
+  functionality. The following combinations are known to work and
+  are tested with every release of the TDK:
+</p>
+
+<table>
+  <tr>
+    <td><b>Platform</b></td>
+    <td><b>Database</b></td>
+    <td><b>Testers</b></td>
+  </tr>
+  
+  <tr>
+    <td>Linux</td>
+    <td>MySQL</td>
+    <td><a href="mailto:jvanzyl@apache.org">Jason van Zyl</a></td>
+  </tr>
+
+  <tr>
+    <td>Linux</td>
+    <td>PostgreSQL</td>
+    <td><a href="mailto:jvanzyl@apache.org">Jason van Zyl</a></td>
+  </tr>
+
+  <tr>
+    <td>Window2K</td>
+    <td>MySQL</td>
+    <td><a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a></td>
+  </tr>
+
+  <tr>
+    <td>NT (sp6)</td>
+    <td>MySQL</td>
+    <td><a href="mailto:irissky@bellsouth.net">Randall G. Alley</a></td>
+  </tr>
+
+  <!-- template
+  <tr>
+    <td></td>
+    <td></td>
+    <td><a href="mailto:"></a></td>
+  </tr>
+  -->
+
+</table>
+
+<p>
+  If the combination is not listed here, it doesn't mean that the TDK
+  won't work for you. It just means that no one regularly tests that
+  combination when new TDKs are released. If you get an unsupported
+  combination to work and you would like to test your combination
+  please post a message to the list and we will add you to the list
+  above.
+</p>
+
+</section>
+
+<section name="Downloading and Installing the TDK">
+<p>
+First of all, you have to get the TDK distribution. You can fetch it from 
+the <a 
+href="http://jakarta.apache.org/builds/jakarta-turbine/release/">Turbine
+release repository</a>. Search for the directory with the latest version, and
+download the file tdk-2.1.tar.gz (preferred choice for 
+Unix systems), or tdk-2.1.zip (for Windows systems this may be more 
+practical).
+</p>
+
+<p>
+Unpack the TDK distribution into a directory of your choosing.  On Windows, use
+WinZip to unpack the files and on Unix, something like:
+</p>
+
+<source><![CDATA[
+tar -xvzf tdk-2.1.tar.gz
+]]></source>
+
+<p>
+should to the trick.  This is all that you have to do to install the TDK.
+</p>
+
+</section>
+
+<section name="Creating your first Turbine application">
+
+<p>
+Now that you have Turbine installed on your machine, you need to create a
+sample application in order to begin using it.  This is done in the following
+manner:
+</p>
+
+<p>
+1.  Open up the file "build.properties" in the root TDK directory. Change the
+property "target.package" to the name of the package that you would like your
+java files to live in and the property "target.directory" to the directory that
+you would like your classes to be created in.  These two values are usually a
+mirror of one another.  Finally, change the property "turbine.app" to the
+name of the application that you would like to create.  Usually this is the same
+as the identifier specified at the end of your target.package.
+</p>
+
+<p>
+2.  Set the JAVA_HOME environment value for your system.  On *nix/BSD using the
+Bash shell, this can be done with:
+</p>
+
+<source><![CDATA[
+export JAVA_HOME="/PATH/TO/JDK/"
+]]></source>
+
+<p>
+3.  Run Ant in the root directory of the TDK installation. The sample
+application will be generated with the default name of
+<strong>newapp</strong>. If you wish to change the name of the default
+sample app then you must change the <strong>turbine.app.name</strong>
+property in the <strong>build.properties</strong> file.
+</p>
+
+<source><![CDATA[
+ant
+]]></source>
+
+<p>
+from your root TDK directory.  This will create most of the files necessary for
+running your turbine app.
+</p>
+
+<p>
+4.  Once the initial set of files has been created, you will need to go into
+the directory "/TDKROOT/webapps/APPNAME/WEB-INF/build" and edit
+your "build.properties" file.  This file is used to specify properties
+such as the type of database you are using and your DB connection info.  This
+information is used to create the tables Turbine will be using and the classes
+used to access them.  At this time you should also copy your JDBC drivers
+(renaming .zip files to .jar files) into the
+"webapps/APPNAME/WEB-INF/lib" directory if you are using a database for which
+the TDK does not provide JDBC drivers. These files will be important when 
+creating the database tables in the next step.
+</p>
+
+<p>
+5.  Go to the directory "/TDKROOT/webapps/APPNAME/WEB-INF/build" and run the
+command "ant init"  This command <strong>must be run</strong> before 
+attempting to use the TDK.  It creates the database tables and OM 
+classes for accessing them.
+</p>
+
+<p>
+NOTE 
+<br/>
+For Oracle and Sybase users it is often common that the database
+has already been created: if this is the case then by setting the
+<strong>database.manual.creation</strong> property in your "build.properties"
+file you can force the 'create-database' target to
+be skipped.
+</p>
+
+<p>
+6.  Your first Turbine app has now been created!  go back to the root directory
+of your TDK installation and type in "./bin/catalina.sh run" if you want to
+see console output or "./bin/catalina.sh start" if you want the servlet
+container process to run in the background. 
+</p>
+
+<p>
+NOTE
+<br/>
+  If you want automatic class reloading to work, then you have to
+  configure it specifically for each webapp that you generate.
+  Class reloading for automatically configured webapps doesn't
+  appear to be working Catalina b5. Hopefully this will be
+  resolved before the 2.1 release. If you use the the default
+  setup, then class reloading will be setup for you i.e. your
+  APPNAME is 'newapp'. If, for example, your APPNAME is 'rupert'
+  then you must add the following to your conf/server.xml file:
+</p>
+
+<source><![CDATA[
+<context path="/rupert" docBase="rupert" reloadable="true"/>
+]]></source>
+
+<p>
+  Look for 'TDK SITE' in the conf/server.xml file and make
+  the adjustment just above it to get class reloading working.
+  You will see how the class reload has been setup for the
+  default 'newapp' and you can use that as an example.
+</p>
+
+</section>
+
+<section name="Accessing your Turbine application">
+
+<p>
+Now that you have your Turbine application created and running by following the
+instructions above, point your browser to
+http://SERVERNAME:8080/APPNAME/servlet/APPNAME where SERVERNAME is the hostname
+of the machine running Tomcat, and APPNAME is the name of the application you
+created.
+</p>
+
+<p>
+The initial login screen should appear and you should login with username
+'turbine' and password 'turbine'  This will bring you to the initial "Turbine
+Data Manager" layout.  From here you can insert/delete/edit entries in the
+default database or create and manage users using Flux, the built-in user
+management system for Turbine.  These are the example turbine apps.
+</p>
+
+</section>
+
+<section name="Editing the Example App">
+
+<p>
+Look at the example app that you now have on your screen.  The view that you are
+seeing actually consists of 4 different parts (top, bottom, menu and index) that
+were assembled for you on the fly by Velocity.  In order to see how this works,
+you have to edit the file "webapps/APPNAME/templates/app/layouts/Default.vm"  This
+file defines how the default layout is shown on your screen.  As you can see,
+it is written as a fragment of HTML that will eventually be integrated into your
+final page.  Editing this file will affect the layout of your entire
+application.
+</p>
+
+<p>
+Knowing now how the page is laid out, go to the directory
+"webapps/APPNAME/templates/app/navigations" to see the files that will be inserted
+into the layout template above.  Edit the file "DefaultBottom.vm", save your
+changes back, and reload your page.  By doing this you should see whatever
+changes you have made to the file appear at the bottom of your layout.  This
+change will also occur in all of the other pages on your site.  Navigate to a
+different page in order to confirm this behavior.
+</p>
+
+<p>
+Now go into the directory "webapps/APPNAME/templates/app/screens"  The files in this
+directory are the ones that replace the "$screen_placeholder" variable in
+the original layout.  Open up the file "Index.vm" and you will see that a
+variable is defined called "$headings" that holds the strings for each of the
+headings on the Index page and that a variable called "$entries" is used
+to show the dynamic data on the page.  This variable comes from the Java class
+file that is associated with this .vm page, as explained in the next paragraph.
+The Index.vm page also includes a number of functions that begin with #, such as
+"#entryCell(...)"  These functions are replaced with HTML fragments at runtime,
+as defined in the "webapps/APPNAME/templates/app/GlobalMacros.vm" file.  Look at
+this file to get an idea of what each of these methods do.  This file can be
+edited in order to add your own velocity macros to the system as well.
+</p>
+
+<p>
+In order to view the Java file that is associated with the Index.vm, go to the
+directory "webapps/APPNAME/WEB-INF/src/java/PACKAGE/modules/screens"  A quick
+look in this directory should show you that each page with dynamic data in it
+has an associated class file in this directory.  Open the file "Index.java" and
+look over its contents.  As you can see, the "doBuildTemplate" method creates a
+variable called "entries" and associates the data that it pulls from the
+database in the "getEntries" method into it.  In the case of the Index.vm page,
+this corresponds to all of the entries from our example database.  The
+"context.put("entries", getEntries())" method places the data and the associated
+handle for it into our session context so that it can be accessed from our
+Index.vm page.  You would edit this file to change the behavior of a given
+page.  More information on building sites with Velocity is available
+<a href="howto/velocity-site-howto.html">here.</a>
+</p>
+
+</section>
+
+<section name="Action Events">
+
+<p>
+Now go back into your sample app in your web browser and insert an entry into
+the table.  Look at the URL line in your browser.  The end of it should contain
+"/action/SQL"  This is the method that Turbine just used to insert your data
+into the database.  The class file corresponding to it can be found in
+"webapps/APPNAME/WEB-INF/src/java/PACKAGE/modules/actions" and is called
+SQL.java.  In fact, when you did your Insert of the data, Turbine called a
+method called "doInsert" inside of the SQL class in order to insert the data.
+A full explaination of how actions work is available
+<a href="action-event-howto.html">here.</a>
+</p>
+
+</section>
+
+<section name="Changing your schema">
+
+<p>
+Now that we know about actions, we should change our database to something more
+useful.  In order to do this, move to the directory
+"webapps/APPNAME/WEB-INF/conf" and open up the file
+"APPNAME-schema.xml".  This file contains our database schema in XML.  This
+file should be rather self explainatory.  Within it you can create new tables
+and new fields within existing tables.  Add some more rows to the example
+table and save the file back.  Now go to the directory
+"webapps/APPNAME/WEB-INF/build" and run the command
+"ant init" again.  (WARNING: If this is done you will lose all of your
+data in the existing tables, do not run if you have data in your tables
+that you want to save.)  This will update existing databases and their objects
+with new fields and create the databases defined in the .xml file, along with
+their associated java classes.  The java classes that Turbine uses to access
+your database are located in the directory
+"webapps/APPNAME/WEB-INF/src/java/PACKAGE/om"  Look at them to get an idea of
+how the object-model portion of Turbine operates.  There should be one named
+after each of the tables that you defined above in your schema.  These classes
+will be used to interact with the database while using Turbine.
+</p>
+
+<p>
+After our schema has been updated we will need to go back and edit the .vm files
+that operate on it.  Go back into "Index.vm" as described above and change the
+headings to those that match your new schema.  If you have created another table
+that you would like to call from the Index, or have changed the name of your
+original table, edit your "Index.java" file to get the data from that Database
+instead of the default one by calling the OM object for it instead.
+</p>
+
+</section>
+
+<section name="Conclusion">
+
+<p>
+You now have your first Turbine application up and running and you now know
+how to edit the Java and .vm files in the TDK in order to begin building a
+specific application.  In order to recompile any Java files that you change
+or create in the TDK, move to "webapps/APPNAME/WEB-INF/build" and run "ant compile".
+This will recompile all of the Java files that have changed in your project.
+You may also wish to join the Turbine Users mailing list.  Instructions for
+doing so can be found <a href="http://jakarta.apache.org/site/mail.html">here.</a>
+</p>
+
+</section>
+
+<section name="Deployment">
+
+<p>
+The TDK uses Tomcat 4.0 as it's Servlet container, but you can package up
+your webapps and run them under any compliant Servlet container. The only
+thing that you have to change are the references to the Servlet 2.3
+DTDs in your web.xml file. If you change these references, webapps that
+you develop with the TDK should be fully portable. We use the Tomcat 4.0
+server because it is the burgeoning standard.
+</p>
+
+<p>
+We'll add more notes to this as the TDK gains more deployment features.
+There is a very primitive 'deploy' target, but all it currently does is
+package up your webapp in a WAR file.
+</p>
+
+</section>
+
+</body>
+</document>
+

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Application Service Proposal</title>
+    <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  </properties>
+
+<body>
+
+<section name="Scheduler Service">
+
+<p>
+  <li>
+    implementaions independent of DB/Peers should be added. An xml
+    based implementation seems easy and useable.
+  </li>
+</p>
+
+</section>
+
+</body>
+</document>

@@ -1,0 +1,75 @@
+#set ($basePath = $generator.OutputPath)
+#foreach ($databaseModel in $appData.Databases)
+    #if ($databaseModel.Package)
+        #set ($package = $databaseModel.Package)   
+    #else   
+        #set ($package = $targetPackage)
+    #end
+
+    #set ( $pkbase = "${package}" )
+    #set ( $pkpeer = "${package}" )
+    #set ( $pkmap = "${package}.map" )
+
+    $pkbase
+    $pkpeer
+    $pkmap
+
+    #set ( $path = $strings.getPackageAsPath($pkpeer) )
+    $files.mkdir("$outputDirectory/$path")
+
+    #set ( $path = $strings.getPackageAsPath($pkmap) )
+    $files.mkdir("$outputDirectory/$path")
+
+    #set ( $path = $strings.getPackageAsPath($pkbase) )
+    $files.mkdir("$outputDirectory/$path")
+
+    #foreach ($tbl in $databaseModel.Tables)
+        $tbl.Name
+
+        #set ( $firstcap=$tbl.JavaName )
+
+        #set ( $fname = "$basePrefix${firstcap}Peer.java" )
+        #set ( $path = "${strings.getPackageAsPath($pkbase)}$fname" )
+        $generator.parse("om/Peer.vm",$path,"table",$tbl)
+
+        #if (!$tbl.isAlias())
+            #set ( $fname = "${firstcap}MapBuilder.java" )
+            #set ( $path = "${strings.getPackageAsPath($pkmap)}$fname" )
+            $generator.parse("om/MapBuilder.vm",$path,"table",$tbl)
+        #end
+
+        #set ( $fname = "${basePrefix}${firstcap}.java" )
+        #set ( $path = "${strings.getPackageAsPath($pkbase)}$fname" )
+        $generator.parse("om/Object.vm",$path,"table",$tbl)
+
+        #set ( $fname = "${firstcap}.java" )
+        #set ( $path = "${strings.getPackageAsPath($package)}$fname" )
+        #if (!$files.file($basePath,$path).exists())
+            $generator.parse("om/ExtensionObject.vm",$path,"table",$tbl)
+        #end
+
+        #set ( $fname = "${firstcap}Peer.java" )
+        #set ( $path = "${strings.getPackageAsPath($pkpeer)}$fname" )
+        #if (!$files.file($basePath,$path).exists())
+            $generator.parse("om/ExtensionPeer.vm",$path,"table",$tbl)
+        #end
+
+        #if ($tbl.ChildrenColumn)
+            #set ($col = $tbl.ChildrenColumn)
+            #if ($col.isEnumeratedClasses())
+                #foreach ($child in $col.Children)
+
+#set ( $fname = "${child.ClassName}.java" )
+#set ( $path = "${strings.getPackageAsPath($package)}$fname" )
+#if (!$files.file($basePath,$path).exists())
+    $generator.parse("om/MultiExtendObject.vm",$path,"child",$child)
+#end
+        
+                #end
+            #end
+        #end
+    #end
+#end
+
+
+

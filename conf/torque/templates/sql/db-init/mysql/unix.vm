@@ -1,0 +1,22 @@
+#!/bin/sh
+
+#if ($databaseUser)
+    #set ($user = "-u $databaseUser")
+#else
+    #set ($user = "")
+#end
+
+#if ($databasePassword)
+    #set ($password = "-p$databasePassword")
+#else
+    #set ($password = "")
+#end
+
+#if ($databaseHost)
+    #set ($host = "-h $databaseHost")
+#else
+    #set ($host = "")
+#end
+
+mysqladmin $user $password $host --force drop $databaseName
+mysqladmin $user $password $host --force create $databaseName

@@ -1,0 +1,386 @@
+<?xml version="1.0"?>
+
+<document>
+
+ <properties>
+  <title>Criteria Howto</title>
+  <author email="criley@ekmail.com">Cameron Riley</author>
+ </properties>
+
+ <body>
+  <section name="Advanced Criteria Techniques">
+
+   <p>
+     For a basic description and examples of the Criteria Object with Peers please 
+     view the <a href="../howto/peers-howto.html">Peers Howto</a> 
+     document. This document intends to show more advanced techniques using Criteria, 
+     such as comparators and joins. As always, for more information on the methods 
+     available in the Criteria Object, view the javadocs.
+   </p>
+  </section>
+
+  <section name="Using Criteria to create Joins ">
+  
+   <p>
+    This example will use the related tables in the Turbine Security system between 
+    the Turbine_Role and Turbine_Permission tables, with the bridging table, 
+    Turbine_Role_Permission. The relationship between these tables are in the 
+    <a href="../turbine-schema.html">Core Schema</a> document, with Turbine_Role and 
+    Turbine_Permission both having a one-to-many relationships with 
+    Turbine_Role_Permission table. As Role exists as a container for Permissions, 
+    one requirement that may be desired for an application is to show a list of the 
+    Permissions in a Role. Please note though, that this is for the sake of 
+    example, the Role Object in the org.apache.turbine.om.security package contains a 
+    convenience method getPermissions() which will achieve pretty much the same 
+    objective. The following is used as an example as it is a relatively familiar problem 
+    and uses components that are part of the core Turbine system. 
+   </p>
+
+   <p>
+    Create the Criteria Object;
+   </p>
+
+<source>
+Criteria criteria = new Criteria();
+criteria.addJoin(PermissionPeer.PERMISSION_ID,RolePermissionPeer.PERMISSION_ID);
+criteria.addJoin(RolePermissionPeer.ROLE_ID, RolePeer.ROLE_ID);
+
+Vector v = RolePeer.doSelect(criteria);
+</source>
+
+   <p>
+     The addJoin() method works by joining the tables left to right, the above criteria 
+     will return all the Roles that have a Permission. To view the output of the 
+     criteria, print it out with criteria.toString().
+   </p>
+
+  
+
+  <p> 
+    If instead though we want to view all the Permissions that are connected to a 
+    Role we would reverse the join via;
+  </p>
+
+<source>
+Criteria criteria = new Criteria();
+criteria.addJoin(RolePeer.ROLE_ID,RolePermissionPeer.ROLE_ID);
+criteria.addJoin(RolePermissionPeer.PERMISSION_ID, PermissionPeer.PERMISSION_ID);
+
+Vector v = PermissionPeer.doSelect(criteria);
+</source>
+
+  </section>
+
+  <section name="Using DISTINCT with Criteria">
+   
+   <p>
+     Both the above examples return multiples of the desired table columns. 
+     In the first example, the Role will appear for every Permission that is attached to it. 
+     If a Role has 10 Permissions, the Role will appear in the returned Vector 10 times. 
+     To avoid this problem and so that our returned Vector only returns the Role once 
+     despite the number of times it appears, we can use the setDistinct() method in 
+     Criteria. For instance, in the Role example;
+   </p> 
+
+<source>
+Criteria criteria = new Criteria();
+criteria.addJoin(PermissionPeer.PERMISSION_ID,RolePermissionPeer.PERMISSION_ID);
+criteria.addJoin(RolePermissionPeer.ROLE_ID, RolePeer.ROLE_ID);
+criteria.setDistinct();
+
+Vector v = RolePeer.doSelect(criteria);
+</source>
+
+  </section>
+
+  <section name="Ordering the Results">
+  
+   <p>
+     One of the common clauses in an SQL Query is the ORDER BY clause. This can be emulated 
+     with the Criteria Object via the addOrderByColumn(String columnname) method. For 
+     the Role example, the Role OM Objects in the returned Vector can be ordered by 
+     the TURBINE_ROLE columns, ROLE_ID or NAME. If the column chosen to order by is 
+     the ROLE_ID, the returned Vector is ordered in numbers, if the NAME is the ordered 
+     column, the Vector returns a set of Role Objects, ordered alphabetically by 
+     their names.
+   </p>
+
+<source>
+Criteria criteria = new Criteria();
+criteria.addJoin(PermissionPeer.PERMISSION_ID,RolePermissionPeer.PERMISSION_ID);
+criteria.addJoin(RolePermissionPeer.ROLE_ID, RolePeer.ROLE_ID);
+criteria.setDistinct();
+criteria.addOrderByColumn(RolePeer.NAME);
+
+Vector v = RolePeer.doSelect(criteria);
+</source>
+
+  </section>
+
+  <section name="Putting Joins, Ordering and Distinct Together">
+   
+    <p>
+      To put all the above together into a useful method, we can query the core 
+      Turbine Schema for the Groups that a User has a Role in. This requires a join 
+      across the TURBINE_USER_GROUP_ROLE table from the TURBINE_GROUP to the TURBINE_USER 
+      table. This will return a Vector of Groups that the User has a Role in.
+    </p>
+
+<source>
+public Vector allUsersGroups(RunData data) throws Exception
+{
+    Vector v = new Vector(10);
+    
+    //get the User from RunData
+    User user = data.getUser();
+
+    //make sure the User has logged in
+    if (user.hasLoggedIn())
+    {
+        Criteria criteria = new Criteria();
+        criteria.addJoin(GroupPeer.GROUP_ID,UserGroupRolePeer.GROUP_ID);
+        criteria.addJoin(UserGroupRolePeer.USER_ID,TurbineUserPeer.USER_ID);
+        criteria.add(TurbineUserPeer.USERNAME, user.getUserName()); 
+        criteria.addOrderByColumn(GroupPeer.NAME);
+        criteria.setDistinct();
+      
+        v = GroupPeer.doSelect(criteria);
+    }
+    return v;
+}
+</source>
+
+    <p>
+     At the action or screen level a test can be done to make sure the Vector has size 
+     before displaying the Groups in a Velocity Template.
+    </p>
+
+  </section>
+
+  <section name="Using the Comparators in Criteria">
+  
+   <p>
+    The Criteria Object has the following camparators;
+   </p>  
+
+<source>
+Criteria.ALT_NOT_EQUAL
+Criteria.CUSTOM
+Criteria.DISTINCT
+Criteria.EQUAL
+Criteria.GREATER_EQUAL
+Criteria.GREATER_THAN
+Criteria.IN
+Criteria.JOIN
+Criteria.LESS_EQUAL
+Criteria.LESS_THAN
+Criteria.LIKE
+Criteria.NOT_EQUAL
+Criteria.NOT_IN
+</source>
+
+
+   <p>The comparators can be used to return results that satisfy the chosen comparisons. 
+   As an example, assume we have Invoice OM and Peer Objects that map to an invoice 
+   table in a database. The invoice table contains the columns, INVOICE_ID, COST, DATE 
+   and DESCRIPTION. Where the id is an integer, the cost a double, the date an 
+   mysql DATETIME and the Description a VARCHAR.
+   </p>
+
+   <p>
+     In the case of an invoice, we may need to know all the invoices that are above a 
+     certain limit. Where the limit is greater than $1000, this could be done via;
+   </p>
+
+<source>
+Criteria criteria = new Criteria();
+criteria.add(InvoicePeer.COST, 1000, Criteria.GREATER_THAN);
+
+Vector v = InvoicePeer.doSelect(criteria);
+</source>
+
+   <p>
+     This will return a Vector of Invoice OM Objects which have cost values greater 
+     than $1000. The other comparitors work similarly and can be used in the same manner 
+     though many of the comparators are present as methods in the Criteria Object 
+     already, such as the Joins.
+   </p>
+
+  </section>
+
+  <section name="Using the CUSTOM Comparator to check for NULL and NOT NULL">
+  
+   <p>
+     There is currently no conditional operator for NULL and NOT NULL as the database 
+     implementations vary fairly widely. The way to solve it for a particular 
+     application is through the CUSTOM comparitor. Using the Invoice example again 
+     to check if the description is null;
+   </p>  
+
+<source>
+Criteria criteria = new Criteria();
+criteria.add(InvoicePeer.DESCRIPTION, (Object)"DESCRIPTION is NULL", Criteria.CUSTOM);
+
+Vector v = InvoicePeer.doSelect(criteria);
+</source>
+
+  </section>
+
+  <section name="Using Criterion to use a Column twice in a Criteria">
+  
+   <p>
+    The Criteria Object extends the functionality of a Hashtable and as such suffers from 
+    the Hashtable limitation of the key having to be unique in the Hashtable. When a 
+    Criteria is set to use the same column twice, it overwrites the previous key. 
+    The way around this is to use the Criterion Object. The Criterion is a final 
+    inner class of Criteria. Because it is a member class the Criterion can "look" 
+    into Criteria's instance fields and methods including ones declared private. 
+    The Criterion also carries the default package visibility which means it can be 
+    used in a sub-class of Criteria. 
+   </p>  
+
+   <p>
+     Using the Invoice table and OM Object again, we may want to search on the Invoice 
+     Amounts within a certain Range, such as $1000 and $5000. For this we would need 
+     to use the Criterion;
+   </p>
+
+<source>
+Criteria criteria = new Criteria();
+criteria.add(InvoicePeer.COST,1000, Criteria.GREATER_EQUAL);
+ 
+Criteria.Criterion criterion = criteria.getCriterion(InvoicePeer.COST);
+criterion.and(
+               criteria.getNewCriterion(
+                             criterion.getTable(),
+                             criterion.getColumn(),
+                             new Integer(5000),
+                             Criteria.LESS_EQUAL )
+               );
+</source>
+
+  </section>
+
+  <section name="Simplifying Criteria">
+  
+   <p>
+     The Criteria Object can be verbose to use directly in your code. Often in an 
+     application the 80:20 rule applies when dealing with queries. The same 20% of 
+     queries are used 80% of the time. While Criteria and Criterion offer a tonne of 
+     flexibility, often having something simple to use is easier. 
+   </p>  
+
+   <p>
+     One way to achieve this is to create a class that extends Criteria and add 
+     convenience methods for your application or are specific to your database. 
+     In this case the example Object will be the SimpleCriteria with the methods that 
+     allow access to the examples above.
+   </p>
+
+<source>
+//Turbine
+import org.apache.turbine.util.db.Criteria;
+
+/**
+ * SimpleCriteria is a simple case of the more powerful Criteria
+ * Object.
+ */
+
+public class SimpleCriteria extends Criteria
+{
+    /** currently used as DEFAULT_CAPACITY in Criteria is private */
+    private static final int DEFAULT_CAPACITY = 10;
+
+    /*
+     * Constructor
+     */
+    public SimpleCriteria()
+    {
+        super(DEFAULT_CAPACITY);
+    }
+
+    /*
+     * Represents the Greater Than in the WHERE 
+     * clause of an SQL Statement  
+     *
+     * @param columnname the column name
+     * @param columnvalue the column value to be compared against
+     */
+    public SimpleCriteria greaterThan(String columnname, int columnvalue)
+    {
+        super.add(columnname, columnvalue, Criteria.GREATER_THAN);    
+        return this;   
+    }
+
+   /*
+     * Represents the Is NULL in the WHERE 
+     * clause of an SQL Statement  
+     *
+     * @param columnname the column name
+     */
+    public SimpleCriteria isNull(String columnname)
+    {
+        super.add(columnname, (columnname + " is NULL"), Criteria.CUSTOM);    
+        return this; 
+    }
+
+   /*
+     * Represents the Is NULL in the WHERE 
+     * clause of an SQL Statement  
+     *
+     * @param columnname the column name
+     */
+    public SimpleCriteria isBetween(String columnname, int min, int max)
+    {
+        super.add(columnname, min, Criteria.GREATER_THAN);
+        super.Criterion criterion = criteria.getCriterion(columnname);
+        criterion.and(
+                   super.getNewCriterion(
+                              criterion.getTable(),
+                              criterion.getColumn(),
+                              new Integer(max),
+                              Criteria.LESS_EQUAL )
+                    ); 
+        return this;
+    }
+
+}
+</source>
+
+   <p>
+     This will simplify the code being written in the Business Objects or Actions and 
+     condense all the Criteria knowledge into the SimpleCriteria Object. 
+     The SimpleCriteria Object used in the same manner as Criteria. 
+     For example the initial
+   </p>
+
+<source>
+SimpleCriteria criteria = new SimpleCriteria();
+criteria.isBetween(InvoicePeer.COST, 1000, 5000);
+
+Vector v = InvoicePeer.doSelect(criteria);    
+</source>
+
+  </section>
+
+  <section name="Debugging Criteria's">
+
+   <p>
+    Criteria contains a toString() method which will output a representation of the 
+    Criteria as a String. As the Criteria to a large extent represents the statements 
+    in a WHERE clause of SQL, the LoggingService can output the SQL. In the 
+    TurbineResources.properties file, under the directive;
+   </p>
+
+<source>
+services.LogginService.sql.level = DEBUG
+</source>
+
+   <p>
+    Set the level to DEBUG.
+   </p>
+
+  </section>
+
+ </body>
+</document>

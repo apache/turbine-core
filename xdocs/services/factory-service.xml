@@ -1,0 +1,203 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - Factory Service</title>
+  <author email="ilkka.priha@simsoft.fi">Ilkka Priha</author>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="Factory Service">
+
+<p>
+The Factory Service instantiates objects from the given class name
+using either the given class loader or an applicable one found from the class
+loader repository. If neither one is specified, the default class loader
+will be used.
+</p>
+
+<p>
+The service provides the following benefits compared to Class.forName():
+</p>
+<ul>
+<li>support for parameters in constructors,</li>
+<li>internal class loader repository, which can be specified in resources,</li>
+<li>optional class specific factories, which can be used for customized instantiation, and</li>
+<li>integration with the Pool Service supporting recycling of instances created by the service.</li>
+</ul>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+# 
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.FactoryService.classname=org.apache.turbine.services.factory.TurbineFactoryService
+.
+.
+.
+# -------------------------------------------------------------------
+# 
+#  F A C T O R Y  S E R V I C E
+#
+# -------------------------------------------------------------------
+
+# A comma separated list of classloaders (very optional)
+#
+# Example: org.foo.bar.MyClassLoader, org.ack.joe.YourClassLoader
+#
+#services.FactoryService.class.loaders=
+
+# Customized factories to be used instead of the default factory.
+# E.g. to instantiate XML parsers, SSL sockets, etc., which require
+# specific instantiation not supported by the default factory.
+# The property name is prefixed with "factory" followed by the
+# name of the production class. The value is the class name of
+# the factory implementing the Factory interface. The factory
+# will be instantiated by using the service itself.
+#
+# Examples:
+#
+#services.FactoryService.factory.javax.xml.parsers.DocumentBuilder=org.foo.xml.DomBuilderFactory
+#services.FactoryService.factory.javax.xml.parsers.SAXParser=org.foo.xml.SaxParserFactory
+#services.FactoryService.factory.java.net.ServerSocket=org.foo.net.SslServerSocketFactory
+
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<p>
+In Turbine, the Factory Service is currently only used internally by the Pool Service.
+Applications can also use the service instead of Class.forName() and for unifying
+initialization, configuration and access to vendor specific object factories. 
+The following is a simplified example of a customized DOM parser factory:
+</p>
+
+<source><![CDATA[
+package org.foo.xml;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.services.factory.Factory;
+
+/**
+ * A factory for instantiating DOM parsers. 
+ */
+public class DomBuilderFactory implements Factory
+{
+    /**
+     * The implementation of the factory.
+     */
+    private DocumentBuilderFactory factory;
+
+    /**
+     * Initializes the factory.
+     */
+    public void init(String className)
+        throws TurbineException
+    {
+        factory = DocumentBuilderFactory.newInstance();
+    }
+
+    /**
+     * Gets a DocumentBuilder instance.
+     */
+    public Object getInstance()
+        throws TurbineException
+    {
+        try
+        {
+            return factory.newDocumentBuilder();
+        }
+        catch (ParserConfigurationException x)
+        {
+            throw new TurbineException(x);
+        }
+    }
+
+    /**
+     * Gets a DocumentBuilder instance.
+     * The given loader is ignored.
+     */
+    public Object getInstance(ClassLoader loader)
+        throws TurbineException
+    {
+        return getInstance();
+    }
+
+    /**
+     * Gets a DocumentBuilder instance.
+     * Constructor parameters are ignored.
+     */
+    public Object getInstance(Object[] params,
+                              String[] signature)
+        throws TurbineException
+    {
+        return getInstance();
+    }
+
+    /**
+     * Gets a DocumentBuilder instance.
+     * The given loader and constructor parameters are ignored.
+     */
+    public Object getInstance(ClassLoader loader,
+                              Object[] params,
+                              String[] signature)
+        throws TurbineException
+    {
+        return getInstance();
+    }
+
+    /**
+     * Returns false as given class loaders are not supported.
+     */
+    public boolean isLoaderSupported()
+    {
+        return false;
+    }
+}
+]]></source>
+
+<p>
+The customized DOM parser factory must be specified in Turbine Resources before it can be used:
+</p>
+
+<source><![CDATA[
+services.FactoryService.factory.javax.xml.parsers.DocumentBuilder=org.foo.xml.DomBuilderFactory
+]]></source>
+
+<p>
+A DOM parser can now be instantiated with the following code fragment:
+</p>
+
+<source><![CDATA[
+// Access the service singleton.
+FactoryService service = (FactoryService) 
+    TurbineServices.getInstance().getService(FactoryService.SERVICE_NAME);
+    
+// Create a new DOM parser. 
+DocumentBuilder parser = 
+    service.getInstance("javax.xml.parsers.DocumentBuilder");
+]]></source>
+
+</section>
+
+</body>
+</document>

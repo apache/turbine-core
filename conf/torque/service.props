@@ -1,0 +1,10 @@
+baseName=BSF
+package=org.apache.turbine.services.bsf
+name=Jason van Zyl
+email=jvanzyl@apache.org
+
+## The contents of the file license.txt
+## will be available in the context
+## as $license.
+
+license.file.contents = license.txt

@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - XML-RPC Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="XML-RPC Service">
+
+<p>
+  The XML-RPC service is the easiest way to add distributed
+  computing and B2B capabilities to your Turbine web application.
+  The current implementation is based on the Helma XML-RPC
+  package which can be found <a href="http://classic.helma.at/hannes/xmlrpc/">
+  here</a>.
+</p>
+
+<p>
+  You can leverage the XML-RPC service for your particular needs by
+  creating <strong>handlers</strong>. A handler is simply a class that
+  performs certain actions: for example you may have a FileHandler
+  that is responsible for sending, getting and removing files from
+  a remote server. For your convenience there is the <strong>
+  org.apache.turbine.services.xmlrpc.util.FileHandler</strong>
+  class that will perform these operations for you. Please refer
+  to the usage section below for more details.
+</p>  
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+# 
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.XmlRpcService.classname=org.apache.turbine.services.xmlrpc.TurbineXmlRpcService
+.
+.
+.
+# -------------------------------------------------------------------
+# 
+#  X M L R P C  S E R V I C E
+#
+# -------------------------------------------------------------------
+# This property specifies which class should be used to parse
+# xml for XmlRpc functionality.
+#
+# Default: org.apache.xerces.parsers.SAXParser
+
+services.XmlRpcService.parser=org.apache.xerces.parsers.SAXParser
+
+# This property specifies which port the server part of the XmlRpc
+# should listen, if it is active.
+#
+# Default: 12345
+
+services.XmlRpcService.port=12345
+
+# If any classes are specified here, the Service will create an 
+# instance of them here and start up a listener on the specified 
+# port.
+#
+# Note that the handlers demonstrated are not very useful.  You
+# will have to invent your own services.  They do however
+# illustrate that any class with a default constructor can be
+# added here
+#
+# The handler parameter without further extension determines
+# the default handler for the service
+#
+# Default: no classes are specified by default
+
+#services.XmlRpcService.handler.$default=java.util.Hashtable
+#services.XmlRpcService.handler.stringhandler=java.lang.String
+
+# The following properties allow the transfer of data between
+# separate Turbine applications running on different servers.
+# This allows B2B type behavior such as sending database
+# updates in the form of XML or whatever type of data
+# that needs to be shared between Turbine applications
+# running on separate servers.
+
+services.XmlRpcService.handler.file = org.apache.turbine.services.xmlrpc.util.FileHandler
+services.XmlRpcService.paranoid = false
+services.XmlRpcService.acceptClient = 192.168.1.*
+services.XmlRpcService.denyClient = 
+
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<p>
+  The following example is taken from the class used to test the
+  file transfer features of the XML-RPC service. The <strong>
+  org.apache.turbine.services.xmlrpc.util.FileHandlerTest</strong>
+  can be found in the CVS repository. Here is how the FileHandler
+  might be used:
+</p>
+
+<source><![CDATA[
+
+public class XmlRpcExample
+{
+    /**
+     * We will test the following three operations:
+     * 
+     * 1) Send a file to a remove server
+     * 2) Get a file from a remote server
+     * 3) Remove a file to a remove server
+     */
+    public void testOperations() throws Exception
+    {
+        /*
+         * @param serverURL
+         * @param sourceLocationProperty
+         * @param sourceFileName
+         * @param destinationLocationProperty
+         * @param destinationFileName
+         */
+        FileTransfer.send("http://www.far-away.com:9000/RPC2",
+                          "test.location",
+                          "test.txt",
+                          "test.location",
+                          "test.send");
+        /*
+         * @param serverURL
+         * @param sourceLocationProperty
+         * @param sourceFileName
+         * @param destinationLocationProperty
+         * @param destinationFileName
+         */
+        FileTransfer.get("http://www.far-away.com:9000/RPC2",
+                         "test.location",
+                         "test.txt",
+                         "test.location",
+                         "test.get");
+
+        /*
+         * @param serverURL
+         * @param sourceLocationProperty
+         * @param sourceFileName
+         */
+        FileTransfer.remove("http://www.far-away.com:9000/RPC2",
+                            "test.location",
+                            "test.txt");
+    }
+}
+
+]]></source>
+
+</section>
+
+</body>
+</document>

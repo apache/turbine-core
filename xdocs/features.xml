@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+
+<document>
+
+ <properties>
+  <title>Turbine Features</title>
+  <author email="jon@latchkey.com">Jon S. Stevens</author>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="Features">
+
+<p>
+This document is for bragging about all of Turbine's features and inherent
+coolness. Turbine is well over 200 classes and contains a boat load of
+features and API's. Many of these can also be used indepently of Turbine.
+Almost all of the default implementations can be easily overridden with
+your own implementations. Turbine also has extensive Javadoc documentation
+for nearly all of the classes as well as in-code comments. At the risk
+of sounding snooty &lt;smile>, Turbine is by far the leader of complex
+web application development tools. No other systems come close to being
+as cleanly implemented and executed. It clearly has been developed by the
+people who do web applications on a daily basis and have to constantly
+solve the same problems over and over again.
+</p>
+
+<p>
+<strong>All of these features have been made possible thanks to the over
+30 developers (and growing all the time!) who have <a href="contributors.html">
+contributed</a> to Turbine over the last 2+ years.</strong>
+</p>
+
+<ul>
+    <li>
+      Integration with template systems: Velocity, WebMacro,
+      FreeMarker, JSP
+    </li>
+    <li>
+        Utility code for working with Velocity and WebMacro, such as a
+        SelectorBox class for building &lt;select> boxes</li>
+    <li>
+        Single Entry Point Servlet model for optimal security and control</li>
+    <li>
+        Singleton based Database Connection Pool (JDBC) with built in support
+        for all of the major databases</li>
+    <li>
+        ParameterParsing for GET/POST/PATH_INFO</li>
+    <li>
+        Event based Action handling!</li>
+    <li>
+        Strict MVC guidelines implemented through many interfaces and abstract
+        classes as well as through the template systems.</li>
+    <li>
+        Object-Relational tools: DatabaseMap/Peers, Village,
+        <a href="http://castor.exolab.org">Castor</a>.</li>
+    <li>
+        IDBroker that abstracts the autoinsert/sequence usage from the database</li>
+    <li>
+        Failsafe Job based scheduler system (ie: a Java based cron)</li>
+    <li>
+        GlobalCache (Singleton based system for caching data across servlets and
+        requests)</li>
+    <li>
+        DateSelector (utility for building the HTML for popup date menus)</li>
+    <li>
+        File Upload API</li>
+    <li>
+        Generic Services API for creating Singletons</li>
+    <li>
+        Castor Service Integration</li>
+    <li>
+        <a href="http://www.xml-rpc.com/">XML-RPC</a> Service Integration</li>
+    <li>
+        Localization Services API</li>
+    <li>
+        JNDI Services API</li>
+    <li>
+        Visitor/Member API for managing users</li>
+    <li>
+        Temporary and Permanent storage/management for users session data</li>
+    <li>
+        ACL (Access Control List) based security system that uses Roles and
+        Permissions (and the database schemas)</li>
+    <li>
+        BrowserDetector class for determining which browser someone is using</li>
+    <li>
+        GenerateUniqueId class for getting a unique number (ie: for sessions)</li>
+    <li>
+        Logging to a file facility...(extensible to include ANY logging system
+        implementation).</li>
+    <li>
+        Property file reader tools and a TurbineResources service to make it easy
+        to retrieve properties</li>
+    <li>
+        Integration with JavaMail to make sending email painless</li>
+    <li>
+        Integration with JavaMail and Velocity/WebMacro to allow you to send
+        processed Velocity templates as email!</li>
+    <li>
+        Built using Ant</li>
+    <li>
+        Initial application development WAR archive creation tool using Ant</li>
+    <li>
+        Turbine Servlet works cleanly with Servlet API 2.1 and higher</li>
+    <li>
+        Works with JDK 1.2.x and higher - 100% Pure Java</li>
+</ul>
+
+</section>
+
+</body>
+</document>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<document>
+
+<properties>
+  <title>2.1 Branch Changes</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  <author email="jmcnally@apache.org">John D. McNally</author>
+</properties>
+
+<body>
+
+<section name="Changes">
+
+<p>
+This document describes what has changed in Turbine on the 2.1 branch
+between releases.
+</p>
+
+<p>
+  <ul>
+
+    <li>
+        Fixed error in Mssql unique.vm template (removed a blank line)
+    </li>
+    <li>
+        ECS, Frremarker ans Webmacro services/modules are marked deprecated. 
+        You should use Velocity instead.
+    </li>
+    <li>
+        Castor service is marked as deprecated. You should use om/peer 
+        classes instead!
+    </li>
+
+  </ul>
+</p>
+</section>
+
+</body>
+</document>

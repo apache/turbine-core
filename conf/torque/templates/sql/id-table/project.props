@@ -1,0 +1,5 @@
+# -------------------------------------------------------------------------
+# The values for the ID_TABLE_ID column in the ID_TABLE start
+# at 101 for tables used in projects.
+# -------------------------------------------------------------------------
+initialID = 101

@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - Assembler Broker Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="Assembler Broker Service">
+
+<p>
+In Turbine <strong>assemblers</strong> are the basis for all the
+module types: pages, layouts, screens, navigations, and scheduled
+jobs. The way that these module types fits together is defined in
+the Turbine <a href="../fsd.html">specification</a> document.
+</p>
+
+<p>
+The Assembler Broker Service allows these module types to
+be loaded by one or more AssemblerFactory implementations.
+</p>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+# 
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.AssemblerBrokerService.classname=org.apache.turbine.services.assemblerbroker.TurbineAssemblerBrokerService
+.
+.
+.
+
+# -------------------------------------------------------------------
+# 
+#  A S S E M B L E R  B R O K E R  S E R V I C E
+#
+# -------------------------------------------------------------------
+# A list of AssemblerFactory classes that will be registered 
+# with TurbineAssemblerBrokerService
+# -------------------------------------------------------------------
+
+services.AssemblerBrokerService.screen=org.apache.turbine.util.assemblerbroker.java.JavaScreenFactory
+services.AssemblerBrokerService.screen=org.apache.turbine.util.assemblerbroker.python.PythonScreenFactory
+services.AssemblerBrokerService.action=org.apache.turbine.util.assemblerbroker.java.JavaActionFactory
+services.AssemblerBrokerService.layout=org.apache.turbine.util.assemblerbroker.java.JavaLayoutFactory
+services.AssemblerBrokerService.page=org.apache.turbine.util.assemblerbroker.java.JavaPageFactory
+services.AssemblerBrokerService.navigation=org.apache.turbine.util.assemblerbroker.java.JavaNavigationFactory
+services.AssemblerBrokerService.scheduledjob=org.apache.turbine.util.assemblerbroker.java.JavaScheduledJobFactory
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<p>
+This service is used internally within Turbine. Therefore, we do not
+document its usage here. It is best to simply look at the source code,
+read the Javadocs and follow the logic.
+</p>
+
+</section>
+
+</body>
+</document>

@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - Servlet Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="Servlet Service">
+
+<p>
+The Servlet Service encapsulates the information provided by the
+ServletContext API, and makes it available from anywhere in the code.
+</p>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+# 
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.ServletService.classname=\
+  org.apache.turbine.services.servlet.TurbineServletService
+.
+.
+.
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<p>
+Upon initialization, this service remembers the servlet configuration
+for the application, and is able to provide back information about
+this configuration.  After the service has been initialized, it
+supports the following functionality:
+
+ <ul>
+
+  <li>
+Create an URL from a URI string which is relative to the context.
+  </li>
+
+  <li>
+Provide the complete filesystem path for a given URI.
+  </li>
+
+  <li>
+Expand a string that points to a relative path or path list,
+leaving it as an absolute path based on the servlet context.
+  </li>
+
+ </ul>
+
+</p>
+
+</section>
+
+</body>
+</document>

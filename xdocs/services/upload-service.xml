@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - Upload Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="Upload Service">
+
+<p>
+The Upload Service handles the parsing of multi-part/form-data from POST
+Requests, making the multi-part files available from either memory or from a
+specified location on the file system.
+</p>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+# 
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.UploadService.classname=org.apache.turbine.services.upload.TurbineUploadService
+.
+.
+.
+# -------------------------------------------------------------------
+#
+#  U P L O A D  S E R V I C E
+#
+# -------------------------------------------------------------------
+
+# Whether the files should be automatically picked up by
+# ParameterParser.
+
+services.UploadService.automatic=false
+
+#
+# The directory where files will be temporarily stored.
+#
+services.UploadService.repository=.
+
+#
+# The maximum size of a request that will be processed.
+#
+services.UploadService.size.max=1048576
+
+#
+# The maximum size of a request that will have it's elements cached in
+# memory by TurbineUploadService class.
+#
+services.UploadService.size.threshold=10240
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<p>
+Change the automatic directive to true. With this set to true any
+multi-part/form-data requests which Turbine fields, will be parsed and the
+appropriate files made available to ParameterParser as FileItem objects. If
+this is set as false, the FileItems will have to be parsed out of RunData
+manually with the method getRequest() available from TurbineUpload.
+</p>
+
+<p>
+Set the remaining values to ones approriate for your installation. On Win32
+file systems for the repository directive, an entry of the form:
+<ul>
+  <code>f:\path\to\upload\repository</code>
+</ul>
+is most likely necessary.
+</p>
+
+
+<p>
+Create an HTML form of the type:
+</p>
+
+<source test=""><![CDATA[
+
+<form enctype="multipart/form-data" method="POST">
+<input type="hidden" name="action" value="UploadExample" />
+<input type="file" name="filename">
+<input type="submit" value="upload" />
+</form>
+
+]]></source>
+
+<p>
+The Upload Service manages if the FileItem is stored in Memory or in the
+Repository specified in TurbineReources.properties. It is also possible to
+overide the TurbineResources setting for the repository by using
+TurbineUpload.getRequest()  to parse the request with a custom repository
+directory. The TurbineUpload object serves as a Facade to the Upload Service
+by making available static methods to manage the upload internally in your
+application. The FileItems can be accessed in an UploadExample Action class by:
+</p>
+
+<source test=""><![CDATA[
+    public void doPerform(RunData data, Context context) throws Exception
+    {
+        //get the ParameterParser from RunData
+        ParameterParser params = data.getParameters();
+
+        //grab the FileItems available in ParameterParser
+        FileItem fi = params.getFileItem("filename");
+
+        //do work on the FileItem
+        //get the file as a File
+        //or outputstream etc.
+
+    }
+
+]]></source>
+
+<p>
+Once a new instance of the FileItem is created many public methods are
+available to work on the object, whether it is in temporary storage as memory or as
+a temporary file on part of the file system. All the temporary storage management and
+clean up occurs behind the scenes and is transparent to the application being
+based on Turbine. There is no need to manually clean up the FileItems as the
+FileItem object doesn't span Requests ( or RunData instances ) and the temporary
+files that use the file system are cleaned up in a finalize() method inherited
+from Object().
+</p>
+
+<p>
+The TurbineUpload object and the FileItem object give all the functionality
+needed to manage this sort of operation or action at the application level.
+For more detailed information on the methods available to deal with uploaded
+files, view the relevant Javadocs for TurbineUpload, ParameterParser and
+FileItem.
+</p>
+
+</section>
+
+</body>
+</document>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Application Service Proposal</title>
+    <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  </properties>
+
+<body>
+
+<section name="Parameter parser and its ilk">
+
+<p>
+  <li>
+    clean up and orthogonalize APIs (add vs append vs set)
+  </li>
+
+  <li>
+    what the heck is uploadData? I think UploadService/FileItems do the
+    trick just fine
+  </li>
+
+  <li>
+    BaseValueParser should not extend RecyclableSupport. If I understand
+    the pattern correctly, it should include an instance of
+    RecyclableSupport and delegate Recyclable interface method to it. 
+    The same goes for TurbineDefaultRunData. To prevent people from doing 
+    that RecyclableSupport should not implement Recyclable itself. AFAIK, this 
+    kind of apprach is used to emulate multiple inheritance in Java. 
+    I'd appreciate a comment on this issue from Ilkka.
+  </li>
+</p>
+
+</section>
+
+</body>
+</document>

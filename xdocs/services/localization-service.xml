@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - Localization Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="Localization Service">
+
+<p>
+There is a Turbine service that makes it easy to add localization support
+to your application.
+</p>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+# 
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.GlobalCacheService.classname=org.apache.turbine.services.cache.TurbineGlobalCacheService
+.
+.
+.
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+
+<source><![CDATA[
+
+TurbineServices.getInstance().getService(LocalizationService.LOCALIZATION)
+    .getString("DISPLAYPROJECTS_TITLE");
+
+]]></source>
+
+<p>
+Wow. That is a lot of typing. That could be easily shortened to this:
+</p>
+
+<source><![CDATA[
+
+Localization.getString("DISPLAYPROJECTS_TITLE");
+
+]]></source>
+
+<p>
+The hard example above was given as an example of using Services. The easy
+example is the one that you really should be using. Another cool feature
+of the Localization class is that you can pass in a RunData object like
+this:
+</p>
+
+<source><![CDATA[
+
+Localization.getString(data, "DISPLAYPROJECTS_TITLE");
+
+]]></source>
+
+<p>
+This has the added effect of using the Accept-Language HTTP header to determine
+which language to display based on what setting the user has defined in
+the browser. Can you say Dynamic Localization? ;-)
+</p>
+
+<p>
+For creating the file where you get the value of the String, please
+see the <em>java.util.ListResourceBundle</em> and
+<em>java.util.ResourceBundle</em> classes for more information.
+<a href="http://java.apache.org/jyve/">Jyve</a> also contains example usage
+of this code because that was the first place where this code was originally
+developed.
+</p>
+
+</section>
+
+</body>
+</document>

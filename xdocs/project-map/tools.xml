@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<document>
+    <properties>
+        <title>Project map - Core</title>
+        <author email="rafal@apache.org">Rafal Krzewski</author>
+    </properties>
+    
+    <body>
+        <section name="Turbine tools">
+            <p><a href="#Torque">Torque</a></p>
+            <p><a href="#Intake">Intake</a></p>
+            <p><a href="#Migrator">Migrator</a></p>
+        </section>
+
+        <section name="Torque">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+
+            <ul>
+                <li>org.apache.turbine.torque.TorqueIntakeTask</li>
+                <li>org.apache.turbine.torque.TorqueJDBCTransformTask</li>
+                <li>org.apache.turbine.torque.TorqueObjectModelTask</li>
+                <li>org.apache.turbine.torque.TorqueSQLTask</li>
+                <li>org.apache.turbine.torque.TorqueSQLTransformTask</li>
+                <li>org.apache.turbine.torque.engine.database.model.AppData</li>
+                <li>org.apache.turbine.torque.engine.database.model.Column</li>
+                <li>org.apache.turbine.torque.engine.database.model.Database</li>
+                <li>org.apache.turbine.torque.engine.database.model.ForeignKey</li>
+                <li>org.apache.turbine.torque.engine.database.model.IdMethodParameter</li>
+                <li>org.apache.turbine.torque.engine.database.model.Index</li>
+                <li>org.apache.turbine.torque.engine.database.model.Inheritance</li>
+                <li>org.apache.turbine.torque.engine.database.model.Table</li>
+                <li>org.apache.turbine.torque.engine.database.model.TypeMap</li>
+                <li>org.apache.turbine.torque.engine.database.model.Unique</li>
+                <li>org.apache.turbine.torque.engine.database.transform.DTDResolver</li>
+                <li>org.apache.turbine.torque.engine.database.transform.SQLToAppData</li>
+                <li>org.apache.turbine.torque.engine.database.transform.XmlToAppData</li>
+                <li>org.apache.turbine.torque.engine.intake.base.Field</li>
+                <li>org.apache.turbine.torque.engine.intake.model.AppData</li>
+                <li>org.apache.turbine.torque.engine.intake.model.InputGroup</li>
+                <li>org.apache.turbine.torque.engine.intake.model.Rule</li>
+                <li>org.apache.turbine.torque.engine.intake.model.XmlField</li>
+                <li>org.apache.turbine.torque.engine.intake.transform.DTDResolver</li>
+                <li>org.apache.turbine.torque.engine.intake.transform.XmlToAppData</li>
+                <li>org.apache.turbine.torque.engine.sql.ParseException</li>
+                <li>org.apache.turbine.torque.engine.sql.SQLScanner</li>
+                <li>org.apache.turbine.torque.engine.sql.Token</li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+                <li>Leon Messerschmidt</li>
+                <li>John McNally</li>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <p>None</p>
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section> 
+
+        <section name="Intake">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+
+            <ul>
+                <li>org.apache.turbine.services.intake.model.BigDecimalField</li>
+                <li>org.apache.turbine.services.intake.model.BooleanField</li>
+                <li>org.apache.turbine.services.intake.model.Field</li>
+                <li>org.apache.turbine.services.intake.model.FieldFactory</li>
+                <li>org.apache.turbine.services.intake.model.Group</li>
+                <li>org.apache.turbine.services.intake.model.IntakeValue</li>
+                <li>org.apache.turbine.services.intake.model.NumberKeyField</li>
+                <li>org.apache.turbine.services.intake.model.IntegerField</li>
+                <li>org.apache.turbine.services.intake.model.StringField</li>
+                <li>org.apache.turbine.services.intake.model.ComboKeyField</li>
+                <li>org.apache.turbine.services.intake.IntakeService</li>
+                <li>org.apache.turbine.services.intake.IntakeTool</li>
+                <li>org.apache.turbine.services.intake.TurbineIntake</li>
+                <li>org.apache.turbine.services.intake.TurbineIntakeService</li>
+                <li>org.apache.turbine.services.intake.transform.DTDResolver</li>
+                <li>org.apache.turbine.services.intake.transform.XmlToAppData</li>
+                <li>org.apache.turbine.services.intake.xmlmodel.AppData</li>
+                <li>org.apache.turbine.services.intake.xmlmodel.Rule</li>
+                <li>org.apache.turbine.services.intake.xmlmodel.XmlField</li>
+                <li>org.apache.turbine.services.intake.xmlmodel.XmlGroup</li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+                <li>John McNally</li>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <p>None</p>
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+    
+        <section name="Migrator">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+
+            <ul>
+                <li>org.apache.turbine.util.migrator.Migrator</li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+                <li>Jason van Zyl</li>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <p>None</p>
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+    </body>
+</document>

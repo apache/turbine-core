@@ -1,0 +1,40 @@
+<!-- 
+    Intake XML input constraints DTD 
+    $Id$
+-->
+
+<!ELEMENT input-data (group+)>
+<!ATTLIST input-data 
+  basePackage CDATA #IMPLIED
+>
+
+<!ELEMENT group (field+)>
+<!ATTLIST group 
+  key CDATA #REQUIRED
+  name CDATA #REQUIRED
+  mapToObject CDATA #IMPLIED
+>
+
+<!ELEMENT field (rule*,required-message?)>
+<!ATTLIST field 
+  key CDATA #REQUIRED
+  name CDATA #REQUIRED
+  type ( boolean | BigDecimal | short | int  | long   | float 
+       | double  | BigInteger | byte  | char | String | Date  
+       | StringKey | NumberKey | DateKey | ComboKey ) "String"      
+  onError CDATA #IMPLIED
+  multiValued ( true | false ) "false"
+  mapToObject CDATA #IMPLIED
+  mapToProperty CDATA #IMPLIED
+  validator CDATA #IMPLIED
+>
+
+                  
+<!ELEMENT rule (#PCDATA)>
+<!ATTLIST rule 
+  name CDATA #REQUIRED
+  value CDATA #REQUIRED
+>
+
+<!ELEMENT required-message (#PCDATA)>
+

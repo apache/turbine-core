@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Application Service Proposal</title>
+    <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  </properties>
+
+<body>
+
+<section name="Reusable Components">
+
+<p>
+  <li>
+    facilities for presenation of tabular data, with the ability
+    to do paging, filtering and sorting
+  </li>
+
+  <li>
+    date selection component (skinnable calendar with year/month/week 
+    views in a popup window, includes some JS)
+  </li>
+</p>
+
+</section>
+
+</body>
+</document>

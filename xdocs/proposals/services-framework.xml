@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Application Service Proposal</title>
+    <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  </properties>
+
+<body>
+
+<section name="Service framework">
+
+<p>
+  <li>
+    Simplify initialization sequence - no more init(Object), just start(),
+    init(), shutdown()
+  </li>
+
+  <li>
+    system property repository in the broker, for the services that
+    *really* need to use ServletConfig or RunData
+  </li>
+
+  <li>
+    getRealPath/getResourceAsStream for the use in the services in the
+    broker
+  </li>
+
+  <li>
+    initialization of the broker needs to be refactored - logic for that
+    should moved from TurbineServices into BaseServiceBroker
+  </li>
+</p>
+
+</section>
+
+</body>
+</document>

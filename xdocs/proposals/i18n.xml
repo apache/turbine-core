@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Application Service Proposal</title>
+    <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  </properties>
+
+<body>
+
+<section name="i18n">
+<p>
+  <li>
+    Messages that turbine outputs should live in a resource bundles, not
+    in in TR.props
+  </li>
+
+  <li>
+    Template lookups depending on locale (Is Ilkka working on that?) 
+  </li>
+</p>
+
+</section>
+
+
+</body>
+</document>

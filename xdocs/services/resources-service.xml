@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - Resources Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="Resources Service">
+
+<p>
+Within Turbine is a class for reading and accessing data in Property
+files. The classes that accomplish this have been borrowed from the Apache
+JServ project. These classes are called ExtendedProperties and are more
+feature complete than the Properties objects that are default in the Java
+Language specification. Turbine comes with a global properties file called
+TurbineResources.properties. This file is used to configure runtime directives
+within Turbine. You can also use this file to store your application specific
+resources or you can uses the Resources Services to create other files
+that are specific to your application.
+</p>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+.
+.
+.
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<p>
+To access data that is within the TurbineResources.properties file,
+all you need to do is this:
+</p>
+
+<source><![CDATA[
+
+TurbineResources
+    .setPropertiesFileName("d:/path/to/TurbineResources.properties");
+
+String foo = TurbineResources
+    .getString("foo.data","defaultValue");
+
+]]></source>
+
+<p>
+The above code sets the properties file name path so that it can be found.
+This only needs to be executed once per instance of the JVM because it
+is a mostly static class and can cache this information. The getString()
+line will retrieve the value out of the properties file that starts with
+"<em>foo.data</em>". If that key value is not found in the properties file,
+then it will return the optional "<em>defaultValue</em>" as the String.
+</p>
+
+<p>There is also a class, TurbineResourceServices that allows you to use
+the Services functionality to access information within TurbineResources.
+Since this is more work for the programmer, I will leave this as an exercise
+that you can do on your own. It is recommended that you just use the simple
+example above instead.
+</p>
+
+</section>
+
+</body>
+</document>

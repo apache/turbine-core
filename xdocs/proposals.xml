@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="Proposals">
+
+<p>
+These are the proposals that are up on the table:
+</p>
+
+<ul>
+<li><a href="proposals/application-service.html">Application Service</a></li>
+<li><a href="proposals/browser-bound-app-context.html">Browser Bound Application Context</a></li>
+<li><a href="proposals/i18n.html">i18n</a></li>
+<li><a href="proposals/naming-service.html">Naming Service</a></li>
+<li><a href="proposals/sql.html">New Query Model</a></li>
+<li><a href="proposals/package-cleanup.html">Package Cleanup</a></li>
+<li><a href="proposals/peers.html">Peer</a></li>
+<li><a href="proposals/policy-service.html">Policy Service</a></li>
+<li><a href="proposals/pp.html">PP and Related Classes</a></li>
+<li><a href="proposals/reusable-components.html">Reusable Components</a></li>
+<li><a href="proposals/security-service.html">Security Service</a></li>
+<li><a href="proposals/services-repository.html">Services Repository</a></li>
+<li><a href="proposals/xslt-service.html">XSLT Service</a></li>
+<li><a href="proposals/unified-templating.html">Unified Templating Service</a></li>
+<li><a href="proposals/bo-managers.html">Torque BO Managers</a></li>
+</ul>
+
+</section>
+
+</body>
+</document>

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+dropdb $databaseName
+createdb $databaseName

@@ -1,0 +1,647 @@
+package org.apache.turbine;
+
+/* ====================================================================
+ * The Apache Software License, Version 1.1
+ *
+ * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * 3. The end-user documentation included with the redistribution,
+ *    if any, must include the following acknowledgment:
+ *       "This product includes software developed by the
+ *        Apache Software Foundation (http://www.apache.org/)."
+ *    Alternately, this acknowledgment may appear in the software itself,
+ *    if and wherever such third-party acknowledgments normally appear.
+ *
+ * 4. The names "Apache" and "Apache Software Foundation" and 
+ *    "Apache Turbine" must not be used to endorse or promote products 
+ *    derived from this software without prior written permission. For 
+ *    written permission, please contact apache@apache.org.
+ *
+ * 5. Products derived from this software may not be called "Apache",
+ *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    prior written permission of the Apache Software Foundation.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+ * ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+ * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ * ====================================================================
+ *
+ * This software consists of voluntary contributions made by many
+ * individuals on behalf of the Apache Software Foundation.  For more
+ * information on the Apache Software Foundation, please see
+ * <http://www.apache.org/>.
+ */
+
+// Java Core Classes
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Enumeration;
+
+// Java Servlet Classes
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+// Turbine Modules
+import org.apache.turbine.modules.ActionLoader;
+import org.apache.turbine.modules.PageLoader;
+import org.apache.turbine.modules.actions.sessionvalidator.SessionValidator;
+
+// Turbine Utility Classes
+import org.apache.turbine.util.DynamicURI;
+import org.apache.turbine.util.Log;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.RunDataFactory;
+import org.apache.turbine.util.StringUtils;
+import org.apache.turbine.util.security.AccessControlList;
+
+//Turbine Services
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.resources.TurbineResources;
+import org.apache.turbine.services.logging.LoggingService;
+import org.apache.turbine.services.template.TurbineTemplate;
+
+/**
+ * Turbine is the main servlet for the entire system. It is <code>final</code>
+ * because you should <i>not</i> ever need to subclass this servlet.  If you
+ * need to perform initialization of a service, then you should implement the
+ * Services API and let your code be initialized by it.
+ * If you need to override something in the <code>doGet()</code> or
+ * <code>doPost()</code> methods, edit the TurbineResources.properties file and
+ * specify your own classes there.
+ *
+ * <p> Turbine servlet recognizes the following initialization parameters.
+ *
+ * <ul>
+ * <li><code>resources</code> the implementation of
+ * {@link org.apache.turbine.services.resources.ResourceService} to be used</li>
+ * <li><code>properties</code> the path to TurbineResources.properties file
+ * used by the default implementation of <code>ResourceService</code>, relative
+ * to the application root.</li>
+ * <li><code>basedir</code> this parameter is used <strong>only</strong> if your
+ * application server does not support web applications, or the or does not
+ * support <code>ServletContext.getRealPath(String)</code> method correctly.
+ * You can use this parameter to specify the directory within the server's
+ * filesystem, that is the base of your web application.</li>
+ * </ul><br>
+ *
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @version $Id$
+ */
+public class Turbine extends HttpServlet
+{
+    /**
+     * Name of path info parameter used to indicate the redirected stage of
+     * a given user's initial Turbine request
+     */
+    public static final String REDIRECTED_PATHINFO_NAME = "redirected";
+
+    /**
+     * The base directory key
+     */
+    public static final String BASEDIR_KEY = "basedir";
+
+    /**
+     * In certain situations the init() method is called more than once,
+     * somtimes even concurrently. This causes bad things to happen,
+     * so we use this flag to prevent it.
+     */
+    private static boolean firstInit = true;
+
+    /**
+     * Whether init succeeded or not.
+     */
+    private static Throwable initFailure = null;
+
+    /**
+     * Should initialization activities be performed during doGet()
+     * execution?
+     */
+    private static boolean firstDoGet = true;
+
+    /**
+     * This init method will load the default resources from a
+     * properties file.
+     *
+     * @param config typical Servlet initialization parameter.
+     * @exception ServletException a servlet exception.
+     */
+    public final void init(ServletConfig config)
+        throws ServletException
+    {
+        super.init(config);
+
+        synchronized ( this.getClass() )
+        {
+            if(!firstInit)
+            {
+                log ("Double initializaton of Turbine was attempted!");
+                return;
+            }
+            // executing init will trigger some static initializers, so we have
+            // only one chance.
+            firstInit = false;
+
+            try
+            {
+                // Initalize TurbineServices and init bootstrap services
+                TurbineServices services =
+                    (TurbineServices) TurbineServices.getInstance();
+
+                // Initialize essential services (Resources & Logging)
+                services.initPrimaryServices(config);
+
+                // Initialize other services that require early init
+                services.initServices(config, false);
+            }
+            catch ( Exception e )
+            {
+                // save the exception to complain loudly later :-)
+                initFailure = e;
+                log ("Turbine: init() failed: " + StringUtils.stackTrace(e));
+                return;
+            }
+            log ("Turbine: init() Ready to Rumble!");
+        }
+    }
+
+    /**
+     * Initializes the services which need <code>RunData</code> to
+     * initialize themselves (post startup).
+     *
+     * @param data The first <code>GET</code> request.
+     */
+    public final void init(RunData data)
+    {
+        if (firstDoGet)
+        {
+            synchronized (Turbine.class)
+            {
+                if (firstDoGet)
+                {
+                    log("Turbine: Starting HTTP initialization of services");
+                    TurbineServices.getInstance().initServices(data);
+                    log("Turbine: Completed HTTP initialization of services");
+
+                    // Mark that we're done.
+                    firstDoGet = false;
+               }
+            }
+        }
+    }
+
+    /**
+     * The <code>Servlet</code> destroy method.  Invokes
+     * <code>ServiceBroker</code> tear down method.
+     */
+    public final void destroy()
+    {
+        // Shut down all Turbine Services.
+        TurbineServices.getInstance().shutdownServices();
+        System.gc();
+
+        log("Turbine: Done shutting down!");
+    }
+
+    /**
+     * The primary method invoked when the Turbine servlet is executed.
+     *
+     * @param req Servlet request.
+     * @param res Servlet response.
+     * @exception IOException a servlet exception.
+     * @exception ServletException a servlet exception.
+     */
+    public final void doGet (HttpServletRequest req,
+                       HttpServletResponse res)
+        throws IOException,
+               ServletException
+    {
+        // Placeholder for the RunData object.
+        RunData data = null;
+        try
+        {
+            // Check to make sure that we started up properly.
+            if (initFailure != null)
+            {
+                throw initFailure;
+            }
+
+            // Get general RunData here...
+            // Perform turbine specific initialization below.
+            data = RunDataFactory.getRunData( req, res,
+                                              getServletConfig() );
+
+            // If this is the first invocation, perform some
+            // initialization.  Certain services need RunData to initialize
+            // themselves.
+            init(data);
+
+            // Get the instance of the Session Validator.
+            SessionValidator sessionValidator = (SessionValidator)ActionLoader
+                .getInstance().getInstance(TurbineResources.getString(
+                    "action.sessionvalidator"));
+
+            // if this is the redirected stage of the initial request, 
+            // check that the session is now not new. 
+            // If it is not, then redirect back to the
+            // original URL (i.e. remove the "redirected" pathinfo)
+            if (data.getParameters()
+                .getString(REDIRECTED_PATHINFO_NAME, "false").equals("true"))
+            {
+                if (data.getSession().isNew())
+                {
+                    String message = "Infinite redirect detected...";
+                    log(message);
+                    Log.error(message);
+                    throw new Exception(message);
+                }
+                else
+                {
+                    DynamicURI duri = new DynamicURI (data, true);
+
+                    // Pass on the sent data in pathinfo.
+                    for (Enumeration e = data.getParameters().keys() ;
+                         e.hasMoreElements() ;)
+                    {
+                        String key = (String) e.nextElement();
+                        if (!key.equals(REDIRECTED_PATHINFO_NAME))
+                        {
+                            String value =
+                                (String) data.getParameters().getString ( key );
+                            duri.addPathInfo((String)key, (String)value );
+                        }
+                    }
+
+                    data.getResponse().sendRedirect( duri.toString() );
+                    return;
+                }
+            }
+            else
+            {
+                // Insist that the client starts a session before access
+                // to data is allowed. this is done by redirecting them to
+                // the "screen.homepage" page but you could have them go
+                // to any page as a starter (ie: the homepage)
+                // "data.getResponse()" represents the HTTP servlet
+                // response.
+                if ( sessionValidator.requiresNewSession(data) &&
+                     data.getSession().isNew() )
+                {
+                    DynamicURI duri = new DynamicURI (data, true);
+
+                    // Pass on the sent data in pathinfo.
+                    for (Enumeration e = data.getParameters().keys() ;
+                         e.hasMoreElements() ;)
+                    {
+                        String key = (String) e.nextElement();
+                        String value =
+                            (String) data.getParameters().getString ( key );
+                        duri.addPathInfo((String)key, (String)value );
+                    }
+
+                    // add a dummy bit of path info to fool browser into 
+                    // thinking this is a new URL
+                    if (!data.getParameters()
+                        .containsKey(REDIRECTED_PATHINFO_NAME))
+                    {
+                        duri.addPathInfo(REDIRECTED_PATHINFO_NAME, "true");
+                    }
+
+                    // as the session is new take this opportunity to 
+                    // set the session timeout if specified in TR.properties
+                    int timeout = 
+                        TurbineResources.getInt("session.timeout", -1);
+                    
+                    if (timeout != -1)
+                    {
+                        data.getSession().setMaxInactiveInterval(timeout);
+                    }                        
+
+                    data.getResponse().sendRedirect( duri.toString() );
+                    return;
+                }
+            }
+
+            // Fill in the screen and action variables.
+            data.setScreen ( data.getParameters().getString("screen") );
+            data.setAction ( data.getParameters().getString("action") );
+
+            // Special case for login and logout, this must happen before the
+            // session validator is executed in order either to allow a user to
+            // even login, or to ensure that the session validator gets to
+            // mandate its page selection policy for non-logged in users
+            // after the logout has taken place.
+            if ( data.hasAction()
+                    && data.getAction().equalsIgnoreCase(TurbineResources
+                            .getString("action.login"))
+                    || data.getAction().equalsIgnoreCase(TurbineResources
+                            .getString("action.logout")))
+            {
+                // If a User is logging in, we should refresh the
+                // session here.  Invalidating session and starting a
+                // new session would seem to be a good method, but I
+                // (JDM) could not get this to work well (it always
+                // required the user to login twice).  Maybe related
+                // to JServ?  If we do not clear out the session, it
+                // is possible a new User may accidently (if they
+                // login incorrectly) continue on with information
+                // associated with the previous User.  Currently the
+                // only keys stored in the session are "turbine.user"
+                // and "turbine.acl".
+                if (data.getAction().equalsIgnoreCase(TurbineResources
+                        .getString("action.login")))
+                {
+                    String[] names = data.getSession().getValueNames();
+                    if (names != null)
+                    {
+                        for (int i=0; i< names.length; i++)
+                        {
+                            data.getSession().removeValue(names[i]);
+                        }
+                    }
+                }
+                ActionLoader.getInstance().exec ( data, data.getAction() );
+                data.setAction(null);
+            }
+
+            // This is where the validation of the Session information
+            // is performed if the user has not logged in yet, then
+            // the screen is set to be Login. This also handles the
+            // case of not having a screen defined by also setting the
+            // screen to Login. If you want people to go to another
+            // screen other than Login, you need to change that within
+            // TurbineResources.properties...screen.homepage; or, you
+            // can specify your own SessionValidator action.
+            ActionLoader.getInstance().exec(
+                data,TurbineResources.getString("action.sessionvalidator") );
+
+            // Put the Access Control List into the RunData object, so
+            // it is easily available to modules.  It is also placed
+            // into the session for serialization.  Modules can null
+            // out the ACL to force it to be rebuilt based on more
+            // information.
+            ActionLoader.getInstance().exec(
+                data,TurbineResources.getString("action.accesscontroller"));
+
+            // Start the execution phase. DefaultPage will execute the
+            // appropriate action as well as get the Layout from the
+            // Screen and then execute that. The Layout is then
+            // responsible for executing the Navigation and Screen
+            // modules.
+            //
+            // Note that by default, this cannot be overridden from
+            // parameters passed in via post/query data. This is for
+            // security purposes.  You should really never need more
+            // than just the default page.  If you do, add logic to
+            // DefaultPage to do what you want.
+            
+            String defaultPage = TurbineTemplate.getDefaultPageName(data);
+            
+            if (defaultPage == null)
+            {
+                /*
+                 * In this case none of the template services are running.
+                 * The application may be using ECS for views, or a
+                 * decendent of RawScreen is trying to produce output.
+                 * If there is a 'page.default' property in the TR.props
+                 * then use that, otherwise return DefaultPage which will
+                 * handle ECS view scenerios and RawScreen scenerios. The
+                 * app developer can still specify the 'page.default'
+                 * if they wish but the DefaultPage should work in
+                 * most cases.
+                 */
+                defaultPage = TurbineResources.getString(
+                    "page.default", "DefaultPage");
+            }
+            
+            PageLoader.getInstance().exec(data, defaultPage);
+
+            // If a module has set data.acl = null, remove acl from
+            // the session.
+            if ( data.getACL() == null )
+            {
+                data.getSession().removeValue(
+                    AccessControlList.SESSION_KEY);
+            }
+
+            try
+            {
+                if ( data.isPageSet() == false &&
+                     data.isOutSet() == false )
+                    throw new Exception ( "Nothing to output" );
+
+                // We are all done! if isPageSet() output that way
+                // otherwise, data.getOut() has already been written
+                // to the data.getOut().close() happens below in the
+                // finally.
+                if ( data.isPageSet() && data.isOutSet() == false )
+                {
+                    // Modules can override these.
+                    data.getResponse()
+                        .setLocale( data.getLocale() );
+                    data.getResponse()
+                        .setContentType( data.getContentType() );
+
+                    // Handle the case where a module may want to send
+                    // a redirect.
+                    if ( ( data.getStatusCode() == 301 ||
+                           data.getStatusCode() ==  302 ) &&
+                         data.getRedirectURI() != null )
+                    {
+                        data.getResponse()
+                            .sendRedirect ( data.getRedirectURI() );
+                    }
+
+                    // Set the status code.
+                    data.getResponse().setStatus ( data.getStatusCode() );
+                    // Output the Page.
+                    data.getPage().output (data.getOut());
+                }
+            }
+            catch ( Exception e )
+            {
+                // The output stream was probably closed by the client
+                // end of things ie: the client clicked the Stop
+                // button on the browser, so ignore any errors that
+                // result.
+            }
+        }
+        catch ( Exception e )
+        {
+            handleException(data, res, e);
+        }
+        catch (Throwable t)
+        {
+            handleException(data, res, t);
+        }
+        finally
+        {
+            // Make sure to close the outputstream when we are done.
+            try
+            {
+                data.getOut().close();
+            }
+            catch (Exception e)
+            {
+                // Ignore.
+            }
+
+            // Return the used RunData to the factory for recycling.
+            RunDataFactory.putRunData(data);
+        }
+    }
+
+    /**
+     * In this application doGet and doPost are the same thing.
+     *
+     * @param req Servlet request.
+     * @param res Servlet response.
+     * @exception IOException a servlet exception.
+     * @exception ServletException a servlet exception.
+     */
+    public final void doPost (HttpServletRequest req,
+                        HttpServletResponse res)
+        throws IOException,
+               ServletException
+    {
+        doGet ( req, res );
+    }
+
+    /**
+     * Return the servlet info.
+     *
+     * @return a string with the servlet information.
+     */
+    public final String getServletInfo()
+    {
+        return "Turbine Servlet";
+    }
+
+    /**
+     * This method is about making sure that we catch and display
+     * errors to the screen in one fashion or another. What happens is
+     * that it will attempt to show the error using your user defined
+     * Error Screen. If that fails, then it will resort to just
+     * displaying the error and logging it all over the place
+     * including the servlet engine log file, the Turbine log file and
+     * on the screen.
+     *
+     * @param data A Turbine RunData object.
+     * @param res Servlet response.
+     * @param e The exception to report.
+     */
+    private final void handleException(RunData data,
+                                 HttpServletResponse res,
+                                 Throwable t)
+    {
+        // make sure that the stack trace makes it the log
+        Log.error("Turbine.handleException: "+t.getMessage());
+        Log.error(t);
+
+        String mimeType = "text/plain";
+        try
+        {
+            // This is where we capture all exceptions and show the
+            // Error Screen.
+            data.setStackTrace(StringUtils.stackTrace(t),t);
+
+            // setup the screen
+            data.setScreen(TurbineResources
+                           .getString("screen.error"));
+
+            // do more screen setup for template execution if needed
+            if (data.getTemplateInfo() != null)
+                data.getTemplateInfo()
+                    .setScreenTemplate(TurbineResources
+                                       .getString("template.error"));
+
+            // Make sure to not execute an action.
+            data.setAction ("");
+
+            PageLoader.getInstance()
+                .exec(data,
+                      TurbineResources.getString("page.default", 
+                      "DefaultPage"));
+
+            data.getResponse().setContentType( data.getContentType() );
+            data.getResponse().setStatus ( data.getStatusCode() );
+            if( data.isPageSet() )
+                data.getOut().print ( data.getPage().toString() );
+        }
+        // Catch this one because it occurs if some code hasn't been
+        // completely re-compiled after a change..
+        catch ( java.lang.NoSuchFieldError e )
+        {
+            try
+            {
+                data.getResponse().setContentType( mimeType );
+                data.getResponse().setStatus ( 200 );
+            }
+            catch (Exception ignored) {}
+
+            try
+            {
+                data.getOut().print ("java.lang.NoSuchFieldError: " +
+                                     "Please recompile all of your " +
+                                     "source code.");
+            }
+            catch (IOException ignored) {}
+
+            log ( data.getStackTrace() );
+            org.apache.turbine.util.Log.error ( e.getMessage(), e );
+        }
+        // Attempt to do *something* at this point...
+        catch ( Throwable reallyScrewedNow )
+        {
+            StringBuffer msg = new StringBuffer();
+            msg.append("Horrible Exception: ");
+            if (data != null)
+            {
+                msg.append(data.getStackTrace());
+            }
+            else
+            {
+                msg.append(t);
+            }
+            try
+            {
+                res.setContentType( mimeType );
+                res.setStatus ( 200 );
+                res.getWriter().print (msg.toString());
+            }
+            catch (Exception ignored) {}
+            org.apache.turbine.util.Log.error (
+                    reallyScrewedNow.getMessage(), reallyScrewedNow );
+        }
+    }
+}

@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Todo</title>
+  <author email="celkins@scardini.com">Christopher Elkins</author>
+ </properties>
+
+<body>
+
+<section name="Todo">
+
+<p>
+
+  This document describes functionality that is either missing or not finished
+  within Turbine as well as the owners of implementing or coordinating the
+  implementation of these features.
+
+</p>
+
+<p>
+
+  Wish List functionality is stuff that we would like to see implemented, but is
+  not critical for release. This is the area where you can take ownership of a
+  part of the project and contribute back.
+
+</p>
+
+<p>
+  
+  Critical Before Release is stuff that we feel is holding up the release of
+  Turbine.
+
+</p>
+
+<p>
+
+  If you are a new developer to Turbine or even an existing developer, these are
+  areas where you can take ownership and help complete. Please do not ask us how
+  you can help, but rather specific questions about how you think that these items
+  should be implemented. It is up to you to take initiative and provide solutions
+  to the missing functionality described below. ;-)
+
+</p>
+
+<p>
+
+  It is always possible to take ownership of any portion of the project. The way
+  to do this is to communicate with the owner of the portion and then come to some
+  sort of agreement about what portions you will be splitting up or taking over.
+  If you cannot get a response from the people in charge of the projects, assume
+  they are dead and fill yourself in.
+
+</p>
+
+<p>
+
+  Documentation is <b>*always*</b> appreciated in any form. There are two ways to provide helpful documentation. The first way is to write up XML documentation and send it to one of the primary authors directly (we are also
+  willing to give you CVS write access if you wish). The second way is to post
+  Questions/Answers to the <a href="http://java.apache.org/jyve-faq/Turbine">
+  FAQ</a> under the Turbine sections there. Please review the sections in the <a href="turbine-documentation-project.html">Turbine Documentation Project</a> for ways to get started and areas of documentation needing attention. You need to take the initiative and just start writing down your thoughts and concerns and questions and answers and then giving those back to us.
+
+</p>
+
+<p>
+
+  If you need more detailed help, please send mail to the 
+  <a href="http://jakarta.apache.org/site/mail.html">mailing list</a> and ask 
+  your specific questions there.
+
+</p>
+
+</section>
+
+<section name="Wish List">
+
+<ul>
+  <li>
+    
+    Documentation improvements - The website is checked into CVS and can 
+    be edited by anyone. If you are new to Turbine and are just learning
+    things, documenting what you learn and adding it to our website
+    would be appreciated. 
+    
+    <p>
+    
+       More detail on how you can contribute 
+       documentation is contained in the 
+       <a href="turbine-documentation-project.html">Turbine Documentation Project</a> page.
+    
+    </p>
+        
+  </li>
+        
+  <li>
+    
+    Implement more robust multipart message handling
+    (org/apache/turbine/util/mail)
+    
+    <p>
+      Owner: None
+    </p>
+  
+  </li>
+
+  <li>
+    
+    Well thought out (and executed) Cocoon 2 Implementation
+    <p>
+      
+      Owner: None (potential <a href="mailto:jon@latchkey.com">Jon
+      S.Stevens</a> and Kevin Burton)</p>
+      <p>Co-Owner: (Giacomo Pati has expressed interest)
+    
+    </p>
+  
+  </li>
+
+  <li>
+    
+    We can always use additional utility code that goes into the <code>util</code> directory.
+    Send us whatever you can along the lines of what <code>BrowserDetector</code> and
+    <code>DateSelector</code> provide. This is your chance to contribute your useful classes
+    to a wider audience and get feedback and support!
+    
+    <p>
+      Owner: None
+    </p>
+  </li>
+
+  <li>
+    
+    Add a feature to the connection pool system to allow it to have multiple database
+    fail over so that if all the connections to one database fail, it will auto-attempt
+    to connect to a "backup" database.
+    
+    <p>
+      Owner: None
+    </p>
+  
+  </li>
+
+</ul>
+
+</section>
+
+</body>
+</document>

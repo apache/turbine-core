@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Application Service Proposal</title>
+    <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  </properties>
+
+<body>
+
+<section name="Peers">
+
+<p>
+  <ul>
+  <li>
+    Criteria should not extend Hashtable. This is widely considered to be
+    a bad practice. Even if criteria is to maintain hashtable-like 
+    semantics, it should do so by delegation not derivation.
+  </li>
+
+  <li>
+    The Peers currently contain String constants with the uppercased
+    column name as a variable name and the fully qualified column name
+    as the String.  This String is then broken into its constituents (table
+    and column) multiple times.  This is inefficient due to parsing Strings,
+    Object creation, and equality comparisons on the Strings.  A TableColumn
+    class has been created that will solve much of this inefficiency.
+    It should be integrated with Criteria and BasePeer.
+  </li>
+  </ul>
+</p>
+
+</section>
+
+
+</body>
+</document>

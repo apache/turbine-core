@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Application Service Proposal</title>
+    <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  </properties>
+
+<body>
+
+<section name="Naming service">
+
+<p>
+  <li>
+    this service is rater outdated, it needs some cleanup, and adding
+    suppport for DirContexts (low priority, might be useful in  
+    creating LDAP User Manager / Security Service implementations)
+  </li>
+</p>
+
+</section>
+
+
+</body>
+</document>

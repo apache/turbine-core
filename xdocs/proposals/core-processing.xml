@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Application Service Proposal</title>
+    <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  </properties>
+
+<body>
+
+<section name="Core Processing">
+
+<p>
+  <li>
+    Begone, ECS! We want ECS to dissappear completly from Turbine. Instead
+    of Elements, modules should pass Strings around.
+  </li>
+
+  <li>
+    the inheritance hierarchy of modules - if you look at the class
+    diagram, you'll notice that it looks rather ugly.
+  </li>
+</p>
+
+</section>
+
+</body>
+</document>

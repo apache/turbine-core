@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Application Service Proposal</title>
+    <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  </properties>
+
+<body>
+
+<section name="Resource Service">
+
+<p>
+  <li>
+    clean up property names so that dot is used as namespace separator,
+    not as a space character replacement examples:
+    <br/>
+    services.GlobalCacheService.cache.check.frequecy should be:
+    <br/>
+    services.GlobalCacheService.cachCheckFrequency
+    <br/>
+    services.PullService.tools.per.request.refresh should be:
+    <br/>
+    services.PullService.toolsPerRequestRefresh
+    <p/>
+
+    if we do the above, it would be easy to map the dot separated property
+    names onto a DOM tree or a JNDI namespace. These two alternative
+    ResourceService implementation would be a nice addition to Turbine.
+  </li>
+</p>
+
+</section>
+
+
+</body>
+</document>

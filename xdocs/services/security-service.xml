@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - Security Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="Security Service">
+
+<p>
+</p>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+# 
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.SecurityService.classname=org.apache.turbine.services.cache.<type>SecurityService
+.
+.
+.
+# -------------------------------------------------------------------
+# 
+#  S E C U R I T Y  S E R V I C E
+#
+# -------------------------------------------------------------------
+
+#
+# This is the class that implements the User interface.
+# You want to override this setting only if you want your User 
+# implementation to provide application specific addtional 
+# functionality.
+#
+# Default: org.apache.turbine.om.security.TurbineUser
+#
+
+services.SecurityService.user.class=org.apache.turbine.om.security.TurbineUser
+
+#
+# This setting is DBSecurityService specific - this class is consulted for the names
+# of the columns in the users' tables for the purpose of creating join queries. 
+# If you use your own User implementation in conjunction with DBSecurityService,
+# it's peer class must implement org.apache.turbine.om.security.peer.UserPeer interface,
+# and you need to specify the name of the peer class here.
+#
+# Defalut: org.apache.turbine.om.security.peer.TurbineUserPeer
+#
+services.SecurityService.userPeer.class=org.apache.turbine.om.security.peer.TurbineUserPeer
+
+#
+# This is the class that implements UserManager interface.
+# Override this setting if you want your User information stored
+# on a different medium (LADP directory is a good example).
+# Default implementation uses Peers and a relational database .
+#
+
+services.SecurityService.user.manager=org.apache.turbine.services.security.db.DBUserManager
+
+#
+# This is used by the SecurityService to make the password checking
+# secure. When enabled, passwords are transformed by a one-way
+# function into a sequence of bytes that is base64 encoded.
+# It is impossible to guess the plain-text form of the password
+# from the representation. When user logs in, the entered password
+# is transformed the same way and then compared with stored value.
+#
+# Default: false
+#
+
+services.SecurityService.secure.passwords=false
+
+#
+# This property lets you choose what digest algorithm will be used
+# for encrypting passwords. Check documentation of your JRE for
+# available algorithms.
+#
+# Default: SHA
+#
+
+services.SecurityService.secure.passwords.algorithm=SHA
+
+# Configuration for the LDAP Security Service implementation
+
+#services.SecurityService.ldap.security.athentication=simple
+#services.SecurityService.ldap.port=<LDAP PORT>
+#services.SecurityService.ldap.host=<LDAP HOST>
+#services.SecurityService.ldap.admin.username=<ADMIN USERNAME>
+#services.SecurityService.ldap.admin.password=<ADMIN PASSWORD>
+#services.SecurityService.ldap.user.basesearch=<SEARCH PATTERN>
+#services.SecurityService.ldap.user.search.filter=<SEARCH FILTER>
+#services.SecurityService.ldap.dn.attribute=userPrincipalName
+#services.SecurityService.ldap.provider=com.sun.jndi.ldap.LdapCtxFactory
+
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<source><![CDATA[
+
+]]></source>
+
+</section>
+
+</body>
+</document>

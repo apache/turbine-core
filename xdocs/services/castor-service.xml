@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - Castor Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="Castor Service">
+
+<p>
+This is a Service that offers access to the object to relational mapping
+from <a href="http://castor.exolab.org">Castor</a>. We recommend that if
+you need an Object Relational mapping, that you use the <a
+href="../howto/peers-howto.html">Turbine Peer system</a> with <a
+href="../howto/torque-howto.html">Torque</a> instead.
+</p>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+# 
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.CastorService.classname=org.apache.turbine.services.castor.TurbineCastorService
+.
+.
+.
+# -------------------------------------------------------------------
+# 
+#  C A S T O R  S E R V I C E
+#
+# -------------------------------------------------------------------
+
+services.CastorService.classname=org.apache.turbine.services.castor.TurbineCastorService
+services.CastorService.properties.logfile=/tmp/castor.log
+services.CastorService.properties.logprefix=turbinecastor
+services.CastorService.properties.databasefile=/tmp/database.xml
+services.CastorService.properties.databasename=turbine
+
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<source><![CDATA[
+TurbineServices ts = TurbineServices.getInstance();
+CastorService cs = (CastorService) ts.getService (CastorService.SERVICE_NAME);
+Database db = cs.getDatabase();
+db.begin();
+...
+db.commit();
+db.close();
+]]></source>
+
+</section>
+
+</body>
+</document>

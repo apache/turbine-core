@@ -1,0 +1,272 @@
+<project name="Turbine SQL" default="main" basedir=".">
+  
+  <!-- ================================================================ -->
+  <!-- I N I T  T A R G E T                                             -->
+  <!-- ================================================================ -->
+  <!-- We are placing the taskdef initialization in a target of its     -->
+  <!-- because the classpath will not be loaded within the taskdef      -->
+  <!-- if the taskdef is a child of the project. It must be placed      -->
+  <!-- with a target to work. This is a work around for a problem       -->
+  <!-- in Ant, but it solves the problem of not having to alter         -->
+  <!-- the classpath in the .sh|.bat scripts.                           -->
+  <!-- ================================================================ -->
+
+  <target name="init">
+  
+    <taskdef name="torque-sql" classname="org.apache.turbine.torque.TorqueSQLTask">
+      <classpath>
+        <fileset dir="../bin">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="../lib">
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
+
+    <property name="schemaDirectory" value="../conf/master"/>
+    <property name="SQLControlTemplate" value="sql/base/Control.vm"/>
+    <property name="idTableControlTemplate" value="sql/id-table/Control.vm"/>
+    <property name="securityControlTemplate" value="sql/security/Control.vm"/>
+    <property name="outputDirectory" value="../src/sql"/>
+    <property name="templatePath" value="../conf/torque/templates"/>
+
+  </target>
+
+
+  <!-- ================================================================ -->
+  <!-- M A I N  T A R G E T                                             -->
+  <!-- ================================================================ -->
+  <!-- Generate Turbine SQL schema for supported DBs                    -->
+  <!-- ================================================================ -->
+
+  <target name="main" depends="init">
+
+    <antcall target="db2"/>
+    <antcall target="hypersonic"/>
+    <antcall target="interbase"/>
+    <antcall target="mysql"/>
+    <antcall target="oracle"/>
+    <antcall target="postgresql"/>
+    <antcall target="sybase"/>
+
+  </target>
+
+  <target name="db2">
+    <!-- DB2 -->
+    <antcall target="turbine-sql">
+      <param name="database" value="db2"/>
+    </antcall>
+    <antcall target="turbine-id-table-sql">
+      <param name="database" value="db2"/>
+    </antcall>
+    <antcall target="turbine-id-table-init-sql">
+      <param name="database" value="db2"/>
+    </antcall>
+    <antcall target="turbine-security-sql">
+      <param name="database" value="db2"/>
+    </antcall>
+  </target>
+
+  <target name="hypersonic">
+    <!-- Hypersonic -->
+    <antcall target="turbine-sql">
+      <param name="database" value="hypersonic"/>
+    </antcall>
+    <antcall target="turbine-id-table-sql">
+      <param name="database" value="hypersonic"/>
+    </antcall>
+    <antcall target="turbine-id-table-init-sql">
+      <param name="database" value="hypersonic"/>
+    </antcall>
+    <antcall target="turbine-security-sql">
+      <param name="database" value="hypersonic"/>
+    </antcall>
+  </target>
+
+  <target name="interbase">
+    <!-- Interbase -->
+    <antcall target="turbine-sql">
+      <param name="database" value="interbase"/>
+    </antcall>
+    <antcall target="turbine-id-table-sql">
+      <param name="database" value="interbase"/>
+    </antcall>
+    <antcall target="turbine-id-table-init-sql">
+      <param name="database" value="interbase"/>
+    </antcall>
+    <antcall target="turbine-security-sql">
+      <param name="database" value="interbase"/>
+    </antcall>
+  </target>
+
+  <target name="oracle">
+    <!-- Oracle -->
+    <antcall target="turbine-sql">
+      <param name="database" value="oracle"/>
+    </antcall>
+    <antcall target="turbine-id-table-sql">
+      <param name="database" value="oracle"/>
+    </antcall>
+    <antcall target="turbine-id-table-init-sql">
+      <param name="database" value="oracle"/>
+    </antcall>
+    <antcall target="turbine-security-sql">
+      <param name="database" value="oracle"/>
+    </antcall>
+  </target>
+
+  <target name="mysql">
+    <!-- MySQL -->
+    <antcall target="turbine-sql">
+      <param name="database" value="mysql"/>
+    </antcall>
+    <antcall target="turbine-id-table-sql">
+      <param name="database" value="mysql"/>
+    </antcall>
+    <antcall target="turbine-id-table-init-sql">
+      <param name="database" value="mysql"/>
+    </antcall>
+    <antcall target="turbine-security-sql">
+      <param name="database" value="mysql"/>
+    </antcall>
+  </target>
+
+  <target name="postgresql">
+    <!-- PostgreSQL -->
+    <antcall target="turbine-sql">
+      <param name="database" value="postgresql"/>
+    </antcall>
+    <antcall target="turbine-id-table-sql">
+      <param name="database" value="postgresql"/>
+    </antcall>
+    <antcall target="turbine-id-table-init-sql">
+      <param name="database" value="postgresql"/>
+    </antcall>
+    <antcall target="turbine-security-sql">
+      <param name="database" value="postgresql"/>
+    </antcall>
+  </target>
+
+  <target name="sybase">
+    <!-- Sybase -->
+    <antcall target="turbine-sql">
+      <param name="database" value="sybase"/>
+    </antcall>
+    <antcall target="turbine-id-table-sql">
+      <param name="database" value="sybase"/>
+    </antcall>
+    <antcall target="turbine-id-table-init-sql">
+      <param name="database" value="sybase"/>
+    </antcall>
+    <antcall target="turbine-security-sql">
+      <param name="database" value="sybase"/>
+    </antcall>
+  </target>
+
+
+  <!-- ================================================================ -->
+  <!-- G E N E R A T E  P R O J E C T  S Q L                            -->
+  <!-- ================================================================ -->
+  <!-- Generate the SQL for your project, these are in addition         -->
+  <!-- to the base Turbine tables! The tables you require for your      -->
+  <!-- project should be specified in project-schema.xml.               -->
+  <!-- ================================================================ -->
+
+  <target name="turbine-sql">
+
+    <echo message="+----------------------------------------------+"/>
+    <echo message="| Generating Turbine SQL schema for ${database} "/>
+    <echo message="+----------------------------------------------+"/>
+
+    <torque-sql
+      controlTemplate="${SQLControlTemplate}"
+      outputDirectory="${outputDirectory}"
+      templatePath="${templatePath}"
+      outputFile="${database}-turbine.sql"
+      xmlFile="${schemaDirectory}/turbine-schema.xml"
+      targetDatabase="${database}"
+    />
+
+  </target>
+
+  <!-- ================================================================ -->
+  <!-- G E N E R A T E  P R O J E C T  S Q L                            -->
+  <!-- ================================================================ -->
+  <!-- Generate the SQL for your project, these are in addition         -->
+  <!-- to the base Turbine tables! The tables you require for your      -->
+  <!-- project should be specified in project-schema.xml.               -->
+  <!-- ================================================================ -->
+
+  <target name="turbine-id-table-sql">
+
+    <echo message="+------------------------------------------+"/>
+    <echo message="|                                          |"/>
+    <echo message="| Generating SQL for YOUR Turbine project! |"/>
+    <echo message="| Woo hoo!                                 |"/>
+    <echo message="|                                          |"/>
+    <echo message="+------------------------------------------+"/>
+
+    <torque-sql
+      controlTemplate="${SQLControlTemplate}"
+      outputDirectory="${outputDirectory}"
+      templatePath="${templatePath}"
+      outputFile="${database}-id-table-schema.sql"
+      xmlFile="${schemaDirectory}/id-table-schema.xml"
+      targetDatabase="${database}"
+    />
+
+  </target>
+
+  <!-- ================================================================ -->
+  <!-- G E N E R A T E  T U R B I N E  I D  B R O K E R  I N I T  S Q L -->
+  <!-- ================================================================ -->
+
+  <target name="turbine-id-table-init-sql">
+
+    <echo message="+------------------------------------------+"/>
+    <echo message="|                                          |"/>
+    <echo message="| Generating TURBINE initialization SQL    |"/>
+    <echo message="| for ID Broker system!                    |"/>
+    <echo message="|                                          |"/>
+    <echo message="+------------------------------------------+"/>
+
+    <torque-sql
+      contextProperties="../conf/torque/templates/sql/id-table/turbine.props"
+      controlTemplate="${idTableControlTemplate}"
+      outputDirectory="${outputDirectory}"
+      templatePath="${templatePath}"
+      outputFile="${database}-turbine-id-table-init.sql"
+      xmlFile="${schemaDirectory}/turbine-schema.xml"
+      targetDatabase="${database}"
+    />
+
+  </target>
+
+  <!-- ================================================================ -->
+  <!-- T U R B I N E  S E C U R I T Y  S Y S T E M  S Q L               -->
+  <!-- ================================================================ -->
+
+  <target name="turbine-security-sql">
+
+    <echo message="+------------------------------------------+"/>
+    <echo message="|                                          |"/>
+    <echo message="| Generating Turbine security system SQL!  |"/>
+    <echo message="|                                          |"/>
+    <echo message="+------------------------------------------+"/>
+    
+    <!-- This could probably be a simple texen task -->
+    
+    <torque-sql
+      contextProperties="../conf/torque/templates/sql/id-table/project.props"
+      controlTemplate="${securityControlTemplate}"
+      outputDirectory="${outputDirectory}"
+      templatePath="${templatePath}"
+      outputFile="${database}-turbine-security.sql"
+      xmlFile="${schemaDirectory}/${project}-schema.xml"
+      targetDatabase="${database}"
+    />
+
+  </target>
+
+</project>

@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - DB Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="DB Service">
+
+<p>
+'DB Service' includes two services:
+<ul>
+  <li>PoolBrokerService - provides database connection pooling</li>
+  <li>MapBrokerService - manages DatabaseMap objects</li>
+</ul>
+
+</p>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+#
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.PoolBrokerService.classname=org.apache.turbine.services.db.TurbinePoolBrokerService
+services.MapBrokerService.classname=org.apache.turbine.services.db.TurbineMapBrokerService
+.
+.
+.
+# -------------------------------------------------------------------
+#
+#  D A T A B A S E  S E T T I N G S
+#
+# -------------------------------------------------------------------
+# These are your database settings.  Look in the
+# org.apache.turbine.util.db.pool.* packages for more information.
+# The default driver for Turbine is for MySQL.
+#
+# The parameters to connect to the default database.  You MUST
+# configure these properly.
+# -------------------------------------------------------------------
+
+database.default.driver=org.gjt.mm.mysql.Driver
+database.default.url=jdbc:mysql://localhost:3306/Turbine
+database.default.username=username
+database.default.password=password
+
+# The number of database connections to cache per ConnectionPool
+# instance (specified per database).
+
+database.default.maxConnections=3
+
+# The amount of time (in milliseconds) that database connections will be
+# cached (specified per database).
+#
+# Default: one hour = 60 * 60 * 1000
+
+database.default.expiryTime=3600000
+
+# The amount of time (in milliseconds) a connection request will have to wait
+# before a time out occurs and an error is thrown.
+#
+# Default: ten seconds = 10 * 1000
+
+database.connectionWaitTimeout=10000
+
+# The interval (in milliseconds) between which the PoolBrokerService logs
+# the status of it's ConnectionPools.
+#
+# Default: No logging = 0 = 0 * 1000
+
+database.logInterval=0
+
+# These are the supported JDBC drivers and their associated Turbine
+# adaptor.  These properties are used by the DBFactory.  You can add
+# all the drivers you want here.
+
+database.adaptor=DBMM
+database.adaptor.DBMM=org.gjt.mm.mysql.Driver
+
+# Determines if the quantity column of the IDBroker's id_table should
+# be increased automatically if requests for ids reaches a high
+# volume.
+
+database.idbroker.cleverquantity=true
+
+# -------------------------------------------------------------------
+#
+#  P E E R S
+#
+# -------------------------------------------------------------------
+# Supplies Turbine with information about the database schema, which
+# can simplify any required Peer classes.
+#
+# Default: org.apache.turbine.util.db.map.TurbineMapBuilder
+# -------------------------------------------------------------------
+
+database.maps.builder=org.apache.turbine.util.db.map.TurbineMapBuilder
+
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<subsection name="PoolBrokerService">
+
+<p>
+To obtain a connection from the default pool, all you need to do is
+write code like this:
+</p>
+
+<source><![CDATA[
+DBConnection dbConn = null;
+try
+{
+    dbConn = TurbineDB.getConnection();
+    // Do something with the connection here...
+}
+catch (Exception e)
+{
+    // Either from obtaining the connection or from your application code.
+}
+finally
+{
+    try
+    {
+        TurbineDB.releaseConnection(dbConn);
+    }
+    catch (Exception e)
+    {
+        // Error releasing database connection back to pool.
+    }
+}
+]]></source>
+
+<p>
+To obtain a connection from another pool, simply pass the name of the other
+pool to the TurbineDB:
+</p>
+
+<source><![CDATA[
+DBConnection db = TurbineDB.getConnection("mypoolname");
+]]></source>
+
+<p>
+You should always make sure to enclose your code within
+the try/finally block so that you make sure to always release the connection
+back to the pool. If you experience a situation where it seems like your
+code locks up after a while and you do not get results back from the browser,
+then chances are that you have forgotten to release a connection back to
+the pool for some reason. An enhancement to the pooling code would be to
+add a background cleanup thread that cleans up connections that have not
+been released back to the pool after a determined amount of time. This
+does not fix the problem of bad code, but would help in situations where
+bad code does manage to find its way into the system.
+</p>
+</subsection>
+</section>
+
+</body>
+</document>

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<document>
+    <properties>
+        <title>Project map - Core</title>
+        <author email="rafal@apache.org">Rafal Krzewski</author>
+    </properties>
+    
+    <body>
+        <section name="Email message generation">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+
+            <p>Generic</p>
+            <ul>
+                <li>org.apache.turbine.util.mail.ByteArrayDataSource</li>
+                <li>org.apache.turbine.util.mail.Email</li>
+                <li>org.apache.turbine.util.mail.EmailAttachment</li>
+                <li>org.apache.turbine.util.mail.HtmlEmail</li>
+                <li>org.apache.turbine.util.mail.MailMessage</li>
+                <li>org.apache.turbine.util.mail.MultiPartEmail</li>
+                <li>org.apache.turbine.util.mail.SimpleEmail</li>
+            </ul>
+
+            <p>Templating</p>
+            <ul>
+                <li>org.apache.turbine.util.velocity.VelocityEmail</li>
+                <li>org.apache.turbine.util.velocity.VelocityHtmlEmail</li>
+                <li>org.apache.turbine.util.webmacro.WebMacroEmail</li>
+                <li>org.apache.turbine.util.webmacro.WebMacroHtmlEmail</li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+                <li>Mr. Nobody</li>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <p>None</p>
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+    </body>
+</document>

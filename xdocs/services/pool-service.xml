@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - Pool Service</title>
+  <author email="ilkka.priha@simsoft.fi">Ilkka Priha</author>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="Pool Service">
+
+<p>
+The Pool Service extends the functionality of the Factory Service by adding 
+support for pooling objects intantiated from the given class name or
+Class object reference. Pooling of objects stabilizes memory consumption and 
+reduces garbage collection making response times in server applications 
+more predictable.
+</p>
+
+<p>
+When a new instance is requested from the service, it first checks its pool 
+if one is available. If the the pool is empty, a new object will be instantiated 
+from the given class. If the class is specified by its name, the request to create 
+an instance will be forwarded to the Factory Service.
+</p>
+
+<p>
+For pooled objects implementing the Recyclable interface, a recycle method 
+will be called, when they are taken from the pool, and a dispose method, 
+when they are returned to the pool. Implementations of the methods should 
+clear and initialize the pooled instances correspondingly. Objects 
+that do not implement the interface can also be pooled, if they do not 
+need to perform any specific actions during pooling. A RecyclableSupport class 
+can be extended to get a minimal implementation of the interface.
+</p>
+
+<p>
+An ArrayCtorRecyclable interface extends the Recyclable interface providing
+a more efficient recycle method with less reflection for recycling frequently
+used objects having constuctors with parameters.   
+</p>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+# 
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.PoolService.classname=org.apache.turbine.services.pool.TurbinePoolService
+.
+.
+.
+# -------------------------------------------------------------------
+# 
+#  P O O L  S E R V I C E
+#
+# -------------------------------------------------------------------
+
+# Default capacity of pools of the Object pooling service.
+#
+# Default: 128
+services.PoolService.pool.capacity = 128
+
+# Class specific capacities used instead of the default if specified.
+#
+#services.PoolService.pool.capacity.org.apache.turbine.services.rundata.DefaultTurbineRunData=512
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<p>
+The Pool Service can be called instead of the Factory Service, when instantiating
+objects that are needed repeatedly e.g. for processing client requests. Intances
+of RunData implementations, ParameterParser and CookieParser implementations, 
+Pull Service tools, etc, are typical examples of pooled objects. Used objects
+must be returned to the Pool Service for recycling. The TurbinePool class is a 
+static accessor for common methods of the Pool Service:
+</p>
+
+<source><![CDATA[
+// Get a pooled DOM parser.
+DocumentBuilder parser = 
+    TurbinePool.getInstance("javax.xml.parsers.DocumentBuilder");
+        
+// Parse an XML document.
+Document doc = parser.parse(myfile);
+
+// Return the parser to the pool.
+TurbinePool.putInstance(parser);    
+]]></source>
+
+</section>
+
+</body>
+</document>

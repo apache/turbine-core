@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+
+<document>
+
+  <properties>
+    <title>Application Service Proposal</title>
+    <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  </properties>
+
+<body>
+
+<section name="XSLT Service">
+
+<p>
+  <li>
+    support for processing of DOM trees present in memory could be 
+    useful (right now both data and stylesheet are read from disk
+    files)
+  </li>
+</p>
+
+</section>
+
+</body>
+</document>

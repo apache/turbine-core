@@ -1,0 +1,3 @@
+database.driver=org.gjt.mm.mysql.Driver
+database.url=jdbc:mysql://localhost:3306/${database.name}
+database.adaptor=DBMM

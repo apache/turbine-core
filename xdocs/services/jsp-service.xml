@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - JSP Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="JSP Service">
+
+<p>
+Turbine supports the use of JSP internally through a Service which
+provides JSP related Modules with access to the JSP engine directly. We
+have another document which gives a <a
+href="../howto/jsp-howto.html">howto</a> on configuration of Turbine to
+use JSP.
+</p>
+
+<p>
+While Turbine supports the use of many templating systems, we definitely
+have our favorite system to use and recommend and that is <a
+href="http://jakarta.apache.org/velocity/">Velocity</a>.
+</p>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+# 
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.JspService.classname=org.apache.turbine.services.jsp.TurbineJspService
+.
+.
+.
+# -------------------------------------------------------------------
+# 
+#  J S P  S E R V I C E
+#
+# -------------------------------------------------------------------
+
+services.JspService.template.extension=jsp
+services.JspService.default.page = JspPage
+services.JspService.default.screen=BaseJspScreen
+services.JspService.default.layout = JspLayout
+services.JspService.default.navigation=BaseJspNavigation
+services.JspService.default.error.screen = JspErrorScreen
+services.JspService.default.layout.template = /Default.jsp
+
+services.JspService.templates = /templates/app
+services.JspService.buffer.size = 8192
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<p>
+Please refer to the org.apache.turbine.services.jsp classes for details
+on how to use this service.
+</p>
+
+</section>
+
+</body>
+</document>

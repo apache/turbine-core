@@ -1,0 +1,568 @@
+<?xml version="1.0"?>
+
+<document>
+<properties>
+    <title>Turbine Core Schema</title>
+    <author email="criley@ekmail.com">Cameron Riley</author>
+ </properties>
+
+<body>
+
+<section name="Turbine Schema">
+<p>
+The naming scheme is that the Turbine specific tables are prefixed with
+"TURBINE_". This is to avoid name collisions with applications for common tables
+such as PERMISSION or ROLE and also to avoid name collisions with reserved
+keywords in differant databases.
+</p>
+
+<p>
+<ul>
+    <li>TURBINE_PERMISSION</li>
+    <li>TURBINE_ROLE</li>
+    <li>TURBINE_GROUP</li>
+    <li>TURBINE_ROLE_PERMISSION</li>
+    <li>TURBINE_USER</li>
+    <li>TURBINE_USER_GROUP_ROLE</li>
+    <li>TURBINE_SCHEDULED_JOB</li>
+    <li>ID_TABLE</li>
+</ul>
+</p>
+</section>
+
+<section name="Relationships">
+<source test=""><![CDATA[
+
+TURBINE_USER  -|------o-< TURBINE_USER_GROUP_ROLE
+TURBINE_ROLE  -|------o-< TURBINE_USER_GROUP_ROLE
+TURBINE_GROUP -|------o-< TURBINE_USER_GROUP_ROLE
+TURBINE_ROLE  -|------o-< TURBINE_ROLE_PERMISSION
+TURBINE_PERMISSION -|------o-< TURBINE_ROLE_PERMISSION
+
+]]></source>
+</section>
+
+<section name="Table Schemas">
+<p>
+The data-types represented below are for the MySQL database.
+For other database specific data-types check the .sql scripts in
+the src/sql directory of the Turbine distribution.
+</p>
+
+<p>
+<strong>ID_TABLE</strong>
+</p>
+
+<p>
+The ID_TABLE carries the information for the next ID
+number in the specified tables. This table is useful when
+the database being used has no data-type which carries out
+auto-increment operations.
+</p>
+
+<table>
+<tr>
+    <td>Column Name</td>
+    <td>Key</td>
+    <td>Data Type</td>
+    <td>Default Value</td>
+    <td>Null</td>
+    <td>Indexed</td>
+    <td>Comment</td>
+</tr>
+<tr>
+    <td>ID_TABLE_ID</td>
+    <td>Primary</td>
+    <td>INTEGER</td>
+    <td></td>
+    <td>NOT NULL</td>
+    <td>Yes</td>
+    <td>AUTOINCREMENT</td>
+</tr>
+<tr>
+    <td>TABLE_NAME</td>
+    <td>Unique</td>
+    <td>VARCHAR(255)</td>
+    <td></td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td>UNIQUE</td>
+</tr>
+<tr>
+    <td>NEXT_ID</td>
+    <td></td>
+    <td>INTEGER</td>
+    <td></td>
+    <td>NULL</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>QUANTITY</td>
+    <td></td>
+    <td>INTEGER</td>
+    <td></td>
+    <td>NULL</td>
+    <td></td>
+    <td></td>
+</tr>
+</table>
+
+<p>
+<strong>TURBINE_PERMISSION</strong>
+</p>
+
+<p>
+The TURBINE_PERMISSION table stores the lowest level of permissions allowed
+for a Turbine User.
+</p>
+
+<table>
+<tr>
+    <td>Column Name</td>
+    <td>Key</td>
+    <td>Data Type</td>
+    <td>Default Value</td>
+    <td>Null</td>
+    <td>Indexed</td>
+    <td>Comment</td>
+</tr>
+<tr>
+    <td>PERMISSION_ID</td>
+    <td>PRIMARY</td>
+    <td>INTEGER</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>AUTOINCREMENT</td>
+</tr>
+<tr>
+    <td>PERMISSION_NAME</td>
+    <td></td>
+    <td>VARCHAR(99)</td>
+    <td></td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td>UNIQUE</td>
+</tr>
+<tr>
+    <td>OBJECTDATA</td>
+    <td></td>
+    <td>MEDIUMBLOB</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+</table>
+
+<p>
+<strong>TURBINE_ROLE</strong>
+</p>
+
+<p>
+The TURBINE_ROLE table links a Turbine User to a span of permissions.
+Potentially a Turbine User can have many roles within the system. In this case
+a role represents a descriptive word for a series of permissions or actions the
+Turbine User is able to undertake.
+</p>
+
+<table>
+<tr>
+    <td>Column Name</td>
+    <td>Key</td>
+    <td>Data Type</td>
+    <td>Default Value</td>
+    <td>Null</td>
+    <td>Indexed</td>
+    <td>Comment</td>
+</tr>
+<tr>
+    <td>ROLE_ID</td>
+    <td>PRIMARY</td>
+    <td>INTEGER</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>AUTO_INCREMENT</td>
+</tr>
+<tr>
+    <td>ROLE_NAME</td>
+    <td></td>
+    <td>VARCHAR(99)</td>
+    <td></td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td>UNIQUE</td>
+</tr>
+<tr>
+    <td>OBJECTDATA</td>
+    <td></td>
+    <td>MEDIUMBLOB</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+</table>
+
+<p>
+<strong>TURBINE_GROUP</strong>
+</p>
+
+<p>
+The TURBINE_GROUP table allows for a series of roles and Turbine Users to be
+connected under a Group ID and hence Group Name. For instance there may be a
+group named Administrators with the necessary roles and permissions. There may
+also be many Administrators on the system. The Group table and it's relationship
+with the TURBINE_USER_GROUP_ROLE table maps this functionality.
+</p>
+
+<table>
+<tr>
+    <td>Column Name</td>
+    <td>Key</td>
+    <td>Data Type</td>
+    <td>Default Value</td>
+    <td>Null</td>
+    <td>Indexed</td>
+    <td>Comment</td>
+</tr>
+<tr>
+    <td>GROUP_ID</td>
+    <td>PRIMARY</td>
+    <td>INTEGER</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>AUTOINCREMENT</td>
+</tr>
+<tr>
+    <td>GROUP_NAME</td>
+    <td></td>
+    <td>VARCHAR(99)</td>
+    <td></td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td>UNIQUE</td>
+</tr>
+<tr>
+    <td>OBJECTDATA</td>
+    <td></td>
+    <td>MEDIUMBLOB</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+</table>
+
+<p>
+<strong>TURBINE_ROLE_PERMISSION</strong>
+</p>
+
+<p>
+The TURBINE_ROLE_PERMISSION table is a bridging table between TURBINE_ROLE and
+TURBINE_PERMISSION that allows a several differant roles to make use of the
+same permission.
+</p>
+
+<table>
+<tr>
+    <td>Column Name</td>
+    <td>Key</td>
+    <td>Data Type</td>
+    <td>Default Value</td>
+    <td>Null</td>
+    <td>Indexed</td>
+    <td>Comment</td>
+</tr>
+<tr>
+    <td>ROLE_ID</td>
+    <td>PRIMARY</td>
+    <td>INTEGER</td>
+    <td></td>
+    <td>NOT NULL</td>
+    <td>Yes</td>
+    <td></td>
+</tr>
+<tr>
+    <td>PERMISSION_ID</td>
+    <td>PRIMARY</td>
+    <td>INTEGER</td>
+    <td></td>
+    <td>NOT NULL</td>
+    <td>Yes</td>
+    <td></td>
+</tr>
+</table>
+
+<p>
+<strong>TURBINE_USER</strong>
+</p>
+
+<p>
+The TURBINE_USER table describes the basic information on the user in the
+system.
+</p>
+
+<table>
+<tr>
+    <td>Column Name</td>
+    <td>Key</td>
+    <td>Data Type</td>
+    <td>Default Value</td>
+    <td>Null</td>
+    <td>Indexed</td>
+    <td>Comment</td>
+</tr>
+<tr>
+    <td>USER_ID</td>
+    <td>PRIMARY</td>
+    <td>INTEGER</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>LOGIN_NAME</td>
+    <td></td>
+    <td>VARCHAR(32)</td>
+    <td></td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td>UNIQUE</td>
+</tr>
+<tr>
+    <td>PASSWORD_VALUE</td>
+    <td></td>
+    <td>VARCHAR(32)</td>
+    <td></td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>FIRST_NAME</td>
+    <td></td>
+    <td>VARCHAR(99)</td>
+    <td></td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>LAST_NAME</td>
+    <td></td>
+    <td>VARCHAR(99)</td>
+    <td></td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>EMAIL</td>
+    <td></td>
+    <td>VARCHAR(99)</td>
+    <td></td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>CONFIRM_VALUE</td>
+    <td></td>
+    <td>VARCHAR(32)</td>
+    <td></td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>MODIFIED</td>
+    <td></td>
+    <td>TIMESTAMP</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>CREATED</td>
+    <td></td>
+    <td>DATETIME</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>LAST_LOGIN</td>
+    <td></td>
+    <td>TIMESTAMP</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>OBJECTDATA</td>
+    <td></td>
+    <td>MEDIUMBLOB</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+</table>
+
+<p>
+<strong>TURBINE_USER_GROUP_ROLE</strong>
+</p>
+
+<p>
+The TURBINE_USER_GROUP_ROLE describes what roles a given user has as a member of
+a given group.
+</p>
+
+<table>
+<tr>
+    <td>Column Name</td>
+    <td>Key</td>
+    <td>Data Type</td>
+    <td>Default Value</td>
+    <td>Null</td>
+    <td>Indexed</td>
+    <td>Comment</td>
+</tr>
+<tr>
+    <td>USER_ID</td>
+    <td>PRIMARY</td>
+    <td>INTEGER</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>GROUP_ID</td>
+    <td>PRIMARY</td>
+    <td>INTEGER</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>ROLE_ID</td>
+    <td>PRIMARY</td>
+    <td>INTEGER</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+</table>
+
+<p>
+<strong>TURBINE_SCHEDULED_JOB</strong>
+</p>
+
+<table>
+<tr>
+    <td>Column Name</td>
+    <td>Key</td>
+    <td>Data Type</td>
+    <td>Default Value</td>
+    <td>Null</td>
+    <td>Indexed</td>
+    <td>Comment</td>
+</tr>
+<tr>
+    <td>JOB_ID</td>
+    <td>PRIMARY</td>
+    <td>int(11)</td>
+    <td></td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td>AUTO_INCREMENT</td>
+</tr>
+<tr>
+    <td>SECOND</td>
+    <td></td>
+    <td>INTEGER</td>
+    <td>-1</td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>MINUTE</td>
+    <td></td>
+    <td>INTEGER</td>
+    <td>-1</td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>HOUR</td>
+    <td></td>
+    <td>INTEGER</td>
+    <td>-1</td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>WEEK_DAY</td>
+    <td></td>
+    <td>INTEGER</td>
+    <td>-1</td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>DAY_OF_MONTH</td>
+    <td></td>
+    <td>INTEGER</td>
+    <td>-1</td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>TASK</td>
+    <td></td>
+    <td>VARCHAR(99)</td>
+    <td></td>
+    <td>NOT NULL</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>EMAIL</td>
+    <td></td>
+    <td>VARCHAR(99)</td>
+    <td></td>
+    <td>NULL</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>PROPERTY</td>
+    <td></td>
+    <td>VARBINARY</td>
+    <td></td>
+    <td>NULL</td>
+    <td></td>
+    <td></td>
+</tr>
+</table>
+
+</section>
+
+</body>
+</document>

@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - Naming Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  <author email="jon@latchkey.com">Jon S. Stevens</author>
+ </properties>
+
+<body>
+
+<section name="Naming Service">
+
+<p>
+The Naming Service provides access to JNDI contexts. Please note that if
+you are using Tomcat as your servlet engine and you get errors about
+sealing violations, you may need to read <a
+href="../howto/jboss-howto.html">this document</a>.
+</p>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+# 
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.NamingService.classname=org.apache.turbine.services.naming.TurbineNamingService
+.
+.
+.
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<source><![CDATA[
+try
+{
+    // Set up the naming provider. This may not always be necessary,
+    // depending on how your Java system is configured.
+    System.setProperty("java.naming.factory.initial",
+      "org.jnp.interfaces.NamingContextFactory");
+    System.setProperty("java.naming.provider.url",
+      "localhost:1099");
+    // Get a naming context
+    InitialContext jndiContext = new InitialContext();
+
+    // Get a reference to the Interest Bean
+    Object ref = jndiContext.lookup("interest/Interest");
+
+    // Get a reference from this to the Bean's Home interface
+    InterestHome home = (InterestHome)
+        PortableRemoteObject.narrow (ref, InterestHome.class);
+
+    // Create an Interest object from the Home interface
+    m_interest = home.create();
+}
+catch(Exception e)
+{
+    out.println("<LI>Context failed: " + e);
+}
+]]></source>
+
+</section>
+
+</body>
+</document>

@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<document>
+    <properties>
+        <title>Project map - Core</title>
+        <author email="rafal@apache.org">Rafal Krzewski</author>
+    </properties>
+    
+    <body>
+        <section name="Turbine Core">
+            <p><b>Description</b></p>
+        
+            <p></p>
+    
+            <p><b>Classes</b></p>
+
+            <p> Turbine Servlet </p>
+            <ul>
+                <li><code>org.apache.turbine.Turbine</code></li>
+            </ul>
+            <p>Modules (Assemblers)</p>
+            <ul>
+                <li><code>org.apache.turbine.modules.Assembler</code></li>
+                <li><code>org.apache.turbine.modules.Page</code></li>
+                <li><code>org.apache.turbine.modules.Action</code></li>
+                <li><code>org.apache.turbine.modules.ActionEvent</code></li>
+                <li><code>org.apache.turbine.modules.Screen</code></li>
+                <li><code>org.apache.turbine.modules.Layout</code></li>
+                <li><code>org.apache.turbine.modules.Navigation</code></li>
+                <li><code>org.apache.turbine.modules.ScheduledJob</code></li>
+            </ul>
+            <p>Module loaders</p>
+            <ul>
+                <li><code>org.apache.turbine.modules.GenericLoader</code></li>
+                <li><code>org.apache.turbine.modules.PageLoader</code></li>
+                <li><code>org.apache.turbine.modules.ActionLoader</code></li>
+                <li><code>org.apache.turbine.modules.ScreenLoader</code></li>
+                <li><code>org.apache.turbine.modules.LayoutLoader</code></li>
+                <li><code>org.apache.turbine.modules.NavigationLoader</code></li>
+                <li><code>org.apache.turbine.modules.ScheduledJobLoader</code></li>
+            </ul>
+            <p>Default / ECS based Modules</p>
+            <ul>
+                <li><code>org.apache.turbine.modules.GenericLoader</code></li>
+                <li><code>org.apache.turbine.modules.PageLoader</code></li>
+                <li><code>org.apache.turbine.modules.ActionLoader</code></li>
+                <li><code>org.apache.turbine.modules.ScreenLoader</code></li>
+                <li><code>org.apache.turbine.modules.LayoutLoader</code></li>
+                <li><code>org.apache.turbine.modules.NavigationLoader</code></li>
+                <li><code>org.apache.turbine.modules.ScheduledJobLoader</code></li>
+            </ul>
+            <p>Template based Modules</p>
+            <ul>
+                <li><code>org.apache.turbine.modules.pages.TemplatePage</code></li>
+                <li><code>org.apache.turbine.modules.screens.TemplateScreen</code></li>
+                <li><code>org.apache.turbine.modules.navigations.TemplateNavigation</code></li>
+            </ul>
+            <p>Velocity Modules</p>
+            <ul>
+                <li><code>org.apache.turbine.modules.pages.VelocityPage</code></li>
+                <li><code>org.apache.turbine.modules.actions.VelocityAction</code></li>
+                <li><code>org.apache.turbine.util.velocity.VelocityActionEvent</code></li>
+                <li><code>org.apache.turbine.modules.actions.VelocitySecureAction</code></li>
+                <li><code>org.apache.turbine.modules.screens.VelocityScreen</code></li>
+                <li><code>org.apache.turbine.modules.screens.VelocitySecureScreen</code></li>
+                <li><code>org.apache.turbine.modules.screens.VelocityErrorScreen</code></li>
+                <li><code>org.apache.turbine.modules.layouts.VelocityECSLayout</code></li>
+                <li><code>org.apache.turbine.modules.layouts.VelocityOnlyLayout</code></li>
+                <li><code>org.apache.turbine.modules.navigations.VelocityNavigation</code></li>
+            </ul>
+            <p>WebMacro Modules</p>
+            <ul>
+                <li><code>org.apache.turbine.modules.pages.WebMacroSitePage</code></li>
+                <li><code>org.apache.turbine.modules.actions.WebMacroSiteAction</code></li>
+                <li><code>org.apache.turbine.util.webmacro.WebMacroActionEvent</code></li>
+                <li><code>org.apache.turbine.modules.actions.WebMacroSiteSecureAction</code></li>
+                <li><code>org.apache.turbine.modules.screens.WebMacroSiteScreen</code></li>
+                <li><code>org.apache.turbine.modules.screens.WebMacroSiteSecureScreen</code></li>
+                <li><code>org.apache.turbine.modules.screens.WebMacroSiteErrorScreen</code></li>
+                <li><code>org.apache.turbine.modules.layouts.WebMacroOnlyLayout</code></li>
+                <li><code>org.apache.turbine.modules.layouts.WebMacroSiteLayout</code></li>
+                <li><code>org.apache.turbine.modules.navigations.WebMacroSiteNavigation</code></li>
+            </ul>
+            <p>FreeMarker Modules</p>
+            <ul>
+                <li><code>org.apache.turbine.modules.pages.FreeMarkerSitePage</code></li>
+                <li><code>org.apache.turbine.modules.screens.BaseFreeMarkerScreen</code></li>
+                <li><code>org.apache.turbine.modules.layouts.FreeMarkerLayout</code></li>
+                <li><code>org.apache.turbine.modules.layouts.FreeMarkerSiteLayout</code></li>
+                <li><code>org.apache.turbine.modules.navigations.BaseFreeMarkerNavigation</code></li>
+            </ul>
+            <p>JSP Modules</p>
+            <ul>
+                <li><code>org.apache.turbine.modules.pages.JspPage</code></li>
+                <li><code>org.apache.turbine.modules.screens.BaseJspScreen</code></li>
+                <li><code>org.apache.turbine.modules.screens.JspErrorScreen</code></li>
+                <li><code>org.apache.turbine.modules.layouts.JspLayout</code></li>
+                <li><code>org.apache.turbine.modules.navigations.BaseJspNavigation</code></li>
+            </ul>
+            <p>Content generation utility classes</p>
+            <ul>
+                <li><code>org.apache.turbine.util.ContentURI</code></li>
+                <li><code>org.apache.turbine.util.DynamicURI</code></li>
+                <li><code>org.apache.turbine.util.RelativeDynamicURI</code></li>
+                <li><code>org.apache.turbine.util.template.TemplateLink</code></li>
+                <li><code>org.apache.turbine.util.template.TemplateNavigation</code></li>
+                <li><code>org.apache.turbine.util.template.TemplatePageAttributes</code></li>
+                <li><code>org.apache.turbine.util.webmacro.WebMacroFormatter</code></li>
+                <li><code>org.apache.turbine.util.DateSelector</code></li>
+                <li><code>org.apache.turbine.util.template.SelectorBox</code></li>
+                <li><code>org.apache.turbine.util.BrowserDetector</code></li>
+            </ul>
+
+            <p><b>People</b></p>
+            <ul>
+            <li>Jon Stevens</li>
+            <li>John McNally</li>
+            </ul>
+
+            <p><b>Known Issues</b></p>
+            <p>None</p>
+
+            <p><b>TODO list</b></p>
+            <p>None</p>
+
+        </section>
+    </body>
+</document>

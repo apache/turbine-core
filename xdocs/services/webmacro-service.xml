@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Turbine Services - WebMacro Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+ </properties>
+
+<body>
+
+<section name="WebMacro Service">
+
+<p>
+</p>
+
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+# 
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.WebMacroService.classname=org.apache.turbine.services.webmacro.TurbineWebMacroService
+.
+.
+.
+# -------------------------------------------------------------------
+# 
+#  W E B M A C R O  S E R V I C E
+#
+# -------------------------------------------------------------------
+
+services.WebMacroService.template.extension=wm
+services.WebMacroService.default.page = WebMacroSitePage
+services.WebMacroService.default.screen=WebMacroSiteScreen
+services.WebMacroService.default.layout = WebMacroSiteLayout
+services.WebMacroService.default.navigation=WebMacroSiteNavigation
+services.WebMacroService.default.error.screen = WebMacroSiteErrorScreen
+services.WebMacroService.default.layout.template = /Default.wm
+
+# The location of WebMacro configuration file, relative to webapp
+# root.
+
+services.WebMacroService.properties=/WEB-INF/conf/WebMacro.properties
+
+# The path where WebMacro will look for templates, relative to webapp
+# root.  Use your system's path separator to specify multiple paths.
+
+services.WebMacroService.templates=/templates/app
+
+# The class that will act as a template provider in webmacro.  We can
+# use default class from WebMacro (template path above is pushed into
+# WebMacro configuration mechanism, so that class can pick it up), or
+# some other custom class
+
+services.WebMacroService.templates.provider=org.apache.turbine.services.webmacro.TurbineTemplateProvider
+
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<source><![CDATA[
+
+]]></source>
+
+</section>
+
+</body>
+</document>
