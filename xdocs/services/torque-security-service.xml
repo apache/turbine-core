@@ -300,6 +300,16 @@ The elegant way:
 <source><![CDATA[
 public class CustomUser extends TorqueUser
 {
+  public CustomUser()
+  {
+      super();
+  }
+
+  public CustomUser(Persistent obj)
+  {
+      super(obj);
+  }
+
   public String getPhone()
   {
     return ((CustomObject)getPersistentObj()).getPhone();
