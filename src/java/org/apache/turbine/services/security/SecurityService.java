@@ -59,6 +59,10 @@ import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
+import org.apache.turbine.om.security.TurbineGroup;
+import org.apache.turbine.om.security.TurbinePermission;
+import org.apache.turbine.om.security.TurbineRole;
+import org.apache.turbine.om.security.TurbineUser;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.Service;
 import org.apache.turbine.services.security.db.DBUserManager;
@@ -107,7 +111,46 @@ public interface SecurityService
      * (org.apache.turbine.om.security.DBUser)
      */
     static final String USER_CLASS_DEFAULT
-        = "org.apache.turbine.om.security.TurbineUser";
+        = TurbineUser.class.getName();
+
+    /**
+     * The key within services' properties for the GROUP
+     * implementation classname (group.class)
+     */
+    static final String GROUP_CLASS_KEY = "group.class";
+
+    /**
+     * The default implementation of the Group interface
+     *(org.apache.fulcrum.security.impl.db.DBGroup)
+     */
+    static final String GROUP_CLASS_DEFAULT
+        = TurbineGroup.class.getName();
+
+    /**
+     * The key within services' properties for the PERMISSION
+     * implementation classname (permission.class)
+     */
+    static final String PERMISSION_CLASS_KEY = "permission.class";
+
+    /**
+     * The default implementation of the Permissions interface
+     * (org.apache.fulcrum.security.impl.db.DBPermission)
+     */
+    static final String PERMISSION_CLASS_DEFAULT
+        = TurbinePermission.class.getName();
+
+    /**
+     * The key within services' properties for the ROLE
+     * implementation classname (role.class)
+     */
+    static final String ROLE_CLASS_KEY = "role.class";
+
+    /**
+     * The default implementation of the Role Interface
+     * (org.apache.fulcrum.security.impl.db.DBRole)
+     */
+    static final String ROLE_CLASS_DEFAULT
+        = TurbineRole.class.getName();
 
     /**
      * The key within services' properties for the
@@ -121,7 +164,7 @@ public interface SecurityService
      */
     static final String ACL_CLASS_DEFAULT
         = TurbineAccessControlList.class.getName();
-        
+
     /**
      * the key within services's properties for user implementation
      * classname (user.manager)
@@ -182,6 +225,131 @@ public interface SecurityService
         throws UnknownEntityException;
 
     /**
+     * Construct a blank User object.
+     *
+     * This method calls getUserClass, and then creates a new object using
+     * the default constructor.
+     *
+     * @param userName The name of the user.
+     *
+     * @return an object implementing User interface.
+     * @throws UnknownEntityException if the object could not be instantiated.
+     */
+    User getUserInstance(String userName)
+        throws UnknownEntityException;
+
+    /**
+     * Returns the Class object for the implementation of Group interface
+     * used by the system.
+     *
+     * @return the implementation of Group interface used by the system.
+     * @throws UnknownEntityException if the system's implementation of Group
+     *         interface could not be determined.
+     */
+    Class getGroupClass()
+        throws UnknownEntityException;
+
+    /**
+     * Construct a blank Group object.
+     *
+     * This method calls getGroupClass, and then creates a new object using
+     * the default constructor.
+     *
+     * @return an object implementing Group interface.
+     * @throws UnknownEntityException if the object could not be instantiated.
+     */
+    Group getGroupInstance()
+        throws UnknownEntityException;
+
+    /**
+     * Construct a blank Group object.
+     *
+     * This method calls getGroupClass, and then creates a new object using
+     * the default constructor.
+     *
+     * @param groupName The name of the Group
+     *
+     * @return an object implementing Group interface.
+     * @throws UnknownEntityException if the object could not be instantiated.
+     */
+    Group getGroupInstance(String groupName)
+        throws UnknownEntityException;
+
+    /**
+     * Returns the Class object for the implementation of Permission interface
+     * used by the system.
+     *
+     * @return the implementation of Permission interface used by the system.
+     * @throws UnknownEntityException if the system's implementation of Permission
+     *         interface could not be determined.
+     */
+    Class getPermissionClass()
+        throws UnknownEntityException;
+
+    /**
+     * Construct a blank Permission object.
+     *
+     * This method calls getPermissionClass, and then creates a new object using
+     * the default constructor.
+     *
+     * @return an object implementing Permission interface.
+     * @throws UnknownEntityException if the object could not be instantiated.
+     */
+    Permission getPermissionInstance()
+        throws UnknownEntityException;
+
+    /**
+     * Construct a blank Permission object.
+     *
+     * This method calls getPermissionClass, and then creates a new object using
+     * the default constructor.
+     *
+     * @param permName The name of the Permission
+     *
+     * @return an object implementing Permission interface.
+     * @throws UnknownEntityException if the object could not be instantiated.
+     */
+    Permission getPermissionInstance(String permName)
+        throws UnknownEntityException;
+
+    /**
+     * Returns the Class object for the implementation of Role interface
+     * used by the system.
+     *
+     * @return the implementation of Role interface used by the system.
+     * @throws UnknownEntityException if the system's implementation of Role
+     *         interface could not be determined.
+     */
+    Class getRoleClass()
+        throws UnknownEntityException;
+
+    /**
+     * Construct a blank Role object.
+     *
+     * This method calls getRoleClass, and then creates a new object using
+     * the default constructor.
+     *
+     * @return an object implementing Role interface.
+     * @throws UnknownEntityException if the object could not be instantiated.
+     */
+    Role getRoleInstance()
+        throws UnknownEntityException;
+
+    /**
+     * Construct a blank Role object.
+     *
+     * This method calls getRoleClass, and then creates a new object using
+     * the default constructor.
+     *
+     * @param roleName The name of the Role
+     *
+     * @return an object implementing Role interface.
+     * @throws UnknownEntityException if the object could not be instantiated.
+     */
+    Role getRoleInstance(String roleName)
+        throws UnknownEntityException;
+
+    /**
      * Returns the Class object for the implementation of AccessControlList interface
      * used by the system.
      *
@@ -197,7 +365,7 @@ public interface SecurityService
      *
      * This constructs a new ACL object from the configured class and
      * initializes it with the supplied roles and permissions.
-     * 
+     *
      * @param roles The roles that this ACL should contain
      * @param permissions The permissions for this ACL
      *
@@ -350,7 +518,7 @@ public interface SecurityService
      * a consistent approach to encrypting password. The behavior of the
      * method can be configured in service's properties.
      *
-     * Algorithms that must supply a salt for encryption 
+     * Algorithms that must supply a salt for encryption
      * can use this method to provide it.
      *
      * @param password the password to process
@@ -371,7 +539,7 @@ public interface SecurityService
      *
      */
     boolean checkPassword(String checkpw, String encpw);
-    
+
     /**
      * Change the password for an User.
      *
@@ -530,33 +698,17 @@ public interface SecurityService
     Group getGlobalGroup();
 
     /**
-     * Retrieves a new Group. It creates
-     * a new Group based on the Services Group implementation. It does not
-     * create a new Group in the system though. Use addGroup for that.
-     *
-     * @param groupName The name of the Group to be retrieved.
-     * @return the Group
+     * @deprecated Use getGroupInstance(String name) instead.
      */
     Group getNewGroup(String groupName);
 
     /**
-     * Retrieves a new Role. It creates
-     * a new Group based on the Services Role implementation. It does not
-     * create a new Role in the system though. Use addRole for that.
-     *
-     * @param roleName The name of the Role to be retrieved.
-     * @return the Role
+     * @deprecated Use getRoleInstance(String name) instead.
      */
     Role getNewRole(String roleName);
 
     /**
-     * Retrieves a new Permission.
-     * It creates a new Permission based on the Services Permission
-     * implementation. It does not create a new Permission in the system though.
-     * Use addPermission for that.
-     *
-     * @param permissionName The name of the Permission to be retrieved.
-     * @return the Permission
+     * @deprecated Use getPermissionInstance(String name) instead.
      */
     Permission getNewPermission(String permissionName);
 

@@ -225,7 +225,7 @@ public class DBSecurityService
                 criteria.add(UserGroupRolePeer.GROUP_ID,
                              ((BaseObject) group).getPrimaryKey());
                 criteria.add(UserGroupRolePeer.ROLE_ID,
-                             ((TurbineRole) role).getPrimaryKey());
+                             ((BaseObject) role).getPrimaryKey());
                 UserGroupRolePeer.doInsert(criteria);
                 return;
             }
@@ -286,7 +286,7 @@ public class DBSecurityService
                 criteria.add(UserGroupRolePeer.GROUP_ID,
                              ((BaseObject) group).getPrimaryKey());
                 criteria.add(UserGroupRolePeer.ROLE_ID,
-                             ((TurbineRole) role).getPrimaryKey());
+                             ((BaseObject) role).getPrimaryKey());
                 UserGroupRolePeer.doDelete(criteria);
                 return;
             }
@@ -387,7 +387,7 @@ public class DBSecurityService
             {
                 Criteria criteria = new Criteria();
                 criteria.add(RolePermissionPeer.ROLE_ID,
-                             ((TurbineRole) role).getPrimaryKey());
+                             ((BaseObject) role).getPrimaryKey());
                 criteria.add(RolePermissionPeer.PERMISSION_ID,
                              ((BaseObject) permission).getPrimaryKey());
                 UserGroupRolePeer.doInsert(criteria);
@@ -437,7 +437,7 @@ public class DBSecurityService
             {
                 Criteria criteria = new Criteria();
                 criteria.add(RolePermissionPeer.ROLE_ID,
-                             ((TurbineRole) role).getPrimaryKey());
+                             ((BaseObject) role).getPrimaryKey());
                 criteria.add(RolePermissionPeer.PERMISSION_ID,
                              ((BaseObject) permission).getPrimaryKey());
                 RolePermissionPeer.doDelete(criteria);
@@ -492,7 +492,7 @@ public class DBSecurityService
                 //         role.getPrimaryKey());
                 // RolePermissionPeer.doDelete(criteria);
 
-                int id = ((NumberKey) ((TurbineRole) role)
+                int id = ((NumberKey) ((BaseObject) role)
                           .getPrimaryKey()).intValue();
                 RolePermissionPeer.deleteAll(RolePermissionPeer.TABLE_NAME,
                                              RolePermissionPeer.ROLE_ID, id);
@@ -729,45 +729,6 @@ public class DBSecurityService
         }
         throw new UnknownEntityException("Unknown permission '"
                                          + permission + "'");
-    }
-
-    /**
-     * Retrieves a new Group. It creates
-     * a new Group based on the Services Group implementation. It does not
-     * create a new Group in the system though. Use create for that.
-     *
-     * @param groupName The name of the Group to be retrieved.
-     * @return the Group object
-     */
-    public Group getNewGroup(String groupName)
-    {
-        return (Group) new TurbineGroup(groupName);
-    }
-
-    /**
-     * Retrieves a new Role. It creates
-     * a new Role based on the Services Role implementation. It does not
-     * create a new Role in the system though. Use create for that.
-     *
-     * @param roleName The name of the Role to be retrieved.
-     * @return the Role object
-     */
-    public Role getNewRole(String roleName)
-    {
-        return (Role) new TurbineRole(roleName);
-    }
-
-    /**
-     * Retrieves a new Permission. It creates a new Permission based on the
-     * Services Permission implementation. It does not
-     * create a new Permission in the system though. Use create for that.
-     *
-     * @param permissionName The name of the Permission to be retrieved.
-     * @return the Permission object
-     */
-    public Permission getNewPermission(String permissionName)
-    {
-        return (Permission) new TurbinePermission(permissionName);
     }
 
     /**
@@ -1221,7 +1182,6 @@ public class DBSecurityService
         }
         return up;
     }
-
 
     /**
      * Determines if the <code>Group</code> exists in the security system.
