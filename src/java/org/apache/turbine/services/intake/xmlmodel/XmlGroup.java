@@ -313,6 +313,4 @@ public class XmlGroup
 
         return result.toString();
     }
-
-
 }
