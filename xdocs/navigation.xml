@@ -92,7 +92,7 @@
         <item name="Velocity Context Howto" href="/howto/context-howto.html"/>
         <item name="Velocity Site Howto" href="/howto/velocity-site-howto.html"/>
         <item name="VelocityOnlyLayout Howto" href="/howto/velocityonlylayout-howto.html"/>
-        <item name="Wiki Howtos" href="http://nagoya.apache.org/wiki/apachewiki.cgi?search=CategoryJakartaTurbine2HowTo"/>
+        <item name="Wiki Howtos" href="http://wiki.apache.org/jakarta-turbine/Turbine2"/>
       </item>
       <item name="JavaDocs"		 href="/apidocs/index.html"/>
     </menu>
