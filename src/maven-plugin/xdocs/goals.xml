@@ -27,7 +27,7 @@
         </description>
       </goal>
       <goal>
-        <name>turbine:inplace-war</name>
+        <name>turbine:inplace</name>
         <description>
 		  Builds an inplace exploded WAR webapp.  Run this the first time to 
 		  setup your inplace development.  Also runs the eclipse plugin to
