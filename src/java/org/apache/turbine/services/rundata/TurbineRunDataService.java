@@ -240,8 +240,7 @@ public class TurbineRunDataService
             || (res == null)
             || (config == null))
         {
-            throw new IllegalArgumentException(
-                "RunDataFactory fatal error: HttpServletRequest, "
+            throw new IllegalArgumentException("HttpServletRequest, "
                 + "HttpServletResponse or ServletConfig was null.");
         }
 
