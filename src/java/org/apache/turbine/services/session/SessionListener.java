@@ -110,7 +110,6 @@ public class SessionListener
      */
     public void sessionDestroyed(HttpSessionEvent event)
     {
-        event.getSession().removeAttribute(getClass().getName());
         TurbineSession.removeSession(event.getSession());
     }
 
