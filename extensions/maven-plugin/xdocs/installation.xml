@@ -45,10 +45,10 @@ After you've installed maven, get these plugins through the following links.
 </p>
 <table>
 <tr>
-  <td><a href="http://www.apache.org/~henning/maven/maven-turbine-plugin-1.1-dev.jar">META Plugin</a></td>
+  <td><a href="http://www.apache.org/~henning/maven/maven-turbine-plugin-1.1-dev.jar">META Plugin (Version 1.1-dev)</a></td>
 </tr>
 <tr>
-  <td><a href="http://www.apache.org/~henning/maven/maven-torque-plugin-3.1.1-dev.jar">Torque Plugin</a></td>
+  <td><a href="http://www.apache.org/~henning/maven/maven-torque-plugin-3.1.1-dev.jar">Torque Plugin (Version 3.1.1-dev)</a></td>
 </tr>
 </table>
 <p>
@@ -104,6 +104,26 @@ targets are displayed in the goal list:
   webapp  ......................... Generate a Turbine based Web application (
                                     war)
 ]]></source>
+
+<p>If you get errors or build failures when running META goals,
+because maven cannot download either <code>torque-3.1.1-dev.jar</code>
+or <code>torque-gen-3.1.1-dev.jar</code>, then get these files from
+here:</p>
+
+<table>
+<tr>
+  <td><a href="http://www.apache.org/~henning/maven/torque-3.1.1-dev.jar">torque-3.1.1-dev.jar</a></td>
+</tr>
+<tr>
+  <td><a href="http://www.apache.org/~henning/maven/torque-gen-3.1.1-dev.jar">torque-gen-3.1.1-dev.jar</a></td>
+</tr>
+</table>
+<p>
+These files are dependencies of the Maven Torque plugin which has no
+official release yet and so its dependencies are not yet in the
+central maven repository. Get both files and put them into your local
+repository in the <code>torque/jars</code> subdirectory.
+</p>
 
 <p>You are now ready to use META. Continue to the <a
 href="getting_started.html">Getting Started</a> page.</p>
