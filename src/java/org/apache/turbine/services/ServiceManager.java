@@ -96,7 +96,7 @@ public interface ServiceManager extends ServiceBroker
     /**
      * Set the application root.
      *
-     * @param String application root
+     * @param applicationRoot application root
      */
     void setApplicationRoot(String applicationRoot);
 }

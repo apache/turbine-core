@@ -97,8 +97,7 @@ public interface ServiceBroker
      * @exception InitializationException if the service is unknown
      * or can't be initialized.
      */
-    void initService(String name)
-            throws InitializationException;
+    void initService(String name) throws InitializationException;
 
     /**
      * Shutdowns a Service.
@@ -126,8 +125,7 @@ public interface ServiceBroker
      * @exception InstantiationException if the service is unknown or
      * can't be initialized.
      */
-    Service getService(String name)
-            throws InstantiationException;
+    Service getService(String name) throws InstantiationException;
 
     /**
      * Returns the configuration of a specific service. Services

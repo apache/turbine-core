@@ -93,11 +93,10 @@ public interface Initable
      * throw an exception and complain.
      *
      * @param data An Object to use for initialization activities.
-     * @exception InitializationException, if initilaization of this
+     * @exception InitializationException if initilaization of this
      * class was not successful.
      */
-    void init(Object data)
-            throws InitializationException;
+    void init(Object data) throws InitializationException;
 
     /**
      * Performs late initialization of an Initable.
@@ -106,7 +105,7 @@ public interface Initable
      * will call getInit(), and if it returns false, this method will
      * be invoked.
      *
-     * @exception InitializationException, if initialization of this
+     * @exception InitializationException if initialization of this
      * class was not successful.
      */
     void init() throws InitializationException;

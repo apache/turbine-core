@@ -66,8 +66,7 @@ import org.apache.turbine.util.TurbineRuntimeException;
  * @version $Id$
  * @see org.apache.turbine.services.Initable
  */
-public class InstantiationException
-        extends TurbineRuntimeException
+public class InstantiationException extends TurbineRuntimeException
 {
     /**
      * Construct an InstantiationException with specified detail

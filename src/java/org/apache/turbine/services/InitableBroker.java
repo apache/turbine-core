@@ -97,11 +97,10 @@ public interface InitableBroker
      *
      * @param className The name of the class to be initailized.
      * @param data An object to be used for initialization activities.
-     * @exception InitializationException, if initialization of this
+     * @exception InitializationException if initialization of this
      * class was not successful.
      */
-    void initClass(String className,
-                   Object data)
+    void initClass(String className, Object data)
             throws InitializationException;
 
     /**
@@ -125,9 +124,8 @@ public interface InitableBroker
      *
      * @param className The name of the Initable requested.
      * @return An instance of requested Initable.
-     * @exception InstantiationException, if there was a problem
+     * @exception InstantiationException if there was a problem
      * during instantiation or initialization of the Initable.
      */
-    Initable getInitable(String className)
-            throws InstantiationException;
+    Initable getInitable(String className) throws InstantiationException;
 }

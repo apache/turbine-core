@@ -65,8 +65,7 @@ import org.apache.turbine.util.TurbineException;
  * @version $Id$
  * @see org.apache.turbine.services.Initable
  */
-public class InitializationException
-        extends TurbineException
+public class InitializationException extends TurbineException
 {
     /**
      * Construct an InitializationException with specified detail message.

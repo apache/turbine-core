@@ -124,8 +124,7 @@ public abstract class BaseInitableBroker
      * @param data An Object to be used for initialization activities.
      * @exception InitializationException Initialization was not successful.
      */
-    public void initClass(String className,
-                          Object data)
+    public void initClass(String className, Object data)
             throws InitializationException
     {
         // make sure that only one thread calls this method recursively
@@ -221,12 +220,14 @@ public abstract class BaseInitableBroker
                     }
                     if (!initable.getInit())
                     {
-                        // this exception will be caught & rethrown by this very method.
-                        // getInit() returning false indicates some initialization issue,
-                        // which in turn prevents the InitableBroker from passing a working
+                        // this exception will be caught & rethrown by this
+                        // very method. getInit() returning false indicates
+                        // some initialization issue, which in turn prevents
+                        // the InitableBroker from passing a working
                         // instance of the initable to the client.
                         throw new InitializationException(
-                                "init() failed to initialize class " + className);
+                                "init() failed to initialize class "
+                                + className);
                     }
                 }
             }
