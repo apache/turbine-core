@@ -30,11 +30,11 @@
 <p>
 To be able to install your applications into a servlet container, you must either
 use inplace deployment or add the location of your web container to your build.properties (If you're writing
-web applications with maven, this is a good idea anyway. You should add a line like this:
+web applications with maven, this is a good idea anyway). You should add a line like this:
 
 <source><![CDATA[
 For Unix:
-maven.appserver.home = ${user.home}/jakarta-tomcat-5.0.24
+maven.appserver.home = /opt/jakarta-tomcat-5.0.24
 
 For Windows:
 maven.appserver.home = C:/Program Files/Apache Software Foundation/Tomcat-5.0.24
