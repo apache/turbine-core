@@ -318,12 +318,20 @@
     <dependency>
       <id>commons-configuration</id>
       <version>1.0-dev-3.20030603.101200</version>
-      <!-- <version>0.8.1</version> -->
       <url>http://jakarta.apache.org/commons/sandbox/configuration/index.html</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
     </dependency>
+	<dependency>
+      <id>commons-digester</id> 
+	  <version>1.5</version> 
+	  <url>http://jakarta.apache.org/commons/digester/index.html</url> 
+	  <properties>
+	    <war.bundle.jar>true</war.bundle.jar> 
+	  </properties>
+	</dependency>
+    
     <dependency>
       <id>commons-email</id>
       <version>20030310.165926</version>
@@ -372,6 +380,14 @@
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
     </dependency>
+    <dependency>
+      <id>dom4j</id>
+      <version>1.4</version>
+      <url>http://www.dom4j.org/</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>    
     <dependency>
       <id>ecs</id>
       <version>1.4.1</version>
