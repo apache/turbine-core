@@ -279,66 +279,66 @@ The simple way:
 <source><![CDATA[
    User user = TurbineSecurity.getUser("test");
 
-   String phone = ((CustomObject)(((TorqueUser)user).getPersistentObj())).getPhone();
+   String phone = ((CustomUser) (((TorqueUser) user).getPersistentObj())).getPhone();
 
    /*  Better readable: */
 
    User         u2  = TurbineSecurity.getUser("test2");
    TorqueUser   tu2 = (TorqueUser) u2;
-   CustomObject cuo = (CustomObject) u2.getPersistentObj();
-   String fax       = cup.getFax();
+   CustomUser   cu  = (CustomUser) u2.getPersistentObj();
+   String fax       = cu.getFax();
 ]]></source>
 <p>
 Ugly, isn't it? If you get a class cast exception somewhere on the
 way, don't worry. Then you misconfigured either the Torque Security
-Service (CCE when doing dbu2 = (TorqueUser) u2) or the peer (CCE when doing
-cuo = (CustomObject) u2.getPersistentObj()).
+Service (CCE when doing tu2 = (TorqueUser) u2) or the peer (CCE when doing
+cu = (CustomUser) u2.getPersistentObj()).
 </p>
 <p>
 The elegant way:
 </p>
 <source><![CDATA[
-public class CustomUser extends TorqueUser
+public class ExtendedUser extends TorqueUser
 {
-  public CustomUser()
+  public ExtendedUser()
   {
       super();
   }
 
-  public CustomUser(Persistent obj)
+  public ExtendedUser(Persistent obj)
   {
       super(obj);
   }
 
   public String getPhone()
   {
-    return ((CustomObject)getPersistentObj()).getPhone();
+    return ((CustomUser) getPersistentObj()).getPhone();
   }
 
   public void setPhone(String phone)
   {
-    ((CustomObject)getPersistentObj()).setPhone(phone);
+    ((CustomUser) getPersistentObj()).setPhone(phone);
   }
 
   public String getFax()
   {
-    return ((CustomObject)getPersistentObj()).getFax();
+    return ((CustomUser) getPersistentObj()).getFax();
   }
 
   public void setFax(String fax)
   {
-    ((CustomObject)getPersistentObj()).setFax(fax);
+    ((CustomUser) getPersistentObj()).setFax(fax);
   }
 }
 
 TurbineResources.properties:
 
-services.SecurityService.user.class=CustomUser
+services.SecurityService.user.class = ExtendedUser
 
 And then:
 
-CustomUser cu = (CustomUser) TurbineSecurity.getUser("test");
-String phone = cu.getPhone();
+ExtendedUser eu = (ExtendedUser) TurbineSecurity.getUser("test");
+String phone = eu.getPhone();
 ]]></source>
 
 </section>
