@@ -333,15 +333,18 @@
   <dependencies>
     <dependency>
       <id>commons-collections</id>
-      <version>1.0</version>
+      <version>2.0</version>
+      <url>http://jakarta.apache.org/commons/collections.html</url>
     </dependency>
     <dependency>
       <id>commons-configuration</id>
       <version>1.0-dev</version>
+      <url>http://jakarta.apache.org/commons/</url>
     </dependency>
     <dependency>
       <id>commons-lang</id>
-      <version>0.1-dev</version>
+      <version>1.0-dev</version>
+      <url>http://jakarta.apache.org/commons/</url>
     </dependency>
     <dependency>
       <id>ecs</id>
