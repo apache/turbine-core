@@ -77,19 +77,19 @@ public interface RunDataService
     extends Service
 {
     /** The key under which this service is stored in TurbineServices. */
-    static final String SERVICE_NAME = "RunDataService";
+    String SERVICE_NAME = "RunDataService";
 
     /** The default parser configuration key. */
-    static final String DEFAULT_CONFIG = "default";
+    String DEFAULT_CONFIG = "default";
 
     /** The property for the implemention of the RunData object */
-    public static final String RUN_DATA_KEY = "run.data";
+    String RUN_DATA_KEY = "run.data";
 
     /** The property for the implemention of the ParameterParser. */
-    public static final String PARAMETER_PARSER_KEY = "parameter.parser";
+    String PARAMETER_PARSER_KEY = "parameter.parser";
 
     /** The property for the implemention of the CookieParser. */
-    public static final String COOKIE_PARSER_KEY = "cookie.parser";
+    String COOKIE_PARSER_KEY = "cookie.parser";
 
     /**
      * Gets a default RunData object.
