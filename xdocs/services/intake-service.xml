@@ -764,6 +764,91 @@ can be added to a template and then the information is easily passed on
 to an associated bean.
 </p>
 
+
+<source>
+Dan Diephouse wrote:
+> 
+> I want to validate a form that updates my business object properties
+> with intake.  I got the latest cvs of turbine-2 repository and built a
+> new distribution of the turbine jar.  I can easily use intake to add
+> validate items I add to my databse, but I'm running in to a snag when
+> trying to modify them.  I've defined by business object in the intake
+> validation file.  I use the following code to update my item:
+> 
+>          IntakeTool intake = (IntakeTool) context.get("intake");
+> 
+>          ParameterParser pp = data.getParameters();
+> 
+>          if ( intake.isAllValid() ) {
+>              Job j = new Job();
+>              j.setNew(false);
+>              group.setProperties(j);
+> 
+>              JobPeer.doUpdate(j);
+> 
+> Error-->    data.getParameters().add("jobid", j.getJobId().toString());
+>              data.setMessage("Job updated.");
+>          } else {
+>              data.setMessage("There was an error updating the job.
+> Check below for further information.");
+>          }
+> 
+> It runs OK, until I try and retrieve the JobId.  I get a Null Pointer
+> exception.  Is there something I'm doing wrong here?  Or is this a bug?
+>   Do I need to specify that this is not a new object to intake?  I would
+> include my template, but there are lots of fields so its really long.
+> But here's a little summary with most fields gone:
+> 
+> #set ( $job = $basecamp.getJob() )   - This gets a job from a pull tool
+> #set ( $jobGroup = $intake.Job.mapTo($job) )
+> <input type=hidden name="$jobGroup.JobId.Key" 
+> value="$jobGroup.JobId.Value">
+> 
+> #if ( !$jobGroup.Title.isValid() )
+> $jobGroup.Title.Message<br>
+> #end
+> <input type=text name="$jobGroup.Title.Key"
+> value="$!jobGroup.Title.Value" size="50">
+> .
+> .
+> .
+> .
+> $intake.declareGroups()
+> 
+> Thanks,
+> 
+> Dan Diephouse
+
+This is not how i usually do things, but I guess it could work.  One
+thing that is wrong is that you are using mapTo(job) in the template and
+then in the action you are using IntakeTool.DEFAULT_KEY.  Unless
+job.getQueryKey() returns "_0", this combination is not going to work.
+Print out data.getParameters().toString() in the action to see what the
+parameters look like.
+
+Here is what I consider a normal course of events:
+
+1.  In the template:  
+
+$job = $foo.Job
+#set ( $jobGroup = $intake.Job.mapTo($job) )
+
+(This job is can be a new Job or one that is already saved.)
+
+2. In the action:
+
+// get the same (not necessarilary the same java Object, but has the
+exact same attribute values) job
+Job job = foo.getJob()
+Group group = intake.get("Job", job.getQueryKey());
+group.setProperties(job);
+
+It appears as though you are trying to map the parameters given for one
+job to another job.
+
+john mcnally
+</source>
+
   </section>
 
 
