@@ -76,6 +76,11 @@ Changes between Turbine 2.3 and 2.3.1.
        now processed correctly (the trailing ".x" and ".y" are removed from
        the event names).
     </li>
+    <li>
+       Intake was fixed so that fields with required elements with value=false 
+       can later be enabled with field.setRequired(true) (i.e. you should 
+       do this rather than using the deprecated required-message element).
+    </li>
   </ul>
 </p>
 </subsection>
