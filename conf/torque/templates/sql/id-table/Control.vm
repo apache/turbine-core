@@ -2,9 +2,9 @@
 
 #foreach ($databaseModel in $appData.Databases)
   #if ($appData.MultipleDatabases)
-    #set ( $outFile = "${project}-${databaseModel.Name}-idtable.sql" )
+    #set ( $outFile = "${project}-${databaseModel.Name}-id-table-init.sql" )
   #else
-    #set ( $outFile = "${project}-idtable.sql" )
+    #set ( $outFile = "${project}-id-table-init.sql" )
   #end
 $generator.parse($fname,$outFile,"tables",$databaseModel.Tables)
 #end
