@@ -84,8 +84,9 @@ import org.apache.turbine.util.security.GroupSet;
  */
 public class GroupPeer extends BasePeer
 {
-    private static final TurbineMapBuilder mapBuilder =
-        (TurbineMapBuilder) getMapBuilder("org.apache.turbine.util.db.map.TurbineMapBuilder");
+    /** The map builder for this Peer. */
+    private static final TurbineMapBuilder mapBuilder = (TurbineMapBuilder)
+            getMapBuilder(TurbineMapBuilder.class.getName());
 
     /** The table name for this peer. */
     private static final String TABLE_NAME = mapBuilder.getTableGroup();

@@ -87,9 +87,9 @@ import com.workingdogs.village.Record;
  */
 public class PermissionPeer extends BasePeer
 {
-    /** The mapBuilder for this Peer. */
+    /** The map builder for this Peer. */
     private static final TurbineMapBuilder mapBuilder = (TurbineMapBuilder)
-            getMapBuilder("org.apache.turbine.util.db.map.TurbineMapBuilder");
+            getMapBuilder(TurbineMapBuilder.class.getName());
 
     /** The table name for this peer. */
     private static final String TABLE_NAME = mapBuilder.getTablePermission();

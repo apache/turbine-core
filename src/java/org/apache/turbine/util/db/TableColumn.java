@@ -59,6 +59,7 @@ package org.apache.turbine.util.db;
  *
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @deprecated Use <a href="http://db.apache.org/torque/">Torque</a>.
  */
 public class TableColumn
 {
