@@ -332,6 +332,10 @@
   </developers>
   <dependencies>
     <dependency>
+      <id>ant</id>
+      <version>1.4.1</version>
+    </dependency>
+    <dependency>
       <id>commons-collections</id>
       <version>2.0</version>
       <url>http://jakarta.apache.org/commons/collections.html</url>
