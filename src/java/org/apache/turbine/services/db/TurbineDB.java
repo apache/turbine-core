@@ -54,11 +54,11 @@ package org.apache.turbine.services.db;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.util.TurbineException;
+import java.sql.Connection;
 import org.apache.torque.adapter.DB;
 import org.apache.torque.map.DatabaseMap;
-import java.sql.Connection;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * This class provides a common front end to all database - related
@@ -67,14 +67,12 @@ import java.sql.Connection;
  * can call to access the methods of system's configured service
  * implementations.
  * <p>
- * Assuming that your TurbineResources.properties file is setup correctly, the
- * sample code below demonstrates the right way to get and release a database
- * connection (exception handling is application dependent):
- * <blockquote><code><pre>
- * DBConnection dbConn = null;
+ * <b> This class is deprecated you should use org.apache.torque.Torque</b>
+ *
+ * Connection dbConn = null;
  * try
  * {
- *     dbConn = TurbineDB.getConnection();
+ *     dbConn = Torque.getConnection();
  *     // Do something with the connection here...
  * }
  * catch (Exception e)
@@ -85,7 +83,7 @@ import java.sql.Connection;
  * {
  *     try
  *     {
- *         TurbineDB.releaseConnection(dbConn);
+ *         dbConn.close();
  *     }
  *     catch (Exception e)
  *     {
@@ -96,6 +94,7 @@ import java.sql.Connection;
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
+ * @deprecated use org.apache.torque.Torque
  */
 public abstract class TurbineDB
 {
@@ -190,7 +189,7 @@ public abstract class TurbineDB
      * This method returns a DBConnection from the default pool.
      *
      * @return The requested connection.
-     * @throws TurbineException Any exceptions caught during processing will be
+     * @throws Exception Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
     public static Connection getConnection()
@@ -215,7 +214,7 @@ public abstract class TurbineDB
      *
      * @param name The name of the pool to get a connection from.
      * @return     The requested connection.
-     * @throws TurbineException Any exceptions caught during processing will be
+     * @throws Exception Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
     public static Connection getConnection(String name)
@@ -268,7 +267,7 @@ public abstract class TurbineDB
      * Returns the database adapter for the default connection pool.
      *
      * @return The database adapter.
-     * @throws TurbineException Any exceptions caught during processing will be
+     * @throws Exception Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
     public static DB getDB()
@@ -282,7 +281,7 @@ public abstract class TurbineDB
      *
      * @param name A pool name.
      * @return     The corresponding database adapter.
-     * @throws TurbineException Any exceptions caught during processing will be
+     * @throws Exception Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
     public static DB getDB(String name)

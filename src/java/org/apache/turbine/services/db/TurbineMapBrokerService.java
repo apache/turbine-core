@@ -54,19 +54,10 @@ package org.apache.turbine.services.db;
  * <http://www.apache.org/>.
  */
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import org.apache.turbine.services.BaseService;
-import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.util.TurbineException;
-import org.apache.torque.oid.IDGeneratorFactory;
-import org.apache.torque.oid.IDBroker;
-import org.apache.torque.adapter.DB;
-import org.apache.torque.adapter.DBFactory;
+import org.apache.torque.Torque;
 import org.apache.torque.map.DatabaseMap;
-import org.apache.torque.map.TableMap;
-import org.apache.commons.configuration.Configuration;
+import org.apache.turbine.services.BaseService;
+import org.apache.turbine.util.TurbineException;
 
 
 /**
@@ -80,30 +71,17 @@ import org.apache.commons.configuration.Configuration;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
+ * @deprecated use org.apache.torque.Torque instead
  */
 public class TurbineMapBrokerService extends BaseService
-    implements MapBrokerService
+        implements MapBrokerService
 {
-    /** The global cache of database maps */
-    private Map dbMaps;
-
-    /** Default database map */
-    private String defaultMap;
 
     /**
      * Initializes the service.
      */
     public void init()
     {
-        dbMaps = (Map)new HashMap();
-        Configuration configuration = getConfiguration();
-
-        // Get the value for the default map, but if there
-        // isn't a value than fall back to the standard
-        // "default" value.
-        defaultMap = configuration.getString(DEFAULT_MAP, DEFAULT);
-
-        // indicate that the service initialized correctly
         setInit(true);
     }
 
@@ -112,7 +90,7 @@ public class TurbineMapBrokerService extends BaseService
      */
     public String getDefaultMap()
     {
-        return defaultMap;
+        return Torque.getDefaultMap();
     }
 
     /**
@@ -123,16 +101,6 @@ public class TurbineMapBrokerService extends BaseService
      */
     public void shutdown()
     {
-        Iterator maps = dbMaps.values().iterator();
-        while ( maps.hasNext() )
-        {
-            DatabaseMap map = (DatabaseMap) maps.next();
-            IDBroker idBroker = map.getIDBroker();
-            if (idBroker != null)
-            {
-                idBroker.stop();
-            }
-        }
     }
 
     /**
@@ -143,9 +111,16 @@ public class TurbineMapBrokerService extends BaseService
      *         rethrown wrapped into a TurbineException.
      */
     public DatabaseMap getDatabaseMap()
-        throws TurbineException
+            throws TurbineException
     {
-        return getDatabaseMap(defaultMap);
+        try
+        {
+            return Torque.getDatabaseMap();
+        }
+        catch (Exception ex)
+        {
+            throw new TurbineException(ex);
+        }
     }
 
     /**
@@ -159,88 +134,16 @@ public class TurbineMapBrokerService extends BaseService
      *         rethrown wrapped into a TurbineException.
      */
     public DatabaseMap getDatabaseMap(String name)
-        throws TurbineException
+            throws TurbineException
     {
-            if ( name == null )
+        try
         {
-            throw new TurbineException ("DatabaseMap name was null!");
+            return Torque.getDatabaseMap(name);
         }
-
-        // Quick (non-sync) check for the map we want.
-        DatabaseMap map = (DatabaseMap)dbMaps.get(name);
-        if ( map == null )
+        catch (Exception ex)
         {
-            // Map not there...
-            synchronized( dbMaps )
-            {
-                // ... sync and look again to avoid race condition.
-                map = (DatabaseMap)dbMaps.get(name);
-                if ( map == null )
-                {
-                    // Still not there.  Create and add.
-                    map = new DatabaseMap(name);
-
-                    // Add info about IDBroker's table.
-                    setupIdTable(map);
-                    // setup other id generators
-                    try
-                    {
-                        DB db = DBFactory.create(
-                            getDatabaseProperty(name, "driver") );
-                        for (int i = 0; i < IDGeneratorFactory.ID_GENERATOR_METHODS.length;
-                             i++)
-                        {
-                            map.addIdGenerator(IDGeneratorFactory.ID_GENERATOR_METHODS[i],
-                                               IDGeneratorFactory.create(db));
-                        }
-                    }
-                    catch (java.lang.InstantiationException e)
-                    {
-                        throw new TurbineException(e);
-                    }
-
-                    dbMaps.put(name, map);
-                }
-            }
+            throw new TurbineException(ex);
         }
-        return map;
-    }
-
-    /**
-     * Returns the specified property of the given database, or the empty
-     * string if no value is set for the property.
-     *
-     * @param db   The name of the database whose property to get.
-     * @param prop The name of the property to get.
-     * @return     The property's value.
-     */
-    private static final String getDatabaseProperty(String db, String prop)
-    {
-        return TurbineResources.getString
-            ( new StringBuffer("database.")
-                .append(db)
-                .append('.')
-                .append(prop)
-                .toString(), "" );
-    }
-
-    /**
-     * Setup IDBroker's table information within given database map.
-     *
-     * This method should be called on all new database map to ensure that
-     * IDBroker functionality is available in all databases userd by the
-     * application.
-     *
-     * @param map the DataBaseMap to setup.
-     */
-    private void setupIdTable(DatabaseMap map)
-    {
-        map.setIdTable("ID_TABLE");
-        TableMap tMap = map.getIdTable();
-        tMap.addPrimaryKey("ID_TABLE_ID", new Integer(0));
-        tMap.addColumn("TABLE_NAME", new String(""));
-        tMap.addColumn("NEXT_ID", new Integer(0));
-        tMap.addColumn("QUANTITY", new Integer(0));
     }
 }
 

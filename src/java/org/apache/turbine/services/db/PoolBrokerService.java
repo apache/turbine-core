@@ -79,6 +79,7 @@ import org.apache.turbine.services.Service;
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
+ * @deprecated use org.apache.torque.Torque
  */
 public interface PoolBrokerService extends Service
 {
@@ -98,84 +99,41 @@ public interface PoolBrokerService extends Service
      * This method returns a DBConnection from the default pool.
      *
      * @return The requested connection.
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
+     * @throws Exception A generic exception.
      */
-    public Connection getConnection()
-        throws Exception;
+    public Connection getConnection() throws Exception;
 
     /**
      * This method returns a DBConnection from the pool with the
-     * specified name.  The pool must either have been registered
-     * with the {@link #registerPool(String,String,String,String,String)}
-     * method, or be specified in the property file using the
-     * following syntax:
-     *
-     * <pre>
-     * database.[name].driver
-     * database.[name].url
-     * database.[name].username
-     * database.[name].password
-     * </pre>
+     * specified name.
      *
      * @param name The name of the pool to get a connection from.
      * @return     The requested connection.
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
+     * @throws Exception A generic exception.
      */
-    public Connection getConnection(String name)
-        throws Exception;
-
+    public Connection getConnection(String name) throws Exception;
 
     /**
      * Release a connection back to the database pool.
      *
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
-     * @exception Exception A generic exception.
+     * @throws Exception A generic exception.
      */
-    public void releaseConnection(Connection dbconn)
-        throws Exception;
-
-    /**
-     * This method registers a new pool using the given parameters.
-     *
-     * @param name The name of the pool to register.
-     * @param driver The fully-qualified name of the JDBC driver to use.
-     * @param url The URL of the database to use.
-     * @param username The name of the database user.
-     * @param password The password of the database user.
-     *
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
-     */
-/*
-    public void registerPool( String name,
-                              String driver,
-                              String url,
-                              String username,
-                              String password )
-        throws Exception;
-*/
+    public void releaseConnection(Connection dbconn) throws Exception;
 
     /**
      * Returns the database adapter for the default connection pool.
      *
      * @return The database adapter.
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
+     * @throws Exception A generic exception.
      */
-    public DB getDB()
-        throws Exception;
+    public DB getDB() throws Exception;
 
     /**
      * Returns database adapter for a specific connection pool.
      *
      * @param name A pool name.
      * @return     The corresponding database adapter.
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
+     * @throws Exception A generic exception.
      */
-    public DB getDB(String name)
-        throws Exception;
+    public DB getDB(String name) throws Exception;
 }

@@ -55,14 +55,10 @@ package org.apache.turbine.services.db;
  */
 
 import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Map;
-import org.apache.commons.configuration.Configuration;
 import org.apache.torque.Torque;
 import org.apache.torque.adapter.DB;
 import org.apache.torque.util.BasePeer;
 import org.apache.turbine.services.BaseService;
-import org.apache.turbine.services.resources.TurbineResources;
 
 
 /**
@@ -76,47 +72,16 @@ import org.apache.turbine.services.resources.TurbineResources;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
+ * @deprecated use org.apache.torque.Torque instead
  */
 public class TurbinePoolBrokerService extends BaseService
-    implements PoolBrokerService
+        implements PoolBrokerService
 {
-    /**
-     * Name of the default connection pool.
-     */
-    public static final String DEFAULT = "default";
-
-    /** Default database pool */
-    private String defaultPool;
-
-    /**
-     * The various connection pools this broker contains.  Keyed by
-     * database URL.
-     */
-    private Map pools;
-
     /**
      * Initialize the connection pool broker.
      */
     public void init()
     {
-        pools = (Map) new HashMap();
-
-        Configuration configuration = getConfiguration();
-
-        // Get the value for the default pool, but if there
-        // isn't a value than fall back to the standard
-        // "default" value.
-        defaultPool = configuration.getString(DEFAULT_POOL, DEFAULT);
-
-        // Create monitor thread
-//        Monitor monitor = new Monitor();
-        // Indicate that this is a system thread. JVM will quit only when there
-        // are no more active user threads. Settings threads spawned internally
-        // by Turbine as daemons allows commandline applications using Turbine
-        // to terminate in an orderly manner.
-//        monitor.setDaemon(true);
-//        monitor.start();
-
         // indicate that the service initialized correctly
         setInit(true);
     }
@@ -141,36 +106,22 @@ public class TurbinePoolBrokerService extends BaseService
      * This method returns a DBConnection from the default pool.
      *
      * @return The requested connection.
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
+     * @throws Exception A generic exception.
      */
-    public Connection getConnection()
-        throws Exception
+    public Connection getConnection() throws Exception
     {
         return Torque.getConnection();
     }
 
     /**
      * This method returns a DBConnection from the pool with the
-     * specified name.  The pool must either have been registered
-     * with the {@link #registerPool(String,String,String,String,String)}
-     * method, or be specified in the property file using the
-     * following syntax:
-     *
-     * <pre>
-     * database.[name].driver
-     * database.[name].url
-     * database.[name].username
-     * database.[name].password
-     * </pre>
+     * specified name.
      *
      * @param name The name of the pool to get a connection from.
      * @return     The requested connection.
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
+     * @throws Exception A generic exception.
      */
-    public Connection getConnection(String name)
-        throws Exception
+    public Connection getConnection(String name) throws Exception
     {
         return Torque.getConnection(name);
     }
@@ -179,12 +130,9 @@ public class TurbinePoolBrokerService extends BaseService
      * Release a connection back to the database pool.  <code>null</code>
      * references are ignored.
      *
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
-     * @exception Exception A generic exception.
+     * @throws Exception A generic exception.
      */
-    public void releaseConnection(Connection dbconn)
-        throws Exception
+    public void releaseConnection(Connection dbconn) throws Exception
     {
         BasePeer.closeConnection(dbconn);
     }
@@ -193,13 +141,11 @@ public class TurbinePoolBrokerService extends BaseService
      * Returns the database adapter for the default connection pool.
      *
      * @return The database adapter.
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
+     * @throws Exception A generic exception.
      */
-    public DB getDB()
-        throws Exception
+    public DB getDB() throws Exception
     {
-        return getDB(DEFAULT);
+        return Torque.getDB(Torque.getDefaultDB());
     }
 
     /**
@@ -207,100 +153,10 @@ public class TurbinePoolBrokerService extends BaseService
      *
      * @param name A pool name.
      * @return     The corresponding database adapter.
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
+     * @throws Exception A generic exception.
      */
-    public DB getDB(String name)
-        throws Exception
+    public DB getDB(String name) throws Exception
     {
-        return Torque.getDB(getDefaultDB());
+        return Torque.getDB(name);
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Returns the specified property of the given database, or the empty
-     * string if no value is set for the property.
-     *
-     * @param db   The name of the database whose property to get.
-     * @param prop The name of the property to get.
-     * @return     The property's value.
-     */
-    private static final String getDatabaseProperty(String db, String prop)
-    {
-        return TurbineResources.getString
-            ( new StringBuffer("database.")
-                .append(db)
-                .append('.')
-                .append(prop)
-                .toString(), "" );
-    }
-
-    /**
-     * Returns the string for the specified property of the given database.
-     *
-     * @param db   The name of the database whose property to get.
-     * @param prop The name of the property to get.
-     * @return     The string of the property.
-     */
-    private String getProperty(String db, String prop)
-    {
-        return
-            new StringBuffer("database.")
-            .append(db)
-            .append('.')
-            .append(prop)
-            .toString();
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     * This inner class monitors the <code>PoolBrokerService</code>.
-     *
-     * This class is capable of logging the number of connections available in
-     * the pool periodically. This can prove useful if you application
-     * frozes after certain amount of time/requests and you suspect
-     * that you have connection leakage problem.
-     *
-     * Set the <code>database.logInterval</code> property to the number of
-     * milliseconds you want to elapse between loging the number of
-     * connections.
-     */
-/*
-    protected class Monitor extends Thread
-    {
-        public void run()
-        {
-            int logInterval = TurbineResources.getInt("database.logInterval",0);
-            StringBuffer buf = new StringBuffer();
-            while (logInterval > 0)
-            {
-                // Loop through all pools and log.
-                Iterator poolIter = pools.keySet().iterator();
-                while ( poolIter.hasNext() )
-                {
-                    String poolName = (String) poolIter.next();
-                    ConnectionPool pool = (ConnectionPool) pools.get(poolName);
-                    buf.setLength(0);
-                    buf.append(poolName).append(" (in + out = total): ")
-                        .append(pool.getNbrAvailable()).append(" + ")
-                        .append(pool.getNbrCheckedOut()).append(" = ")
-                        .append(pool.getTotalCount());
-                    Log.info("database",buf.toString());
-                }
-
-                // Wait for a bit.
-                try
-                {
-                    Thread.sleep(logInterval);
-                }
-                catch (InterruptedException ignored)
-                {
-                    // Don't care.
-                }
-            }
-        }
-    }
-*/
 }

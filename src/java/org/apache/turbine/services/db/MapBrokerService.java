@@ -54,9 +54,9 @@ package org.apache.turbine.services.db;
  * <http://www.apache.org/>.
  */
 
+import org.apache.torque.map.DatabaseMap;
 import org.apache.turbine.services.Service;
 import org.apache.turbine.util.TurbineException;
-import org.apache.torque.map.DatabaseMap;
 
 /**
  * This service manages {@link org.apache.turbine.util.db.map.DatabaseMap}
@@ -66,6 +66,7 @@ import org.apache.torque.map.DatabaseMap;
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
+ * @deprecated use org.apache.torque.Torque
  */
 public interface MapBrokerService extends Service
 {
@@ -89,8 +90,7 @@ public interface MapBrokerService extends Service
      * @throws TurbineException Any exceptions caught during procssing will be
      *         rethrown wrapped into a TurbineException.
      */
-    public DatabaseMap getDatabaseMap()
-        throws TurbineException;
+    public DatabaseMap getDatabaseMap() throws TurbineException;
 
     /**
      * Returns the database map information. Name relates to the name
@@ -102,6 +102,5 @@ public interface MapBrokerService extends Service
      * @throws TurbineException Any exceptions caught during procssing will be
      *         rethrown wrapped into a TurbineException.
      */
-    public DatabaseMap getDatabaseMap(String name)
-        throws TurbineException;
+    public DatabaseMap getDatabaseMap(String name) throws TurbineException;
 }
