@@ -73,8 +73,8 @@ import org.apache.turbine.util.ServerData;
  */
 
 public class DataURI
-    extends BaseURI
-    implements URIConstants
+        extends BaseURI
+        implements URIConstants
 {
     /**
      * Empty C'tor. Uses Turbine.getDefaultServerData().

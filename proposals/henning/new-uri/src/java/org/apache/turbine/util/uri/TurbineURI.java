@@ -683,7 +683,6 @@ public class TurbineURI
         }
     }
 
-
     /**
      * Gets the current Query Data List.
      *
@@ -788,7 +787,7 @@ public class TurbineURI
     {
         if(!list.isEmpty())
         {
-            for(Iterator it = list.iterator(); it.hasNext(); )
+            for(Iterator it = list.iterator(); it.hasNext();)
             {
                 URIParam uriParam = (URIParam) it.next();
                 String key = URLEncoder.encode((String) uriParam.getKey());
@@ -852,7 +851,7 @@ public class TurbineURI
     protected void add(int type,
             ParameterParser pp)
     {
-        for(Enumeration e = pp.keys(); e.hasMoreElements(); )
+        for(Enumeration e = pp.keys(); e.hasMoreElements();)
         {
             String key = (String) e.nextElement();
 
@@ -885,7 +884,7 @@ public class TurbineURI
     protected void add(int type,
             List list)
     {
-        for (Iterator it = list.iterator(); it.hasNext(); )
+        for (Iterator it = list.iterator(); it.hasNext();)
         {
             // Strictly spoken we don't need this cast. But if we do,
             // we get class cast right here is someone tries to put
@@ -908,25 +907,17 @@ public class TurbineURI
     protected void remove (int type,
             String name)
     {
-        try
+        Collection c = dataVectors[type];
+        String key = ParserUtils.convertAndTrim(name);
+        
+        for (Iterator it = c.iterator(); it.hasNext();)
         {
-            Collection c = dataVectors[type];
-            String key = ParserUtils.convertAndTrim(name);
-
-            for (Iterator it = c.iterator(); it.hasNext(); )
+            URIParam uriParam = (URIParam) it.next();
+            
+            if (key.equals(uriParam.getKey()))
             {
-                URIParam uriParam = (URIParam) it.next();
-
-                if (key.equals(uriParam.getKey()))
-                {
-                    c.remove(uriParam);
-                }
+                it.remove();
             }
         }
-        catch (Exception e)
-        {
-            log.error("remove(): ", e);
-        }
     }
-
 }
