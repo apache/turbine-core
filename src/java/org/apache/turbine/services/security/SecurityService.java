@@ -453,24 +453,6 @@ public interface SecurityService
      * are defined in {@link User} interface, plus the names
      * of the custom attributes you added to your user representation
      * in the data storage. Use verbatim names of the attributes -
-     * without table name prefix in case of DB implementation.
-     *
-     * @param criteria The criteria of selection.
-     * @return a List of users meeting the criteria.
-     * @throws DataBackendException if there is a problem accessing the
-     *         storage.
-     * @deprecated Use <a href="#retrieveList">retrieveList</a> instead.
-     */
-    User[] getUsers(Criteria criteria)
-            throws DataBackendException;
-
-    /**
-     * Retrieve a set of users that meet the specified criteria.
-     *
-     * As the keys for the criteria, you should use the constants that
-     * are defined in {@link User} interface, plus the names
-     * of the custom attributes you added to your user representation
-     * in the data storage. Use verbatim names of the attributes -
      * without table name prefix in case of Torque implementation.
      *
      * @param criteria The criteria of selection.

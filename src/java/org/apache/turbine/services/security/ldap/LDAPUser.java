@@ -155,7 +155,7 @@ public class LDAPUser extends BaseObject implements User
             attr = attribs.get(attrName);
             if (attr != null && attr.get() != null)
             {
-                setUserName(attr.get().toString());
+                setName(attr.get().toString());
             }
         }
         else
@@ -542,17 +542,6 @@ public class LDAPUser extends BaseObject implements User
         return this.timeout;
     }
 
-    /**
-     * Returns the username for this user.  If this is defined, then
-     * the user is considered logged in.
-     *
-     * @return A String with the username.
-     * @deprecated Use getName() instead
-     */
-    public String getUserName()
-    {
-        return getName();
-    }
 
     /**
      * Returns the first name for this user.  If this is defined, then
@@ -844,15 +833,7 @@ public class LDAPUser extends BaseObject implements User
         this.timeout = time;
     }
 
-    /**
-     * Sets the username for this user.
-     *
-     * @param username The user's username.
-     */
-    public void setUserName(String username)
-    {
-        setPerm(User.USERNAME, username);
-    }
+
 
     /**
      * Updates the last login date in the database.
@@ -927,11 +908,12 @@ public class LDAPUser extends BaseObject implements User
     }
 
     /**
-     * Not implemented.
+     * Set the users name.
      * @param name the name of the User.
      */
     public void setName(String name)
     {
+		setPerm(User.USERNAME, name);
     }
 
     /**
