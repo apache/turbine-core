@@ -212,35 +212,24 @@ public class TurbineVelocityService
                 pullModelActive ? pullService.getGlobalContext() : null;
 
         Context ctx = new VelocityContext(globalContext);
-        addEventCartridge(ctx);
-
         return ctx;
     }
 
     /**
      * This method returns a new, empty Context object.
      *
-     * @return A WebContext.
+     * @return A Context Object.
      */
     public Context getNewContext()
     {
         Context ctx = new VelocityContext();
-        addEventCartridge(ctx);
-        return ctx;
-    }
 
-    /**
-     * Creates a new Event Cartridge object and attaches it
-     * to the passed Velocity Context
-     *
-     * @param ctx The context
-     */
-    private void addEventCartridge(Context ctx)
-    {
+        // Attach an Event Cartridge to it, so we get exceptions
+        // while invoking methods from the Velocity Screens
         EventCartridge ec = new EventCartridge();
         ec.addEventHandler(this);
         ec.attachToContext(ctx);
-        log.debug("Activated Velocity Event Cartridge for Context " + ctx);
+        return ctx;
     }
 
     /**
@@ -259,7 +248,7 @@ public class TurbineVelocityService
     public Object methodException(Class clazz, String method, Exception e)
             throws Exception
     {
-        log.error("Class " + clazz.getName() + "::" + method + " threw Exception", e);
+        log.error("Class " + clazz.getName() + "." + method + " threw Exception", e);
 
         if (!catchErrors)
         {
