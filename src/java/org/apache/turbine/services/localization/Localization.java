@@ -115,7 +115,7 @@ public abstract class Localization
      */
     public static String getString(String key)
     {
-        return getService().getBundle().getString(key);
+        return getService().getString(null, null, key);
     }
 
     /**
@@ -143,7 +143,7 @@ public abstract class Localization
      */
     public static String getString(String key, HttpServletRequest req)
     {
-        return getService().getBundle(req).getString(key);
+        return getService().getString(null, getLocale(req), key);
     }
 
     /**
@@ -158,8 +158,7 @@ public abstract class Localization
      */
     public static String getString(String key, String lang)
     {
-        return getBundle(getDefaultBundleName(), new Locale(lang, ""))
-            .getString(key);
+        return getString(getDefaultBundleName(), new Locale(lang, ""),key);
     }
 
     /**
