@@ -405,6 +405,10 @@
             <batchtest>
                 <fileset dir="${build.src}">
                     <include name="**/*Test.java"/>
+
+                    <!-- TurbineCacheTest requires Cactus, which we
+                         aren't yet setup for -->
+                    <exclude name="**/TurbineCacheTest.java"/>
                 </fileset>
             </batchtest>
         </junit>
