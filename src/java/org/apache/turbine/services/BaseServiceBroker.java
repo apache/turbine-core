@@ -83,8 +83,7 @@ import org.apache.commons.logging.LogFactory;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public abstract class BaseServiceBroker
-        implements ServiceBroker
+public abstract class BaseServiceBroker implements ServiceBroker
 {
     /**
      * Mapping of Service names to class names.
@@ -475,8 +474,7 @@ public abstract class BaseServiceBroker
      * @exception InstantiationException if the service is unknown or
      * can't be initialized.
      */
-    public Service getService(String name)
-            throws InstantiationException
+    public Service getService(String name) throws InstantiationException
     {
         Service service;
         try
@@ -540,7 +538,8 @@ public abstract class BaseServiceBroker
             if (StringUtils.isEmpty(className))
             {
                 throw new InstantiationException(
-                        "ServiceBroker: unknown service " + name + " requested");
+                        "ServiceBroker: unknown service " + name
+                        + " requested");
             }
             try
             {
@@ -550,9 +549,10 @@ public abstract class BaseServiceBroker
                 {
                     try
                     {
-                        service = (Service) Class.forName(className).newInstance();
+                        service = (Service)
+                                Class.forName(className).newInstance();
                     }
-                            // those two errors must be passed to the VM
+                    // those two errors must be passed to the VM
                     catch (ThreadDeath t)
                     {
                         throw t;
@@ -593,7 +593,8 @@ public abstract class BaseServiceBroker
             catch (ClassCastException e)
             {
                 throw new InstantiationException("ServiceBroker: Class "
-                        + className + " does not implement Service interface.", e);
+                        + className
+                        + " does not implement Service interface.", e);
             }
             catch (InstantiationException e)
             {

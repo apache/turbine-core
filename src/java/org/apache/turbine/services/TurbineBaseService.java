@@ -123,8 +123,7 @@ public abstract class TurbineBaseService
      * class was not successful.
      * @deprecated Use init() instead
      */
-    public void init(ServletConfig config)
-            throws InitializationException
+    public void init(ServletConfig config) throws InitializationException
     {
     }
 
@@ -132,11 +131,10 @@ public abstract class TurbineBaseService
      * Performs early initialization.
      *
      * @param data An RunData to use for initialization activities.
-     * @exception InitializationException, if initialization of this
+     * @exception InitializationException if initialization of this
      * class was not successful.
      */
-    public void init(RunData data)
-            throws InitializationException
+    public void init(RunData data) throws InitializationException
     {
     }
 
@@ -150,8 +148,7 @@ public abstract class TurbineBaseService
      * @exception InitializationException, if initialization of this
      * class was not successful.
      */
-    public void init()
-            throws InitializationException
+    public void init() throws InitializationException
     {
         setInit(true);
     }
