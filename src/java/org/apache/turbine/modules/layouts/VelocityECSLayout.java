@@ -85,7 +85,7 @@ public class VelocityECSLayout extends Layout
      * of the HttpServletResponse object.
      *
      * @param data Turbine information.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public void doBuild( RunData data ) throws Exception
     {

@@ -81,8 +81,7 @@ public class VelocityOnlyLayout extends Layout
     /**
      * Method called by LayoutLoader.
      *
-     * @param RunData
-     * @return processed template in a String
+     * @param data
      */
     public void doBuild( RunData data ) throws Exception
     {
@@ -106,8 +105,8 @@ public class VelocityOnlyLayout extends Layout
         /* variable to reference the navigation screen in the layout template */
         context.put("navigation", new TemplateNavigation( data ));
 
-        /* Grab the layout template set in the WebMacroSitePage.  
-         * If null, then use the default layout template 
+        /* Grab the layout template set in the WebMacroSitePage.
+         * If null, then use the default layout template
          * (done by the TemplateInfo object )
          */
         String templateName = data.getTemplateInfo().getLayoutTemplate();
