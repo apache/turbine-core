@@ -101,6 +101,26 @@ public class IntegerField
     }
 
     /**
+     * Set the empty Value. This value is used if Intake
+     * maps a field to a parameter returned by the user and
+     * the corresponding field is either empty (empty string)
+     * or non-existant.
+     *
+     * @param prop The value to use if the field is empty.
+     */
+    public void setEmptyValue(String prop)
+    {
+        emptyValue = null;
+
+        if (prop == null)
+        {
+            return;
+        }
+
+        emptyValue = new Integer(prop);
+    }
+
+    /**
      * A suitable validator.
      *
      * @return A suitable validator
@@ -122,14 +142,14 @@ public class IntegerField
             for (int i = 0; i < inputs.length; i++)
             {
                 values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? new Integer(inputs[i]) : null;
+                        ? new Integer(inputs[i]) : (Integer) getEmptyValue();
             }
             setTestValue(values);
         }
         else
         {
             String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val) ? new Integer(val) : null);
+            setTestValue(StringUtils.isNotEmpty(val) ? new Integer(val) : (Integer) getEmptyValue());
         }
     }
 }

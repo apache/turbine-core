@@ -429,6 +429,10 @@ Changes between Turbine 2.2 and 2.3-dev.
       not only the velocity internal stack trace. You can switch this behaviour off by setting 
       "services.VelocityService.catch.errors" to off or false.
     </li>
+    <li>
+      Intake can now assign "empty" values to fields which are not returned or left out by the browser. This
+      is useful if you want your string fields not to map to null if the user does not enter anything.
+    </li>
   </ul>
 </p>
 </subsection>

@@ -122,7 +122,35 @@ public class DateStringField
         catch (ParseException e)
         {
             throw new TurbineRuntimeException("Could not parse " + prop
-                    + " into a valid Date", e);
+                    + " into a valid Date for the default value", e);
+        }
+    }
+
+    /**
+     * Set the empty Value. This value is used if Intake
+     * maps a field to a parameter returned by the user and
+     * the corresponding field is either empty (empty string)
+     * or non-existant.
+     *
+     * @param prop The value to use if the field is empty.
+     */
+    public void setEmptyValue(String prop)
+    {
+        emptyValue = null;
+
+        if (prop == null)
+        {
+            return;
+        }
+
+        try
+        {
+            emptyValue = getDate(prop);
+        }
+        catch (ParseException e)
+        {
+            throw new TurbineRuntimeException("Could not parse " + prop
+                    + " into a valid Date for the empty value", e);
         }
     }
 
@@ -150,7 +178,7 @@ public class DateStringField
                 try
                 {
                     values[i] = StringUtils.isNotEmpty(inputs[i])
-                            ? getDate(inputs[i]) : null;
+                            ? getDate(inputs[i]) : (Date) getEmptyValue();
                 }
                 catch (ParseException e)
                 {
@@ -164,7 +192,7 @@ public class DateStringField
             String val = parser.getString(getKey());
             try
             {
-                setTestValue(StringUtils.isNotEmpty(val) ? getDate(val) : null);
+                setTestValue(StringUtils.isNotEmpty(val) ? getDate(val) : (Date) getEmptyValue());
             }
             catch (ParseException e)
             {

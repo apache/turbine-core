@@ -144,6 +144,9 @@ public abstract class Field
     /** Default value of the field */
     protected Object defaultValue;
 
+    /** Value of the field to use if the mapped parameter is empty or non-existant */
+    protected Object emptyValue;
+
     /** Display size of the field */
     private String displaySize;
 
@@ -674,9 +677,22 @@ public abstract class Field
     }
 
     /**
-     * Set the default Value.
+     * Set the default Value. This value is used if
+     * Intake should map this field to a new object.
+     *
+     * @param prop The value to use if the field is mapped to a new object.
      */
     public abstract void setDefaultValue(String prop);
+
+    /**
+     * Set the empty Value. This value is used if Intake
+     * maps a field to a parameter returned by the user and
+     * the corresponding field is either empty (empty string)
+     * or non-existant.
+     *
+     * @param prop The value to use if the field is empty.
+     */
+    public abstract void setEmptyValue(String prop);
 
     /**
      * @deprecated Use doSetValue() instead (with no parameters).
@@ -928,6 +944,16 @@ public abstract class Field
     public Object getDefaultValue()
     {
         return defaultValue;
+    }
+
+    /**
+     * Get the Value to use if the field is empty
+     *
+     * @return the value to use if the field is empty.
+     */
+    public Object getEmptyValue()
+    {
+        return emptyValue;
     }
 
     /**

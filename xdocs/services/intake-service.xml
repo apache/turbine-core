@@ -853,8 +853,8 @@ john mcnally
   <section name="Default Values for fields">
 
 <p>
-If you want to use input fields which should default to non-empty values,
-you can use the defaultValue field:
+If you want to use input fields which should default to non-empty values for,
+new objects, you can use the defaultValue field:
 </p>
 
 <source><![CDATA[
@@ -864,7 +864,7 @@ you can use the defaultValue field:
 </group>
 ]]></source>
 
-If you set up a form like this:
+<p>If you set up a form like this:</p>
 
 <source><![CDATA[
 #if($!dz)
@@ -885,6 +885,27 @@ the val Field is the string 'preset'.
 </p>
 
 </section>
+
+<section name="Empty fields">
+<p>
+Sometimes you have form fields which are not required (can be left
+empty) but should be mapped onto a non null value in your bean. This
+is especially true if you use string fields in conjunction with
+"required" columns in a database. For this case, you can preset an
+"empty" value for each field which is used if a field is missing or
+empty in the form parameters returned by the browser. If you don't set
+this, the default is "null".
+</p>
+
+<source><![CDATA[
+<group name="test" key="test">
+    <field name="Value" key="val" type="String" emptyValue=""/>
+</group>
+]]></source>
+
+<p>This would return the empty String (not a null value) for the "val" field
+if the user does not enter anything. Without the emptyValue parameter, intake
+would assign the null value to the bean field.</p>
 
  </body>
 

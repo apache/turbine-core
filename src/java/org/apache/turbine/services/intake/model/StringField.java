@@ -106,6 +106,19 @@ public class StringField
     }
 
     /**
+     * Set the empty Value. This value is used if Intake
+     * maps a field to a parameter returned by the user and
+     * the corresponding field is either empty (empty string)
+     * or non-existant.
+     *
+     * @param prop The value to use if the field is empty.
+     */
+    public void setEmptyValue(String prop)
+    {
+        emptyValue = prop;
+    }
+
+    /**
      * Sets the value of the field from data in the parser.
      */
     protected void doSetValue()
@@ -116,14 +129,14 @@ public class StringField
             String[] sval = new String[ss.length];
             for (int i = 0; i < ss.length; i++)
             {
-                sval[i] = (StringUtils.isNotEmpty(ss[i])) ? ss[i] : "";
+                sval[i] = (StringUtils.isNotEmpty(ss[i])) ? ss[i] : (String) getEmptyValue();
             }
             setTestValue(sval);
         }
         else
         {
             String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val) ? val : "");
+            setTestValue(StringUtils.isNotEmpty(val) ? val : (String) getEmptyValue());
         }
     }
 
