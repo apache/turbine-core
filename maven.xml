@@ -1,4 +1,4 @@
-<project 
+<project
   xmlns:j="jelly:core"
   xmlns:m="maven"
   xmlns:u="jelly:util"
@@ -6,7 +6,7 @@
 
   <!-- Define a post goal for compile to copy intake.dtd into the appropriate
        location for packaging in the jar file.  -->
-       
+
   <postGoal name="java:compile">
 
     <copy
@@ -15,5 +15,26 @@
     />
 
   </postGoal>
+
+  <preGoal name="java:compile">
+
+    <!-- Setup where Torque generates the files to. -->
+    <copy todir="target/src">
+      <fileset dir="src/java"/>
+    </copy>
+
+    <!-- Now generate the scheduler service. -->
+    <j:set var="torque.project" value="scheduler"/>
+    <j:set var="torque.schema.om.includes" value="scheduler-schema.xml"/>
+    <j:set var="torque.targetPackage" value="${scheduler.package}"/>
+    <filter token="DATABASE_DEFAULT" value="${scheduler.database.name}"/>
+    <filter token="EXTRA_USER_COLUMNS" value="${scheduler.extra.user.columns}"/>
+    <copy
+      file="scheduler-schema.xml"
+      tofile="${torque.schema.dir}/scheduler-schema.xml"
+      filtering="yes"/>
+    <attainGoal name="torque:om"/>
+
+  </preGoal>
 
 </project>
