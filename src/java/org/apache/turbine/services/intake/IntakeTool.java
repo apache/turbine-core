@@ -363,11 +363,11 @@ public class IntakeTool
     }
 
     /**
-     * Give derived classes access to the Group Map
+     * Get a Map containing all the groups.
      *
      * @return the Group Map
      */
-    protected Map getGroups()
+    public Map getGroups()
     {
         return groups;
     }

@@ -78,6 +78,9 @@ Changes between Turbine 2.2-rc1 and 2.2-rc2.
     <li>
       TTWS5: Reference support for DynamicURI
     </li>
+    <li>
+      TTWS13: IntakeTool.getGroups() should be public
+    </li>
   </ul>
 </p>
 </subsection>
