@@ -58,7 +58,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.apache.cactus.ServletTestCase;
 import org.apache.turbine.Turbine;

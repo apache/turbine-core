@@ -78,7 +78,6 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.factory.TurbineFactory;
 import org.apache.turbine.services.servlet.TurbineServlet;
-import org.apache.turbine.services.template.mapper.BaseMapper;
 import org.apache.turbine.services.template.mapper.BaseTemplateMapper;
 import org.apache.turbine.services.template.mapper.ClassMapper;
 import org.apache.turbine.services.template.mapper.DirectMapper;
