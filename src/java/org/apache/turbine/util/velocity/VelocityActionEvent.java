@@ -189,6 +189,7 @@ public abstract class VelocityActionEvent extends ActionEvent
         {
             Throwable t = ite.getTargetException();
             log.error("Invokation of " + method , t);
+            throw ite;
         }
         finally
         {
