@@ -62,8 +62,8 @@
             would be very welcome contribution to the project.
         </li>
         <li>
-            The <a href="http://nagoya.apache.org/wiki/apachewiki.cgi?TurbineProjectPages">
-            Apache Wiki</a> another repository of documentation for the project.  It
+            The <a href="http://wiki.apache.org/jakarta-turbine/">Jakarta Turbine
+            Wiki</a> another repository of documentation for the project.  It
             contains development information, user documentation, how-to documents,
             discussion of new features, etc.  Anyone can add new pages and edit existing
             pages very easily!  This is perhaps the easiest way to contribute documentation
@@ -100,8 +100,8 @@
 <p>
     You can also contribute to the project by enhancing existing functionality and/or
     adding new functionality.  There is a current list of requested features on the
-    <a href="http://nagoya.apache.org/wiki/apachewiki.cgi?JakartaTurbine2/WishList">
-    Apache Wiki</a>.  Everyone is encouraged to take part in the discussion, design, and
+    <a href="http://wiki.apache.org/jakarta-turbine/Turbine2/WishList">Jakarta
+    Turbine Wiki</a>.  Everyone is encouraged to take part in the discussion, design, and
     implementation.
 </p>
 
