@@ -55,6 +55,7 @@ package org.apache.turbine.services.template;
  */
 
 import org.apache.turbine.services.Service;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -70,7 +71,8 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
-public interface TemplateService extends Service
+public interface TemplateService
+    extends Service
 {
     /**
      * The key under which this service is stored in TurbineServices.

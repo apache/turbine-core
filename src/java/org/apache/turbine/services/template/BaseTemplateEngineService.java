@@ -57,6 +57,7 @@ package org.apache.turbine.services.template;
 import java.util.Hashtable;
 
 import org.apache.commons.configuration.Configuration;
+
 import org.apache.turbine.services.TurbineBaseService;
 
 /**
@@ -67,8 +68,9 @@ import org.apache.turbine.services.TurbineBaseService;
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @version $Id$
  */
-public abstract class BaseTemplateEngineService extends TurbineBaseService
-        implements TemplateEngineService
+public abstract class BaseTemplateEngineService
+    extends TurbineBaseService
+    implements TemplateEngineService
 {
     /**
      * A Map containing the configuration for the template
@@ -131,7 +133,7 @@ public abstract class BaseTemplateEngineService extends TurbineBaseService
                 config.getStringArray(TEMPLATE_EXTENSIONS);
 
         if (fileExtensionAssociations == null ||
-                fileExtensionAssociations.length == 0)
+            fileExtensionAssociations.length == 0)
         {
             fileExtensionAssociations = new String[1];
             fileExtensionAssociations[0] = config.getString(
