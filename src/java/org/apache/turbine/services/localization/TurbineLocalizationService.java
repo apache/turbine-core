@@ -57,43 +57,40 @@ package org.apache.turbine.services.localization;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.StringUtils;
 
 /**
- * This class has been added 17.01.2000 by [jm],mediaphil digital
- * media.  Please contact me if you have any questions, which ARE NOT
- * ANSWERED by the Java Localization/Internationalization
- * Documentation.
- *
- * This class is the single point of access to all localization
+ * <p>This class is the single point of access to all localization
  * resources.  It caches different ResourceBundles for different
- * Locales.
+ * Locales.</p>
  *
- * <p>
+ * <p>Usage example:</p>
+ * 
+ * <blockquote><code><pre>
+ * LocalizationService ls = (LocalizationService) TurbineServices
+ *     .getInstance().getService(LocalizationService.SERVICE_NAME);
+ * </pre></code></blockquote>
  *
- * Usage example:<br>
- * LocalizationService ls =<br>
- *     (LocalizationService)TurbineServices<br>
- *         .getInstance()<br>
- *         .getService(LocalizationService.SERVICE_NAME);<br>
+ * <p>Then call one of four methods to retrieve a ResourceBundle:
  *
- * <p>
- *
- * Then call one of four methods to retrieve a ResourceBundle:
- *
- * <br>
- * - getBundle("MyBundleName")<br>
- * - getBundle("MyBundleName", httpAcceptLanguageHeader)<br>
- * - getBundle("MyBundleName", RunData)<br>
- * - getBundle("MyBundleName", Locale)<br>
+ * <ul>
+ * <li>getBundle("MyBundleName")</li>
+ * <li>getBundle("MyBundleName", httpAcceptLanguageHeader)</li>
+ * <li>etBundle("MyBundleName", HttpServletRequest)</li>
+ * <li>getBundle("MyBundleName", Locale)</li>
+ * <li>etc.</li>
+ * </ul></p>
  *
  * @author <a href="mailto:jm@mediaphil.de">Jonas Maurus</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:novalidemail@foo.com">Frank Y. Kim</a>
- * @version $Id$
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  */
 public class TurbineLocalizationService
     extends TurbineBaseService
@@ -104,10 +101,22 @@ public class TurbineLocalizationService
      * Key=bundle name
      * Value=Hashtable containing ResourceBundles keyed by Locale.
      */
-    private static Hashtable bundles = null;
+    private Hashtable bundles = null;
 
     /** The name of the default bundle to use. */
-    private static String defaultBundle = null;
+    private String defaultBundle = null;
+
+    /**
+     * The name of the default locale to use (includes language and
+     * country).
+     */
+    private Locale defaultLocale = null;
+
+    /** The name of the default language to use. */
+    private String defaultLanguage = null;
+
+    /** The name of the default country to use. */
+    private String defaultCountry = null;
 
     /**
      * Constructor.
@@ -124,7 +133,24 @@ public class TurbineLocalizationService
     {
         bundles = new Hashtable();
         defaultBundle = TurbineResources.getString("locale.default.bundle");
+        Locale jvmDefault = Locale.getDefault();
+        defaultLanguage = TurbineResources
+            .getString("locale.default.language",
+                       jvmDefault.getLanguage()).trim();
+        defaultCountry = TurbineResources
+            .getString("locale.default.country",
+                       jvmDefault.getCountry()).trim();
+        defaultLocale = new Locale(defaultLanguage, defaultCountry);
         setInit(true);
+    }
+
+    /**
+     * Retrieves the name of the default bundle (as specified in the
+     * config file).
+     */
+    public String getDefaultBundleName()
+    {
+        return defaultBundle;
     }
 
     /**
@@ -136,7 +162,7 @@ public class TurbineLocalizationService
      */
     public ResourceBundle getBundle()
     {
-        return getBundle( defaultBundle );
+        return getBundle(defaultBundle, (Locale) null);
     }
 
     /**
@@ -148,13 +174,7 @@ public class TurbineLocalizationService
      */
     public ResourceBundle getBundle(String bundleName)
     {
-        String language =
-            TurbineResources.getString("locale.default.language", "en").trim();
-        String country =
-            TurbineResources.getString("locale.default.country", "US").trim();
-
-        return getBundle( bundleName,
-                          new Locale(language, country) );
+        return getBundle(bundleName, (Locale) null);
     }
 
     /**
@@ -166,11 +186,37 @@ public class TurbineLocalizationService
      * @param languageHeader A String with the language header.
      * @return A localized ResourceBundle.
      */
-    public ResourceBundle getBundle(String bundleName,
-                                    String languageHeader)
+    public ResourceBundle getBundle(String bundleName, String languageHeader)
     {
-        return getBundle( bundleName,
-                          LocaleDetector.getLocale(languageHeader) );
+        return getBundle(bundleName, getLocale(languageHeader));
+    }
+
+    /**
+     * This method returns a ResourceBundle given the Locale
+     * information supplied in the HTTP "Accept-Language" header which
+     * is stored in HttpServletRequest.
+     *
+     * @param req HttpServletRequest.
+     * @return A localized ResourceBundle.
+     */
+    public ResourceBundle getBundle(HttpServletRequest req)
+    {
+        return getBundle(defaultBundle, getLocale(req));
+    }
+
+    /**
+     * This method returns a ResourceBundle given the bundle name and
+     * the Locale information supplied in the HTTP "Accept-Language"
+     * header which is stored in HttpServletRequest.
+     *
+     * @param bundleName Name of the bundle to use if the request's
+     * locale cannot be resolved.
+     * @param req HttpServletRequest.
+     * @return A localized ResourceBundle.
+     */
+    public ResourceBundle getBundle(String bundleName, HttpServletRequest req)
+    {
+        return getBundle(bundleName, getLocale(req));
     }
 
     /**
@@ -183,10 +229,7 @@ public class TurbineLocalizationService
      */
     public ResourceBundle getBundle(RunData data)
     {
-        Locale locale = LocaleDetector.getLocale(data);
-        if (locale == null)
-            return getBundle();
-        return getBundle( defaultBundle, locale );
+        return getBundle(defaultBundle, getLocale(data.getRequest()));
     }
 
     /**
@@ -198,13 +241,9 @@ public class TurbineLocalizationService
      * @param data Turbine information.
      * @return A localized ResourceBundle.
      */
-    public ResourceBundle getBundle(String bundleName,
-                                    RunData data)
+    public ResourceBundle getBundle(String bundleName, RunData data)
     {
-        Locale locale = LocaleDetector.getLocale(data);
-        if (locale == null)
-            return getBundle(bundleName);
-        return getBundle( bundleName, locale );
+        return getBundle(bundleName, getLocale(data.getRequest()));
     }
 
     /**
@@ -215,10 +254,14 @@ public class TurbineLocalizationService
      * @param locale A Locale.
      * @return A localized ResourceBundle.
      */
-    public ResourceBundle getBundle(String bundleName,
-                                    Locale locale)
+    public ResourceBundle getBundle(String bundleName, Locale locale)
     {
-        bundleName = bundleName.trim();
+        // Assure usable inputs.
+        bundleName = (bundleName == null ? defaultBundle : bundleName.trim());
+        if (locale == null)
+        {
+            locale = getLocale((String) null);
+        }
 
         if ( bundles.containsKey(bundleName) )
         {
@@ -269,5 +312,31 @@ public class TurbineLocalizationService
     public void setBundle(String defaultBundle)
     {
         this.defaultBundle = defaultBundle;
+    }
+
+    /**
+     * @see org.apache.turbine.services.localization.LocalizationService#getLocale(HttpServletRequest)
+     */
+    public final Locale getLocale(HttpServletRequest req)
+    {
+        return getLocale(req.getHeader(ACCEPT_LANGUAGE));
+    }
+
+    /**
+     * @see org.apache.turbine.services.localization.LocalizationService#getLocale(String)
+     */
+    public Locale getLocale(String header)
+    {
+        if (!StringUtils.isEmpty(header))
+        {
+            LocaleTokenizer tok = new LocaleTokenizer(header);
+            if (tok.hasNext())
+            {
+                return (Locale) tok.next();
+            }
+        }
+
+        // Couldn't parse locale.
+        return defaultLocale;
     }
 }
