@@ -66,11 +66,11 @@ import javax.servlet.http.HttpSessionListener;
  * descriptor as follows for the container to call it:
  *
  * <blockquote><code><pre>
- * <listener>
- *   <listener-class>
+ * &lt;listener&gt;
+ *   &lt;listener-class&gt;
  *     org.apache.turbine.session.SessionListener
- *   </listener-class>
- * </listener>
+ *   &lt;/listener-class&gt;
+ * &lt;/listener&gt;
  * </pre></code></blockquote>
  *
  * <code>&lt;listener&gt;</code> elemements can occur between

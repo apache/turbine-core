@@ -86,7 +86,7 @@ import org.apache.turbine.services.resources.TurbineResources;
  *
  * <dl>
  * <dt>classname</dt><dd>the classname of this service</dd>
- * <dt>cache.initial.size/dt><dd>Initial size of hash table use to store cached
+ * <dt>cache.initial.size</dt><dd>Initial size of hash table use to store cached
  objects.  If this property is not present, the default value is 20</dd>
  * <dt>cache.check.frequency</dt><dd>Cache check frequency in Millis (1000
  Millis = 1 second).  If this property is not present, the default value is 5000</dd>

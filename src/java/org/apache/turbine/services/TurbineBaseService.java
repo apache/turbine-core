@@ -59,27 +59,27 @@ import javax.servlet.ServletConfig;
 import org.apache.turbine.util.RunData;
 
 /**
- * This class provides a <code>Service</code> implementation that
+ * <p>This class provides a <code>Service</code> implementation that
  * Services used in Turbine are required to extend.  The
  * functionality provided in addition to <code>BaseService</code>
  * functionality is recognizing objects used in early initialization
  * of <code>Services</code> in Turbine, and passing them to
  * appropriate convenience methods.  These methods should be overriden
- * to provide desired initialization functionality.
+ * to provide desired initialization functionality.</p>
  *
- * <strong>Note!</strong><br>Remember to call
- * <code>setInit(true)</code> after successful initialization.
+ * <p><strong>Note!</strong><br>Remember to call
+ * <code>setInit(true)</code> after successful initialization.</p>
  *
- * <strong>Note!</strong><br>If you need to use another
+ * <p><strong>Note!</strong><br>If you need to use another
  * <code>Service</code> inside your early initialization, remember to
  * request initialization of that <code>Service</code> before using
- * it:
+ * it:</p>
  *
- * <code>
- * getServiceBroker().initClass("OtherService",data);<br>
+ * <pre><code>
+ * getServiceBroker().initClass("OtherService",data);
  * OtherService service =
- * (OtherService)getServiceBroker().getService("OtherService");
- * </code>
+ *         (OtherService)getServiceBroker().getService("OtherService");
+ * </code></pre>
  *
  * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
