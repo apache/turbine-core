@@ -3,11 +3,12 @@ package org.apache.turbine.modules.screens;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.apache.cactus.ServletTestCase;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.modules.ScreenLoader;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.RunDataFactory;
-import org.apache.cactus.*;
 
 /**
  *  ErrorTest
@@ -85,7 +86,7 @@ public class ErrorTest extends ServletTestCase
 		turbine = new Turbine();
 		turbine.init(config);
 
-		data = RunDataFactory.getRunData(request, response, config);
+		data = ((RunDataService) TurbineServices.getInstance().getService(RunDataService.SERVICE_NAME)).getRunData(request, response, config);
 
 		errorScreen =
 			(org.apache.turbine.modules.screens.Error) ScreenLoader

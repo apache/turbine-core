@@ -102,7 +102,7 @@ public class TSVParserTest
          *  properties file to be used.:
          */
         config.setInitParameter("properties",
-                                "/WEB-INF/conf/TurbineDefault.properties");
+                                "/WEB-INF/conf/TurbineComplete.properties");
         turbine = new Turbine();
         turbine.init(config);
     }

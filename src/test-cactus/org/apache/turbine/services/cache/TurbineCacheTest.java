@@ -126,7 +126,7 @@ public class TurbineCacheTest extends ServletTestCase {
     {
         super.setUp();
         config.setInitParameter("properties",
-                "/WEB-INF/conf/TurbineCacheTest.properties");
+                "/WEB-INF/conf/TurbineComplete.properties");
         turbine = new Turbine();
         turbine.init(config);
     }
