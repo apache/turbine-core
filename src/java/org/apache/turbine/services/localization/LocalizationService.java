@@ -83,7 +83,8 @@ public interface LocalizationService
 
     /**
      * Retrieves the name of the default bundle (as specified in the
-     * config file).
+     * config file), or the first in the list if there are more than
+     * one.
      */
     public String getDefaultBundleName();
 
@@ -171,4 +172,18 @@ public interface LocalizationService
      * @param defaultBundle Name of default bundle.
      */
     public void setBundle(String defaultBundle);
+
+
+    /**
+     * Tries very hard to return a value, looking first in the
+     * specified bundle, then searching list of default bundles
+     * (giving precedence to earlier bundles over later bundles).
+     *
+     * @param bundleName Name of the bundle to look in first.
+     * @param locale Locale to get text for.
+     * @param key Name of the text to retrieve.
+     * @return Localized text.
+     */
+    public String getString(String bundleName, Locale locale, String key);
+
 }

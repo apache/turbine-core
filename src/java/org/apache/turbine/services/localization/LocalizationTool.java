@@ -61,6 +61,7 @@ import java.util.ResourceBundle;
 import org.apache.turbine.services.localization.Localization;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.Log;
 
 /**
  * A pull tool which provides lookups for localized text by delegating

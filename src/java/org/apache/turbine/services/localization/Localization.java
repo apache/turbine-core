@@ -91,6 +91,18 @@ import org.apache.turbine.util.RunData;
 public abstract class Localization
 {
     /**
+     * Fetches the localized text from the specified bundle, ignoring
+     * any default bundles.
+     *
+     * @see LocalizationService#getString(String, Locale, String)
+     */
+    public static String getString(String bundleName, Locale locale,
+                                   String key)
+    {
+        return getService().getString(bundleName, locale, key);
+    }
+
+    /**
      * Pulls a string out of the LocalizationService with the default
      * locale values of what is defined in the
      * TurbineResources.properties file for the
@@ -113,7 +125,7 @@ public abstract class Localization
      */
     public static String getString(String key, Locale locale)
     {
-        return getService().getBundle(null, locale).getString(key);
+        return getService().getString(null, locale, key);
     }
 
     /**
