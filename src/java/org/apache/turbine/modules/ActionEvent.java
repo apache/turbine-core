@@ -262,9 +262,9 @@ public abstract class ActionEvent extends Action
             tmp = input.toLowerCase();
             
             // Chop off suffixes (for image type)
-            input = (tmp.endsWith(".x") || tmp.endsWith(".y"))
-                    ? input.substring(0, input.length() - 2)
-                    : input;
+            tmp = (tmp.endsWith(".x") || tmp.endsWith(".y"))
+                    ? tmp.substring(0, tmp.length() - 2)
+                    : tmp;
             
             if (ParserUtils.getUrlFolding() 
                     != ParserUtils.URL_CASE_FOLDING_NONE)
