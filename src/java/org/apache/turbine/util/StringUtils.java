@@ -68,6 +68,8 @@ import org.apache.commons.lang.exception.ExceptionUtils;
  * @author <a href="mailto:gcoladonato@yahoo.com">Greg Coladonato</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
+ * @deprecated This class will be removed after the 2.3 release. Please
+ *             use the <a href="http://jakarta.apache.org/commons/">commons-lang</a> component.
  */
 public class StringUtils
 {
