@@ -1,4 +1,4 @@
-package org.apache.turbine.modules;
+package org.apache.turbine.util;
 
 /* ====================================================================
  * The Apache Software License, Version 1.1
@@ -54,45 +54,38 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
-import org.apache.ecs.ConcreteElement;
+import org.apache.ecs.Entities;
 
-import org.apache.turbine.util.InputFilterUtils;
-import org.apache.turbine.util.RunData;
+import org.apache.ecs.filter.CharacterFilter;
 
 /**
- * This is an interface that defines what a Navigation module is.
+ * Some filter methods that have been orphaned in the Screen class.
+ *
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public abstract class Navigation
-    extends Assembler
+
+public abstract class InputFilterUtils
 {
-    /**
-     * A subclass must override this method to build itself.
-     * Subclasses override this method to store the navigation in
-     * RunData or to write the navigation to the output stream
-     * referenced in RunData.
-     *
-     * @param data Turbine information.
-     * @exception Exception a generic exception.
-     */
-    protected abstract ConcreteElement doBuild(RunData data)
-        throws Exception;
+    /** A HtmlFilter Object for the normal input filter */
+    private static final CharacterFilter filter = htmlFilter();
+
+    /** A HtmlFilter Object for the minimal input filter */
+    private static final CharacterFilter minFilter = htmlMinFilter();
 
     /**
-     * Subclasses can override this method to add additional
-     * functionality.  This method is protected to force clients to
-     * use NavigationLoader to build a Navigation.
+     * This function can/should be used in any screen that will output
+     * User entered text.  This will help prevent users from entering
+     * html (<SCRIPT>) tags that will get executed by the browser.
      *
-     * @param data Turbine information.
-     * @exception Exception a generic exception.
+     * @param s The string to prepare.
+     * @return A string with the input already prepared.
      */
-    protected ConcreteElement build(RunData data)
-        throws Exception
+    public static String prepareText(String s)
     {
-        return doBuild(data);
+        return filter.process(s);
     }
 
     /**
@@ -102,10 +95,45 @@ public abstract class Navigation
      *
      * @param s The string to prepare.
      * @return A string with the input already prepared.
-     * @deprecated Use InputFilterUtils.prepareText(String s)
      */
-    public static String prepareText(String s)
+    public static String prepareTextMinimum(String s)
     {
-        return InputFilterUtils.prepareText(s);
+        return minFilter.process(s);
+    }
+
+    /**
+     * These attributes are supposed to be the default, but they are
+     * not, at least in ECS 1.2.  Include them all just to be safe.
+     *
+     * @return A CharacterFilter to do HTML filtering.
+     */
+    private static CharacterFilter htmlFilter()
+    {
+        CharacterFilter filter = new CharacterFilter();
+        filter.addAttribute("\"", Entities.QUOT);
+        filter.addAttribute("'", Entities.LSQUO);
+        filter.addAttribute("&", Entities.AMP);
+        filter.addAttribute("<", Entities.LT);
+        filter.addAttribute(">", Entities.GT);
+        return filter;
+    }
+
+    /*
+     * We would like to filter user entered text that might be
+     * dynamically added, using javascript for example.  But we do not
+     * want to filter all the above chars, so we will just disallow
+     * <.
+     *
+     * @return A CharacterFilter to do minimal HTML filtering.
+     */
+    private static CharacterFilter htmlMinFilter()
+    {
+        CharacterFilter filter = new CharacterFilter();
+        filter.removeAttribute(">");
+        filter.removeAttribute("\"");
+        filter.removeAttribute("'");
+        filter.removeAttribute("&");
+        filter.addAttribute("<", Entities.LT);
+        return filter;
     }
 }

@@ -54,24 +54,21 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
-// Turbine Utility Classes
-
 import org.apache.ecs.ConcreteElement;
-import org.apache.ecs.Entities;
-import org.apache.ecs.filter.CharacterFilter;
+
+import org.apache.turbine.util.InputFilterUtils;
 import org.apache.turbine.util.RunData;
 
 /**
- * This is an interface that defines the Screen modules.
+ * This is the base class which defines the Screen modules.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public abstract class Screen extends Assembler
+public abstract class Screen
+    extends Assembler
 {
-    private static final CharacterFilter filter = htmlFilter();
-    private static final CharacterFilter minFilter = htmlMinFilter();
-
     /**
      * A subclass must override this method to build itself.
      * Subclasses override this method to store the screen in RunData
@@ -82,7 +79,7 @@ public abstract class Screen extends Assembler
      * @exception Exception a generic exception.
      */
     protected abstract ConcreteElement doBuild(RunData data)
-            throws Exception;
+        throws Exception;
 
     /**
      * Subclasses can override this method to add additional
@@ -93,7 +90,7 @@ public abstract class Screen extends Assembler
      * @exception Exception a generic exception.
      */
     protected ConcreteElement build(RunData data)
-            throws Exception
+        throws Exception
     {
         return doBuild(data);
     }
@@ -105,7 +102,7 @@ public abstract class Screen extends Assembler
      * the Layout to execute.  You can also define that logic here as
      * well if you want it to apply on a global scale.  For example,
      * if you wanted to allow someone to define Layout "preferences"
-     * where they could dynamicially change the Layout for the entire
+     * where they could dynamically change the Layout for the entire
      * site.  The information for the request is passed in with the
      * RunData object.
      *
@@ -135,10 +132,11 @@ public abstract class Screen extends Assembler
      *
      * @param s The string to prepare.
      * @return A string with the input already prepared.
+     * @deprecated Use InputFilterUtils.prepareText(String s)
      */
     public static String prepareText(String s)
     {
-        return filter.process(s);
+        return InputFilterUtils.prepareText(s);
     }
 
     /**
@@ -148,45 +146,10 @@ public abstract class Screen extends Assembler
      *
      * @param s The string to prepare.
      * @return A string with the input already prepared.
+     * @deprecated Use InputFilterUtils.prepareTextMinimum(String s)
      */
     public static String prepareTextMinimum(String s)
     {
-        return minFilter.process(s);
-    }
-
-    /**
-     * These attributes are supposed to be the default, but they are
-     * not, at least in ECS 1.2.  Include them all just to be safe.
-     *
-     * @return A CharacterFilter to do HTML filtering.
-     */
-    private static CharacterFilter htmlFilter()
-    {
-        CharacterFilter filter = new CharacterFilter();
-        filter.addAttribute("\"", Entities.QUOT);
-        filter.addAttribute("'", Entities.LSQUO);
-        filter.addAttribute("&", Entities.AMP);
-        filter.addAttribute("<", Entities.LT);
-        filter.addAttribute(">", Entities.GT);
-        return filter;
-    }
-
-    /*
-     * We would like to filter user entered text that might be
-     * dynamically added, using javascript for example.  But we do not
-     * want to filter all the above chars, so we will just disallow
-     * <.
-     *
-     * @return A CharacterFilter to do minimal HTML filtering.
-     */
-    private static CharacterFilter htmlMinFilter()
-    {
-        CharacterFilter filter = new CharacterFilter();
-        filter.removeAttribute(">");
-        filter.removeAttribute("\"");
-        filter.removeAttribute("'");
-        filter.removeAttribute("&");
-        filter.addAttribute("<", Entities.LT);
-        return filter;
+        return InputFilterUtils.prepareTextMinimum(s);
     }
 }
