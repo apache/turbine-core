@@ -1,0 +1,17 @@
+<!-- 
+	This configuration file for Avalon components is used for testing the Fulcrum Components with
+	Turbine.
+-->
+
+<role-list>
+    <role
+        name="org.apache.fulcrum.cache.GlobalCacheService"
+        shorthand="cache"
+        default-class="org.apache.fulcrum.cache.DefaultGlobalCacheService"/>
+        
+    <role
+        name="org.apache.fulcrum.mimetype.MimeTypeService"
+        shorthand="mimetype"
+        default-class="org.apache.fulcrum.mimetype.DefaultMimeTypeService"/>        
+</role-list>
+
