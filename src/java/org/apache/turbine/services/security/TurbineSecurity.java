@@ -182,6 +182,16 @@ public abstract class TurbineSecurity
     }
 
     /**
+     * Returns the configured UserManager.
+     *
+     * @return An UserManager object
+     */
+    public static UserManager getUserManager()
+    {
+        return getService().getUserManager();
+    }
+
+    /**
      * Check whether a specified user's account exists.
      *
      * The login name is used for looking up the account.
