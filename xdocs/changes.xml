@@ -62,6 +62,11 @@ Changes between Turbine 2.3 and 2.4.
 <subsection name="Avalonized Components">
 <p>
   <ul>
+  	<li>
+  	   The cache, crypto, mimetype services have now been deprecated in favor
+  	   of the Fulcrum versions as well.  Turbine security now uses the Fulcrum
+  	   crypto component.
+  	</li>
     <li>
 	   The intake service within Turbine has been deprecated in favor
 	   of the Fulcrum Intake service.  The intake pull tool has
@@ -141,6 +146,21 @@ Changes between Turbine 2.3 and 2.4.
 <subsection name="Other changes">
 <p>
   <ul>
+  	<li>
+  	  Maven Plugin for Turbine moved to /extensions directory.  The torque
+  	  codegeneration of objects for the Schedule and Security services was
+  	  moved to a new project /extensions/torque.  This removes all the nasty
+  	  logic required to code generate the torque objects before hand.  Should
+  	  help new users work with Turbine as well as allow other backend providers
+  	  for the Schedule and LDAP security services.  The multiproject plugin is
+  	  now used to build Turbine.
+  	</li>
+  	<li>
+  	  Removed deprecated Turbine Security methods.
+  	</li>
+  	<li>
+  	 Removed deprecated db service.
+  	</li>
   	<li>
 	 Removed deprecated TurbineResources class.
     </li>
