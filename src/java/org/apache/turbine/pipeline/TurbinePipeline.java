@@ -73,7 +73,7 @@ public class TurbinePipeline
      * The "Turbine Classic" pipeline.
      */
     public static String CLASSIC_PIPELINE = 
-        "web-inf/conf/turbine-classic-pipeline.xml";
+        "WEB-INF/conf/turbine-classic-pipeline.xml";
 
     /**
      * Name of this pipeline.
