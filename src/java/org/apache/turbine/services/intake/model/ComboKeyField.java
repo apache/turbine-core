@@ -101,6 +101,26 @@ public class ComboKeyField
     }
 
     /**
+     * Set the empty Value. This value is used if Intake
+     * maps a field to a parameter returned by the user and
+     * the corresponding field is either empty (empty string)
+     * or non-existant.
+     *
+     * @param prop The value to use if the field is empty.
+     */
+    public void setEmptyValue(String prop)
+    {
+        emptyValue = null;
+
+        if (prop == null)
+        {
+            return;
+        }
+
+        emptyValue = new ComboKey(prop);
+    }
+
+    /**
      * Sets the value of the field from data in the parser.
      */
     protected void doSetValue()
@@ -112,14 +132,14 @@ public class ComboKeyField
             for (int i = 0; i < inputs.length; i++)
             {
                 values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? new ComboKey(inputs[i]) : null;
+                        ? new ComboKey(inputs[i]) : (ComboKey) getEmptyValue();
             }
             setTestValue(values);
         }
         else
         {
             String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val) ? new ComboKey(val) : null);
+            setTestValue(StringUtils.isNotEmpty(val) ? new ComboKey(val) : (ComboKey) getEmptyValue());
         }
     }
 }

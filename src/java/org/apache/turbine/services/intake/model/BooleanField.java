@@ -103,6 +103,26 @@ public class BooleanField
     }
 
     /**
+     * Set the empty Value. This value is used if Intake
+     * maps a field to a parameter returned by the user and
+     * the corresponding field is either empty (empty string)
+     * or non-existant.
+     *
+     * @param prop The value to use if the field is empty.
+     */
+    public void setEmptyValue(String prop)
+    {
+        emptyValue = null;
+
+        if (prop == null)
+        {
+            return;
+        }
+
+        emptyValue = new Boolean(prop);
+    }
+
+    /**
      * A suitable validator.
      *
      * @return class name of the validator
@@ -124,14 +144,14 @@ public class BooleanField
             for (int i = 0; i < inputs.length; i++)
             {
                 values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? getBoolean(inputs[i]) : null;
+                        ? getBoolean(inputs[i]) : (Boolean) getEmptyValue();
             }
             setTestValue(values);
         }
         else
         {
             String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val) ? getBoolean(val) : null);
+            setTestValue(StringUtils.isNotEmpty(val) ? getBoolean(val) : (Boolean) getEmptyValue());
         }
     }
 

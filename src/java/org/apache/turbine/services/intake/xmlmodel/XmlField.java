@@ -93,6 +93,7 @@ public class XmlField
     private String mapToProperty;
     private String validator;
     private String defaultValue;
+    private String emptyValue;
     private String displaySize;
 
     /**
@@ -135,6 +136,7 @@ public class XmlField
         setMapToProperty(attrib.getValue("mapToProperty"));
         setValidator(attrib.getValue("validator"));
         setDefaultValue(attrib.getValue("defaultValue"));
+        setDefaultValue(attrib.getValue("emptyValue"));
     }
 
     /**
@@ -326,6 +328,26 @@ public class XmlField
     }
 
     /**
+     * Set the empty Value.
+     *
+     * @param prop The parameter to use as empty value.
+     */
+    public void setEmptyValue(String prop)
+    {
+        emptyValue = prop;
+    }
+
+    /**
+     * Get the empty Value.
+     *
+     * @return The empty value for this field.
+     */
+    public String getEmptyValue()
+    {
+        return emptyValue;
+    }
+
+    /**
      * The name of the field making sure the first letter is lowercase.
      *
      * @return a <code>String</code> value
@@ -452,6 +474,11 @@ public class XmlField
         if (defaultValue != null)
         {
             result.append(" defaultValue=\"" + defaultValue + "\"");
+        }
+
+        if (emptyValue != null)
+        {
+            result.append(" emptyValue=\"" + emptyValue + "\"");
         }
 
         if (rules.size() == 0)

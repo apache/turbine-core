@@ -108,6 +108,26 @@ public class FileItemField
     }
 
     /**
+     * It is not possible to set the empty value for this field type.
+     * Calling this method with a non-null parameter will result in a
+     * TurbineRuntimeException
+     *
+     * @param prop Parameter for the empty values
+     * @throws TurbineRuntimeException
+     */
+    public void setEmptyValue(String prop)
+    {
+        if (prop != null)
+        {
+            throw new TurbineRuntimeException(
+                    "Empty values are not valid for "
+                    + this.getClass().getName());
+        }
+
+        emptyValue = null;
+    }
+
+    /**
      * A suitable validator.
      *
      * @return A suitable validator
