@@ -81,7 +81,7 @@ public abstract class TurbineRunDataFacade
      *
      * @return a RunDataService implementation instance
      */
-    protected static RunDataService getService()
+    public static RunDataService getService()
     {
         return (RunDataService) TurbineServices
             .getInstance().getService(RunDataService.SERVICE_NAME);
