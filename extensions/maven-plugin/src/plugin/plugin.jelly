@@ -754,7 +754,6 @@
       <j:when test="${pluginMode.equalsIgnoreCase('inplace')}">
         <j:set var="webXmlName" value="web.xml" />
       </j:when>
-      <j:when test="${pluginMode.equalsIgnoreCase('eclipse')}"/>
       <j:otherwise>
         <fail>
 --------------------------------------------------------------------------
