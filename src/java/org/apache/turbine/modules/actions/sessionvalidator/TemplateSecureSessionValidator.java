@@ -54,8 +54,18 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.configuration.Configuration;
+
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.services.resources.TurbineResources;
+
+import org.apache.turbine.services.security.TurbineSecurity;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -81,8 +91,12 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class TemplateSecureSessionValidator extends SessionValidator
+public class TemplateSecureSessionValidator
+    extends SessionValidator
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TemplateSecureSessionValidator.class);
+
     /**
      * doPerform is virtually identical to DefaultSessionValidator
      * except that it calls template methods instead of bare screen
@@ -93,33 +107,49 @@ public class TemplateSecureSessionValidator extends SessionValidator
      * @see DefaultSessionValidator     * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    public void doPerform(RunData data) throws Exception
+    public void doPerform(RunData data)
+        throws Exception
     {
+        Configuration conf = Turbine.getConfiguration();
+
         /*
          * Pull user from session.
          */
         data.populate();
 
+        // The user may have not logged in, so create a "guest/anonymous" user.
+        if (data.getUser() == null)
+        {
+            log.debug("Fixing up empty User Object!");
+            data.setUser(TurbineSecurity.getAnonymousUser());
+            data.save();
+        }
+
         /*
          * This is the secure sessionvalidator, so user must be logged in.
          */
-        if ((data.getUser() == null) || (!data.getUser().hasLoggedIn()))
+        if (!data.getUser().hasLoggedIn())
         {
+            log.debug("User is not logged in!");
+            
             /*
              * Only set the message if nothing else has already set it
              * (e.g. the LogoutUser action).
              */
-            if (data.getMessage() == null)
+            if (StringUtils.isEmpty(data.getMessage()))
             {
-                data.setMessage(TurbineResources.getString(
-                        TurbineConstants.LOGIN_MESSAGE));
+                data.setMessage(conf.getString(TurbineConstants.LOGIN_MESSAGE));
             }
 
             /*
              * Set the screen template to the login page.
              */
-            data.getTemplateInfo().setScreenTemplate(
-                    TurbineResources.getString(TurbineConstants.TEMPLATE_LOGIN));
+
+            String loginTemplate = 
+                conf.getString(TurbineConstants.TEMPLATE_LOGIN);
+
+            log.debug("Sending User to the Login Screen (" + loginTemplate + ")");
+            data.getTemplateInfo().setScreenTemplate(loginTemplate);
 
             /*
              * We're not doing any actions buddy! (except action.login which
@@ -128,23 +158,21 @@ public class TemplateSecureSessionValidator extends SessionValidator
             data.setAction(null);
         }
 
-        /*
-         * Make sure we have some way to return a response.
-         */
+        log.debug("Login Check finished!");
+        
+        //Make sure we have some way to return a response.
         if (!data.hasScreen() &&
-                data.getTemplateInfo().getScreenTemplate() == null)
+            StringUtils.isEmpty(data.getTemplateInfo().getScreenTemplate()))
         {
-            String template = TurbineResources.getString(
-                    TurbineConstants.TEMPLATE_HOMEPAGE);
+            String template = conf.getString(TurbineConstants.TEMPLATE_HOMEPAGE);
 
-            if (template != null)
+            if (StringUtils.isNotEmpty(template))
             {
                 data.getTemplateInfo().setScreenTemplate(template);
             }
             else
             {
-                data.setScreen(TurbineResources.getString(
-                        TurbineConstants.SCREEN_HOMEPAGE));
+                data.setScreen(conf.getString(TurbineConstants.SCREEN_HOMEPAGE));
             }
         }
 
@@ -166,20 +194,17 @@ public class TemplateSecureSessionValidator extends SessionValidator
                 if (data.getTemplateInfo().getScreenTemplate() != null)
                 {
                     data.getUser().setTemp("prev_template",
-                            data.getTemplateInfo().getScreenTemplate());
-                    data.getTemplateInfo().setScreenTemplate(
-                            TurbineResources.getString(
-                                    TurbineConstants.TEMPLATE_INVALID_STATE));
+                                           data.getTemplateInfo().getScreenTemplate()
+                                           .replace('/', ','));
+                    data.getTemplateInfo().setScreenTemplate(conf.getString(TurbineConstants.TEMPLATE_INVALID_STATE));
                 }
                 else
                 {
                     data.getUser().setTemp("prev_screen",
-                            data.getScreen().replace('/', ','));
-                    data.setScreen(TurbineResources.getString(
-                            TurbineConstants.SCREEN_INVALID_STATE));
+                                           data.getScreen().replace('/', ','));
+                    data.setScreen(conf.getString(TurbineConstants.SCREEN_INVALID_STATE));
                 }
-                data.getUser()
-                        .setTemp("prev_parameters", data.getParameters());
+                data.getUser().setTemp("prev_parameters", data.getParameters());
                 data.setAction("");
             }
         }

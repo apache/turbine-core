@@ -54,9 +54,18 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.configuration.Configuration;
+
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.services.security.TurbineSecurity;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -77,43 +86,49 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class TemplateSessionValidator extends SessionValidator
+public class TemplateSessionValidator
+    extends SessionValidator
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TemplateSessionValidator.class);
+
     /**
      * Execute the action.
      *
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    public void doPerform(RunData data) throws Exception
+    public void doPerform(RunData data)
+        throws Exception
     {
+        Configuration conf = Turbine.getConfiguration();
+
         /*
          * Pull user from session.
          */
         data.populate();
 
-        // The user may have not logged in, so create a "guest" user.
+        // The user may have not logged in, so create a "guest/anonymous" user.
         if (data.getUser() == null)
         {
+            log.debug("Fixing up empty User Object!");
             data.setUser(TurbineSecurity.getAnonymousUser());
             data.save();
         }
 
         // make sure we have some way to return a response
         if (!data.hasScreen() &&
-                data.getTemplateInfo().getScreenTemplate() == null)
+            StringUtils.isEmpty(data.getTemplateInfo().getScreenTemplate()))
         {
-            String template = TurbineResources.getString(
-                    TurbineConstants.TEMPLATE_HOMEPAGE);
+            String template = conf.getString(TurbineConstants.TEMPLATE_HOMEPAGE);
 
-            if (template != null)
+            if (StringUtils.isNotEmpty(template))
             {
                 data.getTemplateInfo().setScreenTemplate(template);
             }
             else
             {
-                data.setScreen(TurbineResources.getString(
-                        TurbineConstants.SCREEN_HOMEPAGE));
+                data.setScreen(conf.getString(TurbineConstants.SCREEN_HOMEPAGE));
             }
         }
         // the session_access_counter can be placed as a hidden field in
@@ -129,18 +144,15 @@ public class TemplateSessionValidator extends SessionValidator
                 if (data.getTemplateInfo().getScreenTemplate() != null)
                 {
                     data.getUser().setTemp("prev_template",
-                            data.getTemplateInfo().getScreenTemplate()
-                            .replace('/', ','));
-                    data.getTemplateInfo().setScreenTemplate(
-                            TurbineResources.getString(
-                                    TurbineConstants.TEMPLATE_INVALID_STATE));
+                                           data.getTemplateInfo().getScreenTemplate()
+                                           .replace('/', ','));
+                    data.getTemplateInfo().setScreenTemplate(conf.getString(TurbineConstants.TEMPLATE_INVALID_STATE));
                 }
                 else
                 {
                     data.getUser().setTemp("prev_screen",
-                            data.getScreen().replace('/', ','));
-                    data.setScreen(TurbineResources.getString(
-                            TurbineConstants.SCREEN_INVALID_STATE));
+                                           data.getScreen().replace('/', ','));
+                    data.setScreen(conf.getString(TurbineConstants.SCREEN_INVALID_STATE));
                 }
                 data.getUser().setTemp("prev_parameters", data.getParameters());
                 data.setAction("");
