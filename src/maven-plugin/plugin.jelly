@@ -69,7 +69,7 @@
     <attainGoal name="turbine:base"/>
   </goal>
 
- <goal name="turbine:inplace-war" description="Builds an inplace exploded Turbine webapp">
+ <goal name="turbine:inplace" description="Builds an inplace exploded Turbine webapp">
 
      <j:set var="warWebappBuildDir"
         value="${maven.src.dir}/webapp"/>    
