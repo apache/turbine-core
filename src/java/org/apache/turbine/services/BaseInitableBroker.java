@@ -54,9 +54,12 @@ package org.apache.turbine.services;
  * <http://www.apache.org/>.
  */
 
-import java.util.Date;
 import java.util.Hashtable;
 import java.util.Stack;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -85,6 +88,7 @@ import org.apache.turbine.util.TurbineException;
  *
  * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class BaseInitableBroker
@@ -100,8 +104,11 @@ public abstract class BaseInitableBroker
      */
     protected Stack stack = new Stack();
 
+    /** Logging */
+    private Log log = LogFactory.getLog(this.getClass());
+
     /**
-     * Default constructor of InitableBorker.
+     * Default constructor of InitableBroker.
      *
      * This constructor does nothing. Your brokers should be
      * singletons, therefore their constructors should be
@@ -115,12 +122,12 @@ public abstract class BaseInitableBroker
     /**
      * Performs early initialization of an Initable class.
      *
-     * @param className The name of the class to be initailized.
+     * @param className The name of the class to be initialized.
      * @param data An Object to be used for initialization activities.
      * @exception InitializationException Initialization was not successful.
      */
-    public void initClass( String className,
-                           Object data )
+    public void initClass(String className,
+                           Object data)
         throws InitializationException
     {
         // make sure that only one thread calls this method recursively
@@ -166,7 +173,7 @@ public abstract class BaseInitableBroker
      *
      * @param className The name of the class to be uninitialized.
      */
-    public void shutdownClass( String className )
+    public void shutdownClass(String className)
     {
         try
         {
@@ -177,12 +184,12 @@ public abstract class BaseInitableBroker
                 ((BaseInitable)initable).setInit(false);
             }
         }
-        catch( InstantiationException e )
+        catch (InstantiationException e)
         {
             // Shutdown of a nonexistent class was requested.
             // This does not hurt anything, so we log the error and continue.
-            error(new TurbineException("Shutdown of a nonexistent class " +
-                    className + " was requested", e));
+            log.error("Shutdown of a nonexistent class " +
+                      className + " was requested", e);
         }
     }
 
@@ -199,7 +206,7 @@ public abstract class BaseInitableBroker
      * @exception InstantiationException, if there was a problem
      * during instantiation or initialization of the Initable.
      */
-    public Initable getInitable( String className )
+    public Initable getInitable(String className)
         throws InstantiationException
     {
         Initable initable;
@@ -227,7 +234,7 @@ public abstract class BaseInitableBroker
             }
             return initable;
         }
-        catch( InitializationException e )
+        catch (InitializationException e)
         {
             throw new InstantiationException("Class " + className +
                             " failed to initialize", e);
@@ -245,7 +252,7 @@ public abstract class BaseInitableBroker
      * @exception InstantiationException, if the requested class can't
      * be instantiated.
      */
-    protected Initable getInitableInstance( String className )
+    protected Initable getInitableInstance(String className)
         throws InstantiationException
     {
         Initable initable = (Initable)initables.get(className);
@@ -258,16 +265,16 @@ public abstract class BaseInitableBroker
             }
 
             // those two errors must be passed to the VM
-            catch( ThreadDeath t )
+            catch (ThreadDeath t)
             {
                 throw t;
             }
-            catch( OutOfMemoryError t )
+            catch (OutOfMemoryError t)
             {
                 throw t;
             }
 
-            catch( Throwable t )
+            catch (Throwable t)
             {
                 // Used to indicate error condition.
                 String msg = null;
@@ -302,37 +309,4 @@ public abstract class BaseInitableBroker
         return initable;
     }
 
-    /**
-     * Output a diagnostic notice.
-     *
-     * This method is used by the service framework classes for producing
-     * tracing mesages that might be useful for debugging (newline terminated).
-     *
-     * <p>The default implementation uses system error stream. When writing
-     * your own, remeber to direct that message to the proper logging
-     * mechanism.
-     *
-     * @param msg the message to print.
-     */
-    public void notice(String msg)
-    {
-        System.err.println('[' + new Date().toString() + "] " + msg);
-    }
-
-    /**
-     * Output an error message.
-     *
-     * This method is used by the service framework classes for displaying
-     * stacktraces of any exceptions that might be caught during processing.
-     *
-     * <p>The default implementation uses system error stream. When writing
-     * your own, remeber to direct that message to the proper logging
-     * mechanism.
-     *
-     * @param msg the message to print.
-     */
-    public void error(Throwable t)
-    {
-        t.printStackTrace(System.err);
-    }
 }
