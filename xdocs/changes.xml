@@ -90,6 +90,17 @@ Changes between Turbine 2.3 and 2.3.1.
        <em>$group.foo.StringValue</em> rather than <em>$group.foo.Value</em> 
        (you can do this for all values, not just DateString).
     </li>
+    <li>
+       Intake now makes use of the the emptyValue attribute from the field 
+       elements when mapping from the group to the object when no value has 
+       been set.  This makes it possible to clear values in an existing object
+       that is being overwritten with Intake data using 
+       <em>group.setProperties(obj)</em> (or you can provide non-null values
+       in your intake.xml file).  Make sure you do not inadvertently include 
+       the primary key for the object in the intake group without actually 
+       setting it to the appropriate value (it shouldn't be in the group 
+       anyway).
+    </li>
   </ul>
 </p>
 </subsection>
