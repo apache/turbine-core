@@ -1,0 +1,3 @@
+database.driver=com.ibm.as400.access.AS400JDBCDriver
+database.url=jdbc:as400://yourAS400/${database.name}
+database.adaptor=DBDB2400
