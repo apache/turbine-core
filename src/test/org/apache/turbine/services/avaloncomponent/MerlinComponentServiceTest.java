@@ -54,14 +54,15 @@ package org.apache.turbine.services.avaloncomponent;
  * <http://www.apache.org/>.
  */
 
-import org.apache.avalon.activation.appliance.Appliance;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 
-import tutorial.HelloComponent;
+import tutorial.Hello;
+
+
 
 /**
  * Simple test to make sure that the AvalonComponentService can be initialized.
@@ -71,60 +72,56 @@ import tutorial.HelloComponent;
  */
 public class MerlinComponentServiceTest extends BaseTestCase
 {
-    private static final Log log = LogFactory.getLog(MerlinComponentServiceTest.class);
+	private static final Log log = LogFactory.getLog(MerlinComponentServiceTest.class);
 
-    public MerlinComponentServiceTest(String name) throws Exception
-    {
-        super(name);
-    }
-    private MerlinComponentService getService()
-    {
-        return (MerlinComponentService) TurbineServices.getInstance().getService(
-            MerlinComponentService.SERVICE_NAME);
-    }
+	public MerlinComponentServiceTest(String name) throws Exception
+	{
+		super(name);
+	}
+	private MerlinComponentService getService()
+	{
+		return (MerlinComponentService) TurbineServices.getInstance().getService(
+			MerlinComponentService.SERVICE_NAME);
+	}
 
-    /**
-     * Test that we successfully download and install the HelloComponent form the 
-     * Merlin tutorial.  Currently pulling from http://jakarta.apache.org/turbine/repo/merlin
-     * @throws Exception
-     */
-    public void testMerlinWithHelloComponent() throws Exception
-    {
+	/**
+	 * Test that we successfully download and install the HelloComponent form the 
+	 * Merlin tutorial.  Currently pulling from http://jakarta.apache.org/turbine/repo/merlin
+	 * @throws Exception
+	 */
+	public void testMerlinWithHelloComponent() throws Exception
+	{
 
-        TurbineConfig tc =
-            new TurbineConfig(".", "/conf/test/MerlinComponentServiceTest.properties");
+		TurbineConfig tc =
+			new TurbineConfig(".", "/conf/test/MerlinComponentServiceTest.properties");
 
-        try
-        {
-            tc.initialize();
+		try
+		{
+			tc.initialize();
 
-            Object appliance = getService().lookup("/tutorial/hello"); // just to test
-            assertNotNull(appliance);
-            assertEquals("appliance:/tutorial/hello", appliance.toString());
-            log.info("Looked up appliance: " + appliance.toString());
+			Hello hello = (Hello) getService().lookup("/fulcrum/hello"); // just to test
+			assertNotNull(hello);
             
-			HelloComponent hello = (HelloComponent)appliance;
-            
-            getService().release(appliance);
+			getService().release(hello);
 
  
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-        finally
-        {
-            tc.dispose();
-        }
-    }
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+		finally
+		{
+			tc.dispose();
+		}
+	}
     
-    /**
-     * Test that a locally compiled component can be loaded and used.  Currently not
-     * working because the org.apache.turbine.test.TestComponent is in this classloader,
-     * not in a downloaded jar.  
-     * @throws Exception
-     */
+	/**
+	 * Test that a locally compiled component can be loaded and used.  Currently not
+	 * working because the org.apache.turbine.test.TestComponent is in this classloader,
+	 * not in a downloaded jar.  
+	 * @throws Exception
+	 */
 	public void OFF_testMerlinWithTestComponent() throws Exception
 		{
 
@@ -153,3 +150,4 @@ public class MerlinComponentServiceTest extends BaseTestCase
 			}
 		}
 }
+
