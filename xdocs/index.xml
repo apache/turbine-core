@@ -45,8 +45,8 @@
     A couple example web applications that can benefit from using this
     framework include <a
     href="http://www.restorationhardware.com/">e-commerce shopping cart
-    systems</a>, Yahoo style link conservatories and project / <a
-    href="http://scarab.tigris.org/">bug / issue</a> tracking systems as
+    systems</a>, Yahoo style link conservatories and <a
+    href="http://scarab.tigris.org/">project / bug / issue</a> tracking systems as
     well as cool XML integration applications like <a
     href="http://jakarta.apache.org/jetspeed/">Jetspeed</a>.
  </p>
