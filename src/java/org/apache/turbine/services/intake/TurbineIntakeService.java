@@ -83,7 +83,7 @@ import org.apache.turbine.util.ServletUtils;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.pool.BoundedBuffer;
 import org.apache.turbine.util.pool.Recyclable;
-import org.apache.turbine.services.BaseService;
+import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.InitializationException;
 
 /**
@@ -94,7 +94,7 @@ import org.apache.turbine.services.InitializationException;
  * @version $Id$
  */
 public class TurbineIntakeService
-    extends BaseService
+    extends TurbineBaseService
     implements IntakeService
 {
     /** Array of group names. */
