@@ -320,6 +320,12 @@
     <td></td>
     <td>Apprentice</td>
     -->
+    <developer>
+      <name>Quinton McCombs</name>
+      <id>quintonm</id>
+      <email>quintonm@bellsouth.net</email>
+      <organization>Nequalsone</organization>
+    </developer>
 
   </developers>
 
