@@ -558,11 +558,17 @@
     </dependency>
     <dependency>
       <id>torque</id>
-      <version>3.1-dev</version>
+      <version>SNAPSHOT</version>
       <url>http://db.apache.org/torque/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
+    </dependency>
+    <dependency>
+      <groupId>torque</groupId>
+      <artifactId>torque-gen</artifactId>
+      <version>SNAPSHOT</version>
+      <url>http://db.apache.org/torque/</url>
     </dependency>
     <dependency>
       <id>velocity</id>
@@ -616,17 +622,14 @@
   <build>
     <sourceDirectory>target/src</sourceDirectory>
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
-
     <unitTest>
       <includes>
         <include>**/*Test.java</include>
       </includes>
     </unitTest>
-
     <integrationUnitTestSourceDirectory/>
     <integrationUnitTest/>
     <aspectSourceDirectory/>
-
   </build>
 
 </project>
