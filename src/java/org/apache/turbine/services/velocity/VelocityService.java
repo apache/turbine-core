@@ -135,6 +135,13 @@ public interface VelocityService
     Context getContext();
 
     /**
+     * This method returns a new, empty Context object.
+     *
+     * @return A WebContext.
+     */
+    Context getNewContext();
+
+    /**
      * Create a Context from the RunData object.  Adds a pointer to
      * the RunData object to the Context so that RunData is available in
      * the templates.

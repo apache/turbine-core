@@ -238,6 +238,17 @@ public class TurbineVelocityService
     }
 
     /**
+     * This method returns a new, empty Context object.
+     *
+     * @return A WebContext.
+     */
+    public Context getNewContext()
+    {
+        Context ctx = new VelocityContext();
+        return ctx;
+    }
+
+    /**
      * Create a Context from the RunData object.  Adds a pointer to
      * the RunData object to the VelocityContext so that RunData
      * is available in the templates.

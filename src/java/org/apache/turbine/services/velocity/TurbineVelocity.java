@@ -86,7 +86,7 @@ public abstract class TurbineVelocity
      *
      * @return a VelocityService implementation instance
      */
-    protected static VelocityService getService()
+    public static VelocityService getService()
     {
         return (VelocityService) TurbineServices
                 .getInstance().getService(VelocityService.SERVICE_NAME);
@@ -158,13 +158,26 @@ public abstract class TurbineVelocity
     }
 
     /**
-     * This method returns a blank Context object.
+     * This method returns a blank Context object, which
+     * also contains the global context object. Do not use
+     * this method if you need an empty context object! Use
+     * getNewContext for this.
      *
      * @return A WebContext.
      */
     public static Context getContext()
     {
         return getService().getContext();
+    }
+
+    /**
+     * This method returns a new, empty Context object.
+     *
+     * @return A WebContext.
+     */
+    public static Context getNewContext()
+    {
+        return getService().getNewContext();
     }
 
     /**
