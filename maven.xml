@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ======================================================================== -->
+<!--                                                                          -->
+<!--  maven Buildfile                                                         -->
+<!--                                                                          -->
+<!-- $Id$ -->
+<!--                                                                          -->
+<!-- ======================================================================== -->
+
 <project
   xmlns:j="jelly:core"
   xmlns:m="maven"
@@ -5,20 +15,29 @@
   xmlns:maven="jelly:maven"
   default="java:jar">
 
-  <!-- Define a post goal for compile to copy intake.dtd into the appropriate
-       location for packaging in the jar file.  -->
+  <!-- ================================================================== -->
+  <!-- C O M P I L E   P O S T - G O A L                                  -->
+  <!-- ================================================================== -->
+  <!-- executed before the building of the jar, it copies all the various -->
+  <!-- resource files into the jar build directory                        -->
+  <!-- ================================================================== -->
 
   <postGoal name="java:compile">
-
     <copy
       file="${maven.src.dir}/dtd/intake.dtd"
       todir="${maven.build.dest}/org/apache/turbine/services/intake/transform"
     />
-
   </postGoal>
 
-  <preGoal name="java:compile">
+  <!-- ================================================================== -->
+  <!-- T O R Q U E  G E N E R A T I O N  P R E  G O A L                   --> 
+  <!-- ================================================================== -->
+  <!-- This preGoal is executed before the the compilation goal so that   -->
+  <!-- the sources for the security service and the scheduler are         -->
+  <!-- generated.                                                         -->
+  <!-- ================================================================== -->
 
+  <preGoal name="java:compile">
     <copy todir="target/src">
       <fileset dir="src/java"/>
     </copy>
