@@ -69,7 +69,8 @@ import org.apache.turbine.util.RunData;
  * @version $Id$
  * @deprecated The use of ECS for the view is deprecated. Use a templating solution.
  */
-public class DefaultTopNavigation extends Navigation
+public class DefaultTopNavigation
+        extends Navigation
 {
     private static String txt =
             "Turbine - A Servlet Framework for building Secure Dynamic Websites.";
