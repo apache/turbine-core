@@ -191,9 +191,11 @@ public class FileHandler
     public static String readFileContents(String targetLocationProperty,
                                           String fileName)
     {
+        File tmpF = new File(".");
+
         String file = TurbineServlet.getRealPath(
             TurbineResources.getString(targetLocationProperty) + 
-                "/" + fileName);
+                tmpF.separator + fileName);
 
         StringWriter sw = null;
         BufferedReader reader = null;
@@ -203,8 +205,9 @@ public class FileHandler
              * This little routine was borrowed from the
              * velocity ContentResource class.
              */
-            sw = new StringWriter();
             
+            sw = new StringWriter();    
+
             reader = new BufferedReader(
                 new InputStreamReader(
                     new FileInputStream(file)));
