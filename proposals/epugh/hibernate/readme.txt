@@ -138,5 +138,7 @@ You will also need to add this to your web.xml:
     <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+I will also try and add more examples of actualing using the Hibernate code...
+
 
 Thanks, Eric (epugh@upstate.com)
