@@ -56,8 +56,10 @@ package org.apache.turbine.services.resources;
 
 import java.util.Iterator;
 import java.util.Vector;
+
 import org.apache.commons.configuration.Configuration;
-import org.apache.turbine.services.TurbineServices;
+
+import org.apache.turbine.Turbine;
 
 /**
  * <p>This is a static class for defining the default Turbine configuration
@@ -70,6 +72,7 @@ import org.apache.turbine.services.TurbineServices;
  * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
  * @author <a href="mailto:luta.raphael@networks.vivendi.net">Raphaël Luta</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class TurbineResources
@@ -91,19 +94,6 @@ public abstract class TurbineResources
     public static final String LOGOUT_MESSAGE = "logout.message";
 
     /**
-     * Utility method for accessing the service
-     * implementation
-     *
-     * @return a ResourcesService implementation instance
-     */
-    protected static ResourceService getService()
-    {
-        return (ResourceService)TurbineServices
-                    .getInstance()
-                    .getService(ResourceService.SERVICE_NAME);
-    }
-
-    /**
      * Set a property in with a key=value pair.
      *
      * @param String key
@@ -111,7 +101,7 @@ public abstract class TurbineResources
      */
     public static void setProperty(String key, String value)
     {
-        getService().setProperty(key,value);
+        Turbine.getConfiguration().setProperty(key,value);
     }
 
     /**
@@ -123,7 +113,7 @@ public abstract class TurbineResources
      */
     public static boolean getBoolean(String name)
     {
-        return getService().getBoolean (name);
+        return Turbine.getConfiguration().getBoolean (name);
     }
 
     /**
@@ -138,7 +128,7 @@ public abstract class TurbineResources
     public static boolean getBoolean(String name,
                                      boolean def)
     {
-        return getService().getBoolean(name, def);
+        return Turbine.getConfiguration().getBoolean(name, def);
     }
 
     /**
@@ -150,7 +140,7 @@ public abstract class TurbineResources
      */
     public static double getDouble(String name)
     {
-        return getService().getDouble(name);
+        return Turbine.getConfiguration().getDouble(name);
     }
 
     /**
@@ -164,7 +154,7 @@ public abstract class TurbineResources
     public static double getDouble(String name,
                                    double def)
     {
-        return getService().getDouble(name, def);
+        return Turbine.getConfiguration().getDouble(name, def);
     }
 
     /**
@@ -176,7 +166,7 @@ public abstract class TurbineResources
      */
     public static float getFloat(String name)
     {
-        return getService().getFloat(name);
+        return Turbine.getConfiguration().getFloat(name);
     }
 
     /**
@@ -190,7 +180,7 @@ public abstract class TurbineResources
     public static float getFloat(String name,
                                  float def)
     {
-        return getService().getFloat(name, def);
+        return Turbine.getConfiguration().getFloat(name, def);
     }
 
     /**
@@ -202,7 +192,7 @@ public abstract class TurbineResources
      */
     public static int getInt(String name)
     {
-        return getService().getInt(name);
+        return Turbine.getConfiguration().getInt(name);
     }
 
     /**
@@ -216,7 +206,7 @@ public abstract class TurbineResources
     public static int getInt(String name,
                              int def)
     {
-        return getService().getInt(name, def);
+        return Turbine.getConfiguration().getInt(name, def);
     }
 
     /**
@@ -227,7 +217,7 @@ public abstract class TurbineResources
      */
     public static Iterator getKeys()
     {
-        return getService().getKeys();
+        return Turbine.getConfiguration().getKeys();
     }
 
     /**
@@ -239,7 +229,7 @@ public abstract class TurbineResources
      */
     public static Iterator getKeys(String prefix)
     {
-        return getService().getKeys(prefix);
+        return Turbine.getConfiguration().getKeys(prefix);
     }
 
     /**
@@ -251,7 +241,7 @@ public abstract class TurbineResources
      */
     public static long getLong(String name)
     {
-        return getService().getLong(name);
+        return Turbine.getConfiguration().getLong(name);
     }
 
     /**
@@ -265,7 +255,7 @@ public abstract class TurbineResources
     public static long getLong(String name,
                                long def)
     {
-        return getService().getLong(name, def);
+        return Turbine.getConfiguration().getLong(name, def);
     }
 
     /**
@@ -277,7 +267,7 @@ public abstract class TurbineResources
      */
     public static String getString(String name)
     {
-        return getService().getString(name);
+        return Turbine.getConfiguration().getString(name);
     }
 
     /**
@@ -291,7 +281,7 @@ public abstract class TurbineResources
     public static String getString(String name,
                                    String def)
     {
-        return getService().getString(name, def);
+        return Turbine.getConfiguration().getString(name, def);
     }
 
     /**
@@ -303,7 +293,7 @@ public abstract class TurbineResources
      */
     public static String[] getStringArray(String name)
     {
-        return getService().getStringArray(name);
+        return Turbine.getConfiguration().getStringArray(name);
     }
 
     /**
@@ -315,7 +305,7 @@ public abstract class TurbineResources
      */
     public static Vector getVector(String name)
     {
-        return getService().getVector(name);
+        return Turbine.getConfiguration().getVector(name);
     }
 
     /**
@@ -329,19 +319,7 @@ public abstract class TurbineResources
     public static Vector getVector(String name,
                                    Vector def)
     {
-        return getService().getVector(name,def);
-    }
-
-    /**
-     * The purpose of this method is to extract a subset of configuration
-     * resources sharing a common name prefix.
-     *
-     * @param prefix the common name prefix
-     * @return A ResourceService providing the subset of configuration.
-     */
-    public static ResourceService getResources(String prefix)
-    {
-        return getService().getResources(prefix);
+        return Turbine.getConfiguration().getVector(name,def);
     }
 
     /**
@@ -351,7 +329,7 @@ public abstract class TurbineResources
      */
     public static Configuration getConfiguration()
     {
-        return getService().getConfiguration();
+        return Turbine.getConfiguration();
     }
 
     /**
@@ -363,6 +341,6 @@ public abstract class TurbineResources
      */
     public static Configuration getConfiguration(String prefix)
     {
-        return getService().getConfiguration(prefix);
+        return Turbine.getConfiguration().subset(prefix);
     }
 }
