@@ -29,6 +29,7 @@
 
     <menu name="Development">
       <item name="Proposals"             href="/proposals.html"/>
+      <item name="How To Help"           href="/how-to-help.html"/>
       <item name="Todo"                  href="/todo.html"/>
     </menu>
 
