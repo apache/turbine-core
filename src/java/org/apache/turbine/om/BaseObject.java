@@ -54,6 +54,8 @@ package org.apache.turbine.om;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.util.db.pool.DBConnection;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -403,6 +405,27 @@ public abstract class BaseObject implements Persistent, Serializable
         }
         
         return ok.hashCode();
+    }
+
+    /**
+     * Stores the object in the database.  If the object is new,
+     * it inserts it; otherwise an update is performed.
+     */
+    public void save(String dbName) throws Exception
+    {
+        throw new UnsupportedOperationException("Method must be implemented if called");
+    }
+
+    /**
+     * Stores the object in the database.  If the object is new,
+     * it inserts it; otherwise an update is performed.  This method
+     * is meant to be used as part of a transaction, otherwise use
+     * the save() method and the connection details will be handled
+     * internally
+     */
+    public void save(DBConnection dbCon) throws Exception
+    {
+        throw new UnsupportedOperationException("Method must be implemented if called");
     }
 }
 
