@@ -1102,7 +1102,11 @@ public class BaseValueParser
                 // Convert from 12 to 24hr format if appropriate
                 if (ampm != null)
                 {
-                    if (Integer.parseInt(ampm) == Calendar.PM)
+                    if ( hour == 12 )
+                    {
+                        hour = (Integer.parseInt(ampm) == Calendar.PM) ? 12 : 0;
+                    }
+                    else if (Integer.parseInt(ampm) == Calendar.PM)
                     {
                         hour += 12;
                     }
