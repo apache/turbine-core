@@ -50,6 +50,32 @@ Changes between Turbine 2.2-b1 and 2.2-b2.
 </subsection>
 </section>
 -->
+<section name="Turbine 2.2-rc1">
+
+<p>
+Changes between Turbine 2.2-b2 and 2.2-rc1.
+</p>
+
+<subsection name="Other changes">
+<p>
+  <ul>
+    <li>
+      Enhancements to support Apache XML-RPC versions 1.2 alpha 1 and 2.
+    </li>
+  </ul>
+</p>
+</subsection>
+
+<subsection name="Fixed bugs">
+<p>
+  <ul>
+    <li>
+      TRQD2: Update to intake-howto to mention remove()
+    </li>
+  </ul>
+</p>
+</subsection>
+</section>
 
 <section name="Turbine 2.2-b2">
 
@@ -61,7 +87,6 @@ Changes between Turbine 2.2-b1 and 2.2-b2.
 <b>The coupled version of Torque has been removed from Turbine 2.2!</b> <br/>
 Get a full list of changes at the
 <a href="http://jakarta.apache.org/turbine/torque/changes">Torque-site</a>.
-
 </p>
 
 <subsection name="Changes that could break older environments">
