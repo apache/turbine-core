@@ -165,4 +165,15 @@ public abstract class TurbineSession
         return getService().getSession(sessionId);
     }
 
+    /**
+     * Get a collection of all session on which the given user
+     * is logged in.
+     *
+     * @param user the user
+     * @return Collection of HtttSession objects
+     */
+    public static Collection getSessionsForUser(User user)
+    {
+        return getService().getSessionsForUser(user);
+    }
 }

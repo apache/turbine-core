@@ -183,6 +183,31 @@ public class TurbineSessionService
         return (HttpSession) this.activeSessions.get(sessionId);
     }
 
+    /**
+     * Get a collection of all session on which the given user
+     * is logged in.
+     *
+     * @param user the user
+     * @return Collection of HtttSession objects
+     */
+    public Collection getSessionsForUser(User user)
+    {
+        Vector results = new Vector();
+        Collection sessions = this.getActiveSessions();
+        for(Iterator iter = sessions.iterator(); iter.hasNext();)
+        {
+            HttpSession session = (HttpSession) iter.next();
+            User tmpUser = this.getUserFromSession(session);
+            if(user.equals(tmpUser))
+            {
+                results.add(session);
+            }
+
+        }
+
+        return results;
+    }
+
     /******************************************************
      * Service initilization methods
      *****************************************************/

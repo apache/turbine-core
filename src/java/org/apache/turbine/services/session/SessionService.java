@@ -138,4 +138,13 @@ public interface SessionService extends Service
      */
     public HttpSession getSession(String sessionId);
 
+    /**
+     * Get a collection of all session on which the given user
+     * is logged in.
+     *
+     * @param user the user
+     * @return Collection of HtttSession objects
+     */
+    public Collection getSessionsForUser(User user);
+
 }
