@@ -56,7 +56,11 @@ package org.apache.turbine.util.template;
 
 import java.util.Hashtable;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.services.template.TurbineTemplate;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -70,6 +74,10 @@ import org.apache.turbine.util.RunData;
  */
 public class TemplateInfo
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TemplateInfo.class);
+
+
     /* Constants for tempStorage hashtable. */
     public static final String NAVIGATION_TEMPLATE = "00navigation_template00";
     public static final String LAYOUT_TEMPLATE = "00layout_template00";
@@ -145,12 +153,10 @@ public class TemplateInfo
     {
         data.getParameters().setString("template", v);
 
-        /*
-         * We have changed the screen template so
-         * we should now update the layout template
-         * as well. We will use the template service
-         * to help us out.
-         */
+        // We have changed the screen template so
+        // we should now update the layout template
+        // as well. We will use the template service
+        // to help us out.
         try
         {
             setLayoutTemplate(TurbineTemplate.getLayoutTemplateName(v));
@@ -270,6 +276,7 @@ public class TemplateInfo
      */
     public void setTemp(String name, Object value)
     {
+        log.debug("setTemp(" + name + ", " + value + ")");
         tempStorage.put(name, value);
     }
 

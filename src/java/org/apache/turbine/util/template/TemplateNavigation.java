@@ -56,10 +56,16 @@ package org.apache.turbine.util.template;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.ecs.ConcreteElement;
+
 import org.apache.turbine.modules.NavigationLoader;
+
 import org.apache.turbine.services.TurbineServices;
+
 import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.services.template.TurbineTemplate;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -117,14 +123,14 @@ public class TemplateNavigation
      */
     public String toString()
     {
+        log.debug("toString: " + this.template);
         data.getTemplateInfo().setNavigationTemplate(this.template);
         String module = null;
         String returnValue = null;
         try
         {
-            module = ((TemplateService) TurbineServices.getInstance()
-                    .getService(TemplateService.SERVICE_NAME))
-                    .getNavigationName(template);
+            module = TurbineTemplate.getNavigationName(template);
+
             ConcreteElement results = NavigationLoader.getInstance()
                     .eval(data, module);
             returnValue = results.toString();
