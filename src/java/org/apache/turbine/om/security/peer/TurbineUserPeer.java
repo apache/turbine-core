@@ -282,8 +282,7 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
             // Restore the Permanent Storage Hashtable.  First the
             // Hashtable is restored, then any explicit table columns
             // which should be included in the Hashtable are added.
-            byte[] objectData = (byte[])
-                    row.getValue(objectDataPosition).asBytes();
+            byte[] objectData = row.getValue(objectDataPosition).asBytes();
             Hashtable tempHash = (Hashtable)
                     ObjectUtils.deserialize(objectData);
             if (tempHash == null)
@@ -395,9 +394,6 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
     public static List doSelect(Criteria criteria, User current)
         throws TorqueException
     {
-        // stuff for postgresql problem.....
-        criteria.setBlobFlag(true);
-
         // add User table columns
         addSelectColumns(criteria);
 
@@ -451,9 +447,6 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
     public static List doSelect(Criteria criteria, Connection dbConn)
         throws TorqueException
     {
-        // stuff for postgresql problem.....
-        criteria.setBlobFlag(true);
-
         // add User table columns
         addSelectColumns(criteria);
 
