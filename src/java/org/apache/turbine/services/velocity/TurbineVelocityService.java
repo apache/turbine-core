@@ -21,8 +21,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
 import javax.servlet.ServletConfig;
 
@@ -523,7 +525,30 @@ public class TurbineVelocityService
             if (!key.endsWith(RESOURCE_LOADER_PATH))
             {
                 Object value = conf.getProperty(key);
-                veloConfig.addProperty(key, value);
+
+                // Since 1.0-pre-something, Commons Collections suddently
+                // no longer returns a vector for multiple value-keys but a
+                // List object. Velocity will choke if we add this object because
+                // org.apache.commons.collections.ExtendedProperties expect a
+                // Vector object. Ah, the joys of incompatible class changes, 
+                // unwritten assumptions and general Java JAR Hell... =8-O
+                if (value instanceof List)
+                {
+                    List srcValue = (List) value;
+                    Vector targetValue = new Vector(srcValue.size());
+
+                    for (Iterator it = srcValue.iterator(); it.hasNext(); )
+                    {
+                        targetValue.add(it.next());
+                    }
+
+                    veloConfig.addProperty(key, targetValue);
+                }
+                else
+                {
+                    veloConfig.addProperty(key, value);
+                }
+
                 continue; // for()
             }
 
@@ -544,6 +569,7 @@ public class TurbineVelocityService
             // jar:file://path-component!/entry-component
             // file://path-component
             // path/component
+
             for (Iterator j = paths.iterator(); j.hasNext();)
             {
                 String path = (String) j.next();
