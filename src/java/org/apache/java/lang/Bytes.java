@@ -60,6 +60,7 @@ package org.apache.java.lang;
  *
  * @author <a href="mailto:stefano@apache.org">Stefano Mazzocchi</a>
  * @version $Id$
+ * @deprecated Use Jakarta Commons
  */
 public class Bytes
 {

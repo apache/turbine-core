@@ -64,6 +64,7 @@ package org.apache.java.security;
  *
  * @author <a href="mailto:mazzocchi@mbox.systemy.it">Stefano Mazzocchi</a>
  * @version $Id$
+ * @deprecated Use the java.security package.
  */
 public abstract class MessageDigest
 {

@@ -97,6 +97,7 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
+ * @deprecated Use the Unique ID Service
  */
 public class UUIdGenerator
 {

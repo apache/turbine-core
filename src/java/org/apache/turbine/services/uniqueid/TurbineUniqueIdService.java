@@ -54,13 +54,15 @@ package org.apache.turbine.services.uniqueid;
  * <http://www.apache.org/>.
  */
 
+import java.security.MessageDigest;
+
+import org.apache.commons.codec.base64.Base64;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.java.lang.Bytes;
-import org.apache.java.security.MD5;
-
 import org.apache.turbine.Turbine;
+import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.GenerateUniqueId;
 import org.apache.turbine.util.RunData;
@@ -69,6 +71,7 @@ import org.apache.turbine.util.RunData;
  * <p> This is an implementation of {@link UniqueIdService}.
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineUniqueIdService
@@ -89,6 +92,7 @@ public class TurbineUniqueIdService
      * @deprecated Use init() instead
      */
     public void init(RunData data)
+            throws InitializationException
     {
         init();
     }
@@ -98,21 +102,31 @@ public class TurbineUniqueIdService
      * invocation.
      */
     public void init()
+            throws InitializationException
     {
-        // This might be a problem if the unique Id Service runs
-        // before Turbine got its first request. In this case,
-        // getDefaultServerData will return just a dummy value
-        // which is the same for all instances of Turbine.
-        //
-        // @todo This needs definitely further working.
-        String url = Turbine.getDefaultServerData().toString();
-
-        MD5 md5 = new MD5();
-        turbineId = Bytes.toString(md5.digest(url.toString().getBytes()));
-
-        log.info("This is Turbine instance running at: " + url);
-        log.info("The instance id is #" + turbineId);
-        setInit(true);
+        try
+        {
+            // This might be a problem if the unique Id Service runs
+            // before Turbine got its first request. In this case,
+            // getDefaultServerData will return just a dummy value
+            // which is the same for all instances of Turbine.
+            //
+            // @todo This needs definitely further working.
+            String url = Turbine.getDefaultServerData().toString();
+            
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte [] bytesId = md.digest(url.getBytes("UTF-8"));
+            turbineId = new String(Base64.encode(bytesId));
+            
+            log.info("This is Turbine instance running at: " + url);
+            log.info("The instance id is #" + turbineId);
+            setInit(true);
+        }
+        catch (Exception e)
+        {
+            throw new InitializationException(
+                    "Could not initialize TurbineUniqueId Service", e);
+        }
     }
 
     /**
