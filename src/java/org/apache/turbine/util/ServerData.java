@@ -269,14 +269,14 @@ public class ServerData
         this.contextPath = contextPath;
     }
 
+
     /**
-     * Returns this element as an URL
+     * Appends the Host URL to the supplied StringBuffer
      *
-     * @return The contents of this element as a String
+     * @param url A StringBuffer object
      */
-    public String toString()
+    public void getHostUrl(StringBuffer url)
     {
-        StringBuffer url = new StringBuffer();
         url.append(getServerScheme());
         url.append("://");
         url.append(getServerName());
@@ -290,6 +290,19 @@ public class ServerData
             url.append(":");
             url.append(getServerPort());
         }
+    }
+
+
+    /**
+     * Returns this object as an URL
+     *
+     * @return The contents of this object as a String
+     */
+    public String toString()
+    {
+        StringBuffer url = new StringBuffer();
+
+        getHostUrl(url);
 
         url.append(getScriptName());
         url.append(getContextPath());

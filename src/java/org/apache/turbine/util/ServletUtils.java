@@ -59,36 +59,44 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.turbine.Turbine;
+import org.apache.turbine.util.uri.URIConstants;
 
 /**
  * This is where common Servlet manipulation routines should go.
  *
  * @author <a href="mailto:gonzalo.diethelm@sonda.com">Gonzalo Diethelm</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class ServletUtils
 {
     /**
      * The default HTTP port number.
+     * @deprecated use URIConstants.HTTP_PORT
      */
-    public static final int HTTP_PORT = 80;
+    public static final int HTTP_PORT = URIConstants.HTTP_PORT;
 
     /**
      * The default HTTPS port number.
+     * @deprecated use URIConstants.HTTPS_PORT
      */
-    public static final int HTTPS_PORT = 443;
+    public static final int HTTPS_PORT = URIConstants.HTTPS_PORT;
 
     /**
      * The default FTP port number.
+     * @deprecated use URIConstants.FTP_PORT
      */
-    public static final int FTP_PORT = 20;
+    public static final int FTP_PORT = URIConstants.FTP_PORT;
 
     /**
      * The part of the URI which separates the protocol indicator (i.e. the
-     * scheme) from the rest of the URI.
+     * scheme) from the rest of the URI. 
+     * @deprecated use URIConstants.URI_SCHEME_SEPARATOR;
      */
-    public static final String URI_SCHEME_SEPARATOR = "://";
+    public static final String URI_SCHEME_SEPARATOR = URIConstants.URI_SCHEME_SEPARATOR;
 
     /**
      * Expands a string that points to a relative path or path list,
@@ -103,7 +111,7 @@ public class ServletUtils
     public static String expandRelative(ServletConfig config,
                                         String text)
     {
-        if (text == null || text.length() <= 0)
+        if (StringUtils.isEmpty(text))
         {
             return text;
         }
@@ -122,19 +130,21 @@ public class ServletUtils
             sb.append(text);
             text = sb.toString();
         }
-
+        
         ServletContext context = config.getServletContext();
         String base = context.getRealPath("/");
-        if (base == null)
-        {
-            base = config.getInitParameter(Turbine.BASEDIR_KEY);
-        }
-        if (base == null)
+        
+        base = (StringUtils.isEmpty(base))
+            ? config.getInitParameter(Turbine.BASEDIR_KEY) 
+            : base;
+            
+        if (StringUtils.isEmpty(base))
         {
             return text;
         }
 
         String separator = System.getProperty("path.separator");
+        
         StringTokenizer tokenizer = new StringTokenizer(text,
                 separator);
         StringBuffer buffer = new StringBuffer();
@@ -153,6 +163,7 @@ public class ServletUtils
      * Defaults to the scheme used in the supplied request.
      *
      * @see #hostURL(HttpServletRequest req, String proto)
+     * @deprecated Use ServerData(req).getHostUrl()
      */
     public static StringBuffer hostURL(HttpServletRequest req)
     {
@@ -168,24 +179,21 @@ public class ServletUtils
      * @param scheme The protocol indicator to prefix the host name with, or
      * the protocol used to address the server with if <code>null</code>.
      * @return The desired URL fragment.
+     * @deprecated Use ServerData(req).getHostUrl()
      */
     public static StringBuffer hostURL(HttpServletRequest req, String scheme)
     {
-        if (scheme == null)
+        ServerData serverData = new ServerData(req);
+
+        if (StringUtils.isNotEmpty(scheme))
         {
-            scheme = req.getScheme();
+            serverData.setServerScheme(scheme);
         }
-        StringBuffer url = new StringBuffer()
-                .append(scheme)
-                .append(URI_SCHEME_SEPARATOR)
-                .append(req.getServerName());
-        int port = req.getServerPort();
-        if (!(("http".equalsIgnoreCase(scheme) && port == HTTP_PORT) ||
-                ("https".equalsIgnoreCase(scheme) && port == HTTPS_PORT) ||
-                ("ftp".equalsIgnoreCase(scheme) && port == FTP_PORT)))
-        {
-            url.append(':').append(port);
-        }
-        return url;
+
+        StringBuffer sb = new StringBuffer();
+
+        serverData.getHostUrl(sb);
+
+        return sb;
     }
 }
