@@ -129,7 +129,7 @@ public class SecurityCheck
     public boolean hasRole(String role)
             throws Exception
     {
-        return hasRole(TurbineSecurity.getRole(role));
+        return hasRole(TurbineSecurity.getRoleByName(role));
     }
 
     /**
@@ -166,7 +166,7 @@ public class SecurityCheck
     public boolean hasPermission(String permission)
             throws Exception
     {
-        return hasPermission(TurbineSecurity.getPermission(permission));
+        return hasPermission(TurbineSecurity.getPermissionByName(permission));
     }
 
     /**

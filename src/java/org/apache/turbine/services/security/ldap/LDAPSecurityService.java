@@ -1199,14 +1199,15 @@ public class LDAPSecurityService extends BaseSecurityService
     public void revokeAll(Group group)
             throws DataBackendException, UnknownEntityException
     {
-        User[] users = getUsers(new Criteria());
-        for (int i = 0; i < users.length; i++)
+        for (Iterator it = getUserList(new Criteria()).iterator();
+             it.hasNext();)
         {
-            Iterator rolesIterator = getRoles(users[i], group).iterator();
-            while (rolesIterator.hasNext())
+            User user = (User) it.next();
+            for (Iterator rolesIterator = getRoles(user, group).iterator();
+                 rolesIterator.hasNext();)
             {
                 Role role = (Role) rolesIterator.next();
-                revoke(users[i], group, role);
+                revoke(user, group, role);
             }
         }
     }
