@@ -494,9 +494,12 @@
     </unitTest>
 
     <resources>
-      <includes>
-        <include>**/*.properties</include>
-      </includes>
+      <resource>
+        <directory>${basedir}/conf</directory>
+        <includes>
+          <include>commons-logging.properties</include>
+        </includes>
+      </resource>    
     </resources>
 
   </build>
