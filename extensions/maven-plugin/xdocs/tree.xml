@@ -67,6 +67,23 @@ java compile into class files. All other files get copied as is into the
 <code>WEB-INF/classes</code> tree</td>
 </tr>
 
+<a name="src_resources"/>
+<tr>
+<td>src/resources</td>
+<td>resources</td>
+<td>Misc. Turbine resource files</td>
+<td>All files in this directory will be copied to the <code>resources</code>
+subdirectory in the root of your application.</td>
+</tr>
+
+<a name="src_pages"/>
+<tr>
+<td>src/pages</td>
+<td>.</td>
+<td>HTML pages</td>
+<td>All files in this directory will be copied to the root directory of your application.</td>
+</tr>
+
 <a name="src_scripts"/>
 <tr>
 <td>src/scripts</td>

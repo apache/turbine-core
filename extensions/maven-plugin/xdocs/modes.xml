@@ -94,6 +94,7 @@ directory layout</a>.
     |                           |-- navigations
     |                           |-- pages
     |                           `-- screens
+    |-- pages
     |-- resources
     |-- schema
     |-- scripts
@@ -135,6 +136,7 @@ access your development location. Its tree layout is directly usable as a web ap
 |   |                           `-- screens
 |   `-- test
 |-- images
+|-- pages
 |-- resources
 |-- scripts
 |-- src

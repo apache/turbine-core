@@ -85,6 +85,7 @@ helloworld
     |                           |-- navigations
     |                           |-- pages
     |                           `-- screens
+    |-- pages
     |-- resources
     |-- schema
     |-- scripts
@@ -112,7 +113,7 @@ maven turbine:deploy
 Restart your web container or force it to reload its applications.<br/>
 Point your browser to the deployed application (if you use <a href="http://jakarta.apache.org/tomcat/">Tomcat</a>
 running on your local machine, this would be
-<a href="http://localhost:8080/helloworld/app/">http://localhost:8080/helloworld/app/</a>).</p>
+<a href="http://localhost:8080/helloworld/">http://localhost:8080/helloworld/</a>).</p>
 
 <p>The result should look like this:
 <center><img src="images/helloworld.png" width="722" height="525"/><br/></center>
