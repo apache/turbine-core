@@ -24,8 +24,40 @@
   </properties>
 
   <body>
+    <release version="1.2-dev" date="in CVS">
+     <action dev="henning" type="update">
+       remove the inplace switch, replace with mode selection to allow easy adding of
+       other modes (Hint! Hint! We could really use an Eclipse Mode using the eclipse
+       plugin).
+     </action>
+     <action dev="henning" type="update">
+       Moved the flavor directories into common directories under the flavor version
+       (suggested by Eric Pugh).
+     </action>
+     <action dev="henning" type="add">
+       Added a resources directory as it is referenced in many other parts of the Turbine
+       documentation (suggested by Lester Ward).
+     </action>
+     <action dev="henning" type="update">
+       Reworked the inplace mode to be really &quot;in place&quot;. No more turbine:deploy
+       needed (suggested by Lester Ward).
+     </action>
+     <action dev="henning" type="update">
+       Reworked the creation of the maven.war.webxml property (suggested by Lester Ward).
+     </action>
+     <action dev="henning" type="add">
+       Added a pages directory to put HTML pages that are part of an application in.
+     </action>
+     <action dev="henning" type="add">
+       Added an index.html page so that accessing the webapp without any other part paths
+       redirect to the Turbine home page.
+     </action>
+     <action dev="henning" type="add">
+      Add copyright notices to all files.
+     </action>
+    </release>
     <release version="1.1-dev" date="in CVS">
-     <action dev="henning" type="modify">
+     <action dev="henning" type="update">
        Replaced the <code>turbine:inplace</code> goal by making <code>turbine:deploy</code>
        configureable.
      </action>
