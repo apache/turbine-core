@@ -57,13 +57,14 @@ package org.apache.turbine.services.rundata;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
-import java.util.Vector;
+import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -79,11 +80,8 @@ import org.apache.ecs.StringElement;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.om.security.User;
-
 import org.apache.turbine.services.mimetype.TurbineMimeTypes;
-
 import org.apache.turbine.services.template.TurbineTemplate;
 
 import org.apache.turbine.util.CookieParser;
@@ -91,13 +89,9 @@ import org.apache.turbine.util.FormMessages;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.SystemError;
-
 import org.apache.turbine.util.pool.Recyclable;
-
 import org.apache.turbine.util.pool.RecyclableSupport;
-
 import org.apache.turbine.util.security.AccessControlList;
-
 import org.apache.turbine.util.template.TemplateInfo;
 
 /**
@@ -120,12 +114,12 @@ import org.apache.turbine.util.template.TemplateInfo;
  * @author <a href="mailto:bhoeneis@ee.ethz.ch">Bernie Hoeneisen</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class DefaultTurbineRunData
-    extends RecyclableSupport
-    implements TurbineRunData,
-               Recyclable
+        extends RecyclableSupport
+        implements TurbineRunData, Recyclable
 {
     /** The default locale. */
     private static Locale defaultLocale = null;
@@ -153,8 +147,7 @@ public class DefaultTurbineRunData
 
     /**
      * The servlet context information.
-     * Note that this is from the
-     * "Turbine" Servlet context.
+     * Note that this is from the "Turbine" Servlet context.
      */
     private ServletContext servletContext;
 
@@ -167,35 +160,22 @@ public class DefaultTurbineRunData
     /** This creates an ECS Document. */
     private Document page;
 
-    /**
-     * Cached action name to execute for this request.
-     */
+    /** Cached action name to execute for this request. */
     private String action;
 
-    /**
-     * This is the layout that the page will use to render the screen.
-     */
+    /** This is the layout that the page will use to render the screen. */
     private String layout;
 
-    /**
-     * Cached screen name to execute for this request.
-     */
+    /** Cached screen name to execute for this request. */
     private String screen;
 
-    /**
-     * The character encoding of template files.
-     */
+    /** The character encoding of template files. */
     private String templateEncoding;
 
-    /**
-     * Information used by a Template system (such as
-     * Velocity/Freemarker).
-     */
+    /** Information used by a Template system (such as Velocity/JSP). */
     private TemplateInfo templateInfo;
 
-    /**
-     * This is where output messages from actions should go.
-     */
+    /** This is where output messages from actions should go. */
     private StringElement message;
 
     /**
@@ -204,20 +184,13 @@ public class DefaultTurbineRunData
      */
     private FormMessages messages;
 
-    /**
-     * The user object.
-     */
+    /** The user object. */
     private User user;
 
-    /**
-     * This is what will build the <title></title> of the document.
-     */
+    /** This is what will build the <title></title> of the document. */
     private String title;
 
-    /**
-     * Determines if there is information in the outputstream or
-     * not.
-     */
+    /** Determines if there is information in the outputstream or not. */
     private boolean outSet;
 
     /**
@@ -226,67 +199,43 @@ public class DefaultTurbineRunData
      */
     private PrintWriter out;
 
-    /**
-     * The locale.
-     */
+    /** The locale. */
     private Locale locale;
 
     /** The HTTP charset. */
     private String charSet;
 
-    /**
-     * The HTTP content type to return.
-     */
+    /** The HTTP content type to return. */
     private String contentType = "text/html";
 
-    /**
-     * If this is set, also set the status code to 302.
-     */
+    /** If this is set, also set the status code to 302. */
     private String redirectURI;
 
-    /**
-     * The HTTP status code to return.
-     */
+    /** The HTTP status code to return. */
     private int statusCode = HttpServletResponse.SC_OK;
 
-    /**
-     * This is a vector to hold critical system errors.
-     */
-    private Vector errors = new Vector();
+    /** This is a List to hold critical system errors. */
+    private List errors = new ArrayList();
 
-    /**
-     * JNDI Contexts.
-     */
-    private Hashtable jndiContexts;
+    /** JNDI Contexts. */
+    private Map jndiContexts;
 
-    /**
-     * Holds ServerData (basic properties) about this RunData object.
-     */
+    /** Holds ServerData (basic properties) about this RunData object. */
     private ServerData serverData;
 
-    /**
-     * @see #getRemoteAddr()
-     */
+    /** @see #getRemoteAddr() */
     private String remoteAddr;
 
-    /**
-     * @see #getRemoteHost()
-     */
+    /** @see #getRemoteHost() */
     private String remoteHost;
 
-    /**
-     * @see #getUserAgent()
-     */
+    /** @see #getUserAgent() */
     private String userAgent;
 
-    /**
-     * A holder for stack trace.
-     */
+    /** A holder for stack trace. */
     private String stackTrace;
 
-    /**
-     * A holder ofr stack trace exception.
-     */
+    /** A holder ofr stack trace exception. */
     private Throwable stackTraceException;
 
     /**
@@ -294,7 +243,7 @@ public class DefaultTurbineRunData
      * screen.  This is great for debugging variable values when an
      * exception is thrown.
      */
-    private Hashtable varDebug = new Hashtable();
+    private Map debugVariables = new HashMap();
 
     /** Logging */
     private static Log log = LogFactory.getLog(DefaultTurbineRunData.class);
@@ -310,7 +259,7 @@ public class DefaultTurbineRunData
     {
         try
         {
-            return (User) session.getValue(User.SESSION_KEY);
+            return (User) session.getAttribute(User.SESSION_KEY);
         }
         catch (ClassCastException e)
         {
@@ -328,7 +277,7 @@ public class DefaultTurbineRunData
     {
         try
         {
-            session.removeValue(User.SESSION_KEY);
+            session.removeAttribute(User.SESSION_KEY);
         }
         catch (Exception e)
         {
@@ -469,7 +418,7 @@ public class DefaultTurbineRunData
         userAgent = null;
         stackTrace = null;
         stackTraceException = null;
-        varDebug.clear();
+        debugVariables.clear();
 
         super.dispose();
     }
@@ -1001,7 +950,8 @@ public class DefaultTurbineRunData
      * will set the print writer via the response.
      *
      * @return a print writer.
-     * @throws IOException.
+     * @throws IOException
+     * @deprecated no replacement planned, response writer will not be cached
      */
     public PrintWriter getOut()
             throws IOException
@@ -1082,7 +1032,7 @@ public class DefaultTurbineRunData
     /**
      * Sets the charset.
      *
-     * @param charset the name of the new charset.
+     * @param charSet the name of the new charset.
      */
     public void setCharSet(String charSet)
     {
@@ -1124,11 +1074,11 @@ public class DefaultTurbineRunData
     /**
      * Sets the HTTP content type to return.
      *
-     * @param ct a string.
+     * @param contentType a string.
      */
-    public void setContentType(String ct)
+    public void setContentType(String contentType)
     {
-        this.contentType = ct;
+        this.contentType = contentType;
     }
 
     /**
@@ -1166,11 +1116,11 @@ public class DefaultTurbineRunData
     /**
      * Sets the HTTP status code to return.
      *
-     * @param sc the status.
+     * @param statusCode the status.
      */
-    public void setStatusCode(int sc)
+    public void setStatusCode(int statusCode)
     {
-        this.statusCode = sc;
+        this.statusCode = statusCode;
     }
 
     /**
@@ -1181,7 +1131,7 @@ public class DefaultTurbineRunData
     public SystemError[] getSystemErrors()
     {
         SystemError[] result = new SystemError[errors.size()];
-        errors.copyInto(result);
+        errors.toArray(result);
         return result;
     }
 
@@ -1192,7 +1142,7 @@ public class DefaultTurbineRunData
      */
     public void setSystemError(SystemError err)
     {
-        this.errors.addElement(err);
+        this.errors.add(err);
     }
 
     /**
@@ -1200,10 +1150,10 @@ public class DefaultTurbineRunData
      *
      * @return a hashtable.
      */
-    public Hashtable getJNDIContexts()
+    public Map getJNDIContexts()
     {
         if (jndiContexts == null)
-            jndiContexts = new Hashtable();
+            jndiContexts = new HashMap();
         return jndiContexts;
     }
 
@@ -1212,7 +1162,7 @@ public class DefaultTurbineRunData
      *
      * @param contexts a hashtable.
      */
-    public void setJNDIContexts(Hashtable contexts)
+    public void setJNDIContexts(Map contexts)
     {
         this.jndiContexts = contexts;
     }
@@ -1345,7 +1295,7 @@ public class DefaultTurbineRunData
      */
     public void save()
     {
-        session.putValue(User.SESSION_KEY, (Object) user);
+        session.setAttribute(User.SESSION_KEY, user);
     }
 
     /**
@@ -1374,21 +1324,44 @@ public class DefaultTurbineRunData
      * @param trace the stack trace.
      * @param exp the exception.
      */
-    public void setStackTrace(String trace,
-                              Throwable exp)
+    public void setStackTrace(String trace, Throwable exp)
     {
         stackTrace = trace;
         stackTraceException = exp;
     }
 
     /**
-     * Gets a table of debug variables.
+     * Gets a Map of debug variables.
      *
-     * @return a hashtable for debug variables.
+     * @return a Map of debug variables.
+     * @deprecated use {@link #getDebugVariables} instead
      */
-    public Hashtable getVarDebug()
+    public Map getVarDebug()
     {
-        return varDebug;
+        return debugVariables;
+    }
+
+    /**
+     * Sets a name/value pair in an internal Map that is accessible from the
+     * Error screen.  This is a good way to get debugging information
+     * when an exception is thrown.
+     *
+     * @param name name of the variable
+     * @param value value of the variable.
+     */
+    public void setDebugVariable(String name, Object value)
+    {
+        this.debugVariables.put(name, value);
+    }
+
+    /**
+     * Gets a Map of debug variables.
+     *
+     * @return a Map of debug variables.
+     */
+    public Map getDebugVariables()
+    {
+        return this.debugVariables;
     }
 
     // **********************************************
@@ -1511,7 +1484,7 @@ public class DefaultTurbineRunData
     /**
      * Sets the cached server scheme that is stored in the server data.
      *
-     * @param ss a string.
+     * @param serverScheme a string.
      */
     protected void setServerScheme(String serverScheme)
     {
@@ -1521,7 +1494,7 @@ public class DefaultTurbineRunData
     /**
      * Sets the cached server same that is stored in the server data.
      *
-     * @param sn a string.
+     * @param serverName a string.
      */
     protected void setServerName(String serverName)
     {
@@ -1541,7 +1514,7 @@ public class DefaultTurbineRunData
     /**
      * Sets the cached context path that is stored in the server data.
      *
-     * @param cp a string.
+     * @param contextPath a string.
      */
     protected void setContextPath(String contextPath)
     {
@@ -1551,7 +1524,7 @@ public class DefaultTurbineRunData
     /**
      * Sets the cached script name that is stored in the server data.
      *
-     * @param sn a string.
+     * @param scriptName a string.
      */
     protected void setScriptName(String scriptName)
     {
