@@ -1,7 +1,8 @@
 <project 
   xmlns:j="jelly:core"
   xmlns:m="maven"
-  xmlns:u="jelly:util">
+  xmlns:u="jelly:util"
+  default="java:jar">
 
   <!-- Define a post goal for compile to copy intake.dtd into the appropriate
        location for packaging in the jar file.  -->
