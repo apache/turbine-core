@@ -61,6 +61,8 @@ import java.util.Map;
 
 import org.apache.commons.configuration.Configuration;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -85,31 +87,110 @@ import org.apache.turbine.util.RunData;
  * template structure.  It also performs caching if turned on in the
  * properties file.
  *
- * Since everything is keyed off the template variable,
- * if data.getParameters().getString("template") returns
- * /about_us/directions/driving.vm, the search for the
- * Screen class is as follows (in order):
+ * This service is not bound to a specific templating engine but we
+ * will use the Velocity templating engine for the examples. It is
+ * available by using the VelocityService.
  *
- * 1. about_us.directions.Driving
- * 2. about_us.directions.Default
- * 3. about_us.Default
- * 4. Default
- * 5. VelocityScreen
+ * This assumes the following properties in the Turbine configuration:
  *
- * If the template variable does not exist, then VelocityScreen will be
- * executed and templates/screens/index.vm will be executed.
- * If index.vm is not found or if the template is invalid or Velocity
- * execution throws an exception of any reason, then
- * templates/screens/error.vm will be executed.
+ * <pre>
+ * # Register the VelocityService for the "vm" extension.
+ * services.VelocityService.template.extension=vm
+ * 
+ * # Default Java class for rendering a Page in this service
+ * # (must be found on the class path (org.apache.turbine.modules.page.VelocityPage))
+ * services.VelocityService.default.page = VelocityPage
+ * 
+ * # Default Java class for rendering a Screen in this service
+ * # (must be found on the class path (org.apache.turbine.modules.screen.VelocityScreen))
+ * services.VelocityService.default.screen=VelocityScreen
+ * 
+ * # Default Java class for rendering a Layout in this service
+ * # (must be found on the class path (org.apache.turbine.modules.layout.VelocityOnlyLayout))
+ * services.VelocityService.default.layout = VelocityOnlyLayout
+ * 
+ * # Default Java class for rendering a Navigation in this service
+ * # (must be found on the class path (org.apache.turbine.modules.navigation.VelocityNavigation))
+ * services.VelocityService.default.navigation=VelocityNavigation
  *
- * For the Layouts and Navigations, the following paths will be
- * searched in the layouts and navigations template
- * subdirectories (in order):
+ * # Default Template Name to be used as Layout. If nothing else is
+ * # found, return this as the default name for a layout
+ * services.VelocityService.default.layout.template = Default.vm
+ * </pre>
+ * If you want to render a template, a search path is used to find 
+ * a Java class which might provide information for the context of
+ * this template.
  *
- * 1./about_us/directions/driving.vm
- * 2./about_us/directions/default.vm
- * 3./about_us/default.vm
- * 4./default.vm
+ * If you request e.g. the template screen
+ * 
+ * about,directions,Driving.vm 
+ * 
+ * then the following class names are searched (on the module search
+ * path):
+ *
+ * 1. about.directions.Driving     &lt;- direct matching the template to the class name
+ * 2. about.directions.Default     &lt;- matching the package, class name is Default
+ * 3. about.Default                &lt;- stepping up in the package hierarchy, looking for Default
+ * 4. Default                      &lt;- Class called "Default" without package
+ * 5. VelocityScreen               &lt;- The class configured by the Service (VelocityService) to
+ *
+ * And if you have the following module packages configured:
+ *
+ * module.packages = org.apache.turbine.modules, com.mycorp.modules
+ *
+ * then the class loader will look for
+ *
+ * org.apache.turbine.modules.screens.about.directions.Driving
+ * com.mycorp.modules.screens.about.directions.Driving
+ * org.apache.turbine.modules.screens.about.directions.Default
+ * com.mycorp.modules.screens.about.directions.Default
+ * org.apache.turbine.modules.screens.about.Default
+ * com.mycorp.modules.screens.about.Default
+ * org.apache.turbine.modules.screens.Default
+ * com.mycorp.modules.screens.Default
+ * org.apache.turbine.modules.screens.VelocityScreen
+ * com.mycorp.modules.screens.VelocityScreen
+ *
+ * Most of the times, you don't have any backing Java class for a
+ * template screen, so the first match will be
+ * org.apache.turbine.modules.screens.VelocityScreen
+ * which then renders your screen.
+ *
+ * Please note, that your Screen Template (Driving.vm) must exist!
+ * If it does not exist, the Template Service will report an error.
+ *
+ * Once the screen is found, the template service will look for
+ * the Layout and Navigation templates of your Screen. Here, the
+ * template service looks for matching template names! 
+ *
+ * Consider our example:  about,directions,Driving.vm (Screen Name)
+ *
+ * Now the template service will look for the following Navigation
+ * and Layout templates:
+ *
+ * 1. about,directions,Driving.vm      &lt;- exact match
+ * 2. about,directions,Default.vm      &lt;- package match, Default name
+ * 3. about,Default.vm                 &lt;- stepping up in the hierarchy
+ * 4. Default.vm                       &lt;- The name configured as default.layout.template
+ *                                        in the Velocity service.
+ *
+ * And now Hennings' two golden rules for using templates:
+ *
+ * Many examples and docs from older Turbine code show template pathes
+ * with a slashes. Repeat after me: "TEMPLATE NAMES NEVER CONTAIN SLASHES!"
+ *
+ * Many examples and docs from older Turbine code show templates that start
+ * with "/". This is not only a violation of the rule above but actively breaks
+ * things like loading templates from a jar with the velocity jar loader. Repeat
+ * after me: "TEMPLATE NAMES ARE NOT PATHES. THEY'RE NOT ABSOLUTE AND HAVE NO 
+ * LEADING /".
+ *
+ * If you now wonder how a template name is mapped to a file name: This is
+ * scope of the templating engine. Velocity e.g. has this wonderful option to
+ * load templates from jar archives. There is no single file but you tell
+ * velocity "get about,directions,Driving.vm" and it returns the rendered
+ * template. This is not the job of the Templating Service but of the Template
+ * rendering services like VelocityService.
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
@@ -129,19 +210,25 @@ public class TurbineTemplateService
      */
     protected static final String NO_FILE_EXT = "";
 
-    /**
-     * The keys of template objects provided by the service.
-     */
+    /** The keys of template objects provided by the service: Page objects */
     protected static final int PAGE_KEY = 0;
+
+    /** The keys of template objects provided by the service: Screen objects */
     protected static final int SCREEN_KEY = 1;
+
+    /** The keys of template objects provided by the service: Layout objects */
     protected static final int LAYOUT_KEY = 2;
+
+    /** The keys of template objects provided by the service: Navigation objects */
     protected static final int NAVIGATION_KEY = 3;
+
+    /** The keys of template objects provided by the service: Layout Template objects */
     protected static final int LAYOUT_TEMPLATE_KEY = 4;
+
+    /** The keys of template objects provided by the service: Screen Template objects */
     protected static final int SCREEN_TEMPLATE_KEY = 5;
 
-    /**
-     * The properties for default template object names.
-     */
+    /** The properties for default template object names. */
     private String[] defaultNameProperties = new String[]
     {
         TemplateEngineService.DEFAULT_PAGE,
@@ -149,6 +236,7 @@ public class TurbineTemplateService
         TemplateEngineService.DEFAULT_LAYOUT,
         TemplateEngineService.DEFAULT_NAVIGATION,
         TemplateEngineService.DEFAULT_LAYOUT_TEMPLATE
+        // Missing 'default screen template'
     };
 
     /** The hashtables used to cache template object names. */
@@ -168,10 +256,10 @@ public class TurbineTemplateService
      * org.apache.turbine.services.template.TemplateEngineService}
      * implementations.  Implementing template engines can locate
      * templates within the capability of any resource loaders they
-     * may posses, and other template engines are stuck with file
+     * may possess, and other template engines are stuck with file
      * based template hierarchy only.
      */
-    private HashMap templateEngineRegistry;
+    private HashMap templateEngineRegistry = null; // Do not change. We need .clone() !
 
     /** Logging */
     private static Log log = LogFactory.getLog(TurbineTemplateService.class);
@@ -186,9 +274,11 @@ public class TurbineTemplateService
     /**
      * Called the first time the Service is used.
      *
-     * @exception InitializationException.
+     * @exception InitializationException Something went wrong when 
+     *                                     setting up the Template Service.
      */
-    public void init() throws InitializationException
+    public void init()
+        throws InitializationException
     {
         initTemplate();
         setInit(true);
@@ -198,7 +288,7 @@ public class TurbineTemplateService
      * Get the default template name extension specified
      * in the template service properties.
      *
-     * @return The default the extension.
+     * @return The default extension.
      */
     public String getDefaultExtension()
     {
@@ -324,8 +414,9 @@ public class TurbineTemplateService
     {
         String layoutTemplate =
                 getDefaultModuleName(template, LAYOUT_TEMPLATE_KEY);
-        if ((layoutTemplate != null) &&
-                (layoutTemplate.indexOf('.') < 0))
+
+        if (StringUtils.isNotEmpty(layoutTemplate)
+            && layoutTemplate.indexOf('.') < 0)
         {
             int dotIndex = template.lastIndexOf('.');
             layoutTemplate += dotIndex >= 0 ?
@@ -477,10 +568,8 @@ public class TurbineTemplateService
      */
     public synchronized void registerTemplateEngineService(TemplateEngineService service)
     {
-        /*
-         * Clone the registry to write to non-sync'd
-         * Map implementations.
-         */
+        // Clone the registry to write to non-sync'd
+        // Map implementations.
         HashMap registry = templateEngineRegistry != null ?
                 (HashMap) templateEngineRegistry.clone() : new HashMap();
 
@@ -502,7 +591,7 @@ public class TurbineTemplateService
      */
     protected TemplateEngineService getTemplateEngineService(String template)
     {
-        HashMap registry = templateEngineRegistry;
+        Map registry = templateEngineRegistry;
         if (registry != null && template != null)
         {
             int dotIndex = template.lastIndexOf('.');
@@ -548,17 +637,18 @@ public class TurbineTemplateService
                                    int key)
             throws Exception
     {
-        /*
-         * Add a default extension if missing.
-         */
+        if (StringUtils.isEmpty(template))
+        {
+            return null;
+        }
+
+        // Add a default extension if missing.
         if (template.indexOf('.') < 0)
         {
             template += '.' + defaultExtension;
         }
 
-        /*
-         * Check the cache first.
-         */
+        // Check the cache first.
         String found;
         if (useCache)
         {
@@ -569,9 +659,7 @@ public class TurbineTemplateService
             }
         }
 
-        /*
-         * Not in the cache, try to find it.
-         */
+        // Not in the cache, try to find it.
         switch (key)
         {
             case SCREEN_TEMPLATE_KEY:
@@ -586,9 +674,7 @@ public class TurbineTemplateService
                 found = getParsedModuleName(template, key);
         }
 
-        /*
-         * Put the found name to the cache.
-         */
+        // Put the found name to the cache.
         if (useCache)
         {
             templateNameCache[key].put(template, found);
@@ -609,9 +695,7 @@ public class TurbineTemplateService
                                          int key)
             throws Exception
     {
-        /*
-         * Parse the template name and change it into a package.
-         */
+        // Parse the template name and change it into a package.
         StringBuffer pckage = new StringBuffer();
         int i = parseTemplatePath(template, pckage);
         if (pckage.charAt(0) == '/')
@@ -630,9 +714,7 @@ public class TurbineTemplateService
             }
         }
 
-        /*
-         * Remove a possible file extension.
-         */
+        // Remove a possible file extension.
         for (int j = i + 1; j < pckage.length(); j++)
         {
             if (pckage.charAt(j) == '.')
@@ -642,11 +724,9 @@ public class TurbineTemplateService
             }
         }
 
-        /*
-         * Try first an exact match for a module having the same
-         * name as the input template, traverse then upper level
-         * packages to find a default module named Default.
-         */
+        // Try first an exact match for a module having the same
+        // name as the input template, traverse then upper level
+        // packages to find a default module named Default.
         int j = 9999;
         String module;
         while (j-- > 0)
@@ -676,9 +756,7 @@ public class TurbineTemplateService
             pckage.setLength(i + 1);
             if (i > 0)
             {
-                /*
-                 * We have still packages to traverse.
-                 */
+                // We have still packages to traverse.
                 for (i = pckage.length() - 2; i >= 0; i--)
                 {
                     if (pckage.charAt(i) == '.')
@@ -689,17 +767,13 @@ public class TurbineTemplateService
             }
             else if (j > 0)
             {
-                /*
-                 * Only the main level left.
-                 */
+                // Only the main level left.
                 j = 1;
             }
             pckage.append("Default");
         }
 
-        /*
-         * Not found, return the default module name.
-         */
+        // Not found, return the default module name.
         return getDefaultModuleName(template, key);
     }
 
@@ -713,9 +787,7 @@ public class TurbineTemplateService
     protected String getParsedScreenTemplateName(String template)
             throws Exception
     {
-        /*
-         * Parse the template name.
-         */
+        // Parse the template name.
         StringBuffer path = new StringBuffer();
         parseTemplatePath(template, path);
         if (path.charAt(0) != '/')
@@ -724,7 +796,7 @@ public class TurbineTemplateService
         }
         path.insert(0, "screens");
 
-        /* Let the template engine service to check its existance. */
+        // Let the template engine service to check its existance.
         TemplateEngineService tes = getTemplateEngineService(template);
         if ((tes == null) || !tes.templateExists(path.toString()))
         {
@@ -744,9 +816,7 @@ public class TurbineTemplateService
     protected String getParsedLayoutTemplateName(String template)
             throws Exception
     {
-        /*
-         * Parse the template name.
-         */
+        // Parse the template name.
         StringBuffer path = new StringBuffer();
         int i = parseTemplatePath(template, path);
         if (path.charAt(0) != '/')
@@ -757,11 +827,9 @@ public class TurbineTemplateService
         path.insert(0, "layouts");
         i += 7;
 
-        /*
-         * Try first an exact match for a layout template having the same
-         * name as the input template, traverse then upper level
-         * directories to find the default layout template.
-         */
+        // Try first an exact match for a layout template having the same
+        // name as the input template, traverse then upper level
+        // directories to find the default layout template.
         TemplateEngineService tes = getTemplateEngineService(template);
         if (tes == null)
         {
@@ -802,9 +870,7 @@ public class TurbineTemplateService
             path.setLength(i);
             if (i > 8)
             {
-                /*
-                 * We have still directories to traverse.
-                 */
+                // We have still directories to traverse.
                 for (i = path.length() - 2; i >= 8; i--)
                 {
                     if (path.charAt(i) == '/')
@@ -815,18 +881,14 @@ public class TurbineTemplateService
             }
             else if (j > 0)
             {
-                /*
-                 * Only the main level left.
-                 */
+                // Only the main level left.
                 j = 1;
             }
             path.append(defaultLayout);
         }
 
-        /*
-         * Not found, return the default layout
-         * template as such.
-         */
+        // Not found, return the default layout
+        // template as such.
         return defaultLayout;
     }
 
@@ -891,20 +953,14 @@ public class TurbineTemplateService
      */
     private void initTemplate()
     {
-        /*
-         * Get the configuration for the template service.
-         */
+        // Get the configuration for the template service.
         Configuration config = getConfiguration();
 
-        /*
-         * Get the default extension to use if nothing else is applicable.
-         */
+        // Get the default extension to use if nothing else is applicable.
         defaultExtension = config.getString("default.extension", NO_FILE_EXT);
         defaultTemplate = "Default." + defaultExtension;
 
-        /*
-         * Check to see if we are going to be caching modules.
-         */
+        // Check to see if we are going to be caching modules.
         useCache = Turbine.getConfiguration().getBoolean(TurbineConstants.MODULE_CACHE_KEY,
                                                          TurbineConstants.MODULE_CACHE_DEFAULT);
 
@@ -923,10 +979,8 @@ public class TurbineTemplateService
             log.debug("layoutSize: "     + layoutSize);
             log.debug("navigationSize: " + navigationSize);
 
-            /*
-             * Create hashtables for each object type,
-             * the first one for pages is not used.
-             */
+            // Create hashtables for each object type,
+            // the first one for pages is not used.
             templateNameCache[PAGE_KEY] = null;
 
             templateNameCache[SCREEN_KEY] =
