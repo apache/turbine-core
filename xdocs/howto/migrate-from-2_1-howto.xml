@@ -1,0 +1,349 @@
+<?xml version="1.0"?>
+
+<document>
+
+ <properties>
+  <title>Migrating from 2.1 to 2.2</title>
+  <author email="quintonm@bellsouth.net">Quinton McCombs</author>
+  <author email="seade@backstagetech.com.au">Scott Eade</author>
+ </properties>
+
+<body>
+
+<section name="Introduction">
+<p>
+    This document describes the basic steps needed to migrate an
+    application written for Turbine 2.1 to Turbine 2.2 using the
+    decoupled Torque.
+</p>
+<p>
+    You may find that migrating to 2.2 is not all that difficult.
+    Of course, this depends quite a bit on how much of Turbine your
+    application actually uses.  You may find migrating to 2.2 to be
+    quite a chore, but it is well worth the effort. Most of the
+    pain in figuring out this migration process has been documented 
+    in the mailing list archives, but is summarized here for your 
+    convenience.
+</p>
+</section>
+
+<section name="Cleanup">
+<p>
+    Start off with deleting all of the objects that Torque generated
+    for you. I am talking about om.map.* and om.Base*. You will be
+    able to regenerate them later during the migration process.
+</p>
+</section>
+
+<section name="Build and Properties Files">
+<p>
+    The structure of the build files used by Turbine has changed 
+    quite a bit with the 2.2 release. The easiest way of obtaining 
+    a reference set of property (and build files) is to install 
+    version 2.2 of the TDK and generate the demo application.
+</p>
+<p>
+    From the demo application you should:
+    <ul>
+    <li>Merge <code>tdk-2.2/webapps/newapp/WEB-INF/conf/build.properties</code>
+        with your existing properties file.</li>
+    <li>Copy <code>build-torque.xml</code> from the demo application
+        to your build directory.</li>
+    <li>Copy <code>project-build.xml</code> from the demo application
+        to your build directory.</li>
+    <li>Merge <code>build.xml</code> from the demo application
+        to your existing build file (if you have only ever used the
+        default build file supplied with the tdk then I assume you 
+        can just replace your file with the new one).</li>
+    <li>Copy <code>WEB-INF/conf/TurbineResources.template</code> and 
+        <code>WEB-INF/conf/Torque.template</code>) to your application
+        and apply changes as needed (it is up to you as to how much you
+        hard code into your application template and how much you allow
+        to be processed into the resulting properties files by way of
+        <code>build.properties</code> or the other property files).</li>
+    </ul>
+</p>
+<p>
+    See the Torque 
+  <a href="http://jakarta.apache.org/turbine/torque/properties-reference.html">
+    Properties Reference</a> for full details of the available properties.
+</p>
+</section>
+
+<section name="Libraries">
+<p>
+    Turbine and Torque use updated versions of a number of 
+    libraries (jar files). Take a look at the WEB-INF/lib directory 
+    of the TDK sample application to see which libraries have been 
+    updated and replace the files in the lib directory of your 
+    application as needed.
+</p>
+<p>
+    Note that if you have applied local changes to Turbine itself
+    then you should ensure that your changes have made it into the
+    Turbine 2.2 and Torque 3.0 releases.  If any of your changes 
+    have not made it then you will need to port these changes forward 
+    and build your own versions of the Turbine and Torque jar files
+    (while you are there you may as well create patches and submit 
+    them to the relevant modules in Scarab so that they can be 
+    included in future releases).
+</p>
+<p>
+    By default Torque will utilize a set of  Velocity templates that
+    you need to extract from the Torque jar file (see the 
+    <code>torque.templatePath</code> property). Unless you have a 
+    need to alter these templates you may prefer to use these directly
+    from the jar file.  To do this you need to set the 
+    <code>torque.useClasspath</code> property to <code>true</code> in
+    <code>build.peoperties</code>.  In any case, you should either 
+    replace or delete the old versions of these templates from your
+    existing project.
+</p>
+</section>
+
+<section name="Import Statements">
+<p>
+    Many of your import statements will need to be changed. This is
+    due to the decoupled version of Torque. This will take care of
+    most of the changes due to refactoring. There will still be a
+    few cases (discussed later) where the methods have been changed and/or
+    moved to different classes.
+</p>
+<p>
+    <a href="http://jakarta.apache.org/turbine/torque/changes.html#Torque%203.0-b3">
+    [Here]</a> is list of the most common import changes.
+</p>
+</section>
+
+<section name="Transactions and obtaining database connections">
+<p>
+    org.apache.turbine.util.db.DBConnection is gone. The replacement
+    is java.sql.Connection. This was a wrapper class from the
+    Connection object. It was returned when you asked for a database
+    connection. The new version of Torque will simply return a
+    Connection object.
+</p>
+<p>
+    org.apache.turbine.services.db.TurbineDB is gone. The replacement
+    is org.apache.torque.Torque. This was mainly used to obtain
+    database connections and the name of the default database. All
+    of this functionality is in the new class.
+</p>
+<p>
+    Below is an example of how you might have been obtaining database
+    connections in version 2.1.
+</p>
+
+<source>
+<![CDATA[
+DBConnection dbConn = null;
+try
+{
+    dbConn = TurbineDB.getConnection();
+    // Do something with the connection here...
+}
+catch (Exception e)
+{
+    // Either from obtaining the connection or from your application code.
+}
+finally
+{
+    try
+    {
+        TurbineDB.releaseConnection(dbConn);
+    }
+    catch (Exception e)
+    {
+        // Error releasing database connection back to pool.
+    }
+}
+]]>
+</source>
+<p>
+    Using the new version of Torque this would be rewritten as follows.
+</p>
+<source>
+<![CDATA[
+Connection conn = null;
+try
+{
+    conn = Torque.getConnection();
+    // Do something with the connection here...
+}
+catch (TorqueException ex)
+{
+    // Either from obtaining the connection or from your application code.
+	Log.error(ex);
+}
+finally
+{
+    Torque.closeConnection(conn);
+}
+]]>
+</source>
+<p>
+    Support for transactions has been moved from org.apache.turbine.om.BasePeer
+    into org.apache.torque.util.Transaction. The method names have changed
+    slightly as well. Here is an example of using transactions in 2.1.
+</p>
+<source>
+<![CDATA[
+DBConnection dbConn = null;
+try
+{
+    dbConn = BasePeer.beginTrasaction(TurbineDB.getDefaultDB?());
+    someObject.save(dbConn);
+    someOtherObject.save(dbConn);
+    BasePeer.commitTransaction(dbConn);
+}
+catch (Exception e)
+{
+    // Either from obtaining the connection or from your application code.
+    BasePeer?.rollbackTransaction(dbConn);
+}
+]]>
+</source>
+<p>
+    This would now be written as shown below.
+</p>
+<source>
+<![CDATA[
+Connection conn = null;
+try
+{
+    conn = Transaction.begin(Torque.getDefaultDB());
+    someObject.save(conn);
+    someOtherObject.save(conn);
+    Transaction.commit(conn);
+}
+catch (TorqueException ex) 
+{
+    try
+    {
+        Transaction.rollback(conn);
+    }
+    catch (TorqueException ex2)
+    { 
+        Log.error(ex2);
+    }
+    Log.error(ex);
+}
+]]>
+</source>
+</section>
+
+<section name="Vector becomes List">
+<p>
+    Methods generated by Torque that previously had a return type of
+    <code>Vector</code> now have a return type of <code>List</code>.
+    If you have not already been doing so you should switch to 
+    retrieving the results of these methods into variables declared 
+    as <code>List</code>.  While you are at it you might like to 
+    update any of your own code to use <code>ArrayList</code> in 
+    preference to <code>Vector</code>.
+</p>
+</section>
+
+<section name="Exception becomes TorqueException">
+<p>
+    Methods generated by Torque now throw <code>TorqueException</code>
+    rather than <code>Exception</code>.  You might like to update
+    your code to match.
+</p>
+<p>
+    Note that the exception thrown by <code>save()</code> methods is 
+    determined by the Torque property <code>torque.saveException</code>
+    which defaults to <code>Exception</code>.
+</p>
+</section>
+
+<section name="Extending Turbine User">
+<p>
+    See
+    <a href="http://jakarta.apache.org/turbine/turbine-2/howto/extend-user-howto.html">
+    Extending Turbine User How-To</a> for this information.
+</p>
+</section>
+
+<section name="Changes to the OM classes">
+<p>
+    Read over the Torque Schema Reference to find out what to change
+    in your project-schema.xml file. The main changes are the
+    deprecation of sequence and autoIncrement idMethods and the 
+    addition of the javaType attribute to column elements 
+    (Torque can now work with object types).
+</p>
+<p>
+    If you used inheritance, you will run need to specify
+    abstract="true" for the tables which have abstract base
+    classes. When you do this, you will need to implement the
+    copy() method in your subclasses. An example is provided below.
+</p>
+<source>
+<![CDATA[
+public <base class> copy() throws TorqueException
+{
+    return copyInto(new <sub class>());
+}
+]]>
+</source>
+<p>
+    Atributes defined as primary keys are no longer generated
+    as NumberKey objects. They are now Integer or int (depending
+    on the javaType specified in project-schema.xml).
+</p>
+<p>
+    If you have a turbine-schema.xml file in your WEB-INF/conf
+    directory, the project-om ant task will generate all of the
+    Turbine*, BaseTurbine*, and map.Turbine* objects for you.
+    These will not be used by Turbine. They will only confuse
+    you. The best thing to do for this is to rename your
+    turbine-schema.xml file to something like turbine-schema.nogenerate.
+</p>
+</section>
+
+<section name="XML-RPC service">
+<p>
+    My TurbineResources.properties did not have settings to
+    configure the secure options. This caused initialization
+    of the service to fail. To fix this, I simply obtained all
+    of the configuration settings from the TurbineResources.properties
+    included with the source version.
+</p>
+<p>
+    The service does not listen on the loopback interface by default
+    any longer. There were no other changes that are required to get
+    this service up and running under T2.2.
+</p>
+</section>
+
+<section name="Other services">
+<p>
+    Intake, Security, and Scheduler all work without a problem
+    after migrating to T2.2.
+</p>
+</section>
+
+<section name="Maven">
+<p>
+    You may like to consider using 
+    <a href="http://jakarta.apache.org/turbine/maven/">Maven</a> to
+    build your project.  The  document 
+    <a href="http://nagoya.apache.org/wiki/apachewiki.cgi?JakartaTDK/Starting_Project_With_TDK2.2_And_Maven">
+    Starting your project and database with TDK2.2 and Maven</a> 
+    provides some information that can be adapted for this purpose 
+    (jump down to the "Moving The Sample" heading for the 
+    documentation relevant to an existing project).
+</p>
+</section>
+
+<section name="Updates to this document">
+<p>
+    This document is by no means complete or totally accurate. We welcome 
+    suggestions as to how it might be improved, particularly if you have 
+    just completed migrating an application by following this howto.
+</p>
+</section>
+
+</body>
+</document>
