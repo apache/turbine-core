@@ -73,6 +73,7 @@ import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * When building sites using templates, Screens need only be defined
@@ -271,7 +272,7 @@ public class DefaultPage
                     }
                     else
                     {
-                        throw new Exception(errMsg);
+                        throw new TurbineException(errMsg);
                     }
                     break;
                 }
@@ -285,7 +286,7 @@ public class DefaultPage
                 }
             default:
                 {                
-                    throw new Exception(errMsg);
+                    throw new TurbineException(errMsg);
                 }
             }
         }

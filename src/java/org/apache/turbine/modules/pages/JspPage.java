@@ -57,36 +57,39 @@ package org.apache.turbine.modules.pages;
 // Turbine Classes
 
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.jsp.JspService;
+
+import org.apache.turbine.services.jsp.TurbineJsp;
+
 import org.apache.turbine.util.RunData;
 
 /**
  * Extends TemplatePage to add some convenience objects to the request.
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Revision$
  */
-public class JspPage extends TemplatePage
+public class JspPage
+    extends TemplatePage
 {
     /**
      * Stuffs some useful objects into the request so that
      * it is available to the Action module and the Screen module
      */
-    protected void doBuildBeforeAction(RunData data) throws Exception
+    protected void doBuildBeforeAction(RunData data)
+        throws Exception
     {
-        JspService jsp = (JspService) TurbineServices.getInstance()
-                .getService(JspService.SERVICE_NAME);
+        TurbineJsp.addDefaultObjects(data);
 
-        jsp.addDefaultObjects(data);
         try
         {
             //We try to set the buffer size from defaults
-            data.getResponse().setBufferSize(jsp.getDefaultBufferSize());
+            data.getResponse().setBufferSize(TurbineJsp.getDefaultBufferSize());
         }
         catch (IllegalStateException ise)
         {
-            //If the response was already commited, we die silently
-            //No logger here?
+            // If the response was already commited, we die silently
+            // No logger here?
         }
     }
 }
