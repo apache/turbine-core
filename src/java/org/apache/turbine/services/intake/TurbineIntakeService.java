@@ -153,7 +153,7 @@ public class TurbineIntakeService
             throw new InitializationException(pathError);
         }
         //!! need a constant
-        String appDataPath = "WEB-INF/appData.ser";
+        String appDataPath = "/WEB-INF/appData.ser";
         try
         {
             // If possible, transform paths to be webapp root relative.
