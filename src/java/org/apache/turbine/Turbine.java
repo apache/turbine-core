@@ -118,7 +118,9 @@ import org.apache.turbine.services.template.TurbineTemplate;
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @version $Id$
  */
-public class Turbine extends HttpServlet
+public class Turbine 
+    extends HttpServlet
+    implements TurbineConstants
 {
     /**
      * Name of path info parameter used to indicate the redirected stage of
@@ -149,6 +151,8 @@ public class Turbine extends HttpServlet
      */
     private static boolean firstDoGet = true;
 
+    private static String applicationRoot;
+
     /**
      * This init method will load the default resources from a
      * properties file.
@@ -174,6 +178,17 @@ public class Turbine extends HttpServlet
 
             try
             {
+                // Set the application root. This defaults to the webapp
+                // context if not otherwise set. This is to allow 2.1 apps
+                // to be developed from CVS. This feature will carry over
+                // into 3.0.
+                applicationRoot = config.getInitParameter(APPLICATION_ROOT);
+                
+                if (applicationRoot == null || applicationRoot.equals("webContext"))
+                {
+                    applicationRoot = config.getServletContext().getRealPath("");
+                }                    
+                
                 // Initalize TurbineServices and init bootstrap services
                 TurbineServices services =
                     (TurbineServices) TurbineServices.getInstance();
@@ -644,4 +659,36 @@ public class Turbine extends HttpServlet
                     reallyScrewedNow.getMessage(), reallyScrewedNow );
         }
     }
+
+    /**
+     * Get the application root for this Turbine webapp. This
+     * concept was started in 3.0 and will allow an app to be
+     * developed from a standard CVS layout. With a simple
+     * switch the app will work fully within the servlet
+     * container for deployment.
+     *
+     * @return String applicationRoot
+     */
+    public static String getApplicationRoot()
+    {
+        return applicationRoot;
+    }        
+    
+    /**
+     * Used to get the real path of configuration and resource
+     * information. This can be used by an app being
+     * developed in a standard CVS layout.
+     *
+     * @param String path
+     * @param String path translated to the application root
+     */
+    public static String getRealPath(String path)
+    {
+        if (path.startsWith("/"))
+        {
+            path = path.substring(1);
+        }
+        
+        return applicationRoot + "/" + path;
+    }        
 }

@@ -274,4 +274,6 @@ public interface TurbineConstants
      * Default document type.
      */
     public static final String DEFAULT_DOCUMENT_TYPE = "default.doctype";
+
+    public static final String APPLICATION_ROOT = "applicationRoot";
 }

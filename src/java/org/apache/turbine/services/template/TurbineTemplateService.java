@@ -720,8 +720,7 @@ public class TurbineTemplateService extends TurbineBaseService
     
         /* Let the template engine service to check its existance. */
         TemplateEngineService tes = getTemplateEngineService(template);
-        if ((tes == null) ||
-            !tes.templateExists(path.toString()))
+        if ((tes == null) || !tes.templateExists(path.toString()))
         {
             throw new Exception(
                 "Screen template '" + template + "' not found");

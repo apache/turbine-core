@@ -59,12 +59,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
-
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
-
+import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
-
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
@@ -73,7 +71,6 @@ import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.services.resources.ResourceService;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.services.servlet.TurbineServlet;
-
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServletUtils;
@@ -287,7 +284,7 @@ public class TurbinePullService extends TurbineBaseService
          * for it to initialize correctly.
          */
          absolutePathToResourcesDirectory = 
-            TurbineServlet.getRealPath(resourcesDirectory);
+            Turbine.getRealPath(resourcesDirectory);
     
         /*
          * Should we refresh the tool box on a per
