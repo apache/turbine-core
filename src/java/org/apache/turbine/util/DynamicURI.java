@@ -117,18 +117,6 @@ public class DynamicURI
     /** The RunData object. */
     protected RunData data = null;
 
-    /** ie: http or https. */
-    protected String serverScheme = null;
-
-    /** ie: www.foo.com. */
-    protected String serverName = null;
-
-    /** ie: 80 or 443. */
-    protected int serverPort = 80;
-
-    /** /foo/Turbine. */
-    protected String scriptName = null;
-
     /** #ref */
     protected String reference = null;
 
@@ -340,11 +328,7 @@ public class DynamicURI
      */
     public void init(ServerData serverData)
     {
-        this.sd = serverData;
-        this.serverScheme = this.sd.getServerScheme();
-        this.serverName = this.sd.getServerName();
-        this.serverPort = this.sd.getServerPort();
-        this.scriptName = this.sd.getScriptName();
+        this.sd = (ServerData) serverData.clone();
         this.pathInfo = new ArrayList();
         this.queryData = new ArrayList();
         this.reference = null;
@@ -596,8 +580,8 @@ public class DynamicURI
      */
     public String getScriptName()
     {
-        assertInitialized();
-        return (StringUtils.isEmpty(this.scriptName) ? "" : this.scriptName);
+        String result = getServerData().getServerName();
+        return (StringUtils.isEmpty(result) ? "" : result);
     }
 
     /**
@@ -618,8 +602,8 @@ public class DynamicURI
      */
     public String getServerName()
     {
-        assertInitialized();
-        return (StringUtils.isEmpty(this.serverName) ? "" : this.serverName);
+        String result = getServerData().getServerName();
+        return (StringUtils.isEmpty(result) ? "" : result);
     }
 
     /**
@@ -629,8 +613,8 @@ public class DynamicURI
      */
     public int getServerPort()
     {
-        assertInitialized();
-        return (this.serverPort==0 ? 80 : this.serverPort);
+        int result = getServerData().getServerPort();
+        return (result==0 ? 80 : result);
     }
 
     /**
@@ -640,9 +624,8 @@ public class DynamicURI
      */
     public String getServerScheme()
     {
-        assertInitialized();
-        return (StringUtils.isEmpty(this.serverScheme) ?
-                "" : this.serverScheme);
+        String result = getServerData().getServerScheme();
+        return (StringUtils.isEmpty(result) ? "" : result);
     }
 
     /**
@@ -872,7 +855,7 @@ public class DynamicURI
      */
     public DynamicURI setScriptName(String name)
     {
-        this.scriptName = name;
+        getServerData().setScriptName(name);
         return this;
     }
 
@@ -896,7 +879,7 @@ public class DynamicURI
      */
     public DynamicURI setServerName(String name)
     {
-        this.serverName = name;
+        getServerData().setServerName(name);
         return this;
     }
 
@@ -908,7 +891,7 @@ public class DynamicURI
      */
     public DynamicURI setServerPort(int port)
     {
-        this.serverPort = port;
+        getServerData().setServerPort(port);
         return this;
     }
 
@@ -952,7 +935,7 @@ public class DynamicURI
      */
     public DynamicURI setServerScheme(String scheme)
     {
-        this.serverScheme = scheme;
+        getServerData().setServerScheme(scheme);
         return this;
     }
 
