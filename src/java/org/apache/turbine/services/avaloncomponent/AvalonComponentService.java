@@ -77,6 +77,9 @@ public interface AvalonComponentService
     /** property specifing file name of the component role file */
     String COMPONENT_ROLE = "componentRoles";
 
+    /** Key used in the context for defining the application root */
+    String APP_ROOT = "ComponentAppRoot";
+
     /**
      * Returns an instance of the named component
      *
