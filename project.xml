@@ -25,7 +25,8 @@
   <distributionDirectory>/www/jakarta.apache.org/builds/jakarta-turbine/turbine-2/</distributionDirectory>
 
   <repository>
-    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2</connection>
+    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2:anoncvs</connection>
+    <developerConnection>scm:cvs:ext:${maven.username}@cvs.apache.org:/home/cvs:jakarta-turbine-2</developerConnection>
     <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2/</url>
   </repository>
 
