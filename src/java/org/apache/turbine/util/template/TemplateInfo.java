@@ -54,14 +54,16 @@ package org.apache.turbine.util.template;
  * <http://www.apache.org/>.
  */
 
-import java.util.Hashtable;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.services.template.TurbineTemplate;
-
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.uri.URIConstants;
+
 
 /**
  * This is a wrapper for Template specific information.  It's part of
@@ -70,6 +72,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:mbryson@mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TemplateInfo
@@ -78,7 +81,7 @@ public class TemplateInfo
     private static Log log = LogFactory.getLog(TemplateInfo.class);
 
 
-    /* Constants for tempStorage hashtable. */
+    /* Constants for tempStorage hash map. */
     public static final String NAVIGATION_TEMPLATE = "00navigation_template00";
     public static final String LAYOUT_TEMPLATE = "00layout_template00";
     public static final String SERVICE_NAME = "template_service";
@@ -87,7 +90,7 @@ public class TemplateInfo
     private RunData data = null;
 
     /* Place to store information about templates. */
-    private Hashtable tempStorage = null;
+    private Map tempStorage = null;
 
     /**
      * Constructor
@@ -97,7 +100,7 @@ public class TemplateInfo
     public TemplateInfo(RunData data)
     {
         this.data = data;
-        tempStorage = new Hashtable(10);
+        tempStorage = new HashMap(10);
     }
 
     /**
@@ -135,12 +138,7 @@ public class TemplateInfo
      */
     public String getScreenTemplate()
     {
-        String temp = data.getParameters().getString("template", null);
-        if (temp != null)
-        {
-            temp = temp.replace(',', '/');
-        }
-        return temp;
+        return data.getParameters().getString(URIConstants.CGI_TEMPLATE_PARAM, null);
     }
 
     /**
@@ -151,7 +149,7 @@ public class TemplateInfo
      */
     public void setScreenTemplate(String v)
     {
-        data.getParameters().setString("template", v);
+        data.getParameters().setString(URIConstants.CGI_TEMPLATE_PARAM, v);
 
         // We have changed the screen template so
         // we should now update the layout template
@@ -276,12 +274,11 @@ public class TemplateInfo
      */
     public void setTemp(String name, Object value)
     {
-        log.debug("setTemp(" + name + ", " + value + ")");
         tempStorage.put(name, value);
     }
 
     /**
-     * Return a String[] from the temp hashtable.
+     * Return a String[] from the temp hash map.
      *
      * @param name A String with the name of the object.
      * @return A String[].
@@ -298,7 +295,7 @@ public class TemplateInfo
     }
 
     /**
-     * Return a String from the temp hashtable.
+     * Return a String from the temp hash map.
      *
      * @param name A String with the name of the object.
      * @return A String.
