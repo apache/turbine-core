@@ -73,7 +73,7 @@ public abstract class TurbineTemplate
      *
      * @return a TemplateService implementation instance
      */
-    protected static TemplateService getService()
+    public static TemplateService getService()
     {
         return (TemplateService) TurbineServices
             .getInstance().getService(TemplateService.SERVICE_NAME);
