@@ -65,6 +65,7 @@ import org.apache.turbine.services.TurbineServices;
  * implementation of the GlobalCacheService used by the System, according to
  * the settings in TurbineResources.
  *
+ * @deprecated Use the Fulcrum Cache component instead.
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @version $Id$
  */

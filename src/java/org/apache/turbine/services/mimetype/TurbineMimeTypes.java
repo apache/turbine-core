@@ -63,6 +63,7 @@ import org.apache.turbine.services.mimetype.util.MimeType;
 /**
  * This is a static accessor to MIME types and charsets.
  *
+ * @deprecated Use the Fulcrum Mimetype component instead.
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */

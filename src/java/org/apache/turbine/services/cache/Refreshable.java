@@ -58,6 +58,7 @@ package org.apache.turbine.services.cache;
  * This is the interface for objects you want to refresh themselves
  * from the cache.
  *
+ * @deprecated Use the Fulcrum Cache component instead.
  * @author <a href="mailto:nissim@nksystems.com">Nissim Karpenstein</a>
  * @version $Id$
  */

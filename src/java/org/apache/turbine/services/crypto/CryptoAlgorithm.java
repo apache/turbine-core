@@ -58,6 +58,7 @@ package org.apache.turbine.services.crypto;
  * This interface describes the various Crypto Algorithms that are
  * handed out by the Crypto Service.
  *
+ * @deprecated Use the Fulcrum Crypto component instead.
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */

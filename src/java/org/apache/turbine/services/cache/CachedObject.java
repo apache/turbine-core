@@ -62,6 +62,7 @@ import org.apache.turbine.Turbine;
  * Wrapper for an object you want to store in a cache for a period of
  * time.
  *
+ * @deprecated Use the Fulcrum Cache component instead.
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$

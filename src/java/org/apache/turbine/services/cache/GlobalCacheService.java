@@ -61,6 +61,7 @@ import org.apache.turbine.services.Service;
 /**
  * GlobalCacheService interface.
  *
+ * @deprecated Use the Fulcrum Cache component instead.
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */

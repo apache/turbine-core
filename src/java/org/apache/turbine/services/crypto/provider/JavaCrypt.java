@@ -74,6 +74,7 @@ import org.apache.turbine.services.crypto.CryptoAlgorithm;
  *
  * This provider can be used as the default crypto algorithm provider.
  *
+ * @deprecated Use the Fulcrum Crypto component instead.
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */

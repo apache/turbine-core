@@ -68,6 +68,7 @@ import java.io.InputStream;
  * In addition, this class maintains static default mappings
  * and constructors support application specific mappings.
  *
+ * @deprecated Use the Fulcrum Mimetype component instead.
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
