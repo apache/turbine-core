@@ -63,8 +63,7 @@ import org.apache.turbine.util.TurbineException;
 
 /**
  * This class provides a common front end to all database - related
- * services in Turbine. Currently these are {@link PoolBrokerService} and
- * {@link MapBrokerService}. This class contains static methods that you
+ * services in Turbine. This class contains static methods that you
  * can call to access the methods of system's configured service
  * implementations.
  * <p>
@@ -188,10 +187,8 @@ public abstract class TurbineDB
 
     /**
      * This method returns a DBConnection from the pool with the
-     * specified name.  The pool must either have been registered
-     * with the {@link #registerPool(String,String,String,String,String)}
-     * method, or be specified in the property file using the
-     * following syntax:
+     * specified name. The pool must be specified in the property file using 
+     * the following syntax:
      *
      * <pre>
      * database.[name].driver

@@ -133,13 +133,13 @@ public class FileHandler
      * params.get(1) = the name the file should have when it lands.
      * params.get(2) = property describing where the file should land.
      *
-     * @param fileContents: The contents of the file to store. It
+     * @param fileContents The contents of the file to store. It
      *    is assumed that any xml content is properly encoded!
      *
-     * @param fileName: Name to give the file created to store
+     * @param fileName Name to give the file created to store
      *    the contents.
      *
-     * @param targetLocationProperty: storage location of this file
+     * @param targetLocationProperty storage location of this file
      *    is controlled by this property that is specified in
      *    the TR.props file or an included properties file.
      */
@@ -173,10 +173,10 @@ public class FileHandler
      * params.get(0) = the name the file should have when it lands.
      * params.get(1) = property describing where the file should land.
      *
-     * @param fileName: Name to give the file created to store
+     * @param fileName Name to give the file created to store
      *    the contents.
      *
-     * @param targetLocationProperty: storage location of this file
+     * @param targetLocationProperty storage location of this file
      *    is controlled by this property that is specified in
      *    the TR.props file or an included properties file.
      *
