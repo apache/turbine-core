@@ -236,6 +236,9 @@
                                 frompath="pages"
                                 include="**/*" />
 
+    <j:if test="${context.getVariable('turbine.setup.demo') != null &amp;&amp; context.getVariable('turbine.setup.demo') == 'true'}">
+      <attainGoal name="turbine:install-demo"/>
+    </j:if>
   </goal>
   <!-- ======================================================================== -->
   <!-- turbine:setup                                                            -->
@@ -834,6 +837,19 @@
         <j:set var="${_propname}" scope="parent">${_result}</j:set>
       </define:tag>
 
+      <define:tag name="copyTurbineDemo">
+
+        <u:available file="${plugin.resources}/demo/${frompath}">
+          <ant:copy todir="${todir}" filtering="${filtering}" overwrite="true" >
+            <ant:fileset dir="${plugin.resources}/demo/${frompath}">
+              <include name="${include}"/>
+              <exclude name="${exclude}"/>
+            </ant:fileset>
+          </ant:copy>
+        </u:available>
+
+      </define:tag>
+
     </define:taglib>
   </goal>
 
@@ -1146,4 +1162,44 @@
   <!-- turbine:security-datadtd                                           -->
   <!-- ================================================================== -->
 
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- turbine:install-demo                                                     -->
+  <!--                                                                          -->
+  <!-- Put the demo pages into a newly created application. Should be called    -->
+  <!-- only from turbine:setup!                                                 -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:install-demo"
+    prereqs="turbine:init">
+
+    <meta:copyTurbineDemo todir="${turbine.plugin.root.dir}/${turbine.plugin.src.templates}" 
+                          filtering="true"
+                          frompath="templates"
+                          include="**/*"/>
+
+    <meta:copyTurbineDemo todir="${turbine.plugin.root.dir}/${turbine.plugin.src.images}" 
+                          filtering="false"
+                          frompath="images"
+                          include="**/*"/>
+
+    <meta:copyTurbineDemo todir="${turbine.plugin.root.dir}/${turbine.plugin.src.resources}" 
+                          filtering="true"
+                          frompath="resources"
+                          include="**/*"/>
+
+    <meta:copyTurbineDemo todir="${turbine.plugin.root.dir}/${turbine.plugin.src.style}" 
+                          filtering="true"
+                          frompath="style"
+                          include="**/*"/>
+
+    <meta:copyTurbineDemo todir="${turbine.plugin.root.dir}/${turbine.plugin.src.pages}" 
+                          filtering="true"
+                          frompath="pages"
+                          include="**/*"/>
+  </goal>
+
+  <!-- ======================================================================== -->
+  <!-- turbine:install-demo                                                     -->
+  <!-- ======================================================================== -->
 </project>
