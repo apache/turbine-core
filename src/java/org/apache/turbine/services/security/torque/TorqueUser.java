@@ -613,7 +613,10 @@ public class TorqueUser
      */
     public void setPermStorage(Hashtable storage)
     {
-        this.permStorage = storage;
+        if (permStorage != null)
+        {
+            this.permStorage = permStorage;
+        }
     }
 
     /**
@@ -639,7 +642,10 @@ public class TorqueUser
      */
     public void setTempStorage(Hashtable storage)
     {
-        this.tempStorage = storage;
+        if (tempStorage != null)
+        {
+            this.tempStorage = tempStorage;
+        }
     }
 
     /**
