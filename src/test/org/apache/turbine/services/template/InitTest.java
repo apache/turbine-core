@@ -55,16 +55,13 @@ package org.apache.turbine.services.template;
  */
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.turbine.services.TurbineServices;
-
-import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.template.TemplateEngineService;
-
+import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.velocity.VelocityService;
-
+import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 
 /**
@@ -76,12 +73,13 @@ import org.apache.turbine.util.TurbineConfig;
  */
 
 public class InitTest
-    extends TestCase
+    extends BaseTestCase
 {
     private static TurbineConfig tc = null;
     private static TemplateService ts = null;
 
     public InitTest(String name)
+            throws Exception
     {
         super(name);
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");

@@ -54,36 +54,31 @@ package org.apache.turbine.services.security;
  * <http://www.apache.org/>.
  */
 
-import junit.framework.TestCase;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 
+import org.apache.turbine.om.security.Group;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
-
 import org.apache.turbine.services.factory.FactoryService;
 import org.apache.turbine.services.factory.TurbineFactoryService;
-
 import org.apache.turbine.services.security.SecurityService;
-
-import org.apache.turbine.om.security.Group;
-
+import org.apache.turbine.services.security.db.DBSecurityService;
+import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.TurbineAccessControlList;
 
-import org.apache.turbine.services.security.db.DBSecurityService;
-
 public class AccessControlListTest
-    extends TestCase
+    extends BaseTestCase
 {
     private static final String PREFIX = "services." +
         SecurityService.SERVICE_NAME + '.';
 
     public AccessControlListTest( String name )
+            throws Exception
     {
         super(name);
     }

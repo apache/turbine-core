@@ -54,16 +54,16 @@ package org.apache.turbine.services.schedule;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.modules.scheduledjob.SimpleJob;
+import junit.framework.Test;
+import junit.framework.TestSuite;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
+
+import org.apache.turbine.modules.scheduledjob.SimpleJob;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.apache.turbine.test.BaseTestCase;
 
 /**
  * Unit testing for the non-persistent implementation of the scheduler service.
@@ -71,11 +71,12 @@ import junit.framework.TestSuite;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class TurbineNonPersistentSchedulerServiceTest extends TestCase
+public class TurbineNonPersistentSchedulerServiceTest extends BaseTestCase
 {
     private static final String PREFIX = "services." + ScheduleService.SERVICE_NAME + '.';
 
     public TurbineNonPersistentSchedulerServiceTest(String name)
+            throws Exception
     {
         super(name);
 

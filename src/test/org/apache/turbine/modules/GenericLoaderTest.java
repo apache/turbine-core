@@ -54,12 +54,13 @@ package org.apache.turbine.modules;
  * <http://www.apache.org/>.
  */
 
-import junit.framework.TestCase;
+import org.apache.turbine.test.BaseTestCase;
 
 public class GenericLoaderTest
-    extends TestCase
+    extends BaseTestCase
 {
     public GenericLoaderTest(String name)
+            throws Exception
     {
         super(name);
     }

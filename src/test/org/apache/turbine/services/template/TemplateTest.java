@@ -55,10 +55,9 @@ package org.apache.turbine.services.template;
  */
 
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 
 /**
@@ -70,12 +69,13 @@ import org.apache.turbine.util.TurbineConfig;
  */
 
 public class TemplateTest
-    extends TestCase
+    extends BaseTestCase
 {
     private static TurbineConfig tc = null;
     private static TemplateService ts = null;
 
     public TemplateTest(String name)
+            throws Exception
     {
         super(name);
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");

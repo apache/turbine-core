@@ -54,7 +54,6 @@ package org.apache.turbine.util.uri;
  * <http://www.apache.org/>.
  */
 
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.commons.configuration.BaseConfiguration;
@@ -62,6 +61,7 @@ import org.apache.commons.configuration.Configuration;
 
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.parser.ParserUtils;
 
@@ -71,7 +71,7 @@ import org.apache.turbine.util.parser.ParserUtils;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class TurbineURITest extends TestCase
+public class TurbineURITest extends BaseTestCase
 {
     private TurbineURI turi;
 
@@ -81,6 +81,7 @@ public class TurbineURITest extends TestCase
      * @param testName name of the test being executed
      */
     public TurbineURITest(String testName)
+            throws Exception
     {
         super(testName);
 

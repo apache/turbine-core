@@ -56,11 +56,12 @@ package org.apache.turbine.services.avaloncomponent;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
+
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.TestComponent;
 
-import junit.framework.TestCase;
 
 /**
  * Simple test to make sure that the AvalonComponentService can be initialized.
@@ -68,18 +69,21 @@ import junit.framework.TestCase;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class TurbineAvalonComponentServiceTest extends TestCase
+public class TurbineAvalonComponentServiceTest
+        extends BaseTestCase
 {
     private static final String PREFIX = "services." +
             AvalonComponentService.SERVICE_NAME + '.';
 
     /**
      * Initialize the unit test.  The AvalonComponentService will be configured
-     * and initialized.
+     * and initialized.         
+
      *
      * @param name
      */
     public TurbineAvalonComponentServiceTest(String name)
+            throws Exception
     {
         super(name);
         ServiceManager serviceManager = TurbineServices.getInstance();

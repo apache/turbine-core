@@ -54,14 +54,15 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
+import junit.framework.TestSuite;
+
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.commons.configuration.Configuration;
+
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.parser.ParserUtils;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.BaseConfiguration;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * Testing of the DynamicURI class
@@ -69,7 +70,7 @@ import junit.framework.TestSuite;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class DynamicURITest extends TestCase
+public class DynamicURITest extends BaseTestCase
 {
     private DynamicURI duri;
 
@@ -79,6 +80,7 @@ public class DynamicURITest extends TestCase
      * @param testName name of the test being executed
      */
     public DynamicURITest(String testName)
+            throws Exception
     {
         super(testName);
 
