@@ -1758,7 +1758,7 @@ public class BaseValueParser
         }
         else if (propclass == Integer.class || propclass == Integer.TYPE)
         {
-            args[0] = getInteger(prop.getName());
+            args[0] = getIntObject(prop.getName());
         }
         else if (propclass == Long.class || propclass == Long.TYPE)
         {
@@ -1766,7 +1766,7 @@ public class BaseValueParser
         }
         else if (propclass == Boolean.class || propclass == Boolean.TYPE)
         {
-            args[0] = getBool(prop.getName());
+            args[0] = getBooleanObject(prop.getName());
         }
         else if (propclass == Double.class || propclass == Double.TYPE)
         {
@@ -1790,7 +1790,7 @@ public class BaseValueParser
         }
         else if (propclass == Integer[].class)
         {
-            args[0] = getIntegers(prop.getName());
+            args[0] = getIntObjects(prop.getName());
         }
         else if (propclass == Date.class)
         {
