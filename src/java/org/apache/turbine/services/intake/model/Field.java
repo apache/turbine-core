@@ -224,6 +224,17 @@ public abstract class Field
                     + field.getDefaultValue(), e);
         }
 
+        try
+        {
+            setEmptyValue(field.getEmptyValue());
+        }
+        catch (RuntimeException e)
+        {
+            log.error("Could not set empty value of " +
+                    this.getDisplayName() + " to "
+                    + field.getEmptyValue(), e);
+        }
+
         String validatorClassName = field.getValidator();
         if (validatorClassName == null && field.getRules().size() > 0)
         {
