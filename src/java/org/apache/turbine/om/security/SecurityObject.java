@@ -57,6 +57,7 @@ package org.apache.turbine.om.security;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.torque.om.BaseObject;
 
 /**
@@ -130,7 +131,7 @@ public abstract class SecurityObject extends BaseObject implements Comparable
      * Sets the value of specific attribute of this object.
      *
      * @param name the name of the attribute
-     * @return the value of the attribute
+     * @param value the value of the attribute
      */
     public void setAttribute( String name, Object value )
     {
