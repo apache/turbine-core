@@ -133,7 +133,7 @@ public class GroupSet implements Serializable
      */
     public boolean add(GroupSet groupSet)
     {
-        return add((Collection) groupSet.set);
+        return set.addAll(groupSet.set);
     }
 
     /**

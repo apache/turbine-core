@@ -136,7 +136,7 @@ public class PermissionSet implements Serializable
      */
     public boolean add(PermissionSet permissionSet)
     {
-        return set.addAll((Collection) permissionSet.set);
+        return set.addAll(permissionSet.set);
     }
 
     /**
