@@ -49,6 +49,13 @@
       <organization></organization>
     </developer>
 
+     <developer>
+      <name>Fedor Karpelevitch</name>
+      <id>fedor</id>
+      <email>fedor@karpelevitch.net</email>
+      <organization></organization>
+    </developer>
+
     <developer>
       <name>John McNally</name>
       <id>jmcnally</id>
