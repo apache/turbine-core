@@ -2,6 +2,7 @@
   xmlns:j="jelly:core"
   xmlns:m="maven"
   xmlns:u="jelly:util"
+  xmlns:maven="jelly:maven"
   default="java:jar">
 
   <!-- Define a post goal for compile to copy intake.dtd into the appropriate
@@ -15,5 +16,59 @@
     />
 
   </postGoal>
+
+  <!-- ================================================== -->
+  <!-- Perform the nightly build process                  -->
+  <!-- ================================================== -->
+  <goal name="nightly:build"
+      description="Build distribution snapshots">
+
+    <cvs command="-q update -Pd"/>
+    <attainGoal name="clean"/>
+    <maven:snapshot project="${pom}"/>
+
+    <j:set var="maven.final.name" value="${snapshotSignature}-${pom.currentVersion}"/>
+    <attainGoal name="dist:build"/>
+
+  </goal>
+
+  <!-- ================================================== -->
+  <!-- Deploy the nightly builds                          -->
+  <!-- ================================================== -->
+  <goal name="nightly:deploy"
+     prereqs="nightly:build"
+     description="Deploy the nightly builds">
+
+    <m:user-check user="${maven.username}"/>
+
+    <echo>
+       deploymentAddress = ${pom.siteAddress}
+       deploymentDirectory = ${turbine.nightly.dist.dir}
+    </echo>
+
+    <j:set var="dist.dir" value="${maven.build.dir}/distributions" />
+
+    <!-- Make sure the destination directory exists before trying to copy -->
+    <exec dir="." executable="${maven.ssh.executable}">
+       <arg line="${pom.siteAddress} -l ${maven.username} 'mkdir -p ${turbine.nightly.dist.dir}'"/>
+    </exec>
+
+    <fileScanner var="distFiles">
+      <fileset dir="${dist.dir}">
+      </fileset>
+    </fileScanner>
+
+    <j:forEach var="file" items="${distFiles.iterator()}">
+      <echo>Processing ${file}</echo>
+
+      <exec dir="${dist.dir}" executable="${maven.scp.executable}">
+        <arg value="${file}"/>
+        <arg value="${maven.username}@${pom.siteAddress}:${turbine.nightly.dist.dir}"/>
+      </exec>
+    </j:forEach>
+
+  </goal>
+
+
 
 </project>
