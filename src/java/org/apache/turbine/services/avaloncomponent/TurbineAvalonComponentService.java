@@ -215,8 +215,9 @@ public class TurbineAvalonComponentService
         // Init ECM!!!!
         manager.initialize();
 
-        Vector lookupComponents = conf.getVector(COMPONENT_LOOKUP_KEY, new Vector());
-
+        Vector lookupComponents = conf.getVector(COMPONENT_LOOKUP_KEY,
+                new Vector());
+        
         for (Iterator it = lookupComponents.iterator(); it.hasNext(); )
         {
             String component = (String) it.next();
@@ -224,6 +225,7 @@ public class TurbineAvalonComponentService
             {
                 Component c = manager.lookup(component);
                 log.info("Lookup for Component " + component + " successful");
+                manager.release(c);
             }
             catch (Exception e)
             {
