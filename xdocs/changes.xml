@@ -89,6 +89,9 @@ Changes between Turbine 2.2 and 2.3-dev.
 <p>
   <ul>
     <li>
+      Backported the Crypto Service from Fulcrum.
+    </li>
+    <li>
       TTWS24: With this patch LDAP security services can have users, groups,
       roles and permissions in the LDAP repository. It also works with users in
       LDAP and the rest in the Database. <br/>
