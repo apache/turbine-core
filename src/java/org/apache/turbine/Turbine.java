@@ -86,6 +86,7 @@ import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.PageLoader;
 
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 
 import org.apache.turbine.services.component.ComponentService;
 
@@ -183,8 +184,8 @@ public class Turbine
     private static ServletContext servletContext;
 
     /**
-     * The webapp root where the Turbine application 
-     * is running in the servlet container. 
+     * The webapp root where the Turbine application
+     * is running in the servlet container.
      * This might differ from the application root.
      */
     private static String webappRoot;
@@ -256,7 +257,7 @@ public class Turbine
         }
     }
 
-    private void configure(ServletConfig config, 
+    private void configure(ServletConfig config,
                            ServletContext context,
                            String propsFile)
         throws Exception
@@ -267,8 +268,8 @@ public class Turbine
         // to be developed from CVS. This feature will carry over
         // into 3.0.
         applicationRoot =
-            findInitParameter(context, config, 
-                              APPLICATION_ROOT_KEY, 
+            findInitParameter(context, config,
+                              APPLICATION_ROOT_KEY,
                               APPLICATION_ROOT_DEFAULT);
 
         webappRoot = config.getServletContext().getRealPath("/");
@@ -337,11 +338,11 @@ public class Turbine
         }
 
         //
-        // Set up Commons Logging to use the Log4J Logging 
+        // Set up Commons Logging to use the Log4J Logging
         //
         System.getProperties().setProperty(LogFactory.class.getName(),
                                            Log4jFactory.class.getName());
-                                           
+
         setTurbineServletConfig(config);
         setTurbineServletContext(context);
 
@@ -362,8 +363,12 @@ public class Turbine
         //
         // Be sure, that our essential services get run early
         //
-        configuration.setProperty(TurbineServices.SERVICE_PREFIX + 
-                                  ComponentService.SERVICE_NAME + ".earlyInit", 
+        configuration.setProperty(TurbineServices.SERVICE_PREFIX +
+                                  ComponentService.SERVICE_NAME + ".earlyInit",
+                                  new Boolean(true));
+
+        configuration.setProperty(TurbineServices.SERVICE_PREFIX +
+                                  AvalonComponentService.SERVICE_NAME + ".earlyInit",
                                   new Boolean(true));
 
         serviceManager.setConfiguration(configuration);
@@ -395,8 +400,8 @@ public class Turbine
     private static void createRuntimeDirectories(ServletContext context,
                                                  ServletConfig config)
     {
-        String path = findInitParameter(context, config, 
-                                        LOGGING_ROOT_KEY, 
+        String path = findInitParameter(context, config,
+                                        LOGGING_ROOT_KEY,
                                         LOGGING_ROOT_DEFAULT);
 
         File logDir = new File(getRealPath(path));
