@@ -22,6 +22,8 @@ import org.apache.turbine.util.TurbineException;
  * Thrown by <code>Initable</code> class in case of initialization
  * problems.
  *
+ * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
+ * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  * @see org.apache.turbine.services.Initable
  */

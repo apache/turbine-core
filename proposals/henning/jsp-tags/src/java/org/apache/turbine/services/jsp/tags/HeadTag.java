@@ -27,6 +27,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  * Example usage:
  * &lt;x:head&gt;&lt;title&gt;Login&lt;/title&gt;&lt;/x:head&gt;
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @version $Id$
  */
 public class HeadTag extends TagSupport 

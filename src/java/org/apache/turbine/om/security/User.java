@@ -26,6 +26,11 @@ import javax.servlet.http.HttpSessionBindingListener;
  * This interface represents functionality that all users of the
  * Turbine system require.
  *
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:jon@collab.net">Jon S. Stevens</a>
+ * @author <a href="mailto:cberry@gluecode.com">Craig D. Berry</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface User

@@ -25,6 +25,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
 /**
  * A pull tool for accessing the SessionService from a velocity template.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class SessionTool

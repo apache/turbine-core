@@ -21,6 +21,8 @@ import org.apache.turbine.services.intake.IntakeException;
 /**
  * An Exception to mark a failed validation
  *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class ValidationException

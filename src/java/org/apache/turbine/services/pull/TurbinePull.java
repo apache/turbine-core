@@ -28,6 +28,9 @@ import org.apache.velocity.context.Context;
  * implementation of the PullService used by the System, according to
  * the settings in TurbineResources.
  *
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class TurbinePull

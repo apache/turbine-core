@@ -25,6 +25,8 @@ import org.apache.turbine.util.TurbineException;
  * loaders are supported for a class depends on implementation
  * and can be tested with the isLoaderSupported method.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class TurbineFactory

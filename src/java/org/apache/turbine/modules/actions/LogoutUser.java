@@ -31,6 +31,8 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * This action removes a user from the session. It makes sure to save
  * the User object in the session.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class LogoutUser

@@ -27,6 +27,7 @@ import org.apache.turbine.util.RunData;
 /**
  * This is a sample navigation module.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  * @deprecated The use of ECS for the view is deprecated. Use a templating solution.
  */

@@ -39,6 +39,8 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * {@link org.apache.turbine.om.security.User} objects, saving those data
  * to the permanent storage, and authenticating users.
  *
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface UserManager

@@ -28,6 +28,8 @@ import org.apache.turbine.util.RunData;
  * dynamic content is supposed to be primarily located in screens and
  * navigations there should be relatively few reasons to subclass this Layout.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class JspLayout

@@ -26,6 +26,7 @@ package org.apache.turbine.services.intake.validator;
  * value="255"
  * message="Value cannot be longer than 255 characters."
  *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @version $Id$
  */
 public interface Constraint

@@ -27,6 +27,7 @@ import org.apache.turbine.services.TurbineServices;
  * various implementations of the Crypto Security Service, according
  * to the settings in TurbineResources.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class TurbineCrypto

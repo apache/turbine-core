@@ -22,6 +22,7 @@ import org.apache.turbine.util.TurbineException;
 /**
  * This is a static accessor to common pooling tasks.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
 public abstract class TurbinePool

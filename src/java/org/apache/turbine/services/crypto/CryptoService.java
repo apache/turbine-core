@@ -29,6 +29,7 @@ import org.apache.turbine.services.Service;
  * It contains no actual crypto code so it should be fine to import/export
  * everywhere.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface CryptoService

@@ -27,6 +27,8 @@ import org.apache.velocity.context.Context;
  * to use. Since this class is abstract, it should only be extended
  * and not used directly.
  *
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @version $Id$
  */
 public abstract class VelocityAction extends VelocityActionEvent

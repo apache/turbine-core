@@ -26,6 +26,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
 /**
  * This pull tool is used to format date objects into strings.
  *
+ * @author <a href="mailto:qmccombs@nequalsone.com">Quinton McCombs</a>
  * @version $Id$
  */
 public class DateFormatter

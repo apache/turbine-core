@@ -58,6 +58,12 @@ import org.apache.turbine.util.RunData;
  * <li>etc.</li>
  * </ul></p>
  *
+ * @author <a href="mailto:jm@mediaphil.de">Jonas Maurus</a>
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:novalidemail@foo.com">Frank Y. Kim</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:leonardr@collab.net">Leonard Richardson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineLocalizationService

@@ -163,6 +163,12 @@ import org.apache.turbine.util.uri.URIConstants;
  * template. This is not the job of the Templating Service but of the Template
  * rendering services like VelocityService.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineTemplateService

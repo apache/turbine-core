@@ -30,6 +30,9 @@ import org.apache.velocity.context.Context;
  * Then each action that needs to perform the same check could extend
  * your base action.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @version $Id$
  */
 public abstract class VelocitySecureAction extends VelocityAction

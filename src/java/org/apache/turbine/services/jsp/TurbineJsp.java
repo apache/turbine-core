@@ -24,6 +24,8 @@ import org.apache.turbine.util.TurbineException;
 /**
  * Facade class for the Jsp Service.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
 public abstract class TurbineJsp
 {

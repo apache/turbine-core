@@ -55,6 +55,9 @@ import org.apache.turbine.util.parser.ParameterParser;
  * org.apache.turbine.util.upload.FileItem}s associated with given
  * html widget.
  *
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineUploadService

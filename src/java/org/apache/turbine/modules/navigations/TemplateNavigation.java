@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 /**
  * Base Template Navigation.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
 public abstract class TemplateNavigation

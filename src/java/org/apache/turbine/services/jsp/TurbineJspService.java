@@ -42,6 +42,11 @@ import org.apache.turbine.util.TurbineException;
  * This is a Service that can process JSP templates from within a Turbine
  * screen.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
 public class TurbineJspService
         extends BaseTemplateEngineService

@@ -35,6 +35,7 @@ import org.apache.turbine.util.template.TemplateInfo;
  * is decided by the section parameter.  Example usage:
  * &lt;x:screen section="head" /&gt;
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @version $Id$
  */
 public class ScreenTag extends TagSupport 

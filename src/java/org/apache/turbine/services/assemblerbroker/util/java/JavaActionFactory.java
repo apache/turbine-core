@@ -23,6 +23,8 @@ import org.apache.turbine.modules.Assembler;
  * An action factory that attempts to load a java class from
  * the module packages defined in the TurbineResource.properties.
  *
+ * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class JavaActionFactory

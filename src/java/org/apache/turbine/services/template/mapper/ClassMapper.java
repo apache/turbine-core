@@ -44,6 +44,7 @@ import org.apache.turbine.services.template.TemplateService;
  * Please note, that no actual packages are searched. This is the scope of the
  * TemplateEngine Loader which is passed at construction time.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

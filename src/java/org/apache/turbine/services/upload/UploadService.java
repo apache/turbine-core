@@ -29,6 +29,8 @@ import org.apache.turbine.util.parser.ParameterParser;
  * org.apache.turbine.util.ParameterParser} or manually by an user
  * definded {@link org.apache.turbine.modules.Action}.
  *
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @version $Id$
  */
 public interface UploadService

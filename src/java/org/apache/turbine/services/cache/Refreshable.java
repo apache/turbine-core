@@ -20,6 +20,7 @@ package org.apache.turbine.services.cache;
  * This is the interface for objects you want to refresh themselves
  * from the cache.
  *
+ * @author <a href="mailto:nissim@nksystems.com">Nissim Karpenstein</a>
  * @version $Id$
  */
 public interface Refreshable

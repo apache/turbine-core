@@ -21,6 +21,7 @@ import org.apache.turbine.modules.Assembler;
 /**
  * Interface for AssemblerFactory's
  *
+ * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
  * @version $Id$
  */
 public interface AssemblerFactory

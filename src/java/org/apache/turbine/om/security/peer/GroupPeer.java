@@ -38,6 +38,10 @@ import org.apache.turbine.util.security.GroupSet;
  * This class handles all the database access for the Group table.
  * This table contains all the Groups that a given member can play.
  *
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
 public class GroupPeer extends BasePeer

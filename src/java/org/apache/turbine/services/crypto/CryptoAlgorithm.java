@@ -20,6 +20,7 @@ package org.apache.turbine.services.crypto;
  * This interface describes the various Crypto Algorithms that are
  * handed out by the Crypto Service.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface CryptoAlgorithm

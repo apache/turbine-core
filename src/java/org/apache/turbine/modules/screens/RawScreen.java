@@ -34,6 +34,7 @@ import org.apache.turbine.util.RunData;
  * <p> You migth want to take a look at the ImageServer screen class
  * contained in the TDK.<br>
  *
+ * @author <a href="mailto:rkoenig@chez.com">Regis Koenig</a>
  * @version $Id$
  */
 public abstract class RawScreen extends Screen

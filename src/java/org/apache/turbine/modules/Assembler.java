@@ -21,6 +21,7 @@ package org.apache.turbine.modules;
  * current modules extend off of this class. It is currently empty and
  * future use is yet to be determined.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
 public abstract class Assembler

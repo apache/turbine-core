@@ -25,6 +25,7 @@ package org.apache.java.security;
  * environments (like Kaffe) where the package
  * <code>java.security</code> is highly improbable to be found.
  *
+ * @author <a href="mailto:stefano@apache.org">Stefano Mazzocchi</a>
  * @version $Id$
  * @deprecated Use the java.security package.
  */

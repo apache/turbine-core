@@ -29,6 +29,7 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * derived from this class which contains the base compare and management
  * methods for all security objects.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

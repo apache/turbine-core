@@ -27,6 +27,7 @@ import java.util.StringTokenizer;
  * Parses the HTTP <code>Accept-Language</code> header as per section
  * 14.4 of RFC 2068 (HTTP 1.1 header field definitions).
  *
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @version $Id$
  */
 public class LocaleTokenizer

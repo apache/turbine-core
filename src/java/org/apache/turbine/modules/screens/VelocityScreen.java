@@ -46,6 +46,8 @@ import org.apache.velocity.context.Context;
  * If you need more specific behavior in your application, extend this
  * class and override the doBuildTemplate() method.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class VelocityScreen

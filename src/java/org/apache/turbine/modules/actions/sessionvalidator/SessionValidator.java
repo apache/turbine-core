@@ -38,6 +38,7 @@ import org.apache.turbine.modules.Action;
  * This action is special in that it should only be executed by the
  * Turbine servlet.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
 public abstract class SessionValidator extends Action

@@ -26,6 +26,9 @@ import org.apache.commons.configuration.Configuration;
  * to <code>ServiceBroker</code> functionality includes configuration
  * of the manager.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface ServiceManager extends ServiceBroker

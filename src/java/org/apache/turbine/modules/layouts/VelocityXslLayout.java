@@ -48,6 +48,8 @@ import org.apache.velocity.context.Context;
  * screens and navigations there should be relatively few reasons to
  * subclass this Layout.
  *
+ * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class VelocityXslLayout extends Layout

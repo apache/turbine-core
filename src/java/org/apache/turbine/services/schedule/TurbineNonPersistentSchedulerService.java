@@ -62,6 +62,9 @@ import org.apache.turbine.util.TurbineException;
  *
  * Based on TamboraSchedulerService written by John Thorhauer.
  *
+ * @author <a href="mailto:ekkerbj@netscpae.net">Jeff Brekke</a>
+ * @author <a href="mailto:john@zenplex.com">John Thorhauer</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class TurbineNonPersistentSchedulerService

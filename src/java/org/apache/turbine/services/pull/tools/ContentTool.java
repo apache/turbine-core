@@ -36,6 +36,7 @@ import org.apache.turbine.util.uri.DataURI;
  * This is an application pull tool for the template system. You should <b>not</b>
  * use it in a normal application!
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

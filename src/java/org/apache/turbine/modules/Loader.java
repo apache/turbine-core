@@ -19,6 +19,7 @@ package org.apache.turbine.modules;
 /**
  * A common interface for Screen, Layout and Navigation Loader
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

@@ -23,6 +23,10 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * This class represents a role played by the User associated with the
  * current Session.
  *
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface Role extends SecurityEntity

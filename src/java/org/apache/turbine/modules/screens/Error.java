@@ -33,6 +33,7 @@ import org.apache.turbine.util.RunData;
 /**
  * This is a sample Error Screen module.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
 public class Error extends Screen

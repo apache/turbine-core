@@ -21,6 +21,7 @@ import org.apache.turbine.services.TurbineServices;
 /**
  * This is a facade class for {@link UniqueIdService}.
  *
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
 public abstract class TurbineUniqueId

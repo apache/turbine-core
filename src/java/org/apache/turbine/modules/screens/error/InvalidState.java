@@ -37,6 +37,8 @@ import org.apache.turbine.util.uri.TurbineURI;
  * SessionValidator action will check to see if it is an old
  * value and redirect you to this screen.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class InvalidState

@@ -21,6 +21,7 @@ import org.apache.turbine.util.RunData;
 /**
  * Generic Action class.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
 public abstract class Action extends Assembler

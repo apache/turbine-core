@@ -27,7 +27,8 @@ import org.w3c.dom.Node;
  * The Turbine XSLT Service is used to transform xml with a xsl stylesheet.
  * The service makes use of the Xalan xslt engine available from apache.
  *
- *
+ * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @version $Id$
  */
 public interface XSLTService
         extends Service

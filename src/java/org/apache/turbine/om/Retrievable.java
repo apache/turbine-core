@@ -19,6 +19,7 @@ package org.apache.turbine.om;
 /**
  * This interface specifies methods for uniquely identifying an object.
  *
+ * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
  * @version $Id$
  */
 public interface Retrievable

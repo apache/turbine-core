@@ -36,6 +36,8 @@ import org.apache.turbine.services.pull.ApplicationTool;
  * @deprecated Use {@link org.apache.turbine.services.pull.tools.TemplateLink} with the
  * {@link org.apache.turbine.services.pull.tools.TemplateLink#getRelativeLink} method.
  *
+ * @author <a href="jmcnally@collab.net">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class RelativeTemplateLink

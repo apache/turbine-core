@@ -39,6 +39,7 @@ import org.apache.turbine.services.crypto.CryptoAlgorithm;
  *
  * Nevertheless it can be used as the default crypto algorithm .
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class OldJavaCrypt

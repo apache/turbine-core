@@ -34,6 +34,8 @@ import org.apache.turbine.services.jsp.TurbineJsp;
  * If you need more specific behavior in your application, extend this
  * class and override the doBuildTemplate() method.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:gabrielm@itcsoluciones.com">Gabriel A. Moreno</a>
  * @version $Id$
  */
 public class JspScreen extends BaseJspScreen {

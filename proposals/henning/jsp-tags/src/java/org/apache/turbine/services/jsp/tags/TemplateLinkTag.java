@@ -27,11 +27,12 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateLink;
 
 /**
-  * Supporting class for the TemplateLink tag.
-  * Uses the TemplateLink class to construct a URI
-  *
+ * Supporting class for the TemplateLink tag.
+ * Uses the TemplateLink class to construct a URI
+ *
+ * @author <a href="mailto:ingo@raleigh.ibm.com">Ingo Schuster</a>
  * @version $Id$
-  */
+ */
 public class TemplateLinkTag extends TagSupport
 {
      /**

@@ -20,6 +20,9 @@ package org.apache.turbine;
  * This interface contains all the constants used throughout
  * the Turbine code base.
  *
+ * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  */
 public interface TurbineConstants

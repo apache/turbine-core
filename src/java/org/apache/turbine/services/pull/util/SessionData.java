@@ -28,6 +28,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
  * {@link org.apache.turbine.om.security.User#setTemp} and
  * {@link org.apache.turbine.om.security.User#getTemp} methods.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class SessionData implements ApplicationTool

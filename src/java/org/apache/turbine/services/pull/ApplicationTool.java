@@ -19,6 +19,7 @@ package org.apache.turbine.services.pull;
 /**
  * Tools that go into the Toolbox should implement this interface.
  *
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @version $Id$
  */
 public interface ApplicationTool

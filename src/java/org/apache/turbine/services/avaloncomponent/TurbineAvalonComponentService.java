@@ -62,6 +62,8 @@ import org.apache.turbine.Turbine;
  *
  * in your TurbineResources.properties.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineAvalonComponentService

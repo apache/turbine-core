@@ -35,6 +35,9 @@ import org.apache.velocity.context.Context;
  * data.getPage().getBody().addElement(results);
  * </pre>
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:jvanzyl@periapt.com.com">Jason van Zyl</a>
  * @version $Id$
  */
 public abstract class TurbineVelocity

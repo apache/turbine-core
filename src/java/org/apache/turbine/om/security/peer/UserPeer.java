@@ -22,6 +22,7 @@ package org.apache.turbine.om.security.peer;
  * The purpose of this class is to decouple DBSecurityService from
  * the default User implementation and it's related Peer class.
  *
+ * @author <a href="mailto:leandro@ibnetwork.com.br">Leandro Rodrigo Saad Cruz</a>
  * @version $Id$
  */
 public interface UserPeer

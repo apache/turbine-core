@@ -25,6 +25,8 @@ import org.apache.turbine.util.TurbineException;
  * An interface the Turbine Assembler service.
  * See TurbineAssemblerBrokerService for more info.
  *
+ * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface AssemblerBrokerService

@@ -38,6 +38,9 @@ import org.apache.turbine.util.RunData;
  * This class is the default implementation of NamingService, which
  * provides JNDI naming contexts.
  *
+ * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
+ * @author <a href="mailto:colin.chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineNamingService

@@ -23,6 +23,8 @@ import java.util.Hashtable;
  * to. This includes the Velocity, WebMacro, FreeMarker, and JSP
  * services.
  *
+ * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$ */
 public interface TemplateEngineService
 {

@@ -46,6 +46,8 @@ import org.apache.commons.lang.StringUtils;
  * <li>0</li>
  * </ul>
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
  * @version $Id$
  */
 public class BooleanValidator

@@ -37,6 +37,8 @@ import org.apache.turbine.util.TurbineException;
  * classes.  AssemblerFactory classes are registered with this broker
  * by adding them to the TurbineResources.properties file.
  *
+ * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineAssemblerBrokerService

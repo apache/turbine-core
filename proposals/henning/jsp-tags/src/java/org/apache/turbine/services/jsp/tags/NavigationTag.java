@@ -36,6 +36,7 @@ import org.apache.turbine.util.template.TemplateInfo;
  * in this tag.  Example usage:
  * &lt;body &lt;x:bodyAttributes default='onLoad="jsfunc()"' /&gt;&gt;
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @version $Id$
  */
 public class NavigationTag extends TagSupport 

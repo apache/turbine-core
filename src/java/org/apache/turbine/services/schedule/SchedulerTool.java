@@ -27,6 +27,7 @@ import org.apache.turbine.util.TurbineException;
 /**
  * This tool is used to retrieve information about the job scheduler.
  *
+ * @author <a href="mailto:qmccombs@nequalsone.com">Quinton McCombs</a>
  * @version $Id$
  */
 public class SchedulerTool implements ApplicationTool

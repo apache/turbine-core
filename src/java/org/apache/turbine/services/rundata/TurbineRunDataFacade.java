@@ -31,6 +31,7 @@ import org.apache.turbine.util.TurbineException;
  * out of line of the other Turbine Services. So what? All the good
  * ones were taken.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

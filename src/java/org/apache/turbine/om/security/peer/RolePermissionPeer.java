@@ -25,6 +25,10 @@ import org.apache.turbine.util.db.map.TurbineMapBuilder;
  * ROLE_PERMISSION table.  This table contains all
  * the permissions for a given role.
  *
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:jon@collab.net">Jon S. Stevens</a>
  * @version $Id$
  */
 public class RolePermissionPeer extends BasePeer

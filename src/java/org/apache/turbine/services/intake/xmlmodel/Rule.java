@@ -25,6 +25,7 @@ import org.xml.sax.Attributes;
 /**
  * A Class for holding data about a constraint on a property.
  *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @version $Id$
  */
 public class Rule

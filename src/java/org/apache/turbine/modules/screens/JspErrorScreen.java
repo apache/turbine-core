@@ -24,6 +24,8 @@ import org.apache.turbine.util.RunData;
 /**
  * Directs errors at the Jsp error template defined in template.error.
  *
+ * @author <a href="mailto:ingo@raleigh.ibm.com">Ingo Schuster</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class JspErrorScreen

@@ -22,6 +22,7 @@ import org.apache.turbine.services.Service;
  * <p> This service provides unique identifiers for the instance of
  * Turbine, and for objects it creates.
  *
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
 public interface UniqueIdService

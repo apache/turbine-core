@@ -42,6 +42,8 @@ package org.apache.turbine.services;
  *
  * </ul>
  *
+ * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
+ * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
 public interface InitableBroker

@@ -23,6 +23,10 @@ import org.apache.turbine.modules.ScheduledJobLoader;
 /**
  * Wrapper for a <code>JobEntry</code> to actually perform the job's action.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class WorkerThread

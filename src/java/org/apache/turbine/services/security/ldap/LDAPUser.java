@@ -38,6 +38,12 @@ import org.apache.turbine.services.security.TurbineSecurity;
  * LDAPUser implements User and provides access to a user who accesses the
  * system via LDAP.
  *
+ * @author <a href="mailto:cberry@gluecode.com">Craig D. Berry</a>
+ * @author <a href="mailto:tadewunmi@gluecode.com">Tracy M. Adewunmi</a>
+ * @author <a href="mailto:lflournoy@gluecode.com">Leonard J. Flournoy </a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hhernandez@itweb.com.mx">Humberto Hernandez</a>
+ * @version $Id$
  */
 public class LDAPUser extends BaseObject implements User
 {

@@ -32,6 +32,10 @@ import org.apache.turbine.util.uri.URIConstants;
  *     http://foo.com/myapp/servlet/Turbine/key/value/template/index.jsp
  * </code>
  *
+ * @author <a href="john.mcnally@clearink.com">John McNally</a>
+ * @author <a href="mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author Jon S. Stevens <a href="mailto:jon@latchkey.com">jon@latchkey.com</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  * deprecated Use {@org.apache.turbine.services.pull.tools.TemplateLink} instead.
  */

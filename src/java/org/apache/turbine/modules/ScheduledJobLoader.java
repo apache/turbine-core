@@ -32,6 +32,8 @@ import org.apache.turbine.util.RunData;
 /**
  * ScheduledJobs loader class.
  *
+ * @author <a href="mailto:mbryson@mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class ScheduledJobLoader

@@ -108,6 +108,10 @@ import org.apache.velocity.context.Context;
  * Defaults: none
  * </pre>
  *
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class TurbinePullService

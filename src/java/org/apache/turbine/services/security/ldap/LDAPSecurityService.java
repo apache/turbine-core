@@ -53,6 +53,12 @@ import org.apache.turbine.util.security.UnknownEntityException;
 /**
  * An implementation of SecurityService that uses LDAP as a backend.
  *
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:tadewunmi@gluecode.com">Tracy M. Adewunmi </a>
+ * @author <a href="mailto:lflournoy@gluecode.com">Leonard J. Flournoy </a>
+ * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
+ * @author <a href="mailto:hhernandez@itweb.com.mx">Humberto Hernandez</a>
  * @version $Id$
  */
 public class LDAPSecurityService extends BaseSecurityService

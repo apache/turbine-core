@@ -32,6 +32,7 @@ import org.apache.turbine.util.parser.ParameterParser;
  * constants defined in {@link UploadService} interface for accessing
  * the service's properties and default values for them.
  *
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
 public abstract class TurbineUpload

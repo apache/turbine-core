@@ -42,6 +42,9 @@ import com.workingdogs.village.Record;
  * table.  This table contains all the permissions that are used in
  * the system.
  *
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
  * @version $Id$
  */
 public class PermissionPeer extends BasePeer

@@ -27,6 +27,11 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * current Session. It is separated from the actual Torque peer object
  * to be able to replace the Peer with an user supplied Peer (and Object)
  *
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

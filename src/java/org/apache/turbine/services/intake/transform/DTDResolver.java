@@ -32,6 +32,9 @@ import org.xml.sax.InputSource;
  * <a href="http://developer.java.sun.com/developer/bugParade/bugs/4337703.html">
  * Bug 4337703</a>
  *
+ * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class DTDResolver implements EntityResolver

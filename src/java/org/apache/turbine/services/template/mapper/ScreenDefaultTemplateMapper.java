@@ -36,6 +36,7 @@ import org.apache.turbine.services.template.TurbineTemplate;
  * This path can be used by the TemplateEngine to access 
  * a certain resource to actually render the template.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

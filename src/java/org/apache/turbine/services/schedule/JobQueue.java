@@ -26,6 +26,8 @@ import org.apache.turbine.util.TurbineException;
 /**
  * Queue for the scheduler.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class JobQueue

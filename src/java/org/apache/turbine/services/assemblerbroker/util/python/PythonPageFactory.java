@@ -25,6 +25,8 @@ import org.apache.turbine.modules.Assembler;
  * The JPython script should inherit from Turbine Screen or one
  * of its subclasses.
  *
+ * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class PythonPageFactory

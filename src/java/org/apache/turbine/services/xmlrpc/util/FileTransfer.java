@@ -30,6 +30,7 @@ import org.apache.turbine.util.TurbineException;
  * @deprecated This is not scope of the Service itself but of an
  *             application which uses the service. This class shouldn't
  *             be part of Turbine but of an addon application.
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @version $Id$
  */
 public class FileTransfer

@@ -38,6 +38,9 @@ import org.apache.velocity.context.Context;
  *
  * This class uses ECS to render the layout.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  * @deprecated you should use VelocityOnlyLayout
  */

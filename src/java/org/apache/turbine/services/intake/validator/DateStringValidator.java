@@ -46,6 +46,9 @@ import org.apache.turbine.services.intake.IntakeException;
  * <td>false</td></tr>
  * </table>
  *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
  * @version $Id$
  */
 public class DateStringValidator

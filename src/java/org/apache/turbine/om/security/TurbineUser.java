@@ -39,6 +39,13 @@ import org.apache.turbine.services.security.TurbineSecurity;
  * of user data storage normally involves writing an implementation of
  * {@link org.apache.turbine.services.security.UserManager} interface.
  *
+ * @author <a href="mailto:josh@stonecottage.com">Josh Lucas</a>
+ * @author <a href="mailto:jon@collab.net">Jon S. Stevens</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:cberry@gluecode.com">Craig D. Berry</a>
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineUser extends SecurityObject implements User

@@ -19,6 +19,7 @@ package org.apache.turbine.services.intake.validator;
 /**
  * Validator api.
  *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @version $Id$
  */
 public interface Validator

@@ -24,6 +24,8 @@ import org.apache.turbine.services.Service;
 /**
  * This service allows access to avalon components.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface AvalonComponentService

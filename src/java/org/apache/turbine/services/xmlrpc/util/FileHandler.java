@@ -58,6 +58,9 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * The client must then decode the file contents and write the
  * decoded file contents to disk.
  *
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  * @deprecated This is not scope of the Service itself but of an
  *             application which uses the service. This class shouldn't

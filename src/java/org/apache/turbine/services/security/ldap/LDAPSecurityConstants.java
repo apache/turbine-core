@@ -24,7 +24,9 @@ import org.apache.turbine.services.security.TurbineSecurity;
  * <p>This is a static class for defining the default ldap confiquration
  * keys used by core Turbine components.</p>
  *
- *
+ * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:hhernandez@itweb.com.mx">Humberto Hernandez</a>
+ * @version $Id$
  */
 public class LDAPSecurityConstants
 {

@@ -21,6 +21,8 @@ import org.apache.turbine.util.RunData;
 /**
  * This is the base class that defines what a Page module is.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class Page

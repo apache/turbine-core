@@ -55,6 +55,9 @@ import org.apache.turbine.om.security.User;
  * This action is special in that it should only be executed by the
  * Turbine servlet.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class AccessController

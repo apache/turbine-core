@@ -38,6 +38,11 @@ import org.apache.turbine.util.pool.Recyclable;
  * <p>TurbineRunData extends also the Recyclable interface making
  * it possible to pool its implementations for recycling.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:bhoeneis@ee.ethz.ch">Bernie Hoeneisen</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface TurbineRunData

@@ -26,6 +26,7 @@ import org.apache.turbine.services.schedule.JobEntry;
  * execute at a specific time.  The name of this class is what you
  * register in the JobEntry.
  *
+ * @author <a href="mailto:mbryson@mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
 public abstract class ScheduledJob extends Assembler

@@ -21,6 +21,7 @@ import org.apache.turbine.services.intake.IntakeException;
 /**
  * An Exception indidate an invalid field mask.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class InvalidMaskException

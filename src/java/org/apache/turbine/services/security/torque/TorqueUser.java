@@ -39,6 +39,14 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * This is the User class used by the TorqueSecurity Service. It decouples
  * all the database peer access from the actual Peer object
  *
+ * @author <a href="mailto:josh@stonecottage.com">Josh Lucas</a>
+ * @author <a href="mailto:jon@collab.net">Jon S. Stevens</a>
+ * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:cberry@gluecode.com">Craig D. Berry</a>
+ * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

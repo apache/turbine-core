@@ -25,6 +25,8 @@ import org.apache.turbine.util.TurbineException;
 /**
  * Implementations of the JspService interface.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @version $Id$
  */
 public interface JspService
     extends Service

@@ -43,6 +43,7 @@ import org.apache.turbine.util.security.GroupSet;
  * It allows the exchange of the default Turbine supplied TurbineGroupPeer
  * class against a custom class.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  *
  */

@@ -27,6 +27,7 @@ import org.apache.turbine.services.TurbineServices;
  * through static methods.  The SessionService should ALWAYS be accessed
  * through this class.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  * @see org.apache.turbine.services.session.SessionService
  */

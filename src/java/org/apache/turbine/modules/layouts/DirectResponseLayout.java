@@ -25,6 +25,7 @@ import org.apache.turbine.util.TurbineException;
  * It requires that data.declareDirectResponse() has been called to indicate 
  * that the OutputStream is being handled elsewhere.
  *
+ * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
 public class DirectResponseLayout extends Layout

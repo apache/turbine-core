@@ -41,6 +41,8 @@ import org.apache.turbine.services.TurbineBaseService;
  * &lt;/listener&gt;
  * </pre></code></blockquote>
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @since 2.3
  * @version $Id$
  * @see org.apache.turbine.services.session.TurbineSession

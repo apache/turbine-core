@@ -28,6 +28,8 @@ import org.apache.turbine.util.RunData;
  * Base JSP navigation that should be subclassed by Navigation that want to
  * use JSP.  Subclasses should override the doBuildTemplate() method.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class BaseJspNavigation

@@ -30,6 +30,7 @@ import java.io.InputStream;
  * In addition, this class maintains static default mappings
  * and constructors support application specific mappings.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
 public class MimeTypeMap
