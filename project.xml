@@ -136,8 +136,8 @@
     <developer>
       <name>Eric Pugh</name>
       <id>epugh</id>
-      <email>epugh@upstate.com</email>
-      <organization/>
+      <email>epugh@opensourceconnections.com</email>
+      <organization>OpenSource Connections</organization>
     </developer>
     <developer>
       <name>Daniel Rall</name>
@@ -464,37 +464,37 @@
     <dependency>
       <id>commons-collections</id>
       <version>2.1</version>
-      <url>http://jakarta.apache.org/commons/collections.html</url>
+      <url>http://jakarta.apache.org/commons/collections/</url>
     </dependency>
     <dependency>
       <id>commons-configuration</id>
       <version>20040328.175011</version>
-      <url>http://jakarta.apache.org/commons/configuration/index.html</url>
+      <url>http://jakarta.apache.org/commons/configuration/</url>
     </dependency>
     <dependency>
       <id>commons-digester</id>
       <version>1.5</version>
-      <url>http://jakarta.apache.org/commons/digester/index.html</url>
+      <url>http://jakarta.apache.org/commons/digester/</url>
     </dependency>
     <dependency>
       <id>commons-email</id>
       <version>20030310.165926</version>
-      <url>http://jakarta.apache.org/commons/sandbox/email</url>
+      <url>http://jakarta.apache.org/commons/sandbox/email/</url>
     </dependency>
     <dependency>
       <id>commons-fileupload</id>
       <version>1.0</version>
-      <url>http://jakarta.apache.org/commons/fileupload/index.html</url>
+      <url>http://jakarta.apache.org/commons/fileupload/</url>
     </dependency>
     <dependency>
       <id>commons-io</id>
       <version>0.2-dev.20020717.100545</version>
-      <url>http://jakarta.apache.org/commons/io/index.html</url>
+      <url>http://jakarta.apache.org/commons/io/</url>
     </dependency>    
     <dependency>
       <id>commons-lang</id>
       <version>2.0</version>
-      <url>http://jakarta.apache.org/commons/lang.html</url>
+      <url>http://jakarta.apache.org/commons/lang/</url>
     </dependency>
     <dependency>
       <id>commons-logging</id>
