@@ -66,10 +66,12 @@ import org.apache.avalon.framework.component.ComponentException;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.avalon.framework.context.DefaultContext;
+import org.apache.avalon.framework.context.Context;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.Turbine;
 
 /**
  * An implementation of AvalonComponentService which loads all the
@@ -167,6 +169,7 @@ public class TurbineAvalonComponentService
         roles.configure(roleConfig);
 
         // Setup ECM
+        this.manager.setLoggerManager(lm);
         this.manager.enableLogging(lm.getLoggerForCategory("org.apache.turbine.services"));
         this.manager.contextualize(new DefaultContext());
         this.manager.setRoleManager(roles);
