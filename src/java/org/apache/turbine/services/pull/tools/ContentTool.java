@@ -1,4 +1,4 @@
-package org.apache.turbine.services.pull.tool;
+package org.apache.turbine.services.pull.tools;
 
 /* ====================================================================
  * The Apache Software License, Version 1.1
