@@ -43,16 +43,12 @@ package org.apache.turbine;
  * Apache Software Foundation, please see <http://www.apache.org/>.
  */
 
-import java.io.File;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
 import org.apache.turbine.test.BaseTestCase;
-import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.test.EnhancedMockHttpServletResponse;
 import org.apache.turbine.util.TurbineConfig;
-import org.apache.turbine.util.TurbineXmlConfig;
 
 import com.mockobjects.servlet.MockHttpServletRequest;
 
@@ -84,7 +80,6 @@ public class TurbineTest extends BaseTestCase {
         assertEquals("80",Turbine.getServerPort());
         assertEquals("",Turbine.getScriptName());
         Turbine t = tc.getTurbine();
-        assertEquals("80",t.getServerPort());
         
         MockHttpServletRequest request = getMockRequest();
         EnhancedMockHttpServletResponse resp = new EnhancedMockHttpServletResponse();
