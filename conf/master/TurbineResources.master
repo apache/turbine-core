@@ -1054,6 +1054,9 @@ url.case.folding=lower
 # Components implementing the lifecycle interfaces can be loaded,
 # configured and initialized by Turbine
 # -------------------------------------------------------------------
+# THE COMPOINENTSERVICE IS DEPRECATED!!!!
+# You should use the AvalonComponentService instead!
+# -------------------------------------------------------------------
 
 #
 # Here you define the names of the various components to load. These

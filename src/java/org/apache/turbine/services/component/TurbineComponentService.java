@@ -73,8 +73,8 @@ import org.apache.turbine.services.TurbineBaseService;
  *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
+ * @deprecated torque is now loaded using the AvalonComponentService
  */
-
 public class TurbineComponentService
         extends TurbineBaseService
         implements ComponentService
@@ -110,6 +110,8 @@ public class TurbineComponentService
         Configuration loaderConf = new BaseConfiguration();
 
         String[] names = getConfiguration().getStringArray(NAME);
+        
+        log.warn("The ComponentService is deprecated!");
 
         for (int i = 0; i < names.length; i++)
         {
