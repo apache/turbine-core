@@ -1099,12 +1099,12 @@ services.ComponentService.torque.config = /WEB-INF/conf/Torque.properties
 #
 # Name and location to the configuration file for the components.
 #
-services.AvalonComponentService.componentConfiguration = WEB-ING/conf/componentConfiguration.xml
+services.AvalonComponentService.componentConfiguration = WEB-INF/conf/componentConfiguration.xml
 
 #
 # Name and location to the configuration file for the component roles.
 #
-services.AvalonComponentService.roleConfiguration = WEB-ING/conf/roleConfiguration.xml
+services.AvalonComponentService.roleConfiguration = WEB-INF/conf/roleConfiguration.xml
 
 # -------------------------------------------------------------------
 #
