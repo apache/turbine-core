@@ -78,13 +78,13 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.factory.TurbineFactory;
 import org.apache.turbine.services.servlet.TurbineServlet;
-import org.apache.turbine.services.template.mapper.TemplateBaseLayoutMapper;
-import org.apache.turbine.services.template.mapper.TemplateBaseMapper;
-import org.apache.turbine.services.template.mapper.TemplateClassMapper;
-import org.apache.turbine.services.template.mapper.TemplateDirectMapper;
-import org.apache.turbine.services.template.mapper.TemplateLayoutMapper;
-import org.apache.turbine.services.template.mapper.TemplateMapper;
-import org.apache.turbine.services.template.mapper.TemplateScreenMapper;
+import org.apache.turbine.services.template.mapper.BaseMapper;
+import org.apache.turbine.services.template.mapper.BaseTemplateMapper;
+import org.apache.turbine.services.template.mapper.ClassMapper;
+import org.apache.turbine.services.template.mapper.DirectMapper;
+import org.apache.turbine.services.template.mapper.LayoutTemplateMapper;
+import org.apache.turbine.services.template.mapper.Mapper;
+import org.apache.turbine.services.template.mapper.ScreenTemplateMapper;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.uri.URIConstants;
@@ -262,7 +262,7 @@ public class TurbineTemplateService
     public static final int TEMPLATE_TYPES = 7;
 
     /** Here we register the mapper objects for our various object types */
-    private TemplateMapper [] mapperRegistry = null;
+    private Mapper [] mapperRegistry = null;
 
     /**
      * The default file extension used as a registry key when a
@@ -329,7 +329,7 @@ public class TurbineTemplateService
 
         templateEngineRegistry = Collections.synchronizedMap(new HashMap());
 
-        initTemplateMapper(config);
+        initMapper(config);
         setInit(true);
     }
 
@@ -458,7 +458,7 @@ public class TurbineTemplateService
      */
     public String getDefaultPageName(String template)
     {
-        return ((TemplateMapper) mapperRegistry[PAGE_KEY]).getDefaultName(template);
+        return ((Mapper) mapperRegistry[PAGE_KEY]).getDefaultName(template);
     }
 
     /**
@@ -471,7 +471,7 @@ public class TurbineTemplateService
      */
     public String getDefaultScreenName(String template)
     {
-        return ((TemplateMapper) mapperRegistry[SCREEN_KEY]).getDefaultName(template);
+        return ((Mapper) mapperRegistry[SCREEN_KEY]).getDefaultName(template);
     }
 
     /**
@@ -484,7 +484,7 @@ public class TurbineTemplateService
      */
     public String getDefaultLayoutName(String template)
     {
-        return ((TemplateMapper) mapperRegistry[LAYOUT_KEY]).getDefaultName(template);
+        return ((Mapper) mapperRegistry[LAYOUT_KEY]).getDefaultName(template);
     }
 
     /**
@@ -497,7 +497,7 @@ public class TurbineTemplateService
      */
     public String getDefaultNavigationName(String template)
     {
-        return ((TemplateMapper) mapperRegistry[NAVIGATION_KEY]).getDefaultName(template);
+        return ((Mapper) mapperRegistry[NAVIGATION_KEY]).getDefaultName(template);
     }
 
     /**
@@ -510,7 +510,7 @@ public class TurbineTemplateService
      */
     public String getDefaultLayoutTemplateName(String template)
     {
-        return ((TemplateMapper) mapperRegistry[LAYOUT_TEMPLATE_KEY]).getDefaultName(template);
+        return ((Mapper) mapperRegistry[LAYOUT_TEMPLATE_KEY]).getDefaultName(template);
     }
 
     /**
@@ -552,7 +552,7 @@ public class TurbineTemplateService
     public String getScreenName(String template)
         throws Exception
     {
-        return ((TemplateMapper) mapperRegistry[SCREEN_KEY]).getMappedName(template);
+        return ((Mapper) mapperRegistry[SCREEN_KEY]).getMappedName(template);
     }
 
     /**
@@ -566,7 +566,7 @@ public class TurbineTemplateService
     public String getLayoutName(String template)
         throws Exception
     {
-        return ((TemplateMapper) mapperRegistry[LAYOUT_KEY]).getMappedName(template);
+        return ((Mapper) mapperRegistry[LAYOUT_KEY]).getMappedName(template);
     }
 
     /**
@@ -580,7 +580,7 @@ public class TurbineTemplateService
     public String getNavigationName(String template)
         throws Exception
     {
-        return ((TemplateMapper) mapperRegistry[NAVIGATION_KEY]).getMappedName(template);
+        return ((Mapper) mapperRegistry[NAVIGATION_KEY]).getMappedName(template);
     }
 
     /**
@@ -595,7 +595,7 @@ public class TurbineTemplateService
     public String getScreenTemplateName(String template)
         throws Exception
     {
-        return ((TemplateMapper) mapperRegistry[SCREEN_TEMPLATE_KEY]).getMappedName(template);
+        return ((Mapper) mapperRegistry[SCREEN_TEMPLATE_KEY]).getMappedName(template);
     }
 
     /**
@@ -609,7 +609,7 @@ public class TurbineTemplateService
     public String getLayoutTemplateName(String template)
         throws Exception
     {
-        return ((TemplateMapper) mapperRegistry[LAYOUT_TEMPLATE_KEY]).getMappedName(template);
+        return ((Mapper) mapperRegistry[LAYOUT_TEMPLATE_KEY]).getMappedName(template);
     }
 
     /**
@@ -624,7 +624,7 @@ public class TurbineTemplateService
     public String getNavigationTemplateName(String template)
         throws Exception
     {
-        return ((TemplateMapper) mapperRegistry[NAVIGATION_TEMPLATE_KEY]).getMappedName(template);
+        return ((Mapper) mapperRegistry[NAVIGATION_TEMPLATE_KEY]).getMappedName(template);
     }
 
     /**
@@ -703,9 +703,9 @@ public class TurbineTemplateService
      * object type which is managed by the TemplateService.
      *
      * @param templateKey  One of the _KEY constants for the Template object types.
-     * @param mapper  An object which implements the TemplateMapper interface.
+     * @param mapper  An object which implements the Mapper interface.
      */
-    private void registerMapper(int templateKey, TemplateMapper mapper)
+    private void registerMapper(int templateKey, Mapper mapper)
     {
         mapper.init();
         mapperRegistry[templateKey] = mapper;
@@ -718,14 +718,14 @@ public class TurbineTemplateService
      * @param conf The current configuration object.
      * @throws InitializationException A problem occured trying to set up the mappers.
      */
-    private void initTemplateMapper(Configuration conf)
+    private void initMapper(Configuration conf)
             throws InitializationException
     {
         // Create a registry with the number of Template Types managed by this service.
         // We could use a List object here and extend the number of managed objects
         // dynamically. However, by using an Object Array, we get much more performance
         // out of the Template Service.
-        mapperRegistry = new TemplateMapper [TEMPLATE_TYPES];
+        mapperRegistry = new Mapper [TEMPLATE_TYPES];
 
         String [] mapperNames = new String [] {
             PAGE_NAME,SCREEN_NAME, LAYOUT_NAME,
@@ -733,13 +733,13 @@ public class TurbineTemplateService
         };
 
         String [] mapperClasses = new String [] {
-            TemplateDirectMapper.class.getName(),
-            TemplateClassMapper.class.getName(),
-            TemplateClassMapper.class.getName(),
-            TemplateClassMapper.class.getName(),
-            TemplateLayoutMapper.class.getName(),
-            TemplateScreenMapper.class.getName(),
-            TemplateScreenMapper.class.getName()
+            DirectMapper.class.getName(),
+            ClassMapper.class.getName(),
+            ClassMapper.class.getName(),
+            ClassMapper.class.getName(),
+            LayoutTemplateMapper.class.getName(),
+            ScreenTemplateMapper.class.getName(),
+            ScreenTemplateMapper.class.getName()
         };
 
         int [] mapperCacheSize = new int [] {
@@ -801,11 +801,11 @@ public class TurbineTemplateService
 
             log.info("Using " + mapperClass + " to map " + mapperNames[i] + " elements");
 
-            TemplateMapper tm = null;
+            Mapper tm = null;
 
             try
             {
-                tm = (TemplateMapper) TurbineFactory.getInstance(mapperClass);
+                tm = (Mapper) TurbineFactory.getInstance(mapperClass);
             }
             catch (TurbineException te)
             {
@@ -817,14 +817,14 @@ public class TurbineTemplateService
             tm.setDefaultProperty(mapperDefaultProperty[i]);
             tm.setSeparator(mapperSeparator[i]);
 
-            if ((mapperLoader[i] != null) && (tm instanceof TemplateClassMapper))
+            if ((mapperLoader[i] != null) && (tm instanceof ClassMapper))
             {
-                ((TemplateClassMapper) tm).setLoader(mapperLoader[i]);
+                ((ClassMapper) tm).setLoader(mapperLoader[i]);
             }
 
-            if ((mapperPrefix[i] != null) && (tm instanceof TemplateBaseLayoutMapper))
+            if ((mapperPrefix[i] != null) && (tm instanceof BaseTemplateMapper))
             {
-                ((TemplateBaseLayoutMapper) tm).setPrefix(mapperPrefix[i]);
+                ((BaseTemplateMapper) tm).setPrefix(mapperPrefix[i]);
             }
 
             registerMapper(i, tm);

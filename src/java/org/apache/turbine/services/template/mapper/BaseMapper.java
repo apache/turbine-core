@@ -70,7 +70,7 @@ import org.apache.turbine.services.template.TemplateEngineService;
  * @version $Id$
  */
 
-public abstract class TemplateBaseMapper
+public abstract class BaseMapper
 {
     /** True if this mapper should cache template -> name mappings */
     private boolean useCache = false;
@@ -96,7 +96,7 @@ public abstract class TemplateBaseMapper
      * the bean setter to set the various properties needed for
      * this mapper before first usage.
      */
-    public TemplateBaseMapper()
+    public BaseMapper()
     {
     }
 
