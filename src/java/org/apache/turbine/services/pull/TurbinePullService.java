@@ -377,7 +377,7 @@ public class TurbinePullService extends TurbineBaseService
             catch (Exception e)
             {
                 Log.error("Cannot find tool class " + toolClassName
-                        + ", please check the name of the class.");
+                        + ", please check the name of the class.", e);
             }
         }
 
@@ -449,7 +449,7 @@ public class TurbinePullService extends TurbineBaseService
             {
                 Log.error(
                         "Could not instantiate tool " + toolData.toolClassName
-                        + " to add to the context");
+                        + " to add to the context", e);
             }
         }
     }
@@ -486,7 +486,7 @@ public class TurbinePullService extends TurbineBaseService
             {
                 Log.error(
                         "Could not instantiate tool " + toolData.toolClassName
-                        + " to add to the context",e);
+                        + " to add to the context", e);
             }
         }
     }
@@ -559,7 +559,7 @@ public class TurbinePullService extends TurbineBaseService
             {
                 Log.error(
                         "Could not instantiate tool " + toolData.toolClassName
-                        + " to add to the context");
+                        + " to add to the context", e);
             }
         }
     }
