@@ -159,7 +159,7 @@ public abstract class ActionEvent extends Action
                 .getBoolean(TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_KEY,
                         TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_DEFAULT);
 
-        log.info(submitValueKey 
+        log.debug(submitValueKey 
                 ? "ActionEvent accepts only eventSubmit_do Keys with a value != 0"
                 : "ActionEvent accepts all eventSubmit_do Keys");
     }
