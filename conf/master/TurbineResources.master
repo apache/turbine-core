@@ -500,6 +500,28 @@ tool.global.ui=org.apache.turbine.services.pull.util.UIManager
 
 tool.ui.skin=default
 
+#
+# The content tool can put its URIs through the Servlet container,
+# which might attach things like the jsessionid even to URIs that
+# are not servered by the container. 
+#
+# The default behaviour was not to put these through the container.
+#
+# Set this to true if you need things like jsessionid attached to all
+# links generated from the $content pull tool.
+#
+tool.content.want.encoding = false
+
+#
+# Both the link and the content tool normally return absolute URIs
+# You can change this by exchanging the tool classes but this is not
+# really recommended. Setting these properties to true allow you
+# to change the behaviour if you want only relative URIs (e.g. if you
+# run behind a reverse proxy or a load balancer).
+#
+tool.content.want.relative = false
+tool.link.want.relative = false
+
 # -------------------------------------------------------------------
 #
 #  V E L O C I T Y  S E R V I C E
