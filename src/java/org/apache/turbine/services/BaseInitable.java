@@ -25,13 +25,13 @@ package org.apache.turbine.services;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -65,7 +65,7 @@ package org.apache.turbine.services;
  * @version $Id$
  */
 public class BaseInitable
-    implements Initable
+        implements Initable
 {
     /** InitableBroker that instantiatd this class. */
     protected InitableBroker initableBroker;
@@ -89,7 +89,7 @@ public class BaseInitable
      *
      * @param broker The InitableBroker that instantiated this object.
      */
-    public void setInitableBroker( InitableBroker broker )
+    public void setInitableBroker(InitableBroker broker)
     {
         this.initableBroker = broker;
     }
@@ -108,20 +108,20 @@ public class BaseInitable
      * Performs early initialization.  Used in a manner similar to a ctor.
      *
      * BaseInitable doesn't need early initialization, therefore it
-     * ignores all objects passed to it and performs no initialization 
+     * ignores all objects passed to it and performs no initialization
      * activities.
      *
      * @param data An Object to use for initialization activities.
      * @exception InitializationException Initialization of this
      * class was not successful.
      */
-    public void init( Object data ) throws InitializationException
+    public void init(Object data) throws InitializationException
     {
     }
 
     /**
-     * Performs late initializtion.  Called when the Service is requested 
-     * for the first time (if not already completely initialized by the 
+     * Performs late initializtion.  Called when the Service is requested
+     * for the first time (if not already completely initialized by the
      * early initializer).
      *
      * Late intialization of a BaseInitable is alwas successful.
@@ -144,7 +144,6 @@ public class BaseInitable
         setInit(false);
     }
 
-    
     /**
      * Returns initialization status.
      *
@@ -160,7 +159,7 @@ public class BaseInitable
      *
      * @param value The new initialization status.
      */
-    protected void setInit( boolean value )
+    protected void setInit(boolean value)
     {
         this.isInitialized = value;
     }

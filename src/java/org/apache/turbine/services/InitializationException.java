@@ -66,14 +66,14 @@ import org.apache.turbine.util.TurbineException;
  * @see org.apache.turbine.services.Initable
  */
 public class InitializationException
-    extends TurbineException
+        extends TurbineException
 {
     /**
      * Construct an InitializationException with specified detail message.
      *
      * @param msg The detail message.
      */
-    public InitializationException( String msg )
+    public InitializationException(String msg)
     {
         super(msg);
     }
@@ -86,7 +86,7 @@ public class InitializationException
      * @param t the exception or error that caused this exception
      *               to be thrown.
      */
-    public InitializationException( String msg, Throwable t )
+    public InitializationException(String msg, Throwable t)
     {
         super(msg, t);
     }

@@ -56,7 +56,6 @@ package org.apache.turbine.services;
 
 import org.apache.commons.configuration.Configuration;
 
-
 /**
  * Classes that implement this interface can act as a broker for
  * <code>Service</code> classes.
@@ -99,7 +98,7 @@ public interface ServiceBroker
      * or can't be initialized.
      */
     void initService(String name)
-        throws InitializationException;
+            throws InitializationException;
 
     /**
      * Shutdowns a Service.
@@ -128,7 +127,7 @@ public interface ServiceBroker
      * can't be initialized.
      */
     Service getService(String name)
-        throws InstantiationException;
+            throws InstantiationException;
 
     /**
      * Returns the configuration of a specific service. Services

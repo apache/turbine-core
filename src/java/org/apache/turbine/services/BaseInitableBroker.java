@@ -56,6 +56,7 @@ package org.apache.turbine.services;
 
 import java.util.Hashtable;
 import java.util.Stack;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -89,7 +90,7 @@ import org.apache.commons.logging.LogFactory;
  * @version $Id$
  */
 public abstract class BaseInitableBroker
-    implements InitableBroker
+        implements InitableBroker
 {
     /** A repository of Initable instances. */
     protected Hashtable initables = new Hashtable();
@@ -124,20 +125,20 @@ public abstract class BaseInitableBroker
      * @exception InitializationException Initialization was not successful.
      */
     public void initClass(String className,
-                           Object data)
-        throws InitializationException
+                          Object data)
+            throws InitializationException
     {
         // make sure that only one thread calls this method recursively
         synchronized(stack)
         {
             int pos = stack.search(className);
-            if(pos != -1)
+            if (pos != -1)
             {
                 StringBuffer msg = new StringBuffer().append(className)
-                    .append(" couldn't be initialized because of circular depency chain:\n");
-                for(int i=pos; i>0; i--)
+                        .append(" couldn't be initialized because of circular depency chain:\n");
+                for(int i = pos; i > 0; i--)
                 {
-                    msg.append((String)stack.elementAt(stack.size()-i-1)+"->");
+                    msg.append((String) stack.elementAt(stack.size() - i - 1) + "->");
                 }
                 msg.append(className).append('\n');
 
@@ -147,7 +148,7 @@ public abstract class BaseInitableBroker
             {
                 stack.push(className);
                 Initable instance = getInitableInstance(className);
-                if(!instance.getInit())
+                if (!instance.getInit())
                 {
                     // this call might result in an indirect recursion
                     instance.init(data);
@@ -175,10 +176,10 @@ public abstract class BaseInitableBroker
         try
         {
             Initable initable = getInitableInstance(className);
-            if(initable.getInit())
+            if (initable.getInit())
             {
                 initable.shutdown();
-                ((BaseInitable)initable).setInit(false);
+                ((BaseInitable) initable).setInit(false);
             }
         }
         catch (InstantiationException e)
@@ -186,7 +187,7 @@ public abstract class BaseInitableBroker
             // Shutdown of a nonexistent class was requested.
             // This does not hurt anything, so we log the error and continue.
             log.error("Shutdown of a nonexistent class " +
-                      className + " was requested", e);
+                    className + " was requested", e);
         }
     }
 
@@ -204,28 +205,28 @@ public abstract class BaseInitableBroker
      * during instantiation or initialization of the Initable.
      */
     public Initable getInitable(String className)
-        throws InstantiationException
+            throws InstantiationException
     {
         Initable initable;
         try
         {
             initable = getInitableInstance(className);
-            if(!initable.getInit())
+            if (!initable.getInit())
             {
                 synchronized(initable.getClass())
                 {
-                    if(!initable.getInit())
+                    if (!initable.getInit())
                     {
                         initable.init();
                     }
-                    if(!initable.getInit())
+                    if (!initable.getInit())
                     {
                         // this exception will be caught & rethrown by this very method.
                         // getInit() returning false indicates some initialization issue,
                         // which in turn prevents the InitableBroker from passing a working
                         // instance of the initable to the client.
                         throw new InitializationException(
-                            "init() failed to initialize class " + className);
+                                "init() failed to initialize class " + className);
                     }
                 }
             }
@@ -234,7 +235,7 @@ public abstract class BaseInitableBroker
         catch (InitializationException e)
         {
             throw new InstantiationException("Class " + className +
-                            " failed to initialize", e);
+                    " failed to initialize", e);
         }
     }
 
@@ -250,18 +251,18 @@ public abstract class BaseInitableBroker
      * be instantiated.
      */
     protected Initable getInitableInstance(String className)
-        throws InstantiationException
+            throws InstantiationException
     {
-        Initable initable = (Initable)initables.get(className);
+        Initable initable = (Initable) initables.get(className);
 
-        if(initable == null)
+        if (initable == null)
         {
             try
             {
-                initable = (Initable)Class.forName(className).newInstance();
+                initable = (Initable) Class.forName(className).newInstance();
             }
 
-            // those two errors must be passed to the VM
+                    // those two errors must be passed to the VM
             catch (ThreadDeath t)
             {
                 throw t;
@@ -276,20 +277,20 @@ public abstract class BaseInitableBroker
                 // Used to indicate error condition.
                 String msg = null;
 
-                if(t instanceof NoClassDefFoundError)
+                if (t instanceof NoClassDefFoundError)
                 {
                     msg = "A class referenced by " + className +
-                        " is unavailable. Check your jars and classes.";
+                            " is unavailable. Check your jars and classes.";
                 }
-                else if(t instanceof ClassNotFoundException)
+                else if (t instanceof ClassNotFoundException)
                 {
                     msg = "Class " + className +
-                        " is unavailable. Check your jars and classes.";
+                            " is unavailable. Check your jars and classes.";
                 }
-                else if(t instanceof ClassCastException)
+                else if (t instanceof ClassCastException)
                 {
                     msg = "Class " + className +
-                        " doesn't implement Initable.";
+                            " doesn't implement Initable.";
                 }
                 else
                 {

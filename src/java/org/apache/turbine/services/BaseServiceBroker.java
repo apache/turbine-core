@@ -250,13 +250,13 @@ public abstract class BaseServiceBroker
             String[] keyParts = StringUtils.split(key, ".");
 
             if ((keyParts.length == 3)
-                && (keyParts[0] + ".").equals(SERVICE_PREFIX)
-                && ("." + keyParts[2]).equals(CLASSNAME_SUFFIX))
+                    && (keyParts[0] + ".").equals(SERVICE_PREFIX)
+                    && ("." + keyParts[2]).equals(CLASSNAME_SUFFIX))
             {
                 String serviceKey = keyParts[1];
                 log.info("Added Mapping for Service: " + serviceKey);
 
-                if(!mapping.containsKey(serviceKey))
+                if (!mapping.containsKey(serviceKey))
                 {
                     mapping.setProperty(serviceKey,
                             configuration.getString(key));
@@ -316,7 +316,7 @@ public abstract class BaseServiceBroker
         // initialization.
         Service instance = getServiceInstance(name);
 
-        if(!instance.getInit())
+        if (!instance.getInit())
         {
             // this call might result in an indirect recursion
             instance.init();
@@ -335,10 +335,10 @@ public abstract class BaseServiceBroker
         {
             initServices(false);
         }
-        catch(InstantiationException notThrown)
+        catch (InstantiationException notThrown)
         {
         }
-        catch(InitializationException notThrown)
+        catch (InitializationException notThrown)
         {
         }
     }
@@ -354,7 +354,7 @@ public abstract class BaseServiceBroker
     public void initServices(boolean report)
             throws InstantiationException, InitializationException
     {
-        if(report)
+        if (report)
         {
             // Throw exceptions
             for(Iterator names = getServiceNames(); names.hasNext();)
@@ -373,11 +373,11 @@ public abstract class BaseServiceBroker
                 }
                         // In case of an exception, file an error message; the
                         // system may be still functional, though.
-                catch(InstantiationException e)
+                catch (InstantiationException e)
                 {
                     log.error(e);
                 }
-                catch(InitializationException e)
+                catch (InitializationException e)
                 {
                     log.error(e);
                 }
@@ -394,7 +394,7 @@ public abstract class BaseServiceBroker
             throws InstantiationException, InitializationException
     {
         // Only start up services that have their earlyInit flag set.
-        if(getConfiguration(name).getBoolean("earlyInit", false))
+        if (getConfiguration(name).getBoolean("earlyInit", false))
         {
             log.info("Start Initializing service (early): " + name);
             initService(name);
@@ -415,10 +415,10 @@ public abstract class BaseServiceBroker
         try
         {
             Service service = getServiceInstance(name);
-            if(service != null && service.getInit())
+            if (service != null && service.getInit())
             {
                 service.shutdown();
-                if(service.getInit() && service instanceof BaseService)
+                if (service.getInit() && service instanceof BaseService)
                 {
                     // BaseService::shutdown() does this by default,
                     // but could've been overriden poorly.
@@ -426,7 +426,7 @@ public abstract class BaseServiceBroker
                 }
             }
         }
-        catch(InstantiationException e)
+        catch (InstantiationException e)
         {
             // Assuming harmless -- log the error and continue.
             log.error("Shutdown of a nonexistent Service '"
@@ -482,11 +482,11 @@ public abstract class BaseServiceBroker
         try
         {
             service = getServiceInstance(name);
-            if(!service.getInit())
+            if (!service.getInit())
             {
                 synchronized(service.getClass())
                 {
-                    if(!service.getInit())
+                    if (!service.getInit())
                     {
                         log.info("Start Initializing service (late): " + name);
                         service.init();
@@ -494,7 +494,7 @@ public abstract class BaseServiceBroker
                     }
                 }
             }
-            if(!service.getInit())
+            if (!service.getInit())
             {
                 // this exception will be caught & rethrown by this very method.
                 // getInit() returning false indicates some initialization issue,
@@ -505,7 +505,7 @@ public abstract class BaseServiceBroker
             }
             return service;
         }
-        catch(InitializationException e)
+        catch (InitializationException e)
         {
             throw new InstantiationException("Service " + name +
                     " failed to initialize", e);
@@ -534,10 +534,10 @@ public abstract class BaseServiceBroker
     {
         Service service = (Service) services.get(name);
 
-        if(service == null)
+        if (service == null)
         {
             String className = mapping.getString(name);
-            if(StringUtils.isEmpty(className))
+            if (StringUtils.isEmpty(className))
             {
                 throw new InstantiationException(
                         "ServiceBroker: unknown service " + name + " requested");
@@ -546,37 +546,37 @@ public abstract class BaseServiceBroker
             {
                 service = (Service) services.get(className);
 
-                if(service == null)
+                if (service == null)
                 {
                     try
                     {
                         service = (Service) Class.forName(className).newInstance();
                     }
                             // those two errors must be passed to the VM
-                    catch(ThreadDeath t)
+                    catch (ThreadDeath t)
                     {
                         throw t;
                     }
-                    catch(OutOfMemoryError t)
+                    catch (OutOfMemoryError t)
                     {
                         throw t;
                     }
-                    catch(Throwable t)
+                    catch (Throwable t)
                     {
                         // Used to indicate error condition.
                         String msg = null;
 
-                        if(t instanceof NoClassDefFoundError)
+                        if (t instanceof NoClassDefFoundError)
                         {
                             msg = "A class referenced by " + className +
                                     " is unavailable. Check your jars and classes.";
                         }
-                        else if(t instanceof ClassNotFoundException)
+                        else if (t instanceof ClassNotFoundException)
                         {
                             msg = "Class " + className +
                                     " is unavailable. Check your jars and classes.";
                         }
-                        else if(t instanceof ClassCastException)
+                        else if (t instanceof ClassCastException)
                         {
                             msg = "Class " + className +
                                     " doesn't implement the Service interface";
@@ -590,12 +590,12 @@ public abstract class BaseServiceBroker
                     }
                 }
             }
-            catch(ClassCastException e)
+            catch (ClassCastException e)
             {
                 throw new InstantiationException("ServiceBroker: Class "
                         + className + " does not implement Service interface.", e);
             }
-            catch(InstantiationException e)
+            catch (InstantiationException e)
             {
                 throw new InstantiationException(
                         "Failed to instantiate service " + name, e);
