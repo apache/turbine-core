@@ -86,7 +86,10 @@ public class TurbineServletService
     /** Logging */
     private static Log log = LogFactory.getLog(TurbineServletService.class);
 
+    /** The servlet context for this servlet */
     private ServletContext servletContext = null;
+
+    /** The servlet configuration for this servlet */
     private ServletConfig servletConfig = null;
 
     /**
@@ -101,12 +104,11 @@ public class TurbineServletService
         {
             this.servletContext = servletConfig.getServletContext();
 
-            log.debug("[TurbineServletService] Initializing with ServletConfig");
+            log.debug("Initializing with ServletConfig");
         }
         catch (Exception e)
         {
-            log.error("Cannot initialize TurbineServletService.");
-            log.error(e);
+            log.error("Cannot initialize TurbineServletService.", e);
         }
         setInit(true);
     }
