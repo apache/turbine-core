@@ -55,6 +55,7 @@ package org.apache.turbine.services.security.passive;
  */
 
 import org.apache.torque.util.Criteria;
+
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.UserManager;
 import org.apache.turbine.util.security.DataBackendException;

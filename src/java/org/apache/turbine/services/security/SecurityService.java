@@ -54,9 +54,11 @@ package org.apache.turbine.services.security;
  * <http://www.apache.org/>.
  */
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.torque.util.Criteria;
+
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
@@ -109,7 +111,7 @@ public interface SecurityService
 
     /**
      * the default implementation of User interface
-     * (org.apache.turbine.om.security.DBUser)
+     * (org.apache.turbine.om.security.TurbineUser)
      */
     static final String USER_CLASS_DEFAULT
             = TurbineUser.class.getName();
@@ -122,7 +124,7 @@ public interface SecurityService
 
     /**
      * The default implementation of the Group interface
-     *(org.apache.fulcrum.security.impl.db.DBGroup)
+     * (org.apache.turbine.om.security.TurbineGroup)
      */
     static final String GROUP_CLASS_DEFAULT
             = TurbineGroup.class.getName();
@@ -135,7 +137,7 @@ public interface SecurityService
 
     /**
      * The default implementation of the Permissions interface
-     * (org.apache.fulcrum.security.impl.db.DBPermission)
+     * (org.apache.turbine.om.security.TurbinePermission)
      */
     static final String PERMISSION_CLASS_DEFAULT
             = TurbinePermission.class.getName();
@@ -148,7 +150,7 @@ public interface SecurityService
 
     /**
      * The default implementation of the Role Interface
-     * (org.apache.fulcrum.security.impl.db.DBRole)
+     * (org.apache.turbine.om.security.TurbineRole)
      */
     static final String ROLE_CLASS_DEFAULT
             = TurbineRole.class.getName();
@@ -499,7 +501,7 @@ public interface SecurityService
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public void saveOnSessionUnbind(User user)
+    void saveOnSessionUnbind(User user)
             throws UnknownEntityException, DataBackendException;
 
     /*-----------------------------------------------------------------------
