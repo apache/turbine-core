@@ -87,7 +87,7 @@ public abstract class VelocityActionEvent extends ActionEvent
      * class.
      *
      * @param data A Turbine RunData object.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public abstract void doPerform(RunData data)
             throws Exception;
@@ -98,7 +98,7 @@ public abstract class VelocityActionEvent extends ActionEvent
      * doPerform() method instead.
      *
      * @param data A Turbine RunData object.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     protected void perform(RunData data)
             throws Exception
@@ -118,7 +118,7 @@ public abstract class VelocityActionEvent extends ActionEvent
      *
      * @param data A Turbine RunData object.
      * @param context Velocity context information.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public void executeEvents(RunData data, Context context) throws Exception
     {
