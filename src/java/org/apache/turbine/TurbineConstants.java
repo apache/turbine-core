@@ -302,6 +302,12 @@ public interface TurbineConstants
     /** Context Key for the navigation object placeholder in the various velocity layouts */
     String NAVIGATION_PLACEHOLDER = "navigation";
 
+    /** Context Key for the Processing Exception */
+    String PROCESSING_EXCEPTION_PLACEHOLDER = "processingException";
+
+    /** Context Key for the Stack Trace */
+    String STACK_TRACE_PLACEHOLDER = "stackTrace";
+
     /** Prefix for layout related classes and templates */
     String LAYOUT_PREFIX = "layouts";
 
