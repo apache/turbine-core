@@ -263,9 +263,6 @@ public class TurbineServices
      */
     protected void initMapping()
     {
-        int pref = SERVICE_PREFIX.length();
-        int suff = CLASSNAME_SUFFIX.length();
-
         /*
          * These keys returned in an order that corresponds
          * to the order the services are listed in
@@ -284,8 +281,8 @@ public class TurbineServices
             String key = (String)keys.next();
             String [] keyParts = StringUtils.split(key, ".");
             if ((keyParts.length == 3) 
-                && keyParts[0].equals(SERVICE_PREFIX) 
-                && keyParts[2].equals(CLASSNAME_SUFFIX))
+                && (keyParts[0] + ".").equals(SERVICE_PREFIX) 
+                && ("." + keyParts[2]).equals(CLASSNAME_SUFFIX))
             {
                 String serviceKey = keyParts[1];
                 notice ("Added Mapping for Service: " + serviceKey);
