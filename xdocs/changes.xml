@@ -23,6 +23,8 @@
   </properties>
 
   <body>
+    <release version="2.4-M2" date="in cvs">
+    </release>
     <release version="2.4-M1" date="2004-08-14" description="Milestone release including Pipeline and PipelineData objects">
       <action dev="epugh" type="update">
      Update to Commons Configuration 1.0-RC1.  TurbineConfiguration.xml files should switch
