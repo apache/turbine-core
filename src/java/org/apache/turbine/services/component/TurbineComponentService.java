@@ -55,7 +55,6 @@ package org.apache.turbine.services.component;
  */
 
 import java.util.Iterator;
-import java.util.Properties;
 
 import javax.servlet.ServletConfig;
 
@@ -63,8 +62,6 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 
 import org.apache.turbine.services.resources.TurbineResources;
-
-import org.apache.turbine.TurbineConstants;
 
 import org.apache.turbine.util.Log;
 
@@ -114,6 +111,10 @@ public class TurbineComponentService
     /**
      * Inits the service using servlet parameters to obtain path to the
      * configuration file. Change relatives paths.
+     *
+     * @param config The ServletConfiguration from Turbine
+     *
+     * @throws InitializationException Something went wrong when starting up.
      */
     public void init(ServletConfig config) 
         throws InitializationException
@@ -136,12 +137,12 @@ public class TurbineComponentService
                 String subKey = (String) it.next();
                 Object subVal = subConf.getProperty(subKey);
 
-                if(subKey.equals(CONFIG))
+                if (subKey.equals(CONFIG))
                 {
-                    Log.debug("Fixing up "+subVal);
+                    Log.debug("Fixing up " + subVal);
                     subVal = 
                         config.getServletContext().getRealPath((String)subVal);
-                    Log.debug("Now: "+subVal);
+                    Log.debug("Now: " + subVal);
                 }
                 
                 loaderConf.addProperty(subProperty + "." + subKey,
@@ -159,8 +160,8 @@ public class TurbineComponentService
         }
         catch (Exception e)
         {
-            Log.error("Component Service failed: ",e);
-            throw new InitializationException("ComponentService failed: ",e);
+            Log.error("Component Service failed: ", e);
+            throw new InitializationException("ComponentService failed: ", e);
         }
     }
 
@@ -172,14 +173,14 @@ public class TurbineComponentService
     
     public void shutdown()
     {
-        if(components != null)
+        if (components != null)
         {
-            for(int i = 0; i < components.length; i++)
+            for (int i = 0; i < components.length; i++)
             {
                 if (components[i] instanceof Disposable)
                 {
-                    Log.debug("Disposing a "+ components[i].getClass().getName()+" object");
-                    ((Disposable)components[i]).dispose();
+                    Log.debug("Disposing a " + components[i].getClass().getName() + " object");
+                    ((Disposable) components[i]).dispose();
                 }
                 else
                 {
