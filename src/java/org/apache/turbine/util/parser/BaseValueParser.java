@@ -1294,7 +1294,7 @@ public class BaseValueParser
      * @param prop A PropertyDescriptor.
      * @exception Exception, a generic exception.
      */
-    private void setProperty(Object bean,
+    protected void setProperty(Object bean,
                              PropertyDescriptor prop)
         throws Exception
     {
