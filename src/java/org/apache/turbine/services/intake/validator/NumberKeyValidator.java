@@ -133,7 +133,7 @@ public class NumberKeyValidator
      * @exception ValidationException containing an error message if the
      * testValue did not pass the validation tests.
      */
-    protected void doAssertValidity(String testValue)
+    public void assertValidity(String testValue)
             throws ValidationException
     {
         NumberKey nk = null;
@@ -143,17 +143,17 @@ public class NumberKeyValidator
         }
         catch (RuntimeException e)
         {
-            message = invalidNumberMessage;
+            errorMessage = invalidNumberMessage;
             throw new ValidationException(invalidNumberMessage);
         }
         if (minValue != null && nk.compareTo(minValue) < 0)
         {
-            message = minValueMessage;
+            errorMessage = minValueMessage;
             throw new ValidationException(minValueMessage);
         }
         if (maxValue != null && nk.compareTo(maxValue) > 0)
         {
-            message = maxValueMessage;
+            errorMessage = maxValueMessage;
             throw new ValidationException(maxValueMessage);
         }
     }
@@ -176,11 +176,11 @@ public class NumberKeyValidator
     /**
      * Set the value of minValue.
      *
-     * @param v  Value to assign to minValue.
+     * @param minValue Value to assign to minValue.
      */
-    public void setMinValue(NumberKey v)
+    public void setMinValue(NumberKey minValue)
     {
-        this.minValue = v;
+        this.minValue = minValue;
     }
 
     /**
@@ -196,10 +196,10 @@ public class NumberKeyValidator
     /**
      * Set the value of maxValue.
      *
-     * @param value  Value to assign to maxValue.
+     * @param maxValue Value to assign to maxValue.
      */
-    public void setMaxValue(NumberKey value)
+    public void setMaxValue(NumberKey maxValue)
     {
-        this.maxValue = value;
+        this.maxValue = maxValue;
     }
 }
