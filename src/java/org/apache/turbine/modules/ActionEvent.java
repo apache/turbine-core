@@ -198,24 +198,31 @@ public abstract class ActionEvent extends Action
      */
     protected final String formatString(String input)
     {
-        if (ParserUtils.getUrlFolding() != ParserUtils.URL_CASE_FOLDING_NONE)
+        String tmp = null;
+        
+        if (StringUtils.isNotEmpty(input))
         {
-            String tmp = input;
-
+            tmp = input.toLowerCase();
+            
             // Chop off suffixes (for image type)
-            if (input.endsWith(".x") || input.endsWith(".y"))
+            input = (tmp.endsWith(".x") || tmp.endsWith(".y"))
+                    ? input.substring(0, input.length() - 2)
+                    : input;
+            
+            if (ParserUtils.getUrlFolding() 
+                    != ParserUtils.URL_CASE_FOLDING_NONE)
             {
-                tmp = tmp.substring(0, input.length() - 2);
+                
+                tmp = tmp.substring(BUTTON_LENGTH + METHOD_NAME_LENGTH);
+                tmp = METHOD_NAME_PREFIX + StringUtils.capitalise(tmp);
             }
-            // Chop off the prefixes.
-            tmp = tmp.substring(BUTTON_LENGTH + METHOD_NAME_LENGTH);
-
-            return (METHOD_NAME_PREFIX +
-                    StringUtils.capitalise(StringUtils.lowerCase(tmp)));
+            else
+            {
+                tmp = input.substring(BUTTON_LENGTH);
+            }
         }
-        else
-        {
-            return input.substring(BUTTON_LENGTH);
-        }
+        return tmp;
     }
 }
+
+
