@@ -90,6 +90,12 @@ Changes between Turbine 2.3 and 2.4.
 <subsection name="Fixed bugs">
 <p>
   <ul>
+    <li>
+       Intake now handles multiValued="true" on type="int" fields correctly.
+       The get/set methods of the underlying object need to deal with an array
+       of ints.  The intake processing for other primitive types has also been 
+       updated, though not tested to the same extent as int.
+    </li>
   	<li>
   		HttpUtils.httpDateFormat had the year set as 'yyyyy', should be 'yyyy' therefore
   		setting expiry dates failed.

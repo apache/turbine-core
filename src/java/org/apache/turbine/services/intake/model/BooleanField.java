@@ -65,10 +65,6 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
  * Processor for boolean fields.
  *
  * @deprecated Use the Fulcrum Intake component instead.
- * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
- * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
- * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
- * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  */
 public class BooleanField
@@ -150,11 +146,12 @@ public class BooleanField
         if (isMultiValued)
         {
             String[] inputs = parser.getStrings(getKey());
-            Boolean[] values = new Boolean[inputs.length];
+            boolean[] values = new boolean[inputs.length];
             for (int i = 0; i < inputs.length; i++)
             {
                 values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? getBoolean(inputs[i]) : (Boolean) getEmptyValue();
+                        ? getBoolean(inputs[i]).booleanValue() 
+                        : ((Boolean) getEmptyValue()).booleanValue();
             }
             setTestValue(values);
         }
@@ -220,4 +217,5 @@ public class BooleanField
         }
         return result;
     }
+    
 }
