@@ -77,50 +77,50 @@ public interface UploadService
     /**
      * HTTP header.
      */
-    static final String CONTENT_TYPE = "Content-type";
+    String CONTENT_TYPE = "Content-type";
 
     /**
      * HTTP header.
      */
-    static final String CONTENT_DISPOSITION = "Content-disposition";
+    String CONTENT_DISPOSITION = "Content-disposition";
 
     /**
      * HTTP header base type.
      */
-    static final String MULTIPART = "multipart";
+    String MULTIPART = "multipart";
 
     /**
      * HTTP header base type modifier.
      */
-    static final String FORM_DATA = "form-data";
+    String FORM_DATA = "form-data";
 
     /**
      * HTTP header base type modifier.
      */
-    static final String MIXED = "mixed";
+    String MIXED = "mixed";
 
     /**
      * HTTP header.
      */
-    static final String MULTIPART_FORM_DATA =
+    String MULTIPART_FORM_DATA =
             MULTIPART + '/' + FORM_DATA;
 
     /**
      * HTTP header.
      */
-    static final String MULTIPART_MIXED = MULTIPART + '/' + MIXED;
+    String MULTIPART_MIXED = MULTIPART + '/' + MIXED;
 
     /**
      * The key in the TurbineResources.properties that references this
      * service.
      */
-    static final String SERVICE_NAME = "UploadService";
+    String SERVICE_NAME = "UploadService";
 
     /**
      * The key in UploadService properties in
      * TurbineResources.properties 'automatic' property.
      */
-    static final String AUTOMATIC_KEY = "automatic";
+    String AUTOMATIC_KEY = "automatic";
 
     /**
      * <p> The default value of 'automatic' property
@@ -131,19 +131,19 @@ public interface UploadService
      * request by calling {@link #parseRequest(HttpServletRequest,
             * ParameterParser, String) parseRequest} manually.
      */
-    static final String AUTOMATIC_DEFAULT = "false";
+    String AUTOMATIC_DEFAULT = "false";
 
     /**
      * The request parameter name for overriding 'repository' property
      * (path).
      */
-    static final String REPOSITORY_PARAMETER = "path";
+    String REPOSITORY_PARAMETER = "path";
 
     /**
      * The key in UploadService properties in
      * TurbineResources.properties 'repository' property.
      */
-    static final String REPOSITORY_KEY = "repository";
+    String REPOSITORY_KEY = "repository";
 
     /**
      * <p> The default value of 'repository' property (.).  This is
@@ -151,13 +151,13 @@ public interface UploadService
      * Note that "."  is whatever the servlet container chooses to be
      * it's 'current directory'.
      */
-    static final String REPOSITORY_DEFAULT = ".";
+    String REPOSITORY_DEFAULT = ".";
 
     /**
-     *w The key in UploadService properties in
+     * The key in UploadService properties in
      * TurbineResources.properties 'size.max' property.
      */
-    static final String SIZE_MAX_KEY = "size.max";
+    String SIZE_MAX_KEY = "size.max";
 
     /**
      * <p> The default value of 'size.max' property (1 megabyte =
@@ -167,13 +167,13 @@ public interface UploadService
      * value, and use an action + no auto upload to enforce limits.
      *
      */
-    static final Integer SIZE_MAX_DEFAULT = new Integer(1048576);
+    Integer SIZE_MAX_DEFAULT = new Integer(1048576);
 
     /**
      * The key in UploadService properties in
      * TurbineResources.properties 'size.threshold' property.
      */
-    static final String SIZE_THRESHOLD_KEY = "size.threshold";
+    String SIZE_THRESHOLD_KEY = "size.threshold";
 
     /**
      * <p> The default value of 'size.threshold' property (10
@@ -181,7 +181,7 @@ public interface UploadService
      * request that will have it's components stored temporarily in
      * memory, instead of disk.
      */
-    static final Integer SIZE_THRESHOLD_DEFAULT = new Integer(10240);
+    Integer SIZE_THRESHOLD_DEFAULT = new Integer(10240);
 
     /**
      * <p> This method performs parsing the request, and storing the

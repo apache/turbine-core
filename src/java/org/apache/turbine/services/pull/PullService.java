@@ -169,7 +169,7 @@ public interface PullService
      * Shoud we refresh the tools
      * on each request. For development purposes.
      *
-     * returns true if we should refresh the tools on every request.
+     * @return true if we should refresh the tools on every request.
      */
     boolean refreshToolsPerRequest();
 

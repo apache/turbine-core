@@ -76,16 +76,16 @@ public interface VelocityService
         extends Service
 {
     /** The Service Name */
-    static final String SERVICE_NAME = "VelocityService";
+    String SERVICE_NAME = "VelocityService";
 
     /** Key for storing the Context in the RunData object */
-    static final String CONTEXT = "VELOCITY_CONTEXT";
+    String CONTEXT = "VELOCITY_CONTEXT";
 
     /** The default extension of Velocity Pages */
-    static final String VELOCITY_EXTENSION = "vm";
+    String VELOCITY_EXTENSION = "vm";
 
     /** The Key for storing the RunData Object in the Context */
-    static final String RUNDATA_KEY = "data";
+    String RUNDATA_KEY = "data";
 
     /**
      * Process the request and fill in the template with the values

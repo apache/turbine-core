@@ -88,7 +88,7 @@ import org.apache.velocity.context.Context;
  * <pre>
  * tool.<scope>.<id> = <classname>
  *
- * <scope>      is the tool scope: global, request, session
+ * <scope>      is the tool scope: global, request, session,
  *              authorized or persistent (see below for more details)
  * <id>         is the name of the tool in the context
  *
@@ -245,7 +245,7 @@ public class TurbinePullService
     /**
      * Initialize the pull service
      *
-     * @exception Exception, a generic exception.
+     * @exception Exception A problem happened when starting up
      */
     private void initPullService()
         throws Exception
@@ -395,7 +395,7 @@ public class TurbinePullService
 
         // 
         // Session Tool start right at the session once the user has been set
-        // while persistent Tools are started when the user has logged in 
+        // while persistent and authorized Tools are started when the user has logged in 
         //
         User user = data.getUser();
 
@@ -568,6 +568,8 @@ public class TurbinePullService
     /**
      * Return the absolute path to the resources directory
      * used by the application tools.
+     *
+     * @return the absolute path of the resources directory
      */
     public String getAbsolutePathToResourcesDirectory()
     {
@@ -577,6 +579,8 @@ public class TurbinePullService
     /**
      * Return the resources directory. This is
      * relative to the web context.
+     *
+     * @return the relative path of the resources directory
      */
     public String getResourcesDirectory()
     {
