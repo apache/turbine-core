@@ -55,8 +55,8 @@ package org.apache.turbine.services.intake.model;
  */
 
 import java.util.Vector;
-import org.apache.turbine.om.NumberKey;
-import org.apache.turbine.om.ObjectKey;
+import org.apache.torque.om.NumberKey;
+import org.apache.torque.om.ObjectKey;
 import org.apache.turbine.services.intake.xmlmodel.Rule;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.util.ParameterParser;
@@ -79,13 +79,13 @@ public class NumberKeyField extends Field
         try
         {
             defaultValue = new NumberKey(prop);
-        } 
-        catch(RuntimeException e) 
+        }
+        catch(RuntimeException e)
         {
             Log.error("Could not convert "+prop+" into a NumberKey. ("+name+")");
         }
     }
-    
+
 
     /**
      * A suitable validator.

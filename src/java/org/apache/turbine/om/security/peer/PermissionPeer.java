@@ -25,13 +25,13 @@ package org.apache.turbine.om.security.peer;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -57,11 +57,11 @@ package org.apache.turbine.om.security.peer;
 import com.workingdogs.village.Record;
 import com.workingdogs.village.Value;
 import java.util.Enumeration;
-import java.util.Map;
+import java.util.*;
 import java.util.Vector;
 import org.apache.turbine.om.BaseObject;
-import org.apache.turbine.om.ObjectKey;
-import org.apache.turbine.om.peer.BasePeer;
+import org.apache.torque.om.ObjectKey;
+import org.apache.torque.util.BasePeer;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.SecurityObject;
@@ -69,11 +69,12 @@ import org.apache.turbine.om.security.TurbineRole;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.StringStackBuffer;
-import org.apache.turbine.util.db.Criteria;
-import org.apache.turbine.util.db.map.MapBuilder;
+import org.apache.torque.util.Criteria;
+import org.apache.torque.map.MapBuilder;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.PermissionSet;
+import org.apache.torque.TorqueException;
 
 /**
  * This class handles all the database access for the PERMISSION
@@ -87,25 +88,25 @@ import org.apache.turbine.util.security.PermissionSet;
  */
 public class PermissionPeer extends BasePeer
 {
-    private static final TurbineMapBuilder mapBuilder = 
-        (TurbineMapBuilder) getMapBuilder();
+    private static final TurbineMapBuilder mapBuilder =
+        (TurbineMapBuilder) getMapBuilder("org.apache.turbine.util.db.map.TurbineMapBuilder");
 
     /** The table name for this peer. */
     private static final String TABLE_NAME = mapBuilder.getTablePermission();
 
     /** The column name for the permission id field. */
-    public static final String PERMISSION_ID = 
+    public static final String PERMISSION_ID =
         mapBuilder.getPermission_PermissionId();
 
     /** The column name for the name field. */
     public static final String NAME = mapBuilder.getPermission_Name();
 
     /** The column name for the ObjectData field */
-    public static final String OBJECTDATA = 
+    public static final String OBJECTDATA =
         mapBuilder.getPermission_ObjectData();
 
     /** The Oracle sequence name for this peer. */
-    private static final String SEQUENCE_NAME = 
+    private static final String SEQUENCE_NAME =
         mapBuilder.getSequencePermission();
 
 
@@ -119,11 +120,11 @@ public class PermissionPeer extends BasePeer
     public static PermissionSet retrieveSet(Criteria criteria)
         throws Exception
     {
-        Vector results = PermissionPeer.doSelect(criteria);
+        List results = PermissionPeer.doSelect(criteria);
         PermissionSet ps = new PermissionSet();
-        for (int i=0; i<results.size(); i++)
+        for (int i = 0; i < results.size(); i++)
         {
-            ps.add( (Permission)results.elementAt(i) );
+            ps.add((Permission) results.get(i));
         }
         return ps;
     }
@@ -139,9 +140,9 @@ public class PermissionPeer extends BasePeer
         throws Exception
     {
         Criteria criteria = new Criteria();
-        criteria.add(RolePermissionPeer.ROLE_ID, 
+        criteria.add(RolePermissionPeer.ROLE_ID,
                      ((TurbineRole)role).getPrimaryKey());
-        criteria.addJoin(RolePermissionPeer.PERMISSION_ID, 
+        criteria.addJoin(RolePermissionPeer.PERMISSION_ID,
                          PermissionPeer.PERMISSION_ID);
         return retrieveSet(criteria);
     }
@@ -154,51 +155,58 @@ public class PermissionPeer extends BasePeer
      * @return Vector containing Permission objects.
      * @exception Exception, a generic exception.
      */
-    public static Vector doSelect(Criteria criteria)
-        throws Exception
+    public static List doSelect(Criteria criteria)
+        throws TorqueException
     {
-        criteria.addSelectColumn(PERMISSION_ID)
-                .addSelectColumn(NAME)
-                .addSelectColumn(OBJECTDATA);
-
-        if (criteria.getOrderByColumns() == null ||
-            criteria.getOrderByColumns().size() == 0)
+        try
         {
-            criteria.addAscendingOrderByColumn(NAME);
-        }
+            criteria.addSelectColumn(PERMISSION_ID)
+                    .addSelectColumn(NAME)
+                    .addSelectColumn(OBJECTDATA);
 
-        // Place any checks here to intercept criteria which require
-        // custom SQL.  For example:
-        // if ( criteria.containsKey("SomeTable.SomeColumn") )
-        // {
-        //     String whereSql = "SomeTable.SomeColumn IN (Select ...";
-        //     criteria.add("SomeTable.SomeColumn",
-        //                  whereSQL, criteria.CUSTOM);
-        // }
-
-        // BasePeer returns a Vector of Value (Village) arrays.  The
-        // array order follows the order columns were placed in the
-        // Select clause.
-        Vector rows = BasePeer.doSelect(criteria);
-        Vector results = new Vector();
-
-        // Populate the object(s).
-        for ( int i=0; i<rows.size(); i++ )
-        {
-            Permission obj = TurbineSecurity.getNewPermission(null);
-            Record row = (Record)rows.elementAt(i);
-            ((SecurityObject)obj).setPrimaryKey( row.getValue(1).asInt() );
-            ((SecurityObject)obj).setName( row.getValue(2).asString() );
-            byte[] objectData = (byte[])row.getValue(3).asBytes();
-            Map temp = (Map)ObjectUtils.deserialize(objectData);
-            if(temp != null)
+            if (criteria.getOrderByColumns() == null ||
+                criteria.getOrderByColumns().size() == 0)
             {
-                ((SecurityObject)obj).setAttributes(temp);
+                criteria.addAscendingOrderByColumn(NAME);
             }
-            results.addElement( obj );
-        }
 
-        return results;
+            // Place any checks here to intercept criteria which require
+            // custom SQL.  For example:
+            // if ( criteria.containsKey("SomeTable.SomeColumn") )
+            // {
+            //     String whereSql = "SomeTable.SomeColumn IN (Select ...";
+            //     criteria.add("SomeTable.SomeColumn",
+            //                  whereSQL, criteria.CUSTOM);
+            // }
+
+            // BasePeer returns a Vector of Value (Village) arrays.  The
+            // array order follows the order columns were placed in the
+            // Select clause.
+            List rows = BasePeer.doSelect(criteria);
+            List results = new ArrayList();
+
+            // Populate the object(s).
+            for ( int i=0; i<rows.size(); i++ )
+            {
+                Permission obj = TurbineSecurity.getNewPermission(null);
+                Record row = (Record) rows.get(i);
+                ((SecurityObject) obj).setPrimaryKey( row.getValue(1).asInt() );
+                ((SecurityObject) obj).setName( row.getValue(2).asString() );
+                byte[] objectData = (byte[]) row.getValue(3).asBytes();
+                Map temp = (Map) ObjectUtils.deserialize(objectData);
+                if (temp != null)
+                {
+                    ((SecurityObject) obj).setAttributes(temp);
+                }
+                results.add(obj);
+            }
+
+            return results;
+        }
+        catch (Exception ex)
+        {
+            throw new TorqueException(ex);
+        }
     }
 
     /**
@@ -209,11 +217,11 @@ public class PermissionPeer extends BasePeer
         Criteria criteria = new Criteria();
         if ( !((BaseObject)permission).isNew() )
         {
-            criteria.add(PERMISSION_ID, 
+            criteria.add(PERMISSION_ID,
                          ((BaseObject)permission).getPrimaryKey());
         }
         criteria.add(NAME, ((SecurityObject)permission).getName());
-        
+
         /*
          * This is causing the the removal and updating of
          * a permission to crap out. This addition to the
@@ -221,7 +229,7 @@ public class PermissionPeer extends BasePeer
          *
          * where OBJECTDATA = {}
          *
-         * Is the NAME even necessary. Wouldn't 
+         * Is the NAME even necessary. Wouldn't
          * criteria.add(PERMISSION_ID, N) be enough to
          * generate a where clause that would remove the
          * permission?
@@ -239,7 +247,7 @@ public class PermissionPeer extends BasePeer
      * @exception Exception, a generic exception.
      */
     public static void doUpdate(Criteria criteria)
-        throws Exception
+        throws TorqueException
     {
         Criteria selectCriteria = new Criteria(2);
         selectCriteria.put( PERMISSION_ID,
@@ -253,7 +261,7 @@ public class PermissionPeer extends BasePeer
      *
      * @param permission The Permission to be checked.
      * @return <code>true</code> if given Permission exists in the system.
-     * @throws DataBackendException when more than one Permission with 
+     * @throws DataBackendException when more than one Permission with
      *         the same name exists.
      * @throws Exception, a generic exception.
      */
@@ -263,10 +271,10 @@ public class PermissionPeer extends BasePeer
         Criteria criteria = new Criteria();
         criteria.addSelectColumn(PERMISSION_ID);
         criteria.add(NAME, ((SecurityObject)permission).getName());
-        Vector results = BasePeer.doSelect(criteria);
+        List results = BasePeer.doSelect(criteria);
         if(results.size() > 1)
         {
-            throw new DataBackendException("Multiple permissions named '" + 
+            throw new DataBackendException("Multiple permissions named '" +
                 ((SecurityObject)permission).getName() + "' exist!");
         }
         return (results.size()==1);
@@ -314,7 +322,7 @@ public class PermissionPeer extends BasePeer
             for (Enumeration f = clone.elements() ; f.hasMoreElements() ;)
             {
                 Permission tmp2 = (Permission) f.nextElement();
-                if (((BaseObject)tmp).getPrimaryKey() == 
+                if (((BaseObject)tmp).getPrimaryKey() ==
                     ((BaseObject)tmp2).getPrimaryKey())
                 {
                     clone.removeElement(tmp2);

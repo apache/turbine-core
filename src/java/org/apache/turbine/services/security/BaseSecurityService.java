@@ -58,7 +58,7 @@ import javax.servlet.ServletConfig;
 
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.db.Criteria;
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Role;

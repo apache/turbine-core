@@ -25,13 +25,13 @@ package org.apache.turbine.services.security;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -73,19 +73,19 @@ import org.apache.turbine.util.security.EntityExistsException;
 import org.apache.turbine.util.security.PasswordMismatchException;
 import org.apache.turbine.util.security.TurbineSecurityException;
 
-import org.apache.turbine.util.db.Criteria;
+import org.apache.torque.util.Criteria;
 
 /**
  * This is a Facade class for SecurityService.
  *
- * This class provides static methods that call related methods of the 
+ * This class provides static methods that call related methods of the
  * implementation of SecurityService used by the System, according to
  * the settings in TurbineResources.
  * <br>
  *
  * <a name="global">
  * <p> Certain Roles that the Users may have in the system may are not related
- * to any specific resource nor entity. They are assigned within a special group 
+ * to any specific resource nor entity. They are assigned within a special group
  * named 'global' that can be referenced in the code as {@link org.apache.turbine.om.security.Group#GLOBAL_GROUP_NAME}.
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
@@ -102,26 +102,26 @@ public abstract class TurbineSecurity
     public static SecurityService getService()
     {
         return (SecurityService)TurbineServices.getInstance().
-            getService(SecurityService.SERVICE_NAME);    
+            getService(SecurityService.SERVICE_NAME);
     }
 
     /*-----------------------------------------------------------------------
       Management of User objects
-      -----------------------------------------------------------------------*/ 
+      -----------------------------------------------------------------------*/
 
-    /* 
-     * This method provides client-side encryption of passwords. 
-     *   
+    /*
+     * This method provides client-side encryption of passwords.
+     *
      * This is an utility method that is used by other classes to maintain
      * a consistent approach to encrypting password. The behavior of the
-     * method can be configured in service's properties. 
+     * method can be configured in service's properties.
      *
      * @param password the password to process
      * @return processed password
      */
     public static String encryptPassword( String password )
     {
-        return getService().encryptPassword(password); 
+        return getService().encryptPassword(password);
     }
 
     /**
@@ -129,7 +129,7 @@ public abstract class TurbineSecurity
      * of User interface.
      *
      * @return systems's chosen implementation of User interface.
-     * @throws UnknownEntityException if the implementation of User interface 
+     * @throws UnknownEntityException if the implementation of User interface
      *         could not be determined, or does not exist.
      */
     public static Class getUserClass()
@@ -207,7 +207,7 @@ public abstract class TurbineSecurity
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if user account is not present.
      */
-    public static User getUser( String username ) 
+    public static User getUser( String username )
         throws DataBackendException, UnknownEntityException
     {
         return getService().getUser(username);
@@ -237,7 +237,7 @@ public abstract class TurbineSecurity
      * Constructs an User object to represent an anonymous user of the application.
      *
      * @return An anonymous Turbine User.
-     * @throws UnknownEntityException if the anonymous User object couldn't be 
+     * @throws UnknownEntityException if the anonymous User object couldn't be
      *         constructed.
      */
     public static User getAnonymousUser()
@@ -267,7 +267,7 @@ public abstract class TurbineSecurity
      * @param user an User to change password for.
      * @param oldPassword the current password supplied by the user.
      * @param newPassword the current password requested by the user.
-     * @exception PasswordMismatchException if the supplied password was 
+     * @exception PasswordMismatchException if the supplied password was
      *            incorrect.
      * @exception UnknownEntityException if the user's record does not
      *            exist in the database.
@@ -275,7 +275,7 @@ public abstract class TurbineSecurity
      *            storage.
      */
     public static void changePassword( User user, String oldPassword, String newPassword )
-        throws PasswordMismatchException, UnknownEntityException, 
+        throws PasswordMismatchException, UnknownEntityException,
                DataBackendException
     {
         getService().changePassword(user, oldPassword, newPassword);
@@ -285,10 +285,10 @@ public abstract class TurbineSecurity
      * Forcibly sets new password for an User.
      *
      * This is supposed by the administrator to change the forgotten or
-     * compromised passwords. Certain implementatations of this feature 
-     * would require administrative level access to the authenticating 
+     * compromised passwords. Certain implementatations of this feature
+     * would require administrative level access to the authenticating
      * server / program.
-     * 
+     *
      * @param user an User to change password for.
      * @param password the new password.
      * @exception UnknownEntityException if the user's record does not
@@ -304,7 +304,7 @@ public abstract class TurbineSecurity
 
     /*-----------------------------------------------------------------------
       Creation of AccessControlLists
-      -----------------------------------------------------------------------*/ 
+      -----------------------------------------------------------------------*/
 
     /**
      * Constructs an AccessControlList for a specific user.
@@ -313,7 +313,7 @@ public abstract class TurbineSecurity
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if user account is not present.
      */
-    public static AccessControlList getACL( User user ) 
+    public static AccessControlList getACL( User user )
         throws DataBackendException, UnknownEntityException
     {
         return getService().getACL(user);
@@ -321,9 +321,9 @@ public abstract class TurbineSecurity
 
     /*-----------------------------------------------------------------------
       Security management
-      -----------------------------------------------------------------------*/ 
+      -----------------------------------------------------------------------*/
 
-    /** 
+    /**
      * Grant an User a Role in a Group.
      *
      * @param User the user.
@@ -338,7 +338,7 @@ public abstract class TurbineSecurity
         getService().grant(user, group, role);
     }
 
-    /** 
+    /**
      * Revoke a Role in a Group from an User.
      *
      * @param User the user.
@@ -413,7 +413,7 @@ public abstract class TurbineSecurity
 
     /*-----------------------------------------------------------------------
       Account management
-      -----------------------------------------------------------------------*/ 
+      -----------------------------------------------------------------------*/
 
     /**
      * Creates new user account with specified attributes.
@@ -424,7 +424,7 @@ public abstract class TurbineSecurity
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws EntityExistsException if the user account already exists.
      */
-    public static void addUser( User user, String password ) 
+    public static void addUser( User user, String password )
         throws DataBackendException, EntityExistsException
     {
         getService().addUser(user, password);
@@ -435,13 +435,13 @@ public abstract class TurbineSecurity
      * Removes an user account from the system.
      *
      * <strong>TODO</strong> throw more specific exception<br>
-     * 
+     *
      * @param user the object describing the account to be removed.
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if the user account is not present.
      */
-    public static void removeUser( User user ) 
-        throws DataBackendException, UnknownEntityException    
+    public static void removeUser( User user )
+        throws DataBackendException, UnknownEntityException
     {
         getService().removeUser(user);
     }
@@ -449,11 +449,11 @@ public abstract class TurbineSecurity
 
     /*-----------------------------------------------------------------------
       Group/Role/Permission management
-      -----------------------------------------------------------------------*/ 
+      -----------------------------------------------------------------------*/
     /**
-     * Provides a reference to the Group object that represents the 
-     * <a name="global">global group</a>. 
-     * 
+     * Provides a reference to the Group object that represents the
+     * <a name="global">global group</a>.
+     *
      * @return a Group object that represents the global group.
      */
     public static Group getGlobalGroup()
@@ -464,7 +464,7 @@ public abstract class TurbineSecurity
     /**
      * Creates a new Group in the system. This is a convenience
      * method.
-     * 
+     *
      * @param name The name of the new Group.
      * @return An object representing the new Group.
      * @throws TurbineSecurityException if the Group could not be created.
@@ -478,7 +478,7 @@ public abstract class TurbineSecurity
     /**
      * Creates a new Permission in the system. This is a convenience
      * method.
-     * 
+     *
      * @param name The name of the new Permission.
      * @return An object representing the new Permission.
      * @throws TurbineSecurityException if the Permission could not be created.
@@ -585,7 +585,7 @@ public abstract class TurbineSecurity
         return getService().getGroups(criteria);
     }
 
-    
+
     /**
      * Retrieve a set of Roles that meet the specified Criteria.
      *
@@ -704,7 +704,7 @@ public abstract class TurbineSecurity
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws EntityExistsException if the group already exists.
      */
-    public static void addGroup( Group group ) 
+    public static void addGroup( Group group )
         throws DataBackendException, EntityExistsException
     {
         getService().addGroup(group);
@@ -788,7 +788,7 @@ public abstract class TurbineSecurity
     {
         getService().renameGroup(group, name);
     }
-    
+
     /**
      * Renames an existing Role.
      *

@@ -73,8 +73,8 @@ import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 
-import org.apache.turbine.om.NumberKey;
-import org.apache.turbine.om.StringKey;
+import org.apache.torque.om.NumberKey;
+import org.apache.torque.om.StringKey;
 
 import org.apache.turbine.services.resources.TurbineResources;
 

@@ -60,10 +60,11 @@ import java.util.Map;
 import org.apache.turbine.services.BaseService;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.Log;
-import org.apache.turbine.util.db.adapter.DB;
-import org.apache.turbine.util.db.pool.ConnectionPool;
-import org.apache.turbine.util.db.pool.DBConnection;
+import org.apache.torque.adapter.DB;
+import java.sql.Connection;
 import org.apache.commons.configuration.Configuration;
+import org.apache.torque.Torque;
+import org.apache.torque.util.BasePeer;
 
 
 /**
@@ -110,13 +111,13 @@ public class TurbinePoolBrokerService extends BaseService
         defaultPool = configuration.getString(DEFAULT_POOL, DEFAULT);
 
         // Create monitor thread
-        Monitor monitor = new Monitor();
+//        Monitor monitor = new Monitor();
         // Indicate that this is a system thread. JVM will quit only when there
         // are no more active user threads. Settings threads spawned internally
         // by Turbine as daemons allows commandline applications using Turbine
         // to terminate in an orderly manner.
-        monitor.setDaemon(true);
-        monitor.start();
+//        monitor.setDaemon(true);
+//        monitor.start();
 
         // indicate that the service initialized correctly
         setInit(true);
@@ -127,7 +128,7 @@ public class TurbinePoolBrokerService extends BaseService
      */
     public String getDefaultDB()
     {
-        return defaultPool;
+        return Torque.getDefaultDB();
     }
 
     /**
@@ -135,22 +136,7 @@ public class TurbinePoolBrokerService extends BaseService
      */
     public synchronized void shutdown()
     {
-        if ( pools != null )
-        {
-            // Release connections for each pool.
-            Iterator pool = pools.values().iterator();
-            while ( pool.hasNext() )
-            {
-                try
-                {
-                    ((ConnectionPool)pool.next()).shutdown();
-                }
-                catch (Exception ignored)
-                {
-                    // Unlikely.
-                }
-            }
-        }
+        Torque.shutdown();
     }
 
     /**
@@ -160,10 +146,10 @@ public class TurbinePoolBrokerService extends BaseService
      * @throws TurbineException Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
-    public DBConnection getConnection()
+    public Connection getConnection()
         throws Exception
     {
-        return getConnection(defaultPool);
+        return Torque.getConnection();
     }
 
     /**
@@ -185,48 +171,10 @@ public class TurbinePoolBrokerService extends BaseService
      * @throws TurbineException Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
-    public DBConnection getConnection(String name)
+    public Connection getConnection(String name)
         throws Exception
     {
-        // The getPool method ensures the validity of the returned pool.
-        return getPool(name).getConnection();
-    }
-
-    /**
-     * This method returns a DBConnecton using the given parameters.
-     *
-     * @param driver The fully-qualified name of the JDBC driver to use.
-     * @param url The URL of the database from which the connection is
-     * desired.
-     * @param username The name of the database user.
-     * @param password The password of the database user.
-     * @return A DBConnection.
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
-     *
-     * @deprecated Database parameters should not be specified each
-     * time a DBConnection is fetched from the service.
-     */
-    public DBConnection getConnection(String driver,
-                                      String url,
-                                      String username,
-                                      String password)
-        throws Exception
-    {
-        ConnectionPool pool = null;
-        url = url.trim();
-
-        // Quick (non-sync) check for the pool we want.
-        // NOTE: Here we must not call getPool(), since the pool
-        // is almost certainly not defined in the properties file
-        pool = (ConnectionPool) pools.get(url + username);
-        if ( pool == null )
-        {
-            registerPool(url + username, driver,  url, username, password);
-            pool = (ConnectionPool) pools.get(url + username);
-        }
-
-        return pool.getConnection();
+        return Torque.getConnection(name);
     }
 
     /**
@@ -237,97 +185,10 @@ public class TurbinePoolBrokerService extends BaseService
      *         rethrown wrapped into a TurbineException.
      * @exception Exception A generic exception.
      */
-    public void releaseConnection(DBConnection dbconn)
+    public void releaseConnection(Connection dbconn)
         throws Exception
     {
-        if ( dbconn != null )
-        {
-            ConnectionPool pool = dbconn.getPool();
-            if ( pools.containsValue( pool ) )
-            {
-                pool.releaseConnection( dbconn );
-            }
-        }
-    }
-
-    /**
-     * This method registers a new pool using the given parameters.
-     *
-     * @param name The name of the pool to register.
-     * @param driver The fully-qualified name of the JDBC driver to use.
-     * @param url The URL of the database to use.
-     * @param username The name of the database user.
-     * @param password The password of the database user.
-     *
-     * @throws Exception Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
-     */
-    public void registerPool( String name,
-                              String driver,
-                              String url,
-                              String username,
-                              String password )
-        throws Exception
-    {
-        /**
-         * Added so that the configuration file can define maxConnections &
-         * expiryTime for each database pool that is defined in the
-         * TurbineResources.properties
-         * Was defined as: database.expiryTime=3600000
-         * If you need per database, it is
-         * now database.helpdesk.expiryTime=3600000
-         */
-        registerPool(name,
-                     driver,
-                     url,
-                     username,
-                     password,
-                     TurbineResources.getInt(
-                         getProperty(name, "maxConnections"), 10),
-                     TurbineResources.getLong(
-                         getProperty(name, "expiryTime"), 3600000));
-    }
-
-    /**
-     * This thread-safe method registers a new pool using the given parameters.
-     *
-     * @param name The name of the pool to register.
-     * @param driver The fully-qualified name of the JDBC driver to use.
-     * @param url The URL of the database to use.
-     * @param username The name of the database user.
-     * @param password The password of the database user.
-     * @exception Exception A generic exception.
-     */
-    public void registerPool( String name,
-                              String driver,
-                              String url,
-                              String username,
-                              String password,
-                              int maxCons,
-                              long expiryTime)
-        throws Exception
-    {
-
-        // Quick (non-sync) check for the pool we want.
-        if ( !pools.containsKey(name) )
-        {
-            // Pool not there...
-            synchronized ( pools )
-            {
-                // ... sync and look again to avoid race collisions.
-                if ( !pools.containsKey(name) )
-                {
-                    // Still not there.  Create and add.
-                    ConnectionPool pool =
-                        new ConnectionPool(driver,
-                                           url,
-                                           username,
-                                           password,
-                                           maxCons,expiryTime);
-                    pools.put( name, pool );
-                }
-            }
-        }
+        BasePeer.closeConnection(dbconn);
     }
 
     /**
@@ -354,53 +215,10 @@ public class TurbinePoolBrokerService extends BaseService
     public DB getDB(String name)
         throws Exception
     {
-        return getPool(name).getDB();
+        return Torque.getDB(getDefaultDB());
     }
 
     ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     * This method returns the default pool.
-     *
-     * @return The default pool.
-     * @exception Exception A generic exception.
-     */
-    private ConnectionPool getPool()
-        throws Exception
-    {
-        return getPool(DEFAULT);
-    }
-
-    /**
-     * This method returns a pool with the specified name.  The pool must
-     * either have been registered with the
-     * {@link #registerPool(String,String,String,String,String)} methd, or be
-     * specified in the TurbineResources properties. This method is used
-     * interanlly by the service.
-     *
-     * @param name The name of the pool to get.
-     * @return     The requested pool.
-     *
-     * @exception Exception A generic exception.
-     */
-    private ConnectionPool getPool(String name)
-        throws Exception
-    {
-        ConnectionPool pool = (ConnectionPool) pools.get(name);
-
-        // If the pool is not in the Hashtable, we must register it.
-        if ( pool == null )
-        {
-            registerPool( name,
-                          getDatabaseProperty(name, "driver"),
-                          getDatabaseProperty(name, "url"),
-                          getDatabaseProperty(name, "username"),
-                          getDatabaseProperty(name, "password") );
-            pool = (ConnectionPool) pools.get(name);
-        }
-
-        return pool;
-    }
 
     /**
      * Returns the specified property of the given database, or the empty
@@ -451,6 +269,7 @@ public class TurbinePoolBrokerService extends BaseService
      * milliseconds you want to elapse between loging the number of
      * connections.
      */
+/*
     protected class Monitor extends Thread
     {
         public void run()
@@ -485,4 +304,5 @@ public class TurbinePoolBrokerService extends BaseService
             }
         }
     }
+*/
 }

@@ -25,13 +25,13 @@ package org.apache.turbine.services.schedule;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -57,16 +57,18 @@ package org.apache.turbine.services.schedule;
 import com.workingdogs.village.Record;
 import com.workingdogs.village.Value;
 import java.util.Hashtable;
-import java.util.Vector;
+import java.util.*;
 import org.apache.turbine.om.BaseObject;
-import org.apache.turbine.om.ObjectKey;
-import org.apache.turbine.om.peer.BasePeer;
+import org.apache.torque.om.ObjectKey;
+import org.apache.torque.util.BasePeer;
 import org.apache.turbine.util.ObjectUtils;
-import org.apache.turbine.util.db.Criteria;
-import org.apache.turbine.util.db.map.DatabaseMap;
-import org.apache.turbine.util.db.map.MapBuilder;
+import org.apache.torque.util.Criteria;
+import org.apache.torque.map.DatabaseMap;
+import org.apache.torque.map.MapBuilder;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
-import org.apache.turbine.util.db.pool.DBConnection;
+import java.sql.Connection;
+import org.apache.torque.TorqueException;
+import com.workingdogs.village.DataSetException;
 
 /**
  * Peer class for JobEntry database access.
@@ -78,7 +80,7 @@ public class JobEntryPeer extends BasePeer
 {
     /** Get the MapBuilder. */
     private static final TurbineMapBuilder mapBuilder =
-        (TurbineMapBuilder) getMapBuilder();
+        (TurbineMapBuilder) getMapBuilder("org.apache.turbine.util.db.map.TurbineMapBuilder");
 
     /** Name of the table. */
     private static final String  TABLE_NAME = mapBuilder.getTableJobentry();
@@ -101,7 +103,7 @@ public class JobEntryPeer extends BasePeer
      * @exception Exception, a generic exception.
      */
     public static void doUpdate(Criteria criteria)
-        throws Exception
+        throws TorqueException
     {
         Criteria selectCriteria = new Criteria(2);
         selectCriteria.put( OID, criteria.remove(OID) );
@@ -116,68 +118,75 @@ public class JobEntryPeer extends BasePeer
      * @return Vector of JobEntries.
      * @exception Exception, a generic exception.
      */
-    public static Vector doSelect(Criteria criteria)
-        throws Exception
+    public static List doSelect(Criteria criteria)
+        throws TorqueException
     {
         addSelectColumns(criteria);
 
-        Vector rows = BasePeer.doSelect(criteria);
-        Vector results = new Vector();
+        List rows = BasePeer.doSelect(criteria);
+        List results = new ArrayList();
 
-        // Populate the object(s).
-        for ( int i=0; i<rows.size(); i++ )
+        try
         {
-            Record rec = (Record)rows.elementAt(i);
-            int oid =  rec.getValue(1).asInt();
-            int sec =  rec.getValue(2).asInt();
-            int min =  rec.getValue(3).asInt();
-            int hr  =  rec.getValue(4).asInt();
-            int wd  =  rec.getValue(5).asInt();
-            int d_m =  rec.getValue(6).asInt();
-            String task =  rec.getValue(7).asString();
-            String email =  rec.getValue(8).asString();
-            byte[] objectData = (byte[])rec.getValue(9).asBytes();
-            Hashtable tempHash = (Hashtable)ObjectUtils.deserialize(objectData);
+            // Populate the object(s).
+            for ( int i=0; i<rows.size(); i++ )
+            {
+                Record rec = (Record)rows.get(i);
+                int oid = rec.getValue(1).asInt();
+                int sec = rec.getValue(2).asInt();
+                int min = rec.getValue(3).asInt();
+                int hr  = rec.getValue(4).asInt();
+                int wd  = rec.getValue(5).asInt();
+                int d_m = rec.getValue(6).asInt();
+                String task = rec.getValue(7).asString();
+                String email = rec.getValue(8).asString();
+                byte[] objectData = (byte[]) rec.getValue(9).asBytes();
+                Hashtable tempHash = (Hashtable) ObjectUtils.deserialize(objectData);
 
-            JobEntry je = new JobEntry(sec, min, hr, wd, d_m, task);
-            je.setPrimaryKey(oid);
-            je.setEmail(email);
-            je.setProperty(tempHash);
-            je.setModified(false);
+                JobEntry je = new JobEntry(sec, min, hr, wd, d_m, task);
+                je.setPrimaryKey(oid);
+                je.setEmail(email);
+                je.setProperty(tempHash);
+                je.setModified(false);
 
-            results.addElement( je );
+                results.add(je);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new TorqueException(ex);
         }
         return results;
     }
 
-    /**  
+    /**
      * Perform a SQL <code>insert</code>, handling connection details
      * internally.
      */
     public static ObjectKey doInsert(Criteria criteria)
-        throws Exception 
+        throws TorqueException
     {
         criteria.setDbName(mapBuilder.getDatabaseMap().getName());
         return BasePeer.doInsert(criteria);
     }
- 
-    /**  
-     * Method to do inserts.  This method is to be used during a transaction, 
-     * otherwise use the doInsert(Criteria) method.  It will take care of  
-     * the connection details internally.  
-     */ 
-    public static ObjectKey doInsert(Criteria criteria, DBConnection dbCon)
-        throws Exception 
+
+    /**
+     * Method to do inserts.  This method is to be used during a transaction,
+     * otherwise use the doInsert(Criteria) method.  It will take care of
+     * the connection details internally.
+     */
+    public static ObjectKey doInsert(Criteria criteria, Connection dbCon)
+        throws TorqueException
     {
         criteria.setDbName(mapBuilder.getDatabaseMap().getName());
         return BasePeer.doInsert(criteria, dbCon);
     }
- 
+
     /**
      * Add all the columns needed to create a new object.
      */
     protected static void addSelectColumns(Criteria criteria)
-        throws Exception 
+        throws TorqueException
     {
         criteria.addSelectColumn(OID)
             .addSelectColumn(SECOND)
@@ -205,11 +214,11 @@ public class JobEntryPeer extends BasePeer
         Criteria c = new Criteria(9);
         c.add(OID,new Integer(oid));
 
-        Vector results = JobEntryPeer.doSelect(c);
+        List results = JobEntryPeer.doSelect(c);
 
-        if ( results != null  )
+        if (results != null)
         {
-            je = (JobEntry)results.elementAt(0);
+            je = (JobEntry) results.get(0);
         }
         return je;
     }

@@ -25,13 +25,13 @@ package org.apache.turbine.om.security.peer;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -57,21 +57,22 @@ package org.apache.turbine.om.security.peer;
 import com.workingdogs.village.Record;
 import com.workingdogs.village.Value;
 import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 import org.apache.turbine.om.BaseObject;
-import org.apache.turbine.om.ObjectKey;
-import org.apache.turbine.om.peer.BasePeer;
+import org.apache.torque.om.ObjectKey;
+import org.apache.torque.util.BasePeer;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.SecurityObject;
 import org.apache.turbine.om.security.TurbineGroup;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.StringStackBuffer;
-import org.apache.turbine.util.db.Criteria;
-import org.apache.turbine.util.db.map.MapBuilder;
+import org.apache.torque.util.Criteria;
+import org.apache.torque.map.MapBuilder;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.GroupSet;
+import org.apache.torque.TorqueException;
 
 /**
  * This class handles all the database access for the Group table.
@@ -85,8 +86,8 @@ import org.apache.turbine.util.security.GroupSet;
  */
 public class GroupPeer extends BasePeer
 {
-    private static final TurbineMapBuilder mapBuilder = 
-        (TurbineMapBuilder) getMapBuilder();
+    private static final TurbineMapBuilder mapBuilder =
+        (TurbineMapBuilder) getMapBuilder("org.apache.turbine.util.db.map.TurbineMapBuilder");
 
     /** The table name for this peer. */
     private static final String TABLE_NAME = mapBuilder.getTableGroup();
@@ -121,11 +122,11 @@ public class GroupPeer extends BasePeer
      */
     public static GroupSet retrieveSet(Criteria criteria) throws Exception
     {
-        Vector results = GroupPeer.doSelect(criteria);
+        List results = GroupPeer.doSelect(criteria);
         GroupSet rs = new GroupSet();
-        for (int i=0; i<results.size(); i++)
+        for (int i = 0; i < results.size(); i++)
         {
-            rs.add( (Group)results.elementAt(i) );
+            rs.add((Group) results.get(i));
         }
         return rs;
     }
@@ -138,51 +139,58 @@ public class GroupPeer extends BasePeer
      * @return Vector containing Group objects.
      * @exception Exception, a generic exception.
      */
-    public static Vector doSelect(Criteria criteria)
-        throws Exception
+    public static List doSelect(Criteria criteria)
+        throws TorqueException
     {
-        criteria.addSelectColumn(GROUP_ID)
-                .addSelectColumn(NAME)
-                .addSelectColumn(OBJECTDATA);
-
-        if (criteria.getOrderByColumns() == null ||
-            criteria.getOrderByColumns().size() == 0)
+        try
         {
-            criteria.addAscendingOrderByColumn(NAME);
-        }
+            criteria.addSelectColumn(GROUP_ID)
+                    .addSelectColumn(NAME)
+                    .addSelectColumn(OBJECTDATA);
 
-        // Place any checks here to intercept criteria which require
-        // custom SQL.  For example:
-        // if ( criteria.containsKey("SomeTable.SomeColumn") )
-        // {
-        //     String whereSql = "SomeTable.SomeColumn IN (Select ...";
-        //     criteria.add("SomeTable.SomeColumn",
-        //                  whereSQL, criteria.CUSTOM);
-        // }
-
-        // BasePeer returns a Vector of Value (Village) arrays.  The
-        // array order follows the order columns were placed in the
-        // Select clause.
-        Vector rows = BasePeer.doSelect(criteria);
-        Vector results = new Vector();
-
-        // Populate the object(s).
-        for ( int i=0; i<rows.size(); i++ )
-        {
-            Group obj = TurbineSecurity.getNewGroup(null);
-            Record row = (Record)rows.elementAt(i);
-            ((SecurityObject)obj).setPrimaryKey( row.getValue(1).asInt() );
-            ((SecurityObject)obj).setName( row.getValue(2).asString() );
-            byte[] objectData = (byte[])row.getValue(3).asBytes();
-            Map temp = (Map)ObjectUtils.deserialize(objectData);
-            if(temp != null)
+            if (criteria.getOrderByColumns() == null ||
+                criteria.getOrderByColumns().size() == 0)
             {
-                ((SecurityObject)obj).setAttributes(temp);
+                criteria.addAscendingOrderByColumn(NAME);
             }
-            results.addElement( obj );
-        }
 
-        return results;
+            // Place any checks here to intercept criteria which require
+            // custom SQL.  For example:
+            // if ( criteria.containsKey("SomeTable.SomeColumn") )
+            // {
+            //     String whereSql = "SomeTable.SomeColumn IN (Select ...";
+            //     criteria.add("SomeTable.SomeColumn",
+            //                  whereSQL, criteria.CUSTOM);
+            // }
+
+            // BasePeer returns a Vector of Value (Village) arrays.  The
+            // array order follows the order columns were placed in the
+            // Select clause.
+            List rows = BasePeer.doSelect(criteria);
+            List results = new ArrayList();
+
+            // Populate the object(s).
+            for ( int i = 0; i < rows.size(); i++ )
+            {
+                Group obj = TurbineSecurity.getNewGroup(null);
+                Record row = (Record) rows.get(i);
+                ((SecurityObject) obj).setPrimaryKey(row.getValue(1).asInt());
+                ((SecurityObject) obj).setName(row.getValue(2).asString());
+                byte[] objectData = (byte[]) row.getValue(3).asBytes();
+                Map temp = (Map) ObjectUtils.deserialize(objectData);
+                if (temp != null)
+                {
+                    ((SecurityObject) obj).setAttributes(temp);
+                }
+                results.add(obj);
+            }
+
+            return results;
+        }
+        catch (Exception ex)
+        {
+            throw new TorqueException(ex);
+        }
     }
 
     /**
@@ -193,7 +201,7 @@ public class GroupPeer extends BasePeer
      * @exception Exception, a generic exception.
      */
     public static void doUpdate(Criteria criteria)
-        throws Exception
+        throws TorqueException
     {
         Criteria selectCriteria = new Criteria(2);
         selectCriteria.put( GROUP_ID, criteria.remove(GROUP_ID) );
@@ -206,7 +214,7 @@ public class GroupPeer extends BasePeer
      *
      * @param permission The Group to be checked.
      * @return <code>true</code> if given Group exists in the system.
-     * @throws DataBackendException when more than one Group with 
+     * @throws DataBackendException when more than one Group with
      *         the same name exists.
      * @throws Exception, a generic exception.
      */
@@ -216,10 +224,10 @@ public class GroupPeer extends BasePeer
         Criteria criteria = new Criteria();
         criteria.addSelectColumn(GROUP_ID);
         criteria.add(NAME, ((SecurityObject)group).getName());
-        Vector results = BasePeer.doSelect(criteria);
-        if(results.size() > 1)
+        List results = BasePeer.doSelect(criteria);
+        if (results.size() > 1)
         {
-            throw new DataBackendException("Multiple groups named '" + 
+            throw new DataBackendException("Multiple groups named '" +
                 ((TurbineGroup)group).getName() + "' exist!");
         }
         return (results.size()==1);

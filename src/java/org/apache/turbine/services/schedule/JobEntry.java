@@ -58,8 +58,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Hashtable;
 import org.apache.turbine.om.BaseObject;
-import org.apache.turbine.om.NumberKey;
-import org.apache.turbine.util.db.Criteria;
+import org.apache.torque.om.NumberKey;
+import org.apache.torque.util.Criteria;
 
 /**
  * This is a wrapper for a scheduled job.  It is modeled after the

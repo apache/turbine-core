@@ -54,7 +54,7 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.om.StringKey;
+import org.apache.torque.om.StringKey;
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 
@@ -71,7 +71,7 @@ public class StringKeyField extends Field
     /**
      * Sets the default value for an StringKeyField
      */
-    
+
     protected void setDefaultValue(String prop)
     {
         defaultValue = new StringKey(prop);

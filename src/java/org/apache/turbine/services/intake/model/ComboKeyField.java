@@ -56,8 +56,8 @@ package org.apache.turbine.services.intake.model;
 
 import java.util.Vector;
 import org.apache.turbine.util.ParameterParser;
-import org.apache.turbine.om.ComboKey;
-import org.apache.turbine.om.ObjectKey;
+import org.apache.torque.om.ComboKey;
+import org.apache.torque.om.ObjectKey;
 import org.apache.turbine.services.intake.xmlmodel.Rule;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.util.Log;
@@ -76,7 +76,7 @@ public class ComboKeyField extends Field
     /**
      * Sets the default value for an ComboKeyField
      */
-    
+
     protected void setDefaultValue(String prop)
     {
         defaultValue = prop;

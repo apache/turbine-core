@@ -72,7 +72,7 @@ import org.apache.turbine.om.security.peer.RolePermissionPeer;
 import org.apache.turbine.om.security.peer.TurbineUserPeer;
 
 import org.apache.turbine.util.Log;
-import org.apache.turbine.util.db.Criteria;
+import org.apache.torque.util.Criteria;
 
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.GroupSet;

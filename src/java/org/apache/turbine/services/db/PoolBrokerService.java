@@ -25,13 +25,13 @@ package org.apache.turbine.services.db;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,8 +54,8 @@ package org.apache.turbine.services.db;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.util.db.pool.DBConnection;
-import org.apache.turbine.util.db.adapter.DB;
+import java.sql.Connection;
+import org.apache.torque.adapter.DB;
 import org.apache.turbine.services.Service;
 
 /**
@@ -64,7 +64,7 @@ import org.apache.turbine.services.Service;
  * The service can manage a number of connection pools. Each pool is related
  * to a specific database, identified by it's driver class name, url, username
  * and password. The pools may be defined in TurbineResources.properties
- * file, or created at runtime using 
+ * file, or created at runtime using
  * {@link #registerPool(String,String,String,String,String)} method.
  *
  * <p> You can use {@link #getConnection(String)} to acquire a
@@ -101,7 +101,7 @@ public interface PoolBrokerService extends Service
      * @throws TurbineException Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
-    public DBConnection getConnection()
+    public Connection getConnection()
         throws Exception;
 
     /**
@@ -123,30 +123,9 @@ public interface PoolBrokerService extends Service
      * @throws TurbineException Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
-    public DBConnection getConnection(String name)
+    public Connection getConnection(String name)
         throws Exception;
 
-
-    /**
-     * This method returns a DBConnecton using the given parameters.
-     *
-     * @param driver The fully-qualified name of the JDBC driver to use.
-     * @param url The URL of the database from which the connection is
-     * desired.
-     * @param username The name of the database user.
-     * @param password The password of the database user.
-     * @return A DBConnection.
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
-     *
-     * @deprecated Database parameters should not be specified each
-     * time a DBConnection is fetched from the service.
-     */
-    public DBConnection getConnection(String driver,
-                                      String url,
-                                      String username,
-                                      String password)
-        throws Exception;
 
     /**
      * Release a connection back to the database pool.
@@ -155,7 +134,7 @@ public interface PoolBrokerService extends Service
      *         rethrown wrapped into a TurbineException.
      * @exception Exception A generic exception.
      */
-    public void releaseConnection(DBConnection dbconn)
+    public void releaseConnection(Connection dbconn)
         throws Exception;
 
     /**
@@ -170,13 +149,14 @@ public interface PoolBrokerService extends Service
      * @throws TurbineException Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
+/*
     public void registerPool( String name,
                               String driver,
                               String url,
                               String username,
                               String password )
         throws Exception;
-
+*/
 
     /**
      * Returns the database adapter for the default connection pool.

@@ -25,13 +25,13 @@ package org.apache.turbine.util.db.map;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -58,6 +58,7 @@ import java.util.Date;
 import java.util.Hashtable;
 
 import org.apache.turbine.services.db.TurbineDB;
+import org.apache.torque.map.*;
 
 /**
  * Default Builder for Database/Table/Column Maps within the Turbine
@@ -254,7 +255,7 @@ public class TurbineMapBuilder implements MapBuilder
     }
 
    /**
-    * Column used to store the user's first name. 
+    * Column used to store the user's first name.
     * Override this if using your custom table.
     *
     * @return A String.
@@ -274,9 +275,9 @@ public class TurbineMapBuilder implements MapBuilder
     {
         return getTableUser() + '.' + getFirstName();
     }
-    
+
    /**
-    * Column used to store the user's last name. 
+    * Column used to store the user's last name.
     * Override this if using your custom table.
     *
     * @return A String.
@@ -298,7 +299,7 @@ public class TurbineMapBuilder implements MapBuilder
     }
 
    /**
-    * Column used to store the user's data modification time. 
+    * Column used to store the user's data modification time.
     * Override this if using your custom table.
     *
     * @return A String.
@@ -307,7 +308,7 @@ public class TurbineMapBuilder implements MapBuilder
    {
         return "MODIFIED";
    }
-   
+
     /**
      * Fully qualified column used to store the user's data modification time.
      * Shouldn't need to override this as it uses the above methods.
@@ -320,7 +321,7 @@ public class TurbineMapBuilder implements MapBuilder
     }
 
    /**
-    * Column used to store the user's record cration time. 
+    * Column used to store the user's record cration time.
     * Override this if using your custom table.
     *
     * @return A String.
@@ -342,7 +343,7 @@ public class TurbineMapBuilder implements MapBuilder
     }
 
    /**
-    * Column used to store the user's email. 
+    * Column used to store the user's email.
     * Override this if using your custom table.
     *
     * @return A String.
@@ -364,7 +365,7 @@ public class TurbineMapBuilder implements MapBuilder
     }
 
    /**
-    * Column used to store the user's confirmation flag. 
+    * Column used to store the user's confirmation flag.
     * Override this if using your custom table.
     *
     * @return A String.
@@ -770,7 +771,7 @@ public class TurbineMapBuilder implements MapBuilder
     {
         return getTableJobentry() + '.' + getEmail();
     }
-    
+
     /**
      * Column used to store the job schedule property.
      * Override this if using your custom table.
@@ -781,7 +782,7 @@ public class TurbineMapBuilder implements MapBuilder
     {
         return "PROPERTY";
     }
-    
+
     /**
      * Fully qualified column name for property column.  Shouldn't
      * need to override this as it uses the above methods.
@@ -869,7 +870,7 @@ public class TurbineMapBuilder implements MapBuilder
     {
         // Reusable TableMap
         TableMap tMap;
-        
+
         // Make some objects.
         String string = new String("");
         Integer integer = new Integer(0);
@@ -902,7 +903,7 @@ public class TurbineMapBuilder implements MapBuilder
         tMap.addColumn(getModified(), date);
         tMap.addColumn(getLastLogin(), date);
         tMap.addColumn(getObjectData(), new Hashtable(1) );
-        
+
         // Add Group columns.
         tMap = dbMap.getTable(getTableGroup());
         tMap.setPrimaryKeyMethod(TableMap.ID_BROKER);
@@ -958,7 +959,7 @@ public class TurbineMapBuilder implements MapBuilder
         tMap.setPrimaryKeyMethod(TableMap.ID_BROKER);
         tMap.setPrimaryKeyMethodInfo(tMap.getName());
         tMap.addPrimaryKey(getJobId(), integer);
-        tMap.addColumn(getSecond(), integer);        
+        tMap.addColumn(getSecond(), integer);
         tMap.addColumn(getMinute(), integer);
         tMap.addColumn(getHour(), integer);
         tMap.addColumn(getWeekday(), integer);

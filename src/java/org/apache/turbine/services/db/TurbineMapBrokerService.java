@@ -60,12 +60,12 @@ import java.util.Map;
 import org.apache.turbine.services.BaseService;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.db.IDGeneratorFactory;
-import org.apache.turbine.util.db.IDBroker;
-import org.apache.turbine.util.db.adapter.DB;
-import org.apache.turbine.util.db.adapter.DBFactory;
-import org.apache.turbine.util.db.map.DatabaseMap;
-import org.apache.turbine.util.db.map.TableMap;
+import org.apache.torque.oid.IDGeneratorFactory;
+import org.apache.torque.oid.IDBroker;
+import org.apache.torque.adapter.DB;
+import org.apache.torque.adapter.DBFactory;
+import org.apache.torque.map.DatabaseMap;
+import org.apache.torque.map.TableMap;
 import org.apache.commons.configuration.Configuration;
 
 

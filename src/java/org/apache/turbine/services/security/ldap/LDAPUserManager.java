@@ -71,7 +71,7 @@ import javax.naming.directory.InitialDirContext;
 import org.apache.turbine.om.security.User;
 
 import org.apache.turbine.util.Log;
-import org.apache.turbine.util.db.Criteria;
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.UnknownEntityException;
 import org.apache.turbine.util.security.EntityExistsException;
@@ -135,7 +135,7 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
          * employed in the DBUserManager can be employed
          * here.
          */
-        
+
         try
         {
             User ldapUser = retrieve(username);
@@ -145,7 +145,7 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
             throw new DataBackendException(
                 "Failed to check account's presence", e);
         }
-        
+
         return true;
     }
 
@@ -175,7 +175,7 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
         User ldapUser = null;
 
         /*
-         * The userBaseSearch string contains some 
+         * The userBaseSearch string contains some
          * characters that need to be transformed.
          */
         userBaseSearch = userBaseSearch.replace('/', '=');
@@ -214,11 +214,11 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
             }
 
             StringTokenizer sT = new StringTokenizer(dN, ":");
-            
+
             while (sT.hasMoreElements())
             {
                 dN = sT.nextToken();
-            }                
+            }
 
             dN = dN.trim();
 
@@ -273,7 +273,7 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
       *            exist in the database.
       * @exception DataBackendException Error accessing the data backend.
       */
-    public User retrieve(String username, String password) 
+    public User retrieve(String username, String password)
         throws PasswordMismatchException,
             UnknownEntityException,DataBackendException
     {
@@ -294,7 +294,7 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
       *            exist in the database.
       *
       */
-    public void store(User user) 
+    public void store(User user)
         throws UnknownEntityException,DataBackendException
     {
         if (!accountExists(user))
@@ -317,7 +317,7 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
       *            exist in the database.
       * @exception DataBackendException Error accessing the data backend.
       */
-    public void authenticate(User user, String password) 
+    public void authenticate(User user, String password)
         throws PasswordMismatchException,
             UnknownEntityException, DataBackendException
     {
@@ -328,7 +328,7 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
         catch (NamingException authEx)
         {
             throw new PasswordMismatchException(
-                "The given password for: " + 
+                "The given password for: " +
                     user.getUserName() + " is invalid\n");
         }
     }
@@ -345,7 +345,7 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
       *            exist in the database.
       * @exception DataBackendException Error accessing the data backend.
       */
-    public void changePassword(User user, String oldPassword, String newPassword) 
+    public void changePassword(User user, String oldPassword, String newPassword)
         throws PasswordMismatchException,
             UnknownEntityException, DataBackendException
     {
@@ -368,7 +368,7 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
       *            exist in the database.
       * @exception DataBackendException Error accessing the data backend.
       */
-    public void forcePassword(User user, String password) 
+    public void forcePassword(User user, String password)
         throws UnknownEntityException,DataBackendException
     {
         throw new DataBackendException(
@@ -383,7 +383,7 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
       * @throws DataBackendException Error accessing the data backend.
       * @throws EntityExistsException if the user account already exists.
       */
-    public void createAccount(User user, String initialPassword) 
+    public void createAccount(User user, String initialPassword)
         throws EntityExistsException,DataBackendException
     {
         throw new DataBackendException(
@@ -398,7 +398,7 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
       * @throws DataBackendException Error accessing the data backend.
       * @throws UnknownEntityException if the user account is not present.
       */
-    public void removeAccount(User user) 
+    public void removeAccount(User user)
         throws UnknownEntityException,DataBackendException
     {
         throw new DataBackendException(
@@ -415,7 +415,7 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
      * @throws UnknownEntityException if the user account is not present.
      * @throws NamingException when an error occurs with the named server.
      */
-    public DirContext bind(String username, String password) 
+    public DirContext bind(String username, String password)
         throws NamingException, DataBackendException, UnknownEntityException
     {
         DirContext ctx = null;
@@ -428,7 +428,7 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
             String providerURL = new String("ldap://" + host + ":" + port);
 
             /*
-             * creating an initial context using Sun's client 
+             * creating an initial context using Sun's client
              * LDAP Provider.
              */
             Hashtable env = new Hashtable();
@@ -445,17 +445,17 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
         catch (NamingException ne)
         {
             String errno = ParseExceptionMessage.findErrno(ne.getExplanation());
-            
+
             if (errno.equals("49"))
             {
                 throw new UnknownEntityException(
                     "The given credentials for the administrator are invalid");
-            }                
+            }
             else if (errno.equals("22"))
             {
                 throw new DataBackendException(
                     "The LDAP server specified is unavailable");
-            }                
+            }
             else
             {
                 throw ne;
@@ -465,7 +465,7 @@ public class LDAPUserManager implements UserManager, LDAPSecurityConstants
         {
             Log.error(e);
         }
-        
+
         return ctx;
     }
 }
