@@ -87,20 +87,18 @@ public class IntakeTool
     public IntakeTool()
     {
         String[] groupNames = TurbineIntake.getGroupNames();
+        int groupCount = 0;
         if(groupNames != null)
         {
-            groups = new HashMap((int)(1.25*groupNames.length + 1));
-            pullMap = new HashMap((int)(1.25*groupNames.length + 1));
+            groupCount = groupNames.length;
+        }
+        groups = new HashMap((int) (1.25 * groupCount + 1));
+        pullMap = new HashMap((int) (1.25 * groupCount + 1));
 
-            for (int i=groupNames.length-1; i>=0; i--)
-            {
-                pullMap.put(groupNames[i], new PullHelper(groupNames[i]));
-            }
-		}
-		else
-		{
-			Log.warn("You do not have any groups defined for intake!!!!");
-		}
+        for (int i = groupNames.length - 1; i >= 0; i--)
+        {
+            pullMap.put(groupNames[i], new PullHelper(groupNames[i]));
+        }
     }
 
     /**
