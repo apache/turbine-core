@@ -69,6 +69,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.upload.TurbineUpload;
 import org.apache.turbine.services.upload.UploadService;
 
@@ -106,6 +108,8 @@ public class DefaultParameterParser
     extends BaseValueParser
     implements ParameterParser, Recyclable
 {
+    private String defaultCharSet;
+
     /** Logging */
     private static Log log = LogFactory.getLog(DefaultParameterParser.class);
 
@@ -189,6 +193,19 @@ public class DefaultParameterParser
         return this.request;
     }
 
+	private String getDefaultCharset()
+	{
+		if (defaultCharSet == null)
+		{
+			/* Get the default charset and cache it in a static variable. */
+			defaultCharSet = Turbine.getConfiguration()
+				.getString(TurbineConstants.LOCALE_DEFAULT_CHARSET_KEY,
+					TurbineConstants.LOCALE_DEFAULT_CHARSET_DEFAULT);
+			log.debug("defaultCharSet = " + defaultCharSet + " (From Properties)");
+		}
+		return defaultCharSet;
+	}
+
     /**
      * Sets the servlet request to be parser.  This requires a
      * valid HttpServletRequest object.  It will attempt to parse out
@@ -209,7 +226,8 @@ public class DefaultParameterParser
         uploadData = null;
 
         String enc = request.getCharacterEncoding();
-        setCharacterEncoding(enc != null ? enc : "US-ASCII");
+		String charset = getDefaultCharset();
+        setCharacterEncoding(enc != null ? enc : charset);
 
         // String object re-use at its best.
         String tmp = null;
