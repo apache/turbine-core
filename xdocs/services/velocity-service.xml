@@ -52,6 +52,10 @@ services.VelocityService.default.navigation=VelocityNavigation
 services.VelocityService.default.error.screen = VelocityErrorScreen
 services.VelocityService.default.layout.template = /Default.vm
 
+#
+# Set this to true to catch Velocity Errors and display them in the log file
+services.VelocityService.catch.errors = true
+
 services.VelocityService.runtime.log=/logs/velocity.log
 #services.VelocityService.input.encoding=UTF-8
 services.VelocityService.velocimacro.library = GlobalMacros.vm
@@ -73,10 +77,17 @@ services.VelocityService.classpath.resource.loader.class = org.apache.velocity.r
 
 <section name="Usage">
 
-<source><![CDATA[
+</section>
 
-]]></source>
-
+<section name="Properties">
+<ul>
+  <li>"services.VelocityService.catch.errors" controls the reporting of Velocity errors to the application (and to to the user).
+      If this is set to "true" (which is the default), errors are caught by Turbine and reported in the turbine.log file at 
+      error level. Velocity will get the String "[Turbine caught an Error here. Look into the turbine.log for further information]"
+      as return value (this might cause further errors down the road if you e.g. expect a numerical value or an object as the result
+      of a method), so if you see this message in your screen, follow the instructions.
+  </li>
+</ul>
 </section>
 
 </body>
