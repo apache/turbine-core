@@ -91,6 +91,12 @@ public interface TurbineConstants
     /** The SMTP server Turbine uses to send mail. */
     String MAIL_SERVER_KEY = "mail.server";
 
+    /** Default Value for he SMTP server that Turbine uses to send mail. */
+    String MAIL_SERVER_DEFAULT = "localhost";
+
+    /** The Smtp sender address property */
+    String MAIL_SMTP_FROM = "mail.smtp.from";
+
     /** Property that controls whether Turbine modules are cached or not. */
     String MODULE_CACHE_KEY = "module.cache";
 
