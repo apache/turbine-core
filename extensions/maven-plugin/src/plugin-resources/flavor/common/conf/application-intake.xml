@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="iso-8859-1"?>
+
 <!-- 
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
@@ -19,11 +20,17 @@
 
 <!-- ======================================================================== -->
 <!--                                                                          -->
-<!--  maven Buildfile                                                         -->
+<!--  Default Intake file for Turbine Skeleton                                -->
 <!--                                                                          -->
-<!-- $Id$ -->
+<!-- $Id$   -->
 <!--                                                                          -->
 <!-- ======================================================================== -->
 
-<project default="plugin:plugin"/>
+<!DOCTYPE input-data PUBLIC "JAKARTA//TURBINE intake.dtd//EN"
+                                        "http://jakarta.apache.org/turbine/dtd/intake_2_3.dtd">
 
+<input-data>
+  <group name="dummy" key="dummy">
+    <field name="dummy" key="dummy" />
+  </group>
+</input-data>

@@ -24,7 +24,63 @@
   </properties>
 
   <body>
-
+    <release version="1.2-dev" date="in CVS">
+     <action dev="henning" type="add">
+       Different OM layers can be configured when setting up the application. Currently
+       only Torque and no OM layer are supported (Volunteers for Hibernate, OJB wanted!)
+     </action>
+     <action dev="henning" type="update">
+       Installation of the demo pages to verify the function of a new web application can
+       be skipped.
+     </action>
+     <action dev="henning" type="add">
+       Most parts of the plugin deployment and WAR packing can be skipped by setting skip 
+       properties and replaced by custom postGoal scripts.
+     </action>
+     <action dev="henning" type="update">
+       remove the inplace switch, replace with mode selection to allow easy adding of
+       other modes (Hint! Hint! We could really use an Eclipse Mode using the eclipse
+       plugin).
+     </action>
+     <action dev="henning" type="update">
+       Moved the flavor directories into common directories under the flavor version
+       (suggested by Eric Pugh).
+     </action>
+     <action dev="henning" type="add">
+       Added a resources directory as it is referenced in many other parts of the Turbine
+       documentation (suggested by Lester Ward).
+     </action>
+     <action dev="henning" type="update">
+       Reworked the inplace mode to be really &quot;in place&quot;. No more turbine:deploy
+       needed (suggested by Lester Ward).
+     </action>
+     <action dev="henning" type="update">
+       Reworked the creation of the maven.war.webxml property (suggested by Lester Ward).
+     </action>
+     <action dev="henning" type="add">
+       Added a pages directory to put HTML pages that are part of an application in.
+     </action>
+     <action dev="henning" type="add">
+       Added an index.html page so that accessing the webapp without any other part paths
+       redirect to the Turbine home page.
+     </action>
+     <action dev="henning" type="add">
+      Add copyright notices to all files.
+     </action>
+    </release>
+    <release version="1.1-dev" date="in CVS">
+     <action dev="henning" type="update">
+       Replaced the <code>turbine:inplace</code> goal by making <code>turbine:deploy</code>
+       configureable.
+     </action>
+     <action dev="henning" type="add">
+       Add lots of xdocs for documenting the plugin.
+     </action>
+     <action dev="henning" type="add">
+       Add <code>turbine.app.flavor</code> switch for setting up different types of Turbine
+       applications.
+     </action>
+    </release>
     <release version="2.4-dev" date="in CVS">
       <action dev="epugh" type="add">
         Added goals turbine:inplace-war and turbine:inplace-clean to facilate inplace editing

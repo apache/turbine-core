@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- 
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
@@ -17,19 +17,27 @@
  */
  -->
 
-<project name="Maven Turbine Plugin">
-
-  <title>Maven Turbine Plugin</title>
-
+<project>
+  <title>
+  </title>
   <body>
     <links>
-      <item name="Turbine" href="http://jakarta.apache.org/turbine/"/>
-      <item name="Maven" href="http://maven.apache.org/"/>      
+      <item href="http://jakarta.apache.org/turbine/" name="Turbine"/>
+      <item href="http://db.apache.org/torque/" name="Torque"/>
+      <item href="http://maven.apache.org/" name="Maven"/>
     </links>
     <menu name="Overview">
-      <item name="Overview"           href="/index.html" />
-      <item name="Goals"              href="/goals.html" />
-      <item name="Properties"         href="/properties.html" />
+      <item href="/index.html" name="Home"/>
+      <item href="/installation.html" name="Installation"/>
+      <item href="/getting_started.html" name="Getting Started"/>
+      <item href="/using_meta.html" name="Using M.E.T.A."/>
+      <item href="/tree.html" name="Directory tree reference"/>
+      <item href="/config.html" name="Configuration file reference"/>
+      <item href="/schema.html" name="Schema file reference"/>
+      <item href="/modes.html" name="Application development modes"/>
+      <item href="/flavors.html" name="Flavors of Turbine applications"/>
+      <item href="/goals.html" name="Goals"/>
+      <item href="/properties.html" name="Properties"/>
     </menu>
   </body>
 </project>
