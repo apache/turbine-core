@@ -36,13 +36,6 @@
         <pathelement location="${webmacro.jar}"/>
     </path>
 
-    <!-- Build classpath -->
-    <path id="classpath">
-        <fileset dir="lib">
-            <include name="**/*.jar"/>
-        </fileset>
-    </path>
-
     <!-- ================================================================== -->
     <!-- Prints useful build environment values                             -->
     <!-- ================================================================== -->
