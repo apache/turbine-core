@@ -75,7 +75,7 @@
     <filter token="TURBINE_APP_SUBDIR"         value="${turbine.app.subdir}"/>
     <filter token="TURBINE_PLUGIN_MODE"        value="${turbine.plugin.mode}"/>
     <filter token="TURBINE_PLUGIN_INPLACE_DIR" value="${turbine.plugin.inplace.dir}"/>
-    <filter token="TURBINE_SETUP_DEMO"         value="${turbine.setup.demo}"/>
+    <filter token="TURBINE_APP_SETUP_DEMO"     value="${turbine.app.setup.demo}"/>
 
     <filter token="TURBINE_PLUGIN_BASE_DIR"    value="${turbine.plugin.base.dir}"/>
     <filter token="TURBINE_PLUGIN_SRC_IMAGES"  value="${turbine.plugin.src.images}"/>
@@ -260,7 +260,7 @@
                                 fromfile="schema/application-data.xml" />
 
 
-    <j:if test="${context.getVariable('turbine.setup.demo') != null &amp;&amp; context.getVariable('turbine.setup.demo') == 'true'}">
+    <j:if test="${context.getVariable('turbine.app.setup.demo') != null &amp;&amp; context.getVariable('turbine.app.setup.demo') == 'true'}">
       <attainGoal name="turbine:install-demo"/>
     </j:if>
   </goal>
