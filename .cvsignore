@@ -7,3 +7,5 @@ velocity.log*
 .classpath
 .project
 .externalToolBuilders
+logs
+junit*.properties
