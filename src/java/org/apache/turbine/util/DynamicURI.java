@@ -62,7 +62,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ecs.html.A;
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.turbine.util.parser.BaseValueParser;
+import org.apache.turbine.util.parser.ParserUtils;
 
 /**
  * This creates a Dynamic URI for use within the Turbine system
@@ -360,7 +360,7 @@ public class DynamicURI
                        String value)
     {
         Object[] tmp = new Object[2];
-        tmp[0] = (Object) BaseValueParser.convertAndTrim(name);
+        tmp[0] = (Object) ParserUtils.convertAndTrim(name);
         tmp[1] = (Object) value;
         switch (type)
         {
@@ -679,7 +679,7 @@ public class DynamicURI
                          e.hasMoreElements();)
                     {
                         Object[] tmp = (Object[]) e.nextElement();
-                        if (BaseValueParser.convertAndTrim(name)
+                        if (ParserUtils.convertAndTrim(name)
                                 .equals((String) tmp[0]))
                         {
                             this.pathInfo.removeElement(tmp);
@@ -695,7 +695,7 @@ public class DynamicURI
                          e.hasMoreElements();)
                     {
                         Object[] tmp = (Object[]) e.nextElement();
-                        if (BaseValueParser.convertAndTrim(name)
+                        if (ParserUtils.convertAndTrim(name)
                                 .equals((String) tmp[0]))
                         {
                             this.queryData.removeElement(tmp);
