@@ -59,28 +59,49 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+
 import java.util.Iterator;
 import java.util.Vector;
+
 import javax.servlet.ServletConfig;
 
+import org.apache.commons.collections.ExtendedProperties;
+
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationConverter;
+import org.apache.commons.configuration.PropertiesConfiguration;
+
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.Turbine;
+
 import org.apache.turbine.services.InitializationException;
+
 import org.apache.turbine.services.pull.TurbinePull;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
+
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
+
 import org.apache.velocity.VelocityContext;
+
 import org.apache.velocity.app.Velocity;
+
 import org.apache.velocity.context.Context;
+
 import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
 
 /**
  * This is a Service that can process Velocity templates from within a
- * Turbine Screen.  Here's an example of how you might use it from a
+ * Turbine Screen. It is used in conjunction with the templating service
+ * as a Templating Engine for templates ending in "vm". It registers
+ * itself as translation engine with the template service and gets
+ * accessed from there. After configuring it in your properties, it
+ * should never be necessary to call methods from this service directly.
+ *
+ * Here's an example of how you might use it from a
  * screen:<br>
  *
  * <code>
@@ -99,28 +120,19 @@ import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
  * @version $Id$
  */
 public class TurbineVelocityService
-        extends BaseTemplateEngineService
-        implements VelocityService
+    extends BaseTemplateEngineService
+    implements VelocityService
 {
-    /**
-     * The generic resource loader path property in velocity.
-     */
-    private static final String RESOURCE_LOADER_PATH =
-            ".resource.loader.path";
+    /** The generic resource loader path property in velocity.*/
+    private static final String RESOURCE_LOADER_PATH = ".resource.loader.path";
 
-    /**
-     * Default character set to use if not specified in the RunData object.
-     */
+    /** Default character set to use if not specified in the RunData object. */
     private static final String DEFAULT_CHAR_SET = "ISO-8859-1";
 
-    /**
-     * The prefix used for URIs which are of type <code>jar</code>.
-     */
+    /** The prefix used for URIs which are of type <code>jar</code>. */
     private static final String JAR_PREFIX = "jar:";
 
-    /**
-     * The prefix used for URIs which are of type <code>absolute</code>.
-     */
+    /** The prefix used for URIs which are of type <code>absolute</code>. */
     private static final String ABSOLUTE_PREFIX = "file://";
 
     /** Logging */
@@ -132,16 +144,12 @@ public class TurbineVelocityService
      */
     private Context globalContext = null;
 
-    /**
-     * Is the pullModelActive.
-     */
+    /** Is the pullModelActive? */
     private boolean pullModelActive = false;
 
-    /**
-     * Should we refresh the tools on a per
-     * request basis. This is used for development.
-     */
+    /** Should we refresh the tools on a per request basis? (This is useful for development) */
     private boolean refreshToolsPerRequest = false;
+
 
     /**
      * Load all configured components and initialize them. This is
@@ -152,7 +160,7 @@ public class TurbineVelocityService
      *         stage
      */
     public void init()
-            throws InitializationException
+        throws InitializationException
     {
         try
         {
@@ -160,11 +168,9 @@ public class TurbineVelocityService
 
             globalContext = null;
 
-            /*
-             * We can only load the Pull Model ToolBox
-             * if the Pull service has been listed in the TR.props
-             * and the service has successfully been initialized.
-             */
+            // We can only load the Pull Model ToolBox
+            // if the Pull service has been listed in the TR.props
+            // and the service has successfully been initialized.
             if (TurbinePull.isRegistered())
             {
                 globalContext = TurbinePull.getGlobalContext();
@@ -172,29 +178,29 @@ public class TurbineVelocityService
                 pullModelActive = true;
 
                 refreshToolsPerRequest = TurbinePull.refreshToolsPerRequest();
+                log.debug("Activated Pull Tools");
             }
 
-            /*
-             * If the Pull service is inactive then we create
-             * an empty toolBoxContext
-             */
+            // If the Pull service is inactive then we create
+            // an empty toolBoxContext
             if (globalContext == null)
             {
                 globalContext = new VelocityContext();
             }
 
-            /*
-             * Register with the template service.
-             */
-            registerConfiguration("vm");
+            // Register with the template service.
+            registerConfiguration(VelocityService.VELOCITY_EXTENSION);
+
             setInit(true);
         }
         catch (Exception e)
         {
+            log.error("Error: ", e);
             throw new InitializationException(
-                    "Failed to initialize TurbineVelocityService", e);
+                "Failed to initialize TurbineVelocityService", e);
         }
     }
+
 
     /**
      * Inits the service using servlet parameters to obtain path to the
@@ -206,10 +212,11 @@ public class TurbineVelocityService
      * @deprecated use init() instead.
      */
     public void init(ServletConfig config)
-            throws InitializationException
+        throws InitializationException
     {
         init();
     }
+
 
     /**
      * Create a Context object that also contains the globalContext.
@@ -221,44 +228,42 @@ public class TurbineVelocityService
         return new VelocityContext(globalContext);
     }
 
+
     /**
      * Create a Context from the RunData object.  Adds a pointer to
-     * the RunData object to the WC so that RunData is available in
-     * the templates.
+     * the RunData object to the VelocityContext so that RunData 
+     * is available in the templates.
      *
      * @param data The Turbine RunData object.
      * @return A clone of the WebContext needed by Velocity.
      */
     public Context getContext(RunData data)
     {
-        /*
-         * Attempt to get it from the data first.  If it doesn't
-         * exist, create it and then stuff it into the data.
-         */
+        // Attempt to get it from the data first.  If it doesn't
+        // exist, create it and then stuff it into the data.
         Context context = (Context)
-                data.getTemplateInfo().getTemplateContext(VelocityService.CONTEXT);
+            data.getTemplateInfo().getTemplateContext(VelocityService.CONTEXT);
 
         if (context == null)
         {
             context = getContext();
-            context.put("data", data);
+            context.put(VelocityService.RUNDATA_KEY, data);
 
             if (pullModelActive)
             {
-                /*
-                 * Populate the toolbox with request scope, session scope
-                 * and persistent scope tools (global tools are already in
-                 * the toolBoxContent which has been wrapped to construct
-                 * this request-specific context).
-                 */
+                // Populate the toolbox with request scope, session scope
+                // and persistent scope tools (global tools are already in
+                // the toolBoxContent which has been wrapped to construct
+                // this request-specific context).
                 TurbinePull.populateContext(context, data);
             }
 
             data.getTemplateInfo().setTemplateContext(
-                    VelocityService.CONTEXT, context);
+                VelocityService.CONTEXT, context);
         }
         return context;
     }
+
 
     /**
      * Process the request and fill in the template with the values
@@ -272,15 +277,21 @@ public class TurbineVelocityService
      *         wrapped into a TurbineException and rethrown.
      */
     public String handleRequest(Context context, String filename)
-            throws TurbineException
+        throws TurbineException
     {
         String results = null;
         ByteArrayOutputStream bytes = null;
+        OutputStreamWriter writer = null;
+        String charset = getCharSet(context);
 
         try
         {
             bytes = new ByteArrayOutputStream();
-            String charset = decodeRequest(context, filename, bytes);
+
+            writer = new OutputStreamWriter(bytes, charset);
+
+            executeRequest(context, filename, writer);
+            // Writer got flushed in executeRequest!
             results = bytes.toString(charset);
         }
         catch (Exception e)
@@ -291,14 +302,19 @@ public class TurbineVelocityService
         {
             try
             {
-                if (bytes != null) bytes.close();
+                if (bytes != null)
+                {
+                    bytes.close();
+                }
             }
             catch (IOException ignored)
             {
+                // do nothing.
             }
         }
         return results;
     }
+
 
     /**
      * Process the request and fill in the template with the values
@@ -313,12 +329,38 @@ public class TurbineVelocityService
      *         wrapped into a TurbineException and rethrown.
      */
     public void handleRequest(Context context,
-                              String filename,
-                              OutputStream output)
-            throws TurbineException
+        String filename,
+        OutputStream output)
+        throws TurbineException
     {
-        decodeRequest(context, filename, output);
+        String charset  = getCharSet(context);
+        OutputStreamWriter writer = null;
+
+        try
+        {
+            writer = new OutputStreamWriter(output, charset);
+            executeRequest(context, filename, writer);
+        }
+        catch (Exception e)
+        {
+            renderingError(filename, e);
+        }
+        finally
+        {
+            try
+            {
+                if (writer != null)
+                {
+                    writer.flush();
+                }
+            }
+            catch (Exception ignored)
+            {
+                // do nothing.
+            }
+        }
     }
+
 
     /**
      * Process the request and fill in the template with the values
@@ -333,13 +375,34 @@ public class TurbineVelocityService
      *         wrapped into a TurbineException and rethrown.
      */
     public void handleRequest(Context context,
-                              String filename,
-                              Writer writer)
-            throws TurbineException
+        String filename,
+        Writer writer)
+        throws TurbineException
     {
-        String encoding = getEncoding(context);
-        decodeRequest(context, filename, encoding, writer);
+        try
+        {
+            executeRequest(context, filename, writer);
+        }
+        catch (Exception e)
+        {
+            renderingError(filename, e);
+        }
+        finally
+        {
+            try
+            {
+                if (writer != null)
+                {
+                    writer.flush();
+                }
+            }
+            catch (Exception ignored)
+            {
+                // do nothing.
+            }
+        }
     }
+
 
     /**
      * Process the request and fill in the template with the values
@@ -350,67 +413,32 @@ public class TurbineVelocityService
      * @param filename A String with the filename of the template.
      * @param output A OutputStream where we will write the process template as
      * a String.
-     * @return The character encoding applied to the resulting String.
      *
-     * @throws TurbineException Any exception trown while processing will be
-     *         wrapped into a TurbineException and rethrown.
+     * @throws Exception A problem occured.
      */
-    private String decodeRequest(Context context,
-                                 String filename,
-                                 OutputStream output)
-            throws TurbineException
+    private void executeRequest(Context context,
+        String filename,
+        Writer writer)
+        throws Exception
     {
-        /*
-         * This is for development.
-         */
+        String encoding = getEncoding(context);
+
+        // This is for development.
         if (pullModelActive && refreshToolsPerRequest)
         {
             TurbinePull.refreshGlobalTools();
         }
 
-        /*
-         * Get the character and template encodings from the RunData object.
-         */
-        String charset = getCharSet(context);
-        String encoding = getEncoding(context);
-
-        OutputStreamWriter writer = null;
-
-        try
+        if (encoding != null)
         {
-            writer = new OutputStreamWriter(output, charset);
-            if (encoding != null)
-            {
-                Velocity.mergeTemplate(filename, encoding, context, writer);
-            }
-            else
-            {
-                Velocity.mergeTemplate(filename, context, writer);
-            }
+            Velocity.mergeTemplate(filename, encoding, context, writer);
         }
-        catch (Exception e)
+        else
         {
-            renderingError(filename, e);
+            Velocity.mergeTemplate(filename, context, writer);
         }
-        finally
-        {
-            try
-            {
-                if (writer != null)
-                {
-                    writer.flush();
-                }
-            }
-            catch (Exception ignored)
-            {
-                /*
-                 * do nothing.
-                 */
-            }
-        }
-
-        return charset;
     }
+
 
     /**
      * Retrieve the required charset from the Turbine RunData in the context
@@ -420,23 +448,17 @@ public class TurbineVelocityService
      */
     private String getCharSet(Context context)
     {
-        String charset;
-        Object data = context.get("data");
+        String charset = null; 
+
+        Object data = context.get(VelocityService.RUNDATA_KEY);
         if ((data != null) && (data instanceof RunData))
         {
             charset = ((RunData) data).getCharSet();
-            if (charset == null)
-            {
-                charset = DEFAULT_CHAR_SET;
-            }
-        }
-        else
-        {
-            charset = DEFAULT_CHAR_SET;
         }
 
-        return charset;
+        return (StringUtils.isEmpty(charset)) ? DEFAULT_CHAR_SET : charset;
     }
+
 
     /**
      * Retrieve the required encoding from the Turbine RunData in the context
@@ -446,79 +468,17 @@ public class TurbineVelocityService
      */
     private String getEncoding(Context context)
     {
-        String encoding;
-        Object data = context.get("data");
+        String encoding = null;
+
+        Object data = context.get(VelocityService.RUNDATA_KEY);
         if ((data != null) && (data instanceof RunData))
         {
             encoding = ((RunData) data).getTemplateEncoding();
         }
-        else
-        {
-            encoding = null;
-        }
+
         return encoding;
     }
 
-    /**
-     * Process the request and fill in the template with the values
-     * you set in the Context.
-     *
-     * @param context A Context.
-     * @param filename A String with the filename of the template.
-     * @param encoding The encoding to use with the template
-     * @param writer A Writer where we will write the process template as
-     * a String. This writer charset should be compatible with the selected
-     * encoding
-     *
-     * @throws TurbineException Any exception trown while processing will be
-     *         wrapped into a TurbineException and rethrown.
-     */
-    private void decodeRequest(Context context,
-                               String filename,
-                               String encoding,
-                               Writer writer)
-            throws TurbineException
-    {
-        /*
-         * This is for development.
-         */
-        if (pullModelActive && refreshToolsPerRequest)
-        {
-            TurbinePull.refreshGlobalTools();
-        }
-
-        try
-        {
-            if (encoding != null)
-            {
-                Velocity.mergeTemplate(filename, encoding, context, writer);
-            }
-            else
-            {
-                Velocity.mergeTemplate(filename, context, writer);
-            }
-        }
-        catch (Exception e)
-        {
-            renderingError(filename, e);
-        }
-        finally
-        {
-            try
-            {
-                if (writer != null)
-                {
-                    writer.flush();
-                }
-            }
-            catch (Exception ignored)
-            {
-                /*
-                 * do nothing.
-                 */
-            }
-        }
-    }
 
     /**
      * Macro to handle rendering errors.
@@ -530,119 +490,131 @@ public class TurbineVelocityService
      *                             information to <code>e</code>.
      */
     private static final void renderingError(String filename, Exception e)
-            throws TurbineException
+        throws TurbineException
     {
         String err = "Error rendering Velocity template: " + filename;
         log.error(err + ": " + e.getMessage());
         throw new TurbineException(err, e);
     }
 
+
     /**
      * Setup the velocity runtime by using a subset of the
      * Turbine configuration which relates to velocity.
      *
-     * @exception InitializationException For any errors during initialization.
+     * @exception Exception An Error occured.
      */
-    private void initVelocity()
-            throws InitializationException
+    private synchronized void initVelocity()
+        throws Exception
     {
-        /*
-         * Get the configuration for this service.
-         */
+        // Get the configuration for this service.
         Configuration configuration = getConfiguration();
-
+        
         configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS,
-                SimpleLog4JLogSystem.class.getName());
+            SimpleLog4JLogSystem.class.getName());
         configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM
-                + ".log4j.category", "velocity");
+            + ".log4j.category", "velocity");
+        
+        Velocity.setExtendedProperties(createVelocityProperties(configuration));
+        Velocity.init();
+    }
 
-        /*
-         * Get all the template paths where the velocity runtime should search
-         * for templates and collect them into a separate vector to avoid
-         * concurrent modification exceptions.
-         */
-        String key;
-        Vector keys = new Vector();
-        for (Iterator i = configuration.getKeys(); i.hasNext();)
+
+    /**
+     * This method generates the Extended Properties object necessary
+     * for the initialization of Velocity. It also converts the various
+     * resource loader pathes into webapp relative pathes. It also
+     *
+     * @param conf The Velocity Service configuration
+     *
+     * @return An ExtendedProperties Object for Velocity
+     *
+     * @throws Exception If a problem occured while converting the properties.
+     */
+
+    public ExtendedProperties createVelocityProperties(Configuration conf)
+        throws Exception
+    {
+        // This bugger is public, because we want to run some Unit tests
+        // on it. 
+        
+        ExtendedProperties veloConfig = new ExtendedProperties();
+        
+        // Fix up all the template resource loader pathes to be
+        // webapp relative. Copy all other keys verbatim into the
+        // veloConfiguration.
+        
+        for (Iterator i = conf.getKeys(); i.hasNext();)
         {
-            key = (String) i.next();
-            if (key.endsWith(RESOURCE_LOADER_PATH))
+            String key = (String) i.next();
+            if (!key.endsWith(RESOURCE_LOADER_PATH))
             {
-                keys.add(key);
+                Object value = conf.getProperty(key);
+                veloConfig.addProperty(key, value);
+                continue; // for()
             }
-        }
 
-        /*
-         * Loop through all template paths, clear the corresponding
-         * velocity properties and translate them all to the webapp space.
-         */
-
-        int ind;
-        Vector paths;
-        String entry;
-        for (Iterator i = keys.iterator(); i.hasNext();)
-        {
-            key = (String) i.next();
-            paths = configuration.getVector(key, null);
-            if (paths != null)
+            Vector paths = conf.getVector(key, null);
+            if (paths == null)
             {
-                Velocity.clearProperty(key);
-                configuration.clearProperty(key);
+                // We don't copy this into VeloProperties, because
+                // null value is unhealthy for the ExtendedProperties object...
+                continue; // for()
+            }
 
-                for (Iterator j = paths.iterator(); j.hasNext();)
+            Velocity.clearProperty(key);
+            
+            // Translate the supplied pathes given here.
+            // the following three different kinds of
+            // pathes must be translated to be webapp-relative
+            //
+            // jar:file://path-component!/entry-component
+            // file://path-component
+            // path/component
+            for (Iterator j = paths.iterator(); j.hasNext();)
+            {
+                String path = (String) j.next();
+                
+                log.debug("Translating " + path);
+
+                if (path.startsWith(JAR_PREFIX))
                 {
-                    String path = (String) j.next();
-                    if (path.startsWith(JAR_PREFIX + "file"))
+                    // skip jar: -> 4 chars
+                    if (path.substring(4).startsWith(ABSOLUTE_PREFIX))
                     {
-                        /*
-                         * A local jar resource URL path is a bit more
-                         * complicated, but we can translate it as well.
-                         */
-                        ind = path.indexOf("!/");
-                        if (ind >= 0)
-                        {
-                            entry = path.substring(ind);
-                            path = path.substring(9, ind);
-                        }
-                        else
-                        {
-                            entry = "!/";
-                            path = path.substring(9);
-                        }
-                        path = JAR_PREFIX + "file:"
-                                + Turbine.getRealPath(path) + entry;
+                        // We must convert up to the jar path separator
+                        int jarSepIndex = path.indexOf("!/");
+                        
+                        // jar:file:// -> skip 11 chars
+                        path = (jarSepIndex < 0) 
+                            ? Turbine.getRealPath(path.substring(11))
+                        // Add the path after the jar path separator again to the new url.
+                            : (Turbine.getRealPath(path.substring(11, jarSepIndex)) + path.substring(jarSepIndex));
+
+                        log.debug("Result (absolute jar path): " + path);
                     }
-                    else if (path.startsWith(ABSOLUTE_PREFIX))
-                    {
-                        path = path.substring(ABSOLUTE_PREFIX.length(),
-                                path.length());
-                    }
-                    else if (!path.startsWith(JAR_PREFIX))
-                    {
-                        // But we don't translate remote jar URLs.
-                        path = Turbine.getRealPath(path);
-                    }
-                    // Put the translated paths back to the configuration.
-                    configuration.addProperty(key, path);
                 }
+                else if(path.startsWith(ABSOLUTE_PREFIX))
+                {
+                    // skip file:// -> 7 chars
+                    path = Turbine.getRealPath(path.substring(7));
+
+                    log.debug("Result (absolute URL Path): " + path);
+                }
+                // Test if this might be some sort of URL that we haven't encountered yet.
+                else if(path.indexOf("://") < 0)
+                {
+                    path = Turbine.getRealPath(path);
+
+                    log.debug("Result (normal fs reference): " + path);
+                }
+
+                log.debug("Adding " + key + " -> " + path);
+                // Re-Add this property to the configuration object
+                veloConfig.addProperty(key, path);
             }
         }
-        try
-        {
-            Velocity.setExtendedProperties(ConfigurationConverter
-                    .getExtendedProperties(configuration));
-            Velocity.init();
-        }
-        catch (Exception e)
-        {
-            /*
-             * This will be caught and rethrown by the init() method.
-             * Oh well, that will protect us from RuntimeException folk showing
-             * up somewhere above this try/catch
-             */
-            throw new InitializationException(
-                    "Failed to set up TurbineVelocityService", e);
-        }
+        return veloConfig;
     }
 
     /**
@@ -651,7 +623,7 @@ public class TurbineVelocityService
      * a template exists or not.
      *
      * @param template String template to search for
-     * @return boolean
+     * @return True if the template can be loaded by Velocity
      */
     public boolean templateExists(String template)
     {
@@ -672,3 +644,4 @@ public class TurbineVelocityService
         }
     }
 }
+
