@@ -286,16 +286,6 @@ public class TurbineUser extends SecurityObject implements User
         return val;
     }
 
-    /**
-     * Returns the username for this user.
-     *
-     * @return A String with the username.
-     * @deprecated use {@link #getName} instead.
-     */
-    public String getUserName()
-    {
-        return getName();
-    }
 
     /**
      * Returns the first name for this user.
@@ -536,16 +526,6 @@ public class TurbineUser extends SecurityObject implements User
         getTempStorage().put(name, (value == null) ? "" : value);
     }
 
-    /**
-     * Sets the username for this user.
-     *
-     * @param username The user's username.
-     * @deprecated use {@link #setName} instead
-     */
-    public void setUserName(String username)
-    {
-        setName(username);
-    }
 
     /**
      * Sets the first name for this user.

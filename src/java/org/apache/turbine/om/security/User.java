@@ -214,15 +214,6 @@ public interface User
     Object getTemp(String name, Object def);
 
     /**
-     * Returns the username for this user.
-     *
-     * @return A String with the username.
-     *
-     * @deprecated This is the same as getName(), so use this.
-     */
-    String getUserName();
-
-    /**
      * Returns the first name for this user.
      *
      * @return A String with the user's first name.
@@ -347,15 +338,6 @@ public interface User
      * @param value The object.
      */
     void setTemp(String name, Object value);
-
-    /**
-     * Sets the username for this user.
-     *
-     * @param username The user's username.
-     *
-     * @deprecated This is the same as setName(), so use this.
-     */
-    void setUserName(String username);
 
     /**
      * Sets the first name for this user.
