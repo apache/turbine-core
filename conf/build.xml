@@ -78,6 +78,7 @@
     <filter token="DATABASE_USER" value="${database.user}"/>
     <filter token="DATABASE_PASSWORD" value="${database.password}"/>
     <filter token="DATABASE_NAME" value="${database.name}"/>
+    <filter token="PROJECT" value="${project}"/>
   
   </target>
 
@@ -129,6 +130,7 @@
     <filter token="LOCALE_DEFAULT_COUNTRY" value="${locale.default.country}"/>
 
     <filter token="INCLUDE_FILE" value="${include.file}"/>
+    
   </target>
 
 </project>

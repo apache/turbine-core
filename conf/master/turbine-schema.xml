@@ -17,7 +17,7 @@
 <!-- @version $Id$     -->
 <!-- ==================================================================== -->
 
-<database name="@PROJECT@">
+<database name="@DEFAULT_DATABASE@">
   
   <table name="TURBINE_PERMISSION" idMethod="idbroker">
     <column name="PERMISSION_ID" required="true" primaryKey="true" type="INTEGER"/>
