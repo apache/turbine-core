@@ -187,6 +187,7 @@ public class PermissionSet
      * @param permissionName Name of Permission.
      * @return Permission if argument matched a Permission in this
      * PermissionSet; null if no match.
+     * @deprecated Use <a href="#getPermissionByName">getPermissionByName</a> instead.
      */
     public Permission getPermission(String permissionName)
     {
