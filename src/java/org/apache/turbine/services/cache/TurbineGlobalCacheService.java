@@ -64,7 +64,6 @@ import java.util.Vector;
 
 import org.apache.commons.configuration.Configuration;
 
-import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 
@@ -126,9 +125,7 @@ public class TurbineGlobalCacheService
      * Value must be > 0.
      * Default = 5 seconds
      */
-    public static final long DEFAULT_CACHE_CHECK_FREQUENCY =
-            Turbine.getConfiguration()
-            .getLong("cache.check.frequency", 5000); // 5 seconds
+    public static final long DEFAULT_CACHE_CHECK_FREQUENCY = 5000; // 5 seconds
 
     /** The cache. **/
     private Hashtable cache = null;
@@ -185,6 +182,7 @@ public class TurbineGlobalCacheService
             // to terminate in an orderly manner.
             housekeeping.setDaemon(true);
             housekeeping.start();
+
             setInit(true);
         }
         catch (Exception e)
@@ -196,7 +194,7 @@ public class TurbineGlobalCacheService
 
     /**
      * Returns an item from the cache.  RefreshableCachedObject will be
-     * refreshed if it is expired not untouched.
+     * refreshed if it is expired and not untouched.
      *
      * @param id The key of the stored object.
      * @return The object from the cache.
