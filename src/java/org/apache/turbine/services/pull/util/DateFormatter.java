@@ -58,12 +58,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.pull.ApplicationTool;
 
 /**
  * This pull tool is used to format date objects into strings.
  *
  * @author <a href="mailto:qmccombs@nequalsone.com">Quinton McCombs</a>
+ * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  */
 public class DateFormatter
@@ -73,7 +75,15 @@ public class DateFormatter
     private SimpleDateFormat sdf = new SimpleDateFormat();
 
     /** Default date format */
-    private static final String defaultFormat = "MM/dd/yyyy";
+    private static final String DATE_FORMAT_DEFAULT = "MM/dd/yyyy";
+
+    /**
+     * Property tag for the date format that is to be used for the web 
+     * application.
+     */
+    private static final String DATE_FORMAT_KEY = "tool.dateTool.format";
+
+    private String dateFormat = null;
 
     /**
      * Initialize the application tool. The data parameter holds a different
@@ -87,6 +97,8 @@ public class DateFormatter
      */
     public void init(Object data)
     {
+        dateFormat = Turbine.getConfiguration()
+                .getString(DATE_FORMAT_KEY, DATE_FORMAT_DEFAULT);
     }
 
     /**
@@ -109,7 +121,7 @@ public class DateFormatter
      */
     public String format(Date theDate)
     {
-        return format(theDate, defaultFormat);
+        return format(theDate, dateFormat);
     }
 
     /**
