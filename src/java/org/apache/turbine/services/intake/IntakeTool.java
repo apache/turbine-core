@@ -95,7 +95,7 @@ public class IntakeTool
         groups = new HashMap((int) (1.25 * groupCount + 1));
         pullMap = new HashMap((int) (1.25 * groupCount + 1));
 
-        for (int i = groupNames.length - 1; i >= 0; i--)
+        for (int i = groupCount - 1; i >= 0; i--)
         {
             pullMap.put(groupNames[i], new PullHelper(groupNames[i]));
         }
