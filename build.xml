@@ -295,10 +295,18 @@
     <!-- ================================================================== -->
     <target name="package" depends="jar,javadocs">
         <mkdir dir="${final.dir}"/>
-        <mkdir dir="${final.dir}/src/java"/>
-
-        <copy todir="${final.dir}/src/java">
-            <fileset dir="${build.dir}/src"/>
+        <mkdir dir="${final.dir}/src"/>
+        <mkdir dir="${final.dir}/conf"/>
+ 
+        <copy file="${conf.dir}/TurbineResources.properties" 
+              tofile="${final.dir}/conf/TurbineResources.properties"/>
+  
+        <copy todir="${final.dir}/src">
+            <fileset dir="${src.dir}">
+               <exclude name="**/CVS/*"/>
+               <exclude name="tlds/**"/>
+               <exclude name="sql/**"/>
+            </fileset> 
         </copy>
 
         <copy todir="${final.dir}/docs">
@@ -307,12 +315,14 @@
             </fileset>
         </copy>
 
-        <copy todir="${final.dir}/build">
-            <fileset dir="build"/>
-        </copy>
-
-        <copy todir="${final.dir}/lib">
-            <fileset dir="lib"/>
+        <copy todir="${final.dir}">
+            <fileset dir=".">
+               <include name="build*.xml"/>
+               <include name="deps.list"/>
+               <include name="default.properties"/>
+               <include name="build.properties.sample"/>
+               <include name="tdk.jar"/>
+            </fileset>
         </copy>
 
         <copy file="${build.dir}/${final.name}.jar"
