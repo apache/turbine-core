@@ -19,7 +19,7 @@
         <li>Determine if a given user is already logged in on another
             session
         </li>
-        <li>Terminate a session (not implemented yet)</li>
+        <li>Terminate a session</li>
     </ul>
 </p>
 
@@ -93,15 +93,23 @@ services.SessionService.earlyInit=true
 </web-app>
 ]]></source>
 
+<p>
+    There is also a pull tool avilable for accessing this service.  To make it
+    available for use in your velocity templates, add the following line to
+    your TR.props file.
+</p>
+<source><![CDATA[
+tool.session.sessionmgt = org.apache.turbine.services.session.SessionTool
+]]></source>
+
 </section>
 
 <section name="Usage">
 
 <p>
     The Session Service should be accessed through the
-    <code>org.apache.turbine.services.session.TurbineSession</code> class.  This
-    class will provide you with static methods for accessing the service.  See
-    the javadocs for this class for information on the API.
+    <code>org.apache.turbine.services.session.TurbineSession</code> class or the
+    pull tool.  See the javadocs for both classes for more usage information.
 </p>
 
 </section>
