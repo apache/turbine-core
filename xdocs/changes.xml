@@ -73,7 +73,7 @@ Changes between Turbine LAST_RELEASE and CURRENT_RELEASE.
 -->
 
 
-<section name="Turbine 2.3-rc3-dev">
+<section name="Turbine 2.3.1">
 
 <subsection name="Other changes">
 <p>
@@ -90,10 +90,10 @@ Changes between Turbine LAST_RELEASE and CURRENT_RELEASE.
 
 </section>
 
-<section name="Turbine 2.3-rc2">
+<section name="Turbine 2.3.1-rc2">
 
 <p>
-Changes between Turbine 2.3-rc1 and 2.3.1-rc2.
+Changes between Turbine 2.3.1-rc1 and 2.3.1-rc2.
 </p>
 
 <subsection name="Fixed bugs">
@@ -114,7 +114,7 @@ Changes between Turbine 2.3-rc1 and 2.3.1-rc2.
 </subsection>
 </section>
 
-<section name="Turbine 2.3-rc2">
+<section name="Turbine 2.3.1-rc1">
 
 <p>
 Changes between Turbine 2.3 and 2.3.1-rc1.
