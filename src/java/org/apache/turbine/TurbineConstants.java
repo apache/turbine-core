@@ -65,6 +65,27 @@ package org.apache.turbine;
 public interface TurbineConstants
 {
     /**
+     * <p>The prefix used to denote the namespace reserved for and
+     * used by Turbine-specific configuration parameters (such as
+     * those passed in via servlet container's config file
+     * (<code>server.xml</code>), or the web app deployment descriptor
+     * (<code>web.xml</code>).</p>
+     *
+     * <p>For example, a parameter in the Turbine namespace would be
+     * <code>org.apache.turbine.loggingRoot</code>.</p>
+     */
+    String CONFIG_NAMESPACE = "org.apache.turbine";
+
+    /** The key for the Log4J File */
+    String LOG4J_CONFIG_FILE = "log4j.file";
+
+    /** The default value for the Log4J File */
+    String LOG4J_CONFIG_FILE_DEFAULT = "/WEB-INF/conf/Log4j.properties";
+
+    /** This is the default log file to be used for logging */
+    String DEFAULT_LOGGER = "turbine";
+
+    /**
      * The logging facility which captures output from the SchedulerService.
      */
     String SCHEDULER_LOG_FACILITY = "scheduler";
@@ -222,7 +243,27 @@ public interface TurbineConstants
      */
     String DEFAULT_DOCUMENT_TYPE = "default.doctype";
 
-    String APPLICATION_ROOT = "applicationRoot";
-    String WEBAPP_ROOT = "webappRoot";
+    /** Key for the Path to the TurbineResources.properties File */ 
+    String APPLICATION_ROOT_KEY = "applicationRoot";
+
+    /** Default Value for the Path to the TurbineResources.properties File */ 
+    String APPLICATION_ROOT_DEFAULT = "/WEB-INF/conf/TurbineResources.properties";
+  
+    /** If this value is set as applicationRoot, then the webContext is used
+     * as application root
+     */
     String WEB_CONTEXT = "webContext";
+
+    /** This is the key used in the Turbine.properties to access resources 
+     * relative to the Web Application root. It might differ from the 
+     * Application root, but the normal case is, that the webapp root
+     * and the application root point to the same path.
+     */
+    String WEBAPP_ROOT_KEY = "webappRoot";
+
+    /** The Key in the deployment descriptor for the Logging Directory */
+    String LOGGING_ROOT_KEY = "loggingRoot";
+    
+    /** Default Value for the Logging Directory, relative to the webroot */
+    String LOGGING_ROOT_DEFAULT = "/logs";
 }
