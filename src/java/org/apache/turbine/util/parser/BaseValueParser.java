@@ -74,6 +74,8 @@ import java.util.GregorianCalendar;
 import java.util.Hashtable;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.StringKey;
@@ -117,17 +119,15 @@ import org.apache.turbine.util.pool.RecyclableSupport;
  */
 public class BaseValueParser
         extends RecyclableSupport
-        implements ValueParser,
-        Recyclable
+        implements ValueParser, Recyclable
 {
-    /**
-     * Random access storage for parameter data.
-     */
-    protected Hashtable parameters = new Hashtable();
+    /** Logging */
+    private static Log log = LogFactory.getLog(BaseValueParser.class);
 
-    /**
-     * The character encoding to use when converting to byte arrays
-     */
+    /** Random access storage for parameter data. */
+    private Hashtable parameters = new Hashtable();
+
+    /** The character encoding to use when converting to byte arrays */
     private String characterEncoding = "US-ASCII";
 
     /**
@@ -223,8 +223,7 @@ public class BaseValueParser
      * @param name A String with the name.
      * @param value A double with the value.
      */
-    public void add(String name,
-                    double value)
+    public void add(String name, double value)
     {
         add(name, Double.toString(value));
     }
@@ -235,8 +234,7 @@ public class BaseValueParser
      * @param name A String with the name.
      * @param value An int with the value.
      */
-    public void add(String name,
-                    int value)
+    public void add(String name, int value)
     {
         add(name, Integer.toString(value));
     }
@@ -247,8 +245,7 @@ public class BaseValueParser
      * @param name A String with the name.
      * @param value An Integer with the value.
      */
-    public void add(String name,
-                    Integer value)
+    public void add(String name, Integer value)
     {
         add(name, value.toString());
     }
@@ -259,8 +256,7 @@ public class BaseValueParser
      * @param name A String with the name.
      * @param value A long with the value.
      */
-    public void add(String name,
-                    long value)
+    public void add(String name, long value)
     {
         add(name, Long.toString(value));
     }
@@ -271,8 +267,7 @@ public class BaseValueParser
      * @param name A String with the name.
      * @param value A long with the value.
      */
-    public void add(String name,
-                    String value)
+    public void add(String name, String value)
     {
         append(name, value);
     }
@@ -285,8 +280,7 @@ public class BaseValueParser
      * @param name A String with the name.
      * @param value A String with the value.
      */
-    public void append(String name,
-                       String value)
+    public void append(String name, String value)
     {
         String[] items = this.getStrings(name);
         if (items == null)
@@ -307,7 +301,6 @@ public class BaseValueParser
     /**
      * Removes the named parameter from the contained hashtable. Wraps to the
      * contained <code>Hashtable.remove()</code>.
-     *
      *
      * @return The value that was mapped to the key (a <code>String[]</code>)
      *         or <code>null</code> if the key was not mapped.
@@ -400,8 +393,7 @@ public class BaseValueParser
      * @param defaultValue The default value.
      * @return A boolean.
      */
-    public boolean getBoolean(String name,
-                              boolean defaultValue)
+    public boolean getBoolean(String name, boolean defaultValue)
     {
         boolean value = defaultValue;
         Object object = parameters.get(convert(name));
@@ -444,8 +436,7 @@ public class BaseValueParser
      * @param defaultValue The default value.
      * @return A Boolean.
      */
-    public Boolean getBool(String name,
-                           boolean defaultValue)
+    public Boolean getBool(String name, boolean defaultValue)
     {
         return new Boolean(getBoolean(name, defaultValue));
     }
@@ -470,8 +461,7 @@ public class BaseValueParser
      * @param defaultValue The default value.
      * @return A double.
      */
-    public double getDouble(String name,
-                            double defaultValue)
+    public double getDouble(String name, double defaultValue)
     {
         double value = defaultValue;
         try
@@ -482,8 +472,10 @@ public class BaseValueParser
                 value = Double.valueOf(((String[]) object)[0]).doubleValue();
             }
         }
-        catch (NumberFormatException exception)
+        catch (NumberFormatException e)
         {
+            log.error("Parameter ("
+                    + name + ") could not be converted to a double", e);
         }
         return value;
     }
@@ -508,8 +500,7 @@ public class BaseValueParser
      * @param defaultValue The default value.
      * @return A float.
      */
-    public float getFloat(String name,
-                          float defaultValue)
+    public float getFloat(String name, float defaultValue)
     {
         float value = defaultValue;
         try
@@ -518,8 +509,10 @@ public class BaseValueParser
             if (object != null)
                 value = Float.valueOf(((String[]) object)[0]).floatValue();
         }
-        catch (NumberFormatException exception)
+        catch (NumberFormatException e)
         {
+            log.error("Parameter ("
+                    + name + ") could not be converted to a float", e);
         }
         return value;
     }
@@ -544,8 +537,7 @@ public class BaseValueParser
      * @param defaultValue The default value.
      * @return A BigDecimal.
      */
-    public BigDecimal getBigDecimal(String name,
-                                    BigDecimal defaultValue)
+    public BigDecimal getBigDecimal(String name, BigDecimal defaultValue)
     {
         BigDecimal value = defaultValue;
         try
@@ -560,8 +552,10 @@ public class BaseValueParser
                 }
             }
         }
-        catch (NumberFormatException exception)
+        catch (NumberFormatException e)
         {
+            log.error("Parameter ("
+                    + name + ") could not be converted to a BigDecimal", e);
         }
         return value;
     }
@@ -609,8 +603,7 @@ public class BaseValueParser
      * @param defaultValue The default value.
      * @return An int.
      */
-    public int getInt(String name,
-                      int defaultValue)
+    public int getInt(String name, int defaultValue)
     {
         int value = defaultValue;
         try
@@ -621,8 +614,10 @@ public class BaseValueParser
                 value = Integer.valueOf(((String[]) object)[0]).intValue();
             }
         }
-        catch (NumberFormatException exception)
+        catch (NumberFormatException e)
         {
+            log.error("Parameter ("
+                    + name + ") could not be converted to an integer", e);
         }
         return value;
     }
@@ -647,8 +642,7 @@ public class BaseValueParser
      * @param defaultValue The default value.
      * @return An Integer.
      */
-    public Integer getInteger(String name,
-                              int defaultValue)
+    public Integer getInteger(String name, int defaultValue)
     {
         return new Integer(getInt(name, defaultValue));
     }
@@ -659,11 +653,10 @@ public class BaseValueParser
      * the default value.
      *
      * @param name A String with the name.
-     * @param defaultValue The default value.
+     * @param def The default value.
      * @return An Integer.
      */
-    public Integer getInteger(String name,
-                              Integer def)
+    public Integer getInteger(String name, Integer def)
     {
         return new Integer(getInt(name, def.intValue()));
     }
@@ -734,8 +727,7 @@ public class BaseValueParser
      * @param defaultValue The default value.
      * @return A long.
      */
-    public long getLong(String name,
-                        long defaultValue)
+    public long getLong(String name, long defaultValue)
     {
         long value = defaultValue;
         try
@@ -744,8 +736,10 @@ public class BaseValueParser
             if (object != null)
                 value = Long.valueOf(((String[]) object)[0]).longValue();
         }
-        catch (NumberFormatException exception)
+        catch (NumberFormatException e)
         {
+            log.error("Parameter ("
+                    + name + ") could not be converted to a long", e);
         }
         return value;
     }
@@ -816,8 +810,7 @@ public class BaseValueParser
      * @param defaultValue The default value.
      * @return A byte.
      */
-    public byte getByte(String name,
-                        byte defaultValue)
+    public byte getByte(String name, byte defaultValue)
     {
         byte value = defaultValue;
         try
@@ -826,8 +819,10 @@ public class BaseValueParser
             if (object != null)
                 value = Byte.valueOf(((String[]) object)[0]).byteValue();
         }
-        catch (NumberFormatException exception)
+        catch (NumberFormatException e)
         {
+            log.error("Parameter ("
+                    + name + ") could not be converted to a byte", e);
         }
         return value;
     }
@@ -851,7 +846,7 @@ public class BaseValueParser
      *
      * @param name A String with the name.
      * @return A byte[].
-     * @exception UnsupportedEncodingException.
+     * @exception UnsupportedEncodingException
      */
     public byte[] getBytes(String name)
             throws UnsupportedEncodingException
@@ -885,6 +880,8 @@ public class BaseValueParser
         }
         catch (ClassCastException e)
         {
+            log.error("Parameter ("
+                    + name + ") could not be converted to a String", e);
             return null;
         }
     }
@@ -914,8 +911,7 @@ public class BaseValueParser
      * @param defaultValue The default value.
      * @return A String.
      */
-    public String getString(String name,
-                            String defaultValue)
+    public String getString(String name, String defaultValue)
     {
         String value = getString(name);
 
@@ -965,8 +961,7 @@ public class BaseValueParser
      * @param defaultValue The default value.
      * @return A String[].
      */
-    public String[] getStrings(String name,
-                               String[] defaultValue)
+    public String[] getStrings(String name, String[] defaultValue)
     {
         String[] value = getStrings(name);
 
@@ -1034,17 +1029,15 @@ public class BaseValueParser
 
     /**
      * Returns a {@link java.util.Date} object.  String is parsed by supplied
-     * DateFormat.  If the name does not exist, return the
-     * defaultValue.
+     * DateFormat.  If the name does not exist or the value could not be
+     * parsed into a date return the defaultValue.
      *
      * @param name A String with the name.
      * @param df A DateFormat.
      * @param defaultValue The default value.
      * @return A Date.
      */
-    public Date getDate(String name,
-                        DateFormat df,
-                        Date defaultValue)
+    public Date getDate(String name, DateFormat df, Date defaultValue)
     {
         Date date = null;
 
@@ -1058,7 +1051,8 @@ public class BaseValueParser
             }
             catch (ParseException e)
             {
-                // Thrown if couldn't parse date.
+                log.error("Parameter ("
+                        + name + ") could not be parsed into a date", e);
                 date = defaultValue;
             }
         }
@@ -1096,7 +1090,8 @@ public class BaseValueParser
             }
             catch (IllegalArgumentException e)
             {
-                // Thrown if an invalid date.
+                log.error("Parameter ("
+                        + name + ") could not be parsed into a date", e);
             }
         }
         else if (containsTimeSelectorKeys(name))
@@ -1129,7 +1124,8 @@ public class BaseValueParser
             }
             catch (IllegalArgumentException e)
             {
-                // Thrown if an invalid date.
+                log.error("Parameter ("
+                        + name + ") could not be parsed into a date", e);
             }
         }
         else
@@ -1149,8 +1145,7 @@ public class BaseValueParser
      * @param df A DateFormat.
      * @return A Date.
      */
-    public Date getDate(String name,
-                        DateFormat df)
+    public Date getDate(String name, DateFormat df)
     {
         return getDate(name, df, null);
     }
@@ -1172,10 +1167,13 @@ public class BaseValueParser
             {
                 value = ((String[]) object)[0];
             }
-            return (StringUtils.isNotEmpty(value) ? new NumberKey(value) : null);
+            return (StringUtils.isNotEmpty(value) ?
+                    new NumberKey(value) : null);
         }
         catch (ClassCastException e)
         {
+            log.error("Parameter ("
+                    + name + ") could not be converted to a NumberKey", e);
             return null;
         }
     }
@@ -1201,6 +1199,8 @@ public class BaseValueParser
         }
         catch (ClassCastException e)
         {
+            log.error("Parameter ("
+                    + name + ") could not be converted to a StringKey", e);
             return null;
         }
     }
@@ -1211,10 +1211,9 @@ public class BaseValueParser
      * the bean property and the parameter is looked for.
      *
      * @param bean An Object.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
-    public void setProperties(Object bean)
-            throws Exception
+    public void setProperties(Object bean) throws Exception
     {
         Class beanClass = bean.getClass();
         PropertyDescriptor[] props
@@ -1299,7 +1298,7 @@ public class BaseValueParser
      *
      * @param bean An Object.
      * @param prop A PropertyDescriptor.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     protected void setProperty(Object bean,
                                PropertyDescriptor prop)
