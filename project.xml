@@ -20,7 +20,7 @@
     easily available for use in other applications.
   </description>
 
-  <url>http://jakarta.apache.org/turbine</url>
+  <url>http://jakarta.apache.org/turbine/</url>
   <cvsWebUrl>http://cvs.apache.org/viewcvs/jakarta-turbine-2/</cvsWebUrl>
   <siteAddress>jakarta.apache.org</siteAddress>
   <siteDirectory>/www/jakarta.apache.org/turbine/turbine-2/</siteDirectory>
