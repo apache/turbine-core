@@ -10,3 +10,4 @@ velocity.log*
 logs
 junit*.properties
 jCoverage.ser
+jcoverage.ser
