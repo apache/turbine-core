@@ -266,6 +266,16 @@ Changes between Turbine 2.2 and 2.3-dev.
     <li>
        added new Configuration code based on commons-configuration. Switched
        all configuration requests to commons-configuration.
+       <ul>
+         <li>
+           Configuration values can now be stored in XML, .properties, as well as JNDI Tree.
+         </li>
+         <li>
+		   Configuration values can be overridden.  If you specify JNDI and the .xml, if a value
+		   is found in JNDI, then it is used.  Useful for overriding environment specific values
+		   like mail servers or whether Velocity templates are reloadable.
+         </li>         
+       </ul>
     </li>
     <li>
       added Log4j configuration and startup.
