@@ -34,13 +34,13 @@
       <name>Turbine User List</name>
       <subscribe>turbine-user-subscribe@jakarta.apache.org</subscribe>
       <unsubscribe>turbine-user-unsubscribe@jakarta.apache.org</unsubscribe>
-      <archive>http://www.mail-archive.com/turbine-user@jakarta.apache.org/</archive>
+      <archive>http://nagoya.apache.org:8080/eyebrowse/SummarizeList?listName=turbine-user@jakarta.apache.org</archive>
     </mailingList>
     <mailingList>
       <name>Turbine Developer List</name>
       <subscribe>mailto:turbine-dev-subscribe@jakarta.apache.org</subscribe>
       <unsubscribe>mailto:turbine-dev-unsubscribe@jakarta.apache.org</unsubscribe>
-      <archive>http://www.mail-archive.com/turbine-dev@jakarta.apache.org/</archive>
+      <archive>http://nagoya.apache.org:8080/eyebrowse/SummarizeList?listName=turbine-dev@jakarta.apache.org</archive>
     </mailingList>
   </mailingLists>
 
