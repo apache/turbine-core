@@ -47,16 +47,149 @@
   <developers>
 
     <developer>
+      <name>Gary Bartlett</name>
+      <id></id>
+      <email></email>
+      <organization>gary_a_bartlett@yahoo.com</organization>
+    </developer>
+
+    <developer>
       <name>Jeff Brekke</name>
       <id>brekke</id>
       <email>ekkerbj@yahoo.com</email>
       <organization></organization>
     </developer>
 
-     <developer>
+    <developer>
+      <name>Dave Bryson</name>
+      <id>daveb</id>
+      <email>mbryson@mont.mindspring.com</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Kevin A. Burton</name>
+      <id>burton</id>
+      <email>burton@relativity.yi.org</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Youngho Cho</name>
+      <id></id>
+      <email>youngho@nannet.co.kr</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Frank Conradie</name>
+      <id></id>
+      <email>frank@opticode.co.za</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Gonzalo A. Diethelm</name>
+      <id></id>
+      <email>gonzalo.diethelm@iname.com</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Eric Dobbs</name>
+      <id></id>
+      <email>dobbs@apache.org</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>David Duddleston</name>
+      <id></id>
+      <email>david@i2a.com</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Christopher Elkins</name>
+      <id></id>
+      <email>celkins@scardini.com</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Jian He</name>
+      <id></id>
+      <email>hjnet@163.net</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
       <name>Fedor Karpelevitch</name>
       <id>fedor</id>
       <email>fedor@karpelevitch.net</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Nissim Karpenstein</name>
+      <id></id>
+      <email>nissim@nksystems.com</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Rafal Krzewski</name>
+      <id></id>
+      <email>krzewski@e-point.pl</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Frank Kim</name>
+      <id></id>
+      <email></email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Chris Kimpton</name>
+      <id></id>
+      <email>kimptoc.mail@bigfoot.com</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Sean Legassick</name>
+      <id></id>
+      <email>mailto:sean@informage.net</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Josh Lucas</name>
+      <id></id>
+      <email>josh@stonecottage.com</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Carl Ludwig</name>
+      <id></id>
+      <email>carl@destinymusic.com</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Jonas Mauras</name>
+      <id></id>
+      <email>jm@mediaphil.de</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Brett McLaughlin</name>
+      <id></id>
+      <email>bmclaugh@algx.net</email>
       <organization></organization>
     </developer>
 
@@ -68,10 +201,73 @@
     </developer>
 
     <developer>
+      <name>Leon Messerschmidt</name>
+      <id></id>
+      <email>leon@opticode.co.za</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Chris Meyer</name>
+      <id></id>
+      <email>cmeyer@gatan.com</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Steven Nagy</name>
+      <id></id>
+      <email>snagy@web-publicity.com</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Kasper Nielsen</name>
+      <id></id>
+      <email>mailto:kav@kav.dk</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Paul O'Leary</name>
+      <id></id>
+      <email>paul@evolventtech.com</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Giacomo Pati</name>
+      <id></id>
+      <email>Giacomo.Pati@pwr.ch</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
       <name>Martin Poeschl</name>
       <id>mpoeschl</id>
       <email>mpoeschl@marmot.at</email>
       <organization>Zenplex</organization>
+    </developer>
+
+    <developer>
+      <name>Mark Porter</name>
+      <id></id>
+      <email>mark.porter@canlink.com</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Jeff Prickett</name>
+      <id></id>
+      <email>jeffprickett@mindspring.com</email>
+      <organization></organization>
+    </developer>
+
+    <developer>
+      <name>Ilkka Priha</name>
+      <id></id>
+      <email>ilkka.priha@simsoft.fi</email>
+      <organization></organization>
     </developer>
 
     <developer>
@@ -81,12 +277,89 @@
       <organization>CollabNet, Inc.</organization>
     </developer>
 
+    <!--
+    <td>Cameron Riley</td>
+    <td><a href="mailto:criley@ekmail.com">criley@ekmail.com</a></td>
+    <td></td>
+    <td>Apprentice</td>
+    -->
+    
+    <!--
+    <td>Greg Ritter</td>
+    <td><a href="mailto:greg@shwoop.com">greg@shwoop.com</a></td>
+    <td></td>
+    <td>Master</td>
+    -->
+
+    <!--
+    <td>Kurt Schrader</td>
+    <td><a href="mailto:kschrade@engin.umich.edu">kschrade@engin.umich.edu</a></td>
+    <td></td>
+    <td>Journeyer</td>
+    -->
+
+    <!--
+    <td>Ingo Schuster</td>
+    <td><a href="mailto:ingo@raleigh.ibm.com">ingo@raleigh.ibm.com</a></td>
+    <td></td>
+    <td>Apprentice</td>
+    -->
+
+    <!--
+    <td>Costas Stergiou</td>
+    <td><a href="mailto:csterg@aias.gr">csterg@aias.gr</a></td>
+    <td></td>
+    <td>Journeyer</td>
+    -->
+
     <developer>
       <name>Jon Scott Stevens</name>
       <id>jon</id>
       <email>jon@latchkey.com</email>
       <organization>CollabNet, Inc.</organization>
     </developer>
+
+    <!--
+    <td>George Stewart</td>
+    <td><a href="mailto:georgestewart@yahoo.com">georgestewart@yahoo.com</a></td>
+    <td></td>
+    <td>Journeyer</td>
+    -->
+
+    <!--
+    <td>Ralf Stranzenbach</td>
+    <td><a href="mailto:ralf@reswi.ruhr.de">ralf@reswi.ruhr.de</a></td>
+    <td></td>
+    <td>Journeyer</td>
+    -->
+
+    <!--
+    <td>Hakan Tandogan</td>
+    <td><a href="mailto:hakan42@gmx.de">hakan42@gmx.de</a></td>
+    <td></td>
+    <td>Journeyer</td>
+    -->
+
+    <!--
+    <td>Scott C. Tavares</td>
+    <td><a href="mailto:stavares@home.com">stavares@home.com</a></td>
+    <td></td>
+    <td>Master</td>
+    -->
+
+    <!--
+    <td>John Thorhauer</td>
+    <td><a href="mailto:john@zenplex.com">john@zenplex.com</a></td>
+    <td>Zenplex Inc.</td>
+    <td>Journeyer</td>
+    -->
+
+    <!--
+    <td>Magn&#250;s &#254;&#243;r Torfason</td>
+    <td><a href="mailto:magnus@handpoint.com">magnus@handpoint.com</a></td>
+    <td><a href="http://www.handpoint.com/">handPoint</a></td>
+    <td>Apprentice</td>
+    -->
 
     <developer>
       <name>Jason van Zyl</name>
@@ -95,6 +368,13 @@
       <organization>Zenplex</organization>
     </developer>
 
+    <!--
+    <td>Scott Weaver</td>
+    <td><a href="mailto:sweaver@rippe.com">sweaver@rippe.com</a></td>
+    <td></td>
+    <td>Apprentice</td>
+    -->
+  
   </developers>
 
   <!-- Need to mark these as compile-time/run-time -->
