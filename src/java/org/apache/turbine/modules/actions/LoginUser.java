@@ -64,7 +64,8 @@ import org.apache.turbine.services.resources.TurbineResources;
 
 import org.apache.turbine.services.security.TurbineSecurity;
 
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 import org.apache.turbine.util.RunData;
 
 import org.apache.turbine.util.security.DataBackendException;
@@ -80,6 +81,9 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  */
 public class LoginUser extends Action
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(LoginUser.class);
+
     /**
      * Updates the user's LastLogin timestamp, sets their state to
      * "logged in" and calls RunData.setUser() .  If the user cannot
@@ -92,7 +96,7 @@ public class LoginUser extends Action
      * method</em></p>
      *
      * @param data Turbine information.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public void doPerform(RunData data)
         throws Exception
@@ -144,7 +148,7 @@ public class LoginUser extends Action
         {
             if (e instanceof DataBackendException)
             {
-                Log.error(e);
+                log.error(e);
             }
             data.setMessage(TurbineResources.getString(
                 TurbineConstants.LOGIN_ERROR));

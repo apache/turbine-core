@@ -61,7 +61,8 @@ import java.util.Date;
 import java.util.Hashtable;
 import javax.servlet.http.HttpSessionBindingEvent;
 import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.util.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.Log;
 import org.apache.turbine.util.ObjectUtils;
 
 /**
@@ -84,6 +85,9 @@ import org.apache.turbine.util.ObjectUtils;
  */
 public class TurbineUser extends SecurityObject implements User
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(TurbineUser.class);
+
     /** The date on which the user account was created. */
     private Date createDate = null;
     /** The date on which the user last accessed the application. */
@@ -655,7 +659,7 @@ public class TurbineUser extends SecurityObject implements User
         }
         catch ( Exception e )
         {
-            Log.error("TurbineUser.valueUnbobund(): " + e.getMessage(), e);
+            log.error("TurbineUser.valueUnbobund(): " + e.getMessage(), e);
 
             // To prevent messages being lost in case the logging system
             // goes away before sessions get unbound on servlet container
