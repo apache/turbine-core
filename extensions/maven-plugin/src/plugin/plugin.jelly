@@ -295,14 +295,6 @@
 
     <delete file="${maven.build.dir}/${pom.artifactId}.war" />
 
-    <j:set var="turbine.target.dir" 
-             value="${maven.appserver.home}/webapps/${pom.name}" />
-
-    <j:set var="inPlace" value="${turbine.app.inplace}"/>
-    <j:if test="${inPlace.equalsIgnoreCase('true')}">
-      <j:set var="turbine.target.dir" value="${turbine.app.inplace.dir}"/>
-    </j:if>
-
     <echo>Installing to Appserver Directory: ${turbine.target.dir}, Inplace: ${turbine.app.inplace}</echo>
 
     <mkdir dir="${turbine.target.dir}/WEB-INF/lib" />
@@ -372,10 +364,10 @@
   <!-- Cleanup inplace generated artifacts.                                     -->
   <!--                                                                          -->
   <!-- ======================================================================== -->     
-   <goal name="turbine:clean-clean">
-    <j:set var="inPlace" value="${turbine.app.inplace}"/>
-    <j:if test="${inPlace.equalsIgnoreCase('true')}">
-      <j:set var="turbine.target.dir" value="${turbine.app.inplace.dir}"/>
+   <goal name="turbine:clean-clean"
+    prereqs="turbine:check-runtime-environment">
+
+    <j:if test="${context.getVariable('turbine.app.inplace') != null and context.getVariable('turbine.app.inplace').equalsIgnoreCase('true')}">
       <ant:delete dir="${turbine.target.dir}/WEB-INF/lib"/>
       <ant:delete dir="${turbine.target.dir}/WEB-INF/classes"/>
     </j:if>
@@ -592,19 +584,22 @@
       <meta:requiredPropertyMissing propname="torque.database" />
     </j:if>
 
-    <j:set var="inPlace" value="${turbine.app.inplace}"/>
     <j:choose>
-      <j:when test="${inPlace.equalsIgnoreCase('true')}">
+      <j:when test="${context.getVariable('turbine.app.inplace') != null and context.getVariable('turbine.app.inplace').equalsIgnoreCase('true')}">
         <j:if test="${context.getVariable('turbine.app.inplace.dir') == null || context.getVariable('turbine.app.inplace.dir') == ''}">
           <meta:requiredPropertyMissing propname="turbine.app.inplace.dir" />
         </j:if>
+        <ant:property name="turbine.target.dir" value="${turbine.app.inplace.dir}" />
       </j:when>
       <j:otherwise>
         <j:if test="${context.getVariable('maven.appserver.home') == null || context.getVariable('maven.appserver.home') == ''}">
           <meta:requiredPropertyMissing propname="maven.appserver.home" />
         </j:if>
+        <ant:property name="turbine.target.dir" value="${maven.appserver.home}/webapps/${pom.name}" />
       </j:otherwise>
     </j:choose>
+
+    <echo>Turbine Target Directory is ${turbine.target.dir}</echo>
   </goal>
 
   <goal name="turbine:check-setup-environment"
