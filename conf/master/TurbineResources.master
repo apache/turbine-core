@@ -369,8 +369,6 @@ services.XmlRpcService.classname=org.apache.turbine.services.xmlrpc.TurbineXmlRp
 services.UniqueIdService.classname=org.apache.turbine.services.uniqueid.TurbineUniqueIdService
 services.UploadService.classname=org.apache.turbine.services.upload.TurbineUploadService
 services.SecurityService.classname=org.apache.turbine.services.security.db.DBSecurityService
-services.PoolBrokerService.classname=org.apache.turbine.services.db.TurbinePoolBrokerService
-services.MapBrokerService.classname=org.apache.turbine.services.db.TurbineMapBrokerService
 services.PullService.classname=org.apache.turbine.services.pull.TurbinePullService
 #services.IntakeService.classname=org.apache.turbine.services.intake.TurbineIntakeService
 services.TemplateService.classname=org.apache.turbine.services.template.TurbineTemplateService
@@ -378,17 +376,6 @@ services.XSLTService.classname=org.apache.turbine.services.xslt.TurbineXSLTServi
 
 # Turn on the appropriate template service.
 @TEMPLATE_SERVICE@
-
-# -------------------------------------------------------------------
-#
-#  P O O L / M A P  B R O K E R
-#
-# -------------------------------------------------------------------
-# Default value: default
-# -------------------------------------------------------------------
-
-services.PoolBrokerService.defaultPool = @DATABASE_DEFAULT@
-services.MapBrokerService.defaultMap = @DATABASE_DEFAULT@
 
 # -------------------------------------------------------------------
 #

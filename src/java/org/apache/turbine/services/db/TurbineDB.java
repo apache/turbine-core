@@ -55,6 +55,7 @@ package org.apache.turbine.services.db;
  */
 
 import java.sql.Connection;
+import org.apache.torque.Torque;
 import org.apache.torque.adapter.DB;
 import org.apache.torque.map.DatabaseMap;
 import org.apache.turbine.services.TurbineServices;
@@ -81,20 +82,13 @@ import org.apache.turbine.util.TurbineException;
  * }
  * finally
  * {
- *     try
- *     {
- *         dbConn.close();
- *     }
- *     catch (Exception e)
- *     {
- *         // Error releasing database connection back to pool.
- *     }
+ *     Torque.closeConnection(dbConn);
  * }
  * </pre></code></blockquote>
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
- * @deprecated use org.apache.torque.Torque
+ * @deprecated As of Turbine 2.2, use org.apache.torque.Torque
  */
 public abstract class TurbineDB
 {
@@ -115,16 +109,7 @@ public abstract class TurbineDB
         // hit of catching the exception will only happen
         // once and while running torque from the command
         // line it won't incur an unbearable wait.
-        try
-        {
-            return getMapBroker().getDefaultMap();
-        }
-        catch(Exception e)
-        {
-            // do nothing
-        }
-
-        return MapBrokerService.DEFAULT;
+        return Torque.getDefaultDB();
     }
 
     /**
@@ -134,10 +119,16 @@ public abstract class TurbineDB
      * @throws TurbineException Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
-    public static DatabaseMap getDatabaseMap()
-        throws TurbineException
+    public static DatabaseMap getDatabaseMap() throws TurbineException
     {
-        return getMapBroker().getDatabaseMap();
+        try
+        {
+            return Torque.getDatabaseMap();
+        }
+        catch (Exception ex)
+        {
+            throw new TurbineException(ex);
+        }
     }
 
     /**
@@ -151,9 +142,16 @@ public abstract class TurbineDB
      *         rethrown wrapped into a TurbineException.
      */
     public static DatabaseMap getDatabaseMap(String name)
-        throws TurbineException
+            throws TurbineException
     {
-        return getMapBroker().getDatabaseMap(name);
+        try
+        {
+            return Torque.getDatabaseMap(name);
+        }
+        catch (Exception ex)
+        {
+            throw new TurbineException(ex);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -173,16 +171,7 @@ public abstract class TurbineDB
         // hit of catching the exception will only happen
         // once and while running torque from the command
         // line it won't incur an unbearable wait.
-        try
-        {
-            return getPoolBroker().getDefaultDB();
-        }
-        catch(Exception e)
-        {
-            // do nothing
-        }
-
-        return PoolBrokerService.DEFAULT;
+        return Torque.getDefaultDB();
     }
 
     /**
@@ -192,10 +181,9 @@ public abstract class TurbineDB
      * @throws Exception Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
-    public static Connection getConnection()
-        throws Exception
+    public static Connection getConnection() throws Exception
     {
-        return getPoolBroker().getConnection();
+        return Torque.getConnection();
     }
 
     /**
@@ -217,48 +205,22 @@ public abstract class TurbineDB
      * @throws Exception Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
-    public static Connection getConnection(String name)
-        throws Exception
+    public static Connection getConnection(String name) throws Exception
     {
-        return getPoolBroker().getConnection(name);
+        return Torque.getConnection(name);
     }
 
     /**
      * Release a connection back to the database pool.
      *
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
-     * @exception Exception A generic exception.
+     * @param dbconn the connection to release
+     * @throws Exception A generic exception.
      */
-    public static void releaseConnection(Connection dbconn)
-        throws Exception
+    public static void releaseConnection(Connection dbconn) throws Exception
     {
-        getPoolBroker().releaseConnection(dbconn);
+        Torque.closeConnection(dbconn);
     }
 
-    /**
-     * This method registers a new pool using the given parameters.
-     *
-     * @param name The name of the pool to register.
-     * @param driver The fully-qualified name of the JDBC driver to use.
-     * @param url The URL of the database to use.
-     * @param username The name of the database user.
-     * @param password The password of the database user.
-     *
-     * @throws TurbineException Any exceptions caught during processing will be
-     *         rethrown wrapped into a TurbineException.
-     */
-/*
-    public static void registerPool( String name,
-                              String driver,
-                              String url,
-                              String username,
-                              String password )
-        throws Exception
-    {
-        getPoolBroker().registerPool(name, driver, url, username, password);
-    }
-*/
     ///////////////////////////////////////////////////////////////////////////
     // DB Adapters
     ///////////////////////////////////////////////////////////////////////////
@@ -270,10 +232,9 @@ public abstract class TurbineDB
      * @throws Exception Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
-    public static DB getDB()
-        throws Exception
+    public static DB getDB() throws Exception
     {
-        return getPoolBroker().getDB();
+        return Torque.getDB(Torque.getDefaultDB());
     }
 
     /**
@@ -284,35 +245,8 @@ public abstract class TurbineDB
      * @throws Exception Any exceptions caught during processing will be
      *         rethrown wrapped into a TurbineException.
      */
-    public static DB getDB(String name)
-        throws Exception
+    public static DB getDB(String name) throws Exception
     {
-        return getPoolBroker().getDB(name);
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Service access
-    ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Returns the system's configured MapBrokerService implementation.
-     *
-     * @return a MapBrokerService
-     */
-    private static MapBrokerService getMapBroker()
-    {
-        return (MapBrokerService)TurbineServices.getInstance().getService(
-            MapBrokerService.SERVICE_NAME);
-    }
-
-    /**
-     * Returns the system's configured PoolBrokerService implementation.
-     *
-     * @return a PoolBrokerService
-     */
-    private static PoolBrokerService getPoolBroker()
-    {
-        return (PoolBrokerService)TurbineServices.getInstance().getService(
-            PoolBrokerService.SERVICE_NAME);
+        return Torque.getDB(name);
     }
 }
