@@ -380,7 +380,7 @@
     <mkdir dir="${turbine.target.dir}/templates" />
 
     <j:forEach var="dep" items="${pom.dependencies}">
-      <j:if test="${dep.getProperty('war.bundle').equalsIgnoreCase('true')}">
+      <j:if test="${dep.getProperty('war.bundle') != null &amp;&amp; dep.getProperty('war.bundle').equalsIgnoreCase('true')}">
         <copy todir="${turbine.target.dir}/WEB-INF/lib"
           file="${maven.repo.local}/${dep.getArtifactDirectory()}/jars/${dep.getArtifact()}"/>
       </j:if>  
