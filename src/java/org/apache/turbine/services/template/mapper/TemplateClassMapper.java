@@ -170,7 +170,7 @@ public class TemplateClassMapper
             log.debug("Looking for " + testName);
             try
             {
-                loader.getInstance(testName.toString());
+                loader.getAssembler(testName.toString());
                 log.debug("Found it, returning " + testName);
                 return testName.toString();
             }
