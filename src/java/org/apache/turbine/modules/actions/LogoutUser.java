@@ -75,7 +75,7 @@ public class LogoutUser
 
         Configuration conf = Turbine.getConfiguration();
 
-        data.setMessage(conf.getString(TurbineConstants.LOGOUT_MESSAGE));
+        data.setMessage(conf.getString(TurbineConstants.LOGOUT_MESSAGE, ""));
 
         // This will cause the acl to be removed from the session in
         // the Turbine servlet code.
