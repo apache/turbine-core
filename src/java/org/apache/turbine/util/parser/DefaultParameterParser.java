@@ -101,14 +101,10 @@ public class DefaultParameterParser
     /** Logging */
     private static Log log = LogFactory.getLog(DefaultParameterParser.class);
 
-    /**
-     * The servlet request to parse.
-     */
+    /** The servlet request to parse. */
     private HttpServletRequest request = null;
 
-    /**
-     * The raw data of a file upload.
-     */
+    /** The raw data of a file upload. */
     private byte[] uploadData = null;
 
     /** Turbine Upload Service reference */
@@ -123,7 +119,6 @@ public class DefaultParameterParser
      *
      * <p>To add name/value pairs to this set of parameters, use the
      * <code>add()</code> methods.
-     *
      */
     public DefaultParameterParser()
     {
@@ -210,9 +205,9 @@ public class DefaultParameterParser
         tmp = req.getHeader("Content-type");
 
         if (uploadServiceIsAvailable
-            && uploadService.getAutomatic()
-            && tmp != null
-            && tmp.startsWith("multipart/form-data"))
+                && uploadService.getAutomatic()
+                && tmp != null
+                && tmp.startsWith("multipart/form-data"))
         {
             try
             {
@@ -220,7 +215,7 @@ public class DefaultParameterParser
             }
             catch (TurbineException e)
             {
-                log.error(new TurbineException("File upload failed", e));
+                log.error("File upload failed", e);
             }
         }
 
@@ -230,8 +225,7 @@ public class DefaultParameterParser
             while (names.hasMoreElements())
             {
                 tmp = (String) names.nextElement();
-                parameters.put(convert(tmp),
-                        (Object) req.getParameterValues(tmp));
+                parameters.put(convert(tmp), req.getParameterValues(tmp));
             }
         }
 
