@@ -63,6 +63,12 @@ Changes between Turbine 2.2 and 2.3-dev.
 <p>
   <ul>
     <li>
+      The loginAction no longer checks to see if the user object is already
+      in the session and returns if it is found.  The user will always be there
+      now.  If you have a custom loginAction that still performs this check,
+      you will need to remove it in order for your login action to work.
+    </li>
+    <li>
       AccessControlList is now an interface and its implementation is in
       TurbineAccessControlList. This is now configurable and can be replaced
       by a custom AccessControlList implementation. If older compiled code
@@ -106,6 +112,11 @@ Changes between Turbine 2.2 and 2.3-dev.
 <subsection name="Other changes">
 <p>
   <ul>
+    <li>
+      Turbine used to remove all data from the session before executing
+      the login action.  This no longer happens.  Instead, the session
+      is invalidated before calling to logout action.
+    </li>
     <li>
       There is a new pull tool that makes it easy to format
       Date objects into Strings.  See
