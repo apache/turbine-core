@@ -86,7 +86,7 @@ public class LogoutUser extends Action
      * for a logged out (read not-logged-in) user.
      *
      * @param data Turbine information.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public void doPerform(RunData data)
             throws Exception
@@ -128,7 +128,7 @@ public class LogoutUser extends Action
         // - it is recommended that action.logout is set to "LogoutUser" and
         // that the session validator does handle setting the screen/template
         // for a logged out (read not-logged-in) user.
-        if (!TurbineResources.getString(TurbineConstants.ACTION_LOGOUT, "")
+        if (!TurbineResources.getString(TurbineConstants.ACTION_LOGOUT_KEY, "")
                 .equals("LogoutUser"))
         {
             data.setScreen(TurbineResources.getString(

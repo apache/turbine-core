@@ -73,17 +73,16 @@ public class VelocityErrorScreen extends VelocityScreen
      *
      * @param data Turbine information.
      * @param context Context for web pages.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
-    protected void doBuildTemplate(RunData data,
-                                   Context context)
+    protected void doBuildTemplate(RunData data, Context context)
             throws Exception
     {
         context.put("processingException",
                 data.getStackTraceException().toString());
         context.put("stackTrace", data.getStackTrace());
-        String errorTemplate = TurbineResources.getString(TurbineConstants.TEMPLATE_ERROR,
-                "error.vm");
+        String errorTemplate = TurbineResources.getString(
+                TurbineConstants.TEMPLATE_ERROR_KEY, "error.vm");
         setTemplate(data, errorTemplate);
     }
 }
