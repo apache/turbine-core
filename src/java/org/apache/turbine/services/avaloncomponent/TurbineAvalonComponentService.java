@@ -158,9 +158,9 @@ public class TurbineAvalonComponentService
     {
         // get the filenames and expand them relative to webapp root
         String sysConfigFilename = Turbine.getRealPath(
-                getConfiguration().getString("componentConfiguration"));
+                getConfiguration().getString(COMPONENT_CONFIG));
         String roleConfigFilename = Turbine.getRealPath(
-                getConfiguration().getString("componentRoles"));
+                getConfiguration().getString(COMPONENT_ROLE));
 
         // process configuration files
         DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder();
