@@ -87,7 +87,6 @@ import org.apache.torque.om.StringKey;
 
 import org.apache.turbine.util.DateSelector;
 import org.apache.turbine.util.TimeSelector;
-import org.apache.turbine.util.ValueParser;
 import org.apache.turbine.util.pool.Recyclable;
 import org.apache.turbine.util.pool.RecyclableSupport;
 
@@ -928,6 +927,7 @@ public class BaseValueParser
      * @param name A String with the name.
      * @param defaultValue The default value.
      * @return An Integer.
+     * @deprecated use {@link #getIntObject} instead
      */
     public Integer getInteger(String name, int defaultValue)
     {
