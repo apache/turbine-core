@@ -91,9 +91,7 @@ import org.apache.velocity.context.Context;
 public interface PullService
         extends Service
 {
-    /**
-     * The key under which this service is stored in TurbineServices.
-     */
+    /** The key under which this service is stored in TurbineServices. */
     String SERVICE_NAME = "PullService";
 
     /** Property Key for the global tools */
@@ -114,21 +112,29 @@ public interface PullService
     /** Property tag for application tool resources directory */
     String TOOL_RESOURCES_DIR_KEY = "tools.resources.dir";
 
-    /** Default value for the application tool resources. This is relative to the webapp root */
+    /**
+     * Default value for the application tool resources. This is relative
+     * to the webapp root
+     */
     String TOOL_RESOURCES_DIR_DEFAULT = "resources";
 
-    /** Property tag for per request tool refreshing (for obvious reasons has no effect for per-request tools) */
+    /**
+     * Property tag for per request tool refreshing (for obvious reasons
+     * has no effect for per-request tools)
+     */
     String TOOLS_PER_REQUEST_REFRESH_KEY = "tools.per.request.refresh";
 
     /** Default value for per request tool refreshing */
     boolean TOOLS_PER_REQUEST_REFRESH_DEFAULT = false;
 
+    /** prefix for key used in the session to store session scope pull tools */
+    String SESSION_TOOLS_ATTRIBUTE_PREFIX = "turbine.sessiontools.";
 
     /**
      * Get the context containing global tools that will be
      * use as part of the Turbine Pull Model.
      *
-     * @return A Context object which contains the 
+     * @return A Context object which contains the
      *         Global Tool instances.
      */
     Context getGlobalContext();
