@@ -87,6 +87,7 @@ import org.apache.turbine.services.intake.IntakeException;
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:jh@byteaction.de">J&uuml;rgen Hoffmann</a>
  * @version $Id$
  */
 public class DateStringValidator
@@ -193,14 +194,17 @@ public class DateStringValidator
     {
         super.assertValidity(testValue);
 
-        try
+        if ((required) || ((testValue != null) && (testValue.length() > 0)))
         {
-            parse(testValue);
-        }
-        catch (ParseException e)
-        {
-            errorMessage = dateFormatMessage;
-            throw new ValidationException(dateFormatMessage);
+            try
+            {
+                parse(testValue);
+            }
+            catch (ParseException e)
+            {
+                errorMessage = dateFormatMessage;
+                throw new ValidationException(dateFormatMessage);
+            }
         }
     }
 
