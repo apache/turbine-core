@@ -55,9 +55,12 @@ package org.apache.turbine.services.intake.xmlmodel;
  */
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import org.xml.sax.Attributes;
 
@@ -97,7 +100,7 @@ public class XmlGroup
         poolCapacity = attrib.getValue("pool-capacity");
 
         String objName = attrib.getValue("mapToObject");
-        if (objName != null && objName.length() != 0)
+        if (StringUtils.isNotEmpty(objName))
         {
             defaultMapToObject = objName;
         }
