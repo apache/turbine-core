@@ -75,10 +75,10 @@ import org.apache.commons.configuration.Configuration;
 
 import org.apache.commons.lang.StringUtils;
 
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.servlet.TurbineServlet;
 
 import org.w3c.dom.Node;
 
@@ -125,13 +125,13 @@ public class TurbineXSLTService
     {
         Configuration conf = getConfiguration();
 
-        path = TurbineServlet.getRealPath(conf.getString(STYLESHEET_PATH, null));
+        path = Turbine.getRealPath(conf.getString(STYLESHEET_PATH, null));
 
         if (StringUtils.isNotEmpty(path))
         {
             if (!path.endsWith("/") && !path.endsWith ("\\"))
             {
-                path=path + File.separator;
+                path = path + File.separator;
             }
         }
 
