@@ -275,8 +275,8 @@ public class TurbineRunDataService
 
         // Set the ServerData.
         data.setServerData(new ServerData(req));
-        
-        return (RunData) data;
+
+        return data;
     }
 
     /**
