@@ -54,21 +54,22 @@ package org.apache.turbine.services.security;
  * <http://www.apache.org/>.
  */
 
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.security.DataBackendException;
-import org.apache.turbine.util.security.UnknownEntityException;
 import org.apache.turbine.util.security.EntityExistsException;
 import org.apache.turbine.util.security.PasswordMismatchException;
-
-import org.apache.torque.util.Criteria;
+import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
  * An UserManager performs {@link org.apache.turbine.om.security.User} objects
- * related tasks on behalf of the {@link org.apache.turbine.services.security.BaseSecurityService}.
+ * related tasks on behalf of the
+ * {@link org.apache.turbine.services.security.BaseSecurityService}.
  *
  * The responsibilities of this class include loading data of an user from the
- * storage and putting them into the {@link org.apache.turbine.om.security.User} objects,
- * saving those data to the permanent storage, and authenticating users.
+ * storage and putting them into the {@link org.apache.turbine.om.security.User}
+ * objects, saving those data to the permanent storage, and authenticating
+ * users.
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
@@ -82,36 +83,35 @@ public interface UserManager
      *
      * @param user The user to be checked.
      * @return true if the specified account exists
-     * @throws DataBackendException if there was an error accessing the data backend.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
      */
-    public boolean accountExists( User user )
-        throws DataBackendException;
+    public boolean accountExists(User user) throws DataBackendException;
 
     /**
      * Check whether a specified user's account exists.
      *
      * The login name is used for looking up the account.
      *
-     * @param usename The name of the user to be checked.
+     * @param username The name of the user to be checked.
      * @return true if the specified account exists
-     * @throws DataBackendException if there was an error accessing the data backend.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
      */
-    public boolean accountExists( String username )
-        throws DataBackendException;
+    public boolean accountExists(String username) throws DataBackendException;
 
-   /**
+    /**
      * Retrieve a user from persistent storage using username as the
      * key.
      *
      * @param username the name of the user.
      * @return an User object.
-     * @exception UnknownEntityException if the user's record does not
-     *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
-     *            storage.
+     * @throws UnknownEntityException if the user's record does not
+     *         exist in the database.
+     * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public User retrieve( String username )
-        throws UnknownEntityException, DataBackendException;
+    public User retrieve(String username)
+            throws UnknownEntityException, DataBackendException;
 
     /**
      * Retrieve a set of users that meet the specified criteria.
@@ -124,11 +124,9 @@ public interface UserManager
      *
      * @param criteria The criteria of selection.
      * @return a List of users meeting the criteria.
-     * @throws DataBackendException if there is a problem accessing the
-     *         storage.
+     * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public User[] retrieve( Criteria criteria )
-        throws DataBackendException;
+    public User[] retrieve(Criteria criteria) throws DataBackendException;
 
     /**
      * Retrieve a user from persistent storage using username as the
@@ -139,29 +137,26 @@ public interface UserManager
      * @param username the name of the user.
      * @param password the user supplied password.
      * @return an User object.
-     * @exception PasswordMismatchException if the supplied password was
-     *            incorrect.
-     * @exception UnknownEntityException if the user's record does not
-     *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
-     *            storage.
+     * @throws PasswordMismatchException if the supplied password was incorrect.
+     * @throws UnknownEntityException if the user's record does not
+     *         exist in the database.
+     * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public User retrieve( String username, String password )
-        throws PasswordMismatchException, UnknownEntityException,
-               DataBackendException;
+    public User retrieve(String username, String password)
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException;
 
     /**
      * Save an User object to persistent storage. User's record is
      * required to exist in the storage.
      *
      * @param user an User object to store.
-     * @exception UnknownEntityException if the user's record does not
-     *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
-     *            storage.
+     * @throws UnknownEntityException if the user's record does not
+     *         exist in the database.
+     * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public void store( User user )
-        throws UnknownEntityException, DataBackendException;
+    public void store(User user)
+            throws UnknownEntityException, DataBackendException;
 
     /**
      * Authenticate an User with the specified password. If authentication
@@ -170,52 +165,53 @@ public interface UserManager
      *
      * @param user an User object to authenticate.
      * @param password the user supplied password.
-     * @exception PasswordMismatchException if the supplied password was
-     *            incorrect.
-     * @exception UnknownEntityException if the user's record does not
-     *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
-     *            storage.
+     * @throws PasswordMismatchException if the supplied password was incorrect.
+     * @throws UnknownEntityException if the user's record does not
+     *         exist in the database.
+     * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public void authenticate( User user, String password )
-        throws PasswordMismatchException, UnknownEntityException,
-               DataBackendException;
+    public void authenticate(User user, String password)
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException;
 
     /**
      * Creates new user account with specified attributes.
      *
      * @param user the object describing account to be created.
-     * @throws DataBackendException if there was an error accessing the data backend.
+     * @param initialPassword password for the new user
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
      * @throws EntityExistsException if the user account already exists.
      */
-    public void createAccount( User user, String initialPassword )
-        throws EntityExistsException, DataBackendException;
+    public void createAccount(User user, String initialPassword)
+            throws EntityExistsException, DataBackendException;
 
     /**
      * Removes an user account from the system.
      *
      * @param user the object describing the account to be removed.
-     * @throws DataBackendException if there was an error accessing the data backend.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
      * @throws UnknownEntityException if the user account is not present.
      */
-    public void removeAccount( User user )
-        throws UnknownEntityException, DataBackendException;
+    public void removeAccount(User user)
+            throws UnknownEntityException, DataBackendException;
+
     /**
      * Change the password for an User.
      *
      * @param user an User to change password for.
      * @param oldPassword the current password suplied by the user.
      * @param newPassword the current password requested by the user.
-     * @exception PasswordMismatchException if the supplied password was
-     *            incorrect.
-     * @exception UnknownEntityException if the user's record does not
-     *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
-     *            storage.
+     * @throws PasswordMismatchException if the supplied password was incorrect.
+     * @throws UnknownEntityException if the user's record does not
+     *         exist in the database.
+     * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public void changePassword( User user, String oldPassword, String newPassword )
-        throws PasswordMismatchException, UnknownEntityException,
-               DataBackendException;
+    public void changePassword(User user, String oldPassword,
+            String newPassword)
+            throws PasswordMismatchException, UnknownEntityException,
+            DataBackendException;
 
     /**
      * Forcibly sets new password for an User.
@@ -227,11 +223,10 @@ public interface UserManager
      *
      * @param user an User to change password for.
      * @param password the new password.
-     * @exception UnknownEntityException if the user's record does not
+     * @throws UnknownEntityException if the user's record does not
      *            exist in the database.
-     * @exception DataBackendException if there is a problem accessing the
-     *            storage.
+     * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public void forcePassword( User user, String password )
-        throws UnknownEntityException, DataBackendException;
+    public void forcePassword(User user, String password)
+            throws UnknownEntityException, DataBackendException;
 }
