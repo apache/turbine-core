@@ -126,10 +126,10 @@ public class DynamicURI
     /** Servlet response interface. */
     public HttpServletResponse res = null;
 
-    /** A Vector that contains all the path info if any. */
+    /** A List that contains all the path info if any. */
     protected List pathInfo = null;
 
-    /** A Vectory that contains all the query data if any. */
+    /** A List that contains all the query data if any. */
     protected List queryData = null;
 
     /** Fast shortcut to determine if there is any data in the path info. */
@@ -726,7 +726,7 @@ public class DynamicURI
     }
 
     /**
-     * This method takes a Vector of key/value arrays and converts it
+     * This method takes a List of key/value arrays and converts it
      * into a URL encoded querystring format.
      *
      * @param data A List of key/value arrays.
@@ -764,7 +764,7 @@ public class DynamicURI
     }
 
     /**
-     * This method takes a Vector of key/value arrays and converts it
+     * This method takes a List of key/value arrays and converts it
      * into a URL encoded querystring format.
      *
      * @param data A List of key/value arrays.
