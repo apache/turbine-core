@@ -54,11 +54,7 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.LinkedList;
-import java.util.StringTokenizer;
+import org.apache.commons.lang.exception.NestableException;
 
 /**
  * The base class of all exceptions thrown by Turbine.
@@ -85,7 +81,7 @@ import java.util.StringTokenizer;
  *  9         }
  * 10      }
  * 11
- * 12      public static void a() throws Exception {
+ * 12      public static void a() throws TurbineException {
  * 13          try {
  * 14              b();
  * 15          } catch(Exception e) {
@@ -93,7 +89,7 @@ import java.util.StringTokenizer;
  * 17          }
  * 18      }
  * 19
- * 20      public static void b() throws Exception {
+ * 20      public static void b() throws TurbineException {
  * 21          try {
  * 22              c();
  * 23          } catch(Exception e) {
@@ -101,7 +97,7 @@ import java.util.StringTokenizer;
  * 25          }
  * 26      }
  * 27
- * 28      public static void c() throws Exception {
+ * 28      public static void c() throws TurbineException {
  * 29          throw new Exception("baz");
  * 30      }
  * 31 }
@@ -120,22 +116,17 @@ import java.util.StringTokenizer;
  * </pre></blockquote><br>
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  */
-public class TurbineException extends Exception
+public class TurbineException extends NestableException
 {
-    /**
-     * Holds the reference to the exception or error that caused
-     * this exception to be thrown.
-     */
-    private Throwable nested = null;
-
     /**
      * Constructs a new <code>TurbineException</code> without specified
      * detail message.
      */
     public TurbineException()
     {
-        super();
     }
 
     /**
@@ -158,8 +149,7 @@ public class TurbineException extends Exception
      */
     public TurbineException(Throwable nested)
     {
-        super();
-        this.nested = nested;
+        super(nested);
     }
 
     /**
@@ -172,158 +162,6 @@ public class TurbineException extends Exception
      */
     public TurbineException(String msg, Throwable nested)
     {
-        super(msg);
-        this.nested = nested;
-    }
-
-    /**
-     * Returns the error message of this and any nested <code>Throwable</code>.
-     *
-     * @return The error message.
-     */
-    public String getMessage()
-    {
-        StringBuffer msg = new StringBuffer();
-        String ourMsg = super.getMessage();
-        if (ourMsg != null)
-        {
-            msg.append(ourMsg);
-        }
-        if (nested != null)
-        {
-            String nestedMsg = nested.getMessage();
-            if (nestedMsg != null)
-            {
-                if (ourMsg != null)
-                {
-                    msg.append(": ");
-                }
-                msg.append(nestedMsg);
-            }
-
-        }
-        return (msg.length() > 0 ? msg.toString() : null);
-    }
-
-    /**
-     * Prints the stack trace of this exception the the standar error
-     * stream.
-     */
-    public void printStackTrace()
-    {
-        synchronized (System.err)
-        {
-            printStackTrace(System.err);
-        }
-    }
-
-    /**
-     * Prints the stack trace of this exception to the specified print stream.
-     *
-     * @param out <code>PrintStream</code> to use for output.
-     */
-    public void printStackTrace(PrintStream out)
-    {
-        synchronized (out)
-        {
-            PrintWriter pw = new PrintWriter(out, false);
-            printStackTrace(pw);
-            // Flush the PrintWriter before it's GC'ed.
-            pw.flush();
-        }
-    }
-
-    /**
-     * Prints the stack trace of this exception to the specified print writer.
-     *
-     * @param out <code>PrintWriter</code> to use for output.
-     */
-    public void printStackTrace(PrintWriter out)
-    {
-        synchronized (out)
-        {
-            printStackTrace(out, 0);
-        }
-    }
-
-    /**
-     * Prints the stack trace of this exception skiping a specified number
-     * of stack frames.
-     *
-     * @param out  <code>PrintWriter</code> to use for output.
-     * @param skip The numbere of stack frames to skip.
-     */
-    public void printStackTrace(PrintWriter out, int skip)
-    {
-        String[] st = captureStackTrace();
-        if (nested != null)
-        {
-            if (nested instanceof TurbineException)
-            {
-                ((TurbineException)nested).printStackTrace(out, st.length - 2);
-            }
-            else if (nested instanceof TurbineRuntimeException)
-            {
-                ((TurbineRuntimeException)nested).printStackTrace(out, st.length - 2);
-            }
-            else
-            {
-                String[] nst = captureStackTrace(nested);
-                for(int i = 0; i < nst.length - st.length + 2; i++)
-                {
-                    out.println(nst[i]);
-                }
-            }
-            out.print("rethrown as ");
-        }
-        for (int i = 0; i < st.length - skip; i++)
-        {
-            out.println(st[i]);
-        }
-    }
-
-    /**
-     * Captures the stack trace associated with this exception.
-     *
-     * @return an array of Strings describing stack frames.
-     */
-    private String[] captureStackTrace()
-    {
-        StringWriter sw = new StringWriter();
-        super.printStackTrace(new PrintWriter(sw, true));
-        return splitStackTrace(sw.getBuffer().toString());
-    }
-
-    /**
-     * Captures the stack trace associated with a <code>Throwable</code>
-     * object.
-     *
-     * @param t The <code>Throwable</code>.
-     * @return  An array of strings describing each stack frame.
-     */
-    private String[] captureStackTrace(Throwable t)
-    {
-        StringWriter sw = new StringWriter();
-        t.printStackTrace(new PrintWriter(sw, true));
-        return splitStackTrace(sw.getBuffer().toString());
-    }
-
-    /**
-     * Splits the stack trace given as a newline separated string
-     * into an array of stack frames.
-     *
-     * @param stackTrace The stack trace.
-     * @return           An array of strings describing each stack frame.
-     */
-    private String[] splitStackTrace(String stackTrace)
-    {
-        String linebreak = System.getProperty("line.separator");
-        StringTokenizer st = new StringTokenizer(stackTrace, linebreak);
-        LinkedList list = new LinkedList();
-        while (st.hasMoreTokens())
-        {
-            list.add(st.nextToken());
-        }
-        return (String []) list.toArray(new String[] {});
+        super(msg, nested);
     }
 }
