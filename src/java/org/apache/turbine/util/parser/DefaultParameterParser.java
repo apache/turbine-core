@@ -171,6 +171,7 @@ public class DefaultParameterParser
     {
         this.request = null;
         this.uploadData = null;
+        this.fileParameters.clear();
         super.dispose();
     }
 
