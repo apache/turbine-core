@@ -249,6 +249,12 @@
     -->
 
     <developer>
+      <name>Henning P. Schmiedehausen</name>
+      <id>henning</id>
+      <email>hps@intermeta.de</email>
+      <organization>INTERMETA - Gesellschaft fuer Mehrwertdienste mbH</organization>
+    </developer>
+    <developer>
       <name>Kurt Schrader</name>
       <id>kschrader</id>
       <email>kschrader@karmalab.org</email>
