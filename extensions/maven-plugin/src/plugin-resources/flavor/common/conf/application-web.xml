@@ -52,6 +52,16 @@
 
 <!-- ======================================================================== -->
 <!--                                                                          -->
+<!-- Redirect the home page of the application to the turbine servlet         -->
+<!--                                                                          -->
+<!-- ======================================================================== -->
+
+  <welcome-file-list>
+    <welcome-file>app</welcome-file>
+  </welcome-file-list>
+
+<!-- ======================================================================== -->
+<!--                                                                          -->
 <!-- Make sure that templates, resources and logs are not available through   -->
 <!-- the servlet container. Remove security constraints or add an authen-     -->
 <!-- tication role if you need access to these paths.                         -->
