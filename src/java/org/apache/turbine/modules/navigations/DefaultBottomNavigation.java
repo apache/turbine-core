@@ -57,6 +57,8 @@ package org.apache.turbine.modules.navigations;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.ecs.AlignType;
 import org.apache.ecs.ConcreteElement;
@@ -180,12 +182,12 @@ public class DefaultBottomNavigation
                     .addElement(pre);
 
             Table table2 = new Table().setBorder(0);
-            Hashtable varDebug = data.getVarDebug();
-            keys = varDebug.keys();
+            Map varDebug = data.getVarDebug();
+           
             boolean hasValues2 = false;
-            while (keys.hasMoreElements())
-            {
-                String key = (String) keys.nextElement();
+            
+			for (Iterator i = varDebug.keySet().iterator();i.hasNext();){
+                String key = (String) i.next();
                 String value = varDebug.get(key).toString();
                 TR tr = new TR()
                         .addElement(new TD().addElement(new B(key)))
