@@ -59,9 +59,10 @@ import org.apache.turbine.services.Service;
 /**
  * This service loads components that can be loaded by the Stratum
  * component loader, e.g. the decoupled Torque.
-
+ * 
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
+ * @deprecated torque is now loaded using the AvalonComponentService
  */
 public interface ComponentService
         extends Service

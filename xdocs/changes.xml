@@ -410,6 +410,12 @@ Changes between Turbine 2.2 and 2.3-dev.
         with VelocityOnlyLayout to render the page attributes like in VelocityECSLayout
         based pages.
     </li>
+    <li>
+      The ComponentService (using the stratum lifecycle interfaces) is 
+      deprecated. It will be removed after the 2.3 release as the stratum 
+      package is unmaintained. We use the new AvalonComponentService to
+      initialize Torque. 
+    </li>
   </ul>
 </p>
 </subsection>
