@@ -3,6 +3,7 @@
 <document>
   <properties>
     <title>Extend User Howto</title>
+    <author email="quintonm@bellsouth.net">Quinton McCombs</author>
     <author email="jon@latchkey.com">Jon S. Stevens</author>
     <author email="dan@chowda.net">Dan A. Bachelder</author>
     <author email="seade@backstagetech.com.au">Scott B. Eade</author>
@@ -10,176 +11,358 @@
 
   <body>
 
-  <section name="Extend User">
-
-     <p>
-      This is a HOWTO on extending the TurbineUser and its
-      functionality.  The motivating factors for extending TurbineUser
-      are:
+    <section name="Introduction">
+      <p>
+        This is a HOWTO on extending the TurbineUser and its
+        functionality.  The motivating factors for extending TurbineUser
+        are:
         <ol>
-        <li>
-          to be able to make use of TURBINE_USER.USER_ID as a foreign key in
-          application tables; and
-        </li>
-        <li>
-          to be able to represent additional user attributes by adding columns
-          to TURBINE_USER.
-        </li>
+          <li>
+            to be able to make use of TURBINE_USER.USER_ID as a foreign key in
+            application tables; and
+          </li>
+          <li>
+            to be able to represent additional user attributes by adding columns
+            to TURBINE_USER.
+          </li>
         </ol>
-     </p>
-     <p>
-      The example herein uses TDK 2.1 and the TDK sample application Newapp.
-      To illustrate solutions to both of out motivators we will:
+      </p>
+      <p>
+        The example herein uses a very simple object model with only one table.
+        This table would be defined in your project-schema.xml file.
+        To illustrate solutions to both of our motivators we will:
         <ol>
-        <li>
-          Add a CREATE_USER_ID column to the RDF application table.
-        </li>
-        <li>
-          Add a TITLE column to TURBINE_USER.
-        </li>
+          <li>
+            Add a REVIEWED_BY_USER_ID column to the BOOK application table.  This will
+              also include a foreign key reference back to TURBINE_USER.
+          </li>
+          <li>
+            Add a TITLE column to TURBINE_USER.
+          </li>
         </ol>
-     </p>
-     <p>
-      <b>Important Note:</b> This solution is functionally incomplete in that
-      it does not support the ability to use TurbineUser as a commit point for
-      a transaction.  See the very end of this howto for further details.
-     </p>
-     <p>
-      First we update the schema for the project (in this case
-      newapp-schema.xml) to include an alias definition of TurbineUser (which
-      will NOT create a new table) as well as the desired foreign key
-      references.  Note how the TurbineUser definition refers to a pair of
-      adapter classes (that we will create shortly) and how it is only
-      necessary to define the columns we are referring to as foreign keys
-      elsewhere in the application database.  Note also the addition of
-      CREATE_USER_ID as a foreign key in the RDF table.
-     </p>
-     <source><![CDATA[
-  <table name="TURBINE_USER" javaName="NewappUser" alias="TurbineUser"
-    baseClass="org.mycompany.newapp.om.TurbineUserAdapter"
-    basePeer="org.mycompany.newapp.om.TurbineUserPeerAdapter">
-    <!-- Unique identifier -->
-    <column name="USER_ID" primaryKey="true" required="true" type="integer"/>
-  </table>
+      </p>
+      <p>
+        <b>Important Note:</b> This solution is functionally incomplete in that
+        it does not support the ability to use TurbineUser as a commit point for
+        a transaction.  See the very end of this document for further details.
+      </p>
 
-  <table name="RDF" idMethod="autoincrement">
-    <column name="RDF_ID" required="true" autoIncrement="true"
-        primaryKey="true" type="INTEGER"/>
-    <column name="TITLE" size="255" type="VARCHAR"/>
-    <column name="BODY" size="255" type="VARCHAR"/>
-    <column name="URL" size="255" type="VARCHAR"/>
-    <column name="AUTHOR" size="255" type="VARCHAR"/>
-    <column name="DEPT" size="255" type="VARCHAR"/>
-    <column name="CREATE_USER_ID" required="true" type="INTEGER"/>
-    <foreign-key foreignTable="TURBINE_USER">
-      <reference local="CREATE_USER_ID" foreign="USER_ID"/>
-    </foreign-key>
-  </table>]]></source>
-     <p>
-      The columns we want to add to TurbineUser must be defined in
-      turbine-schema.xml thus:
-    </p>
-     <source><![CDATA[
-  <table name="TURBINE_USER" idMethod="idbroker">
-    <column name="USER_ID" required="true" primaryKey="true" type="INTEGER"/>
-    <column name="LOGIN_NAME" required="true" size="32" type="VARCHAR"/>
-    <column name="PASSWORD_VALUE" required="true" size="32" type="VARCHAR"/>
-    <column name="FIRST_NAME" required="true" size="99" type="VARCHAR"/>
-    <column name="LAST_NAME" required="true" size="99" type="VARCHAR"/>
-    <column name="EMAIL" size="99" type="VARCHAR"/>
-    <column name="CONFIRM_VALUE" size="99" type="VARCHAR"/>
-    <column name="TITLE" size="99" type="VARCHAR"/> <!-- New column -->
-    <column name="MODIFIED" type="TIMESTAMP"/>
-    <column name="CREATED" type="TIMESTAMP"/>
-    <column name="LAST_LOGIN" type="TIMESTAMP"/>
-    <column name="OBJECTDATA" type="VARBINARY"/>
-    <unique>
-        <unique-column name="LOGIN_NAME"/>
-    </unique>
-  </table>]]></source>
-     <p>
-      Before we create the adapter classes referred to above we will first
-      extend TurbineMapBuilder in order to tell Turbine about the additional
-      columns we are adding to TurbineUser.  Note that you can actually omit
-      this step and not even define database columns for the additional
-      attributes you want to add if you don't care to have easy external access
-      to the data.  If you do this the data for the additional attributes will
-      be written to TURBINE_USER.OBJECTDATA along with any other data added to
-      the the perm hashtable (this is a way cool feature, you should also look
-      into the temp hashtable if you like this).
-     </p>
-     <source><![CDATA[
-package org.mycompany.newapp.util.db.map;
+      <p>
+          It is also important to note that this HOWTO is intended for use with
+          the database implementation of the SecurityService.  I will not address
+          how to extend TurbineUser for use with any other implementation.
+      </p>
+    </section>
 
-import java.util.Date;
+    <section name="How does TurbineUser actually work?" >
 
-import org.apache.turbine.services.db.TurbineDB;
-import org.apache.turbine.util.db.map.TableMap;
+        <p>
+            The inplementation of TurbineUser and TurbineUserPeer is distributed
+            with Turbine in the <code>org.apache.turbine.om.security</code>
+            package.  It is _NOT_ generated by Torque at this time.  There are
+            no corresponding Base* classes nor a TurbineUserMapBuilder either.
+        </p>
+        <p>
+            TurbineUser implements the User interface (from the same package).
+            This interface is used by the Security Service and a few other
+            services as well.  This is the reason behind not generating TurbineUser
+            through Torque.  It would have no idea how to provide an implementation
+            of the User interface leaving that inplementaion to you.
+        </p>
+        <p>
+            The MapBuilder for TurbineUser is
+            <code>org.apache.turbine.util.db.map.TurbineMapBuilder</code>.  This
+            MapBuilder is also used by Turbine for the other Turbine* classes
+            that are defined in the turbine-schema.xml file distributed with Turbine.
+        </p>
+        <p>
+            The turbine-schema.xml file is the source of a small problem.  The ant task
+            used to generate your OM layer will generate OM objects for all of the tables
+            defined in this file along with the MapBuilders.  These classes do not really
+            hurt anything but they can be a source of confusion.  There are not used
+            by Turbine for anything!
+        </p>
+        <p>
+            One valid reason for leaving this file in place is for the ant task that will
+            create your database schema for you.  Since the task will mot modify the schema
+            for you after it is created (to add/remove columns, indexes, etc), it is of
+            little use after the database is created other than to serve as a reference.
+        </p>
+        <p>
+            Later in this discussion, you will be given instruction to remane this file to
+            prevent it from being used by the ant tasks as well as removing any objects
+            generated as a result.
+        </p>
+        <p>
+            Another interesting fact about TurbineUser is the way in which data stored in
+            the database is accessed.  Instaed of using using private attributes for storage
+            within the object, all attibutes are stored in a hashtable (known herein as the
+            perm hashtable).  Access to the perm hashtable is controlled through the
+            getPerm/setPerm methods.
+        </p>
+        <p>
+            When the object is returned from the database, data from the columns are
+            added to the perm hashtable for you.  When you save the object, the data
+            is removed from the perm hashtable and written to the appropriate database
+            columns.
+        </p>
+        <p>
+            As you will read later, any data left in the perm hashtable that does
+            not have a mapped database column (more on this later)
+            during the save operation will be serialized and written to the
+            TURBINE_USER.OBJECTDATA column.
+        </p>
+        <p>
+            Another very nice feature of TurbineUser is the getTemp/setTemp
+            methods.  This allows you to store data in TurbineUser for the duration
+            of the session.  It will not be written to your persistent storage.
+            It is ONLY for the session.  Keep in mind that the login action will
+            replace the user object in the session with a user object from your
+            persistent storage thus removing any data you might have stored in the
+            user.
+        </p>
+
+    </section>
+
+    <section name="Modifications to project-schema.xml">
+      <p>
+        Here is the sample project-schema.xml file before making modifications
+        to reference TURBINE_USER.
+      </p>
+      <source>
+<![CDATA[
+<database defaultIdMethod="native" defaultJavaType="object">
+    <table name="BOOK">
+        <column name="BOOK_ID" required="true" primaryKey="true" type="INTEGER"/>
+        <column name="TITLE" required="true" type="VARCHAR"/>
+        <column name="AUTHOR" required="true" type="VARCHAR"/>
+    </table>
+</database>
+]]>
+      </source>
+      <p>
+        First we update the schema to include an alias definition of TurbineUser
+        as well as the desired foreign key
+        references.  Note how the TurbineUser definition refers to a pair of
+        adapter classes (that we will create shortly) and how it is only
+        necessary to define the columns we are referring to as foreign keys
+        elsewhere in the application database.  Note also the addition of
+        REVIEWED_BY_USER_ID as a foreign key in the BOOK table.
+      </p>
+      <source>
+<![CDATA[
+<database defaultIdMethod="native" defaultJavaType="object">
+    <table name="EXTENDED_USER" alias="TurbineUser"
+            baseClass="org.mycompany.sampleapp.om.TurbineUserAdapter"
+            basePeer="org.mycompany.sampleapp.om.TurbineUserPeerAdapter">
+        <column name="USER_ID" required="true" primaryKey="true" type="INTEGER"/>
+    </table>
+    <table name="BOOK">
+        <column name="BOOK_ID" required="true" primaryKey="true" type="INTEGER"/>
+        <column name="TITLE" required="true" type="VARCHAR"/>
+        <column name="AUTHOR" required="true" type="VARCHAR"/>
+        <column name="REVIEWED_BY_USER_ID" type="INTEGER"/>
+        <foreign-key foreignTable="EXTENDED_USER">
+            <reference local="REVIEWED_BY_USER_ID" foreign="USER_ID"/>
+        </foreign-key>
+    </table>
+</database>
+]]>
+      </source>
+        <p>
+            Notice the attribute on the database tag for defaultJavaType.  I used
+            "object" as the value.  The default is "primative".  You do not have to
+            use "object"!!!
+        </p>
+        <p>
+            In the last version of Turbine (2.1), the only option was to use the
+            primative types.  However, this posed a small problem.  It was not
+            possible to have number or boolean types that contained null values.
+            If a null value was found in the database for columns of these types,
+            the value returned from the OM object was 0 or false, respectively.
+            This also implies that you can not have non-required foreign key
+            references back to TURBINE_USER.  The primary key of TURBINE_USER
+            is a number.
+        </p>
+    </section>
+
+    <section name="Deciding how additional data in Turbine User will be stored">
+      <p>
+          There are two ways in which additional data in your extended TurbineUser
+          object can be stored.  The first, and simplest method, is to store it in
+          the perm hashtable.  As described earlier, any data in the perm hashtable
+          not mapped to a database column with remains the the perm hashtable and
+          gets serialized into the TURBINE_USER.OBJECTDATA column.  The second,
+          and perferred method, is to use additional database column(s) for storage.
+      </p>
+      <p>
+          Although storing the additional data in the TURBINE_USER.OBJECTDATA
+          column is the simplest method, it has a few drawbacks.
+          <ol>
+              <li>
+                  You will not have easy access to the data through SQL
+                  of other external tools.
+              </li>
+              <li>
+                  You will not be able to specify criteria to select TurbineUser
+                  objects from the database by filtering on data stored in
+                  TURBINE_USER.OBJECTDATA.
+              </li>
+              <li>
+                  There is an upper limit to the amount of data that can be stored
+                  in the TURBINE_USER.OBJECTDATA column.  A few users have reported
+                  on the mailing list that they ran into this problem.  The limit
+                  will vary from one database to another.  This limit is reduced
+                  by persistent pull tools(see the docs on the PullService for
+                  details), if you have any in your project,
+                  as they are stored using this method by the PullService.
+              </li>
+          </ol>
+      </p>
+      <p>
+          If you do decide to store some of your additional attributes
+          in the TURBINE_USER.OBJECTDATA column, you need to be careful
+          of possible conflicts with the keys used in the perm hashtable by
+          TurbineUser.  When
+          the object is saved to the database, this data is removed from the
+          perm hashtable and written to the correct columns.  The keys used in the
+          perm hashtable are the uppercase names of the columns.  The column names
+          are not fully qualified with the names of the table like
+          <code>TURBINE_USER.LAST_NAME</code>.  Instead the key used is
+          <code>LAST_NAME</code>.  See
+          <code>org.apache.turbine.util.db.map.TurbineMapBuilder</code> for a
+          complete list of the keys used for the default columns.
+      </p>
+      <p>
+          If you choose to use additional database columns, you will not have
+          any of the drawbacks mentioned above.  Using the additional columns
+          is the approach that should be taken unless you have a _VERY_ good
+          reason not to do so.
+      </p>
+    </section>
+
+    <section name="Implementing adapter and map builder classes">
+        <p>
+            First, we will extend the map builder used by Turbine for the Turbine*
+            classes to add the additional column(s) that we will be using in
+            TURBINE_USER.
+        </p>
+        <source>
+<![CDATA[
+package org.mycompany.sampleapp.util.db.map;
+
+import org.apache.torque.Torque;
+import org.apache.torque.map.TableMap;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
 
+/**
+ * Used to add the mapping of additional columns into any of the
+ * TURBINE_* tables.  This can be implemented as an empty class
+ * if you are not adding any additional database columns.
+ */
 public class TurbineMapBuilderAdapter extends TurbineMapBuilder
 {
     /*
-     * Note: The getUser_*() methods in this class should be static, but
-     * getTableUser() and the initial field level methods are incorrectly
-     * declared in TurbineMapBuilder and hence we must use non-static methods
-     * here.
-     */
+    * Note: The getUser_*() methods in this class should be static, but
+    * getTableUser() and the initial field level methods are incorrectly
+    * declared in TurbineMapBuilder and hence we must use non-static methods
+    * here.
+    */
 
+    /**
+     * Gets the name of the database column that we are adding to
+     * TURBINE_USER.
+     * @return The name of the database column.
+     */
     public static String getTitle()
     {
         return "TITLE";
     }
 
+    /**
+     * Gets the fully qualified column name (TABLE.COLUMN) that will be
+     * used to store the Title attribute in the extended TurbineUser object.
+     * @return The fully qualified database column name.
+     */
     public String getUser_Title()
     {
         return getTableUser() + '.' + getTitle();
     }
 
-    public void doBuild()
-        throws java.lang.Exception
+    /**
+     * Creates the map used by Torque to persist the Turbine* objects
+     * to the TURBINE_* tables.
+     * @throws Exception generic error
+     */
+    public void doBuild() throws java.lang.Exception
     {
+        // the superclass version of the MapBuilder must be called to create
+        // the mappings for the default columns.
         super.doBuild();
 
-        // Make some objects.
-        String string = new String("");
-        Integer integer = new Integer(0);
-        java.util.Date date = new Date();
+        // When you add a column to the database map, the map must know
+        // what type of data will be stored in the column.  For that
+        // purpose, we will create a few dummy objects to serve as
+        // data type indicators.  Not all of them are used in our example.
+        Integer dummyInteger = new Integer(0);
+        Date dummyDate = new Date();
+        String dummyString = new String();
 
-        // Add extra User columns.
-        TableMap tMap = TurbineDB.getDatabaseMap().getTable(getTableUser());
-        tMap.addColumn(getTitle(), string);
+        // Add extra column.
+        TableMap tMap = Torque.getDatabaseMap().getTable(getTableUser());
+        tMap.addColumn(getTitle(),dummyInteger);
     }
-}]]></source>
-     <p>
-      Now we will implement the pair of adapters we referred to in our
-      schema.  First we implement TurbineUserAdapter to provide access
-      to the primary key as well as the column we are adding to
-      TurbineUser.  If you are going to use OBJECTDATA (and not define
-      new columns in the database) you can still add accessor methods
-      here for convenience if you like, alternatively you can just use
-      setPerm() directly.
-    </p>
-     <source><![CDATA[
-package org.mycompany.newapp.om;
+}
+]]>
+      </source>
+      <p>
+          Now we will implement the pair of adapters we referred to in our
+          schema.  First we implement TurbineUserAdapter to provide access
+          to the primary key as well any additional attibutes we are adding.
+      </p>
+      <source>
+<![CDATA[
+package org.mycompany.sampleapp.om;
 
 import org.apache.turbine.om.security.TurbineUser;
-import org.apache.turbine.om.NumberKey;
+import org.apache.torque.om.NumberKey;
+import org.apache.turbine.util.ObjectUtils;
 
+/**
+ * This class extends TurbineUser for the purpose of adding get/set methods
+ * for accessing additional attributes.
+ */
 public class TurbineUserAdapter extends TurbineUser
 {
+    /** Used as the key in the perm hashtable.  */
     public static final String TITLE = "TITLE";
 
-    public NumberKey getUserId()
+    /**
+     * Gets the userId of the user.  This is also the primary key
+     * of the TURBINE_USER table.  The return type of Integer is
+     * valid only if the javaType for the ExtendedUser table
+     * is "object".  If it is "primative", the return type
+     * should be changed to int.
+     * @return the user id
+     */
+    public Integer getUserId()
     {
-        return (NumberKey) getPrimaryKey();
+        return new Integer(((NumberKey)getPrimaryKey()).intValue());
     }
 
+    /**
+     * Sets the title of the user.
+     * @param title the user's title
+     */
     public void setTitle(String title)
     {
         setPerm(TITLE, title);
     }
 
+    /**
+     * Gets the user's title
+     * @return the user's title
+     */
     public String getTitle()
     {
         String tmp = null;
@@ -187,217 +370,225 @@ public class TurbineUserAdapter extends TurbineUser
         {
             tmp = (String) getPerm(TITLE);
             if ( tmp.length() == 0 )
-                tmp = null;
+            tmp = null;
         }
-        catch ( Exception e )
+        catch (Exception e)
         {
         }
         return tmp;
     }
-}]]></source>
-     <p>
-       Next comes TurbineUserPeerAdapter to which we also add details of the new
-       database columns (the body will be empty if you choose to use
-       OBJECTDATA).
-     </p>
-     <source><![CDATA[
+}
+]]>
+      </source>
+      <p>
+          Note: Even though this class uses the setPerm and getPerm methods to
+          access the data even though we are going to use the TURBINE_USER.TITLE
+          column for storage.  As mentioned earlier, the data is removed from the
+          hashtable when the object is saved to the database and written into the
+          correct database column.  Likewise, the when the object is returning
+          data from the database, the data from the TURBINE_USER.TITLE column is
+          added to the perm hashtable in the TITLE key.
+      </p>
+      <p>
+          Next comes TurbineUserPeerAdapter to which we add details of the new
+          database columns.
+      </p>
+      <source>
+<![CDATA[
 package org.mycompany.newapp.om;
 
 import java.util.Vector;
 
+import org.mycompany.sampleapp.util.db.map.TurbineMapBuilderAdapter;
+import org.apache.torque.om.ObjectKey;
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.peer.TurbineUserPeer;
-import org.mycompany.newapp.util.db.map.TurbineMapBuilderAdapter;
 
+/**
+ * This class extends TurbineUserPeer for the purpose of mapping additional
+ * database columns.  You can implement this as an empty class if you are not
+ * using any additional database columns.
+ */
 public class TurbineUserPeerAdapter extends TurbineUserPeer
 {
+    /** the default database name for this class */
+    public static final String DATABASE_NAME = "default";
+
+    /** Used to build the map for the extended Turbine User */
     private static final TurbineMapBuilderAdapter mapBuilder =
-        (TurbineMapBuilderAdapter) getMapBuilder();
+        (TurbineMapBuilderAdapter)getMapBuilder("org.mycompany.sampleapp.util.db.map.TurbineMapBuilderAdapter");
 
+    /** The fully qualified name of the database table */
     public static final String TITLE = mapBuilder.getUser_Title();
-}]]></source>
-     <p>
-      We can now use "ant project-om" to generate our OM layer using
-      the adapter classes we defined above.  Note that "ant init"
-      (WARNING: THE <code>init</code> TARGET WILL DELETE ALL DATA IN
-      YOUR DATABASE), or any other target that triggers a compile of
-      the OM layer will result in a compile error of BaseRdf due to
-      the fact that NewappUserPeer does not implement a retrieveByPK()
-      method.
-    </p>
-     <p>
-      So lets implement retrieveByPK() so that everything can compile.  This
-      needs to be implemented in NewappUserPeer which was generated by torque
-      when we executed project-om above (but it won't be deleted should we need
-      to regenerate the OM layer at some stage in the future - like in about 2
-      minutes).
-    </p>
-     <source><![CDATA[
-package org.mycompany.newapp.om;
 
-import java.util.*;
-
-import com.workingdogs.village.*;
-
-import org.apache.turbine.om.peer.*;
-import org.apache.turbine.util.*;
-import org.apache.turbine.util.db.*;
-import org.apache.turbine.util.db.map.*;
-import org.apache.turbine.util.db.pool.DBConnection;
-import org.apache.turbine.om.ObjectKey;
-import org.apache.turbine.services.db.TurbineDB;
-
-import org.mycompany.newapp.om.map.*;
-
-public class NewappUserPeer
-    extends org.mycompany.newapp.om.BaseNewappUserPeer
-{
-    public static NewappUser retrieveByPK(ObjectKey pk)
-        throws Exception
+    /**
+    * Builds a criteria object to select by a primary key value.  Of course,
+    * it could also be used for an update or delete.
+    * @param pk Primary key to select/update/delete
+    * @return A Criteria object built to select by primary key
+    */
+    public static Criteria buildCriteria(ObjectKey pk)
     {
-        DBConnection db = null;
-        NewappUser retVal = null;
+        Criteria crit = new Criteria();
+        crit.add(TurbineUserPeer.USER_ID,pk.getValue());
 
-        try
-        {
-            db = TurbineDB.getConnection(getMapBuilder()
-                .getDatabaseMap().getName());
-            retVal = retrieveByPK(pk, db);
-        }
-        finally
-        {
-            if (db != null)
-            {
-                TurbineDB.releaseConnection(db);
-            }
-        }
-        return(retVal);
+        return crit;
     }
+}]]>
+      </source>
+    </section>
 
-    public static NewappUser retrieveByPK( ObjectKey pk, DBConnection dbcon )
-        throws Exception
-    {
-        Criteria criteria = new Criteria();
-        criteria.add( USER_ID, pk );
-        Vector v = doSelect(criteria, dbcon);
-        if ( v.size() != 1)
-        {
-            throw new Exception("Failed to select one and only one row.");
-        }
-        else
-        {
-            return (NewappUser)v.firstElement();
-        }
-    }
-}]]></source>
-     <p>
-      Now we can use "ant init" to generate the rest of the things it
-      generates - this will include the regenreation of the OM layer, the
-      generation of the sql to create the database tables and the actual
-      execution of this sql to recreate the database tables to now include any
-      additional columns we have defined (<b>AS A CONSEQUENCE ALL DATA IN THE
-      DATABASE WILL BE DESTROYED</b>).
-     </p>
-     <p>
-      With any luck everything will compile okay and we are only a small step
-      away from being able to use the new OM layer.  The last step is to tell
-      Turbine about the new classes we are using for Users and the new
-      MapBuilder.  To do this we need to update the following entries in
-      TurbineResources.properties:
-     </p>
-     <source><![CDATA[
-database.maps.builder=org.mycompany.newapp.util.db.map.TurbineMapBuilderAdapter
-services.SecurityService.user.class=org.mycompany.newapp.om.NewappUser
-services.SecurityService.userPeer.class=org.mycompany.newapp.om.NewappUserPeer
-]]></source>
-     <p>
-      That is basically it.  We can now modify our application to utilise the
-      new columns via the methods defined in the OM objects we have modified.
-      Note that in order to access the new methods in NewappUser we need to cast
-      from TurbineUser thus:
-    </p>
-     <source><![CDATA[
-NewappUser user = (NewappUser) data.getUser();]]></source>
-     <p>
-      Extending TurbineUser should be relatively straightforward with the help
-      of this information.
-    </p>
-     <p>
-      Enjoy.
-    </p>
-    <p>
-     <b>Additional Information (Added 12 Nov 2001) - Solution available
-     below</b>
-    </p>
-    <p>
-     For those of you that are attempting to extend TurbineUser to make use of
-     TURBINE_USER.USER_ID as a foreign key in your application tables here is
-     the latest problem I have run into - it actually intersects with another
-     turbine-dev mailing list thread titled "autoincrement and key retrieving".
-    </p>
-    <p>
-     Torque generates some pretty useful code that enables you to add related
-     objects to a common parent object and then save them all to the database
-     in one transaction.  You can do something like this:
-    </p>
-    <source><![CDATA[
+    <section name="Generating the OM layer">
+        <p>
+            Before generating the OM layer, see if you have a turbine-schema.xml
+            file in your WEB-INF/conf directory.  If you do, rename this file to
+            turbine-schema.xml.nogenerate.  Also, the only Turbine* classes that
+            you should have in your om package are the two adapters that you
+            created earlier.  Any other Turbine* or BaseTurbine* class in your om
+            package should be removed.  You should also remove any om.map.Turbine*
+            classes that might have been generated.
+        </p>
+        <p>
+
+            <b>Warning:  Do not run the init ant task after doing this.</b>
+            That task will drop and recreate your database.  Without the
+            turbine-schema.xml file present, the TURBINE_* tables will not
+            be recreated!
+        </p>
+        <p>
+            These classes were generated from the turbine-schema.xml file.  The
+            project-om ant task will process
+            any file in your WEB-INF/conf directory ending in <code>-schema.xml</code>
+            and generate the appropriate classes from that definition.  Renaming the
+            turbine-schema.xml file stops these extra classes from being generated.
+        </p>
+        <p>
+            Next, you will need to manually create any additional database columns
+            that you will be using in TURBINE_USER.  Make sure that the name of the
+            columns match what you speificied in TurbineUserPeerAdapter.
+        </p>
+        <p>
+            We can now use project-om ant task to generate our OM layer using
+            the adapter classes we defined above.
+        </p>
+        <p>
+            With any luck everything will compile okay and we are only a small step
+            away from being able to use the new OM layer.
+        </p>
+    </section>
+
+    <section name="Modifications to TurbineResources.properties">
+        <p>
+            The last step is to tell Turbine about the new classes we are using for
+            Users and MapBuilder.  To do this we need to update the following
+            entries in TurbineResources.properties:
+        </p>
+      <source>
+<![CDATA[
+database.maps.builder=org.mycompany.sampleapp.util.db.map.TurbineMapBuilderAdapter
+services.SecurityService.user.class=org.mycompany.sampleapp.om.ExtendedUser
+services.SecurityService.userPeer.class=org.mycompany.sampleapp.om.ExtendedUserPeer
+]]>
+      </source>
+        <p>
+            That is basically it.  We can now modify our application to utilise the
+            new columns via the methods defined in the OM objects we have modified.
+            Note that in order to access the new methods in ExtendedUser we need to cast
+            from TurbineUser thus:
+        </p>
+      <source>
+<![CDATA[
+ExtendedUser user = (ExtendedUser) data.getUser();
+]]>
+      </source>
+        <p>
+            Enjoy.
+        </p>
+    </section>
+
+    <section name="Additional Information">
+        <p>
+            For those of you that are attempting to extend TurbineUser to make use of
+            TURBINE_USER.USER_ID as a foreign key in your application tables here is
+            one small problem.
+        </p>
+        <p>
+            Torque generates some pretty useful code that enables you to add related
+            objects to a common parent object and then save them all to the database
+            in one transaction.  You can do something like this:
+        </p>
+        <source>
+<![CDATA[
 OrderDetail od1 = new OrderDetail(500, "item1");
 OrderDetail od2 = new OrderDetail(100, "item2");
 Order o = new Order(clientId);
 o.addOrderDetail(od1);
 o.addOrderDetail(od2);
-o.save();]]></source>
-    <p>
-     This is very helpful - you don't need to worry about the ids that connect
-     the child rows to the parent rows and you don't need to worry about the
-     transaction necessary to insert these into the database as one atomic
-     operation.  It also provides:
-    </p>
-    <source><![CDATA[
-o.save(dbConn);]]></source>
-    <p>
-     which can be used when you have other data you want to commit in a
-     transaction you are managing yourself.
-    </p>
-    <p>
-     Now here is the problem.  After extending TurbineUser in the manner
-     described above, the methods are generated to add records related the
-     extended user class, but the data itself is ignored when
-     ExtendedTurbineUser.save() is invoked.  Here is an example:
-    </p>
-    <source><![CDATA[
-Rdf rdf = new Rdf();
-data.getParameters().setProperties(rdf);
-NewappUser user = (NewappUser) data.getUser();
-user.addRdf(rdf);
-user.save(); // !!!! rdf is not saved !!!!]]></source>
-    <p>
-     Of course replacing the last two lines with:
-    </p>
-    <source><![CDATA[
-rdf.setCreateUserId(user.getUserId());
-rdf.save();]]></source>
-    <p>
-     will in fact save the Rdf, this is beside the point - the other method
-     addRdf() shouldn't exist if it doesn't work and this is a trivial example.
-    </p>
-    <p>
-     In addition to this, there is no equivalent save(dbConn) method provided
-     to allow this update to be combined with others within a single database
-     transaction.
-    </p>
-    <p>
-     <b>
-      And the solution is... (Added 16 Jan 2002)
-     </b>
-    </p>
-    <p>
-     The solution involves altering a torque template so that the code that
-     generates the aspects of the save() method that handle related tables is
-     allowed to execute for the TurbineUserAlias class.  You need to apply the
-     following patch (most likely to the version of Object.vm copied to the
-     WEB-INF/build/bin/torque/templates/om directory for your application):
-    </p>
-    <source><![CDATA[
+o.save();
+]]>
+        </source>
+        <p>
+            This is very helpful - you don't need to worry about the ids that connect
+            the child rows to the parent rows and you don't need to worry about the
+            transaction necessary to insert these into the database as one atomic
+            operation.  It also provides:
+        </p>
+        <source>
+<![CDATA[
+o.save(dbConn);
+]]>
+        </source>
+            <p>
+                which can be used when you have other data you want to commit in a
+                transaction you are managing yourself.
+            </p>
+            <p>
+                Now here is the problem.  After extending TurbineUser in the manner
+                described above, the methods are generated to add records related the
+                extended user class, but the data itself is ignored when
+                ExtendedUser.save() is invoked.  Here is an example:
+            </p>
+        <source>
+<![CDATA[
+Book book = new Book();
+data.getParameters().setProperties(book);
+ExtendedUser user = (ExtendedUser) data.getUser();
+user.addBook(book);
+user.save(); // !!!! book is not saved !!!!
+]]>
+        </source>
+            <p>
+                Of course replacing the last two lines with:
+            </p>
+        <source>
+<![CDATA[
+book.setReviewedByUserId(user.getUserId());
+book.save();
+]]>
+        </source>
+            <p>
+                will in fact save the Book, this is beside the point - the other method
+                addBook() shouldn't exist if it doesn't work and this is a trivial example.
+            </p>
+            <p>
+                In addition to this, there is no equivalent save(dbConn) method provided
+                to allow this update to be combined with others within a single database
+                transaction.
+            </p>
+            <p>
+                <b>
+                    And the solution is...
+                </b>
+            </p>
+            <p>
+                The solution involves altering a torque template so that the code that
+                generates the aspects of the save() method that handle related tables is
+                allowed to execute for the TurbineUserAlias class.  You need to apply the
+                following patch (most likely to the version of Object.vm copied to the
+                WEB-INF/build/bin/torque/templates/om directory for your application):
+            </p>
+        <source>
+<![CDATA[
 Index: jakarta-turbine-2/conf/torque/templates/om/Object.vm
 ===================================================================
 RCS file: /home/cvspublic/jakarta-turbine-2/conf/torque/templates/om/Object.vm,v
@@ -409,45 +600,47 @@ diff -u -r1.3 Object.vm
 +++ jakarta-turbine-2/conf/torque/templates/om/Object.vm        16 Jan 2002 14:0
 0:43 -0000
 @@ -787,7 +787,7 @@
- #end     ## ends the if(addGetByNameMethod)
+#end     ## ends the if(addGetByNameMethod)
 
 
 -#if (!$table.isAlias() && $addSaveMethod)
 +#if ((!$table.isAlias() || $table.Alias == "TurbineUser") && $addSaveMethod)
-     /**
-      * Stores the object in the database.  If the object is new,
-      * it inserts it; otherwise an update is performed.
+/**
+* Stores the object in the database.  If the object is new,
+* it inserts it; otherwise an update is performed.
 @@ -880,6 +880,9 @@
-       {
-         alreadyInSave = true;
-   #end
+{
+alreadyInSave = true;
+#end
 +    #if ($table.isAlias() && $table.Alias == "TurbineUser")
 +        super.save();
 +    #else
-         if (isModified())
-         {
-             if (isNew())
+if (isModified())
+{
+if (isNew())
 @@ -892,6 +895,7 @@
-                 ${table.JavaName}Peer.doUpdate(($table.JavaName)this, dbCon);
-             }
-         }
+${table.JavaName}Peer.doUpdate(($table.JavaName)this, dbCon);
+}
+}
 +    #end
 
-  #if ($complexObjectModel)
-   #foreach ($fk in $table.Referrers)]]></source>
-    <p>
-     (Note: You will need to manually remove the line wrapping from the above
-     patch).
-    </p>
-    <p>
-     This seems to me like a bit of a hack so I have not submitted this patch.
-     Notice how although you can go <code>user.save(dbCon);</code> the
-     TurbineUser record will not be part of the transaction.
-    </p>
-    <p>
-     It should be noted that I am currently using the code produced by this
-     patched version quite successfully in a production system.
-    </p>
-   </section>
-</body>
+#if ($complexObjectModel)
+#foreach ($fk in $table.Referrers)
+]]>
+        </source>
+            <p>
+                (Note: You will need to manually remove the line wrapping from the above
+                patch).
+            </p>
+            <p>
+                Notice how although you can go <code>user.save(dbCon);</code> the
+                TurbineUser record will not be part of the transaction.
+            </p>
+            <p>
+                It should be noted that I am currently using the code produced by this
+                patched version quite successfully in a production system.
+            </p>
+    </section>
+
+  </body>
 </document>
