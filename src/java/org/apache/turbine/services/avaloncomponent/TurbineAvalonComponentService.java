@@ -97,7 +97,8 @@ public class TurbineAvalonComponentService
         implements AvalonComponentService, Initializable, Disposable
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(TurbineAvalonComponentService.class);
+    private static Log log = LogFactory.getLog(
+            TurbineAvalonComponentService.class);
 
     /** Component manager */
     private ExcaliburComponentManager manager = new ExcaliburComponentManager();
@@ -193,7 +194,8 @@ public class TurbineAvalonComponentService
         this.manager.enableLogging(
                 lm.getLoggerForCategory("org.apache.turbine.services"));
         DefaultContext context = new DefaultContext();
-        context.put(AvalonComponentService.COMPONENT_APP_ROOT, Turbine.getRealPath("/"));
+        context.put(AvalonComponentService.COMPONENT_APP_ROOT,
+                Turbine.getRealPath("/"));
         System.setProperty("applicationRoot", Turbine.getRealPath("/"));
         this.manager.contextualize(context);
         this.manager.setRoleManager(roles);
