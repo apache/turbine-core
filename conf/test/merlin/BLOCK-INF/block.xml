@@ -8,12 +8,35 @@
          <resource id="fulcrum:fulcrum-mimetype-impl" version="1.0-alpha-4"/>
          <resource id="fulcrum:fulcrum-localization-api" version="1.0-alpha-4"/>
          <resource id="fulcrum:fulcrum-localization-impl" version="1.0-alpha-4"/>
+         <!--
+         <resource id="fulcrum:fulcrum-factory-api" version="1.0-alpha-2"/>
+         <resource id="fulcrum:fulcrum-factory-impl" version="1.0-alpha-2"/>
+         -->
+         <resource id="fulcrum:fulcrum-intake" version="1.0-alpha-2"/>
        </repository>
      </classpath>
    </classloader>
    <component name="hello" class="tutorial.HelloComponent"/>
    <component name="mimetype" class="org.apache.fulcrum.mimetype.DefaultMimeTypeService"/>   
-   <component name="localizer" class="org.apache.fulcrum.localization.DefaultLocalizationService" 
-     activation="true"/>
+   <component name="localization" 
+     class="org.apache.fulcrum.localization.DefaultLocalizationService">
+     <configuration>
+       <bundles>
+         <bundle>org.apache.turbine.services.localization.BarBundle</bundle>
+       </bundles>
+     </configuration>
+   </component>
+   <!--component name="factory" class="org.apache.fulcrum.factory.DefaultFactoryService"/-->  
+	
+   <component name="intake" 
+       class="org.apache.fulcrum.intake.IntakeServiceImpl"
+       activation="lazy">
+     <configuration>
+       <serialDataPath>./target/appData.ser</serialDataPath>
+       <xmlPaths>
+      	<xmlPath>conf/test/intake.xml</xmlPath>
+       </xmlPaths>
+     </configuration>
+   </component>   
 </container>
 

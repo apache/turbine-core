@@ -1,7 +1,7 @@
 
 <targets>
 
-  <target path="/fulcrum/localizer">
+  <target path="/fulcrum/localization">
     <categories priority="INFO"/>
     <configuration>
       <bundles>

@@ -138,7 +138,7 @@ public class IntakeToolTest extends BaseTestCase
     }
     public void setUp() throws Exception
     {
-        tc = new TurbineConfig(".", "/conf/test/TestIntake.properties");
+        tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
     }
     public void tearDown() throws Exception
