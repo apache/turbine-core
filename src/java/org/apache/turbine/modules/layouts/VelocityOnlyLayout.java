@@ -54,14 +54,17 @@ package org.apache.turbine.modules.layouts;
  * <http://www.apache.org/>.
  */
 
-// ECS Classes
-
 import org.apache.ecs.ConcreteElement;
+
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.ScreenLoader;
+
 import org.apache.turbine.services.velocity.TurbineVelocity;
+
 import org.apache.turbine.util.RunData;
+
 import org.apache.turbine.util.template.TemplateNavigation;
+
 import org.apache.velocity.context.Context;
 
 /**
@@ -72,8 +75,11 @@ import org.apache.velocity.context.Context;
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
-public class VelocityOnlyLayout extends Layout
+public class VelocityOnlyLayout
+    extends Layout
 {
     /**
      * Method called by LayoutLoader.
@@ -81,21 +87,18 @@ public class VelocityOnlyLayout extends Layout
      * @param data RunData
      * @throws Exception generic exception
      */
-    public void doBuild(RunData data) throws Exception
+    public void doBuild(RunData data)
+        throws Exception
     {
         // Get the context needed by Velocity
         Context context = TurbineVelocity.getContext(data);
-        // Screen results
-        String returnValue = "";
 
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.
         ConcreteElement results = ScreenLoader.getInstance()
-                .eval(data, data.getScreen());
-        if (results != null)
-        {
-            returnValue = results.toString();
-        }
+            .eval(data, data.getScreen());
+
+        String returnValue = (results == null) ? "" : results.toString();
 
         // variable for the screen in the layout template
         context.put("screen_placeholder", returnValue);
