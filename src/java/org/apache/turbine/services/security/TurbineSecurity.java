@@ -342,14 +342,12 @@ public abstract class TurbineSecurity
      * Checks whether a passed user object matches the anonymous user pattern
      * according to the configured service
      *
-     * @param An user object
-     *
+     * @param user A user object
      * @return True if this is an anonymous user
-     *
      */
-    public static boolean isAnonymousUser(User u)
+    public static boolean isAnonymousUser(User user)
     {
-        return getService().isAnonymousUser(u);
+        return getService().isAnonymousUser(user);
     }
 
     /**
