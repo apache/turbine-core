@@ -60,9 +60,9 @@ import org.apache.ecs.ElementContainer;
 import org.apache.ecs.html.A;
 
 import org.apache.turbine.modules.Screen;
-import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
+import org.apache.turbine.util.uri.TurbineURI;
 
 /**
  * Users will get this screen if the screen on their browser is in an
@@ -108,10 +108,9 @@ public class InvalidState
         pp = (ParameterParser) data.getUser().getTemp("prev_parameters");
         pp.remove("_session_access_counter");
 
-        DynamicURI back = new DynamicURI(data, (String) data.getUser().getTemp("prev_screen"));
+        TurbineURI back = new TurbineURI(data,(String) data.getUser().getTemp("prev_screen"));
         back.addPathInfo(pp);
-
-        message.addElement(new A().setHref(back.toString()).addElement("here"));
+        message.addElement(new A().setHref(back.getRelativeLink()).addElement("here"));
 
         message.addElement(" to return the the screen you were working on.");
 
