@@ -294,6 +294,12 @@
       </j:if>  
     </j:forEach>            
 
+    <copy todir="${turbine.target.dir}/WEB-INF/classes" filtering="no">
+      <fileset dir="${pom.build.SourceDirectory}">
+        <exclude name="**/*java"/>
+      </fileset>
+    </copy>
+
     <copy todir="${turbine.target.dir}/WEB-INF/classes">
       <fileset dir="${maven.build.dest}"/>
     </copy>
