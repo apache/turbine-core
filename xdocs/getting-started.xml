@@ -86,9 +86,7 @@ org.apache.turbine.services - This is where the Services Framework
 lives. The Services framework is a core aspect of Turbine. Essentially
 it is a framework for creating Singleton objects which may also have an
 init() and destroy() lifecycle. There are Services for many different
-things. For example, the Database Connection Pool is a service and so is
-the Logging (which is backed by <a
-href="http://jakarta.apache.org/log4j/">Log4J</a>).
+things.
 </li>
 <li>
 org.apache.turbine.util - The Util package is just that. A package of

@@ -34,14 +34,6 @@
     easily) that can take part in the startup and shutdown sequence of the 
     application. </p>
 
-    <p> You will find here the Services that are essential for the operation
-    of the framework and very useful for building your application, like
-    Resource service (for accessing configuration settings) and Logging
-    service (a powerful tool that allows you to trace various aspects of
-    operation of the application, and send the messages to a multitude
-    of destinations including system console, text files, unix syslog
-    daemon, JDBC compliatn database and even a remote Logging service) </p>
-
     <p><a href="project-map/content-generation.html"><b>Content generation services</b></a></p>
 
     <p> This block groups together various services that aid you in the process
