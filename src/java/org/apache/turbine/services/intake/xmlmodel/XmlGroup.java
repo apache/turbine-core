@@ -67,6 +67,7 @@ import org.xml.sax.Attributes;
 /**
  * A Class for holding data about a grouping of inputs used in an Application.
  *
+ * @deprecated Use the Fulcrum Intake component instead.
  * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
  * @version $Id$
  */

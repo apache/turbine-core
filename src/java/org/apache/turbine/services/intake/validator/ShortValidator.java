@@ -72,6 +72,7 @@ import org.apache.commons.lang.StringUtils;
  * <td>Entry was not a valid Short</td></tr>
  * </table>
  *
+ * @deprecated Use the Fulcrum Intake component instead.
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
  * @author <a href="mailto:jh@byteaction.de">J&uuml;rgen Hoffmann</a>

@@ -67,6 +67,7 @@ import org.xml.sax.Attributes;
 /**
  * A class for holding application data structures.
  *
+ * @deprecated Use the Fulcrum Intake component instead.
  * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$

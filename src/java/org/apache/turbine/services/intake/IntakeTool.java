@@ -61,21 +61,24 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.fulcrum.intake.Intake;
+import org.apache.fulcrum.intake.IntakeException;
+import org.apache.fulcrum.intake.Retrievable;
+import org.apache.fulcrum.intake.model.Group;
 
-import org.apache.turbine.om.Retrievable;
-import org.apache.turbine.services.intake.model.Group;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.parser.ValueParser;
 import org.apache.turbine.util.pool.Recyclable;
 
 /**
- * The main class through which Intake is accessed.
+ * The main class through which Intake is accessed.  Provides easy access
+ * to the Fulcrum Intake component.
  *
  * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
 public class IntakeTool
@@ -108,7 +111,7 @@ public class IntakeTool
      */
     public IntakeTool()
     {
-        String[] groupNames = TurbineIntake.getGroupNames();
+        String[] groupNames = Intake.getGroupNames();
         int groupCount = 0;
         if (groupNames != null)
         {
@@ -134,14 +137,14 @@ public class IntakeTool
         String[] groupNames = null;
         if (groupKeys == null || groupKeys.length == 0)
         {
-            groupNames = TurbineIntake.getGroupNames();
+            groupNames = Intake.getGroupNames();
         }
         else
         {
             groupNames = new String[groupKeys.length];
             for (int i = groupKeys.length - 1; i >= 0; i--)
             {
-                groupNames[i] = TurbineIntake.getGroupName(groupKeys[i]);
+                groupNames[i] = Intake.getGroupName(groupKeys[i]);
             }
 
         }
@@ -150,7 +153,7 @@ public class IntakeTool
         {
             try
             {
-                List foundGroups = TurbineIntake.getGroup(groupNames[i])
+                List foundGroups = Intake.getGroup(groupNames[i])
                     .getObjects(pp);
 
                 if (foundGroups != null)
@@ -306,14 +309,14 @@ public class IntakeTool
         {
             Group g = null;
 
-            String inputKey = TurbineIntake.getGroupKey(groupName) + key;
+            String inputKey = Intake.getGroupKey(groupName) + key;
             if (groups.containsKey(inputKey))
             {
                 g = (Group) groups.get(inputKey);
             }
             else if (create)
             {
-                g = TurbineIntake.getGroup(groupName);
+                g = Intake.getGroup(groupName);
                 groups.put(inputKey, g);
                 g.init(key, pp);
             }
@@ -334,7 +337,7 @@ public class IntakeTool
 
             try
             {
-                String inputKey = TurbineIntake.getGroupKey(groupName)
+                String inputKey = Intake.getGroupKey(groupName)
                         + obj.getQueryKey();
                 if (groups.containsKey(inputKey))
                 {
@@ -342,9 +345,10 @@ public class IntakeTool
                 }
                 else
                 {
-                    g = TurbineIntake.getGroup(groupName);
+                    g = Intake.getGroup(groupName);
                     groups.put(inputKey, g);
                 }
+                
                 return g.init(obj);
             }
             catch (Exception e)
@@ -354,7 +358,7 @@ public class IntakeTool
 
             return null;
         }
-    }
+    }    
 
     /**
      * get a specific group
@@ -457,9 +461,9 @@ public class IntakeTool
             
             try
             {
-                TurbineIntake.releaseGroup(group);
+                Intake.releaseGroup(group);
             }
-            catch (TurbineException se)
+            catch (IntakeException ie)
             {
                 log.error("Tried to release unknown group "
                         + group.getIntakeGroupName());
@@ -524,9 +528,9 @@ public class IntakeTool
 
             try
             {
-                TurbineIntake.releaseGroup(g);
+                Intake.releaseGroup(g);
             }
-            catch (TurbineException se)
+            catch (IntakeException ie)
             {
                 log.error("Tried to release unknown group "
                         + g.getIntakeGroupName());

@@ -63,6 +63,7 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
 /**
  * Creates Field objects.
  *
+ * @deprecated Use the Fulcrum Intake component instead.
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>

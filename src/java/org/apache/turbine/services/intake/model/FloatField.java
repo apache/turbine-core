@@ -63,6 +63,7 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
 /**
  * Creates Float Field objects.
  *
+ * @deprecated Use the Fulcrum Intake component instead.
  * @author <a href="mailto:r.wekker@rubicon-bv.com>Ronald Wekker</a>
  * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>

@@ -59,6 +59,7 @@ import org.apache.turbine.services.intake.IntakeException;
 /**
  * An Exception indidate an invalid field mask.
  *
+ * @deprecated Use the Fulcrum Intake component instead.
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
