@@ -67,9 +67,11 @@ Changes between Turbine 2.3 and 2.4.
   	   container.  Merlin has many many features to help with dealing with components.  Thanks to Peter for this!
   	</li>
   	<li>
-  	   The cache, crypto, mimetype services have now been deprecated in favor
-  	   of the Fulcrum versions as well.  Turbine security now uses the Fulcrum
-  	   crypto component.
+  	   The cache, crypto, localization, intake, factory, and mimetype services have now been deprecated in favor
+  	   of the Fulcrum versions as well.  
+  	</li>
+  	<li>
+  		Turbine security now uses the Fulcrum crypto component.
   	</li>
     <li>
 	   The intake service within Turbine has been deprecated in favor
