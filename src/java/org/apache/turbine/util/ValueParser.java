@@ -63,6 +63,8 @@ import java.util.Enumeration;
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.StringKey;
 
+import org.apache.turbine.util.parser.ParserUtils;
+
 /**
  * ValueParser is a base interface for classes that need to parse
  * name/value Parameters, for example GET/POST data or Cookies
@@ -78,18 +80,38 @@ import org.apache.torque.om.StringKey;
  * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface ValueParser
 {
-    /**
-     * The case folding property specifying the case folding
-     * to apply to value keys of the parser.
+    /** 
+     * The Key for the Case folding.
+     *
+     * @deprecated. Use ParserUtils.URL_CASE_FOLDING_KEY
      */
-    static final String URL_CASE_FOLDING = "url.case.folding";
-    static final String URL_CASE_FOLDING_NONE = "none";
-    static final String URL_CASE_FOLDING_LOWER = "lower";
-    static final String URL_CASE_FOLDING_UPPER = "upper";
+    static final String URL_CASE_FOLDING = ParserUtils.URL_CASE_FOLDING_KEY;
+
+    /**
+     * No Case folding.
+     *
+     * @deprecated Use ParserUtils.URL_CASE_FOLDING_NONE_VALUE
+     */
+    static final String URL_CASE_FOLDING_NONE = ParserUtils.URL_CASE_FOLDING_NONE_VALUE;
+
+    /**
+     * Fold Keys to lower case.
+     *
+     * @deprecated Use ParserUtils.URL_CASE_FOLDING_LOWER_VALUE
+     */
+    static final String URL_CASE_FOLDING_LOWER = ParserUtils.URL_CASE_FOLDING_LOWER_VALUE;
+
+    /**
+     * Fold Keys to upper case.
+     *
+     * @deprecated Use ParserUtils.URL_CASE_FOLDING_UPPER_VALUE
+     */
+    static final String URL_CASE_FOLDING_UPPER = ParserUtils.URL_CASE_FOLDING_UPPER_VALUE;
 
     /**
      * Clear all name/value pairs out of this object.
@@ -229,7 +251,7 @@ public interface ValueParser
 
     /**
      * Return a boolean for the given name.  If the name does not
-     * exist, return <code>null</code>.
+     * exist, return false.
      *
      * @param name A String with the name.
      * @return A boolean.
