@@ -63,6 +63,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.turbine.om.security.SecurityEntity;
 
 /**
@@ -84,12 +86,16 @@ public abstract class SecuritySet
     /** Map for "name" -> "security object" */
     protected Map nameMap = null;
 
+    /** Map for "id" -> "security object" */
+    protected Map idMap = null;
+
     /**
      * Constructs an empty Set
      */
     public SecuritySet()
     {
         nameMap = new TreeMap();
+        idMap = new TreeMap();
     }
 
     /**
@@ -115,11 +121,23 @@ public abstract class SecuritySet
     }
 
     /**
+     * Returns a set of Id values in this Object.
+     *
+     * @return The Set of Ids in this Object,
+     *         backed by the actual data.
+     */
+    public Set getIds()
+    {
+        return idMap.keySet();
+    }
+
+    /**
      * Removes all Objects from this Set.
      */
     public void clear()
     {
         nameMap.clear();
+        idMap.clear();
     }
 
     /**
@@ -146,12 +164,20 @@ public abstract class SecuritySet
      */
     public boolean containsName(String name)
     {
-        if (name == null)
-        {
-            return false;
-        }
+        return (StringUtils.isNotEmpty(name)) ? nameMap.containsKey(name) : false;
+    }
 
-        return nameMap.containsKey(name);
+    /**
+     * Searches if an Object with a given Id is in the
+     * Set
+     *
+     * @param id Id of the Security Object.
+     * @return True if argument matched an Object in this Set; false
+     * if no match.
+     */
+    public boolean containsId(int id)
+    {
+        return (id == 0) ? false:  idMap.containsKey(new Integer(id));
     }
 
     /**

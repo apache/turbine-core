@@ -109,6 +109,7 @@ public class GroupSet
     {
         boolean res = contains(group);
         nameMap.put(group.getName(), group);
+        idMap.put(group.getIdAsObj(), group);
         return res;
     }
 
@@ -161,6 +162,7 @@ public class GroupSet
     {
         boolean res = contains(group);
         nameMap.remove(group.getName());
+        idMap.remove(group.getIdAsObj());
         return res;
     }
 
@@ -186,8 +188,35 @@ public class GroupSet
      */
     public Group getGroup(String groupName)
     {
+        return getGroupByName(groupName);
+    }
+
+    /**
+     * Returns a Group with the given name, if it is contained in
+     * this GroupSet.
+     *
+     * @param groupName Name of Group.
+     * @return Group if argument matched a Group in this
+     * GroupSet; null if no match.
+     */
+    public Group getGroupByName(String groupName)
+    {
         return (StringUtils.isNotEmpty(groupName))
                 ? (Group) nameMap.get(groupName) : null;
+    }
+
+    /**
+     * Returns a Group with the given id, if it is contained in
+     * this GroupSet.
+     *
+     * @param groupId Id of the group
+     * @return Group if argument matched a Group in this
+     * GroupSet; null if no match.
+     */
+    public Group getGroupById(int groupId)
+    {
+        return (groupId != 0)
+                ? (Group) idMap.get(new Integer(groupId)) : null;
     }
 
     /**
@@ -216,6 +245,8 @@ public class GroupSet
             Group g = (Group) it.next();
             sb.append('[');
             sb.append(g.getName());
+            sb.append(" -> ");
+            sb.append(g.getIdAsObj());
             sb.append(']');
             if (it.hasNext())
             {

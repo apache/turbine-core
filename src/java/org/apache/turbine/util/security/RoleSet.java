@@ -109,6 +109,7 @@ public class RoleSet
     {
         boolean res = contains(role);
         nameMap.put(role.getName(), role);
+        idMap.put(role.getIdAsObj(), role);
         return res;
     }
 
@@ -161,6 +162,7 @@ public class RoleSet
     {
         boolean res = contains(role);
         nameMap.remove(role.getName());
+        idMap.remove(role.getIdAsObj());
         return res;
     }
 
@@ -186,8 +188,35 @@ public class RoleSet
      */
     public Role getRole(String roleName)
     {
+        return getRoleByName(roleName);
+    }
+
+    /**
+     * Returns a Role with the given name, if it is contained in
+     * this RoleSet.
+     *
+     * @param roleName Name of Role.
+     * @return Role if argument matched a Role in this
+     * RoleSet; null if no match.
+     */
+    public Role getRoleByName(String roleName)
+    {
         return (StringUtils.isNotEmpty(roleName))
                 ? (Role) nameMap.get(roleName) : null;
+    }
+
+    /**
+     * Returns a Role with the given id, if it is contained in this
+     * RoleSet.
+     *
+     * @param roleId id of the Role.
+     * @return Role if argument matched a Role in this RoleSet; null
+     * if no match.
+     */
+    public Role getRoleById(int roleId)
+    {
+        return (roleId != 0) 
+                ? (Role) idMap.get(new Integer(roleId)) : null;
     }
 
     /**
@@ -216,6 +245,8 @@ public class RoleSet
             Role r = (Role) it.next();
             sb.append('[');
             sb.append(r.getName());
+            sb.append(" -> ");
+            sb.append(r.getIdAsObj());
             sb.append(']');
             if (it.hasNext())
             {

@@ -731,5 +731,4 @@ public class TurbineUser extends SecurityObject implements User
     {
         setPerm(User.USERNAME, name);
     }
-
 }

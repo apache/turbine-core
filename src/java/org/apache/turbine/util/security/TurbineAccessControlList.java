@@ -238,8 +238,8 @@ public class TurbineAccessControlList
     {
         try
         {
-            return hasRole(TurbineSecurity.getRole(role),
-                    TurbineSecurity.getGroup(group));
+            return hasRole(TurbineSecurity.getRoleByName(role),
+                    TurbineSecurity.getGroupByName(group));
         }
         catch (Exception e)
         {
@@ -261,7 +261,7 @@ public class TurbineAccessControlList
         Role role;
         try
         {
-            role = TurbineSecurity.getRole(rolename);
+            role = TurbineSecurity.getRoleByName(rolename);
         }
         catch (TurbineSecurityException e)
         {
@@ -307,7 +307,7 @@ public class TurbineAccessControlList
     {
         try
         {
-            return hasRole(TurbineSecurity.getRole(role));
+            return hasRole(TurbineSecurity.getRoleByName(role));
         }
         catch (Exception e)
         {
@@ -373,8 +373,8 @@ public class TurbineAccessControlList
     {
         try
         {
-            return hasPermission(TurbineSecurity.getPermission(permission),
-                    TurbineSecurity.getGroup(group));
+            return hasPermission(TurbineSecurity.getPermissionByName(permission),
+                    TurbineSecurity.getGroupByName(group));
         }
         catch (Exception e)
         {
@@ -394,7 +394,7 @@ public class TurbineAccessControlList
         try
         {
             return hasPermission(
-                    TurbineSecurity.getPermission(permission), group);
+                    TurbineSecurity.getPermissionByName(permission), group);
         }
         catch (Exception e)
         {
@@ -416,7 +416,7 @@ public class TurbineAccessControlList
         Permission permission;
         try
         {
-            permission = TurbineSecurity.getPermission(permissionName);
+            permission = TurbineSecurity.getPermissionByName(permissionName);
         }
         catch (TurbineSecurityException e)
         {
@@ -462,7 +462,7 @@ public class TurbineAccessControlList
     {
         try
         {
-            return hasPermission(TurbineSecurity.getPermission(permission));
+            return hasPermission(TurbineSecurity.getPermissionByName(permission));
         }
         catch (Exception e)
         {

@@ -110,6 +110,7 @@ public class PermissionSet
     {
         boolean res = contains(permission);
         nameMap.put(permission.getName(), permission);
+        idMap.put(permission.getIdAsObj(), permission);
         return res;
     }
 
@@ -163,6 +164,7 @@ public class PermissionSet
     {
         boolean res = contains(permission);
         nameMap.remove(permission.getName());
+        idMap.remove(permission.getIdAsObj());
         return res;
     }
 
@@ -188,8 +190,35 @@ public class PermissionSet
      */
     public Permission getPermission(String permissionName)
     {
+        return getPermissionByName(permissionName);
+    }
+
+    /**
+     * Returns a Permission with the given name, if it is contained in
+     * this PermissionSet.
+     *
+     * @param permissionName Name of Permission.
+     * @return Permission if argument matched a Permission in this
+     * PermissionSet; null if no match.
+     */
+    public Permission getPermissionByName(String permissionName)
+    {
         return (StringUtils.isNotEmpty(permissionName))
                 ? (Permission) nameMap.get(permissionName) : null;
+    }
+
+    /**
+     * Returns a Permission with the given id, if it is contained in
+     * this PermissionSet.
+     *
+     * @param permissionId Id of the Permission.
+     * @return Permission if argument matched a Permission in this
+     * PermissionSet; null if no match.
+     */
+    public Permission getPermissionById(int permissionId)
+    {
+        return (permissionId != 0) 
+                ? (Permission) idMap.get(new Integer(permissionId)) : null;
     }
 
     /**
@@ -218,6 +247,8 @@ public class PermissionSet
             Permission p = (Permission) it.next();
             sb.append('[');
             sb.append(p.getName());
+            sb.append(" -> ");
+            sb.append(p.getIdAsObj());
             sb.append(']');
             if (it.hasNext())
             {

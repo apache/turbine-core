@@ -81,4 +81,26 @@ public interface SecurityEntity
      * @param name Name of the SecurityEntity.
      */
     void setName(String name);
+
+    /**
+     * Get the Id of the SecurityEntity.
+     *
+     * @return The Id of the SecurityEntity.
+     */
+    int getId();
+
+    /**
+     * Get the Id of the SecurityEntity as an
+     * Integer object.
+     *
+     * @return The Id of the SecurityEntity.
+     */
+    Integer getIdAsObj();
+
+    /**
+     * Sets the Id of the SecurityEntity.
+     *
+     * @param id The new Id of the SecurityEntity
+     */
+    void setId(int id);
 }
