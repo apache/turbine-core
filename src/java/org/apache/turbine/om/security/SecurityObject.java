@@ -74,6 +74,9 @@ public abstract class SecurityObject extends BaseObject implements Comparable
     /** The name of this object. */
     private String name;
 
+    /** The id of this object */
+    private int id;
+
     /** The attributes of this object. */
     private Map attributes;
 
@@ -90,9 +93,10 @@ public abstract class SecurityObject extends BaseObject implements Comparable
      *
      * @param name The name of the new object.
      */
-    public SecurityObject( String name )
+    public SecurityObject(String name)
     {
         setName(name);
+        setId(0);
         setAttributes(Collections.synchronizedMap(new HashMap()));
     }
 
@@ -111,7 +115,7 @@ public abstract class SecurityObject extends BaseObject implements Comparable
      *
      * @param attributes The new attributes of the object.
      */
-    public void setAttributes( Map attributes )
+    public void setAttributes(Map attributes)
     {
         this.attributes = attributes;
     }
@@ -122,7 +126,7 @@ public abstract class SecurityObject extends BaseObject implements Comparable
      * @param name the name of the attribute
      * @return the value of the attribute
      */
-    public Object getAttribute( String name )
+    public Object getAttribute(String name)
     {
         return attributes.get(name);
     }
@@ -133,7 +137,7 @@ public abstract class SecurityObject extends BaseObject implements Comparable
      * @param name the name of the attribute
      * @param value the value of the attribute
      */
-    public void setAttribute( String name, Object value )
+    public void setAttribute(String name, Object value)
     {
         attributes.put(name, value);
     }
@@ -156,6 +160,42 @@ public abstract class SecurityObject extends BaseObject implements Comparable
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    /**
+     * Unused. There is an ID column in the 
+     * database scheme but it doesn't seem
+     * to be used.
+     *
+     * @return 0
+     */
+    public int getId()
+    {
+        return id;
+    }
+            
+    /**
+     * Unused. There is an ID column in the 
+     * database scheme but it doesn't seem
+     * to be used.
+     *
+     * @return null
+     */
+    public Integer getIdAsObj()
+    {
+        return new Integer(id);
+    }
+
+    /**
+     * Unused. There is an ID column in the 
+     * database scheme but it doesn't seem
+     * to be used.
+     *
+     * @param id The id of the User.
+     */
+    public void setId(int id)
+    {
+        this.id = id;
     }
 
     /**
