@@ -59,16 +59,13 @@ import java.util.Map;
 
 import javax.servlet.ServletConfig;
 
-import org.apache.avalon.framework.component.ComponentException;
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.fulcrum.crypto.CryptoAlgorithm;
+import org.apache.fulcrum.crypto.CryptoService;
 import org.apache.torque.util.Criteria;
-
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
@@ -77,8 +74,6 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
-import org.apache.fulcrum.crypto.CryptoAlgorithm;
-import org.apache.fulcrum.crypto.CryptoService;
 import org.apache.turbine.services.factory.FactoryService;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.DataBackendException;

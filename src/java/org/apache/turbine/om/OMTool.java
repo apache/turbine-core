@@ -57,7 +57,6 @@ package org.apache.turbine.om;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.turbine.Turbine;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.pool.Recyclable;
 

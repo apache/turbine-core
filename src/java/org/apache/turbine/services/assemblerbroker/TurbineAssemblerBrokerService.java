@@ -114,7 +114,7 @@ public class TurbineAssemblerBrokerService
     private void registerFactories(String type)
         throws TurbineException
     {
-        List names = getConfiguration().getVector(type);
+        List names = getConfiguration().getList(type);
 
         log.info("Registering " + names.size() + " " + type + " factories.");
 

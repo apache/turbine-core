@@ -59,7 +59,6 @@ import java.util.Vector;
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.test.BaseTestCase;

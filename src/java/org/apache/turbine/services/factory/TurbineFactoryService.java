@@ -57,14 +57,12 @@ package org.apache.turbine.services.factory;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.TurbineException;
@@ -148,7 +146,7 @@ public class TurbineFactoryService
         Configuration conf = getConfiguration();
         if (conf != null)
         {
-            Vector loaders = conf.getVector(CLASS_LOADERS);
+            List loaders = conf.getList(CLASS_LOADERS);
             if (loaders != null)
             {
                 for (int i = 0; i < loaders.size(); i++)

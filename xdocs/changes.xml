@@ -163,6 +163,11 @@ Changes between Turbine 2.3 and 2.4.
 <p>
   <ul>
   	<li>
+  	  Updated to use Stratum b5 which properly supports the upcoming 1.0 release of 
+  	  Commons Configuration.  Also removed uses of getVector which has been removed 
+  	  from the Configuration API.
+  	</li>  
+  	<li>
   	  Backported the Pipeline from Turbine 3 to Turbine 2.4.  The pipeline allows
   	  you to define via an XML file all the stages for processing a request.  This
   	  makes it simple to add your own custom steps to be applied to each HTTP
