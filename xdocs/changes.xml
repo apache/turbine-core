@@ -17,15 +17,34 @@
 Changes between Turbine 2.1 and 2.2b1.
 </p>
 
+<p>
+Torque and Fulcrum (the service framework) have been decoupled in preparation
+for Turbine 3.0. The decoupled versions can be used with Turbine 2.2.
+We strongly recommend to use the decoupled versions (some of the 'old' services
+must be used, because they are used internally by Turbine)
+</p>
+
+<p>
+The following services could (and should) be replaced by the Fulcrum versions:
+<ul>
+  <li>XmlRpcService</li>
+</ul>
+</p>
+
+<p>
+If you wrote your own services you should also change them to be Fulcrum
+services to make them work with Turbine 3.x
+</p>
+
 <subsection name="Changes that could break older environments">
 
 <p>
   <ul>
     <li>
-      The Service interface was extended to allow integration of Service 
+      The Service interface was extended to allow integration of Service
       implementations: <br/>
       <b>Service.getName()</b> <br/>
-      since most Service implementations extend BaseService 
+      since most Service implementations extend BaseService
       (which implements a public getName method), this should not be an issue.
     </li>
   </ul>
@@ -39,11 +58,11 @@ Changes between Turbine 2.1 and 2.2b1.
 <p>
   <ul>
     <li>
-      <b>ECS, Freemarker and Webmacro</b> services/modules are marked 
+      <b>ECS, Freemarker and Webmacro</b> services/modules are marked
       <b>deprecated</b>. You should use Velocity instead.
     </li>
     <li>
-      <b>Castor</b> service is marked as <b>deprecated</b>. You should use 
+      <b>Castor</b> service is marked as <b>deprecated</b>. You should use
       om/peer classes instead!
     </li>
     <li>
@@ -60,7 +79,7 @@ Changes between Turbine 2.1 and 2.2b1.
     </li>
     <li>
       Added a configuration parameter to torque, addTimeStamp, that allows the
-      user to generate files without a timestamp. Default is true, timestamps 
+      user to generate files without a timestamp. Default is true, timestamps
       will be generated.
     </li>
     <li>
@@ -70,7 +89,7 @@ Changes between Turbine 2.1 and 2.2b1.
       DB implements Serializable
     </li>
     <li>
-      torque: id-methods <i>sequence</i> and <i>autoincrement</i> are 
+      torque: id-methods <i>sequence</i> and <i>autoincrement</i> are
       <b>deprecated</b>. You should use <b>native</b>. torque uses the method
       provided by your database
     </li>
@@ -81,7 +100,7 @@ Changes between Turbine 2.1 and 2.2b1.
       added getDateString() method to format date fields to DB.
     </li>
     <li>
-      added VelocityDirectLayout/Screen to make it possible to embed 
+      added VelocityDirectLayout/Screen to make it possible to embed
       servlet/JSP outputs into a Velocity template used within Turbine.
       (patch by raphael.luta@networks.groupvu.com)
     </li>
@@ -121,7 +140,7 @@ Changes between Turbine 2.1 and 2.2b1.
       fixed syntax for create index (postgresql)
     </li>
     <li>
-      fixed problem for postgres with blob style column in TurbineUser table.  
+      fixed problem for postgres with blob style column in TurbineUser table.
       (patch by Jerome Veryleyen)
     </li>
     <li>
@@ -140,7 +159,7 @@ Changes between Turbine 2.1 and 2.2b1.
       fixed problem when ignoreCase was used with ISNULL or ISNOTNULL.
     </li>
     <li>
-      fixed Option object initialisation in SelectorBox 
+      fixed Option object initialisation in SelectorBox
       (patch by Kurt Grafius kurtg@jvoom.com)
     </li>
   </ul>
