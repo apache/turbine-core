@@ -119,7 +119,7 @@ public class DataURI
     /**
      * Constructor, set explicit redirection
      *
-     * @param data A ServerData object
+     * @param serverData A ServerData object
      * @param redirect True if redirection allowed.
      */
     public DataURI(ServerData serverData, boolean redirect)
