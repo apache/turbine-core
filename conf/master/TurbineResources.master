@@ -170,11 +170,15 @@ screen.invalidstate=@SCREEN_INVALID_STATE@
 
 default.doctype=Html40Transitional
 
-# This is the default action to log a user in.
+# This is the default action to log a user in.  If you write your own 
+# implementation of the login action, make sure that you change this 
+# to reflect the new name.  
 
 action.login=@ACTION_LOGIN@
 
-# This is the default action to log a user out.
+# This is the default action to log a user out. If you write your own 
+# implementation of the logout action, make sure that you change this 
+# to reflect the new name.  
 
 action.logout=@ACTION_LOGOUT@
 
@@ -486,6 +490,10 @@ services.VelocityService.default.layout.template = Default.vm
 services.VelocityService.runtime.log=/logs/velocity.log
 #services.VelocityService.input.encoding=UTF-8
 services.VelocityService.velocimacro.library = GlobalMacros.vm
+
+# Set the following line to true to cause velocity to automatically reload
+# library macro files if they change.  This is useful for debugging.
+services.VelocityService.velocimacro.library.autoreload = false
 
 services.VelocityService.resource.loader = file
 services.VelocityService.file.resource.loader.description = Velocity File Resource Loader
@@ -921,9 +929,22 @@ services.XSLTService.cache = false
 
 # The location of the xml file specifying valid inputs
 #
-# Example: org.foo.bar.MyClassLoader, org.ack.joe.YourClassLoader
+# If you need to define multiple definition files, you can should 
+# seperate them with commas.
+#
+# Default: WEB-INF/conf/intake.xml
 #
 services.IntakeService.xml.path=WEB-INF/conf/intake.xml
+
+# This file is used to cache the XML definitions after they are 
+# parsed.  It provides for a small performance gain on startup.
+#
+# Note: Even if you have multiple XML definition files, you will
+# only need one serialization file!
+#
+# Default: WEB-INF/appData.ser
+#
+services.IntakeService.serialize.path=WEB-INF/appData.ser
 
 #--------------------------------------------------------------------
 #
