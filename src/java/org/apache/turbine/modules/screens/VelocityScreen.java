@@ -54,8 +54,6 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.lang.exception.ExceptionUtils;

@@ -1,10 +1,5 @@
 package org.apache.turbine.modules;
 
-import java.util.Map;
-
-import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.RunData;
-
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -59,6 +54,9 @@ import org.apache.turbine.util.RunData;
  * <http://www.apache.org/>.
  */
 
+
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.util.RunData;
 /**
  * This is an interface that defines what an Assembler is. All the
  * current modules extend off of this class. It is currently empty and
