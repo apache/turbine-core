@@ -305,6 +305,17 @@
   <!--                                                                          -->
   <!-- ======================================================================== -->
   <goal name="turbine:webapp"
+        prereqs="turbine:war">
+    <ant:echo>
+*********************************************************************************
+***                                                                           ***   
+*** turbine:webapp is deprecated and will be removed. Please use turbine:war! ***
+***                                                                           ***   
+*********************************************************************************
+    </ant:echo>
+  </goal>
+
+  <goal name="turbine:war"
     description="Generate a Turbine based Web application (war)"
     prereqs="turbine:check-runtime-environment,java:compile, war:webapp">
 
