@@ -251,8 +251,14 @@ public class TurbineTemplateService
     /** Represents Screen Template Objects */
     public static final String SCREEN_TEMPLATE_NAME = "screen.template";
 
+    /** Represents Navigation Template Objects */
+    public static final int NAVIGATION_TEMPLATE_KEY = 6;
+
+    /** Represents Navigation Template Objects */
+    public static final String NAVIGATION_TEMPLATE_NAME = "navigation.template";
+
     /** Number of different Template Types that we know of */
-    public static final int TEMPLATE_TYPES = 6;
+    public static final int TEMPLATE_TYPES = 7;
 
     /** Here we register the mapper objects for our various object types */
     private TemplateMapper [] mapperRegistry = null;
@@ -606,6 +612,21 @@ public class TurbineTemplateService
     }
 
     /**
+     * Locate and return the name of the navigation template corresponding
+     * to the given template name parameter. This might return null if
+     * the navigation is not found!
+     *
+     * @param template The template name parameter.
+     * @return The found navigation template name.
+     * @exception Exception, a generic exception.
+     */
+    public String getNavigationTemplateName(String template)
+        throws Exception
+    {
+        return ((TemplateMapper) mapperRegistry[NAVIGATION_TEMPLATE_KEY]).getMappedName(template);
+    }
+
+    /**
      * Translates the supplied template paths into their Turbine-canonical
      * equivalent (probably absolute paths). This is used if the templating
      * engine (e.g. JSP) does not provide any means to load a page but 
@@ -707,7 +728,7 @@ public class TurbineTemplateService
 
         String [] mapperNames = new String [] {
             PAGE_NAME,SCREEN_NAME, LAYOUT_NAME,
-            NAVIGATION_NAME, LAYOUT_TEMPLATE_NAME, SCREEN_TEMPLATE_NAME
+            NAVIGATION_NAME, LAYOUT_TEMPLATE_NAME, SCREEN_TEMPLATE_NAME, NAVIGATION_TEMPLATE_NAME
         };
 
         String [] mapperClasses = new String [] {
@@ -716,6 +737,7 @@ public class TurbineTemplateService
             TemplateClassMapper.class.getName(),
             TemplateClassMapper.class.getName(),
             TemplateLayoutMapper.class.getName(),
+            TemplateScreenMapper.class.getName(),
             TemplateScreenMapper.class.getName()
         };
 
@@ -735,7 +757,10 @@ public class TurbineTemplateService
                     TurbineConstants.LAYOUT_CACHE_SIZE_DEFAULT),
             conf.getInt(
                     TurbineConstants.SCREEN_CACHE_SIZE_KEY,
-                    TurbineConstants.SCREEN_CACHE_SIZE_DEFAULT)
+                    TurbineConstants.SCREEN_CACHE_SIZE_DEFAULT),
+            conf.getInt(
+                    TurbineConstants.NAVIGATION_CACHE_SIZE_KEY,
+                    TurbineConstants.NAVIGATION_CACHE_SIZE_DEFAULT)
         };
 
         String [] mapperDefaultProperty = new String [] {
@@ -744,22 +769,24 @@ public class TurbineTemplateService
             TemplateEngineService.DEFAULT_LAYOUT,
             TemplateEngineService.DEFAULT_NAVIGATION,
             TemplateEngineService.DEFAULT_LAYOUT_TEMPLATE,
-            TemplateEngineService.DEFAULT_SCREEN_TEMPLATE
+            TemplateEngineService.DEFAULT_SCREEN_TEMPLATE,
+            TemplateEngineService.DEFAULT_NAVIGATION_TEMPLATE
         };
 
-        char [] mapperSeparator = new char [] { '.', '.', '.', '.', '/', '/' };
+        char [] mapperSeparator = new char [] { '.', '.', '.', '.', '/', '/', '/' };
 
         Loader [] mapperLoader = new Loader [] { 
             null,
             ScreenLoader.getInstance(),
             LayoutLoader.getInstance(),
             NavigationLoader.getInstance(),
-            null, null, };
+            null, null, null};
 
         String [] mapperPrefix = new String [] { 
             null, null, null, null,
             TurbineConstants.LAYOUT_PREFIX,
-            TurbineConstants.SCREEN_PREFIX };
+            TurbineConstants.SCREEN_PREFIX,
+            TurbineConstants.NAVIGATION_PREFIX  };
 
         for (int i = 0; i < TEMPLATE_TYPES; i++)
         {

@@ -296,6 +296,17 @@ public interface TemplateService
             throws Exception;
 
     /**
+     * Locate and return the name of the navigation template corresponding
+     * to the given template name parameter.
+     *
+     * @param template The template name parameter.
+     * @return The found navigation template name.
+     * @exception Exception, a generic exception.
+     */
+    String getNavigationTemplateName(String template)
+            throws Exception;
+
+    /**
      * Translates the supplied template paths into their Turbine-canonical
      * equivalent (probably absolute paths).
      *
