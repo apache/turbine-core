@@ -80,7 +80,7 @@ public class AuthenticatedFileHandler
 
             if (method.equals("remove"))
             {
-                this.remove((String) params.elementAt(0),
+                AuthenticatedFileHandler.remove((String) params.elementAt(0),
                         (String) params.elementAt(1));
                 obj = new Boolean("true");
             }

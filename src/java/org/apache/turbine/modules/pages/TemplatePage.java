@@ -16,10 +16,7 @@ package org.apache.turbine.modules.pages;
  * limitations under the License.
  */
 
-import org.apache.commons.logging.Log;
-
 import org.apache.turbine.services.template.TurbineTemplate;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 

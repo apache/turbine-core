@@ -16,8 +16,6 @@ package org.apache.turbine.modules.screens;
  * limitations under the License.
  */
 
-import org.apache.commons.logging.Log;
-
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.ecs.ConcreteElement;

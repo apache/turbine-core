@@ -628,7 +628,7 @@ public class TimeSelector
         if (this.showSeconds == true)
             ec.addElement(":");
         ec.addElement(secondSelect);
-        if (this.timeFormat == this.TWELVE_HOUR)
+        if (this.timeFormat == TimeSelector.TWELVE_HOUR)
         {
             ec.addElement(ampmSelect);
         }
