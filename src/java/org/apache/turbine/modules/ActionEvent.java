@@ -66,7 +66,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.parser.ParserUtils;
 
