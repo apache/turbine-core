@@ -12,6 +12,7 @@
   xmlns:j="jelly:core"
   xmlns:u="jelly:util"
   xmlns:ant="jelly:ant"
+  xmlns:maven="jelly:maven"
   xmlns:define="jelly:define"
   xmlns:meta="http://jakarta.apache.org/turbine/meta/taglib"
 >
@@ -312,6 +313,25 @@
     description="Deploys the Application into a local web container for testing"
     prereqs="turbine:init, turbine:check-runtime-environment">
 
+    <j:if test="${context.getVariable('turbine.plugin.mode').equalsIgnoreCase('inplace')}">
+      <maven:makeAbsolutePath var="absPath" basedir="${basedir}" path="${turbine.plugin.base.dir}" trim="true" />
+        <fail>
+--------------------------------------------------------------------------
+| Inplace Mode cannot be deployed                                        |
+--------------------------------------------------------------------------
+
+ An inplace application cannot be deployed. Instead you should modify
+ your web container to serve an application located at
+ 
+ ${absPath}
+
+--------------------------------------------------------------------------
+        </fail>
+
+    </j:if>
+
+    
+
     <echo>Located Application Server at ${maven.appserver.home} (${maven.appserver.name})</echo>
 
     <attainGoal name="jar:jar"/>
@@ -320,12 +340,6 @@
 
     <j:set var="turbine.target.dir" 
              value="${maven.appserver.home}/webapps/${pom.name}" />
-
-    <!-- FIXME -->
-    <j:if test="${context.getVariable('turbine.plugin.mode').equalsIgnoreCase('inplace')}">
-      <j:set var="turbine.target.dir" value="${turbine.plugin.inplace.dir}"/>
-    </j:if>
-    <!-- FIXME -->
 
     <echo>Installing to Appserver Directory: ${turbine.target.dir}, Inplace: ${turbine.plugin.mode}</echo>
 
