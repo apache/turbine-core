@@ -850,6 +850,41 @@ john mcnally
 
   </section>
 
+  <section name="Default Values for fields">
+
+<p>
+If you want to use input fields which should default to non-empty values,
+you can use the defaultValue field:
+</p>
+
+<source><![CDATA[
+<group name="test" key="test">
+    <field name="Value" key="val" type="String" defaultValue="preset">
+    </field>
+</group>
+]]></source>
+
+If you set up a form like this:
+
+<source><![CDATA[
+#if($!dz)
+#set ($frm = $intake.test.mapTo($t))
+$frm.Mode.
+#else
+#set ($frm = $intake.test.default )
+#end
+
+<FORM NAME="entryForm">
+<INPUT type="text" name="$frm.get("val").Key" value="$!frm.get("val")">
+</FORM>
+]]></source>
+
+<p>
+then you can either map your form to the fields of the $t object or to the default values, which, for
+the val Field is the string 'preset'.
+</p>
+
+</section>
 
  </body>
 

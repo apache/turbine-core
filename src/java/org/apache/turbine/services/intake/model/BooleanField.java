@@ -57,6 +57,7 @@ package org.apache.turbine.services.intake.model;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.ParameterParser;
+import org.apache.turbine.util.Log;
 
 /**
  * Base class for Intake generated input processing classes.
@@ -70,6 +71,25 @@ public class BooleanField extends Field
         throws Exception
     {
         super(field, group);
+    }
+
+    /**
+     * Sets the default value for an FileItemField
+     */
+    
+    protected void setDefaultValue(String prop)
+    {
+        if(prop == null)
+            return;
+
+        try
+        {
+            defaultValue = new Boolean(prop);
+        } 
+        catch(RuntimeException e) 
+        {
+            Log.error("Could not convert "+prop+" into a Boolean. ("+name+")");
+        }
     }
 
     /**
@@ -104,11 +124,3 @@ public class BooleanField extends Field
         return result;
     }
 }
-
-
-
-
-
-
-
-

@@ -74,6 +74,15 @@ public class ComboKeyField extends Field
     }
 
     /**
+     * Sets the default value for an ComboKeyField
+     */
+    
+    protected void setDefaultValue(String prop)
+    {
+        defaultValue = prop;
+    }
+
+    /**
      * converts the parameter to the correct Object.
      */
     protected void doSetValue(ParameterParser pp)

@@ -68,6 +68,14 @@ public class StringKeyField extends Field
 
     }
 
+    /**
+     * Sets the default value for an StringKeyField
+     */
+    
+    protected void setDefaultValue(String prop)
+    {
+        defaultValue = new StringKey(prop);
+    }
 
     /**
      * A suitable validator.

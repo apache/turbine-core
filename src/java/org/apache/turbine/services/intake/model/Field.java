@@ -94,6 +94,7 @@ public abstract class Field
     protected final Group group;
     protected boolean alwaysRequired;
     protected Object onError;
+    protected Object defaultValue;
 
     // these are reset when the Field is returned to the pool
     protected boolean set_flag;
@@ -126,6 +127,7 @@ public abstract class Field
         name = field.getName();
         displayName = field.getDisplayName();
         isMultiValued  = field.isMultiValued();
+        setDefaultValue(field.getDefaultValue());
         String className = field.getValidator();
         if ( className == null && field.getRules().size() > 0 )
         {
@@ -395,15 +397,15 @@ public abstract class Field
      */
     public void setMessage(String message)
     {
-         this.message = message;
-         valid_flag = false;
+        this.message = message;
+        valid_flag = false;
     }
 
     /**
      * Compares request data with constraints and sets the valid flag.
      */
     protected boolean validate(ParameterParser pp)
-    //    throws TurbineException
+        //    throws TurbineException
     {
         if ( isMultiValued  )
         {
@@ -475,6 +477,10 @@ public abstract class Field
      */
     protected abstract void doSetValue(ParameterParser pp);
 
+    /**
+     * Set the default Value
+     */
+    protected abstract void setDefaultValue(String prop);
 
 
     /**
@@ -505,6 +511,10 @@ public abstract class Field
             if ( retrievable != null )
             {
                 getProperty(retrievable);
+            }
+            else
+            {
+                getDefault();
             }
         }
         return validValue;
@@ -592,18 +602,27 @@ public abstract class Field
     }
 
     /**
+     * Loads the default value from the object
+     */
+
+    public void getDefault()
+    {
+        validValue = getDefaultValue();
+    }
+
+    /**
      * Calls a setter method on obj, if this field has been set.
      * @exception throws a TurbineException if called and the input
      * was not valid.
      */
     public void setProperty(Object obj)
-    // public void setProperty($appData.BasePackage$field.MapToObject obj)
+        // public void setProperty($appData.BasePackage$field.MapToObject obj)
         throws TurbineException
     {
         if (!isValid())
         {
             throw new TurbineException(
-                "Attempted to assign an invalid input.");
+                                       "Attempted to assign an invalid input.");
         }
         if (isSet())
         {
@@ -615,9 +634,17 @@ public abstract class Field
             catch ( Exception e)
             {
                 throw new TurbineException("An exception prevented the" +
-                    " setting property "+name+" of " + obj + " to " +
+                                           " setting property "+name+" of " + obj + " to " +
                                            valArray[0], e);
             }
         }
+    }
+
+    /**
+     * Get the default Value
+     */
+    public Object getDefaultValue()
+    {
+        return defaultValue;
     }
 }
