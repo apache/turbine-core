@@ -58,8 +58,10 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 import org.apache.turbine.services.Service;
+
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
+
 import org.apache.velocity.context.Context;
 
 /**
@@ -68,12 +70,23 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public interface VelocityService extends Service
+public interface VelocityService
+    extends Service
 {
+    /** The Service Name */
     static final String SERVICE_NAME = "VelocityService";
+
+    /** Key for storing the Context in the RunData object */
     static final String CONTEXT = "VELOCITY_CONTEXT";
+
+    /** The default extension of Velocity Pages */
+    static final String VELOCITY_EXTENSION = "vm";
+
+    /** The Key for storing the RunData Object in the Context */
+    static final String RUNDATA_KEY = "data";
 
     /**
      * Process the request and fill in the template with the values
@@ -85,7 +98,7 @@ public interface VelocityService extends Service
      * @exception Exception, a generic exception.
      */
     String handleRequest(Context context, String template)
-            throws Exception;
+        throws Exception;
 
     /**
      * Process the request and fill in the template with the values
@@ -99,9 +112,9 @@ public interface VelocityService extends Service
      *         wrapped into a TurbineException and rethrown.
      */
     void handleRequest(Context context,
-                       String filename,
-                       OutputStream out)
-            throws TurbineException;
+        String filename,
+        OutputStream out)
+        throws TurbineException;
 
     /**
      * Process the request and fill in the template with the values
@@ -115,9 +128,9 @@ public interface VelocityService extends Service
      *         wrapped into a TurbineException and rethrown.
      */
     void handleRequest(Context context,
-                       String filename,
-                       Writer writer)
-            throws TurbineException;
+        String filename,
+        Writer writer)
+        throws TurbineException;
 
     /**
      * Create an empty WebContext object.
@@ -143,5 +156,4 @@ public interface VelocityService extends Service
      * @param context a Velocity Context
      */
     void requestFinished(Context context);
-
 }
