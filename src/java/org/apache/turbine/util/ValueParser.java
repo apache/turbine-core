@@ -144,8 +144,7 @@ public interface ValueParser
      * @param name A String with the name.
      * @param value A double with the value.
      */
-    void add(String name,
-             double value);
+    void add(String name, double value);
 
     /**
      * Add a name/value pair into this object.
@@ -153,8 +152,7 @@ public interface ValueParser
      * @param name A String with the name.
      * @param value An int with the value.
      */
-    void add(String name,
-             int value);
+    void add(String name, int value);
 
     /**
      * Add a name/value pair into this object.
@@ -162,8 +160,7 @@ public interface ValueParser
      * @param name A String with the name.
      * @param value An Integer with the value.
      */
-    void add(String name,
-             Integer value);
+    void add(String name, Integer value);
 
     /**
      * Add a name/value pair into this object.
@@ -171,8 +168,7 @@ public interface ValueParser
      * @param name A String with the name.
      * @param value A long with the value.
      */
-    void add(String name,
-             long value);
+    void add(String name, long value);
 
     /**
      * Add a name/value pair into this object.
@@ -180,8 +176,7 @@ public interface ValueParser
      * @param name A String with the name.
      * @param value A long with the value.
      */
-    void add(String name,
-             String value);
+    void add(String name, String value);
 
     /**
      * Add a String parameters.  If there are any Strings already
@@ -191,8 +186,7 @@ public interface ValueParser
      * @param name A String with the name.
      * @param value A String with the value.
      */
-    void append(String name,
-                String value);
+    void append(String name, String value);
 
     /**
      * Removes the named parameter from the contained hashtable. Wraps to the
@@ -246,8 +240,7 @@ public interface ValueParser
      * @param defaultValue The default value.
      * @return A boolean.
      */
-    boolean getBoolean(String name,
-                       boolean defaultValue);
+    boolean getBoolean(String name, boolean defaultValue);
 
     /**
      * Return a boolean for the given name.  If the name does not
@@ -266,8 +259,7 @@ public interface ValueParser
      * @param defaultValue The default value.
      * @return A Boolean.
      */
-    Boolean getBool(String name,
-                    boolean defaultValue);
+    Boolean getBool(String name, boolean defaultValue);
 
     /**
      * Return a Boolean for the given name.  If the name does not
@@ -286,8 +278,7 @@ public interface ValueParser
      * @param defaultValue The default value.
      * @return A double.
      */
-    double getDouble(String name,
-                     double defaultValue);
+    double getDouble(String name, double defaultValue);
 
     /**
      * Return a double for the given name.  If the name does not
@@ -306,8 +297,7 @@ public interface ValueParser
      * @param defaultValue The default value.
      * @return A float.
      */
-    float getFloat(String name,
-                   float defaultValue);
+    float getFloat(String name, float defaultValue);
 
     /**
      * Return a float for the given name.  If the name does not
@@ -326,8 +316,7 @@ public interface ValueParser
      * @param defaultValue The default value.
      * @return A BigDecimal.
      */
-    BigDecimal getBigDecimal(String name,
-                             BigDecimal defaultValue);
+    BigDecimal getBigDecimal(String name, BigDecimal defaultValue);
 
     /**
      * Return a BigDecimal for the given name.  If the name does not
@@ -355,8 +344,7 @@ public interface ValueParser
      * @param defaultValue The default value.
      * @return An int.
      */
-    int getInt(String name,
-               int defaultValue);
+    int getInt(String name, int defaultValue);
 
     /**
      * Return an int for the given name.  If the name does not exist,
@@ -375,8 +363,7 @@ public interface ValueParser
      * @param defaultValue The default value.
      * @return An Integer.
      */
-    Integer getInteger(String name,
-                       int defaultValue);
+    Integer getInteger(String name, int defaultValue);
 
     /**
      * Return an Integer for the given name.  If the name does not
@@ -387,8 +374,7 @@ public interface ValueParser
      * @param defaultValue The default value.
      * @return An Integer.
      */
-    Integer getInteger(String name,
-                       Integer def);
+    Integer getInteger(String name, Integer defaultValue);
 
     /**
      * Return an Integer for the given name.  If the name does not
@@ -425,8 +411,7 @@ public interface ValueParser
      * @param defaultValue The default value.
      * @return A long.
      */
-    long getLong(String name,
-                 long defaultValue);
+    long getLong(String name, long defaultValue);
 
     /**
      * Return a long for the given name.  If the name does not exist,
@@ -463,8 +448,7 @@ public interface ValueParser
      * @param defaultValue The default value.
      * @return A byte.
      */
-    byte getByte(String name,
-                 byte defaultValue);
+    byte getByte(String name, byte defaultValue);
 
     /**
      * Return a byte for the given name.  If the name does not exist,
@@ -482,10 +466,9 @@ public interface ValueParser
      *
      * @param name A String with the name.
      * @return A byte[].
-     * @exception UnsupportedEncodingException.
+     * @exception UnsupportedEncodingException
      */
-    byte[] getBytes(String name)
-            throws UnsupportedEncodingException;
+    byte[] getBytes(String name) throws UnsupportedEncodingException;
 
     /**
      * Return a String for the given name.  If the name does not
@@ -518,8 +501,7 @@ public interface ValueParser
      * @param defaultValue The default value.
      * @return A String.
      */
-    String getString(String name,
-                     String defaultValue);
+    String getString(String name, String defaultValue);
 
     /**
      * Set a parameter to a specific value.
@@ -548,8 +530,7 @@ public interface ValueParser
      * @param defaultValue The default value.
      * @return A String[].
      */
-    String[] getStrings(String name,
-                        String[] defaultValue);
+    String[] getStrings(String name, String[] defaultValue);
 
     /**
      * Set a parameter to a specific value.
@@ -589,9 +570,7 @@ public interface ValueParser
      * @param defaultValue The default value.
      * @return A Date.
      */
-    Date getDate(String name,
-                 DateFormat df,
-                 Date defaultValue);
+    Date getDate(String name, DateFormat df, Date defaultValue);
 
     /**
      * Returns a java.util.Date object.  If there are DateSelector
@@ -612,8 +591,7 @@ public interface ValueParser
      * @param df A DateFormat.
      * @return A Date.
      */
-    Date getDate(String name,
-                 DateFormat df);
+    Date getDate(String name, DateFormat df);
 
     /**
      * Return an NumberKey for the given name.  If the name does not
@@ -639,10 +617,9 @@ public interface ValueParser
      * the bean property and the parameter is looked for.
      *
      * @param bean An Object.
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
-    void setProperties(Object bean)
-            throws Exception;
+    void setProperties(Object bean) throws Exception;
 
     /**
      * Simple method that attempts to get a toString() representation
