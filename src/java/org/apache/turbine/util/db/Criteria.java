@@ -1777,8 +1777,7 @@ public class Criteria extends Hashtable
      */
     public Criteria addOrderByColumn( String name )
     {
-        orderByColumns.add( name );
-        return this;
+        return addAscendingOrderByColumn(name);
     }
 
     /**
