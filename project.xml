@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project>
-  
+
   <name>jakarta-turbine-2</name>
   <id>turbine</id>
   <currentVersion>2.2-b2-dev</currentVersion>
@@ -64,6 +64,13 @@
     </developer>
 
     <developer>
+      <name>Martin Poeschl</name>
+      <id>mpoeschl</id>
+      <email>mpoeschl@marmot.at</email>
+      <organization>Zenplex</organization>
+    </developer>
+
+    <developer>
       <name>Daniel Rall</name>
       <id>dlr</id>
       <email>dlr@finemaltcoding.com</email>
@@ -83,7 +90,7 @@
       <email>jason@zenplex.com</email>
       <organization>Zenplex</organization>
     </developer>
-  
+
   </developers>
 
   <!-- Need to mark these as compile-time/run-time -->
@@ -131,7 +138,7 @@
       <version>1.0.1</version>
       <jar>activation-1.0.1.jar</jar>
     </dependency>
-    
+
     <dependency>
       <name>jdbc</name>
       <type>required</type>
@@ -163,15 +170,15 @@
     <dependency>
       <name>jakarta-turbine-stratum</name>
       <type>required</type>
-      <version>0.1</version>
-      <jar>stratum-0.1-dev.jar</jar>
+      <version>1.0-b2-dev</version>
+      <jar>stratum-1.0-b2-dev.jar</jar>
     </dependency>
 
     <dependency>
       <name>jakarta-turbine-torque</name>
       <type>required</type>
-      <version>3.0-dev</version>
-      <jar>torque-3.0-dev.jar</jar>
+      <version>3.0-b2-dev</version>
+      <jar>torque-3.0-b2-dev.jar</jar>
     </dependency>
 
     <dependency>
@@ -295,21 +302,21 @@
     </dependency>
 
   </dependencies>
-  
+
   <build>
-        
+
     <sourceDirectories>
       <sourceDirectory>src/java</sourceDirectory>
-    </sourceDirectories>  
+    </sourceDirectories>
 
     <testSourceDirectories>
       <testSourceDirectory>src/java</testSourceDirectory>
       <testSourceDirectory>src/test</testSourceDirectory>
       <testSourceDirectory>src/rttest</testSourceDirectory>
-    </testSourceDirectories>  
+    </testSourceDirectories>
 
     <aspectSourceDirectories>
-    </aspectSourceDirectories>  
+    </aspectSourceDirectories>
 
     <!-- Unit test classes -->
     <unitTestClassEntries>
@@ -318,7 +325,7 @@
       <unitTestClassEntry>exclude = **/BaseValueParserTest.class</unitTestClassEntry>
       <unitTestClassEntry>exclude = **/FileHandlerTest.class</unitTestClassEntry>
       <unitTestClassEntry>exclude = **/TurbineCacheTest.class</unitTestClassEntry>
-    </unitTestClassEntries>  
+    </unitTestClassEntries>
 
     <!-- Runtime unit test classes -->
     <runtimeTestClassEntries>
@@ -327,15 +334,15 @@
       <runtimeTestClassEntry>include = **/*ServletTest.class</runtimeTestClassEntry>
       <runtimeTestClassEntry>include = **/TurbineCacheTest.class</runtimeTestClassEntry>
       <runtimeTestClassEntry>include = **/BaseValueParserTest.class</runtimeTestClassEntry>
-    </runtimeTestClassEntries>  
+    </runtimeTestClassEntries>
 
     <!-- J A R  R E S O U R C E S -->
     <!-- Resources that are packaged up inside the JAR file -->
-    
+
     <jarResources>
     </jarResources>
 
     <jars>
-    </jars>  
+    </jars>
   </build>
 </project>
