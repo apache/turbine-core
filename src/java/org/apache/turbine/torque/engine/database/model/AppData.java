@@ -68,7 +68,7 @@ import org.xml.sax.Attributes;
  */
 public class AppData
 {
-
+    private String name;
     private List dbList = new ArrayList(5);
 
     /**
@@ -91,7 +91,16 @@ public class AppData
         }
         return dbs;
     }
-
+    
+    public Database getDatabase()
+    {
+        Database[] dbs = getDatabases();
+        return dbs[0];
+    }
+    
+    public void setName(String name) { this.name = name; }
+    public String getName() { return name; }
+    
     /**
      *
      */

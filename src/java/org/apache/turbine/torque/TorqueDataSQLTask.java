@@ -53,42 +53,32 @@ package org.apache.turbine.torque;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-import java.util.Date;
-import java.util.List;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.List;
+import java.util.Properties;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.texen.ant.TexenTask;
-
 import org.apache.turbine.torque.engine.database.model.AppData;
 import org.apache.turbine.torque.engine.database.model.Database;
-import org.apache.turbine.torque.engine.database.transform.XmlToAppData;
 import org.apache.turbine.torque.engine.database.transform.XmlToData;
 
 /**
  *  An extended Texen task used for generating SQL source from
  *  an XML data file
  *
- * @author   <a href="mailto:jvanzyl@periapt.com"> Jason van Zyl </a>
- * @author   <a href="mailto:jmcnally@collab.net"> John McNally </a>
- * @author   <a href="mailto:fedor.karpelevitch@home.com"> Fedor Karpelevitch </a>
- * @version  $Id$
+ * @author <a href="mailto:jvanzyl@periapt.com"> Jason van Zyl </a>
+ * @author <a href="mailto:jmcnally@collab.net"> John McNally </a>
+ * @author <a href="mailto:fedor.karpelevitch@home.com"> Fedor Karpelevitch </a>
+ * @version $Id$
  */
-public class TorqueDataSQLTask extends TexenTask
+public class TorqueDataSQLTask extends 
+    TorqueDataModelTask
 {
-    /**
-     *  Application model. In this case a database model.
-     */
-    private AppData app;
-
-    /**
-     *  XML that describes the database model, this is transformed
-     *  into the application model object.
-     */
-    private String xmlFile;
     private String dataXmlFile;
     private String dataDTD;
-
+    
     /**
      *  The target database(s) we are generating SQL
      *  for. Right now we can only deal with a single
@@ -96,33 +86,6 @@ public class TorqueDataSQLTask extends TexenTask
      *  soon.
      */
     private String targetDatabase;
-
-    private String databaseName;
-
-
-    /**
-     *  Get the xml schema describing the application
-     *  model.
-     *
-     * @return  String xml schema file.
-     */
-    public String getXmlFile()
-    {
-        return xmlFile;
-    }
-
-
-    /**
-     *  Set the xml schema describing the application
-     *  model.
-     *
-     * @param  v The new XmlFile value
-     */
-    public void setXmlFile(String v)
-    {
-        xmlFile = v;
-    }
-
 
     /**
      *  Sets the DataXmlFile attribute of the TorqueDataSQLTask object
@@ -134,7 +97,6 @@ public class TorqueDataSQLTask extends TexenTask
         dataXmlFile = v;
     }
 
-
     /**
      *  Gets the DataXmlFile attribute of the TorqueDataSQLTask object
      *
@@ -145,7 +107,6 @@ public class TorqueDataSQLTask extends TexenTask
         return dataXmlFile;
     }
 
-
     /**
      *  Get the current target database.
      *
@@ -155,7 +116,6 @@ public class TorqueDataSQLTask extends TexenTask
     {
         return targetDatabase;
     }
-
 
     /**
      *  Set the current target database.  This is where
@@ -168,29 +128,6 @@ public class TorqueDataSQLTask extends TexenTask
         targetDatabase = v;
     }
 
-
-    /**
-     *  Gets the DatabaseName attribute of the TorqueDataSQLTask object
-     *
-     * @return  The DatabaseName value
-     */
-    public String getDatabaseName()
-    {
-        return databaseName;
-    }
-
-
-    /**
-     *  Sets the DatabaseName attribute of the TorqueDataSQLTask object
-     *
-     * @param  v The new DatabaseName value
-     */
-    public void setDatabaseName(String v)
-    {
-        databaseName = v;
-    }
-
-
     /**
      *  Gets the DataDTD attribute of the TorqueDataSQLTask object
      *
@@ -201,7 +138,6 @@ public class TorqueDataSQLTask extends TexenTask
         return dataDTD;
     }
 
-
     /**
      *  Sets the DataDTD attribute of the TorqueDataSQLTask object
      *
@@ -211,8 +147,7 @@ public class TorqueDataSQLTask extends TexenTask
     {
         dataDTD = v;
     }
-
-
+    
     /**
      *  Set up the initialial context for generating the
      *  SQL from the XML schema.
@@ -220,24 +155,13 @@ public class TorqueDataSQLTask extends TexenTask
      * @return  Description of the Returned Value
      */
     public Context initControlContext()
+        throws Exception
     {
-        /*
-         * Create a new Velocity context.
-         */
-        Context context = new VelocityContext();
-
-        /*
-         * Transform the XML database schema into an
-         * object that represents our model.
-         */
-        XmlToAppData xmlParser = new XmlToAppData();
-        app = xmlParser.parseFile(xmlFile);
-
-        Database db = app.getDatabase(databaseName);
-        if (db == null)
-        {
-            db = app.getDatabases()[0];
-        }
+        super.initControlContext();
+        
+        AppData app = (AppData) getDataModels().elementAt(0);
+        Database db = app.getDatabase();
+        
         try
         {
             XmlToData dataXmlParser = new XmlToData(db, dataDTD);
@@ -246,19 +170,23 @@ public class TorqueDataSQLTask extends TexenTask
         }
         catch (Exception e)
         {
-            System.err.println("Exception parsing data XML:");
-            e.printStackTrace();
+            throw new Exception("Exception parsing data XML:");
         }
-        /*
-         * Place our model in the context.
-         */
+        
+        // Place our model in the context.
         context.put("appData", app);
 
-        /*
-         * Place the target database in the context.
-         */
+        // Place the target database in the context.
         context.put("targetDatabase", targetDatabase);
-
+        
+        Properties p = new Properties();
+        FileInputStream fis = new FileInputStream(getSqlDbMap());
+        p.load(fis);
+        fis.close();
+        
+        p.setProperty(getOutputFile(), db.getName());
+        p.store(new FileOutputStream(getSqlDbMap()),"Sqlfile -> Database map");
+        
         return context;
     }
 }

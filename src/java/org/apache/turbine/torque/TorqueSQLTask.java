@@ -54,12 +54,13 @@ package org.apache.turbine.torque;
  * <http://www.apache.org/>.
  */
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.Properties;
+import java.util.Iterator;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.texen.ant.TexenTask;
-
-import org.apache.turbine.torque.engine.database.model.AppData;
-import org.apache.turbine.torque.engine.database.transform.XmlToAppData;
 
 /**
  * An extended Texen task used for generating SQL source from
@@ -69,19 +70,9 @@ import org.apache.turbine.torque.engine.database.transform.XmlToAppData;
  * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
  * @version $Id$
  */
-public class TorqueSQLTask extends TexenTask
+public class TorqueSQLTask 
+    extends TorqueDataModelTask
 {
-    /**
-     * Application model. In this case a database model.
-     */
-    private AppData app;
-
-    /**
-     * XML that describes the database model, this is transformed
-     * into the application model object.
-     */
-    private String xmlFile;
-    
     /**
      * The target database(s) we are generating SQL
      * for. Right now we can only deal with a single
@@ -90,27 +81,34 @@ public class TorqueSQLTask extends TexenTask
      */
     private String targetDatabase;
 
-    /**
-     * Get the xml schema describing the application
-     * model.
-     *
-     * @return String xml schema file.
-     */
-    public String getXmlFile ()
-    {
-        return xmlFile;
-    }
+    // if the database is set than all generated sql files
+    // will be placed in the specified database, the database
+    // will not be taken from the data model schema file.
 
-    /**
-     * Set the xml schema describing the application
-     * model.
-     *
-     * @param String xml schema file.
-     */
-    public void setXmlFile(String v)
+    private String database;
+    private String suffix = "";
+    
+    public void setDatabase(String database)
     {
-        xmlFile = v;
+        this.database = database;
     }
+    
+    public String getDatabase()
+    {
+        return database;
+    }        
+
+    public void setSuffix(String suffix)
+    {
+        this.suffix = suffix;
+    }
+    
+    public String getSuffix()
+    {
+        return suffix;
+    }        
+
+
 
     /**
      * Get the current target package.
@@ -132,31 +130,63 @@ public class TorqueSQLTask extends TexenTask
     {
         targetDatabase = v;
     }
-    
+
+    private void createSqlDbMap()
+        throws Exception
+    {
+        if (getSqlDbMap() == null)
+        {
+            return;
+        }        
+        
+        // Produce the sql -> database map
+        Properties sqldbmap = new Properties();
+        
+        // Check to see if the sqldbmap has already been created.
+        File file = new File(getSqlDbMap());
+        
+        if (file.exists())
+        {
+            FileInputStream fis = new FileInputStream(file);
+            sqldbmap.load(fis);
+            fis.close();
+        }
+        
+        Iterator i = getDataModelDbMap().keySet().iterator();
+        
+        while (i.hasNext())
+        {
+            String dataModelName = (String) i.next();
+            String sqlFile = dataModelName + suffix + ".sql";
+            
+            String databaseName;
+            
+            if (getDatabase() == null)
+            {
+                databaseName = (String) getDataModelDbMap().get(dataModelName);
+            }
+            else
+            {   
+                databaseName = getDatabase();
+            }
+            
+            sqldbmap.setProperty(sqlFile,databaseName);
+        }
+        
+        sqldbmap.store(new FileOutputStream(getSqlDbMap()),"Sqlfile -> Database map");
+    }
+
     /**
-     * Set up the initialial context for generating the
-     * SQL from the XML schema.
+     * Place our target database and target platform
+     * values into the context for use in the
+     * templates.
      */
     public Context initControlContext()
-    {
-
-        // Create a new Velocity context.
-        Context context = new VelocityContext();
-        
-        // Transform the XML database schema into an
-        // object that represents our model.
-        XmlToAppData xmlParser = new XmlToAppData();
-        app = xmlParser.parseFile(xmlFile);
-        
-        // Place our model in the context.
-        context.put("appData", app);
-
-        // Place the target database in the context.
+        throws Exception
+    {   
+        super.initControlContext();
         context.put("targetDatabase", targetDatabase);
-        
+        createSqlDbMap();
         return context;
     }
 }
-
-
-
