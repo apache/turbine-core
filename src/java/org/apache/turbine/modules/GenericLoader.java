@@ -75,8 +75,10 @@ public abstract class GenericLoader
 {
     /** @serial This can be serialized */
     private boolean reload = false;
+
     /** @serial This can be serialized */
     private boolean isCaching = true;
+
     /** Base packages path for Turbine */
     private static final String TURBINE_PACKAGE = "org.apache.turbine.modules";
 

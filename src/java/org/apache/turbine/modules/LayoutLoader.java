@@ -56,6 +56,9 @@ package org.apache.turbine.modules;
 
 import java.util.Vector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 
@@ -78,11 +81,19 @@ public class LayoutLoader
     extends GenericLoader
     implements Loader
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(LayoutLoader.class);
+
     /** The single instance of this class. */
     private static LayoutLoader instance = 
         new LayoutLoader(Turbine.getConfiguration()
                          .getInt(TurbineConstants.LAYOUT_CACHE_SIZE_KEY, 
                                  TurbineConstants.LAYOUT_CACHE_SIZE_DEFAULT));
+
+    /** The Assembler Broker Service */
+    private static AssemblerBrokerService ab = 
+        (AssemblerBrokerService) TurbineServices.getInstance()
+        .getService(AssemblerBrokerService.SERVICE_NAME);
 
     /**
      * These ctor's are private to force clients to use getInstance()
@@ -111,7 +122,9 @@ public class LayoutLoader
     private void addInstance(String name, Layout layout)
     {
         if (cache())
+        {
             this.put(name, (Layout) layout);
+        }
     }
 
     /**
@@ -145,10 +158,10 @@ public class LayoutLoader
     }
 
     /**
-     * Pulls out an instance of the object by name.  Name is just the
-     * single name of the object.
+     * Pulls out an instance of the Layout by name.  Name is just the
+     * single name of the Layout.
      *
-     * @param name Name of object instance.
+     * @param name Name of requested Layout
      * @return A Layout with the specified name, or null.
      * @exception Exception a generic exception.
      */
@@ -157,22 +170,24 @@ public class LayoutLoader
     {
         Layout layout = null;
 
+        // Check if the layout is already in the cache
         if (cache() && this.containsKey(name))
         {
             layout = (Layout) this.get(name);
+            log.debug("Found Layout " + name + " in the cache!");
         }
         else
         {
-            // We get the broker service
-            AssemblerBrokerService ab =
-                    (AssemblerBrokerService) TurbineServices.getInstance()
-                    .getService(AssemblerBrokerService.SERVICE_NAME);
+            log.debug("Loading Layout " + name + " from the Assembler Broker");
 
             try
             {
-                // Attempt to load the screen
-                layout = (Layout) ab.getAssembler(
+                if (ab != null)
+                {
+                    // Attempt to load the layout
+                    layout = (Layout) ab.getAssembler(
                         AssemblerBrokerService.LAYOUT_TYPE, name);
+                }
             }
             catch (ClassCastException cce)
             {
@@ -186,8 +201,8 @@ public class LayoutLoader
             {
                 // If we did not find a screen we should try and give
                 // the user a reason for that...
-                // FIX ME: The AssemblerFactories should each add it's own
-                //         string here...
+                // FIX ME: The AssemblerFactories should each add it's
+                // own string here...
                 Vector packages = Turbine.getConfiguration()
                     .getVector(TurbineConstants.MODULE_PACKAGES);
 
@@ -195,9 +210,9 @@ public class LayoutLoader
                         GenericLoader.getBasePackage());
 
                 throw new ClassNotFoundException(
-                        "\n\n\tRequested Layout not found: " + name + "\n" +
-                        "\tTurbine looked in the following modules.packages " +
-                        "path: \n\t" + packages.toString() + "\n");
+                        "\n\n\tRequested Layout not found: " + name +
+                        "\n\tTurbine looked in the following " +
+                        "modules.packages path: \n\t" + packages.toString() + "\n");
             }
             else if (cache())
             {
