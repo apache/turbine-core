@@ -232,7 +232,7 @@ public interface ValueParser
 
     /**
      * Return a boolean for the given name.  If the name does not
-     * exist, return false.
+     * exist, return <code>null</code>.
      *
      * @param name A String with the name.
      * @return A boolean.
@@ -312,7 +312,7 @@ public interface ValueParser
 
     /**
      * Return a BigDecimal for the given name.  If the name does not
-     * exist, return 0.0.
+     * exist, return <code>null</code>.
      *
      * @param name A String with the name.
      * @return A BigDecimal.
@@ -373,7 +373,7 @@ public interface ValueParser
 
     /**
      * Return an Integer for the given name.  If the name does not
-     * exist, return 0.
+     * exist, return <code>null</code>.
      *
      * @param name A String with the name.
      * @return An Integer.

@@ -111,6 +111,7 @@ import org.apache.turbine.util.pool.RecyclableSupport;
  * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  */
 public class BaseValueParser
@@ -457,14 +458,18 @@ public class BaseValueParser
 
     /**
      * Return a Boolean for the given name.  If the name does not
-     * exist, return false.
+     * exist, return <code>null</code>.
      *
      * @param name A String with the name.
      * @return A Boolean.
      */
     public Boolean getBool(String name)
     {
-        return new Boolean(getBoolean(name, false));
+        if (containsKey(name))
+        {
+            return new Boolean(getBoolean(name));
+        }
+        return null;
     }
 
     /**
@@ -572,14 +577,14 @@ public class BaseValueParser
 
     /**
      * Return a BigDecimal for the given name.  If the name does not
-     * exist, return 0.0.
+     * exist, return <code>null</code>.
      *
      * @param name A String with the name.
      * @return A BigDecimal.
      */
     public BigDecimal getBigDecimal(String name)
     {
-        return getBigDecimal(name, new BigDecimal(0.0));
+        return getBigDecimal(name, null);
     }
 
     /**
@@ -670,14 +675,18 @@ public class BaseValueParser
 
     /**
      * Return an Integer for the given name.  If the name does not
-     * exist, return 0.
+     * exist, return <code>null</code>.
      *
      * @param name A String with the name.
      * @return An Integer.
      */
     public Integer getInteger(String name)
     {
-        return new Integer(getInt(name, 0));
+        if (containsKey(name))
+        {
+            return new Integer(getInt(name));
+        }
+        return null;
     }
 
     /**
