@@ -37,6 +37,7 @@ import org.apache.turbine.util.pool.ObjectInputStreamForContext;
  * class loaders. If none is specified, the default one
  * will be used.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
 public class TurbineFactoryService

@@ -24,6 +24,11 @@ import org.apache.commons.configuration.Configuration;
  * <code>Services</code> are <code>Initables</code> that have a name,
  * and a set of properties.
  *
+ * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
+ * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @version $Id$
  */
 public interface Service

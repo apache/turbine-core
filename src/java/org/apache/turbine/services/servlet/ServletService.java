@@ -27,6 +27,9 @@ import org.apache.turbine.services.Service;
  * <p>This interface exposes methods of the runner context in order
  * resolve or get access to external resources</p>
  *
+ * @author <a href="mailto:ekkerbj@netscape.net">Jeff Brekke</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @version $Id$
  */
 public interface ServletService extends Service

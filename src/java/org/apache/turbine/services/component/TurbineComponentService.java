@@ -33,6 +33,7 @@ import org.apache.turbine.services.TurbineBaseService;
  * An implementation of ComponentService which loads all the
  * components given in the TurbineResources.properties File
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  * @deprecated torque is now loaded using the AvalonComponentService
  */

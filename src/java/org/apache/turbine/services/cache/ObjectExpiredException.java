@@ -20,6 +20,7 @@ package org.apache.turbine.services.cache;
  * Exception thrown when an item either does not exist or has expired
  * from the GlobalCache.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
 public class ObjectExpiredException

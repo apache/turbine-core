@@ -26,6 +26,8 @@ import org.w3c.dom.Node;
 /**
  * This is a static accesor class for {@link XSLTService}.
  *
+ * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @version $Id$
  */
 public class TurbineXSLT
 {

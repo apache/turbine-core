@@ -26,6 +26,9 @@ import org.apache.velocity.context.Context;
 /**
  * Extends TemplatePage to set the template Context.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class VelocityPage

@@ -24,6 +24,8 @@ package org.apache.turbine.services;
  * ensures that there is only one instance of the class in the system,
  * and handles dependencies between <code>Initables</code>.
  *
+ * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
+ * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
 public interface Initable

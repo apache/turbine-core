@@ -46,6 +46,8 @@ import org.apache.velocity.context.Context;
  * that is given to the tool, in this case 'ui', can
  * be specified as well.
  *
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface PullService

@@ -37,6 +37,9 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * against a user in the database. If the user exists in the database
  * that users last login time will be updated.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class LoginUser

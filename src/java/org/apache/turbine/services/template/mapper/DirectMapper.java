@@ -24,6 +24,7 @@ import org.apache.turbine.services.template.TemplateService;
  * The most primitive mapper. It is used for the page objects in the
  * Template service. It never caches and simply returns what is given to it.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class DirectMapper

@@ -24,6 +24,7 @@ import org.apache.turbine.services.Service;
  * Implementations of the NamingService interface provide JNDI naming
  * contexts.
  *
+ * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
  * @version $Id$
  */
 public interface NamingService

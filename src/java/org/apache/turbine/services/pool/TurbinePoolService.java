@@ -47,6 +47,8 @@ import org.apache.turbine.util.pool.Recyclable;
  * method will be called, when they taken from the pool, and
  * a dispose method, when they are returned to the pool.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbinePoolService

@@ -40,6 +40,8 @@ import org.apache.turbine.util.RunData;
  * Look at the code for the doBuild() method to get an idea of what is
  * going on there (it is quite simple really).
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class TemplateScreen

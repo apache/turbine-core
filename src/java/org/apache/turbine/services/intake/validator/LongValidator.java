@@ -34,6 +34,8 @@ import org.apache.commons.lang.StringUtils;
  * <td>Entry was not a valid number</td></tr>
  * </table>
  *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
  * @version $Id$
  */
 public class LongValidator

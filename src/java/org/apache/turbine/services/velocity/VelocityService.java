@@ -28,6 +28,10 @@ import org.apache.velocity.context.Context;
 /**
  * Implementations of the VelocityService interface.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface VelocityService

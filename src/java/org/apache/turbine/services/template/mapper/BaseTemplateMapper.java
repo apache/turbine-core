@@ -26,6 +26,7 @@ import org.apache.turbine.services.template.TurbineTemplate;
  * results with the extension of the template names passed or (if no
  * extension is passed), the default extension.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

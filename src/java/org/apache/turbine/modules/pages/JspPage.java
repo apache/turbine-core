@@ -22,6 +22,8 @@ import org.apache.turbine.util.RunData;
 /**
  * Extends TemplatePage to add some convenience objects to the request.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class JspPage

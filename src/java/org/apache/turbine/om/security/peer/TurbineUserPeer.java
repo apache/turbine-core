@@ -44,6 +44,9 @@ import org.apache.turbine.util.security.DataBackendException;
  * This class handles all the database access for the User/User
  * table.  This table contains all the information for a given user.
  *
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
  * @version $Id$
  */
 public class TurbineUserPeer extends BasePeer implements UserPeer

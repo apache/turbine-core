@@ -20,6 +20,7 @@ package org.apache.java.lang;
  * Static methods for managing byte arrays (all methods follow Big
  * Endian order where most significant bits are in front).
  *
+ * @author <a href="mailto:stefano@apache.org">Stefano Mazzocchi</a>
  * @version $Id$
  * @deprecated Use Jakarta Commons
  */

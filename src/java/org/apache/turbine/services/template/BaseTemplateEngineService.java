@@ -26,6 +26,8 @@ import org.apache.turbine.services.TurbineBaseService;
  * The base implementation of Turbine {@link
  * org.apache.turbine.services.template.TemplateEngineService}.
  *
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @version $Id$
  */
 public abstract class BaseTemplateEngineService

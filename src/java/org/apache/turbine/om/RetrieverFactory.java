@@ -19,6 +19,7 @@ package org.apache.turbine.om;
 /**
  *
  *
+ * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
  * @version $Id$
  */
 public interface RetrieverFactory

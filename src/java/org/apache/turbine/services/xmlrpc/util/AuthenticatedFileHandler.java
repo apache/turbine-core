@@ -34,6 +34,8 @@ import org.apache.xmlrpc.AuthenticatedXmlRpcHandler;
  *
  * See the FileHandler class for further documentation.
  *
+ * @author <a href="mailto:john@zenplex.com">John Thorhauer</a>
+ * @version $Id$
  * @deprecated This is not scope of the Service itself but of an
  *             application which uses the service. This class shouldn't
  *             be part of Turbine but of an addon application.

@@ -51,6 +51,8 @@ import org.apache.turbine.util.TurbineException;
  * This action is special in that it should only be executed by the
  * Turbine servlet.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class DefaultSessionValidator

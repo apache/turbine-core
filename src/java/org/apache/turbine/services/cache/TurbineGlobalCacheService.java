@@ -54,6 +54,11 @@ import org.apache.turbine.services.TurbineBaseService;
  * <dt>cache.check.frequency</dt><dd>Cache check frequency in Millis (1000
  Millis = 1 second).  If this property is not present, the default value is 5000</dd>
  * </dl>
+ *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
+ * @author <a href="mailto:john@zenplex.com">John Thorhauer</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineGlobalCacheService

@@ -31,6 +31,9 @@ import org.apache.turbine.util.RunData;
  * This class is based on examples from Jason Hunter's book <i>Java
  * Servlet Programming</i>.
  *
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:jon@collab.net">Jon S. Stevens</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  * @deprecated Use LocaleTokenizer instead.
  */

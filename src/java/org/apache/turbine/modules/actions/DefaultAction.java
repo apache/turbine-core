@@ -24,6 +24,7 @@ import org.apache.turbine.util.RunData;
 /**
  * This is a Default Action module that doesn't do much.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
 public class DefaultAction extends Action

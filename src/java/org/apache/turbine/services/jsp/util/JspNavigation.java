@@ -33,6 +33,9 @@ import org.apache.turbine.util.RunData;
  * ...
  * <%= navigation.setTemplate("admin_navigation.jsp") %>
  * </code>
+ * @author <a href="john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class JspNavigation

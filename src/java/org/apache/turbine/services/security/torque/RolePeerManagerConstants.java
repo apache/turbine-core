@@ -37,6 +37,7 @@ import org.apache.turbine.services.security.torque.om.TurbineRolePeer;
  * If security.torque.role.class is unset, then the value of the constant CLASSNAME_DEFAULT
  * from the configured Peer is used.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

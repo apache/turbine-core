@@ -44,6 +44,10 @@ import org.apache.turbine.util.uri.TemplateURI;
  * This is an application pull tool for the template system. You should <b>not</b>
  * use it in a normal application!
  *
+ * @author <a href="mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 

@@ -32,6 +32,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  * some html content
  * &lt;/x:body&gt;
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @version $Id$
  */
 public class BodyTag extends TagSupport 

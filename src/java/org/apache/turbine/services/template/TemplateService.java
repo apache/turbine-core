@@ -27,6 +27,10 @@ import org.apache.turbine.util.RunData;
  * template structure.  It also performs caching if turned on in the
  * properties file.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
 public interface TemplateService

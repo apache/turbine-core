@@ -37,6 +37,8 @@ import org.apache.velocity.context.Context;
  * Navigations screens should extend this class and overide the
  * doBuildTemplate( data , context) method.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class VelocityNavigation

@@ -35,6 +35,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
  *
  * @deprecated Use {@link org.apache.turbine.services.pull.tools.TemplateLink} instead and fix up your template references.
  *
+ * @author <a href="jmcnally@collab.net">John D. McNally</a>
  * @version $Id$
  */
 public class TemplateLinkWithSlash

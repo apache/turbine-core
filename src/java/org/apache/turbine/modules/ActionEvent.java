@@ -70,6 +70,9 @@ import org.apache.turbine.util.parser.ParserUtils;
  * If you follow these conventions, then you should be ok with your
  * method naming in your Action class.
  *
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens </a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public abstract class ActionEvent extends Action

@@ -26,6 +26,7 @@ import org.apache.turbine.services.crypto.CryptoAlgorithm;
  *
  * Can be used as the default crypto algorithm
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class ClearCrypt

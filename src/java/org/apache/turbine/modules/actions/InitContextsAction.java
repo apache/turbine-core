@@ -31,6 +31,8 @@ import org.apache.turbine.util.RunData;
 /**
  * Used to initialize JNDI contexts.
  *
+ * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class InitContextsAction

@@ -28,6 +28,8 @@ package org.apache.turbine.services.cache;
  * This extends CachedObject and provides a method for refreshing the
  * cached object, and resetting its expire time.
  *
+ * @author <a href="mailto:nissim@nksystems.com">Nissim Karpenstein</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class RefreshableCachedObject

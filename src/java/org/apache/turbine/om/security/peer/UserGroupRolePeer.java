@@ -24,6 +24,9 @@ import org.apache.turbine.util.db.map.TurbineMapBuilder;
  * This class handles all database access for the VISITOR_ROLE table.
  * This table contains all the roles that a given user can play.
  *
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
  * @version $Id$
  */
 public class UserGroupRolePeer extends BasePeer

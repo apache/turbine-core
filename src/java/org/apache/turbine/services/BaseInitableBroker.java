@@ -46,6 +46,9 @@ import org.apache.commons.logging.LogFactory;
  *
  * </ul>
  *
+ * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
+ * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class BaseInitableBroker

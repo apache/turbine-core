@@ -21,6 +21,7 @@ package org.apache.turbine.services.template.mapper;
  * names and template names, we use classes that implement this
  * interface.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

@@ -24,6 +24,7 @@ import org.apache.turbine.util.RunData;
  * This is a simple static accessor to common TemplateService tasks such as
  * getting a Screen that is associated with a screen template.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @version $Id$
  */
 public abstract class TurbineTemplate

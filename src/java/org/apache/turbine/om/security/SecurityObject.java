@@ -25,6 +25,10 @@ import org.apache.torque.om.BaseObject;
 /**
  * This class represents a generic object used in the Access Control Lists.
  *
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
 public abstract class SecurityObject extends BaseObject implements Comparable

@@ -33,6 +33,7 @@ import java.util.StringTokenizer;
  * by a MIME type name followed by a list of extensions separated
  * by a whitespace.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
 public class MimeTypeMapper

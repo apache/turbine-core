@@ -31,6 +31,9 @@ import org.apache.turbine.util.RunData;
  * Base JSP Screen that should be subclassed by screens that want to
  * use JSP.  Subclasses should override the doBuildTemplate() method.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author Frank Y. Kim
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class BaseJspScreen

@@ -69,6 +69,9 @@ import org.apache.turbine.util.TurbineException;
  * updated and added to regularly by those with little Java
  * experience.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TemplatePage

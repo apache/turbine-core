@@ -27,6 +27,8 @@ import org.apache.turbine.util.RunData;
  * used across all of the loaders. It also specifies the interface
  * that is required to be called a Loader.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class GenericLoader

@@ -48,11 +48,13 @@ import org.w3c.dom.Node;
  * xsl file.  XSL stylesheets are compiled and cached (if the property in
  * TurbineResources.properties is set) to improve speeds.
  *
+ * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:rubys@us.ibm.com">Sam Ruby</a>
+ * @version $Id$
  */
 public class TurbineXSLTService
         extends TurbineBaseService
         implements XSLTService
-
 {
     /**
      * Property to control the caching of StyleSheetRoots.

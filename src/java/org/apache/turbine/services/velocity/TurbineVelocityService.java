@@ -69,6 +69,12 @@ import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
  * data.getPage().getBody().addElement(results);<br>
  * </code>
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:sean@informage.ent">Sean Legassick</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineVelocityService

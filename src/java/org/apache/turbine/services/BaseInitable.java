@@ -22,6 +22,8 @@ package org.apache.turbine.services;
  * <code>Initables</code> are welcome to extend, contains facilities
  * to maintain internal state.
  *
+ * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
+ * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
 public class BaseInitable

@@ -25,6 +25,7 @@ import org.apache.turbine.services.template.TemplateService;
  * objects. It never caches and simply returns what is given to it but keeps
  * the template extension.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class DirectTemplateMapper

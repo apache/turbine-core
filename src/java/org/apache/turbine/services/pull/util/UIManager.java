@@ -70,6 +70,9 @@ import org.apache.turbine.util.uri.DataURI;
  * use it in a normal application!
  *
  *
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:james_coltman@majorband.co.uk">James Coltman</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class UIManager implements ApplicationTool

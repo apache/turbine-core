@@ -26,6 +26,7 @@ import org.apache.turbine.util.TurbineException;
  * service.  All access methods are static and act upon the current
  * instance of the scheduler service.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  * @see org.apache.turbine.services.schedule.ScheduleService
  */

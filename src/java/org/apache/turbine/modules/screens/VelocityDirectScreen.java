@@ -37,6 +37,8 @@ import org.apache.velocity.context.Context;
  * output screen isn't possible or the result doesn't fit in the
  * memory.
  * <p>
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class VelocityDirectScreen

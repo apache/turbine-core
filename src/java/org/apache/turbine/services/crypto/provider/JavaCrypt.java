@@ -36,6 +36,7 @@ import org.apache.turbine.services.crypto.CryptoAlgorithm;
  *
  * This provider can be used as the default crypto algorithm provider.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class JavaCrypt

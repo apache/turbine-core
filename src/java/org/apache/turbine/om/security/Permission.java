@@ -24,6 +24,10 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * Comparable so that when Permissions are added to a Set, they will
  * be in alphabetical order by name.
  *
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface Permission extends SecurityEntity

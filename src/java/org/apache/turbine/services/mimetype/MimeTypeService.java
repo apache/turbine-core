@@ -29,6 +29,7 @@ import org.apache.turbine.services.mimetype.util.MimeType;
  * properties or files located in user's home directory, Java home
  * directory or the current class jar depending on the implementation.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
 public interface MimeTypeService extends Service

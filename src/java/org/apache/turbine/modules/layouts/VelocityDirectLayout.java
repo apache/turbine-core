@@ -35,6 +35,10 @@ import org.apache.velocity.context.Context;
  * using a screen. Use this if you have a large page to output
  * and won't buffer it in the memory.
  *
+ * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class VelocityDirectLayout

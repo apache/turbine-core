@@ -29,6 +29,9 @@ import org.apache.turbine.util.RunData;
  * A pull tool which provides lookups for localized text by delegating
  * to the configured <code>LocalizationService</code>.
  *
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
+ * @author <a href="mailto:jon@collab.net">Jon Stevens</a>
+ * @version $Id$
  */
 public class LocalizationTool implements ApplicationTool
 {

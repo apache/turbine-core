@@ -34,6 +34,8 @@ import org.apache.torque.om.NumberKey;
  * <td>Entry was not a valid number</td></tr>
  * </table>
  *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  * @deprecated No replacement
  */

@@ -23,6 +23,7 @@ import java.util.ArrayList;
  * The representation is parsed from a string based
  * representation of the MIME type, as defined in the RFC1345.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
 public class MimeType

@@ -28,6 +28,10 @@ import org.apache.turbine.util.TurbineException;
 /**
  * The interface an XmlRpcService implements.
  *
+ * @author <a href="mailto:josh@stonecottage.com">Josh Lucas</a>
+ * @author <a href="mailto:magnus@handtolvur.is">Magnús Þór Torfason</a>
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="jvanzyl@periapt.com">Jason van Zyl</a>
  * @version $Id$
  */
 public interface XmlRpcService

@@ -47,6 +47,7 @@ import org.apache.turbine.util.TurbineException;
  * }
  * </pre></code></blockquote>
  *
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  * @deprecated As of Turbine 2.2, use org.apache.torque.Torque
  */

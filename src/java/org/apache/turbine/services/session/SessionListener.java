@@ -45,6 +45,8 @@ import javax.servlet.http.HttpSessionListener;
  * re-activation.
  *
  * @since 2.3
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:dlr@apache.org">Daniel Rall</a>
  * @version $Id$
  * @see javax.servlet.http.HttpSessionListener
  */

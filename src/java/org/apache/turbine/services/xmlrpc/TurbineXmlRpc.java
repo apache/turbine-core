@@ -28,6 +28,10 @@ import org.apache.turbine.util.TurbineException;
 /**
  * This is a static accesor class for {@link XmlRpcService}.
  *
+ * @author <a href="mailto:magnus@handtolvur.is">Magnús Þór Torfason</a>
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @version $Id$
  */
 public abstract class TurbineXmlRpc
 {

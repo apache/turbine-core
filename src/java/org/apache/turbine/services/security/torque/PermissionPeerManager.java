@@ -47,6 +47,7 @@ import org.apache.torque.util.Criteria;
  * It allows the exchange of the default Turbine supplied TurbinePermissionPeer
  * class against a custom class.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  *
  */

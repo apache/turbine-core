@@ -26,6 +26,9 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * Comparable so that when Permissions are added to a Set, they will
  * be in alphabetical order by name.
  *
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
  * @version $Id$
  */
 public class TurbinePermission extends SecurityObject implements Permission

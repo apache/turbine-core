@@ -86,6 +86,8 @@ import org.apache.turbine.util.TurbineException;
  * The code is an almost a complete clone of the FreeMarkerSitePage
  * written by John McNally.  I've only modified it for Template use.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class DefaultPage

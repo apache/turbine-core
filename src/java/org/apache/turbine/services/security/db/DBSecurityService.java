@@ -50,6 +50,9 @@ import org.apache.turbine.util.security.UnknownEntityException;
 /**
  * An implementation of SecurityService that uses a database as backend.
  *
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
  * @version $Id$
  */
 public class DBSecurityService

@@ -27,6 +27,10 @@ import org.apache.velocity.context.Context;
  * getting an instance of a context as well as handling a request for
  * processing a template.
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:jvanzyl@periapt.com.com">Jason van Zyl</a>
+ * @author <a href="mailto:gabrielm@itcsoluciones.com">Gabriel A. Moreno</a>
  * @version $Id$
  */
 public abstract class TurbineJsp

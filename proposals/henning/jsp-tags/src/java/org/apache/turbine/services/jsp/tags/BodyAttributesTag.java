@@ -29,6 +29,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  * in this tag.  Example usage:
  * &lt;body &lt;x:bodyAttributes default='onLoad="jsfunc()"' /&gt;&gt;
  *
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @version $Id$
  */
 public class BodyAttributesTag extends TagSupport 

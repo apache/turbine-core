@@ -22,6 +22,7 @@ import java.util.Map;
  * This interface marks a bean/class that can have its properties set
  * by values in a Map.
  *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @version $Id$
  */
 public interface InitableByConstraintMap

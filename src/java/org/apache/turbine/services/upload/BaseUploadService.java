@@ -30,6 +30,10 @@ import org.apache.turbine.util.parser.ParameterParser;
  * <p> This class is a base implementation of
  * {@link org.apache.turbine.services.upload.UploadService}.
  *
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public abstract class BaseUploadService

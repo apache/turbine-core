@@ -25,6 +25,8 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * various Roles. The Permissions to perform actions upon the resource depend
  * on the Roles in the Group that they are assigned.
  *
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface Group extends SecurityEntity

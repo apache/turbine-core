@@ -21,6 +21,7 @@ import org.apache.turbine.util.RunData;
 /**
  * This is the base class that defines what a Layout module is.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
 public abstract class Layout

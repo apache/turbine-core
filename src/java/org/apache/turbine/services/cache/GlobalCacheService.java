@@ -23,6 +23,7 @@ import org.apache.turbine.services.Service;
 /**
  * GlobalCacheService interface.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
 public interface GlobalCacheService

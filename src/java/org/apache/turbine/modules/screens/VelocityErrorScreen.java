@@ -27,6 +27,8 @@ import org.apache.velocity.context.Context;
  * VelocityErrorScreen screen - directs errors at the velocity
  * error template defined in template.error.
  *
+ * @author <a href="mailto:gonzalo.diethelm@sonda.com">Gonzalo Diethelm</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class VelocityErrorScreen

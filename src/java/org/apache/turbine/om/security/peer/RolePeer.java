@@ -40,6 +40,9 @@ import com.workingdogs.village.Record;
  * This class handles all the database access for the ROLE table.
  * This table contains all the roles that a given member can play.
  *
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
  * @version $Id$
  */
 public class RolePeer extends BasePeer

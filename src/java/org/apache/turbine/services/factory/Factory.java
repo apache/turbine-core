@@ -26,6 +26,7 @@ import org.apache.turbine.util.TurbineException;
  * instantiation of XML parsers and secure sockets requiring
  * provider specific initializations before instantiation.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
 public interface Factory

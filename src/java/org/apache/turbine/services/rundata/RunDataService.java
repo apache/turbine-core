@@ -31,6 +31,8 @@ import org.apache.turbine.util.TurbineException;
  * by specifying a configuration key. It may use pooling, in which case
  * the implementations should implement the Recyclable interface.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface RunDataService

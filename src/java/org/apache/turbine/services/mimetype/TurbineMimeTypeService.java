@@ -47,6 +47,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * with the charset.file property. In addition, the service maintains
  * a set of most common mappings.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
 public class TurbineMimeTypeService

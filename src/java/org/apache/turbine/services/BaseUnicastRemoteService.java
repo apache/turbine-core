@@ -28,6 +28,7 @@ import org.apache.commons.configuration.ConfigurationConverter;
  * A base implementation of an {@link java.rmi.server.UnicastRemoteObject}
  * as a Turbine {@link org.apache.turbine.services.Service}.
  *
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @version $Id$
  */
 public class BaseUnicastRemoteService extends UnicastRemoteObject

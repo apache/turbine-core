@@ -19,6 +19,7 @@ package org.apache.turbine.om;
 /**
  * This interface marks a class that has a retrieve(String) method.
  *
+ * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
  * @version $Id$
  */
 public interface Retriever

@@ -36,6 +36,7 @@ import java.util.Properties;
  * In addition, this class maintains static default mappings
  * and constructors support application specific mappings.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
 public class CharSetMap

@@ -48,6 +48,12 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * expects that the User interface implementation will be castable to
  * {@link org.apache.torque.om.BaseObject}.
  *
+ * @author <a href="mailto:jon@collab.net">Jon S. Stevens</a>
+ * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:cberry@gluecode.com">Craig D. Berry</a>
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TorqueUserManager

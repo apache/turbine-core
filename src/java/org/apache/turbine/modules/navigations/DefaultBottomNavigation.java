@@ -45,6 +45,8 @@ import org.apache.turbine.util.uri.TurbineURI;
 /**
  * This is a sample navigation module.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  * @deprecated The use of ECS for the view is deprecated. 
  * Use a templating solution.

@@ -27,6 +27,7 @@ import org.apache.turbine.services.TurbineServices;
  * implementation of the GlobalCacheService used by the System, according to
  * the settings in TurbineResources.
  *
+ * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @version $Id$
  */
 public abstract class TurbineGlobalCache

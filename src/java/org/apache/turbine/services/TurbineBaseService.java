@@ -43,6 +43,12 @@ import org.apache.turbine.util.RunData;
  *         (OtherService)getServiceBroker().getService("OtherService");
  * </code></pre>
  *
+ * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
+ * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
+ * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @version $Id$
  */
 public abstract class TurbineBaseService

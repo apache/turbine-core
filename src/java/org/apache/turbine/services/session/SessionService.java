@@ -27,6 +27,7 @@ import org.apache.turbine.services.Service;
  * The session objects that are cached by this service are obtained through
  * a listener.  The listener must be configured in your web.xml file.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @since 2.3
  * @see org.apache.turbine.services.session.SessionListener
  * @version $Id$

@@ -26,6 +26,8 @@ import org.apache.turbine.util.pool.Recyclable;
 /**
  * A Pull tool to make om objects available to a template
  *
+ * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class OMTool implements ApplicationTool, Recyclable

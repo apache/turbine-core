@@ -50,6 +50,16 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * expects that the User interface implementation will be castable to
  * {@link org.apache.turbine.om.BaseObject}.
  *
+ * @author <a href="mailto:jon@collab.net">Jon S. Stevens</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
+ * @author <a href="mailto:cberry@gluecode.com">Craig D. Berry</a>
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:tadewunmi@gluecode.com">Tracy M. Adewunmi</a>
+ * @author <a href="mailto:lflournoy@gluecode.com">Leonard J. Flournoy</a>
+ * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hhernandez@itweb.com.mx">Humberto Hernandez</a>
  * @version $Id$
  */
 public class LDAPUserManager implements UserManager

@@ -34,6 +34,8 @@ import org.apache.turbine.util.RunData;
  * <%= screen_placeholder %>
  *</code>
  *
+ * @author <a href="john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class JspScreenPlaceholder

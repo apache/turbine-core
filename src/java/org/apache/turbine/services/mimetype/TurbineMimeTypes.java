@@ -25,6 +25,7 @@ import org.apache.turbine.services.mimetype.util.MimeType;
 /**
  * This is a static accessor to MIME types and charsets.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
 public abstract class TurbineMimeTypes

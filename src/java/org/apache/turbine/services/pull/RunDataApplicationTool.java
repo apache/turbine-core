@@ -22,6 +22,7 @@ import org.apache.turbine.util.RunData;
  * Tools in the Toolbox that need a Rundata Object on every refresh should
  * implement this interface.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public interface RunDataApplicationTool

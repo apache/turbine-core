@@ -43,6 +43,9 @@ import org.xml.sax.helpers.DefaultHandler;
  * xml schema file and creates and AppData java structure.
  * It uses apache Xerces to do the xml parsing.
  *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class XmlToAppData extends DefaultHandler

@@ -32,6 +32,7 @@ import org.apache.velocity.context.Context;
  * Then each screen that needs to perform the same check could extend
  * your base screen.
  *
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
 public abstract class VelocitySecureScreen
