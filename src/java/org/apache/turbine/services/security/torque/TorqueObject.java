@@ -3,7 +3,7 @@ package org.apache.turbine.services.security.torque;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -100,7 +100,7 @@ public abstract class TorqueObject
     }
 
     /**
-     * This Constructor is used when a Manager 
+     * This Constructor is used when a Manager
      * has retrieved a list of Database Objects from the peer and
      * must 'wrap' them into TorqueObjects.
      *
@@ -158,7 +158,7 @@ public abstract class TorqueObject
      *
      * @exception Exception This method might throw an exceptions
      */
-    public void setPrimaryKey(ObjectKey primaryKey) 
+    public void setPrimaryKey(ObjectKey primaryKey)
         throws Exception
     {
         getPersistentObj().setPrimaryKey(primaryKey);
@@ -230,7 +230,7 @@ public abstract class TorqueObject
      *
      * @exception Exception This method might throw an exceptions
      */
-    public void save(String dbName) 
+    public void save(String dbName)
         throws Exception
     {
         getPersistentObj().save(dbName);
@@ -247,7 +247,7 @@ public abstract class TorqueObject
      *
      * @exception Exception This method might throw an exceptions
      */
-    public void save(Connection con) 
+    public void save(Connection con)
         throws Exception
     {
         getPersistentObj().save(con);
@@ -300,7 +300,7 @@ public abstract class TorqueObject
             return false;
         }
     }
-    
+
     /**
      * Compares the primary key of this instance with the key of another.
      *

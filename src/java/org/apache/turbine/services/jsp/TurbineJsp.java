@@ -3,7 +3,7 @@ package org.apache.turbine.services.jsp;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,13 +25,13 @@ package org.apache.turbine.services.jsp;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -68,7 +68,7 @@ import org.apache.turbine.util.TurbineException;
 public abstract class TurbineJsp
 {
     /**
-     * Utility method for accessing the service 
+     * Utility method for accessing the service
      * implementation
      *
      * @return a JspService implementation instance
@@ -78,7 +78,7 @@ public abstract class TurbineJsp
         return (JspService) TurbineServices
             .getInstance().getService(JspService.SERVICE_NAME);
     }
-    
+
     /**
      * Adds some convenience objects to the request.  For example an instance
      * of JspLink which can be used to generate links to other templates.
@@ -98,7 +98,7 @@ public abstract class TurbineJsp
      * @param isForward whether to perform a forward or include.
      *
      * @throws TurbineException If a problem occured while executing the JSP
-     */    
+     */
     public static void handleRequest(RunData data, String templateName, boolean isForward)
         throws TurbineException
     {
@@ -112,7 +112,7 @@ public abstract class TurbineJsp
      * @param templateName The template to execute
      *
      * @throws TurbineException If a problem occured while executing the JSP
-     */    
+     */
     public static void handleRequest(RunData data, String templateName)
         throws TurbineException
     {
@@ -130,7 +130,7 @@ public abstract class TurbineJsp
     }
 
     /**
-     * Searchs for a template in the default.template path[s] and 
+     * Searchs for a template in the default.template path[s] and
      * returns the template name with a relative path which is required
      * by <a href="http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/ServletContext.html#getRequestDispatcher(java.lang.String)">javax.servlet.RequestDispatcher</a>
      *

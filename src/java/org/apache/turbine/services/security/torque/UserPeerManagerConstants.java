@@ -3,7 +3,7 @@ package org.apache.turbine.services.security.torque;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -76,7 +76,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
  * security.torque.userPeer.column.createdate = CREATED
  * security.torque.userPeer.column.lastlogin  = LAST_LOGIN
  * security.torque.userPeer.column.objectdata = OBJECTDATA
- * 
+ *
  * security.torque.user.class = org.apache.turbine.services.security.torque.om.TurbineUser
  * security.torque.user.property.name       = UserName
  * security.torque.user.property.id         = UserId
@@ -91,8 +91,8 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
  *
  * </pre>
  * If security.torque.user.class is unset, then the value of the constant CLASSNAME_DEFAULT
- * from the configured Peer is used. 
- * 
+ * from the configured Peer is used.
+ *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
@@ -101,11 +101,11 @@ public interface UserPeerManagerConstants
     extends Serializable
 {
     /** The key within the security service properties for the user class implementation */
-    public static final String USER_CLASS_KEY = 
+    public static final String USER_CLASS_KEY =
         "torque.user.class";
 
     /** The key within the security service properties for the user peer class implementation */
-    public static final String USER_PEER_CLASS_KEY = 
+    public static final String USER_PEER_CLASS_KEY =
         "torque.userPeer.class";
 
     /** User peer default class */
@@ -194,37 +194,37 @@ public interface UserPeerManagerConstants
         "OBJECTDATA";
 
     /** The property name of the bean property for the login name field. */
-    public static final String USER_NAME_PROPERTY_KEY = 
+    public static final String USER_NAME_PROPERTY_KEY =
         "torque.user.property.name";
-    
+
     /** The property name of the bean property for the id field. */
     public static final String USER_ID_PROPERTY_KEY =
         "torque.user.property.id";
-    
+
     /** The property name of the bean property for the password field. */
     public static final String USER_PASSWORD_PROPERTY_KEY =
         "torque.user.property.password";
-    
+
     /** The property name of the bean property for the first name field. */
     public static final String USER_FIRST_NAME_PROPERTY_KEY =
         "torque.user.property.firstname";
-    
+
     /** The property name of the bean property for the last name field. */
     public static final String USER_LAST_NAME_PROPERTY_KEY =
         "torque.user.property.lastname";
-    
+
     /** The property name of the bean property for the email field. */
     public static final String USER_EMAIL_PROPERTY_KEY =
         "torque.user.property.email";
-    
+
     /** The property name of the bean property for the confirm field. */
     public static final String USER_CONFIRM_PROPERTY_KEY =
         "torque.user.property.confirm";
-    
+
     /** The property name of the bean property for the create date field. */
     public static final String USER_CREATE_PROPERTY_KEY =
         "torque.user.property.createdate";
-    
+
     /** The property name of the bean property for the last login field. */
     public static final String USER_LAST_LOGIN_PROPERTY_KEY =
         "torque.user.property.lastlogin";
@@ -274,4 +274,4 @@ public interface UserPeerManagerConstants
         "Objectdata";
 };
 
-    
+

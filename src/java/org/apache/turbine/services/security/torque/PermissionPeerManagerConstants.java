@@ -3,7 +3,7 @@ package org.apache.turbine.services.security.torque;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,15 +64,15 @@ package org.apache.turbine.services.security.torque;
  * security.torque.permissionPeer.class = org.apache.turbine.services.security.torque.om.TurbinePermissionPeer
  * security.torque.permissionPeer.column.name       = PERMISSION_NAME
  * security.torque.permissionPeer.column.id         = PERMISSION_ID
- * 
+ *
  * security.torque.permission.class = org.apache.turbine.services.security.torque.om.TurbinePermission
  * security.torque.permission.property.name       = Name
  * security.torque.permission.property.id         = PermissionId
  *
  * </pre>
  * If security.torque.permission.class is unset, then the value of the constant CLASSNAME_DEFAULT
- * from the configured Peer is used. 
- * 
+ * from the configured Peer is used.
+ *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
@@ -80,11 +80,11 @@ package org.apache.turbine.services.security.torque;
 public interface PermissionPeerManagerConstants
 {
     /** The key within the security service properties for the permission class implementation */
-    public static final String PERMISSION_CLASS_KEY = 
+    public static final String PERMISSION_CLASS_KEY =
         "torque.permission.class";
 
     /** The key within the security service properties for the permission peer class implementation */
-    public static final String PERMISSION_PEER_CLASS_KEY = 
+    public static final String PERMISSION_PEER_CLASS_KEY =
         "torque.permissionPeer.class";
 
     /** Permission peer default class */
@@ -110,13 +110,13 @@ public interface PermissionPeerManagerConstants
 
 
     /** The property name of the bean property for the login name field. */
-    public static final String PERMISSION_NAME_PROPERTY_KEY = 
+    public static final String PERMISSION_NAME_PROPERTY_KEY =
         "torque.permission.property.name";
-    
+
     /** The property name of the bean property for the id field. */
     public static final String PERMISSION_ID_PROPERTY_KEY =
         "torque.permission.property.id";
-    
+
 
     /** The default value of the bean property for the login name field. */
     public static final String PERMISSION_NAME_PROPERTY_DEFAULT =
@@ -128,4 +128,4 @@ public interface PermissionPeerManagerConstants
 
 };
 
-    
+

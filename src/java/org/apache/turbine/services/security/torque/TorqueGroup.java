@@ -3,7 +3,7 @@ package org.apache.turbine.services.security.torque;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -71,9 +71,9 @@ import org.apache.turbine.util.security.TurbineSecurityException;
 import org.apache.torque.om.Persistent;
 
 /**
- * This class represents a Group of Users in the system that are associated 
+ * This class represents a Group of Users in the system that are associated
  * with specific entity or resource. The users belonging to the Group may
- * have various Roles. The Permissions to perform actions upon the resource 
+ * have various Roles. The Permissions to perform actions upon the resource
  * depend on the Roles in the Group that they are assigned. It is separated
  * from the actual Torque peer object to be able to replace the Peer with an
  * user supplied Peer (and Object)
@@ -189,7 +189,7 @@ public class TorqueGroup
     /**
      * Sets the Id of this object
      *
-     * @param id The new Id 
+     * @param id The new Id
      */
     public void setId(int id)
     {

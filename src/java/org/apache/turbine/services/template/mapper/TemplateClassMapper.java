@@ -3,7 +3,7 @@ package org.apache.turbine.services.template.mapper;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -78,7 +78,7 @@ import org.apache.turbine.services.template.TemplateService;
  * 3. about.Default                &lt;- stepping up in the package hierarchy, looking for Default
  * 4. Default                      &lt;- Class called "Default" without package
  * 5. VelocityScreen               &lt;- The class configured by the Service (VelocityService) to
- * 
+ *
  * Please note, that no actual packages are searched. This is the scope of the
  * TemplateEngine Loader which is passed at construction time.
  *
@@ -119,23 +119,23 @@ public class TemplateClassMapper
     /**
      * Strip off a possible extension, replace all "," with "."
      * Look through the given package path until a match is found.
-     * 
+     *
      * @param template The template name.
-     * @return A class name for the given template. 
+     * @return A class name for the given template.
      */
     public String doMapping(String template)
     {
         log.debug("doMapping(" + template + ")");
 
         // Copy our elements into an array
-        List components 
+        List components
             = new ArrayList(Arrays.asList(StringUtils.split(
-                                              template, 
+                                              template,
                                               String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR))));
         int componentSize = components.size() - 1 ;
 
         // This method never gets an empty string passed.
-        // So this is never < 0 
+        // So this is never < 0
         String className = (String) components.get(componentSize);
         components.remove(componentSize--);
 
@@ -145,9 +145,9 @@ public class TemplateClassMapper
         int dotIndex = className.lastIndexOf(TemplateService.EXTENSION_SEPARATOR);
         className = (dotIndex < 0) ? className : className.substring(0, dotIndex);
 
-        // This is an optimization. If the name we're looking for is 
+        // This is an optimization. If the name we're looking for is
         // already the default name for the template, don't do a "first run"
-        // which looks for an exact match. 
+        // which looks for an exact match.
         boolean firstRun = !className.equals(TemplateService.DEFAULT_NAME);
 
         for(;;)
@@ -198,6 +198,6 @@ public class TemplateClassMapper
     }
 }
 
-    
-        
-    
+
+
+

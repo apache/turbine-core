@@ -3,7 +3,7 @@ package org.apache.turbine.services.security.torque;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -123,19 +123,19 @@ public class RolePeerManager
     static Log log = LogFactory.getLog(RolePeerManager.class);
 
     /**
-     * Initializes the RolePeerManager, loading the class object for the 
+     * Initializes the RolePeerManager, loading the class object for the
      * Peer used to retrieve Role objects
      *
      * @param conf The configuration object used to configure the Manager
      *
-     * @exception InitializationException A problem occured during 
+     * @exception InitializationException A problem occured during
      *            initialization
      */
 
     public static void init(Configuration conf)
         throws InitializationException
     {
-        String rolePeerClassName = conf.getString(ROLE_PEER_CLASS_KEY, 
+        String rolePeerClassName = conf.getString(ROLE_PEER_CLASS_KEY,
                                                   ROLE_PEER_CLASS_DEFAULT);
 
         String roleObjectName = null;
@@ -144,31 +144,31 @@ public class RolePeerManager
         {
             rolePeerClass = Class.forName(rolePeerClassName);
 
-            tableName  = 
+            tableName  =
               (String) rolePeerClass.getField("TABLE_NAME").get(null);
 
             //
-            // We have either an user configured Object class or we use the 
+            // We have either an user configured Object class or we use the
             // default as supplied by the Peer class
             //
 
             // Default from Peer, can be overridden
 
             roleObject = getPersistenceClass();
-            
-            roleObjectName = 
+
+            roleObjectName =
               (String) conf.getString(ROLE_CLASS_KEY,
                                       roleObject.getName());
-            
-            // Maybe the user set a new value...
-            roleObject = Class.forName(roleObjectName); 
 
-            /* If any of the following Field queries fails, the role 
-             * subsystem is unusable. So check this right here at init time, 
+            // Maybe the user set a new value...
+            roleObject = Class.forName(roleObjectName);
+
+            /* If any of the following Field queries fails, the role
+             * subsystem is unusable. So check this right here at init time,
              * which saves us much time and hassle if it fails...
              */
 
-            nameColumn = 
+            nameColumn =
               (String) rolePeerClass.getField(
                   (String) conf.getString(ROLE_NAME_COLUMN_KEY,
                                           ROLE_NAME_COLUMN_DEFAULT)
@@ -176,17 +176,17 @@ public class RolePeerManager
 
             idColumn = (String) rolePeerClass.getField(
                 (String) conf.getString(ROLE_ID_COLUMN_KEY,
-                                        ROLE_ID_COLUMN_DEFAULT)  
+                                        ROLE_ID_COLUMN_DEFAULT)
                 ).get(null);
 
 
-            namePropDesc = 
+            namePropDesc =
                 new PropertyDescriptor(
                     (String) conf.getString(ROLE_NAME_PROPERTY_KEY,
                                             ROLE_NAME_PROPERTY_DEFAULT),
                     roleObject);
 
-            idPropDesc = 
+            idPropDesc =
                 new PropertyDescriptor(
                     (String) conf.getString(ROLE_ID_PROPERTY_KEY,
                                             ROLE_ID_PROPERTY_DEFAULT),
@@ -217,13 +217,13 @@ public class RolePeerManager
             if (nameColumn == null || namePropDesc == null)
             {
                 throw new InitializationException(
-                    "RolePeer " + rolePeerClassName 
+                    "RolePeer " + rolePeerClassName
                     + " has no name column information!", e);
             }
             if (idColumn == null || idPropDesc == null)
             {
                 throw new InitializationException(
-                    "RolePeer " + rolePeerClassName 
+                    "RolePeer " + rolePeerClassName
                     + " has no id column information!", e);
             }
         }
@@ -265,7 +265,7 @@ public class RolePeerManager
      * Returns the full name of a column.
      *
      * @param name The column to fully qualify
-     * 
+     *
      * @return A String with the full name of the column.
      */
     public static String getColumnName(String name)
@@ -324,12 +324,12 @@ public class RolePeerManager
      * @exception Exception A generic exception.
      *
      */
-    public static RoleSet retrieveSet(Criteria criteria) 
+    public static RoleSet retrieveSet(Criteria criteria)
         throws Exception
     {
         List results = doSelect(criteria);
         RoleSet rs = new RoleSet();
-        
+
         for(Iterator it = results.iterator(); it.hasNext(); )
         {
             rs.add((Role) it.next());
@@ -342,7 +342,7 @@ public class RolePeerManager
      *
      * @param user An user object
      * @param group A group object
-     * 
+     *
      * @return A Set of Roles of this User in the Group
      *
      * @exception Exception A generic exception.
@@ -352,13 +352,13 @@ public class RolePeerManager
     {
         Criteria criteria = new Criteria();
 
-        criteria.add(UserPeerManager.getNameColumn(), 
+        criteria.add(UserPeerManager.getNameColumn(),
                      user.getUserName());
 
         criteria.add(TurbineUserGroupRolePeer.GROUP_ID,
                      ((Persistent) group).getPrimaryKey());
 
-        criteria.addJoin(UserPeerManager.getIdColumn(), 
+        criteria.addJoin(UserPeerManager.getIdColumn(),
                          TurbineUserGroupRolePeer.USER_ID);
 
         criteria.addJoin(TurbineUserGroupRolePeer.ROLE_ID, getIdColumn());
@@ -399,7 +399,7 @@ public class RolePeerManager
      * ========================================================================
      *
      * WARNING! Do not read on if you have a weak stomach. What follows here
-     * are some abominations thanks to the braindead static peers of Torque 
+     * are some abominations thanks to the braindead static peers of Torque
      * and the rigidity of Java....
      *
      * ========================================================================
@@ -414,7 +414,7 @@ public class RolePeerManager
      *
      * @param role An object which implements the Role interface
      *
-     * @return A criteria for the supplied role object 
+     * @return A criteria for the supplied role object
      */
 
     public static Criteria buildCriteria(Role role)
@@ -424,7 +424,7 @@ public class RolePeerManager
         try
         {
             Class[] clazz = new Class[] { roleObject };
-            Object[] params = 
+            Object[] params =
                 new Object[] { ((TorqueRole) role).getPersistentObj() };
 
             crit =  (Criteria) rolePeerClass
@@ -507,7 +507,7 @@ public class RolePeerManager
 
         try
         {
-            Class[] clazz = 
+            Class[] clazz =
                 new Class[] { Criteria.class };
             Object[] params = new Object[] { criteria };
 
@@ -628,7 +628,7 @@ public class RolePeerManager
      * Invokes setId(int n) on the supplied base object
      *
      * @param obj The object to use for setting the name
-     * @param id The new Id 
+     * @param id The new Id
      */
     public static void setId(Persistent obj, int id)
     {

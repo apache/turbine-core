@@ -3,7 +3,7 @@ package org.apache.turbine.services.rundata;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -76,7 +76,7 @@ import org.apache.turbine.util.TurbineException;
 public abstract class TurbineRunDataFacade
 {
     /**
-     * Utility method for accessing the service 
+     * Utility method for accessing the service
      * implementation
      *
      * @return a RunDataService implementation instance
@@ -86,7 +86,7 @@ public abstract class TurbineRunDataFacade
         return (RunDataService) TurbineServices
             .getInstance().getService(RunDataService.SERVICE_NAME);
     }
-    
+
     /**
      * Gets a default RunData object.
      *

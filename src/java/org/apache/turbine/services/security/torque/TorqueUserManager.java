@@ -3,7 +3,7 @@ package org.apache.turbine.services.security.torque;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -97,7 +97,7 @@ import org.apache.turbine.services.security.TurbineSecurity;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class TorqueUserManager 
+public class TorqueUserManager
     implements UserManager
 {
     /** Logging */
@@ -310,7 +310,7 @@ public class TorqueUserManager
 
         try
         {
-            // this is to mimic the old behavior of the method, the user 
+            // this is to mimic the old behavior of the method, the user
             // should be new that is passed to this method.  It would be
             // better if this was checked, but the original code did not
             // care about the user's state, so we set it to be appropriate
@@ -381,7 +381,7 @@ public class TorqueUserManager
 
         /*
          * Unix crypt needs the existing, encrypted password text as
-         * salt for checking the supplied password. So we supply it 
+         * salt for checking the supplied password. So we supply it
          * into the checkPassword routine
          */
 
@@ -486,7 +486,7 @@ public class TorqueUserManager
 
         try
         {
-            // this is to mimic the old behavior of the method, the user 
+            // this is to mimic the old behavior of the method, the user
             // should be new that is passed to this method.  It would be
             // better if this was checked, but the original code did not
             // care about the user's state, so we set it to be appropriate

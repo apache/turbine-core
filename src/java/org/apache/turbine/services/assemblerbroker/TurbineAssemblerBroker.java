@@ -3,7 +3,7 @@ package org.apache.turbine.services.assemblerbroker;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -105,8 +105,8 @@ public abstract class TurbineAssemblerBroker
      *
      * @throws TurbineException If a problem locating the Assember occured.
      */
-    public static Assembler getAssembler(String type, 
-        String name) 
+    public static Assembler getAssembler(String type,
+        String name)
         throws TurbineException
     {
         return getService().getAssembler(type, name);

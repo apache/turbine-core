@@ -3,7 +3,7 @@ package org.apache.turbine.services.security.torque;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,7 +70,7 @@ import java.util.Hashtable;
  * Tools pulled together to load and store the permanent storage
  * in the User class. Stolen from various parts of Turbine 2 and
  * Torque. :-)
- * 
+ *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
@@ -157,7 +157,7 @@ public class ObjectUtils
         }
         finally
         {
-            if (out != null) 
+            if (out != null)
             {
                 out.close();
             }
@@ -165,7 +165,7 @@ public class ObjectUtils
             {
                 bos.close();
             }
-            
+
             if (baos != null)
             {
                 baos.close();
@@ -187,14 +187,14 @@ public class ObjectUtils
     {
         Object object = null;
 
-        if (objectData != null)            
+        if (objectData != null)
         {
             // These streams are closed in finally.
             ByteArrayInputStream bais = new ByteArrayInputStream(objectData);
             BufferedInputStream  bis  = new BufferedInputStream(bais);
             ObjectInputStream    in   = null;
 
-            try                
+            try
             {
                 in = new ObjectInputStream(bis);
 
@@ -205,11 +205,11 @@ public class ObjectUtils
             catch (Exception e)
             {
             }
-            finally                
+            finally
             {
-                try 
+                try
                 {
-                    if (in != null) 
+                    if (in != null)
                     {
                         in.close();
                     }
@@ -217,11 +217,11 @@ public class ObjectUtils
                     {
                         bis.close();
                     }
-                    if (bais != null) 
+                    if (bais != null)
                     {
                         bais.close();
                     }
-                } 
+                }
                 catch (IOException e)
                 {
                 }

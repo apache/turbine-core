@@ -3,7 +3,7 @@ package org.apache.turbine.services.security.torque;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -64,15 +64,15 @@ package org.apache.turbine.services.security.torque;
  * security.torque.groupPeer.class = org.apache.turbine.services.security.torque.om.TurbineGroupPeer
  * security.torque.groupPeer.column.name       = GROUP_NAME
  * security.torque.groupPeer.column.id         = GROUP_ID
- * 
+ *
  * security.torque.group.class = org.apache.turbine.services.security.torque.om.TurbineGroup
  * security.torque.group.property.name       = Name
  * security.torque.group.property.id         = GroupId
  *
  * </pre>
  * If security.torque.group.class is unset, then the value of the constant CLASSNAME_DEFAULT
- * from the configured Peer is used. 
- * 
+ * from the configured Peer is used.
+ *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
@@ -80,11 +80,11 @@ package org.apache.turbine.services.security.torque;
 public interface GroupPeerManagerConstants
 {
     /** The key within the security service properties for the group class implementation */
-    public static final String GROUP_CLASS_KEY = 
+    public static final String GROUP_CLASS_KEY =
         "torque.group.class";
 
     /** The key within the security service properties for the group peer class implementation */
-    public static final String GROUP_PEER_CLASS_KEY = 
+    public static final String GROUP_PEER_CLASS_KEY =
         "torque.groupPeer.class";
 
     /** Group peer default class */
@@ -110,13 +110,13 @@ public interface GroupPeerManagerConstants
 
 
     /** The property name of the bean property for the login name field. */
-    public static final String GROUP_NAME_PROPERTY_KEY = 
+    public static final String GROUP_NAME_PROPERTY_KEY =
         "torque.group.property.name";
-    
+
     /** The property name of the bean property for the id field. */
     public static final String GROUP_ID_PROPERTY_KEY =
         "torque.group.property.id";
-    
+
 
     /** The default value of the bean property for the login name field. */
     public static final String GROUP_NAME_PROPERTY_DEFAULT =
@@ -128,4 +128,4 @@ public interface GroupPeerManagerConstants
 
 };
 
-    
+

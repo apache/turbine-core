@@ -3,7 +3,7 @@ package org.apache.turbine.services.resources;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -126,8 +126,8 @@ public abstract class TurbineResources
     /**
      * Set a property in with a key=value pair.
      *
-     * @param String key
-     * @param String value
+     * @param key
+     * @param value
      */
     public static void setProperty(String key, String value)
     {

@@ -3,7 +3,7 @@ package org.apache.turbine.services.security.torque;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -124,7 +124,7 @@ public class PermissionPeerManager
     static Log log = LogFactory.getLog(PermissionPeerManager.class);
 
     /**
-     * Initializes the PermissionPeerManager, loading the class object for the 
+     * Initializes the PermissionPeerManager, loading the class object for the
      * Peer used to retrieve Permission objects
      *
      * @param conf The configuration object used to configure the Manager
@@ -135,7 +135,7 @@ public class PermissionPeerManager
     public static void init(Configuration conf)
         throws InitializationException
     {
-        String persistentPeerClassName = 
+        String persistentPeerClassName =
             conf.getString(PERMISSION_PEER_CLASS_KEY,
                            PERMISSION_PEER_CLASS_DEFAULT);
 
@@ -145,49 +145,49 @@ public class PermissionPeerManager
         {
             persistentPeerClass = Class.forName(persistentPeerClassName);
 
-            tableName  = 
+            tableName  =
                 (String) persistentPeerClass.getField("TABLE_NAME").get(null);
 
             //
-            // We have either an user configured Object class or we use the 
+            // We have either an user configured Object class or we use the
             // default as supplied by the Peer class
             //
             // Default from Peer, can be overridden
 
-            permissionObject = getPersistenceClass(); 
-            
-            permissionObjectName = 
+            permissionObject = getPersistenceClass();
+
+            permissionObjectName =
                 (String) conf.getString(PERMISSION_CLASS_KEY,
                                         permissionObject.getName());
-            
+
             // Maybe the user set a new value...
             permissionObject = Class.forName(permissionObjectName);
 
-            /* If any of the following Field queries fails, the permission 
+            /* If any of the following Field queries fails, the permission
              * subsystem is unusable. So check this right here at init time,
              * which saves us much time and hassle if it fails...
              */
 
-            nameColumn = 
+            nameColumn =
                 (String) persistentPeerClass.getField(
                     (String) conf.getString(PERMISSION_NAME_COLUMN_KEY,
                                             PERMISSION_NAME_COLUMN_DEFAULT)
                    ).get(null);
 
-            idColumn = 
+            idColumn =
                 (String) persistentPeerClass.getField(
                     (String) conf.getString(PERMISSION_ID_COLUMN_KEY,
-                                            PERMISSION_ID_COLUMN_DEFAULT)  
+                                            PERMISSION_ID_COLUMN_DEFAULT)
                    ).get(null);
 
 
-            namePropDesc = 
+            namePropDesc =
                 new PropertyDescriptor(
                     (String) conf.getString(PERMISSION_NAME_PROPERTY_KEY,
                                             PERMISSION_NAME_PROPERTY_DEFAULT),
                     permissionObject);
 
-            idPropDesc = 
+            idPropDesc =
                 new PropertyDescriptor(
                     (String) conf.getString(PERMISSION_ID_PROPERTY_KEY,
                                             PERMISSION_ID_PROPERTY_DEFAULT),
@@ -217,13 +217,13 @@ public class PermissionPeerManager
             if (nameColumn == null || namePropDesc == null)
             {
                 throw new InitializationException(
-                    "PermissionPeer " + persistentPeerClassName + 
+                    "PermissionPeer " + persistentPeerClassName +
                     " has no name column information!", e);
             }
             if (idColumn == null || idPropDesc == null)
             {
                 throw new InitializationException(
-                    "PermissionPeer " + persistentPeerClassName + 
+                    "PermissionPeer " + persistentPeerClassName +
                     " has no id column information!", e);
             }
         }
@@ -266,7 +266,7 @@ public class PermissionPeerManager
      * Returns the full name of a column.
      *
      * @param name The column to fully qualify
-     * 
+     *
      * @return A String with the full name of the column.
      */
     public static String getColumnName(String name)
@@ -415,7 +415,7 @@ public class PermissionPeerManager
      * ========================================================================
      *
      * WARNING! Do not read on if you have a weak stomach. What follows here
-     * are some abominations thanks to the braindead static peers of Torque 
+     * are some abominations thanks to the braindead static peers of Torque
      * and the rigidity of Java....
      *
      * ========================================================================
@@ -434,7 +434,7 @@ public class PermissionPeerManager
      * @param permission An object which implements
      *                 the Permission interface
      *
-     * @return A criteria for the supplied permission object 
+     * @return A criteria for the supplied permission object
      */
 
     public static Criteria buildCriteria(Permission permission)
@@ -444,7 +444,7 @@ public class PermissionPeerManager
         try
         {
             Class[] clazz = new Class[] { permissionObject };
-            Object[] params = 
+            Object[] params =
               new Object[] { ((TorquePermission) permission).getPersistentObj() };
 
             crit =  (Criteria) persistentPeerClass
@@ -527,7 +527,7 @@ public class PermissionPeerManager
 
         try
         {
-            Class[] clazz = 
+            Class[] clazz =
               new Class[] { Criteria.class };
             Object[] params = new Object[] { criteria };
 
@@ -648,7 +648,7 @@ public class PermissionPeerManager
      * Invokes setId(int n) on the supplied base object
      *
      * @param obj The object to use for setting the name
-     * @param id The new Id 
+     * @param id The new Id
      */
     public static void setId(Persistent obj, int id)
     {

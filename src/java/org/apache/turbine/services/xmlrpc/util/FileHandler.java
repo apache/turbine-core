@@ -3,7 +3,7 @@ package org.apache.turbine.services.xmlrpc.util;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -200,7 +200,7 @@ public class FileHandler
     public static String readFileContents(String targetLocationProperty,
                                           String fileName)
     {
-        String location = 
+        String location =
           Turbine.getConfiguration().getString(targetLocationProperty);
 
         if (StringUtils.isEmpty(location))
@@ -274,7 +274,7 @@ public class FileHandler
                                             String targetLocationProperty,
                                             String fileName)
     {
-        String location = 
+        String location =
           Turbine.getConfiguration().getString(targetLocationProperty);
 
         if (StringUtils.isEmpty(location))
@@ -366,12 +366,12 @@ public class FileHandler
     public static void remove(String sourceLocationProperty,
                               String sourceFileName)
     {
-        String location = 
+        String location =
           Turbine.getConfiguration().getString(sourceLocationProperty);
 
         if (StringUtils.isEmpty(location))
         {
-          log.error("Could not load Property for location " 
+          log.error("Could not load Property for location "
               + sourceLocationProperty);
           return;
         }
@@ -381,8 +381,8 @@ public class FileHandler
          * make the application fully portable. So use the TurbineServlet
          * service to map the target location in the webapp space.
          */
-        File sourceFile = 
-            new File(TurbineServlet.getRealPath(sourceLocationProperty 
+        File sourceFile =
+            new File(TurbineServlet.getRealPath(sourceLocationProperty
                          + "/" + sourceFileName));
 
         if (sourceFile.exists())

@@ -3,7 +3,7 @@ package org.apache.turbine.services.template.mapper;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -110,7 +110,7 @@ public class TemplateLayoutMapper
     /**
      * Look for a given Template, then try the
      * defaults until we hit the root.
-     * 
+     *
      * @param template The template name.
      * @return The parsed module name.
      */
@@ -125,7 +125,7 @@ public class TemplateLayoutMapper
         int componentSize = components.size() - 1 ;
 
         // This method never gets an empty string passed.
-        // So this is never < 0 
+        // So this is never < 0
         String templateName = (String) components.get(componentSize);
         components.remove(componentSize--);
 
@@ -139,12 +139,12 @@ public class TemplateLayoutMapper
             return null;
         }
 
-        String defaultName = 
+        String defaultName =
             TurbineTemplate.getDefaultLayoutTemplateName(templateName); // We're, after all, a Layout Template Mapper...
 
-        // This is an optimization. If the name we're looking for is 
+        // This is an optimization. If the name we're looking for is
         // already the default name for the template, don't do a "first run"
-        // which looks for an exact match. 
+        // which looks for an exact match.
         boolean firstRun = !templateName.equals(defaultName);
 
         for(;;)
@@ -181,7 +181,7 @@ public class TemplateLayoutMapper
                 log.debug("Found it, returning " + testName);
                 return testName.toString();
             }
-            
+
             if (firstRun)
             {
                 firstRun = false;
