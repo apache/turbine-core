@@ -14,7 +14,9 @@
         #else
             #set ( $outFile = "${project}-schema.sql" )
         #end
-
+        
+        File to be created: $outFile
+        
         #foreach ($tbl in $databaseModel.Tables)
             #if (!$tbl.isSkipSql())
                 $generator.parse($fname,$outFile,"table",$tbl)
