@@ -684,6 +684,7 @@ public class Turbine
             if (data.hasAction())
             {
                 String action = data.getAction();
+                log.debug("action = " + action);
 
                 if (action.equalsIgnoreCase(
                         configuration.getString(ACTION_LOGIN_KEY,
@@ -877,7 +878,7 @@ public class Turbine
         // associated with the previous User.  Currently the
         // only keys stored in the session are "turbine.user"
         // and "turbine.acl".
-        
+
         String[] names = data.getSession().getValueNames();
         if (names != null)
         {
@@ -929,7 +930,7 @@ public class Turbine
             ti.removeTemp(VelocityService.CONTEXT);
         }
     }
-    
+
     /**
      * Return the servlet info.
      *
