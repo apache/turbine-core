@@ -765,7 +765,7 @@ to an associated bean.
 </p>
 
 
-<source>
+<source><![CDATA[
 Dan Diephouse wrote:
 > 
 > I want to validate a form that updates my business object properties
@@ -847,7 +847,7 @@ It appears as though you are trying to map the parameters given for one
 job to another job.
 
 john mcnally
-</source>
+]]></source>
 
   </section>
 
