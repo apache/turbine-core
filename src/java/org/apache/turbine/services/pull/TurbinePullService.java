@@ -64,8 +64,6 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.pool.PoolService;
-import org.apache.turbine.services.resources.ResourceService;
-import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.Log;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.VelocityContext;
@@ -140,6 +138,7 @@ import org.apache.velocity.context.Context;
  *
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbinePullService extends TurbineBaseService
@@ -268,9 +267,8 @@ public class TurbinePullService extends TurbineBaseService
          * Get the resources directory that is specificed
          * in the TR.props or default to "/resources".
          */
-        resourcesDirectory = TurbineResources.getString(
-            TOOL_RESOURCES_DIR,
-                TOOL_RESOURCES_DIR_DEFAULT);
+        resourcesDirectory = conf.getString(TOOL_RESOURCES_DIR,
+                                            TOOL_RESOURCES_DIR_DEFAULT);
 
         /*
          * Get absolute path to the resources directory.
@@ -280,7 +278,7 @@ public class TurbinePullService extends TurbineBaseService
          * for it to initialize correctly.
          */
          absolutePathToResourcesDirectory =
-            Turbine.getRealPath(resourcesDirectory);
+             Turbine.getRealPath(resourcesDirectory);
 
         /*
          * Should we refresh the tool box on a per
@@ -339,8 +337,8 @@ public class TurbinePullService extends TurbineBaseService
     {
         List classes = new ArrayList();
 
-        ResourceService toolResources =
-            TurbineResources.getResources(keyPrefix);
+        Configuration toolResources =
+            Turbine.getConfiguration().subset(keyPrefix);
 
         /*
          * There might not be any tools for this prefix
