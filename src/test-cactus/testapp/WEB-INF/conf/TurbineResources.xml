@@ -1,0 +1,12 @@
+<XmlConfiguration>
+
+	<services>
+	  <IntakeService>
+	  	<xml>
+	  	  <path>
+ 	  	    WEB-INF/conf/specialIntake.xml
+ 	  	  </path>
+	  	</xml>
+	 </IntakeService>
+	</services>
+</XmlConfiguration>

@@ -68,7 +68,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.configuration.Configuration;
-// import org.apache.commons.configuration.ConfigurationFactory;
+import org.apache.commons.configuration.ConfigurationFactory;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 import org.apache.commons.lang.StringUtils;
@@ -325,21 +325,19 @@ public class Turbine
         String confPath;
         String confStyle = "unset";
 
-// Remove these comments and uncomment the 0.8.1 version of commons-configuration
-// once this is on ibiblio. Until then, the XML code is not enabled. Don't forget
-// to remove the comment in front of the import above.
-//
-//        if (StringUtils.isNotEmpty(confFile))
-//        {
-//            confPath = getRealPath(confFile);
-//            ConfigurationFactory configurationFactory = new ConfigurationFactory();
-//            configurationFactory.setBasePath(getApplicationRoot());
-//            configurationFactory.setConfigurationFileName(confPath);
-//            configuration = configurationFactory.getConfiguration();
-//            confStyle = "XML";
-//        }
-//        else
-//        {
+
+
+        if (StringUtils.isNotEmpty(confFile))
+        {
+            confPath = getRealPath(confFile);
+            ConfigurationFactory configurationFactory = new ConfigurationFactory();
+            configurationFactory.setBasePath(getApplicationRoot());
+            configurationFactory.setConfigurationFileName(confPath);
+            configuration = configurationFactory.getConfiguration();
+            confStyle = "XML";
+        }
+        else
+        {
             confFile = findInitParameter(context, config,
                     TurbineConfig.PROPERTIES_PATH_KEY,
                     TurbineConfig.PROPERTIES_PATH_DEFAULT);
@@ -351,7 +349,7 @@ public class Turbine
             // can be stored anywhere.
             configuration = (Configuration) new PropertiesConfiguration(confPath);
             confStyle = "Properties";
-//        }
+        }
 
         //
         // Set up logging as soon as possible
