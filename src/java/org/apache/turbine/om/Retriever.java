@@ -71,11 +71,3 @@ public interface Retriever
     public Object retrieve(String key)
         throws Exception;
 }
-
-
-
-
-
-
-
-

@@ -75,11 +75,3 @@ public interface Retrievable
     public void setQueryKey(String key) throws Exception; 
 
 }
-
-
-
-
-
-
-
-
