@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <extend>${basedir}/../../project.xml</extend>
+  <pomVersion>3</pomVersion>
+  <name>Turbine Torque Impl</name>
+  <id>turbine-torque-impl</id>
+  <currentVersion>2.4-dev</currentVersion>
+  
+  <package>org.apache.turbine</package>
+
+ 
+  <shortDescription>Torque Generated Code for Turbine</shortDescription>
+  <description>
+  	Torque provides autogeneration of objects and sql based on an xml schema document.   This
+    project contains the generated code required by Turbine for Torque implementations of the
+    Schedule service and the Security Service.
+  </description>
+  
+
+  <repository>
+    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2/src/torque</connection>
+    <developerConnection>scm:cvs:ext:${maven.username}@cvs.apache.org:/home/cvs:jakarta-turbine-2/src/torque</developerConnection>
+    <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2/src/torque</url>
+  </repository>
+
+
+  <dependencies>
+    <dependency>
+      <id>turbine</id>
+      <version>2.4-dev</version>
+      <url>http://jakarta.apache.org/turbine</url>
+    </dependency>
+    <dependency>
+      <id>jdbc</id>
+      <version>2.0</version>
+      <url>http://java.sun.com/products/jdbc/</url>
+    </dependency>
+    <dependency>
+      <id>jndi</id>
+      <version>1.2.1</version>
+      <url>http://java.sun.com/products/jndi/</url>
+    </dependency>
+    <dependency>
+      <id>torque</id>
+      <version>3.1</version>
+      <url>http://db.apache.org/torque/</url>
+    </dependency>
+    <dependency>
+      <id>village</id>
+      <version>2.0-dev-20030825</version>
+      <url>http://share.whichever.com/index.php?SCREEN=village</url>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>target/src</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+    <integrationUnitTestSourceDirectory/>
+    <integrationUnitTest/>
+    <aspectSourceDirectory/>
+  </build>
+
+
+</project>

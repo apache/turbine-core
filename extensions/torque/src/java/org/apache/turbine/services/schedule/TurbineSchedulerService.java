@@ -120,7 +120,7 @@ public class TurbineSchedulerService
             mainLoop = new MainLoop();
 
             // Load all from cold storage.
-            List jobs = JobEntryPeer.doSelect(new Criteria());
+            List jobs = JobEntryTorquePeer.doSelect(new Criteria());
 
             if (jobs != null && jobs.size() > 0)
             {
@@ -184,7 +184,7 @@ public class TurbineSchedulerService
     {
         try
         {
-            JobEntry je = JobEntryPeer.retrieveByPK(oid);
+            JobEntry je = JobEntryTorquePeer.retrieveByPK(oid);
             return scheduleQueue.getJob(je);
         }
         catch (TorqueException e)
@@ -219,8 +219,8 @@ public class TurbineSchedulerService
         try
         {
             // First remove from DB.
-            Criteria c = new Criteria().add(JobEntryPeer.JOB_ID, je.getPrimaryKey());
-            JobEntryPeer.doDelete(c);
+            Criteria c = new Criteria().add(JobEntryTorquePeer.JOB_ID, ((JobEntryTorque)je).getPrimaryKey());
+            JobEntryTorquePeer.doDelete(c);
 
             // Remove from the queue.
             scheduleQueue.remove(je);
@@ -250,7 +250,7 @@ public class TurbineSchedulerService
             je.calcRunTime();
 
             // Update the queue.
-            if (je.isNew())
+            if (((JobEntryTorque)je).isNew())
             {
                 scheduleQueue.add(je);
             }
@@ -259,7 +259,7 @@ public class TurbineSchedulerService
                 scheduleQueue.modify(je);
             }
 
-            je.save();
+            ((JobEntryTorque)je).save();
 
             restart();
         }
@@ -470,5 +470,24 @@ public class TurbineSchedulerService
                 clearThread();
             }
         }
+    }
+    public JobEntry createJobEntry(){
+        JobEntry je = new JobEntryTorque();
+        return je;
+    }
+    
+    public JobEntry createJobEntry(int sec,
+                            int min,
+                            int hr,
+                            int wkday,
+                            int dayOfMonth,
+                            String jobName) throws TurbineException{
+        JobEntry je = new JobEntryTorque(sec,
+                            min,
+                            hr,
+                            wkday,
+                            dayOfMonth,
+                            jobName);
+        return je;
     }
 }

@@ -17,9 +17,12 @@
       <item name="Features"              href="/features.html"/>
       <item name="Specification"         href="/fsd.html"/>
       <item name="Getting Started"       href="/getting-started.html"/>
-      <item name="Maven Plugin"          href="/maven-turbine-plugin/index.html"/>
+      <item name="Howto Build Turbine"   href="/how-to-build.html"/>
     </menu>
-
+    <menu name="Extensions">
+      <item name="Maven Plugin"            href="/maven-turbine-plugin/index.html"/>
+      <item name="Torque Impl of Services" href="/turbine-torque-impl/index.html"/>    
+    </menu>
     <menu name="Documentation">
       <item name="Changes"               href="/changes.html"/>
       <item name="Core DB Schema"        href="/turbine-schema.html"/>

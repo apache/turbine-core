@@ -55,6 +55,7 @@ package org.apache.turbine.services.schedule;
  */
 
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.commons.configuration.BaseConfiguration;
@@ -63,7 +64,7 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.modules.scheduledjob.SimpleJob;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.test.BaseTestCase;
+//import org.apache.turbine.test.BaseTestCase;
 
 /**
  * Unit testing for the non-persistent implementation of the scheduler service.
@@ -71,7 +72,7 @@ import org.apache.turbine.test.BaseTestCase;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class TurbineNonPersistentSchedulerServiceTest extends BaseTestCase
+public class TurbineNonPersistentSchedulerServiceTest extends TestCase
 {
     private static final String PREFIX = "services." + ScheduleService.SERVICE_NAME + '.';
 
@@ -145,7 +146,7 @@ public class TurbineNonPersistentSchedulerServiceTest extends BaseTestCase
             int jobCount = TurbineScheduler.listJobs().size();
 
             // Add a new job entry
-            JobEntry je = new JobEntry();
+			JobEntryTorque je = new JobEntryTorque();
             je.setJobId(jobCount + 1);
             je.setSecond(0);
             je.setMinute(1);
@@ -175,7 +176,7 @@ public class TurbineNonPersistentSchedulerServiceTest extends BaseTestCase
     {
         try
         {
-            JobEntry je = TurbineScheduler.getJob(1);
+			JobEntryTorque je = (JobEntryTorque)TurbineScheduler.getJob(1);
             assertEquals(je.getJobId(), 1);
             assertEquals(je.getSecond(), 10);
             assertEquals(je.getMinute(), -1);
