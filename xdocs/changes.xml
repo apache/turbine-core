@@ -423,6 +423,12 @@ Changes between Turbine 2.2 and 2.3-dev.
       is  useful if you have multiple event fields in a form and only one should be selected 
       (e.g. by a client side java script application).
     </li>
+    <li>
+      VelocityService now uses the EventCartridge Code to catch and log invocation errors from templates.
+      This is very useful when debugging pull tools, because you get the actual exception in the log and
+      not only the velocity internal stack trace. You can switch this behaviour off by setting 
+      "services.VelocityService.catch.errors" to off or false.
+    </li>
   </ul>
 </p>
 </subsection>

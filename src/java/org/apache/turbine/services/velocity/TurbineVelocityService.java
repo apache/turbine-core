@@ -83,6 +83,8 @@ import org.apache.turbine.util.TurbineException;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.event.EventCartridge;
+import org.apache.velocity.app.event.MethodExceptionEventHandler;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
 
@@ -114,7 +116,8 @@ import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
  */
 public class TurbineVelocityService
         extends BaseTemplateEngineService
-        implements VelocityService
+        implements VelocityService,
+                   MethodExceptionEventHandler
 {
     /** The generic resource loader path property in velocity.*/
     private static final String RESOURCE_LOADER_PATH = ".resource.loader.path";
@@ -145,6 +148,9 @@ public class TurbineVelocityService
      * useful for development)
      */
     private boolean refreshToolsPerRequest = false;
+
+    /** Shall we catch Velocity Errors and report them in the log file? */
+    private boolean catchErrors = true;
 
     /**
      * Load all configured components and initialize them. This is
@@ -180,7 +186,7 @@ public class TurbineVelocityService
             // an empty toolBoxContext
             if (globalContext == null)
             {
-                globalContext = new VelocityContext();
+                globalContext = getNewContext();
             }
 
             // Register with the template service.
@@ -224,6 +230,7 @@ public class TurbineVelocityService
     public Context getContext()
     {
         Context ctx = new VelocityContext(globalContext);
+        addEventCartridge(ctx);
 
         //
         // We have only one context per request (that is the nature
@@ -245,7 +252,47 @@ public class TurbineVelocityService
     public Context getNewContext()
     {
         Context ctx = new VelocityContext();
+        addEventCartridge(ctx);
         return ctx;
+    }
+
+    /**
+     * Creates a new Event Cartridge object and attaches it
+     * to the passed Velocity Context
+     *
+     * @param ctx The context
+     */
+    private void addEventCartridge(Context ctx)
+    {
+        EventCartridge ec = new EventCartridge();
+        ec.addEventHandler(this);
+        ec.attachToContext(ctx);
+    }
+
+    /**
+     * MethodException Event Cartridge handler
+     * for Velocity.
+     *
+     * It logs an execption thrown by the velocity processing
+     * on error level into the log file
+     *
+     * @param clazz The class that threw the exception
+     * @param method The Method name that threw the exception
+     * @param e The exception that would've been thrown
+     * @return A valid value to be used as Return value
+     * @throws Exception We threw the exception further up
+     */
+    public Object methodException(Class clazz, String method, Exception e)
+            throws Exception
+    {
+        log.error("Class " + clazz.getName() + "::" + method + " threw Exception", e);
+
+        if (!catchErrors)
+        {
+            throw e;
+        }
+
+        return "[Turbine caught an Error here. Look into the turbine.log for further information]";
     }
 
     /**
@@ -511,14 +558,16 @@ public class TurbineVelocityService
         throws Exception
     {
         // Get the configuration for this service.
-        Configuration configuration = getConfiguration();
+        Configuration conf = getConfiguration();
 
-        configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS,
+        catchErrors = conf.getBoolean(CATCH_ERRORS_KEY, CATCH_ERRORS_DEFAULT);
+        
+        conf.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS,
                 SimpleLog4JLogSystem.class.getName());
-        configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM
+        conf.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM
                 + ".log4j.category", "velocity");
-
-        Velocity.setExtendedProperties(createVelocityProperties(configuration));
+        
+        Velocity.setExtendedProperties(createVelocityProperties(conf));
         Velocity.init();
     }
 

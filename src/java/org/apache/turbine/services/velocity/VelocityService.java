@@ -87,6 +87,12 @@ public interface VelocityService
     /** The Key for storing the RunData Object in the Context */
     String RUNDATA_KEY = "data";
 
+    /** Shall we catch Velocity Errors and report them? */
+    String CATCH_ERRORS_KEY = "catch.errors";
+
+    /** Default: Yes */
+    boolean CATCH_ERRORS_DEFAULT = true;
+
     /**
      * Process the request and fill in the template with the values
      * you set in the Context.
