@@ -62,6 +62,17 @@ Changes between Turbine LAST_RELEASE and CURRENT_RELEASE.
 Changes between Turbine 2.3 and 2.3.1.
 </p>
 
+<subsection name="Other changes">
+<p>
+  <ul>
+    <li>
+      Intake was extended to provide Field values with &quot; escaped as
+      &amp;quot; to provide valid values for HTML form inputs.
+    </li>
+  </ul>
+</p>
+</subsection>
+
 <subsection name="Fixed bugs">
 <p>
   <ul>
