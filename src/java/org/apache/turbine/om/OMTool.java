@@ -90,8 +90,8 @@ public class OMTool implements ApplicationTool, Recyclable
     public OMTool()throws Exception
     {
         omMap = new HashMap();
-        String className = Turbine.getConfiguration()
-                .getString("tool.om.factory");
+        //String className = Turbine.getConfiguration()
+        //       .getString("tool.om.factory");
         //        RetrieverFactory omFactory =
         //            (RetrieverFactory)Class.forName(className).newInstance();
     }
