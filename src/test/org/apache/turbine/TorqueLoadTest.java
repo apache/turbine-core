@@ -57,16 +57,11 @@ package org.apache.turbine;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.turbine.Turbine;
+import org.apache.torque.Torque;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
-
-import org.apache.torque.Torque;
-import org.apache.torque.TorqueSingleton;
-import org.apache.torque.avalon.TorqueComponent;
-
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
-import org.apache.turbine.services.TurbineServices;
 
 /**
  * Can we load and run Torque standalone, from Component and from
