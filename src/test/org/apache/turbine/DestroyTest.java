@@ -54,10 +54,6 @@ package org.apache.turbine;
  * <http://www.apache.org/>.
  */
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import org.apache.turbine.Turbine;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 
@@ -78,11 +74,6 @@ public class DestroyTest
     {
         super(name);
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
-    }
-
-    public static Test suite()
-    {
-        return new TestSuite(DestroyTest.class);
     }
 
     public void testDestroy()

@@ -54,9 +54,6 @@ package org.apache.turbine.services.template;
  * <http://www.apache.org/>.
  */
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
@@ -83,11 +80,6 @@ public class ClassTest
         tc.initialize();
 
         ts = (TemplateService) TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
-    }
-
-    public static Test suite()
-    {
-        return new TestSuite(ClassTest.class);
     }
 
     public void testTemplateDefaults()

@@ -54,12 +54,7 @@ package org.apache.turbine.services.template;
  * <http://www.apache.org/>.
  */
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.template.TemplateEngineService;
-import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
@@ -88,10 +83,6 @@ public class InitTest
         ts = (TemplateService) TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
     }
 
-    public static Test suite()
-    {
-        return new TestSuite(InitTest.class);
-    }
 
     public void testService()
         throws Exception

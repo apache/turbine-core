@@ -54,9 +54,6 @@ package org.apache.turbine.services.crypto;
  * <http://www.apache.org/>.
  */
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.apache.fulcrum.crypto.CryptoAlgorithm;
 import org.apache.fulcrum.crypto.CryptoService;
 import org.apache.turbine.services.TurbineServices;
@@ -83,11 +80,6 @@ public class CryptoRunningInECMTest extends BaseTestCase
         super(name);
 
       
-    }
-
-    public static Test suite()
-    {
-        return new TestSuite(CryptoRunningInECMTest.class);
     }
 
     public void testMd5()

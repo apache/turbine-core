@@ -54,16 +54,10 @@ package org.apache.turbine.services.velocity;
  * <http://www.apache.org/>.
  */
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.apache.commons.collections.ExtendedProperties;
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.velocity.TurbineVelocityService;
-import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 
@@ -92,10 +86,6 @@ public class PathConverterTest
         vs = (VelocityService) TurbineServices.getInstance().getService(VelocityService.SERVICE_NAME);
     }
 
-    public static Test suite()
-    {
-        return new TestSuite(PathConverterTest.class);
-    }
 
     public void testService()
         throws Exception

@@ -54,9 +54,6 @@ package org.apache.turbine;
  * <http://www.apache.org/>.
  */
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
@@ -85,11 +82,6 @@ public class ConfigurationTest extends BaseTestCase
     public ConfigurationTest(String name) throws Exception
     {
         super(name);
-    }
-
-    public static Test suite()
-    {
-        return new TestSuite(ConfigurationTest.class);
     }
 
     public void testCreateTurbineWithConfigurationXML() throws Exception
