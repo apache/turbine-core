@@ -82,18 +82,11 @@ public abstract class ObjectUtils
      * @param o The object to test.
      * @param dflt The default value to return.
      * @return The object o if it is not null, dflt otherwise.
-     * @deprecated Use commons-lang
+     * @deprecated Use org.apache.commons.lang.ObjectUtils.defaultIfNull()
      */
     public static Object isNull(Object o, Object dflt)
     {
-        if (o == null)
-        {
-            return dflt;
-        }
-        else
-        {
-            return o;
-        }
+		return org.apache.commons.lang.ObjectUtils.defaultIfNull(o,dflt);
     }
 
     /**
@@ -237,23 +230,11 @@ public abstract class ObjectUtils
      * @param o1 The first object.
      * @param o2 The second object.
      * @return True if the values of both xstrings are the same.
-     * @deprecated No replacement
+     * @deprecated Use org.apache.commons.lang.ObjectUtils.equals()
      */
     public static boolean equals(Object o1, Object o2)
     {
-        if (o1 == null)
-        {
-            return (o2 == null);
-        }
-        else if (o2 == null)
-        {
-            // o1 is not null
-            return false;
-        }
-        else
-        {
-            return o1.equals(o2);
-        }
+		return org.apache.commons.lang.ObjectUtils.equals(o1,o2);
     }
 
     /**
