@@ -128,4 +128,13 @@ public abstract class TurbineGlobalCache
     {
         return getService().getCacheSize();
     }
+
+    /**
+     * Returns the number of objects in the cache.
+     * @return int The current number of objects in the cache.
+     */
+    public static int getNumberOfObjects()
+    {
+        return getService().getNumberOfObjects();
+    }
 }

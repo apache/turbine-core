@@ -85,8 +85,7 @@ public interface GlobalCacheService
      * @param id The String id for the object.
      * @param o The object to add to the cache.
      */
-    public void addObject(String id,
-                          CachedObject o);
+    public void addObject(String id, CachedObject o);
 
     /**
      * Removes an object from the cache.
@@ -101,4 +100,10 @@ public interface GlobalCacheService
      */
     public int getCacheSize()
         throws IOException;
+
+    /**
+     * Returns the number of objects in the cache.
+     * @return int The current number of objects in the cache.
+     */
+    public int getNumberOfObjects();
 }
