@@ -54,51 +54,48 @@ package org.apache.turbine.util.security;
  * <http://www.apache.org/>.
  */
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.TreeSet;
+
+import org.apache.commons.lang.StringUtils;
 
 import org.apache.turbine.om.security.Permission;
-import org.apache.turbine.om.security.SecurityObject;
 
 /**
  * This class represents a set of Permissions.  It makes it easy to
  * build a UI that would allow someone to add a group of Permissions
- * to a Role.  It wraps a TreeSet object to enforce that only
+ * to a Role.  It enforces that only
  * Permission objects are allowed in the set and only relevant methods
- * are available.  TreeSet's contain only unique Objects (no
- * duplicates).
+ * are available.
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * @author <a href="mailto:marco@intermeta.de">Marco Kn&uuml;ttel</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class PermissionSet implements Serializable
+public class PermissionSet
+    extends SecuritySet
 {
-    /** Set to hold the Permission Set */
-    private TreeSet set;
-
     /**
      * Constructs an empty PermissionSet
      */
     public PermissionSet()
     {
-        set = new TreeSet();
+        super();
     }
 
     /**
-     * Constructs a new PermissionSet with specifed contents.
+     * Constructs a new PermissionSet with specified contents.
      *
      * If the given collection contains multiple objects that are
-     * identical WRT equals() method, some objects will be overwriten.
+     * identical WRT equals() method, some objects will be overwritten.
      *
      * @param permissions A collection of permissions to be contained in the set.
      */
     public PermissionSet(Collection permissions)
     {
-        this();
+        super();
         add(permissions);
     }
 
@@ -111,20 +108,28 @@ public class PermissionSet implements Serializable
      */
     public boolean add(Permission permission)
     {
-        return set.add((Object) permission);
+        boolean res = contains(permission);
+        nameMap.put(permission.getName(), permission);
+        return res;
     }
 
     /**
      * Adds the Permissions in a Collection to this PermissionSet.
      *
-     * @param permissions A Permission.
+     * @param permissions A Collection of Permissions.
      * @return True if this PermissionSet changed as a result; false
      * if no change to this PermissionSet occurred (this PermissionSet
      * already contained all members of the added PermissionSet).
      */
     public boolean add(Collection permissions)
     {
-        return set.addAll(permissions);
+        boolean res = false;
+        for (Iterator it = permissions.iterator(); it.hasNext();)
+        {
+            Permission p = (Permission) it.next();
+            res |= add(p);
+        }
+        return res;
     }
 
     /**
@@ -138,7 +143,13 @@ public class PermissionSet implements Serializable
      */
     public boolean add(PermissionSet permissionSet)
     {
-        return set.addAll(permissionSet.set);
+        boolean res = false;
+        for( Iterator it = permissionSet.iterator(); it.hasNext();)
+        {
+            Permission p = (Permission) it.next();
+            res |= add(p);
+        }
+        return res;
     }
 
     /**
@@ -150,15 +161,9 @@ public class PermissionSet implements Serializable
      */
     public boolean remove(Permission permission)
     {
-        return set.remove((Object) permission);
-    }
-
-    /**
-     * Removes all Permissions from this PermissionSet.
-     */
-    public void clear()
-    {
-        set.clear();
+        boolean res = contains(permission);
+        nameMap.remove(permission.getName());
+        return res;
     }
 
     /**
@@ -170,30 +175,7 @@ public class PermissionSet implements Serializable
      */
     public boolean contains(Permission permission)
     {
-        return set.contains((Object) permission);
-    }
-
-    /**
-     * Returns a Permission with the given name, if it is contained in
-     * this PermissionSet.
-     *
-     * @param permissionName Name of Permission.
-     * @return True if argument matched a Permission in this
-     * PermissionSet; false if no match.
-     */
-    public boolean contains(String permissionName)
-    {
-        Iterator iter = set.iterator();
-        while (iter.hasNext())
-        {
-            Permission permission = (Permission) iter.next();
-            if (permissionName != null &&
-                    permissionName.equals(((SecurityObject) permission).getName()))
-            {
-                return true;
-            }
-        }
-        return false;
+        return nameMap.containsValue((Object) permission);
     }
 
     /**
@@ -206,17 +188,8 @@ public class PermissionSet implements Serializable
      */
     public Permission getPermission(String permissionName)
     {
-        Iterator iter = set.iterator();
-        while (iter.hasNext())
-        {
-            Permission permission = (Permission) iter.next();
-            if (permissionName != null &&
-                    permissionName.equals(((SecurityObject) permission).getName()))
-            {
-                return permission;
-            }
-        }
-        return null;
+        return (StringUtils.isNotEmpty(permissionName))
+                ? (Permission) nameMap.get(permissionName) : null;
     }
 
     /**
@@ -226,34 +199,32 @@ public class PermissionSet implements Serializable
      */
     public Permission[] getPermissionsArray()
     {
-        return (Permission[]) set.toArray(new Permission[0]);
+        return (Permission[]) getSet().toArray(new Permission[0]);
     }
 
     /**
-     * @deprecated Use iterator() instead.
-     */
-    public Iterator elements()
-    {
-        return set.iterator();
-    }
-
-    /**
-     * Returns an Iterator for Groups in this GroupSet.
+     * Print out a PermissionSet as a String
      *
-     * @return An Iterator for this GroupSet
-     */
-    public Iterator iterator()
-    {
-        return set.iterator();
-    }
-
-    /**
-     * Returns size (cardinality) of this set.
+     * @returns The Permission Set as String
      *
-     * @return The cardinality of this PermissionSet.
      */
-    public int size()
+    public String toString()
     {
-        return set.size();
+        StringBuffer sb = new StringBuffer();
+        sb.append("PermissionSet: ");
+
+        for(Iterator it = iterator(); it.hasNext();)
+        {
+            Permission p = (Permission) it.next();
+            sb.append('[');
+            sb.append(p.getName());
+            sb.append(']');
+            if (it.hasNext())
+            {
+                sb.append(", ");
+            }
+        }
+
+        return sb.toString();
     }
 }
