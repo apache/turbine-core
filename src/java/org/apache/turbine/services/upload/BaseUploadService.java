@@ -183,4 +183,26 @@ public abstract class BaseUploadService
         return ServletUtils.expandRelative(config, tmpPath);
 
     }
+
+    /**
+     * Retrieves the value of the 'automatic' property of {@link
+     * UploadService}. This reports whether the Parameter parser
+     * should allow "automatic" uploads if it is submitted to
+     * Turbine.
+     *
+     * @return The value of 'automatic' property of {@link
+     * UploadService}.
+     */
+    public boolean getAutomatic()
+    {
+        String auto = 
+            getConfiguration().getString(
+                UploadService.AUTOMATIC_KEY,
+                UploadService.AUTOMATIC_DEFAULT).toLowerCase();
+
+        // True, yes, 1 is "true", everything else is "false".
+        return auto.equals("true") 
+            || auto.equals("yes") 
+            || auto.equals("1");
+    }
 }

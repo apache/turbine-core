@@ -56,7 +56,9 @@ package org.apache.turbine.services.upload;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.turbine.services.InstantiationException;
 import org.apache.turbine.services.TurbineServices;
+
 import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.TurbineException;
 
@@ -87,40 +89,46 @@ public abstract class TurbineUpload
     }
 
     /**
-     * <p> Retrieves the value of 'automatic' property of {@link
-     * UploadService}.
+     * Checks whether an Upload Service is configured. 
+     * This method is safe to call even with no Upload
+     * service installed.
      *
-     * @return The value of 'automatic' property of {@link
-     * UploadService}.
+     * @return True if an upload Service is configured
      */
-    public static boolean getAutomatic()
+    public static boolean isAvailable()
     {
         UploadService upload = null;
         try
         {
             upload = getService();
         }
-        catch (org.apache.turbine.services.InstantiationException ie)
+        catch (InstantiationException ie)
         {
             // If the service couldn't be instantiated, it obviously
-            // can't be used for automatic uploading.
+            // isn't configured.
             return false;
         }
-        String auto = upload.getProperties()
-                .getProperty(UploadService.AUTOMATIC_KEY,
-                        UploadService.AUTOMATIC_DEFAULT.toString())
-                .toLowerCase();
-        if (auto.equals("true") || auto.equals("yes") || auto.equals("1"))
-        {
-            return true;
-        }
-        if (auto.equals("false") || auto.equals("no") || auto.equals("0"))
-        {
-            return false;
-        }
-        return UploadService.AUTOMATIC_DEFAULT.booleanValue();
+        return true;
     }
 
+
+    /**
+     * Retrieves the value of the 'automatic' property of {@link
+     * UploadService}. This reports whether the Upload Service
+     * is available and (if yes), the Parameter parser should
+     * allow "automatic" uploads if it is submitted to Turbine.
+     *
+     * This method is safe to call even with no Upload Service
+     * configured.
+     *
+     * @return The value of 'automatic' property of {@link
+     * UploadService}.
+     */
+    public static boolean getAutomatic()
+    {
+        // Short circuit evaluation of the && operator!
+        return isAvailable() && getService().getAutomatic();
+    }
     /**
      * <p> Retrieves the value of 'size.max' property of {@link
      * UploadService}.
