@@ -250,21 +250,21 @@ public class TurbineResourceService
 
         int begin = -1;
         int end = -1;
-        int prec = 0-END_TOKEN.length();
+        int prec = 0 - END_TOKEN.length();
         String variable = null;
         StringBuffer result = new StringBuffer();
 
         // FIXME: we should probably allow the escaping of the start token
-        while ( ((begin=base.indexOf(START_TOKEN,prec+END_TOKEN.length()))>-1)
-                && ((end=base.indexOf(END_TOKEN,begin))>-1) )
+        while ( ((begin = base.indexOf(START_TOKEN, prec + END_TOKEN.length())) >- 1)
+                && ((end = base.indexOf(END_TOKEN, begin)) >- 1) )
         {
-            result.append(base.substring(prec+END_TOKEN.length(),begin));
-            variable = base.substring(begin+START_TOKEN.length(),end);
+            result.append(base.substring(prec + END_TOKEN.length(), begin));
+            variable = base.substring(begin + START_TOKEN.length(), end);
             if (top.getString(variable)!=null)
             {
                 result.append(top.getString(variable));
             }
-            prec=end;
+            prec = end;
         }
         result.append(base.substring(prec+END_TOKEN.length(),base.length()));
 
