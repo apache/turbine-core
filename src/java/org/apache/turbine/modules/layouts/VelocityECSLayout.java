@@ -54,16 +54,20 @@ package org.apache.turbine.modules.layouts;
  * <http://www.apache.org/>.
  */
 
-// ECS Classes
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.ecs.ConcreteElement;
+
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.ScreenLoader;
+
 import org.apache.turbine.services.velocity.TurbineVelocity;
+
 import org.apache.turbine.util.RunData;
+
 import org.apache.turbine.util.template.TemplateNavigation;
+
 import org.apache.velocity.context.Context;
 
 /**
@@ -74,12 +78,14 @@ import org.apache.velocity.context.Context;
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  * @deprecated you should use velocity
  */
-public class VelocityECSLayout extends Layout
+public class VelocityECSLayout
+    extends Layout
 {
-    /** the log */
+    /** Logging */
     private static Log log = LogFactory.getLog(VelocityECSLayout.class);
 
     /**
@@ -98,23 +104,24 @@ public class VelocityECSLayout extends Layout
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    public void doBuild(RunData data) throws Exception
+    public void doBuild(RunData data)
+        throws Exception
     {
         // Get the context needed by Velocity.
         Context context = TurbineVelocity.getContext(data);
 
-        // Screen results.
-        String returnValue = "";
+        String screenName = data.getScreen();
 
-        // First, generate the screen and put it in the context so we
-        // can grab it the layout template.
-        ConcreteElement results = ScreenLoader.getInstance()
-                .eval(data, data.getScreen());
+        log.debug("Loading Screen " + screenName);
 
-        if (results != null)
-        {
-            returnValue = results.toString();
-        }
+        /*
+         * First, generate the screen and put it in the context so we
+         * can grab it the layout template.
+         */
+        ConcreteElement results =
+            ScreenLoader.getInstance().eval(data, screenName);
+
+        String returnValue = (results == null) ? "" : results.toString();
 
         // Variable for the screen in the layout template.
         context.put("screen_placeholder", returnValue);
