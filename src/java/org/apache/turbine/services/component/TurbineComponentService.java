@@ -90,13 +90,13 @@ public class TurbineComponentService
 {
 
     /** Extension used for Configuration files. */
-    private static String CONFIG    = "config";
+    private static String CONFIG = "config";
 
     /** Name tag used in Configurations */
-    private static String NAME           = "name";
+    private static String NAME = "name";
 
     /** Prefix used by the Component Loader */
-    private static String COMPONENT      = "component";
+    private static String COMPONENT = "component";
 
     /** List of Components that was initialized */
     private Object [] components = null;
@@ -118,11 +118,6 @@ public class TurbineComponentService
     public void init(ServletConfig config) 
         throws InitializationException
     {
-
-        String webAppRoot = config.getServletContext().getRealPath("");
-        
-        webAppRoot += System.getProperty("file.separator");
-
         Configuration loaderConf = new BaseConfiguration();
 
         String [] names = getConfiguration().getStringArray(NAME);
@@ -143,7 +138,10 @@ public class TurbineComponentService
 
                 if(subKey.equals(CONFIG))
                 {
-                    subVal = webAppRoot + (String)subVal;
+                    Log.debug("Fixing up "+subVal);
+                    subVal = 
+                        config.getServletContext().getRealPath((String)subVal);
+                    Log.debug("Now: "+subVal);
                 }
                 
                 loaderConf.addProperty(subProperty + "." + subKey,
