@@ -14,10 +14,9 @@ The Component service loads external modules which implement the
 org.apache.stratum.lifecycle Interfaces for use with Turbine 2.
 </p>
 <p>
-Main usage for this are the <a
-href="http://jakarta.apache.org/turbine/torque/">Torque</a> and <a
-href="http://jakarta.apache.org/turbine/fulcrum/">Fulcrum</a>
-components of the <a
+Main usage for this are the <a href="http://db.apache.org/torque/">
+Torque</a> and <a href="http://jakarta.apache.org/turbine/fulcrum/">
+Fulcrum</a> components of the <a 
 hef="http://jakarta.apache.org/turbine/">Turbine</a> project.
 </p>
 
@@ -25,6 +24,14 @@ hef="http://jakarta.apache.org/turbine/">Turbine</a> project.
 As Turbine-2 now uses the decoupled Torque, you must initialize Torque
 at startup. Fulcrum is currently not integrated in Turbine-2.2 but you
 can use some services from it.
+</p>
+
+<p>
+As of version 2.3 Turbine now provides an 
+<a href="avalon-component-service.html">Avalon Component Service</a> 
+that can be used to configure Torque.  In future releases additional 
+components will be migrated to Avalon components, most likely as part
+of Fulcrum.
 </p>
 
 </section>
