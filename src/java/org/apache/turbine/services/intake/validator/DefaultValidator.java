@@ -56,6 +56,7 @@ package org.apache.turbine.services.intake.validator;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -195,12 +196,11 @@ abstract public class DefaultValidator
     public void assertValidity(String testValue)
             throws ValidationException
     {
-        if (!required && (testValue == null || testValue.length() == 0))
+        if (!required && StringUtils.isEmpty(testValue))
         {
             return;
         }
-        else if (required
-                && (testValue == null || testValue.length() == 0))
+        if (required && StringUtils.isEmpty(testValue))
         {
             errorMessage = requiredMessage;
             throw new ValidationException(requiredMessage);
