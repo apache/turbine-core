@@ -1,0 +1,38 @@
+Version: $Id$
+Author:  Henning P. Schmiedehausen <hps@intermeta.de>
+
+org.apache.turbine.util.uri.BaseURI
+org.apache.turbine.util.uri.DataURI
+org.apache.turbine.util.uri.TemplateURI
+org.apache.turbine.util.uri.TurbineURI
+org.apache.turbine.util.uri.URIParam
+org.apache.turbine.util.uri.URIUtils
+org.apache.turbine.services.pull.tool.ContentTool
+org.apache.turbine.services.pull.tool.RelativeTemplateLink
+org.apache.turbine.services.pull.tool.TemplateLink
+org.apache.turbine.services.pull.tool.TemplateLinkWithSlash
+
+This package provides a new implementation for storing URIs and using
+them in templates in Turbine. It avoids the confusion that arose from
+mixing tools with internal classes and provides a uniform access to
+the various URI types in Turbine. 
+
+This is intended to replace the following classes:
+
+org.apache.turbine.util.ContentURI.java 
+org.apache.turbine.util.DynamicURI.java
+org.apache.turbine.util.RelativeDynamicURI.java
+org.apache.turbine.util.RelativeTemplateLink.java
+org.apache.turbine.util.TemplateLink.java
+org.apache.turbine.util.TemplateLinkWithSlash.java
+
+If you want to try it out, simply copy the tree under src/java onto
+the Turbine-2.3 HEAD tree in src/java and rebuild Turbine.
+
+Then change the definition of the following pull tools:
+
+tool.request.link    = org.apache.turbine.services.pull.tools.TemplateLink
+tool.request.content = org.apache.turbine.services.pull.tools.ContentTool
+
+and restart your Turbine.
+
