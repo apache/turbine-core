@@ -54,18 +54,21 @@ package org.apache.turbine.services.intake;
  */
 import java.io.File;
 import java.util.Vector;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.fulcrum.intake.IntakeService;
 import org.apache.fulcrum.intake.model.Group;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.MerlinComponentService;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
+
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockHttpSession;
 import com.mockobjects.servlet.MockServletConfig;
@@ -142,10 +145,10 @@ public class IntakeToolTest extends BaseTestCase
         tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
         
-		MerlinComponentService merlin =
-			(MerlinComponentService) TurbineServices.getInstance().getService(MerlinComponentService.SERVICE_NAME);
+		AvalonComponentService avalon =
+			(AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
 						
-		merlin.lookup("/fulcrum/intake");
+		avalon.lookup(IntakeService.class.getName());
 						
     }
     public void tearDown() throws Exception
