@@ -36,7 +36,7 @@
     <!--  Load the setup file. You can redefine its name with the 
           turbine.setup.properties property 
     -->
-    <j:if test="${empty(context.getVariable('turbine.setup.properties'))}">
+    <j:if test="${context.getVariable('turbine.setup.properties') == null || context.getVariable('turbine.setup.properties') == ''}">
       <j:set var="turbine.setup.properties" value="setup.properties"/>
     </j:if>
     <u:available file="${turbine.setup.properties}">
@@ -402,7 +402,7 @@
     description="updates the libraries for an inplace application"
     prereqs="turbine:init, turbine:check-runtime-environment">
 
-    <j:if test="${!empty(context.getVariable('turbine.plugin.target.lib'))}">
+    <j:if test="${context.getVariable('turbine.plugin.target.lib') != null &amp;&amp; context.getVariable('turbine.plugin.target.lib') != ''}">
       <j:forEach var="dep" items="${pom.dependencies}">
         <j:if test="${dep.getProperty('war.bundle').equalsIgnoreCase('true')}">
           <copy todir="${turbine.plugin.target.lib}"
@@ -683,10 +683,10 @@
   <goal name="turbine:check-runtime-environment"
     prereqs="turbine:init">
 
-   <j:if test="${empty(context.getVariable('maven.appserver.name'))}">
+   <j:if test="${context.getVariable('maven.appserver.name') == null || context.getVariable('maven.appserver.name') == ''}">
      <meta:requiredPropertyMissing propname="maven.appserver.name" />
    </j:if>
-   <j:if test="${empty(context.getVariable('torque.database'))}">
+   <j:if test="${context.getVariable('torque.database') == null || context.getVariable('torque.database') == ''}">
      <meta:requiredPropertyMissing propname="torque.database" />
    </j:if>
 
@@ -694,12 +694,12 @@
 
    <j:choose>
      <j:when test="${pluginMode.equalsIgnoreCase('normal')}">
-       <j:if test="${empty(context.getVariable('maven.appserver.home'))}">
+       <j:if test="${context.getVariable('maven.appserver.home') == null || context.getVariable('maven.appserver.home') == ''}">
          <meta:requiredPropertyMissing propname="maven.appserver.home" />
        </j:if>
      </j:when>
      <j:when test="${pluginMode.equalsIgnoreCase('inplace')}">
-       <j:if test="${empty(context.getVariable('turbine.plugin.inplace.dir'))}">
+       <j:if test="${context.getVariable('turbine.plugin.inplace.dir') == null || context.getVariable('turbine.plugin.inplace.dir') == ''}">
          <meta:requiredPropertyMissing propname="turbine.plugin.inplace.dir" />
        </j:if>
      </j:when>
@@ -708,7 +708,7 @@
 
   <goal name="turbine:check-setup-environment"
     prereqs="turbine:init, turbine:check-runtime-environment">
-    <j:if test="${empty(context.getVariable('turbine.app.name'))}">
+    <j:if test="${context.getVariable('turbine.app.name') == null || context.getVariable('turbine.app.name') == ''}">
       <meta:requiredPropertyMissing propname="turbine.app.name" />
     </j:if>
 
