@@ -83,7 +83,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 
-/*
+/**
  * This is a Service that can process FreeMarker templates from within
  * a Turbine Screen.  Here's an example of how you might use it from a
  * screen:
