@@ -57,21 +57,30 @@ package org.apache.turbine.services.session;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
  * This class is a listener for Session creation and destruction.  It
- * must be configured in your deployment descriptor for the container
- * to call it.
+ * must be configured via your web application's <code>web.xml</code>
+ * deployment descriptor as follows for the container to call it:
  *
+ * <blockquote><code><pre>
+ * <listener>
+ *   <listener-class>
+ *     org.apache.turbine.session.SessionListener
+ *   </listener-class>
+ * </listener>
+ * </pre></code></blockquote>
+ *
+ * <code>&lt;listener&gt;</code> elemements can occur between
+ * <code>&lt;context-param&gt;</code> and <code>&lt;servlet&gt;</code>
+ * elements in your deployment descriptor.
+ *
+ * @since 2.3
+ * @version $Id$
  * @see javax.servlet.http.HttpSessionListener
  */
 public class SessionListener
         implements HttpSessionListener
 {
-    private static Log log = LogFactory.getLog(SessionListener.class);
-
     /**
      * Called by the servlet container when a new session is created
      *

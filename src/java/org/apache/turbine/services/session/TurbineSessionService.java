@@ -54,26 +54,34 @@ package org.apache.turbine.services.session;
  * <http://www.apache.org/>.
  */
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Vector;
 import javax.servlet.http.HttpSession;
 
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineBaseService;
 
 /**
- * The SessionService allows access to the current sessions of the current
- * context.
- * The session objects that are cached by this service are obtained through
- * a listener.  The listener must be configured in your web.xml file.
+ * The SessionService allows thread-safe access to the current
+ * sessions of the current context.  The session objects that are
+ * cached by this service are obtained through a listener, which must
+ * be configured via your web application's <code>web.xml</code>
+ * deployement descriptor as follows:
  *
- * Access to this service should be through
- * org.apache.turbine.session.TurbineSession
+ * <blockquote><code><pre>
+ * <listener>
+ *   <listener-class>
+ *     org.apache.turbine.session.SessionListener
+ *   </listener-class>
+ * </listener>
+ * </pre></code></blockquote>
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
+ * @since 2.3
  * @version $Id$
  * @see org.apache.turbine.services.session.TurbineSession
  * @see org.apache.turbine.services.session.SessionListener
@@ -86,15 +94,18 @@ public class TurbineSessionService
     private Map activeSessions;
 
     /**
-     * Gets a list of the active sessions
+     * Gets a list of the active sessions.
      *
-     * @return List of HttpSession objects
+     * @return A copy of the list of <code>HttpSession</code> objects.
      */
     public Collection getActiveSessions()
     {
-        Collection result = null;
-        result = activeSessions.values();
-        return result;
+        // Sync externally to allow ArrayList's ctor to iterate
+        // activeSessions' values in a thread-safe fashion.
+        synchronized (activeSessions)
+        {
+            return new ArrayList(activeSessions.values());
+        }
     }
 
     /**
@@ -132,8 +143,7 @@ public class TurbineSessionService
      */
     public boolean isUserLoggedIn(User user)
     {
-        Collection col = getActiveUsers();
-        return col.contains(user);
+        return getActiveUsers().contains(user);
     }
 
     /**
@@ -141,20 +151,23 @@ public class TurbineSessionService
      * logged in.  This will exclude any instances of anonymous user that
      * Turbine will use before the user actually logs on.
      *
-     * @return collection of org.apache.turbine.om.security.User objects
+     * @return A set of {@link org.apache.turbine.om.security.User} objects.
      */
     public Collection getActiveUsers()
     {
-        Vector users = new Vector();
-
-        // loop through the active sessions to find the user
-        for(Iterator iter = activeSessions.values().iterator(); iter.hasNext();)
+        Collection users;
+        synchronized (activeSessions)
         {
-            HttpSession session = (HttpSession) iter.next();
-            User tmpUser = getUserFromSession(session);
-            if(tmpUser != null && tmpUser.hasLoggedIn())
+            // Pre-allocate a list which won't need expansion more
+            // than once.
+            users = new ArrayList((int) (activeSessions.size() * 0.7));
+            for (Iterator i = activeSessions.values().iterator(); i.hasNext();)
             {
-                users.add(tmpUser);
+                User u = getUserFromSession((HttpSession) i.next());
+                if (u != null && u.hasLoggedIn())
+                {
+                    users.add(u);
+                }
             }
         }
 
@@ -164,8 +177,8 @@ public class TurbineSessionService
     /**
      * Gets the User object of the the specified HttpSession.
      *
-     * @param session
-     * @return
+     * @param session The session from which to extract a user.
+     * @return The Turbine User object.
      */
     public User getUserFromSession(HttpSession session)
     {
@@ -175,8 +188,8 @@ public class TurbineSessionService
     /**
      * Gets the HttpSession by the session identifier
      *
-     * @param sessionId
-     * @return
+     * @param sessionId The unique session identifier.
+     * @return The session keyed by the specified identifier.
      */
     public HttpSession getSession(String sessionId)
     {
@@ -217,7 +230,7 @@ public class TurbineSessionService
      */
     public void init()
     {
-        this.activeSessions = new HashMap();
+        this.activeSessions = new Hashtable();
 
         setInit(true);
     }
