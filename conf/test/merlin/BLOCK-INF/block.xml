@@ -3,21 +3,19 @@
    <classloader>
      <classpath>
        <repository>
-         <resource id="merlin/tutorial:hello" version="1.1"/>
-         <resource id="fulcrum:fulcrum-mimetype-api" version="1.0-alpha-4"/>
-         <resource id="fulcrum:fulcrum-mimetype-impl" version="1.0-alpha-4"/>
-         <resource id="fulcrum:fulcrum-localization-api" version="1.0-alpha-4"/>
-         <resource id="fulcrum:fulcrum-localization-impl" version="1.0-alpha-4"/>
+         <resource id="fulcrum:fulcrum-mimetype-api" version="1.0.4"/>
+         <resource id="fulcrum:fulcrum-mimetype-impl" version="1.0.4"/>
+         <resource id="fulcrum:fulcrum-localization-api" version="1.0.4"/>
+         <resource id="fulcrum:fulcrum-localization-impl" version="1.0.4"/>
          
-         <resource id="fulcrum:fulcrum-factory-api" version="1.0-alpha-2"/>
-         <resource id="fulcrum:fulcrum-factory-impl" version="1.0-alpha-2"/>
-         <resource id="fulcrum:fulcrum-crypto-api" version="1.0-alpha-4"/>
-         <resource id="fulcrum:fulcrum-crypto-impl" version="1.0-alpha-4"/>         
-         <resource id="fulcrum:fulcrum-intake" version="1.0-alpha-2"/>
+         <resource id="fulcrum:fulcrum-factory-api" version="1.0.2"/>
+         <resource id="fulcrum:fulcrum-factory-impl" version="1.0.2"/>
+         <resource id="fulcrum:fulcrum-crypto-api" version="1.0.4"/>
+         <resource id="fulcrum:fulcrum-crypto-impl" version="1.0.4"/>         
+         <resource id="fulcrum:fulcrum-intake" version="1.0.3"/>
        </repository>
      </classpath>
    </classloader>
-   <component name="hello" class="tutorial.HelloComponent"/>
    <component name="mimetype" class="org.apache.fulcrum.mimetype.DefaultMimeTypeService"/>   
    <component name="localization" 
      class="org.apache.fulcrum.localization.DefaultLocalizationService">
