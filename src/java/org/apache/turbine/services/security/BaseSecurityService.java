@@ -59,6 +59,7 @@ import java.util.Map;
 
 import javax.servlet.ServletConfig;
 
+import org.apache.avalon.framework.component.ComponentException;
 import org.apache.commons.configuration.Configuration;
 
 import org.apache.commons.lang.StringUtils;
@@ -75,9 +76,9 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.crypto.CryptoAlgorithm;
-import org.apache.turbine.services.crypto.CryptoService;
-import org.apache.turbine.services.crypto.TurbineCrypto;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
+import org.apache.fulcrum.crypto.CryptoAlgorithm;
+import org.apache.fulcrum.crypto.CryptoService;
 import org.apache.turbine.services.factory.FactoryService;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.DataBackendException;
@@ -194,7 +195,14 @@ public abstract class BaseSecurityService
                 SecurityService.SECURE_PASSWORDS_ALGORITHM_KEY,
                 SecurityService.SECURE_PASSWORDS_ALGORITHM_DEFAULT);
 
-        CryptoService cs = TurbineCrypto.getService();
+        AvalonComponentService acs = (AvalonComponentService)TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
+        CryptoService cs = null;
+        try {
+            cs = (CryptoService)acs.lookup(CryptoService.ROLE);
+        }
+        catch (ComponentException ce){
+            throw new RuntimeException("Could not access Crypto Service",ce);
+        }
 
         if (cs != null && (secure.equals("true") || secure.equals("yes")))
         {
