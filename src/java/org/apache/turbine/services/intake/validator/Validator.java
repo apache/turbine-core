@@ -69,7 +69,7 @@ public interface Validator
      * @param testValue a <code>String</code> to be tested
      * @return true if valid, false otherwise
      */
-    public boolean isValid(String testValue);
+    boolean isValid(String testValue);
 
     /**
      * Determine whether a testValue meets the criteria specified
@@ -79,13 +79,13 @@ public interface Validator
      * @exception ValidationException containing an error message if the
      * testValue did not pass the validation tests.
      */
-    public void assertValidity(String testValue)
-            throws ValidationException;
+    void assertValidity(String testValue)
+        throws ValidationException;
 
     /**
      * Get the last error message resulting from invalid input.
      *
      * @return a <code>String</code> message, or the empty String "".
      */
-    public String getMessage();
+    String getMessage();
 }

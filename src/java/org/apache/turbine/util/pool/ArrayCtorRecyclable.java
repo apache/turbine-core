@@ -69,5 +69,5 @@ public interface ArrayCtorRecyclable extends Recyclable
      * this interface must also provide a matching constructor.
      * The recycle methods must call their super.
      */
-    public void recycle(Object[] params);
+    void recycle(Object[] params);
 }

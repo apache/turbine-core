@@ -66,7 +66,7 @@ import org.apache.turbine.services.Service;
  */
 public interface NamingService extends Service 
 {
-    public static final String SERVICE_NAME = "NamingService";
+    static final String SERVICE_NAME = "NamingService";
 
     /**
      * Return the Context with the specified name.
@@ -75,5 +75,5 @@ public interface NamingService extends Service
      * @return The context with the specified name, or null if no context
      * exists with that name.
      */
-    public Context getContext(String name);
+    Context getContext(String name);
 }

@@ -73,7 +73,7 @@ public interface Service
     extends Initable
 {
     /** The name of this service. */
-    public static final String SERVICE_NAME = "Service";
+    static final String SERVICE_NAME = "Service";
 
     /**
      * Provides a Service with a reference to the ServiceBroker that
@@ -82,7 +82,7 @@ public interface Service
      *
      * @param broker The ServiceBroker that instantiated this object.
      */
-    public void setServiceBroker( ServiceBroker broker );
+    void setServiceBroker( ServiceBroker broker );
 
     /**
      * ServiceBroker uses this method to pass a Service its name.
@@ -91,14 +91,14 @@ public interface Service
      *
      * @param name The name of this Service.
      */
-    public void setName( String name );
+    void setName( String name );
 
     /**
      * Returns the name of this Service.
      *
      * @return The name of this Service.
      */
-    public String getName();
+    String getName();
 
     /**
      * Returns the Properties of this Service.  Every Service has at
@@ -109,7 +109,7 @@ public interface Service
      *
      * @return The properties of this Service.
      */
-    public Properties getProperties();
+    Properties getProperties();
 
     /**
      * Returns the Configuration of this Service.  Every Service has at
@@ -120,5 +120,5 @@ public interface Service
      *
      * @return The Configuration of this Service.
      */
-    public Configuration getConfiguration();
+    Configuration getConfiguration();
 }

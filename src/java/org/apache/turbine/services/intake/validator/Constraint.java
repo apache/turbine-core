@@ -72,15 +72,15 @@ public interface Constraint
     /**
      * Get the name of the constraint.
      */
-    public String getName();
+    String getName();
 
     /**
      * Get the value of the constraint.
      */
-    public String getValue();
+    String getValue();
 
     /**
      * Get the error message.
      */
-    public String getMessage();
+    String getMessage();
 }

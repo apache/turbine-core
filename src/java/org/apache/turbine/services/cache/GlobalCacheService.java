@@ -66,7 +66,7 @@ import org.apache.turbine.services.Service;
 public interface GlobalCacheService
     extends Service
 {
-    public static final String SERVICE_NAME = "GlobalCacheService";
+    static final String SERVICE_NAME = "GlobalCacheService";
 
     /**
      * Gets a cached object given its id (a String).
@@ -76,7 +76,7 @@ public interface GlobalCacheService
      * @exception ObjectExpiredException, if the object has expired in
      * the cache.
      */
-    public CachedObject getObject(String id)
+    CachedObject getObject(String id)
         throws ObjectExpiredException;
 
     /**
@@ -85,30 +85,30 @@ public interface GlobalCacheService
      * @param id The String id for the object.
      * @param o The object to add to the cache.
      */
-    public void addObject(String id, CachedObject o);
+    void addObject(String id, CachedObject o);
 
     /**
      * Removes an object from the cache.
      *
      * @param id The String id for the object.
      */
-    public void removeObject(String id);
+    void removeObject(String id);
 
     /**
      * Returns the current size of the cache.
      * @return int representing current cache size in number of bytes
      */
-    public int getCacheSize()
+    int getCacheSize()
         throws IOException;
 
     /**
      * Returns the number of objects in the cache.
      * @return int The current number of objects in the cache.
      */
-    public int getNumberOfObjects();
+    int getNumberOfObjects();
 
     /**
      * Flush the cache of all objects.
      */
-    public void flushCache();
+    void flushCache();
 }

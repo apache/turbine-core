@@ -67,6 +67,6 @@ public interface RetrieverFactory
      *
      * @return the object that matches the key
      */
-    public Retriever getInstance(String className)
+    Retriever getInstance(String className)
         throws Exception;
 }

@@ -73,5 +73,5 @@ public interface InitableRecyclable extends Recyclable
      * This method should be called after retrieving the object from
      * the pool.
      */
-    public void init(Object initObj) throws TurbineException;
+    void init(Object initObj) throws TurbineException;
 }

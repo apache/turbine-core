@@ -66,20 +66,20 @@ import java.util.Hashtable;
  * @version $Id$ */
 public interface TemplateEngineService
 {
-    public static final String TEMPLATE_EXTENSIONS = "template.extension";
-    public static final String DEFAULT_TEMPLATE_EXTENSION = "template.default.extension";
-    public static final String DEFAULT_PAGE = "default.page";
-    public static final String DEFAULT_SCREEN = "default.screen";
-    public static final String DEFAULT_LAYOUT = "default.layout";
-    public static final String DEFAULT_NAVIGATION = "default.navigation";
-    public static final String DEFAULT_ERROR_SCREEN = "default.error.screen";
-    public static final String DEFAULT_LAYOUT_TEMPLATE = "default.layout.template";
+    static final String TEMPLATE_EXTENSIONS = "template.extension";
+    static final String DEFAULT_TEMPLATE_EXTENSION = "template.default.extension";
+    static final String DEFAULT_PAGE = "default.page";
+    static final String DEFAULT_SCREEN = "default.screen";
+    static final String DEFAULT_LAYOUT = "default.layout";
+    static final String DEFAULT_NAVIGATION = "default.navigation";
+    static final String DEFAULT_ERROR_SCREEN = "default.error.screen";
+    static final String DEFAULT_LAYOUT_TEMPLATE = "default.layout.template";
 
     /**
      * Return the configuration of the template engine in
      * the form of a Hashtable.
      */
-    public Hashtable getTemplateEngineServiceConfiguration();
+    Hashtable getTemplateEngineServiceConfiguration();
 
     /**
      * Initializes file extension associations and registers with the
@@ -88,14 +88,14 @@ public interface TemplateEngineService
      * @param defaultExt The default file extension association to use
      *                   in case of properties file misconfiguration.
      */
-    public void registerConfiguration(String defaultExt);
+    void registerConfiguration(String defaultExt);
 
     /**
      * Supplies the file extension to key this engine in {@link
      * org.apache.turbine.services.template.TemplateService}'s
      * registry with.
      */
-    public String[] getAssociatedFileExtensions();
+    String[] getAssociatedFileExtensions();
 
     /**
      * Use the specific template engine to determine whether
@@ -109,5 +109,5 @@ public interface TemplateEngineService
      * @param template The name of the template to check the existance of.
      * @return         Whether the specified template exists.
      */
-    public boolean templateExists(String template);
+    boolean templateExists(String template);
 }

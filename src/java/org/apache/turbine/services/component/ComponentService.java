@@ -67,6 +67,6 @@ public interface ComponentService
     extends Service
 {
     /** The publically visible name of the service */
-    public String SERVICE_NAME = "ComponentService";
+    String SERVICE_NAME = "ComponentService";
 
 }

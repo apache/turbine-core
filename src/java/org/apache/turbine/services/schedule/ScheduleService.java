@@ -66,7 +66,7 @@ import org.apache.turbine.services.Service;
 public interface ScheduleService
     extends Service
 {
-    public static final String SERVICE_NAME = "SchedulerService";
+    static final String SERVICE_NAME = "SchedulerService";
 
     /**
      * Get a specific Job from Storage.
@@ -75,7 +75,7 @@ public interface ScheduleService
      * @return A JobEntry.
      * @exception Exception, a generic exception.
      */
-    public JobEntry getJob(int oid)
+    JobEntry getJob(int oid)
         throws Exception;
 
     /**
@@ -84,7 +84,7 @@ public interface ScheduleService
      * @param je A JobEntry with the job to add.
      * @exception Exception, a generic exception.
      */
-    public void addJob(JobEntry je)
+    void addJob(JobEntry je)
         throws Exception;
 
     /**
@@ -93,7 +93,7 @@ public interface ScheduleService
      * @param je A JobEntry with the job to modify
      * @exception Exception, a generic exception.
      */
-    public void updateJob(JobEntry je)
+    void updateJob(JobEntry je)
         throws Exception;
 
     /**
@@ -102,7 +102,7 @@ public interface ScheduleService
      * @param je A JobEntry with the job to remove.
      * @exception Exception, a generic exception.
      */
-    public void removeJob(JobEntry je)
+    void removeJob(JobEntry je)
         throws Exception;
 
     /**
@@ -110,5 +110,5 @@ public interface ScheduleService
      *
      * @return A Vector of jobs.
      */
-    public Vector listJobs();
+    Vector listJobs();
 }

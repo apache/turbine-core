@@ -93,13 +93,13 @@ public interface PullService extends Service
     /**
      * The key under which this service is stored in TurbineServices.
      */
-    public static final String SERVICE_NAME = "PullService";
+    static final String SERVICE_NAME = "PullService";
 
     /**
      * Get the context containing global tools that will be
      * use as part of the Turbine Pull Model.
      */
-    public Context getGlobalContext();
+    Context getGlobalContext();
 
     /**
      * Populate the given context with all request, session
@@ -110,30 +110,30 @@ public interface PullService extends Service
      * @param context a Velocity Context to populate
      * @param data a RunData object for request specific data
      */
-    public void populateContext(Context context, RunData data);
+    void populateContext(Context context, RunData data);
     
     /**
      * Return the absolute path of the resources directory
      * used by application tools.
      */
-    public String getAbsolutePathToResourcesDirectory();
+    String getAbsolutePathToResourcesDirectory();
 
     /**
      * Return the resources directory. This is relative
      * to the webapp context.
      */
-    public String getResourcesDirectory();
+    String getResourcesDirectory();
 
     /**
      * Refresh the global tools .
      */
-    public void refreshGlobalTools();
+    void refreshGlobalTools();
 
     /**
      * Shoud we refresh the tools
      * on each request. For development purposes.
      */
-    public boolean refreshToolsPerRequest();
+    boolean refreshToolsPerRequest();
 
     /**
      * Release tool instances from the given context to the
@@ -141,6 +141,6 @@ public interface PullService extends Service
      *
      * @param context a Velocity Context to release tools from
      */
-    public void releaseTools(Context context);
+    void releaseTools(Context context);
     
 }

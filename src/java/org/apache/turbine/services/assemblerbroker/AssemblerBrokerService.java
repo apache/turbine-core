@@ -69,20 +69,20 @@ import org.apache.turbine.util.TurbineException;
 public interface AssemblerBrokerService
     extends Service
 {
-    public static final String SERVICE_NAME = "AssemblerBrokerService";
+    static final String SERVICE_NAME = "AssemblerBrokerService";
 
     /**Predefined types for Turbine built-in assemblers */
-    public static final String ACTION_TYPE = "action";
-    public static final String SCREEN_TYPE = "screen";
-    public static final String NAVIGATION_TYPE = "navigation";
-    public static final String LAYOUT_TYPE = "layout";
-    public static final String PAGE_TYPE = "page";
-    public static final String SCHEDULEDJOB_TYPE = "scheduledjob";
+    static final String ACTION_TYPE = "action";
+    static final String SCREEN_TYPE = "screen";
+    static final String NAVIGATION_TYPE = "navigation";
+    static final String LAYOUT_TYPE = "layout";
+    static final String PAGE_TYPE = "page";
+    static final String SCHEDULEDJOB_TYPE = "scheduledjob";
 
     /** Register an AssemblerFactory class for a given type*/
-    public void registerFactory( String type, AssemblerFactory factory );
+    void registerFactory( String type, AssemblerFactory factory );
 
     /** Attempts to load an Assembler of a type with a given name*/
-    public Assembler getAssembler( String type, String name ) 
+    Assembler getAssembler( String type, String name ) 
         throws TurbineException;
 }

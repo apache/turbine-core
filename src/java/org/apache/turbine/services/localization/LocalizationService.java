@@ -74,26 +74,26 @@ public interface LocalizationService
     /**
      * The name of this service.
      */
-    public static final String SERVICE_NAME = "LocalizationService";
+    static final String SERVICE_NAME = "LocalizationService";
 
     /**
      * A constant for the HTTP <code>Accept-Language</code> header.
      */
-    public static final String ACCEPT_LANGUAGE = "Accept-Language";
+    static final String ACCEPT_LANGUAGE = "Accept-Language";
 
     /**
      * Retrieves the name of the default bundle (as specified in the
      * config file), or the first in the list if there are more than
      * one.
      */
-    public String getDefaultBundleName();
+    String getDefaultBundleName();
 
     /**
      * Convenience method to get a default ResourceBundle.
      *
      * @return A localized ResourceBundle.
      */
-    public ResourceBundle getBundle();
+    ResourceBundle getBundle();
 
     /**
      * Convenience method to get a ResourceBundle based on name.
@@ -101,7 +101,7 @@ public interface LocalizationService
      * @param bundleName Name of bundle.
      * @return A localized ResourceBundle.
      */
-    public ResourceBundle getBundle(String bundleName);
+    ResourceBundle getBundle(String bundleName);
 
     /**
      * Convenience method to get a ResourceBundle based on name and
@@ -111,7 +111,7 @@ public interface LocalizationService
      * @param languageHeader A String with the language header.
      * @return A localized ResourceBundle.
      */
-    public ResourceBundle getBundle(String bundleName, String languageHeader);
+    ResourceBundle getBundle(String bundleName, String languageHeader);
 
     /**
      * Convenience method to get a ResourceBundle based on HTTP
@@ -121,7 +121,7 @@ public interface LocalizationService
      * <code>Accept-Language</code> of.
      * @return A localized ResourceBundle.
      */
-    public ResourceBundle getBundle (HttpServletRequest req);
+    ResourceBundle getBundle (HttpServletRequest req);
 
     /**
      * Convenience method to get a ResourceBundle based on name and
@@ -132,7 +132,7 @@ public interface LocalizationService
      * <code>Accept-Language</code> of.
      * @return A localized ResourceBundle.
      */
-    public ResourceBundle getBundle(String bundleName, HttpServletRequest req);
+    ResourceBundle getBundle(String bundleName, HttpServletRequest req);
 
     /**
      * Convenience method to get a ResourceBundle based on name and
@@ -142,7 +142,7 @@ public interface LocalizationService
      * @param locale A Locale.
      * @return A localized ResourceBundle.
      */
-    public ResourceBundle getBundle(String bundleName, Locale locale);
+    ResourceBundle getBundle(String bundleName, Locale locale);
 
     /**
      * Attempts to pull the <code>Accept-Language</code> header out of
@@ -154,7 +154,7 @@ public interface LocalizationService
      * <code>Accept-Language</code> of.
      * @return The parsed locale.
      */
-    public Locale getLocale(HttpServletRequest req);
+    Locale getLocale(HttpServletRequest req);
 
     /**
      * This method parses the <code>Accept-Language</code> header and
@@ -164,14 +164,14 @@ public interface LocalizationService
      * header.
      * @return The parsed locale.
      */
-    public Locale getLocale(String languageHeader);
+    Locale getLocale(String languageHeader);
 
     /**
      * This method sets the name of the defaultBundle.
      *
      * @param defaultBundle Name of default bundle.
      */
-    public void setBundle(String defaultBundle);
+    void setBundle(String defaultBundle);
 
 
     /**
@@ -184,6 +184,6 @@ public interface LocalizationService
      * @param key Name of the text to retrieve.
      * @return Localized text.
      */
-    public String getString(String bundleName, Locale locale, String key);
+    String getString(String bundleName, Locale locale, String key);
 
 }

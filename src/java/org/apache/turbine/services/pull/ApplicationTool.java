@@ -72,7 +72,7 @@ public interface ApplicationTool
      *
      * @param data initialization data
      */
-    public void init(Object data);
+    void init(Object data);
     
     /**
      * Refresh the application tool. This is
@@ -81,5 +81,5 @@ public interface ApplicationTool
      * if it is using configuration information
      * that is typically cached after initialization
      */
-    public void refresh();
+    void refresh();
 }

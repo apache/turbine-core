@@ -77,12 +77,12 @@ public interface RunDataService extends Service
     /**
      * The key under which this service is stored in TurbineServices.
      */
-    public static final String SERVICE_NAME = "RunDataService";
+    static final String SERVICE_NAME = "RunDataService";
 
     /**
      * The default configuration key.
      */
-    public static final String DEFAULT_CONFIG = "default";
+    static final String DEFAULT_CONFIG = "default";
 
     /**
      * Gets a default RunData object.
@@ -93,9 +93,9 @@ public interface RunDataService extends Service
      * @return a new or recycled RunData object.
      * @throws TurbineException if the operation fails.
      */
-    public RunData getRunData(HttpServletRequest req,
-                              HttpServletResponse res,
-                              ServletConfig config)
+    RunData getRunData(HttpServletRequest req,
+                       HttpServletResponse res,
+                       ServletConfig config)
         throws TurbineException;
 
     /**
@@ -108,10 +108,10 @@ public interface RunDataService extends Service
      * @return a new or recycled RunData object.
      * @throws TurbineException if the operation fails.
      */
-    public RunData getRunData(String key,
-                              HttpServletRequest req,
-                              HttpServletResponse res,
-                              ServletConfig config)
+    RunData getRunData(String key,
+                       HttpServletRequest req,
+                       HttpServletResponse res,
+                       ServletConfig config)
         throws TurbineException;
 
     /**
@@ -120,5 +120,5 @@ public interface RunDataService extends Service
      * @param data the used RunData object.
      * @return true, if pooling is supported and the object was accepted.
      */
-    public boolean putRunData(RunData data);
+    boolean putRunData(RunData data);
 }

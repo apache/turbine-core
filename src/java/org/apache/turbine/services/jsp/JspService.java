@@ -67,33 +67,33 @@ import org.apache.turbine.util.TurbineException;
 public interface JspService extends Service 
 {
     /** The name used to specify this service in TurbineResources.properties */
-    public static final String SERVICE_NAME = "JspService";
+    static final String SERVICE_NAME = "JspService";
     /** The key used to store an instance of RunData in the request */
-    public static final String RUNDATA = "rundata";
+    static final String RUNDATA = "rundata";
     /** The key used to store an instance of JspLink in the request */
-    public static final String LINK = "link";
+    static final String LINK = "link";
     
     /**
      * Adds some useful objects to the request, so they are available to the JSP.
      */    
-    public void addDefaultObjects(RunData data);
+    void addDefaultObjects(RunData data);
 
     /**
      * executes the JSP given by templateName.
      */    
-    public void handleRequest(RunData data, String templateName, boolean isForward)
+    void handleRequest(RunData data, String templateName, boolean isForward)
         throws TurbineException;
 
     /**
      * executes the JSP given by templateName.
      */    
-    public void handleRequest(RunData data, String templateName)
+    void handleRequest(RunData data, String templateName)
         throws TurbineException;
 
     /**
      * The buffer size 
      */
-    public int getDefaultBufferSize();
+    int getDefaultBufferSize();
 
     /**
      * Searchs for a template in the default.template path[s] and 
@@ -103,6 +103,6 @@ public interface JspService extends Service
      * @param template The name of the template to search for.
      * @return the template with a relative path
      */
-    public String getRelativeTemplateName(String template);
+    String getRelativeTemplateName(String template);
 
 }

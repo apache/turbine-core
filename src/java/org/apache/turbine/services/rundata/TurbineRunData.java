@@ -91,61 +91,61 @@ public interface TurbineRunData extends RunData,
      *
      * @return the parameter parser.
      */
-    public ParameterParser getParameterParser();
+    ParameterParser getParameterParser();
 
     /**
      * Sets the parameter parser.
      *
      * @param parser a parameter parser.
      */
-    public void setParameterParser(ParameterParser parser);
+    void setParameterParser(ParameterParser parser);
 
     /**
      * Gets the cookie parser without parsing the cookies.
      *
      * @return the cookie parser.
      */
-    public CookieParser getCookieParser();
+    CookieParser getCookieParser();
 
     /**
      * Sets the cookie parser.
      *
      * @param parser a cookie parser.
      */
-    public void setCookieParser(CookieParser parser);
+    void setCookieParser(CookieParser parser);
 
     /**
      * Sets the servlet request.
      *
      * @param req a request.
      */
-    public void setRequest(HttpServletRequest req);
+    void setRequest(HttpServletRequest req);
 
     /**
      * Sets the servlet response.
      *
      * @param res a response.
      */
-    public void setResponse(HttpServletResponse res);
+    void setResponse(HttpServletResponse res);
 
     /**
      * Sets the servlet session information.
      *
      * @param sess a session.
      */
-    public void setSession(HttpSession sess);
+    void setSession(HttpSession sess);
 
     /**
      * Sets the servlet configuration used during servlet init.
      *
      * @param config a configuration.
      */
-    public void setServletConfig(ServletConfig config);
+    void setServletConfig(ServletConfig config);
 
     /**
      * Sets the server data of the request.
      *
      * @param serverData server data.
      */
-    public void setServerData(ServerData serverData);
+    void setServerData(ServerData serverData);
 }

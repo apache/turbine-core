@@ -75,14 +75,14 @@ public interface SessionService extends Service
     /**
      * The key under which this service is stored in TurbineServices.
      */
-    public static final String SERVICE_NAME = "SessionService";
+    static final String SERVICE_NAME = "SessionService";
 
     /**
      * Gets all active sessions
      *
      * @return Collection of HttpSession objects
      */
-    public Collection getActiveSessions();
+    Collection getActiveSessions();
 
     /**
      * Adds a session to the current list.  This method should only be
@@ -90,7 +90,7 @@ public interface SessionService extends Service
      *
      * @param session Session to add
      */
-    public void addSession(HttpSession session);
+    void addSession(HttpSession session);
 
     /**
      * Removes a session from the current list.  This method should only be
@@ -98,7 +98,7 @@ public interface SessionService extends Service
      *
      * @param session Session to remove
      */
-    public void removeSession(HttpSession session);
+    void removeSession(HttpSession session);
 
     /**
      * Determines if a given user is currently logged in.  The actual
@@ -111,7 +111,7 @@ public interface SessionService extends Service
      * @return true if the user is logged in on one of the
      * active sessions.
      */
-    public boolean isUserLoggedIn(User user);
+    boolean isUserLoggedIn(User user);
 
     /**
      * Gets a collection of all user objects representing the users currently
@@ -120,6 +120,6 @@ public interface SessionService extends Service
      *
      * @return collection of org.apache.turbine.om.security.User objects
      */
-    public Collection getActiveUsers();
+    Collection getActiveUsers();
 
 }

@@ -69,7 +69,7 @@ import org.w3c.dom.Node;
 public interface XSLTService
     extends Service
 {
-    public static final String SERVICE_NAME = "XSLTService";
+    static final String SERVICE_NAME = "XSLTService";
 
     /**
      * Uses an xsl file to transform xml input from a reader and writes the
@@ -79,7 +79,7 @@ public interface XSLTService
      * @param in The reader that passes the xml to be transformed
      * @param out The writer for the transformed output
      */
-    public void transform (String xslName, Reader in, Writer out) throws Exception;
+    void transform (String xslName, Reader in, Writer out) throws Exception;
     
     /**
      * Uses an xsl file to transform xml input from a reader and returns a
@@ -88,7 +88,7 @@ public interface XSLTService
      * @param xslName The name of the file that contains the xsl stylesheet.
      * @param in The reader that passes the xml to be transformed
      */
-    public String transform (String xslName, Reader in) throws Exception;
+    String transform (String xslName, Reader in) throws Exception;
     
     /**
      * Uses an xsl file to transform xml input from a DOM note and writes the
@@ -98,7 +98,7 @@ public interface XSLTService
      * @param in The DOM Node to be transformed
      * @param out The writer for the transformed output
      */
-    public void transform (String xslName, Node in, Writer out) throws Exception;
+    void transform (String xslName, Node in, Writer out) throws Exception;
     
     /**
      * Uses an xsl file to transform xml input from a DOM note and returns a
@@ -107,5 +107,5 @@ public interface XSLTService
      * @param xslName The name of the file that contains the xsl stylesheet.
      * @param out The writer for the transformed output
      */
-    public String transform (String xslName, Node in) throws Exception;
+    String transform (String xslName, Node in) throws Exception;
 }

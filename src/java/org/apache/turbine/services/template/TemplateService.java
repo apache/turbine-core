@@ -76,7 +76,7 @@ public interface TemplateService extends Service
     /**
      * The key under which this service is stored in TurbineServices.
      */
-    public static final String SERVICE_NAME = "TemplateService";
+    static final String SERVICE_NAME = "TemplateService";
 
     /**
      * Get the default template name extension specified 
@@ -84,7 +84,7 @@ public interface TemplateService extends Service
      *
      * @return The default the extension.
      */
-    public String getDefaultExtension();
+    String getDefaultExtension();
     
     /**
      * Get the default page module name of the template engine
@@ -92,7 +92,7 @@ public interface TemplateService extends Service
      *
      * @return The default page module name.
      */
-    public String getDefaultPage();
+    String getDefaultPage();
     
     /**
      * Get the default screen module name of the template engine
@@ -100,7 +100,7 @@ public interface TemplateService extends Service
      *
      * @return The default screen module name.
      */
-    public String getDefaultScreen();
+    String getDefaultScreen();
     
     /**
      * Get the default layout module name of the template engine
@@ -108,7 +108,7 @@ public interface TemplateService extends Service
      *
      * @return The default layout module name.
      */
-    public String getDefaultLayout();
+    String getDefaultLayout();
     
     /**
      * Get the default navigation module name of the template engine
@@ -116,7 +116,7 @@ public interface TemplateService extends Service
      *
      * @return The default navigation module name.
      */
-    public String getDefaultNavigation();
+    String getDefaultNavigation();
 
     /**
      * Get the default layout template name of the template engine
@@ -124,7 +124,7 @@ public interface TemplateService extends Service
      *
      * @return The default layout template name.
      */
-    public String getDefaultLayoutTemplate();
+    String getDefaultLayoutTemplate();
 
     /**
      * Get the default page module name of the template engine
@@ -134,7 +134,7 @@ public interface TemplateService extends Service
      * @param template The template name.
      * @return The default page module name.
      */
-    public String getDefaultPageName(String template);
+    String getDefaultPageName(String template);
     
     /**
      * Get the default screen module name of the template engine
@@ -144,7 +144,7 @@ public interface TemplateService extends Service
      * @param template The template name.
      * @return The default screen module name.
      */
-    public String getDefaultScreenName(String template);
+    String getDefaultScreenName(String template);
     
     /**
      * Get the default layout module name of the template engine
@@ -154,7 +154,7 @@ public interface TemplateService extends Service
      * @param template The template name.
      * @return The default layout module name.
      */
-    public String getDefaultLayoutName(String template);
+    String getDefaultLayoutName(String template);
     
     /**
      * Get the default navigation module name of the template engine
@@ -164,7 +164,7 @@ public interface TemplateService extends Service
      * @param template The template name.
      * @return The default navigation module name.
      */
-    public String getDefaultNavigationName(String template);
+    String getDefaultNavigationName(String template);
     
     /**
      * Get the default layout template name of the template engine
@@ -174,7 +174,7 @@ public interface TemplateService extends Service
      * @param template The template name.
      * @return The default layout template name.
      */
-    public String getDefaultLayoutTemplateName(String template);
+    String getDefaultLayoutTemplateName(String template);
     
     /**
      * Find the default page module name for the given request.
@@ -183,7 +183,7 @@ public interface TemplateService extends Service
      *             default page for.
      * @return The default page module name.
      */
-    public String getDefaultPageName(RunData data);
+    String getDefaultPageName(RunData data);
 
     /**
      * Find the default layout module name for the given request.
@@ -192,7 +192,7 @@ public interface TemplateService extends Service
      *             default layout for.
      * @return The default layout module name.
      */
-    public String getDefaultLayoutName(RunData data);
+    String getDefaultLayoutName(RunData data);
 
     /**
      * Locate and return the name of the screen module to be used
@@ -202,7 +202,7 @@ public interface TemplateService extends Service
      * @return The found screen module name.
      * @exception Exception, a generic exception.
      */
-    public String getScreenName(String template)
+    String getScreenName(String template)
         throws Exception;
 
     /**
@@ -213,7 +213,7 @@ public interface TemplateService extends Service
      * @return The found layout module name.
      * @exception Exception, a generic exception.
      */
-    public String getLayoutName(String template)
+    String getLayoutName(String template)
         throws Exception;
 
     /**
@@ -224,7 +224,7 @@ public interface TemplateService extends Service
      * @return The found navigation module name.
      * @exception Exception, a generic exception.
      */
-    public String getNavigationName(String name)
+    String getNavigationName(String name)
         throws Exception;
 
     /**
@@ -235,7 +235,7 @@ public interface TemplateService extends Service
      * @return The found screen template name.
      * @exception Exception, a generic exception.
      */
-    public String getScreenTemplateName(String template)
+    String getScreenTemplateName(String template)
         throws Exception;
 
     /**
@@ -246,7 +246,7 @@ public interface TemplateService extends Service
      * @return The found screen template name.
      * @exception Exception, a generic exception.
      */
-    public String getLayoutTemplateName(String template)
+    String getLayoutTemplateName(String template)
         throws Exception;
 
     /**
@@ -256,7 +256,7 @@ public interface TemplateService extends Service
      * @param templatePaths An array of template paths. 
      * @return An array of translated template paths.
      */
-    public String[] translateTemplatePaths(String[] templatePaths);
+    String[] translateTemplatePaths(String[] templatePaths);
 
     /**
      * Delegates to the appropriate {@link
@@ -266,8 +266,8 @@ public interface TemplateService extends Service
      * @param template      The template to check for the existance of.
      * @param templatePaths The paths to check for the template.
      */
-    public boolean templateExists(String template, 
-                                  String[] templatePaths);
+    boolean templateExists(String template, 
+                           String[] templatePaths);
 
     /**
      * Registers the provided template engine for use by the
@@ -275,5 +275,5 @@ public interface TemplateService extends Service
      *
      * @param service The <code>TemplateEngineService</code> to register.
      */
-    public void registerTemplateEngineService(TemplateEngineService service);
+    void registerTemplateEngineService(TemplateEngineService service);
 }

@@ -66,12 +66,12 @@ public interface Retrievable
      * get an id that differentiates this object from others
      * of its class.
      */
-    public String getQueryKey(); 
+    String getQueryKey(); 
 
     /** 
      * set an id that differentiates this object from others
      * of its class.
      */
-    public void setQueryKey(String key) throws Exception; 
+    void setQueryKey(String key) throws Exception; 
 
 }

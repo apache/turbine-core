@@ -65,6 +65,6 @@ package org.apache.turbine.om.security;
  */
 public interface SecurityEntity
 {
-    public String getName();
-    public void setName(String name);
+    String getName();
+    void setName(String name);
 }

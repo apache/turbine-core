@@ -75,7 +75,7 @@ public interface MimeTypeService extends Service
     /**
      * The name of the service.
      */
-    public static final String SERVICE_NAME = "MimeTypeService";
+    static final String SERVICE_NAME = "MimeTypeService";
 
     /**
      * Sets a MIME content type mapping to extensions to the map.
@@ -84,7 +84,7 @@ public interface MimeTypeService extends Service
      *
      * @param spec a MIME type extension specification to add.
      */
-    public void setContentType(String spec);
+    void setContentType(String spec);
 
     /**
      * Gets the MIME content type for a file as a string.
@@ -92,7 +92,7 @@ public interface MimeTypeService extends Service
      * @param file the file.
      * @return the MIME type string.
      */
-    public String getContentType(File file);
+    String getContentType(File file);
 
     /**
      * Gets the MIME content type for a named file as a string.
@@ -100,7 +100,7 @@ public interface MimeTypeService extends Service
      * @param name the name of the file.
      * @return the MIME type string.
      */
-    public String getContentType(String name);
+    String getContentType(String name);
 
     /**
      * Gets the MIME content type for a file name extension as a string.
@@ -109,8 +109,8 @@ public interface MimeTypeService extends Service
      * @param def the default type if none is found.
      * @return the MIME type string.
      */
-    public String getContentType(String ext,
-                                 String def);
+    String getContentType(String ext,
+                          String def);
 
     /**
      * Gets the MIME content type for a file.
@@ -118,7 +118,7 @@ public interface MimeTypeService extends Service
      * @param file the file.
      * @return the MIME type.
      */
-    public MimeType getMimeContentType(File file);
+    MimeType getMimeContentType(File file);
 
     /**
      * Gets the MIME content type for a named file.
@@ -126,7 +126,7 @@ public interface MimeTypeService extends Service
      * @param name the name of the file.
      * @return the MIME type.
      */
-    public MimeType getMimeContentType(String name);
+    MimeType getMimeContentType(String name);
 
     /**
      * Gets the MIME content type for a file name extension.
@@ -135,8 +135,8 @@ public interface MimeTypeService extends Service
      * @param def the default type if none is found.
      * @return the MIME type.
      */
-    public MimeType getMimeContentType(String ext,
-                                       String def);
+    MimeType getMimeContentType(String ext,
+                                String def);
 
     /**
      * Gets the default file name extension for a MIME type.
@@ -145,7 +145,7 @@ public interface MimeTypeService extends Service
      * @param type the MIME type as a string.
      * @return the file name extension or null.
      */
-    public String getDefaultExtension(String type);
+    String getDefaultExtension(String type);
 
     /**
      * Gets the default file name extension for a MIME type.
@@ -154,7 +154,7 @@ public interface MimeTypeService extends Service
      * @param mime the MIME type.
      * @return the file name extension or null.
      */
-    public String getDefaultExtension(MimeType mime);
+    String getDefaultExtension(MimeType mime);
 
     /**
      * Sets a locale-charset mapping.
@@ -162,8 +162,8 @@ public interface MimeTypeService extends Service
      * @param key the key for the charset.
      * @param charset the corresponding charset.
      */
-    public  void setCharSet(String key,
-                            String charset);
+    void setCharSet(String key,
+                    String charset);
 
     /**
      * Gets the charset for a locale. First a locale specific charset
@@ -173,7 +173,7 @@ public interface MimeTypeService extends Service
      * @param locale the locale.
      * @return the charset.
      */
-    public String getCharSet(Locale locale);
+    String getCharSet(Locale locale);
 
     /**
      * Gets the charset for a locale with a variant. The search
@@ -191,8 +191,8 @@ public interface MimeTypeService extends Service
      * @param variant a variant field.
      * @return the charset.
      */
-    public String getCharSet(Locale locale,
-                             String variant);
+    String getCharSet(Locale locale,
+                      String variant);
 
     /**
      * Gets the charset for a specified key.
@@ -200,7 +200,7 @@ public interface MimeTypeService extends Service
      * @param key the key for the charset.
      * @return the found charset or the default one.
      */
-    public String getCharSet(String key);
+    String getCharSet(String key);
 
     /**
      * Gets the charset for a specified key.
@@ -209,6 +209,6 @@ public interface MimeTypeService extends Service
      * @param def the default charset if none is found.
      * @return the found charset or the given default.
      */
-    public String getCharSet(String key,
-                             String def);
+    String getCharSet(String key,
+                      String def);
 }

@@ -73,18 +73,18 @@ public interface Recyclable
      * methods whenever applicable.
      * The recycle methods must call their super.
      */
-    public void recycle();
+    void recycle();
 
     /**
      * Disposes the object after use. The method is called
      * when the object is returned to its pool.
      * The dispose method must call its super.
      */
-    public void dispose();
+    void dispose();
 
     /**
      * Checks whether the recyclable has been disposed.
      * @return true, if the recyclable is disposed.
      */
-    public boolean isDisposed();
+    boolean isDisposed();
 }

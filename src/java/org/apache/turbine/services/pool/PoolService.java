@@ -78,12 +78,12 @@ public interface PoolService extends FactoryService
     /**
      * The key under which this service is stored in TurbineServices.
      */
-    public static final String SERVICE_NAME = "PoolService";
+    static final String SERVICE_NAME = "PoolService";
 
     /**
      * The default pool capacity.
      */
-    public static final int DEFAULT_POOL_CAPACITY = 128;
+    static final int DEFAULT_POOL_CAPACITY = 128;
 
     /**
      * Gets an instance of a specified class either from the pool
@@ -93,7 +93,7 @@ public interface PoolService extends FactoryService
      * @return the instance.
      * @throws TurbineException if recycling fails.
      */
-    public Object getInstance(Class clazz)
+    Object getInstance(Class clazz)
         throws TurbineException;
 
     /**
@@ -106,9 +106,9 @@ public interface PoolService extends FactoryService
      * @return the instance.
      * @throws TurbineException if recycling fails.
      */
-    public Object getInstance(Class clazz,
-                              Object params[],
-                              String signature[])
+    Object getInstance(Class clazz,
+                       Object params[],
+                       String signature[])
         throws TurbineException;
 
     /**
@@ -120,14 +120,14 @@ public interface PoolService extends FactoryService
      * @param instance the object instance to recycle.
      * @return true if the instance was accepted.
      */
-    public boolean putInstance(Object instance);
+    boolean putInstance(Object instance);
 
     /**
      * Gets the capacity of the pool for a named class.
      *
      * @param className the name of the class.
      */
-    public int getCapacity(String className);
+    int getCapacity(String className);
 
     /**
      * Sets the capacity of the pool for a named class.
@@ -136,25 +136,25 @@ public interface PoolService extends FactoryService
      * @param className the name of the class.
      * @param capacity the new capacity.
      */
-    public void setCapacity(String className,
-                            int capacity);
+    void setCapacity(String className,
+                     int capacity);
 
     /**
      * Gets the current size of the pool for a named class.
      *
      * @param className the name of the class.
      */
-    public int getSize(String className);
+    int getSize(String className);
 
     /**
      * Clears instances of a named class from the pool.
      *
      * @param className the name of the class.
      */
-    public void clearPool(String className);
+    void clearPool(String className);
 
     /**
      * Clears all instances from the pool.
      */
-    public void clearPool();
+    void clearPool();
 }

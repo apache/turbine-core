@@ -66,5 +66,5 @@ public interface Refreshable
     /**
      * Refreshes the object.
      */
-    public void refresh();
+    void refresh();
 }

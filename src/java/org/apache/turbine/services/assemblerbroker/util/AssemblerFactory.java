@@ -64,6 +64,6 @@ import org.apache.turbine.modules.Assembler;
  */
 public interface AssemblerFactory
 {
-    public Assembler getAssembler( String name ) throws Exception;
+    Assembler getAssembler( String name ) throws Exception;
 }
 

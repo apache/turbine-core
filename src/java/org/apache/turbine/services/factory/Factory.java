@@ -76,7 +76,7 @@ public interface Factory
      * @param className the name of the production class
      * @throws TurbineException if initialization fails.
      */
-    public void init(String className)
+    void init(String className)
         throws TurbineException;
 
     /**
@@ -85,7 +85,7 @@ public interface Factory
      * @return the instance.
      * @throws TurbineException if instantiation fails.
      */
-    public Object getInstance()
+    Object getInstance()
         throws TurbineException;
 
     /**
@@ -98,7 +98,7 @@ public interface Factory
      * @return the instance.
      * @throws TurbineException if instantiation fails.
      */
-    public Object getInstance(ClassLoader loader)
+    Object getInstance(ClassLoader loader)
         throws TurbineException;
 
     /**
@@ -111,8 +111,8 @@ public interface Factory
      * @return the instance.
      * @throws TurbineException if instantiation fails.
      */
-    public Object getInstance(Object[] params,
-                              String[] signature)
+    Object getInstance(Object[] params,
+                       String[] signature)
         throws TurbineException;
 
     /**
@@ -129,9 +129,9 @@ public interface Factory
      * @return the instance.
      * @throws TurbineException if instantiation fails.
      */
-    public Object getInstance(ClassLoader loader,
-                              Object[] params,
-                              String[] signature)
+    Object getInstance(ClassLoader loader,
+                       Object[] params,
+                       String[] signature)
         throws TurbineException;
 
     /**
@@ -139,5 +139,5 @@ public interface Factory
      * 
      * @return true if class loaders are supported, false otherwise. 
      */
-    public boolean isLoaderSupported();
+    boolean isLoaderSupported();
 }

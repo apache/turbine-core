@@ -71,8 +71,8 @@ import org.apache.velocity.context.Context;
  */
 public interface VelocityService extends Service
 {
-    public static final String SERVICE_NAME = "VelocityService";
-    public static final String CONTEXT = "VELOCITY_CONTEXT";
+    static final String SERVICE_NAME = "VelocityService";
+    static final String CONTEXT = "VELOCITY_CONTEXT";
 
     /**
      * Process the request and fill in the template with the values
@@ -83,7 +83,7 @@ public interface VelocityService extends Service
      * @return The process template as a String.
      * @exception Exception, a generic exception.
      */
-    public String handleRequest(Context context, String template)
+    String handleRequest(Context context, String template)
         throws Exception;
 
     /**
@@ -97,9 +97,9 @@ public interface VelocityService extends Service
      * @throws TurbineException Any exception trown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
-    public void handleRequest(Context context,
-                              String filename,
-                              OutputStream out)
+    void handleRequest(Context context,
+                       String filename,
+                       OutputStream out)
         throws TurbineException;
 
     /**
@@ -113,9 +113,9 @@ public interface VelocityService extends Service
      * @throws TurbineException Any exception trown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
-    public void handleRequest(Context context,
-                              String filename,
-                              Writer writer)
+    void handleRequest(Context context,
+                       String filename,
+                       Writer writer)
         throws TurbineException;
 
     /**
@@ -123,7 +123,7 @@ public interface VelocityService extends Service
      *
      * @return An empty WebContext object.
      */
-    public Context getContext();
+    Context getContext();
 
     /**
      * Create a Context from the RunData object.  Adds a pointer to
@@ -133,7 +133,7 @@ public interface VelocityService extends Service
      * @param data The Turbine RunData object.
      * @return A clone of the Context needed by Velocity.
      */
-    public Context getContext(RunData data);
+    Context getContext(RunData data);
 
     /**
      * Performs post-request actions (releases context
@@ -141,6 +141,6 @@ public interface VelocityService extends Service
      *
      * @param context a Velocity Context
      */
-    public void requestFinished(Context context);
+    void requestFinished(Context context);
 
 }

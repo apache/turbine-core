@@ -74,14 +74,14 @@ public interface ServiceManager extends ServiceBroker
     /**
      * Initialize this service manager.
      */
-    public void init() throws InitializationException;
+    void init() throws InitializationException;
 
     /**
      * Get the configuration for this service manager.
      *
      * @return Manager configuration.
      */
-    public Configuration getConfiguration();
+    Configuration getConfiguration();
 
     /**
      * Set the configuration object for the services broker.
@@ -91,12 +91,12 @@ public interface ServiceManager extends ServiceBroker
      *
      * @param configuration Manager configuration.
      */
-    public void setConfiguration(Configuration configuration);
+    void setConfiguration(Configuration configuration);
 
     /**
      * Set the application root.
      *
      * @param String application root
      */
-    public void setApplicationRoot(String applicationRoot);
+    void setApplicationRoot(String applicationRoot);
 }

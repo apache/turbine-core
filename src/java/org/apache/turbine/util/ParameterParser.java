@@ -89,7 +89,7 @@ public interface ParameterParser
      *
      * @return the parsed servlet request or null.
      */
-    public HttpServletRequest getRequest();
+    HttpServletRequest getRequest();
 
     /**
      * Sets the servlet request to be parser.  This requires a
@@ -104,21 +104,21 @@ public interface ParameterParser
      *
      * @param req An HttpServletRequest.
      */
-    public void setRequest(HttpServletRequest req);
+    void setRequest(HttpServletRequest req);
 
     /**
      * Sets the uploadData byte[]
      *
      * @param uploadData A byte[] with data.
      */
-    public void setUploadData(byte[] uploadData);
+    void setUploadData(byte[] uploadData);
 
     /**
      * Gets the uploadData byte[]
      *
      * @return uploadData A byte[] with data.
      */
-    public byte[] getUploadData();
+    byte[] getUploadData();
 
 
     /**
@@ -130,7 +130,7 @@ public interface ParameterParser
      * @param name A String with the name.
      * @param value A FileItem with the value.
      */
-    public void append(String name, FileItem value);
+    void append(String name, FileItem value);
 
 
     /**
@@ -140,7 +140,7 @@ public interface ParameterParser
      * @param name A String with the name.
      * @return A FileItem.
      */
-    public FileItem getFileItem(String name);
+    FileItem getFileItem(String name);
 
     /**
      * Return an array of FileItem objects for the given name.  If the
@@ -150,5 +150,5 @@ public interface ParameterParser
      * @param name A String with the name.
      * @return A FileItem[].
      */
-    public FileItem[] getFileItems(String name);
+    FileItem[] getFileItems(String name);
 }

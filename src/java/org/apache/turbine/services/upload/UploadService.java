@@ -76,50 +76,50 @@ public interface UploadService
     /**
      * HTTP header.
      */
-    public static final String CONTENT_TYPE = "Content-type";
+    static final String CONTENT_TYPE = "Content-type";
 
     /**
      * HTTP header.
      */
-    public static final String CONTENT_DISPOSITION = "Content-disposition";
+    static final String CONTENT_DISPOSITION = "Content-disposition";
 
     /**
      * HTTP header base type.
      */
-    public static final String MULTIPART = "multipart";
+    static final String MULTIPART = "multipart";
 
     /**
      * HTTP header base type modifier.
      */
-    public static final String FORM_DATA = "form-data";
+    static final String FORM_DATA = "form-data";
 
     /**
      * HTTP header base type modifier.
      */
-    public static final String MIXED = "mixed";
+    static final String MIXED = "mixed";
 
     /**
      * HTTP header.
      */
-    public static final String MULTIPART_FORM_DATA =
+    static final String MULTIPART_FORM_DATA =
         MULTIPART + '/' + FORM_DATA;
 
     /**
      * HTTP header.
      */
-    public static final String MULTIPART_MIXED = MULTIPART + '/' + MIXED;
+    static final String MULTIPART_MIXED = MULTIPART + '/' + MIXED;
 
     /**
      * The key in the TurbineResources.properties that references this
      * service.
      */
-    public static final String SERVICE_NAME = "UploadService";
+    static final String SERVICE_NAME = "UploadService";
 
     /**
      * The key in UploadService properties in
      * TurbineResources.properties 'automatic' property.
      */
-    public static final String AUTOMATIC_KEY = "automatic";
+    static final String AUTOMATIC_KEY = "automatic";
 
     /**
      * <p> The default value of 'automatic' property
@@ -130,19 +130,19 @@ public interface UploadService
      * request by calling {@link #parseRequest(HttpServletRequest,
      * ParameterParser, String) parseRequest} manually.
      */
-    public static final Boolean AUTOMATIC_DEFAULT = Boolean.FALSE;
+    static final Boolean AUTOMATIC_DEFAULT = Boolean.FALSE;
 
     /**
      * The request parameter name for overriding 'repository' property
      * (path).
      */
-    public static final String REPOSITORY_PARAMETER = "path";
+    static final String REPOSITORY_PARAMETER = "path";
 
     /**
      * The key in UploadService properties in
      * TurbineResources.properties 'repository' property.
      */
-    public static final String REPOSITORY_KEY = "repository";
+    static final String REPOSITORY_KEY = "repository";
 
     /**
      * <p> The default value of 'repository' property (.).  This is
@@ -150,13 +150,13 @@ public interface UploadService
      * Note that "."  is whatever the servlet container chooses to be
      * it's 'current directory'.
      */
-    public static final String REPOSITORY_DEFAULT = ".";
+    static final String REPOSITORY_DEFAULT = ".";
 
     /**
      *w The key in UploadService properties in
      * TurbineResources.properties 'size.max' property.
      */
-    public static final String SIZE_MAX_KEY = "size.max";
+    static final String SIZE_MAX_KEY = "size.max";
 
     /**
      * <p> The default value of 'size.max' property (1 megabyte =
@@ -166,13 +166,13 @@ public interface UploadService
      * value, and use an action + no auto upload to enforce limits.
      *
      */
-    public static final Integer SIZE_MAX_DEFAULT = new Integer(1048576);
+    static final Integer SIZE_MAX_DEFAULT = new Integer(1048576);
 
     /**
      * The key in UploadService properties in
      * TurbineResources.properties 'size.threshold' property.
      */
-    public static final String SIZE_THRESHOLD_KEY = "size.threshold";
+    static final String SIZE_THRESHOLD_KEY = "size.threshold";
 
     /**
      * <p> The default value of 'size.threshold' property (10
@@ -180,7 +180,7 @@ public interface UploadService
      * request that will have it's components stored temporarily in
      * memory, instead of disk.
      */
-    public static final Integer SIZE_THRESHOLD_DEFAULT = new Integer(10240);
+    static final Integer SIZE_THRESHOLD_DEFAULT = new Integer(10240);
 
     /**
      * <p> This method performs parsing the request, and storing the
@@ -193,9 +193,9 @@ public interface UploadService
      * @exception IOException, if there are problems reading/parsing
      * the request or storing files.
      */
-    public void parseRequest( HttpServletRequest req,
-                              ParameterParser params,
-                              String path )
+    void parseRequest( HttpServletRequest req,
+                       ParameterParser params,
+                       String path )
         throws TurbineException;
 
     /**
@@ -204,7 +204,7 @@ public interface UploadService
      *
      * @return The maximum upload size.
      */
-    public int getSizeMax();
+    int getSizeMax();
 
     /**
      * <p> Retrieves the value of <code>size.threshold</code> property of
@@ -212,7 +212,7 @@ public interface UploadService
      *
      * @return The threshold beyond which files are written directly to disk.
      */
-    public int getSizeThreshold();
+    int getSizeThreshold();
 
     /**
      * <p> Retrieves the value of the <code>repository</code> property of
@@ -220,5 +220,5 @@ public interface UploadService
      *
      * @return The repository.
      */
-    public String getRepository();
+    String getRepository();
 }

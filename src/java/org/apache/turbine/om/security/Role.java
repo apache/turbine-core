@@ -74,7 +74,7 @@ public interface Role extends SecurityEntity
      * @return A PermissionSet.
      * @exception Exception, a generic exception.
      */
-    public PermissionSet getPermissions() 
+    PermissionSet getPermissions() 
         throws Exception;
 
     /**
@@ -82,7 +82,7 @@ public interface Role extends SecurityEntity
      *
      * @param permissionSet A PermissionSet.
      */
-    public void setPermissions(PermissionSet permissionSet);
+    void setPermissions(PermissionSet permissionSet);
 
     // These following methods are wrappers around TurbineSecurity
 
@@ -93,7 +93,7 @@ public interface Role extends SecurityEntity
      * @return An object representing the new Role.
      * @throws TurbineSecurityException if the Role could not be created.
      */
-    public Role create( String name ) 
+    Role create( String name ) 
         throws TurbineSecurityException;
 
     /**
@@ -102,7 +102,7 @@ public interface Role extends SecurityEntity
      * @throws TurbineSecurityException if there is a problem while
      *  saving data.
      */
-    public void save() 
+    void save() 
         throws TurbineSecurityException;
 
     /**
@@ -110,7 +110,7 @@ public interface Role extends SecurityEntity
      *
      * @throws TurbineSecurityException if the Role could not be removed.
      */
-    public void remove() 
+    void remove() 
         throws TurbineSecurityException;
 
     /**
@@ -119,7 +119,7 @@ public interface Role extends SecurityEntity
      * @param name The new Role name.
      * @throws TurbineSecurityException if the Role could not be renamed.
      */
-    public void rename(String name) 
+    void rename(String name) 
         throws TurbineSecurityException;
 
     /**
@@ -129,7 +129,7 @@ public interface Role extends SecurityEntity
      * @throws TurbineSecurityException if there is a problem while assigning
      * the Permission.
      */
-    public void grant(Permission permission) 
+    void grant(Permission permission) 
         throws TurbineSecurityException;
 
     /**
@@ -139,7 +139,7 @@ public interface Role extends SecurityEntity
      * @throws TurbineSecurityException if there is a problem while assigning
      * the Permissions.
      */
-    public void grant(PermissionSet permissionSet) 
+    void grant(PermissionSet permissionSet) 
         throws TurbineSecurityException;
 
     /**
@@ -149,7 +149,7 @@ public interface Role extends SecurityEntity
      * @throws TurbineSecurityException if there is a problem while unassigning
      * the Permission.
      */
-    public void revoke(Permission permission)
+    void revoke(Permission permission)
         throws TurbineSecurityException;
 
     /**
@@ -159,6 +159,6 @@ public interface Role extends SecurityEntity
      * @throws TurbineSecurityException if there is a problem while unassigning
      * the Permissions.
      */
-    public void revoke(PermissionSet permissionSet)
+    void revoke(PermissionSet permissionSet)
         throws TurbineSecurityException;
 }

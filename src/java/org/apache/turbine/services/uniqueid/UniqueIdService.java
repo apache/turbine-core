@@ -67,7 +67,7 @@ import org.apache.turbine.services.Service;
 public interface UniqueIdService
     extends Service
 {
-    public static final String SERVICE_NAME = "UniqueIdService";
+    static final String SERVICE_NAME = "UniqueIdService";
 
     /**
      * <p> Returs an identifer of this Turbine instance that is unique
@@ -75,7 +75,7 @@ public interface UniqueIdService
      *
      * @return A String with the instance identifier.
      */
-    public String getInstanceId();
+    String getInstanceId();
 
     /**
      * <p> Returns an identifier that is unique within this turbine
@@ -87,7 +87,7 @@ public interface UniqueIdService
      * @return A String with the non-random looking instance
      * identifier.
      * */
-    public String getUniqueId();
+    String getUniqueId();
 
     /**
      * <p> Returns a unique identifier that looks like random data.
@@ -100,5 +100,5 @@ public interface UniqueIdService
      *
      * @return A String with the random looking instance identifier.
      */
-    public String getPseudorandomId();
+    String getPseudorandomId();
 }

@@ -66,10 +66,10 @@ package org.apache.turbine.om.security.peer;
 public interface UserPeer
 {
     /** The key name for the visitor id field. */
-    public static String USERNAME = "LOGIN_NAME";
+    static String USERNAME = "LOGIN_NAME";
 
     /** The key name for the username field. */
-    public static String USER_ID = "USER_ID";
+    static String USER_ID = "USER_ID";
 
     /**
      * Returns the full name of a column.

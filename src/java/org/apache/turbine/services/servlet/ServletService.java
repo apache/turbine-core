@@ -74,7 +74,7 @@ public interface ServletService extends Service
     /**
      * The service identifier
      */
-    public String SERVICE_NAME = "ServletService";
+    String SERVICE_NAME = "ServletService";
     
     /**
      * Returns an URL object for a given URI string.
@@ -83,7 +83,7 @@ public interface ServletService extends Service
      * @return an URL object or null is the uri is malformed or
      * can't be resolved
      */
-    public URL getResource( String uri );
+    URL getResource( String uri );
     
     /**
      * Same as getResource except that it returns an InputStream
@@ -91,7 +91,7 @@ public interface ServletService extends Service
      * @param uri the URI to resolve
      * @return an InputStream on the URI content or null
      */
-    public InputStream getResourceAsStream( String uri );
+    InputStream getResourceAsStream( String uri );
     
     /**
      * Returns the complete filesystem path for a 
@@ -100,7 +100,7 @@ public interface ServletService extends Service
      * @param uri the URI to resolve
      * @return the full system path of this URI
      */
-    public String getRealPath( String uri );
+    String getRealPath( String uri );
     
     /**
      * Returns the servlet config used by this
@@ -108,7 +108,7 @@ public interface ServletService extends Service
      *
      * @return turbine servlet config
      */
-    public ServletConfig getServletConfig();
+    ServletConfig getServletConfig();
 
     /**
      * Returns the servlet context used by this
@@ -116,7 +116,7 @@ public interface ServletService extends Service
      *
      * @return turbine servlet context
      */
-    public ServletContext getServletContext();
+    ServletContext getServletContext();
 
     /**
      * Returns the server scheme for this
@@ -125,7 +125,7 @@ public interface ServletService extends Service
      *
      * @return String
      */
-    public String getServerScheme();
+    String getServerScheme();
     
     /**
      * Returns the server name that this
@@ -134,7 +134,7 @@ public interface ServletService extends Service
      *
      * @return String
      */
-    public String getServerName();
+    String getServerName();
     
     /**
      * Returns the port that this Turbine
@@ -143,7 +143,7 @@ public interface ServletService extends Service
      *
      * @return String
      */
-    public String getServerPort();
+    String getServerPort();
     
     /**
      * Returns the context path for this
@@ -151,5 +151,5 @@ public interface ServletService extends Service
      *
      * @return String
      */
-    public String getContextPath();
+    String getContextPath();
 }

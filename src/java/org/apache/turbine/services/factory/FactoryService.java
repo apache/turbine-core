@@ -71,7 +71,7 @@ public interface FactoryService extends Service
     /**
      * The key under which this service is stored in TurbineServices.
      */
-    public static final String SERVICE_NAME = "FactoryService";
+    static final String SERVICE_NAME = "FactoryService";
 
     /**
      * Gets an instance of a named class.
@@ -80,7 +80,7 @@ public interface FactoryService extends Service
      * @return the instance.
      * @throws TurbineException if instantiation fails.
      */
-    public Object getInstance(String className)
+    Object getInstance(String className)
         throws TurbineException;
 
     /**
@@ -94,8 +94,8 @@ public interface FactoryService extends Service
      * @return the instance.
      * @throws TurbineException if instantiation fails.
      */
-    public Object getInstance(String className,
-                              ClassLoader loader)
+    Object getInstance(String className,
+                       ClassLoader loader)
         throws TurbineException;
 
     /**
@@ -109,9 +109,9 @@ public interface FactoryService extends Service
      * @return the instance.
      * @throws TurbineException if instantiation fails.
      */
-    public Object getInstance(String className,
-                              Object[] params,
-                              String[] signature)
+    Object getInstance(String className,
+                       Object[] params,
+                       String[] signature)
         throws TurbineException;
 
     /**
@@ -129,10 +129,10 @@ public interface FactoryService extends Service
      * @return the instance.
      * @throws TurbineException if instantiation fails.
      */
-    public Object getInstance(String className,
-                              ClassLoader loader,
-                              Object[] params,
-                              String[] signature)
+    Object getInstance(String className,
+                       ClassLoader loader,
+                       Object[] params,
+                       String[] signature)
         throws TurbineException;
 
     /**
@@ -142,6 +142,6 @@ public interface FactoryService extends Service
      * @return true if class loaders are supported, false otherwise. 
      * @throws TurbineException if test fails.
      */
-    public boolean isLoaderSupported(String className)
+    boolean isLoaderSupported(String className)
         throws TurbineException;
 }

@@ -75,7 +75,7 @@ public interface Initable
      *
      * @param broker The InitableBroker that instantiated this object.
      */
-    public void setInitableBroker( InitableBroker broker );
+    void setInitableBroker( InitableBroker broker );
 
     /**
      * Performs early initailization of an Initable
@@ -96,7 +96,7 @@ public interface Initable
      * @exception InitializationException, if initilaization of this
      * class was not successful.
      */
-    public void init( Object data )
+    void init( Object data )
         throws InitializationException;
 
     /**
@@ -109,7 +109,7 @@ public interface Initable
      * @exception InitializationException, if initialization of this
      * class was not successful.
      */
-    public void init( ) throws InitializationException;
+    void init( ) throws InitializationException;
 
     /**
      * Returns an <code>Initable</code> to an uninitialized state.
@@ -120,12 +120,12 @@ public interface Initable
      * this operation, getInit() should return false after successful
      * shutdown of the service.
      */
-    public void shutdown( );
+    void shutdown( );
 
     /**
      * Returns initialization status of an Initable.
      *
      * @return Initialization status of an Initable.
      */
-    public boolean getInit( );
+    boolean getInit( );
 }

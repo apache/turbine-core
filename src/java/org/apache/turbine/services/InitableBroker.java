@@ -100,8 +100,8 @@ public interface InitableBroker
      * @exception InitializationException, if initialization of this
      * class was not successful.
      */
-    public void initClass( String className,
-                           Object data )
+    void initClass( String className,
+                    Object data )
         throws InitializationException;
 
     /**
@@ -113,7 +113,7 @@ public interface InitableBroker
      *
      * @param className The name of the class to be uninitialized.
      */
-    public void shutdownClass( String className );
+    void shutdownClass( String className );
 
     /**
      * Provides an instance of Initable class ready to work.
@@ -128,6 +128,6 @@ public interface InitableBroker
      * @exception InstantiationException, if there was a problem
      * during instantiation or initialization of the Initable.
      */
-    public Initable getInitable( String className )
+    Initable getInitable( String className )
         throws InstantiationException;
 }

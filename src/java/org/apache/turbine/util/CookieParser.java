@@ -84,15 +84,15 @@ package org.apache.turbine.util;
 public interface CookieParser 
     extends ValueParser
 {
-    public static final int AGE_SESSION = -1;
-    public static final int AGE_DELETE = 0;
+    static final int AGE_SESSION = -1;
+    static final int AGE_DELETE = 0;
 
     /**
      * Gets the parsed RunData.
      *
      * @return the parsed RunData object or null.
      */
-    public RunData getRunData();
+    RunData getRunData();
 
     /**
      * Sets the RunData to be parsed.
@@ -100,32 +100,32 @@ public interface CookieParser
      *
      * @param data the RunData object.
      */
-    public void setRunData (RunData data);
+    void setRunData (RunData data);
 
     /**
      * Get the Path where cookies will be stored
      */
-    public DynamicURI getCookiePath();
+    DynamicURI getCookiePath();
 
     /**
      * Set the path for cookie storage
      */
-    public void setCookiePath (DynamicURI path);
+    void setCookiePath (DynamicURI path);
 
     /**
      * Set a cookie that will be stored on the client for
      * the duration of the session.
      */
-    public void set (String name, String value);
+    void set (String name, String value);
 
     /**
      * Set a persisten cookie on the client that will expire
      * after a maximum age (given in seconds).
      */
-    public void set (String name, String value, int seconds_age);
+    void set (String name, String value, int seconds_age);
 
     /**
      * Remove a previously set cookie from the client machine.
      */
-    public void unset (String name);
+    void unset (String name);
 }

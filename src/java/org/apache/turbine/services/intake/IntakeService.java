@@ -81,34 +81,34 @@ public interface IntakeService
     /**
      * The key under which this service is stored in TurbineServices.
      */
-    public static final String SERVICE_NAME = "IntakeService";
+    static final String SERVICE_NAME = "IntakeService";
 
     /**
      * The property specifying the location of the xml specification.
      */
-    public static final String XML_PATH = "xml.path";
+    static final String XML_PATH = "xml.path";
 
     /**
      * The default location of the xml specification.
      */
-    public static final String XML_PATH_DEFAULT = "WEB-INF/conf/intake.xml";
+    static final String XML_PATH_DEFAULT = "WEB-INF/conf/intake.xml";
 
     /**
      * The property specifying the location where a serialized version of
      * the xml specification can be written for faster restarts..
      */
-    public static final String SERIAL_XML = "serialize.path";
+    static final String SERIAL_XML = "serialize.path";
 
     /**
      * The default location where a serialized version of
      * the xml specification can be written for faster restarts..
      */
-    public static final String SERIAL_XML_DEFAULT = "WEB-INF/appData.ser";
+    static final String SERIAL_XML_DEFAULT = "WEB-INF/appData.ser";
 
     /**
      * The default pool capacity.
      */
-    public static final int DEFAULT_POOL_CAPACITY = 1024;
+    static final int DEFAULT_POOL_CAPACITY = 1024;
 
     /**
      * Gets an instance of a named group either from the pool
@@ -118,8 +118,8 @@ public interface IntakeService
      * @return a Group instance.
      * @throws IntakeException if recycling fails.
      */
-    public Group getGroup(String groupName)
-            throws IntakeException;
+    Group getGroup(String groupName)
+        throws IntakeException;
 
     /**
      * Puts a group back to the pool.
@@ -127,8 +127,8 @@ public interface IntakeService
      *
      * @throws IntakeException The passed group name does not exist.
      */
-    public void releaseGroup(Group instance)
-            throws IntakeException;
+    void releaseGroup(Group instance)
+        throws IntakeException;
 
     /**
      * Gets the current size of the pool for a named group.
@@ -137,15 +137,15 @@ public interface IntakeService
      *
      * @throws IntakeException The passed group name does not exist.
      */
-    public int getSize(String groupName)
-            throws IntakeException;
+    int getSize(String groupName)
+        throws IntakeException;
 
     /**
      * Names of all the defined groups.
      *
      * @return array of names.
      */
-    public String[] getGroupNames();
+    String[] getGroupNames();
 
     /**
      * Gets the key (usually a short identifier) for a group.
@@ -153,7 +153,7 @@ public interface IntakeService
      * @param groupName the name of the group.
      * @return the key.
      */
-    public String getGroupKey(String groupName);
+    String getGroupKey(String groupName);
 
     /**
      * Gets the group name given its key.
@@ -161,7 +161,7 @@ public interface IntakeService
      * @param groupKey the key.
      * @return groupName the name of the group.
      */
-    public String getGroupName(String groupKey);
+    String getGroupName(String groupKey);
 
     /**
      * Gets the Method that can be used to set a property.
@@ -172,8 +172,8 @@ public interface IntakeService
      * @throws ClassNotFoundException
      * @throws IntrospectionException
      */
-    public Method getFieldSetter(String className, String propName)
-            throws ClassNotFoundException, IntrospectionException;
+    Method getFieldSetter(String className, String propName)
+        throws ClassNotFoundException, IntrospectionException;
 
     /**
      * Gets the Method that can be used to get a property value.
@@ -184,8 +184,8 @@ public interface IntakeService
      * @throws ClassNotFoundException
      * @throws IntrospectionException
      */
-    public Method getFieldGetter(String className, String propName)
-            throws ClassNotFoundException, IntrospectionException;
+    Method getFieldGetter(String className, String propName)
+        throws ClassNotFoundException, IntrospectionException;
 }
 
 

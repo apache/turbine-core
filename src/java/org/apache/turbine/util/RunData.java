@@ -94,84 +94,84 @@ public interface RunData
      *
      * @return a parameter parser.
      */
-    public ParameterParser getParameters();
+    ParameterParser getParameters();
 
     /**
      * Gets the cookies.
      *
      * @return a cookie parser.
      */
-    public CookieParser getCookies();
+    CookieParser getCookies();
 
     /**
      * Gets the servlet request.
      *
      * @return the request.
      */
-    public HttpServletRequest getRequest();
+    HttpServletRequest getRequest();
 
     /**
      * Gets the servlet response.
      *
      * @return the resposne.
      */
-    public HttpServletResponse getResponse();
+    HttpServletResponse getResponse();
 
     /**
      * Gets the servlet session information.
      *
      * @return the session.
      */
-    public HttpSession getSession();
+    HttpSession getSession();
 
     /**
      * Gets the servlet configuration used during servlet init.
      *
      * @return the configuration.
      */
-    public ServletConfig getServletConfig();
+    ServletConfig getServletConfig();
 
     /**
      * Gets the servlet context used during servlet init.
      *
      * @return the context.
      */
-    public ServletContext getServletContext();
+    ServletContext getServletContext();
 
     /**
      * Gets the access control list.
      *
      * @return the access control list.
      */
-    public AccessControlList getACL();
+    AccessControlList getACL();
 
     /**
      * Sets the access control list.
      *
      * @param acl an access control list.
      */
-    public void setACL(AccessControlList acl);
+    void setACL(AccessControlList acl);
 
     /**
      * Checks to see if the page is set.
      *
      * @return true if the page is set.
      */
-    public boolean isPageSet();
+    boolean isPageSet();
 
     /**
      * Gets the page.
      *
      * @return a document.
      */
-    public Document getPage();
+    Document getPage();
 
     /**
      * Whether or not an action has been defined.
      *
      * @return true if an action has been defined.
      */
-    public boolean hasAction();
+    boolean hasAction();
 
     /**
      * Gets the action. It returns an empty string if null so
@@ -180,14 +180,14 @@ public interface RunData
      *
      * @return a string, "" if null.
      */
-    public String getAction();
+    String getAction();
 
     /**
      * Sets the action for the request.
      *
      * @param action a atring.
      */
-    public void setAction(String action);
+    void setAction(String action);
 
     /**
      * If the Layout has not been defined by the screen then set the
@@ -201,14 +201,14 @@ public interface RunData
      *
      * @return a string.
      */
-    public String getLayout();
+    String getLayout();
 
     /**
      * Set the layout for the request.
      *
      * @param layout a string.
      */
-    public void setLayout(String layout);
+    void setLayout(String layout);
 
     /**
      * Convenience method for a template info that
@@ -216,7 +216,7 @@ public interface RunData
      *
      * @return a string.
      */
-    public String getLayoutTemplate();
+    String getLayoutTemplate();
 
     /**
      * Modifies the layout template for the screen. This convenience
@@ -227,28 +227,28 @@ public interface RunData
      *
      * @param layout a layout template.
      */
-    public void setLayoutTemplate(String layout);
+    void setLayoutTemplate(String layout);
 
     /**
      * Whether or not a screen has been defined.
      *
      * @return true if a screen has been defined.
      */
-    public boolean hasScreen();
+    boolean hasScreen();
 
     /**
      * Gets the screen to execute.
      *
      * @return a string.
      */
-    public String getScreen();
+    String getScreen();
 
     /**
      * Sets the screen for the request.
      *
      * @param screen a string.
      */
-    public void setScreen(String screen);
+    void setScreen(String screen);
 
     /**
      * Convenience method for a template info that
@@ -256,7 +256,7 @@ public interface RunData
      *
      * @return a string.
      */
-    public String getScreenTemplate();
+    String getScreenTemplate();
 
     /**
      * Sets the screen template for the request. For
@@ -266,35 +266,35 @@ public interface RunData
      *
      * @param screen a screen template.
      */
-    public void setScreenTemplate(String screen);
+    void setScreenTemplate(String screen);
 
     /**
      * Gets the character encoding to use for reading template files.
      *
      * @return the template encoding or null if not specified.
      */
-    public String getTemplateEncoding();
+    String getTemplateEncoding();
 
     /**
      * Sets the character encoding to use for reading template files.
      *
      * @param encoding the template encoding.
      */
-    public void setTemplateEncoding(String encoding);
+    void setTemplateEncoding(String encoding);
 
     /**
      * Gets the template info. Creates a new one if needed.
      *
      * @return a template info.
      */
-    public TemplateInfo getTemplateInfo();
+    TemplateInfo getTemplateInfo();
 
     /**
      * Whether or not a message has been defined.
      *
      * @return true if a message has been defined.
      */
-    public boolean hasMessage();
+    boolean hasMessage();
 
     /**
      * Gets the results of an action or another message
@@ -302,14 +302,14 @@ public interface RunData
      *
      * @return a string.
      */
-    public String getMessage();
+    String getMessage();
 
     /**
      * Sets the message for the request as a string.
      *
      * @param msg a string.
      */
-    public void setMessage(String msg);
+    void setMessage(String msg);
 
     /**
      * Adds the string to message. If message has prior messages from
@@ -317,7 +317,7 @@ public interface RunData
      *
      * @param msg a string.
      */
-    public void addMessage(String msg);
+    void addMessage(String msg);
 
     /**
      * Gets the results of an action or another message
@@ -325,14 +325,14 @@ public interface RunData
      *
      * @return a string element.
      */
-    public StringElement getMessageAsHTML();
+    StringElement getMessageAsHTML();
 
     /**
      * Sets the message for the request as an ECS element.
      *
      * @param msg an element.
      */
-    public void setMessage(Element msg);
+    void setMessage(Element msg);
 
     /**
      * Adds the ECS element to message. If message has prior messages from
@@ -340,12 +340,12 @@ public interface RunData
      *
      * @param msg an element.
      */
-    public void addMessage(Element msg);
+    void addMessage(Element msg);
 
     /**
      * Unsets the message for the request.
      */
-    public void unsetMessage();
+    void unsetMessage();
 
     /**
      * Gets a FormMessages object where all the messages to the
@@ -353,49 +353,49 @@ public interface RunData
      *
      * @return a FormMessages.
      */
-    public FormMessages getMessages();
+    FormMessages getMessages();
 
     /**
      * Sets the FormMessages object for the request.
      *
      * @param msgs A FormMessages.
      */
-    public void setMessages(FormMessages msgs);
+    void setMessages(FormMessages msgs);
 
     /**
      * Gets the title of the page.
      *
      * @return a string.
      */
-    public String getTitle();
+    String getTitle();
 
     /**
      * Sets the title of the page.
      *
      * @param title a string.
      */
-    public void setTitle(String title);
+    void setTitle(String title);
 
     /**
      * Checks if a user exists in this session.
      *
      * @return true if a user exists in this session.
      */
-    public boolean userExists();
+    boolean userExists();
 
     /**
      * Gets the user.
      *
      * @return a user.
      */
-    public User getUser();
+    User getUser();
 
     /**
      * Sets the user.
      *
      * @param user a user.
      */
-    public void setUser(User user);
+    void setUser(User user);
 
     /**
      * Attempts to get the user from the session. If it does
@@ -403,21 +403,21 @@ public interface RunData
      *
      * @return a user.
      */
-    public User getUserFromSession();
+    User getUserFromSession();
 
     /**
      * Allows one to invalidate the user in the default session.
      *
      * @return true if user was invalidated.
      */
-    public boolean removeUserFromSession();
+    boolean removeUserFromSession();
 
     /**
      * Checks to see if out is set.
      *
      * @return true if out is set.
      */
-    public boolean isOutSet();
+    boolean isOutSet();
 
     /**
      * Gets the print writer. First time calling this
@@ -426,7 +426,7 @@ public interface RunData
      * @return a print writer.
      * @throws IOException.
      */
-    public PrintWriter getOut()
+    PrintWriter getOut()
         throws IOException;
 
     /**
@@ -435,7 +435,7 @@ public interface RunData
      * mechanisms that may call res.getWriter() themselves
      * (such as JSP.)
      */
-    public void declareDirectResponse();
+    void declareDirectResponse();
 
     /**
      * Gets the locale. If it has not already been defined with
@@ -446,14 +446,14 @@ public interface RunData
      *
      * @return the locale.
      */
-    public Locale getLocale();
+    Locale getLocale();
 
     /**
      * Sets the locale.
      *
      * @param locale the new locale.
      */
-    public void setLocale(Locale locale);
+    void setLocale(Locale locale);
 
     /**
      * Gets the charset. If it has not already been defined with
@@ -464,14 +464,14 @@ public interface RunData
      *
      * @return the name of the charset or null.
      */
-    public String getCharSet();
+    String getCharSet();
 
     /**
      * Sets the charset.
      *
      * @param charset the name of the new charset.
      */
-    public void setCharSet(String charset);
+    void setCharSet(String charset);
 
     /**
      * Gets the HTTP content type to return. If a charset
@@ -484,14 +484,14 @@ public interface RunData
      *
      * @return the content type or an empty string.
      */
-    public String getContentType();
+    String getContentType();
 
     /**
      * Sets the HTTP content type to return.
      *
      * @param ct the new content type.
      */
-    public void setContentType(String ct);
+    void setContentType(String ct);
 
     /**
      * Gets the redirect URI. If this is set, also make sure to set
@@ -499,7 +499,7 @@ public interface RunData
      *
      * @return a string, "" if null.
      */
-    public String getRedirectURI();
+    String getRedirectURI();
 
     /**
      * Sets the redirect uri. If this is set, also make sure to set
@@ -507,137 +507,137 @@ public interface RunData
      *
      * @param ruri a string.
      */
-    public void setRedirectURI(String ruri);
+    void setRedirectURI(String ruri);
 
     /**
      * Gets the HTTP status code to return.
      *
      * @return the status.
      */
-    public int getStatusCode();
+    int getStatusCode();
 
     /**
      * Sets the HTTP status code to return.
      *
      * @param sc the status.
      */
-    public void setStatusCode(int sc);
+    void setStatusCode(int sc);
 
     /**
      * Gets an array of system errors.
      *
      * @return a SystemError[].
      */
-    public SystemError[] getSystemErrors();
+    SystemError[] getSystemErrors();
 
     /**
      * Adds a critical system error.
      *
      * @param err a system error.
      */
-    public void setSystemError(SystemError err);
+    void setSystemError(SystemError err);
 
     /**
      * Gets JNDI Contexts.
      *
      * @return a hashtable.
      */
-    public Hashtable getJNDIContexts();
+    Hashtable getJNDIContexts();
 
     /**
      * Sets JNDI Contexts.
      *
      * @param contexts a hashtable.
      */
-    public void setJNDIContexts(Hashtable contexts);
+    void setJNDIContexts(Hashtable contexts);
 
     /**
      * Gets the cached server scheme.
      *
      * @return a string.
      */
-    public String getServerScheme();
+    String getServerScheme();
 
     /**
      * Gets the cached server name.
      *
      * @return a string.
      */
-    public String getServerName();
+    String getServerName();
 
     /**
      * Gets the cached server port.
      *
      * @return an int.
      */
-    public int getServerPort();
+    int getServerPort();
 
     /**
      * Gets the cached context path.
      *
      * @return a string.
      */
-    public String getContextPath();
+    String getContextPath();
 
     /**
      * Gets the cached script name.
      *
      * @return a string.
      */
-    public String getScriptName();
+    String getScriptName();
 
     /**
      * Gets the server data used by the request.
      *
      * @return server data.
      */
-    public ServerData getServerData();
+    ServerData getServerData();
 
     /**
      * Gets the IP address of the client that sent the request.
      *
      * @return a string.
      */
-    public String getRemoteAddr();
+    String getRemoteAddr();
 
     /**
      * Gets the qualified name of the client that sent the request.
      *
      * @return a string.
      */
-    public String getRemoteHost();
+    String getRemoteHost();
 
     /**
      * Get the user agent for the request.
      *
      * @return a string.
      */
-    public String getUserAgent();
+    String getUserAgent();
 
     /**
      * Pulls a user object from the session and increments the access
      * counter and sets the last access date for the object.
      */
-    public void populate();
+    void populate();
 
     /**
      * Saves a user object into the session.
      */
-    public void save();
+    void save();
 
     /**
      * Gets the stack trace if set.
      *
      * @return the stack trace.
      */
-    public String getStackTrace();
+    String getStackTrace();
 
     /**
      * Gets the stack trace exception if set.
      *
      * @return the stack exception.
      */
-    public Throwable getStackTraceException();
+    Throwable getStackTraceException();
 
     /**
      * Sets the stack trace.
@@ -645,13 +645,13 @@ public interface RunData
      * @param trace the stack trace.
      * @param exp the exception.
      */
-    public void setStackTrace(String trace,
-                              Throwable exp);
+    void setStackTrace(String trace,
+                       Throwable exp);
 
     /**
      * Gets a table of debug variables.
      *
      * @return a hashtable for debug variables.
      */
-    public Hashtable getVarDebug();
+    Hashtable getVarDebug();
 }

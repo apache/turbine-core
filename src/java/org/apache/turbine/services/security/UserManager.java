@@ -86,7 +86,7 @@ public interface UserManager
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    public boolean accountExists(User user) throws DataBackendException;
+    boolean accountExists(User user) throws DataBackendException;
 
     /**
      * Check whether a specified user's account exists.
@@ -98,7 +98,7 @@ public interface UserManager
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    public boolean accountExists(String username) throws DataBackendException;
+    boolean accountExists(String username) throws DataBackendException;
 
     /**
      * Retrieve a user from persistent storage using username as the
@@ -110,8 +110,8 @@ public interface UserManager
      *         exist in the database.
      * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public User retrieve(String username)
-            throws UnknownEntityException, DataBackendException;
+    User retrieve(String username)
+        throws UnknownEntityException, DataBackendException;
 
     /**
      * Retrieve a set of users that meet the specified criteria.
@@ -126,7 +126,7 @@ public interface UserManager
      * @return a List of users meeting the criteria.
      * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public User[] retrieve(Criteria criteria) throws DataBackendException;
+    User[] retrieve(Criteria criteria) throws DataBackendException;
 
     /**
      * Retrieve a user from persistent storage using username as the
@@ -142,9 +142,9 @@ public interface UserManager
      *         exist in the database.
      * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public User retrieve(String username, String password)
-            throws PasswordMismatchException, UnknownEntityException,
-            DataBackendException;
+    User retrieve(String username, String password)
+        throws PasswordMismatchException, UnknownEntityException,
+               DataBackendException;
 
     /**
      * Save an User object to persistent storage. User's record is
@@ -155,8 +155,8 @@ public interface UserManager
      *         exist in the database.
      * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public void store(User user)
-            throws UnknownEntityException, DataBackendException;
+    void store(User user)
+        throws UnknownEntityException, DataBackendException;
 
     /**
      * Authenticate an User with the specified password. If authentication
@@ -170,9 +170,9 @@ public interface UserManager
      *         exist in the database.
      * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public void authenticate(User user, String password)
-            throws PasswordMismatchException, UnknownEntityException,
-            DataBackendException;
+    void authenticate(User user, String password)
+        throws PasswordMismatchException, UnknownEntityException,
+               DataBackendException;
 
     /**
      * Creates new user account with specified attributes.
@@ -183,8 +183,8 @@ public interface UserManager
      *         backend.
      * @throws EntityExistsException if the user account already exists.
      */
-    public void createAccount(User user, String initialPassword)
-            throws EntityExistsException, DataBackendException;
+    void createAccount(User user, String initialPassword)
+        throws EntityExistsException, DataBackendException;
 
     /**
      * Removes an user account from the system.
@@ -194,8 +194,8 @@ public interface UserManager
      *         backend.
      * @throws UnknownEntityException if the user account is not present.
      */
-    public void removeAccount(User user)
-            throws UnknownEntityException, DataBackendException;
+    void removeAccount(User user)
+        throws UnknownEntityException, DataBackendException;
 
     /**
      * Change the password for an User.
@@ -208,10 +208,10 @@ public interface UserManager
      *         exist in the database.
      * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public void changePassword(User user, String oldPassword,
-            String newPassword)
-            throws PasswordMismatchException, UnknownEntityException,
-            DataBackendException;
+    void changePassword(User user, String oldPassword,
+                        String newPassword)
+        throws PasswordMismatchException, UnknownEntityException,
+               DataBackendException;
 
     /**
      * Forcibly sets new password for an User.
@@ -227,6 +227,6 @@ public interface UserManager
      *            exist in the database.
      * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public void forcePassword(User user, String password)
-            throws UnknownEntityException, DataBackendException;
+    void forcePassword(User user, String password)
+        throws UnknownEntityException, DataBackendException;
 }
