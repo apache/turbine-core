@@ -66,14 +66,11 @@ import org.apache.avalon.framework.component.ComponentException;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.avalon.framework.context.DefaultContext;
-import org.apache.avalon.framework.context.Context;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.Turbine;
-import org.apache.turbine.util.ServletUtils;
 
 /**
  * An implementation of AvalonComponentService which loads all the
