@@ -65,7 +65,7 @@ import org.apache.ecs.ElementContainer;
 import org.apache.ecs.html.Body;
 import org.apache.ecs.html.Html;
 import org.apache.ecs.html.PRE;
-import org.apache.turbine.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * An HTML multipart email.
@@ -235,7 +235,7 @@ public class HtmlEmail extends MultiPartEmail
         MimeBodyPart msgText = null;
         MimeBodyPart msgHtml = null;
 
-        if (StringUtils.isValid(text) && StringUtils.isValid(html))
+        if (StringUtils.isNotEmpty(text) && StringUtils.isNotEmpty(html))
         {
             // The message in text and HTML form.
             MimeMultipart msg = getHtmlContent();
@@ -248,12 +248,12 @@ public class HtmlEmail extends MultiPartEmail
             msg.addBodyPart(msgHtml);
 
         }
-        else if (StringUtils.isValid(text))
+        else if (StringUtils.isNotEmpty(text))
         {
             // just text so the text part is the main part
             msgText = main;
         }
-        else if (StringUtils.isValid(html))
+        else if (StringUtils.isNotEmpty(html))
         {
             // just HTML so the html part is the main part
             msgHtml = main;
