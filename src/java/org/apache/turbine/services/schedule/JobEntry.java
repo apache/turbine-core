@@ -109,6 +109,13 @@ public class JobEntry extends BaseObject
     private Hashtable jobProp = null;
 
     /**
+     * Default Constructor
+     */
+    public JobEntry()
+    {
+    }
+
+    /**
      * Constuctor.
      *
      * Schedule a job to run on a certain point of time.<br>
