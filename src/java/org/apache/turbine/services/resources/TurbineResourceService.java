@@ -255,8 +255,8 @@ public class TurbineResourceService
         StringBuffer result = new StringBuffer();
 
         // FIXME: we should probably allow the escaping of the start token
-        while ( ((begin = base.indexOf(START_TOKEN, prec + END_TOKEN.length())) >- 1)
-                && ((end = base.indexOf(END_TOKEN, begin)) >- 1) )
+        while ( ((begin = base.indexOf(START_TOKEN, prec + END_TOKEN.length())) >  -1)
+                && ((end = base.indexOf(END_TOKEN, begin)) > -1) )
         {
             result.append(base.substring(prec + END_TOKEN.length(), begin));
             variable = base.substring(begin + START_TOKEN.length(), end);
@@ -266,7 +266,8 @@ public class TurbineResourceService
             }
             prec = end;
         }
-        result.append(base.substring(prec+END_TOKEN.length(),base.length()));
+        result.append(base.substring(prec + END_TOKEN.length(),
+                                     base.length()));
 
         return result.toString();
     }
