@@ -191,7 +191,7 @@ public abstract class TurbinePool
      *
      * @return the pool service implementation.
      */
-    protected static PoolService getService()
+    public static PoolService getService()
     {
         return (PoolService) TurbineServices.
                 getInstance().getService(PoolService.SERVICE_NAME);
