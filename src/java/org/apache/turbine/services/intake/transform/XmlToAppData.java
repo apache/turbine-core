@@ -57,7 +57,8 @@ public class XmlToAppData extends DefaultHandler
     private XmlGroup currGroup;
     private XmlField currField;
     private Rule currRule;
-    private String currElement;
+
+    private StringBuffer charBuffer = null;
 
     private static SAXParserFactory saxFactory;
 
@@ -121,7 +122,8 @@ public class XmlToAppData extends DefaultHandler
     public void startElement(String uri, String localName,
                              String rawName, Attributes attributes)
     {
-        currElement = rawName;
+        charBuffer = new StringBuffer();
+
         if (rawName.equals("input-data"))
         {
             app.loadFromXML(attributes);
@@ -146,17 +148,31 @@ public class XmlToAppData extends DefaultHandler
      */
     public void characters(char[] mesgArray, int start, int length)
     {
-        String cdata = new String(mesgArray, start, length).trim();
-        if ("rule".equals(currElement) && cdata.length() > 0)
+        charBuffer.append(mesgArray, start, length);
+    }
+
+    /**
+     * Handles closing Elements of the XML file
+     */
+
+    public void endElement(String uri, String localName,
+            String rawName)
+    {
+        if (charBuffer.length() > 0)
         {
-            currRule.setMessage(cdata);
-        }
-        if ("required-message".equals(currElement) && cdata.length() > 0)
-        {
-            log.warn("The required-message element is deprecated!  " +
-                    "You should update your intake.xml file to use the " +
-                    "'required' rule instead.");
-            currField.setIfRequiredMessage(cdata);
+            String cdata = charBuffer.toString().trim();
+
+            if ("rule".equals(rawName))
+            {
+                currRule.setMessage(cdata);
+            }
+            else if ("required-message".equals(rawName))
+            {
+                log.warn("The required-message element is deprecated!  " +
+                        "You should update your intake.xml file to use the " +
+                        "'required' rule instead.");
+                currField.setIfRequiredMessage(cdata);
+            }
         }
     }
 
