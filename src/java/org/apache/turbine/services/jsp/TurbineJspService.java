@@ -55,17 +55,24 @@ package org.apache.turbine.services.jsp;
  */
 
 import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.configuration.Configuration;
+
 import org.apache.turbine.services.InitializationException;
+
 import org.apache.turbine.services.jsp.util.JspLink;
+
 import org.apache.turbine.services.servlet.TurbineServlet;
+
 import org.apache.turbine.services.template.BaseTemplateEngineService;
 import org.apache.turbine.services.template.TurbineTemplate;
+
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -77,8 +84,9 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  */
-public class TurbineJspService extends BaseTemplateEngineService
-        implements JspService
+public class TurbineJspService
+    extends BaseTemplateEngineService
+    implements JspService
 {
     /** The base path[s] prepended to filenames given in arguments */
     private String[] templatePaths;
@@ -121,7 +129,8 @@ public class TurbineJspService extends BaseTemplateEngineService
      * @throws InitializationException Something went wrong when starting up.
      * @deprecated use init() instead.
      */
-    public void init(ServletConfig config) throws InitializationException
+    public void init(ServletConfig config)
+        throws InitializationException
     {
         init();
     }
@@ -140,8 +149,9 @@ public class TurbineJspService extends BaseTemplateEngineService
     }
 
     /**
-     * The buffer size
+     * Returns the default buffer size of the JspService
      *
+     * @return The default buffer size.
      */
     public int getDefaultBufferSize()
     {
@@ -149,38 +159,38 @@ public class TurbineJspService extends BaseTemplateEngineService
     }
 
     /**
-     * Process the request
+     * executes the JSP given by templateName.
      *
-     * @param data
-     * @param filename the filename of the template.
-     * @throws TurbineException Any exception trown while processing will be
+     * @param data A RunData Object
+     * @param templateName the filename of the template.
+     * @throws TurbineException Any exception thrown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
-    public void handleRequest(RunData data, String filename)
+    public void handleRequest(RunData data, String templateName)
             throws TurbineException
     {
-        handleRequest(data, filename, false);
+        handleRequest(data, templateName, false);
     }
 
     /**
-     * Process the request
+     * executes the JSP given by templateName.
      *
-     * @param data
-     * @param filename the filename of the template.
+     * @param data A RunData Object
+     * @param templateName the filename of the template.
      * @param isForward whether to perform a forward or include.
      * @throws TurbineException Any exception trown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
-    public void handleRequest(RunData data, String filename, boolean isForward)
+    public void handleRequest(RunData data, String templateName, boolean isForward)
             throws TurbineException
     {
         /** template name with relative path */
-        String relativeTemplateName = getRelativeTemplateName(filename);
+        String relativeTemplateName = getRelativeTemplateName(templateName);
 
         if (relativeTemplateName == null)
         {
             throw new TurbineException(
-                    "Template " + filename + " not found in template paths");
+                    "Template " + templateName + " not found in template paths");
         }
 
         // get the RequestDispatcher for the JSP
@@ -208,7 +218,7 @@ public class TurbineJspService extends BaseTemplateEngineService
             try
             {
                 data.getOut().print("Error encountered processing a template: "
-                        + filename);
+                        + templateName);
                 e.printStackTrace(data.getOut());
             }
             catch (IOException ignored)
@@ -218,14 +228,15 @@ public class TurbineJspService extends BaseTemplateEngineService
             // pass the exception to the caller according to the general
             // contract for tamplating services in Turbine
             throw new TurbineException(
-                    "Error encountered processing a template:" + filename, e);
+                    "Error encountered processing a template: " + templateName, e);
         }
     }
 
     /**
      * This method sets up the template cache.
      */
-    private void initJsp() throws Exception
+    private void initJsp()
+        throws Exception
     {
         ServletContext context = TurbineServlet.getServletContext();
         Configuration config = getConfiguration();
