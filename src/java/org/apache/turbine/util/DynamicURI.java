@@ -58,10 +58,13 @@ import java.net.URLEncoder;
 
 import java.util.Enumeration;
 import java.util.Vector;
+import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.ecs.html.A;
 
 import org.apache.turbine.Turbine;
@@ -88,6 +91,7 @@ import org.apache.turbine.util.uri.URIConstants;
  *
  * &lt;A HREF="http://www.server.com:80/servlets/Turbine/screen=UserScreen&amp;amp;user=jon"&gt;Click Here&lt;/A&gt;
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @version $Id$
@@ -99,6 +103,9 @@ public class DynamicURI
 
     /** @deprecated Use URIConstants.HTTPS */
     public static final String HTTPS = URIConstants.HTTPS;
+
+    /** Logging */
+    private static Log log = LogFactory.getLog(DynamicURI.class);
 
     /** The ServerData object. */
     protected ServerData sd = null;
@@ -133,16 +140,10 @@ public class DynamicURI
     /** A Vectory that contains all the query data if any. */
     protected Vector queryData = null;
 
-    /**
-     * Fast shortcut to determine if there is any data in the path
-     * info.
-     */
+    /** Fast shortcut to determine if there is any data in the path info. */
     protected boolean hasPathInfo = false;
 
-    /**
-     * Fast shortcut to determine if there is any data in the query
-     * data.
-     */
+    /** Fast shortcut to determine if there is any data in the query data. */
     protected boolean hasQueryData = false;
 
     /** Whether we want to redirect or not. */
@@ -153,6 +154,9 @@ public class DynamicURI
 
     /** Q = 1 for query data. */
     protected static final int QUERY_DATA = 1;
+
+    /** Has the object been initialized? */
+    private boolean initialized = false;
 
     /**
      * Constructor sets up some variables.
@@ -325,12 +329,13 @@ public class DynamicURI
     {
         this(sd);
         this.redirect = redirect;
+        this.initialized = true;
     }
 
     /**
      * Initialize with a RunData object
      *
-     * @param RunData
+     * @param data RunData instance
      */
     public void init(RunData data)
     {
@@ -342,7 +347,7 @@ public class DynamicURI
     /**
      * Initialize with a ServerData object.
      *
-     * @param ServerData
+     * @param sd
      */
     public void init(ServerData sd)
     {
@@ -361,10 +366,9 @@ public class DynamicURI
      * @param name A String with the name to add.
      * @param value A String with the value to add.
      */
-    protected void add(int type,
-                       String name,
-                       String value)
+    protected void add(int type, String name, String value)
     {
+        assertInitialized();
         Object[] tmp = new Object[2];
         tmp[0] = (Object) ParserUtils.convertAndTrim(name);
         tmp[1] = (Object) value;
@@ -394,11 +398,9 @@ public class DynamicURI
      * @param type Type (P or Q) of insertion.
      * @param pp A ParameterParser.
      */
-    protected void add(int type,
-                       ParameterParser pp)
+    protected void add(int type, ParameterParser pp)
     {
-        Enumeration e = pp.keys();
-        while (e.hasMoreElements())
+        for( Enumeration e = pp.keys(); e.hasMoreElements(); )
         {
             String key = (String) e.nextElement();
             if (!key.equalsIgnoreCase("action") &&
@@ -419,6 +421,7 @@ public class DynamicURI
      *
      * @param name A String with the name to add.
      * @param value An Object with the value to add.
+     * @return A DynamicURI (self).
      */
     public DynamicURI addPathInfo(String name, Object value)
     {
@@ -431,6 +434,7 @@ public class DynamicURI
      *
      * @param name A String with the name to add.
      * @param value A String with the value to add.
+     * @return A DynamicURI (self).
      */
     public DynamicURI addPathInfo(String name, String value)
     {
@@ -443,6 +447,7 @@ public class DynamicURI
      *
      * @param name A String with the name to add.
      * @param value A double with the value to add.
+     * @return A DynamicURI (self).
      */
     public DynamicURI addPathInfo(String name, double value)
     {
@@ -455,6 +460,7 @@ public class DynamicURI
      *
      * @param name A String with the name to add.
      * @param value An int with the value to add.
+     * @return A DynamicURI (self).
      */
     public DynamicURI addPathInfo(String name, int value)
     {
@@ -467,6 +473,7 @@ public class DynamicURI
      *
      * @param name A String with the name to add.
      * @param value A long with the value to add.
+     * @return A DynamicURI (self).
      */
     public DynamicURI addPathInfo(String name, long value)
     {
@@ -479,6 +486,7 @@ public class DynamicURI
      * object to the path_info string.
      *
      * @param pp A ParameterParser.
+     * @return A DynamicURI (self).
      */
     public DynamicURI addPathInfo(ParameterParser pp)
     {
@@ -491,6 +499,7 @@ public class DynamicURI
      *
      * @param name A String with the name to add.
      * @param value An Object with the value to add.
+     * @return A DynamicURI (self).
      */
     public DynamicURI addQueryData(String name, Object value)
     {
@@ -503,6 +512,7 @@ public class DynamicURI
      *
      * @param name A String with the name to add.
      * @param value A String with the value to add.
+     * @return A DynamicURI (self).
      */
     public DynamicURI addQueryData(String name, String value)
     {
@@ -515,6 +525,7 @@ public class DynamicURI
      *
      * @param name A String with the name to add.
      * @param value A double with the value to add.
+     * @return A DynamicURI (self).
      */
     public DynamicURI addQueryData(String name, double value)
     {
@@ -527,6 +538,7 @@ public class DynamicURI
      *
      * @param name A String with the name to add.
      * @param value An int with the value to add.
+     * @return A DynamicURI (self).
      */
     public DynamicURI addQueryData(String name, int value)
     {
@@ -539,6 +551,7 @@ public class DynamicURI
      *
      * @param name A String with the name to add.
      * @param value A long with the value to add.
+     * @return A DynamicURI (self).
      */
     public DynamicURI addQueryData(String name, long value)
     {
@@ -551,6 +564,7 @@ public class DynamicURI
      * object to the query string.
      *
      * @param pp A ParameterParser.
+     * @return A DynamicURI (self).
      */
     public DynamicURI addQueryData(ParameterParser pp)
     {
@@ -586,6 +600,7 @@ public class DynamicURI
      */
     public String getScriptName()
     {
+        assertInitialized();
         if (this.scriptName == null)
         {
             return "";
@@ -600,6 +615,7 @@ public class DynamicURI
      */
     public String getReference()
     {
+        assertInitialized();
         if (this.reference == null)
         {
             return "";
@@ -614,6 +630,7 @@ public class DynamicURI
      */
     public String getServerName()
     {
+        assertInitialized();
         if (this.serverName == null)
         {
             return "";
@@ -628,6 +645,7 @@ public class DynamicURI
      */
     public int getServerPort()
     {
+        assertInitialized();
         if (this.serverPort == 0)
         {
             return 80;
@@ -642,6 +660,7 @@ public class DynamicURI
      */
     public String getServerScheme()
     {
+        assertInitialized();
         if (this.serverScheme == null)
         {
             return "";
@@ -661,6 +680,7 @@ public class DynamicURI
         this.pathInfo = new Vector();
         this.queryData = new Vector();
         this.reference = null;
+        this.initialized = true;
     }
 
     /**
@@ -673,18 +693,18 @@ public class DynamicURI
      * @param type Type (P or Q) of removal.
      * @param name A String with the name to be removed.
      */
-    protected void remove(int type,
-                          String name)
+    protected void remove(int type, String name)
     {
+        assertInitialized();
         try
         {
             switch (type)
             {
                 case PATH_INFO:
-                    for (Enumeration e = this.pathInfo.elements();
-                         e.hasMoreElements();)
+                    for (Iterator iter = this.pathInfo.iterator();
+                         iter.hasNext();)
                     {
-                        Object[] tmp = (Object[]) e.nextElement();
+                        Object[] tmp = (Object[]) iter.next();
                         if (ParserUtils.convertAndTrim(name)
                                 .equals((String) tmp[0]))
                         {
@@ -697,10 +717,10 @@ public class DynamicURI
                     }
                     break;
                 case QUERY_DATA:
-                    for (Enumeration e = this.queryData.elements();
-                         e.hasMoreElements();)
+                    for (Iterator iter = this.pathInfo.iterator();
+                         iter.hasNext();)
                     {
-                        Object[] tmp = (Object[]) e.nextElement();
+                        Object[] tmp = (Object[]) iter.next();
                         if (ParserUtils.convertAndTrim(name)
                                 .equals((String) tmp[0]))
                         {
@@ -716,6 +736,7 @@ public class DynamicURI
         }
         catch (Exception e)
         {
+            log.error("Could not remove "+name, e);
         }
     }
 
@@ -724,6 +745,7 @@ public class DynamicURI
      */
     public void removePathInfo()
     {
+        assertInitialized();
         this.pathInfo.removeAllElements();
         this.hasPathInfo = false;
     }
@@ -743,6 +765,7 @@ public class DynamicURI
      */
     public void removeQueryData()
     {
+        assertInitialized();
         this.queryData.removeAllElements();
         this.hasQueryData = false;
     }
@@ -770,10 +793,9 @@ public class DynamicURI
         String value = null;
         String tmp = null;
         StringBuffer out = new StringBuffer();
-        Enumeration keys = data.elements();
-        while (keys.hasMoreElements())
+        for( Iterator iter = data.iterator(); iter.hasNext(); )
         {
-            Object[] stuff = (Object[]) keys.nextElement();
+            Object[] stuff = (Object[]) iter.next();
             key = URLEncoder.encode((String) stuff[0]);
             tmp = (String) stuff[1];
             if (tmp == null || tmp.length() == 0)
@@ -809,10 +831,9 @@ public class DynamicURI
         String value = null;
         String tmp = null;
         StringBuffer out = new StringBuffer();
-        Enumeration keys = data.elements();
-        while (keys.hasMoreElements())
+        for( Iterator iter = data.iterator(); iter.hasNext(); )
         {
-            Object[] stuff = (Object[]) keys.nextElement();
+            Object[] stuff = (Object[]) iter.next();
             key = URLEncoder.encode((String) stuff[0]);
             tmp = (String) stuff[1];
             if (tmp == null || tmp.length() == 0)
@@ -856,7 +877,7 @@ public class DynamicURI
      * <p>By default it adds the information to the path_info instead
      * of the query data.
      *
-     * @param action A String with the screen value.
+     * @param screen A String with the screen value.
      * @return A DynamicURI (self).
      */
     public DynamicURI setScreen(String screen)
@@ -977,6 +998,7 @@ public class DynamicURI
      */
     public String toString()
     {
+        assertInitialized();
         StringBuffer output = new StringBuffer();
         output.append(getServerScheme());
         output.append("://");
@@ -1011,9 +1033,9 @@ public class DynamicURI
         if (this.res != null)
         {
             if (this.redirect)
-                return res.encodeRedirectUrl(output.toString());
+                return res.encodeRedirectURL(output.toString());
             else
-                return res.encodeUrl(output.toString());
+                return res.encodeURL(output.toString());
         }
         else
         {
@@ -1071,6 +1093,7 @@ public class DynamicURI
      */
     public ServerData getServerData()
     {
+        assertInitialized();
         return this.sd;
     }
 
@@ -1082,5 +1105,16 @@ public class DynamicURI
     public void setServerData(ServerData sd)
     {
         this.sd = sd;
+    }
+
+    /**
+     * Verifies that one of the init() methods has been called
+     */
+    protected void assertInitialized()
+    {
+        if(!this.initialized)
+        {
+            throw new IllegalStateException("Not initialized");
+        }
     }
 }
