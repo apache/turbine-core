@@ -656,6 +656,8 @@ public class Turbine
         getServiceManager().shutdownServices();
         System.gc();
 
+        firstInit = true;
+        firstDoGet = true;
         log.info("Turbine: Done shutting down!");
     }
 
