@@ -122,6 +122,37 @@ public abstract class TurbineSecurity
     }
 
     /**
+     * This method provides client-side encryption of passwords.
+     *
+     * This is an utility method that is used by other classes to maintain
+     * a consistent approach to encrypting password. The behavior of the
+     * method can be configured in service's properties.
+     *
+     * @param password the password to process
+     * @param salt the supplied salt to encrypt the password
+     * @return processed password
+     */
+    public static String encryptPassword(String password, String salt)
+    {
+        return getService().encryptPassword(password, salt);
+    }
+
+    /**
+     * Checks if a supplied password matches the encrypted password
+     *
+     * @param checkpw      The clear text password supplied by the user
+     * @param encpw        The current, encrypted password
+     *
+     * @return true if the password matches, else false
+     *
+     */
+
+    public static boolean checkPassword(String checkpw, String encpw)
+    {
+        return getService().checkPassword(checkpw, encpw);
+    }
+
+    /**
      * Returns the Class object for the implementation of User interface
      * used by the system.
      *

@@ -304,8 +304,17 @@ public class DBUserManager
             throw new UnknownEntityException("The account '" +
                                              user.getUserName() + "' does not exist");
         }
-        String encrypted = TurbineSecurity.encryptPassword(password);
-        if (!user.getPassword().equals(encrypted))
+
+        // log.debug("Supplied Pass: " + password);
+        // log.debug("User Pass: " + user.getPassword());
+
+        /*
+         * Unix crypt needs the existing, encrypted password text as
+         * salt for checking the supplied password. So we supply it 
+         * into the checkPassword routine
+         */
+
+        if (!TurbineSecurity.checkPassword(password, user.getPassword()))
         {
             throw new PasswordMismatchException("The passwords do not match");
         }
@@ -330,13 +339,13 @@ public class DBUserManager
         throws PasswordMismatchException, UnknownEntityException,
                DataBackendException
     {
-        String encrypted = TurbineSecurity.encryptPassword(oldPassword);
         if (!accountExists(user))
         {
             throw new UnknownEntityException("The account '" +
                                              user.getUserName() + "' does not exist");
         }
-        if (!user.getPassword().equals(encrypted))
+
+        if (!TurbineSecurity.checkPassword(oldPassword, user.getPassword()))
         {
             throw new PasswordMismatchException(
                 "The supplied old password for '" + user.getUserName() +
@@ -396,8 +405,7 @@ public class DBUserManager
             throw new EntityExistsException("The account '" +
                                             user.getUserName() + "' already exists");
         }
-        String encrypted = TurbineSecurity.encryptPassword(initialPassword);
-        user.setPassword(encrypted);
+        user.setPassword(TurbineSecurity.encryptPassword(initialPassword));
         Criteria criteria = TurbineUserPeer.buildCriteria(user);
         try
         {

@@ -54,11 +54,7 @@ package org.apache.turbine.services.security;
  * <http://www.apache.org/>.
  */
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.security.MessageDigest;
 import java.util.Map;
-import javax.mail.internet.MimeUtility;
 import javax.servlet.ServletConfig;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
@@ -69,6 +65,9 @@ import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.crypto.TurbineCrypto;
+import org.apache.turbine.services.crypto.CryptoService;
+import org.apache.turbine.services.crypto.CryptoAlgorithm;
 import org.apache.turbine.services.factory.FactoryService;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -154,6 +153,29 @@ public abstract class BaseSecurityService
      */
     public String encryptPassword(String password)
     {
+        return encryptPassword(password, null);
+    }
+
+    /**
+     * This method provides client-side encryption of passwords.
+     *
+     * If <code>secure.passwords</code> are enabled in TurbineResources,
+     * the password will be encrypted, if not, it will be returned unchanged.
+     * The <code>secure.passwords.algorithm</code> property can be used
+     * to chose which digest algorithm should be used for performing the
+     * encryption. <code>SHA</code> is used by default.
+     *
+     * The used algorithms must be prepared to accept null as a
+     * valid parameter for salt. All algorithms in the Fulcrum Cryptoservice
+     * accept this.
+     *
+     * @param password the password to process
+     * @param salt     algorithms that needs a salt can provide one here
+     * @return processed password
+     */
+
+    public String encryptPassword(String password, String salt)
+    {
         if (password == null)
         {
             return null;
@@ -161,27 +183,28 @@ public abstract class BaseSecurityService
         String secure = getConfiguration().getString(
             SecurityService.SECURE_PASSWORDS_KEY,
             SecurityService.SECURE_PASSWORDS_DEFAULT).toLowerCase();
+
         String algorithm = getConfiguration().getString(
             SecurityService.SECURE_PASSWORDS_ALGORITHM_KEY,
             SecurityService.SECURE_PASSWORDS_ALGORITHM_DEFAULT);
-        if (secure.equals("true") || secure.equals("yes"))
+
+        CryptoService cs = TurbineCrypto.getService();
+
+        if (cs != null && (secure.equals("true") || secure.equals("yes")))
         {
             try
             {
-                MessageDigest md = MessageDigest.getInstance(algorithm);
-                // We need to use unicode here, to be independent of platform's
-                // default encoding. Thanks to SGawin for spotting this.
-                byte[] digest = md.digest(password.getBytes("UTF-8"));
-                ByteArrayOutputStream bas = new ByteArrayOutputStream(
-                    digest.length + digest.length / 3 + 1);
-                OutputStream encodedStream = MimeUtility.encode(bas, "base64");
-                encodedStream.write(digest);
-                return bas.toString();
+                CryptoAlgorithm ca = cs.getCryptoAlgorithm(algorithm);
+
+                ca.setSeed(salt);
+
+                String result = ca.encrypt(password);
+
+                return result;
             }
             catch (Exception e)
             {
-                log.error("Unable to encrypt password." + e.getMessage());
-                log.error(e);
+                log.error("Unable to encrypt password: ", e);
 
                 return null;
             }
@@ -190,6 +213,23 @@ public abstract class BaseSecurityService
         {
             return password;
         }
+    }
+
+    /**
+     * Checks if a supplied password matches the encrypted password
+     *
+     * @param checkpw      The clear text password supplied by the user
+     * @param encpw        The current, encrypted password
+     *
+     * @return true if the password matches, else false
+     *
+     */
+
+    public boolean checkPassword(String checkpw, String encpw)
+    {
+        String result = encryptPassword(checkpw, encpw);
+
+        return (result == null) ? false : result.equals(encpw);
     }
 
     /**
@@ -213,7 +253,7 @@ public abstract class BaseSecurityService
             SecurityService.USER_CLASS_DEFAULT);
 
         String aclClassName = conf.getString(
-            SecurityService.ACL_CLASS_KEY, 
+            SecurityService.ACL_CLASS_KEY,
             SecurityService.ACL_CLASS_DEFAULT);
 
         try
@@ -245,7 +285,7 @@ public abstract class BaseSecurityService
             throw new InitializationException("Failed to instantiate UserManager", e);
         }
 
-        try 
+        try
         {
             aclFactoryService = (FactoryService) TurbineServices.getInstance().
                 getService(FactoryService.SERVICE_NAME);
@@ -339,7 +379,7 @@ public abstract class BaseSecurityService
      *
      * This constructs a new ACL object from the configured class and
      * initializes it with the supplied roles and permissions.
-     * 
+     *
      * @param roles The roles that this ACL should contain
      * @param permissions The permissions for this ACL
      *
@@ -352,12 +392,12 @@ public abstract class BaseSecurityService
         Object[] objects    = { roles, permissions };
         String[] signatures = {Map.class.getName(), Map.class.getName()};
         AccessControlList accessControlList;
-        
+
         try
         {
-            accessControlList = 
-                (AccessControlList) aclFactoryService.getInstance(aclClass.getName(), 
-                                                                  objects, 
+            accessControlList =
+                (AccessControlList) aclFactoryService.getInstance(aclClass.getName(),
+                                                                  objects,
                                                                   signatures);
         }
         catch (Exception e)

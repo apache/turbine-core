@@ -344,6 +344,35 @@ public interface SecurityService
     String encryptPassword(String password);
 
     /**
+     * This method provides client-side encryption mechanism for passwords.
+     *
+     * This is an utility method that is used by other classes to maintain
+     * a consistent approach to encrypting password. The behavior of the
+     * method can be configured in service's properties.
+     *
+     * Algorithms that must supply a salt for encryption 
+     * can use this method to provide it.
+     *
+     * @param password the password to process
+     * @param salt Salt parameter for some crypto algorithms
+     *
+     * @return processed password
+     */
+    String encryptPassword(String password, String salt);
+
+    /**
+     * Checks if a supplied password matches the encrypted password
+     * when using the current encryption algorithm
+     *
+     * @param checkpw      The clear text password supplied by the user
+     * @param encpw        The current, encrypted password
+     *
+     * @return true if the password matches, else false
+     *
+     */
+    boolean checkPassword(String checkpw, String encpw);
+    
+    /**
      * Change the password for an User.
      *
      * @param user an User to change password for.
@@ -496,7 +525,7 @@ public interface SecurityService
      * Provides a reference to the Group object that represents the
      * <a href="#global">global group</a>.
      *
-     * @return a Group object that represents the global group.
+     * @return A Group object that represents the global group.
      */
     Group getGlobalGroup();
 
