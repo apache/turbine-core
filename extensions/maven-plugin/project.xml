@@ -50,11 +50,13 @@
   <siteDirectory>/www/jakarta.apache.org/turbine/meta/</siteDirectory>
   <distributionSite>www.apache.org</distributionSite>
   <distributionDirectory>/www/www.apache.org/dist/java-repository/</distributionDirectory>
+
   <repository>
     <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2/extensions/maven-plugin</connection>
     <developerConnection>scm:cvs:ext:${maven.username}@cvs.apache.org:/home/cvs:jakarta-turbine-2/extensions/maven-plugin</developerConnection>
     <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2/extensions/maven-plugin/</url>
   </repository>
+
   <mailingLists>
     <mailingList>
       <name>Turbine User List</name>
@@ -69,6 +71,15 @@
       <archive>http://nagoya.apache.org/eyebrowse/SummarizeList?listName=turbine-dev@jakarta.apache.org</archive>
     </mailingList>
   </mailingLists>
+
+  <versions>
+    <version>
+      <id>1</id>
+      <name>1.2-rc1</name>
+      <tag>META_1_2_RC1</tag>
+    </version>
+  </versions>
+
   <developers>
     <developer>
       <name>Eric Pugh</name>
@@ -115,12 +126,15 @@
     </license>
   </licenses>
 
-  <!-- ======================================================================== -->
-  <!--                                                                          -->
-  <!-- M.E.T.A. itself has no dependencies on any jars.                         -->
-  <!--                                                                          -->
-  <!-- ======================================================================== -->
-  <dependencies/>
+  <dependencies>
+   <dependency> 
+      <groupId>torque</groupId> 
+      <artifactId>maven-torque-plugin</artifactId> 
+      <version>3.1.1-rc2</version> 
+      <url>http://db.apache.org/torque/</url> 
+      <type>plugin</type>
+    </dependency> 
+  </dependencies>
 
   <build>
     <resources>
