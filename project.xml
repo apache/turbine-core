@@ -762,13 +762,6 @@
       <artifactId>mockobjects-core</artifactId>
       <version>0.09</version>
     </dependency>  
-    
-    <!-- Needed for testing -->
-    <dependency>
-      <groupId>merlin/tutorial</groupId>
-      <artifactId>hello</artifactId>
-      <version>1.1</version>
-    </dependency>   
   </dependencies>
 
   <build>
