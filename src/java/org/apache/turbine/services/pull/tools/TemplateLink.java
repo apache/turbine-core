@@ -68,7 +68,7 @@ import org.apache.turbine.util.uri.URIConstants;
 /**
  * This is a pull to to be used in Templates to convert links in
  * Templates into the correct references.
- * 
+ *
  * The pull service might insert this tool into the Context.
  * in templates.  Here's an example of its Velocity use:
  *
@@ -85,6 +85,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * @author <a href="mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 
@@ -204,6 +205,22 @@ public class TemplateLink
     }
 
     /**
+     * Sets the action= and eventSubmit= values for this URL.
+     *
+     * By default it adds the information to the path_info instead
+     * of the query data.
+     *
+     * @param action A String with the action value.
+     * @param event A string with the event name.
+     */
+    public TemplateLink setActionEvent(String action, String event)
+    {
+        log.debug("setActionEvent(" + action + ", "+ event +")");
+        templateURI.setActionEvent(action, event);
+        return this;
+    }
+
+    /**
      * Sets the screen= value for this URL.
      *
      * By default it adds the information to the path_info instead
@@ -242,7 +259,7 @@ public class TemplateLink
     /*
      * ========================================================================
      *
-     * Adding and removing Data from the Path Info and Query Data 
+     * Adding and removing Data from the Path Info and Query Data
      *
      * ========================================================================
      */
@@ -450,7 +467,7 @@ public class TemplateLink
      * http://www.server.com/servlets/Turbine/screen/UserScreen/user/jon
      *
      * <p>
-     * After rendering the URI, it clears the 
+     * After rendering the URI, it clears the
      * pathInfo and QueryString portions of the TemplateURI. So you can
      * use the $link reference multiple times on a page and start over
      * with a fresh object every time.
@@ -462,7 +479,7 @@ public class TemplateLink
         String output = templateURI.getAbsoluteLink();
 
         // This was added to use $link multiple times on a page and start
-        // over with a fresh set of data every time. 
+        // over with a fresh set of data every time.
         templateURI.removePathInfo();
         templateURI.removeQueryData();
 
@@ -488,7 +505,7 @@ public class TemplateLink
      * /servlets/Turbine/screen/UserScreen/user/jon
      *
      * <p>
-     * After rendering the URI, it clears the 
+     * After rendering the URI, it clears the
      * pathInfo and QueryString portions of the TemplateURI. So you can
      * use the $link reference multiple times on a page and start over
      * with a fresh object every time.
@@ -500,7 +517,7 @@ public class TemplateLink
         String output = templateURI.getRelativeLink();
 
         // This was added to use $link multiple times on a page and start
-        // over with a fresh set of data every time. 
+        // over with a fresh set of data every time.
         templateURI.removePathInfo();
         templateURI.removeQueryData();
 
@@ -508,7 +525,7 @@ public class TemplateLink
     }
 
     /**
-     * Returns the URI. After rendering the URI, it clears the 
+     * Returns the URI. After rendering the URI, it clears the
      * pathInfo and QueryString portions of the TemplateURI. Equivalent
      * to the getAbsoluteLink() method of this class.
      *

@@ -318,6 +318,26 @@ public class TurbineURI
     }
 
     /**
+     * Sets the action= and eventSubmit= values for this URL.
+     *
+     * By default it adds the information to the path_info instead
+     * of the query data. An empty value (null or "") for the action cleans out
+     * an existing value.  An empty value (null or "") for the event has no
+     * effect.
+     *
+     * @param action A String with the action value.
+     * @param event A string with the event name.
+     */
+    public void setActionEvent(String action, String event)
+    {
+        setAction(action);
+        if(StringUtils.isNotEmpty(event))
+        {
+            add(PATH_INFO, CGI_EVENT_PREFIX + event, event);
+        }
+    }
+
+    /**
      * Clears the action= value for this URL.
      *
      */
@@ -908,11 +928,11 @@ public class TurbineURI
     {
         Collection c = dataVectors[type];
         String key = ParserUtils.convertAndTrim(name);
-        
+
         for (Iterator it = c.iterator(); it.hasNext();)
         {
             URIParam uriParam = (URIParam) it.next();
-            
+
             if (key.equals(uriParam.getKey()))
             {
                 it.remove();

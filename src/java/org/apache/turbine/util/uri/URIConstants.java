@@ -59,6 +59,7 @@ package org.apache.turbine.util.uri;
  * working with URIs.
  *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 
@@ -85,14 +86,17 @@ public interface URIConstants
     /** Query Data Marker */
     int QUERY_DATA = 1;
 
-    /** 
+    /**
      * The part of the URI which separates the protocol indicator (i.e. the
-     * scheme) from the rest of the URI. 
+     * scheme) from the rest of the URI.
      */
     String URI_SCHEME_SEPARATOR = "://";
 
     /** CGI parameter for action name */
     String CGI_ACTION_PARAM = "action";
+
+    /** prefix for event names */
+    String CGI_EVENT_PREFIX = "eventSubmit_";
 
     /** CGI parameter for screen name */
     String CGI_SCREEN_PARAM = "screen";
