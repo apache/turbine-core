@@ -72,7 +72,7 @@ import org.apache.turbine.services.TurbineBaseService;
 
 /**
  * An implementation of AvalonComponentService based on the Avalon 
- * Merlin 3.2 container.
+ * Merlin 3.2 container.  Not ready for Prime Time yet.
  * 
  * @author <a mailto="peter@courcoux.biz">Peter Courcoux</a>
  * @author <a mailto="epugh@upstate.com">Eric Pugh</a>

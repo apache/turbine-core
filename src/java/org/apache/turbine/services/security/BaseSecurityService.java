@@ -77,7 +77,6 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
-import org.apache.turbine.services.avaloncomponent.MerlinComponentService;
 import org.apache.fulcrum.crypto.CryptoAlgorithm;
 import org.apache.fulcrum.crypto.CryptoService;
 import org.apache.turbine.services.factory.FactoryService;
@@ -196,10 +195,10 @@ public abstract class BaseSecurityService
                 SecurityService.SECURE_PASSWORDS_ALGORITHM_KEY,
                 SecurityService.SECURE_PASSWORDS_ALGORITHM_DEFAULT);
 
-        MerlinComponentService merlin = (MerlinComponentService)TurbineServices.getInstance().getService(MerlinComponentService.SERVICE_NAME);
+        AvalonComponentService ecm = (AvalonComponentService)TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
         CryptoService cs = null;
         try {
-            cs = (CryptoService)merlin.lookup("/fulcrum/crypto");
+            cs = (CryptoService)ecm.lookup(CryptoService.ROLE);
         }
         catch (Exception e){
             throw new RuntimeException("Could not access Crypto Service",e);

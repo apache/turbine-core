@@ -60,7 +60,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.localization.LocalizationService;
 import org.apache.turbine.services.InstantiationException;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.MerlinComponentService;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
 /**
@@ -91,10 +91,10 @@ public class LocalizationTool implements ApplicationTool
     {
         if (localizationService == null)
         {
-            MerlinComponentService merlin =
-                (MerlinComponentService) TurbineServices.getInstance().getService(MerlinComponentService.SERVICE_NAME);
+            AvalonComponentService ecm =
+                (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
                 try {
-            localizationService = (LocalizationService)merlin.lookup("/fulcrum/localization");
+            localizationService = (LocalizationService)ecm.lookup(LocalizationService.ROLE);
                 }
                 catch (Exception e) {
                     throw new InstantiationException("Problem looking up Localization Service:"+e.getMessage());
