@@ -136,9 +136,9 @@ public class TurbineSchedulerService
         }
         catch(Exception e)
         {
-            log.error("Could not initialize the scheduler service", e);
-            throw new InitializationException(
-                    "TurbineSchedulerService failed to initialize", e);
+            String errorMessage = "Could not initialize the scheduler service";
+            log.error(errorMessage, e);
+            throw new InitializationException(errorMessage, e);
         }
     }
 
@@ -176,7 +176,7 @@ public class TurbineSchedulerService
      *
      * @param oid The int id for the job.
      * @return A JobEntry.
-     * @exception TurbineException a generic exception.
+     * @exception TurbineException job could not be retreived.
      */
     public JobEntry getJob(int oid)
             throws TurbineException
@@ -198,62 +198,51 @@ public class TurbineSchedulerService
      * Add a new job to the queue.
      *
      * @param je A JobEntry with the job to add.
-     * @exception TurbineException a generic exception.
+     * @throws TurbineException job could not be added
      */
     public void addJob(JobEntry je)
             throws TurbineException
     {
-        try
-        {
-            // Calculate the runtime to make sure the entry will be placed
-            // at the right order
-            je.calcRunTime();
-
-            // Save to DB.
-            je.save();
-
-            // Add to the queue.
-            scheduleQueue.add(je);
-            restart();
-        }
-        catch(Exception e)
-        {
-            // Log problems.
-            log.error("Problem saving new Scheduled Job: " + e);
-        }
+        updateJob(je);
     }
 
     /**
      * Remove a job from the queue.
      *
      * @param je A JobEntry with the job to remove.
-     * @exception TurbineException a generic exception.
+     * @exception TurbineException job could not be removed
      */
     public void removeJob(JobEntry je)
             throws TurbineException
     {
-        // First remove from DB.
         try
         {
+            // First remove from DB.
             Criteria c = new Criteria().add(JobEntryPeer.JOB_ID, je.getPrimaryKey());
             JobEntryPeer.doDelete(c);
-        }
-        catch(Exception ouch)
-        {
-            // Log problem.
-            log.error("Problem removing Scheduled Job: " + ouch);
-        }
 
-        // Remove from the queue.
-        scheduleQueue.remove(je);
-        restart();
+            // Remove from the queue.
+            scheduleQueue.remove(je);
+
+            // restart the scheduler
+            if(enabled)
+            {
+                restart();
+            }
+        }
+        catch(Exception e)
+        {
+            String errorMessage = "Problem removing Scheduled Job: " + je.getTask();
+            log.error(errorMessage, e);
+            throw new TurbineException( errorMessage, e);
+        }
     }
 
     /**
-     * Modify a Job.
+     * Add or update a job.
      *
      * @param je A JobEntry with the job to modify
-     * @exception TurbineException a generic exception.
+     * @throws TurbineException job could not be updated
      */
     public void updateJob(JobEntry je)
             throws TurbineException
@@ -261,16 +250,29 @@ public class TurbineSchedulerService
         try
         {
             je.calcRunTime();
-            je.save();
 
             // Update the queue.
-            scheduleQueue.modify(je);
-            restart();
+            if(je.isNew())
+            {
+                scheduleQueue.add(je);
+            }
+            else
+            {
+                scheduleQueue.modify(je);
+            }
+
+            je.save();
+
+            if(enabled)
+            {
+                restart();
+            }
         }
         catch(Exception e)
         {
-            // Log problems.
-            log.error("Problem updating Scheduled Job: " + e);
+            String errorMessage = "Problem updating Scheduled Job: " + je.getTask();
+            log.error(errorMessage, e);
+            throw new TurbineException( errorMessage, e);
         }
     }
 
@@ -291,7 +293,7 @@ public class TurbineSchedulerService
      */
     public boolean isEnabled()
     {
-        return (getThread() == null ? false : true);
+        return enabled;
     }
 
     /**
@@ -428,6 +430,7 @@ public class TurbineSchedulerService
          */
         public void run()
         {
+            String taskName = null;
             try
             {
                 while(enabled)
@@ -435,6 +438,8 @@ public class TurbineSchedulerService
                     JobEntry je = nextJob();
                     if(je != null)
                     {
+                        taskName = je.getTask();
+
                         // Start the thread to run the job.
                         Runnable wt = new WorkerThread(je);
                         Thread helper = new Thread(wt);
@@ -448,8 +453,7 @@ public class TurbineSchedulerService
             }
             catch(Exception e)
             {
-                // Log error.
-                log.error("Error running a Scheduled Job: " + e);
+                log.error("Error running a Scheduled Job: "+taskName, e);
                 enabled = false;
             }
             finally
