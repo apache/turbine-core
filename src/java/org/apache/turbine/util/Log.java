@@ -69,17 +69,6 @@ import org.apache.turbine.services.logging.LoggingService;
 public class Log
 {
     /**
-     * This method has been deprecated, attempts to shutdown logger service.
-     * @deprecated The service should be shut down by the broker class only.
-     */
-    public static void destroy()
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.shutdown();
-    }
-
-    /**
      * This method returns default logger for Turbine System
      *
      * @return The default logger for system.
@@ -127,7 +116,6 @@ public class Log
      * Format tokens are described in RunDataFilter implementation.
      *
      * @see org.apache.turbine.services.logging.BaseRunDataFilter
-     *
      * @param format String describing what information should be extracted from
      *        RunData
      */
@@ -143,7 +131,6 @@ public class Log
      * Format tokens are described in RunDataFilter implementation.
      *
      * @see org.apache.turbine.services.logging.BaseRunDataFilter
-     *
      * @param format String describing what information should be extracted from
      *        RunData
      */
@@ -525,31 +512,5 @@ public class Log
     public static void error(Throwable e)
     {
         error("", e);
-    }
-
-    /**
-     * This method has been deprecated.
-     * This is method is kept for historical reason.
-     *
-     * @deprecated You should use info or debug methods instead.
-     */
-    public static void note(String message)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.info(message);
-    }
-
-    /**
-     * This method has been deprecated.
-     * This is method is kept for historical reason.
-     *
-     * @deprecated You should use info or debug methods instead.
-     */
-    public static void note(String logName, String message)
-    {
-        LoggingService logger = (LoggingService)TurbineServices.getInstance()
-            .getService(LoggingService.SERVICE_NAME);
-        logger.info(logName, message);
     }
 }
