@@ -459,6 +459,7 @@ public interface SecurityService
      * @return a List of users meeting the criteria.
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
+     * @deprecated Use <a href="#retrieveList">retrieveList</a> instead.
      */
     User[] getUsers(Criteria criteria)
             throws DataBackendException;

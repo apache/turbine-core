@@ -222,11 +222,12 @@ public class LDAPUserManager implements UserManager
      * @param criteria The criteria of selection.
      * @return a List of users meeting the criteria.
      * @throws DataBackendException Error accessing the data backend.
+     * @deprecated Use <a href="#retrieveList">retrieveList</a> instead.
      */
     public User[] retrieve(Criteria criteria)
             throws DataBackendException
     {
-        return (User [])retrieveList(criteria).toArray(new User[0]);
+        return (User []) retrieveList(criteria).toArray(new User[0]);
     }
 
     /**
