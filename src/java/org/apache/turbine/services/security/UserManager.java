@@ -56,9 +56,12 @@ package org.apache.turbine.services.security;
 
 import java.util.List;
 
+import org.apache.commons.configuration.Configuration;
+
 import org.apache.torque.util.Criteria;
 
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
 import org.apache.turbine.util.security.PasswordMismatchException;
@@ -80,6 +83,16 @@ import org.apache.turbine.util.security.UnknownEntityException;
  */
 public interface UserManager
 {
+    /**
+     * Initializes the UserManager
+     *
+     * @param conf A Configuration object to init this Manager
+     *
+     * @throws InitializationException When something went wrong.
+     */
+    void init(Configuration conf)
+        throws InitializationException;
+    
     /**
      * Check whether a specified user's account exists.
      *
