@@ -7,6 +7,7 @@
   <author email="jvanzyl@apache.org">Jason van Zyl</author>
   <author email="jmcnally@apache.org">John D. McNally</author>
   <author email="mpoeschl@marmot.at">Martin Poeschl</author>
+  <author email="seade@backstagetech.com.au">Scott Eade</author>
 </properties>
 
 <body>
@@ -63,6 +64,8 @@ Changes between Turbine 2.2 and 2.2.1.
 <p>
   <ul>
     <li>
+       TTWS38: BaseValueParser.getInteger(String name) now returns null if the 
+       key name is not found - the old behaviour was to return new Integer(0).
     </li>
   </ul>
 </p>

@@ -382,7 +382,7 @@ public interface ValueParser
 
     /**
      * Return an array of ints for the given name.  If the name does
-     * not exist, return null.
+     * not exist, return <code>null</code>.
      *
      * @param name A String with the name.
      * @return An int[].

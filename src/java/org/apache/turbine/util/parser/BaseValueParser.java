@@ -670,14 +670,18 @@ public class BaseValueParser
 
     /**
      * Return an Integer for the given name.  If the name does not
-     * exist, return 0.
+     * exist, return <code>null</code>.
      *
      * @param name A String with the name.
      * @return An Integer.
      */
     public Integer getInteger(String name)
     {
-        return new Integer(getInt(name, 0));
+        if (containsKey(name))
+        {
+            return new Integer(getInt(name));
+        }
+        return null;
     }
 
     /**
