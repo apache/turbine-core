@@ -220,14 +220,28 @@ public class TurbineVelocityService
 
     /**
      * Create a Context object that also contains the globalContext.
+     * Refreshes all the global tools in the context. We can't move
+     * this into getContext(RunData data) or even the PullService 
+     * itself, because we would lose some of the refresh events which
+     * should happen every time a context is pulled.
      *
      * @return A Context object.
      */
     public Context getContext()
     {
-        return new VelocityContext(globalContext);
+        Context ctx = new VelocityContext();
+        
+        // 
+        // We have only one context per request (that is the nature
+        // of the context...) So this is the right place to refresh
+        // the global tools.
+        //
+        if (pullModelActive && refreshToolsPerRequest)
+        {
+            TurbinePull.refreshGlobalTools();
+        }
+        return ctx;
     }
-
 
     /**
      * Create a Context from the RunData object.  Adds a pointer to
@@ -422,12 +436,6 @@ public class TurbineVelocityService
         throws Exception
     {
         String encoding = getEncoding(context);
-
-        // This is for development.
-        if (pullModelActive && refreshToolsPerRequest)
-        {
-            TurbinePull.refreshGlobalTools();
-        }
 
         if (encoding != null)
         {
