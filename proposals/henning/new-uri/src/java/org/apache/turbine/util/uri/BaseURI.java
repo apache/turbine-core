@@ -436,7 +436,7 @@ public abstract class BaseURI
     }
 
     /**
-     * Appends Context Path and Script Name to the passed
+     * Append the Context Path and Script Name to the passed
      * String Buffer.
      *
      * <p>
@@ -487,9 +487,9 @@ public abstract class BaseURI
     {
         // http(s)://<servername>
         sb.append(getServerScheme());
-        sb.append("://");
+        sb.append(URIConstants.URI_SCHEME_SEPARATOR);
         sb.append(getServerName());
-        
+
         // (:<port>)
         if ((getServerScheme().equals(HTTP)
                     && getServerPort() != HTTP_PORT)

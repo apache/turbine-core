@@ -65,7 +65,7 @@ import org.apache.turbine.util.ServerData;
 /**
  * This class allows you to keep all the information needed for a single
  * link at one place. It keeps your query data, path info, the server
- * scheme, name, port and the script path. It is tuned for usage with a 
+ * scheme, name, port and the script path. It is tuned for usage with a
  * Template System e.g. Velocity.
  *
  * If you must generate a Turbine Link in a Template System, use this class.
@@ -75,7 +75,7 @@ import org.apache.turbine.util.ServerData;
  */
 
 public class TemplateURI
-    extends TurbineURI
+        extends TurbineURI
 {
     /**
      * Empty C'tor. Uses Turbine.getDefaultServerData().
@@ -299,15 +299,15 @@ public class TemplateURI
      * @param pp A ParameterParser.
      */
     protected void add(int type,
-                       ParameterParser pp)
+            ParameterParser pp)
     {
         for(Enumeration e = pp.keys(); e.hasMoreElements(); )
         {
             String key = (String) e.nextElement();
 
             if (!key.equalsIgnoreCase(CGI_ACTION_PARAM) &&
-                !key.equalsIgnoreCase(CGI_SCREEN_PARAM) &&
-                !key.equalsIgnoreCase(CGI_TEMPLATE_PARAM))
+                    !key.equalsIgnoreCase(CGI_SCREEN_PARAM) &&
+                    !key.equalsIgnoreCase(CGI_TEMPLATE_PARAM))
             {
                 String[] values = pp.getStrings(key);
                 for (int i = 0; i < values.length; i++)
