@@ -317,7 +317,7 @@
     </dependency>
     <dependency>
       <id>commons-configuration</id>
-      <version>1.0-dev-3.20030607.194155</version>
+      <version>20030620.073343</version>
       <url>http://jakarta.apache.org/commons/sandbox/configuration/index.html</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
