@@ -157,7 +157,7 @@ $intake.declareGroups()
             <source><![CDATA[
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE input-data SYSTEM
-           "http://jakarta.apache.org/turbine/dtd/intake.dtd">
+           "http://jakarta.apache.org/turbine/dtd/intake_2_2_1.dtd">
 <input-data basePackage="ca.yorku.devteam.inca.clients.skeleton.">
     ...group elements goes here...
 </input-data>
