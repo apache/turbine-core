@@ -54,15 +54,16 @@ package org.apache.turbine.modules.layouts;
  * <http://www.apache.org/>.
  */
 
-// Turbine Classes
-
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.HtmlColor;
+
 import org.apache.ecs.html.Font;
 import org.apache.ecs.html.P;
+
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.NavigationLoader;
 import org.apache.turbine.modules.ScreenLoader;
+
 import org.apache.turbine.util.RunData;
 
 /**
