@@ -229,6 +229,7 @@ public class TurbineXmlRpcService
                     }
                 }
             }
+            webserver.start();
         }
         catch (Exception e)
         {
