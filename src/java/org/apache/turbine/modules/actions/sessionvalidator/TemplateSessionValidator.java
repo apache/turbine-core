@@ -136,7 +136,8 @@ public class TemplateSessionValidator
         // the session_access_counter can be placed as a hidden field in
         // forms.  This can be used to prevent a user from using the
         // browsers back button and submitting stale data.
-        else if (data.getParameters().containsKey("_session_access_counter"))
+        else if (data.getParameters().containsKey("_session_access_counter")
+                && !TurbineSecurity.isAnonymousUser(data.getUser()))
         {
             // See comments in screens.error.InvalidState.
             if (data.getParameters().getInt("_session_access_counter") 
