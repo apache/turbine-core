@@ -267,4 +267,20 @@ public abstract class Localization
         return (LocalizationService) TurbineServices.getInstance()
                 .getService(LocalizationService.SERVICE_NAME);
     }
+
+    /**
+     * @deprecated Call getString(data.getRequest()) instead.
+     */
+    public static String getString(RunData data, String key)
+    {
+        return getBundle(data.getRequest()).getString(key);
+    }
+
+    /**
+     * @deprecated Call getBundle(bundleName, data.getRequest()) instead.
+     */
+    public static ResourceBundle getBundle(String bundleName, RunData data)
+    {
+        return getBundle(bundleName, data.getRequest());
+    }
 }
