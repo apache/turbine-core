@@ -304,7 +304,7 @@ public class BaseValueParser
 
     /**
      * Removes the named parameter from the contained hashtable. Wraps to the
-     * contained <code>Hashtable.remove()</code>.
+     * contained <code>Map.remove()</code>.
      *
      * @return The value that was mapped to the key (a <code>String[]</code>)
      *         or <code>null</code> if the key was not mapped.

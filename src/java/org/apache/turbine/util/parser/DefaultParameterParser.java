@@ -187,7 +187,7 @@ public class DefaultParameterParser
     /**
      * Sets the servlet request to be parser.  This requires a
      * valid HttpServletRequest object.  It will attempt to parse out
-     * the GET/POST/PATH_INFO data and store the data into a Hashtable.
+     * the GET/POST/PATH_INFO data and store the data into a Map.
      * There are convenience methods for retrieving the data as a
      * number of different datatypes.  The PATH_INFO data must be a
      * URLEncoded() string.
