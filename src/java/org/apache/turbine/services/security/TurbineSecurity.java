@@ -640,7 +640,7 @@ public abstract class TurbineSecurity
     public static Group createGroup(String name)
             throws TurbineSecurityException
     {
-        return getService().addGroup(getNewGroup(name));
+        return getService().addGroup(getGroupInstance(name));
     }
 
     /**
@@ -654,7 +654,7 @@ public abstract class TurbineSecurity
     public static Permission createPermission(String name)
             throws TurbineSecurityException
     {
-        return getService().addPermission(getNewPermission(name));
+        return getService().addPermission(getPermissionInstance(name));
     }
 
     /**
@@ -670,7 +670,7 @@ public abstract class TurbineSecurity
     public static Role createRole(String name)
         throws TurbineSecurityException
     {
-        return getService().addRole(getNewRole(name));
+        return getService().addRole(getRoleInstance(name));
     }
 
     /**
@@ -723,6 +723,24 @@ public abstract class TurbineSecurity
     }
 
     /**
+     * Construct a blank Group object.
+     *
+     * This method calls getGroupClass, and then creates a new object using
+     * the default constructor.
+     *
+     * @param groupName The name of the Group
+     *
+     * @return an object implementing Group interface.
+     *
+     * @throws UnknownEntityException if the object could not be instantiated.
+     */
+    public static Group getGroupInstance(String groupName)
+            throws UnknownEntityException
+    {
+        return getService().getGroupInstance(groupName);
+    }
+
+    /**
      * Retrieves a named Group. If the Group does not exist, it creates
      * a new Group based on the Services Group implementation. It is ok
      * to pass in null or "" here and then use Group.setName() at a later
@@ -732,11 +750,30 @@ public abstract class TurbineSecurity
      * @return an object representing the Group with specified name.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
+     * @deprecated Use getGroupInstance(String name) instead.
      */
     public static Group getNewGroup(String groupName)
             throws DataBackendException
     {
         return getService().getNewGroup(groupName);
+    }
+
+    /**
+     * Construct a blank Role object.
+     *
+     * This method calls getRoleClass, and then creates a new object using
+     * the default constructor.
+     *
+     * @param roleName The name of the role.
+     *
+     * @return an object implementing Role interface.
+     *
+     * @throws UnknownEntityException if the object could not be instantiated.
+     */
+    public static Role getRoleInstance(String roleName)
+            throws UnknownEntityException
+    {
+        return getService().getRoleInstance(roleName);
     }
 
     /**
@@ -748,11 +785,29 @@ public abstract class TurbineSecurity
      * @param roleName The name of the Role to be retrieved.
      * @return an object representing the Role with specified name.
      * @throws TurbineSecurityException if the Role could not be retrieved
+     * @deprecated Use getRoleInstance(String name) instead.
      */
     public static Role getNewRole(String roleName)
             throws TurbineSecurityException
     {
         return getService().getNewRole(roleName);
+    }
+
+    /**
+     * Construct a blank Permission object.
+     *
+     * This method calls getPermissionClass, and then creates a new object using
+     * the default constructor.
+     *
+     * @param permName The name of the permission.
+     *
+     * @return an object implementing Permission interface.
+     * @throws UnknownEntityException if the object could not be instantiated.
+     */
+    public static Permission getPermissionInstance(String permName)
+            throws UnknownEntityException
+    {
+        return getService().getPermissionInstance(permName);
     }
 
     /**
@@ -765,6 +820,7 @@ public abstract class TurbineSecurity
      * @return an object representing the Permission with specified name.
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
+     * @deprecated Use getPermissionInstance(String name) instead.
      */
     public static Permission getNewPermission(String permissionName)
             throws DataBackendException
