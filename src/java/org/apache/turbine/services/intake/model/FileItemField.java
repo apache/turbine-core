@@ -55,8 +55,6 @@ package org.apache.turbine.services.intake.model;
  */
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.FileValidator;
 import org.apache.turbine.services.intake.validator.ValidationException;
@@ -74,9 +72,14 @@ import org.apache.turbine.util.ValueParser;
 public class FileItemField
         extends Field
 {
-    /** Used for logging */
-    private static Log log = LogFactory.getLog(FileItemField.class);
 
+    /**
+     * Constructor.
+     *
+     * @param field xml field definition object
+     * @param group xml group definition object
+     * @throws IntakeException thrown by superclass
+     */
     public FileItemField(XmlField field, Group group)
             throws IntakeException
     {
@@ -84,16 +87,20 @@ public class FileItemField
     }
 
     /**
-     * It is not possible to set the default value for this field type.  Calling this
-     * method with a non-null parameter will result in a TurbineRuntimeException
+     * It is not possible to set the default value for this field type.
+     * Calling this method with a non-null parameter will result in a
+     * TurbineRuntimeException
      *
+     * @param prop Parameter for the default values
      * @throws TurbineRuntimeException
      */
     public void setDefaultValue(String prop)
     {
         if (prop != null)
         {
-            throw new TurbineRuntimeException("Default values are not valid for " + this.getClass().getName());
+            throw new TurbineRuntimeException(
+                    "Default values are not valid for "
+                    + this.getClass().getName());
         }
 
         defaultValue = null;
@@ -146,6 +153,8 @@ public class FileItemField
 
     /**
      * Compares request data with constraints and sets the valid flag.
+     *
+     * @return the valid flag
      */
     protected boolean validate()
     {
@@ -179,7 +188,6 @@ public class FileItemField
             {
                 doSetValue();
             }
-
         }
         else
         {

@@ -56,9 +56,6 @@ package org.apache.turbine.services.intake.model;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.NumberValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
@@ -73,9 +70,6 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
 public class BigDecimalField
         extends Field
 {
-    /** Used for logging */
-    private static Log log = LogFactory.getLog(BigDecimalField.class);
-
     /**
      * Constructor.
      *

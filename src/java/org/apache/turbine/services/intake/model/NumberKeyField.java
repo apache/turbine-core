@@ -55,9 +55,6 @@ package org.apache.turbine.services.intake.model;
  */
 
 import java.math.BigDecimal;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.NumberKey;
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.NumberKeyValidator;
@@ -73,9 +70,14 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
 public class NumberKeyField
         extends BigDecimalField
 {
-    /** Used for logging */
-    private static Log log = LogFactory.getLog(NumberKeyField.class);
 
+    /**
+     * Constructor.
+     *
+     * @param field xml field definition object
+     * @param group xml group definition object
+     * @throws IntakeException thrown by superclass
+     */
     public NumberKeyField(XmlField field, Group group)
             throws IntakeException
     {

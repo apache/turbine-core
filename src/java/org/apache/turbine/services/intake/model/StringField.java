@@ -54,8 +54,6 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 
@@ -70,9 +68,14 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
 public class StringField
         extends Field
 {
-    /** Used for logging */
-    private static Log log = LogFactory.getLog(StringField.class);
 
+    /**
+     * Constructor.
+     *
+     * @param field xml field definition object
+     * @param group xml group definition object
+     * @throws IntakeException thrown by superclass
+     */
     public StringField(XmlField field, Group group)
             throws IntakeException
     {
@@ -84,7 +87,6 @@ public class StringField
      *
      * @param prop Parameter for the default values
      */
-
     public void setDefaultValue(String prop)
     {
         defaultValue = prop;
@@ -128,7 +130,9 @@ public class StringField
 
     /**
      * Set the value of required.
+     *
      * @param v  Value to assign to required.
+     * @param message an error message
      */
     public void setRequired(boolean v, String message)
     {
@@ -168,7 +172,6 @@ public class StringField
                     this.message = message;
                 }
             }
-
         }
     }
 }
