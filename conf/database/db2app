@@ -1,2 +1,0 @@
-database.driver=COM.ibm.db2.jdbc.app.DB2Driver
-database.adaptor="DBDB2App

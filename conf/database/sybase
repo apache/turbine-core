@@ -1,2 +1,0 @@
-database.driver=com.sybase.jdbc.SybDriver
-database.adaptor=DBSybase

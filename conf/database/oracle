@@ -1,3 +1,0 @@
-database.driver=oracle.jdbc.driver.OracleDriver
-database.url=jdbc:oracle:thin:@localhost:1521:ORCL
-database.adaptor=DBOracle

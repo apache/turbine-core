@@ -1,2 +1,0 @@
-database.driver=org.postgresql.Driver
-database.adaptor=DBPostgres

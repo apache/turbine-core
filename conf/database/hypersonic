@@ -1,3 +1,0 @@
-database.driver=org.hsqldb.jdbcDriver
-database.url=jdbc:hsqldb:${applicationRoot}/db/${database.name}
-database.adaptor=DBHypersonicSQL
