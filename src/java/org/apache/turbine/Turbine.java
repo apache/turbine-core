@@ -676,8 +676,8 @@ public class Turbine
             }
 
             // Fill in the screen and action variables.
-            data.setScreen(data.getParameters().getString("screen"));
-            data.setAction(data.getParameters().getString("action"));
+            data.setScreen(data.getParameters().getString(URIConstants.CGI_SCREEN_PARAM));
+            data.setAction(data.getParameters().getString(URIConstants.CGI_ACTION_PARAM));
 
             // Special case for login and logout, this must happen before the
             // session validator is executed in order either to allow a user to
