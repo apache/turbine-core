@@ -293,6 +293,20 @@ public abstract class TurbineSecurity
     }
 
     /**
+     * Checks whether a passed user object matches the anonymous user pattern
+     * according to the configured service
+     *
+     * @param An user object
+     *
+     * @return True if this is an anonymous user
+     *
+     */
+    public static boolean isAnonymousUser(User u)
+    {
+        return getService().isAnonymousUser(u);
+    }
+
+    /**
      * Saves User's data in the permanent storage. The user account is required
      * to exist in the storage.
      *
