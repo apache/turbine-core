@@ -100,7 +100,9 @@ abstract class NumberValidator
     {
         super.init(paramMap);
 
-        Constraint constraint = (Constraint) paramMap.get("invalidNumber");
+        Constraint constraint =
+                (Constraint) paramMap.get(INVALID_NUMBER_RULE_NAME);
+
         if (constraint != null)
         {
             invalidNumberMessage = constraint.getMessage();

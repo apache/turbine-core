@@ -137,7 +137,7 @@ abstract public class DefaultValidator
     public void init(Map paramMap)
             throws InvalidMaskException
     {
-        Constraint constraint = (Constraint) paramMap.get("required");
+        Constraint constraint = (Constraint) paramMap.get(REQUIRED_RULE_NAME);
         if (constraint != null)
         {
             String param = constraint.getValue();
@@ -145,7 +145,7 @@ abstract public class DefaultValidator
             requiredMessage = constraint.getMessage();
         }
 
-        constraint = (Constraint) paramMap.get("minLength");
+        constraint = (Constraint) paramMap.get(MIN_LENGTH_RULE_NAME);
         if (constraint != null)
         {
             String param = constraint.getValue();
@@ -153,7 +153,7 @@ abstract public class DefaultValidator
             minLengthMessage = constraint.getMessage();
         }
 
-        constraint = (Constraint) paramMap.get("maxLength");
+        constraint = (Constraint) paramMap.get(MAX_LENGTH_RULE_NAME);
         if (constraint != null)
         {
             String param = constraint.getValue();
