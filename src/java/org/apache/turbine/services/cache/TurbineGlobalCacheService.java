@@ -205,8 +205,7 @@ public class TurbineGlobalCacheService
             throws ObjectExpiredException
     {
         CachedObject obj = null;
-        boolean stale = false;
-
+        
         obj = (CachedObject) cache.get(id);
 
         if (obj == null)
@@ -377,8 +376,7 @@ public class TurbineGlobalCacheService
         {
             for (Enumeration e = cache.keys(); e.hasMoreElements();)
             {
-                String key = (String) e.nextElement();
-                CachedObject co = (CachedObject) cache.get(key);
+                String key = (String) e.nextElement();     
                 cache.remove(key);
             }
         }

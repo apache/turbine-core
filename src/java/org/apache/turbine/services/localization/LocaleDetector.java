@@ -104,7 +104,6 @@ public class LocaleDetector
     {
         Configuration conf = Turbine.getConfiguration();
 
-        Locale locale = null;
 
         // return a "default" locale
         if (languageHeader == null ||

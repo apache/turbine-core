@@ -62,7 +62,6 @@ import java.util.Iterator;
 import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.parser.ParameterParser;
 
 import org.apache.velocity.context.Context;

@@ -253,7 +253,6 @@ public class TurbineJspService
     private void initJsp()
         throws Exception
     {
-        ServletContext context = TurbineServlet.getServletContext();
         Configuration config = getConfiguration();
 
         // Set relative paths from config.
