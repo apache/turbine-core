@@ -2,7 +2,8 @@
 
 <project
   xmlns:j="jelly:core"
-  xmlns:u="jelly:util">
+  xmlns:u="jelly:util"
+  xmlns:ant="jelly:ant">
 
   <goal
     name="turbine:base"
@@ -68,4 +69,38 @@
     <attainGoal name="turbine:base"/>
   </goal>
 
+ <goal name="turbine:inplace-war" description="Builds an inplace exploded Turbine webapp">
+
+     <j:set var="warWebappBuildDir"
+        value="${maven.src.dir}/webapp"/>    
+     <echo message="war dir:${warBuildDir}"/>
+     <j:set var="maven.war.webapp.dir" value="${warWebappBuildDir}"/>
+     <j:set var="maven.war.build.dir" value="${warWebappBuildDir}"/>
+
+     <ant:property name="maven.test.skip" value="true"/>
+     <ant:property name="maven.war.webapp.dir" value="${warWebappBuildDir}"/>
+     <ant:property name="maven.war.build.dir" value="${warWebappBuildDir}"/>
+     <attainGoal name="eclipse"/>
+     <attainGoal name="war:webapp"/>
+     
+   </goal>
+   
+   <goal name="turbine:inplace-clean" description="Cleans an inplace exploded Turbine webapp">
+
+     <j:set var="warWebappBuildDir"
+        value="${maven.src.dir}/webapp"/>    
+     <echo message="war dir:${warBuildDir}"/>
+     <j:set var="maven.war.webapp.dir" value="${warWebappBuildDir}"/>
+     <j:set var="maven.war.build.dir" value="${warWebappBuildDir}"/>
+
+     <ant:property name="maven.test.skip" value="true"/>
+     <ant:property name="maven.war.webapp.dir" value="${warWebappBuildDir}"/>
+     <ant:property name="maven.war.build.dir" value="${warWebappBuildDir}"/>
+     
+     <ant:delete dir="${warWebappBuildDir}/WEB-INF/lib"/>
+     <ant:delete dir="${warWebappBuildDir}/WEB-INF/classes"/>
+     <attainGoal name="clean"/>
+     
+     
+   </goal>  
 </project>

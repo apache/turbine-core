@@ -6,8 +6,10 @@
   <body>
     <links>
       <item name="Turbine" href="http://jakarta.apache.org/turbine/"/>
+      <item name="Maven" href="http://maven.apache.org/"/>      
     </links>
     <menu name="Overview">
+      <item name="Overview"           href="/index.html" />
       <item name="Goals"              href="/goals.html" />
       <item name="Properties"         href="/properties.html" />
     </menu>

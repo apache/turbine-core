@@ -4,22 +4,22 @@
   <properties>
     <title>Maven Turbine Plug-in</title>
     <author email="mpoeschl@marmot.at">Martin Poeschl</author>
+    <author email="epugh@upstate.com">Eric Pugh</author>
   </properties>
 
   <body>
-    <section name="Maven Turbine Generator Plug-in">
+    <section name="Maven Turbine Plug-in">
+     
       <p>
-        This plugin is a replacement for the TDK.
+        This plugin is for working with Turbine.
       </p>
       <p>
-        It should help to setup the environment to develop Turbine based
-        applications.
+		It has goals to help you setup your base Turbine environment.  Additionally it has 
+		goals to help you with inplace code/build/compile development.
       </p>
-      <p>
-        You must specify the package that you want the code to be
-        generated into, e.g.
-      </p>
-      <source>maven -Dpackage=com.mycompany.project genapp</source>
+     
+     
+
     </section>
   </body>
 </document>
