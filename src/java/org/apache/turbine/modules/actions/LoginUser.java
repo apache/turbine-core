@@ -54,14 +54,22 @@ package org.apache.turbine.modules.actions;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.configuration.Configuration;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+
 import org.apache.turbine.modules.Action;
+
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.services.security.TurbineSecurity;
+
 import org.apache.turbine.util.RunData;
+
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.TurbineSecurityException;
 
@@ -71,9 +79,11 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * that users last login time will be updated.
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class LoginUser extends Action
+public class LoginUser 
+    extends Action
 {
     /** Logging */
     private static Log log = LogFactory.getLog(LoginUser.class);
@@ -140,16 +150,16 @@ public class LoginUser extends Action
         }
         catch (TurbineSecurityException e)
         {
+            Configuration conf = Turbine.getConfiguration();
+
             if (e instanceof DataBackendException)
             {
                 log.error(e);
             }
-            data.setMessage(TurbineResources.getString(
-                    TurbineConstants.LOGIN_ERROR));
+            data.setMessage(conf.getString(TurbineConstants.LOGIN_ERROR));
             // Retrieve an anonymous user.
-            data.setUser(TurbineSecurity.getAnonymousUser());
-            String loginTemplate = TurbineResources.getString(
-                    TurbineConstants.TEMPLATE_LOGIN);
+            data.setUser (TurbineSecurity.getAnonymousUser());
+            String loginTemplate = conf.getString(TurbineConstants.TEMPLATE_LOGIN);
 
             if (loginTemplate != null && loginTemplate.length() > 0)
             {
@@ -157,8 +167,7 @@ public class LoginUser extends Action
             }
             else
             {
-                data.setScreen(TurbineResources.getString(
-                        TurbineConstants.SCREEN_LOGIN));
+                data.setScreen(conf.getString(TurbineConstants.SCREEN_LOGIN));
             }
         }
     }
