@@ -54,10 +54,9 @@ package org.apache.turbine.modules.screens;
  * <http://www.apache.org/>.
  */
 
-// Turbine
-
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
+
 import org.apache.velocity.context.Context;
 
 /**
@@ -74,7 +73,8 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
-public abstract class VelocitySecureScreen extends VelocityScreen
+public abstract class VelocitySecureScreen
+        extends VelocityScreen
 {
     /**
      * Implement this to add information to the context.
@@ -88,13 +88,14 @@ public abstract class VelocitySecureScreen extends VelocityScreen
             throws Exception;
 
     /**
-     * This method overrides the method in WebMacroSiteScreen to
+     * This method overrides the method in VelocityScreen to
      * perform a security check first.
      *
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
-    protected void doBuildTemplate(RunData data) throws Exception
+    protected void doBuildTemplate(RunData data)
+        throws Exception
     {
         if (isAuthorized(data))
         {
@@ -106,7 +107,7 @@ public abstract class VelocitySecureScreen extends VelocityScreen
      * Implement this method to perform the security check needed.
      * You should set the template in this method that you want the
      * user to be sent to if they're unauthorized.  See the
-     * WebMacroSecuritCheck utility.
+     * VelocitySecurityCheck utility.
      *
      * @param data Turbine information.
      * @return True if the user is authorized to access the screen.

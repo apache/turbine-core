@@ -82,9 +82,10 @@ public class VelocityErrorScreen
     protected void doBuildTemplate(RunData data, Context context)
             throws Exception
     {
-        context.put("processingException",
-                data.getStackTraceException().toString());
-        context.put("stackTrace", data.getStackTrace());
+        context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER,
+                     data.getStackTraceException().toString());
+        context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER,
+                     data.getStackTrace());
 
         String errorTemplate = Turbine.getConfiguration()
             .getString(TurbineConstants.TEMPLATE_ERROR_KEY,

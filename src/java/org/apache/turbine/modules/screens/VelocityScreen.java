@@ -95,6 +95,9 @@ public class VelocityScreen
     /** Logging */
     private static Log log = LogFactory.getLog(VelocityScreen.class);
 
+    /** The prefix for lookup up screen pages */
+    private String prefix = TurbineConstants.SCREEN_PREFIX + "/";
+
     /**
      * Velocity Screens extending this class should overide this
      * method to perform any particular business logic and add
@@ -134,28 +137,21 @@ public class VelocityScreen
     public ConcreteElement buildTemplate(RunData data)
         throws Exception
     {
-        StringElement output = null;
         String screenData = null;
+        
         Context context = TurbineVelocity.getContext(data);
 
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
         String templateName
             = TurbineTemplate.getScreenTemplateName(screenTemplate);
-
+        
         // The Template Service could not find the Screen
-        if (templateName == null)
+        if (StringUtils.isEmpty(templateName))
         {
             log.error("Screen " + screenTemplate + " not found!");
             throw new Exception("Could not find screen for " + screenTemplate);
         }
-
-        // Template service adds the leading slash, but make it sure.
-        if ((templateName.length() > 0) &&
-                (templateName.charAt(0) != '/'))
-        {
-            templateName = '/' + templateName;
-        }
-
+        
         try
         {
             // if a layout has been defined return the results, otherwise
@@ -163,13 +159,13 @@ public class VelocityScreen
             if (getLayout(data) == null)
             {
                 TurbineVelocity.handleRequest(context,
-                        "screens" + templateName,
+                        prefix + templateName,
                         data.getResponse().getOutputStream());
             }
             else
             {
                 screenData = TurbineVelocity
-                        .handleRequest(context, "screens" + templateName);
+                        .handleRequest(context, prefix + templateName);
             }
         }
         catch (Exception e)
@@ -177,27 +173,23 @@ public class VelocityScreen
             // If there is an error, build a $processingException and
             // attempt to call the error.vm template in the screens
             // directory.
-            context.put ("processingException", e.toString());
-            context.put ("stackTrace", ExceptionUtils.getStackTrace(e));
-
+            context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
+            context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
+            
             templateName = Turbine.getConfiguration()
                 .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
                            TurbineConstants.TEMPLATE_ERROR_VM);
-
-            if ((templateName.length() > 0) &&
-                    (templateName.charAt(0) != '/'))
-            {
-                templateName = '/' + templateName;
-            }
+            
             screenData = TurbineVelocity.handleRequest(
-                    context, "screens" + templateName);
+                context, prefix + templateName);
         }
-
+        
         // package the response in an ECS element
+        StringElement output = new StringElement();
+        output.setFilterState(false);
+
         if (screenData != null)
         {
-            output = new StringElement();
-            output.setFilterState(false);
             output.addElement(screenData);
         }
         return output;
@@ -208,6 +200,8 @@ public class VelocityScreen
      *
      * @param data Turbine information.
      * @return A Context.
+     *
+     * @deprecated Use TurbineVelocity.getContext(data)
      */
     public static Context getContext(RunData data)
     {
