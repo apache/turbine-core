@@ -47,8 +47,8 @@
         <li><a href="velocity-site-howto.html">Velocity Site Howto</a></li>
         <li><a href="velocityonlylayout-howto.html">VelocityOnlyLayout Howto</a></li>
         <li><a href="hibernate-howto.html">Hibernate OM Howto</a></li>
-        <li><a href="http://nagoya.apache.org/wiki/apachewiki.cgi?search=CategoryJakartaTurbine2HowTo">
-            Additional Howtos from the Apache Wiki</a></li>
+        <li><a href="http://wiki.apache.org/jakarta-turbine/Turbine2">
+            Additional Howtos from the Torque Wiki</a></li>
       </ul>
     </p>
   </section>
