@@ -124,9 +124,6 @@ public class TurbineConfig
     public static final String PROPERTIES_PATH_DEFAULT =
             "/WEB-INF/conf/TurbineResources.properties";
 
-    /** Enables output of debug messages (compile time option). */
-    private final static boolean DEBUG = false;
-
     /** Filenames are looked up in this directory. */
     private File root;
 
