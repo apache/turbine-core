@@ -84,8 +84,7 @@ public interface XmlRpcService
      * @param methodName A String with the method name.
      * @param params A Vector with the parameters.
      * @return An Object.
-     * @exception XmlRpcException.
-     * @exception IOException.
+     * @exception TurbineException
      */
     public Object executeRpc(URL url,
                              String methodName,
@@ -102,8 +101,7 @@ public interface XmlRpcService
      * @param methodName A String with the method name.
      * @param params A Vector with the parameters.
      * @return An Object.
-     * @exception XmlRpcException.
-     * @exception IOException.
+     * @exception TurbineException
      */
     public Object executeAuthenticatedRpc(URL url,
                              String username,
@@ -118,8 +116,8 @@ public interface XmlRpcService
      * @param handlerName The name under which we want
      * to register the service
      * @param handler The handler object
-     * @exception XmlRpcException.
-     * @exception IOException.
+     * @exception XmlRpcException
+     * @exception IOException
      */
     public void registerHandler(String handlerName, Object handler)
         throws XmlRpcException,
@@ -130,8 +128,8 @@ public interface XmlRpcService
      * the XmlRpc Server part.
      *
      * @param handler The handler object
-     * @exception XmlRpcException.
-     * @exception IOException.
+     * @exception XmlRpcException
+     * @exception IOException
      */
     public void registerHandler(Object handler)
         throws XmlRpcException,
@@ -180,6 +178,7 @@ public interface XmlRpcService
      * @param sourceFileName
      * @param destinationLocationProperty
      * @param destinationFileName
+     * @throws Exception
      */
     public void send(String serverURL,
                      String sourceLocationProperty,
@@ -198,6 +197,7 @@ public interface XmlRpcService
      * @param sourceFileName
      * @param destinationLocationProperty
      * @param destinationFileName
+     * @throws Exception
      */
     public void send(String serverURL,
                      String username,
@@ -216,6 +216,7 @@ public interface XmlRpcService
      * @param sourceFileName
      * @param destinationLocationProperty
      * @param destinationFileName
+     * @throws Exception
      */
     public void get(String serverURL,
                     String sourceLocationProperty,
@@ -235,6 +236,7 @@ public interface XmlRpcService
      * @param sourceFileName
      * @param destinationLocationProperty
      * @param destinationFileName
+     * @throws Exception
      */
     public void get(String serverURL,
                     String username,
@@ -252,6 +254,7 @@ public interface XmlRpcService
      * @param serverURL
      * @param sourceLocationProperty
      * @param sourceFileName
+     * @throws Exception
      */
     public void remove(String serverURL,
                        String sourceLocationProperty,
@@ -267,6 +270,7 @@ public interface XmlRpcService
      * @param password
      * @param sourceLocationProperty
      * @param sourceFileName
+     * @throws Exception
      */
     public void remove(String serverURL,
                        String username,
@@ -277,6 +281,8 @@ public interface XmlRpcService
 
     /**
      * Switch client filtering on/off.
+     *
+     * @param state
      * @see #acceptClient(java.lang.String)
      * @see #denyClient(java.lang.String)
      */
@@ -288,6 +294,7 @@ public interface XmlRpcService
      * call setParanoid(true) in order for this to have
      * any effect.
      *
+     * @param address
      * @see #denyClient(java.lang.String)
      * @see #setParanoid(boolean)
      */
@@ -298,6 +305,7 @@ public interface XmlRpcService
      * contain '*' as wildcard character, e.g. "192.168.*.*". You must call
      * setParanoid(true) in order for this to have any effect.
      *
+     * @param address
      * @see #acceptClient(java.lang.String)
      * @see #setParanoid(boolean)
      */
