@@ -276,15 +276,10 @@ public class DBUserManager
                                              user.getUserName() + "' does not exist");
         }
 
+        Criteria criteria = TurbineUserPeer.buildCriteria(user);
         try
         {
-            // this is to mimic the old behavior of the method, the user
-            // should be new that is passed to this method.  It would be
-            // better if this was checked, but the original code did not
-            // care about the user's state, so we set it to be appropriate
-            ((BaseObject) user).setNew(false);
-            ((BaseObject) user).setModified(true);
-            ((BaseObject) user).save();
+            TurbineUserPeer.doUpdate(criteria);
         }
         catch (Exception e)
         {
@@ -481,15 +476,10 @@ public class DBUserManager
         }
         user.setPassword(TurbineSecurity.encryptPassword(initialPassword));
 
+        Criteria criteria = TurbineUserPeer.buildCriteria(user);
         try
         {
-            // this is to mimic the old behavior of the method, the user
-            // should be new that is passed to this method.  It would be
-            // better if this was checked, but the original code did not
-            // care about the user's state, so we set it to be appropriate
-            ((BaseObject) user).setNew(true);
-            ((BaseObject) user).setModified(true);
-            ((BaseObject) user).save();
+            TurbineUserPeer.doInsert(criteria);
         }
         catch (Exception e)
         {
