@@ -19,7 +19,7 @@
 	
 <document>
   <properties>
-    <title>Maven Environment for Turbine Applications (META)</title>
+    <title>Maven Environment for Turbine Applications (M.E.T.A.)</title>
     <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
   </properties>
 
@@ -28,24 +28,24 @@
 
 <subsection name="Installing Maven">
 <p>
-If you want to use META, you need <a
+If you want to use M.E.T.A., you need <a
 href="http://maven.apache.org/">maven</a>. Even though maven has still
 no real release and many things are in a constant state of flux, you
-can get maven 1.0-RC3 from the<a
+can get maven 1.0-RC3 from the <a
 href="http://maven.apache.org/start/download.html">maven download
-site</a>, which proved to be working with the META plugin. You can
+site</a>, which proved to be working with the M.E.T.A. plugin. You can
 either get a binary or a source distribution.
 </p>
 
 </subsection>
 
-<subsection name="Installing the Torque and META plugins">
+<subsection name="Installing the Torque and M.E.T.A. plugins">
 <p>
 After you've installed maven, get these plugins through the following links.
 </p>
 <table>
 <tr>
-  <td><a href="http://www.apache.org/~henning/maven/maven-turbine-plugin-1.1-dev.jar">META Plugin (Version 1.1-dev)</a></td>
+  <td><a href="http://www.apache.org/~henning/maven/maven-turbine-plugin-1.2-dev.jar">M.E.T.A. Plugin (Version 1.2-dev)</a></td>
 </tr>
 <tr>
   <td><a href="http://www.apache.org/~henning/maven/maven-torque-plugin-3.1.1-dev.jar">Torque Plugin (Version 3.1.1-dev)</a></td>
@@ -55,7 +55,7 @@ After you've installed maven, get these plugins through the following links.
 If you already have the Torque plugin installed, make sure that you
 have the Plugin from the <a
 href="http://db.apache.org/torque-31/">Torque 3.1 Branch</a>
-installed. META does not work yet with the 3.2 development branch.
+installed. M.E.T.A. does not work with the 3.2 development branch.
 </p>
 
 <p>
@@ -66,7 +66,7 @@ maven installation. You find some documentation on how to do this <a
 href="http://maven.apache.org/start/install.html">on the maven install
 page</a>.<br/>
 
-After the installation, run maven -g and check whether the following
+After the installation, run <code>maven -g</code> and check whether the following
 targets are displayed in the goal list:
 </p>
 
@@ -98,6 +98,8 @@ targets are displayed in the goal list:
 [turbine]                           ( NO DEFAULT GOAL )
   deploy  ......................... Deploys the Application into a local web
                                     container for testing
+  install-libs  ................... updates the libraries for an inplace
+                                    application
   setup  .......................... Setup a new Turbine web application
   sql  ............................ Build the SQL files necessary for the
                                     application
@@ -105,8 +107,8 @@ targets are displayed in the goal list:
                                     war)
 ]]></source>
 
-<p>If you get errors or build failures when running META goals,
-because maven cannot download either <code>torque-3.1.1-dev.jar</code>
+<p>If you get errors or build failures when running M.E.T.A. goals,
+because maven can not download either <code>torque-3.1.1-dev.jar</code>
 or <code>torque-gen-3.1.1-dev.jar</code>, then get these files from
 here:</p>
 
@@ -120,12 +122,14 @@ here:</p>
 </table>
 <p>
 These files are dependencies of the Maven Torque plugin which has no
-official release yet and so its dependencies are not yet in the
-central maven repository. Get both files and put them into your local
-repository in the <code>torque/jars</code> subdirectory.
+official release and its dependencies might not be in the maven
+repository located at <a
+href="http://www.ibiblio.org/maven">ibiblio</a>. Get both files and
+put them into your local repository in the <code>torque/jars</code>
+subdirectory.
 </p>
 
-<p>You are now ready to use META. Continue to the <a
+<p>You are now ready to use M.E.T.A. Continue to the <a
 href="getting_started.html">Getting Started</a> page.</p>
 
 </subsection>

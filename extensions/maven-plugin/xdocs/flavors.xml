@@ -11,7 +11,7 @@
     There is more than just one version of Turbine. You might have to build one application using
     a released version of Turbine (currently 2.3) and the next should use a developer version or
     even a &quot;bleeding edge&quot; snapshot release of the Turbine code. Whatever you want to use,
-    the META plugin helps you selecting the right skeleton for your code.
+    the M.E.T.A. plugin helps you selecting the right skeleton for your code.
     </p>
 
 <subsection name="Selecting Flavors">
@@ -34,16 +34,21 @@ maven -Dturbine.app.name=<application name> -Dturbine.app.flavor=turbine-2.3.1-d
 <p>
 <font color="red">This is a section for advanced users that are
 reasonably familiar with maven and the Turbine framework. If you're
-just starting to use Turbine and META, you can skip this
+just starting to use Turbine and M.E.T.A., you can skip this
 section.</font></p>
 
 <p>
-Flavors are built from templates in various subdirectories in the META plugin. If you want to add a new
-flavor, you must modify the plugin source and then deploy the plugin to your maven installation.<br/>
+Flavors are built from templates in the <code>flavor</code>
+subdirectory of the M.E.T.A. plugin. If you want to add a new flavor, you
+must modify the plugin source and then rebuild and deploy the plugin
+to your maven installation.<br/>
 
 The plugin source contains a subdirectory
-<code>src/plugin-resources</code>. Here are the setup files for each flavor stored, that are used by the
-<code>turbine:setup</code> goal.
+<code>src/plugin-resources/flavor</code>. Here are the setup files for
+each flavor stored, that are used by the <a
+href="goals.html#turbine_setup">turbine:setup</a> goal. Each flavor
+has its own subdirectory which can in turn contain the following
+directories:
 
 <table>
   <tr>
@@ -72,24 +77,25 @@ The plugin source contains a subdirectory
   </tr>
 </table>
 
-In each of these directories you'll find a directory called
-<code>common</code> and a subdirectory for each flavor. The setup goal
-first copies all the files from the <code>common</code> directory into
-the new application skeleton and then the files from the respective
-flavor directory. Files from the latter will overwrite files from the
-common tree.
+There is also a directory called  <code>common</code> which contains
+files that are the same for all flavors.
 </p>
 
 <p>
-Subdirectories might be missing in the trees (e.g. there are no
-flavor-specific files in the <code>images</code> tree and no common
-files in the <code>conf</code> tree). In this case they will be
-silently skipped.
+<a href="goals.html#turbine_setup">turbine:setup</a> copies all the
+files from the <code>common</code> directory into the new application
+skeleton and then the files from the respective flavor
+directory. Files from the latter will overwrite files from the
+<code>common</code> tree.
 </p>
 
 <p>
-To add a new flavor, you must add at least a flavor specific
-subdirectory to the <code>maven</code> tree which contains the
+Subdirectories can be omitted if there are no flavor specific files.
+</p>
+
+<p>
+To add a new flavor, you must add at least a flavor specific <code>maven</code>
+subdirectory as <code>flavor/&lt;your flavor name&gt;/maven</code>  which contains the
 template for the maven POM (<code>project.xml</code>).
 </p>
 </subsection>

@@ -27,7 +27,7 @@
 
   <section name="Configuration files">
   <p>
-  META generates a few configuration files for your application. These work
+  M.E.T.A. generates a few configuration files for your application. These work
   well for a simple application without security and just a few data sources.<br/>
   <b>All configuration files, unless stated explicitly otherwise, get
   deleted and recreated if you re-run <code>turbine:setup</code>. So be
@@ -36,11 +36,11 @@
 
 <subsection name="Maven specific configuration files">
 <p>
-META generates and uses the following configuration files in the root
+M.E.T.A. generates and uses the following configuration files in the root
 directory of your application tree.<br/>
 
 If you run the <code>turbine:setup</code> goal and no
-<code>setup.properties</code> file exists in it yet, a new file is
+<code>setup.properties</code> file exists in it, a new file is
 created with all parameters copied in. An existing setup.properties
 file is never clobbered!<br/>
 
@@ -53,7 +53,7 @@ file is never clobbered!<br/>
   <tr>
     <a name="setup_properties"/>
     <td>setup.properties</td>
-    <td>META configuration</td>
+    <td>M.E.T.A. configuration</td>
     <td>Whenever you run the <code>turbine:setup</code> goal, this
         file is read and used to generate all other configuration
         files. It should contain the <a
@@ -76,7 +76,7 @@ file is never clobbered!<br/>
     <td>maven.xml</td>
     <td>Maven build file</td>
     <td>This file contains the callbacks from other maven goals into
-        META. If you need to customize your build process, you can add
+        M.E.T.A. If you need to customize your build process, you can add
         custom goals or callbacks in this file.</td>
   </tr>
   <tr>
@@ -92,28 +92,32 @@ file is never clobbered!<br/>
 
   <subsection name="Application specific configuration files">
   <p>
-  META generates the following configuration files for your
-  application. These files are located in the <code>conf</code>
-  subdirectory of the application tree.
+  M.E.T.A. generates the following configuration files for your
+  application. These location of these files differ in the various
+  application development modes.
 
   <table>
   <tr>
-    <th>Name</th>
+    <th>Name and Location in normal Mode</th>
+    <th>name and Location in inplace Mode</th>
     <th>Function</th>
     <th>Description</th>
   </tr>
   <tr>
-    <td>&lt;appname&gt;.properties</td>
+    <td>conf/&lt;appname&gt;.properties</td>
+    <td>WEB-INF/conf/&lt;appname&gt;.properties</td>
     <td>Turbine configuration</td>
     <td>This file gets included by the <code>TurbineResources.properties</code> file when Turbine is configured.</td>
   </tr>
   <tr>
-    <td>&lt;appname&gt;-web.xml</td>
+    <td>conf/&lt;appname&gt;-web.xml</td>
+    <td>WEB-INF/web.xml</td>
     <td>Deployment descriptor</td>
-    <td>This is the deployment descriptor for your application. It gets copied to <code>WEB-INF/web.xml</code> in your application.</td>
+    <td>This is the deployment descriptor for your application. In <a href="modes.html#normal">Normal</a> mode, it gets copied to <code>WEB-INF/web.xml</code> in your application.</td>
   </tr>
   <tr>
-    <td>&lt;appname&gt;-intake.xml</td>
+    <td>conf/&lt;appname&gt;-intake.xml</td>
+    <td>WEB-INF/conf/&lt;appname&gt;-intake.xml</td>
     <td>IntakeService</td>
     <td>This file should contain your intake group definitions.</td>
   </tr>
@@ -124,7 +128,7 @@ file is never clobbered!<br/>
   <subsection name="TurbineResource.properties">
   <p>
   This is the main configuration file for Tubine. It contains all the
-  settings for the turbine core. The META configuration has the
+  settings for the turbine core. The M.E.T.A. configuration has the
   following settings which might bite you when you build an
   application. It is necessary that you review the settings in this
   file and customize them to match your application needs!<br/> This
@@ -156,7 +160,7 @@ file is never clobbered!<br/>
   <tr>
     <td>action.sessionvalidator</td>
     <td>sessionvalidator.TemplateSessionValidator</td>
-    <td>A META-generated application does not use security by default! If you
+    <td>A M.E.T.A.-generated application does not use security by default! If you
     need <a
     href="http://www.lyricsdir.com/m/men-without-hats/security-everybody-feels-better-with.php">security</a>,
     you must change this to
@@ -168,7 +172,7 @@ file is never clobbered!<br/>
     <td colspan="2">The default configuration does not activate all
 the Turbine-supplied services! E.g. the Scheduler is not activated by
 default. If you need additional services, you must add them to your
-configuration file. META activates the following services:<br/>
+configuration file. M.E.T.A. activates the following services:<br/>
 <ul>
 <li>AvalonComponentService</li>
 <li>CryptoService</li>
@@ -219,8 +223,8 @@ configuration file. META activates the following services:<br/>
 
   <subsection name="Application-specific properties">
   <p>
-  All application specific parameters are configured in &lt;appname&gt;.properties. It gets
-  merged into <code>TurbineResources.properties</code>.
+  All application specific parameters are configured in &lt;appname&gt;.properties. This file is
+  loaded by an <code>include</code> property in <code>TurbineResources.properties</code>.
   </p>
 
   <table>
@@ -250,22 +254,23 @@ configuration file. META activates the following services:<br/>
 
   <subsection name="torque.properties">
   <p>
-  Some parts of Turbine and probably your web application will use
+  Some parts of Turbine and probably your web application might use
   <a href="http://db.apache.org/torque/">Torque</a> to access databases.<br/>
-  In this configuration file, the various datasources are defined. META
+  In this configuration file, the various datasources are defined. M.E.T.A.
   generates a default data source (<code>default</code>) and an application
   specific data source (<code>&lt;appname&gt;</code>) for you.<br/>
   At setup time, both data sources are mapped onto the same JDBC data provider.
   </p>
 
-  <p>META uses the <code>org.apache.torque.dsfactory.SharedPoolDataSourceFactory</code>
+  <p>M.E.T.A. configures Torque to use the
+  <code>org.apache.torque.dsfactory.SharedPoolDataSourceFactory</code>
   as pool factory.</p>
   </subsection>
 
   <subsection name="log4j.properties">
   <p>
   For debugging purposes is it very important to get logging
-  information from a running application. META generated applications
+  information from a running application. M.E.T.A. generated applications
   write the following log files into the <a
   href="tree.html#logs">logs</a> subdirectory:<br/>
 
@@ -311,9 +316,10 @@ configuration file. META activates the following services:<br/>
   <subsection name="Avalon specific configuration">
   <p>
   Turbine 2.3 uses the AvalonComponentService to load and initialize
-  <a href="http://db.apache.org/torque/">Torque</a>. META provides two
+  <a href="http://db.apache.org/torque/">Torque</a>.<br/>
+  M.E.T.A. provides two
   minimal <a href="http://avalon.apache.org/">Avalon</a> configuration
-  files to allow this.<br/>
+  files to allow this:
 
   <ul>
     <li>componentConfiguration.xml</li>
@@ -323,8 +329,8 @@ configuration file. META activates the following services:<br/>
   If you don't intend to use Avalon in your application, you should
   not change anything here.</p>
   </subsection>
-  <p><b>Using META is no replacement for looking at the Turbine documentation and the
-  comments in the configuration files!</b></p>
+  <p><font color="red">Using M.E.T.A. is no replacement for looking at the Turbine documentation and the
+  comments in the configuration files!</font></p>
 </section>
 </body>
 </document>
