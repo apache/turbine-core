@@ -24,7 +24,10 @@
   </properties>
 
   <body>
-    <release version="1.2-dev" date="in CVS">
+    <release version="1.2-rc1" date="2004-08-23">
+     <action dev="henning" type="add">
+       Add a personality for the upcoming Turbine 2.3.1 release.
+     </action>
      <action dev="henning" type="add">
        Different OM layers can be configured when setting up the application. Currently
        only Torque and no OM layer are supported (Volunteers for Hibernate, OJB wanted!)
