@@ -117,10 +117,17 @@ public class TurbineNamingService
         {
             contextPropsList = new HashMap();
 
-            for (Iterator contextKeys = conf.subset("context"); contextKeys.hasNext();)
+            for (Iterator contextKeys = conf.subset("context");
+                 contextKeys.hasNext();)
             {
                 String key = (String) contextKeys.next();
                 int end = key.indexOf(".", start);
+
+                if (end == -1)
+                {
+                    continue;
+                }
+
                 String contextName = key.substring(0, end);
                 Properties contextProps = null;
 
