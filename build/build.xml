@@ -460,4 +460,17 @@
         <ant antfile="build-turbine-sql.xml"/>
     </target>
 
+    <!-- ================================================================== -->
+    <!-- I N S T A L L  J A R                                               -->
+    <!-- ================================================================== -->
+
+    <target name="install-jar" depends="jar" 
+            description="--> Installs .jar file in ${lib.repo}">
+      <copy todir="${lib.repo}" filtering="no">
+        <fileset dir="${build.dir}">
+          <include name="${final.name}.jar"/>
+        </fileset>
+      </copy>
+    </target>
+
 </project>
