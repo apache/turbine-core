@@ -54,10 +54,14 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.apache.turbine.util.uri.URIConstants;
 
 /**
  * Holds basic server information under which Turbine is running.
@@ -131,6 +135,21 @@ public class ServerData
         setServerScheme(serverData.getServerScheme());
         setScriptName(serverData.getScriptName());
         setContextPath(serverData.getContextPath());
+    }
+
+    /**
+     * A C'tor that takes a HTTP Request object and
+     * builds the server data from its contents
+     *
+     * @param req The HTTP Request
+     */
+    public ServerData(HttpServletRequest req)
+    {
+        setServerName(req.getServerName());
+        setServerPort(req.getServerPort());
+        setServerScheme(req.getScheme());
+        setScriptName(req.getServletPath());
+        setContextPath(req.getContextPath());
     }
 
     /**
@@ -248,5 +267,32 @@ public class ServerData
     {
         log.debug("setContextPath(" + contextPath + ")");
         this.contextPath = contextPath;
+    }
+
+    /**
+     * Returns this element as an URL
+     *
+     * @return The contents of this element as a String
+     */
+    public String toString()
+    {
+        StringBuffer url = new StringBuffer();
+        url.append(getServerScheme());
+        url.append("://");
+        url.append(getServerName());
+        if ((getServerScheme().equals(URIConstants.HTTP)
+                && getServerPort() != URIConstants.HTTP_PORT) 
+            ||
+            (getServerScheme().equals(URIConstants.HTTPS)
+                && getServerPort() != URIConstants.HTTPS_PORT)
+            )
+        {
+            url.append(":");
+            url.append(getServerPort());
+        }
+
+        url.append(getScriptName());
+        url.append(getContextPath());
+        return url.toString();
     }
 }
