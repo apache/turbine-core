@@ -57,6 +57,8 @@ package org.apache.turbine.util.template;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.ecs.ConcreteElement;
 
 import org.apache.turbine.modules.NavigationLoader;
@@ -91,7 +93,7 @@ public class TemplateNavigation
     private RunData data;
 
     /* The name of the navigation template. */
-    private String template;
+    private String template = null;     
 
     /**
      * Constructor
@@ -112,6 +114,7 @@ public class TemplateNavigation
      */
     public TemplateNavigation setTemplate(String template)
     {
+        log.debug("setTemplate(" + template + ")");
         this.template = template;
         return this;
     }
@@ -123,25 +126,42 @@ public class TemplateNavigation
      */
     public String toString()
     {
-        log.debug("toString: " + this.template);
-        data.getTemplateInfo().setNavigationTemplate(this.template);
         String module = null;
         String returnValue = null;
+
         try
         {
-            module = TurbineTemplate.getNavigationName(template);
+            if (template == null)
+            {
+                returnValue = "Navigation Template is null (Might be unset)";
+                throw new Exception(returnValue);
+            }
 
-            ConcreteElement results = NavigationLoader.getInstance()
-                    .eval(data, module);
+            data.getTemplateInfo().setNavigationTemplate(template);
+            module = TurbineTemplate.getNavigationName(template);
+                
+            if (module == null)
+            {
+                returnValue = "Template Service returned null for Navigation Template " + template;
+                throw new Exception(returnValue);
+            }
+            
+            ConcreteElement results = 
+                    NavigationLoader.getInstance().eval(data, module);
             returnValue = results.toString();
         }
         catch (Exception e)
         {
-            String message = ("Error processing navigation template:"
-                    + this.template + " using module: " + module);
-            log.error(message, e);
-            returnValue = message;
+            if (returnValue == null)
+            {
+                returnValue = "Error processing navigation template: "
+                        + template + ", using module: " + module;
+            }
+            log.error(returnValue, e);
         }
+
+        log.debug("Returning " + returnValue);
+
         return returnValue;
     }
 }
