@@ -112,7 +112,7 @@ public class BigDecimalValidator
     {
         super.init(paramMap);
 
-        Constraint constraint = (Constraint) paramMap.get("minValue");
+        Constraint constraint = (Constraint) paramMap.get(MIN_VALUE_RULE_NAME);
         if (constraint != null)
         {
             String param = constraint.getValue();
@@ -120,7 +120,7 @@ public class BigDecimalValidator
             minValueMessage = constraint.getMessage();
         }
 
-        constraint = (Constraint) paramMap.get("maxValue");
+        constraint = (Constraint) paramMap.get(MAX_VALUE_RULE_NAME);
         if (constraint != null)
         {
             String param = constraint.getValue();

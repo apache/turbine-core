@@ -135,7 +135,7 @@ public class DateStringValidator
     {
         super.init(paramMap);
 
-        Constraint constraint = (Constraint) paramMap.get("format");
+        Constraint constraint = (Constraint) paramMap.get(FORMAT_RULE_NAME);
 
         if (constraint != null)
         {
@@ -143,22 +143,25 @@ public class DateStringValidator
             setDateFormatMessage(constraint.getMessage());
         }
 
-        int i = 1;
-        constraint = (Constraint) paramMap.get("format" + i);
-
-        while (constraint != null)
+        for(int i = 1 ;; i++)
         {
+            constraint = (Constraint) paramMap.get(FORMAT_RULE_NAME + i);
+
+            if (constraint == null)
+            {
+                break; // for
+            }
+
             dateFormats.add(constraint.getValue());
             setDateFormatMessage(constraint.getMessage());
-            constraint = (Constraint) paramMap.get("format" + (++i));
-        }
+        } 
 
         if (StringUtils.isEmpty(dateFormatMessage))
         {
             dateFormatMessage = DEFAULT_DATE_MESSAGE;
         }
 
-        constraint = (Constraint) paramMap.get("flexible");
+        constraint = (Constraint) paramMap.get(FLEXIBLE_RULE_NAME);
 
         if (constraint != null)
         {

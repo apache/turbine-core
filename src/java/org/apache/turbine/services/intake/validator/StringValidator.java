@@ -126,7 +126,7 @@ public class StringValidator
     {
         super.init(paramMap);
 
-        Constraint constraint = (Constraint) paramMap.get("mask");
+        Constraint constraint = (Constraint) paramMap.get(MASK_RULE_NAME);
         if (constraint != null)
         {
             String param = constraint.getValue();

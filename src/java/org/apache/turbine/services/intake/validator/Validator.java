@@ -62,6 +62,33 @@ package org.apache.turbine.services.intake.validator;
  */
 public interface Validator
 {
+    /** "flexible" Rule, used in DateFormat Validator */
+    String FLEXIBLE_RULE_NAME = "flexible";
+
+    /** "format" Rule, used in DateFormat Validator */
+    String FORMAT_RULE_NAME = "format";
+
+    /** "invalidNumber" Rule, used in the various Number Validators */
+    String INVALID_NUMBER_RULE_NAME = "invalidNumber";
+
+    /** "mask" Rule, used in StringValidator */
+    String MASK_RULE_NAME = "mask";
+
+    /** "maxLength" Rule, used in all validators */
+    String MAX_LENGTH_RULE_NAME = "maxLength";
+
+    /** "maxValue" Rule, used in the various Number Validators */
+    String MAX_VALUE_RULE_NAME = "maxValue";
+
+    /** "minLength" Rule, used in all validators */
+    String MIN_LENGTH_RULE_NAME = "minLength";
+
+    /** "minValue" Rule, used in the various Number Validators */
+    String MIN_VALUE_RULE_NAME = "minValue";
+
+    /** "required" Rule, used in all validators */
+    String REQUIRED_RULE_NAME = "required";
+
     /**
      * Determine whether a testValue meets the criteria specified
      * in the constraints defined for this validator
