@@ -93,6 +93,7 @@ import org.apache.turbine.services.upload.TurbineUpload;
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @version $Id$
+ * @deprecated use commons-fileupload instead
  */
 public class FileItem implements DataSource
 {
