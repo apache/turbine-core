@@ -3,7 +3,7 @@ package org.apache.turbine.modules.pages;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -139,7 +139,7 @@ public class TemplatePage
             // from the parameter parser in rundata. This is coming
             // from the request for a template.
             String template = data.getTemplateInfo().getScreenTemplate();
-            
+
             // Get the layout template and the correct Screen.
             String layoutTemplate =
                     TurbineTemplate.getLayoutTemplateName(template);
@@ -149,7 +149,7 @@ public class TemplatePage
 
             if (screen == null)
             {
-                String errMsg = "Couldn't map Template " 
+                String errMsg = "Couldn't map Template "
                     + template + " to any Screen class!";
                 log.error(errMsg);
                 throw new TurbineException(errMsg);

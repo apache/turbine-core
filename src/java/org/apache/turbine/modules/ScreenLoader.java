@@ -3,7 +3,7 @@ package org.apache.turbine.modules;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -90,9 +90,9 @@ public class ScreenLoader
     /** The single instance of this class. */
     private static ScreenLoader instance =
         new ScreenLoader(Turbine.getConfiguration()
-                         .getInt(TurbineConstants.SCREEN_CACHE_SIZE_KEY, 
+                         .getInt(TurbineConstants.SCREEN_CACHE_SIZE_KEY,
                                  TurbineConstants.SCREEN_CACHE_SIZE_DEFAULT));
-    
+
     /** The Assembler Broker Service */
     private static AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
 

@@ -3,7 +3,7 @@ package org.apache.turbine.modules.screens;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -79,7 +79,7 @@ public class JspErrorScreen
         String errorTemplate = Turbine.getConfiguration()
             .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
                        TurbineConstants.TEMPLATE_ERROR_JSP);
-        
+
         setTemplate(data, errorTemplate);
     }
 }

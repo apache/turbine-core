@@ -3,7 +3,7 @@ package org.apache.turbine.modules;
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2001 The Apache Software Foundation.  All rights
+ * Copyright (c) 2001-2003 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -86,7 +86,7 @@ public class ActionLoader
 
     /** The single instance of this class. */
     private static ActionLoader instance = new ActionLoader(
-        Turbine.getConfiguration().getInt(TurbineConstants.ACTION_CACHE_SIZE_KEY, 
+        Turbine.getConfiguration().getInt(TurbineConstants.ACTION_CACHE_SIZE_KEY,
                                           TurbineConstants.ACTION_CACHE_SIZE_DEFAULT));
 
     /** The Assembler Broker Service */
