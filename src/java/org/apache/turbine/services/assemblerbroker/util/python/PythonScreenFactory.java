@@ -65,10 +65,8 @@ import org.apache.turbine.modules.Assembler;
  */
 public class PythonScreenFactory extends PythonBaseFactory
 {
-
     public Assembler getAssembler( String name ) throws Exception
     {
         return getAssembler ("screens",name);
     }
-
 }

@@ -65,8 +65,6 @@ import org.apache.turbine.modules.Assembler;
  */
 public class PythonLayoutFactory extends PythonBaseFactory
 {
-
-
     public Assembler getAssembler( String name ) throws Exception
     {
         return getAssembler ("layouts",name);
