@@ -66,8 +66,9 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.services.pull.TurbinePull;
 import org.apache.turbine.services.servlet.TurbineServlet;
-import org.apache.turbine.util.ContentURI;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.ServerData;
+import org.apache.turbine.util.uri.DataURI;
 
 /**
  * UIManager.java
@@ -102,6 +103,11 @@ import org.apache.turbine.util.RunData;
  * <p>
  * How to specify skins, how to deal with images,
  * how could this be handled with a web app.
+ * <p>
+ *
+ * This is an application pull tool for the template system. You should <b>not</b>
+ * use it in a normal application!
+ *
  *
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:james_coltman@majorband.co.uk">James Coltman</a>
@@ -143,7 +149,7 @@ public class UIManager implements ApplicationTool
      * Attribute name of skinName value in User's temp hashmap.
      */
     private static final String SKIN_ATTRIBUTE =
-            "org.apache.turbine.services.pull.util.UIManager.skin";
+        UIManager.class.getName()+ ".skin";
 
     /**
      * The actual skin being used for the webapp.
@@ -247,7 +253,7 @@ public class UIManager implements ApplicationTool
     /**
      * Retrieve the URL for an image that is part
      * of a skin. The images are stored in the
-     * WEBAPP/resources/ui/skins/<SKIN>/images
+     * WEBAPP/resources/ui/skins/&lt;SKIN&gt;/images
      * directory.
      *
      * Use this if for some reason your server name,
@@ -260,7 +266,8 @@ public class UIManager implements ApplicationTool
      */
     public String image(String imageId, RunData data)
     {
-        ContentURI cu = new ContentURI(data);
+        DataURI du = new DataURI(data);
+
         StringBuffer sb = new StringBuffer();
 
         sb.append(resourcesDirectory).
@@ -271,40 +278,39 @@ public class UIManager implements ApplicationTool
                 append("/").
                 append(imageId);
 
-        return cu.getURI(sb.toString());
+        du.setScriptName(sb.toString());
+        return du.getAbsoluteLink();
     }
 
     /**
      * Retrieve the URL for an image that is part
      * of a skin. The images are stored in the
-     * WEBAPP/resources/ui/skins/<SKIN>/images
+     * WEBAPP/resources/ui/skins/&lt;SKIN&gt;/images
      * directory.
      */
     public String image(String imageId)
     {
+        ServerData sd = Turbine.getDefaultServerData();
+        DataURI du = new DataURI(sd);
+
         StringBuffer sb = new StringBuffer();
 
-        sb.append(TurbineServlet.getServerScheme()).
-                append("://").
-                append(TurbineServlet.getServerName()).
-                append(":").
-                append(TurbineServlet.getServerPort()).
-                append(TurbineServlet.getContextPath()).
-                append(resourcesDirectory).
-                append(SKINS_DIRECTORY).
-                append("/").
-                append(getSkin()).
-                append(IMAGES_DIRECTORY).
-                append("/").
-                append(imageId);
+        sb.append(resourcesDirectory).
+           append(SKINS_DIRECTORY).
+           append("/").
+           append(getSkin()).
+           append(IMAGES_DIRECTORY).
+           append("/").
+           append(imageId);
 
-        return sb.toString();
+        du.setScriptName(sb.toString());
+        return du.getAbsoluteLink();
     }
 
     /**
      * Retrieve the URL for the style sheet that is part
      * of a skin. The style is stored in the
-     * WEBAPP/resources/ui/skins/<SKIN> directory with the
+     * WEBAPP/resources/ui/skins/&lt;SKIN&gt; directory with the
      * filename skin.css
      *
      * Use this if for some reason your server name,
@@ -317,7 +323,7 @@ public class UIManager implements ApplicationTool
      */
     public String getStylecss(RunData data)
     {
-        ContentURI cu = new ContentURI(data);
+        DataURI du = new DataURI(data);
         StringBuffer sb = new StringBuffer();
 
         sb.append(resourcesDirectory).
@@ -327,34 +333,32 @@ public class UIManager implements ApplicationTool
                 append("/").
                 append(SKIN_CSS_FILE);
 
-        return cu.getURI(sb.toString());
+        du.setScriptName(sb.toString());
+        return du.getAbsoluteLink();
     }
 
     /**
      * Retrieve the URL for the style sheet that is part
      * of a skin. The style is stored in the
-     * WEBAPP/resources/ui/skins/<SKIN> directory with the
+     * WEBAPP/resources/ui/skins/&lt;SKIN&gt; directory with the
      * filename skin.css
      */
     public String getStylecss()
     {
+        ServerData sd = Turbine.getDefaultServerData();
+        DataURI du = new DataURI(sd);
+
         StringBuffer sb = new StringBuffer();
 
-        sb.append(TurbineServlet.getServerScheme()).
-                append("://").
-                append(TurbineServlet.getServerName()).
-                append(":").
-                append(TurbineServlet.getServerPort()).
-                append(TurbineServlet.getContextPath()).
-                append("/").
-                append(resourcesDirectory).
-                append(SKINS_DIRECTORY).
-                append("/").
-                append(getSkin()).
-                append("/").
-                append(SKIN_CSS_FILE);
+        sb.append(resourcesDirectory).
+           append(SKINS_DIRECTORY).
+           append("/").
+           append(getSkin()).
+           append("/").
+           append(SKIN_CSS_FILE);
 
-        return sb.toString();
+        du.setScriptName(sb.toString());
+        return du.getAbsoluteLink();
     }
 
     /**
