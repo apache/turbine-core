@@ -168,6 +168,9 @@ Changes between Turbine 2.3 and 2.4.
 	 Added to website documentation the Maven Plugin for Turbine.  Now has goals to
 	 help with inplace development of Turbine apps.
     </li>
+    <li>
+     Upgraded to commons-pool-1.1
+    </li>
   </ul>
 </p>
 </subsection>
