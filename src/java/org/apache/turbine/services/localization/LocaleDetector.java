@@ -57,7 +57,9 @@ package org.apache.turbine.services.localization;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
-import org.apache.turbine.services.resources.TurbineResources;
+import org.apache.commons.configuration.Configuration;
+
+import org.apache.turbine.Turbine;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -69,6 +71,8 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
  * @author <a href="mailto:jon@collab.net">Jon S. Stevens</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @version $Id$
  * @deprecated Use LocaleTokenizer instead.
  */
 public class LocaleDetector
@@ -98,6 +102,8 @@ public class LocaleDetector
      */
     public static Locale getLocale(String languageHeader)
     {
+        Configuration conf = Turbine.getConfiguration();
+
         Locale locale = null;
 
         // return a "default" locale
@@ -105,8 +111,8 @@ public class LocaleDetector
                 languageHeader.trim().equals(""))
         {
             return new Locale(
-                    TurbineResources.getString("locale.default.language", "en"),
-                    TurbineResources.getString("locale.default.country", "US"));
+                    conf.getString("locale.default.language", "en"),
+                    conf.getString("locale.default.country", "US"));
         }
 
         // The HTTP Accept-Header is something like

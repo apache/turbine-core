@@ -58,14 +58,18 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
+import org.apache.commons.configuration.Configuration;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -74,6 +78,7 @@ import org.apache.turbine.util.RunData;
  *
  * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
  * @author <a href="mailto:colin.chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineNamingService extends TurbineBaseService implements NamingService
@@ -99,11 +104,13 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
         // "contextname."  is the name of the property that will be
         // used by the InitialContext class to create a new context
         // instance.
+
+        Configuration conf = Turbine.getConfiguration();
         try
         {
             contextPropsList = new Hashtable();
 
-            for (Iterator contextKeys = TurbineResources.getKeys("context."); contextKeys.hasNext();)
+            for (Iterator contextKeys = conf.getKeys("context."); contextKeys.hasNext();)
             {
                 String key = (String) contextKeys.next();
                 int start = key.indexOf(".") + 1;
@@ -122,7 +129,7 @@ public class TurbineNamingService extends TurbineBaseService implements NamingSe
                 }
 
                 contextProps.put(
-                        key.substring(end + 1), TurbineResources.getString(key));
+                        key.substring(end + 1), conf.getString(key));
 
                 contextPropsList.put(contextName, contextProps);
             }
