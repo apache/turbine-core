@@ -55,6 +55,8 @@ package org.apache.turbine.util.parser;
  */
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -88,22 +90,26 @@ import org.apache.turbine.util.pool.Recyclable;
  *
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class DefaultCookieParser extends BaseValueParser
-        implements CookieParser, Recyclable
+public class DefaultCookieParser
+    extends BaseValueParser
+    implements CookieParser, Recyclable
 {
     /** Logging */
     private static Log log = LogFactory.getLog(DefaultCookieParser.class);
 
-    /**
-     * The run data to parse.
-     */
+    /** Internal Run Data object containing the parameters to parse */
     private RunData data = null;
 
-    /**
-     * The cookie path.
-     */
+    /** Just like Fulcrum, we actually use the Request and response objects */
+    private HttpServletRequest request;
+
+    /** Just like Fulcrum, we actually use the Request and response objects */
+    private HttpServletResponse response;
+
+    /** The cookie path. */
     private DynamicURI cookiePath = null;
 
     /**
@@ -121,6 +127,8 @@ public class DefaultCookieParser extends BaseValueParser
     {
         this.data = null;
         this.cookiePath = null;
+        this.request = null;
+        this.response = null;
         super.dispose();
     }
 
@@ -128,42 +136,76 @@ public class DefaultCookieParser extends BaseValueParser
      * Gets the parsed RunData.
      *
      * @return the parsed RunData object or null.
+     * @deprecated. Don't use the Run Data object. use getRequest().
      */
     public RunData getRunData()
     {
-        return this.data;
+        return data;
     }
 
     /**
-     * Sets the RunData to be parsed.
+     * Gets the Request Object for this parser.
+     *
+     * @return the HttpServletRequest or null.
+     */
+    public HttpServletRequest getRequest()
+    {
+        return request;
+    }
+
+    /**
+     * Sets the RunData to be parsed. This is a convenience method to
+     * set the request and response from the RunData object. It is
+     * equivalent to
+     *
+     * <pre>
+     *  setData(data.getRequest(), data.getResponse());
+     * </pre>
+     *
      * All previous cookies will be cleared.
      *
      * @param data the RunData object.
      */
     public void setRunData(RunData data)
     {
+        setData(data.getRequest(), data.getResponse());
+        this.data = data;
+    }
+
+    /**
+     * Sets Request and Response to be parsed.
+     *
+     * All previous cookies will be cleared.
+     *
+     * @param request The http request from the servlet
+     * @param response The http reponse from the servlet
+     */
+    public void setData (HttpServletRequest request,
+                         HttpServletResponse response)
+    {
         clear();
 
-        String enc = data.getRequest().getCharacterEncoding();
+        String enc = request.getCharacterEncoding();
         setCharacterEncoding(enc != null ? enc : "US-ASCII");
 
         cookiePath = new DynamicURI(data);
 
-        Cookie[] cookies = data.getRequest().getCookies();
+        Cookie[] cookies = request.getCookies();
 
-        int cookiesCount = (cookies != null ? cookies.length : 0);
+        int cookiesCount = (cookies != null) ? cookies.length : 0;
 
-        log.debug("Number of Cookies " + cookiesCount);
+        log.debug ("Number of Cookies: " + cookiesCount);
 
         for (int i = 0; i < cookiesCount; i++)
         {
-            String name = convert(cookies[i].getName());
+            String name = convert (cookies[i].getName());
             String value = cookies[i].getValue();
             log.debug("Adding " + name + "=" + value);
             add(name, value);
         }
 
-        this.data = data;
+        this.request = request;
+        this.response = response;
     }
 
     /**
@@ -197,15 +239,15 @@ public class DefaultCookieParser extends BaseValueParser
      */
     public void set(String name, String value, int seconds_age)
     {
-        if (data == null)
+        if (response == null)
         {
-            throw new IllegalStateException("RunData not available");
+            throw new IllegalStateException("Servlet response not available");
         }
 
         Cookie cookie = new Cookie(name, value);
         cookie.setMaxAge(seconds_age);
         cookie.setPath(cookiePath.getScriptName());
-        data.getResponse().addCookie(cookie);
+        response.addCookie (cookie);
     }
 
     /**
