@@ -53,14 +53,21 @@
       <name>John McNally</name>
       <id>jmcnally</id>
       <email>jmcnally@collab.net</email>
-      <organization>CollabNet</organization>
+      <organization>CollabNet, Inc.</organization>
+    </developer>
+
+    <developer>
+      <name>Daniel Rall</name>
+      <id>dlr</id>
+      <email>dlr@finemaltcoding.com</email>
+      <organization>CollabNet, Inc.</organization>
     </developer>
 
     <developer>
       <name>Jon Scott Stevens</name>
       <id>jon</id>
       <email>jon@latchkey.com</email>
-      <organization></organization>
+      <organization>CollabNet, Inc.</organization>
     </developer>
 
     <developer>
