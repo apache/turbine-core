@@ -192,9 +192,9 @@ Turbine supports the retrieval of information from databases through
 various OM layers. The most popular is <a
 href="http://db.apache.org/torque/">Torque</a> and Turbine itself uses
 Torque for the <a
-href="http://jakarta.apache.org/turbine/turbine-2.3/services/security-service.html">Security
+href="http://jakarta.apache.org/turbine/turbine/turbine-2.3.1/services/security-service.html">Security
 Service</a> and the <a
-href="http://jakarta.apache.org/turbine/turbine-2.3/services/scheduler-service.html">Scheduler
+href="http://jakarta.apache.org/turbine/turbine/turbine-2.3.1/services/scheduler-service.html">Scheduler
 Service</a>. With the M.E.T.A. plugin, different OM layers can be
 configured. The default is to use Torque. The OM layer is configured
 by setting the <a
