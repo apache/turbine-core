@@ -113,7 +113,7 @@
   </goal>
 
   <!-- ================================================== -->
-  <!-- Deploy the nightly build process                   -->
+  <!-- Deploy the nightly builds                          -->
   <!-- ================================================== -->
   <goal name="nightly:deploy"
      prereqs="nightly:build"
@@ -126,18 +126,26 @@
        deploymentDirectory = ${turbine.nightly.dist.dir}
     </echo>
 
-    <j:set var="dist.dir"
-       value="${pom.getPluginContext('maven-dist-plugin').getVariable('maven.dist.dir')}"/>
+    <j:set var="dist.dir" value="${maven.build.dir}/distributions" />
 
     <!-- Make sure the destination directory exists before trying to copy -->
     <exec dir="." executable="${maven.ssh.executable}">
        <arg line="${pom.siteAddress} -l ${maven.username} 'mkdir -p ${turbine.nightly.dist.dir}'"/>
     </exec>
 
-    <exec dir="${dist.dir}" executable="${maven.scp.executable}">
-      <arg value="*"/>
-      <arg value="${maven.username}@${pom.siteAddress}:${turbine.nightly.dist.dir}"/>
-    </exec>
+    <fileScanner var="distFiles">
+      <fileset dir="${dist.dir}">
+      </fileset>
+    </fileScanner>
+
+    <j:forEach var="file" items="${distFiles.iterator()}">
+      <echo>Processing ${file}</echo>
+
+      <exec dir="${dist.dir}" executable="${maven.scp.executable}">
+        <arg value="${file}"/>
+        <arg value="${maven.username}@${pom.siteAddress}:${turbine.nightly.dist.dir}"/>
+      </exec>
+    </j:forEach>
 
   </goal>
 
