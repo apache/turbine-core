@@ -59,6 +59,7 @@ import javax.servlet.ServletConfig;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.torque.om.NumberKey;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.resources.TurbineResources;
@@ -143,8 +144,8 @@ public class TurbineNonPersistentSchedulerService
                     String jobName = (String) jobProps.elementAt(i);
                     String jobPrefix = "scheduler.job." + jobName;
 
-                    if((TurbineResources.getString(jobPrefix + ".ID", null))
-                            == null)
+                    String jobId = getConfiguration().getString(jobPrefix + ".ID", null);
+                    if(StringUtils.isEmpty(jobId))
                     {
                         throw new Exception(
                                 "There is an error in the TurbineResources.properties file. \n"
@@ -164,6 +165,7 @@ public class TurbineNonPersistentSchedulerService
                             wkday,
                             dayOfMonth,
                             jobName);
+                    je.setJobId(Integer.parseInt(jobId));
                     jobs.addElement(je);
 
                 }
