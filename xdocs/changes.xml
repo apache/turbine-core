@@ -9,6 +9,7 @@
   <author email="mpoeschl@marmot.at">Martin Poeschl</author>
   <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
   <author email="quintonm@bellsouth.net">Quinton McCombs</author>
+  <author email="epugh@upstate.com">Eric Pugh</author>
 </properties>
 
 <body>
@@ -145,6 +146,17 @@ Changes between Turbine 2.2 and 2.3-dev.
 <subsection name="Other changes">
 <p>
   <ul>
+    <li>
+	 Added ability to specify either the class TurbineResources.properties file
+	 or a new TurbineConfiguration.xml file.  TurbineConfiguration.xml allows
+	 Turbine to pull it's configuration values from multiple locations.  Please
+	 read the howto for more information.
+    </li>
+    <li>
+	 Added a Howto describing using Hibernate with Turbine.  The actual code is
+	 currently not part of the Turbine distrib due to licensing issues, but is very
+	 easy to implement due to Turbine support of Avalon Components.
+    </li>    
     <li>
 	 Changed TurbineUser so that when either perment or temporary values are
 	 stored, if the required hashtable was missing, then it was created.  This
