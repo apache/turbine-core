@@ -55,6 +55,7 @@ package org.apache.turbine.services.security.ldap.util;
  */
 
 import java.util.StringTokenizer;
+
 import org.apache.turbine.util.Log;
 
 /**

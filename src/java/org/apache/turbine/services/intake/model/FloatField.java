@@ -54,10 +54,10 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.services.intake.xmlmodel.Rule;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
-import org.apache.turbine.util.ParameterParser;
+
 import org.apache.turbine.util.Log;
+import org.apache.turbine.util.ParameterParser;
 
 /**
  * Creates Field objects.
