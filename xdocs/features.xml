@@ -84,9 +84,13 @@ contributed</a> to Turbine over the last 2+ years.</strong>
         Logging via commons-logging, backed by Log4j.
     </li>
     <li>
-        A centralized configuration using commons-configuration tomake it easy
+        A centralized configuration using commons-configuration to make it easy
         to retrieve properties.
     </li>
+    <li>
+        Properties can be stored in JNDI, XML, or .properties files!  Properties can
+        override each other.
+    </li>    
     <li>
         Integration with JavaMail to make sending email painless</li>
     <li>
