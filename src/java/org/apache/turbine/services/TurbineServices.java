@@ -57,11 +57,15 @@ package org.apache.turbine.services;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.Vector;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 import javax.servlet.ServletConfig;
 import org.apache.turbine.services.logging.LoggingService;
 import org.apache.turbine.services.resources.ResourceService;
 import org.apache.turbine.services.resources.TurbineResources;
-import org.apache.velocity.runtime.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
+
 
 /**
  * This is a singleton utility class that acts as a Services broker.
@@ -133,6 +137,12 @@ public class TurbineServices
     /** True if logging should go throught LoggingService, false if not. */
     private boolean enabledLogging = false;
 
+    /** caches log messages before logging is enabled */
+    private Vector logCache = new Vector(5);
+
+    /** the logger */
+    private LoggingService logger;
+
     /**
      * This constructor is protected to force clients to use
      * getInstance() to access this class.
@@ -158,27 +168,48 @@ public class TurbineServices
     public void initPrimaryServices(ServletConfig config)
         throws InstantiationException, InitializationException
     {
-        // Resurce service must start as the very first
+        // Resource service must start as the very first
         String resourcesClass = config.getInitParameter(RESOURCES_CLASS_KEY);
-        if (resourcesClass == null)
+
+        try
         {
-            resourcesClass = RESOURCES_CLASS_DEFAULT;
-        }
-        mapping.put(ResourceService.SERVICE_NAME, resourcesClass);
-        initService (ResourceService.SERVICE_NAME, config);
+            if (resourcesClass == null)
+            {
+                resourcesClass = RESOURCES_CLASS_DEFAULT;
+            }
+            mapping.setProperty(ResourceService.SERVICE_NAME, resourcesClass);
+            initService(ResourceService.SERVICE_NAME, config);
 
-        // Now logging can be initailzed
-        String loggingClass = config.getInitParameter(LOGGING_CLASS_KEY);
-        if (loggingClass == null)
+            // Now logging can be initialized
+            String loggingClass = config.getInitParameter(LOGGING_CLASS_KEY);
+            if (loggingClass == null)
+            {
+                loggingClass = LOGGING_CLASS_DEFAULT;
+            }
+            mapping.setProperty(LoggingService.SERVICE_NAME, loggingClass);
+            try
+            {
+                initService(LoggingService.SERVICE_NAME, config);
+                logger = getLogger();
+            }
+            catch (InitializationException e)
+            {
+                mapping.clearProperty(LoggingService.SERVICE_NAME);
+                throw e;
+            }
+            catch (InstantiationException e)
+            {
+                mapping.clearProperty(LoggingService.SERVICE_NAME);
+                throw e;
+            }
+        }
+        finally
         {
-            loggingClass = LOGGING_CLASS_DEFAULT;
+            // All further messages will go through LoggingService
+            // if logging service could not be initialized we still want
+            // to enable logging for further messages to go to console
+            enableLogging();
         }
-        mapping.put(LoggingService.SERVICE_NAME, loggingClass);
-        initService (LoggingService.SERVICE_NAME, config);
-
-        // All further messages will go through LoggingService
-        enableLogging();
-
         // Since we have ResourceService running, real mappings of services
         // may be loaded now
         initMapping();
@@ -213,7 +244,7 @@ public class TurbineServices
     {
         int pref = SERVICE_PREFIX.length();
         int suff = CLASSNAME_SUFFIX.length();
-        
+
         /*
          * These keys returned in an order that corresponds
          * to the order the services are listed in
@@ -234,7 +265,7 @@ public class TurbineServices
             {
                 String serviceKey = key.substring(pref, key.length() - suff);
                 notice ("Added Mapping for Service: " + serviceKey);
-                
+
                 if (! mapping.containsKey(serviceKey))
                     mapping.setProperty(serviceKey, TurbineResources.getString(key));
             }
@@ -343,7 +374,6 @@ public class TurbineServices
     {
         if (enabledLogging)
         {
-            LoggingService logger = getLogger();
             if (logger == null)
             {
                 System.out.println("(!) NOTICE: " + msg);
@@ -355,7 +385,8 @@ public class TurbineServices
         }
         else
         {
-            System.out.println("NOTICE: " + msg);
+            // cache the message to log as soon as logiing is on
+            logCache.add(msg);
         }
     }
 
@@ -373,20 +404,22 @@ public class TurbineServices
     {
         if (enabledLogging)
         {
-            LoggingService logger = getLogger();
             if (logger == null)
             {
                 System.out.println("(!) ERROR: " + t.getMessage());
             }
             else
-            {  
+            {
                 logger.error("", t);
             }
         }
         else
         {
-            System.out.println("ERROR: " + t.getMessage());
-            t.printStackTrace();
+            // cache the message to log as soon as logiing is on
+            logCache.add("ERROR: " + t.getMessage());
+            StringWriter sw = new StringWriter();
+            t.printStackTrace(new PrintWriter(sw));
+            logCache.add(sw.toString());
         }
 
     }
@@ -397,12 +430,18 @@ public class TurbineServices
      */
     private void enableLogging()
     {
-        LoggingService logger = getLogger();
-        if (logger != null)
+        enabledLogging = true;
+        //log all cached log messages
+        for (int i = 0; i < logCache.size(); i++)
         {
-            logger.info("ServiceBroker: LoggingService enabled.");
-            enabledLogging = true;
+            String s = (String) logCache.elementAt(i);
+            notice(s);
         }
+        //dispose of the cache
+        logCache = null;
+
+        notice("ServiceBroker: LoggingService enabled.");
+
     }
 
     /**

@@ -54,14 +54,11 @@ package org.apache.turbine.torque.engine.database.model;
  * <http://www.apache.org/>.
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Hashtable;
-import java.util.List;
-
 import org.apache.velocity.util.StringUtils;
+import org.xml.sax.AttributeList;
 
-import org.xml.sax.Attributes;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A Class for holding data about a column used in an Application.
@@ -71,6 +68,7 @@ import org.xml.sax.Attributes;
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
 public class Column
 {
@@ -104,7 +102,7 @@ public class Column
      */
     public Column()
     {
-		this(null);
+        this(null);
     }
 
     /**
@@ -118,7 +116,7 @@ public class Column
     /**
      * Imports a column from an XML specification
      */
-    public void loadFromXML (Attributes attrib)
+    public void loadFromXML (AttributeList attrib)
     {
         //Name
         name = attrib.getValue("name");
@@ -254,7 +252,7 @@ public class Column
      * A utility function to create a new column
      * from attrib and add it to this table.
      */
-    public Inheritance addInheritance(Attributes attrib)
+    public Inheritance addInheritance(AttributeList attrib)
     {
         Inheritance inh = new Inheritance();
         inh.loadFromXML (attrib);
@@ -433,7 +431,7 @@ public class Column
         if (referrers == null)
         {
             referrers = new ArrayList(5);
-		}
+        }
         referrers.add(fk);
     }
 
@@ -445,7 +443,7 @@ public class Column
         if (referrers == null)
         {
             referrers = new ArrayList(5);
-		}
+        }
         return referrers;
     }
 
@@ -516,21 +514,21 @@ public class Column
         if (size != null)
         {
             result.append(" size=\"").append(size).append('"');
-		}
+        }
 
         if (defaultValue != null)
         {
             result.append(" default=\"").append(defaultValue).append('"');
-		}
+        }
 
         if (isInheritance())
         {
-			result.append(" inheritance=\"").append(inheritanceType)
-	            .append('"');
-	    }
+            result.append(" inheritance=\"").append(inheritanceType)
+                .append('"');
+        }
 
-	    // Close the column.
-	    result.append(" />\n");
+        // Close the column.
+        result.append(" />\n");
 
         return result.toString();
     }
@@ -644,8 +642,10 @@ public class Column
         String tn = typeName.toUpperCase();
         setType(tn);
 
-        if (this.size != null)
+        if (size != null)
+        {
             this.size = size;
+        }
 
         if (tn.indexOf ("CHAR") != -1)
         {

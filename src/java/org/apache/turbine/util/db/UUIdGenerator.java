@@ -144,7 +144,8 @@ public class UUIdGenerator
                 {
                     while ( stok.hasMoreTokens() ) 
                     {
-                        address[i++] = Byte.parseByte(stok.nextToken());
+                        address[i++] =
+                            Integer.valueOf(stok.nextToken(), 16).byteValue();
                     }
                 }
                 catch (Exception e)
@@ -205,7 +206,7 @@ public class UUIdGenerator
     }
     /**
      * Gets the id
-     * @returns the 18 character id
+     * @return the 18 character id
      */
     public String getId() throws Exception
     {

@@ -64,8 +64,8 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.mimetype.util.MimeType;
 import org.apache.turbine.services.mimetype.util.MimeTypeMap;
 import org.apache.turbine.services.mimetype.util.CharSetMap;
+import org.apache.commons.configuration.Configuration;
 
-import org.apache.velocity.runtime.configuration.Configuration;
 
 /**
  * The MimeType Service maintains mappings between MIME types and

@@ -1,5 +1,7 @@
 package org.apache.turbine.om;
 
+import org.apache.turbine.util.db.pool.DBConnection;
+
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -122,4 +124,19 @@ public interface Persistent
      * Saves the object.
      */
     public void save() throws Exception;
+
+    /**
+     * Stores the object in the database.  If the object is new,
+     * it inserts it; otherwise an update is performed.
+     */
+    public void save(String dbName) throws Exception;
+
+    /**
+     * Stores the object in the database.  If the object is new,
+     * it inserts it; otherwise an update is performed.  This method
+     * is meant to be used as part of a transaction, otherwise use
+     * the save() method and the connection details will be handled
+     * internally
+     */
+    public void save(DBConnection dbCon) throws Exception;
 }

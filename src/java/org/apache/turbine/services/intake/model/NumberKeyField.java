@@ -60,6 +60,7 @@ import org.apache.turbine.om.ObjectKey;
 import org.apache.turbine.services.intake.xmlmodel.Rule;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.util.ParameterParser;
+import org.apache.turbine.util.Log;
 
 /**  */
 public class NumberKeyField extends Field
@@ -68,9 +69,23 @@ public class NumberKeyField extends Field
         throws Exception
     {
         super(field, group);
-
     }
 
+    protected void setDefaultValue(String prop)
+    {
+        if(prop == null)
+            return;
+
+        try
+        {
+            defaultValue = new NumberKey(prop);
+        } 
+        catch(RuntimeException e) 
+        {
+            Log.error("Could not convert "+prop+" into a NumberKey. ("+name+")");
+        }
+    }
+    
 
     /**
      * A suitable validator.
@@ -105,22 +120,3 @@ public class NumberKeyField extends Field
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

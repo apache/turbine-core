@@ -25,13 +25,13 @@ package org.apache.turbine.util.db.adapter;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -60,6 +60,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 /**
  * This is used to connect to SapDB databases.
@@ -67,6 +68,7 @@ import java.sql.Statement;
  * <a href="http://www.sapdb.org">http://www.sapdb.org</a>
  *
  * @author <a href="mailto:dave.polito@planetcad.com">Dave Polito</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
 public class DBSapDB
@@ -112,36 +114,29 @@ public class DBSapDB
     }
 
     /**
-     * Returns the SQL to get the database key of the last row
-     * inserted.
-     * SapDB doesn't have this, so it returns null.
-     *
-     * @return null.
+     * @see DB#getIDMethodType()
      */
-    public String getIdSqlForAutoIncrement(Object obj)
+    public String getIDMethodType()
     {
-        return null;
+        return SEQUENCE;
     }
 
     /**
-     * Returns the next key from a sequence.  Databases like SapDB
-     * which support this feature will return a result, others will
-     * return null.
+     * Returns the next key from a sequence.  Uses the following
+     * implementation:
      *
-     * SapDB does this by returning
+     * <blockquote><code><pre>
+     * select sequenceName.nextval from dual
+     * </pre></code></blockquote>
      *
-     *   select sequenceName.nextval from dual
-     *
-     * @param sequenceName, An object of type String
-     * @return The next database key.
+     * @param sequenceName The name of the sequence (should be of type
+     * <code>String</code>).
+     * @return SQL to retreive the next database key.
+     * @see DB#getIDMethodSQL(Object)
      */
-    public String getSequenceSql(Object sequenceName)
+    public String getIDMethodSQL(Object sequenceName)
     {
-        return new StringBuffer()
-               .append("select ")
-               .append((String)sequenceName)
-               .append(".nextval from dual")
-               .toString();
+        return ("select " + sequenceName + ".nextval from dual");
     }
 
     /**
@@ -173,7 +168,7 @@ public class DBSapDB
     *
     * @return false.
     */
-    
+
     public boolean escapeText()
     {
         return false;
@@ -192,5 +187,24 @@ public class DBSapDB
         // Tables in SapDB are unlocked when a commit is issued.  The
         // user may have issued a commit but do it here to be sure.
         con.commit();
+    }
+
+    /**
+     * This method is used to format a date string.
+     * This implementation uses the following format:
+     * "{ts '" + date.toString() + "'}"
+     *
+     * The default format provided by DB, prevents SapDB from matching
+     * criteria of the following form:
+     * <code>"WHERE SOME_DATE_FIELD = " + getDateString(Date)</code>
+     *
+     * Whereas, the implementation provided here successfully matches
+     * that criteria.
+     *
+     * @param date the Date object to be formatted as a string.
+     * @return The proper date formated String.  */
+    public String getDateString(Date date)
+    {
+        return "{ts '" + date.toString() + "'}";
     }
 }

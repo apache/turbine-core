@@ -23,7 +23,7 @@
 </section>
 
 <section name="Requirements">
-<p>
+<ul>
   <li>
     Turbine would probably process a directory of JAR files
     that contain sub-applications. The manifest would contain
@@ -82,7 +82,7 @@
     Extension do DynamicURI and derivates to support new parameter
     (sub-application selector)
   </li>
-</p>
+</ul>
 </section>
 
 

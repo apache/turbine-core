@@ -25,13 +25,13 @@ package org.apache.turbine.torque.engine.database.model;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,10 +54,11 @@ package org.apache.turbine.torque.engine.database.model;
  * <http://www.apache.org/>.
  */
 
+import org.xml.sax.AttributeList;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.xml.sax.Attributes;
 
 /**
  * A class for holding application data structures.
@@ -65,10 +66,11 @@ import org.xml.sax.Attributes;
  * @author <a href="mailto:leon@opticode.co.za>Leon Messerschmidt</a>
  * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
 public class AppData
 {
-
+    private String name;
     private List dbList = new ArrayList(5);
 
     /**
@@ -92,6 +94,15 @@ public class AppData
         return dbs;
     }
 
+    public Database getDatabase()
+    {
+        Database[] dbs = getDatabases();
+        return dbs[0];
+    }
+
+    public void setName(String name) { this.name = name; }
+    public String getName() { return name; }
+
     /**
      *
      */
@@ -99,7 +110,7 @@ public class AppData
     {
         return (dbList.size() > 1);
     }
-    
+
 
     /**
      * Return the database with the specified name.
@@ -122,7 +133,7 @@ public class AppData
      * An utility method to add a new database from
      * an xml attribute.
      */
-    public Database addDatabase(Attributes attrib)
+    public Database addDatabase(AttributeList attrib)
     {
         Database db = new Database();
         db.loadFromXML (attrib);

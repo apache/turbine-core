@@ -26,7 +26,7 @@
   <!-- when you change your XML schema.                                 -->
   <!-- ================================================================ -->
 
-  <target name="main">
+  <target name="main" description="==> generates sql + om classes">
     <antcall target="project-sql"/>
     <antcall target="project-om"/>
   </target>
@@ -93,7 +93,8 @@
   <!-- J D B C  ->  X M L                                               -->
   <!-- ================================================================ -->
   
-  <target name="project-jdbc" depends="init-tasks">
+  <target name="project-jdbc" depends="init-tasks"
+          description="==> jbbc to xml">
  
     <echo message="JDBC transform"/>
  
@@ -112,7 +113,8 @@
   <!-- Generate SQL from XML data file                                  -->
   <!-- ================================================================ -->
 
-  <target name="project-datasql" depends="init-tasks">
+  <target name="project-datasql" depends="init-tasks"
+          description="==> generates sql from data xml">
 
     <echo message="+-----------------------------------------------+"/>
     <echo message="|                                               |"/>
@@ -138,10 +140,11 @@
   </target>
 
   <!-- ================================================================ -->
-  <!-- Dump data from databse into xml file                             -->
+  <!-- Dump data from database into xml file                            -->
   <!-- ================================================================ -->
 
-  <target name="project-datadump" depends="init-tasks">
+  <target name="project-datadump" depends="init-tasks"
+          description="==> dump data from database into xml file">
 
     <echo message="+-----------------------------------------------+"/>
     <echo message="|                                               |"/>
@@ -169,7 +172,8 @@
   <!-- Generate the DATA DTD for your project                           -->
   <!-- ================================================================ -->
 
-  <target name="project-datadtd" depends="init-tasks">
+  <target name="project-datadtd" depends="init-tasks"
+          description="==> generates the DATA DTD for your project">
 
     <echo message="+-----------------------------------------------+"/>
     <echo message="|                                               |"/>
@@ -198,7 +202,8 @@
   <!-- project should be specified in project-schema.xml.               -->
   <!-- ================================================================ -->
 
-  <target name="project-sql" depends="init-tasks">
+  <target name="project-sql" depends="init-tasks"
+          description="==> generates the SQL for your project">
 
     <echo message="+------------------------------------------+"/>
     <echo message="|                                          |"/>
@@ -227,7 +232,8 @@
   <!-- ================================================================ -->
 
 
-  <target name="project-om" depends="init-tasks">
+  <target name="project-om" depends="init-tasks"
+          description="==> generates the Peer-based object model for your project">
 
     <echo message="+------------------------------------------+"/>
     <echo message="|                                          |"/>
@@ -251,7 +257,7 @@
   <!-- =================================================================== -->
   <!-- C O M P I L E  O M                                                  -->
   <!-- =================================================================== -->  
-  <target name="compile">
+  <target name="compile" description="==> compiles the OM classes">
     
     <!-- 
       This should be moved to the top of the file, and
@@ -304,7 +310,8 @@
   <!-- outputFile: The file where the xml schema will be written           -->
   <!-- =================================================================== -->
 
-  <target name="sql2xml" depends="init-tasks">
+  <target name="sql2xml" depends="init-tasks"
+          description="==> creates an xml schema from an sql schema">
     <sql-xml
       inputFile="schema/schema.sql"
       outputFile="schema/schema.xml"
@@ -315,7 +322,7 @@
   <!-- Creates the API documentation                                      -->
   <!-- ================================================================== -->
   <target name="javadocs"
-          description="--> generates the API documentation">
+          description="==> generates the API documentation">
     <mkdir dir="${torque.home}/${outputDirectory}/javadoc"/>
     <javadoc sourcepath="${torque.home}/${outputDirectory}"
              packagenames="${targetPackage}.*"

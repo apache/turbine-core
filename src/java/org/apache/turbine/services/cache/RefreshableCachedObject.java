@@ -147,8 +147,8 @@ public class RefreshableCachedObject
         Refreshable r = (Refreshable)getContents();
         synchronized (this)
         {
+            created = System.currentTimeMillis();
             r.refresh();
-            created = created + getExpires();
         }
     }
 }

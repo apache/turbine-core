@@ -70,6 +70,7 @@ import com.workingdogs.village.Value;
  * getting an id prior to inserting a row into the database.
  *
  * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @version $Id$
  */
 public class SequenceIdGenerator
@@ -186,7 +187,7 @@ public class SequenceIdGenerator
                                       Object keyInfo)
         throws Exception
     {
-        String idSql = dbAdapter.getSequenceSql(keyInfo);
+        String idSql = dbAdapter.getIDMethodSQL(keyInfo);
 
         // Execute the query.
         QueryDataSet qds = new QueryDataSet( connection, idSql );

@@ -230,6 +230,12 @@ public class IntakeTool
             this.groupName = groupName;
         }
 
+      /**
+       * populates the object with the default values from the XML File
+       *
+       * @return a Group object with the default values 
+       */
+
         public Group getDefault()
             throws Exception
         {
@@ -262,6 +268,15 @@ public class IntakeTool
             return g;
         }
 
+
+      /**
+       * maps an Intake Group to the values from a Retrievable object.
+       *
+       * @param obj       A retrievable object
+       *
+       * @return          an Intake Group
+       *
+       */
 
         public Group mapTo(Retrievable obj)
             throws Exception
@@ -399,12 +414,4 @@ public class IntakeTool
     {
         return disposed;
     }
-
-
 }
-
-
-
-
-
-

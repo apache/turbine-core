@@ -1,8 +1,0 @@
-#!/bin/sh
-
-for i in `find ../bin/classes -name '*.class'`
-do
-    A=`echo $i | sed 's/\.class//' | sed 's/\.\.\/bin\/classes\///' | sed 's/\//\./g'`
-    echo $A
-    ./is.sh $A > $i.import
-done

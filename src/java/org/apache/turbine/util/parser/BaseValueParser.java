@@ -79,6 +79,7 @@ import org.apache.turbine.om.StringKey;
 import org.apache.turbine.services.resources.TurbineResources;
 
 import org.apache.turbine.util.DateSelector;
+import org.apache.turbine.util.StringUtils;
 import org.apache.turbine.util.TimeSelector;
 import org.apache.turbine.util.ValueParser;
 import org.apache.turbine.util.pool.Recyclable;
@@ -1101,7 +1102,11 @@ public class BaseValueParser
                 // Convert from 12 to 24hr format if appropriate
                 if (ampm != null)
                 {
-                    if (Integer.parseInt(ampm) == Calendar.PM)
+                    if ( hour == 12 )
+                    {
+                        hour = (Integer.parseInt(ampm) == Calendar.PM) ? 12 : 0;
+                    }
+                    else if (Integer.parseInt(ampm) == Calendar.PM)
                     {
                         hour += 12;
                     }
@@ -1148,7 +1153,7 @@ public class BaseValueParser
      * exist, return null.
      *
      * @param name A String with the name.
-     * @return An NumberKey.
+     * @return A NumberKey, or <code>null</code> if unparsable.
      */
     public NumberKey getNumberKey(String name)
     {
@@ -1160,7 +1165,7 @@ public class BaseValueParser
             {
                 value = ((String[])object)[0];
             }
-            return new NumberKey(value);
+            return (StringUtils.isValid(value) ? new NumberKey(value) : null);
         }
         catch ( ClassCastException e )
         {
@@ -1173,7 +1178,7 @@ public class BaseValueParser
      * exist, return null.
      *
      * @param name A String with the name.
-     * @return An StringKey.
+     * @return A StringKey, or <code>null</code> if unparsable.
      */
     public StringKey getStringKey(String name)
     {
@@ -1185,7 +1190,7 @@ public class BaseValueParser
             {
                 value = ((String[])object)[0];
             }
-            return new StringKey(value);
+            return (StringUtils.isValid(value) ? new StringKey(value) : null);
         }
         catch ( ClassCastException e )
         {
@@ -1289,7 +1294,7 @@ public class BaseValueParser
      * @param prop A PropertyDescriptor.
      * @exception Exception, a generic exception.
      */
-    private void setProperty(Object bean,
+    protected void setProperty(Object bean,
                              PropertyDescriptor prop)
         throws Exception
     {

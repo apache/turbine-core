@@ -70,6 +70,7 @@ import org.apache.turbine.util.db.adapter.DB;
  * Connection pool service only when needed.
  *
  * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @version $Id$
  */
 public interface IdGenerator
@@ -78,7 +79,7 @@ public interface IdGenerator
      * Returns an id as a primitive int. 
      *
      * @param connection A Connection.
-     * @param keyInfo, an Object that contains additional info.
+     * @param keyInfo an Object that contains additional info.
      * @return An int with the value for the id.
      * @exception Exception Database error.
      */
@@ -89,7 +90,7 @@ public interface IdGenerator
      * Returns an id as a primitive long. 
      *
      * @param connection A Connection.
-     * @param keyInfo, an Object that contains additional info.
+     * @param keyInfo an Object that contains additional info.
      * @return A long with the value for the id.
      * @exception Exception Database error.
      */
@@ -100,7 +101,7 @@ public interface IdGenerator
      * Returns an id as a BigDecimal. 
      *
      * @param connection A Connection.
-     * @param keyInfo, an Object that contains additional info.
+     * @param keyInfo an Object that contains additional info.
      * @return A BigDecimal id.
      * @exception Exception Database error.
      */
@@ -112,13 +113,12 @@ public interface IdGenerator
      * Returns an id as a String. 
      *
      * @param connection A Connection.
-     * @param keyInfo, an Object that contains additional info.
+     * @param keyInfo an Object that contains additional info.
      * @return A String id
      * @exception Exception Database error.
      */
     public String getIdAsString(Connection connection, Object keyInfo)
         throws Exception;
-
 
     /**
      * A flag to determine the timing of the id generation

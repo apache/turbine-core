@@ -3,388 +3,170 @@
 <document>
 
 <properties>
-  <title>Changes</title>
+  <title>2.x Changes</title>
   <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  <author email="jmcnally@apache.org">John D. McNally</author>
+  <author email="mpoeschl@marmot.at">Martin Poeschl</author>
 </properties>
 
 <body>
 
-<section name="Changes">
+<section name="Turbine 2.2b1">
 
 <p>
-This document describes what has changed in Turbine on a
-particular date. When we release these changes can be tracked
-on a release to release basis, but for now we'll just use
-the date to keep track of major changes.
-</p>
-
-</section>
-
-<section name="18 March 2001">
-
-<p>
-  The following changes are a result of trying to order the
-  initialization of the services according to order they
-  are listed in the TR.props file. To effect this change, the
-  Configuration class from Velocity was used because it
-  internally keeps properties in order. Variants of the
-  Configuration are used in three projects now so we should
-  work on putting it somewhere so it can be reused. For
-  now it's being pulled from the Velocity JAR included in
-  the Turbine distribution but this will change when we
-  find a home for the Configuration class.
+Changes between Turbine 2.1 and 2.2b1.
 </p>
 
 <p>
+Torque and Fulcrum (the service framework) have been decoupled in preparation
+for Turbine 3.0. The decoupled versions can be used with Turbine 2.2.
+We strongly recommend to use the decoupled versions (some of the 'old' services
+must be used, because they are used internally by Turbine)
+</p>
+
+<p>
+The following services could (and should) be replaced by the Fulcrum versions:
+<ul>
+  <li>XmlRpcService</li>
+</ul>
+</p>
+
+<p>
+If you wrote your own services you should also change them to be Fulcrum
+services to make them work with Turbine 3.x
+</p>
+
+<subsection name="Changes that could break older environments">
+
+<p>
   <ul>
     <li>
-      The order of the services has been changed in the TR.props
-      master file to reflect some dependencies services have
-      on one another.
+      The Service interface was extended to allow integration of Service
+      implementations: <br/>
+      <b>Service.getName()</b> <br/>
+      since most Service implementations extend BaseService
+      (which implements a public getName method), this should not be an issue.
     </li>
-    <li>
-      The way to tools are specified for the Pull Service has
-      changed because the Configuration class takes care of
-      correct ordering. The <code>loader-order</code> key is no longer
-      required as the tools will be instantiated in the order they
-      appear in the TR.props file.
-    </li>
-    <li>
-      Big cleanup to the TurbineResourcesService directory.
-      The Configuration class is an amalgamation of the
-      ConfigurationRepository/Configurations/ExtendedProperties
-      class so they have been removed and the Configuration
-      class is now used in their place. Here is a list of the
-      affected files:
-      <ul>
-        <li>
-          modules/actions/InitContextsAction.java
-        </li>
-        <li>
-          services/BaseServiceBroker.java
-        </li>
-        <li>
-          services/TurbineServices.java
-        </li>
-        <li>
-          services/logging/PropertiesLoggingConfig.java
-        </li>
-        <li>
-          services/naming/TurbineNamingService.java
-        </li>
-        <li>
-          services/pull/TurbinePullService.java
-        </li>
-        <li>
-          services/resources/ResourceService.java
-        </li>
-        <li>
-          services/resources/TurbineResourceService.java
-        </li>
-        <li>
-          services/resources/TurbineResources.java
-        </li>
-        <li>
-          services/xmlrpc/TurbineXmlRpcService.java
-        </li>
-      </ul>
-
-      <p>
-      Most of these changes have to do with the fact the
-      the keys returned from a Configuration are in the
-      form of an Iterator, not an Enumeration.
-      </p>
-
-    </li>
-
-    <li>
-      Some dead files were removed from the TurbineResources
-      directory. The ErrorResources and the MessageResources.
-      The MessageResources wasn't doing anything and the
-      ErrorResources looked like it was being used in
-      TurbineResources but none of the errors it was supposed
-      to trap had any effect. For example the message that
-      it is supposed to display when the TR.props file is
-      missing wasn't displayed. It looked a bit sketchy
-      anyway so I removed it. If anyone feels strongly about
-      it they can put it back. I think we can with a better
-      error mechanism any way.
-    </li>
-
-    <li>
-      The Velocity service has been updated to reflect recent
-      changes made in Velocity. The Velocity service has started
-      using the Velocity class which is now the client code
-      contract with Velocity internals.
-    </li>
-
-    <li>
-      TurbineUploadService changed so that a repository
-      path specified without a leading <code>/</code> is relative to
-      the webapp.
-    </li>
-
   </ul>
 </p>
 
-</section>
+</subsection>
 
-<section name="21 March 2001">
+
+<subsection name="Other changes">
+
+<p>
   <ul>
     <li>
-      Email classes
-      <br/>
-      Added ability to set SMTP-From headers, to direct all 'delivery
-      failed' messages to a separate mailbox.
-      <br/>
-      TR.props also changed to allow for an address for all messages
-      with failed delivery.
+      <b>ECS, Freemarker and Webmacro</b> services/modules are marked
+      <b>deprecated</b>. You should use Velocity instead.
     </li>
-
     <li>
-      Pull Service
-      <br/>
-      Added getTool() method to allow access to request level
-      tools in the context without having to do an annoying cast.
+      <b>Castor</b> service is marked as <b>deprecated</b>. You should use
+      om/peer classes instead!
     </li>
-
     <li>
-      Scheduler Service
-      <br/>
-      Cleaned up logging in the WorkerThread class.
+      The XSLT Service is updated to use Xalan 2.0
     </li>
-
+    <li>
+      Improved datatype mappings for mysql, oracle, postgresql, sapdb
+    </li>
+    <li>
+      adding support for DB2 on AS400 (patch by Sweaver@rippe.com).
+    </li>
+    <li>
+      adding support for secure connections in the xmlrpc service.
+    </li>
+    <li>
+      Added a configuration parameter to torque, addTimeStamp, that allows the
+      user to generate files without a timestamp. Default is true, timestamps
+      will be generated.
+    </li>
+    <li>
+      Criteria.Criterion implements Serializable
+    </li>
+    <li>
+      DB implements Serializable
+    </li>
+    <li>
+      torque: id-methods <i>sequence</i> and <i>autoincrement</i> are
+      <b>deprecated</b>. You should use <b>native</b>. torque uses the method
+      provided by your database
+    </li>
+    <li>
+      added static strings for ISNULL and ISNOTNULL to Criteria.
+    </li>
+    <li>
+      added getDateString() method to format date fields to DB.
+    </li>
+    <li>
+      added VelocityDirectLayout/Screen to make it possible to embed
+      servlet/JSP outputs into a Velocity template used within Turbine.
+      (patch by raphael.luta@networks.groupvu.com)
+    </li>
+    <li>
+      added an easy to use localization pull tool.
+    </li>
+    <li>
+      Javadocs improvements.
+    </li>
+    <li>
+      Documentation improvements.
+    </li>
   </ul>
-</section>
+</p>
 
-<section name="22 March 2001">
-  <ul>
+</subsection>
 
-    <li>
-      HttpUtils class added
-      <br/>
-      A place to hang HTTP utility routines.  Currently provides date
-      formatting and cache header control.  Unfortunate name conflict
-      with HttpUtils class in the <code>javax.servlet package</code>,
-      but consistant with current utility class naming scheme.
-    </li>
 
-  </ul>
-</section>
+<subsection name="Fixed bugs">
 
-<section name="25 March 2001">
-  <ul>
-
-    <li>
-      Configuration functionality add to services.
-      <br/>
-      Services now have access to a Configuration object that
-      can be used instead of a Properties object. Hopefully
-      we can eliminate the use of Properties all together.
-      Right now the Velocity Service is the example of how
-      to use the Configuration object inside a service.
-    </li>
-
-    <li>
-      Torque
-      <br/>
-      The Torque tasks have been cleaned up. Tried to place
-      as much of the information required for generation
-      in a configuration file. Hopefully this will allow
-      us to add functionality to the generating process without
-      having to alter the ant task code.
-    </li>
-
-    <li>
-      Velocity Service
-      <br/>
-      Updated to keep in step with the changes that are
-      being made as Velocity moves to 1.0. Velocity can
-      now be fully configured from the TR.props. In the
-      Velocity service the subset of the TR.props that
-      pertain to the Velocity service are extracted
-      and passed on to the Velocity Runtime. This should
-      make the Velocity service easier to configure.
-    </li>
-
-  </ul>
-</section>
-
-<section name="2 April 2001">
+<p>
   <ul>
 
     <li>
-      Template Services
-      <br/>
-      TemplateService was reworked to associate template file name
-      extensions with TemplateEngineService implementations and
-      delegate to the appropriate registered service.  The easiest
-      wasy to write such a TemplateEngineService implementation is to
-      extend the new BaseTemplateEngineService class.
+      fixed error in Mssql unique.vm template (removed a blank line)
     </li>
-
     <li>
-      BasePeer
-      <br/>
-      Added <code>database.query.debug</code> flag for control of
-      query logging at the <code>DEBUG</code> level.
+      [2301] Embedding message parts in HtmlEmail throws NullPointerException.
     </li>
-
+    <li>
+      bugfix for BigDecimal attributes with default value
+    </li>
+    <li>
+      fixed handling of sequences for db2, oracle, postgresql, sapdb
+    </li>
+    <li>
+      fixed syntax for create index (postgresql)
+    </li>
+    <li>
+      fixed problem for postgres with blob style column in TurbineUser table.
+      (patch by Jerome Veryleyen)
+    </li>
+    <li>
+      BaseUnicastRemoteService.java: Corrected method name (setName -> getName).
+    </li>
+    <li>
+      fixed Roleset.add(RoleSet) (patch by lujin@yahoo.com)
+    </li>
+    <li>
+      fixed database - defaultIdMethod (torque)
+    </li>
+    <li>
+      fixed date formating problem with Oracle.
+    </li>
+    <li>
+      fixed problem when ignoreCase was used with ISNULL or ISNOTNULL.
+    </li>
+    <li>
+      fixed Option object initialisation in SelectorBox
+      (patch by Kurt Grafius kurtg@jvoom.com)
+    </li>
   </ul>
-</section>
+</p>
 
-<section name="5 April 2001">
-  <ul>
+</subsection>
 
-    <li>
-      SQL Logging Facility
-      <br/>
-      A new SQL logging facility has been defined, initially set to
-      ERROR level.  Currently, the logging level must be loosened to
-      DEBUG to produce logging output.
-    </li>
-
-    <li>
-      BasePeer
-      <br/>
-      Dropped <code>database.query.debug</code> from BasePeer in favor
-      of logging SQL queries to the <code>sql</code> facility instead.
-      at DEBUG level.
-    </li>
-
-  </ul>
-</section>
-
-
-
-<section name="7 April 2001">
-  <ul>
-
-    <li>
-      Added SequencedHashtable and BufferCache Collections classes
-      <br/>
-      <code>SequencedHashtable</code> is a Hashtable whose keys are
-      sequenced.  The sequencing of the keys allow easy access to the
-      values in the order which they were added in.  Thread safe.
-      <br/>
-      <code>BufferCache</code> is a fixed length object cache
-      implementing the LRU algorithm.  Convenient for buffering
-      recently used objects.
-    </li>
-
-  </ul>
-</section>
-
-<section name="8 April 2001">
-  <ul>
-
-    <li>
-      Service Names and TurbineResources.properties
-      <br/>
-      Each service's SERVICE_NAME constant has been changed from the
-      name of Turbine's implemtating class to the name of the
-      service's interface.
-    </li>
-
-  </ul>
-</section>
-
-<section name="9 April 2001">
-  <ul>
-
-    <li>
-      TurbineServices
-      <br/>
-      Bug fix to getProperties(String name) to properly handle
-      internal use of Configuration class for multi-value keys.  A
-      ClassCastException was being thrown erroneously, contradicting
-      the behavior noted in the JavaDoc.  JavaDoc was updated to
-      recommend getConfiguration(String name) for multi-value keys.
-    </li>
-
-  </ul>
-</section>
-
-<section name="11 April 2001">
-  <ul>
-
-    <li>
-      TurbineUploadService
-      <p/>
-      Bug fix to close FileItem OutputStream after data has been 
-      written into it.
-    </li>
-  
-    <li>
-      MultiPartEmail and FileItem (upload service)
-      <p/>
-      Made FileItem implement the javax.activation.DataSource
-      interface, and had MultiPartEmail accept DataSource
-      specified attachments.
-    </li>
-
-    <li>
-      HtmlEmail
-      <p/>
-      Now will only form a multipart/alternative body part if
-      both the HTML and text parts are specified. If either is
-      omitted, only the other will be used as the body.
-    </li>
-
-  </ul>
-</section>
-
-<section name="14 April 2001">
-  <ul>
-
-    <li>
-      StringUtils and VelocityEmail
-      <p/>
-      Text wrapping capabilities added to StringUtils.  Hooks added to
-      VelocityEmail to make use of this new StringUtils functionality.
-    </li>
-
-  </ul>
-</section>
-
-<section name="17 April 2001">
-  <ul>
-
-    <li>
-      Security
-      <p/>
-      Users/Roles/Groups security was extensively revamped in a
-      branch.  Now merged back into the HEAD.
-    </li>
-
-  </ul>
-</section>
-
-<section name="18 April 2001">
-  <ul>
-
-    <li>
-      BaseUnicastRemoteService
-      <p/>
-      Added a base implementation of a java.rmi.server.UnicastRemoteObject
-      as a Turbine Service.
-    </li>
-
-  </ul>
-</section>
-
-
-<section name="24 April 2001">
-  <ul>
-
-    <li>
-      TimeSelector
-      <p/>
-      Integrated a new org.apache.turbine.util.TimeSelector component
-      into org.apache.turbine.util.parser.BaseValueParser.
-    </li>
-
-  </ul>
 </section>
 
 </body>

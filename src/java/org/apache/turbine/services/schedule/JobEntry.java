@@ -69,6 +69,7 @@ import org.apache.turbine.util.db.Criteria;
  * @version $Id$
  */
 public class JobEntry extends BaseObject
+    implements Comparable
 {
     /** Valid entry ( 0-60 ). **/
     private int second = -1;
@@ -106,6 +107,13 @@ public class JobEntry extends BaseObject
 
     /** Storage for additional properties */
     private Hashtable jobProp = null;
+
+    /**
+     * Default Constructor
+     */
+    public JobEntry()
+    {
+    }
 
     /**
      * Constuctor.
@@ -457,7 +465,12 @@ public class JobEntry extends BaseObject
             .add(JobEntryPeer.EMAIL, getEmail())
             .add(JobEntryPeer.PROPERTY, getProperty());
 
-        long key = ((NumberKey)getPrimaryKey()).getBigDecimal().longValue();
+        NumberKey nk = (NumberKey)getPrimaryKey();
+        long key = 0;
+        if (nk != null)
+        {
+            key = ((NumberKey)getPrimaryKey()).getBigDecimal().longValue();
+        }
         if ( isModified() && key > 0)
         {
             // This is an update.
@@ -541,6 +554,32 @@ public class JobEntry extends BaseObject
                 throw new Exception("Error in JobEntry. Bad Job parameter.");
 
             return DAY_OF_MONTH;
+        }
+    }
+
+    /**
+     * Used for ordering Jobentries
+     * Note: this comparator imposes orderings that are inconsistent with
+     * equals.
+     *
+     * @param je The first <code>JobEntry</code> object.
+     * @return An <code>int</code> indicating the result of the comparison.
+     */
+    public int compareTo(Object je)
+    {
+        long obj1Time = this.getNextRuntime();
+        long obj2Time = ((JobEntry)je).getNextRuntime();
+        if (obj1Time > obj2Time)
+        {
+            return 1;
+        }
+        else if (obj1Time < obj2Time)
+        {
+            return -1;
+        }
+        else
+        {
+            return 0;
         }
     }
 

@@ -6,8 +6,8 @@
 
   <!-- Give user a chance to override without editing this file
       (and without typing -D each time it compiles it -->
-  <property file="${user.home}/.ant.properties" />
-  <property file=".ant.properties" />
+  <property file="${user.home}/build.properties" />
+  <property file="build.properties" />
 
   <property name="master.home" value="./master"/>
   <property name="conf.home" value="."/>
@@ -20,6 +20,9 @@
   <property name="master" value="${master.home}/TurbineResources.master"/>
   <property name="copy" value="${target.dir}/TurbineResources.properties"/>
 
+  <property name="fulcrum.master" value="${master.home}/Fulcrum.master"/>
+  <property name="fulcrum.copy" value="${target.dir}/Fulcrum.properties"/>
+
   <!-- =================================================================== -->
   <!-- T R  P R O P S  W I T H  D B  V A L U E S                           -->
   <!-- =================================================================== -->
@@ -29,11 +32,14 @@
   <!-- =================================================================== -->
 
   <target name="tr-props-with-db-values" depends="configure,configure-db">
-    
+
     <echo message="Creating TurbineResources ..."/>
     <delete file="${copy}"/>
+    <delete file="${fulcrum.copy}"/>
+    
     <copy file="${master}" tofile="${copy}" filtering="on"/>
-  
+    <copy file="${fulcrum.master}" tofile="${fulcrum.copy}" filtering="on"/>
+
   </target>
 
   <!-- =================================================================== -->
@@ -47,11 +53,14 @@
   <!-- =================================================================== -->
 
   <target name="tr-props-without-db-values" depends="configure">
-    
+
     <echo message="Creating TurbineResources ..."/>
     <delete file="${copy}"/>
+    <delete file="${fulcrum.copy}"/>
+
     <copy file="${master}" tofile="${copy}" filtering="on"/>
-  
+    <copy file="${fulcrum.master}" tofile="${fulcrum.copy}" filtering="on"/>
+
   </target>
 
   <!-- =================================================================== -->
@@ -78,6 +87,8 @@
     <filter token="DATABASE_USER" value="${database.user}"/>
     <filter token="DATABASE_PASSWORD" value="${database.password}"/>
     <filter token="DATABASE_NAME" value="${database.name}"/>
+    <filter token="DATABASE_DEFAULT" value="default"/>
+    <filter token="PROJECT" value="${project}"/>
   
   </target>
 
@@ -129,6 +140,7 @@
     <filter token="LOCALE_DEFAULT_COUNTRY" value="${locale.default.country}"/>
 
     <filter token="INCLUDE_FILE" value="${include.file}"/>
+    
   </target>
 
 </project>

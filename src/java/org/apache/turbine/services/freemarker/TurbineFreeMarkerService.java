@@ -54,27 +54,49 @@ package org.apache.turbine.services.freemarker;
  * <http://www.apache.org/>.
  */
 
-// Java Stuff
-import java.util.*;
-import java.io.*;
-
-// Java Servlet Classes
-import javax.servlet.*;
-
-// Turbine Stuff
-import org.apache.turbine.util.*;
-import org.apache.turbine.util.security.*;
-import org.apache.turbine.om.security.*;
-import org.apache.turbine.services.*;
-import org.apache.turbine.services.resources.*;
-import org.apache.turbine.services.servlet.TurbineServlet;
-
-import org.apache.ecs.StringElement;
 
 // FreeMarker Stuff
-import freemarker.template.*;
+import freemarker.template.CacheEvent;
+import freemarker.template.CacheListener;
+import freemarker.template.FileTemplateCache;
+import freemarker.template.SimpleHash;
+import freemarker.template.SimpleList;
+import freemarker.template.Template;
+import freemarker.template.TemplateServletUtils;
 
-import org.apache.velocity.runtime.configuration.Configuration;
+// Java Stuff
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.StringTokenizer;
+
+// Java Servlet Classes
+import javax.servlet.ServletRequest;
+
+import org.apache.commons.configuration.Configuration;
+
+// Turbine Stuff
+import org.apache.turbine.om.security.Permission;
+import org.apache.turbine.om.security.Role;
+import org.apache.turbine.om.security.User;
+
+import org.apache.turbine.services.BaseService;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+
+import org.apache.turbine.services.servlet.TurbineServlet;
+
+import org.apache.turbine.util.DynamicURI;
+import org.apache.turbine.util.Log;
+import org.apache.turbine.util.ParameterParser;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
+
 
 /*
  * This is a Service that can process FreeMarker templates from within

@@ -54,12 +54,14 @@ package org.apache.turbine.torque.engine.database.model;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.util.db.map.IDMethod;
+import org.apache.velocity.util.StringUtils;
+import org.xml.sax.AttributeList;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.velocity.util.StringUtils;
-import org.xml.sax.Attributes;
 
 /**
  * Data about a table used in an application.
@@ -70,15 +72,10 @@ import org.xml.sax.Attributes;
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
-public class Table
+public class Table implements IDMethod
 {
-    /**
-     * A value indicating that the database-specific native ID method
-     * should be used for this table.
-     */
-    private static final String NATIVE_ID_METHOD = "native";
-
     //private AttributeListImpl attributes;
     private List columnList;
     private List foreignKeys;
@@ -127,7 +124,7 @@ public class Table
     /**
      * Load the table object from an xml tag.
      */
-    public void loadFromXML (Attributes attrib, String defaultIdMethod)
+    public void loadFromXML (AttributeList attrib, String defaultIdMethod)
     {
         name = attrib.getValue("name");
         javaName = attrib.getValue("javaName");
@@ -142,9 +139,9 @@ public class Table
         {
             System.out.println("The value '" + idMethod + "' for Torque's " +
                      "table.idMethod attribute has been deprecated in favor " +
-                     "of '" + NATIVE_ID_METHOD + "'.  Please adjust your " +
+                     "of '" + NATIVE + "'.  Please adjust your " +
                      "Torque XML schema accordingly.");
-            idMethod = NATIVE_ID_METHOD;
+            idMethod = NATIVE;
         }
         skipSql = "true".equals(attrib.getValue("skipSql"));
         // pkg = attrib.getValue("package");
@@ -216,7 +213,7 @@ public class Table
      * A utility function to create a new column
      * from attrib and add it to this table.
      */
-    public Column addColumn(Attributes attrib)
+    public Column addColumn(AttributeList attrib)
     {
         Column col = new Column();
         col.loadFromXML (attrib);
@@ -245,7 +242,7 @@ public class Table
      * A utility function to create a new foreign key
      * from attrib and add it to this table.
      */
-    public ForeignKey addForeignKey(Attributes attrib)
+    public ForeignKey addForeignKey(AttributeList attrib)
     {
         ForeignKey fk = new ForeignKey();
         fk.loadFromXML (attrib);
@@ -287,7 +284,7 @@ public class Table
         if (referrers == null)
         {
             referrers = new ArrayList(5);
-		}
+        }
         referrers.add(fk);
     }
 
@@ -350,7 +347,7 @@ public class Table
      * A utility function to create a new id method parameter
      * from attrib and add it to this table.
      */
-    public IdMethodParameter addIdMethodParameter(Attributes attrib)
+    public IdMethodParameter addIdMethodParameter(AttributeList attrib)
     {
         IdMethodParameter imp = new IdMethodParameter();
         imp.loadFromXML (attrib);
@@ -389,7 +386,7 @@ public class Table
      * A utility function to create a new index
      * from attrib and add it to this table.
      */
-    public Index addIndex(Attributes attrib)
+    public Index addIndex(AttributeList attrib)
     {
         Index index = new Index();
         index.loadFromXML (attrib);
@@ -411,9 +408,10 @@ public class Table
      * A utility function to create a new Unique
      * from attrib and add it to this table.
      */
-    public Unique addUnique(Attributes attrib)
+    public Unique addUnique(AttributeList attrib)
     {
         Unique unique = new Unique();
+        unique.loadFromXML (attrib);
         addUnique (unique);
         return unique;
     }
@@ -609,7 +607,7 @@ public class Table
     public String getSequenceName()
     {
         String result = null;
-        if ( getIdMethod().equals(NATIVE_ID_METHOD))
+        if (getIdMethod().equals(NATIVE))
         {
             List idMethodParams = getIdMethodParameters();
             if (idMethodParams == null)
@@ -834,6 +832,16 @@ public class Table
     public final ArrayList getPrimaryKeys()
     {
         return (ArrayList) getPrimaryKey();
+    }
+
+    /**
+     * Determine whether this table has a primary key.
+     *
+     * @return Whether this table has any primary key parts.
+     */
+    public boolean hasPrimaryKey()
+    {
+        return (getPrimaryKey().size() > 0);
     }
 
     /**

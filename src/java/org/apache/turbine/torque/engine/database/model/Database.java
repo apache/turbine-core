@@ -54,12 +54,13 @@ package org.apache.turbine.torque.engine.database.model;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.services.db.TurbineDB;
+import org.xml.sax.AttributeList;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.turbine.services.db.TurbineDB;
-import org.xml.sax.Attributes;
 
 /**
  * A class for holding application data structures.
@@ -68,6 +69,7 @@ import org.xml.sax.Attributes;
  * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
  * @author <a href="mailto:mpoeschl@marmot.at>Martin Poeschl</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
 public class Database
 {
@@ -92,7 +94,7 @@ public class Database
     /**
      * Load the database object from an xml tag.
      */
-    public void loadFromXML (Attributes attrib)
+    public void loadFromXML (AttributeList attrib)
     {
         name = attrib.getValue("name");
         if ( name == null )
@@ -145,7 +147,7 @@ public class Database
      */
     public String getBaseClass()
     {
-        if ( baseClass == null ) 
+        if ( baseClass == null )
         {
             return "BaseObject";
         }
@@ -167,7 +169,7 @@ public class Database
      */
     public String getBasePeer()
     {
-        if ( basePeer == null ) 
+        if ( basePeer == null )
         {
             return "BasePeer";
         }
@@ -237,7 +239,7 @@ public class Database
      * An utility method to add a new table from
      * an xml attribute.
      */
-    public Table addTable(Attributes attrib)
+    public Table addTable(AttributeList attrib)
     {
         Table tbl = new Table();
         tbl.loadFromXML (attrib, this.getDefaultIdMethod());

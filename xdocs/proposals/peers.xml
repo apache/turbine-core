@@ -11,8 +11,7 @@
 
 <section name="Peers">
 
-<p>
-  <ul>
+<ul>
   <li>
     Criteria should not extend Hashtable. This is widely considered to be
     a bad practice. Even if criteria is to maintain hashtable-like 
@@ -28,8 +27,7 @@
     class has been created that will solve much of this inefficiency.
     It should be integrated with Criteria and BasePeer.
   </li>
-  </ul>
-</p>
+</ul>
 
 </section>
 

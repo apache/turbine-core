@@ -1,1 +1,4 @@
-bin
+target
+cactus_client.log
+cactus_server.log
+*~

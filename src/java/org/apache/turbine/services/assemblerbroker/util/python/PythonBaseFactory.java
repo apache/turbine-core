@@ -55,20 +55,27 @@ package org.apache.turbine.services.assemblerbroker.util.python;
  */
 
 // JDK Classes
-import java.io.*;
+import java.io.File;
 
-// Turbine Utility Classes
-import org.apache.turbine.util.*;
-import org.apache.turbine.modules.*;
-import org.apache.turbine.modules.screens.*;
+// Turbine Classes
+import org.apache.turbine.modules.Assembler;
+
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.resources.TurbineResources;
+
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
-import org.apache.turbine.services.assemblerbroker.util.*;
+
+import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
+
+import org.apache.turbine.services.resources.TurbineResources;
+
+import org.apache.turbine.util.Log;
 
 // JPython Classes
+import org.python.core.Py;
+
 import org.python.util.PythonInterpreter;
-import org.python.core.*;
+
+
 
 /**
  * A screen factory that attempts to load a python class in the

@@ -18,5 +18,7 @@
     #set ($host = "")
 #end
 
+#foreach ($databaseName in $databaseNames)
 mysqladmin $user $password $host --force drop $databaseName
 mysqladmin $user $password $host --force create $databaseName
+#end

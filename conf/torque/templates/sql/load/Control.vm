@@ -1,6 +1,5 @@
 #set ( $fname= "sql/load/${targetDatabase}/row.vm" )
-#set ( $outFile = "${project}-data.sql")
 
 #foreach ($r in $data)
-    $generator.parse($fname,$outFile,"row",$r)
+$generator.parse($fname,"","row",$r)
 #end

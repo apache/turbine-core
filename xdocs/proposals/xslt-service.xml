@@ -11,13 +11,13 @@
 
 <section name="XSLT Service">
 
-<p>
+<ul>
   <li>
     support for processing of DOM trees present in memory could be 
     useful (right now both data and stylesheet are read from disk
     files)
   </li>
-</p>
+</ul>
 
 </section>
 

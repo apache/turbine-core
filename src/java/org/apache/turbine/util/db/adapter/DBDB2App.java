@@ -68,6 +68,7 @@ import org.apache.turbine.util.Log;
  * </a>
  *
  * @author <a href="mailto:hakan42@gmx.de">Hakan Tandogan</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
 public class DBDB2App
@@ -125,30 +126,18 @@ public class DBDB2App
     }
 
     /**
-     * Returns the last auto-increment key.  Databases like MySQL
-     * which support this feature will return a result, others will
-     * return null.
-     *
-     * @return The most recently inserted database key.
+     * @see org.apache.turbine.util.db.adapter.DB#getIDMethodType()
      */
-    public String getIdSqlForAutoIncrement(Object obj)
+    public String getIDMethodType()
     {
-        Log.info("DBDB2App.getIdSqlForAutoIncrement(), not implemented yet");
-
-        return null;
+        return NO_ID_METHOD;
     }
 
     /**
-     * Returns the last auto-increment key.  Databases like Oracle
-     * which support this feature will return a result, others will
-     * return null.
-     *
-     * @return The most recently inserted database key.
+     * @see org.apache.turbine.util.db.adapter.DB#getIDMethodSQL(Object obj)
      */
-    public String getSequenceSql(Object obj)
+    public String getIDMethodSQL(Object obj)
     {
-        Log.info("DBDB2App.getSequenceSql(" + obj + "), not implemented yet");
-
         return null;
     }
 

@@ -54,6 +54,8 @@ package org.apache.turbine.util.upload;
  * <http://www.apache.org/>.
  */
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -385,6 +387,7 @@ public class FileItem implements DataSource
             fileName = instanceName + "_upload_" + fileName + ".tmp";
             fileName = path + "/" + fileName;
             item.storeLocation = new File(fileName);
+            item.storeLocation.deleteOnExit();
         }
         else
         {
@@ -407,8 +410,19 @@ public class FileItem implements DataSource
     {
         if (inMemory())
         {
-            FileWriter writer = new FileWriter(file);
-            writer.write(getString());
+            FileOutputStream fout = null;
+            try
+            {
+                fout = new FileOutputStream(file);
+                fout.write(get());
+            }
+            finally
+            {
+                if (fout != null)
+                {
+                    fout.close();
+                }
+            }
         }
         else if (storeLocation != null)
         {
@@ -419,9 +433,40 @@ public class FileItem implements DataSource
              */
             if (storeLocation.renameTo(new File(file)) == false)
             {
-                throw new Exception(
-                    "Cannot write uploaded file to disk!");
-            }                
+                BufferedInputStream in = null;
+                BufferedOutputStream out = null;
+                try
+                {
+                    in = new BufferedInputStream
+                        ( new FileInputStream(storeLocation));
+                    out = new BufferedOutputStream(new FileOutputStream(file));
+                    byte[] bytes = new byte[2048];
+                    int s = 0;
+                    while ( (s = in.read(bytes)) != -1 )
+                    {
+                        out.write(bytes,0,s);
+                    }
+                }
+                finally
+                {
+                    try
+                    {
+                        in.close();
+                    }
+                    catch (Exception e)
+                    {
+                                // ignore
+                    }
+                    try
+                    {
+                        out.close();
+                    }
+                    catch (Exception e)
+                    {
+                                // ignore
+                    }
+                }
+            }
         }
         else
         {

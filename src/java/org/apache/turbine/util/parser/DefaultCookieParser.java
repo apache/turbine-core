@@ -153,13 +153,13 @@ public class DefaultCookieParser
 
         Cookie[] cookies = data.getRequest().getCookies();
 
-        Log.info ("Number of Cookies "+cookies.length);
+        Log.debug ("Number of Cookies "+cookies.length);
 
         for (int i=0; i<cookies.length; i++)
         {
             String name = convert (cookies[i].getName());
             String value = cookies[i].getValue();
-            Log.info ("Adding "+name+"="+value);
+            Log.debug ("Adding "+name+"="+value);
             add (name,value);
         }
 

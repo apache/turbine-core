@@ -25,13 +25,13 @@ package org.apache.turbine.services.pool;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -61,7 +61,7 @@ import java.lang.reflect.Method;
 
 import javax.servlet.ServletConfig;
 
-import org.apache.velocity.runtime.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 
 import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.pool.Recyclable;
@@ -88,7 +88,7 @@ import org.apache.turbine.services.factory.TurbineFactoryService;
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
-public class TurbinePoolService 
+public class TurbinePoolService
     extends TurbineFactoryService
     implements PoolService
 {
@@ -133,7 +133,7 @@ public class TurbinePoolService
             /**
              * Matches the given signature against
              * that of the recycle method of this recycler.
-             * 
+             *
              * @param sign the signature.
              * @return the matching recycle method or null.
              */
@@ -217,7 +217,7 @@ public class TurbinePoolService
         {
             Object instance = pool.poll();
             if (instance != null)
-            {    
+            {
                 if (arrayCtorRecyclable)
                 {
                     ((ArrayCtorRecyclable) instance).recycle(params);
@@ -244,7 +244,7 @@ public class TurbinePoolService
                                             TurbinePoolService.this.getSignature(
                                                 clazz,params,signature));
                                         ArrayList cache = recyclers != null ?
-                                            (ArrayList) recyclers.clone() : 
+                                            (ArrayList) recyclers.clone() :
                                             new ArrayList();
                                         cache.add(
                                             new Recycler(recycle,signature));
@@ -309,11 +309,11 @@ public class TurbinePoolService
         {
             return pool.size();
         }
-        
+
         /**
-         * Returns a cached recycle method 
+         * Returns a cached recycle method
          * corresponding to the given signature.
-         * 
+         *
          * @param signature the signature.
          * @return the recycle method or null.
          */
@@ -468,9 +468,9 @@ public class TurbinePoolService
 
     /**
      * Tests if specified class loaders are supported for a named class.
-     * 
+     *
      * @param className the name of the class.
-     * @return true if class loaders are supported, false otherwise. 
+     * @return true if class loaders are supported, false otherwise.
      * @throws TurbineException if test fails.
      */
     public boolean isLoaderSupported(String className)
@@ -537,8 +537,8 @@ public class TurbinePoolService
                 repository = (HashMap) repository.clone();
                 repository.put(className,pool);
                 poolRepository = repository;
-                
-                if (instance instanceof ArrayCtorRecyclable) 
+
+                if (instance instanceof ArrayCtorRecyclable)
                 {
                     pool.setArrayCtorRecyclable(true);
                 }
@@ -575,8 +575,8 @@ public class TurbinePoolService
                         capacity = poolCapacity;
                     }
                 }
-                catch (Exception x) 
-                { 
+                catch (Exception x)
+                {
                 }
             }
             return capacity;

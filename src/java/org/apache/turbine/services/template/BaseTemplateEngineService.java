@@ -25,13 +25,13 @@ package org.apache.turbine.services.template;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -58,7 +58,9 @@ import java.util.Iterator;
 import java.util.Hashtable;
 
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.velocity.runtime.configuration.Configuration;
+
+import org.apache.commons.configuration.Configuration;
+
 
 /**
  * The base implementation of Turbine {@link
@@ -68,7 +70,7 @@ import org.apache.velocity.runtime.configuration.Configuration;
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @version $Id$
  */
-public abstract class BaseTemplateEngineService extends TurbineBaseService 
+public abstract class BaseTemplateEngineService extends TurbineBaseService
     implements TemplateEngineService
 {
     /**
@@ -99,7 +101,7 @@ public abstract class BaseTemplateEngineService extends TurbineBaseService
     public Hashtable getTemplateEngineServiceConfiguration()
     {
         return configuration;
-    }                
+    }
 
     /**
      * @see org.apache.turbine.services.template.TemplateEngineService#getAssociatedFileExtensions
@@ -123,7 +125,7 @@ public abstract class BaseTemplateEngineService extends TurbineBaseService
     protected void initConfiguration(String defaultExt)
     {
         Configuration config = getConfiguration();
-        
+
         /*
          * Should modify the configuration class to take defaults
          * here, should have to do this.
@@ -138,9 +140,9 @@ public abstract class BaseTemplateEngineService extends TurbineBaseService
             fileExtensionAssociations[0] = config.getString(
                 DEFAULT_TEMPLATE_EXTENSION, defaultExt);
         }
-        
+
         configuration.put(TEMPLATE_EXTENSIONS, fileExtensionAssociations);
-        
+
         /*
          * We need some better error checking here and should probably
          * throw an exception here if these things aren't set

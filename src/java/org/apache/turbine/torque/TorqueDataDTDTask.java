@@ -53,86 +53,16 @@ package org.apache.turbine.torque;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-import java.util.Date;
-
-import org.apache.velocity.context.Context;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.texen.ant.TexenTask;
-
-import org.apache.turbine.torque.engine.database.model.AppData;
-import org.apache.turbine.torque.engine.database.transform.XmlToAppData;
 
 /**
- *  An extended Texen task used for generating data DTD from
- *  an XML schema describing a database structure.
+ * An extended Texen task used for generating data DTD from
+ * an XML schema describing a database structure.
  *
- * @author   <a href="mailto:fedor.karpelevitch@home.com"> Fedor Karpelevitch </a>
+ * @author <a href="mailto:fedor.karpelevitch@home.com"> Fedor Karpelevitch </a>
  * @version  $Id$
+ * @deprecated use turbine-torque
  */
-public class TorqueDataDTDTask extends TexenTask
+public class TorqueDataDTDTask
+    extends TorqueDataModelTask
 {
-    /**
-     *  Application model. In this case a database model.
-     */
-    private AppData app;
-
-    /**
-     *  XML that describes the database model, this is transformed
-     *  into the application model object.
-     */
-    private String xmlFile;
-
-
-    /**
-     *  Get the xml schema describing the application
-     *  model.
-     *
-     * @return  String xml schema file.
-     */
-    public String getXmlFile()
-    {
-        return xmlFile;
-    }
-
-
-    /**
-     *  Set the xml schema describing the application
-     *  model.
-     *
-     * @param  v The new XmlFile value
-     */
-    public void setXmlFile(String v)
-    {
-        xmlFile = v;
-    }
-
-
-    /**
-     *  Set up the initialial context for generating the
-     *  SQL from the XML schema.
-     *
-     * @return  Description of the Returned Value
-     */
-    public Context initControlContext()
-    {
-        /*
-         * Create a new Velocity context.
-         */
-        Context context = new VelocityContext();
-
-        /*
-         * Transform the XML database schema into an
-         * object that represents our model.
-         */
-        XmlToAppData xmlParser = new XmlToAppData();
-        app = xmlParser.parseFile(xmlFile);
-
-        /*
-         * Place our model in the context.
-         */
-        context.put("appData", app);
-
-        return context;
-    }
 }
-

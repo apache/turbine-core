@@ -51,7 +51,7 @@
     all over the net with various licenses that you may or may not agree
     to.
  </p>
- 
+
  <p>
     The point of Turbine is to collect that code into one location and
     make it easy to create re-usable components (such as
@@ -87,7 +87,7 @@
     href="http://jakarta.apache.org/velocity/">Velocity</a>, <a
     href="http://www.webmacro.org/">Webmacro</a>, <a
     href="http://jakarta.apache.org/">Java Server Pages (JSP)</a>, <a
-    href="http://freemarker.org">FreeMarker</a> and <a
+    href="http://freemarker.sourceforge.net">FreeMarker</a> and <a
     href="http://xml.apache.org/cocoon/">Cocoon</a> technologies by
     specially creating Screens that use Services to parse templates.
     Screens can also be created to read files from other websites as
@@ -100,10 +100,10 @@
  <p>
     The reason why Turbine works so well is because it applies object oriented
     principles to the entire process of building a complex secure web application.
-    We try to follow the 
+    We try to follow the
     <a href="http://www.javaworld.com/javaworld/jw-12-1999/jw-12-ssj-jspmvc.html">Model
     2 methodology</a> yet expand on it to encompass "View" techologies other
-    than just JSP as well as more mature methodologies such as 
+    than just JSP as well as more mature methodologies such as
     <a href="./howto/action-event-howto.html">Action
     Event</a> handling. Turbine is consided as Model 2 <strong>+ 1</strong>. :-) Please
     see the <a href="model2+1.html">discussion</a> of Model 2+1 for more information.
@@ -133,8 +133,8 @@
   <p>
     You can find released versions of
     Turbine,
-    the <a href="howto/tdk-howto.html">TDK</a>,
-    and <a href="howto/torque-howto">Torque</a>
+    the <a href="../tdk/index.html">TDK</a>,
+    and <a href="../torque/index.html">Torque</a>
     <a href="http://jakarta.apache.org/builds/jakarta-turbine/release/">here</a>.
   </p>
 

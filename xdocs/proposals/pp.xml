@@ -11,7 +11,7 @@
 
 <section name="Parameter parser and its ilk">
 
-<p>
+<ul>
   <li>
     clean up and orthogonalize APIs (add vs append vs set)
   </li>
@@ -30,7 +30,7 @@
     kind of apprach is used to emulate multiple inheritance in Java. 
     I'd appreciate a comment on this issue from Ilkka.
   </li>
-</p>
+</ul>
 
 </section>
 

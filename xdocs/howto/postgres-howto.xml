@@ -65,24 +65,18 @@ are using the latest released version of Village.
 /home/projects/pgsql/cvsroot/pgsql/src/interfaces/jdbc/org/postgresql/Field.java,v
 retrieving revision 1.1
 diff -r1.1 Field.java
-118c118
+147c147
 <     "int4","oid",
 ---
 >     "int4",
-129c129,130
-<     "abstime","timestamp"
----
->     "abstime","timestamp",
->     "oid"
-141c142
+158a159
+>     "oid",
+172c173
 <     Types.INTEGER,Types.INTEGER,
 ---
 >     Types.INTEGER,
-152c153,154
-<     Types.TIMESTAMP,Types.TIMESTAMP
----
->     Types.TIMESTAMP,Types.TIMESTAMP,
->     Types.VARBINARY
+183a185
+>     Types.VARBINARY,
 ]]></source>
 
 <p>

@@ -54,27 +54,26 @@ package org.apache.turbine.services.logging;
  * <http://www.apache.org/>.
  */
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Vector;
-import javax.servlet.ServletContext;
 import org.apache.log4j.Appender;
-import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Category;
-import org.apache.log4j.WriterAppender;
 import org.apache.log4j.Layout;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.Priority;
+import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.RollingFileAppender;
+import org.apache.log4j.WriterAppender;
 import org.apache.log4j.net.SMTPAppender;
 import org.apache.log4j.net.SocketAppender;
 import org.apache.log4j.net.SyslogAppender;
 import org.apache.turbine.services.logging.jdbc.JDBCAppender;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
+
+import javax.servlet.ServletContext;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Properties;
+import java.util.Vector;
 
 /**
  * Class implements the Logger interface using log4java package
@@ -135,6 +134,11 @@ public class Log4JavaLogger extends BaseLogger
 
         // now do the rest of initialization
         super.init(loggingConfig);
+
+        //if there are log4j properties defined, let them override all else
+        Properties props =
+            loggingConfig.getFacilityProperties(loggingConfig.getName());
+        PropertyConfigurator.configure(props);
     }
 
 
@@ -146,6 +150,13 @@ public class Log4JavaLogger extends BaseLogger
     protected void configureFiles(LoggingConfig loggingConfig)
     {
         Vector files = loggingConfig.getFiles();
+
+        //we may not always have 'files' defined, for example if its
+        //done in the log4j properties
+        if (files == null)
+        {
+            return;
+        }
 
         for (Enumeration filesEnum = files.elements(); filesEnum.hasMoreElements(); )
         {
@@ -250,7 +261,7 @@ public class Log4JavaLogger extends BaseLogger
         String bufferSize = loggingConfig.getEmailBufferSize();
 
         if (smtpHost == null || smtpHost.trim().equals("")
-                || emailFrom == null || smtpHost.trim().equals("")
+                || emailFrom == null || emailFrom.trim().equals("")
                 || emailTo == null || emailTo.trim().equals("")
                 || emailSubject == null || emailSubject.trim().equals("")
                 || bufferSize == null || bufferSize.trim().equals("") )

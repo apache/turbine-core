@@ -25,13 +25,13 @@ package org.apache.turbine.services.velocity;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,6 +55,7 @@ package org.apache.turbine.services.velocity;
  */
 
 import java.io.OutputStream;
+import java.io.Writer;
 
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.velocity.VelocityService;
@@ -81,7 +82,7 @@ import org.apache.velocity.context.Context;
 public abstract class TurbineVelocity
 {
     /**
-     * Utility method for accessing the service 
+     * Utility method for accessing the service
      * implementation
      *
      * @return a VelocityService implementation instance
@@ -125,6 +126,24 @@ public abstract class TurbineVelocity
         throws Exception
     {
         getService().handleRequest(context, template, out);
+    }
+
+    /**
+     * Process the request and fill in the template with the values
+     * you set in the Context.
+     *
+     * @param context A Context.
+     * @param filename A String with the filename of the template.
+     * @param writer A Writer where we will write the process template as
+     * a String.
+     * @exception Exception, a generic exception.
+     */
+    public static void handleRequest(Context context,
+                              String template,
+                              Writer writer)
+        throws Exception
+    {
+        getService().handleRequest(context, template, writer);
     }
 
     /**

@@ -25,13 +25,13 @@ package org.apache.turbine.torque.engine.database.model;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -100,13 +100,14 @@ import java.math.BigDecimal;
  * TIMESTAMP     | java.sql.Timestamp   | java.util.Date
  *
  * -------------------------------------------------------
- * A couple variations have been introduced to cover cases 
+ * A couple variations have been introduced to cover cases
  * that may arise, but are not covered above
  * BOOLEANCHAR   | boolean              | String
  * BOOLEANINT    | boolean              | Integer
  *
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @version $Id$
+ * @deprecated use turbine-torque
  */
 public class TypeMap
 {
@@ -252,9 +253,9 @@ public class TypeMap
             /*
              * Create JDBC -> Java object mappings.
              */
-            
+
             jdbcToJavaObjectMap = new Hashtable();
-            
+
             jdbcToJavaObjectMap.put(CHAR, CHAR_OBJECT_TYPE);
             jdbcToJavaObjectMap.put(VARCHAR, VARCHAR_OBJECT_TYPE);
             jdbcToJavaObjectMap.put(LONGVARCHAR, LONGVARCHAR_OBJECT_TYPE);
@@ -278,13 +279,13 @@ public class TypeMap
             jdbcToJavaObjectMap.put(TIMESTAMP, TIMESTAMP_OBJECT_TYPE);
             jdbcToJavaObjectMap.put(BOOLEANCHAR, BOOLEANCHAR_OBJECT_TYPE);
             jdbcToJavaObjectMap.put(BOOLEANINT, BOOLEANINT_OBJECT_TYPE);
-        
+
             /*
              * Create JDBC -> native Java type mappings.
              */
-            
+
             jdbcToJavaNativeMap = new Hashtable();
-            
+
             jdbcToJavaNativeMap.put(CHAR, CHAR_NATIVE_TYPE);
             jdbcToJavaNativeMap.put(VARCHAR, VARCHAR_NATIVE_TYPE);
             jdbcToJavaNativeMap.put(LONGVARCHAR, LONGVARCHAR_NATIVE_TYPE);
@@ -312,9 +313,9 @@ public class TypeMap
             /*
              * Create JDBC -> Village asX() mappings.
              */
-            
+
             jdbcToVillageMethodMap = new Hashtable();
-            
+
             jdbcToVillageMethodMap.put(CHAR, CHAR_VILLAGE_METHOD);
             jdbcToVillageMethodMap.put(VARCHAR, VARCHAR_VILLAGE_METHOD);
             jdbcToVillageMethodMap.put(LONGVARCHAR, LONGVARCHAR_VILLAGE_METHOD);
@@ -342,9 +343,9 @@ public class TypeMap
             /*
              * Create JDBC -> ParameterParser getX() mappings.
              */
-            
+
             jdbcToPPMethodMap = new Hashtable();
-            
+
             jdbcToPPMethodMap.put(CHAR, CHAR_PP_METHOD);
             jdbcToPPMethodMap.put(VARCHAR, VARCHAR_PP_METHOD);
             jdbcToPPMethodMap.put(LONGVARCHAR, LONGVARCHAR_PP_METHOD);
@@ -370,9 +371,9 @@ public class TypeMap
             /*
              * Create JDBC -> Java object mappings.
              */
-            
+
             torqueTypeToJdbcTypeMap = new Hashtable();
-            
+
             torqueTypeToJdbcTypeMap.put(CHAR, CHAR);
             torqueTypeToJdbcTypeMap.put(VARCHAR, VARCHAR);
             torqueTypeToJdbcTypeMap.put(LONGVARCHAR, LONGVARCHAR);
@@ -396,7 +397,7 @@ public class TypeMap
             torqueTypeToJdbcTypeMap.put(TIMESTAMP, TIMESTAMP);
             torqueTypeToJdbcTypeMap.put(BOOLEANCHAR, CHAR);
             torqueTypeToJdbcTypeMap.put(BOOLEANINT, INTEGER);
-            
+
             /*
              * Create JDBC type code to torque type map.
              */
@@ -434,7 +435,7 @@ public class TypeMap
     public static boolean isInitialized()
     {
         return isInitialized;
-    }        
+    }
 
     /**
      * Return a Java object which corresponds to the
@@ -447,7 +448,7 @@ public class TypeMap
          */
         if (isInitialized == false)
             initialize();
-        
+
         return (String)jdbcToJavaObjectMap.get(jdbcType);
     }
 
@@ -463,7 +464,7 @@ public class TypeMap
          */
         if (isInitialized == false)
             initialize();
-        
+
         return (String) jdbcToJavaNativeMap.get(jdbcType);
     }
 
@@ -479,7 +480,7 @@ public class TypeMap
          */
         if (isInitialized == false)
             initialize();
-        
+
         return (String) jdbcToVillageMethodMap.get(jdbcType);
     }
 
@@ -495,7 +496,7 @@ public class TypeMap
          */
         if (isInitialized == false)
             initialize();
-        
+
         return (String) jdbcToPPMethodMap.get(jdbcType);
     }
 
@@ -509,13 +510,13 @@ public class TypeMap
          */
         if (isInitialized == false)
             initialize();
-        
+
         return (String) torqueTypeToJdbcTypeMap.get(type);
     }
-    
+
     /**
      * Returns Torque type constant corresponding to JDBC type code.
-     * Used but Torque JDBC task. 
+     * Used but Torque JDBC task.
      */
     public static String getTorqueType(Integer sqlType)
     {
@@ -540,7 +541,7 @@ public class TypeMap
     }
 
     /**
-     * Returns true if the type is boolean in the 
+     * Returns true if the type is boolean in the
      * java object and a String "Y" or "N" in the db.
      *
      * @param type The type to check.

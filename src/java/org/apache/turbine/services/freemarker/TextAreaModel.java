@@ -54,14 +54,17 @@ package org.apache.turbine.services.freemarker;
  * <http://www.apache.org/>.
  */
 
+// Turbine Utility Classes
+import freemarker.template.SimpleScalar;
+import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateModel;
+import freemarker.template.TemplateModelException;
+
+// Java stuff.
 import java.util.List;
 
-// Turbine Utility Classes
-import org.apache.turbine.util.*;
-import org.apache.ecs.html.*;
-
 // FreeMarker Classes
-import freemarker.template.*;
+import org.apache.ecs.html.TextArea;
 
 /**
  * Creates a TEXTAREA html tag.  The rows, columns, and wrap attribute

@@ -14,27 +14,22 @@
 
 <p>
 This document serves to answer a few common questions about integration
-of Turbine with J2EE technologies. The short answer is that it is all 
-Java code and you can choose to use Turbine's solutions to some things
-or you can choose to use J2EE solutions to some things. Turbine is 
-increasingly flexible about what parts you choose to use and what parts
-you don't. The reason is because there has been quite a lot of de coupling
-of the various Turbine components as a result of years of development
-and use by people all over the world in various different ways. Wow, 
-isn't that cool?
+of Turbine with J2EE technologies including Servlets, EJB, Swing, JMS,
+Transactions, JNDI, XML, JDBC, JSP, and Security. The short answer is
+that it is all Java code and you can choose to use Turbine's solutions
+to some things or you can choose to use J2EE solutions to some things.
+Turbine is increasingly flexible about what parts you choose to use and
+what parts you don't. The reason is because there has been quite a lot
+of de coupling of the various Turbine components as a result of years of
+development and use by people all over the world in various different
+ways. Wow, isn't that cool?
 </p>
 
-<subsection name="What is J2EE?">
-
-<p>
-Many Java technology extensions, including - Servlets, EJB, Swing, JMS,
-Transactions, JNDI, XML, JDBC, JSP, Security
-</p>
-
-</subsection>
-
-<subsection name="How does Turbine work with ... Servlets?">
-
+<subsection name="How does Turbine work with ... ?">
+<table>
+  <tr>
+    <td>Servlets</td>
+    <td>
 <p>
 It is a servlet. It is also a set of re-usable components assembled into
 a framework. You can choose to work with just the Servlet, you can
@@ -45,30 +40,30 @@ Cron Schedulers, User Management, Services, etc.). That is what we have
 done as well, however we have done it in such a way that it is very
 pluggable. Mix and match and use what you want to use. Ignore the rest.
 </p>
-
-</subsection>
-
-<subsection name="How does Turbine work with ... EJB?">
-
+    </td>
+  </tr>
+  <tr>
+    <td>EJB</td>
+    <td>
 <p>
 Turbine provides a framework for developing web applications -
 specifically the front end. EJB provides a framework for developing
 n-tier applications - specifically the back ends - thus Turbine and EJB
 complement each other well at that level.
 </p>
-
-</subsection>
-
-<subsection name="How does Turbine work with ... Swing?">
-
+    </td>
+  </tr>
+  <tr>
+    <td>Swing</td>
+    <td>
 <p>
 Turbine is the for the web - Swing is not - not applicable.
 </p>
-
-</subsection>
-
-<subsection name="How does Turbine work with ... JMS?">
-
+    </td>
+  </tr>
+  <tr>
+    <td>JMS</td>
+    <td>
 <p>
 Turbine provides facilities for plugging in other Services - and thus
 JMS could be plugged in as a service to that. Even if it isn't plugged
@@ -76,41 +71,41 @@ in through Turbine's Services facilities, you can still put your JMS
 related methods into your code. Turbine doesn't prevent you from calling
 other Java code.
 </p>
-
-</subsection>
-
-<subsection name="How does Turbine work with ... Transactions?">
-
+    </td>
+  </tr>
+  <tr>
+    <td>Transactions</td>
+    <td>
 <p>
 There is nothing in Turbine explicitly using the JTS/JTA - but can use
 EJB and hence these technologies. That belongs in EJB's anyways. :-)
 </p>
-
-</subsection>
-
-<subsection name="How does Turbine work with ... JNDI?">
-
+    </td>
+  </tr>
+  <tr>
+    <td>JNDI</td>
+    <td>
 <p>
 Turbine provides access to JNDI via a Service facility. You can always
 choose to implement your own facility as well (ie: if you have an
 existing code base that you would like to use, Turbine does not stop you
 from using it).
 </p>
-
-</subsection>
-
-<subsection name="How does Turbine work with ... XML?">
-
+    </td>
+  </tr>
+  <tr>
+    <td>XML</td>
+    <td>
 <p>
 Turbine provides support for using and working with XML. Again, nothing
 preventing you from using XML within Turbine or even sending XML out 
 of Turbine.
 </p>
-
-</subsection>
-
-<subsection name="How does Turbine work with ... JDBC?">
-
+    </td>
+  </tr>
+  <tr>
+    <td>JDBC</td>
+    <td>
 <p>
 Turbine provides good support for working with JDBC through the <a
 href="http://share.whichever.com/village/">Village API</a>, the <a
@@ -121,11 +116,11 @@ point we may choose to implement that. Note, again, Turbine does not
 prevent you from using your own Connection pooling mechanism, we simply
 created one because at the time, we needed one and ours works just fine.
 </p>
-
-</subsection>
-
-<subsection name="How does Turbine work with ... JSP?">
-
+    </td>
+  </tr>
+  <tr>
+    <td>JSP</td>
+    <td>
 <p>
 Turbine provides excellent support for using JSP in its model of working
 - which is based on the Model 2 style with enhancements, such as solving
@@ -133,11 +128,11 @@ the Action portion of the Model. However, we <a
 href="http://jakarta.apache.org/velocity/ymtd/ymtd.html">strongly
 suggest</a> that you do not use JSP and seek out other alternatives.
 </p>
-
-</subsection>
-
-<subsection name="How does Turbine work with ... Security?">
-
+    </td>
+  </tr>
+  <tr>
+    <td>Security</td>
+    <td>
 <p>
 Turbine was created long before J2EE was created. Therefore, we needed
 to implement our own Security Model. This model is based on Users,
@@ -147,35 +142,31 @@ control people can come up with. It follows our extensible design
 pattern and you can use Turbine's code as the basis for any additional
 security your application requires.
 </p>
-
-</subsection>
-
-<subsection name="How does Turbine work with ... container managed security?">
-
+    </td>
+  </tr>
+  <tr>
+    <td>Container Managed Security</td>
+    <td>
 <p>
 You can use container managed security if you wish, and Turbine provides you with
 mechanism for application manged security, in case you need them.
 </p>
-
 <p>
 The main problem with container managed security is that it cannot be managed
 from the inside of the application. Whenever you want to add/remove users to
 your application (or suite of them) or want to modify user's roles, you need
 to use whatever tool your application server provides for that.
 </p>
-
 <p>
 Now, this could work just fine for closed-public applications and intranets,
 but would be really unacceptable on open-public sites, where the users need
 the ability to register and receive 'accounts' without human interaction.
 </p>
-
 <p>
 Currently Turbine supports the latter model - application managed security.
 This is because if it didn't have it, many people would have to write code
 to provide it. That's why we created SecurityService in a cooperative effort.
 </p>
-
 <p>
 On the other hand, you don't need to write any code to use declarative
 container managed security. You can restrict access to the Turbine
@@ -186,7 +177,9 @@ and SecureActions that contained code that calls the <code>HttpServletRequest
 getUserPrincipal</code> and <code>isUserInRole</code> methods.
 above.
 </p>
-
+    </td>
+  </tr>
+</table>
 </subsection>
 
 </section>

@@ -43,7 +43,7 @@ public abstract class $basePrefix${table.JavaName}Peer
     public static final String TABLE_NAME = mapBuilder.getTable();
 
     /** 
-     * @returns the map builder for this peer 
+     * @return the map builder for this peer
      */
     public static MapBuilder getMapBuilder()
     {
@@ -1030,6 +1030,10 @@ public abstract class $basePrefix${table.JavaName}Peer
    /**
     * selects a collection of $className objects pre-filled with their
     * $joinClassName objects.
+    *
+    * This method is protected by default in order to keep the public
+    * api reasonable.  You can provide public methods for those you
+    * actually need in ${table.JavaName}Peer.
     */
     protected static Vector doSelectJoin${joinColumnId}(Criteria c)
         throws Exception
@@ -1178,6 +1182,10 @@ public abstract class $basePrefix${table.JavaName}Peer
    /**
     * selects a collection of $className objects pre-filled with 
     * all related objects.
+    *
+    * This method is protected by default in order to keep the public
+    * api reasonable.  You can provide public methods for those you
+    * actually need in ${table.JavaName}Peer.
     */
     protected static Vector doSelectJoinAllExcept${excludeString}(Criteria c) 
         throws Exception

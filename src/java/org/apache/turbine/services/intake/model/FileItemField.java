@@ -78,6 +78,15 @@ public class FileItemField extends Field
     }
 
     /**
+     * Sets the default value for an FileItemField
+     */
+    
+    protected void setDefaultValue(String prop)
+    {
+        defaultValue = prop;
+    }
+
+    /**
      * A suitable validator.
      *
      * @return "FileValidator"
@@ -118,7 +127,7 @@ public class FileItemField extends Field
      * Compares request data with constraints and sets the valid flag.
      */
     protected boolean validate(ParameterParser pp)
-    //    throws TurbineException
+        //    throws TurbineException
     {
         if ( isMultiValued  )
         {

@@ -72,7 +72,7 @@ import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.template.TemplateLink;
 import org.apache.turbine.util.template.TemplatePageAttributes;
 import org.apache.turbine.util.webmacro.WebMacroFormatter;
-import org.apache.velocity.runtime.configuration.Configuration;
+import org.apache.commons.configuration.Configuration;
 import org.webmacro.Broker;
 import org.webmacro.Context;
 import org.webmacro.FastWriter;

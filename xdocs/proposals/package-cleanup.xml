@@ -11,7 +11,7 @@
 
 <section name="Renaming and reordering">
 
-<p>
+<ul>
   <li>
     2.2 will be a good moment to rename, and move classes around.
   </li>
@@ -32,8 +32,7 @@
     through the generated Peers, so there should not be much bad effect
     on users and it will lead to much better public api in Criteria.
   </li>
-
-</p>
+</ul>
 </section>
 
 </body>

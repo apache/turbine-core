@@ -119,7 +119,8 @@ public class StringKey extends SimpleKey
 
     /**
      * keyObj is equal to this StringKey if keyObj is a StringKey or String 
-     * that contains the same information this key contains. 
+     * that contains the same information this key contains.  Two ObjectKeys
+     * that both contain null values are not considered equal. 
      */
     public boolean equals(Object keyObj)
     {

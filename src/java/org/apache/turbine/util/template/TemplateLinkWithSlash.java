@@ -54,9 +54,6 @@ package org.apache.turbine.util.template;
  * <http://www.apache.org/>.
  */
 
-//import javax.servlet.http.HttpServletResponse;
-
-import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
 
 /**

@@ -25,13 +25,13 @@ package org.apache.turbine.util.db.map;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -65,6 +65,7 @@ import org.apache.turbine.util.db.IdGenerator;
  * DatabaseMap is used to model a database.
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
 public class DatabaseMap
@@ -83,6 +84,8 @@ public class DatabaseMap
 
     /** The IDBroker that goes with the idTable. */
     private IDBroker idBroker = null;
+
+    /** The IdGenerators, keyed by type of idMethod. */
     private HashMap idGenerators;
 
     /**
@@ -91,8 +94,7 @@ public class DatabaseMap
      * @param name Name of the database.
      * @param numberOfTables Number of tables in the database.
      */
-    public DatabaseMap( String name,
-                        int numberOfTables )
+    public DatabaseMap(String name, int numberOfTables)
     {
         this.name = name;
         tables = new Hashtable( (int)(1.25*numberOfTables) + 1 );
@@ -242,7 +244,7 @@ public class DatabaseMap
         this.idTable = idTable;
         addTable(idTable);
         idBroker = new IDBroker(idTable);
-        addIdGenerator(TableMap.IDBROKERTABLE, idBroker);
+        addIdGenerator(TableMap.ID_BROKER, idBroker);
     }
 
     /**
@@ -268,8 +270,8 @@ public class DatabaseMap
     }
 
     /**
-     * Get a type of id generator. Example valid values are:
-     * TableMap.IDBROKERTABLE, TableMap.AUTOINCREMENT, TableMap.SEQUENCE
+     * Get a type of id generator.  Valid values are listed in the
+     * {@see IDMethod} interface.
      *
      * @param type a <code>String</code> value
      * @return an <code>IdGenerator</code> value

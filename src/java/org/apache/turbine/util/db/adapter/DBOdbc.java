@@ -64,6 +64,7 @@ import org.apache.turbine.util.Log;
  * Platforms.
  *
  * @author <a href="mailto:criley@ekmail.com">Cameron Riley</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
 public class DBOdbc
@@ -109,33 +110,18 @@ public class DBOdbc
     }
 
     /**
-     * Returns the last auto-increment key.  Databases like MySQL
-     * which support this feature will return a result, others will
-     * return null.
-     *
-     * Access has no equivalent db level function to return the key of
-     * the last row inserted.
-     *
-     * @return The most recently inserted database key.
+     * @see org.apache.turbine.util.db.adapter.DB#getIDMethodType()
      */
-    public String getIdSqlForAutoIncrement(Object obj)
+    public String getIDMethodType()
     {
-        Log.info("DBOdbc.getIdSqlForAutoIncrement(), not implemented");
-        return null;
+        return NO_ID_METHOD;
     }
 
     /**
-     * Returns the last auto-increment key.  Databases like Oracle
-     * which support this feature will return a result, others will
-     * return null.
-     *
-     * Access does not implement this.
-     *
-     * @return The most recently inserted database key.
+     * @see org.apache.turbine.util.db.adapter.DB#getIDMethodSQL(Object obj)
      */
-    public String getSequenceSql(Object obj)
+    public String getIDMethodSQL(Object obj)
     {
-        Log.info("DBOdbc.getSequenceSql(" + obj + "), not implemented");
         return null;
     }
 

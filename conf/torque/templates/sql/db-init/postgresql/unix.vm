@@ -1,4 +1,6 @@
 #!/bin/sh
 
+#foreach ($databaseName in $databaseNames)
 dropdb $databaseName
 createdb $databaseName
+#end

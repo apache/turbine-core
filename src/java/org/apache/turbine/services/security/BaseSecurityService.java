@@ -200,7 +200,7 @@ public abstract class BaseSecurityService
         catch(Exception e)
         {
             throw new InitializationException(
-                "Failed create a Class object for User implementation", e);
+                "BaseSecurityService.init: Failed create a Class object for User implementation", e);
         }
 
         try
@@ -211,7 +211,8 @@ public abstract class BaseSecurityService
         }
         catch(Exception e)
         {
-            throw new InitializationException("BaseSecurityService.init: Failed to instantiate UserManager" ,e);
+            throw new InitializationException(
+                "BaseSecurityService.init: Failed to instantiate UserManager" ,e);
         }
 
     }

@@ -58,35 +58,34 @@
 </section>
 
 <section name="Requirements">
-  <li>
+  <p>
     Services would have to be functional from JAR files. For this to work
     the following changes would have to be made:
-    <p/>
-      <ul>
-      <li>
-        The Services framework would have to be altered to load services
-        packaged in the form of JAR files.
-      </li>
-      
-      <li>
-        Dependent services would have to be listed in the manifest so that the 
-        the initialization of a service could be deferred until all
-        prerequisites of the service have been initialized.
-      </li>
-      
-      <li>
-        The service package in a JAR should state all of its configuration
-        options as it may be necessary to have this configuration information
-        extracted from the JAR and added to TR.props or whatever future
-        configuration mechanisms we devise. It might be nice to have an
-        option in Turbine where there is no TR.props to begin with but
-        starting Turbine with a certain option would produce a configuration
-        that reflected the use of a set of services. Or Turbine would start,
-        but would require some configuration from via a little web application
-        before Turbine would accept connections from the outside world.
-      </li>
-      </ul>
-  </li>
+  </p>
+  <ul>
+    <li>
+      The Services framework would have to be altered to load services
+      packaged in the form of JAR files.
+    </li>
+
+    <li>
+      Dependent services would have to be listed in the manifest so that the 
+      the initialization of a service could be deferred until all
+      prerequisites of the service have been initialized.
+    </li>
+
+    <li>
+      The service package in a JAR should state all of its configuration
+      options as it may be necessary to have this configuration information
+      extracted from the JAR and added to TR.props or whatever future
+      configuration mechanisms we devise. It might be nice to have an
+      option in Turbine where there is no TR.props to begin with but
+      starting Turbine with a certain option would produce a configuration
+      that reflected the use of a set of services. Or Turbine would start,
+      but would require some configuration from via a little web application
+      before Turbine would accept connections from the outside world.
+    </li>
+  </ul>
 </section>
 
 <section name="Scope">

@@ -25,13 +25,13 @@ package org.apache.turbine.services;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -61,8 +61,9 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.apache.turbine.util.StringUtils;
+import org.apache.commons.configuration.BaseConfiguration;
+import org.apache.commons.configuration.Configuration;
 
-import org.apache.velocity.runtime.configuration.Configuration;
 
 /**
  * A generic implementation of a <code>ServiceBroker</code>.
@@ -91,7 +92,7 @@ public abstract class BaseServiceBroker
 {
     /** Mapping of Service names to class names. */
     //protected Hashtable mapping = new Hashtable();
-    protected Configuration mapping = new Configuration();
+    protected Configuration mapping = (Configuration) new BaseConfiguration();
 
     /** A repository of Service instances. */
     protected Hashtable services = new Hashtable();
@@ -127,15 +128,14 @@ public abstract class BaseServiceBroker
      * @exception InitializationException Initilaization of this
      * service was not successful.
      */
-    public void initService( String name,
-                             Object data )
+    public void initService( String name, Object data )
         throws InitializationException
     {
-        String className = (String) mapping.get(name);
+        String className = mapping.getString(name);
         if (StringUtils.isEmpty(className))
         {
             throw new InitializationException(
-                "ServiceBroker: initialization of unknown service " + 
+                "ServiceBroker: initialization of unknown service " +
                 name + " requested.");
         }
         initClass(className, data);
@@ -163,7 +163,7 @@ public abstract class BaseServiceBroker
     }
 
     /**
-     * Performs early initiailzation of all services. You can decide 
+     * Performs early initiailzation of all services. You can decide
      * to handle failed initizalizations if you wish, but then
      * after one service fails, the other will not have the chance
      * to initialize.
@@ -174,11 +174,11 @@ public abstract class BaseServiceBroker
     public void initServices( Object data, boolean report )
         throws InstantiationException, InitializationException
     {
-        notice("Initializing all services using: " + 
+        notice("Initializing all services using: " +
                 data.getClass().getName());
         Iterator names = mapping.getKeys();
-        // throw exceptions 
-        if(report) 
+        // throw exceptions
+        if(report)
         {
             while(names.hasNext())
             {
@@ -221,7 +221,7 @@ public abstract class BaseServiceBroker
         // Make sure the service has it's name and broker
         // reference set before initialization.
         getServiceInstance(name);
-        
+
         // Perform early initialization.
         initClass(mapping.getString(name), data);
 
@@ -238,7 +238,7 @@ public abstract class BaseServiceBroker
      */
     public void shutdownService( String name )
     {
-        String className = (String)mapping.get(name);
+        String className = mapping.getString(name);
         if (className != null)
         {
             shutdownClass(className);
@@ -246,33 +246,33 @@ public abstract class BaseServiceBroker
     }
 
     /**
-     * Shuts down all Turbine services, releasing allocated resources and 
+     * Shuts down all Turbine services, releasing allocated resources and
      * returning them to their initial (uninitailized) state.
      */
     public void shutdownServices( )
     {
         notice("Shutting down all services!");
-        
+
         Iterator serviceNames = mapping.getKeys();
         String serviceName = null;
-        
+
         /*
          * Now we want to reverse the order of
-         * this list. This functionality should be added to 
+         * this list. This functionality should be added to
          * the ExtendedProperties in the commons but
          * this will fix the problem for now.
          */
-        
+
         ArrayList reverseServicesList = new ArrayList();
-        
+
         while (serviceNames.hasNext())
         {
             serviceName = (String)serviceNames.next();
             reverseServicesList.add(0, serviceName);
         }
-        
+
         serviceNames = reverseServicesList.iterator();
-        
+
         while (serviceNames.hasNext())
         {
             serviceName = (String)serviceNames.next();
@@ -321,7 +321,7 @@ public abstract class BaseServiceBroker
         }
         catch( InitializationException e )
         {
-            throw new InstantiationException("Service " + name + 
+            throw new InstantiationException("Service " + name +
                 " failed to initialize", e);
         }
     }
@@ -350,7 +350,7 @@ public abstract class BaseServiceBroker
 
         if(service == null)
         {
-            String className = (String)mapping.get(name);
+            String className = mapping.getString(name);
             if(className == null)
             {
                 throw new InstantiationException(
@@ -387,10 +387,10 @@ public abstract class BaseServiceBroker
      * @param name The name of the service.
      * @return Properties of requested Service.
      */
-     public Properties getProperties( String name )
-     {
+    public Properties getProperties( String name )
+    {
         return new Properties();
-     }
+    }
 
     /**
      * Returns the Configuration of a specific service.
@@ -400,8 +400,8 @@ public abstract class BaseServiceBroker
      * @param name The name of the service.
      * @return Properties of requested Service.
      */
-     public Configuration getConfiguration( String name )
-     {
-        return new Configuration();
-     }
+    public Configuration getConfiguration( String name )
+    {
+        return (Configuration) new BaseConfiguration();
+    }
 }

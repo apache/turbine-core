@@ -1,4 +1,4 @@
-package org.apache.turbine.om.security.peer;   
+package org.apache.turbine.om.security.peer;
 
 /* ====================================================================
  * The Apache Software License, Version 1.1
@@ -78,4 +78,4 @@ public interface UserPeer
      * @return A String with the full name of the column.            
      */          
     public String getFullColumnName(String name);
-}  
+}

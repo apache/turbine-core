@@ -11,7 +11,7 @@
 
 <section name="Reusable Components">
 
-<p>
+<ul>
   <li>
     facilities for presenation of tabular data, with the ability
     to do paging, filtering and sorting
@@ -21,7 +21,7 @@
     date selection component (skinnable calendar with year/month/week 
     views in a popup window, includes some JS)
   </li>
-</p>
+</ul>
 
 </section>
 

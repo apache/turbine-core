@@ -70,6 +70,7 @@ import com.workingdogs.village.Value;
  * Connection.
  *
  * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
+ * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @version $Id$
  */
 public class AutoIncrementIdGenerator
@@ -172,7 +173,7 @@ public class AutoIncrementIdGenerator
      *
      * @return a <code>boolean</code> value
      */
-    public boolean isConnectionRequired()
+    public final boolean isConnectionRequired()
     {
         return true;
     }
@@ -190,19 +191,22 @@ public class AutoIncrementIdGenerator
                                       Object keyInfo)
         throws Exception
     {
-        String IDSql = dbAdapter.getIdSqlForAutoIncrement(keyInfo);
+        String idSQL = dbAdapter.getIDMethodSQL(keyInfo);
         Value id = null;
         QueryDataSet qds = null;
         try
         {
-            qds = new QueryDataSet(connection, IDSql);
+            qds = new QueryDataSet(connection, idSQL);
             qds.fetchRecords(1);
             Record rec = qds.getRecord(0);
             id = rec.getValue(1);
         }
         finally
         {
-            if (qds != null) qds.close();
+            if (qds != null)
+            {
+                qds.close();
+            }
         }
         return id;
     }
