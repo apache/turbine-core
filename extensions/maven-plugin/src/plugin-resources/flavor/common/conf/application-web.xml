@@ -49,6 +49,29 @@
     <servlet-name>@TURBINE_APP_NAME@</servlet-name>
     <url-pattern>/app/*</url-pattern>
   </servlet-mapping>
+
+<!-- ======================================================================== -->
+<!--                                                                          -->
+<!-- Make sure that templates, resources and logs are not available through   -->
+<!-- the servlet container. Remove security constraints or add an authen-     -->
+<!-- tication role if you need access to these paths.                         -->
+<!--                                                                          -->
+<!-- ======================================================================== -->
+
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>templates</web-resource-name>
+      <url-pattern>/templates/*</url-pattern>
+    </web-resource-collection>
+    <web-resource-collection>
+      <web-resource-name>logs</web-resource-name>
+      <url-pattern>/logs/*</url-pattern>
+    </web-resource-collection>
+    <web-resource-collection>
+      <web-resource-name>resources</web-resource-name>
+      <url-pattern>/resources/*</url-pattern>
+    </web-resource-collection>
+  </security-constraint>
 </web-app>
 
 
