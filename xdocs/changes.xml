@@ -86,7 +86,7 @@ Changes between Turbine 2.2 and 2.3-dev.
       applicable to all Validator's and NumbeValidator's respectively. Unnecessary use
       was being made of (Old) NumberValidator which used BigDecimals, cleaned this up
       implementing concrete classes for all Number Types. Simplified definition of 
-      (number & required) rules in Intake.xml.  	
+      (number &amp; required) rules in Intake.xml.  	
   	</li>
     <li>
       The LoginUser action no longer checks to see if the user object is already
