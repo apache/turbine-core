@@ -134,16 +134,6 @@ public class TurbineMapBuilder implements MapBuilder
     }
 
     /**
-     * Get the Jobentry table.
-     *
-     * @return A String.
-     */
-    public String getTableJobentry()
-    {
-        return "TURBINE_SCHEDULED_JOB";
-    }
-
-    /**
      * Internal Unique key to the visitor table.  Override this if
      * using your custom table.
      *
@@ -609,193 +599,6 @@ public class TurbineMapBuilder implements MapBuilder
     }
 
     /**
-     * Column used for the id of Jobentry.  Override this if using
-     * your custom table.
-     *
-     * @return A String.
-     */
-    public String getJobId()
-    {
-        return "JOB_ID";
-    }
-
-    /**
-     * Fully qualified column name for Jobentry id.  Shouldn't
-     * need to override this as it uses the above methods.
-     *
-     * @return A String.
-     */
-    public String getJobentry_JobId()
-    {
-        return getTableJobentry() + '.' + getJobId();
-    }
-
-    /**
-     * Column used for the second when the job should be run.
-     * Override this if using your custom table.
-     *
-     * @return A String.
-     */
-     public String getSecond()
-     {
-        return "SECOND";
-     }
-
-    /**
-     * Fully qualified column name for second column.  Shouldn't
-     * need to override this as it uses the above methods.
-     *
-     * @return A String.
-     */
-    public String getJobentry_Second()
-    {
-        return getTableJobentry() + '.' + getSecond();
-    }
-
-    /**
-     * Column used for the minute when the job should be run.
-     * Override this if using your custom table.
-     *
-     * @return A String.
-     */
-     public String getMinute()
-     {
-        return "MINUTE";
-     }
-
-    /**
-     * Fully qualified column name for minute column.  Shouldn't
-     * need to override this as it uses the above methods.
-     *
-     * @return A String.
-     */
-    public String getJobentry_Minute()
-    {
-        return getTableJobentry() + '.' + getMinute();
-    }
-
-    /**
-     * Column used for the hour when the job should be run.
-     * Override this if using your custom table.
-     *
-     * @return A String.
-     */
-     public String getHour()
-     {
-        return "HOUR";
-     }
-
-    /**
-     * Fully qualified column name for hour column.  Shouldn't
-     * need to override this as it uses the above methods.
-     *
-     * @return A String.
-     */
-    public String getJobentry_Hour()
-    {
-        return getTableJobentry() + '.' + getHour();
-    }
-
-    /**
-     * Column used for the weekday when the job should be run.
-     * Override this if using your custom table.
-     *
-     * @return A String.
-     */
-     public String getWeekday()
-     {
-        return "WEEK_DAY";
-     }
-
-    /**
-     * Fully qualified column name for weekday column.  Shouldn't
-     * need to override this as it uses the above methods.
-     *
-     * @return A String.
-     */
-    public String getJobentry_Weekday()
-    {
-        return getTableJobentry() + '.' + getWeekday();
-    }
-
-    /**
-     * Column used for the day of month when the job should be run.
-     * Override this if using your custom table.
-     *
-     * @return A String.
-     */
-     public String getDayOfMonth()
-     {
-        return "DAY_OF_MONTH";
-     }
-
-    /**
-     * Fully qualified column name for day of month column.  Shouldn't
-     * need to override this as it uses the above methods.
-     *
-     * @return A String.
-     */
-    public String getJobentry_DayOfMonth()
-    {
-        return getTableJobentry() + '.' + getDayOfMonth();
-    }
-
-    /**
-     * Column used for the name of the class that should be run.
-     * Override this if using your custom table.
-     *
-     * @return A String.
-     */
-     public String getTask()
-     {
-        return "TASK";
-     }
-
-    /**
-     * Fully qualified column name for task column.  Shouldn't
-     * need to override this as it uses the above methods.
-     *
-     * @return A String.
-     */
-    public String getJobentry_Task()
-    {
-        return getTableJobentry() + '.' + getTask();
-    }
-
-    /**
-     * Fully qualified column name for email column.  Shouldn't
-     * need to override this as it uses the above methods.
-     *
-     * @return A String.
-     */
-    public String getJobentry_Email()
-    {
-        return getTableJobentry() + '.' + getEmail();
-    }
-
-    /**
-     * Column used to store the job schedule property.
-     * Override this if using your custom table.
-     *
-     * @return A String.
-     */
-    public String getProperty()
-    {
-        return "PROPERTY";
-    }
-
-    /**
-     * Fully qualified column name for property column.  Shouldn't
-     * need to override this as it uses the above methods.
-     *
-     * @return A String.
-     */
-    public String getJobentry_Property()
-    {
-        return getTableJobentry() + '.' + getProperty();
-    }
-
-    /**
      * GROUP_SEQUENCE.
      *
      * @return A String.
@@ -864,7 +667,7 @@ public class TurbineMapBuilder implements MapBuilder
      * to read a .xml file representation of the database to build
      * this.
      *
-     * @exception Exception, a generic exception.
+     * @exception Exception a generic exception.
      */
     public void doBuild()
         throws Exception
@@ -887,7 +690,6 @@ public class TurbineMapBuilder implements MapBuilder
         dbMap.addTable(getTablePermission());
         dbMap.addTable(getTableUserGroupRole());
         dbMap.addTable(getTableRolePermission());
-        dbMap.addTable(getTableJobentry());
 
         // Add User columns.
         tMap = dbMap.getTable(getTableUser());
@@ -954,19 +756,5 @@ public class TurbineMapBuilder implements MapBuilder
                                   integer,
                                   getTableRole(),
                                   getRoleId());
-
-         // Add Jobentry columns.
-        tMap = dbMap.getTable(getTableJobentry());
-        tMap.setPrimaryKeyMethod(TableMap.ID_BROKER);
-        tMap.setPrimaryKeyMethodInfo(tMap.getName());
-        tMap.addPrimaryKey(getJobId(), integer);
-        tMap.addColumn(getSecond(), integer);
-        tMap.addColumn(getMinute(), integer);
-        tMap.addColumn(getHour(), integer);
-        tMap.addColumn(getWeekday(), integer);
-        tMap.addColumn(getDayOfMonth(), integer);
-        tMap.addColumn(getTask(), string);
-        tMap.addColumn(getEmail(), string);
-        tMap.addColumn(getProperty(), new Hashtable(89));
     }
 }
