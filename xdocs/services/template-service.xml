@@ -20,7 +20,7 @@
 
 <source><![CDATA[
 # -------------------------------------------------------------------
-# 
+#
 #  S E R V I C E S
 #
 # -------------------------------------------------------------------
@@ -35,7 +35,7 @@ services.TemplateService.classname=org.apache.turbine.services.template.TurbineT
 .
 .
 # -------------------------------------------------------------------
-# 
+#
 #  T E M P L A T E  S E R V I C E
 #
 # -------------------------------------------------------------------
@@ -51,13 +51,14 @@ services.TemplateService.screen.cache.size=50
 #
 # These are the mapper classes responsible for the lookup of Page, Screen, Layout and Navigation classes according
 # to the supplied template Name. They also map template names on the Layout and Screen file names to be used.
-# 
-services.TemplateService.mapper.page.class            = org.apache.turbine.services.template.mapper.TemplateDirectMapper
-services.TemplateService.mapper.screen.class          = org.apache.turbine.services.template.mapper.TemplateClassMapper
-services.TemplateService.mapper.layout.class          = org.apache.turbine.services.template.mapper.TemplateClassMapper
-services.TemplateService.mapper.navigation.class      = org.apache.turbine.services.template.mapper.TemplateClassMapper
-services.TemplateService.mapper.layout.template.class = org.apache.turbine.services.template.mapper.TemplateLayoutMapper
-services.TemplateService.mapper.screen.template.class = org.apache.turbine.services.template.mapper.TemplateScreenMapper  
+#
+services.TemplateService.mapper.page.class                = org.apache.turbine.services.template.mapper.DirectMapper
+services.TemplateService.mapper.screen.class              = org.apache.turbine.services.template.mapper.ClassMapper
+services.TemplateService.mapper.layout.class              = org.apache.turbine.services.template.mapper.ClassMapper
+services.TemplateService.mapper.navigation.class          = org.apache.turbine.services.template.mapper.ClassMapper
+services.TemplateService.mapper.layout.template.class     = org.apache.turbine.services.template.mapper.LayoutTemplateMapper
+services.TemplateService.mapper.screen.template.class     = org.apache.turbine.services.template.mapper.ScreenTemplateMapper
+services.TemplateService.mapper.navigation.template.class = org.apache.turbine.services.template.mapper.DirectTemplateMapper
 
 ]]></source>
 
@@ -74,7 +75,7 @@ the <a href="services/velocity-service.html">VelocityService</a> as
 your preferred view service. So if you read "Velocity" in the
 following paragraphs, this means "default configured view
 class". Currently, Turbine includes two supported view services,
-<a href="services/velocity-service.html">Velocity</a> and 
+<a href="services/velocity-service.html">Velocity</a> and
 <a href="services/jsp-service.html">Java Server Pages (JSP)</a>.
 </p>
 
@@ -88,7 +89,7 @@ class". Currently, Turbine includes two supported view services,
 
 <ul>
   <li>1) Many examples and docs from older Turbine code show template
-         pathes with a slashes.<br/> 
+         pathes with a slashes.<br/>
          Repeat after me: <b>TEMPLATE NAMES NEVER CONTAIN SLASHES!</b><br/>
          Template names are separated by "," (the colon). </li>
   <li>2) Many examples and docs from older Turbine code show templates
@@ -119,7 +120,7 @@ class". Currently, Turbine includes two supported view services,
 
 <p>
   And if you have the following module packages configured in your TurbineResources.properties:
-  "module.packages = org.apache.turbine.modules, com.mycorp.modules", 
+  "module.packages = org.apache.turbine.modules, com.mycorp.modules",
   then the class loader will look for
 </p>
 
@@ -172,7 +173,7 @@ class". Currently, Turbine includes two supported view services,
 
 <p>
   If you now wonder how a template name is mapped to an actual file name: This is
-  scope of the templating engine. <a href="services/velocity-service.html">Velocity</a> 
+  scope of the templating engine. <a href="services/velocity-service.html">Velocity</a>
   e.g. has this wonderful option to load templates from jar archives.
   There is no file but if you tell velocity "get about,directions,Driving.vm" and it
   returns the rendered template. So getting the actual template is not the job of the
@@ -182,47 +183,53 @@ class". Currently, Turbine includes two supported view services,
 
 <section name="Properties">
 <p>
-  The mapping of classes and template pathes to template names is configured in 
+  The mapping of classes and template pathes to template names is configured in
   mapper classes. These are pluggable and can be exchanged to configure other mapping
   policies. This is an option for seasoned Turbine developers and the default policy
   shouldn't be changed lightly.
 </p>
 
-<ul> 
+<ul>
   <li>
     services.TemplateService.mapper.page.class configures the mapper
     used for finding a page class suitable for the supplied template
-    name. Default is org.apache.turbine.services.template.mapper.TemplateDirectMapper
+    name. Default is org.apache.turbine.services.template.mapper.DirectMapper
   </li>
   <li>
     services.TemplateService.mapper.screen.class configures the mapper
     used for finding a screen class suitable for the supplied template
-    name. Default isorg.apache.turbine.services.template.mapper.TemplateClassMapper
+    name. Default isorg.apache.turbine.services.template.mapper.ClassMapper
   </li>
   <li>
     services.TemplateService.mapper.layout.class configures the mapper
     used for finding a layout class suitable for the supplied template
-    name. Default is org.apache.turbine.services.template.mapper.TemplateClassMapper
+    name. Default is org.apache.turbine.services.template.mapper.ClassMapper
   </li>
   <li>
     services.TemplateService.mapper.navigation.class configures the
     mapper used for finding navigation classes suitable for the
     supplied template name. This mapper is not used directly but from
     various navigation helpers like TemplateNavigation. Default is
-    org.apache.turbine.services.template.mapper.TemplateClassMapper
+    org.apache.turbine.services.template.mapper.ClassMapper
   </li>
   <li>
     services.TemplateService.mapper.layout.template.class configures
     the mapper used for finding a layout template to render your
     screen. This template is used by your Layout class (see above) to
     position the various visual elements like content and navigation
-    on the Page. Default is org.apache.turbine.services.template.mapper.TemplateLayoutMapper
+    on the Page. Default is org.apache.turbine.services.template.mapper.LayoutTemplateMapper
   </li>
   <li>
     services.TemplateService.mapper.screen.template.class configures
     the mapper used for finding your screen template. This is used
     whenever a screen class is requesting a template to
-    render. Default is org.apache.turbine.services.template.mapper.TemplateScreenMapper
+    render. Default is org.apache.turbine.services.template.mapper.ScreenTemplateMapper
+  </li>
+  <li>
+    services.TemplateService.mapper.navigation.template.class configures
+    the mapper used for finding your navigation template. This is used
+    whenever a navigation class is requesting a template to
+    render. Default is org.apache.turbine.services.template.mapper.DirectTemplateMapper
   </li>
 </ul>
 </section>
