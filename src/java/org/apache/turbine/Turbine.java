@@ -116,6 +116,7 @@ import org.apache.turbine.services.template.TurbineTemplate;
  * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @version $Id$
  */
 public class Turbine 
@@ -358,7 +359,7 @@ public class Turbine
             // If it is not, then redirect back to the
             // original URL (i.e. remove the "redirected" pathinfo)
             if (data.getParameters()
-                .getString(REDIRECTED_PATHINFO_NAME, "false").equals("true"))
+                .getString(REDIRECTED_PATHINFO_NAME, "false").startsWith("true"))
             {
                 if (data.getSession().isNew())
                 {
