@@ -57,9 +57,6 @@ package org.apache.turbine.services.intake.validator;
 import java.text.ParseException;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 /**
  * Validator for boolean field types.<br><br>
  *
@@ -91,9 +88,6 @@ import org.apache.commons.logging.LogFactory;
 public class BooleanValidator
         extends DefaultValidator
 {
-    /** Logging */
-    private static Log log = LogFactory.getClass(BooleanValidator.class);
-
     /** String values which would evaluate to Boolean.TRUE */
     private static String[] trueValues = {"TRUE","T","YES","Y","1"};
 
