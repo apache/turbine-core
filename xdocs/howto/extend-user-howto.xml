@@ -7,11 +7,11 @@
     <author email="dan@chowda.net">Dan A. Bachelder</author>
     <author email="seade@backstagetech.com.au">Scott B. Eade</author>
   </properties>
-  
+
   <body>
-  
+
   <section name="Extend User">
-  
+
      <p>
       This is a HOWTO on extending the TurbineUser and its
       functionality.  The motivating factors for extending TurbineUser
@@ -40,6 +40,11 @@
         </ol>
      </p>
      <p>
+      <b>Important Note:</b> This solution is functionally incomplete in that
+      it does not support the ability to use TurbineUser as a commit point for
+      a transaction.  See the very end of this howto for further details.
+     </p>
+     <p>
       First we update the schema for the project (in this case
       newapp-schema.xml) to include an alias definition of TurbineUser (which
       will NOT create a new table) as well as the desired foreign key
@@ -58,7 +63,7 @@
   </table>
 
   <table name="RDF" idMethod="autoincrement">
-    <column name="RDF_ID" required="true" autoIncrement="true" 
+    <column name="RDF_ID" required="true" autoIncrement="true"
         primaryKey="true" type="INTEGER"/>
     <column name="TITLE" size="255" type="VARCHAR"/>
     <column name="BODY" size="255" type="VARCHAR"/>
@@ -69,8 +74,7 @@
     <foreign-key foreignTable="NEWAPP_USER">
       <reference local="CREATE_USER_ID" foreign="USER_ID"/>
     </foreign-key>
-  </table>
-    ]]></source>
+  </table>]]></source>
      <p>
       The columns we want to add to TurbineUser must be defined in
       turbine-schema.xml thus:
@@ -92,8 +96,7 @@
     <unique>
         <unique-column name="LOGIN_NAME"/>
     </unique>
-  </table>
-    ]]></source>
+  </table>]]></source>
      <p>
       Before we create the adapter classes referred to above we will first
       extend TurbineMapBuilder in order to tell Turbine about the additional
@@ -140,8 +143,7 @@ public class TurbineMapBuilderAdapter extends TurbineMapBuilder
         TableMap tMap = TurbineDB.getDatabaseMap().getTable(getTableUser());
         tMap.addColumn(getTitle(), string);
     }
-}
-    ]]></source>
+}]]></source>
      <p>
       Now we will implement the pair of adapters we referred to in our
       schema.  First we implement TurbineUserAdapter to provide access
@@ -185,8 +187,7 @@ public class TurbineUserAdapter extends TurbineUser
         }
         return tmp;
     }
-}
-    ]]></source>
+}]]></source>
      <p>
        Next comes TurbineUserPeerAdapter to which we also add details of the new
        database columns (the body will be empty if you choose to use
@@ -206,8 +207,7 @@ public class TurbineUserPeerAdapter extends TurbineUserPeer
         (TurbineMapBuilderAdapter) getMapBuilder();
 
     public static final String TITLE = mapBuilder.getUser_Title();
-}
-    ]]></source>
+}]]></source>
      <p>
       We can now use "ant project-om" to generate our OM layer using
       the adapter classes we defined above.  Note that "ant init"
@@ -288,8 +288,7 @@ public class NewappUserPeer
             return (NewappUser)v.firstElement();
         }
     }
-}
-    ]]></source>
+}]]></source>
      <p>
       Now we can now use "ant init" to generate the rest of the things it
       generates - this will include the regenreation of the OM layer, the
@@ -306,10 +305,10 @@ public class NewappUserPeer
       TurbineResources.properties:
      </p>
      <source><![CDATA[
- database.maps.builder=org.mycompany.newapp.util.db.map.TurbineMapBuilderAdapter
- services.SecurityService.user.class=org.mycompany.newapp.om.NewappUser
- services.SecurityService.userPeer.class=org.mycompany.newapp.om.NewappUserPeer
-    ]]></source>
+database.maps.builder=org.mycompany.newapp.util.db.map.TurbineMapBuilderAdapter
+services.SecurityService.user.class=org.mycompany.newapp.om.NewappUser
+services.SecurityService.userPeer.class=org.mycompany.newapp.om.NewappUserPeer
+]]></source>
      <p>
       That is basically it.  We can now modify our application to utilise the
       new columns via the methods defined in the OM objects we have modified.
@@ -317,14 +316,90 @@ public class NewappUserPeer
       from TurbineUser thus:
     </p>
      <source><![CDATA[
-        NewappUser user = (NewappUser) data.getUser();
-    ]]></source>
+NewappUser user = (NewappUser) data.getUser();]]></source>
      <p>
       Extending TurbineUser should be relatively straightforward with the help
       of this information.
     </p>
      <p>
       Enjoy.
+    </p>
+    <p>
+     <b>Additional Information (Added 12 Nov 2001)</b>
+    </p>
+    <p>
+     For those of you that are attempting to extend TurbineUser to make use of
+     TURBINE_USER.USER_ID as a foreign key in your application tables here is
+     the latest problem I have run into - it actually intersects with another
+     turbine-dev mailing list thread titled "autoincrement and key retrieving".
+    </p>
+    <p>
+     Torque generates some pretty useful code that enables you to add related
+     objects to a common parent object and then save them all to the database
+     in one transaction.  You can do something like this:
+    </p>
+    <source><![CDATA[
+OrderDetail od1 = new OrderDetail(500, "item1");
+OrderDetail od2 = new OrderDetail(100, "item2");
+Order o = new Order(clientId);
+o.addOrderDetail(od1);
+o.addOrderDetail(od2);
+o.save();]]></source>
+    <p>
+     This is very helpful - you don't need to worry about the ids that connect
+     the child rows to the parent rows and you don't need to worry about the
+     transaction necessary to insert these into the database as one atomic
+     operation.  It also provides:
+    </p>
+    <source><![CDATA[
+o.save(dbConn);]]></source>
+    <p>
+     which can be used when you have other data you want to commit in a
+     transaction you are managing yourself.
+    </p>
+    <p>
+     Now here is the problem.  After extending TurbineUser in the manner
+     described above, the methods are generated to add records related the
+     extended user class, but the data itself is ignored when
+     ExtendedTurbineUser.save() is invoked.  Here is an example:
+    </p>
+    <source><![CDATA[
+Rdf rdf = new Rdf();
+data.getParameters().setProperties(rdf);
+NewappUser user = (NewappUser) data.getUser();
+user.addRdf(rdf);
+user.save(); // !!!! rdf is not saved !!!!]]></source>
+    <p>
+     Of course replacing the last two lines with:
+    </p>
+    <source><![CDATA[
+rdf.setCreateUserId(user.getUserId());
+rdf.save();]]></source>
+    <p>
+     will in fact save the Rdf, this is beside the point - the other method
+     addRdf() shouldn't exist if it doesn't work and this is a trivial example.
+    </p>
+    <p>
+     In addition to this, there is no equivalent save(dbConn) method provided
+     to allow this update to be combined with others within a single database
+     transaction.
+    </p>
+    <p>
+     The answer is going to be something along the lines of implementing a
+     custom UserManager (perhaps by extending DBUserManager), but the problem
+     here is that UserManager is designed to be storage medium agnostic (e.g.
+     retrieving a user from an LDAP server rather than the database) and hence
+     it does not include methods specific to database storage.
+    </p>
+    <p>
+     How to proceed is not clear.  For the moment I myself have abandoned this
+     approach and have gone back to redefining TURBINE_USER in my application
+     schema so that I can retain the benefit of the torque generated code (at
+     the cost of having to retrieve user records a second time).
+    </p>
+    <p>
+     Don't be disheartened.  If you have any useful suggestions, post them to
+     the mailing lists.
     </p>
    </section>
 </body>
