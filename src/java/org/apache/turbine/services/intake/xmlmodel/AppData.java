@@ -25,13 +25,13 @@ package org.apache.turbine.services.intake.xmlmodel;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -57,20 +57,29 @@ package org.apache.turbine.services.intake.xmlmodel;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.apache.turbine.services.intake.IntakeException;
+
 import org.xml.sax.Attributes;
 
 /**
  * A class for holding application data structures.
  *
  * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class AppData
-    implements java.io.Serializable
+        implements java.io.Serializable
 {
-
+    /** List of groups */
     private List inputs;
+
+    /** Package that will be used for all mapTo objects */
     private String basePackage;
+
+    /** Prefix string that will be used to qualify &lt;prefix&gt;:&lt;intakegroup&gt; names */
+    private String groupPrefix;
 
     /**
      * Default Constructor
@@ -83,28 +92,35 @@ public class AppData
     /**
      * Imports the top level element from an XML specification
      */
-    public void loadFromXML (Attributes attrib)
+    public void loadFromXML(Attributes attrib)
     {
         String basePkg = attrib.getValue("basePackage");
-        if ( basePkg == null )
+        if (basePkg == null)
         {
             setBasePackage("");
         }
         else
-        {            
-            if ( basePkg.charAt(basePkg.length()-1) != '.' ) 
+        {
+            if (basePkg.charAt(basePkg.length() - 1) != '.')
             {
-                setBasePackage(basePkg + '.');                
+                setBasePackage(basePkg + '.');
             }
             else
             {
                 setBasePackage(basePkg);
             }
         }
+
+        setGroupPrefix(attrib.getValue("groupPrefix"));
     }
 
     /**
-     * Return a collection of input sections (<group>)
+     * Return a collection of input sections (&lt;group&gt;).
+     * The names of the groups returned here are only unique
+     * to this AppData object and not qualified with the groupPrefix.
+     * This method is used in the IntakeService to register all the
+     * groups with and without prefix in the service.
+     *
      */
     public List getGroups()
     {
@@ -112,22 +128,47 @@ public class AppData
     }
 
     /**
-     * Get a XmlGroup with the given name.
+     * Get a XmlGroup with the given name. It finds both
+     * qualified and unqualified names in this package.
      *
      * @param groupName a <code>String</code> value
      * @return a <code>XmlGroup</code> value
+     * @throws IntakeException indicates that the groupName was null
      */
     public XmlGroup getGroup(String groupName)
+            throws IntakeException
     {
-        XmlGroup group = null;
-        Iterator iter = inputs.iterator();
-        do 
+        if (groupName == null)
         {
-            group = (XmlGroup)iter.next();
-    
-        } while (!group.getName().equals(groupName));
-        
-        return group;
+            throw new IntakeException(
+                    "Intake AppData.getGroup(groupName) is null");
+        }
+
+        String groupPrefix = getGroupPrefix();
+
+        for (Iterator it = inputs.iterator(); it.hasNext();)
+        {
+            XmlGroup group = (XmlGroup) it.next();
+
+            if (group.getName().equals(groupName))
+            {
+                return group;
+            }
+            if (groupPrefix != null)
+            {
+                StringBuffer qualifiedGroupName = new StringBuffer();
+
+                qualifiedGroupName.append(groupPrefix)
+                        .append(":")
+                        .append(group.getName());
+
+                if (qualifiedGroupName.toString().equals(groupName))
+                {
+                    return group;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -152,29 +193,50 @@ public class AppData
         inputs.add(input);
     }
 
-    
     /**
      * Get the base package String that will be appended to
      * any mapToObjects
      *
      * @return value of basePackage.
      */
-    public String getBasePackage() 
+    public String getBasePackage()
     {
         return basePackage;
     }
-    
+
     /**
-     * Get the base package String that will be appended to
+     * Set the base package String that will be appended to
      * any mapToObjects
      *
      * @param v  Value to assign to basePackage.
      */
-    public void setBasePackage(String  v) 
+    public void setBasePackage(String v)
     {
         this.basePackage = v;
     }
-    
+
+    /**
+     * Get the prefix String that will be used to qualify
+     * intake groups when using multiple XML files
+     *
+     * @return value of groupPrefix
+     */
+    public String getGroupPrefix()
+    {
+        return groupPrefix;
+    }
+
+    /**
+     * Set the prefix String that will be used to qualify
+     * intake groups when using multiple XML files
+     *
+     * @param groupPrefix  Value to assign to basePackage.
+     */
+    public void setGroupPrefix(String groupPrefix)
+    {
+        this.groupPrefix = groupPrefix;
+    }
+
     /**
      * Creats a string representation of this AppData.
      * The representation is given in xml format.
@@ -183,12 +245,12 @@ public class AppData
     {
         StringBuffer result = new StringBuffer();
 
-        result.append ("<input-data>\n");
-        for (Iterator iter = inputs.iterator() ; iter.hasNext() ;)
+        result.append("<input-data>\n");
+        for (Iterator iter = inputs.iterator(); iter.hasNext();)
         {
-            result.append (iter.next());
+            result.append(iter.next());
         }
-        result.append ("</input-data>");
+        result.append("</input-data>");
         return result.toString();
-  }
+    }
 }

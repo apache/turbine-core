@@ -59,22 +59,28 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.pool.BaseKeyedPoolableObjectFactory;
 import org.apache.turbine.om.Retrievable;
+import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.TurbineIntake;
+import org.apache.turbine.services.intake.xmlmodel.AppData;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.services.intake.xmlmodel.XmlGroup;
-import org.apache.turbine.util.ParameterParser;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.pool.Recyclable;
+import org.apache.turbine.util.ValueParser;
 
 /**
  * Holds a group of Fields
  *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class Group
-    implements Recyclable
 {
     public static final String EMPTY = "";
 
@@ -82,6 +88,15 @@ public class Group
      * An id representing a new object.
      */
     public static final String NEW = "_0";
+
+    private static final Log log;
+    private static final boolean isDebugEnabled;
+
+    static
+    {
+        log = LogFactory.getLog(Group.class);
+        isDebugEnabled = log.isDebugEnabled();
+    }
 
     /**
      * The key used to represent this group in a parameter.
@@ -123,7 +138,7 @@ public class Group
     /**
      * The object containing the request data
      */
-    protected RunData data;
+    protected ValueParser pp;
 
     /**
      * A flag to help prevent duplicate hidden fields declaring this group.
@@ -136,10 +151,9 @@ public class Group
      * be instantiated otherwise.
      *
      * @param group a <code>XmlGroup</code> value
-     * @exception Exception if an error occurs in other classes
+     * @exception IntakeException if an error occurs in other classes
      */
-    public Group(XmlGroup group)
-        throws Exception
+    public Group(XmlGroup group) throws IntakeException
     {
         gid = group.getKey();
         name = group.getName();
@@ -147,19 +161,19 @@ public class Group
 
         List inputFields = group.getFields();
         int size = inputFields.size();
-        fields = new HashMap((int)(1.25*size + 1));
-        mapToObjectFields = new HashMap((int)(1.25*size + 1));
+        fields = new HashMap((int) (1.25 * size + 1));
+        mapToObjectFields = new HashMap((int) (1.25 * size + 1));
         fieldsArray = new Field[size];
-        for (int i=size-1; i>=0; i--)
+        for (int i = size - 1; i >= 0; i--)
         {
-            XmlField f = (XmlField)inputFields.get(i);
+            XmlField f = (XmlField) inputFields.get(i);
             Field field = FieldFactory.getInstance(f, this);
-            fieldsArray[i]= field;
+            fieldsArray[i] = field;
             fields.put(f.getName(), field);
 
             // map fields by their mapToObject
-            List tmpFields = (List)mapToObjectFields.get(f.getMapToObject());
-            if ( tmpFields == null )
+            List tmpFields = (List) mapToObjectFields.get(f.getMapToObject());
+            if (tmpFields == null)
             {
                 tmpFields = new ArrayList(size);
                 mapToObjectFields.put(f.getMapToObject(), tmpFields);
@@ -169,45 +183,43 @@ public class Group
 
         // Change the mapToObjectFields values to Field[]
         Iterator keys = mapToObjectFields.keySet().iterator();
-        while ( keys.hasNext() )
+        while (keys.hasNext())
         {
             Object key = keys.next();
-            List tmpFields = (List)mapToObjectFields.get(key);
+            List tmpFields = (List) mapToObjectFields.get(key);
             mapToObjectFields.put(key,
-                tmpFields.toArray(new Field[tmpFields.size()]));
+                    tmpFields.toArray(new Field[tmpFields.size()]));
         }
     }
 
     /**
-     * Initializes the default Group with parameters from RunData.
+     * Initializes the default Group using parameters.
      *
-     * @param data a <code>RunData</code> value
+     * @param pp a <code>ValueParser</code> value
      * @return this Group
      */
-    public Group init(RunData data) throws TurbineException
+    public Group init(ValueParser pp) throws TurbineException
     {
-        return init(NEW, data);
+        return init(NEW, pp);
     }
 
     /**
      * Initializes the Group with parameters from RunData
      * corresponding to key.
      *
-     * @param data a <code>RunData</code> value
+     * @param pp a <code>ValueParser</code> value
      * @return this Group
      */
-    public Group init(String key, RunData data)
-        throws TurbineException
+    public Group init(String key, ValueParser pp) throws IntakeException
     {
         this.oid = key;
-        this.data = data;
-        for (int i=fieldsArray.length-1; i>=0; i--)
+        this.pp = pp;
+        for (int i = fieldsArray.length - 1; i >= 0; i--)
         {
-            fieldsArray[i].init(data);
+            fieldsArray[i].init(pp);
         }
         return this;
     }
-
 
     /**
      * Initializes the group with properties from an object.
@@ -220,12 +232,12 @@ public class Group
         this.oid = obj.getQueryKey();
 
         Class cls = obj.getClass();
-        while ( cls != null )
+        while (cls != null)
         {
-            Field[] flds = (Field[])mapToObjectFields.get(cls.getName());
-            if ( flds != null )
+            Field[] flds = (Field[]) mapToObjectFields.get(cls.getName());
+            if (flds != null)
             {
-                for (int i=flds.length-1; i>=0; i--)
+                for (int i = flds.length - 1; i >= 0; i--)
                 {
                     flds[i].init(obj);
                 }
@@ -237,7 +249,6 @@ public class Group
         return this;
     }
 
-
     /**
      * Gets a list of the names of the fields stored in this object.
      *
@@ -246,13 +257,12 @@ public class Group
     public String[] getFieldNames()
     {
         String nameList[] = new String[fieldsArray.length];
-        for(int i = 0; i < nameList.length; i++)
+        for (int i = 0; i < nameList.length; i++)
         {
             nameList[i] = fieldsArray[i].name;
         }
         return nameList;
     }
-
 
     /**
      * Return the name given to this group.  The long name is to
@@ -310,21 +320,20 @@ public class Group
     /**
      * Describe <code>getObjects</code> method here.
      *
-     * @param pp a <code>ParameterParser</code> value
+     * @param pp a <code>ValueParser</code> value
      * @return an <code>ArrayList</code> value
-     * @exception TurbineException if an error occurs
+     * @exception IntakeException if an error occurs
      */
-    public ArrayList getObjects(RunData data)
-        throws TurbineException
+    public ArrayList getObjects(ValueParser pp) throws IntakeException
     {
         ArrayList objs = null;
-        String[] oids = data.getParameters().getStrings(gid);
+        String[] oids = pp.getStrings(gid);
         if (oids != null)
         {
             objs = new ArrayList(oids.length);
-            for (int i=oids.length-1; i>=0; i--)
+            for (int i = oids.length - 1; i >= 0; i--)
             {
-                objs.add( TurbineIntake.getGroup(name).init(oids[i], data) );
+                objs.add(TurbineIntake.getGroup(name).init(oids[i], pp));
             }
         }
         return objs;
@@ -333,18 +342,19 @@ public class Group
     /**
      * Get the Field .
      * @return Field.
+     * @throws IntakeException indicates the field could not be found.
      */
     public Field get(String fieldName)
-        throws TurbineException
+            throws IntakeException
     {
         if (fields.containsKey(fieldName))
         {
-            return (Field)fields.get(fieldName);
+            return (Field) fields.get(fieldName);
         }
         else
         {
-            throw new TurbineException ("Intake Field name: " + fieldName +
-                                        " not found!");
+            throw new IntakeException("Intake Field name: " + fieldName +
+                    " not found!");
         }
     }
 
@@ -356,30 +366,69 @@ public class Group
     public boolean isAllValid()
     {
         boolean valid = true;
-        for (int i=fieldsArray.length-1; i>=0; i--)
+        for (int i = fieldsArray.length - 1; i >= 0; i--)
         {
             valid &= fieldsArray[i].isValid();
+            if (isDebugEnabled && !fieldsArray[i].isValid())
+            {
+                log.debug("Group(" + oid + "): " + name + "; Field: "
+                        + fieldsArray[i].name + "; value=" +
+                        fieldsArray[i].getValue() + " is invalid!");
+            }
         }
         return valid;
     }
 
     /**
      * Calls a setter methods on obj, for fields which have been set.
-     * @exception throws up any exceptions resulting from failure to
-     * check input validity.
+     *
+     * @param obj Object to be set with the values from the group.
+     * @throws IntakeException indicates that a failure occurred while
+     * executing the setter methods of the mapped object.
      */
-    public void setProperties(Object obj)
-        throws TurbineException
+    public void setProperties(Object obj) throws IntakeException
     {
         Class cls = obj.getClass();
-        while ( cls != null )
+        while (cls != null)
         {
-            Field[] flds = (Field[])mapToObjectFields.get(cls.getName());
-            if ( flds != null )
+            Field[] flds = (Field[]) mapToObjectFields.get(cls.getName());
+            if (flds != null)
             {
-                for (int i=flds.length-1; i>=0; i--)
+                for (int i = flds.length - 1; i >= 0; i--)
                 {
                     flds[i].setProperty(obj);
+                }
+            }
+
+            cls = cls.getSuperclass();
+        }
+    }
+
+    /**
+     * Calls a setter methods on obj, for fields which pass validity tests.
+     * In most cases one should call Intake.isAllValid() and then if that
+     * test passes call setProperties.  Use this method when some data is
+     * known to be invalid, but you still want to set the object properties
+     * that are valid.
+     */
+    public void setValidProperties(Object obj)
+    {
+        Class cls = obj.getClass();
+        while (cls != null)
+        {
+            Field[] flds = (Field[]) mapToObjectFields.get(cls.getName());
+            if (flds != null)
+            {
+                for (int i = flds.length - 1; i >= 0; i--)
+                {
+                    try
+                    {
+                        flds[i].setProperty(obj);
+                    }
+                    catch (Exception e)
+                    {
+                        // just move on to next field
+                    }
                 }
             }
 
@@ -391,17 +440,21 @@ public class Group
      * Calls getter methods on objects that are known to Intake
      * so that field values in forms can be initialized from
      * the values contained in the intake tool.
+     *
+     * @param obj Object that will be used to as a source of data for
+     * setting the values of the fields within the group.
+     * @throws IntakeException indicates that a failure occurred while
+     * executing the setter methods of the mapped object.
      */
-    public void getProperties(Object obj)
-        throws Exception
+    public void getProperties(Object obj) throws IntakeException
     {
         Class cls = obj.getClass();
         while (cls != null)
         {
-            Field[] flds = (Field[])mapToObjectFields.get(cls.getName());
-            if( flds != null )
+            Field[] flds = (Field[]) mapToObjectFields.get(cls.getName());
+            if (flds != null)
             {
-                for (int i=flds.length-1; i>=0; i--)
+                for (int i = flds.length - 1; i >= 0; i--)
                 {
                     flds[i].getProperty(obj);
                 }
@@ -417,21 +470,23 @@ public class Group
      */
     public void removeFromRequest()
     {
-        ParameterParser pp = data.getParameters();
-        String[] groups = pp.getStrings(gid);
-        if ( groups != null )
+        if (pp != null)
         {
-            pp.remove(gid);
-            for (int i=0; i<groups.length; i++)
+            String[] groups = pp.getStrings(gid);
+            if (groups != null)
             {
-                if ( groups[i] != null && !groups[i].equals(oid) )
+                pp.remove(gid);
+                for (int i = 0; i < groups.length; i++)
                 {
-                    pp.add(gid,groups[i]);
+                    if (groups[i] != null && !groups[i].equals(oid))
+                    {
+                        pp.add(gid, groups[i]);
+                    }
                 }
-            }
-            for (int i=fieldsArray.length-1; i>=0; i--)
-            {
-                fieldsArray[i].removeFromRequest();
+                for (int i = fieldsArray.length - 1; i >= 0; i--)
+                {
+                    fieldsArray[i].removeFromRequest();
+                }
             }
         }
     }
@@ -464,61 +519,54 @@ public class Group
      */
     public void appendHtmlFormInput(StringBuffer sb)
     {
-        if ( !isDeclared )
+        if (!isDeclared)
         {
             isDeclared = true;
             sb.append("<input type=\"hidden\" name=\"")
-              .append(gid)
-              .append("\" value=\"")
-              .append(oid)
-              .append("\"></input>");
+                    .append(gid)
+                    .append("\" value=\"")
+                    .append(oid)
+                    .append("\"/>\n");
         }
     }
 
-    // ****************** Recyclable implementation ************************
+    // ********** PoolableObjectFactory implementation ******************
 
-    private boolean disposed;
-
-    /**
-     * Recycles the object for a new client. Recycle methods with
-     * parameters must be added to implementing object and they will be
-     * automatically called by pool implementations when the object is
-     * taken from the pool for a new client. The parameters must
-     * correspond to the parameters of the constructors of the object.
-     * For new objects, constructors can call their corresponding recycle
-     * methods whenever applicable.
-     * The recycle methods must call their super.
-     */
-    public void recycle()
+    public static class GroupFactory
+            extends BaseKeyedPoolableObjectFactory
     {
-        disposed = false;
-    }
+        private AppData appData;
 
-    /**
-     * Disposes the object after use. The method is called
-     * when the object is returned to its pool.
-     * The dispose method must call its super.
-     */
-    public void dispose()
-    {
-        oid = null;
-        data = null;
-        for (int i=fieldsArray.length-1; i>=0; i--)
+        public GroupFactory(AppData appData)
         {
-            fieldsArray[i].dispose();
+            this.appData = appData;
         }
-        isDeclared = false;
 
-        disposed = true;
-    }
+        /**
+         * Creates an instance that can be returned by the pool.
+         * @return an instance that can be returned by the pool.
+         * @throws IntakeException indicates that the group could not be retreived
+         */
+        public Object makeObject(Object key) throws IntakeException
+        {
+            return new Group(appData.getGroup((String) key));
+        }
 
-    /**
-     * Checks whether the recyclable has been disposed.
-     * @return true, if the recyclable is disposed.
-     */
-    public boolean isDisposed()
-    {
-        return disposed;
+        /**
+         * Uninitialize an instance to be returned to the pool.
+         * @param obj the instance to be passivated
+         */
+        public void passivateObject(Object key, Object obj)
+        {
+            Group group = (Group) obj;
+            group.oid = null;
+            group.pp = null;
+            for (int i = group.fieldsArray.length - 1; i >= 0; i--)
+            {
+                group.fieldsArray[i].dispose();
+            }
+            group.isDeclared = false;
+        }
     }
 }
 

@@ -55,16 +55,17 @@ package org.apache.turbine.services.intake.xmlmodel;
  */
 
 import org.apache.turbine.services.intake.validator.Constraint;
+
 import org.xml.sax.Attributes;
 
 /**
  * A Class for holding data about a constraint on a property.
  *
- * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @version $Id$
  */
 public class Rule
-    implements Constraint, java.io.Serializable
+        implements Constraint, java.io.Serializable
 {
     private String name;
     private String value;
@@ -81,7 +82,7 @@ public class Rule
     /**
      * Imports a column from an XML specification
      */
-    public void loadFromXML (Attributes attrib)
+    public void loadFromXML(Attributes attrib)
     {
         setName(attrib.getValue("name"));
         setValue(attrib.getValue("value"));
@@ -94,6 +95,7 @@ public class Rule
     {
         name = newName;
     }
+
     /**
      * Get the name of the parameter
      */
@@ -109,6 +111,7 @@ public class Rule
     {
         value = newValue;
     }
+
     /**
      * Get the value of the parameter
      */
@@ -157,9 +160,8 @@ public class Rule
     {
         StringBuffer result = new StringBuffer(100);
 
-        result.append("<rule name=\""+name+"\"")
-              .append(" value=\""+value+"\"");
-
+        result.append("<rule name=\"" + name + "\"")
+                .append(" value=\"" + value + "\"");
 
         if (message == null)
         {
@@ -168,8 +170,8 @@ public class Rule
         else
         {
             result.append(">")
-                  .append(message)
-                  .append("</rule>\n");
+                    .append(message)
+                    .append("</rule>\n");
         }
 
         return result.toString();

@@ -1,6 +1,5 @@
 package org.apache.turbine.services.intake.validator;
 
-
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -54,15 +53,16 @@ package org.apache.turbine.services.intake.validator;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-import java.util.Date;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
-import org.apache.turbine.util.TurbineException;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.turbine.services.intake.IntakeException;
 
 /**
  * Validates numbers with the following constraints in addition to those
@@ -81,13 +81,16 @@ import org.apache.turbine.util.TurbineException;
  * <td>false</td></tr>
  * </table>
  *
- * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class DateStringValidator
-    extends DefaultValidator
+        extends DefaultValidator
 {
-    private static final String DEFAULT_DATE_MESSAGE = "Date could not be parsed";
+    private static final String DEFAULT_DATE_MESSAGE =
+            "Date could not be parsed";
+
     private List dateFormats;
     private String dateFormatMessage;
     private boolean flexible;
@@ -95,7 +98,7 @@ public class DateStringValidator
     private SimpleDateFormat sdf;
 
     public DateStringValidator(Map paramMap)
-        throws TurbineException
+            throws IntakeException
     {
         this();
         init(paramMap);
@@ -107,12 +110,12 @@ public class DateStringValidator
     }
 
     public void init(Map paramMap)
-        throws TurbineException
+            throws InvalidMaskException
     {
         super.init(paramMap);
         dateFormats = new ArrayList(5);
 
-        Constraint constraint = (Constraint)paramMap.get("format");
+        Constraint constraint = (Constraint) paramMap.get("format");
 
         if (constraint != null)
         {
@@ -121,13 +124,13 @@ public class DateStringValidator
         }
 
         int i = 1;
-        constraint = (Constraint)paramMap.get("format" + i);
+        constraint = (Constraint) paramMap.get("format" + i);
 
         while (constraint != null)
         {
             dateFormats.add(constraint.getValue());
             setDateFormatMessage(constraint.getMessage());
-            constraint = (Constraint)paramMap.get("format" + (++i));
+            constraint = (Constraint) paramMap.get("format" + (++i));
         }
 
         if (dateFormatMessage == null || dateFormatMessage.equals(""))
@@ -135,14 +138,14 @@ public class DateStringValidator
             dateFormatMessage = DEFAULT_DATE_MESSAGE;
         }
 
-        constraint = (Constraint)paramMap.get("flexible");
+        constraint = (Constraint) paramMap.get("flexible");
 
         if (constraint != null)
         {
             flexible = Boolean.valueOf(constraint.getValue()).booleanValue();
         }
 
-        if ((dateFormats.size() == 0) || (flexible))
+        if (dateFormats.size() == 0 || flexible)
         {
             df = DateFormat.getInstance();
             df.setLenient(true);
@@ -163,7 +166,7 @@ public class DateStringValidator
      * testValue did not pass the validation tests.
      */
     protected void doAssertValidity(String testValue)
-        throws ValidationException
+            throws ValidationException
     {
         try
         {
@@ -179,9 +182,12 @@ public class DateStringValidator
     /**
      * Parses the String s according to the rules/formats for this
      * validator.
+     *
+     * @throws ParseException indicates that the string could not be
+     * parsed into a date.
      */
     public Date parse(String s)
-        throws ParseException
+            throws ParseException
     {
         Date date = null;
 
@@ -190,9 +196,9 @@ public class DateStringValidator
             throw new ParseException("Input string was null", -1);
         }
 
-        for (int i = 0; i < dateFormats.size(); i++)
+        for (int i = 0; i < dateFormats.size() && date == null; i++)
         {
-            sdf.applyPattern((String)dateFormats.get(i));
+            sdf.applyPattern((String) dateFormats.get(i));
 
             try
             {
@@ -203,19 +209,41 @@ public class DateStringValidator
                 // ignore
             }
 
-            if (date != null)
-            {
-                break;
-            }
         }
 
-        if ((date == null) && (df != null))
+        if (date == null && df != null)
         {
             date = df.parse(s);
         }
 
+        // if the date still has not been parsed at this point, throw
+        // a ParseException.
+        if( date == null )
+        {
+            throw new ParseException("Could not parse the date", 0);
+        }
+
         return date;
     }
+
+    /**
+     * Formats a date into a String.  The format used is from
+     * the first format rule found for the field.
+     *
+     * @param date the Date object to convert into a string.
+     * @return formatted date
+     */
+    public String format(Date date)
+    {
+        String s = null;
+        if (date != null)
+        {
+            sdf.applyPattern((String) dateFormats.get(0));
+            s = sdf.format(date);
+        }
+        return s;
+    }
+
 
     // ************************************************************
     // **                Bean accessor methods                   **
@@ -223,6 +251,7 @@ public class DateStringValidator
 
     /**
      * Get the value of minLengthMessage.
+     *
      * @return value of minLengthMessage.
      */
     public String getDateFormatMessage()
@@ -235,18 +264,19 @@ public class DateStringValidator
      * So the last setMessage call with valid data wins.  But later calls
      * with null or empty string will not affect a previous valid setting.
      *
-     * @param v  Value to assign to minLengthMessage.
+     * @param message  Value to assign to minLengthMessage.
      */
-    public void setDateFormatMessage(String v)
+    public void setDateFormatMessage(String message)
     {
-        if ((v != null) && (!v.equals("")))
+        if (message != null && !message.equals(""))
         {
-            dateFormatMessage = v;
+            dateFormatMessage = message;
         }
     }
 
     /**
      * Get the value of dateFormats.
+     *
      * @return value of dateFormats.
      */
     public List getDateFormats()
@@ -256,15 +286,17 @@ public class DateStringValidator
 
     /**
      * Set the value of dateFormats.
-     * @param v  Value to assign to dateFormats.
+     *
+     * @param formats  Value to assign to dateFormats.
      */
-    public void setDateFormats(List v)
+    public void setDateFormats(List formats)
     {
-        this.dateFormats = v;
+        this.dateFormats = formats;
     }
 
     /**
      * Get the value of flexible.
+     *
      * @return value of flexible.
      */
     public boolean isFlexible()
@@ -274,10 +306,11 @@ public class DateStringValidator
 
     /**
      * Set the value of flexible.
-     * @param v  Value to assign to flexible.
+     *
+     * @param flexible  Value to assign to flexible.
      */
-    public void setFlexible(boolean v)
+    public void setFlexible(boolean flexible)
     {
-        this.flexible = v;
+        this.flexible = flexible;
     }
 }

@@ -55,8 +55,8 @@ package org.apache.turbine.services.intake.validator;
  */
 
 import java.util.Map;
-import org.apache.regexp.RE;
-import org.apache.turbine.util.TurbineException;
+
+import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.util.upload.FileItem;
 
 /**
@@ -65,7 +65,6 @@ import org.apache.turbine.util.upload.FileItem;
  * <table>
  * <tr><th>Name</th><th>Valid Values</th><th>Default Value</th></tr>
  * <tr><td>required</td><td>true|false</td><td>false</td></tr>
- * <tr><td>mask</td><td>regexp</td><td>&nbsp;</td></tr>
  * <tr><td>minLength</td><td>integer</td><td>0</td></tr>
  * <tr><td>maxLength</td><td>integer</td><td>&nbsp;</td></tr>
  * </table>
@@ -73,15 +72,14 @@ import org.apache.turbine.util.upload.FileItem;
  * This validator can serve as the base class for more specific validators
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class FileValidator
-    implements Validator, InitableByConstraintMap
+        implements Validator, InitableByConstraintMap
 {
     protected boolean required;
     protected String requiredMessage;
-    protected RE mask;
-    protected String maskMessage;
     protected int minLength;
     protected String minLengthMessage;
     protected int maxLength;
@@ -90,7 +88,7 @@ public class FileValidator
     protected String message;
 
     public FileValidator(Map paramMap)
-        throws TurbineException
+            throws IntakeException
     {
         init(paramMap);
     }
@@ -99,41 +97,41 @@ public class FileValidator
     {
     }
 
-
     /**
      * Extract the relevant parameters from the constraints listed
      * in <rule> tags within the intake.xml file.
      *
      * @param paramMap a <code>Map</code> of <code>Rule</code>'s
      * containing constraints on the input.
-     * @exception TurbineException if an error occurs
      */
     public void init(Map paramMap)
-        throws TurbineException
     {
+        // Init minLength stuff
         minLength = 0;
         minLengthMessage = null;
+
+        // Init maxLength stuff
         maxLength = 0;
         maxLengthMessage = null;
 
-        Constraint constraint = (Constraint)paramMap.get("minLength");
-        if ( constraint != null )
+        Constraint constraint = (Constraint) paramMap.get("minLength");
+        if (constraint != null)
         {
             String param = constraint.getValue();
             minLength = Integer.parseInt(param);
             minLengthMessage = constraint.getMessage();
         }
 
-        constraint = (Constraint)paramMap.get("maxLength");
-        if ( constraint != null )
+        constraint = (Constraint) paramMap.get("maxLength");
+        if (constraint != null)
         {
             String param = constraint.getValue();
             maxLength = Integer.parseInt(param);
             maxLengthMessage = constraint.getMessage();
         }
 
-        constraint = (Constraint)paramMap.get("required");
-        if ( constraint == null )
+        constraint = (Constraint) paramMap.get("required");
+        if (constraint == null)
         {
             required = false;
         }
@@ -175,11 +173,10 @@ public class FileValidator
      * @exception ValidationException always thrown.
      */
     public void assertValidity(String testValue)
-        throws ValidationException
+            throws ValidationException
     {
         throw new ValidationException("this validation is not implemented");
     }
-
 
     /**
      * Determine whether a testValue meets the criteria specified
@@ -190,17 +187,17 @@ public class FileValidator
      * testValue did not pass the validation tests.
      */
     public void assertValidity(FileItem testValue)
-        throws ValidationException
+            throws ValidationException
     {
         message = null;
 
-        if ( (!required && minLength == 0)
-             && ( testValue == null || testValue.getSize() == 0) )
+        if ((!required && minLength == 0)
+                && (testValue == null || testValue.getSize() == 0))
         {
             return;
         }
-        else if ( required
-                  && ( testValue == null || testValue.getSize() == 0))
+        else if (required
+                && (testValue == null || testValue.getSize() == 0))
         {
             message = requiredMessage;
             throw new ValidationException(requiredMessage);
@@ -209,12 +206,12 @@ public class FileValidator
         // allow subclasses first chance at validation
         doAssertValidity(testValue);
 
-        if ( minLength > 0 && testValue.getSize() < minLength )
+        if (minLength > 0 && testValue.getSize() < minLength)
         {
             message = minLengthMessage;
             throw new ValidationException(minLengthMessage);
         }
-        if ( maxLength > 0 && testValue.getSize() > maxLength )
+        if (maxLength > 0 && testValue.getSize() > maxLength)
         {
             message = maxLengthMessage;
             throw new ValidationException(maxLengthMessage);
@@ -228,19 +225,21 @@ public class FileValidator
      */
     public String getMessage()
     {
-        if ( message == null )
+        if (message == null)
         {
             return "";
         }
         return message;
     }
 
-
     /**
      * Method to allow subclasses to add additional validation
+     *
+     * @param testValue <code>FileItem</code> to validate
+     * @throws ValidationException validation failed
      */
     protected void doAssertValidity(FileItem testValue)
-        throws ValidationException
+            throws ValidationException
     {
     }
 
@@ -250,6 +249,7 @@ public class FileValidator
 
     /**
      * Get the value of required.
+     *
      * @return value of required.
      */
     public boolean isRequired()
@@ -259,11 +259,12 @@ public class FileValidator
 
     /**
      * Set the value of required.
-     * @param v  Value to assign to required.
+     *
+     * @param required  Value to assign to required.
      */
-    public void setRequired(boolean  v)
+    public void setRequired(boolean required)
     {
-        this.required = v;
+        this.required = required;
     }
 
     /**
@@ -277,15 +278,17 @@ public class FileValidator
 
     /**
      * Set the value of requiredMessage.
-     * @param v  Value to assign to requiredMessage.
+     *
+     * @param message  Value to assign to requiredMessage.
      */
-    public void setRequiredMessage(String  v)
+    public void setRequiredMessage(String message)
     {
-        this.requiredMessage = v;
+        this.requiredMessage = message;
     }
 
     /**
      * Get the value of minLength.
+     *
      * @return value of minLength.
      */
     public int getMinLength()
@@ -295,15 +298,17 @@ public class FileValidator
 
     /**
      * Set the value of minLength.
-     * @param v  Value to assign to minLength.
+     *
+     * @param length  Value to assign to minLength.
      */
-    public void setMinLength(int  v)
+    public void setMinLength(int length)
     {
-        this.minLength = v;
+        this.minLength = length;
     }
 
     /**
      * Get the value of minLengthMessage.
+     *
      * @return value of minLengthMessage.
      */
     public String getMinLengthMessage()
@@ -313,15 +318,17 @@ public class FileValidator
 
     /**
      * Set the value of minLengthMessage.
-     * @param v  Value to assign to minLengthMessage.
+     *
+     * @param message  Value to assign to minLengthMessage.
      */
-    public void setMinLengthMessage(String  v)
+    public void setMinLengthMessage(String message)
     {
-        this.minLengthMessage = v;
+        this.minLengthMessage = message;
     }
 
     /**
      * Get the value of maxLength.
+     *
      * @return value of maxLength.
      */
     public int getMaxLength()
@@ -331,15 +338,17 @@ public class FileValidator
 
     /**
      * Set the value of maxLength.
-     * @param v  Value to assign to maxLength.
+     *
+     * @param length  Value to assign to maxLength.
      */
-    public void setMaxLength(int  v)
+    public void setMaxLength(int length)
     {
-        this.maxLength = v;
+        this.maxLength = length;
     }
 
     /**
      * Get the value of maxLengthMessage.
+     *
      * @return value of maxLengthMessage.
      */
     public String getMaxLengthMessage()
@@ -349,10 +358,11 @@ public class FileValidator
 
     /**
      * Set the value of maxLengthMessage.
-     * @param v  Value to assign to maxLengthMessage.
+     *
+     * @param message  Value to assign to maxLengthMessage.
      */
-    public void setMaxLengthMessage(String  v)
+    public void setMaxLengthMessage(String message)
     {
-        this.maxLengthMessage = v;
+        this.maxLengthMessage = message;
     }
 }

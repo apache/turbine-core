@@ -1,5 +1,7 @@
 package org.apache.turbine.services.intake.validator;
 
+import org.apache.turbine.services.intake.IntakeException;
+
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
@@ -25,13 +27,13 @@ package org.apache.turbine.services.intake.validator;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -56,15 +58,14 @@ package org.apache.turbine.services.intake.validator;
 
 /**
  * An Exception to mark a failed validation
- * 
- * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
+ *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class ValidationException
-    extends Exception
+        extends IntakeException
 {
-    private String message;
-
     /**
      * Creates a new <code>ValidationException</code> instance.
      *
@@ -72,25 +73,6 @@ public class ValidationException
      */
     public ValidationException(String message)
     {
-        setMessage(message);
+        super(message);
     }
-    
-    /**
-     * Get the value of message.
-     * @return value of message.
-     */
-    public String getMessage() 
-    {
-        return message;
-    }
-    
-    /**
-     * Set the value of message.
-     * @param v  Value to assign to message.
-     */
-    public void setMessage(String  v) 
-    {
-        this.message = v;
-    }
-    
 }

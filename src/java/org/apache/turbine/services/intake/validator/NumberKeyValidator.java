@@ -55,8 +55,9 @@ package org.apache.turbine.services.intake.validator;
  */
 
 import java.util.Map;
+
 import org.apache.torque.om.NumberKey;
-import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.services.intake.IntakeException;
 
 /**
  * Validates numbers with the following constraints in addition to those
@@ -72,11 +73,12 @@ import org.apache.turbine.util.TurbineException;
  * <td>Entry was not a valid number</td></tr>
  * </table>
  *
- * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class NumberKeyValidator
-    extends NumberValidator
+        extends NumberValidator
 {
     private static String INVALID_NUMBER = "Entry was not valid.";
 
@@ -84,7 +86,7 @@ public class NumberKeyValidator
     private NumberKey maxValue;
 
     public NumberKeyValidator(Map paramMap)
-        throws TurbineException
+            throws InvalidMaskException
     {
         this();
         init(paramMap);
@@ -101,16 +103,16 @@ public class NumberKeyValidator
         minValue = null;
         maxValue = null;
 
-        Constraint constraint = (Constraint)paramMap.get("minValue");
-        if ( constraint != null )
+        Constraint constraint = (Constraint) paramMap.get("minValue");
+        if (constraint != null)
         {
             String param = constraint.getValue();
             minValue = new NumberKey(param);
             minValueMessage = constraint.getMessage();
         }
 
-        constraint = (Constraint)paramMap.get("maxValue");
-        if ( constraint != null )
+        constraint = (Constraint) paramMap.get("maxValue");
+        if (constraint != null)
         {
             String param = constraint.getValue();
             maxValue = new NumberKey(param);
@@ -132,7 +134,7 @@ public class NumberKeyValidator
      * testValue did not pass the validation tests.
      */
     protected void doAssertValidity(String testValue)
-        throws ValidationException
+            throws ValidationException
     {
         NumberKey nk = null;
         try
@@ -144,12 +146,12 @@ public class NumberKeyValidator
             message = invalidNumberMessage;
             throw new ValidationException(invalidNumberMessage);
         }
-        if ( minValue != null && nk.compareTo(minValue) < 0 )
+        if (minValue != null && nk.compareTo(minValue) < 0)
         {
             message = minValueMessage;
             throw new ValidationException(minValueMessage);
         }
-        if ( maxValue != null && nk.compareTo(maxValue) > 0 )
+        if (maxValue != null && nk.compareTo(maxValue) > 0)
         {
             message = maxValueMessage;
             throw new ValidationException(maxValueMessage);
@@ -163,6 +165,7 @@ public class NumberKeyValidator
 
     /**
      * Get the value of minValue.
+     *
      * @return value of minValue.
      */
     public NumberKey getMinValue()
@@ -172,15 +175,17 @@ public class NumberKeyValidator
 
     /**
      * Set the value of minValue.
+     *
      * @param v  Value to assign to minValue.
      */
-    public void setMinValue(NumberKey  v)
+    public void setMinValue(NumberKey v)
     {
         this.minValue = v;
     }
 
     /**
      * Get the value of maxValue.
+     *
      * @return value of maxValue.
      */
     public NumberKey getMaxValue()
@@ -190,10 +195,11 @@ public class NumberKeyValidator
 
     /**
      * Set the value of maxValue.
-     * @param v  Value to assign to maxValue.
+     *
+     * @param value  Value to assign to maxValue.
      */
-    public void setMaxValue(NumberKey  v)
+    public void setMaxValue(NumberKey value)
     {
-        this.maxValue = v;
+        this.maxValue = value;
     }
 }

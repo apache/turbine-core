@@ -1,4 +1,10 @@
-package org.apache.turbine.services.intake.model;
+package org.apache.turbine.services.intake.validator;
+
+import java.util.Map;
+import java.util.Vector;
+import java.util.Iterator;
+import java.math.BigDecimal;
+import java.text.ParseException;
 
 /* ====================================================================
  * The Apache Software License, Version 1.1
@@ -54,126 +60,130 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
-import java.text.ParseException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.turbine.services.intake.IntakeException;
-import org.apache.turbine.services.intake.validator.BooleanValidator;
-import org.apache.turbine.services.intake.xmlmodel.XmlField;
-
 /**
- * Processor for boolean fields.
+ * Validator for boolean field types.<br><br>
  *
- * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
- * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * Values are validated by attemting to match the value to
+ * a list of strings for true and false values.  The string
+ * values are compared without reguard to case.<br>
+ *
+ * Valid values for Boolean.TRUE:
+ * <ul>
+ * <li>TRUE</li>
+ * <li>T</li>
+ * <li>YES</li>
+ * <li>Y</li>
+ * <li>1</li>
+ * </ul>
+ * Valid values for Boolean.FALSE:
+ * <ul>
+ * <li>FALSE</li>
+ * <li>F</li>
+ * <li>NO</li>
+ * <li>N</li>
+ * <li>0</li>
+ * </ul>
+ *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class BooleanField
-        extends Field
+public class BooleanValidator
+        extends DefaultValidator
 {
-    /** Used for logging */
-    private static Log log = LogFactory.getLog(BooleanField.class);
+    /** Default error message if the boolean can not be parsed. */
+    private static final String INVALID_BOOLEAN = "Not a boolean value";
 
-    public BooleanField(XmlField field, Group group)
-            throws IntakeException
+    /** String values which would evaluate to Boolean.TRUE */
+    private static Vector trueValues;
+
+    /** String values which would evaluate to Boolean.FALSE */
+    private static Vector falseValues;
+
+    static
     {
-        super(field, group);
+        trueValues = new Vector();
+        trueValues.add("TRUE");
+        trueValues.add("T");
+        trueValues.add("YES");
+        trueValues.add("Y");
+        trueValues.add("1");
+
+        falseValues = new Vector();
+        falseValues.add("FALSE");
+        falseValues.add("F");
+        falseValues.add("NO");
+        falseValues.add("N");
+        falseValues.add("0");
     }
 
+    public BooleanValidator()
+    {
+    }
+
+    public BooleanValidator(Map paramMap)
+            throws InvalidMaskException
+    {
+        super(paramMap);
+    }
+
+
     /**
-     * Sets the default value for a Boolean field
+     * Determine whether a testValue meets the criteria specified
+     * in the constraints defined for this validator
      *
-     * @param prop Parameter for the default values
+     * @param testValue a <code>String</code> to be tested
+     * @exception ValidationException containing an error message if the
+     * testValue did not pass the validation tests.
      */
-    protected void setDefaultValue(String prop)
+    protected void doAssertValidity(String testValue)
+            throws ValidationException
     {
-        if (prop == null)
-        {
-            return;
-        }
-
-        defaultValue = new Boolean(prop);
-    }
-
-    /**
-     * A suitable validator.
-     *
-     * @return class name of the validator
-     */
-    protected String getDefaultValidator()
-    {
-        return BooleanValidator.class.getName();
-    }
-
-    /**
-     * Sets the value of the field from data in the parser.
-     */
-    protected void doSetValue()
-    {
-        String boolStringValue = parser.getString(getKey());
-        Boolean newValue = null;
-        if (boolStringValue != null)
-        {
-            newValue = getBoolean(boolStringValue);
-        }
-        setTestValue(newValue);
-    }
-
-    /**
-     * Parses a string into a Boolean object.  If the field has a validator
-     * and the validator is an instance of BooleanValidator, the parse()
-     * method is used to convert the string into the Boolean.  Otherwise,
-     * the string value is passed to the constructor to the Boolean
-     * object.
-     *
-     * @param stringValue string to parse
-     * @return a <code>Boolean</code> object
-     */
-    private Boolean getBoolean(String stringValue)
-    {
-        Boolean result = null;
-
-        if( validator != null && validator instanceof BooleanValidator )
-        {
-            BooleanValidator bValidator = (BooleanValidator) validator;
-            try
-            {
-                result = bValidator.parse(stringValue);
-            }
-            catch (ParseException e)
-            {
-                // do nothing.  This should never be thrown since this method will not be
-                // executed unless the Validator has already been able to parse the
-                // string value
-            }
-        }
-        else
-        {
-            result = new Boolean(stringValue);
-        }
-
-        return result;
-    }
-
-    /**
-     * Gets the boolean value of the field.  A value of false will be returned
-     * if the value of the field is null.
-     *
-     * @return value of the field.
-     */
-    public boolean booleanValue()
-    {
-        boolean result = false;
         try
         {
-            result = ((Boolean) getValue()).booleanValue();
+            parse(testValue);
         }
-        catch (Exception e)
+        catch (ParseException e)
         {
-            log.error(e);
+            throw new ValidationException(INVALID_BOOLEAN);
         }
+    }
+
+    /**
+     * Parses a srting value into a Boolean object.
+     *
+     * @param stringValue the value to parse
+     * @return a <code>Boolean</a> object
+     */
+    public Boolean parse( String stringValue )
+            throws ParseException
+    {
+        Boolean result = null;
+        for( Iterator iter = trueValues.iterator(); iter.hasNext() && result == null; )
+        {
+            String trueValue = (String) iter.next();
+            if( trueValue.equalsIgnoreCase( stringValue))
+            {
+                result = Boolean.TRUE;
+            }
+        }
+
+        for( Iterator iter = falseValues.iterator(); iter.hasNext() && result == null; )
+        {
+            String falseValue = (String) iter.next();
+            if( falseValue.equalsIgnoreCase( stringValue))
+            {
+                result = Boolean.FALSE;
+            }
+        }
+
+        if( result == null )
+        {
+            throw new ParseException( stringValue +
+                    " could not be converted to a Boolean", 0);
+        }
+
         return result;
     }
+
+
 }

@@ -56,13 +56,21 @@ package org.apache.turbine.services.intake.transform;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.intake.xmlmodel.AppData;
 import org.apache.turbine.services.intake.xmlmodel.Rule;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.services.intake.xmlmodel.XmlGroup;
-import org.apache.xerces.parsers.SAXParser;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -71,64 +79,59 @@ import org.xml.sax.helpers.DefaultHandler;
  * xml schema file and creates and AppData java structure.
  * It uses apache Xerces to do the xml parsing.
  *
- * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class XmlToAppData extends DefaultHandler
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(XmlToAppData.class);
+
     private AppData app;
     private XmlGroup currGroup;
     private XmlField currField;
     private Rule currRule;
     private String currElement;
 
+    private static SAXParserFactory saxFactory;
+
+    static
+    {
+        saxFactory = SAXParserFactory.newInstance();
+        saxFactory.setValidating(true);
+    }
+
     /**
-     * Default custructor
+     * Creates a new instance of the Intake XML Parser
      */
     public XmlToAppData()
     {
         app = new AppData();
     }
 
-
     /**
-     * Parse and xml input file and returns a newly
-     * created and populated AppData structure
+     * Parses a XML input file and returns a newly created and
+     * populated AppData structure.
+     *
+     * @param xmlFile The input file to parse.
+     * @return AppData populated by <code>xmlFile</code>.
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
      */
     public AppData parseFile(String xmlFile)
-        throws Exception
+            throws ParserConfigurationException, SAXException, IOException
     {
-        return parseFile(xmlFile, false);
-    }
+        SAXParser parser = saxFactory.newSAXParser();
 
-    /**
-     * Parse and xml input file and returns a newly
-     * created and populated AppData structure
-     */
-    public AppData parseFile(String xmlFile, boolean skipValidation)
-        throws Exception
-    {
-        SAXParser parser = new SAXParser();
-
-        // set the Resolver for the database DTD
-        DTDResolver dtdResolver = new DTDResolver();
-        parser.setEntityResolver(dtdResolver);
-
-        // We don't use an external content handler - we use this object
-        parser.setContentHandler(this);
-        parser.setErrorHandler(this);
-
-        // Validate the input file
-        parser.setFeature(
-            "http://apache.org/xml/features/validation/dynamic", true);
-        parser.setFeature("http://xml.org/sax/features/validation", true);
-
-        FileReader fr = new FileReader (xmlFile);
-        BufferedReader br = new BufferedReader (fr);
+        FileReader fr = new FileReader(xmlFile);
+        BufferedReader br = new BufferedReader(fr);
         try
         {
-            InputSource is = new InputSource (br);
-            parser.parse(is);
+            InputSource is = new InputSource(br);
+            parser.parse(is, this);
         }
         finally
         {
@@ -138,7 +141,15 @@ public class XmlToAppData extends DefaultHandler
         return app;
     }
 
-
+    /**
+     * EntityResolver implementation. Called by the XML parser
+     *
+     * @return an InputSource for the database.dtd file
+     */
+    public InputSource resolveEntity(String publicId, String systemId)
+    {
+        return new DTDResolver().resolveEntity(publicId, systemId);
+    }
 
     /**
      * Handles opening elements of the xml file.
@@ -165,7 +176,6 @@ public class XmlToAppData extends DefaultHandler
         }
     }
 
-
     /**
      * Handles the character data, which we are using to specify the
      * error message.
@@ -173,12 +183,15 @@ public class XmlToAppData extends DefaultHandler
     public void characters(char[] mesgArray, int start, int length)
     {
         String cdata = new String(mesgArray, start, length).trim();
-        if ( "rule".equals(currElement) && cdata.length() > 0)
+        if ("rule".equals(currElement) && cdata.length() > 0)
         {
             currRule.setMessage(cdata);
         }
-        if ( "required-message".equals(currElement) && cdata.length() > 0)
+        if ("required-message".equals(currElement) && cdata.length() > 0)
         {
+            log.warn("The required-message element is deprecated!  "+
+                    "You should update your intake.xml file to use the "+
+                    "'required' rule instead.");
             currField.setIfRequiredMessage(cdata);
         }
     }
@@ -190,9 +203,10 @@ public class XmlToAppData extends DefaultHandler
      */
     public void warning(SAXParseException spe)
     {
-        System.out.println("Warning Line: " + spe.getLineNumber() +
-                           " Row: " + spe.getColumnNumber() +
-                           " Msg: " + spe.getMessage());
+        log.warn("Parser Exception: " +
+                "Line " + spe.getLineNumber() +
+                " Row: " + spe.getColumnNumber() +
+                " Msg: " + spe.getMessage());
     }
 
     /**
@@ -202,9 +216,10 @@ public class XmlToAppData extends DefaultHandler
      */
     public void error(SAXParseException spe)
     {
-        System.out.println("Error Line: " + spe.getLineNumber() +
-                           " Row: " + spe.getColumnNumber() +
-                           " Msg: " + spe.getMessage());
+        log.error("Parser Exception: " +
+                "Line " + spe.getLineNumber() +
+                " Row: " + spe.getColumnNumber() +
+                " Msg: " + spe.getMessage());
     }
 
     /**
@@ -214,8 +229,9 @@ public class XmlToAppData extends DefaultHandler
      */
     public void fatalError(SAXParseException spe)
     {
-        System.out.println("Fatal Error Line: " + spe.getLineNumber() +
-                           " Row: " + spe.getColumnNumber() +
-                           " Msg: " + spe.getMessage());
+        log.fatal("Parser Exception: " +
+                "Line " + spe.getLineNumber() +
+                " Row: " + spe.getColumnNumber() +
+                " Msg: " + spe.getMessage());
     }
 }

@@ -54,44 +54,59 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.FileValidator;
 import org.apache.turbine.services.intake.validator.ValidationException;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.util.ParameterParser;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.TurbineRuntimeException;
+import org.apache.turbine.util.ValueParser;
 import org.apache.turbine.util.upload.FileItem;
 
 /**
- *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class FileItemField extends Field
+public class FileItemField
+        extends Field
 {
+    /** Used for logging */
+    private static Log log = LogFactory.getLog(FileItemField.class);
 
     public FileItemField(XmlField field, Group group)
-        throws Exception
+            throws IntakeException
     {
         super(field, group);
     }
 
     /**
-     * Sets the default value for an FileItemField
+     * It is not possible to set the default value for this field type.  Calling this
+     * method with a non-null parameter will result in a TurbineRuntimeException
+     *
+     * @throws TurbineRuntimeException
      */
-
     protected void setDefaultValue(String prop)
     {
-        defaultValue = prop;
+        if (prop != null)
+        {
+            throw new TurbineRuntimeException("Default values are not valid for " + this.getClass().getName());
+        }
+
+        defaultValue = null;
     }
 
     /**
      * A suitable validator.
      *
-     * @return "FileValidator"
+     * @return A suitable validator
      */
     protected String getDefaultValidator()
     {
-        return "org.apache.turbine.services.intake.validator.FileValidator";
+        return FileValidator.class.getName();
     }
 
     /**
@@ -100,21 +115,29 @@ public class FileItemField extends Field
      * if a value has been supplied for this field.  if so, the value
      * is validated.
      *
-     * @param data a <code>RunData</code> value
+     * @param vp a <code>ValueParser</code> value
      * @return a <code>Field</code> value
-     * @exception TurbineException if an error occurs
+     * @exception IntakeException if an error occurs
      */
-    public Field init(RunData data)
-        throws TurbineException
+    public Field init(ValueParser vp)
+            throws IntakeException
     {
-        this.data = data;
-        valid_flag = true;
-
-        ParameterParser pp = data.getParameters();
-        if ( pp.containsKey(getKey()) )
+        try
         {
-            set_flag = true;
-            validate(pp);
+            super.parser = (ParameterParser) vp;
+        }
+        catch (ClassCastException e)
+        {
+            throw new IntakeException(
+                    "FileItemFields can only be used with ParameterParser");
+        }
+
+        validFlag = true;
+
+        if (parser.containsKey(getKey()))
+        {
+            setFlag = true;
+            validate();
         }
 
         initialized = true;
@@ -124,26 +147,26 @@ public class FileItemField extends Field
     /**
      * Compares request data with constraints and sets the valid flag.
      */
-    protected boolean validate(ParameterParser pp)
-        //    throws TurbineException
+    protected boolean validate()
     {
-        if ( isMultiValued  )
+        ParameterParser pp = (ParameterParser) super.parser;
+        if (isMultiValued)
         {
             FileItem[] ss = pp.getFileItems(getKey());
             // this definition of not set might need refined.  But
             // not sure the situation will arise.
-            if ( ss.length == 0 )
+            if (ss.length == 0)
             {
-                set_flag = false;
+                setFlag = false;
             }
 
-            if ( validator != null )
+            if (validator != null)
             {
-                for (int i=0; i<ss.length; i++)
+                for (int i = 0; i < ss.length; i++)
                 {
                     try
                     {
-                        ((FileValidator)validator).assertValidity(ss[i]);
+                        ((FileValidator) validator).assertValidity(ss[i]);
                     }
                     catch (ValidationException ve)
                     {
@@ -152,29 +175,29 @@ public class FileItemField extends Field
                 }
             }
 
-            if ( set_flag && valid_flag )
+            if (setFlag && validFlag)
             {
-                doSetValue(pp);
+                doSetValue();
             }
 
         }
         else
         {
             FileItem s = pp.getFileItem(getKey());
-            if ( s == null || s.getSize() == 0 )
+            if (s == null || s.getSize() == 0)
             {
-                set_flag = false;
+                setFlag = false;
             }
 
-            if ( validator != null )
+            if (validator != null)
             {
                 try
                 {
-                    ((FileValidator)validator).assertValidity(s);
+                    ((FileValidator) validator).assertValidity(s);
 
-                    if ( set_flag )
+                    if (setFlag)
                     {
-                        doSetValue(pp);
+                        doSetValue();
                     }
                 }
                 catch (ValidationException ve)
@@ -182,21 +205,22 @@ public class FileItemField extends Field
                     setMessage(ve.getMessage());
                 }
             }
-            else if ( set_flag )
+            else if (setFlag)
             {
-                doSetValue(pp);
+                doSetValue();
             }
         }
 
-        return valid_flag;
+        return validFlag;
     }
 
     /**
-     * converts the parameter to the correct Object.
+     * Sets the value of the field from data in the parser.
      */
-    protected void doSetValue(ParameterParser pp)
+    protected void doSetValue()
     {
-        if ( isMultiValued  )
+        ParameterParser pp = (ParameterParser) super.parser;
+        if (isMultiValued)
         {
             setTestValue(pp.getFileItems(getKey()));
         }

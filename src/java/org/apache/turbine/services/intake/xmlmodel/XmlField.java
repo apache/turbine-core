@@ -25,13 +25,13 @@ package org.apache.turbine.services.intake.xmlmodel;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,32 +54,32 @@ package org.apache.turbine.services.intake.xmlmodel;
  * <http://www.apache.org/>.
  */
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
-import org.apache.turbine.util.StringUtils;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+
 import org.xml.sax.Attributes;
 
 /**
  * A Class for holding data about a property used in an Application.
  *
- * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class XmlField
-    implements java.io.Serializable
+        implements Serializable
 {
-    private static final String DEFAULT_VALIDATOR = 
-        "org.apache.turbine.services.intake.validator.DefaultValidator";
-
-    private String baseClass;
     private String name;
     private String key;
     private String type;
     private String displayName;
-    private String onError;
     private String multiValued;
     private XmlGroup parent;
     private List rules;
@@ -90,59 +90,6 @@ public class XmlField
     private String validator;
     private String defaultValue;
 
-    private static HashMap defaultOnErrors;
-    private static HashMap convertHash;
-    private static HashMap convertArrayHash;
-
-    // static
-    {
-        populateDefaults();
-    }
- 
-    private static void populateDefaults()
-    {
-        defaultOnErrors = new HashMap(15);
-        convertHash = new HashMap(15);
-        convertArrayHash = new HashMap(15);
-
-        defaultOnErrors.put("boolean", "false");
-        defaultOnErrors.put("byte", "-1");
-        defaultOnErrors.put("short", "-1");
-        defaultOnErrors.put("int", "-1");
-        defaultOnErrors.put("long", "-1");
-        defaultOnErrors.put("float", "-1.0f");
-        defaultOnErrors.put("double", "-1.0");
-        defaultOnErrors.put("BigDecimal", "new BigDecimal(\"-1.0\")");
-        // defaultOnErrors.put("BigInteger", "new BigInteger(\"-1\")");
-
-        convertHash.put("boolean", "getBoolean");
-        convertHash.put("byte", "getByte");
-        convertHash.put("short", "getShort");
-        convertHash.put("int", "getInt");
-        convertHash.put("long", "getLong");
-        convertHash.put("float", "getFloat");
-        convertHash.put("double", "getDouble");
-        convertHash.put("Date", "getDate");
-        convertHash.put("BigDecimal", "getBigDecimal");
-        // convertHash.put("BigInteger", "getBigInteger");
-
-        convertHash.put("boolean[]", 
-                        "Boolean.valueOf(stringValue[i]).booleanValue()");
-        convertArrayHash.put("byte[]", 
-                             "Byte.valueOf(stringValue[i]).byteValue()");
-        convertArrayHash.put("short[]", 
-                             "Short.valueOf(stringValue[i]).shortValue()");
-        convertArrayHash.put("int[]", "Integer.parseInt(stringValue[i])");
-        convertArrayHash.put("long[]", "Long.parseLong(stringValue[i])");
-        convertArrayHash.put("float[]", 
-                             "Float.valueOf(stringValue[i]).floatValue()");
-        convertArrayHash.put("double[]", 
-                             "Double.valueOf(stringValue[i]).doubleValue()");
-        convertArrayHash.put("Date[]", "FIXME!!");
-        convertArrayHash.put("BigDecimal[]", "new BigDecimal(stringValue[i])");
-        // convertHash.put("BigInteger", "new BigInteger(stringValue)");
-    }    
-
     /**
      * Default Constructor
      */
@@ -151,7 +98,6 @@ public class XmlField
         rules = new ArrayList();
         ruleMap = new HashMap();
     }
-
 
     /**
      * Creates a new column and set the name
@@ -166,31 +112,28 @@ public class XmlField
     /**
      * Imports a column from an XML specification
      */
-    public void loadFromXML (Attributes attrib)
+    public void loadFromXML(Attributes attrib)
     {
-        setBaseClass(attrib.getValue("baseClass"));
         setName(attrib.getValue("name"));
         key = attrib.getValue("key");
         type = attrib.getValue("type");
         displayName = attrib.getValue("displayName");
-        //setOnError(attrib.getValue("onError"));
         setMultiValued(attrib.getValue("multiValued"));
 
         String mapObj = attrib.getValue("mapToObject");
-        if ( mapObj != null && mapObj.length() != 0 ) 
+        if (mapObj != null && mapObj.length() != 0)
         {
-            setMapToObject(mapObj);            
+            setMapToObject(mapObj);
         }
 
-        String mapProp = attrib.getValue("mapToProperty");        
-        if ( mapProp != null ) 
+        String mapProp = attrib.getValue("mapToProperty");
+        if (mapProp != null)
         {
-            setMapToProperty(mapProp);            
+            setMapToProperty(mapProp);
         }
         setValidator(attrib.getValue("validator"));
         setDefaultValue(attrib.getValue("defaultValue"));
     }
-
 
     /**
      * Get the name of the property
@@ -205,7 +148,7 @@ public class XmlField
      */
     public String getName()
     {
-        return StringUtils.removeUnderScores(name);
+        return StringUtils.replace(name, "_", "");
     }
 
     /**
@@ -239,6 +182,7 @@ public class XmlField
     {
         key = newKey;
     }
+
     /**
      * Get the parameter key of the property
      */
@@ -260,51 +204,8 @@ public class XmlField
      */
     public String getType()
     {
-        /*
-          if ( isMultiValued() ) 
-          {
-          return type + "[]";    
-          } 
-        */  
         return type;
     }
-
-    /**
-     * Set the base class of the field
-     */
-    public void setBaseClass(String newBaseClass)
-    {
-        baseClass = newBaseClass;
-    }
-
-    /**
-     * Get the base class of the field
-     */
-    public String getBaseClass()
-    {
-        return baseClass;
-    }
-
-    /* *
-     * Set the value of the property, if a conversion error occurs.
-     * /
-     public void setOnError(String newOnError)
-     {
-     onError = newOnError;
-     }
-
-     /**
-     * Get the value of the property, if a conversion error occurs.
-     * /
-     public String getOnError()
-     {
-     if ( onError == null && defaultOnErrors.containsKey(getType()) ) 
-     {
-     onError = (String)defaultOnErrors.get(getType());
-     }
-     return onError;
-     }
-    */
 
     /**
      * Set whether this class can have multiple values
@@ -319,7 +220,7 @@ public class XmlField
      */
     public boolean isMultiValued()
     {
-        if ( multiValued != null && multiValued.equals("true") )
+        if (multiValued != null && multiValued.equals("true"))
         {
             return true;
         }
@@ -328,10 +229,12 @@ public class XmlField
 
     /**
      * Set the name of the object that takes this input
+     *
+     * @param objectName name of the class.
      */
-    public void setMapToObject(String obj)
+    public void setMapToObject(String objectName)
     {
-        mapToObject = obj;
+        mapToObject = objectName;
     }
 
     /**
@@ -344,6 +247,8 @@ public class XmlField
 
     /**
      * Set the property method that takes this input
+     *
+     * @param prop Name of the property to which the field will be mapped.
      */
     public void setMapToProperty(String prop)
     {
@@ -355,7 +260,7 @@ public class XmlField
      */
     public String getMapToProperty()
     {
-        if ( mapToProperty == null ) 
+        if (mapToProperty == null)
         {
             return getName();
         }
@@ -380,9 +285,11 @@ public class XmlField
     {
         return validator;
     }
-    
+
     /**
-     * Set the default Value
+     * Set the default Value.
+     *
+     * @param prop The parameter to use as default value.
      */
     public void setDefaultValue(String prop)
     {
@@ -390,43 +297,26 @@ public class XmlField
     }
 
     /**
-     * Get the default Value
+     * Get the default Value.
+     *
+     * @return The default value for this field.
      */
     public String getDefaultValue()
     {
         return defaultValue;
     }
-    
+
     /**
      * The name of the field making sure the first letter is lowercase.
      *
      * @return a <code>String</code> value
+     * @deprecated No replacement
      */
     public String getVariable()
     {
-        String firstChar = getName().substring(0,1).toLowerCase();
+        String firstChar = getName().substring(0, 1).toLowerCase();
         return firstChar + getName().substring(1);
     }
-
-    public String getPPMethod()
-    {
-        String result = null;
-        if ( convertHash.containsKey(getType())) 
-        {
-            result = (String)convertHash.get(getType());    
-        }
-        return result;
-    }        
-
-    public String getArrayConvert()
-    {
-        String result = null;
-        if ( convertArrayHash.containsKey(getType())) 
-        {
-            result = (String)convertArrayHash.get(getType());    
-        }
-        return result;
-    }        
 
     /**
      * Set the parent XmlGroup of the property
@@ -434,7 +324,7 @@ public class XmlField
     public void setGroup(XmlGroup parent)
     {
         this.parent = parent;
-        if ( mapToObject != null && mapToObject.length() != 0 ) 
+        if (mapToObject != null && mapToObject.length() != 0)
         {
             mapToObject = parent.getAppData().getBasePackage() + mapToObject;
         }
@@ -452,16 +342,16 @@ public class XmlField
      * Get the value of ifRequiredMessage.
      * @return value of ifRequiredMessage.
      */
-    public String getIfRequiredMessage() 
+    public String getIfRequiredMessage()
     {
         return ifRequiredMessage;
     }
-    
+
     /**
      * Set the value of ifRequiredMessage.
      * @param v  Value to assign to ifRequiredMessage.
      */
-    public void setIfRequiredMessage(String  v) 
+    public void setIfRequiredMessage(String v)
     {
         this.ifRequiredMessage = v;
     }
@@ -518,66 +408,59 @@ public class XmlField
     public String toString()
     {
         StringBuffer result = new StringBuffer();
-        result.append(" <field name=\""+name+"\"");
-        result.append(" key=\""+key+"\"");
-        result.append(" type=\""+type+"\"");
+        result.append(" <field name=\"" + name + "\"");
+        result.append(" key=\"" + key + "\"");
+        result.append(" type=\"" + type + "\"");
 
         if (displayName != null)
         {
-            result.append(" displayName=\""+displayName+"\"");
-        }
-        if (onError != null)
-        {
-            result.append(" onError=\""+onError+"\"");
+            result.append(" displayName=\"" + displayName + "\"");
         }
         if (mapToObject != null)
         {
-            result.append(" mapToObject=\""+mapToObject+"\"");
+            result.append(" mapToObject=\"" + mapToObject + "\"");
         }
         if (mapToProperty != null)
         {
-            result.append(" mapToProperty=\""+mapToProperty+"\"");
+            result.append(" mapToProperty=\"" + mapToProperty + "\"");
         }
         if (validator != null)
         {
-            result.append(" validator=\""+validator+"\"");
+            result.append(" validator=\"" + validator + "\"");
         }
         if (defaultValue != null)
         {
-            result.append(" defaultValue=\""+defaultValue+"\"");
+            result.append(" defaultValue=\"" + defaultValue + "\"");
         }
 
-
-        if ( rules.size() == 0 )
+        if (rules.size() == 0)
         {
             result.append(" />\n");
         }
         else
         {
             result.append(">\n");
-            for (Iterator i = rules.iterator() ; i.hasNext() ;)
+            for (Iterator i = rules.iterator(); i.hasNext();)
             {
                 result.append(i.next());
             }
             result.append("</field>\n");
-        }        
+        }
 
         return result.toString();
     }
 
     // this methods are called during serialization
     private void writeObject(java.io.ObjectOutputStream stream)
-        throws java.io.IOException
+            throws java.io.IOException
     {
         stream.defaultWriteObject();
     }
 
     private void readObject(java.io.ObjectInputStream stream)
-        throws java.io.IOException, ClassNotFoundException
+            throws java.io.IOException, ClassNotFoundException
     {
         stream.defaultReadObject();
-        populateDefaults();
     }
-
 
 }

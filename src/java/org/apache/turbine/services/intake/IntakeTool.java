@@ -58,38 +58,49 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.om.Retrievable;
 import org.apache.turbine.services.intake.model.Group;
 import org.apache.turbine.services.pull.ApplicationTool;
-import org.apache.turbine.util.Log;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.ValueParser;
 import org.apache.turbine.util.pool.Recyclable;
 
 /**
- * A Pull tool to make intake objects available to a template
+ * The main class through which Intake is accessed.
  *
  * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class IntakeTool
-    implements ApplicationTool, Recyclable
+        implements ApplicationTool, Recyclable
 {
+    /** Used for logging */
+    private static Log log = LogFactory.getLog(IntakeTool.class);
+
     public static final String DEFAULT_KEY = "_0";
     private HashMap groups;
-    private RunData data;
-    // private boolean allValid;
-    // private String omToolKey;
-    // private OMTool omTool;
+    private ValueParser pp;
+
+    HashMap declaredGroups = new HashMap();
+    StringBuffer allGroupsSB = new StringBuffer(256);
+    StringBuffer groupSB = new StringBuffer(128);
 
     /** The cache of PullHelpers. **/
-    private Map pullMap = new HashMap();
+    private Map pullMap;
 
+    /**
+     * Constructor
+     */
     public IntakeTool()
     {
         String[] groupNames = TurbineIntake.getGroupNames();
-        groups = new HashMap((int)(1.25*groupNames.length + 1));
-        pullMap = new HashMap((int)(1.25*groupNames.length + 1));
-        // omToolKey = TurbineResources.getString("tool.intake.om");
+        groups = new HashMap((int) (1.25 * groupNames.length + 1));
+        pullMap = new HashMap((int) (1.25 * groupNames.length + 1));
 
         for (int i = groupNames.length - 1; i >= 0; i--)
         {
@@ -102,9 +113,9 @@ public class IntakeTool
      */
     public void init(Object runData)
     {
-        data = (RunData)runData;
+        this.pp = ((RunData) runData).getParameters();
 
-        String[] groupKeys = data.getParameters().getStrings("intake-grp");
+        String[] groupKeys = pp.getStrings("intake-grp");
         String[] groupNames = null;
         if (groupKeys == null || groupKeys.length == 0)
         {
@@ -125,23 +136,39 @@ public class IntakeTool
             try
             {
                 List foundGroups = TurbineIntake.getGroup(groupNames[i])
-                    .getObjects(data);
+                        .getObjects(pp);
 
                 if (foundGroups != null)
                 {
                     Iterator iter = foundGroups.iterator();
                     while (iter.hasNext())
                     {
-                        Group group = (Group)iter.next();
+                        Group group = (Group) iter.next();
                         groups.put(group.getObjectKey(), group);
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Log.error(e);
+                log.error(e);
             }
         }
+    }
+
+    public void addGroupsToParameters(ValueParser vp)
+    {
+        Iterator i = groups.values().iterator();
+        while (i.hasNext())
+        {
+            Group group = (Group) i.next();
+            if (!declaredGroups.containsKey(group.getIntakeGroupName()))
+            {
+                declaredGroups.put(group.getIntakeGroupName(), null);
+                vp.add("intake-grp", group.getGID());
+            }
+            vp.add(group.getGID(), group.getOID());
+        }
+        declaredGroups.clear();
     }
 
     /**
@@ -159,14 +186,10 @@ public class IntakeTool
         Iterator i = groups.values().iterator();
         while (i.hasNext())
         {
-            declareGroup((Group)i.next(), allGroupsSB);
+            declareGroup((Group) i.next(), allGroupsSB);
         }
         return allGroupsSB.toString();
     }
-
-    HashMap declaredGroups = new HashMap();
-    StringBuffer allGroupsSB = new StringBuffer(256);
-    StringBuffer groupSB = new StringBuffer(128);
 
     /**
      * A convenience method to write out the hidden form fields
@@ -189,9 +212,9 @@ public class IntakeTool
         {
             declaredGroups.put(group.getIntakeGroupName(), null);
             sb.append("<input type=\"hidden\" name=\"")
-              .append("intake-grp\" value=\"")
-              .append(group.getGID())
-              .append("\"></input>\n");
+                    .append("intake-grp\" value=\"")
+                    .append(group.getGID())
+                    .append("\"/>\n");
         }
         group.appendHtmlFormInput(sb);
     }
@@ -202,7 +225,7 @@ public class IntakeTool
         Iterator i = groups.values().iterator();
         while (i.hasNext())
         {
-             ((Group)i.next()).resetDeclared();
+            ((Group) i.next()).resetDeclared();
         }
     }
 
@@ -220,73 +243,89 @@ public class IntakeTool
      */
     public class PullHelper
     {
+        /** Name of the group used by the pull helper */
         String groupName;
 
+        /**
+         * Private constructor to force use of factory method.
+         *
+         * @param groupName
+         */
         private PullHelper(String groupName)
         {
             this.groupName = groupName;
         }
 
-      /**
-       * populates the object with the default values from the XML File
-       *
-       * @return a Group object with the default values
-       */
-
+        /**
+         * Populates the object with the default values from the XML File
+         *
+         * @return a Group object with the default values
+         * @throws IntakeException
+         */
         public Group getDefault()
-            throws Exception
+                throws IntakeException
         {
             return setKey(DEFAULT_KEY);
         }
 
+        /**
+         * Calls setKey(key,true)
+         *
+         * @param key
+         * @return an Intake Group
+         * @throws IntakeException
+         */
         public Group setKey(String key)
-            throws Exception
+                throws IntakeException
         {
             return setKey(key, true);
         }
 
+        /**
+         *
+         * @param key
+         * @param create
+         * @return an Intake Group
+         * @throws IntakeException
+         */
         public Group setKey(String key, boolean create)
-            throws Exception
+                throws IntakeException
         {
             Group g = null;
 
             String inputKey = TurbineIntake.getGroupKey(groupName) + key;
             if (groups.containsKey(inputKey))
             {
-                g = (Group)groups.get(inputKey);
+                g = (Group) groups.get(inputKey);
             }
             else if (create)
             {
                 g = TurbineIntake.getGroup(groupName);
                 groups.put(inputKey, g);
-                g.init(key, data);
+                g.init(key, pp);
             }
 
             return g;
         }
 
-
-      /**
-       * maps an Intake Group to the values from a Retrievable object.
-       *
-       * @param obj       A retrievable object
-       *
-       * @return          an Intake Group
-       *
-       */
-
+        /**
+         * maps an Intake Group to the values from a Retrievable object.
+         *
+         * @param obj A retrievable object
+         * @return an Intake Group
+         */
         public Group mapTo(Retrievable obj)
-            throws Exception
+                throws IntakeException
         {
             Group g = null;
 
             try
             {
                 String inputKey = TurbineIntake.getGroupKey(groupName)
-                    + obj.getQueryKey();
+                        + obj.getQueryKey();
                 if (groups.containsKey(inputKey))
                 {
-                    g = (Group)groups.get(inputKey);
+                    g = (Group) groups.get(inputKey);
                 }
                 else
                 {
@@ -295,44 +334,77 @@ public class IntakeTool
                 }
                 return g.init(obj);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Log.error(e);
+                log.error(e);
             }
 
             return null;
         }
     }
 
-
-    public Object get(String groupName)
-        throws Exception
+    /**
+     * get a specific group
+     */
+    public PullHelper get(String groupName)
+            throws IntakeException
     {
-        return pullMap.get(groupName);
+        return (PullHelper) pullMap.get(groupName);
     }
 
+    /**
+     * Get a specific group
+     *
+     * @param throwExceptions if false, exceptions will be supressed.
+     * @throws IntakeException could not retrieve group
+     */
+    public PullHelper get(String groupName, boolean throwExceptions)
+            throws IntakeException
+    {
+        return (PullHelper) pullMap.get(groupName);
+    }
+
+    /**
+     * Loops through all of the Groups and checks to see if
+     * the data within the Group is valid.
+     */
     public boolean isAllValid()
     {
         boolean allValid = true;
         Iterator iter = groups.values().iterator();
         while (iter.hasNext())
         {
-            Group group = (Group)iter.next();
+            Group group = (Group) iter.next();
             allValid &= group.isAllValid();
         }
         return allValid;
     }
 
+    /**
+     * Get a specific group by name and key.
+     */
     public Group get(String groupName, String key)
-        throws Exception
+            throws IntakeException
     {
-        return ((PullHelper)get(groupName)).setKey(key);
+        if (groupName == null)
+        {
+            throw new IntakeException("Intake.get: groupName == null");
+        }
+        if (key == null)
+        {
+            throw new IntakeException("Intake.get: key == null");
+        }
+        return ((PullHelper) get(groupName)).setKey(key);
     }
 
+    /**
+     * Get a specific group by name and key. Also specify
+     * whether or not you want to create a new group.
+     */
     public Group get(String groupName, String key, boolean create)
-        throws Exception
+            throws IntakeException
     {
-        return ((PullHelper)get(groupName)).setKey(key, create);
+        return ((PullHelper) get(groupName)).setKey(key, create);
     }
 
     /**
@@ -344,7 +416,15 @@ public class IntakeTool
     {
         groups.remove(group.getObjectKey());
         group.removeFromRequest();
-        TurbineIntake.releaseGroup(group);
+
+        try
+        {
+            TurbineIntake.releaseGroup(group);
+        }
+        catch (TurbineException se)
+        {
+            log.error("Tried to release unknown group " + group.getIntakeGroupName());
+        }
     }
 
     /**
@@ -357,7 +437,7 @@ public class IntakeTool
         Object[] allGroups = groups.values().toArray();
         for (int i = allGroups.length - 1; i >= 0; i--)
         {
-            Group group = (Group)allGroups[i];
+            Group group = (Group) allGroups[i];
             remove(group);
         }
     }
@@ -401,19 +481,28 @@ public class IntakeTool
         Iterator iter = groups.values().iterator();
         while (iter.hasNext())
         {
-            Group g = (Group)iter.next();
-            TurbineIntake.releaseGroup(g);
+            Group g = (Group) iter.next();
+
+            try
+            {
+                TurbineIntake.releaseGroup(g);
+            }
+            catch (TurbineException se)
+            {
+                log.error("Tried to release unknown group " + g.getIntakeGroupName());
+            }
         }
 
         groups.clear();
         declaredGroups.clear();
-        data = null;
+        pp = null;
 
         disposed = true;
     }
 
     /**
      * Checks whether the recyclable has been disposed.
+     *
      * @return true, if the recyclable is disposed.
      */
     public boolean isDisposed()

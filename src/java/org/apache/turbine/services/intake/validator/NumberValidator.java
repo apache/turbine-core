@@ -56,7 +56,6 @@ package org.apache.turbine.services.intake.validator;
 
 import java.math.BigDecimal;
 import java.util.Map;
-import org.apache.turbine.util.TurbineException;
 
 /**
  * Validates numbers with the following constraints in addition to those
@@ -72,11 +71,12 @@ import org.apache.turbine.util.TurbineException;
  * <td>Entry was not a valid number</td></tr>
  * </table>
  *
- * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class NumberValidator
-    extends DefaultValidator
+        extends DefaultValidator
 {
     private static String INVALID_NUMBER = "Entry was not a valid number";
 
@@ -87,7 +87,7 @@ public class NumberValidator
     protected String invalidNumberMessage;
 
     public NumberValidator(Map paramMap)
-        throws TurbineException
+            throws InvalidMaskException
     {
         this();
         init(paramMap);
@@ -100,14 +100,14 @@ public class NumberValidator
 
     /**
      * Extract the relevant parameters from the constraints listed
-     * in <input-param> tags within the intake.xml file.
+     * in <rule> tags within the intake.xml file.
      *
-     * @param inputParameters a <code>Map</code> of <code>InputParam</code>'s
+     * @param paramMap a <code>Map</code> of <code>rule</code>'s
      * containing constraints on the input.
-     * @exception TurbineException if an error occurs
+     * @exception InvalidMaskException an invalid mask was specified
      */
     public void init(Map paramMap)
-        throws TurbineException
+            throws InvalidMaskException
     {
         super.init(paramMap);
 
@@ -116,15 +116,15 @@ public class NumberValidator
 
         doInit(paramMap);
 
-        Constraint constraint = (Constraint)paramMap.get("notANumberMessage");
-        if ( constraint != null )
+        Constraint constraint = (Constraint) paramMap.get("notANumberMessage");
+        if (constraint != null)
         {
             String param = constraint.getValue();
-            if ( param != null && param.length() != 0 )
+            if (param != null && param.length() != 0)
             {
                 invalidNumberMessage = param;
             }
-            else if ( constraint.getMessage().length() != 0 )
+            else if (constraint.getMessage().length() != 0)
             {
                 invalidNumberMessage = constraint.getMessage();
             }
@@ -136,16 +136,16 @@ public class NumberValidator
         minValue = null;
         maxValue = null;
 
-        Constraint constraint = (Constraint)paramMap.get("minValue");
-        if ( constraint != null )
+        Constraint constraint = (Constraint) paramMap.get("minValue");
+        if (constraint != null)
         {
             String param = constraint.getValue();
             minValue = new BigDecimal(param);
             minValueMessage = constraint.getMessage();
         }
 
-        constraint = (Constraint)paramMap.get("maxValue");
-        if ( constraint != null )
+        constraint = (Constraint) paramMap.get("maxValue");
+        if (constraint != null)
         {
             String param = constraint.getValue();
             maxValue = new BigDecimal(param);
@@ -167,7 +167,7 @@ public class NumberValidator
      * testValue did not pass the validation tests.
      */
     protected void doAssertValidity(String testValue)
-        throws ValidationException
+            throws ValidationException
     {
         BigDecimal bd = null;
         try
@@ -180,12 +180,12 @@ public class NumberValidator
             throw new ValidationException(invalidNumberMessage);
         }
 
-        if ( minValue != null && bd.compareTo(minValue) < 0 )
+        if (minValue != null && bd.compareTo(minValue) < 0)
         {
             message = minValueMessage;
             throw new ValidationException(minValueMessage);
         }
-        if ( maxValue != null && bd.compareTo(maxValue) > 0 )
+        if (maxValue != null && bd.compareTo(maxValue) > 0)
         {
             message = maxValueMessage;
             throw new ValidationException(maxValueMessage);
@@ -198,6 +198,7 @@ public class NumberValidator
 
     /**
      * Get the value of minValue.
+     *
      * @return value of minValue.
      */
     public BigDecimal getMinValueAsBigDecimal()
@@ -207,15 +208,17 @@ public class NumberValidator
 
     /**
      * Set the value of minValue.
-     * @param v  Value to assign to minValue.
+     *
+     * @param value  Value to assign to minValue.
      */
-    public void setMinValue(BigDecimal  v)
+    public void setMinValue(BigDecimal value)
     {
-        this.minValue = v;
+        this.minValue = value;
     }
 
     /**
      * Get the value of minValueMessage.
+     *
      * @return value of minValueMessage.
      */
     public String getMinValueMessage()
@@ -225,15 +228,17 @@ public class NumberValidator
 
     /**
      * Set the value of minValueMessage.
-     * @param v  Value to assign to minValueMessage.
+     *
+     * @param message  Value to assign to minValueMessage.
      */
-    public void setMinValueMessage(String  v)
+    public void setMinValueMessage(String message)
     {
-        this.minValueMessage = v;
+        this.minValueMessage = message;
     }
 
     /**
      * Get the value of maxValue.
+     *
      * @return value of maxValue.
      */
     public BigDecimal getMaxValueAsBigDecimal()
@@ -243,15 +248,17 @@ public class NumberValidator
 
     /**
      * Set the value of maxValue.
-     * @param v  Value to assign to maxValue.
+     *
+     * @param value  Value to assign to maxValue.
      */
-    public void setMaxValue(BigDecimal  v)
+    public void setMaxValue(BigDecimal value)
     {
-        this.maxValue = v;
+        this.maxValue = value;
     }
 
     /**
      * Get the value of maxValueMessage.
+     *
      * @return value of maxValueMessage.
      */
     public String getMaxValueMessage()
@@ -261,15 +268,17 @@ public class NumberValidator
 
     /**
      * Set the value of maxValueMessage.
-     * @param v  Value to assign to maxValueMessage.
+     *
+     * @param message  Value to assign to maxValueMessage.
      */
-    public void setMaxValueMessage(String  v)
+    public void setMaxValueMessage(String message)
     {
-        this.maxValueMessage = v;
+        this.maxValueMessage = message;
     }
 
     /**
      * Get the value of invalidNumberMessage.
+     *
      * @return value of invalidNumberMessage.
      */
     public String getInvalidNumberMessage()
@@ -278,12 +287,13 @@ public class NumberValidator
     }
 
     /**
+     *
      * Set the value of invalidNumberMessage.
-     * @param v  Value to assign to invalidNumberMessage.
+     * @param message  Value to assign to invalidNumberMessage.
      */
-    public void setInvalidNumberMessage(String  v)
+    public void setInvalidNumberMessage(String message)
     {
-        this.invalidNumberMessage = v;
+        this.invalidNumberMessage = message;
     }
 
 }

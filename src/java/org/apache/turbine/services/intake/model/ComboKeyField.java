@@ -54,58 +54,80 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.ComboKey;
+import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
-import org.apache.turbine.util.Log;
-import org.apache.turbine.util.ParameterParser;
 
 /**
- *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class ComboKeyField extends Field
+public class ComboKeyField
+        extends Field
 {
+    /** Used for logging */
+    private static Log log = LogFactory.getLog(ComboKeyField.class);
+
     public ComboKeyField(XmlField field, Group group)
-        throws Exception
+            throws IntakeException
     {
         super(field, group);
     }
 
     /**
-     * Sets the default value for an ComboKeyField
+     * Sets the default value for a ComboKey field
+     *
+     * @param prop Parameter for the default values
      */
-
     protected void setDefaultValue(String prop)
     {
-        defaultValue = prop;
+        defaultValue = null;
+
+        if (prop == null)
+        {
+            return;
+        }
+
+        defaultValue = new ComboKey(prop);
     }
 
     /**
-     * converts the parameter to the correct Object.
+     * Sets the value of the field from data in the parser.
      */
-    protected void doSetValue(ParameterParser pp)
+    protected void doSetValue()
     {
-        try
+        if (isMultiValued)
         {
-            if ( isMultiValued  )
+            String[] ss = parser.getStrings(getKey());
+            ComboKey[] ival = new ComboKey[ss.length];
+            for (int i = 0; i < ss.length; i++)
             {
-                String[] ss = pp.getStrings(getKey());
-                ComboKey[] ival = new ComboKey[ss.length];
-                for (int i=0; i<ss.length; i++)
+                if (ss[i] != null && ss[i].length() != 0)
                 {
                     ival[i] = new ComboKey(ss[i]);
                 }
-                setTestValue(ival);
+                else
+                {
+                    ival[i] = null;
+                }
+            }
+            setTestValue(ival);
+        }
+        else
+        {
+            String val = parser.getString(getKey());
+            if (val != null && val.length() != 0)
+            {
+                setTestValue(new ComboKey(val));
             }
             else
             {
-                setTestValue( new ComboKey(pp.getString(getKey())) );
+                setTestValue(null);
             }
-        }
-        catch (Exception e)
-        {
-            valid_flag = false;
-            Log.error(e);
         }
     }
 }

@@ -54,11 +54,10 @@ package org.apache.turbine.services.intake.validator;
  * <http://www.apache.org/>.
  */
 
-
 /**
  * Validator api.
  *
- * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @version $Id$
  */
 public interface Validator
@@ -81,7 +80,7 @@ public interface Validator
      * testValue did not pass the validation tests.
      */
     public void assertValidity(String testValue)
-        throws ValidationException;
+            throws ValidationException;
 
     /**
      * Get the last error message resulting from invalid input.

@@ -55,13 +55,14 @@ package org.apache.turbine.services.intake.validator;
  */
 
 import java.util.Map;
-import org.apache.turbine.util.TurbineException;
+
+import org.apache.turbine.services.intake.IntakeException;
 
 /**
  * This interface marks a bean/class that can have its properties set
  * by values in a Map.
  *
- * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @version $Id$
  */
 public interface InitableByConstraintMap
@@ -72,8 +73,8 @@ public interface InitableByConstraintMap
      *
      * @param inputParameters a <code>Map</code> of <code>Constraint</code>'s
      * containing rules and error messages.
-     * @exception TurbineException if an error occurs
+     * @exception InvalidMaskException one of the mask rules is invalid
      */
     public void init(Map inputParameters)
-        throws TurbineException;
+            throws InvalidMaskException;
 }

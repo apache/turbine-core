@@ -55,7 +55,8 @@ package org.apache.turbine.services.intake.validator;
  */
 
 import java.util.Map;
-import org.apache.turbine.util.TurbineException;
+
+import org.apache.turbine.services.intake.IntakeException;
 
 /**
  * Validates numbers with the following constraints in addition to those
@@ -71,11 +72,11 @@ import org.apache.turbine.util.TurbineException;
  * <td>Entry was not a valid number</td></tr>
  * </table>
  *
- * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @version $Id$
  */
 public class IntegerValidator
-    extends NumberValidator
+        extends NumberValidator
 {
     private static String INVALID_NUMBER = "Entry was not a valid integer";
 
@@ -83,7 +84,7 @@ public class IntegerValidator
     private int maxValue;
 
     public IntegerValidator(Map paramMap)
-        throws TurbineException
+            throws InvalidMaskException
     {
         this();
         init(paramMap);
@@ -100,16 +101,16 @@ public class IntegerValidator
         minValue = Integer.MIN_VALUE;
         maxValue = Integer.MAX_VALUE;
 
-        Constraint constraint = (Constraint)paramMap.get("minValue");
-        if ( constraint != null )
+        Constraint constraint = (Constraint) paramMap.get("minValue");
+        if (constraint != null)
         {
             String param = constraint.getValue();
             minValue = Integer.parseInt(param);
             minValueMessage = constraint.getMessage();
         }
 
-        constraint = (Constraint)paramMap.get("maxValue");
-        if ( constraint != null )
+        constraint = (Constraint) paramMap.get("maxValue");
+        if (constraint != null)
         {
             String param = constraint.getValue();
             maxValue = Integer.parseInt(param);
@@ -131,7 +132,7 @@ public class IntegerValidator
      * testValue did not pass the validation tests.
      */
     protected void doAssertValidity(String testValue)
-        throws ValidationException
+            throws ValidationException
     {
         int i = 0;
         try
@@ -144,12 +145,12 @@ public class IntegerValidator
             throw new ValidationException(invalidNumberMessage);
         }
 
-        if ( i < minValue )
+        if (i < minValue)
         {
             message = minValueMessage;
             throw new ValidationException(minValueMessage);
         }
-        if ( i > maxValue )
+        if (i > maxValue)
         {
             message = maxValueMessage;
             throw new ValidationException(maxValueMessage);
@@ -163,6 +164,7 @@ public class IntegerValidator
 
     /**
      * Get the value of minValue.
+     *
      * @return value of minValue.
      */
     public int getMinValue()
@@ -172,15 +174,17 @@ public class IntegerValidator
 
     /**
      * Set the value of minValue.
-     * @param v  Value to assign to minValue.
+     *
+     * @param value  Value to assign to minValue.
      */
-    public void setMinValue(int  v)
+    public void setMinValue(int value)
     {
-        this.minValue = v;
+        this.minValue = value;
     }
 
     /**
      * Get the value of maxValue.
+     *
      * @return value of maxValue.
      */
     public int getMaxValue()
@@ -190,10 +194,11 @@ public class IntegerValidator
 
     /**
      * Set the value of maxValue.
-     * @param v  Value to assign to maxValue.
+     *
+     * @param value  Value to assign to maxValue.
      */
-    public void setMaxValue(int  v)
+    public void setMaxValue(int value)
     {
-        this.maxValue = v;
+        this.maxValue = value;
     }
 }

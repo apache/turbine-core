@@ -57,9 +57,13 @@ package org.apache.turbine.services.intake.model;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.DateStringValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
-import org.apache.turbine.util.ParameterParser;
+import org.apache.turbine.util.TurbineRuntimeException;
 
 /**
  * Field for date inputs as free form text.  The parsing of date strings
@@ -67,20 +71,53 @@ import org.apache.turbine.util.ParameterParser;
  * any validator will be (or extend) DateStringValidator.
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @version $Id$
  */
-public class DateStringField extends Field
+public class DateStringField
+        extends Field
 {
+    /** Used for logging */
+    private static Log log = LogFactory.getLog(DateStringField.class);
+
     private DateFormat df = null;
 
     public DateStringField(XmlField field, Group group)
-        throws Exception
+            throws IntakeException
     {
         super(field, group);
 
-        if ( validator == null )
+        if (validator == null || !(validator instanceof DateStringValidator))
         {
             df = DateFormat.getInstance();
             df.setLenient(true);
+        }
+    }
+
+    /**
+     * Sets the default value for a DateString field
+     *
+     * @param prop Parameter for the default values
+     * @throws TurbineRuntimeException the date string could not be parsed.
+     */
+    protected void setDefaultValue(String prop)
+    {
+        defaultValue = null;
+
+        if (prop == null)
+        {
+            return;
+        }
+
+        try
+        {
+            defaultValue = getDate(prop);
+        }
+        catch (ParseException e)
+        {
+            throw new TurbineRuntimeException("Could not parse " + prop +
+                    " into a valid Date", e);
         }
     }
 
@@ -91,60 +128,105 @@ public class DateStringField extends Field
      */
     protected String getDefaultValidator()
     {
-        return "org.apache.turbine.services.intake.validator.DateStringValidator";
-    }
-
-
-
-    private Date getDate(String dateString)
-    {
-        Date date = null;
-        try
-        {
-            // FIXME: Canonicalize user-entered date strings.
-            if ( df == null ) // guarantees validator != null
-            {
-                date = ((DateStringValidator)validator).parse(dateString);
-            }
-            else
-            {
-                date = df.parse(dateString);
-            }
-        }
-        catch (ParseException e)
-        {
-            //ignore, return null
-        }
-        return date;
+        return DateStringValidator.class.getName();
     }
 
     /**
-     * converts the parameter to the correct Object.
+     * Sets the value of the field from data in the parser.
      */
-    protected void doSetValue(ParameterParser pp)
+    protected void doSetValue()
     {
-        if ( isMultiValued  )
+        if (isMultiValued)
         {
-            String[] ss = pp.getStrings(getKey());
+            String[] ss = parser.getStrings(getKey());
             Date[] dates = new Date[ss.length];
-            for (int i=0; i<ss.length; i++)
+            for (int i = 0; i < ss.length; i++)
             {
-                dates[i] = getDate(ss[i]);
+                if (ss[i] != null && ss[i].length() != 0)
+                {
+                    try
+                    {
+                        dates[i] = getDate(ss[i]);
+                    }
+                    catch (ParseException e)
+                    {
+                        // do nothing.  By the time this method is called, the validator will
+                        // have already ensured that the string can be parsed.
+                    }
+                }
+                else
+                {
+                    dates[i] = null;
+                }
             }
             setTestValue(dates);
         }
         else
         {
-            setTestValue( getDate(pp.getString(getKey())) );
+            String val = parser.getString(getKey());
+            if (val != null && val.length() != 0)
+            {
+                try
+                {
+                    setTestValue(getDate(val));
+                }
+                catch (ParseException e)
+                {
+                    // do nothing.  By the time this method is called, the validator will
+                    // have already ensured that the string can be parsed.
+                }
+            }
+            else
+            {
+                setTestValue(null);
+            }
         }
     }
 
     /**
-     * Sets the default value for an ComboKeyField
+     * Parses a test date string using the Validator if is exists and
+     * is an instance of DateStringValidator.  Otherwise, DateFormat.parse()
+     * is used.
+     * @param dateString The string date to parse
+     * @return A <code>Date</code> object
+     * @throws ParseException The date could not be parsed.
      */
-
-    protected void setDefaultValue(String prop)
+    private Date getDate(String dateString)
+            throws ParseException
     {
-        defaultValue = prop;
+        Date date = null;
+        // FIXME: Canonicalize user-entered date strings.
+        if (validator != null && validator instanceof DateStringValidator)
+        {
+            date = ((DateStringValidator) validator).parse(dateString);
+        }
+        else
+        {
+            date = df.parse(dateString);
+        }
+        return date;
+    }
+
+    public String toString()
+    {
+        String s = null;
+        Object value = getValue();
+        if (value == null)
+        {
+            s = "";
+        }
+        else if (value instanceof String)
+        {
+            s = (String) value;
+        }
+        else if (validator != null && validator instanceof DateStringValidator)
+        {
+            s = ((DateStringValidator) validator).format((Date) value);
+        }
+        else
+        {
+            s = df.format((Date) value);
+        }
+        return s;
     }
 }

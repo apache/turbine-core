@@ -54,45 +54,75 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.util.ParameterParser;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 
 /**
- * Base class for Intake generated input processing classes.
+ * Text field.
  *
- * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class StringField extends Field
+public class StringField
+        extends Field
 {
+    /** Used for logging */
+    private static Log log = LogFactory.getLog(StringField.class);
+
     public StringField(XmlField field, Group group)
-        throws Exception
+            throws IntakeException
     {
         super(field, group);
     }
 
     /**
-     * Sets the default value for an StringField
+     * Sets the default value for a String field
+     *
+     * @param prop Parameter for the default values
      */
-    
+
     protected void setDefaultValue(String prop)
     {
         defaultValue = prop;
     }
 
     /**
-     * converts the parameter to the correct Object.
+     * Sets the value of the field from data in the parser.
      */
-    protected void doSetValue(ParameterParser pp)
+    protected void doSetValue()
     {
-        if ( isMultiValued )
+        if (isMultiValued)
         {
-            String[] ss = pp.getStrings(getKey());
-            setTestValue(ss);
+            String[] ss = parser.getStrings(getKey());
+            String[] sval = new String[ss.length];
+            for (int i = 0; i < ss.length; i++)
+            {
+                if (ss[i] != null && ss[i].length() != 0)
+                {
+                    sval[i] = ss[i];
+                }
+                else
+                {
+                    sval[i] = null;
+                }
+            }
+            setTestValue(sval);
         }
         else
         {
-            setTestValue(pp.getString(getKey()));
+            String val = parser.getString(getKey());
+            if (val != null && val.length() > 0)
+            {
+                setTestValue(val);
+            }
+            else
+            {
+                setTestValue(null);
+            }
         }
     }
 
@@ -100,13 +130,45 @@ public class StringField extends Field
      * Set the value of required.
      * @param v  Value to assign to required.
      */
-    public void setRequired(boolean  v, String message)
+    public void setRequired(boolean v, String message)
     {
         this.required = v;
-        if (v && (!set_flag || ((String)getTestValue()).length() == 0) )
+        if (v)
         {
-            valid_flag=false;
-            this.message = message;
+            if (isMultiValued)
+            {
+                String[] ss = (String[]) getTestValue();
+                if (ss == null || ss.length == 0)
+                {
+                    validFlag = false;
+                    this.message = message;
+                }
+                else
+                {
+                    boolean set = false;
+                    for (int i = 0; i < ss.length; i++)
+                    {
+                        if (ss[i] != null && ss[i].length() > 0)
+                        {
+                            set = true;
+                        }
+                    }
+                    if (!set)
+                    {
+                        validFlag = false;
+                        this.message = message;
+                    }
+                }
+            }
+            else
+            {
+                if (!setFlag || ((String) getTestValue()).length() == 0)
+                {
+                    validFlag = false;
+                    this.message = message;
+                }
+            }
+
         }
     }
 }

@@ -56,13 +56,15 @@ package org.apache.turbine.services.intake.model;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
-import org.apache.turbine.util.TurbineException;
 
 /**
  * Creates Field objects.
  *
- * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public abstract class FieldFactory
@@ -74,101 +76,101 @@ public abstract class FieldFactory
         fieldCtors = new HashMap();
 
         fieldCtors.put("int", new FieldFactory.FieldCtor()
+        {
+            public Field getInstance(XmlField f, Group g)
+                    throws IntakeException
             {
-                public Field getInstance(XmlField f, Group g)
-                    throws Exception
-                {
-                    return new IntegerField(f, g);
-                }
+                return new IntegerField(f, g);
             }
-                       );
+        }
+        );
         fieldCtors.put("boolean", new FieldFactory.FieldCtor()
+        {
+            public Field getInstance(XmlField f, Group g)
+                    throws IntakeException
             {
-                public Field getInstance(XmlField f, Group g)
-                    throws Exception
-                {
-                    return new BooleanField(f, g);
-                }
+                return new BooleanField(f, g);
             }
-                       );
+        }
+        );
         fieldCtors.put("String", new FieldFactory.FieldCtor()
+        {
+            public Field getInstance(XmlField f, Group g)
+                    throws IntakeException
             {
-                public Field getInstance(XmlField f, Group g)
-                    throws Exception
-                {
-                    return new StringField(f, g);
-                }
+                return new StringField(f, g);
             }
-                       );
+        }
+        );
         fieldCtors.put("BigDecimal", new FieldFactory.FieldCtor()
+        {
+            public Field getInstance(XmlField f, Group g)
+                    throws IntakeException
             {
-                public Field getInstance(XmlField f, Group g)
-                    throws Exception
-                {
-                    return new BigDecimalField(f, g);
-                }
+                return new BigDecimalField(f, g);
             }
-                       );
+        }
+        );
         fieldCtors.put("NumberKey", new FieldFactory.FieldCtor()
+        {
+            public Field getInstance(XmlField f, Group g)
+                    throws IntakeException
             {
-                public Field getInstance(XmlField f, Group g)
-                    throws Exception
-                {
-                    return new NumberKeyField(f, g);
-                }
+                return new NumberKeyField(f, g);
             }
-                       );
+        }
+        );
         fieldCtors.put("ComboKey", new FieldFactory.FieldCtor()
+        {
+            public Field getInstance(XmlField f, Group g)
+                    throws IntakeException
             {
-                public Field getInstance(XmlField f, Group g)
-                    throws Exception
-                {
-                    return new ComboKeyField(f, g);
-                }
+                return new ComboKeyField(f, g);
             }
-                       );
+        }
+        );
         fieldCtors.put("StringKey", new FieldFactory.FieldCtor()
+        {
+            public Field getInstance(XmlField f, Group g)
+                    throws IntakeException
             {
-                public Field getInstance(XmlField f, Group g)
-                    throws Exception
-                {
-                    return new StringKeyField(f, g);
-                }
+                return new StringKeyField(f, g);
             }
-                       );
+        }
+        );
         fieldCtors.put("FileItem", new FieldFactory.FieldCtor()
+        {
+            public Field getInstance(XmlField f, Group g)
+                    throws IntakeException
             {
-                public Field getInstance(XmlField f, Group g)
-                    throws Exception
-                {
-                    return new FileItemField(f, g);
-                }
+                return new FileItemField(f, g);
             }
-                       );
+        }
+        );
         fieldCtors.put("DateString", new FieldFactory.FieldCtor()
+        {
+            public Field getInstance(XmlField f, Group g)
+                    throws IntakeException
             {
-                 public Field getInstance(XmlField f, Group g)
-                     throws Exception
-                 {
-                     return new DateStringField(f, g);
-                 }
+                return new DateStringField(f, g);
             }
-                       );
+        }
+        );
         fieldCtors.put("float", new FieldFactory.FieldCtor()
+        {
+            public Field getInstance(XmlField f, Group g)
+                    throws IntakeException
             {
-                public Field getInstance(XmlField f, Group g)
-                    throws Exception
-                {
-                    return new FloatField(f, g);
-                }
+                return new FloatField(f, g);
             }
-                       );
+        }
+        );
         return fieldCtors;
     }
 
     private static abstract class FieldCtor
     {
-        public Field getInstance(XmlField f, Group g) throws Exception
+        public Field getInstance(XmlField f, Group g) throws IntakeException
         {
             return null;
         }
@@ -178,24 +180,26 @@ public abstract class FieldFactory
      * Creates a Field object appropriate for the type specified
      * in the xml file.
      *
-     * @param f a <code>XmlField</code> value
+     * @param xmlField a <code>XmlField</code> value
      * @return a <code>Field</code> value
+     * @throws IntakeException indicates that an unknown type was specified for a field.
      */
-    public static final Field getInstance(XmlField f, Group g)
-        throws Exception
+    public static final Field getInstance(XmlField xmlField, Group xmlGroup)
+            throws IntakeException
     {
         FieldCtor fieldCtor = null;
         Field field = null;
-        String type = f.getType();
+        String type = xmlField.getType();
 
-        fieldCtor = (FieldCtor)fieldCtors.get(type);
-        if ( fieldCtor == null)
+        fieldCtor = (FieldCtor) fieldCtors.get(type);
+        if (fieldCtor == null)
         {
-            throw new TurbineException("Unsupported type: " + type);
+            throw new IntakeException("An Unsupported type has been specified for " +
+                    xmlField.getName() + " in group " + xmlGroup.getIntakeGroupName() + " type = " + type);
         }
         else
         {
-            field = fieldCtor.getInstance(f, g);
+            field = fieldCtor.getInstance(xmlField, xmlGroup);
         }
 
         return field;

@@ -25,13 +25,13 @@ package org.apache.turbine.services.intake.xmlmodel;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -54,9 +54,11 @@ package org.apache.turbine.services.intake.xmlmodel;
  * <http://www.apache.org/>.
  */
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.xml.sax.Attributes;
 
 /**
@@ -66,7 +68,7 @@ import org.xml.sax.Attributes;
  * @version $Id$
  */
 public class XmlGroup
-    implements java.io.Serializable
+        implements Serializable
 {
     private List fields;
     private List mapToObjects;
@@ -88,14 +90,14 @@ public class XmlGroup
     /**
      * Load the input group object from an xml tag.
      */
-    public void loadFromXML (Attributes attrib)
+    public void loadFromXML(Attributes attrib)
     {
         groupName = attrib.getValue("name");
         key = attrib.getValue("key");
         poolCapacity = attrib.getValue("pool-capacity");
-        
+
         String objName = attrib.getValue("mapToObject");
-        if ( objName != null && objName.length() != 0 ) 
+        if (objName != null && objName.length() != 0)
         {
             defaultMapToObject = objName;
         }
@@ -133,7 +135,6 @@ public class XmlGroup
         key = newKey;
     }
 
-
     /**
      * The maximum number of classes specific to this group
      * allowed at one time.
@@ -142,11 +143,11 @@ public class XmlGroup
      */
     public String getPoolCapacity()
     {
-        if ( poolCapacity == null ) 
+        if (poolCapacity == null)
         {
             return "128";
         }
-        
+
         return poolCapacity;
     }
 
@@ -173,30 +174,30 @@ public class XmlGroup
 
         // if this field has an object defined for mapping,
         // add it to the list
-        if ( field.getMapToObject() != null ) 
+        if (field.getMapToObject() != null)
         {
             boolean isNewObject = true;
-            for ( int i=0; i<mapToObjects.size(); i++ ) 
+            for (int i = 0; i < mapToObjects.size(); i++)
             {
-                if ( mapToObjects.get(i).equals(field.getMapToObject()) ) 
+                if (mapToObjects.get(i).equals(field.getMapToObject()))
                 {
                     isNewObject = false;
                     break;
                 }
             }
-            if ( isNewObject ) 
+            if (isNewObject)
             {
                 mapToObjects.add(field.getMapToObject());
             }
         }
         // if a mapToProperty exists, set the object to this group's default
-        else if( field.getMapToProperty() != null
-                 && !"".equals(field.getMapToProperty())
-                 && defaultMapToObject != null )
+        else if (field.getMapToProperty() != null
+                && !"".equals(field.getMapToProperty())
+                && defaultMapToObject != null)
         {
             field.setMapToObject(defaultMapToObject);
         }
-        
+
         fields.add(field);
     }
 
@@ -216,7 +217,6 @@ public class XmlGroup
         return fields.size();
     }
 
-
     /**
      * Returns a Specified field.
      * @return Return a XmlField object or null if it does not exist.
@@ -225,7 +225,7 @@ public class XmlGroup
     {
         String curName;
 
-        for (Iterator iter = fields.iterator() ; iter.hasNext() ;)
+        for (Iterator iter = fields.iterator(); iter.hasNext();)
         {
             XmlField field = (XmlField) iter.next();
             curName = field.getRawName();
@@ -242,7 +242,7 @@ public class XmlGroup
      */
     public boolean containsField(XmlField field)
     {
-        return fields.contains (field);
+        return fields.contains(field);
     }
 
     /**
@@ -250,7 +250,7 @@ public class XmlGroup
      */
     public boolean containsField(String name)
     {
-        return (getField (name) != null);
+        return (getField(name) != null);
     }
 
     public List getMapToObjects()
@@ -264,8 +264,8 @@ public class XmlGroup
     public void setAppData(AppData parent)
     {
         this.parent = parent;
-        if (defaultMapToObject != null ) 
-        {            
+        if (defaultMapToObject != null)
+        {
             defaultMapToObject = parent.getBasePackage() + defaultMapToObject;
             mapToObjects.add(defaultMapToObject);
         }
@@ -284,10 +284,9 @@ public class XmlGroup
      */
     public String getVariable()
     {
-        String firstChar = getName().substring(0,1).toLowerCase();
+        String firstChar = getName().substring(0, 1).toLowerCase();
         return firstChar + getName().substring(1);
     }
-
 
     /**
      * Creates a string representation of this input group. This
@@ -297,19 +296,19 @@ public class XmlGroup
     {
         StringBuffer result = new StringBuffer();
 
-        result.append ("<group name=\"").append(getName());
-        result.append(" key=\""+key+"\"");
+        result.append("<group name=\"").append(getName());
+        result.append(" key=\"" + key + "\"");
         result.append(">\n");
 
         if (fields != null)
         {
-            for (Iterator iter = fields.iterator() ; iter.hasNext() ;)
+            for (Iterator iter = fields.iterator(); iter.hasNext();)
             {
                 result.append(iter.next());
             }
-        }        
+        }
 
-        result.append ("</group>\n");
+        result.append("</group>\n");
 
         return result.toString();
     }

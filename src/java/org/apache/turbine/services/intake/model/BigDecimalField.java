@@ -55,70 +55,124 @@ package org.apache.turbine.services.intake.model;
  */
 
 import java.math.BigDecimal;
-import org.apache.turbine.services.intake.xmlmodel.XmlField;
-import org.apache.turbine.util.Log;
-import org.apache.turbine.util.ParameterParser;
+import java.text.DecimalFormatSymbols;
 
-/**  */
-public class BigDecimalField extends Field
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.services.intake.IntakeException;
+import org.apache.turbine.services.intake.validator.NumberValidator;
+import org.apache.turbine.services.intake.xmlmodel.XmlField;
+
+/**
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @version $Id$
+ */
+public class BigDecimalField
+        extends Field
 {
+    /** Used for logging */
+    private static Log log = LogFactory.getLog(BigDecimalField.class);
+
+    /**
+     * Constructor.
+     *
+     * @param field xml field definition object
+     * @param group xml group definition object
+     * @throws IntakeException thrown by superclass
+     */
     public BigDecimalField(XmlField field, Group group)
-        throws Exception
+            throws IntakeException
     {
         super(field, group);
     }
 
-
     /**
-     * Sets the default value for a BigDecimal
+     * Sets the default value for a BigDecimal field
      *
+     * @param prop Parameter for the default values
      */
-
     protected void setDefaultValue(String prop)
     {
         defaultValue = null;
 
-        if(prop == null)
+        if (prop == null)
+        {
             return;
+        }
 
-        try
-        {
-            defaultValue = new BigDecimal(prop);
-        }
-        catch(RuntimeException e)
-        {
-            Log.error("Could not convert "+prop+" into a BigDecimal. ("+name+")");
-        }
+        defaultValue = new BigDecimal(prop);
     }
 
     /**
      * A suitable validator.
      *
-     * @return "NumberValidator"
+     * @return A suitable validator
      */
     protected String getDefaultValidator()
     {
-        return "org.apache.turbine.services.intake.validator.NumberValidator";
+        return NumberValidator.class.getName();
     }
 
     /**
-     * converts the parameter to the correct Object.
+     * Sets the value of the field from data in the parser.
      */
-    protected void doSetValue(ParameterParser pp)
+    protected void doSetValue()
     {
-        if ( isMultiValued  )
+        if (isMultiValued)
         {
-            String[] ss = pp.getStrings(getKey());
-            BigDecimal[] ival = new BigDecimal[ss.length];
-            for (int i=0; i<ss.length; i++)
+            String[] inputs = parser.getStrings(getKey());
+            BigDecimal[] values = new BigDecimal[inputs.length];
+            for (int i = 0; i < inputs.length; i++)
             {
-                ival[i] = new BigDecimal(ss[i]);
+                if (inputs[i] != null && inputs[i].length() > 0)
+                {
+                    values[i] = canonicalizeDecimalInput(inputs[i]);
+                }
+                else
+                {
+                    values[i] = null;
+                }
             }
-            setTestValue(ival);
+            setTestValue(values);
         }
         else
         {
-            setTestValue( new BigDecimal(pp.getString(getKey())) );
+            String s = parser.getString(getKey());
+            if (s != null && s.length() > 0)
+            {
+                setTestValue(canonicalizeDecimalInput(s));
+            }
+            else
+            {
+                setTestValue(null);
+            }
         }
+    }
+
+    /**
+     * Canonicalizes an user-inputted <code>BigDecimal</code> string
+     * to the system's internal format.
+     *
+     * @param bigDecimal Text conforming to a <code>BigDecimal</code>
+     * description for a set of <code>DecimalFormatSymbols</code>.
+     * @return The canonicalized representation.
+     */
+    protected final BigDecimal canonicalizeDecimalInput(String bigDecimal)
+    {
+        if (getLocale() != null)
+        {
+            DecimalFormatSymbols internal = new DecimalFormatSymbols();
+            DecimalFormatSymbols user = new DecimalFormatSymbols(getLocale());
+
+            if (!internal.equals(user))
+            {
+                bigDecimal = bigDecimal.replace(user.getDecimalSeparator(),
+                        internal.getDecimalSeparator());
+            }
+        }
+        return new BigDecimal(bigDecimal);
     }
 }

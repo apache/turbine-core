@@ -54,78 +54,94 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.services.intake.IntakeException;
+import org.apache.turbine.services.intake.validator.NumberValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 
-import org.apache.turbine.util.Log;
-import org.apache.turbine.util.ParameterParser;
-
 /**
- * Creates Field objects.
+ * Creates Float Field objects.
  *
  * @author <a href="mailto:r.wekker@rubicon-bv.com>Ronald Wekker</a>
+ * @author <a href="mailto:jmcnally@collab.net>John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
- 
-public class FloatField extends Field
+
+public class FloatField
+        extends Field
 {
+    /** Used for logging */
+    private static Log log = LogFactory.getLog(FloatField.class);
 
     public FloatField(XmlField field, Group group)
-        throws Exception
+            throws IntakeException
     {
         super(field, group);
     }
 
     /**
-     * Sets the default value for an Float
+     * Sets the default value for an Float Field
+     *
+     * @param prop Parameter for the default values
      */
-    
     protected void setDefaultValue(String prop)
     {
         defaultValue = null;
 
-        if(prop == null)
+        if (prop == null)
         {
             return;
         }
 
-        try
-        {
-            defaultValue = new Float(prop);
-        } 
-        catch(Exception e) 
-        {
-            Log.error("Could not convert "+prop+" into an Float. ("+name+")");
-        }
+        defaultValue = new Float(prop);
     }
 
     /**
      * A suitable validator.
      *
-     * @return "FloatValidator"
+     * @return A suitable validator
      */
     protected String getDefaultValidator()
     {
-        return "org.apache.turbine.services.intake.validator.NumberValidator";
+        return NumberValidator.class.getName();
     }
 
     /**
-     * converts the parameter to the correct Object.
+     * Sets the value of the field from data in the parser.
      */
-    protected void doSetValue(ParameterParser pp)
+    protected void doSetValue()
     {
-        if ( isMultiValued  )
+        if (isMultiValued)
         {
-            String[] ss = pp.getStrings(getKey());
-            float[] ival = new float[ss.length];
-            for (int i=0; i<ss.length; i++)
+            String[] ss = parser.getStrings(getKey());
+            Float[] ival = new Float[ss.length];
+            for (int i = 0; i < ss.length; i++)
             {
-                ival[i] = Float.parseFloat(ss[i]);
+                if (ss[i] != null && ss[i].length() > 0)
+                {
+                    ival[i] = new Float(ss[i]);
+                }
+                else
+                {
+                    ival[i] = null;
+                }
             }
             setTestValue(ival);
         }
         else
         {
-            setTestValue(new Float(pp.getString(getKey())));
+            String s = parser.getString(getKey());
+            if (s != null && s.length() > 0)
+            {
+                setTestValue(new Float(s));
+            }
+            else
+            {
+                setTestValue(null);
+            }
         }
     }
 }

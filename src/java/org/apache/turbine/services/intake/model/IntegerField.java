@@ -54,72 +54,88 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.services.intake.IntakeException;
+import org.apache.turbine.services.intake.validator.IntegerValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
-import org.apache.turbine.util.Log;
-import org.apache.turbine.util.ParameterParser;
 
 /**
- *
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class IntegerField extends Field
+public class IntegerField
+        extends Field
 {
+    /** Used for logging */
+    private static Log log = LogFactory.getLog(IntegerField.class);
 
     public IntegerField(XmlField field, Group group)
-        throws Exception
+            throws IntakeException
     {
         super(field, group);
     }
 
     /**
-     * Sets the default value for an Integer
+     * Sets the default value for an Integer Field
+     *
+     * @param prop Parameter for the default values
      */
-
     protected void setDefaultValue(String prop)
     {
         defaultValue = null;
 
-        if(prop == null)
+        if (prop == null)
+        {
             return;
+        }
 
-        try
-        {
-            defaultValue = new Integer(prop);
-        }
-        catch(Exception e)
-        {
-            Log.error("Could not convert "+prop+" into an Integer. ("+name+")");
-        }
+        defaultValue = new Integer(prop);
     }
 
     /**
      * A suitable validator.
      *
-     * @return "IntegerValidator"
+     * @return A suitable validator
      */
     protected String getDefaultValidator()
     {
-        return "org.apache.turbine.services.intake.validator.IntegerValidator";
+        return IntegerValidator.class.getName();
     }
 
     /**
-     * converts the parameter to the correct Object.
+     * Sets the value of the field from data in the parser.
      */
-    protected void doSetValue(ParameterParser pp)
+    protected void doSetValue()
     {
-        if ( isMultiValued  )
+        if (isMultiValued)
         {
-            String[] ss = pp.getStrings(getKey());
-            int[] ival = new int[ss.length];
-            for (int i=0; i<ss.length; i++)
+            String[] ss = parser.getStrings(getKey());
+            Integer[] ival = new Integer[ss.length];
+            for (int i = 0; i < ss.length; i++)
             {
-                ival[i] = Integer.parseInt(ss[i]);
+                if (ss[i] != null && ss[i].length() != 0)
+                {
+                    ival[i] = new Integer(ss[i]);
+                }
+                else
+                {
+                    ival[i] = null;
+                }
             }
             setTestValue(ival);
         }
         else
         {
-            setTestValue(new Integer(pp.getString(getKey())));
+            Integer newValue = null;
+            String val = parser.getString(getKey());
+            if (val != null && val.length() > 0)
+            {
+                newValue = new Integer(val);
+            }
+            setTestValue(newValue);
         }
     }
 }

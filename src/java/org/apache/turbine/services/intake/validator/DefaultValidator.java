@@ -55,8 +55,14 @@ package org.apache.turbine.services.intake.validator;
  */
 
 import java.util.Map;
-import org.apache.regexp.RE;
-import org.apache.turbine.util.TurbineException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
+import org.apache.turbine.services.intake.IntakeException;
 
 /**
  * A validator that will compare a testValue against the following
@@ -72,14 +78,22 @@ import org.apache.turbine.util.TurbineException;
  * This validator can serve as the base class for more specific validators
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class DefaultValidator
-    implements Validator, InitableByConstraintMap
+        implements Validator, InitableByConstraintMap
 {
     protected boolean required;
     protected String requiredMessage;
-    protected RE mask;
+
+    /** The matching mask String as supplied by the XML input */
+    protected String maskString;
+
+    /** The compiled perl5 Regular expression from the ORO Perl5Compiler */
+    protected Pattern maskPattern;
+
+    /** The message to report if the mask constraint is not satisfied */
     protected String maskMessage;
     protected int minLength;
     protected String minLengthMessage;
@@ -88,8 +102,23 @@ public class DefaultValidator
 
     protected String message;
 
+    /** perl5 compiler, needed for setting up the masks */
+    private Perl5Compiler patternCompiler = new Perl5Compiler();
+
+    /** perl5 matcher */
+    private Perl5Matcher patternMatcher = new Perl5Matcher();
+
+    /** Logging */
+    private Log log = LogFactory.getLog(this.getClass());
+
+    /**
+     * Constructor
+     *
+     * @param paramMap
+     * @throws InvalidMaskException
+     */
     public DefaultValidator(Map paramMap)
-        throws TurbineException
+            throws InvalidMaskException
     {
         init(paramMap);
     }
@@ -98,52 +127,56 @@ public class DefaultValidator
     {
     }
 
-
-
     /**
      * Extract the relevant parameters from the constraints listed
      * in <rule> tags within the intake.xml file.
      *
      * @param paramMap a <code>Map</code> of <code>Rule</code>'s
      * containing constraints on the input.
-     * @exception TurbineException if an error occurs
+     * @exception InvalidMaskException An invalid mask was specified for one of the rules
      */
     public void init(Map paramMap)
-        throws TurbineException
+            throws InvalidMaskException
     {
-        mask = null;
+        // Init Mask stuff
+        maskString = null;
+        maskPattern = null;
         maskMessage = null;
+
+        // Init minLength stuff
         minLength = 0;
         minLengthMessage = null;
+
+        // Init maxLength stuff
         maxLength = 0;
         maxLengthMessage = null;
 
-        Constraint constraint = (Constraint)paramMap.get("mask");
-        if ( constraint != null )
+        Constraint constraint = (Constraint) paramMap.get("mask");
+        if (constraint != null)
         {
             String param = constraint.getValue();
             setMask(param);
             maskMessage = constraint.getMessage();
         }
 
-        constraint = (Constraint)paramMap.get("minLength");
-        if ( constraint != null )
+        constraint = (Constraint) paramMap.get("minLength");
+        if (constraint != null)
         {
             String param = constraint.getValue();
             minLength = Integer.parseInt(param);
             minLengthMessage = constraint.getMessage();
         }
 
-        constraint = (Constraint)paramMap.get("maxLength");
-        if ( constraint != null )
+        constraint = (Constraint) paramMap.get("maxLength");
+        if (constraint != null)
         {
             String param = constraint.getValue();
             maxLength = Integer.parseInt(param);
             maxLengthMessage = constraint.getMessage();
         }
 
-        constraint = (Constraint)paramMap.get("required");
-        if ( constraint == null )
+        constraint = (Constraint) paramMap.get("required");
+        if (constraint == null)
         {
             required = false;
         }
@@ -186,17 +219,17 @@ public class DefaultValidator
      * testValue did not pass the validation tests.
      */
     public void assertValidity(String testValue)
-        throws ValidationException
+            throws ValidationException
     {
         message = null;
 
-        if ( (!required && minLength == 0)
-             && ( testValue == null || testValue.length() == 0) )
+        if ((!required && minLength == 0)
+                && (testValue == null || testValue.length() == 0))
         {
             return;
         }
-        else if ( required
-                  && ( testValue == null || testValue.length() == 0))
+        else if (required
+                && (testValue == null || testValue.length() == 0))
         {
             message = requiredMessage;
             throw new ValidationException(requiredMessage);
@@ -205,17 +238,27 @@ public class DefaultValidator
         // allow subclasses first chance at validation
         doAssertValidity(testValue);
 
-        if ( mask != null && !mask.match(testValue) )
+        if (maskPattern != null)
         {
-            message = maskMessage;
-            throw new ValidationException(maskMessage);
+            boolean patternMatch =
+                    patternMatcher.matches(testValue, maskPattern);
+
+            log.debug("Trying to match " + testValue
+                    + " to pattern " + maskString);
+
+            if (!patternMatch)
+            {
+                message = maskMessage;
+                throw new ValidationException(maskMessage);
+            }
         }
-        if ( minLength > 0 && testValue.length() < minLength )
+
+        if (minLength > 0 && testValue.length() < minLength)
         {
             message = minLengthMessage;
             throw new ValidationException(minLengthMessage);
         }
-        if ( maxLength > 0 && testValue.length() > maxLength )
+        if (maxLength > 0 && testValue.length() > maxLength)
         {
             message = maxLengthMessage;
             throw new ValidationException(maxLengthMessage);
@@ -229,19 +272,21 @@ public class DefaultValidator
      */
     public String getMessage()
     {
-        if ( message == null )
+        if (message == null)
         {
             return "";
         }
         return message;
     }
 
-
     /**
      * Method to allow subclasses to add additional validation
+     *
+     * @param testValue Value to validate
+     * @throws ValidationException validation failed
      */
     protected void doAssertValidity(String testValue)
-        throws ValidationException
+            throws ValidationException
     {
     }
 
@@ -251,6 +296,7 @@ public class DefaultValidator
 
     /**
      * Get the value of required.
+     *
      * @return value of required.
      */
     public boolean isRequired()
@@ -260,15 +306,17 @@ public class DefaultValidator
 
     /**
      * Set the value of required.
-     * @param v  Value to assign to required.
+     *
+     * @param required  Value to assign to required.
      */
-    public void setRequired(boolean  v)
+    public void setRequired(boolean required)
     {
-        this.required = v;
+        this.required = required;
     }
 
     /**
      * Get the value of requiredMessage.
+     *
      * @return value of requiredMessage.
      */
     public String getRequiredMessage()
@@ -278,41 +326,52 @@ public class DefaultValidator
 
     /**
      * Set the value of requiredMessage.
-     * @param v  Value to assign to requiredMessage.
+     *
+     * @param message  Value to assign to requiredMessage.
      */
-    public void setRequiredMessage(String  v)
+    public void setRequiredMessage(String message)
     {
-        this.requiredMessage = v;
+        this.requiredMessage = message;
     }
 
     /**
      * Get the value of mask.
+     *
      * @return value of mask.
      */
     public String getMask()
     {
-        return mask.toString();
+        return maskString;
     }
 
     /**
      * Set the value of mask.
-     * @param v  Value to assign to mask.
+     *
+     * @param mask  Value to assign to mask.
+     * @throws InvalidMaskException the mask could not be compiled.
      */
-    public void setMask(String  v)
-        throws TurbineException
+    public void setMask(String mask)
+            throws InvalidMaskException
     {
+        maskString = mask;
+
+        // Fixme. We should make this configureable by the XML file -- hps
+        int maskOptions = Perl5Compiler.DEFAULT_MASK;
+
         try
         {
-            mask = new RE(v);
+            log.debug("Compiling pattern " + maskString);
+            maskPattern = patternCompiler.compile(maskString, maskOptions);
         }
-        catch (org.apache.regexp.RESyntaxException e)
+        catch (MalformedPatternException mpe)
         {
-            throw new TurbineException(e);
+            throw new InvalidMaskException("Could not compile pattern " + maskString, mpe);
         }
     }
 
     /**
      * Get the value of maskMessage.
+     *
      * @return value of maskMessage.
      */
     public String getMaskMessage()
@@ -322,15 +381,17 @@ public class DefaultValidator
 
     /**
      * Set the value of maskMessage.
-     * @param v  Value to assign to maskMessage.
+     *
+     * @param message  Value to assign to maskMessage.
      */
-    public void setMaskMessage(String  v)
+    public void setMaskMessage(String message)
     {
-        this.maskMessage = v;
+        this.maskMessage = message;
     }
 
     /**
      * Get the value of minLength.
+     *
      * @return value of minLength.
      */
     public int getMinLength()
@@ -340,15 +401,17 @@ public class DefaultValidator
 
     /**
      * Set the value of minLength.
-     * @param v  Value to assign to minLength.
+     *
+     * @param length  Value to assign to minLength.
      */
-    public void setMinLength(int  v)
+    public void setMinLength(int length)
     {
-        this.minLength = v;
+        this.minLength = length;
     }
 
     /**
      * Get the value of minLengthMessage.
+     *
      * @return value of minLengthMessage.
      */
     public String getMinLengthMessage()
@@ -358,15 +421,17 @@ public class DefaultValidator
 
     /**
      * Set the value of minLengthMessage.
-     * @param v  Value to assign to minLengthMessage.
+     *
+     * @param message  Value to assign to minLengthMessage.
      */
-    public void setMinLengthMessage(String  v)
+    public void setMinLengthMessage(String message)
     {
-        this.minLengthMessage = v;
+        this.minLengthMessage = message;
     }
 
     /**
      * Get the value of maxLength.
+     *
      * @return value of maxLength.
      */
     public int getMaxLength()
@@ -376,15 +441,17 @@ public class DefaultValidator
 
     /**
      * Set the value of maxLength.
-     * @param v  Value to assign to maxLength.
+     *
+     * @param length  Value to assign to maxLength.
      */
-    public void setMaxLength(int  v)
+    public void setMaxLength(int length)
     {
-        this.maxLength = v;
+        this.maxLength = length;
     }
 
     /**
      * Get the value of maxLengthMessage.
+     *
      * @return value of maxLengthMessage.
      */
     public String getMaxLengthMessage()
@@ -394,10 +461,11 @@ public class DefaultValidator
 
     /**
      * Set the value of maxLengthMessage.
-     * @param v  Value to assign to maxLengthMessage.
+     *
+     * @param message  Value to assign to maxLengthMessage.
      */
-    public void setMaxLengthMessage(String  v)
+    public void setMaxLengthMessage(String message)
     {
-        this.maxLengthMessage = v;
+        this.maxLengthMessage = message;
     }
 }

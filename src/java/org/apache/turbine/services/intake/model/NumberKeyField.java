@@ -54,68 +54,94 @@ package org.apache.turbine.services.intake.model;
  * <http://www.apache.org/>.
  */
 
-import java.util.Vector;
-import org.apache.torque.om.NumberKey;
-import org.apache.torque.om.ObjectKey;
-import org.apache.turbine.services.intake.xmlmodel.Rule;
-import org.apache.turbine.services.intake.xmlmodel.XmlField;
-import org.apache.turbine.util.ParameterParser;
-import org.apache.turbine.util.Log;
+import java.math.BigDecimal;
 
-/**  */
-public class NumberKeyField extends Field
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.torque.om.NumberKey;
+import org.apache.turbine.services.intake.IntakeException;
+import org.apache.turbine.services.intake.validator.NumberKeyValidator;
+import org.apache.turbine.services.intake.xmlmodel.XmlField;
+
+/**
+ * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @version $Id$
+ */
+public class NumberKeyField
+        extends BigDecimalField
 {
+    /** Used for logging */
+    private static Log log = LogFactory.getLog(NumberKeyField.class);
+
     public NumberKeyField(XmlField field, Group group)
-        throws Exception
+            throws IntakeException
     {
         super(field, group);
     }
 
+    /**
+     * Sets the default value for a NumberKey field
+     *
+     * @param prop Parameter for the default values
+     */
     protected void setDefaultValue(String prop)
     {
-        if(prop == null)
+        if (prop == null)
+        {
             return;
+        }
 
-        try
-        {
-            defaultValue = new NumberKey(prop);
-        }
-        catch(RuntimeException e)
-        {
-            Log.error("Could not convert "+prop+" into a NumberKey. ("+name+")");
-        }
+        defaultValue = new NumberKey(prop);
     }
-
 
     /**
      * A suitable validator.
      *
-     * @return "NumberKeyValidator"
+     * @return A suitable validator
      */
     protected String getDefaultValidator()
     {
-        return
-            "org.apache.turbine.services.intake.validator.NumberKeyValidator";
+        return NumberKeyValidator.class.getName();
     }
 
     /**
-     * converts the parameter to the correct Object.
+     * Sets the value of the field from data in the parser.
      */
-    protected void doSetValue(ParameterParser pp)
+    protected void doSetValue()
     {
-        if ( isMultiValued  )
+        if (isMultiValued)
         {
-            String[] ss = pp.getStrings(getKey());
-            NumberKey[] ival = new NumberKey[ss.length];
-            for (int i=0; i<ss.length; i++)
+            String[] inputs = parser.getStrings(getKey());
+            NumberKey[] values = new NumberKey[inputs.length];
+            for (int i = 0; i < inputs.length; i++)
             {
-                ival[i] = new NumberKey(ss[i]);
+                if (inputs[i] != null && inputs[i].length() > 0)
+                {
+                    values[i] = new NumberKey(
+                            canonicalizeDecimalInput(inputs[i]));
+                }
+                else
+                {
+                    values[i] = null;
+                }
             }
-            setTestValue(ival);
+            setTestValue(values);
         }
         else
         {
-            setTestValue( new NumberKey(pp.getString(getKey())) );
+            String val = parser.getString(getKey());
+            if (val != null && val.length() > 0)
+            {
+                BigDecimal bd = canonicalizeDecimalInput(val);
+                setTestValue(new NumberKey(bd));
+            }
+            else
+            {
+                setTestValue(null);
+            }
         }
     }
 

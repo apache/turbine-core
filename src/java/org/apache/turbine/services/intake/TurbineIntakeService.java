@@ -53,6 +53,8 @@ package org.apache.turbine.services.intake;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
+
+import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,38 +65,43 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
+import java.util.Vector;
 import javax.servlet.ServletConfig;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.pool.KeyedObjectPool;
+import org.apache.commons.pool.KeyedPoolableObjectFactory;
+import org.apache.commons.pool.impl.StackKeyedObjectPool;
 import org.apache.turbine.Turbine;
-import org.apache.turbine.om.OMTool;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.intake.model.Group;
 import org.apache.turbine.services.intake.transform.XmlToAppData;
 import org.apache.turbine.services.intake.xmlmodel.AppData;
 import org.apache.turbine.services.intake.xmlmodel.XmlGroup;
-import org.apache.turbine.util.Log;
 import org.apache.turbine.util.ServletUtils;
-import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.pool.BoundedBuffer;
-import org.apache.turbine.util.pool.Recyclable;
 
 /**
  * This service provides access to input processing objects based
  * on an XML specification.
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class TurbineIntakeService
-    extends TurbineBaseService
-    implements IntakeService
+        extends TurbineBaseService
+        implements IntakeService
 {
-    /** Array of group names. */
-    private String[] groupNames;
+    /** Map of groupNames -> appData elements */
+    private Map groupNames;
 
     /** The cache of group names. */
     private Map groupNameMap;
@@ -108,38 +115,32 @@ public class TurbineIntakeService
     /** The cache of property setters. */
     private Map setterMap;
 
-    /** Keep a OMTool to be able to retrieve objects */
-    private OMTool omTool;
+    /** AppData -> keyed Pools Map */
+    private Map keyedPools;
 
-    /** The top element of the object tree */
-    private AppData appData;
-
-    /**
-     * The pool repository, one pool for each class.
-     */
-    private HashMap poolRepository = new HashMap();
+    /** Used for logging */
+    private static Log log = LogFactory.getLog(TurbineIntakeService.class);
 
     // a couple integers for a switch statement
     private static final int GETTER = 0;
     private static final int SETTER = 1;
 
     /**
-     * Constructor.
+     * Constructor. All Components need a public no argument constructor
+     * to be a legal Component.
      */
     public TurbineIntakeService()
     {
     }
 
     /**
-     * Initializes the Intake Service.
-     * This is a zero parameter variant which queries the Turbine Servlet
-     * for its config.
+     * Called the first time the Service is used.
      *
      * @throws InitializationException Something went wrong in the init
      *         stage
-     */ 
+     */
     public void init()
-        throws InitializationException
+            throws InitializationException
     {
         ServletConfig conf = Turbine.getTurbineServletConfig();
         init(conf);
@@ -152,83 +153,170 @@ public class TurbineIntakeService
      * @deprecated use init() instead.
      */
     public void init(ServletConfig config)
-        throws InitializationException
+            throws InitializationException
     {
-        Properties props = getProperties();
-        String xmlPath = props.getProperty(XML_PATH);
-        if ( xmlPath == null )
+        Vector defaultXmlPathes = new Vector();
+        defaultXmlPathes.add(XML_PATH_DEFAULT);
+
+        List xmlPathes = getConfiguration()
+                .getVector(XML_PATH, defaultXmlPathes);
+
+        Map appDataElements = null;
+
+        String serialDataPath = getConfiguration()
+                .getString(SERIAL_XML, SERIAL_XML_DEFAULT);
+
+        if (!serialDataPath.equalsIgnoreCase("none"))
         {
-            String pathError =
-                "Path to intake.xml was not specified.  Check that the" +
-                " property exists in TR.props and was loaded.";
-            Log.error(pathError);
-            throw new InitializationException(pathError);
+            serialDataPath = ServletUtils.expandRelative(config, serialDataPath);
         }
-        //!! need a constant
-        String appDataPath = "/WEB-INF/appData.ser";
-        try
+        else
         {
-            // If possible, transform paths to be webapp root relative.
-            xmlPath = ServletUtils.expandRelative(config, xmlPath);
-            appDataPath = ServletUtils.expandRelative(config, appDataPath);
-            File serialAppData = new File(appDataPath);
+            serialDataPath = null;
+        }
+
+        log.debug("Path for serializing: " + serialDataPath);
+
+        groupNames = new HashMap();
+        groupKeyMap = new HashMap();
+        groupNameMap = new HashMap();
+        getterMap = new HashMap();
+        setterMap = new HashMap();
+        keyedPools = new HashMap();
+
+        if (xmlPathes == null)
+        {
+            String LOAD_ERROR = "No pathes for XML files were specified. " +
+                    "Check that the property exists in " +
+                    "TurbineResources.props and were loaded.";
+
+            log.error(LOAD_ERROR);
+            throw new InitializationException(LOAD_ERROR);
+        }
+
+        Set xmlFiles = new HashSet();
+
+        long timeStamp = 0;
+
+        for (Iterator it = xmlPathes.iterator(); it.hasNext();)
+        {
+            // Files are webapp.root relative
+            String xmlPath = ServletUtils.expandRelative(config, (String) it.next());
             File xmlFile = new File(xmlPath);
-            if ( serialAppData.exists()
-                 && serialAppData.lastModified() > xmlFile.lastModified() )
+
+            log.debug("Path for XML File: " + xmlFile);
+
+            if (!xmlFile.canRead())
             {
-                InputStream in = null;
+                String READ_ERR = "Could not read input file " + xmlPath;
+
+                log.error(READ_ERR);
+                throw new InitializationException(READ_ERR);
+            }
+
+            xmlFiles.add(xmlPath);
+
+            log.debug("Added " + xmlPath + " as File to parse");
+
+            // Get the timestamp of the youngest file to be compared with
+            // a serialized file. If it is younger than the serialized file,
+            // then we have to parse the XML anyway.
+            timeStamp =
+                    (xmlFile.lastModified() > timeStamp) ? xmlFile.lastModified() : timeStamp;
+        }
+
+        Map serializedMap = loadSerialized(serialDataPath, timeStamp);
+
+        if (serializedMap != null)
+        {
+            // Use the serialized data as XML groups. Don't parse.
+            appDataElements = serializedMap;
+            log.debug("Using the serialized map");
+        }
+        else
+        {
+            // Parse all the given XML files
+            appDataElements = new HashMap();
+
+            for (Iterator it = xmlFiles.iterator(); it.hasNext();)
+            {
+                String xmlPath = (String) it.next();
+                AppData appData = null;
+
+                log.debug("Now parsing: " + xmlPath);
                 try
                 {
-                    in = new FileInputStream(serialAppData);
-                    ObjectInputStream p = new ObjectInputStream(in);
-                    appData = (AppData)p.readObject();
+                    XmlToAppData xmlApp = new XmlToAppData();
+                    appData = xmlApp.parseFile(xmlPath);
                 }
                 catch (Exception e)
                 {
-                    // We got a corrupt file for some reason
-                    writeAppData(xmlPath, appDataPath, serialAppData);
+                    log.error("Could not parse XML file " + xmlPath, e);
+
+                    throw new InitializationException("Could not parse XML file " +
+                            xmlPath, e);
                 }
-                finally
-                {
-                    if (in != null)
-                    {
-                        in.close();
-                    }
-                }
-            }
-            else
-            {
-                writeAppData(xmlPath, appDataPath, serialAppData);
+
+                appDataElements.put(appData, xmlPath);
+                log.debug("Saving appData for " + xmlPath);
             }
 
-            groupNames = new String[appData.getGroups().size()];
-            groupKeyMap = new HashMap();
-            groupNameMap = new HashMap();
-            getterMap = new HashMap();
-            setterMap = new HashMap();
-            // omTool = new OMTool();
-            String pkg = appData.getBasePackage();
+            saveSerialized(serialDataPath, appDataElements);
+        }
 
-            List glist = appData.getGroups();
-            for ( int i=glist.size()-1; i>=0; i-- )
+        try
+        {
+            for (Iterator it = appDataElements.keySet().iterator(); it.hasNext();)
             {
-                XmlGroup g = (XmlGroup)glist.get(i);
-                String groupName = g.getName();
-                groupNames[i] = groupName;
-                groupKeyMap.put(groupName, g.getKey());
-                groupNameMap.put(g.getKey(), groupName);
+                AppData appData = (AppData) it.next();
 
-                List classNames = g.getMapToObjects();
-                Iterator iter2 = classNames.iterator();
-                while (iter2.hasNext())
+                String pkg = appData.getBasePackage();
+
+                int maxPooledGroups = 0;
+                List glist = appData.getGroups();
+
+                String groupPrefix = appData.getGroupPrefix();
+
+                for (int i = glist.size() - 1; i >= 0; i--)
                 {
-                    String className = (String)iter2.next();
-                    if ( !getterMap.containsKey(className) )
+                    XmlGroup g = (XmlGroup) glist.get(i);
+                    String groupName = g.getName();
+
+                    boolean registerUnqualified = registerGroup(groupName, g, appData, true);
+
+                    if (!registerUnqualified)
                     {
-                        getterMap.put(className, new HashMap());
-                        setterMap.put(className, new HashMap());
+                        log.info("Ignored redefinition of Group " + groupName
+                                + " or Key " + g.getKey()
+                                + " from " + appDataElements.get(appData));
                     }
+
+                    if (groupPrefix != null)
+                    {
+                        StringBuffer qualifiedName = new StringBuffer();
+                        qualifiedName.append(groupPrefix)
+                                .append(":")
+                                .append(groupName);
+
+                        // Add the fully qualified group name. Do _not_ check for
+                        // the existence of the key if the unqualified registration succeeded
+                        // (because then it was added by the registerGroup above).
+                        if (!registerGroup(qualifiedName.toString(), g, appData, !registerUnqualified))
+                        {
+                            log.error("Could not register fully qualified name " + qualifiedName
+                                    + ", maybe two XML files have the same prefix. Ignoring it.");
+                        }
+                    }
+
+                    maxPooledGroups =
+                            Math.max(maxPooledGroups,
+                                    Integer.parseInt(g.getPoolCapacity()));
+
                 }
+
+                KeyedPoolableObjectFactory factory =
+                        new Group.GroupFactory(appData);
+                keyedPools.put(appData, new StackKeyedObjectPool(factory, maxPooledGroups));
             }
 
             setInit(true);
@@ -236,143 +324,220 @@ public class TurbineIntakeService
         catch (Exception e)
         {
             throw new InitializationException(
-                "TurbineIntakeService failed to initialize", e);
+                    "TurbineIntakeService failed to initialize", e);
         }
     }
 
+    /**
+     * Registers a given group name in the system
+     *
+     * @param groupName The name to register the group under
+     * @param group The XML Group to register in
+     * @param appData The app Data object where the group can be found
+     * @param checkKey Whether to check if the key also exists.
+     *
+     * @return true if successful, false if not
+     */
+    private boolean registerGroup(String groupName, XmlGroup group, AppData appData, boolean checkKey)
+    {
+        if (groupNames.keySet().contains(groupName))
+        {
+            // This name already exists.
+            return false;
+        }
+
+        boolean keyExists = groupNameMap.keySet().contains(group.getKey());
+
+        if (checkKey && keyExists)
+        {
+            // The key for this package is already registered for another group
+            return false;
+        }
+
+        groupNames.put(groupName, appData);
+
+        groupKeyMap.put(groupName, group.getKey());
+
+        if (!keyExists)
+        {
+            // This key does not exist. Add it to the hash.
+            groupNameMap.put(group.getKey(), groupName);
+        }
+
+        List classNames = group.getMapToObjects();
+        Iterator iter2 = classNames.iterator();
+        while (iter2.hasNext())
+        {
+            String className = (String) iter2.next();
+            if (!getterMap.containsKey(className))
+            {
+                getterMap.put(className, new HashMap());
+                setterMap.put(className, new HashMap());
+            }
+        }
+        return true;
+    }
 
     /**
-     * This method writes the appData file into Objects and stores
-     * the information into this classes appData property
+     * Tries to load a serialized Intake Group file. This
+     * can reduce the startup time of Turbine.
+     *
+     * @param serialDataPath The path of the File to load.
+     *
+     * @return A map with appData objects loaded from the file
+     *          or null if the map could not be loaded.
      */
-    private void writeAppData(String xmlPath, String appDataPath, File serialAppData)
-        throws Exception
+    private Map loadSerialized(String serialDataPath, long timeStamp)
     {
-        XmlToAppData xmlApp = new XmlToAppData();
-        appData = xmlApp.parseFile(xmlPath);
-        OutputStream out = null;
+        log.debug("Entered loadSerialized("
+                + serialDataPath + ", "
+                + timeStamp + ")");
+
+        if (serialDataPath == null)
+        {
+            return null;
+        }
+
+        File serialDataFile = new File(serialDataPath);
+
+        if (!serialDataFile.exists())
+        {
+            log.info("No serialized file found, parsing XML");
+            return null;
+        }
+
+        if (serialDataFile.lastModified() <= timeStamp)
+        {
+            log.info("serialized file too old, parsing XML");
+            return null;
+        }
+
         InputStream in = null;
+        Map serialData = null;
+
         try
         {
-            // write the appData file out
-            out = new FileOutputStream(serialAppData);
-            ObjectOutputStream p = new ObjectOutputStream(out);
-            p.writeObject(appData);
-            p.flush();
+            in = new FileInputStream(serialDataFile);
+            ObjectInputStream p = new ObjectInputStream(in);
+            Object o = p.readObject();
 
-            // read the file back in. for some reason on OSX 10.1
-            // this is necessary.
-            in = new FileInputStream(serialAppData);
-            ObjectInputStream pin = new ObjectInputStream(in);
-            appData = (AppData)pin.readObject();
+            if (o instanceof Map)
+            {
+                serialData = (Map) o;
+            }
+            else
+            {
+                // Maybe an old file from intake. Ignore it and try to delete
+                log.info("serialized object is not an intake map, ignoring");
+                in.close();
+                in = null;
+                serialDataFile.delete(); // Try to delete the file lying around
+            }
         }
         catch (Exception e)
         {
-            Log.info(
-                "Intake initialization could not be serialized " +
-                "because writing to " + appDataPath + " was not " +
-                "allowed.  This will require that the xml file be " +
-                "parsed when restarting the application.");
+            log.error("Serialized File could not be read.", e);
+
+            // We got a corrupt file for some reason.
+            // Null out serialData to be sure
+            serialData = null;
         }
         finally
         {
-            if (out != null)
+            // Could be null if we opened a file, didn't find it to be a
+            // Map object and then nuked it away.
+            try
             {
-                out.close();
+                if (in != null)
+                {
+                    in.close();
+                }
             }
-            if (in != null)
+            catch (Exception e)
             {
-                in.close();
+                log.error("Exception while closing file", e);
             }
         }
+
+        log.info("Loaded serialized map object, ignoring XML");
+        return serialData;
     }
 
     /**
-     * An inner class for group specific pools.
+     * Writes a parsed XML map with all the appData groups into a
+     * file. This will speed up loading time when you restart the
+     * Intake Service because it will only unserialize this file instead
+     * of reloading all of the XML files
+     *
+     * @param serialDataPath  The path of the file to write to
+     * @param appDataElements A Map containing all of the XML parsed appdata elements
      */
-    private class PoolBuffer
+    private void saveSerialized(String serialDataPath, Map appDataElements)
     {
-        /**
-         * A buffer for class instances.
-         */
-        private BoundedBuffer pool;
 
-        /**
-         * A cache for recycling methods.
-         */
-        private HashMap recyclers;
+        log.debug("Entered saveSerialized("
+                + serialDataPath + ", appDataElements)");
 
-        /**
-         * Contructs a new pool buffer with a specific capacity.
-         *
-         * @param capacity a capacity.
-         */
-        public PoolBuffer(int capacity)
+        if (serialDataPath == null)
         {
-            pool = new BoundedBuffer(capacity);
+            return;
         }
 
-        /**
-         * Polls for an instance from the pool.
-         *
-         * @return an instance or null.
-         */
-        public Group poll()
-            throws TurbineException
+        File serialData = new File(serialDataPath);
+
+        try
         {
-            Group instance = (Group)pool.poll();
-            if ((instance != null) &&
-                (instance instanceof Recyclable))
-            {
-                try
-                {
-                    ((Recyclable) instance).recycle();
-                }
-                catch (Exception x)
-                {
-                    throw new TurbineException("Recycling failed for " +
-                        instance.getClass().getName(),x);
-                }
-            }
-            return instance;
+            serialData.createNewFile();
+            serialData.delete();
+        }
+        catch (Exception e)
+        {
+            log.info("Could not create serialized file " + serialDataPath
+                    + ", not serializing the XML data");
+            return;
         }
 
-        /**
-         * Offers an instance to the pool.
-         *
-         * @param instance an instance.
-         */
-        public boolean offer(Group instance)
+        OutputStream out = null;
+        InputStream in = null;
+
+        try
+        {
+            // write the appData file out
+            out = new FileOutputStream(serialDataPath);
+            ObjectOutputStream pout = new ObjectOutputStream(out);
+            pout.writeObject(appDataElements);
+            pout.flush();
+
+            // read the file back in. for some reason on OSX 10.1
+            // this is necessary.
+            in = new FileInputStream(serialDataPath);
+            ObjectInputStream pin = new ObjectInputStream(in);
+            Map dummy = (Map) pin.readObject();
+
+            log.debug("Serializing successful");
+        }
+        catch (Exception e)
+        {
+            log.info("Could not write serialized file to " + serialDataPath
+                    + ", not serializing the XML data");
+        }
+        finally
         {
             try
             {
-                ((Recyclable) instance).dispose();
+                if (out != null)
+                {
+                    out.close();
+                }
+                if (in != null)
+                {
+                    in.close();
+                }
             }
-            catch (Exception x)
+            catch (Exception e)
             {
-                return false;
+                log.error("Exception while closing file", e);
             }
-            return pool.offer(instance);
-        }
-
-        /**
-         * Returns the capacity of the pool.
-         *
-         * @return the capacity.
-         */
-        public int capacity()
-        {
-            return pool.capacity();
-        }
-
-        /**
-         * Returns the size of the pool.
-         *
-         * @return the size.
-         */
-        public int size()
-        {
-            return pool.size();
         }
     }
 
@@ -382,152 +547,92 @@ public class TurbineIntakeService
      *
      * @param groupName the name of the group.
      * @return a Group instance.
-     * @throws TurbineException if recycling fails.
+     * @throws IntakeException if recycling fails.
      */
     public Group getGroup(String groupName)
-            throws TurbineException
+            throws IntakeException
     {
-        Group instance = (Group)pollInstance(groupName);
-        if ( instance == null )
-        {
-            try
-            {
-                instance = new Group(appData.getGroup(groupName));
-            }
-            catch (Exception e)
-            {
-                throw new TurbineException(e);
-            }
-        }
-        return instance;
-    }
+        Group group = null;
 
+        AppData appData = (AppData) groupNames.get(groupName);
+
+        if (groupName == null)
+        {
+            throw new IntakeException(
+                    "Intake TurbineIntakeService.getGroup(groupName) is null");
+        }
+        if (appData == null)
+        {
+            throw new IntakeException(
+                    "Intake TurbineIntakeService.getGroup(groupName): No XML definition for Group "
+                    + groupName + " found");
+        }
+        try
+        {
+            group = (Group) ((KeyedObjectPool) keyedPools.get(appData)).borrowObject(groupName);
+        }
+        catch (Exception e)
+        {
+            throw new IntakeException("Could not get group " + groupName, e);
+        }
+        return group;
+    }
 
     /**
      * Puts a Group back to the pool.
      *
      * @param instance the object instance to recycle.
-     * @return true if the instance was accepted.
+     *
+     * @throws IntakeException The passed group name does not exist.
      */
-    public boolean releaseGroup(Group instance)
+    public void releaseGroup(Group instance)
+            throws IntakeException
     {
         if (instance != null)
         {
-            HashMap repository = poolRepository;
-            String name = instance.getIntakeGroupName();
-            PoolBuffer pool = (PoolBuffer) repository.get(name);
-            if (pool == null)
-            {
-                pool = new PoolBuffer(instance.getPoolCapacity());
-                repository = (HashMap) repository.clone();
-                repository.put(name,pool);
-                poolRepository = repository;
-            }
-            return pool.offer(instance);
-        }
-        else
-        {
-            return false;
-        }
-    }
+            String groupName = instance.getIntakeGroupName();
+            AppData appData = (AppData) groupNames.get(groupName);
 
-    /**
-     * Gets the capacity of the pool for a named group.
-     *
-     * @param name the name of the class.
-     */
-    public int getCapacity(String name)
-    {
-        int capacity = DEFAULT_POOL_CAPACITY;
-        PoolBuffer pool = (PoolBuffer) poolRepository.get(name);
-        if ( pool == null )
-        {
+            if (appData == null)
+            {
+                throw new IntakeException(
+                        "Intake TurbineIntakeService.releaseGroup(groupName): "
+                        + "No XML definition for Group " + groupName + " found");
+            }
+
             try
             {
-                capacity = Integer
-                    .parseInt(appData.getGroup(name).getPoolCapacity());
+                ((KeyedObjectPool) keyedPools.get(appData)).returnObject(groupName, instance);
             }
-            catch (NumberFormatException nfe) {}
+            catch (Exception e)
+            {
+                new IntakeException("Could not get group " + groupName, e);
+            }
         }
-        else
-        {
-            capacity = pool.capacity();
-        }
-
-        return capacity;
-    }
-
-    /**
-     * Sets the capacity of the pool for a group.
-     * Note that the pool will be cleared after the change.
-     *
-     * @param name the name of the group.
-     * @param capacity the new capacity.
-     */
-    public void setCapacity(String name,
-                            int capacity)
-    {
-        HashMap repository = poolRepository;
-        repository = repository != null ?
-            (HashMap) repository.clone() : new HashMap();
-        repository.put(name,new PoolBuffer(capacity));
-        poolRepository = repository;
     }
 
     /**
      * Gets the current size of the pool for a group.
      *
-     * @param name the name of the group.
-     */
-    public int getSize(String name)
-    {
-        PoolBuffer pool = (PoolBuffer) poolRepository.get(name);
-        return pool != null ? pool.size() : 0;
-    }
-
-    /**
-     * Clears instances of a group from the pool.
-     *
-     * @param name the name of the group.
-     */
-    public void clearPool(String name)
-    {
-        throw new Error("Not implemented");
-        /* FIXME!! We need to worry about objects that are checked out
-
-        HashMap repository = poolRepository;
-        if (repository.get(name) != null)
-        {
-            repository = (HashMap) repository.clone();
-            repository.remove(name);
-            poolRepository = repository;
-        }
-        */
-    }
-
-    /**
-     * Clears all instances from the pool.
-     */
-    public void clearPool()
-    {
-        throw new Error("Not implemented");
-        /* FIXME!! We need to worry about objects that are checked out
-        poolRepository = new HashMap();
-        */
-    }
-
-    /**
-     * Polls and recycles an object of the named group from the pool.
-     *
      * @param groupName the name of the group.
-     * @return the object or null.
-     * @throws TurbineException if recycling fails.
+     *
+     * @throws IntakeException The passed group name does not exist.
      */
-    private Object pollInstance(String groupName)
-        throws TurbineException
+    public int getSize(String groupName)
+            throws IntakeException
     {
-        PoolBuffer pool = (PoolBuffer) poolRepository.get(groupName);
-        return pool != null ? pool.poll() : null;
+        AppData appData = (AppData) groupNames.get(groupName);
+        if (appData == null)
+        {
+            throw new IntakeException(
+                    "Intake TurbineIntakeService.Size(groupName): No XML definition for Group "
+                    + groupName + " found");
+        }
+
+        KeyedObjectPool kop = (KeyedObjectPool) keyedPools.get(groupName);
+
+        return kop.getNumActive(groupName)
+                + kop.getNumIdle(groupName);
     }
 
     /**
@@ -537,7 +642,7 @@ public class TurbineIntakeService
      */
     public String[] getGroupNames()
     {
-        return groupNames;
+        return (String[]) groupNames.keySet().toArray(new String[0]);
     }
 
     /**
@@ -548,18 +653,18 @@ public class TurbineIntakeService
      */
     public String getGroupKey(String groupName)
     {
-        return (String)groupKeyMap.get(groupName);
+        return (String) groupKeyMap.get(groupName);
     }
 
     /**
      * Gets the group name given its key.
      *
-     * @param the the key.
+     * @param groupKey the key.
      * @return groupName the name of the group.
      */
     public String getGroupName(String groupKey)
     {
-        return (String)groupNameMap.get(groupKey);
+        return (String) groupNameMap.get(groupKey);
     }
 
     /**
@@ -568,47 +673,29 @@ public class TurbineIntakeService
      * @param className the name of the object.
      * @param propName the name of the property.
      * @return the setter.
+     * @throws ClassNotFoundException
+     * @throws IntrospectionException
      */
     public Method getFieldSetter(String className, String propName)
+            throws ClassNotFoundException, IntrospectionException
     {
-        Map settersForClassName = (Map)setterMap.get(className);
-        Method setter = (Method)settersForClassName.get(propName);
+        Map settersForClassName = (Map) setterMap.get(className);
+        Method setter = (Method) settersForClassName.get(propName);
 
-        if ( setter == null )
+        if (setter == null)
         {
             PropertyDescriptor pd = null;
-            synchronized(setterMap)
+            synchronized (setterMap)
             {
-                try
+                pd = new PropertyDescriptor(propName,
+                        Class.forName(className));
+                setter = pd.getWriteMethod();
+                ((Map) setterMap.get(className)).put(propName, setter);
+                if (setter == null)
                 {
-                    pd = new PropertyDescriptor(propName,
-                                                Class.forName(className));
-                    setter = pd.getWriteMethod();
-                    ((Map)setterMap.get(className)).put(propName, setter);
-                    if ( setter == null )
-                    {
-                        Log.error("Intake: setter for '" + propName
-                                  + "' in class '" + className
-                                  + "' could not be found.");
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.error(e);
-                }
-            }
-            // we have already completed the reflection on the getter, so
-            // save it so we do not have to repeat
-            synchronized(getterMap)
-            {
-                try
-                {
-                    Method getter = pd.getReadMethod();
-                    ((Map)getterMap.get(className)).put(propName, getter);
-                }
-                catch (Exception e)
-                {
-                    Log.error(e);
+                    log.error("Intake: setter for '" + propName
+                            + "' in class '" + className
+                            + "' could not be found.");
                 }
             }
         }
@@ -621,47 +708,29 @@ public class TurbineIntakeService
      * @param className the name of the object.
      * @param propName the name of the property.
      * @return the getter.
+     * @throws ClassNotFoundException
+     * @throws IntrospectionException
      */
     public Method getFieldGetter(String className, String propName)
+            throws ClassNotFoundException, IntrospectionException
     {
-        Map gettersForClassName = (Map)getterMap.get(className);
-        Method getter = (Method)gettersForClassName.get(propName);
+        Map gettersForClassName = (Map) getterMap.get(className);
+        Method getter = (Method) gettersForClassName.get(propName);
 
-        if ( getter == null )
+        if (getter == null)
         {
             PropertyDescriptor pd = null;
-            synchronized(getterMap)
+            synchronized (getterMap)
             {
-                try
+                pd = new PropertyDescriptor(propName,
+                        Class.forName(className));
+                getter = pd.getReadMethod();
+                ((Map) getterMap.get(className)).put(propName, getter);
+                if (getter == null)
                 {
-                    pd = new PropertyDescriptor(propName,
-                                                Class.forName(className));
-                    getter = pd.getReadMethod();
-                    ((Map)getterMap.get(className)).put(propName, getter);
-                    if ( getter == null )
-                    {
-                        Log.error("Intake: getter for '" + propName
-                                  + "' in class '" + className
-                                  + "' could not be found.");
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.error(e);
-                }
-            }
-            // we have already completed the reflection on the setter, so
-            // save it so we do not have to repeat
-            synchronized(setterMap)
-            {
-                try
-                {
-                    Method setter = pd.getWriteMethod();
-                    ((Map)setterMap.get(className)).put(propName, setter);
-                }
-                catch (Exception e)
-                {
-                    Log.error(e);
+                    log.error("Intake: getter for '" + propName
+                            + "' in class '" + className
+                            + "' could not be found.");
                 }
             }
         }
