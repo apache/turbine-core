@@ -55,10 +55,13 @@ package org.apache.turbine.modules.layouts;
  */
 
 import org.apache.turbine.modules.Layout;
+
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.jsp.JspService;
+
+import org.apache.turbine.services.jsp.TurbineJsp;
 import org.apache.turbine.services.jsp.util.JspNavigation;
 import org.apache.turbine.services.jsp.util.JspScreenPlaceholder;
+
 import org.apache.turbine.util.RunData;
 
 /**
@@ -67,8 +70,10 @@ import org.apache.turbine.util.RunData;
  * navigations there should be relatively few reasons to subclass this Layout.
  *
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  */
-public class JspLayout extends Layout
+public class JspLayout
+    extends Layout
 {
     /**
      * Method called by LayoutLoader.
@@ -76,21 +81,23 @@ public class JspLayout extends Layout
      * @param data RunData
      * @throws Exception generic exception
      */
-    public void doBuild(RunData data) throws Exception
+    public void doBuild(RunData data)
+        throws Exception
     {
         data.getResponse().setContentType("text/html");
         data.declareDirectResponse();
+
         // variable to reference the screen in the layout template
         data.getRequest().setAttribute("screen_placeholder",
                 new JspScreenPlaceholder(data));
+
         // variable to reference the navigations in the layout template
-        data.getRequest().setAttribute("navigation", new JspNavigation(data));
+        data.getRequest().setAttribute("navigation", 
+            new JspNavigation(data));
 
         // Grab the layout template set in the TemplatePage.
         String templateName = data.getTemplateInfo().getLayoutTemplate();
-        // Finally, generate the layout template and output to the response
-        JspService jsp = (JspService) TurbineServices.getInstance()
-                .getService(JspService.SERVICE_NAME);
-        jsp.handleRequest(data, "/layouts" + templateName, true);
+
+        TurbineJsp.handleRequest(data, "/layouts" + templateName, true);
     }
 }
