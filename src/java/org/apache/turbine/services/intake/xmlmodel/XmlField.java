@@ -115,22 +115,22 @@ public class XmlField
      */
     public void loadFromXML(Attributes attrib)
     {
-        name = attrib.getValue("name");
-        key = attrib.getValue("key");
-        type = attrib.getValue("type");
-        displayName = attrib.getValue("displayName");
-        displaySize = attrib.getValue("displaySize");
-        multiValued = attrib.getValue("multiValued");
+        setName(attrib.getValue("name"));
+        setKey(attrib.getValue("key"));
+        setType(attrib.getValue("type"));
+        setDisplayName(attrib.getValue("displayName"));
+        setDisplaySize(attrib.getValue("displaySize"));
+        setMultiValued(attrib.getValue("multiValued"));
 
         String mapObj = attrib.getValue("mapToObject");
         if(mapObj != null && mapObj.length() != 0)
         {
-            mapToObject = mapObj;
+            setMapToObject(mapObj);
         }
 
-        mapToProperty = attrib.getValue("mapToProperty");
-        validator = attrib.getValue("validator");
-        defaultValue = attrib.getValue("defaultValue");
+        setMapToProperty(attrib.getValue("mapToProperty"));
+        setValidator(attrib.getValue("validator"));
+        setDefaultValue(attrib.getValue("defaultValue"));
     }
 
     /**
@@ -151,7 +151,6 @@ public class XmlField
 
     /**
      * Set the name of the property
-     * @deprecated no reason for this method to exist
      */
     public void setName(String newName)
     {
@@ -168,11 +167,18 @@ public class XmlField
 
     /**
      * Set the display name of the property
-     * @deprecated No replacement.
      */
     public void setDisplayName(String newDisplayName)
     {
         displayName = newDisplayName;
+    }
+
+    /**
+     * Sets the display size of the field.
+     */
+    private void setDisplaySize(String size)
+    {
+        this.displaySize = size;
     }
 
     /**
@@ -186,7 +192,6 @@ public class XmlField
 
     /**
      * Set the parameter key of the property
-     * @deprecated No replacement.
      */
     public void setKey(String newKey)
     {
@@ -203,7 +208,6 @@ public class XmlField
 
     /**
      * Set the type of the property
-     * @deprecated No replacement.
      */
     public void setType(String newType)
     {
@@ -220,7 +224,6 @@ public class XmlField
 
     /**
      * Set whether this class can have multiple values
-     * @deprecated No replacement.
      */
     public void setMultiValued(String newMultiValued)
     {
@@ -243,7 +246,6 @@ public class XmlField
      * Set the name of the object that takes this input
      *
      * @param objectName name of the class.
-     * @deprecated No replacement.
      */
     public void setMapToObject(String objectName)
     {
@@ -262,7 +264,6 @@ public class XmlField
      * Set the property method that takes this input
      *
      * @param prop Name of the property to which the field will be mapped.
-     * @deprecated No replacement.
      */
     public void setMapToProperty(String prop)
     {
@@ -286,7 +287,6 @@ public class XmlField
 
     /**
      * Set the class name of the validator
-     * @deprecated No replacement.
      */
     public void setValidator(String prop)
     {
@@ -305,7 +305,6 @@ public class XmlField
      * Set the default Value.
      *
      * @param prop The parameter to use as default value.
-     * @deprecated No replacement.
      */
     public void setDefaultValue(String prop)
     {
@@ -356,8 +355,8 @@ public class XmlField
 
     /**
      * Get the value of ifRequiredMessage.
+     *
      * @return value of ifRequiredMessage.
-     * @deprecated No replacement.
      */
     public String getIfRequiredMessage()
     {
@@ -366,6 +365,7 @@ public class XmlField
 
     /**
      * Set the value of ifRequiredMessage.
+     *
      * @param v  Value to assign to ifRequiredMessage.
      */
     public void setIfRequiredMessage(String v)
@@ -376,7 +376,6 @@ public class XmlField
     /**
      * A utility function to create a new input parameter
      * from attrib and add it to this property.
-     * @deprecated No replacement.
      */
     public Rule addRule(Attributes attrib)
     {
