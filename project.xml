@@ -570,7 +570,7 @@
     <dependency>
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-intake</artifactId>
-      <version>1.0-alpha-1</version>
+      <version>1.0-alpha-2</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/intake</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
@@ -578,8 +578,8 @@
     </dependency>    
     <dependency>
       <groupId>fulcrum</groupId>
-      <artifactId>fulcrum-factory</artifactId>
-      <version>1.0-alpha-1</version>
+      <artifactId>fulcrum-factory-api</artifactId>
+      <version>1.0-alpha-2</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/factory</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>

@@ -94,7 +94,7 @@ public class LocalizationTool implements ApplicationTool
             MerlinComponentService merlin =
                 (MerlinComponentService) TurbineServices.getInstance().getService(MerlinComponentService.SERVICE_NAME);
                 try {
-            localizationService = (LocalizationService)merlin.lookup("/fulcrum/localizer");
+            localizationService = (LocalizationService)merlin.lookup("/fulcrum/localization");
                 }
                 catch (Exception e) {
                     throw new InstantiationException("Problem looking up Localization Service:"+e.getMessage());
