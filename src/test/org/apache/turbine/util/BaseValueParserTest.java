@@ -54,6 +54,8 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
+import java.math.BigDecimal;
+
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.parser.ParserUtils;
@@ -597,6 +599,53 @@ public class BaseValueParserTest extends TestCase
         result = parser.getBooleanObject("unparsable");
         assertNull(result);
     }
+
+    public void testGetBigDecimal()
+    {
+        // no param
+        BigDecimal result = parser.getBigDecimal("invalid");
+        assertEquals(new BigDecimal(0), result);
+
+        // default
+        result = parser.getBigDecimal("default", new BigDecimal(3));
+        assertEquals(result, new BigDecimal(3));
+
+        // param exists
+        parser.add("exists", "1");
+        result = parser.getBigDecimal("exists");
+        assertEquals(result, new BigDecimal(1));
+
+        // unparsable value
+        parser.add("unparsable", "a");
+        result = parser.getBigDecimal("unparsable");
+        assertEquals(new BigDecimal(0), result);
+
+        // array
+        parser.add("array", "1");
+        parser.add("array", "2");
+        parser.add("array", "3");
+        BigDecimal arrayResult[] = parser.getBigDecimals("array");
+        BigDecimal compare[] = {new BigDecimal(1), new BigDecimal(2),
+                                new BigDecimal(3)};
+        assertEquals(arrayResult.length, compare.length);
+        for( int i=0; i<compare.length; i++)
+        {
+            assertEquals(compare[i], arrayResult[i]);
+        }
+
+        // array w/ unparsable element
+        parser.add("array2", "1");
+        parser.add("array2", "a");
+        parser.add("array2", "3");
+        BigDecimal arrayResult2[] = parser.getBigDecimals("array2");
+        BigDecimal compare2[] = {new BigDecimal(1), null, new BigDecimal(3)};
+        assertEquals(arrayResult2.length, compare2.length);
+        for( int i=0; i<compare2.length; i++)
+        {
+            assertEquals(compare2[i], arrayResult2[i] );
+        }
+    }
+
 
     public void getString()
     {
