@@ -55,7 +55,9 @@ package org.apache.turbine.om.security;
  */
 
 import java.io.Serializable;
+
 import java.util.Hashtable;
+
 import javax.servlet.http.HttpSessionBindingListener;
 
 /**
@@ -73,40 +75,40 @@ public interface User
     extends HttpSessionBindingListener, Serializable, SecurityEntity
 {
     /** The 'perm storage' key name for the first name. */
-    static final String FIRST_NAME = "FIRST_NAME";
+    String FIRST_NAME = "FIRST_NAME";
 
     /** The 'perm storage' key name for the last name. */
-    static final String LAST_NAME = "LAST_NAME";
+    String LAST_NAME = "LAST_NAME";
 
     /** The 'perm storage' key name for the last_login field. */
-    static final String LAST_LOGIN = "LAST_LOGIN";
+    String LAST_LOGIN = "LAST_LOGIN";
 
     /** The 'perm storage' key name for the password field. */
-    static final String PASSWORD = "PASSWORD_VALUE";
+    String PASSWORD = "PASSWORD_VALUE";
 
     /** The 'perm storage' key name for the username field. */
-    static final String USERNAME = "LOGIN_NAME";
+    String USERNAME = "LOGIN_NAME";
 
     /** The 'perm storage' key for the confirm_value field. */
-    static final String CONFIRM_VALUE = "CONFIRM_VALUE";
+    String CONFIRM_VALUE = "CONFIRM_VALUE";
 
     /** The 'perm storage' key for the email field. */
-    static final String EMAIL = "EMAIL";
+    String EMAIL = "EMAIL";
 
     /** This is the value that is stored in the database for confirmed users */
-    static final String CONFIRM_DATA = "CONFIRMED";
+    String CONFIRM_DATA = "CONFIRMED";
 
     /** The 'perm storage' key name for the access counter. */
-    static final String ACCESS_COUNTER = "_access_counter";
+    String ACCESS_COUNTER = "_access_counter";
 
     /** The 'temp storage' key name for the session access counter */
-    static final String SESSION_ACCESS_COUNTER = "_session_access_counter";
+    String SESSION_ACCESS_COUNTER = "_session_access_counter";
 
     /** The 'temp storage' key name for the 'has logged in' flag */
-    static final String HAS_LOGGED_IN = "_has_logged_in";
+    String HAS_LOGGED_IN = "_has_logged_in";
 
     /** The session key for the User object. */
-    static final String SESSION_KEY = "turbine.user";
+    String SESSION_KEY = "turbine.user";
 
     /**
      * Gets the access counter for a user from perm storage.
