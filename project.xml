@@ -264,52 +264,6 @@
       <jar>jython-2.1.jar</jar>
     </dependency>
 
-    <!-- *********************************** -->
-    <!-- THESE ARE THE MAVEN DEPENDENCIES    -->
-    <!-- *********************************** -->
-
-    <dependency>
-      <name>maven</name>
-      <type>required</type>
-      <version>0.1</version>
-      <jar>maven-0.1.jar</jar>
-    </dependency>
-
-    <dependency>
-      <name>jdepend</name>
-      <type>required</type>
-      <version>2.2</version>
-      <jar>jdepend.jar</jar>
-    </dependency>
-
-    <dependency>
-      <name>jakarta-velocity-dvsl</name>
-      <type>documentation</type>
-      <version>0.40</version>
-      <jar>velocity-dvsl-0.40.jar</jar>
-    </dependency>
-
-    <dependency>
-      <name>dom4j</name>
-      <type>required</type>
-      <version>1.3</version>
-      <jar>dom4j-1.3.jar</jar>
-    </dependency>
-
-    <dependency>
-      <name>commons-io</name>
-      <type>required</type>
-      <version>0.1</version>
-      <jar>commons-io.jar</jar>
-    </dependency>
-
-    <dependency>
-      <name>commons-util</name>
-      <type>required</type>
-      <version>0.1</version>
-      <jar>commons-util-1.0-rc2-dev.jar</jar>
-    </dependency>
-
   </dependencies>
   
   <build>
