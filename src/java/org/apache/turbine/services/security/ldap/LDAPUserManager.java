@@ -78,9 +78,7 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * object related tasks on behalf of the
  * {@link org.apache.turbine.services.security.SecurityService}.
  *
- * This implementation uses ldap for retrieving user data. It
- * expects that the User interface implementation will be castable to
- * {@link org.apache.turbine.om.BaseObject}.
+ * This implementation uses ldap for retrieving user data.
  *
  * @author <a href="mailto:jon@collab.net">Jon S. Stevens</a>
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
@@ -308,6 +306,30 @@ public class LDAPUserManager implements UserManager
         catch (NamingException ex)
         {
             throw new DataBackendException("NamingException caught", ex);
+        }
+    }
+
+    /**
+     * This method is not yet implemented.
+     *
+     * Saves User data when the session is unbound. The user account is required
+     * to exist in the storage.
+     *
+     * LastLogin, AccessCounter, persistent pull tools, and any data stored
+     * in the permData hashtable that is not mapped to a column will be saved.
+     *
+     * @exception UnknownEntityException if the user's account does not
+     *            exist in the database.
+     * @exception DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    public void saveOnSessionUnbind( User user )
+        throws UnknownEntityException, DataBackendException
+    {
+        if(!accountExists(user))
+        {
+            throw new UnknownEntityException("The account '" +
+                user.getUserName() + "' does not exist");
         }
     }
 

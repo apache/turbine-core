@@ -57,10 +57,13 @@ package org.apache.turbine.services.security.db;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Hashtable;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.BaseObject;
+import org.apache.torque.om.Persistent;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.om.security.peer.TurbineUserPeer;
@@ -78,17 +81,18 @@ import org.apache.turbine.util.security.UnknownEntityException;
  *
  * This implementation uses a relational database for storing user data. It
  * expects that the User interface implementation will be castable to
- * {@link org.apache.turbine.om.BaseObject}.
+ * {@link org.apache.torque.om.BaseObject}.
  *
  * @author <a href="mailto:jon@collab.net">Jon S. Stevens</a>
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
  * @author <a href="mailto:cberry@gluecode.com">Craig D. Berry</a>
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class DBUserManager 
+public class DBUserManager
     implements UserManager
 {
     /** Logging */
@@ -274,7 +278,7 @@ public class DBUserManager
 
         try
         {
-            // this is to mimic the old behavior of the method, the user 
+            // this is to mimic the old behavior of the method, the user
             // should be new that is passed to this method.  It would be
             // better if this was checked, but the original code did not
             // care about the user's state, so we set it to be appropriate
@@ -286,6 +290,63 @@ public class DBUserManager
         {
             throw new DataBackendException("Failed to save user object", e);
         }
+    }
+
+    /**
+     * Saves User data when the session is unbound. The user account is required
+     * to exist in the storage.
+     *
+     * LastLogin, AccessCounter, persistent pull tools, and any data stored
+     * in the permData hashtable that is not mapped to a column will be saved.
+     *
+     * @exception UnknownEntityException if the user's account does not
+     *            exist in the database.
+     * @exception DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    public void saveOnSessionUnbind( User user )
+        throws UnknownEntityException, DataBackendException
+    {
+        if( !user.hasLoggedIn() )
+        {
+            return;
+        }
+
+        if(!accountExists(user))
+        {
+            throw new UnknownEntityException("The account '" +
+                user.getUserName() + "' does not exist");
+        }
+        Criteria crit = new Criteria();
+        if (!((Persistent) user).isNew())
+        {
+            crit.add(TurbineUserPeer.USER_ID, ((Persistent) user).getPrimaryKey());
+        }
+
+        Hashtable permStorage = (Hashtable) user.getPermStorage().clone();
+        crit.add(TurbineUserPeer.LAST_LOGIN, permStorage.remove(TurbineUserPeer.LAST_LOGIN));
+
+        // The OBJECT_DATA column only stores data not mapped to a column.  We must
+        // remove all of the extra data and serialize the rest.  Access Counter
+        // is not mapped to a column so it will be serialized into OBJECT_DATA.
+        for (int i = 1; i < TurbineUserPeer.columnNames.length; i++)
+        {
+            if (permStorage.containsKey(TurbineUserPeer.columnNames[i]))
+            {
+                permStorage.remove(TurbineUserPeer.columnNames[i]);
+            }
+        }
+        crit.add(TurbineUserPeer.OBJECT_DATA, permStorage);
+
+        try
+        {
+            TurbineUserPeer.doUpdate(crit);
+        }
+        catch(Exception e)
+        {
+            throw new DataBackendException("Failed to save user object", e);
+        }
+
     }
 
     /**
@@ -317,7 +378,7 @@ public class DBUserManager
 
         /*
          * Unix crypt needs the existing, encrypted password text as
-         * salt for checking the supplied password. So we supply it 
+         * salt for checking the supplied password. So we supply it
          * into the checkPassword routine
          */
 
@@ -422,7 +483,7 @@ public class DBUserManager
 
         try
         {
-            // this is to mimic the old behavior of the method, the user 
+            // this is to mimic the old behavior of the method, the user
             // should be new that is passed to this method.  It would be
             // better if this was checked, but the original code did not
             // care about the user's state, so we set it to be appropriate

@@ -468,6 +468,21 @@ public interface SecurityService
     void saveUser(User user)
         throws UnknownEntityException, DataBackendException;
 
+    /**
+     * Saves User data when the session is unbound. The user account is required
+     * to exist in the storage.
+     *
+     * LastLogin, AccessCounter, persistent pull tools, and any data stored
+     * in the permData hashtable that is not mapped to a column will be saved.
+     *
+     * @exception UnknownEntityException if the user's account does not
+     *            exist in the database.
+     * @exception DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    public void saveOnSessionUnbind( User user )
+        throws UnknownEntityException, DataBackendException;
+
     /*-----------------------------------------------------------------------
       Account management
       -----------------------------------------------------------------------*/

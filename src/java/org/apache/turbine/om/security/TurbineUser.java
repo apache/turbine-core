@@ -90,6 +90,7 @@ public class TurbineUser extends SecurityObject implements User
 
     /** The date on which the user account was created. */
     private Date createDate = null;
+
     /** The date on which the user last accessed the application. */
     private Date lastAccessDate = null;
 
@@ -654,7 +655,7 @@ public class TurbineUser extends SecurityObject implements User
         {
             if (hasLoggedIn())
             {
-                TurbineSecurity.saveUser(this);
+                TurbineSecurity.saveOnSessionUnbind(this);
             }
         }
         catch ( Exception e )

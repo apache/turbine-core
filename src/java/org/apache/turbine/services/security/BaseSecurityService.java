@@ -776,6 +776,24 @@ public abstract class BaseSecurityService
     }
 
     /**
+     * Saves User data when the session is unbound. The user account is required
+     * to exist in the storage.
+     *
+     * LastLogin, AccessCounter, persistent pull tools, and any data stored
+     * in the permData hashtable that is not mapped to a column will be saved.
+     *
+     * @exception UnknownEntityException if the user's account does not
+     *            exist in the database.
+     * @exception DataBackendException if there is a problem accessing the
+     *            storage.
+     */
+    public void saveOnSessionUnbind( User user )
+        throws UnknownEntityException, DataBackendException
+    {
+        userManager.saveOnSessionUnbind( user );
+    }
+
+    /**
      * Creates new user account with specified attributes.
      *
      * @param user the object describing account to be created.
