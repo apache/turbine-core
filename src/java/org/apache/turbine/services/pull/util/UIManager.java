@@ -147,7 +147,7 @@ public class UIManager implements ApplicationTool
     /**
      * The skins directory.
      */
-    private static String skinsDirectory;
+    private String skinsDirectory;
 
     /**
      * The file within the skin directory that actually
@@ -165,13 +165,13 @@ public class UIManager implements ApplicationTool
      * webapp context. Used for constructing correct
      * URIs for retrieving images in image().
      */
-    private static String resourcesDirectory;
+    private String resourcesDirectory;
 
     /**
      * Properties to hold the name/value pairs
      * for the skin.
      */
-    private static Properties skinProperties;
+    private Properties skinProperties;
 
     /**
      * Initialize the UIManager object.
