@@ -405,14 +405,14 @@ public class TurbinePullService
         // We should either store the session pull tools in the session or
         // make Turbine.loginAction() copy the session pull tools into the
         // new user object.
-        populateWithSessionTools(sessionTools, context, data, user, false);
+        populateWithSessionTools(sessionTools, context, data, user);
 
         if (!TurbineSecurity.isAnonymousUser(user))
         {
             if (user.hasLoggedIn())
             {
-                populateWithSessionTools(authorizedTools, context, data, user, false);
-                populateWithSessionTools(persistentTools, context, data, user, true);
+                populateWithSessionTools(authorizedTools, context, data, user);
+                populateWithPermTools(persistentTools, context, data, user);
             }
         }
     }
@@ -487,12 +487,9 @@ public class TurbinePullService
      * @param data The current RunData object
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
-     * @param usePerm Whether to retrieve the tools from the
-     * permanent storage (as opposed to the temporary storage).
      */
     private void populateWithSessionTools(List tools, Context context,
-        RunData data, User user,
-        boolean usePerm)
+            RunData data, User user)
     {
         // Iterate the tools
         for (Iterator it = tools.iterator(); it.hasNext();)
@@ -502,13 +499,13 @@ public class TurbinePullService
             {
                 // ensure that tool is created only once for a user
                 // by synchronizing against the user object
-                synchronized (user)
+                synchronized (data.getSession())
                 {
                     // first try and fetch the tool from the user's
                     // hashtable
-                    Object tool = usePerm
-                        ? user.getPerm(toolData.toolClassName)
-                        : user.getTemp(toolData.toolClassName);
+                    Object tool = data.getSession().getAttribute(
+                            SESSION_TOOLS_ATTRIBUTE_PREFIX
+                            + toolData.toolClassName);
 
                     if (tool == null)
                     {
@@ -519,16 +516,10 @@ public class TurbinePullService
                         // session tools are init'd with the User object
                         initTool(tool, user);
 
-
-                        // store the newly created tool in the user's hashtable
-                        if (usePerm)
-                        {
-                            user.setPerm(toolData.toolClassName, tool);
-                        }
-                        else
-                        {
-                            user.setTemp(toolData.toolClassName, tool);
-                        }
+                        // store the newly created tool in the session
+                        data.getSession().setAttribute(
+                                SESSION_TOOLS_ATTRIBUTE_PREFIX
+                                + tool.getClass().getName(), tool);
                     }
 
                     // *NOT* else
@@ -553,18 +544,102 @@ public class TurbinePullService
                         }
 
                         // put the tool in the context
-                        log.debug("Adding " + tool + " to ctx as " + toolData.toolName);
+                        log.debug("Adding " + tool + " to ctx as "
+                                + toolData.toolName);
                         context.put(toolData.toolName, tool);
                     }
                     else
                     {
-                        log.info("Tool " + toolData.toolName + " was null, skipping it.");
+                        log.info("Tool " + toolData.toolName
+                                + " was null, skipping it.");
                     }
                 }
             }
             catch (Exception e)
             {
                 log.error("Could not instantiate session tool "
+                    + toolData.toolName + " from a "
+                    + toolData.toolClassName + " object", e);
+            }
+        }
+    }
+
+    /**
+     * Populate the given context with the perm-scoped tools.
+     *
+     * @param tools The list of tools with which to populate the
+     * session.
+     * @param context The context to populate.
+     * @param data The current RunData object
+     * @param user The <code>User</code> object whose storage to
+     * retrieve the tool from.
+     */
+    private void populateWithPermTools(List tools, Context context,
+            RunData data, User user)
+    {
+        // Iterate the tools
+        for (Iterator it = tools.iterator(); it.hasNext();)
+        {
+            ToolData toolData = (ToolData) it.next();
+            try
+            {
+                // ensure that tool is created only once for a user
+                // by synchronizing against the user object
+                synchronized (user)
+                {
+                    // first try and fetch the tool from the user's
+                    // hashtable
+                    Object tool = user.getPerm(toolData.toolClassName);
+
+                    if (tool == null)
+                    {
+                        // if not there, an instance must be fetched from
+                        // the pool
+                        tool = pool.getInstance(toolData.toolClass);
+
+                        // session tools are init'd with the User object
+                        initTool(tool, user);
+
+                        // store the newly created tool in the user's hashtable
+                        user.setPerm(toolData.toolClassName, tool);
+                    }
+
+                    // *NOT* else
+                    if(tool != null)
+                    {
+                        // This is a semantics change. In the old
+                        // Turbine, Session tools were initialized and
+                        // then refreshed every time they were pulled
+                        // into the context if "refreshToolsPerRequest"
+                        // was wanted.
+                        //
+                        // RunDataApplicationTools now have a parameter
+                        // for refresh. If it is not refreshed immediately
+                        // after init(), the parameter value will be undefined
+                        // until the 2nd run. So we refresh all the session
+                        // tools on every run, even if we just init'ed it.
+                        //
+
+                        if (refreshToolsPerRequest)
+                        {
+                            refreshTool(tool, data);
+                        }
+
+                        // put the tool in the context
+                        log.debug("Adding " + tool + " to ctx as "
+                                + toolData.toolName);
+                        context.put(toolData.toolName, tool);
+                    }
+                    else
+                    {
+                        log.info("Tool " + toolData.toolName
+                                + " was null, skipping it.");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                log.error("Could not instantiate perm tool "
                     + toolData.toolName + " from a "
                     + toolData.toolClassName + " object", e);
             }
