@@ -58,12 +58,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * Template context tool that can be used to set various attributes of a
@@ -152,6 +156,9 @@ public class HtmlPageAttributes
 
     /** http-equiv tags */
     private Map httpEquivs = new HashMap();
+
+    /** Doctype */
+    private static String doctype = null;
 
     /**
      * Default constructor. The init method must be called before use
@@ -652,4 +659,128 @@ public class HtmlPageAttributes
         }
 
     }
+    
+    /**
+     * Retrieve the default Doctype.  If Doctype is set to null, then an empty
+     * string will be returned.  The default Doctype can be set in
+     * TurbineResources as three strings giving the tag (e.g. "HTML"), dtd (e.g. 
+     * "-//W3C//DTD HTML 4.01 Transitional//EN") and uri (e.g. 
+     * "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd").  For
+     * backwards compatibility the default can be set using one of the single 
+     * strings: Html40Strict, Html40Transitional, or Html40Frameset or as two 
+     * strings providing the the dtd and uri (tag is assumed to be "HTML") - 
+     * all but the three string configuration will result in an info level 
+     * deprecation message being written to the log.
+     *
+     * @exception TurbineException If the default doctype is not specified in 
+     * TurbineResources.properties.
+     */
+    public static String getDefaultDoctype()
+            throws TurbineException
+    {
+        if (doctype == null)
+        {
+            String errMsg = "default.doctype property not set properly in " 
+                    + "TurbineResources.properties!";
+            Vector doctypeProperty = Turbine.getConfiguration()
+                    .getVector(TurbineConstants.DEFAULT_DOCUMENT_TYPE_KEY);
+
+            if (doctypeProperty != null)
+            {
+                String tag;
+                String identifier;
+                String uri;
+                switch(doctypeProperty.size())
+                {
+                case 1:
+                    {
+                        String doc = (String) doctypeProperty.firstElement();
+                        tag = "HTML";
+                        identifier = "-//W3C//DTD HTML 4.0 ";
+                        uri = "http://www.w3.org/TR/REC-html40/";
+                        if (doc.equalsIgnoreCase(
+                             TurbineConstants.DOCUMENT_TYPE_HTML40TRANSITIONAL))
+                        {
+                            identifier += "Transitional";
+                            uri += "loose";
+                        }
+                        else if (doc.equalsIgnoreCase(
+                                TurbineConstants.DOCUMENT_TYPE_HTML40STRICT))
+                        {
+                            uri += "strict";
+                        }
+                        else if (doc.equalsIgnoreCase(
+                                TurbineConstants.DOCUMENT_TYPE_HTML40FRAMESET))
+                        {
+                            identifier = "Frameset";
+                            uri += "frameset";
+                        }
+                        else
+                        {
+                            throw new TurbineException(errMsg);
+                        }
+                        identifier += "//EN";
+                        uri += ".dtd";
+
+                        log.info("Defining default.doctype with a single string"
+                            + " in TurbineResources.properties is deprecated.  "
+                            + "Please use three strings instead (tag, dtd and "
+                            + "uri).");
+                        break;
+                    }
+                case 2:
+                    {
+                        tag = "HTML";
+                        identifier = (String) doctypeProperty.elementAt(0); 
+                        uri = (String) doctypeProperty.elementAt(1);
+
+                        log.info("Defining default.doctype with two strings"
+                            + " in TurbineResources.properties is deprecated.  "
+                            + "Please use three strings instead (tag, dtd and "
+                            + "uri).");
+                        break;
+                    }
+                case 3:
+                    {
+                        tag = (String) doctypeProperty.elementAt(0);
+                        identifier = (String) doctypeProperty.elementAt(1); 
+                        uri = (String) doctypeProperty.elementAt(2);
+                        break;
+                    }
+                default:
+                    {
+                        throw new TurbineException(errMsg);
+                    }
+                }
+                doctype = getDoctype(tag, identifier, uri);
+            }
+            else
+            {
+                doctype = "";
+            }
+        }
+
+        return doctype;
+    }
+    
+    /**
+     * Build the doctype element.
+     * 
+     * @param tag the tag whose DTD is being declared.
+     * @param identifier the identifier for the doctype declaration.
+     * @param uri the uri for the doctype declaration.
+     * @return the doctype.
+     */
+    private static String getDoctype(String tag, String identifier, String uri)
+    {
+        StringBuffer doctypeBuf = new StringBuffer("<!DOCTYPE ");
+        doctypeBuf.append(tag);
+        doctypeBuf.append(" PUBLIC \"");
+        doctypeBuf.append(identifier);
+        doctypeBuf.append("\" \"");
+        doctypeBuf.append(uri);
+        doctypeBuf.append("\">");
+        return doctypeBuf.toString();
+    }
+    
 }

@@ -284,6 +284,15 @@ public class DefaultPage
                                     .setUri((String) doctypeProperty.elementAt(1)));
                     break;
                 }
+            case 3:
+                {
+                    // Ignore first string as the tag value is provided by ECS.
+                    data.getPage()
+                        .setDoctype(new Doctype()
+                                    .setIdentifier((String) doctypeProperty.elementAt(1))
+                                    .setUri((String) doctypeProperty.elementAt(2)));
+                    break;
+                }
             default:
                 {
                     throw new TurbineException(errMsg);
