@@ -355,6 +355,7 @@ use.ssl=true
 # -------------------------------------------------------------------
 services.ResourceService.classname=org.apache.turbine.services.resources.TurbineResourceService
 services.LoggingService.classname=org.apache.turbine.services.logging.TurbineLoggingService
+services.ComponentService.classname=org.apache.turbine.services.component.TurbineComponentService
 services.FactoryService.classname=org.apache.turbine.services.factory.TurbineFactoryService
 services.PoolService.classname=org.apache.turbine.services.pool.TurbinePoolService
 services.RunDataService.classname=org.apache.turbine.services.rundata.TurbineRunDataService
@@ -983,7 +984,7 @@ services.ComponentService.torque.classname = org.apache.torque.Torque
 # to the Root of the Application (either the Webroot given by the Servlet
 # Container or the Root given to TurbineConfig at startup time)
 #
-services.ComponentService.torque.config = /conf/Torque.properties
+services.ComponentService.torque.config = /WEB-INF/conf/Torque.properties
 
 #
 # Properties can be given directly to Components. This sets the "foo"
@@ -996,7 +997,7 @@ services.ComponentService.torque.config = /conf/Torque.properties
 #
 #services.ComponentService.name = fulcrum
 #services.ComponentService.fulcrum.classname = org.apache.fulcrum.Fulcrum
-#services.ComponentService.fulcrum.config = /conf/Fulcrum.properties
+#services.ComponentService.fulcrum.config = /WEB-INF/conf/Fulcrum.properties
 
 # -------------------------------------------------------------------
 #
