@@ -324,8 +324,9 @@ public abstract class BaseSecurityService
 
         try
         {
-            userManager =
+            UserManager userManager =
                     (UserManager) Class.forName(userManagerClassName).newInstance();
+            setUserManager(userManager);
         }
         catch (Exception e)
         {
@@ -676,6 +677,16 @@ public abstract class BaseSecurityService
     }
 
     /**
+     * Configure a new user Manager.
+     *
+     * @param userManager An UserManager object
+     */
+    public void setUserManager(UserManager userManager)
+    {
+        this.userManager = userManager;
+    }
+
+    /**
      * Check whether a specified user's account exists.
      *
      * The login name is used for looking up the account.
@@ -688,7 +699,7 @@ public abstract class BaseSecurityService
     public boolean accountExists(User user)
             throws DataBackendException
     {
-        return userManager.accountExists(user);
+        return getUserManager().accountExists(user);
     }
 
     /**
@@ -704,7 +715,7 @@ public abstract class BaseSecurityService
     public boolean accountExists(String userName)
             throws DataBackendException
     {
-        return userManager.accountExists(userName);
+        return getUserManager().accountExists(userName);
     }
 
     /**
@@ -723,7 +734,7 @@ public abstract class BaseSecurityService
             throws DataBackendException, UnknownEntityException,
                    PasswordMismatchException
     {
-        return userManager.retrieve(username, password);
+        return getUserManager().retrieve(username, password);
     }
 
     /**
@@ -738,7 +749,7 @@ public abstract class BaseSecurityService
     public User getUser(String username)
             throws DataBackendException, UnknownEntityException
     {
-        return userManager.retrieve(username);
+        return getUserManager().retrieve(username);
     }
 
     /**
@@ -778,7 +789,7 @@ public abstract class BaseSecurityService
     public List getUserList(Criteria criteria)
             throws DataBackendException
     {
-        return userManager.retrieveList(criteria);
+        return getUserManager().retrieveList(criteria);
     }
 
     /**
@@ -824,7 +835,7 @@ public abstract class BaseSecurityService
     public void saveUser(User user)
             throws UnknownEntityException, DataBackendException
     {
-        userManager.store(user);
+        getUserManager().store(user);
     }
 
     /**
@@ -858,7 +869,7 @@ public abstract class BaseSecurityService
     public void addUser(User user, String password)
             throws DataBackendException, EntityExistsException
     {
-        userManager.createAccount(user, password);
+        getUserManager().createAccount(user, password);
     }
 
     /**
@@ -875,7 +886,7 @@ public abstract class BaseSecurityService
         // revoke all roles form the user
         revokeAll(user);
 
-        userManager.removeAccount(user);
+        getUserManager().removeAccount(user);
     }
 
     /**
@@ -894,7 +905,7 @@ public abstract class BaseSecurityService
             throws PasswordMismatchException, UnknownEntityException,
                    DataBackendException
     {
-        userManager.changePassword(user, oldPassword, newPassword);
+        getUserManager().changePassword(user, oldPassword, newPassword);
     }
 
     /**
@@ -914,7 +925,7 @@ public abstract class BaseSecurityService
     public void forcePassword(User user, String password)
             throws UnknownEntityException, DataBackendException
     {
-        userManager.forcePassword(user, password);
+        getUserManager().forcePassword(user, password);
     }
 
     /**
