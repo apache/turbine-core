@@ -71,7 +71,8 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 
 /**
- * An implementation of AvalonComponentService based on the avalon Merlin 3.2 container.
+ * An implementation of AvalonComponentService based on the Avalon 
+ * Merlin 3.2 container.
  * 
  * @author <a mailto="peter@courcoux.biz">Peter Courcoux</a>
  * @author <a mailto="epugh@upstate.com">Eric Pugh</a>
@@ -211,7 +212,7 @@ public class TurbineMerlinComponentService
     public Object lookup(String path) throws Exception
     {
         Block root = m_kernel.getRootBlock();
-        return root.locate(path);
+        return root.locate(path).resolve();
     }
 
     /**

@@ -1,9 +1,9 @@
 
-<container name="tutorial">
+<container name="fulcrum">
    <classloader>
      <classpath>
        <repository>
-         <resource id="merlin:merlin-hello-tutorial" version="1.0"/>
+         <resource id="merlin/tutorial:hello" version="1.1"/>
        </repository>
      </classpath>
    </classloader>
@@ -11,10 +11,3 @@
 
 </container>
 
-<!-- Not working, dont' know how to load wit local path...
-<container name="local">
- 
-   <component name="testcomponent" class="org.apache.turbine.test.TestComponent"/>
-
-</container>
--->
