@@ -63,8 +63,8 @@ Changes between Turbine 2.2 and 2.3-dev.
 <p>
   <ul>
     <li>
-      You now must use Maven to build Turbine 2.3. The old, ant
-      based build system is no longer supported and actively removed
+      It is now necessary to use Maven to build Turbine 2.3. The old,
+      ant-based build system is no longer supported and actively removed
       from the distribution.
     </li>
     <li>
@@ -93,18 +93,18 @@ Changes between Turbine 2.2 and 2.3-dev.
       they go away.
     </li>
     <li>
-      removed all deprecated java code (incl. support for webmacro, freemarker
+      All deprecated java code was removed (incl. support for webmacro, freemarker
       and castor). Make sure to not get any deprecation warnings before you
       switch to 2.3!
     </li>
     <li>
-      removed the LoggingService. Deprecated everything in the utils.Log class.
+      The LoggingService was removed. Deprecated everything in the utils.Log class.
     </li>
     <li>
-       removed the TurbineResources Service.
+       The TurbineResources Service was removed and replaced with commons-configuration.
     </li>
     <li>
-       the service initialization code has been changed. This is important if
+       The service initialization code has been changed. This is important if
        you write services yourself. You should supply a constructor which takes
        no parameters. The usage of a constructor which takes a RunData object
        is deprecated and might be removed later. If you're using the supplied
@@ -121,6 +121,22 @@ Changes between Turbine 2.2 and 2.3-dev.
         VelocityEmailException instead of MessagingException if a problem
         occurs.
     </li>
+    <li>
+      The handling of "," as a separator in template names was tightened and
+      clarified. Many places where you could get away with using "/" as a separator
+      or use a leading "/" for a template name now no longer work. There is a long
+      description on how to use and not to use this in the javadoc for 
+      org.apache.turbine.services.template.TurbineTemplateService. If you want to volunteer
+      for work on Turbine, feel free to whip this into an xdoc and put it into the
+      documentation tree.
+    </li>
+    <li>
+      Some classes have been moved into different packages to allow cleanup and
+      clarification of their usage. The old locations are still available but 
+      deprecated. Examples are the parser classes from org.apache.turbine.util to
+      org.apache.turbine.util.parser and some of the pull tools from org.apache.turbine.util.pull
+      to org.apache.turbine.services.pull.tools
+    </li>
   </ul>
 </p>
 </subsection>
@@ -134,7 +150,7 @@ Changes between Turbine 2.2 and 2.3-dev.
 	 stored, if the required hashtable was missing, then it was created.  This
 	 happened in conjunction with the PassiveUserManager.  Additionally, the
 	 setTempStorage(Hashtable newTempStorage) did not actually assign the new
-	 Hashtable.  Cleaned up some of the code so the parralel permanent and temp
+	 Hashtable.  Cleaned up some of the code so the parallel permanent and temp
 	 data storage methods followed the same patterns.  Created a cactus testcase
 	 to test TurbineUser.
     </li>
@@ -245,7 +261,7 @@ Changes between Turbine 2.2 and 2.3-dev.
     </li>
     <li>
       VelocityHtmlMail can now be used in a scheduled job.  It has a new constructor
-      accepting a velocity contexrt object.
+      accepting a velocity context object.
     </li>
     <li>
       Intake changes:
@@ -303,7 +319,7 @@ Changes between Turbine 2.2 and 2.3-dev.
     </li>
     <li>
         A new SessionService has been added.  This will allow access to all
-        sessions in the current context.
+        sessions in the current context if you use Servlet API 2.3 or better.
     </li>
     <li>
         The non-secure web server for handling xml-rpc requests
@@ -331,7 +347,38 @@ Changes between Turbine 2.2 and 2.3-dev.
     </li>
     <li>
         The Pull Service got a new type of tools: RunDataApplicationTools. These tools get the
-        current RunData object passed at every refresh().
+        current RunData object passed at every refresh(). This type obviously makes sense only
+        for non-request scope tools.
+    </li>
+    <li>
+      Some services got static facade classes: FactoryService, JspService, RunDataService, SchedulerService.
+    </li>
+    <li>
+      Turbine can use the ConfigurationFactory from commons-configuration to load all kinds of configuration types
+      like XML, JNDI or (still) plain properties files.
+    </li>
+    <li>
+      A completely new URI handling scheme was added and is now the proposed default method to handle URI representations
+      in Turbine. The older URI handling classes like ContentURI and DynamicURI will go after the 2.3 release.
+    </li>
+    <li>
+      A new Security Service is available: TorqueSecurityService. It has the same functionality as the DBSecurityService
+      but allows the usage of arbitrary Torque generated peer classes and objects as security objects.
+    </li>
+    <li>
+      The security object get methods from Security Service have been deprecated and replaced by methods which are
+      able to reference Objects by Name and by Primary Key.
+    </li>
+    <li>
+      The TurbineDB Service has been deprecated. Use Torque and the Component Service to start Torque.
+    </li>
+    <li>
+      It is possible to debug pressure on the PoolService by setting services.PoolService.pool.debug to true 
+      in the TurbineResources.properties.
+    </li>
+    <li>
+      Turbine now has some integration for Avalon Components. It can start
+      Avalon based components with the new AvalonComponentService.
     </li>
   </ul>
 </p>
@@ -366,6 +413,9 @@ Changes between Turbine 2.2 and 2.3-dev.
       during the call to data.getCookies() if no cookies were present.  Also,
       the path for cookies was being set incorrectly.  Both of these issues
       have been fixed.
+    </li>
+    <li>
+      The pull service now really refreshes non-request tool every time a tool is requested.
     </li>
   </ul>
 </p>
