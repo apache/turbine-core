@@ -112,33 +112,6 @@ public abstract class FieldFactory
             }
         }
         );
-        fieldCtors.put("NumberKey", new FieldFactory.FieldCtor()
-        {       
-            public Field getInstance(XmlField f, Group g)
-                    throws IntakeException
-            {   
-                return new NumberKeyField(f, g);
-            }   
-        }
-        );
-        fieldCtors.put("ComboKey", new FieldFactory.FieldCtor()
-        {
-            public Field getInstance(XmlField f, Group g)
-                    throws IntakeException
-            {
-                return new ComboKeyField(f, g);
-            }
-        }
-        );
-        fieldCtors.put("StringKey", new FieldFactory.FieldCtor()
-        {
-            public Field getInstance(XmlField f, Group g)
-                    throws IntakeException
-            {
-                return new StringKeyField(f, g);
-            }
-        }
-        );
         fieldCtors.put("FileItem", new FieldFactory.FieldCtor()
         {
             public Field getInstance(XmlField f, Group g)
