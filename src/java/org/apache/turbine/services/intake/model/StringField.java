@@ -57,6 +57,7 @@ package org.apache.turbine.services.intake.model;
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.turbine.services.intake.IntakeException;
+import org.apache.turbine.services.intake.validator.StringValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 
 /**
@@ -82,6 +83,16 @@ public class StringField
             throws IntakeException
     {
         super(field, group);
+    }
+
+    /**
+     * Produces the fully qualified class name of the default validator.
+     *
+     * @return class name of the default validator
+     */
+    protected String getDefaultValidator()
+    {
+        return StringValidator.class.getName();
     }
 
     /**

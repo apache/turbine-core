@@ -57,7 +57,7 @@ package org.apache.turbine.services.intake.model;
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.turbine.services.intake.IntakeException;
-import org.apache.turbine.services.intake.validator.NumberValidator;
+import org.apache.turbine.services.intake.validator.FloatValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 
 /**
@@ -110,7 +110,7 @@ public class FloatField
      */
     protected String getDefaultValidator()
     {
-        return NumberValidator.class.getName();
+        return FloatValidator.class.getName();
     }
 
     /**
@@ -124,7 +124,7 @@ public class FloatField
             Float[] values = new Float[inputs.length];
             for (int i = 0; i < inputs.length; i++)
             {
-                values[i] = StringUtils.isNotEmpty(inputs[i]) 
+                values[i] = StringUtils.isNotEmpty(inputs[i])
                         ? new Float(inputs[i]) : null;
             }
             setTestValue(values);
