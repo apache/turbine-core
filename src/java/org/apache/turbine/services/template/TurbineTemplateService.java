@@ -82,6 +82,7 @@ import org.apache.turbine.services.template.mapper.BaseMapper;
 import org.apache.turbine.services.template.mapper.BaseTemplateMapper;
 import org.apache.turbine.services.template.mapper.ClassMapper;
 import org.apache.turbine.services.template.mapper.DirectMapper;
+import org.apache.turbine.services.template.mapper.DirectTemplateMapper;
 import org.apache.turbine.services.template.mapper.LayoutTemplateMapper;
 import org.apache.turbine.services.template.mapper.Mapper;
 import org.apache.turbine.services.template.mapper.ScreenTemplateMapper;
@@ -739,7 +740,7 @@ public class TurbineTemplateService
             ClassMapper.class.getName(),
             LayoutTemplateMapper.class.getName(),
             ScreenTemplateMapper.class.getName(),
-            ScreenTemplateMapper.class.getName()
+            DirectTemplateMapper.class.getName()
         };
 
         int [] mapperCacheSize = new int [] {
