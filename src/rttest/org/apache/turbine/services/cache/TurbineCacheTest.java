@@ -347,43 +347,30 @@ public class TurbineCacheTest extends ServletTestCase {
 
     /**
      * Verify the Cache count is correct.
-     *
-     * This test can take serveral minutes.
-     *
      * @throws Exception
      */    
     public void testObjectCount() throws Exception
     {
-        String testString = new String( "This is a test");
-        Object retrievedObject = null;
-        CachedObject cacheObject = null;
-        
         GlobalCacheService globalCache = (GlobalCacheService)TurbineServices
         .getInstance()
         .getService( GlobalCacheService.SERVICE_NAME );
-        
-        // Wait 2 Refresh to allow for remove object to be deleted
-        Thread.sleep(TURBINE_CACHE_REFRESH * 2);
-        assertEquals("Initial Object Count", 0, globalCache.getNumberOfObjects());
+        assertNotNull("Could not retrive cache service.", globalCache);
 
-        // Create and add Object that expires in 1 turbine Refresh + 1 millis 
-        cacheObject = new CachedObject(testString, TURBINE_CACHE_REFRESH  + 1);
+        // Create and add Object that expires in 1.5 turbine Refresh
+        long expireTime = TURBINE_CACHE_REFRESH + TURBINE_CACHE_REFRESH/2;
+        CachedObject cacheObject = new CachedObject("This is a test", expireTime);
         assertNotNull( "Failed to create a cachable object", cacheObject);
-        long addTime = System.currentTimeMillis();
+
         globalCache.addObject(cacheKey, cacheObject);
-        
         assertEquals("After adding 1 Object", 1, globalCache.getNumberOfObjects());
         
-        // Wait 1 Refresh
-        Thread.sleep(TURBINE_CACHE_REFRESH + 1);
-        assertEquals("After refresh", 1, globalCache.getNumberOfObjects());
+        // Wait until we're passed 1 refresh, but not half way.
+        Thread.sleep(TURBINE_CACHE_REFRESH + TURBINE_CACHE_REFRESH/3);
+        assertEquals("After one refresh", 1, globalCache.getNumberOfObjects());
 
-        // Wait 2 additional Refresh
-        Thread.sleep((TURBINE_CACHE_REFRESH * 2) + 1);
-        assertEquals("After refresh", 0, globalCache.getNumberOfObjects());
-        
-        // Remove objects
-        globalCache.removeObject(cacheKey);
+        // Wait until we're passed 2 more refreshes
+        Thread.sleep((TURBINE_CACHE_REFRESH * 2) + TURBINE_CACHE_REFRESH/3);
+        assertEquals("After three refreshes", 0, globalCache.getNumberOfObjects());
     }
 
     /**
