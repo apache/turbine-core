@@ -70,6 +70,8 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
+import org.apache.stratum.lifecycle.Initializable;
+import org.apache.stratum.lifecycle.Disposable;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.TurbineServices;
 
@@ -98,9 +100,14 @@ import org.apache.turbine.services.TurbineServices;
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class TurbineConfig implements ServletConfig, ServletContext
+public class TurbineConfig
+    implements ServletConfig,
+               ServletContext,
+               Initializable,
+               Disposable
 {
     /** Enables output of debug messages (compile time option). */
     private final static boolean DEBUG = false;
@@ -164,8 +171,21 @@ public class TurbineConfig implements ServletConfig, ServletContext
     /**
      * Causes this class to initialize itself which in turn initializes
      * all of the Turbine Services that need to be initialized.
+     *
+     * @deprecated Use initialize() instead.
      */
     public void init()
+    {
+        initialize();
+    }
+
+    /**
+     * Causes this class to initialize itself which in turn initializes
+     * all of the Turbine Services that need to be initialized.
+     *
+     * @see org.apache.stratum.lifecycle.Initializable
+     */
+    public void initialize()
     {
         try
         {
@@ -186,6 +206,18 @@ public class TurbineConfig implements ServletConfig, ServletContext
         if (turbine != null)
         {
             turbine.init(data);
+        }
+    }
+
+    /**
+     * Shutdown the Turbine System, lifecycle style
+     *
+     */
+    public void dispose()
+    {
+        if(turbine != null)
+        {
+            turbine.destroy();
         }
     }
 

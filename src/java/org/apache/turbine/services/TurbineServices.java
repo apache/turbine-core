@@ -62,6 +62,7 @@ import java.util.Vector;
 import javax.servlet.ServletConfig;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
+import org.apache.turbine.services.component.ComponentService;
 import org.apache.turbine.services.logging.LoggingService;
 import org.apache.turbine.services.resources.ResourceService;
 import org.apache.turbine.services.resources.TurbineResources;
@@ -75,6 +76,7 @@ import org.apache.turbine.services.resources.TurbineResources;
  * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TurbineServices
@@ -94,15 +96,25 @@ public class TurbineServices
     public final static String RESOURCES_CLASS_DEFAULT =
         "org.apache.turbine.services.resources.TurbineResourceService";
 
-    /** Default bootstrap logger implementation */
-    public final static String LOGGING_CLASS_DEFAULT =
-        "org.apache.turbine.services.logging.TurbineLoggingService";
-
     /**
      * Servlet initialization parameter name for defining the logging
      * service implementation to use.
      */
     public final static String LOGGING_CLASS_KEY="logging";
+
+    /** Default bootstrap logger implementation */
+    public final static String LOGGING_CLASS_DEFAULT =
+        "org.apache.turbine.services.logging.TurbineLoggingService";
+
+    /**
+     * Servlet initialization parameter name for defining the component loader
+     * service implementation to load Stratum based components.
+     */
+    public final static String COMPONENT_CLASS_KEY = "component";
+
+    /** Default component service implementation */
+    public final static String COMPONENT_CLASS_DEFAULT =
+        "org.apache.turbine.services.component.TurbineComponentService";
 
     /**
      * Servlet initialization parameter name for the path to
@@ -180,7 +192,7 @@ public class TurbineServices
             mapping.setProperty(ResourceService.SERVICE_NAME, resourcesClass);
             initService(ResourceService.SERVICE_NAME, config);
 
-            // Now logging can be initialized
+            // Now logging can be initialized.
             String loggingClass = config.getInitParameter(LOGGING_CLASS_KEY);
             if (loggingClass == null)
             {
@@ -202,6 +214,15 @@ public class TurbineServices
                 mapping.clearProperty(LoggingService.SERVICE_NAME);
                 throw e;
             }
+
+            // Now the Component Service can be initialized
+            // Just set up the mapping and let Turbine call us early.
+            String componentClass = config.getInitParameter(COMPONENT_CLASS_KEY);
+            if (componentClass == null)
+            {
+                componentClass = COMPONENT_CLASS_DEFAULT;
+            }
+            mapping.setProperty(ComponentService.SERVICE_NAME, componentClass);
         }
         finally
         {

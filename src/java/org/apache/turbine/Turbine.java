@@ -61,7 +61,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.stratum.component.ComponentLoader;
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.PageLoader;
 import org.apache.turbine.services.TurbineServices;
@@ -106,6 +105,7 @@ import org.apache.turbine.util.security.AccessControlList;
  * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:mpoeschl@marmot.at">Martin Poeschl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class Turbine
@@ -174,16 +174,18 @@ public class Turbine
      * This init method will load the default resources from a
      * properties file.
      *
-     * @param config typical Servlet initialization parameter.
+     * This method is called by init(ServletConfig config)
+     *
      * @exception ServletException a servlet exception.
      */
-    public final void init(ServletConfig config)
+    public final void init()
         throws ServletException
     {
-        super.init(config);
-
         synchronized (this.getClass())
         {
+            super.init();
+            ServletConfig config = getServletConfig();
+
             if (!firstInit)
             {
                 log("Double initializaton of Turbine was attempted!");
@@ -230,11 +232,6 @@ public class Turbine
 
                 // Initialize other services that require early init
                 services.initServices(config, false);
-
-                // Initialize components like torque and fulcrum
-                ComponentLoader loader = new ComponentLoader(
-                        TurbineResources.getConfiguration());
-                loader.load();
 
                 log ("Turbine: init() Ready to Rumble!");
             }

@@ -68,6 +68,12 @@ Castor is a OR tool that is supported by Turbine.
 </li>
 
 <li>
+<a href="services/component-service.html">Component Service</a> 
+<br/>
+Initializes external components which implement the lifecycle interface, e.g. Torque und Fulcrum.
+</li>
+
+<li>
 <a href="services/db-service.html">DB Service</a> 
 <br/>
 <b>[TO DO (PoolBrokerService)]</b> Is a common front end to all database systems. 
