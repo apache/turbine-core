@@ -69,8 +69,6 @@ import javax.naming.directory.SearchResult;
 
 import org.apache.commons.configuration.Configuration;
 
-import org.apache.torque.util.Criteria;
-
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.services.security.UserManager;
@@ -224,7 +222,7 @@ public class LDAPUserManager implements UserManager
      * @throws DataBackendException Error accessing the data backend.
      * @deprecated Use <a href="#retrieveList">retrieveList</a> instead.
      */
-    public User[] retrieve(Criteria criteria)
+    public User[] retrieve(Object criteria)
             throws DataBackendException
     {
         return (User []) retrieveList(criteria).toArray(new User[0]);
@@ -244,7 +242,7 @@ public class LDAPUserManager implements UserManager
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
      */
-    public List retrieveList(Criteria criteria)
+    public List retrieveList(Object criteria)
             throws DataBackendException
     {
         List users = new Vector(0);

@@ -58,7 +58,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.torque.om.BaseObject;
+//import org.apache.torque.om.BaseObject;
 
 /**
  * This class represents a generic object used in the Access Control Lists.
@@ -69,7 +69,7 @@ import org.apache.torque.om.BaseObject;
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
-public abstract class SecurityObject extends BaseObject implements Comparable
+public abstract class SecurityObject implements Comparable
 {
     /** The name of this object. */
     private String name;

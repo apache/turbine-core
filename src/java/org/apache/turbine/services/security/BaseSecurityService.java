@@ -54,7 +54,6 @@ package org.apache.turbine.services.security;
  * <http://www.apache.org/>.
  */
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletConfig;
@@ -65,7 +64,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.crypto.CryptoAlgorithm;
 import org.apache.fulcrum.crypto.CryptoService;
-import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
@@ -747,25 +745,6 @@ public abstract class BaseSecurityService
         return getUserManager().retrieve(username);
     }
 
-    /**
-     * Retrieve a set of users that meet the specified criteria.
-     *
-     * As the keys for the criteria, you should use the constants that
-     * are defined in {@link User} interface, plus the names
-     * of the custom attributes you added to your user representation
-     * in the data storage. Use verbatim names of the attributes -
-     * without table name prefix in case of DB implementation.
-     *
-     * @param criteria The criteria of selection.
-     * @return a List of users meeting the criteria.
-     * @throws DataBackendException if there is a problem accessing the
-     *         storage.
-     */
-    public List getUserList(Criteria criteria)
-            throws DataBackendException
-    {
-        return getUserManager().retrieveList(criteria);
-    }
 
     /**
      * Constructs an User object to represent an anonymous user of the
@@ -1175,11 +1154,8 @@ public abstract class BaseSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      */
-    public GroupSet getAllGroups()
-            throws DataBackendException
-    {
-        return getGroups(new Criteria());
-    }
+    public abstract GroupSet getAllGroups()
+            throws DataBackendException;
 
     /**
      * Retrieves all roles defined in the system.
@@ -1188,11 +1164,8 @@ public abstract class BaseSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      */
-    public RoleSet getAllRoles()
-            throws DataBackendException
-    {
-        return getRoles(new Criteria());
-    }
+    public abstract RoleSet getAllRoles()
+            throws DataBackendException;
 
     /**
      * Retrieves all permissions defined in the system.
@@ -1201,11 +1174,9 @@ public abstract class BaseSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      */
-    public PermissionSet getAllPermissions()
-            throws DataBackendException
-    {
-        return getPermissions(new Criteria());
-    }
+    public abstract PermissionSet getAllPermissions()
+            throws DataBackendException;
+    
 
     /**
      * @deprecated Use getGroupInstance(String name) instead.

@@ -58,8 +58,6 @@ import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
 
-import org.apache.torque.util.Criteria;
-
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.UserManager;
 import org.apache.turbine.util.security.DataBackendException;
@@ -152,7 +150,7 @@ public class PassiveUserManager implements UserManager
      *         storage.
      * @deprecated Use <a href="#retrieveList">retrieveList</a> instead.
      */
-    public User[] retrieve(Criteria criteria)
+    public User[] retrieve(Object criteria)
             throws DataBackendException
     {
         throw new DataBackendException("PassiveUserManager knows no users");
@@ -172,7 +170,7 @@ public class PassiveUserManager implements UserManager
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
      */
-    public List retrieveList(Criteria criteria)
+    public List retrieveList(Object criteria)
             throws DataBackendException
     {
         throw new DataBackendException("PassiveUserManager knows no users");

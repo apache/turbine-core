@@ -57,8 +57,6 @@ package org.apache.turbine.services.security;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.torque.util.Criteria;
-
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
@@ -68,7 +66,7 @@ import org.apache.turbine.om.security.TurbineRole;
 import org.apache.turbine.om.security.TurbineUser;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.Service;
-import org.apache.turbine.services.security.db.DBUserManager;
+import org.apache.turbine.services.security.passive.PassiveUserManager;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
@@ -176,10 +174,10 @@ public interface SecurityService
 
     /**
      * the default implementation of UserManager interface
-     * (org.apache.turbine.services.security.DBUserManager)
+     * (org.apache.turbine.services.security.passive.PassiveUserManager)
      */
     static final String USER_MANAGER_DEFAULT
-            = DBUserManager.class.getName();
+            = PassiveUserManager.class.getName();
 
     /**
      * the key within services's properties for secure passwords flag
@@ -460,7 +458,7 @@ public interface SecurityService
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
      */
-    List getUserList(Criteria criteria)
+    List getUserList(Object criteria)
             throws DataBackendException;
 
     /**
@@ -887,7 +885,7 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    GroupSet getGroups(Criteria criteria)
+    GroupSet getGroups(Object criteria)
             throws DataBackendException;
 
     /**
@@ -898,7 +896,7 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    RoleSet getRoles(Criteria criteria)
+    RoleSet getRoles(Object criteria)
             throws DataBackendException;
 
     /**
@@ -909,7 +907,7 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    PermissionSet getPermissions(Criteria criteria)
+    PermissionSet getPermissions(Object criteria)
             throws DataBackendException;
 
     /**

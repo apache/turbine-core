@@ -26,7 +26,7 @@
       </xmlPaths>
     </intake>    
     <factory/>
-    <torque>
+    <!--torque>
        <configfile>conf/test/TorqueTest.properties</configfile>
-    </torque>    
+    </torque-->    
 </componentConfig>

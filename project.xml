@@ -695,16 +695,11 @@
       <version>2.3</version>
       <url>http://java.sun.com/products/servlet/</url>
     </dependency>
-    <dependency>
-      <id>stratum</id>
-      <version>1.0-b5-dev</version>
-      <url>http://jakarta.apache.org/turbine/stratum/</url>
-    </dependency>
-    <dependency>
+    <!--dependency>
       <id>torque</id>
-      <version>3.1</version>
+      <version>20041102.134240</version>
       <url>http://db.apache.org/torque/</url>
-    </dependency>
+    </dependency-->
     <!--
     <dependency>
     <groupId>turbine</groupId>

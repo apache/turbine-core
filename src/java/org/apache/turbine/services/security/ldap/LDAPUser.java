@@ -58,6 +58,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.Hashtable;
+
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
@@ -67,8 +68,6 @@ import javax.servlet.http.HttpSessionBindingEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.torque.om.BaseObject;
-import org.apache.torque.om.StringKey;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
 
@@ -82,7 +81,7 @@ import org.apache.turbine.services.security.TurbineSecurity;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:hhernandez@itweb.com.mx">Humberto Hernandez</a>
  */
-public class LDAPUser extends BaseObject implements User
+public class LDAPUser implements User
 {
 
     /** Logging */
@@ -139,7 +138,7 @@ public class LDAPUser extends BaseObject implements User
             {
                 try
                 {
-                    setPrimaryKey(new StringKey(attr.get().toString()));
+                    //setPrimaryKey(attr.get().toString());
                 }
                 catch (Exception ex)
                 {
@@ -228,7 +227,7 @@ public class LDAPUser extends BaseObject implements User
         attrName = LDAPSecurityConstants.getUserIdAttribute();
         if (attrName != null)
         {
-            Object value = getPrimaryKey();
+            Object value = this.getIdAsObj();
 
             if (value != null)
             {
