@@ -131,7 +131,7 @@ public class DefaultParameterParser
      */
     public DefaultParameterParser(String characterEncoding)
     {
-        super (characterEncoding);
+        super(characterEncoding);
     }
 
     /**
@@ -187,20 +187,20 @@ public class DefaultParameterParser
             {
                 TurbineUpload.parseRequest(req, this);
             }
-            catch(TurbineException e)
+            catch (TurbineException e)
             {
                 Log.error(new TurbineException("File upload failed", e));
             }
         }
 
         Enumeration names = req.getParameterNames();
-        if ( names != null )
+        if (names != null)
         {
             while(names.hasMoreElements())
             {
                 tmp = (String) names.nextElement();
-                parameters.put( convert(tmp),
-                                (Object) req.getParameterValues(tmp) );
+                parameters.put(convert(tmp),
+                        (Object) req.getParameterValues(tmp));
             }
         }
 
@@ -211,9 +211,9 @@ public class DefaultParameterParser
             StringTokenizer st = new StringTokenizer(req.getPathInfo(), "/");
             boolean name = true;
             String pathPart = null;
-            while(st.hasMoreTokens())
+            while (st.hasMoreTokens())
             {
-                if ( name == true )
+                if (name == true)
                 {
                     tmp = URLDecoder.decode(st.nextToken());
                     name = false;
@@ -221,15 +221,15 @@ public class DefaultParameterParser
                 else
                 {
                     pathPart = URLDecoder.decode(st.nextToken());
-                    if ( tmp.length() != 0 )
+                    if (tmp.length() != 0)
                     {
-                        add (convert(tmp), pathPart);
+                        add(convert(tmp), pathPart);
                     }
                     name = true;
                 }
             }
         }
-        catch ( Exception e )
+        catch (Exception e)
         {
             // If anything goes wrong above, don't worry about it.
             // Chances are that the path info was wrong anyways and
@@ -245,7 +245,7 @@ public class DefaultParameterParser
      *
      * @param uploadData A byte[] with data.
      */
-    public void setUploadData ( byte[] uploadData )
+    public void setUploadData(byte[] uploadData)
     {
         this.uploadData = uploadData;
     }
@@ -255,7 +255,7 @@ public class DefaultParameterParser
      *
      * @return uploadData A byte[] with data.
      */
-    public byte[] setUploadData ()
+    public byte[] getUploadData()
     {
         return this.uploadData;
     }
@@ -270,25 +270,23 @@ public class DefaultParameterParser
      * @param name A String with the name.
      * @param value A FileItem with the value.
      */
-    public void append( String name,
-                        FileItem value )
+    public void append(String name, FileItem value)
     {
         FileItem[] items = this.getFileItems(name);
-        if(items == null)
+        if (items == null)
         {
             items = new FileItem[1];
             items[0] = value;
-            parameters.put( convert(name), items );
+            parameters.put(convert(name), items);
         }
         else
         {
-            FileItem[] newItems = new FileItem[items.length+1];
+            FileItem[] newItems = new FileItem[items.length + 1];
             System.arraycopy(items, 0, newItems, 0, items.length);
             newItems[items.length] = value;
-            parameters.put( convert(name), newItems );
+            parameters.put(convert(name), newItems);
         }
     }
-
 
     /**
      * Return a FileItem object for the given name.  If the name does
@@ -304,10 +302,12 @@ public class DefaultParameterParser
             FileItem value = null;
             Object object = parameters.get(convert(name));
             if (object != null)
-                value = ((FileItem[])object)[0];
+            {
+                value = ((FileItem[]) object)[0];
+            }
             return value;
         }
-        catch ( ClassCastException e )
+        catch (ClassCastException e)
         {
             return null;
         }
@@ -325,9 +325,9 @@ public class DefaultParameterParser
     {
         try
         {
-            return (FileItem[])parameters.get(convert(name));
+            return (FileItem[]) parameters.get(convert(name));
         }
-        catch ( ClassCastException e )
+        catch (ClassCastException e)
         {
             return null;
         }

@@ -25,13 +25,13 @@ package org.apache.turbine.util;
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation" and 
- *    "Apache Turbine" must not be used to endorse or promote products 
- *    derived from this software without prior written permission. For 
+ * 4. The names "Apache" and "Apache Software Foundation" and
+ *    "Apache Turbine" must not be used to endorse or promote products
+ *    derived from this software without prior written permission. For
  *    written permission, please contact apache@apache.org.
  *
  * 5. Products derived from this software may not be called "Apache",
- *    "Apache Turbine", nor may "Apache" appear in their name, without 
+ *    "Apache Turbine", nor may "Apache" appear in their name, without
  *    prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -55,8 +55,8 @@ package org.apache.turbine.util;
  */
 
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.turbine.util.upload.FileItem;
+
 /**
  * ParameterParser is an interface to a utility to handle parsing and
  * retrieving the data passed via the GET/POST/PATH_INFO arguments.
@@ -111,14 +111,14 @@ public interface ParameterParser
      *
      * @param uploadData A byte[] with data.
      */
-    public void setUploadData ( byte[] uploadData );
+    public void setUploadData(byte[] uploadData);
 
     /**
      * Gets the uploadData byte[]
      *
      * @return uploadData A byte[] with data.
      */
-    public byte[] setUploadData ();
+    public byte[] getUploadData();
 
 
     /**
@@ -130,8 +130,7 @@ public interface ParameterParser
      * @param name A String with the name.
      * @param value A FileItem with the value.
      */
-    public void append( String name,
-                        FileItem value );
+    public void append(String name, FileItem value);
 
 
     /**
