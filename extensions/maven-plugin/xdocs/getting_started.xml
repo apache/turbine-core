@@ -73,11 +73,12 @@ web container to check this out:
 maven turbine:deploy
 ]]></source>
 
-Do the necessary steps that your web container needs to reload an
-application in its webapp directory. Point your browser to your
-browser to the application (if you use Tomcat running on your local
-machine, this would be http://localhost:8080/helloworld/app/). It should
-look like this:</p>
+Now do the necessary steps that your web container requires to reload
+an application in its webapp directory. Point your browser to the
+application (if you use Tomcat running on your local machine, this
+would be http://localhost:8080/helloworld/app/). It should look like
+this:</p>
+
 <p><center>
 <img src="images/helloworld.png" width="722" height="525"/><br/>
 </center></p>
