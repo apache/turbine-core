@@ -406,9 +406,8 @@ The Java Action code which handles the submission of the form looks like this:
 <source><![CDATA[
 public void doLogin( RunData data, Context context ) throws Exception
 {
-    IntakeTool intake = (IntakeTool)context
-        .get(ScarabConstants.INTAKE_TOOL);
-    
+    IntakeTool intake = (IntakeTool) context.get("intake");
+
     if ( intake.isAllValid() &amp;&amp; checkUser(data, context) ) 
     {
         String template = data.getParameters()
