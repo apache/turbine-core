@@ -197,6 +197,7 @@ public class TorqueDataModelTask
             // data model object.
             xmlParser = new XmlToAppData();
             AppData ad = xmlParser.parseFile(xmlFile);
+            xmlParser.parseFile(xmlFile);
             ad.setName(xmlFile.substring(0,xmlFile.indexOf(".")));
             dataModels.addElement(ad);
         } 
@@ -216,6 +217,8 @@ public class TorqueDataModelTask
                 {
                     xmlParser = new XmlToAppData();
                     AppData ad = xmlParser.parseFile(
+                        new File(srcDir, dataModelFiles[j]).toString());
+                    xmlParser.parseFile(
                         new File(srcDir, dataModelFiles[j]).toString());
                     
                     ad.setName(dataModelFiles[j].substring(0,dataModelFiles[j].indexOf(".")));
