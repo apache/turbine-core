@@ -22,7 +22,7 @@
   <pomVersion>3</pomVersion>
   <name>jakarta-turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.3.1-rc2</currentVersion>
+  <currentVersion>2.3.1-rc3-dev</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -245,6 +245,10 @@
     <contributor>
       <name>Chris Kimpton</name>
       <email>kimptoc.mail@bigfoot.com</email>
+    </contributor>
+    <contributor>
+      <name>Brian Lawler</name>
+      <email>brian@tribenetwork.com</email>
     </contributor>
     <contributor>
       <name>Josh Lucas</name>

@@ -16,8 +16,11 @@ package org.apache.turbine.services.assemblerbroker.util.java;
  * limitations under the License.
  */
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -48,6 +51,12 @@ public abstract class JavaBaseFactory
     /** Logging */
     protected Log log = LogFactory.getLog(this.getClass());
 
+    /**
+     * A cache for previously obtained Class instances, which we keep in order
+     * to reduce the Class.forName() overhead (which can be sizable).
+     */
+    private Map classCache = Collections.synchronizedMap(new HashMap());
+    
     static
     {
         ObjectUtils.addOnce(packages, GenericLoader.getBasePackage());
@@ -82,7 +91,12 @@ public abstract class JavaBaseFactory
 
                 try
                 {
-                    Class servClass = Class.forName(className.toString());
+                    Class servClass = (Class) classCache.get(className);
+                    if(servClass == null)
+                    {
+                        servClass = Class.forName(className.toString());
+                        classCache.put(className, servClass);
+                    }
                     assembler = (Assembler) servClass.newInstance();
                     break; // for()
                 }

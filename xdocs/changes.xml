@@ -73,6 +73,23 @@ Changes between Turbine LAST_RELEASE and CURRENT_RELEASE.
 -->
 
 
+<section name="Turbine 2.3-rc3-dev">
+
+<subsection name="Other changes">
+<p>
+  <ul>
+    <li>
+       JavaBaseFactory executed a Class.forName() every time it was
+       searching for a named class, which showed up as a very costly
+       API call in our profiling.  A synchronized cache has been added
+       to cache previously obtained class instances inside this class.
+    </li>
+  </ul>
+</p>
+</subsection>
+
+</section>
+
 <section name="Turbine 2.3-rc2">
 
 <p>
