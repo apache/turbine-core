@@ -115,6 +115,11 @@ Changes between Turbine 2.2 and 2.3-dev.
       <li>
         TurbineException is now thrown instead of Exception.
       </li>
+      <li>
+        Toque generated objects are now used to for accessing the database.  You
+        can now add additional fields for the OM objects without modifing the source
+        code.  The OM objects are generated from scheduler-schema.xml
+      </li>
       </ul>
     </li>
     <li>
