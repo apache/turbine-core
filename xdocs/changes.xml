@@ -63,10 +63,10 @@ Changes between Turbine 2.2 and 2.3-dev.
 <p>
   <ul>
     <li>
-      The loginAction no longer checks to see if the user object is already
+      The LoginUser action no longer checks to see if the user object is already
       in the session and returns if it is found.  The user will always be there
-      now.  If you have a custom loginAction that still performs this check,
-      you will need to remove it in order for your login action to work.
+      now.  If you have a custom LoginUser action that still performs this
+      check, you will need to remove it in order for your login action to work.
     </li>
     <li>
       AccessControlList is now an interface and its implementation is in
