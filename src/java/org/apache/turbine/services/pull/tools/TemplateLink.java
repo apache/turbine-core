@@ -149,9 +149,12 @@ public class TemplateLink
 
         Configuration conf = 
                 Turbine.getConfiguration().subset(TEMPLATE_LINK_PREFIX);
-        
-        wantRelative = conf.getBoolean(TEMPLATE_LINK_RELATIVE_KEY,
-                TEMPLATE_LINK_RELATIVE_DEFAULT);
+
+        if (conf != null)
+        {
+            wantRelative = conf.getBoolean(TEMPLATE_LINK_RELATIVE_KEY,
+                    TEMPLATE_LINK_RELATIVE_DEFAULT);
+        }
 
     }
 
