@@ -143,7 +143,6 @@ public class TurbineIntakeService
     public void init()
             throws InitializationException
     {
-        ServletConfig config = Turbine.getTurbineServletConfig();
         Vector defaultXmlPathes = new Vector();
         defaultXmlPathes.add(XML_PATH_DEFAULT);
 
@@ -257,9 +256,7 @@ public class TurbineIntakeService
         {
             for (Iterator it = appDataElements.keySet().iterator(); it.hasNext();)
             {
-                AppData appData = (AppData) it.next();
-
-                String pkg = appData.getBasePackage();
+                AppData appData = (AppData) it.next();                
 
                 int maxPooledGroups = 0;
                 List glist = appData.getGroups();
