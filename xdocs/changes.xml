@@ -186,6 +186,11 @@ Changes between Turbine 2.3 and 2.4.
 <p>
   <ul>
     <li>
+     Update to Commons Configuration 1.0-RC1.  TurbineConfiguration.xml files should switch
+     from &lt;dom4j className="org.apache.commons.configuration.DOM4JConfiguration" fileName="conf/test/TurbineResources.xml"/&gt;
+     to &lt;xml fileName="conf/test/TurbineResources.xml"/&gt; syntax.
+    </li>       
+    <li>
      Refactored how Turbine sets up it's ServerData object.  Removed the use
      of RunData from the process.
     </li>   	

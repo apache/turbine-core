@@ -488,12 +488,12 @@
     </dependency>
     <dependency>
       <id>commons-collections</id>
-      <version>2.1</version>
+      <version>3.1</version>
       <url>http://jakarta.apache.org/commons/collections/</url>
     </dependency>
     <dependency>
       <id>commons-configuration</id>
-      <version>20040328.175011</version>
+      <version>1.0-rc1</version>
       <url>http://jakarta.apache.org/commons/configuration/</url>
     </dependency>
     <dependency>
@@ -786,7 +786,7 @@
     <report>maven-changelog-plugin</report>
     <report>maven-developer-activity-plugin</report>
     <report>maven-file-activity-plugin</report>
-    <!--<report>maven-javadoc-plugin</report>-->
+    <report>maven-javadoc-plugin</report>
     <report>maven-jxr-plugin</report>
 	<report>maven-pmd-plugin</report>
 	<report>maven-jcoverage-plugin</report>
