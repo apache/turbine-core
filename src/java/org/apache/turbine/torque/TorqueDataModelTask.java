@@ -75,7 +75,7 @@ import org.apache.turbine.torque.engine.database.transform.XmlToAppData;
  * a data model contains tables for a <strong>single</strong>
  * database.
  *
- * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:jvanzyl@zenplex.com">Jason van Zyl</a>
  */
 public class TorqueDataModelTask
     extends TexenTask
@@ -109,15 +109,34 @@ public class TorqueDataModelTask
      * in a lot of cases they won't be.
      */
     protected Hashtable dataModelDbMap;
+    
+    /**
+     * Hashtable containing the names of all the databases
+     * in our collection of schemas.
+     */
     protected Hashtable databaseNames;
 
+    /**
+     * Name of the properties file that maps an SQL file
+     * to a particular database.
+     */
     protected String sqldbmap;
 
+    /**
+     * Set the sqldbmap.
+     *
+     * @param String sqldbmap
+     */
     public void setSqlDbMap(String sqldbmap)
     {
         this.sqldbmap = sqldbmap;
     }
     
+    /**
+     * Get the sqldbmap.
+     *
+     * @return String sqldbmap.
+     */
     public String getSqlDbMap()
     {
         return sqldbmap;
