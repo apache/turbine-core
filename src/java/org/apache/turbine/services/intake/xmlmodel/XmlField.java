@@ -89,6 +89,7 @@ public class XmlField
     private String mapToProperty;
     private String validator;
     private String defaultValue;
+    private String displaySize;
 
     /**
      * Default Constructor
@@ -114,25 +115,22 @@ public class XmlField
      */
     public void loadFromXML(Attributes attrib)
     {
-        setName(attrib.getValue("name"));
+        name = attrib.getValue("name");
         key = attrib.getValue("key");
         type = attrib.getValue("type");
         displayName = attrib.getValue("displayName");
-        setMultiValued(attrib.getValue("multiValued"));
+        displaySize = attrib.getValue("displaySize");
+        multiValued = attrib.getValue("multiValued");
 
         String mapObj = attrib.getValue("mapToObject");
-        if (mapObj != null && mapObj.length() != 0)
+        if(mapObj != null && mapObj.length() != 0)
         {
-            setMapToObject(mapObj);
+            mapToObject = mapObj;
         }
 
-        String mapProp = attrib.getValue("mapToProperty");
-        if (mapProp != null)
-        {
-            setMapToProperty(mapProp);
-        }
-        setValidator(attrib.getValue("validator"));
-        setDefaultValue(attrib.getValue("defaultValue"));
+        mapToProperty = attrib.getValue("mapToProperty");
+        validator = attrib.getValue("validator");
+        defaultValue = attrib.getValue("defaultValue");
     }
 
     /**
@@ -153,6 +151,7 @@ public class XmlField
 
     /**
      * Set the name of the property
+     * @deprecated no reason for this method to exist
      */
     public void setName(String newName)
     {
@@ -169,6 +168,7 @@ public class XmlField
 
     /**
      * Set the display name of the property
+     * @deprecated No replacement.
      */
     public void setDisplayName(String newDisplayName)
     {
@@ -176,7 +176,17 @@ public class XmlField
     }
 
     /**
+     * Gets the display size of the field.  This is
+     * useful for constructing the HTML input tag.
+     */
+    public String getDisplaySize()
+    {
+        return this.displaySize;
+    }
+
+    /**
      * Set the parameter key of the property
+     * @deprecated No replacement.
      */
     public void setKey(String newKey)
     {
@@ -193,6 +203,7 @@ public class XmlField
 
     /**
      * Set the type of the property
+     * @deprecated No replacement.
      */
     public void setType(String newType)
     {
@@ -209,6 +220,7 @@ public class XmlField
 
     /**
      * Set whether this class can have multiple values
+     * @deprecated No replacement.
      */
     public void setMultiValued(String newMultiValued)
     {
@@ -220,7 +232,7 @@ public class XmlField
      */
     public boolean isMultiValued()
     {
-        if (multiValued != null && multiValued.equals("true"))
+        if(multiValued != null && multiValued.equals("true"))
         {
             return true;
         }
@@ -231,6 +243,7 @@ public class XmlField
      * Set the name of the object that takes this input
      *
      * @param objectName name of the class.
+     * @deprecated No replacement.
      */
     public void setMapToObject(String objectName)
     {
@@ -249,6 +262,7 @@ public class XmlField
      * Set the property method that takes this input
      *
      * @param prop Name of the property to which the field will be mapped.
+     * @deprecated No replacement.
      */
     public void setMapToProperty(String prop)
     {
@@ -260,7 +274,7 @@ public class XmlField
      */
     public String getMapToProperty()
     {
-        if (mapToProperty == null)
+        if(mapToProperty == null)
         {
             return getName();
         }
@@ -272,6 +286,7 @@ public class XmlField
 
     /**
      * Set the class name of the validator
+     * @deprecated No replacement.
      */
     public void setValidator(String prop)
     {
@@ -290,6 +305,7 @@ public class XmlField
      * Set the default Value.
      *
      * @param prop The parameter to use as default value.
+     * @deprecated No replacement.
      */
     public void setDefaultValue(String prop)
     {
@@ -324,7 +340,7 @@ public class XmlField
     public void setGroup(XmlGroup parent)
     {
         this.parent = parent;
-        if (mapToObject != null && mapToObject.length() != 0)
+        if(mapToObject != null && mapToObject.length() != 0)
         {
             mapToObject = parent.getAppData().getBasePackage() + mapToObject;
         }
@@ -341,6 +357,7 @@ public class XmlField
     /**
      * Get the value of ifRequiredMessage.
      * @return value of ifRequiredMessage.
+     * @deprecated No replacement.
      */
     public String getIfRequiredMessage()
     {
@@ -359,6 +376,7 @@ public class XmlField
     /**
      * A utility function to create a new input parameter
      * from attrib and add it to this property.
+     * @deprecated No replacement.
      */
     public Rule addRule(Attributes attrib)
     {
@@ -412,35 +430,35 @@ public class XmlField
         result.append(" key=\"" + key + "\"");
         result.append(" type=\"" + type + "\"");
 
-        if (displayName != null)
+        if(displayName != null)
         {
             result.append(" displayName=\"" + displayName + "\"");
         }
-        if (mapToObject != null)
+        if(mapToObject != null)
         {
             result.append(" mapToObject=\"" + mapToObject + "\"");
         }
-        if (mapToProperty != null)
+        if(mapToProperty != null)
         {
             result.append(" mapToProperty=\"" + mapToProperty + "\"");
         }
-        if (validator != null)
+        if(validator != null)
         {
             result.append(" validator=\"" + validator + "\"");
         }
-        if (defaultValue != null)
+        if(defaultValue != null)
         {
             result.append(" defaultValue=\"" + defaultValue + "\"");
         }
 
-        if (rules.size() == 0)
+        if(rules.size() == 0)
         {
             result.append(" />\n");
         }
         else
         {
             result.append(">\n");
-            for (Iterator i = rules.iterator(); i.hasNext();)
+            for(Iterator i = rules.iterator(); i.hasNext();)
             {
                 result.append(i.next());
             }
