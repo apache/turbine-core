@@ -101,6 +101,15 @@ Changes between Turbine 2.3 and 2.4.
 <p>
   <ul>
     <li>
+       Fixed problem in Intake with the "remove" method in IntakeTool that is 
+       triggered by a "removeAll".</br>
+       When there is more than one instance of a group and a "removeAll" is
+       done the "remove" method is called for each of the instances of the
+       group. If a mutiply instantiated group is the last one to be removed,
+       it's parameter entries will already have been removed and "getStrings"
+       returns null, which is not being handled in the code.
+    </li>  	
+    <li>
        Intake now handles multiValued="true" on type="int" fields correctly.
        The get/set methods of the underlying object need to deal with an array
        of ints.  The intake processing for other primitive types has also been 
