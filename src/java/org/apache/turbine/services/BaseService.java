@@ -55,13 +55,16 @@ package org.apache.turbine.services;
  */
 
 import java.util.Properties;
+
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationConverter;
 
 /**
  * This class is a generic implementation of <code>Service</code>.
  *
  * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class BaseService
@@ -70,9 +73,6 @@ public class BaseService
 {
     /** A reference to the ServiceBroker that instantiated this object. */
     protected ServiceBroker serviceBroker;
-
-    /** The properties of this service. */
-    protected Properties properties;
 
     /** The configuration for this service */
     protected Configuration configuration;
@@ -129,16 +129,7 @@ public class BaseService
      */
     public Properties getProperties()
     {
-        if (name == null)
-        {
-            return null;
-        }
-
-        if (properties == null)
-        {
-            properties = getServiceBroker().getProperties(name);
-        }
-        return properties;
+        return ConfigurationConverter.getProperties(getConfiguration());
     }
 
     /**

@@ -1,12 +1,14 @@
 package org.apache.turbine.services;
 
-import org.apache.commons.configuration.Configuration;
-
-import java.util.Properties;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+
+import java.util.Properties;
+
 import javax.servlet.ServletConfig;
 
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationConverter;
 
 /**
  * A base implementation of an {@link java.rmi.server.UnicastRemoteObject}
@@ -21,7 +23,6 @@ public class BaseUnicastRemoteService extends UnicastRemoteObject
     private boolean isInitialized;
     private InitableBroker initableBroker;
     private String name;
-    private Properties properties;
     private ServiceBroker serviceBroker;
 
     public BaseUnicastRemoteService()
@@ -29,7 +30,6 @@ public class BaseUnicastRemoteService extends UnicastRemoteObject
     {
         isInitialized = false;
         initableBroker = null;
-        properties = null;
         name = null;
         serviceBroker = null;
     }
@@ -102,16 +102,7 @@ public class BaseUnicastRemoteService extends UnicastRemoteObject
 
     public Properties getProperties()
     {
-        if (name == null)
-        {
-            return null;
-        }
-
-        if (properties == null)
-        {
-            properties = getServiceBroker().getProperties(name);
-        }
-        return properties;
+      return ConfigurationConverter.getProperties(getConfiguration());
     }
 
     public void setName(String name)
