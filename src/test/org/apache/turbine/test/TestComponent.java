@@ -22,6 +22,7 @@ import org.apache.avalon.framework.component.Component;
  * This is a simple component that is only used to test the avalon component
  * service.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public interface TestComponent

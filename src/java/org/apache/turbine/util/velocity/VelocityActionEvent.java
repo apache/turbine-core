@@ -41,6 +41,9 @@ import org.apache.velocity.context.Context;
  * method. If it can't find a method like that, then it will try to
  * execute the method without the Context in it.</p>
  *
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class VelocityActionEvent extends ActionEvent

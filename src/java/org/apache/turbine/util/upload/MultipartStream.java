@@ -72,6 +72,7 @@ import java.io.OutputStream;
  *    }
  * </pre>
  *
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  * @deprecated use commons-fileupload instead
  */

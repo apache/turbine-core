@@ -20,6 +20,8 @@ package org.apache.turbine.util.security;
  * Thrown to indicate that the User,Role,Group or Permission that
  * was requested does not exist.
  *
+ * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class UnknownEntityException

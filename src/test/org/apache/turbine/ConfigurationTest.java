@@ -28,6 +28,7 @@ import org.apache.turbine.util.TurbineXmlConfig;
  * Tests that the ConfigurationFactory and regular old properties methods both work.
  * Verify the overriding of properties.
  * 
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
 public class ConfigurationTest extends BaseTestCase

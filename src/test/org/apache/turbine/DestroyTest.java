@@ -27,6 +27,7 @@ import org.apache.turbine.util.TurbineConfig;
  * Can we call "destroy" unconditionally on our Turbine Servlet, even if
  * it hasn't configured?
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class DestroyTest

@@ -38,6 +38,7 @@ import org.apache.turbine.util.RunData;
  * $navigation.setTemplate("admin_navigation.wm")
  * </code>
  *
+ * @author <a href="mbryson@mont.mindspring.com">Dave Bryson</a>
  * @version $Id$
  */
 public class TemplateNavigation

@@ -22,6 +22,9 @@
 
  <properties>
   <title>Migrating from 2.2 to 2.3</title>
+  <author email="epugh@upstate.com">Eric Pugh</author>
+  <author email="chris@fenetics.com">Chris Chew</author>
+  <author email="seade@backstagetech.com.au">Scott Eade</author>
  </properties>
 
 <body>

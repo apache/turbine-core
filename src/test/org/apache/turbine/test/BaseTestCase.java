@@ -34,6 +34,8 @@ import junit.framework.TestCase;
  * Base functionality to be extended by all Apache Turbine test cases.  Test
  * case implementations are used to automate testing via JUnit.
  *
+ * @author <a href="mailto:celkins@scardini.com">Christopher Elkins</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class BaseTestCase

@@ -22,6 +22,7 @@
 
  <properties>
   <title>Turbine Services - Global Cache Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
  </properties>
 
 <body>

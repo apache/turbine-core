@@ -27,6 +27,8 @@ import org.apache.turbine.util.TimeSelector;
 
 /**
  * Used to test how BaseValueParser works with TimeSelector fields.
+ *
+ * @author <a href="mailto:brekke@apache.org">Jeffrey D. Brekke</a>
  * @version $Id$
  */
 public class BaseValueParserTest extends ServletTestCase

@@ -22,6 +22,8 @@
 
  <properties>
   <title>Turbine Services - Intake Service</title>
+  <author email="jmcnally@collab.net">John McNally</author>
+  <author email="jon@latchkey.com">Jon S. Stevens</author>
  </properties>
 
  <body>

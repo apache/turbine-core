@@ -22,6 +22,7 @@
 
   <properties>
     <title>Application Service Proposal</title>
+    <author email="jvanzyl@apache.org">Jason van Zyl</author>
   </properties>
 
 <body>

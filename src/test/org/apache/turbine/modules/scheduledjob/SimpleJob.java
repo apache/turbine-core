@@ -24,6 +24,8 @@ import org.apache.turbine.services.schedule.JobEntry;
  * job merely increments a static counter variable when it is run.  You 
  * can check the counter to verify the job has run.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
 public class SimpleJob

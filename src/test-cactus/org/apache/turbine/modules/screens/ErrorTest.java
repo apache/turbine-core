@@ -29,9 +29,9 @@ import org.apache.turbine.util.RunData;
 /**
  *  ErrorTest
  *
+ *@author     <a href="epugh@upstate.com">Eric Pugh</a>
  *@version    $Id$
  */
-
 public class ErrorTest extends ServletTestCase
 {
 	private RunData data = null;

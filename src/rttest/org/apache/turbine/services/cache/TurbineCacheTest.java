@@ -33,6 +33,7 @@ import org.apache.turbine.Turbine;
 /**
  * TurbineCacheTest
  *
+ * @author <a href="paulsp@apache.org">Paul Spencer</a>
  * @version $Id$
  */
 public class TurbineCacheTest extends ServletTestCase {

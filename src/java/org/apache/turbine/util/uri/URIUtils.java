@@ -22,6 +22,7 @@ import org.apache.turbine.Turbine;
  * Bundles a few static routines concerning URIs, that you
  * will need all the time.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

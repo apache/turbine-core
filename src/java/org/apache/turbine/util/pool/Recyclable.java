@@ -20,6 +20,7 @@ package org.apache.turbine.util.pool;
  * An interface for objects that can be pooled and
  * recycled several times by different clients.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
 public interface Recyclable

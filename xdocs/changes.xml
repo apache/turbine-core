@@ -22,6 +22,12 @@
 
 <properties>
   <title>2.x Changes</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  <author email="jmcnally@apache.org">John D. McNally</author>
+  <author email="mpoeschl@marmot.at">Martin Poeschl</author>
+  <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
+  <author email="quintonm@bellsouth.net">Quinton McCombs</author>
+  <author email="epugh@upstate.com">Eric Pugh</author>
 </properties>
 
 <body>

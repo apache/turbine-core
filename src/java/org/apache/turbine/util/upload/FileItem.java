@@ -52,6 +52,9 @@ import org.apache.turbine.services.upload.TurbineUpload;
  * for example the adding of a FileItem as an attachment to a multipart
  * email).
  *
+ * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
+ * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
  * @version $Id$
  * @deprecated use commons-fileupload instead
  */

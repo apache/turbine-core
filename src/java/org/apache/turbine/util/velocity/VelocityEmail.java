@@ -94,6 +94,10 @@ import org.apache.velocity.context.Context;
  * <p>You can turn on debugging for the JavaMail API by calling
  * setDebug(true).  The debugging messages will be written to System.out.
  *
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
+ * @author <a href="mailto:gcoladonato@yahoo.com">Greg Coladonato</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class VelocityEmail extends SimpleEmail

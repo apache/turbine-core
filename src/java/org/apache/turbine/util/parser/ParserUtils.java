@@ -28,6 +28,7 @@ import org.apache.turbine.services.TurbineServices;
 /**
  * Static helpers for folding fields to upper or lower case
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

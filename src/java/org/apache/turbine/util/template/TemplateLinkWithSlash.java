@@ -28,6 +28,7 @@ import org.apache.turbine.util.RunData;
  * separator and use TemplateLink.  But this class is available for
  * those who do not mind the inefficiency.
  *
+ * @author <a href="jmcnally@collab.net">John D. McNally</a>
  * @version $Id$
  * @deprecated Use {@link org.apache.turbine.services.pull.tools.TemplateLinkWithSlash} instead.
  */

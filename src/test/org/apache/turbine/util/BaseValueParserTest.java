@@ -32,6 +32,7 @@ import org.apache.turbine.util.parser.ParserUtils;
 /**
  * Testing of the BaseValueParser class
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class BaseValueParserTest extends BaseTestCase

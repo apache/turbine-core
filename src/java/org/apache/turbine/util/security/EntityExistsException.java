@@ -20,6 +20,8 @@ package org.apache.turbine.util.security;
  * Thrown upon an attempt to create an User,Role,Group or Permission that
  * already exists.
  *
+ * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class EntityExistsException

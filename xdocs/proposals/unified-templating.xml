@@ -22,6 +22,7 @@
 
     <properties>
         <title>Unified Templating Service Proposal</title>
+        <author email="rafal@apache.org">Rafal Krzewski</author>
     </properties>
 
     <body>

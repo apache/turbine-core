@@ -20,6 +20,7 @@ package org.apache.turbine.util.security;
  * Thrown to indicate that the User attempted to perform an operation that
  * was not permitted by the security settings.
  *
+ * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
 public class AccessControlException

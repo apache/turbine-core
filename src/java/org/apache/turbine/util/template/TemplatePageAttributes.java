@@ -41,6 +41,7 @@ import org.apache.turbine.util.RunData;
  * $page.setStyleSheet("/style.css");
  * </code></pre></p>
  *
+ * @author <a href="mailto:sean@somacity.com">Sean Legassick</a>
  * @deprecated Use HtmlPageAttributes along with VelocityOnlyLayout instead
  * @version $Id$
  */

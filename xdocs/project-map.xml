@@ -22,6 +22,7 @@
 
     <properties>
         <title>Project Map</title>
+        <author email="rafal@apache.org">Rafal Krzewski</author>
     </properties>
 
     <body>

@@ -22,6 +22,8 @@
 
  <properties>
   <title>Turbine Services - Naming Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  <author email="jon@latchkey.com">Jon S. Stevens</author>
  </properties>
 
 <body>

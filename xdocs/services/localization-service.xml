@@ -21,6 +21,7 @@
 <document>
  <properties>
   <title>Turbine Services - Localization Service</title>
+  <author email="jvanzyl@apache.org">Jason van Zyl</author>
  </properties>
 
 <body>

@@ -26,6 +26,7 @@ import org.apache.avalon.framework.context.ContextException;
 /**
  * Implementation of the test component.
  *
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class TestComponentImpl

@@ -32,6 +32,9 @@ import org.apache.turbine.util.uri.URIConstants;
  * the RunData object and can extract the information it needs to do
  * the job directly from the data.getParameters().
  *
+ * @author <a href="mailto:mbryson@mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TemplateInfo

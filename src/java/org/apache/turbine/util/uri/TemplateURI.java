@@ -32,6 +32,7 @@ import org.apache.turbine.util.parser.ParameterParser;
  *
  * If you must generate a Turbine Link in a Template System, use this class.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 

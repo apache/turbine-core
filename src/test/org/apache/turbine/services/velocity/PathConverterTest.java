@@ -33,9 +33,9 @@ import org.apache.turbine.util.TurbineConfig;
  * Tests startup of the Velocity Service and translation of various
  * path patterns.
  *
+ * @author <a href="hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-
 public class PathConverterTest
     extends BaseTestCase
 {

@@ -59,6 +59,7 @@ import org.apache.ecs.html.Select;
  * }
  * </pre>
  *
+ * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @version $Id$
  */
 public class SelectorBox

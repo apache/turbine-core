@@ -45,6 +45,8 @@ import org.apache.turbine.util.uri.URI;
  *
  * In the above example, result is 2.
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
+ * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
  * @version $Id$
  */
 public interface CookieParser

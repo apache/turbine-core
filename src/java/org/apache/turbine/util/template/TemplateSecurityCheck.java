@@ -37,6 +37,8 @@ import org.apache.turbine.util.RunData;
  *     return;
  * </pre></code>
  *
+ * @author <a href="mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class TemplateSecurityCheck

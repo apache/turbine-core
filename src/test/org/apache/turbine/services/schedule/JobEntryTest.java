@@ -25,11 +25,11 @@ import org.apache.turbine.test.BaseTestCase;
  * Unit testing for Job Entries.  Ensure that removing NumberKey from TurbineNonPersistentScheduler 
  * still works.
  *
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
 public class JobEntryTest extends BaseTestCase
 {
-
     private JobEntry je1;
     private JobEntry je2;
 

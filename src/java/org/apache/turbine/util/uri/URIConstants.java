@@ -20,6 +20,8 @@ package org.apache.turbine.util.uri;
  * This interface contains all the constants that are always needed when
  * working with URIs.
  *
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 

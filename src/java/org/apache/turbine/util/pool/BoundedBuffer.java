@@ -22,6 +22,7 @@ package org.apache.turbine.util.pool;
  * Originally written by Doug Lea and released into the public domain.
  * <p>[<a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html"> Introduction to this package. </a>] <p>
  *
+ * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
 public class BoundedBuffer
