@@ -130,7 +130,7 @@ import org.apache.velocity.context.Context;
  *              be threadsafe.
  *
  *  session:    tool is instantiated once for each user session, and is
- *              stored in the user's temporary hashtable. Tool should be
+ *              stored in the session.  These tools do not need to be
  *              threadsafe.
  *
  *  authorized: tool is instantiated once for each user session once the
@@ -140,8 +140,8 @@ import org.apache.velocity.context.Context;
  *              the user logs in and is is stored in the user's permanent
  *              hashtable.
  *              This means for a logged in user the tool will be persisted
- *              in the user's objectdata. Tool should be threadsafe and
- *              Serializable.
+ *              in the user's objectdata. Tool should be Serializable.  These
+ *              tools do not need to be threadsafe.
  *
  * Defaults: none
  * </pre>
@@ -149,6 +149,7 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class TurbinePullService
