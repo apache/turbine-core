@@ -85,11 +85,11 @@ public class TestComponentImpl
     {
         setupLogger(this, "TestComponent");
         getLogger().debug("test");
-        getLogger().debug("ComponentAppRoot = "+appRoot);
+        getLogger().debug("componentAppRoot = "+appRoot);
     }
 
     public void contextualize(Context context) throws ContextException
     {
-        appRoot = (String) context.get("ComponentAppRoot");
+        appRoot = (String) context.get("componentAppRoot");
     }
 }
