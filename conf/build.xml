@@ -20,6 +20,9 @@
   <property name="master" value="${master.home}/TurbineResources.master"/>
   <property name="copy" value="${target.dir}/TurbineResources.properties"/>
 
+  <property name="fulcrum.master" value="${master.home}/Fulcrum.master"/>
+  <property name="fulcrum.copy" value="${target.dir}/Fulcrum.properties"/>
+
   <!-- =================================================================== -->
   <!-- T R  P R O P S  W I T H  D B  V A L U E S                           -->
   <!-- =================================================================== -->
@@ -29,11 +32,14 @@
   <!-- =================================================================== -->
 
   <target name="tr-props-with-db-values" depends="configure,configure-db">
-    
+
     <echo message="Creating TurbineResources ..."/>
     <delete file="${copy}"/>
+    <delete file="${fulcrum.copy}"/>
+    
     <copy file="${master}" tofile="${copy}" filtering="on"/>
-  
+    <copy file="${fulcrum.master}" tofile="${fulcrum.copy}" filtering="on"/>
+
   </target>
 
   <!-- =================================================================== -->
@@ -47,11 +53,14 @@
   <!-- =================================================================== -->
 
   <target name="tr-props-without-db-values" depends="configure">
-    
+
     <echo message="Creating TurbineResources ..."/>
     <delete file="${copy}"/>
+    <delete file="${fulcrum.copy}"/>
+
     <copy file="${master}" tofile="${copy}" filtering="on"/>
-  
+    <copy file="${fulcrum.master}" tofile="${fulcrum.copy}" filtering="on"/>
+
   </target>
 
   <!-- =================================================================== -->
