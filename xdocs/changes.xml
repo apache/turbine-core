@@ -93,6 +93,11 @@ Changes between Turbine 2.2 and 2.3-dev.
        For consistency a similar change was made to getBool() and
        getBigInteger().
     </li>
+    <li>
+        The velocity mail classes (o.a.t.util.velocity package) now throw
+        VelocityEmailException instead of MessagingException if a problem
+        occurs.
+    </li>
   </ul>
 </p>
 </subsection>
@@ -244,6 +249,14 @@ Changes between Turbine 2.2 and 2.3-dev.
         is not found in TR.props, it will use the default of 0.0.0.0.
         This address will cause the server to listen on all
         addresses of a multi-homed machine.
+    </li>
+    <li>
+        Nearly all of the methods of o.a.t.util.StringUtils has been deprecated.  You should change your
+        application code to use StringUtils from commons-lang.
+    </li>
+    <li>
+        All classed in the org.apache.turbine.util.mail package have been deprecated.  You should change your
+        application code to use commons-mail instead.
     </li>
   </ul>
 </p>

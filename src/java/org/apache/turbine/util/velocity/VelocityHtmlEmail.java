@@ -56,12 +56,11 @@ package org.apache.turbine.util.velocity;
 
 import java.net.URL;
 import java.util.Hashtable;
-import javax.mail.MessagingException;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.mail.HtmlEmail;
+import org.apache.commons.mail.HtmlEmail;
 import org.apache.velocity.context.Context;
 
 /**
@@ -77,17 +76,17 @@ import org.apache.velocity.context.Context;
  * and/or with attachments.  You can access the VelocityHtmlEmail
  * instance within your templates trough the <code>$mail</code>
  * Velocity variable.
- * <p><code>VelocityHtmlEmail	myEmail= new VelocityHtmlEmail(data);<br>
+ * <p><code>VelocityHtmlEmail   myEmail= new VelocityHtmlEmail(data);<br>
  *                              context.put("mail", myMail);</code>
  * <b>or</b>
- *    <code>VelocityHtmlEmail	myEmail= new VelocityHtmlEmail(context);<br>
+ *    <code>VelocityHtmlEmail   myEmail= new VelocityHtmlEmail(context);<br>
  *                              context.put("mail", myMail);</code>
  *
  *
  * <p>The templates should be located under your Template turbine
  * directory.
  *
- * <p>This class extends the HtmlEmail class.  Thus, it uses the
+ * <p>This class wraps the HtmlEmail class from commons-email.  Thus, it uses the
  * JavaMail API and also depends on having the mail.server property
  * set in the TurbineResources.properties file.  If you want to use
  * this class outside of Turbine for general processing that is also
@@ -99,10 +98,11 @@ import org.apache.velocity.context.Context;
  * <p>This class is basically a conversion of the WebMacroHtmlEmail
  * written by Regis Koenig
  *
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:A.Schild@aarboard.ch">Andre Schild</a>
  * @version $Id$
  */
-public class VelocityHtmlEmail extends HtmlEmail
+public class VelocityHtmlEmail
 {
     /** Logging */
     private static Log log = LogFactory.getLog(VelocityHtmlEmail.class);
@@ -125,37 +125,107 @@ public class VelocityHtmlEmail extends HtmlEmail
     /** The map of embedded files. */
     private Hashtable embmap = null;
 
+    /** The HtmlEmail to send */
+    private HtmlEmail htmlEmail = null;
+
+    /** The to name field. */
+    private String toName = null;
+
+    /** The to email field. */
+    private String toEmail = null;
+
+    /** The from name field. */
+    private String fromName = null;
+
+    /** The from email field. */
+    private String fromEmail = null;
+
+    /** The subject of the message. */
+    private String subject = null;
+
+
     /**
      * Constructor, sets the context object from
      * the passed RunData object
      *
      * @param data A Turbine RunData object.
-     * @exception MessagingException.
+     * @exception VelocityEmailException.
      */
     public VelocityHtmlEmail(RunData data)
-        throws MessagingException
+        throws VelocityEmailException
     {
-        super.init();
-        this.context = TurbineVelocity.getContext(data);
-        embmap = new Hashtable();
+        try {
+            this.context = TurbineVelocity.getContext(data);
+            embmap = new Hashtable();
+            htmlEmail = new HtmlEmail();
+        }
+        catch (Exception e){
+            throw new VelocityEmailException(e);
+        }
     }
 
     /**
      * Constructor, sets the context object.
      *
      * @param context A Velocity context object.
-     * @exception MessagingException.
+     * @exception VelocityEmailException.
      */
     public VelocityHtmlEmail(Context context)
-        throws MessagingException
+        throws VelocityEmailException
     {
-        super.init();
-        this.context = context;
-        embmap = new Hashtable();
+        try {
+            this.context = context;
+            embmap = new Hashtable();
+            htmlEmail = new HtmlEmail();
+        }
+        catch (Exception e){
+            throw new VelocityEmailException(e);
+        }
     }
 
     /**
-     * Set the HTML template for the mail.  This is the Webmacro
+     * To: name, email
+     *
+     * @param to A String with the TO name.
+     * @param email A String with the TO email.
+     * @return A VelocityEmail (self).
+     */
+    public VelocityHtmlEmail setTo(String to, String email)
+    {
+        this.toName = to;
+        this.toEmail = email;
+        return (this);
+    }
+
+    /**
+     * From: name, email.
+     *
+     * @param from A String with the FROM name.
+     * @param email A String with the FROM email.
+     * @return A VelocityEmail (self).
+     */
+    public VelocityHtmlEmail setFrom(String from, String email)
+    {
+        this.fromName = from;
+        this.fromEmail = email;
+        return (this);
+    }
+
+    /**
+     * Subject.
+     *
+     * @param subject A String with the subject.
+     * @return A VelocityEmail (self).
+     */
+    public VelocityHtmlEmail setSubject(String subject)
+    {
+        this.subject = subject;
+        return (this);
+    }
+
+
+    /**
+     * Set the HTML template for the mail.  This is the Velocity
      * template to execute for the HTML part.  Path is relative to the
      * VM templates directory.
      *
@@ -185,37 +255,45 @@ public class VelocityHtmlEmail extends HtmlEmail
     /**
      * Actually send the mail.
      *
-     * @exception MessagingException.
+     * @exception VelocityEmailException thrown if mail cannot be sent.
      */
     public void send()
-        throws MessagingException
+        throws VelocityEmailException
     {
-        context.put("mail",this);
+        try {
+            context.put("mail",this);
 
-        String htmlbody = "";
-        String textbody = "";
+            String htmlbody = "";
+            String textbody = "";
 
-        // Process the templates.
-        try
-        {
-            if (htmlTemplate != null)
+            // Process the templates.
+            try
             {
-                htmlbody = TurbineVelocity.handleRequest(context, htmlTemplate);
+                if (htmlTemplate != null)
+                {
+                    htmlbody = TurbineVelocity.handleRequest(context, htmlTemplate);
+                }
+                if (textTemplate != null)
+                {
+                    textbody = TurbineVelocity.handleRequest(context, textTemplate);
+                }
             }
-            if (textTemplate != null)
+            catch (Exception e)
             {
-                textbody = TurbineVelocity.handleRequest(context, textTemplate);
+                throw new VelocityEmailException("Cannot parse template", e);
             }
-        }
-        catch (Exception e)
-        {
-            throw new MessagingException("Cannot parse template", e);
-        }
 
-        setHtmlMsg(htmlbody);
-        setTextMsg(textbody);
 
-        super.send();
+            htmlEmail.setFrom(fromEmail, fromName);
+            htmlEmail.addTo(toEmail, toName);
+            htmlEmail.setSubject(subject);
+            htmlEmail.setHtmlMsg(htmlbody);
+            htmlEmail.setTextMsg(textbody);
+            htmlEmail.send();
+        }
+        catch (Exception e){
+            throw new VelocityEmailException(e);
+        }
     }
 
     /**
@@ -239,16 +317,16 @@ public class VelocityHtmlEmail extends HtmlEmail
      * @param surl A String.
      * @param name A String.
      * @return A String with the cid of the embedded file.
-     * @exception MessagingException.
+     * @exception VelocityEmailException.
      * @see HtmlEmail#embed(URL surl, String name) embed.
      */
-    public String embed(String surl, String name) throws MessagingException
+    public String embed(String surl, String name) throws VelocityEmailException
     {
         String cid ="";
         try
         {
             URL url = new URL(surl);
-            cid = super.embed(url, name);
+            cid = htmlEmail.embed(url, name);
             embmap.put(name,cid);
         }
         catch (Exception e)

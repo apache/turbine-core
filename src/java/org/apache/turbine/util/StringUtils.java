@@ -59,12 +59,16 @@ import java.io.PrintWriter;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+
 /**
  * This is where common String manipulation routines should go.
  *
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:gcoladonato@yahoo.com">Greg Coladonato</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class StringUtils
@@ -75,10 +79,11 @@ public class StringUtils
      *
      * @param foo A String.
      * @return A String.
+     * @deprecated Use org.apache.commons.lang.StringUtils.defaultString()
      */
     public static final String makeString(String foo)
     {
-        return (foo == null ? "" : foo.trim());
+        return org.apache.commons.lang.StringUtils.defaultString(foo);
     }
 
     /**
@@ -87,10 +92,11 @@ public class StringUtils
      *
      * @param foo The text to check.
      * @return Whether valid.
+     * @deprecated Use org.apache.commons.lang.StringUtils.isNotEmpty()
      */
     public static final boolean isValid(String foo)
     {
-        return (foo != null && foo.length() > 0);
+        return org.apache.commons.lang.StringUtils.isNotEmpty(foo);
     }
 
     /**
@@ -98,10 +104,11 @@ public class StringUtils
      *
      * @param foo The text to check.
      * @return Whether empty.
+     * @deprecated use org.apache.commons.lang.StringUtils.isEmpty() instead
      */
     public static final boolean isEmpty(String foo)
     {
-        return (foo == null || foo.trim().length() == 0);
+        return org.apache.commons.lang.StringUtils.isEmpty(foo);
     }
 
     /**
@@ -109,22 +116,11 @@ public class StringUtils
      *
      * @param e A Throwable.
      * @return A String.
+     * @deprecated use org.apache.commons.lang.ExceptionUtils.getStackTrace() instead
      */
     public static final String stackTrace(Throwable e)
     {
-        String foo = null;
-        try
-        {
-            // And show the Error Screen.
-            ByteArrayOutputStream buf = new ByteArrayOutputStream();
-            e.printStackTrace(new PrintWriter(buf, true));
-            foo = buf.toString();
-        }
-        catch (Exception f)
-        {
-            // Do nothing.
-        }
-        return foo;
+        return ExceptionUtils.getStackTrace(e);
     }
 
     /**
@@ -138,11 +134,11 @@ public class StringUtils
     {
         if (addPre)
         {
-            return "<pre>" + stackTrace(e) + "</pre>";
+            return "<pre>" + ExceptionUtils.getStackTrace(e) + "</pre>";
         }
         else
         {
-            return stackTrace(e);
+            return ExceptionUtils.getStackTrace(e);
         }
     }
 
@@ -153,22 +149,11 @@ public class StringUtils
      * @param s1 The first string.
      * @param s2 The second string.
      * @return True if the values of both strings are the same.
+     * @deprecated use org.apache.commons.lang.StringUtils.equals() instead
      */
     public static boolean equals(String s1, String s2 )
     {
-        if (s1 == null)
-        {
-            return (s2 == null);
-        }
-        else if (s2 == null)
-        {
-            // s1 is not null
-            return false;
-        }
-        else
-        {
-            return s1.equals(s2);
-        }
+        return org.apache.commons.lang.StringUtils.equals(s1, s2);
     }
 
     public static final int PPKEY_CLASSNAME = 0;
@@ -205,6 +190,7 @@ public class StringUtils
      */
     public static String removeUnderScores(String data)
     {
+
         String temp = null;
         StringBuffer out = new StringBuffer();
         temp = data;
@@ -213,20 +199,19 @@ public class StringUtils
         while (st.hasMoreTokens())
         {
             String element = (String) st.nextElement();
-            out.append(firstLetterCaps(element));
+            out.append(org.apache.commons.lang.StringUtils.capitalise(element));
         }
         return out.toString();
     }
 
     /**
      * Makes the first letter caps and leaves the rest as is.
+     *
+     * @deprecated use org.apache.commons.lang.StringUtils.capitalise() instead
      */
     public static String firstLetterCaps(String data)
     {
-        StringBuffer sbuf = new StringBuffer(data.length());
-        sbuf.append(data.substring(0, 1).toUpperCase())
-            .append(data.substring(1));
-        return sbuf.toString();
+        return org.apache.commons.lang.StringUtils.capitalise(data);
     }
 
     /**
@@ -235,17 +220,11 @@ public class StringUtils
      * @param text      The CSV list of values to split apart.
      * @param separator The separator character.
      * @return          The list of values.
+     * @deprecated use org.apache.commons.lang.StringUtils.split() instead
      */
     public static String[] split(String text, String separator)
     {
-        StringTokenizer st = new StringTokenizer(text, separator);
-        String[] values = new String[st.countTokens()];
-        int pos = 0;
-        while (st.hasMoreTokens())
-        {
-            values[pos++] = st.nextToken();
-        }
-        return values;
+        return org.apache.commons.lang.StringUtils.split(text, separator);
     }
 
     /**
@@ -255,19 +234,11 @@ public class StringUtils
      * @param list      The list of values to join together.
      * @param separator The separator character.
      * @return          The CSV text.
+     * @deprecated Use org.apache.commons.lang.StringUtils.join()
      */
     public static String join(String[] list, String separator)
     {
-        StringBuffer csv = new StringBuffer();
-        for (int i = 0; i < list.length; i++)
-        {
-            if (i > 0)
-            {
-                csv.append(separator);
-            }
-            csv.append(list[i]);
-        }
-        return csv.toString();
+        return org.apache.commons.lang.StringUtils.join(list, separator);
     }
 
     /**

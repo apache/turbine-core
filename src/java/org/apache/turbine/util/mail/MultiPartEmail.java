@@ -79,6 +79,7 @@ import org.apache.torque.util.Criteria;
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
  * @author <a href="mailto:unknown">Regis Koenig</a>
  * @version $Id$
+ * @deprecated Use org.apache.commons.mail.MultiPartEmail instead.
  */
 public class MultiPartEmail extends Email
 {

@@ -58,7 +58,7 @@ import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.StringUtils;
-import org.apache.turbine.util.mail.SimpleEmail;
+import org.apache.commons.mail.SimpleEmail;
 import org.apache.velocity.context.Context;
 
 /**
@@ -112,8 +112,9 @@ import org.apache.velocity.context.Context;
  * ve.setWordWrap (60);
  * </pre>
  *
- * <p>This class is just a wrapper around the SimpleEmail class.
- * Thus, it uses the JavaMail API and also depends on having the
+ * <p>This class is just a wrapper around the SimpleEmail class from
+ * commons-mail using the JavaMail API.
+ * Thus, it depends on having the
  * mail.server property set in the TurbineResources.properties file.
  * If you want to use this class outside of Turbine for general
  * processing that is also possible by making sure to set the path to
@@ -269,26 +270,32 @@ public class VelocityEmail
 
     /**
      * This method sends the email.
+     * @exception VelocityEmailException thrown if mail cannot be sent.
      */
     public void send()
-        throws Exception
+        throws VelocityEmailException
     {
-        // Process the template.
-        String body = TurbineVelocity.handleRequest(context,template);
+        try {
+            // Process the template.
+            String body = TurbineVelocity.handleRequest(context,template);
 
-        // If the caller desires word-wrapping, do it here
-        if (wordWrap > 0)
-        {
-            body = StringUtils.wrapText(body,
-                    System.getProperty("line.separator"), wordWrap);
+            // If the caller desires word-wrapping, do it here
+            if (wordWrap > 0)
+            {
+                body = StringUtils.wrapText(body,
+                        System.getProperty("line.separator"), wordWrap);
+            }
+
+            SimpleEmail se = new SimpleEmail();
+            se.setFrom(fromEmail, fromName);
+            se.addTo(toEmail, toName);
+            se.setSubject(subject);
+            se.setMsg(body);
+            se.send();
         }
-
-        SimpleEmail se = new SimpleEmail();
-        se.setFrom(fromEmail, fromName);
-        se.addTo(toEmail, toName);
-        se.setSubject(subject);
-        se.setMsg(body);
-        se.send();
+        catch (Exception e){
+            throw new VelocityEmailException(e);
+        }
     }
 
     /**
