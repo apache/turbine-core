@@ -255,6 +255,9 @@ Changes between Turbine 2.2 and 2.3-dev.
       Fixed null pointer exception during initialization of IntakeTool when there are
       no groups defined in intake.xml
     </li>
+    <li>
+      TTWS41: PrimaryKey not set on TurbineUser after insert.
+    </li>
   </ul>
 </p>
 </subsection>
