@@ -131,7 +131,15 @@ public class DoubleField
      */
     protected Object getSafeEmptyValue()
     {
-        return (null == getEmptyValue()) ? new Double(0.0) : getEmptyValue(); 
+        if (isMultiValued)
+        {
+            return new double[0];
+        }
+        else
+        {
+            return (null == getEmptyValue()) 
+                    ? new Double(0.0) : getEmptyValue();
+        }
     }
 
     /**

@@ -125,7 +125,14 @@ public class BooleanField
      */
     protected Object getSafeEmptyValue()
     {
-        return (null == getEmptyValue()) ? Boolean.FALSE : getEmptyValue(); 
+        if (isMultiValued)
+        {
+            return new boolean[0];
+        }
+        else
+        {
+            return (null == getEmptyValue()) ? Boolean.FALSE : getEmptyValue();
+        }
     }
 
     /**
