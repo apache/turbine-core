@@ -84,14 +84,14 @@ import org.apache.velocity.context.Context;
  * templates. You list the tools in the following way:
  * <p>
  * <pre>
- * tool.<scope>.<id> = <classname>
+ * tool.&lt;scope&gt;.&lt;id&gt; = &lt;classname&gt;
  *
- * <scope>      is the tool scope: global, request, session,
+ * &lt;scope&gt;      is the tool scope: global, request, session,
  *              authorized or persistent (see below for more details)
- * <id>         is the name of the tool in the context
+ * &lt;id&gt;         is the name of the tool in the context
  *
  * You can configure the tools in this way:
- * tool.<id>.<parameter> = <value>
+ * tool.&lt;id&gt;.&lt;parameter&gt; = &lt;value&gt;
  *
  * So if you find "global", "request", "session" or "persistent" as second
  * part, it is a configuration to put a tool into the toolbox, else it is a
