@@ -35,7 +35,13 @@
   <gumpRepositoryId>jakarta</gumpRepositoryId>
 
   <shortDescription>A servlet based framework.</shortDescription>
-  <description>Turbine is a servlet based framework that allows experienced Java developers to quickly build secure web applications. Parts of Turbine can also be used independently of the web portion of Turbine as well. In other words, we strive to make portions of Turbine easily available for use in other applications.</description>
+  <description>
+    Turbine is a servlet based framework that allows experienced Java
+    developers to quickly build secure web applications. Parts of Turbine
+    can also be used independently of the web portion of Turbine as
+    well. In other words, we strive to make portions of Turbine easily
+    available for use in other applications.
+  </description>
   <url>http://jakarta.apache.org/turbine/turbine-2.3/</url>
   <issueTrackingUrl>http://issues.apache.org/scarab/issues</issueTrackingUrl>
   <siteAddress>jakarta.apache.org</siteAddress>
@@ -483,10 +489,6 @@
       <url>http://java.sun.com/products/jndi/</url>
       <type>jar</type>
     </dependency>
-
-    <!-- ORO must be loaded before Jython, as Jython includes some ORO -->
-    <!-- classes which cause the Maven JXR plug-in to fail. -->
-
     <dependency>
       <groupId>oro</groupId>
       <artifactId>oro</artifactId>
@@ -525,7 +527,7 @@
     <dependency>
       <groupId>stratum</groupId>
       <artifactId>stratum</artifactId>
-      <version>1.0-b3</version>
+      <version>1.0-b5</version>
       <url>http://jakarta.apache.org/turbine/stratum/</url>
       <type>jar</type>
     </dependency>
@@ -601,6 +603,15 @@
       <type>jar</type>
     </dependency>
 
+    <!-- Ah well. And then there is maven...  -->
+
+    <dependency>
+      <groupId>maven</groupId>
+      <artifactId>maven-pmd-plugin</artifactId>
+      <version>1.6</version>
+      <type>plugin</type>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -631,9 +642,7 @@
   </build>
 
   <reports>
-    <!--
     <report>maven-jdepend-plugin</report>
-    -->
     <report>maven-checkstyle-plugin</report>
     <report>maven-changes-plugin</report>
     <report>maven-changelog-plugin</report>
@@ -641,12 +650,18 @@
     <report>maven-file-activity-plugin</report>
     <report>maven-javadoc-plugin</report>
     <report>maven-jxr-plugin</report>
-    <!--
+    <report>maven-pmd-plugin</report>
+    <report>maven-jcoverage-plugin</report>
+    <report>maven-simian-plugin</report>
     <report>maven-junit-report-plugin</report>
+<!--
     <report>maven-linkcheck-plugin</report>
-    -->
+===========================================================
+Help wanted. The tasklist plugin simply crashes the report
+build, no matter where in the report sequence it is put.
+Looks like a maven bug. 
+===========================================================
     <report>maven-tasklist-plugin</report>
-
+-->
   </reports>
-
 </project>
