@@ -22,17 +22,8 @@
       <fileset dir="src/java"/>
     </copy>
 
-    <j:set var="torque.project" value="scheduler"/>
-    <j:set var="torque.schema.om.includes" value="scheduler-schema.xml"/>
-    <j:set var="torque.targetPackage" value="${scheduler.package}"/>
-    <filter token="DATABASE_DEFAULT" value="${scheduler.database.name}"/>
-    <filter token="EXTRA_USER_COLUMNS" value="${scheduler.extra.user.columns}"/>
-    <copy
-      file="scheduler-schema.xml"
-      tofile="${torque.schema.dir}/scheduler-schema.xml"
-      filtering="yes"/>
-
-    <attainGoal name="torque:om"/>
+    <attainGoal name="scheduler-om"/>
+    <attainGoal name="torque-security-om"/>
 
     <!-- Hack for Maven bug when compiling with a clean target. -->
     <j:if test="${sourcesPresent != 'true'}">
@@ -41,5 +32,56 @@
     </j:if>
 
   </preGoal>
+
+  <!-- ================================================== -->
+  <!-- Build Peers for the Scheduler                      -->
+  <!-- ================================================== -->
+  <goal name="scheduler-om">
+    <uptodate
+      property="schedulerGenerated"
+      srcfile="${torque.schema.dir}/scheduler-schema.xml"
+      targetfile="${maven.prepareSourceDirectory}/report.turbine.scheduler.generation"/>
+
+    <j:if test="${schedulerGenerated != 'true'}">
+   
+      <j:set var="torque.project" value="scheduler"/>
+      <j:set var="torque.schema.om.includes" value="scheduler-schema.xml"/>
+      <j:set var="torque.targetPackage" value="${scheduler.package}"/>
+      <filter token="DATABASE_DEFAULT" value="${scheduler.database.name}"/>
+      <filter token="EXTRA_USER_COLUMNS" value="${scheduler.extra.user.columns}"/>
+      <copy
+        file="src/schema/scheduler-schema.xml"
+        tofile="${torque.schema.dir}/scheduler-schema.xml"
+        filtering="yes"/>
+
+      <attainGoal name="torque:om"/>
+
+    </j:if>
+  </goal>
+
+  <!-- ================================================== -->
+  <!-- Build Peers for Torque Security                    -->
+  <!-- ================================================== -->
+  <goal name="torque-security-om">
+    <uptodate
+      property="securityGenerated"
+      srcfile="${torque.schema.dir}/turbine-schema.xml"
+      targetfile="${maven.prepareSourceDirectory}/report.turbine.security.generation"/>
+
+    <j:if test="${securityGenerated != 'true'}">
+   
+      <j:set var="torque.project" value="torque-security"/>
+      <j:set var="torque.schema.om.includes" value="torque-security-schema.xml"/>
+      <j:set var="torque.targetPackage" value="${torque.security.package}"/>
+      <filter token="DATABASE_DEFAULT" value="${torque.security.database.name}"/>
+      <copy
+        file="src/schema/torque-security-schema.xml"
+        tofile="${torque.schema.dir}/torque-security-schema.xml"
+        filtering="yes"/>
+
+      <attainGoal name="torque:om"/>
+
+    </j:if>
+  </goal>
 
 </project>
