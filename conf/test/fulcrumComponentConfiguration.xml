@@ -1,0 +1,9 @@
+<!-- 
+	This configuration file for Avalon components is used for testing the Fulcrum components
+	with Turbine.
+-->
+
+<componentConfig>
+	<cache cacheInitialSize="20" cacheCheckFrequency="5"/>   
+	<mimetype/>
+</componentConfig>
