@@ -9,29 +9,18 @@
     <property file="${user.home}/.ant.properties" />
     <property file=".ant.properties" />
 
-    <property name="Name" value="Turbine"/>
-    <property name="version" value="2.2b1"/>
-    <property name="project" value="turbine"/>
-    <property name="build.dir" value="../bin"/>
+    <!-- Set default values for the build -->
+    <property file="build.properties" />
+
     <property name="build.src" value="${build.dir}/src"/>
     <property name="build.dest" value="${build.dir}/classes"/>
-    <property name="src.dir" value="../src"/>
+    <property name="build.xdocs" value="${build.dir}/xdocs"/>
+    <property name="build.docs" value="${build.dir}/docs"/>
     <property name="src.java.dir" value="${src.dir}/java"/>
     <property name="src.dtd.dir" value="${src.dir}/dtd"/>
-    <property name="javadoc.destdir" value="../docs/apidocs"/>
     <property name="final.name" value="${project}-${version}"/>
     <property name="final.dir" value="../${final.name}/"/>
-    <property name="year" value="1999-2001"/>
     <property name="ant.home" value="."/>
-    <property name="debug" value="on"/>
-    <property name="optimize" value="off"/>
-    <property name="deprecation" value="off"/>
-
-    <property name="jdom.jar" value="jdom-b6.jar"/>
-    <property name="jakarta.site2" value="../../jakarta-site2"/>
-    
-    <property name="docs.dest" value="../docs"/>
-    <property name="docs.src" value="../xdocs"/>
 
     <!-- Build classpath -->
     <path id="classpath">
@@ -366,7 +355,7 @@
                 </fileset>
             </classpath>
         </taskdef>
-
+        
         <anakia basedir="${docs.src}" destdir="${docs.dest}/"
              extension=".html" style="./site.vsl"
              projectFile="stylesheets/project.xml"
