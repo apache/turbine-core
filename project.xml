@@ -329,7 +329,7 @@
 
     <!-- Unit test classes -->
     <unitTestClassEntries>
-      <unitTestClassEntry>include = **/*Test*.class</unitTestClassEntry>
+      <unitTestClassEntry>include = **/*Test.class</unitTestClassEntry>
       <unitTestClassEntry>exclude = **/*ServletTest.class</unitTestClassEntry>
       <unitTestClassEntry>exclude = **/BaseValueParserTest.class</unitTestClassEntry>
       <unitTestClassEntry>exclude = **/FileHandlerTest.class</unitTestClassEntry>
@@ -338,7 +338,7 @@
 
     <!-- Runtime unit test classes -->
     <runtimeTestClassEntries>
-      <runtimeTestClassEntry>exclude = **/*Test*.class</runtimeTestClassEntry>
+      <runtimeTestClassEntry>exclude = **/*Test.class</runtimeTestClassEntry>
       <runtimeTestClassEntry>exclude = **/FileHandlerTest.class</runtimeTestClassEntry>
       <runtimeTestClassEntry>include = **/*ServletTest.class</runtimeTestClassEntry>
       <runtimeTestClassEntry>include = **/TurbineCacheTest.class</runtimeTestClassEntry>
