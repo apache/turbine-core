@@ -81,6 +81,7 @@ import org.apache.turbine.util.RunData;
  */
 public class ScreenLoader
     extends GenericLoader
+    implements Loader
 {
     /** Logging */
     private static Log log = LogFactory.getLog(ScreenLoader.class);
@@ -159,6 +160,22 @@ public class ScreenLoader
             throws Exception
     {
         this.eval(data, name);
+    }
+
+    /**
+     * Pulls out an instance of the object by name.  Name is just the
+     * single name of the object. This is equal to getInstance but
+     * returns an Assembler object and is needed to fulfil the Loader
+     * interface.
+     *
+     * @param name Name of object instance.
+     * @return A Layout with the specified name, or null.
+     * @exception Exception a generic exception.
+     */
+    public Assembler getAssembler(String name)
+        throws Exception
+    {
+        return getInstance(name);
     }
 
     /**

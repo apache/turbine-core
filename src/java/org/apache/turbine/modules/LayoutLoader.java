@@ -76,6 +76,7 @@ import org.apache.turbine.util.RunData;
  */
 public class LayoutLoader
     extends GenericLoader
+    implements Loader
 {
     /** The single instance of this class. */
     private static LayoutLoader instance = 
@@ -125,6 +126,22 @@ public class LayoutLoader
     {
         // Execute layout
         getInstance(name).build(data);
+    }
+
+    /**
+     * Pulls out an instance of the object by name.  Name is just the
+     * single name of the object. This is equal to getInstance but
+     * returns an Assembler object and is needed to fulfil the Loader
+     * interface.
+     *
+     * @param name Name of object instance.
+     * @return A Layout with the specified name, or null.
+     * @exception Exception a generic exception.
+     */
+    public Assembler getAssembler(String name)
+        throws Exception
+    {
+        return getInstance(name);
     }
 
     /**
