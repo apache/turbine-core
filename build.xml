@@ -25,6 +25,7 @@
         <pathelement location="${javamail.jar}"/>
         <pathelement location="${oro.jar}"/>
         <pathelement location="${servlet.jar}"/>
+        <pathelement location="${stratum.jar}"/>
         <pathelement location="${torque.jar}"/>
         <pathelement location="${velocity.jar}"/>
         <pathelement location="${village.jar}"/>
