@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+<!-- 
+/*
+ * Copyright 2001-2004 The Apache Software Foundation.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ -->
+	
+<document>
+  <properties>
+    <title>Maven Environment for Turbine Applications (M.E.T.A.)</title>
+    <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
+  </properties>
+
+  <body>
+    <section name="Use an IDE to write Turbine applications with M.E.T.A.">
+    <p>
+      Let's face it. Using a text editor and deploying your
+      application into a container is not everyone's development
+      style, even when using the excellent <a
+      href="http://www.gnu.org/software/emacs/emacs.html">emacs</a>
+      editor. Many developers like to use an IDE like <a
+      href="http://www.eclipse.org/">Eclipse</a>. M.E.T.A. supports
+      this style of application development, though some developers
+      consider the arguments for an IDE to be the same as for <a
+      href="http://www.ussg.iu.edu/hypermail/linux/kernel/0009.0/1148.html">a
+      debugger</a>.
+    </p>
+    <p>
+     The remainder of this page uses <a
+     href="http://www.eclipse.org/">Eclipse</a> as IDE because there
+     is good integration between <a
+     href="http://maven.apache.org/">Maven</a> and Eclipse. Examples
+     for other IDEs like <a
+     href="http://www.netbeans.org/">netBeans</a>, <a
+     href="http://www.jetbrains.com/idea/">IntelliJ IDEA</a>, <a
+     href="http://www.borland.com/jbuilder/">JBuilder</a> or any other
+     IDEs are welcome.
+    </p>
+
+    <subsection name="Setting up your workbench">
+
+    <p>Setting up Eclipse and Tomcat for M.E.T.A. is very easy to do:</p>
+    <ul>
+      <li>Download Eclipse from the the <a href="http://www.eclipse.org/">Eclipse Website</a> and install it.</li>
+      <li>Download Jakarta Tomcat from the <a href="http://jakarta.apache.org/tomcat/">Tomcat website</a>. This will
+          be the web container that we use for running and debugging the Turbine application.</li>
+      <li>For development, it is also very useful if you can start and stop Tomcat directly from Eclipse. A very 
+          useful Plugin for Eclipse is <a href="http://www.sysdeo.com/eclipse/tomcatPlugin.html">the Sysdeo Tomcat Plugin</a></li>
+    </ul>
+
+    <p>Now configure Eclipse to your installed tomcat by setting its
+       home directory and server.xml location in &quot;Window&quot;
+       -&gt; &quot;Preferences&quot; -&gt; &quot;Tomcat&quot;:<br/>
+       <img src="images/eclipse-tomcat-prefs.png" width="721"
+       height="687" alt="Tomcat Preferences"/>
+    </p>
+    </subsection>
+
+    <subsection name="Prepare your application for use with Eclipse">
+    <p>
+     Create a new Turbine application by running
+
+<source><![CDATA[
+maven -Dturbine.app.name=helloworld -Dturbine.plugin.mode=inplace -Dturbine.plugin.inplace.dir=tomcat turbine:setup
+]]></source>
+
+     This generates a new inplace application that can be used with an IDE.
+    </p>
+    <p>
+     Build the OM Peer classes:     
+
+<source><![CDATA[
+maven torque:om
+]]></source>
+
+    Note that you must rerun this command every time you OM schema changes.
+    </p>
+    <p>
+    The new application must be compiled once with the
+    M.E.T.A. plugin. This makes sure that all dependencies from the
+    project descriptor get copied into the web application lib
+    directory. If you forget this step, you will get a lot of missing
+    dependencies in Eclipse.
+
+<source><![CDATA[
+maven java:compile
+]]></source>
+    </p>
+    <p>
+    We must prepare our application for Eclipse. Maven offers a goal
+    which builds the project description and classpath files:
+
+<source><![CDATA[
+maven eclipse
+]]></source>
+
+     The last two commands should be re-run everytime the values in
+     the application project descriptor change unless you do not intend
+     to rebuild your project outside of Eclipse. 
+     </p>
+    </subsection>
+
+    <subsection name="Develop your application inside eclipse">
+    <p>
+      Import your application into Eclipse by selecting
+      &quot;File&quot; -&gt; &quot;Import&quot; -&gt; &quot;Existing
+      Project into Workspace&quot; and enter the location of your new
+      Turbine application into the Wizard. The resulting tree should
+      look like this:<br/> 
+      <img src="images/eclipse-helloworld.png" width="841"
+      height="644" alt="Helloworld in Eclipse"/>
+    </p>
+    <p>
+      Finally, tell Eclipse that your application is a Tomcat
+      application and should be run in the web container. Highlight your
+      application and select &quot;File&quot; -&gt;
+      &quot;Properties&quot; from the Menu to open the Properties
+      Dialog for your application. Select the &quot;Tomcat&quot;
+      properties:<br/>
+      <img src="images/helloworld-tomcat-prefs.png" width="676"
+      height="544" alt="Helloworld Tomcat Preferences"/>
+    </p>
+    <p>
+      Enter the desired context name in the first text box. In the
+      second text box, the application root is entered. This must be the
+      same value as the <code>turbine.plugin.inplace.dir</code> value when
+      setting up the Turbine application. <font color="red">Make sure that
+      you have leading slashes in both text boxes!</font> If you forget these,
+      the Tomcat plugin will not work correctly. Also, check all three checkboxes
+      to allow Eclipse to manage your application inside Tomcat and to redirect the
+      <code>catalina.out</code> log file into the Eclipse console.
+    </p>
+    <p>
+      Now you can launch your application through Tomcat by using the
+      &quot;Tomcat&quot; menu from Eclipse. You can set breakpoints in
+      your classes and debug directly in the IDE. Maven and the
+      M.E.T.A. environment have been used for setting up the
+      application but are no longer needed for developing inside the
+      IDE.
+    </p>
+    </subsection>
+    </section>
+  </body>
+</document>
+
