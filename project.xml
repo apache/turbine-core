@@ -76,6 +76,14 @@
       <email>david@i2a.com</email>
       <organization/>
     </developer>
+-->
+    <developer>
+      <name>Scott Eade</name>
+      <id>seade</id>
+      <email>seade@backstagetech.com.au</email>
+      <organization>Backstage Technologies Pty. Ltd.</organization>
+    </developer>
+<!--
     <developer>
       <name>Christopher Elkins</name>
       <id/>
