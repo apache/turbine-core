@@ -89,6 +89,15 @@
     <filter token="TURBINE_PLUGIN_SRC_TEST"    value="${turbine.plugin.src.test}"/>
 
     <filter token="TURBINE_PLUGIN_TARGET_LIB"  value="${turbine.plugin.target.lib}"/>
+
+    <filter token="TURBINE_PLUGIN_DEPLOY_CONFIG_SKIP"     value="${turbine.plugin.deploy.config.skip}"/>
+    <filter token="TURBINE_PLUGIN_IMAGES_CONFIG_SKIP"     value="${turbine.plugin.deploy.images.skip}"/>
+    <filter token="TURBINE_PLUGIN_PAGES_CONFIG_SKIP"      value="${turbine.plugin.deploy.pages.skip}"/>
+    <filter token="TURBINE_PLUGIN_RESOURCES_CONFIG_SKIP"  value="${turbine.plugin.deploy.resources.skip}"/>
+    <filter token="TURBINE_PLUGIN_SCRIPTS_CONFIG_SKIP"    value="${turbine.plugin.deploy.scripts.skip}"/>
+    <filter token="TURBINE_PLUGIN_STYLE_CONFIG_SKIP"      value="${turbine.plugin.deploy.style.skip}"/>
+    <filter token="TURBINE_PLUGIN_TEMPLATES_CONFIG_SKIP"  value="${turbine.plugin.deploy.templates.skip}"/>
+
     <filter token="MAVEN_BUILD_DEST"           value="${maven.build.dest}"/>
 
     <filter token="TORQUE_DATABASE"            value="${torque.database}"/>
@@ -339,7 +348,7 @@
 
     <j:if test="${context.getVariable('turbine.plugin.mode').equalsIgnoreCase('inplace')}">
       <maven:makeAbsolutePath var="absPath" basedir="${basedir}" path="${turbine.plugin.base.dir}" trim="true" />
-        <fail>
+      <fail>
 --------------------------------------------------------------------------
 | Inplace Mode cannot be deployed                                        |
 --------------------------------------------------------------------------
@@ -350,11 +359,8 @@
  ${absPath}
 
 --------------------------------------------------------------------------
-        </fail>
-
+      </fail>
     </j:if>
-
-    
 
     <echo>Located Application Server at ${maven.appserver.home} (${maven.appserver.name})</echo>
 
@@ -362,7 +368,7 @@
 
     <delete file="${maven.build.dir}/${pom.artifactId}.war" />
 
-    <j:set var="turbine.target.dir" 
+    <j:set var="turbine.target.dir" scope="parent"
              value="${maven.appserver.home}/webapps/${pom.name}" />
 
     <echo>Installing to Appserver Directory: ${turbine.target.dir}, Inplace: ${turbine.plugin.mode}</echo>
@@ -390,38 +396,99 @@
       <fileset dir="${maven.build.dest}"/>
     </copy>
 
-    <copy todir="${turbine.target.dir}/WEB-INF/conf" flatten="true" includeEmptyDirs="no">
-     <fileset dir="${turbine.plugin.src.conf}">
-        <exclude name="${pom.name}-web.xml"/>
-      </fileset>
-    </copy>
-
     <copy file="${maven.war.webxml}"
       tofile="${turbine.target.dir}/WEB-INF/web.xml"/>
 
-    <copy todir="${turbine.target.dir}/images">
-      <fileset dir="${turbine.plugin.src.images}"/>
-    </copy>
+    <j:choose>
+      <j:when test="${context.getVariable('turbine.plugin.deploy.config.skip') == null || !context.getVariable('turbine.plugin.deploy.config.skip').equalsIgnoreCase('true')}">
+        <copy todir="${turbine.target.dir}/WEB-INF/conf" flatten="true" includeEmptyDirs="no">
+         <fileset dir="${turbine.plugin.src.conf}">
+            <exclude name="${pom.name}-web.xml"/>
+          </fileset>
+        </copy>
+      </j:when>
+      <j:otherwise>
+        <echo>Skipping configuration because turbine.plugin.deploy.config.skip is true</echo>
+      </j:otherwise>
+    </j:choose>
 
-    <copy todir="${turbine.target.dir}">
-      <fileset dir="${turbine.plugin.src.pages}"/>
-    </copy>
-
-    <copy todir="${turbine.target.dir}/resources">
-      <fileset dir="${turbine.plugin.src.resources}"/>
-    </copy>
-
-    <copy todir="${turbine.target.dir}/scripts">
-      <fileset dir="${turbine.plugin.src.scripts}"/>
-    </copy>
-
-    <copy todir="${turbine.target.dir}/style">
-      <fileset dir="${turbine.plugin.src.style}"/>
-    </copy>
-
-    <copy todir="${turbine.target.dir}/templates">
-      <fileset dir="${turbine.plugin.src.templates}"/>
-    </copy>
+    <j:choose>
+      <j:when test="${context.getVariable('turbine.plugin.deploy.images.skip') == null || !context.getVariable('turbine.plugin.deploy.images.skip').equalsIgnoreCase('true')}">
+        <u:available file="${turbine.plugin.src.images}">
+          <copy todir="${turbine.target.dir}/images">
+            <fileset dir="${turbine.plugin.src.images}"/>
+          </copy>
+        </u:available>
+      </j:when>
+      <j:otherwise>
+        <echo>Skipping configuration because turbine.plugin.deploy.images.skip is true</echo>
+      </j:otherwise>
+    </j:choose>
+    
+    <j:choose>
+      <j:when test="${context.getVariable('turbine.plugin.deploy.pages.skip') == null || !context.getVariable('turbine.plugin.deploy.pages.skip').equalsIgnoreCase('true')}">
+        <u:available file="${turbine.plugin.src.pages}">
+          <copy todir="${turbine.target.dir}">
+            <fileset dir="${turbine.plugin.src.pages}"/>
+          </copy>
+        </u:available>
+      </j:when>
+      <j:otherwise>
+        <echo>Skipping configuration because turbine.plugin.deploy.pages.skip is true</echo>
+      </j:otherwise>
+    </j:choose>
+    
+    <j:choose>
+      <j:when test="${context.getVariable('turbine.plugin.deploy.resources.skip') == null || !context.getVariable('turbine.plugin.deploy.resources.skip').equalsIgnoreCase('true')}">
+        <u:available file="${turbine.plugin.src.resources}">
+          <copy todir="${turbine.target.dir}/resources">
+            <fileset dir="${turbine.plugin.src.resources}"/>
+          </copy>
+        </u:available>
+      </j:when>
+      <j:otherwise>
+        <echo>Skipping configuration because turbine.plugin.deploy.resources.skip is true</echo>
+      </j:otherwise>
+    </j:choose>
+    
+    <j:choose>
+      <j:when test="${context.getVariable('turbine.plugin.deploy.scripts.skip') == null || !context.getVariable('turbine.plugin.deploy.scripts.skip').equalsIgnoreCase('true')}">
+        <u:available file="${turbine.plugin.src.scripts}">
+          <copy todir="${turbine.target.dir}/scripts">
+            <fileset dir="${turbine.plugin.src.scripts}"/>
+          </copy>
+        </u:available>
+      </j:when>
+      <j:otherwise>
+        <echo>Skipping configuration because turbine.plugin.deploy.scripts.skip is true</echo>
+      </j:otherwise>
+    </j:choose>
+    
+    <j:choose>
+      <j:when test="${context.getVariable('turbine.plugin.deploy.style.skip') == null || !context.getVariable('turbine.plugin.deploy.style.skip').equalsIgnoreCase('true')}">
+        <u:available file="${turbine.plugin.src.style}">
+          <copy todir="${turbine.target.dir}/style">
+            <fileset dir="${turbine.plugin.src.style}"/>
+          </copy>
+        </u:available>
+      </j:when>
+      <j:otherwise>
+        <echo>Skipping configuration because turbine.plugin.deploy.style.skip is true</echo>
+      </j:otherwise>
+    </j:choose>
+    
+    <j:choose>
+      <j:when test="${context.getVariable('turbine.plugin.deploy.templates.skip') == null || !context.getVariable('turbine.plugin.deploy.templates.skip').equalsIgnoreCase('true')}">
+        <u:available file="${turbine.plugin.src.templates}">
+          <copy todir="${turbine.target.dir}/templates">
+            <fileset dir="${turbine.plugin.src.templates}"/>
+          </copy>
+        </u:available>
+      </j:when>
+      <j:otherwise>
+        <echo>Skipping configuration because turbine.plugin.deploy.templates.skip is true</echo>
+      </j:otherwise>
+    </j:choose>
 
   </goal>
   <!-- ======================================================================== -->
@@ -582,52 +649,101 @@
     <j:set var="webapp.build.classes" value="target/${pom.name}/WEB-INF/classes"/>
     <j:set var="webapp.build.webinf" value="target/${pom.name}/WEB-INF"/>
 
-   <copy todir="${webapp.build.webinf}/conf" flatten="true" includeEmptyDirs="no">
-     <fileset dir="${turbine.plugin.src.conf}">
-       <exclude name="**/${pom.name}-web.xml"/>
-     </fileset>
-   </copy>
-
-   <u:available file="${turbine.plugin.src.images}">
-     <mkdir dir="${webapp.build}/images"/>
-     <copy todir="${webapp.build}/images" includeEmptyDirs="no">
-       <fileset dir="${turbine.plugin.src.images}"/>
-     </copy>
-   </u:available>
-
-   <u:available file="${turbine.plugin.src.pages}">
-     <copy todir="${webapp.build}" includeEmptyDirs="no">
-       <fileset dir="${turbine.plugin.src.pages}"/>
-     </copy>
-   </u:available>
-
-   <u:available file="${turbine.plugin.src.resources}">
-     <mkdir dir="${webapp.build}/resources"/>
-     <copy todir="${webapp.build}/resources" includeEmptyDirs="no">
-       <fileset dir="${turbine.plugin.src.resources}"/>
-     </copy>
-   </u:available>
-
-   <u:available file="${turbine.plugin.src.scripts}">
-     <mkdir dir="${webapp.build}/scripts"/>
-     <copy todir="${webapp.build}/scripts" includeEmptyDirs="no">
-       <fileset dir="${turbine.plugin.src.scripts}"/>
-     </copy>
-   </u:available>
-
-   <u:available file="${turbine.plugin.src.style}">
-     <mkdir dir="${webapp.build}/style"/>
-     <copy todir="${webapp.build}/style" includeEmptyDirs="no">
-       <fileset dir="${turbine.plugin.src.style}"/>
-     </copy>
-   </u:available>
-
-   <u:available file="${turbine.plugin.src.templates}">
-     <mkdir dir="${webapp.build}/templates"/>
-     <copy todir="${webapp.build}/templates" includeEmptyDirs="no">
-       <fileset dir="${turbine.plugin.src.templates}"/>
-     </copy>
-   </u:available>
+    <j:choose>
+      <j:when test="${context.getVariable('turbine.plugin.deploy.config.skip') == null || !context.getVariable('turbine.plugin.deploy.config.skip').equalsIgnoreCase('true')}">
+        <copy todir="${webapp.build.webinf}/conf" flatten="true" includeEmptyDirs="no">
+          <fileset dir="${turbine.plugin.src.conf}">
+            <exclude name="**/${pom.name}-web.xml"/>
+          </fileset>
+        </copy>
+      </j:when>
+      <j:otherwise>
+        <echo>Skipping configuration because turbine.plugin.deploy.config.skip is true</echo>
+      </j:otherwise>
+    </j:choose>
+     
+    <j:choose>
+      <j:when test="${context.getVariable('turbine.plugin.deploy.images.skip') == null || !context.getVariable('turbine.plugin.deploy.images.skip').equalsIgnoreCase('true')}">
+        <u:available file="${turbine.plugin.src.images}">
+          <mkdir dir="${webapp.build}/images"/>
+          <copy todir="${webapp.build}/images" includeEmptyDirs="no">
+            <fileset dir="${turbine.plugin.src.images}"/>
+          </copy>
+        </u:available>
+      </j:when>
+      <j:otherwise>
+        <echo>Skipping configuration because turbine.plugin.deploy.images.skip is true</echo>
+      </j:otherwise>
+    </j:choose>
+     
+    <j:choose>
+      <j:when test="${context.getVariable('turbine.plugin.deploy.pages.skip') == null || !context.getVariable('turbine.plugin.deploy.pages.skip').equalsIgnoreCase('true')}">
+        <u:available file="${turbine.plugin.src.pages}">
+          <copy todir="${webapp.build}" includeEmptyDirs="no">
+            <fileset dir="${turbine.plugin.src.pages}"/>
+          </copy>
+        </u:available>
+      </j:when>
+      <j:otherwise>
+        <echo>Skipping configuration because turbine.plugin.deploy.pages.skip is true</echo>
+      </j:otherwise>
+    </j:choose>
+     
+    <j:choose>
+      <j:when test="${context.getVariable('turbine.plugin.deploy.resources.skip') == null || !context.getVariable('turbine.plugin.deploy.resources.skip').equalsIgnoreCase('true')}">
+        <u:available file="${turbine.plugin.src.resources}">
+          <mkdir dir="${webapp.build}/resources"/>
+          <copy todir="${webapp.build}/resources" includeEmptyDirs="no">
+            <fileset dir="${turbine.plugin.src.resources}"/>
+          </copy>
+        </u:available>
+      </j:when>
+      <j:otherwise>
+        <echo>Skipping configuration because turbine.plugin.deploy.resources.skip is true</echo>
+      </j:otherwise>
+    </j:choose>
+     
+    <j:choose>
+      <j:when test="${context.getVariable('turbine.plugin.deploy.scripts.skip') == null || !context.getVariable('turbine.plugin.deploy.scripts.skip').equalsIgnoreCase('true')}">
+        <u:available file="${turbine.plugin.src.scripts}">
+          <mkdir dir="${webapp.build}/scripts"/>
+          <copy todir="${webapp.build}/scripts" includeEmptyDirs="no">
+            <fileset dir="${turbine.plugin.src.scripts}"/>
+          </copy>
+        </u:available>
+      </j:when>
+      <j:otherwise>
+        <echo>Skipping configuration because turbine.plugin.deploy.scripts.skip is true</echo>
+      </j:otherwise>
+    </j:choose>
+     
+    <j:choose>
+      <j:when test="${context.getVariable('turbine.plugin.deploy.style.skip') == null || !context.getVariable('turbine.plugin.deploy.style.skip').equalsIgnoreCase('true')}">
+        <u:available file="${turbine.plugin.src.style}">
+          <mkdir dir="${webapp.build}/style"/>
+          <copy todir="${webapp.build}/style" includeEmptyDirs="no">
+            <fileset dir="${turbine.plugin.src.style}"/>
+          </copy>
+        </u:available>
+      </j:when>
+      <j:otherwise>
+        <echo>Skipping configuration because turbine.plugin.deploy.style.skip is true</echo>
+      </j:otherwise>
+    </j:choose>
+     
+    <j:choose>
+      <j:when test="${context.getVariable('turbine.plugin.deploy.templates.skip') == null || !context.getVariable('turbine.plugin.deploy.templates.skip').equalsIgnoreCase('true')}">
+        <u:available file="${turbine.plugin.src.templates}">
+          <mkdir dir="${webapp.build}/templates"/>
+          <copy todir="${webapp.build}/templates" includeEmptyDirs="no">
+            <fileset dir="${turbine.plugin.src.templates}"/>
+          </copy>
+        </u:available>
+      </j:when>
+      <j:otherwise>
+        <echo>Skipping configuration because turbine.plugin.deploy.templates.skip is true</echo>
+      </j:otherwise>
+    </j:choose>
 
   </goal>
   <!-- ======================================================================== -->
