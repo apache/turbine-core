@@ -350,7 +350,7 @@
     </dependency>
     <dependency>
       <id>commons-logging</id>
-      <version>1.0.2</version>
+      <version>1.0.3</version>
       <url>http://jakarta.apache.org/commons/logging.html</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
@@ -465,7 +465,7 @@
     </dependency>
     <dependency>
       <id>log4j</id>
-      <version>1.2.7</version>
+      <version>1.2.8</version>
       <url>http://jakarta.apache.org/log4j/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
@@ -502,7 +502,7 @@
     </dependency>
     <dependency>
       <id>velocity</id>
-      <version>1.3</version>
+      <version>1.3.1</version>
       <url>http://jakarta.apache.org/velocity/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
