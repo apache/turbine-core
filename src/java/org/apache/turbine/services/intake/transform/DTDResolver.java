@@ -117,7 +117,7 @@ public class DTDResolver implements EntityResolver
     /**
      * called by the XML parser
      *
-     * @return an InputSource for the database.dtd file
+     * @return an InputSource for the intake.dtd file
      */
     public InputSource resolveEntity(String publicId, String systemId)
     {
