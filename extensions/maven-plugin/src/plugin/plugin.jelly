@@ -67,6 +67,7 @@
     <filter token="TURBINE_APP_NAME"           value="${turbine.app.name}"/>
     <filter token="TURBINE_APP_FLAVOR"         value="${turbine.app.flavor}"/>
     <filter token="TURBINE_APP_PACKAGE"        value="${turbine.app.package}"/>
+    <filter token="TURBINE_APP_OM_LAYER"       value="${turbine.app.om.layer}"/>
     <filter token="TURBINE_APP_OM_NAME"        value="${turbine.app.om.name}"/>
     <filter token="TURBINE_APP_OM_PACKAGE"     value="${turbine.app.om.package}"/>
     <filter token="TURBINE_APP_OM_SECURITY_NAME" value="${turbine.app.om.security.name}"/>
@@ -112,13 +113,28 @@
 
     <filter token="MAVEN_WAR_WEBXML"           value="${maven.war.webxml}"/>
 
+    <filter token="NOT_USE_OM_TORQUE"          value="#"/>
+    <filter token="USE_OM_TORQUE"              value=""/>
+    <filter token="NOT_USE_OM_NONE"            value="#"/>
+    <filter token="USE_OM_NONE"                value=""/>
+
+    <j:if test="${turbine.plugin.torque.use}">
+      <filter token="NOT_USE_OM_TORQUE"          value=""/>
+      <filter token="USE_OM_TORQUE"              value="#"/>
+    </j:if>
+
+    <j:if test="${turbine.plugin.none.use}">
+      <filter token="NOT_USE_OM_NONE"            value=""/>
+      <filter token="USE_OM_NONE"                value="#"/>
+    </j:if>
+
     <u:replace var="appDir" oldChar="." newChar="/" value="${turbine.app.package}"/>
 
     <echo>Building Turbine Skeleton for ${turbine.app.name} application
           Flavor:         ${turbine.app.flavor}
           Mode:           ${turbine.plugin.mode}
           Package:        ${turbine.app.package}
-          Database:       ${turbine.app.database}
+          OM-Layer:       ${turbine.app.om.layer}
 
           Root Directory: ${turbine.plugin.root.dir} 
           Base Directory: ${turbine.plugin.base.dir}
@@ -149,7 +165,7 @@
 
     <!-- ========== Copy build control files into application root ========== -->
 
-    <meta:copyTurbineDir todir="${turbine.plugin.root.dir}" filtering="true"
+    <meta:copyFlavorDir todir="${turbine.plugin.root.dir}" filtering="true"
                                 flavor="${turbine.app.flavor}"
                                 frompath="maven"
                                 include="**/*"/>
@@ -163,78 +179,85 @@
       </ant:copy>
     </u:available>
 
-    <!-- ========== Copy schema files for Torque ========== -->
-
-    <!-- filtering="false" is intentional! The file variables are 
-         replaced when the files are copied inside the application.
-    -->
-
-    <meta:copyTurbineDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.schema}" filtering="false"
-                                flavor="${turbine.app.flavor}"
-                                frompath="schema"
-                                include="**/*"
-                                exclude="**/application*"/>
-
-    <meta:copyTurbineFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.schema}/${turbine.app.name}-schema.xml" filtering="false"
-                                flavor="${turbine.app.flavor}"
-                                fromfile="schema/application-schema.xml" />
-
-    <meta:copyTurbineFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.dtd" filtering="true"
-                                flavor="${turbine.app.flavor}"
-                                fromfile="schema/application-data.dtd" />
-
-    <meta:copyTurbineFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.xml" filtering="true"
-                                flavor="${turbine.app.flavor}"
-                                fromfile="schema/application-data.xml" />
-
     <!-- ========== Copy template files ========== -->
 
-    <meta:copyTurbineDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.templates}" filtering="true"
+    <meta:copyFlavorDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.templates}" filtering="true"
                                 flavor="${turbine.app.flavor}"
                                 frompath="templates"
                                 include="**/*"
                                 exclude="**/application*"/>
 
-    <meta:copyTurbineFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.templates}/macros/${turbine.app.name}Macros.vm" filtering="true"
+    <meta:copyFlavorFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.templates}/macros/${turbine.app.name}Macros.vm" filtering="true"
                                 flavor="${turbine.app.flavor}"
                                 fromfile="templates/macros/applicationMacros.vm" />
 
     <!-- ========== Copy Turbine configuration files ========== -->
 
-    <meta:copyTurbineDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.conf}" filtering="true"
+    <meta:copyFlavorDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.conf}" filtering="true"
                                 flavor="${turbine.app.flavor}"
                                 frompath="conf"
                                 include="**/*"
                                 exclude="**/application*"/>
 
-    <meta:copyTurbineFile tofile="${turbine.plugin.root.dir}/${maven.war.webxml}" filtering="true"
+    <meta:copyFlavorFile tofile="${turbine.plugin.root.dir}/${maven.war.webxml}" filtering="true"
                                 flavor="${turbine.app.flavor}"
                                 fromfile="conf/application-web.xml" />
 
-    <meta:copyTurbineFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.conf}/${turbine.app.name}.properties" filtering="true"
+    <meta:copyFlavorFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.conf}/${turbine.app.name}.properties" filtering="true"
                                 flavor="${turbine.app.flavor}"
                                 fromfile="conf/application.properties" />
 
-    <meta:copyTurbineFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.conf}/${turbine.app.name}-intake.xml" filtering="true"
+    <meta:copyFlavorFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.conf}/${turbine.app.name}-intake.xml" filtering="true"
                                 flavor="${turbine.app.flavor}"
                                 fromfile="conf/application-intake.xml" />
 
     <!-- ========== Copy other files into application tree ========== -->
 
-    <meta:copyTurbineDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.images}" filtering="false"
+    <meta:copyFlavorDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.images}" filtering="false"
                                 flavor="${turbine.app.flavor}"
                                 frompath="images"
                                 include="**/*" />
 
-    <meta:copyTurbineDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.resources}" filtering="true"
+    <meta:copyFlavorDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.resources}" filtering="true"
                                 flavor="${turbine.app.flavor}"
                                 frompath="resources"
                                 include="**/*" />
 
-    <meta:copyTurbineDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.pages}" filtering="true"
+    <meta:copyFlavorDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.pages}" filtering="true"
                                 flavor="${turbine.app.flavor}"
                                 frompath="pages"
                                 include="**/*" />
+
+    <!-- ========== Copy schema files for Torque ========== -->
+
+    <meta:copyOmDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.conf}" filtering="true"
+                                omLayer="${turbine.app.om.layer}"
+                                frompath="conf"
+                                include="**/*"
+                                exclude="**/application*"/>
+
+    <!-- filtering="false" is intentional! The file variables are 
+         replaced when the files are copied inside the application.
+    -->
+
+    <meta:copyOmDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.schema}" filtering="false"
+                                omLayer="${turbine.app.om.layer}"
+                                frompath="schema"
+                                include="**/*"
+                                exclude="**/application*"/>
+
+    <meta:copyOmFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.schema}/${turbine.app.name}-schema.xml" filtering="false"
+                                omLayer="${turbine.app.om.layer}"
+                                fromfile="schema/application-schema.xml" />
+
+    <meta:copyOmFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.dtd" filtering="true"
+                                omLayer="${turbine.app.om.layer}"
+                                fromfile="schema/application-data.dtd" />
+
+    <meta:copyOmFile tofile="${turbine.plugin.root.dir}/${turbine.plugin.src.schema}/${turbine.app.name}-data.xml" filtering="true"
+                                omLayer="${turbine.app.om.layer}"
+                                fromfile="schema/application-data.xml" />
+
 
     <j:if test="${context.getVariable('turbine.setup.demo') != null &amp;&amp; context.getVariable('turbine.setup.demo') == 'true'}">
       <attainGoal name="turbine:install-demo"/>
@@ -250,17 +273,13 @@
   <!--                                                                          -->
   <!-- ======================================================================== -->
   <goal name="turbine:sql"
-     description="Build the SQL files necessary for the application">
-    <attainGoal name="torque:sql"/>
-    <attainGoal name="torque:id-table-init-sql"/>
+    description="Build the SQL files necessary for the application"
+    prereqs="turbine:check-runtime-environment">
 
-    <u:available file="${turbine.plugin.src.schema}/${pom.name}-data.xml">
-      <attainGoal name="torque:datasql"/>
-    </u:available>
+    <j:if test="${turbine.plugin.torque.use}">
+      <attainGoal name="turbine:torque-sql" />
+    </j:if>
 
-    <u:available file="${turbine.plugin.src.schema}/turbine-security-data.xml">
-      <attainGoal name="turbine:security-datasql"/>
-    </u:available>
   </goal>
   <!-- ======================================================================== -->
   <!-- turbine:sql                                                              -->
@@ -278,7 +297,7 @@
   <!-- ======================================================================== -->
   <goal name="turbine:webapp"
     description="Generate a Turbine based Web application (war)"
-    prereqs="java:compile, war:webapp">
+    prereqs="turbine:check-runtime-environment,java:compile, war:webapp">
 
     <j:set var="webapp.build" value="target/${pom.name}"/>
     <j:set var="webapp.build.lib" value="target/${pom.name}/WEB-INF/lib"/>
@@ -347,7 +366,7 @@
   <!-- ======================================================================== -->
   <goal name="turbine:deploy"
     description="Deploys the Application into a local web container for testing"
-    prereqs="turbine:init, turbine:check-runtime-environment">
+    prereqs="turbine:check-runtime-environment">
 
     <j:if test="${context.getVariable('turbine.plugin.mode').equalsIgnoreCase('inplace')}">
       <maven:makeAbsolutePath var="absPath" basedir="${basedir}" path="${turbine.plugin.base.dir}" trim="true" />
@@ -508,7 +527,7 @@
   <!-- ======================================================================== -->
   <goal name="turbine:install-libs"
     description="updates the libraries for an inplace application"
-    prereqs="turbine:init, turbine:check-runtime-environment">
+    prereqs="turbine:check-runtime-environment">
 
     <j:if test="${context.getVariable('turbine.plugin.target.lib') != null &amp;&amp; context.getVariable('turbine.plugin.target.lib') != ''}">
       <j:forEach var="dep" items="${pom.dependencies}">
@@ -568,8 +587,11 @@
   <!-- nececssary to merge all the source files before compilation.             -->
   <!--                                                                          -->
   <!-- ======================================================================== -->
-  <goal name="turbine:java-compile"
-    prereqs="turbine:om-check">
+  <goal name="turbine:java-compile">
+
+    <j:if test="${turbine.plugin.torque.use}">
+      <attainGoal name="turbine:torque-om-check"/>
+    </j:if>
 
     <path id="maven.compile.src.set">
       <pathelement location="${pom.build.SourceDirectory}"/>
@@ -579,9 +601,11 @@
       <fileset dir="${turbine.plugin.src.java}"/>
     </copy>
 
-    <j:if test="${turbineInternalOmUpToDate != 'true'}">
-      <echo>Building OM Source files from Schema ...</echo>
-      <attainGoal name="torque:om"/>
+    <j:if test="${turbine.plugin.torque.use}">
+      <j:if test="${turbineInternalOmUpToDate != 'true'}">
+        <echo>Building OM Source files from Schema ...</echo>
+        <attainGoal name="torque:om"/>
+      </j:if>
     </j:if>
 
     <property name="sourcesPresent" value="true"/>
@@ -595,7 +619,7 @@
   <!-- torque:init                                                              -->
   <!--                                                                          -->
   <!-- ======================================================================== -->
-  <goal name="turbine:torque-init" prereqs="turbine:copy-om"/>
+  <goal name="turbine:torque-init" prereqs="turbine:torque-copy-om"/>
   <!-- ======================================================================== -->
   <!-- torque:init                                                              -->
   <!-- ======================================================================== -->
@@ -784,7 +808,7 @@
         </fail>
       </define:tag>
 
-      <define:tag name="copyTurbineFile">
+      <define:tag name="copyFlavorFile">
 
         <u:available file="${plugin.resources}/flavor/common/${fromfile}">
           <ant:copy tofile="${tofile}" filtering="${filtering}" overwrite="true"
@@ -798,7 +822,7 @@
 
       </define:tag>
 
-      <define:tag name="copyTurbineDir">
+      <define:tag name="copyFlavorDir">
 
         <u:available file="${plugin.resources}/flavor/common/${frompath}">
           <ant:copy todir="${todir}" filtering="${filtering}" overwrite="true" >
@@ -812,6 +836,28 @@
         <u:available file="${plugin.resources}/flavor/${flavor}/${frompath}">
           <ant:copy todir="${todir}" filtering="${filtering}" overwrite="true" >
             <ant:fileset dir="${plugin.resources}/flavor/${flavor}/${frompath}">
+              <include name="${include}"/>
+              <exclude name="${exclude}"/>
+            </ant:fileset>
+          </ant:copy>
+        </u:available>
+
+      </define:tag>
+
+      <define:tag name="copyOmFile">
+
+        <u:available file="${plugin.resources}/om-layer/${omLayer}/${fromfile}">
+          <ant:copy tofile="${tofile}" filtering="${filtering}" overwrite="true"
+            file="${plugin.resources}/om-layer/${omLayer}/${fromfile}"/>
+        </u:available>
+
+      </define:tag>
+
+      <define:tag name="copyOmDir">
+
+        <u:available file="${plugin.resources}/om-layer/${omLayer}/${frompath}">
+          <ant:copy todir="${todir}" filtering="${filtering}" overwrite="true" >
+            <ant:fileset dir="${plugin.resources}/om-layer/${omLayer}/${frompath}">
               <include name="${include}"/>
               <exclude name="${exclude}"/>
             </ant:fileset>
@@ -837,7 +883,7 @@
         <j:set var="${_propname}" scope="parent">${_result}</j:set>
       </define:tag>
 
-      <define:tag name="copyTurbineDemo">
+      <define:tag name="copyTurbineDemoDir">
 
         <u:available file="${plugin.resources}/demo/${frompath}">
           <ant:copy todir="${todir}" filtering="${filtering}" overwrite="true" >
@@ -863,14 +909,20 @@
   <goal name="turbine:check-runtime-environment"
     prereqs="turbine:init">
 
-   <j:if test="${context.getVariable('maven.appserver.name') == null || context.getVariable('maven.appserver.name') == ''}">
-     <meta:requiredPropertyMissing propname="maven.appserver.name" />
-   </j:if>
-   <j:if test="${context.getVariable('torque.database') == null || context.getVariable('torque.database') == ''}">
-     <meta:requiredPropertyMissing propname="torque.database" />
-   </j:if>
+    <j:set var="pluginMode" value="${turbine.plugin.mode}"/>
 
-   <j:set var="pluginMode" value="${turbine.plugin.mode}"/>
+    <j:set var="turbine.plugin.torque.use" value="${context.getVariable('turbine.app.om.layer') != null &amp;&amp; context.getVariable('turbine.app.om.layer').equalsIgnoreCase('torque')}" />
+    <j:set var="turbine.plugin.none.use"   value="${context.getVariable('turbine.app.om.layer') != null &amp;&amp; context.getVariable('turbine.app.om.layer').equalsIgnoreCase('none')}" />
+
+    <j:if test="${context.getVariable('maven.appserver.name') == null || context.getVariable('maven.appserver.name') == ''}">
+      <meta:requiredPropertyMissing propname="maven.appserver.name" />
+    </j:if>
+
+    <j:if test="${turbine.plugin.torque.use}">
+      <j:if test="${context.getVariable('torque.database') == null || context.getVariable('torque.database') == ''}">
+        <meta:requiredPropertyMissing propname="torque.database" />
+      </j:if>
+    </j:if>
 
    <j:choose>
      <j:when test="${pluginMode.equalsIgnoreCase('normal')}">
@@ -887,7 +939,7 @@
   </goal>
 
   <goal name="turbine:check-setup-environment"
-    prereqs="turbine:init, turbine:check-runtime-environment">
+    prereqs="turbine:check-runtime-environment">
     <j:if test="${context.getVariable('turbine.app.name') == null || context.getVariable('turbine.app.name') == ''}">
       <meta:requiredPropertyMissing propname="turbine.app.name" />
     </j:if>
@@ -904,7 +956,26 @@
 | Flavor not found Error                                                 |
 --------------------------------------------------------------------------
 
- The requested flavor ${turbine.app.flavor} was not found in the
+ The requested flavor (${turbine.app.flavor}) was not found in the
+ current version (${plugin.currentVersion}) of M.E.T.A.
+
+--------------------------------------------------------------------------
+        </fail>
+    </j:if>
+
+    <ant:condition property="omLayerExists">
+    <or>
+      <ant:available type="dir" file="${plugin.resources}/om-layer/${turbine.app.om.layer}/conf" />
+    </or>
+    </ant:condition>    
+
+    <j:if test="${omLayerExists != 'true'}">
+        <fail>
+--------------------------------------------------------------------------
+| OM layer not found Error                                               |
+--------------------------------------------------------------------------
+
+ The requested OM layer (${turbine.app.om.layer}) was not found in the
  current version (${plugin.currentVersion}) of M.E.T.A.
 
 --------------------------------------------------------------------------
@@ -926,7 +997,7 @@
 | Mode not found Error                                                   |
 --------------------------------------------------------------------------
 
- The requested mode ${turbine.plugin.mode} was not found in the
+ The requested mode (${turbine.plugin.mode}) was not found in the
  current version (${plugin.currentVersion}) of M.E.T.A.
 
 --------------------------------------------------------------------------
@@ -985,8 +1056,8 @@
   <!-- Prepare the XML files for building the OM peer classes             -->
   <!--                                                                    -->
   <!-- ================================================================== -->
-  <goal name="turbine:copy-om"
-     prereqs="turbine:copy-security-om, turbine:copy-app-om, turbine:copy-id-table-om, turbine:copy-data-dtd">
+  <goal name="turbine:torque-copy-om"
+     prereqs="turbine:torque-copy-security-om, turbine:torque-copy-app-om, turbine:torque-copy-id-table-om, turbine:torque-copy-data-dtd">
   </goal>
 
   <!-- ================================================================== -->
@@ -996,7 +1067,7 @@
   <!-- Set up the Turbine Security Service Tables                         -->
   <!--                                                                    -->
   <!-- ================================================================== -->
-  <goal name="turbine:copy-security-om">
+  <goal name="turbine:torque-copy-security-om">
     <j:if test="${turbineInternalSecurityUpToDate != 'true'}">
       <filter token="DATABASE_DEFAULT" value="${turbine.app.om.security.name}"/>
       <filter token="DATABASE_PACKAGE" value="${turbine.app.om.security.package}"/>
@@ -1014,7 +1085,7 @@
   <!-- Set up the application specific database tables                    -->
   <!--                                                                    -->
   <!-- ================================================================== -->
-  <goal name="turbine:copy-app-om">
+  <goal name="turbine:torque-copy-app-om">
     <j:if test="${turbineInternalAppUpToDate != 'true'}">
       <filter token="DATABASE_DEFAULT" value="${turbine.app.om.name}"/>
       <filter token="DATABASE_PACKAGE" value="${turbine.app.om.package}"/>
@@ -1032,7 +1103,7 @@
   <!-- Set up the Torque ID Broker Table                                  -->
   <!--                                                                    -->
   <!-- ================================================================== -->
-  <goal name="turbine:copy-id-table-om">
+  <goal name="turbine:torque-copy-id-table-om">
     <j:if test="${turbineInternalIdTableUpToDate != 'true'}">
       <filter token="DATABASE_DEFAULT" value="${turbine.app.om.name}"/>
       <filter token="DATABASE_PACKAGE" value="${turbine.app.om.package}"/>
@@ -1063,7 +1134,7 @@
   <!-- Set up the Torque ID Broker Table                                  -->
   <!--                                                                    -->
   <!-- ================================================================== -->
-  <goal name="turbine:copy-data-dtd">
+  <goal name="turbine:torque-copy-data-dtd">
     <j:if test="${turbineInternalDataDTDUpToDate != 'true'}">
       <copy overwrite="true"
         todir="${torque.schema.dir}">
@@ -1092,7 +1163,7 @@
   <!-- keep our own test target around.                                   -->
   <!--                                                                    -->
   <!-- ================================================================== -->
-  <goal name="turbine:om-check">
+  <goal name="turbine:torque-om-check">
     <j:choose>
       <j:when test="${torque.runOnlyOnSchemaChange}">
         <uptodate
@@ -1118,7 +1189,7 @@
   <!-- Insert Data file for the Torque based security objects.            -->
   <!--                                                                    -->
   <!-- ================================================================== -->
-  <goal name="turbine:security-datasql"
+  <goal name="turbine:torque-security-datasql"
     prereqs="torque:init">
 
     <torque-data-sql
@@ -1145,7 +1216,7 @@
   <!-- Generate a DTD for the Torque based Turbine security objects.      -->
   <!--                                                                    -->
   <!-- ================================================================== -->
-  <goal name="turbine:security-datadtd"
+  <goal name="turbine:torque-security-datadtd"
     prereqs="torque:init">
 
     <torque-data-model
@@ -1170,30 +1241,29 @@
   <!-- only from turbine:setup!                                                 -->
   <!--                                                                          -->
   <!-- ======================================================================== -->
-  <goal name="turbine:install-demo"
-    prereqs="turbine:init">
+  <goal name="turbine:install-demo">
 
-    <meta:copyTurbineDemo todir="${turbine.plugin.root.dir}/${turbine.plugin.src.templates}" 
+    <meta:copyTurbineDemoDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.templates}" 
                           filtering="true"
                           frompath="templates"
                           include="**/*"/>
 
-    <meta:copyTurbineDemo todir="${turbine.plugin.root.dir}/${turbine.plugin.src.images}" 
+    <meta:copyTurbineDemoDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.images}" 
                           filtering="false"
                           frompath="images"
                           include="**/*"/>
 
-    <meta:copyTurbineDemo todir="${turbine.plugin.root.dir}/${turbine.plugin.src.resources}" 
+    <meta:copyTurbineDemoDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.resources}" 
                           filtering="true"
                           frompath="resources"
                           include="**/*"/>
 
-    <meta:copyTurbineDemo todir="${turbine.plugin.root.dir}/${turbine.plugin.src.style}" 
+    <meta:copyTurbineDemoDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.style}" 
                           filtering="true"
                           frompath="style"
                           include="**/*"/>
 
-    <meta:copyTurbineDemo todir="${turbine.plugin.root.dir}/${turbine.plugin.src.pages}" 
+    <meta:copyTurbineDemoDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.pages}" 
                           filtering="true"
                           frompath="pages"
                           include="**/*"/>
@@ -1201,5 +1271,44 @@
 
   <!-- ======================================================================== -->
   <!-- turbine:install-demo                                                     -->
+  <!-- ======================================================================== -->
+
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- turbine:setup-torque                                                     -->
+  <!--                                                                          -->
+  <!-- Install Torque schema files into the new application                     -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:setup-torque">
+
+  </goal>
+  <!-- ======================================================================== -->
+  <!-- turbine:setup-torque                                                     -->
+  <!-- ======================================================================== -->
+
+  <!-- ======================================================================== -->
+  <!--                                                                          -->
+  <!-- turbine:torque-sql                                                       -->
+  <!--                                                                          -->
+  <!-- Generate SQL files when Torque is selected as OM Layer                   -->
+  <!--                                                                          -->
+  <!-- ======================================================================== -->
+  <goal name="turbine:torque-sql">
+
+    <attainGoal name="torque:sql"/>
+    <attainGoal name="torque:id-table-init-sql"/>
+
+    <u:available file="${turbine.plugin.src.schema}/${pom.name}-data.xml">
+      <attainGoal name="torque:datasql"/>
+    </u:available>
+
+    <u:available file="${turbine.plugin.src.schema}/turbine-security-data.xml">
+      <attainGoal name="turbine:torque-security-datasql"/>
+    </u:available>
+
+  </goal>
+  <!-- ======================================================================== -->
+  <!-- turbine:setup-torque                                                     -->
   <!-- ======================================================================== -->
 </project>
