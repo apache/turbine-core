@@ -56,9 +56,9 @@ package org.apache.turbine.services.jsp.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.modules.NavigationLoader;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -72,8 +72,9 @@ import org.apache.turbine.util.RunData;
  * <%= navigation.setTemplate("admin_navigation.jsp") %>
  * </code>
  * @author <a href="john.mcnally@clearink.com">John D. McNally</a>
- * @author Dave Bryson<a href="mbryson@mont.mindspring.com">mbryson@mont.mindspring.com</a>
- *
+ * @author <a href="mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
 public class JspNavigation
 {
@@ -103,8 +104,7 @@ public class JspNavigation
         String module = null;
         try
         {
-            module = ((TemplateService) TurbineServices.getInstance().getService(
-                    TemplateService.SERVICE_NAME)).getNavigationName(template);
+            module = TurbineTemplate.getNavigationName(template);
             NavigationLoader.getInstance().exec(data, module);
         }
         catch (Exception e)

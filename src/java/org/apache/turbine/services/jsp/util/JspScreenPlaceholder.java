@@ -56,13 +56,13 @@ package org.apache.turbine.services.jsp.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.turbine.modules.ScreenLoader;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
 
 /**
- * Returns output of a Navigation module. An instance of this is placed in the
+ * Returns output of a Screen module. An instance of this is placed in the
  * request by the JspLayout. This allows template authors to
  * place the screen template within the layout.<br>
  * Here's how it's used in a JSP template:<br>
@@ -73,6 +73,8 @@ import org.apache.turbine.util.RunData;
  *</code>
  *
  * @author <a href="john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
 public class JspScreenPlaceholder
 {
@@ -85,7 +87,7 @@ public class JspScreenPlaceholder
     /**
      * Constructor
      *
-     * @param data
+     * @param data A Rundata Object
      */
     public JspScreenPlaceholder(RunData data)
     {
@@ -102,8 +104,7 @@ public class JspScreenPlaceholder
         try
         {
             template = data.getTemplateInfo().getScreenTemplate();
-            module = ((TemplateService) TurbineServices.getInstance().getService(
-                    TemplateService.SERVICE_NAME)).getScreenName(template);
+            module = TurbineTemplate.getScreenName(template);
             ScreenLoader.getInstance().exec(data, module);
         }
         catch (Exception e)
