@@ -294,6 +294,20 @@ public class LDAPUser extends BaseObject implements User
             }
         }
 
+        // Set the Password
+        attrName = LDAPSecurityConstants.getPasswordAttribute();
+        if (attrName != null)
+        {
+            Object value = getPassword();
+
+            if (value != null)
+            {
+                Attribute attr = new BasicAttribute(attrName, value);
+
+                attribs.put(attr);
+            }
+        }
+
         return attribs;
     }
 
