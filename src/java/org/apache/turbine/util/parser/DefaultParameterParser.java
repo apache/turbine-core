@@ -226,15 +226,13 @@ public class DefaultParameterParser
             }
         }
 
-        Enumeration names = request.getParameterNames();
-        if (names != null)
+        for (Enumeration names = request.getParameterNames();
+             names.hasMoreElements();)
         {
-            while (names.hasMoreElements())
-            {
-                tmp = (String) names.nextElement();
-                fileParameters.put(convert(tmp),
-                        request.getParameterValues(tmp));
-            }
+            tmp = (String) names.nextElement();
+
+            add(convert(tmp),
+                    request.getParameterValues(tmp));
         }
 
         // Also cache any pathinfo variables that are passed around as
