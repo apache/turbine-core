@@ -89,9 +89,6 @@ import java.util.Vector;
 public class BooleanValidator
         extends DefaultValidator
 {
-    /** Default error message if the boolean can not be parsed. */
-    private static final String INVALID_BOOLEAN = "Not a boolean value";
-
     /** String values which would evaluate to Boolean.TRUE */
     private static Vector trueValues;
 
@@ -143,7 +140,7 @@ public class BooleanValidator
         }
         catch (ParseException e)
         {
-            throw new ValidationException(INVALID_BOOLEAN);
+            throw new ValidationException(e.getMessage());
         }
     }
 
