@@ -138,6 +138,11 @@ Changes between Turbine 2.2 and 2.3-dev.
       org.apache.turbine.util.parser and some of the pull tools from org.apache.turbine.util.pull
       to org.apache.turbine.services.pull.tools
     </li>
+    <li>
+      getSizeMax() in the UploadService interface and implementations changed
+      from int to long to reflect a change that was made in the underlying 
+      commons-fileupload component.
+    </li>
   </ul>
 </p>
 </subsection>

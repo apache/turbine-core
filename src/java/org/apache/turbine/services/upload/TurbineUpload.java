@@ -135,7 +135,7 @@ public abstract class TurbineUpload
      * @return The value of 'size.max' property of {@link
      * UploadService}.
      */
-    public static int getSizeMax()
+    public static long getSizeMax()
     {
         return getService().getSizeMax();
     }

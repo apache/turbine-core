@@ -167,7 +167,7 @@ public interface UploadService
      * value, and use an action + no auto upload to enforce limits.
      *
      */
-    int SIZE_MAX_DEFAULT = 1048576;
+    long SIZE_MAX_DEFAULT = 1048576;
 
     /**
      * The key in UploadService properties in
@@ -205,7 +205,7 @@ public interface UploadService
      *
      * @return The maximum upload size.
      */
-    int getSizeMax();
+    long getSizeMax();
 
     /**
      * <p> Retrieves the value of <code>size.threshold</code> property of
