@@ -55,9 +55,15 @@ package org.apache.turbine.util;
  */
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -65,9 +71,10 @@ import java.util.Vector;
  * This is where common Object manipulation routines should go.
  *
  * @author <a href="mailto:nissim@nksystems.com">Nissim Karpenstein</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class ObjectUtils
+public abstract class ObjectUtils
 {
     /**
      * Returns a default value if the object passed is null.
@@ -75,6 +82,7 @@ public class ObjectUtils
      * @param o The object to test.
      * @param dflt The default value to return.
      * @return The object o if it is not null, dflt otherwise.
+     * @deprecated Use commons-lang
      */
     public static Object isNull(Object o, Object dflt)
     {
@@ -94,6 +102,7 @@ public class ObjectUtils
      *
      * @param v The vector.
      * @param o The object.
+     * @deprecated No replacement
      */
     public static void addOnce(Vector v, Object o)
     {
@@ -104,20 +113,86 @@ public class ObjectUtils
     }
 
     /**
+     * Converts a hashtable to a byte array for storage/serialization.
+     *
+     * @param hash The Hashtable to convert.
+     *
+     * @return A byte[] with the converted Hashtable.
+     *
+     * @exception Exception A generic exception.
+     */
+    public static byte[] serializeHashtable(Hashtable hash)
+        throws Exception
+    {
+        Hashtable saveData = new Hashtable(hash.size());
+        String key = null;
+        Object value = null;
+        byte[] byteArray = null;
+
+        Enumeration keys = hash.keys();
+
+        while (keys.hasMoreElements())
+        {
+            key = (String) keys.nextElement();
+            value = hash.get(key);
+            if (value instanceof Serializable)
+            {
+                saveData.put (key, value);
+            }
+        }
+
+        ByteArrayOutputStream baos = null;
+        BufferedOutputStream bos = null;
+        ObjectOutputStream out = null;
+        try
+        {
+            // These objects are closed in the finally.
+            baos = new ByteArrayOutputStream();
+            bos  = new BufferedOutputStream(baos);
+            out  = new ObjectOutputStream(bos);
+
+            out.writeObject(saveData);
+            out.flush();
+            bos.flush();
+
+            byteArray = baos.toByteArray();
+        }
+        finally
+        {
+            if (out != null)
+            {
+                out.close();
+            }
+            if (bos != null)
+            {
+                bos.close();
+            }
+            if (baos != null)
+            {
+                baos.close();
+            }
+        }
+        return byteArray;
+    }
+
+    /**
      * Deserializes a single object from an array of bytes.
      *
      * @param objectData The serialized object.
+     *
      * @return The deserialized object, or <code>null</code> on failure.
      */
     public static Object deserialize(byte[] objectData)
     {
         Object object = null;
+
         if (objectData != null)
         {
             // These streams are closed in finally.
             ObjectInputStream in = null;
             ByteArrayInputStream bin = new ByteArrayInputStream(objectData);
             BufferedInputStream bufin = new BufferedInputStream(bin);
+            
             try
             {
                 in = new ObjectInputStream(bufin);
@@ -162,6 +237,7 @@ public class ObjectUtils
      * @param o1 The first object.
      * @param o2 The second object.
      * @return True if the values of both xstrings are the same.
+     * @deprecated No replacement
      */
     public static boolean equals(Object o1, Object o2)
     {
@@ -188,6 +264,7 @@ public class ObjectUtils
      * essentially treat put("Not Null", null ) == put("Not Null", "")
      * We will still throw a NPE if the key is null cause that should
      * never happen.
+     * @deprecated No replacement
      */
     public static final void safeAddToHashtable(Hashtable hash, Object key,
                                                 Object value)
