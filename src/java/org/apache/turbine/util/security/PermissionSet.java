@@ -230,9 +230,19 @@ public class PermissionSet implements Serializable
     }
 
     /**
-     * Returns an Iterator for Permissions in this PermissionSet.
+     * @deprecated Use iterator() instead.
      */
     public Iterator elements()
+    {
+        return set.iterator();
+    }
+
+    /**
+     * Returns an Iterator for Groups in this GroupSet.
+     *
+     * @return An Iterator for this GroupSet
+     */
+    public Iterator iterator()
     {
         return set.iterator();
     }

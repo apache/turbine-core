@@ -227,9 +227,19 @@ public class RoleSet implements Serializable
     }
 
     /**
-     * Returns an Iterator for Roles in this RoleSet.
+     * @deprecated Use iterator() instead.
      */
     public Iterator elements()
+    {
+        return set.iterator();
+    }
+
+    /**
+     * Returns an Iterator for Groups in this GroupSet.
+     *
+     * @return An Iterator for this GroupSet
+     */
+    public Iterator iterator()
     {
         return set.iterator();
     }
