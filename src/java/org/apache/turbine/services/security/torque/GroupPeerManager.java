@@ -53,7 +53,6 @@ package org.apache.turbine.services.security.torque;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
-
 import java.beans.PropertyDescriptor;
 
 import java.util.ArrayList;
@@ -65,21 +64,16 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import org.apache.turbine.services.InitializationException;
-
-import org.apache.turbine.services.security.TurbineSecurity;
-
-import org.apache.turbine.om.security.Group;
-
-import org.apache.turbine.util.security.DataBackendException;
-import org.apache.turbine.util.security.GroupSet;
-
 import org.apache.torque.TorqueException;
-
 import org.apache.torque.om.Persistent;
-
 import org.apache.torque.util.BasePeer;
 import org.apache.torque.util.Criteria;
+
+import org.apache.turbine.om.security.Group;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.util.security.DataBackendException;
+import org.apache.turbine.util.security.GroupSet;
 
 /**
  * This class capsulates all direct Peer access for the Group entities.

@@ -56,13 +56,11 @@ package org.apache.turbine.services.security.torque;
 
 import java.sql.Connection;
 
-import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.torque.om.Persistent;
 
 import org.apache.turbine.om.security.Permission;
-
+import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.security.TurbineSecurityException;
-
-import org.apache.torque.om.Persistent;
 
 /**
  * This class represents a permission given to a Role associated with the

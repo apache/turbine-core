@@ -56,13 +56,11 @@ package org.apache.turbine.services.security.torque;
 
 import java.sql.Connection;
 
-import org.apache.turbine.om.security.SecurityEntity;
-
-import org.apache.turbine.util.security.TurbineSecurityException;
-
-import org.apache.torque.om.Persistent;
 import org.apache.torque.om.ObjectKey;
+import org.apache.torque.om.Persistent;
 
+import org.apache.turbine.om.security.SecurityEntity;
+import org.apache.turbine.util.security.TurbineSecurityException;
 
 /**
  * All the Torque Security objects (User, Group, Role, Permission) are
@@ -226,14 +224,14 @@ public abstract class TorqueObject
      * Stores the object in the database.  If the object is new,
      * it inserts it; otherwise an update is performed.
      *
-     * @param dbName The name under which the object should be stored.
+     * @param torqueName The name under which the object should be stored.
      *
      * @exception Exception This method might throw an exceptions
      */
-    public void save(String dbName)
+    public void save(String torqueName)
         throws Exception
     {
-        getPersistentObj().save(dbName);
+        getPersistentObj().save(torqueName);
     }
 
     /**
