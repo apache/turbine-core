@@ -54,7 +54,7 @@ package org.apache.turbine.torque.engine.database.model;
  * <http://www.apache.org/>.
  */
 
-import org.xml.sax.Attributes;
+import org.xml.sax.AttributeList;
 
 /**
  * Information related to an ID method.
@@ -73,7 +73,7 @@ public class IdMethodParameter
     /**
      * Imports foreign key from an XML specification
      */
-    public void loadFromXML (Attributes attrib)
+    public void loadFromXML (AttributeList attrib)
     {
         name = attrib.getValue("name");
         value = attrib.getValue("value");

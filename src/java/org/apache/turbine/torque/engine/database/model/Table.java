@@ -54,14 +54,14 @@ package org.apache.turbine.torque.engine.database.model;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.util.db.map.IDMethod;
+import org.apache.velocity.util.StringUtils;
+import org.xml.sax.AttributeList;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import org.apache.velocity.util.StringUtils;
-import org.xml.sax.Attributes;
-
-import org.apache.turbine.util.db.map.IDMethod;
 
 /**
  * Data about a table used in an application.
@@ -124,7 +124,7 @@ public class Table implements IDMethod
     /**
      * Load the table object from an xml tag.
      */
-    public void loadFromXML (Attributes attrib, String defaultIdMethod)
+    public void loadFromXML (AttributeList attrib, String defaultIdMethod)
     {
         name = attrib.getValue("name");
         javaName = attrib.getValue("javaName");
@@ -213,7 +213,7 @@ public class Table implements IDMethod
      * A utility function to create a new column
      * from attrib and add it to this table.
      */
-    public Column addColumn(Attributes attrib)
+    public Column addColumn(AttributeList attrib)
     {
         Column col = new Column();
         col.loadFromXML (attrib);
@@ -242,7 +242,7 @@ public class Table implements IDMethod
      * A utility function to create a new foreign key
      * from attrib and add it to this table.
      */
-    public ForeignKey addForeignKey(Attributes attrib)
+    public ForeignKey addForeignKey(AttributeList attrib)
     {
         ForeignKey fk = new ForeignKey();
         fk.loadFromXML (attrib);
@@ -347,7 +347,7 @@ public class Table implements IDMethod
      * A utility function to create a new id method parameter
      * from attrib and add it to this table.
      */
-    public IdMethodParameter addIdMethodParameter(Attributes attrib)
+    public IdMethodParameter addIdMethodParameter(AttributeList attrib)
     {
         IdMethodParameter imp = new IdMethodParameter();
         imp.loadFromXML (attrib);
@@ -386,7 +386,7 @@ public class Table implements IDMethod
      * A utility function to create a new index
      * from attrib and add it to this table.
      */
-    public Index addIndex(Attributes attrib)
+    public Index addIndex(AttributeList attrib)
     {
         Index index = new Index();
         index.loadFromXML (attrib);
@@ -408,7 +408,7 @@ public class Table implements IDMethod
      * A utility function to create a new Unique
      * from attrib and add it to this table.
      */
-    public Unique addUnique(Attributes attrib)
+    public Unique addUnique(AttributeList attrib)
     {
         Unique unique = new Unique();
         unique.loadFromXML (attrib);

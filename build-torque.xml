@@ -17,16 +17,11 @@
     <mkdir dir="${torque.dir}"/>
     <mkdir dir="${torque.dir}/lib"/>
 
-    <copy todir="${torque.dir}/lib">
-      <fileset dir=".">
-        <include name="ant-*.jar"/>
-      </fileset>
-      <fileset dir="lib">
-        <include name="xerces-*.jar"/>
-        <include name="velocity-*.jar"/>
-        <include name="village-*.jar"/>
-      </fileset>
-    </copy>
+    <copy file="${velocity.jar}" todir="${torque.dir}/lib"/>
+    <copy file="${village.jar}" todir="${torque.dir}/lib"/>
+    <copy file="${commons-collections.jar}" todir="${torque.dir}/lib"/>
+    <copy file="${stratum.jar}" todir="${torque.dir}/lib"/>
+    <copy file="${log4j.jar}" todir="${torque.dir}/lib"/>
 
     <filter token="TORQUE_HOME" value="."/>
     <filter token="JARS" value="lib/*.jar"/>

@@ -54,30 +54,15 @@ package org.apache.turbine.torque.engine.database.transform;
  * <http://www.apache.org/>.
  */
 
+import org.apache.turbine.services.db.TurbineDB;
+import org.apache.turbine.torque.engine.database.model.*;
+import org.xml.sax.*;
+import org.xml.sax.helpers.DefaultHandler;
+
+import javax.xml.parsers.SAXParserFactory;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.PrintStream;
-import java.io.Reader;
 import java.util.List;
-import org.apache.turbine.services.db.TurbineDB;
-import org.apache.turbine.torque.engine.database.model.AppData;
-import org.apache.turbine.torque.engine.database.model.Column;
-import org.apache.turbine.torque.engine.database.model.Database;
-import org.apache.turbine.torque.engine.database.model.ForeignKey;
-import org.apache.turbine.torque.engine.database.model.IdMethodParameter;
-import org.apache.turbine.torque.engine.database.model.Index;
-import org.apache.turbine.torque.engine.database.model.Inheritance;
-import org.apache.turbine.torque.engine.database.model.Table;
-import org.apache.turbine.torque.engine.database.model.Unique;
-import org.apache.xerces.parsers.SAXParser;
-import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * A Class that is used to parse an input
@@ -90,7 +75,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @version $Id$
  * @deprecated use turbine-torque
  */
-public class XmlToAppData extends DefaultHandler
+public class XmlToAppData extends DefaultHandler implements DocumentHandler
 {
     private AppData app;
     private Database currDB;
@@ -128,19 +113,14 @@ public class XmlToAppData extends DefaultHandler
                 app = new AppData();
             }
 
-            SAXParser parser = new SAXParser();
+            Parser parser = SAXParserFactory.newInstance().newSAXParser().getParser();
 
             // set the Resolver for the database DTD
             DTDResolver dtdResolver = new DTDResolver();
             parser.setEntityResolver(dtdResolver);
 
             // We don't use an external content handler - we use this object
-            parser.setContentHandler(this);
-
-            // Validate the input file
-            parser.setFeature
-                ("http://apache.org/xml/features/validation/dynamic", true);
-            parser.setFeature("http://xml.org/sax/features/validation", true);
+            parser.setDocumentHandler(this);
 
             parser.setErrorHandler(this);
 
@@ -171,13 +151,16 @@ public class XmlToAppData extends DefaultHandler
         return app;
     }
 
-
+    public void endElement(String s) throws SAXException
+    {
+        // nothing to do
+    }
 
     /**
      * Handles opening elements of the xml file.
      */
-    public void startElement(String uri, String localName, String rawName,
-                             Attributes attributes)
+    public void startElement(String rawName,
+                             AttributeList attributes)
     {
         try
         {

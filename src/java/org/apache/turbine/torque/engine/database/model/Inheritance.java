@@ -54,7 +54,7 @@ package org.apache.turbine.torque.engine.database.model;
  * <http://www.apache.org/>.
  */
 
-import org.xml.sax.Attributes;
+import org.xml.sax.AttributeList;
 
 /**
  * A Class for information regarding possible objects representing a table
@@ -80,7 +80,7 @@ public class Inheritance
     /**
      * Imports foreign key from an XML specification
      */
-    public void loadFromXML (Attributes attrib)
+    public void loadFromXML (AttributeList attrib)
     {
         setKey(attrib.getValue("key"));
         setClassName(attrib.getValue("class"));

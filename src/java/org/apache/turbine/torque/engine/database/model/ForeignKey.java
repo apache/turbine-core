@@ -54,10 +54,11 @@ package org.apache.turbine.torque.engine.database.model;
  * <http://www.apache.org/>.
  */
 
+import org.xml.sax.AttributeList;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-import org.xml.sax.Attributes;
 
 /**
  * A Class for information about foreign keys of a table
@@ -83,7 +84,7 @@ public class ForeignKey
     /**
      * Imports foreign key from an XML specification
      */
-    public void loadFromXML (Attributes attrib)
+    public void loadFromXML (AttributeList attrib)
     {
         foreignTableName = attrib.getValue("foreignTable");
     }
@@ -132,7 +133,7 @@ public class ForeignKey
     /**
      *  adds a new reference entry to the foreign key
      */
-    public void addReference(Attributes attrib)
+    public void addReference(AttributeList attrib)
     {
         addReference(attrib.getValue("local"), attrib.getValue("foreign"));
     }

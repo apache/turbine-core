@@ -54,14 +54,11 @@ package org.apache.turbine.torque.engine.database.model;
  * <http://www.apache.org/>.
  */
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Hashtable;
-import java.util.List;
-
 import org.apache.velocity.util.StringUtils;
+import org.xml.sax.AttributeList;
 
-import org.xml.sax.Attributes;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A Class for holding data about a column used in an Application.
@@ -119,7 +116,7 @@ public class Column
     /**
      * Imports a column from an XML specification
      */
-    public void loadFromXML (Attributes attrib)
+    public void loadFromXML (AttributeList attrib)
     {
         //Name
         name = attrib.getValue("name");
@@ -255,7 +252,7 @@ public class Column
      * A utility function to create a new column
      * from attrib and add it to this table.
      */
-    public Inheritance addInheritance(Attributes attrib)
+    public Inheritance addInheritance(AttributeList attrib)
     {
         Inheritance inh = new Inheritance();
         inh.loadFromXML (attrib);

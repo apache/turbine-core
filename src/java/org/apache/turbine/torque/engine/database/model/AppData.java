@@ -54,10 +54,11 @@ package org.apache.turbine.torque.engine.database.model;
  * <http://www.apache.org/>.
  */
 
+import org.xml.sax.AttributeList;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.xml.sax.Attributes;
 
 /**
  * A class for holding application data structures.
@@ -132,7 +133,7 @@ public class AppData
      * An utility method to add a new database from
      * an xml attribute.
      */
-    public Database addDatabase(Attributes attrib)
+    public Database addDatabase(AttributeList attrib)
     {
         Database db = new Database();
         db.loadFromXML (attrib);

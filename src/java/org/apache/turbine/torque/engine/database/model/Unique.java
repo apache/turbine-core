@@ -54,9 +54,10 @@ package org.apache.turbine.torque.engine.database.model;
  * <http://www.apache.org/>.
  */
 
+import org.xml.sax.AttributeList;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.xml.sax.Attributes;
 
 /**
  * A Class for information about unique indices of a table
@@ -114,7 +115,7 @@ public class Unique
     /**
      *  adds a new column to an index
      */
-    public void addColumn(Attributes attrib)
+    public void addColumn(AttributeList attrib)
     {
         indexColumns.add(attrib.getValue("name"));
     }
@@ -168,7 +169,7 @@ public class Unique
     /**
      * Imports a column from an XML specification
      */
-    public void loadFromXML (Attributes attrib)
+    public void loadFromXML (AttributeList attrib)
     {
         indexName = attrib.getValue("name");
     }
