@@ -83,7 +83,7 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.MerlinComponentService;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.FormMessages;
 import org.apache.turbine.util.ServerData;
@@ -351,12 +351,10 @@ public class DefaultTurbineRunData
             if (!locale.equals(Locale.US))
             {
                 log.debug("We don't have US Locale!");
-                MerlinComponentService merlin= (MerlinComponentService)TurbineServices.getInstance().getService(MerlinComponentService.SERVICE_NAME);
+                AvalonComponentService ecm= (AvalonComponentService)TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
 				MimeTypeService mimeTypeService=null;
                 try {
-                    Object o = merlin.lookup("/fulcrum/mimetype");
-                    System.out.println(o.getClass().getName());
-					mimeTypeService= (MimeTypeService)o;
+					mimeTypeService= (MimeTypeService)ecm.lookup(MimeTypeService.ROLE);
                 }
                 catch (Exception e){
                     throw new RuntimeException(e);

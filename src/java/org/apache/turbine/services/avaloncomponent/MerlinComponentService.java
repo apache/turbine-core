@@ -57,7 +57,8 @@ package org.apache.turbine.services.avaloncomponent;
 import org.apache.turbine.services.Service;
 
 /**
- * This service allows access to avalon components.
+ * This service allows access to avalon components running in a Merlin
+ * container.  This is not ready for Prime Time yet.
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>

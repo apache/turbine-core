@@ -203,7 +203,11 @@ public class TurbineAvalonComponentService
         String realPath = Turbine.getRealPath("/");
 
         context.put(AvalonComponentService.COMPONENT_APP_ROOT, realPath);
+        // urn:avalon:home is used by Merlinized components.  Makes things
+        // a bit more backwards compatible.
+        context.put("urn:avalon:home", realPath);
         System.setProperty("applicationRoot", realPath);
+        System.setProperty("urn:avalon:home", realPath);
 
         log.debug("Application Root is " + realPath);
 

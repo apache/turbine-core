@@ -93,6 +93,8 @@ import org.apache.turbine.util.pool.Recyclable;
  * </pre>
  *
  * In the above example, result is 2.
+ * 
+ * Note:  In the jakarta-turbine-2 codebase things look much updated for parsing.
  *
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @author <a href="mailto:jon@clearink.com">Jon S. Stevens</a>
