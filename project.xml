@@ -354,6 +354,13 @@
 
   <dependencies>
     <dependency>
+      <id>commons-codec</id>
+      <version>1.0-dev</version>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>
+    <dependency>
       <id>commons-collections</id>
       <version>2.1</version>
       <url>http://jakarta.apache.org/commons/collections.html</url>
@@ -393,6 +400,13 @@
           <war.bundle.jar>true</war.bundle.jar>
         </properties>
       </dependency>
+    <dependency>
+      <id>cryptix</id>
+      <version>3.2.0</version>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>
     <dependency>
       <id>ecs</id>
       <version>1.4.1</version>
