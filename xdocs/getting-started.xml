@@ -28,8 +28,8 @@ Engine</a> which is preconfigured to run Turbine. The TDK also has
 sample applications as well as scripts that allow you to quickly build
 your own application. As time progresses, we will be including more and
 more helpful information in the TDK.  Please see the
-<a href="howto/tdk-howto.html">Turbine Development Kit Howto</a>
-for more information.
+<a href="http://jakarta.apache.org/turbine/tdk/tdk-howto.html">Turbine
+Development Kit Howto</a> for more information.
 </p>
 </section>
 
