@@ -143,17 +143,6 @@ public class TurbineXmlRpcService
     public void init()
         throws InitializationException
     {
-        ServletConfig conf = Turbine.getTurbineServletConfig();
-        init(conf);
-    }
-
-    /**
-     * This function initializes the XmlRpcService.
-     *
-     * @deprecated Use init() instead.
-     */
-    public void init(ServletConfig config) throws InitializationException
-    {
         try
         {
             server = new XmlRpcServer();
@@ -287,6 +276,16 @@ public class TurbineXmlRpcService
         }
 
         setInit(true);
+    }
+
+    /**
+     * This function initializes the XmlRpcService.
+     *
+     * @deprecated Use init() instead.
+     */
+    public void init(ServletConfig config) throws InitializationException
+    {
+        init();
     }
 
     /**

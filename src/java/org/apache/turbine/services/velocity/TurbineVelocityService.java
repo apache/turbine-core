@@ -166,24 +166,8 @@ public class TurbineVelocityService
      *
      * @throws InitializationException Something went wrong in the init
      *         stage
-     */ 
-    public void init()
-        throws InitializationException
-    {
-        ServletConfig conf = Turbine.getTurbineServletConfig();
-        init(conf);
-    }
-
-    /**
-     * Inits the service using servlet parameters to obtain path to the
-     * configuration file.
-     *
-     * @param config The ServletConfiguration from Turbine
-     *
-     * @throws InitializationException Something went wrong when starting up.
-     * @deprecated use init() instead.
      */
-    public void init(ServletConfig config)
+    public void init()
         throws InitializationException
     {
         try
@@ -226,6 +210,21 @@ public class TurbineVelocityService
             throw new InitializationException(
                 "Failed to initialize TurbineVelocityService", e);
         }
+    }
+
+    /**
+     * Inits the service using servlet parameters to obtain path to the
+     * configuration file.
+     *
+     * @param config The ServletConfiguration from Turbine
+     *
+     * @throws InitializationException Something went wrong when starting up.
+     * @deprecated use init() instead.
+     */
+    public void init(ServletConfig config)
+        throws InitializationException
+    {
+        init();
     }
 
     /**
@@ -569,7 +568,7 @@ public class TurbineVelocityService
          */
         Configuration configuration = getConfiguration();
 
-        configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, 
+        configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS,
                                   SimpleLog4JLogSystem.class.getName());
         configuration.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM + ".log4j.category",
                                   "velocity");

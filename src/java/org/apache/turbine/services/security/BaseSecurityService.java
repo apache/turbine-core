@@ -189,19 +189,6 @@ public abstract class BaseSecurityService
     public void init()
         throws InitializationException
     {
-        ServletConfig conf = Turbine.getTurbineServletConfig();
-        init(conf);
-    }
-
-    /**
-     * Initializes the SecurityService, locating the apropriate UserManager
-     *
-     * @param config a ServletConfig, to enforce early initialization
-     * @deprecated use init() instead.
-     */
-    public void init(ServletConfig config)
-        throws InitializationException
-    {
         String userManagerClassName = getProperties().getProperty(
             SecurityService.USER_MANAGER_KEY,
             SecurityService.USER_MANAGER_DEFAULT);
@@ -231,6 +218,18 @@ public abstract class BaseSecurityService
             throw new InitializationException(
                 "BaseSecurityService.init: Failed to instantiate UserManager", e);
         }
+    }
+
+    /**
+     * Initializes the SecurityService, locating the apropriate UserManager
+     *
+     * @param config a ServletConfig, to enforce early initialization
+     * @deprecated use init() instead.
+     */
+    public void init(ServletConfig config)
+        throws InitializationException
+    {
+        init();
     }
 
     /**

@@ -93,15 +93,22 @@ public class TurbineServletService
      * Load all configured components and initialize them. This is
      * a zero parameter variant which queries the Turbine Servlet
      * for its config.
-     *
-     * @throws InitializationException Something went wrong in the init
-     *         stage
      */
     public void init()
-        throws InitializationException
     {
-        ServletConfig conf = Turbine.getTurbineServletConfig();
-        init(conf);
+        this.servletConfig = Turbine.getTurbineServletConfig();
+        try
+        {
+            this.servletContext = servletConfig.getServletContext();
+
+            log.debug("[TurbineServletService] Initializing with ServletConfig");
+        }
+        catch (Exception e)
+        {
+            log.error ("Cannot initialize TurbineServletService.");
+            log.error (e);
+        }
+        setInit(true);
     }
 
     /**
@@ -113,19 +120,7 @@ public class TurbineServletService
      */
     public void init(ServletConfig servletConfig)
     {
-        try
-        {
-            this.servletConfig = servletConfig;
-            this.servletContext = servletConfig.getServletContext();
-
-            log.debug("[TurbineServletService] Initializing with ServletConfig");
-        }
-        catch (Exception e)
-        {
-            log.error ("Cannot initialize TurbineServletService.");
-            log.error (e);
-        }
-        setInit(true);
+        init();
     }
 
     /**

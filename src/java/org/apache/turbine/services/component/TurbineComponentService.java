@@ -113,22 +113,7 @@ public class TurbineComponentService
     public void init()
         throws InitializationException
     {
-        ServletConfig conf = Turbine.getTurbineServletConfig();
-        init(conf);
-    }
-
-    /**
-     * Inits the service using servlet parameters to obtain path to the
-     * configuration file. Change relatives paths.
-     *
-     * @param config The ServletConfiguration from Turbine
-     *
-     * @throws InitializationException Something went wrong when starting up.
-     * @deprecated use init() instead.
-     */
-    public void init(ServletConfig config)
-        throws InitializationException
-    {
+        ServletConfig config = Turbine.getTurbineServletConfig();
         Configuration loaderConf = new BaseConfiguration();
 
         String [] names = getConfiguration().getStringArray(NAME);
@@ -173,6 +158,21 @@ public class TurbineComponentService
             log.error("Component Service failed: ", e);
             throw new InitializationException("ComponentService failed: ", e);
         }
+    }
+
+    /**
+     * Inits the service using servlet parameters to obtain path to the
+     * configuration file. Change relatives paths.
+     *
+     * @param config The ServletConfiguration from Turbine
+     *
+     * @throws InitializationException Something went wrong when starting up.
+     * @deprecated use init() instead.
+     */
+    public void init(ServletConfig config)
+        throws InitializationException
+    {
+        init();
     }
 
     /**

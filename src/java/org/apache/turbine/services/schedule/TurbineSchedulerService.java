@@ -113,23 +113,6 @@ public class TurbineSchedulerService
     public void init()
         throws InitializationException
     {
-        ServletConfig conf = Turbine.getTurbineServletConfig();
-        init(conf);
-    }
-
-    /**
-     * Called the first time the Service is used.<br>
-     *
-     * Load all the jobs from cold storage.  Add jobs to the queue
-     * (sorted in ascending order by runtime) and start the scheduler
-     * thread.
-     *
-     * @param config A ServletConfig.
-     * @deprecated use init() instead.
-     */
-    public void init(ServletConfig config)
-        throws InitializationException
-    {
         try
         {
             // START SCHEDULER HERE
@@ -159,6 +142,22 @@ public class TurbineSchedulerService
         {
             throw new InitializationException("TurbineSchedulerService failed to initialize", e);
         }
+    }
+
+    /**
+     * Called the first time the Service is used.<br>
+     *
+     * Load all the jobs from cold storage.  Add jobs to the queue
+     * (sorted in ascending order by runtime) and start the scheduler
+     * thread.
+     *
+     * @param config A ServletConfig.
+     * @deprecated use init() instead.
+     */
+    public void init(ServletConfig config)
+        throws InitializationException
+    {
+        init();
     }
 
     /**

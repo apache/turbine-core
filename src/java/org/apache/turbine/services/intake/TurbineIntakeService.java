@@ -142,19 +142,7 @@ public class TurbineIntakeService
     public void init()
             throws InitializationException
     {
-        ServletConfig conf = Turbine.getTurbineServletConfig();
-        init(conf);
-    }
-
-    /**
-     * Called the first time the Service is used.
-     *
-     * @param config A ServletConfig.
-     * @deprecated use init() instead.
-     */
-    public void init(ServletConfig config)
-            throws InitializationException
-    {
+        ServletConfig config = Turbine.getTurbineServletConfig();
         Vector defaultXmlPathes = new Vector();
         defaultXmlPathes.add(XML_PATH_DEFAULT);
 
@@ -326,6 +314,18 @@ public class TurbineIntakeService
             throw new InitializationException(
                     "TurbineIntakeService failed to initialize", e);
         }
+    }
+
+    /**
+     * Called the first time the Service is used.
+     *
+     * @param config A ServletConfig.
+     * @deprecated use init() instead.
+     */
+    public void init(ServletConfig config)
+            throws InitializationException
+    {
+        init();
     }
 
     /**

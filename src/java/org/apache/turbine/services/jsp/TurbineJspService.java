@@ -97,23 +97,9 @@ public class TurbineJspService extends BaseTemplateEngineService
      *
      * @throws InitializationException Something went wrong in the init
      *         stage
-     */ 
+     */
     public void init()
         throws InitializationException
-    {
-        ServletConfig conf = Turbine.getTurbineServletConfig();
-        init(conf);
-    }
-
-    /**
-     * Performs early initialization of this Turbine service.
-     *
-     * @param config The ServletConfiguration from Turbine
-     *
-     * @throws InitializationException Something went wrong when starting up.
-     * @deprecated use init() instead.
-     */
-    public void init(ServletConfig config) throws InitializationException
     {
         try
         {
@@ -129,10 +115,23 @@ public class TurbineJspService extends BaseTemplateEngineService
     }
 
     /**
+     * Performs early initialization of this Turbine service.
+     *
+     * @param config The ServletConfiguration from Turbine
+     *
+     * @throws InitializationException Something went wrong when starting up.
+     * @deprecated use init() instead.
+     */
+    public void init(ServletConfig config) throws InitializationException
+    {
+        init();
+    }
+
+    /**
      * Adds some convenience objects to the request.  For example an instance
      * of JspLink which can be used to generate links to other templates.
      *
-     * @param RunData the turbine rundata object
+     * @param data the turbine rundata object
      */
     public void addDefaultObjects(RunData data)
     {
@@ -153,8 +152,8 @@ public class TurbineJspService extends BaseTemplateEngineService
     /**
      * Process the request
      *
-     * @param RunData
-     * @param String the filename of the template.
+     * @param data
+     * @param filename the filename of the template.
      * @throws TurbineException Any exception trown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
@@ -167,9 +166,9 @@ public class TurbineJspService extends BaseTemplateEngineService
     /**
      * Process the request
      *
-     * @param RunData
-     * @param String the filename of the template.
-     * @param boolean whether to perform a forward or include.
+     * @param data
+     * @param filename the filename of the template.
+     * @param isForward whether to perform a forward or include.
      * @throws TurbineException Any exception trown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
@@ -270,7 +269,7 @@ public class TurbineJspService extends BaseTemplateEngineService
      * so we will use the utility methods provided by
      * the template service to do the searching.
      *
-     * @param String template
+     * @param template
      * @return boolean
      */
     public boolean templateExists(String template)
@@ -283,7 +282,7 @@ public class TurbineJspService extends BaseTemplateEngineService
      * required by <a href="http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/ServletContext.html#getRequestDispatcher(java.lang.String)">
      * javax.servlet.RequestDispatcher</a>
      *
-     * @param String template
+     * @param template
      * @return String
      */
 

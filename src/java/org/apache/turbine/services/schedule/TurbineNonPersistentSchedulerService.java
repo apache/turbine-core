@@ -117,28 +117,8 @@ public class TurbineNonPersistentSchedulerService
      * Initializes the SchedulerService.
      * This is a zero parameter variant which queries the Turbine Servlet
      * for its config.
-     *
-     * @throws InitializationException Something went wrong in the init
-     *         stage
      */
     public void init()
-        throws InitializationException
-    {
-        ServletConfig conf = Turbine.getTurbineServletConfig();
-        init(conf);
-    }
-
-    /**
-     * Called the first time the Service is used.<br>
-     *
-     * Load all the jobs from cold storage.  Add jobs to the queue
-     * (sorted in ascending order by runtime) and start the scheduler
-     * thread.
-     *
-     * @param config A ServletConfig.
-     * @deprecated use init() instead.
-     */
-    public void init(ServletConfig config)
     {
         if ( getInit() )
         {
@@ -200,6 +180,21 @@ public class TurbineNonPersistentSchedulerService
         {
             log.error ( "Cannot initialize TurbineNonPersistentSchedulerService!: " + e );
         }
+    }
+
+    /**
+     * Called the first time the Service is used.<br>
+     *
+     * Load all the jobs from cold storage.  Add jobs to the queue
+     * (sorted in ascending order by runtime) and start the scheduler
+     * thread.
+     *
+     * @param config A ServletConfig.
+     * @deprecated use init() instead.
+     */
+    public void init(ServletConfig config)
+    {
+        init();
     }
 
     /**
