@@ -1,5 +1,0 @@
-#if ($table.hasPrimaryKey())    
-    PRIMARY KEY($table.printPrimaryKey()),
-#end
-#set ($pk = $table.getPrimaryKey())#if ($pk.size() > 1)#foreach ($index in $table.getAdditionalIndicesForPrimaryKey())    INDEX($index),
-#end#end

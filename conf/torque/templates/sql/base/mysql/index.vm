@@ -1,5 +1,0 @@
-#set ( $comma = "" )
-#foreach ($index in $table.Indices)
-    ${comma}INDEX $index.IndexName ($index.IndexColumnList)
-    #set ($comma = ",")
-#end
