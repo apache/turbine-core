@@ -59,28 +59,28 @@ import org.apache.turbine.Turbine;
 /**
  * Bundles a few static routines concerning URIs, that you
  * will need all the time.
- * 
+ *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 
 public abstract class URIUtils
 {
-  /**
-   * Convert a given Path into a Turbine Data URI. The resulting
-   * path contains no path_info or query data. If you have a current
-   * runData object around, you should use DataURI and setScriptName()!.
-   *
-   * @param path A relative path
-   *
-   * @return the absolute path for the request.
-   *
-   */
+    /**
+     * Convert a given Path into a Turbine Data URI. The resulting
+     * path contains no path_info or query data. If you have a current
+     * runData object around, you should use DataURI and setScriptName()!.
+     *
+     * @param path A relative path
+     *
+     * @return the absolute path for the request.
+     *
+     */
 
-  public static String getAbsoluteLink(String path)
-  {
-    DataURI du = new DataURI(Turbine.getDefaultServerData());
-    du.setScriptName(path);
-    return du.getAbsoluteLink();
-  }
+    public static String getAbsoluteLink(String path)
+    {
+        DataURI du = new DataURI(Turbine.getDefaultServerData());
+        du.setScriptName(path);
+        return du.getAbsoluteLink();
+    }
 }
