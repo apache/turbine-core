@@ -254,11 +254,7 @@ public class TemplateInfo
         try
         {
             Object val = tempStorage.get(name);
-            if (val == null)
-            {
-                return def;
-            }
-            return val;
+            return (val != null) ? val : def;
         }
         catch (Exception e)
         {
