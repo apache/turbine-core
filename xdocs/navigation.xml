@@ -24,10 +24,8 @@
 
   <body>
     <links>
-      <item name="Turbine Home"		   href="http://jakarta.apache.org/turbine/"/>
+      <item name="Turbine Home"		       href="http://jakarta.apache.org/turbine/"/>
       <item name="Fulcrum"                 href="http://jakarta.apache.org/turbine/fulcrum/"/>
-      <item name="TDK"                     href="http://jakarta.apache.org/turbine/tdk/"/>
-      <item name="JCS"                     href="http://jakarta.apache.org/turbine/jcs/"/>
     </links>
 
     <menu name="General Information">
@@ -36,6 +34,7 @@
       <item name="Specification"         href="/fsd.html"/>
       <item name="Getting Started"       href="/getting-started.html"/>
       <item name="Howto Build Turbine"   href="/how-to-build.html"/>
+      <item name="Changes"               href="/changes-report.html"/>
     </menu>
     <menu name="Extensions">
       <item name="Maven Plugin"            href="/maven-turbine-plugin/index.html"/>
