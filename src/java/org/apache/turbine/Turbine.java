@@ -151,6 +151,12 @@ public class Turbine
     private static String applicationRoot;
 
     /**
+     * The webapp root where the Turbine application
+     * is running.
+     */
+    private static String webappRoot;
+
+    /**
      * instance of turbine services
      */
     private TurbineServices services =
@@ -203,11 +209,16 @@ public class Turbine
                     applicationRoot = config.getServletContext().getRealPath("");
                 }                    
                 
+                // Set the webapp root. The applicationRoot and the
+                // webappRoot will be the same when the application is
+                // deployed, but during development they may have
+                // different values.
+                webappRoot = config.getServletContext().getRealPath("");
+                
                 // Create any directories that need to be setup for
                 // a running Turbine application.
                 createRuntimeDirectories();
                 
-
                 // Initialize essential services (Resources & Logging)
                 services.initPrimaryServices(config);
                 
@@ -216,8 +227,7 @@ public class Turbine
                 // so that ${applicationRoot} and ${webappRoot} can be
                 // use in the TRP.
                 TurbineResources.setProperty(APPLICATION_ROOT, applicationRoot);
-                TurbineResources.setProperty(WEBAPP_ROOT, 
-                    config.getServletContext().getRealPath(""));
+                TurbineResources.setProperty(WEBAPP_ROOT, webappRoot);
                 
                 // Initialize other services that require early init
                 services.initServices(config, false);
@@ -243,7 +253,7 @@ public class Turbine
     private static void createRuntimeDirectories()
     {
         // Create the logging directory
-        File logDir = new File(getRealPath("/logs"));
+        File logDir = new File(webappRoot + "/logs");
         
         if (logDir.exists() == false)
         {
