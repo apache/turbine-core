@@ -81,7 +81,7 @@ public abstract class JavaBaseFactory
     implements AssemblerFactory
 {
     /** A vector of packages. */
-    private static Vector packages = 
+    private static Vector packages =
         Turbine.getConfiguration().getVector(TurbineConstants.MODULE_PACKAGES);
 
     /** Logging */
@@ -103,36 +103,21 @@ public abstract class JavaBaseFactory
     public Assembler getAssembler(String packageName, String name)
     {
         Assembler assembler = null;
-        
+
         log.debug("Class Fragment is " + name);
 
         if (StringUtils.isNotEmpty(name))
         {
-            int dotIndex = name.lastIndexOf('.');
-
-            if (dotIndex > 0)
-            {
-                //
-                // Convert Foo.Bar.Baz ---> foo.bar.Baz
-                StringBuffer nameBuffer = new StringBuffer();
-                nameBuffer.append(name.substring(0, dotIndex).toLowerCase());
-                nameBuffer.append('.');
-                nameBuffer.append(name.substring(dotIndex + 1));
-                name = nameBuffer.toString();
-            }
-
-            log.debug("Class Fragment now " + name);
-
             for (Iterator it = packages.iterator(); it.hasNext();)
             {
                 StringBuffer className = new StringBuffer();
-            
+
                 className.append(it.next());
                 className.append('.');
                 className.append(packageName);
                 className.append('.');
                 className.append(name);
-            
+
                 log.debug("Trying " + className);
 
                 try
