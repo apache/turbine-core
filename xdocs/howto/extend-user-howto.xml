@@ -649,8 +649,9 @@ ${table.JavaName}Peer.doUpdate(($table.JavaName)this, dbCon);
         </source>
             <p>
                 You will need to manually remove the line wrapping from the above
-                patch.  You should also be aware that this patch is old.  It may or may not
-                apply correctly.
+                patch.  This patch is only included here to give you an idea of what
+                would need to be changed in Torque.  The patch can not be applied
+                to the current version of Torque simply because it is so outdated.
             </p>
             <p>
                 Notice how although you can go <code>user.save(dbCon);</code> the
@@ -663,9 +664,16 @@ ${table.JavaName}Peer.doUpdate(($table.JavaName)this, dbCon);
             </p>
             <p>
                 The real solution to this problem is in modifing Turbine in such a way to
-                allow Torque to generate the TurbineUser object.  This would elevate the
-                need to extend TurbineUser altogether.  This solution is one not so easily
-                implemented.
+                allow Torque to generate the TurbineUser object.  This would eliminate the
+                need to extend TurbineUser altogether.  There would still be the need to add
+                additional columns and/or create FK references to the TURBINE_USER table.  It
+                would would only involve modifing the schema files and letting Torque do
+                all of the work instead of creating the adapter classes and modifing the
+                map builder.
+            </p>
+            <p>
+                Note:  The last solution mentioned should be ready for Turbine 2.3.  This
+                should make life easier for everyone!!!
             </p>
 
     </section>
