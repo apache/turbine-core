@@ -326,9 +326,8 @@ public class Turbine
         if (StringUtils.isNotEmpty(confFile))
         {
             confPath = getRealPath(confFile);
-            ConfigurationFactory configurationFactory = new ConfigurationFactory();
+            ConfigurationFactory configurationFactory = new ConfigurationFactory(confPath);
             configurationFactory.setBasePath(getApplicationRoot());
-            configurationFactory.setConfigurationFileName(confPath);
             configuration = configurationFactory.getConfiguration();
             confStyle = "XML";
         }

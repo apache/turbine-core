@@ -53,35 +53,33 @@ package org.apache.turbine;
  * information on the Apache Software Foundation, please see
  * <http://www.apache.org/>.
  */
+
 import junit.framework.Test;
-import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.apache.commons.configuration.Configuration;
+
+import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineXmlConfig;
-
 
 /**
  * Tests that the ConfigurationFactory and regular old properties methods both work.
  * Verify the overriding of properties.
  * 
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
- * 
  * @version $Id$
  */
 public class ConfigurationTest
-    extends TestCase
+        extends BaseTestCase
 {
     private static TurbineConfig tc = null;
     private static TurbineXmlConfig txc = null;
 
     public ConfigurationTest(String name)
+            throws Exception
     {
         super(name);
-     
-        
-        
     }
 
     public static Test suite()
@@ -89,26 +87,62 @@ public class ConfigurationTest
         return new TestSuite(ConfigurationTest.class);
     }
 
-    
-    
     public void testCreateTurbineWithConfigurationXML() throws Exception
        {
            txc = new TurbineXmlConfig(".", "/conf/test/TurbineConfiguration.xml");
+
+        try
+        {
            txc.initialize();
          
            Configuration configuration = Turbine.getConfiguration();
-           assertTrue("Make sure we have values", !configuration.isEmpty());
+            assertNotNull("No Configuration Object found!", configuration);
+            assertTrue("Make sure we have values", !configuration.isEmpty());
            
            // overridden value
            String key = "module.cache";
-           assertEquals("Read a config value " + key + ", receieved:" + configuration.getString(key), "true", configuration.getString(key));
+            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key),
+                    "true", configuration.getString(key));
            
            // non overridden value
            key = "scheduledjob.cache.size";
-           assertEquals("Read a config value " + key + ", receieved:" + configuration.getString(key), "10", configuration.getString(key));
+            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key),
+                    "10", configuration.getString(key));
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+        finally
+        {
+            txc.dispose();
+        }
+    }
 
+    public void testCreateTurbineWithConfiguration() throws Exception
+    {
+        tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
 
-       }
+        try
+        {
+            tc.initialize();
+            
+            Configuration configuration = Turbine.getConfiguration();
+            assertNotNull("No Configuration Object found!", configuration);
+            assertTrue("Make sure we have values", !configuration.isEmpty());
        
+            String key = "scheduledjob.cache.size";
+            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key),
+                    "10", configuration.getString(key));
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+        finally
+        {
+            tc.dispose();
+        }
+    }
  
 }
