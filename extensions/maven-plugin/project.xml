@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project>
   <pomVersion>3</pomVersion>
+  <groupId>turbine</groupId>
   <id>maven-turbine-plugin</id>
   <name>Maven Turbine Plugin</name>
   <currentVersion>2.4-dev</currentVersion>
