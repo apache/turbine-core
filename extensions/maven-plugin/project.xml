@@ -30,7 +30,7 @@
   <id>maven-turbine-plugin</id>
   <name>Maven Environment for Turbine Applications Plugin</name>
   <groupId>turbine</groupId>
-  <currentVersion>1.1-dev</currentVersion>
+  <currentVersion>1.2-dev</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -83,6 +83,10 @@
       <id>henning</id>
       <email>hps@intermeta.de</email>
       <organization>INTERMETA - Gesellschaft fuer Mehrwertdienste mbH</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+      <timezone>2</timezone>
     </developer>
   </developers>
 
