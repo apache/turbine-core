@@ -77,6 +77,7 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
 public class LoginUser
@@ -99,9 +100,6 @@ public class LoginUser
      * the screenTemplate is set to this, otherwise the screen is set
      * to SCREEN_LOGIN
      *
-     * <p><em>Note: Turbine clears the session before calling this
-     * method</em></p>
-     *
      * @param     data Turbine information.
      * @exception TurbineSecurityException could not get instance of the
      *            anonymous user
@@ -109,15 +107,6 @@ public class LoginUser
     public void doPerform(RunData data)
             throws TurbineSecurityException
     {
-        // This prevents a db hit on second Action call during page
-        // generation.  Turbine removes everything from the Session
-        // before calling this method, so in this case we should
-        // continue on with the Login procedure.
-        if (data.getUserFromSession() != null)
-        {
-            return;
-        }
-
         String username = data.getParameters().getString(CGI_USERNAME, "");
         String password = data.getParameters().getString(CGI_PASSWORD, "");
 
