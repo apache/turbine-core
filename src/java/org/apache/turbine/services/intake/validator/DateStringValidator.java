@@ -77,7 +77,7 @@ import org.apache.turbine.services.intake.IntakeException;
  * <td>&nbsp;</td></tr>
  * <tr><td>formatx</td><td>see SimpleDateFormat javadoc</td>
  * <td>&nbsp;</td></tr>
- * <tr><td colspan=3>where x is &gt;= 0 to specify multiple date
+ * <tr><td colspan=3>where x is &gt;= 1 to specify multiple date
  *         formats.  Only one format rule should have a message</td></tr>
  * <tr><td>flexible</td><td>true, as long as DateFormat can parse the date,
  *                            allow it, and false</td>
@@ -88,6 +88,7 @@ import org.apache.turbine.services.intake.IntakeException;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
  * @author <a href="mailto:jh@byteaction.de">J&uuml;rgen Hoffmann</a>
+ * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  */
 public class DateStringValidator
@@ -209,8 +210,11 @@ public class DateStringValidator
     }
 
     /**
-     * Parses the String s according to the rules/formats for this
-     * validator.
+     * Parses the String s according to the rules/formats for this validator.  
+     * The formats provided by the "formatx" rules (where x is &gt;= 1) are 
+     * used <strong>before</strong> the "format" rules to allow for a display 
+     * format that includes a 4 digit year, but that will parse the date using
+     * a format that accepts 2 digit years.
      *
      * @throws ParseException indicates that the string could not be
      * parsed into a date.
@@ -225,7 +229,7 @@ public class DateStringValidator
             throw new ParseException("Input string was null", -1);
         }
 
-        for (int i = 0; i < dateFormats.size() && date == null; i++)
+        for (int i = 1; i < dateFormats.size() && date == null; i++)
         {
             sdf.applyPattern((String) dateFormats.get(i));
 
@@ -237,7 +241,20 @@ public class DateStringValidator
             {
                 // ignore
             }
+        }
 
+        if (date == null)
+        {
+            sdf.applyPattern((String) dateFormats.get(0));
+
+            try
+            {
+                date = sdf.parse(s);
+            }
+            catch (ParseException e)
+            {
+                // ignore
+            }
         }
 
         if (date == null && df != null)
