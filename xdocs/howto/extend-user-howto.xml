@@ -71,7 +71,7 @@
     <column name="AUTHOR" size="255" type="VARCHAR"/>
     <column name="DEPT" size="255" type="VARCHAR"/>
     <column name="CREATE_USER_ID" required="true" type="INTEGER"/>
-    <foreign-key foreignTable="NEWAPP_USER">
+    <foreign-key foreignTable="TURBINE_USER">
       <reference local="CREATE_USER_ID" foreign="USER_ID"/>
     </foreign-key>
   </table>]]></source>
