@@ -63,6 +63,7 @@ import org.apache.turbine.util.Log;
 import org.apache.turbine.util.db.adapter.DB;
 import org.apache.turbine.util.db.pool.ConnectionPool;
 import org.apache.turbine.util.db.pool.DBConnection;
+import org.apache.velocity.runtime.configuration.Configuration;
 
 /**
  * Turbine's default implementation of {@link PoolBrokerService}.
@@ -84,6 +85,9 @@ public class TurbinePoolBrokerService extends BaseService
      */
     public static final String DEFAULT = "default";
 
+    /** Default database pool */
+    private String defaultPool;
+
     /**
      * The various connection pools this broker contains.  Keyed by
      * database URL.
@@ -96,6 +100,14 @@ public class TurbinePoolBrokerService extends BaseService
     public void init()
     {
         pools = (Map) new HashMap();
+        
+        Configuration configuration = getConfiguration();
+        
+        // Get the value for the default pool, but if there
+        // isn't a value than fall back to the standard
+        // "default" value.
+        defaultPool = configuration.getString(DEFAULT_POOL, DEFAULT);
+        
         // Create monitor thread
         Monitor monitor = new Monitor();
         // Indicate that this is a system thread. JVM will quit only when there
@@ -108,6 +120,14 @@ public class TurbinePoolBrokerService extends BaseService
         // indicate that the service initialized correctly
         setInit(true);
     }
+
+    /**
+     * Return the default pool.
+     */
+    public String getDefaultDB()
+    {
+        return defaultPool;
+    }        
 
     /**
      * Release the database connections for all pools on service shutdown.
@@ -142,7 +162,7 @@ public class TurbinePoolBrokerService extends BaseService
     public DBConnection getConnection()
         throws Exception
     {
-        return getConnection( DEFAULT );
+        return getConnection(defaultPool);
     }
 
     /**

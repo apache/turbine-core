@@ -66,6 +66,7 @@ import org.apache.turbine.util.db.adapter.DB;
 import org.apache.turbine.util.db.adapter.DBFactory;
 import org.apache.turbine.util.db.map.DatabaseMap;
 import org.apache.turbine.util.db.map.TableMap;
+import org.apache.velocity.runtime.configuration.Configuration;
 
 /**
  * Turbine's default implmentation of {@link MapBrokerService}.
@@ -84,18 +85,35 @@ public class TurbineMapBrokerService extends BaseService
 {
     /** The global cache of database maps */
     private Map dbMaps;
-
+    
+    /** Default database map */
+    private String defaultMap;
+    
     /**
      * Initializes the service.
      */
     public void init()
     {
         dbMaps = (Map)new HashMap();
-
+        Configuration configuration = getConfiguration();
+        
+        // Get the value for the default map, but if there
+        // isn't a value than fall back to the standard
+        // "default" value.
+        defaultMap = configuration.getString(DEFAULT_MAP, DEFAULT);
+        
         // indicate that the service initialized correctly
         setInit(true);
     }
-
+    
+    /**
+     * Return the default map.
+     */
+    public String getDefaultMap()
+    {
+        return defaultMap;
+    }        
+    
     /**
      * Shuts down the service.
      *
@@ -126,7 +144,7 @@ public class TurbineMapBrokerService extends BaseService
     public DatabaseMap getDatabaseMap()
         throws TurbineException
     {
-        return getDatabaseMap(DEFAULT);
+        return getDatabaseMap(defaultMap);
     }
     
     /**

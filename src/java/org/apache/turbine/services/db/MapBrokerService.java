@@ -75,6 +75,12 @@ public interface MapBrokerService extends Service
      * Name of the default map builder and map.
      */
     public static final String DEFAULT = "default";
+    
+    /** Name of default map property */
+    public static final String DEFAULT_MAP = "defaultMap";
+
+    /** Return default map */
+    public String getDefaultMap();
 
     /**
      * Returns the default database map information.

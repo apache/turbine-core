@@ -88,6 +88,12 @@ public interface PoolBrokerService extends Service
     /** the name of the default pool */
     public static final String DEFAULT = "default";
 
+    /** Name of default pool property */
+    public static final String DEFAULT_POOL = "defaultPool";
+
+    /** Return default DB */
+    public String getDefaultDB();
+
     /**
      * This method returns a DBConnection from the default pool.
      *
