@@ -180,6 +180,27 @@ public class TestSecurityUserManager
         checkUserList();
     }
 
+    public void testUserManager7()
+    	throws Exception
+    {
+        SecurityService ss = TurbineSecurity.getService();
+        UserManager um = ss.getUserManager();
+
+        User admin = um.retrieveById(new Integer(1));
+
+        try
+        {
+            User doesNotExist = um.retrieveById(new Integer(667));
+            fail("Non existing Account was retrieved");
+        }
+        catch (Exception e)
+        {
+            assertEquals("Wrong Exception thrown: " + e.getClass().getName(), e.getClass(), UnknownEntityException.class);
+        }
+
+        checkUserList();
+    }
+
     public void testAddUser()
     	throws Exception
     {

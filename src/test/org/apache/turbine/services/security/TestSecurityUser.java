@@ -177,5 +177,21 @@ public class TestSecurityUser
         checkUserList();
     }
 
+    public void testRetrieve()
+            throws Exception
+    {
+        SecurityService ss = TurbineSecurity.getService();
+        UserManager um = ss.getUserManager();
+
+        User u = um.retrieve("admin");
+        assertNotNull("No Admin found!", u);
+        assertEquals("Admin Id wrong!", u.getId(), 1);
+
+        User u2 = um.retrieveById(new Integer(1));
+        assertNotNull("No Admin found!", u2);
+        assertEquals("Admin Name wrong!", u.getName(), "admin");
+
+        assertEquals("Two different User objects retrieved!", u, u2);
+    }
 }
 

@@ -142,16 +142,9 @@ public class DBUserManager
     {
         Criteria criteria = new Criteria();
         criteria.add(TurbineUserPeer.USERNAME, userName);
-        List users;
-        try
-        {
-            users = TurbineUserPeer.doSelect(criteria);
-        }
-        catch (Exception e)
-        {
-            throw new DataBackendException("Failed to retrieve user '" +
-                    userName + "'", e);
-        }
+
+        List users = retrieveList(criteria);
+
         if (users.size() > 1)
         {
             throw new DataBackendException(
@@ -162,6 +155,36 @@ public class DBUserManager
             return (User) users.get(0);
         }
         throw new UnknownEntityException("Unknown user '" + userName + "'");
+    }
+
+    /**
+     * Retrieve a user from persistent storage using the primary key
+     *
+     * @param key The primary key object
+     * @return an User object.
+     * @throws UnknownEntityException if the user's record does not
+     *         exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *         storage.
+     */
+    public User retrieveById(Object key)
+            throws UnknownEntityException, DataBackendException
+    {
+        Criteria criteria = new Criteria();
+        criteria.add(TurbineUserPeer.USER_ID, key);
+
+        List users = retrieveList(criteria);
+
+        if (users.size() > 1)
+        {
+            throw new DataBackendException(
+                "Multiple Users with same unique Key '" + String.valueOf(key) + "'");
+        }
+        if (users.size() == 1)
+        {
+            return (User) users.get(0);
+        }
+        throw new UnknownEntityException("Unknown user with key '" + String.valueOf(key) + "'");
     }
 
     /**
@@ -181,8 +204,7 @@ public class DBUserManager
     public List retrieveList(Criteria criteria)
         throws DataBackendException
     {
-        Iterator keys = criteria.keySet().iterator();
-        while (keys.hasNext())
+        for (Iterator keys = criteria.keySet().iterator(); keys.hasNext(); )
         {
             String key = (String) keys.next();
 
@@ -192,14 +214,13 @@ public class DBUserManager
 
             for (int i = 0; i < criterion.length; i++)
             {
-                String table = criterion[i].getTable();
-                if (table == null || "".equals(table))
+                if (StringUtils.isEmpty(criterion[i].getTable()))
                 {
                     criterion[i].setTable(TurbineUserPeer.getTableName());
                 }
             }
         }
-        List users = new ArrayList(0);
+        List users = null;
         try
         {
             users = TurbineUserPeer.doSelect(criteria);

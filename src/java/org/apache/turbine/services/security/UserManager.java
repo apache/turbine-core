@@ -96,6 +96,19 @@ public interface UserManager
             throws UnknownEntityException, DataBackendException;
 
     /**
+     * Retrieve a user from persistent storage using the primary key
+     *
+     * @param key The primary key object
+     * @return an User object.
+     * @throws UnknownEntityException if the user's record does not
+     *         exist in the database.
+     * @throws DataBackendException if there is a problem accessing the
+     *         storage.
+     */
+    User retrieveById(Object key)
+            throws UnknownEntityException, DataBackendException;
+
+    /**
      * Retrieve a set of users that meet the specified criteria.
      *
      * As the keys for the criteria, you should use the constants that
