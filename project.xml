@@ -507,6 +507,18 @@
       <version>1.2-b1</version>
       <url>http://xml.apache.org/xmlrpc/</url>
     </dependency>
+
+    <!-- Needed only for testing -->
+    <dependency>
+      <id>commons-dbcp</id>
+      <version>1.1</version>
+    </dependency>
+
+    <dependency>
+      <id>hsqldb</id>
+      <version>1.7.1</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -516,6 +528,12 @@
       <includes>
         <include>**/*Test.java</include>
       </includes>
+      <includes>
+        <include>**/Test*.java</include>
+      </includes>
+      <excludes>
+        <exclude>**/test/*.java</exclude>
+      </excludes>
     </unitTest>
     <integrationUnitTestSourceDirectory/>
     <integrationUnitTest/>
