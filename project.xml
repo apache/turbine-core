@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <name>jakarta-turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.2-b4-dev</currentVersion>
+  <currentVersion>2.2-rc1</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -415,7 +415,7 @@
     </dependency>
     <dependency>
       <id>torque</id>
-      <version>3.0-b5-dev</version>
+      <version>3.0-rc1</version>
       <url>http://jakarta.apache.org/turbine/torque/</url>
     </dependency>
     <dependency>
