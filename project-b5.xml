@@ -9,6 +9,7 @@
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
   </organization>
+  <logo>/images/blue-logo.gif</logo>
   <inceptionYear>2000</inceptionYear>
   <package>org.apache.turbine</package>
   <gumpRepositoryId>jakarta</gumpRepositoryId>
