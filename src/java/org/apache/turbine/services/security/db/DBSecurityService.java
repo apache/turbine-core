@@ -331,19 +331,10 @@ public class DBSecurityService
             userExists = TurbineSecurity.accountExists(user);
             if (userExists)
             {
-                // The following would not work, due to an annoying misfeature
-                // of Village. Village allows only a single row to be deleted at
-                // a time. I wish that it was possible to disable this
-                // behaviour!
-
-                // Criteria criteria = new Criteria();
-                // criteria.add(UserGroupRolePeer.USER_ID,
-                //         ((BaseObject) user).getPrimaryKey());
-                // UserGroupRolePeer.doDelete(criteria);
-                int id = ((NumberKey) ((BaseObject) user)
-                          .getPrimaryKey()).intValue();
-                UserGroupRolePeer.deleteAll(UserGroupRolePeer.TABLE_NAME,
-                                            UserGroupRolePeer.USER_ID, id);
+                Criteria criteria = new Criteria();
+                criteria.add(UserGroupRolePeer.USER_ID,
+                         ((BaseObject) user).getPrimaryKey());
+                UserGroupRolePeer.doDelete(criteria);
                 return;
             }
         }
@@ -479,18 +470,11 @@ public class DBSecurityService
             roleExists = checkExists(role);
             if (roleExists)
             {
-                // The following would not work, due to an annoying misfeature
-                // of Village. see revokeAll( user )
+                Criteria criteria = new Criteria();
+                criteria.add(RolePermissionPeer.ROLE_ID,
+                        ((BaseObject)role).getPrimaryKey());
+                RolePermissionPeer.doDelete(criteria);
 
-                // Criteria criteria = new Criteria();
-                // criteria.add(RolePermissionPeer.ROLE_ID,
-                //         role.getPrimaryKey());
-                // RolePermissionPeer.doDelete(criteria);
-
-                int id = ((NumberKey) ((BaseObject) role)
-                          .getPrimaryKey()).intValue();
-                RolePermissionPeer.deleteAll(RolePermissionPeer.TABLE_NAME,
-                                             RolePermissionPeer.ROLE_ID, id);
                 return;
             }
         }
