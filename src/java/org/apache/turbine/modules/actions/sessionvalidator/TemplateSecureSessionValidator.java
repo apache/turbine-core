@@ -128,36 +128,29 @@ public class TemplateSecureSessionValidator
         if (!data.getUser().hasLoggedIn())
         {
             log.debug("User is not logged in!");
-
-            /*
-             * Only set the message if nothing else has already set it
-             * (e.g. the LogoutUser action).
-             */
+            
+            // only set the message if nothing else has already set it
+            // (e.g. the LogoutUser action).
             if (StringUtils.isEmpty(data.getMessage()))
             {
                 data.setMessage(conf.getString(TurbineConstants.LOGIN_MESSAGE));
             }
 
-            /*
-             * Set the screen template to the login page.
-             */
-
-            String loginTemplate =
+            // Set the screen template to the login page.
+            String loginTemplate = 
                 conf.getString(TurbineConstants.TEMPLATE_LOGIN);
 
             log.debug("Sending User to the Login Screen (" + loginTemplate + ")");
             data.getTemplateInfo().setScreenTemplate(loginTemplate);
 
-            /*
-             * We're not doing any actions buddy! (except action.login which
-             * will have been performed already)
-             */
+            // We're not doing any actions buddy! (except action.login which
+            // will have been performed already)
             data.setAction(null);
         }
 
         log.debug("Login Check finished!");
-
-        //Make sure we have some way to return a response.
+        
+        // Make sure we have some way to return a response.
         if (!data.hasScreen() &&
             StringUtils.isEmpty(data.getTemplateInfo().getScreenTemplate()))
         {
@@ -173,17 +166,14 @@ public class TemplateSecureSessionValidator
             }
         }
 
-        /*
-         * The session_access_counter can be placed as a hidden field in
-         * forms.  This can be used to prevent a user from using the
-         * browsers back button and submitting stale data.
-         * FIXME!! a template needs to be written to use this with templates.
-         */
-        else if (data.getParameters().containsKey("_session_access_counter"))
+        // The session_access_counter can be placed as a hidden field in
+        // forms.  This can be used to prevent a user from using the
+        // browsers back button and submitting stale data.
+        // FIXME!! a template needs to be written to use this with templates.
+
+        if (data.getParameters().containsKey("_session_access_counter"))
         {
-            /*
-             * See comments in screens.error.InvalidState.
-             */
+            // See comments in screens.error.InvalidState.
             if (data.getParameters().getInt("_session_access_counter") <
                     (((Integer) data.getUser().getTemp("_session_access_counter"))
                     .intValue() - 1))
@@ -206,10 +196,8 @@ public class TemplateSecureSessionValidator
             }
         }
 
-        /*
-         * We do not want to allow both a screen and template parameter.
-         * The template parameter is dominant.
-         */
+        // We do not want to allow both a screen and template parameter.
+        // The template parameter is dominant.
         if (data.getTemplateInfo().getScreenTemplate() != null)
         {
             data.setScreen(null);
