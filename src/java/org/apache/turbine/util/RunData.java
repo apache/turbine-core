@@ -155,6 +155,7 @@ public interface RunData
      * Checks to see if the page is set.
      *
      * @return true if the page is set.
+     * @deprecated no replacement planned, ECS is no longer a requirement
      */
     boolean isPageSet();
 
@@ -162,6 +163,7 @@ public interface RunData
      * Gets the page.
      *
      * @return a document.
+     * @deprecated no replacement planned, ECS is no longer a requirement
      */
     Document getPage();
 
@@ -415,6 +417,7 @@ public interface RunData
      * Checks to see if out is set.
      *
      * @return true if out is set.
+     * @deprecated no replacement planned, response writer will not be cached
      */
     boolean isOutSet();
 
@@ -424,6 +427,7 @@ public interface RunData
      *
      * @return a print writer.
      * @throws IOException
+     * @deprecated no replacement planned, response writer will not be cached
      */
     PrintWriter getOut()
             throws IOException;
@@ -651,6 +655,24 @@ public interface RunData
      * Gets a table of debug variables.
      *
      * @return a Map of debug variables.
+     * @deprecated use {@link #getDebugVariables} instead
      */
     Map getVarDebug();
+
+    /**
+     * Sets a name/value pair in an internal Map that is accessible from the
+     * Error screen.  This is a good way to get debugging information
+     * when an exception is thrown.
+     *
+     * @param name name of the variable
+     * @param value value of the variable.
+     */
+    void setDebugVariable(String name, Object value);
+
+    /**
+     * Gets a Map of debug variables.
+     *
+     * @return a Map of debug variables.
+     */
+    Map getDebugVariables();
 }

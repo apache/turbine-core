@@ -146,6 +146,7 @@ public interface UserManager
      * @return a List of users meeting the criteria.
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
+     * @deprecated Use retrieveList(Criteria crit)
      */
     User[] retrieve(Criteria criteria) throws DataBackendException;
 
