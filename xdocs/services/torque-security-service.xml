@@ -12,7 +12,7 @@
 
 <p>
 This is an implementation of a Security Service which uses <a
-href="http://jakarta.apache.org/turbine/torque/">Torque</a> generated
+href="http://db.apache.org/torque/">Torque</a> generated
 peers to access the required security information.
 </p>
 
@@ -25,8 +25,30 @@ use peer classes from outside Turbine.
 
 </section>
 
-<section name="Using the supplied Peer classes">
+<section name="Configuring the Security Service">
+<p>
+You need to configure Turbine to use the Torque Security Service:
+</p>
+<source><![CDATA[
+services.SecurityService.classname = org.apache.turbine.services.security.torque.TorqueSecurityService
+]]></source>
 
+<p>
+You must also tell the Security Service to use the Torque UserManager
+implementation:
+</p>
+<source><![CDATA[
+services.SecurityService.user.manager = org.apache.turbine.services.security.torque.TorqueUserManager
+]]></source>
+
+<p>
+See the <a href="/services/security-service.html">Security Service</a> page
+for details of these and other properties that may also need to be configured.
+</p>
+
+</section>
+
+<section name="Using the supplied Peer classes">
 <p>
 When you start with the Security Service, you should use the Turbine
 supplied Peer classes to familiarize yourself with the workings of the
