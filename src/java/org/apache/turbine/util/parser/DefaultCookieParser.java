@@ -138,6 +138,7 @@ public class DefaultCookieParser
      * @return the parsed RunData object or null.
      * @deprecated. Don't use the Run Data object. use getRequest().
      */
+
     public RunData getRunData()
     {
         return data;
@@ -166,6 +167,7 @@ public class DefaultCookieParser
      *
      * @param data the RunData object.
      */
+
     public void setRunData(RunData data)
     {
         setData(data.getRequest(), data.getResponse());

@@ -54,6 +54,9 @@ package org.apache.turbine.util;
  * <http://www.apache.org/>.
  */
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * CookieParser is an interface to a utility to to get and set values
  * of Cookies on the Client Browser. You can use CookieParser to convert
@@ -91,16 +94,36 @@ public interface CookieParser
      * Gets the parsed RunData.
      *
      * @return the parsed RunData object or null.
+     * @deprecated. Don't use the Run Data object. use getRequest().
      */
     RunData getRunData();
+
+    /**
+     * Gets the Request Object for this parser.
+     *
+     * @return the HttpServletRequest or null.
+     */
+    HttpServletRequest getRequest();
 
     /**
      * Sets the RunData to be parsed.
      * All previous cookies will be cleared.
      *
      * @param data the RunData object.
+     * @deprecated. Use setData (HttpServletRequest request, HttpServletResponse response) instead
      */
     void setRunData(RunData data);
+
+    /**
+     * Sets Request and Response to be parsed.
+     *
+     * All previous cookies will be cleared.
+     *
+     * @param request The http request from the servlet
+     * @param response The http reponse from the servlet
+     */
+    void setData(HttpServletRequest request,
+                 HttpServletResponse response);
 
     /**
      * Get the Path where cookies will be stored

@@ -505,9 +505,9 @@ public class DefaultTurbineRunData
     {
         // Parse the cookies first, if not yet done.
         if ((this.cookies != null) &&
-                (this.cookies.getRunData() != this))
+                (this.cookies.getRequest() != this.req))
         {
-            this.cookies.setRunData(this);
+            this.cookies.setData(this.req, this.res);
         }
         return this.cookies;
     }
