@@ -54,8 +54,10 @@ package org.apache.turbine.services.pull.tools;
  * <http://www.apache.org/>.
  */
 
-import org.apache.turbine.services.pull.ApplicationTool;
+import org.apache.commons.configuration.Configuration;
 
+import org.apache.turbine.Turbine;
+import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.uri.DataURI;
 
@@ -79,6 +81,32 @@ import org.apache.turbine.util.uri.DataURI;
 public class ContentTool
     implements ApplicationTool
 {
+    /** Prefix for Parameters for this tool */
+    public static final String CONTENT_TOOL_PREFIX = "tool.content";
+
+    /** 
+     * Should this tool add Container Encoding to the URIs returned?
+     * True might cause trouble e.g. if you run with Apache HTTP Daemon / Tomcat Combo.
+     *
+     * Default is false (like Turbine 2.2)
+     */
+    public static final String CONTENT_TOOL_ENCODING_KEY = "want.encoding";
+
+    /** Default Value for CONTENT_TOOL_ENCODING_KEY */
+    public static final boolean CONTENT_TOOL_ENCODING_DEFAULT = false;
+    
+    /** Should this tool return relative URIs or absolute? Default: Absolute. */
+    public static final String CONTENT_TOOL_RELATIVE_KEY = "want.relative";
+
+    /** Default Value for CONTENT_TOOL_RELATIVE_KEY */
+    public static final boolean CONTENT_TOOL_RELATIVE_DEFAULT = false;
+
+    /** Do we want the container to encode the response? */
+    boolean wantEncoding = false;
+    
+    /** Do we want a relative link? */
+    boolean wantRelative = false;
+    
     /** Caches a DataURI object which provides the translation routines */
     private DataURI dataURI = null;
     
@@ -111,6 +139,20 @@ public class ContentTool
         // or null is passed in we'll throw an appropriate runtime
         // exception.
         dataURI = new DataURI((RunData) data);
+
+        Configuration conf = 
+                Turbine.getConfiguration().subset(CONTENT_TOOL_PREFIX);
+        
+        wantRelative = conf.getBoolean(CONTENT_TOOL_RELATIVE_KEY,
+                CONTENT_TOOL_RELATIVE_DEFAULT);
+
+        wantEncoding = conf.getBoolean(CONTENT_TOOL_ENCODING_KEY,
+                CONTENT_TOOL_ENCODING_DEFAULT);
+        
+        if (!wantEncoding)
+        {
+            dataURI.clearResponse();
+        }
     }
 
     /**
@@ -132,6 +174,7 @@ public class ContentTool
     {
         dataURI.setScriptName(path);
 
-        return dataURI.getAbsoluteLink();
+        return wantRelative ? 
+                dataURI.getRelativeLink() : dataURI.getAbsoluteLink();
     }
 }

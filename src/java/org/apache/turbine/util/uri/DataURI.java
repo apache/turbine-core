@@ -127,6 +127,16 @@ public class DataURI
 
 
     /**
+     * Content Tool wants to be able to turn the encoding
+     * of the servlet container off. After calling this method,
+     * the encoding will not happen any longer.
+     */
+    public void clearResponse()
+    {
+        setResponse(null);
+    }
+
+    /**
      * Builds the URL with all of the data URL-encoded as well as
      * encoded using HttpServletResponse.encodeUrl(). The resulting
      * URL is absolute; it starts with http/https...
