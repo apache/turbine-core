@@ -161,6 +161,7 @@ public abstract class TurbinePull
      * If there are objects that don't implement
      * the ApplicationTool interface, then they won't
      * be refreshed.
+     * @deprecated No longer needed as Pull and Velocity Service are now more separate.
      */
     public static final void refreshGlobalTools()
     {
@@ -172,6 +173,7 @@ public abstract class TurbinePull
      * on each request. For development purposes.
      *
      * @return true if we should refresh the tools on every request.
+     * @deprecated No longer needed as Pull and Velocity Service are now more separate.
      */
     public static final boolean refreshToolsPerRequest()
     {
