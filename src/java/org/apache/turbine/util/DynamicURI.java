@@ -354,8 +354,15 @@ public class DynamicURI
      */
     public void init(ServerData sd)
     {
-        this.setServerData(sd);
-        init();
+        this.sd = sd;
+        this.serverScheme = this.sd.getServerScheme();
+        this.serverName = this.sd.getServerName();
+        this.serverPort = this.sd.getServerPort();
+        this.scriptName = this.sd.getScriptName();
+        this.pathInfo = new Vector();
+        this.queryData = new Vector();
+        this.reference = null;
+        this.initialized = true;
     }
 
     /**
@@ -672,21 +679,6 @@ public class DynamicURI
     }
 
     /**
-     * Initializes some common variables.
-     */
-    protected void init()
-    {
-        this.serverScheme = this.getServerData().getServerScheme();
-        this.serverName = this.getServerData().getServerName();
-        this.serverPort = this.getServerData().getServerPort();
-        this.scriptName = this.getServerData().getScriptName();
-        this.pathInfo = new Vector();
-        this.queryData = new Vector();
-        this.reference = null;
-        this.initialized = true;
-    }
-
-    /**
      * <p>If the type is P (0), then remove name/value from the
      * pathInfo hashtable.
      *
@@ -871,6 +863,22 @@ public class DynamicURI
     public DynamicURI setAction(String action)
     {
         add(PATH_INFO, "action", action);
+        return this;
+    }
+
+    /**
+     * Sets the action= value for this URL and added eventSubmit_[eventName]
+     * to the path_info.  The value of eventSubmit_[eventName] will be
+     * [eventName].
+     *
+     * @param actionName name of the action to call
+     * @param eventName name of the event.
+     * @return A DynamicURI (self).
+     */
+    public DynamicURI setActionEvent(String actionName, String eventName)
+    {
+        setAction(actionName).addPathInfo(
+                "eventSubmit_" + eventName, eventName);
         return this;
     }
 
