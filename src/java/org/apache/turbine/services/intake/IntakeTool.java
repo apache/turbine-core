@@ -67,7 +67,7 @@ import org.apache.turbine.services.intake.model.Group;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.ValueParser;
+import org.apache.turbine.util.parser.ValueParser;
 import org.apache.turbine.util.pool.Recyclable;
 
 /**

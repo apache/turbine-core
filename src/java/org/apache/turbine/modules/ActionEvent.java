@@ -59,8 +59,8 @@ import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 
-import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.parser.ParserUtils;
 
 /**

@@ -60,10 +60,9 @@ import org.apache.ecs.ElementContainer;
 import org.apache.ecs.html.A;
 
 import org.apache.turbine.modules.Screen;
-
 import org.apache.turbine.util.DynamicURI;
-import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.parser.ParameterParser;
 
 /**
  * Users will get this screen if the screen on their browser is in an

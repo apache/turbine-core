@@ -72,8 +72,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.upload.TurbineUpload;
 import org.apache.turbine.services.upload.UploadService;
 
-import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.TurbineException;
+import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.pool.Recyclable;
 
 /**

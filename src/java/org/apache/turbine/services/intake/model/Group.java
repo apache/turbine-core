@@ -72,7 +72,7 @@ import org.apache.turbine.services.intake.xmlmodel.AppData;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
 import org.apache.turbine.services.intake.xmlmodel.XmlGroup;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.ValueParser;
+import org.apache.turbine.util.parser.ValueParser;
 
 /**
  * Holds a group of Fields

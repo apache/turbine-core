@@ -1,4 +1,4 @@
-package org.apache.turbine.util;
+package org.apache.turbine.util.parser;
 
 /* ====================================================================
  * The Apache Software License, Version 1.1
@@ -55,23 +55,24 @@ package org.apache.turbine.util;
  */
 
 import java.io.Reader;
-
+import java.io.StreamTokenizer;
 import java.util.List;
 
 /**
- * DataStreamParser is used to parse a stream with a fixed format and
- * generate ValueParser objects which can be used to extract the values
- * in the desired type.
+ * CSVParser is used to parse a stream with comma-separated values and
+ * generate ParameterParser objects which can be used to
+ * extract the values in the desired type.
  *
- * <p>The class itself is abstract - a concrete subclass which implements
- * the initTokenizer method such as CSVParser or TSVParser is required
- * to use the functionality.
+ * <p>The class extends the abstract class DataStreamParser and implements
+ * initTokenizer with suitable values for CSV files to provide this
+ * functionality.
  *
- * <p>The class implements the java.util.Iterator interface for convenience.
+ * <p>The class (indirectly through DataStreamParser) implements the
+ * java.util.Iterator interface for convenience.
  * This allows simple use in a Velocity template for example:
  *
  * <pre>
- * #foreach ($row in $datastream)
+ * #foreach ($row in $csvfile)
  *   Name: $row.Name
  *   Description: $row.Description
  * #end
@@ -80,13 +81,36 @@ import java.util.List;
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:martin@mvdb.net">Martin van den Bemt</a>
  * @version $Id$
- * @deprecated Use org.apache.turbine.util.parser.DataStreamParser instead.
  */
-public abstract class DataStreamParser 
-        extends org.apache.turbine.util.parser.DataStreamParser
+public class CSVParser extends DataStreamParser
 {
     /**
-     * Create a new DataStreamParser instance. Requires a Reader to read the
+     * Create a new CSVParser instance. Requires a Reader to read the
+     * comma-separated values from. The column headers must be set
+     * independently either explicitly, or by reading the first line
+     * of the CSV values.
+     *
+     * @param in the input reader.
+     */
+    public CSVParser(Reader in)
+    {
+        super(in, null, null);
+    }
+
+    /**
+     * Create a new CSVParser instance. Requires a Reader to read the
+     * comma-separated values from, and a list of column names.
+     *
+     * @param in the input reader.
+     * @param columnNames a list of column names.
+     */
+    public CSVParser(Reader in, List columnNames)
+    {
+        super(in, columnNames, null);
+    }
+
+    /**
+     * Create a new CSVParser instance. Requires a Reader to read the
      * comma-separated values from, a list of column names and a
      * character encoding.
      *
@@ -94,9 +118,22 @@ public abstract class DataStreamParser
      * @param columnNames a list of column names.
      * @param characterEncoding the character encoding of the input.
      */
-    public DataStreamParser(Reader in, List columnNames,
-                            String characterEncoding)
+    public CSVParser(Reader in, List columnNames, String characterEncoding)
     {
         super(in, columnNames, characterEncoding);
+    }
+
+    /**
+     * Initialize the StreamTokenizer instance used to read the lines
+     * from the input reader.
+     * It is now only needed to set the fieldSeparator
+     */
+    protected void initTokenizer(StreamTokenizer tokenizer)
+    {
+        // everything is default so let's call super
+        super.initTokenizer(tokenizer);
+        // set the field separator to comma
+        super.setFieldSeparator(',');
+
     }
 }
