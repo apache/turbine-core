@@ -24,12 +24,15 @@
 
   <body>
     <release version="2.4-M2" date="in cvs">
+      <action dev="epugh" type="update">
+        Use RELEASED versions of Fulcrum components!
+      </action>            
       <action dev="epugh" type="remove">
         Remove old security services based on couple Torque.
       </action>          
       <action dev="epugh" type="remove">
         Remove dependencies on Stratum and Torque.  Torque is now completely optional for Turbine.
-        Stratum has been replaced by the AvalonComponentService.s
+        Stratum has been replaced by the AvalonComponentService.
       </action>          
     </release>
     <release version="2.4-M1" date="2004-08-14" description="Milestone release including Pipeline and PipelineData objects">
