@@ -16,6 +16,7 @@
     <path id="classpath">
         <pathelement location="${activation.jar}"/>
         <pathelement location="${commons-collections.jar}"/>
+        <pathelement location="${commons-lang.jar}"/>
         <pathelement location="${ecs.jar}"/>
         <pathelement location="${regexp.jar}"/>
         <pathelement location="${jdbc.jar}"/>
@@ -48,28 +49,35 @@
   </path>
 
   <target
-    name="update-jars">
-    
+    name="update-jars" 
+    description="Update the jars from jakarta site" 
+    depends="update-jars-proxy,update-jars-noproxy">
+  </target>
+
+  <target name="prepare.httpget">    
     <taskdef 
       name="httpget" 
       className="org.apache.tdk.task.Get">
       <classpath refid="update.classpath"/>
     </taskdef>
-    
-    <!-- If you need proxy support you'll have to manually add:
-    
-         proxyHost="x"
-         proxyPort="y"
-       
-         We'll clean this up but it worked for a user behind a proxy.
-    -->
-    
+  </target>
+
+  <target name="update-jars-noproxy" unless="proxy.host" depends="prepare.httpget">
     <httpget
       baseUrl="http://jakarta.apache.org/turbine/jars/"
       dest="${lib.repo}"
       dependencyFile="deps.list"
     />
+  </target>    
 
+  <target name="update-jars-proxy" if="proxy.host" depends="prepare.httpget">
+    <httpget
+      baseUrl="http://jakarta.apache.org/turbine/jars/"
+      dest="${lib.repo}"
+      dependencyFile="deps.list"
+      proxyHost="${proxy.host}"
+      proxyPort="${proxy.port}"
+    />
   </target>    
 
     <!-- ================================================================== -->
