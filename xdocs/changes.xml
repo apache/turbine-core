@@ -25,6 +25,11 @@
   </properties>
 
   <body>
+    <release version="1.3" date="in CVS">
+     <action dev="henning" type="add">
+       Add a new flag to turn off id-table sql generation.
+     </action>
+    </release>
     <release version="1.2" date="2004-10-31">
      <action dev="henning" type="add">
        Add IDE (Eclipse) Howto.
