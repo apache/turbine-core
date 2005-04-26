@@ -84,7 +84,9 @@
   The plugin supplies you with a configuration file for generating an <code>ID_TABLE</code>
   table which is used by the Torque IdBroker to generate unique table row IDs. If you run
   the <a href="goals.html#turbine_sql">turbine:sql</a> goal, SQL for this table is generated. There are no peer and object classes
-  for the id table.</p>
+  for the id table. If you don't need these tables because you use a different way to generate unique IDs (e.g. sequences), you
+  can set the property <a href="properties.html#turbine_app_torque_use_idtable">turbine.app.torque.use.idtable</a> to false and remove
+  all id-table related files from the schema source directory.</p>
   </subsection>
 
   <subsection name="Turbine Security">

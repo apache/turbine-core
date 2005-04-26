@@ -76,6 +76,7 @@
     <filter token="TURBINE_PLUGIN_MODE"        value="${turbine.plugin.mode}"/>
     <filter token="TURBINE_PLUGIN_INPLACE_DIR" value="${turbine.plugin.inplace.dir}"/>
     <filter token="TURBINE_APP_SETUP_DEMO"     value="${turbine.app.setup.demo}"/>
+    <filter token="TURBINE_APP_TORQUE_USE_IDTABLE" value="${turbine.app.torque.use.idtable}" />
 
     <filter token="TURBINE_PLUGIN_BASE_DIR"    value="${turbine.plugin.base.dir}"/>
     <filter token="TURBINE_PLUGIN_SRC_IMAGES"  value="${turbine.plugin.src.images}"/>
@@ -941,6 +942,9 @@
     <j:set var="turbine.plugin.torque.use" value="${context.getVariable('turbine.app.om.layer') != null &amp;&amp; context.getVariable('turbine.app.om.layer').equalsIgnoreCase('torque')}" />
     <j:set var="turbine.plugin.none.use"   value="${context.getVariable('turbine.app.om.layer') != null &amp;&amp; context.getVariable('turbine.app.om.layer').equalsIgnoreCase('none')}" />
 
+    <j:set var="turbine.plugin.om.torque.idtable" value="${context.getVariable('turbine.app.torque.use.idtable') == null || context.getVariable('turbine.app.torque.use.idtable').equalsIgnoreCase('true')}" />
+
+
     <j:if test="${context.getVariable('maven.appserver.name') == null || context.getVariable('maven.appserver.name') == ''}">
       <meta:requiredPropertyMissing propname="maven.appserver.name" />
     </j:if>
@@ -1084,7 +1088,11 @@
   <!--                                                                    -->
   <!-- ================================================================== -->
   <goal name="turbine:torque-copy-om"
-     prereqs="turbine:torque-copy-security-om, turbine:torque-copy-app-om, turbine:torque-copy-id-table-om, turbine:torque-copy-data-dtd">
+     prereqs="turbine:torque-copy-security-om, turbine:torque-copy-app-om, turbine:torque-copy-data-dtd">
+
+    <j:if test="${turbine.plugin.om.torque.idtable}">
+      <attainGoal name="turbine:torque-copy-id-table-om" />
+    </j:if>
   </goal>
 
   <!-- ================================================================== -->
@@ -1324,7 +1332,10 @@
   <goal name="turbine:torque-sql">
 
     <attainGoal name="torque:sql"/>
-    <attainGoal name="torque:id-table-init-sql"/>
+
+    <j:if test="${turbine.plugin.om.torque.idtable}">
+      <attainGoal name="torque:id-table-init-sql"/>
+    </j:if>
 
     <u:available file="${turbine.plugin.src.schema}/${pom.artifactId}-data.xml">
       <attainGoal name="torque:datasql"/>

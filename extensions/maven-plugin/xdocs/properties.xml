@@ -101,6 +101,17 @@ configuration files, so be careful!).
 </tr>
 
 <tr>
+<a name="turbine_app_torque_use_idtable" />
+<td>turbine.app.torque.use.idtable</td>
+<td>Yes</td>
+<td>true</td>
+<td>If true, the all torque related goals will also build SQL code for the ID table which is used by the Torque ID Broker to generate
+    unique IDs. If you use a different ID generation scheme (e.g. sequences), you can set this property to false and remove all id-table
+    related files from the schema directory.
+</td>
+</tr>
+
+<tr>
 <td>turbine.plugin.mode</td>
 <td>Yes</td>
 <td>normal</td>
