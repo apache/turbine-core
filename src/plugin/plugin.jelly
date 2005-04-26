@@ -687,7 +687,7 @@
   <!-- torque:datadtd                                                           -->
   <!--                                                                          -->
   <!-- ======================================================================== -->
-  <goal name="turbine:torque-datadtd" prereqs="turbine:copy-om"/>
+  <goal name="turbine:torque-datadtd" prereqs="turbine:torque-copy-om"/>
   <!-- ======================================================================== -->
   <!-- torque:datadtd                                                           -->
   <!-- ======================================================================== -->
@@ -1082,7 +1082,7 @@
 
   <!-- ================================================================== -->
   <!--                                                                    -->
-  <!-- turbine:copy-om                                                    -->
+  <!-- turbine:torque-copy-om                                             -->
   <!--                                                                    -->
   <!-- Prepare the XML files for building the OM peer classes             -->
   <!--                                                                    -->
@@ -1144,7 +1144,7 @@
       <filter token="DATABASE_PACKAGE" value="${turbine.app.om.package}"/>
       <copy filtering="yes" overwrite="yes"
         file="${turbine.plugin.src.schema}/id-table-schema.xml"
-        tofile="${torque.schema.dir}/${pom.artifactId}-id-table-schema.xml"/>
+        tofile="${torque.schema.dir}/${turbine.app.name}-id-table-schema.xml"/>
 
       <!-- If we have different data source for Application and Security, we must
            also set up two ID Table XML files 
@@ -1181,7 +1181,7 @@
     </j:if>
   </goal>
   <!-- ================================================================== -->
-  <!-- turbine:copy-om                                                    -->
+  <!-- turbine:copy-data-dtd                                              -->
   <!-- ================================================================== -->
 
   <!-- ================================================================== -->
@@ -1337,7 +1337,7 @@
       <attainGoal name="torque:id-table-init-sql"/>
     </j:if>
 
-    <u:available file="${turbine.plugin.src.schema}/${pom.artifactId}-data.xml">
+    <u:available file="${turbine.plugin.src.schema}/${turbine.app.name}-data.xml">
       <attainGoal name="torque:datasql"/>
     </u:available>
 
