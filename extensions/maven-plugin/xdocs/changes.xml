@@ -29,6 +29,10 @@
      <action dev="henning" type="add">
        Add a new flag to turn off id-table sql generation.
      </action>
+     <action dev="henning" type="update">
+       Bugfix: when turbine.app.name and pom.artifactId were different,
+       the generation of data SQL failed.
+     </action>
     </release>
     <release version="1.2" date="2004-10-31">
      <action dev="henning" type="add">
