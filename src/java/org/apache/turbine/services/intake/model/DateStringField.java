@@ -41,8 +41,14 @@ import org.apache.turbine.util.TurbineRuntimeException;
 public class DateStringField
         extends Field
 {
-    /** date format */
-    private DateFormat df = null;
+    /** date format. Fallback if no validator is defined */
+    private static DateFormat df;
+
+    static
+    { 
+        df = DateFormat.getInstance();
+        df.setLenient(true);
+    }
 
     /**
      * Constructor.
@@ -55,12 +61,6 @@ public class DateStringField
             throws IntakeException
     {
         super(field, group);
-
-        if (validator == null || !(validator instanceof DateStringValidator))
-        {
-            df = DateFormat.getInstance();
-            df.setLenient(true);
-        }
     }
 
     /**

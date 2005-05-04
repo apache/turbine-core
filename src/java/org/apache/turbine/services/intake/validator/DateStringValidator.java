@@ -49,6 +49,7 @@ import org.apache.turbine.services.intake.IntakeException;
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class DateStringValidator
@@ -72,7 +73,7 @@ public class DateStringValidator
     /**  */
     private SimpleDateFormat sdf = null;
 
-    public DateStringValidator(Map paramMap)
+    public DateStringValidator(final Map paramMap)
             throws IntakeException
     {
         init(paramMap);
@@ -92,7 +93,7 @@ public class DateStringValidator
      * @param paramMap
      * @throws InvalidMaskException
      */
-    public void init(Map paramMap)
+    public void init(final Map paramMap)
             throws InvalidMaskException
     {
         super.init(paramMap);
@@ -133,11 +134,13 @@ public class DateStringValidator
         if (dateFormats.size() == 0)
         {
             df = DateFormat.getInstance();
+            sdf = null;
             df.setLenient(flexible);
         }
         else
         {
             sdf = new SimpleDateFormat();
+            df = null;
             sdf.setLenient(flexible);
         }
     }
@@ -150,7 +153,7 @@ public class DateStringValidator
      * @exception ValidationException containing an error message if the
      * testValue did not pass the validation tests.
      */
-    public void assertValidity(String testValue)
+    public void assertValidity(final String testValue)
             throws ValidationException
     {
         super.assertValidity(testValue);
@@ -179,7 +182,7 @@ public class DateStringValidator
      * @throws ParseException indicates that the string could not be
      * parsed into a date.
      */
-    public Date parse(String s)
+    public Date parse(final String s)
             throws ParseException
     {
         Date date = null;
@@ -189,34 +192,47 @@ public class DateStringValidator
             throw new ParseException("Input string was null", -1);
         }
 
-        for (int i = 1; i < dateFormats.size() && date == null; i++)
+        if (sdf != null) // This implies dateFormats.size() > 0
         {
-            sdf.applyPattern((String) dateFormats.get(i));
+            // First test the FORMATx patterns. If any of these match, break
+            // the loop.
+            for (int i = 1 ; i < dateFormats.size() - 1; i++)
+            {
+                sdf.applyPattern((String) dateFormats.get(i));
 
-            try
-            {
-                date = sdf.parse(s);
+                try
+                {
+                    date = sdf.parse(s);
+                    break; // We got a matching date. Break the loop
+                }
+                catch (ParseException e)
+                {
+                    // ignore
+                }
             }
-            catch (ParseException e)
+
+            // Now test the FORMAT pattern which is the first one in the array.
+            // if no format but just FORMATx has been given, all of the patterns
+            // have been shifted "one down", e.g. tested as format2, format3, format4, format1 
+            // in sequence.
+            if (date == null)
             {
-                // ignore
+                sdf.applyPattern((String) dateFormats.get(0));
+
+                try
+                {
+                    date = sdf.parse(s);
+                }
+                catch (ParseException e)
+                {
+                    // ignore
+                }
             }
         }
 
-        if (date == null)
-        {
-            sdf.applyPattern((String) dateFormats.get(0));
-
-            try
-            {
-                date = sdf.parse(s);
-            }
-            catch (ParseException e)
-            {
-                // ignore
-            }
-        }
-
+        // Still no match. Either we had no format patterns or no pattern matched.
+        // See if we have a DateFormat object around. If there were patterns given
+        // and just none matched, that we might have date==null and df==null...
         if (date == null && df != null)
         {
             date = df.parse(s);
@@ -239,13 +255,20 @@ public class DateStringValidator
      * @param date the Date object to convert into a string.
      * @return formatted date
      */
-    public String format(Date date)
+    public String format(final Date date)
     {
         String s = null;
         if (date != null)
         {
-            sdf.applyPattern((String) dateFormats.get(0));
-            s = sdf.format(date);
+            if (sdf != null) // implies dateFormats.size() > 0
+            {
+                sdf.applyPattern((String) dateFormats.get(0));
+                s = sdf.format(date);
+            }
+            else // implied df != null
+            {
+                s = df.format(date);
+            }
         }
         return s;
     }
@@ -272,7 +295,7 @@ public class DateStringValidator
      *
      * @param message  Value to assign to minLengthMessage.
      */
-    public void setDateFormatMessage(String message)
+    public void setDateFormatMessage(final String message)
     {
         if (StringUtils.isNotEmpty(message))
         {
@@ -295,7 +318,7 @@ public class DateStringValidator
      *
      * @param formats  Value to assign to dateFormats.
      */
-    public void setDateFormats(List formats)
+    public void setDateFormats(final List formats)
     {
         this.dateFormats = formats;
     }
@@ -315,7 +338,7 @@ public class DateStringValidator
      *
      * @param flexible  Value to assign to flexible.
      */
-    public void setFlexible(boolean flexible)
+    public void setFlexible(final boolean flexible)
     {
         this.flexible = flexible;
     }
