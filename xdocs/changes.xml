@@ -37,6 +37,12 @@
     <action type="update" dev="seade">
       commons-codec was upgraded to 1.3.
     </action>
+    <action type="update" dev="henning">
+      Fix the Intake DateString validator not to throw an NPE whenever a
+      slightest mistake was done in configuring a date field. Make sure
+      that even fields without a formatting rule will parse at least standard
+      date formats.
+    </action>
   </release>
 
   <release version="2.3.1" date="2004-10-29">
