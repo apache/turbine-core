@@ -43,6 +43,10 @@
       that even fields without a formatting rule will parse at least standard
       date formats.
     </action>
+    <action type="update" dev="henning">
+      Intake FileItemFields could not be used when calling IntakeGroup.setProperties(obj) because
+      the field did not look into the right table for retrieving the value object.
+    </action>
   </release>
 
   <release version="2.3.1" date="2004-10-29">
