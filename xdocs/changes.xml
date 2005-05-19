@@ -24,6 +24,21 @@
 
   <body>
     <release version="2.4-M2" date="in cvs">
+      <action dev="sgoeschl" type="update">
+        The AvalonComponentService does not use the deprecated Component interface and ComponentException.
+      </action> 		
+      <action dev="sgoeschl" type="update">
+        Restructured the dependency section to distinguish between ECM and YAAFI dependencies.
+      </action> 		
+      <action dev="sgoeschl" type="update">
+        Use the Fulcrum components from Fulcrum 3.0.0
+      </action> 		
+      <action dev="sgoeschl" type="add">
+        Added YAAFI Avalon service container and the corresponding TurbineYaafiComponentService.
+      </action> 		
+      <action dev="sgoeschl" type="fix">
+        Removed remaining Merlin artifacts
+      </action> 		
       <action dev="epugh" type="fix" due-to="Leandro Rodrigo Saad Cruz">
         Handle non US-ASCII encoding with multipart/form-data mimetype better.
       </action> 		
