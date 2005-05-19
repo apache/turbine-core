@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.avalon.framework.component.ComponentException;
+import org.apache.avalon.framework.service.ServiceException;
 import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
@@ -247,8 +247,8 @@ public class Localization
             AvalonComponentService acs = (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
             return  (LocalizationService)acs.lookup(LocalizationService.class.getName());
         }
-        catch (ComponentException ce){
-            throw new NestableRuntimeException(ce);
+        catch (ServiceException se){
+            throw new NestableRuntimeException(se);
         }
         
         
@@ -276,7 +276,7 @@ public class Localization
             acs.lookup(LocalizationService.class.getName());
             return true;
         }
-        catch (ComponentException ce){
+        catch (ServiceException se){
             return false;
         }
     }
