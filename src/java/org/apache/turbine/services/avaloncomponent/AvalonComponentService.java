@@ -1,6 +1,5 @@
 package org.apache.turbine.services.avaloncomponent;
 
-
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
  *
@@ -17,10 +16,7 @@ package org.apache.turbine.services.avaloncomponent;
  * limitations under the License.
  */
 
-
-import org.apache.avalon.framework.component.Component;
-import org.apache.avalon.framework.component.ComponentException;
-
+import org.apache.avalon.framework.service.ServiceManager;
 import org.apache.turbine.services.Service;
 
 /**
@@ -31,7 +27,7 @@ import org.apache.turbine.services.Service;
  * @version $Id$
  */
 public interface AvalonComponentService
-        extends Service
+        extends Service, ServiceManager
 {
     /** The publically visible name of the service */
     String SERVICE_NAME = "AvalonComponentService";
@@ -56,22 +52,4 @@ public interface AvalonComponentService
 
     /** Key used in the context for defining the application root */
     String COMPONENT_APP_ROOT = "componentAppRoot";
-
-    /**
-     * Returns an instance of the named component
-     *
-     * @param roleName Name of the role the component fills.
-     * @return an instance of the named component
-     * @throws ComponentException generic exception
-     */
-    Component lookup(String roleName)
-            throws ComponentException;
-
-    /**
-     * Releases the component
-     *
-     * @param component the component to release
-     */
-    void release(Component component);
-
 }
