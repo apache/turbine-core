@@ -26,43 +26,47 @@
     <release version="2.4-M2" date="in cvs">
       <action dev="sgoeschl" type="update">
         The AvalonComponentService does not use the deprecated Component interface and ComponentException.
-      </action> 		
+      </action>
       <action dev="sgoeschl" type="update">
         Restructured the dependency section to distinguish between ECM and YAAFI dependencies.
-      </action> 		
+      </action>
       <action dev="sgoeschl" type="update">
         Use the Fulcrum components from Fulcrum 3.0.0
-      </action> 		
+      </action>
       <action dev="sgoeschl" type="add">
         Added YAAFI Avalon service container and the corresponding TurbineYaafiComponentService.
-      </action> 		
+      </action>
       <action dev="sgoeschl" type="fix">
         Removed remaining Merlin artifacts
-      </action> 		
+      </action>
       <action dev="epugh" type="fix" due-to="Leandro Rodrigo Saad Cruz">
         Handle non US-ASCII encoding with multipart/form-data mimetype better.
-      </action> 		
+      </action>
       <action dev="epugh" type="remove">
         Remove Merlin service.  When the replacement for Merlin (Metro) is released, then
         add back in support.
-      </action>          
+      </action>
       <action dev="epugh" type="update">
         Use RELEASED versions of Fulcrum components!
       </action>            
       <action dev="epugh" type="remove">
         Remove old security services based on couple Torque.
-      </action>          
+      </action>
       <action dev="epugh" type="remove">
         Remove dependencies on Stratum and Torque.  Torque is now completely optional for Turbine.
         Stratum has been replaced by the AvalonComponentService.
-      </action>          
+      </action>
+      <action dev="seade" type="update">
+        The velocity page formatting macros have been updated to generate xhtml
+        compatible html.
+      </action>
     </release>
     <release version="2.4-M1" date="2004-08-14" description="Milestone release including Pipeline and PipelineData objects">
       <action dev="epugh" type="update">
      Update to Commons Configuration 1.0-RC1.  TurbineConfiguration.xml files should switch
      from &lt;dom4j className="org.apache.commons.configuration.DOM4JConfiguration" fileName="conf/test/TurbineResources.xml"/&gt;
      to &lt;xml fileName="conf/test/TurbineResources.xml"/&gt; syntax.
-      </action>   
+      </action>
     <action dev="epugh" type="update">
         Refactored how Turbine sets up it's ServerData object.  Removed the use
      of RunData from the process.
