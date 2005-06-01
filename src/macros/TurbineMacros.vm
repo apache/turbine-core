@@ -28,12 +28,12 @@
   #end
   #if ($page.MetaTags.size() > 0)
     #foreach($metaTag in $page.MetaTags.keySet())
-      <meta name="$metaTag" content="$page.MetaTags.get($metaTag)">
+      <meta name="$metaTag" content="$page.MetaTags.get($metaTag)" />
     #end
   #end
   #if ($page.HttpEquivs.size() > 0)
     #foreach($httpEquiv in $page.HttpEquivs.keySet())
-      <meta http-equiv="$httpEquiv" content="$page.HttpEquivs.get($httpEquiv)">
+      <meta http-equiv="$httpEquiv" content="$page.HttpEquivs.get($httpEquiv)" />
     #end
   #end
   #if ($page.StyleSheets.size() > 0)
@@ -42,7 +42,7 @@
         #if($!styleSheet.Type)  type="$styleSheet.Type"   #end
         #if($!styleSheet.Media) media="$styleSheet.Media" #end
         #if($!styleSheet.Title) title="$styleSheet.Title" #end
-      >
+      />
     #end
   #end
   #if ($page.Styles.size() > 0)
