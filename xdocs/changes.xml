@@ -28,6 +28,9 @@
 <body>
   <release version="2.3.2-dev" date="in CVS">
     <action type="update" dev="henning">
+      Fix the build process bug that let some of the reports end up in wrong directories.
+    </action>
+    <action type="update" dev="henning">
       Make the default encoding for incoming requests configureable. This allows you to post
       forms from UTF-8 or other encodings into Turbine. 
     </action>

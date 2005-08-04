@@ -159,6 +159,7 @@
     <j:set var="torque.schema.om.includes" value="scheduler-schema.xml"/>
     <j:set var="torque.targetPackage" value="${scheduler.package}"/>
     <attainGoal name="torque:om"/>
+    <j:set var="outputDirectory" value="" />
 
   </goal>
 
@@ -172,6 +173,7 @@
     <j:set var="torque.schema.om.includes" value="torque-security-schema.xml"/>
     <j:set var="torque.targetPackage" value="${torque.security.package}"/>
     <attainGoal name="torque:om"/>
+    <j:set var="outputDirectory" value="" />
 
   </goal>
 
