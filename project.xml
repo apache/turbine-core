@@ -28,7 +28,7 @@
     <url>http://jakarta.apache.org/</url>
     <logo>/images/jakarta.png</logo>
   </organization>
-  <logo>/images/blue-logo.gif</logo>
+  <logo>/images/logo.gif</logo>
   <inceptionYear>2000</inceptionYear>
   <package>org.apache.turbine</package>
 
@@ -50,9 +50,9 @@
   <distributionDirectory>/www/www.apache.org/dist/java-repository/</distributionDirectory>
 
   <repository>
-    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2</connection>
-    <developerConnection>scm:cvs:ext:${maven.username}@cvs.apache.org:/home/cvs:jakarta-turbine-2</developerConnection>
-    <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/turbine/core/branches/TURBINE_2_3_BRANCH</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/jakarta/turbine/core/branches/TURBINE_2_3_BRANCH</developerConnection>
+    <url>http://cvs.apache.org/viewcvs.cgi/jakarta/turbine/core/branches/TURBINE_2_3_BRANCH/?root=Apache-SVN</url>
   </repository>
 
 <versions>
