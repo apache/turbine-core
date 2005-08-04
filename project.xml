@@ -635,6 +635,90 @@
       <version>3.1.1</version>
       <type>plugin</type>
     </dependency>
+    <dependency>
+      <groupId>maven</groupId>
+      <artifactId>maven-ant-plugin</artifactId>
+      <version>1.9</version>
+      <type>plugin</type>
+    </dependency>
+
+    <dependency>
+      <groupId>maven</groupId>
+      <artifactId>maven-artifact-plugin</artifactId>
+      <version>1.5.2</version>
+      <type>plugin</type>
+    </dependency>
+
+    <dependency>
+      <groupId>maven</groupId>
+      <artifactId>maven-changelog-plugin</artifactId>
+      <version>1.8.2</version>
+      <type>plugin</type>
+    </dependency>
+
+    <dependency>
+      <groupId>maven</groupId>
+      <artifactId>maven-developer-activity-plugin</artifactId>
+      <version>1.5.2</version>
+      <type>plugin</type>
+    </dependency>
+
+    <dependency>
+      <groupId>maven</groupId>
+      <artifactId>maven-file-activity-plugin</artifactId>
+      <version>1.5.2</version>
+      <type>plugin</type>
+    </dependency>
+
+    <dependency> 
+      <groupId>maven-plugins</groupId> 
+      <artifactId>maven-findbugs-plugin</artifactId> 
+      <version>0.9.1</version> 
+      <url>http://maven-plugins.sourceforge.net/maven-findbugs-plugin/</url> 
+      <type>plugin</type>
+    </dependency> 
+
+    <dependency>
+      <groupId>maven</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>1.7</version>
+      <type>plugin</type>
+    </dependency>
+
+    <dependency>
+      <groupId>maven</groupId>
+      <artifactId>maven-plugin-plugin</artifactId>
+      <version>1.6</version>
+      <type>plugin</type>
+    </dependency>
+
+    <dependency>
+      <groupId>maven</groupId>
+      <artifactId>maven-scm-plugin</artifactId>
+      <version>1.5</version>
+      <type>plugin</type>
+    </dependency>
+
+    <dependency>
+      <groupId>maven</groupId>
+      <artifactId>maven-site-plugin</artifactId>
+      <version>1.6.1</version>
+      <type>plugin</type>
+    </dependency>
+
+    <dependency>
+      <groupId>maven</groupId>
+      <artifactId>maven-tasklist-plugin</artifactId>
+      <version>2.4</version>
+      <type>plugin</type>
+    </dependency>
+
+    <dependency>
+      <groupId>maven</groupId>
+      <artifactId>maven-xdoc-plugin</artifactId>
+      <version>1.9.1</version>
+      <type>plugin</type>
+    </dependency>
   </dependencies>
 
   <build>
@@ -679,5 +763,6 @@
     <report>maven-pmd-plugin</report>
     <report>maven-simian-plugin</report>
     <report>maven-jcoverage-plugin</report>
+    <report>maven-findbugs-plugin</report> 
   </reports>
 </project>
