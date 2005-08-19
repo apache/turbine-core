@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.configuration.Configuration;
 
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.pool.PoolService;
@@ -178,6 +179,8 @@ public class TurbineRunDataService
             throws TurbineException,
             IllegalArgumentException
     {
+        // a map to hold information to be added to pipelineData 
+        Map pipelineDataMap = new HashMap();
         // The RunData object caches all the information that is needed for
         // the execution lifetime of a single request. A RunData object
         // is created/recycled for each and every request and is passed
@@ -203,8 +206,13 @@ public class TurbineRunDataService
         try
         {
             data = (TurbineRunData) pool.getInstance(cfg[0]);
-            data.setParameterParser((ParameterParser) pool.getInstance(cfg[1]));
-            data.setCookieParser((CookieParser) pool.getInstance(cfg[2]));
+            ParameterParser pp = (ParameterParser) pool.getInstance(cfg[1]);
+            data.setParameterParser(pp);
+            CookieParser cp = (CookieParser) pool.getInstance(cfg[2]);
+            data.setCookieParser(cp);
+            // also copy data directly into pipelineData
+            pipelineDataMap.put(ParameterParser.class, pp);
+            pipelineDataMap.put(CookieParser.class, cp);
         }
         catch (ClassCastException x)
         {
@@ -214,13 +222,23 @@ public class TurbineRunDataService
         // Set the request and response.
         data.setRequest(req);
         data.setResponse(res);
-
+        // also copy data directly into pipelineData
+        pipelineDataMap.put(HttpServletRequest.class, req);
+        pipelineDataMap.put(HttpServletResponse.class, res);
+        
         // Set the servlet configuration.
         data.setServletConfig(config);
+        // also copy data directly into pipelineData
+        pipelineDataMap.put(ServletConfig.class, config);
 
         // Set the ServerData.
-        data.setServerData(new ServerData(req));
+        ServerData sd = new ServerData(req);
+        data.setServerData(sd);
+        // also copy data directly into pipelineData
+        pipelineDataMap.put(ServerData.class, sd);
 
+        // finally put the pipelineDataMap into the pipelineData object
+        data.put(Turbine.class, pipelineDataMap);
         return data;
     }
 
