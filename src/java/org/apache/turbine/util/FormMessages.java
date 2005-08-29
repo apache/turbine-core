@@ -152,7 +152,7 @@ public class FormMessages
             }
             return result;
         }
-        return null;
+        return new FormMessage[0];
     }
 
     /**
@@ -180,7 +180,7 @@ public class FormMessages
             }
             return result;
         }
-        return null;
+        return new FormMessage[0];
     }
 
     /**
