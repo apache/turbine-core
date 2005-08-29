@@ -75,12 +75,12 @@ public abstract class FieldFactory
         }
         );
         fieldCtors.put("NumberKey", new FieldFactory.FieldCtor()
-        {       
+        {
             public Field getInstance(XmlField f, Group g)
                     throws IntakeException
-            {   
+            {
                 return new NumberKeyField(f, g);
-            }   
+            }
         }
         );
         fieldCtors.put("ComboKey", new FieldFactory.FieldCtor()

@@ -54,7 +54,7 @@ public interface UserManager
      */
     void init(Configuration conf)
         throws InitializationException;
-    
+
     /**
      * Check whether a specified user's account exists.
      *

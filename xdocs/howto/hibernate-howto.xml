@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 
-<!-- 
+<!--
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,15 +35,15 @@
       You just use POJO (Plain Old Java Objects) versus generated objects.
           </li>
           <li>
-      You can either start with Java objects and create your database schema from there, or 
+      You can either start with Java objects and create your database schema from there, or
       start with a database schema, and map the Java objects to the schema.
           </li>
           <li>
       Extensive performance optimizations built into the Hibernate engine.
-          </li>          
+          </li>
           <li>
       Leverage Avalon component use in Turbine 2.3!
-          </li>                    
+          </li>
         </ol>
       </p>
       <p>
@@ -56,27 +56,27 @@
         <ol>
           <li>
         Configure project dependencies.
-          </li>        
+          </li>
           <li>
         Directory Structures
           </li>
-    
+
           <li>
         Setup Avalon component configuration.
           </li>
-          
+
           <li>
           Setup Hibernate mapping files.
           </li>
           <li>
           Create static ServiceLocator class.
-          </li>          
+          </li>
           <li>
             Create filter that manages the Hibernate Session.
           </li>
           <li>
             Setup PersitenceException handling
-          </li>          
+          </li>
         </ol>
       </p>
 
@@ -90,9 +90,9 @@
       /src/java/com/my/project/bizobj business objects reside
       /src/java/com/my/project/om POJO objects mapped to database reside
       /src/java/com/my/project/om/persist manager objects that faciliate retrieve POJO objects
-      /src/java/com/my/project/om/filter Servlet Filter lives that maintains the Hibernate Session 
+      /src/java/com/my/project/om/filter Servlet Filter lives that maintains the Hibernate Session
       /src/java/ where hibernate.hbm.xml and hibernate.cfg.xml files live
-      
+
     </source>
 
     </section>
@@ -105,47 +105,47 @@
       <source>
 <![CDATA[
     <dependency>
-      <id>hibernate</id>      
+      <id>hibernate</id>
       <version>2.0-beta6</version>
-      <properties>        
+      <properties>
       <war.bundle.jar>true</war.bundle.jar>
       </properties>
-    </dependency>  
+    </dependency>
     <dependency>
       <id>hibernate:hibernate-avalon</id>
       <version>0.1</version>
-      <properties>        
+      <properties>
       <war.bundle.jar>true</war.bundle.jar>
-      </properties>              
-    </dependency>  
+      </properties>
+    </dependency>
     <dependency>
-      <id>dom4j</id>      
+      <id>dom4j</id>
       <version>1.4</version>
-      <properties>        
+      <properties>
       <war.bundle.jar>true</war.bundle.jar>
       </properties>
-    </dependency>       
+    </dependency>
     <dependency>
-      <id>cglib</id>      
+      <id>cglib</id>
       <version>rc2-1.0</version>
-      <properties>        
+      <properties>
       <war.bundle.jar>true</war.bundle.jar>
       </properties>
-    </dependency>                          
+    </dependency>
     <dependency>
-      <id>jcs</id>      
+      <id>jcs</id>
       <version>1.0-dev</version>
-      <properties>        
+      <properties>
       <war.bundle.jar>true</war.bundle.jar>
       </properties>
-    </dependency>                       
+    </dependency>
 ]]>
-      </source>     
+      </source>
       <p>
         The key jar file is the hibernate-avalon.jar file, it contains the Avalon wrapper
         for Hibernate, and can be used with any Avalon container.
       </p>
-        
+
     </section>
 
     <section name="Setting up Avalon Configuration" >
@@ -165,12 +165,12 @@
     class="net.sf.hibernate.avalon.HibernateServiceImpl">
   </component>
 </my-system>
-                      
+
 ]]>
-      </source>     
+      </source>
 
         <p>
-      The componentRoles file also defines how to access the component.  Here is a 
+      The componentRoles file also defines how to access the component.  Here is a
       very simple componentRoles.xml file:
         </p>
       <source>
@@ -180,14 +180,14 @@
  <role
     name="net.sf.hibernate.avalon.HibernateService"
     shorthand="hibernate"
-    default-class="net.sf.hibernate.avalon.HibernateServiceImpl"/>   
+    default-class="net.sf.hibernate.avalon.HibernateServiceImpl"/>
 </role-list>
-                      
+
 ]]>
-      </source>             
+      </source>
     </section>
-      
-      
+
+
 
     <section name="Setup Hibernate mapping files">
       <p>
@@ -211,7 +211,7 @@
     Currently this class is not integrated into Turbine, so you will need to provide an implemation yourself.
     This provides a static method of retrieving your Hibernate Session.
       </p>
-     
+
         <source>
 <![CDATA[
 package com.upstate.cellculture.om.persist;
@@ -306,14 +306,14 @@ public class ServiceLocator
 
     <section name="Create Servlet Filter.">
       <p>
-        The servlet Filter is required if you use lazy loading of objects because you need to open a Hibernate sesion, and keeps it open through the view layer. 
+        The servlet Filter is required if you use lazy loading of objects because you need to open a Hibernate sesion, and keeps it open through the view layer.
         This ensures that each user get's their own Hibernate Session.  ?? Should this be done
         through some sort of SessionValidator?
 
       </p>
-     
+
         <source>
-<![CDATA[        
+<![CDATA[
 package com.upstate.cellculture.filter;
 
 import java.io.IOException;
@@ -505,7 +505,7 @@ public class TechnicianManager
     <section name="Setup PersitenceException handling">
         <p>
       By catching a generice Persistence Exception that wraps all the
-      thrown exceptions we can just catch a single exception and then 
+      thrown exceptions we can just catch a single exception and then
       retrieve what type of exception it is.
         </p>
         <source>

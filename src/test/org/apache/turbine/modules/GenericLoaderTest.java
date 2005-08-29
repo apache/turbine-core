@@ -26,7 +26,7 @@ public class GenericLoaderTest
     {
         super(name);
     }
-    
+
     public void testPackage()
     {
         assertEquals("GenericLoader returned wrong Package!",

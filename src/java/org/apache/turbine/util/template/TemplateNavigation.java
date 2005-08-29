@@ -50,7 +50,7 @@ public class TemplateNavigation
     private RunData data;
 
     /* The name of the navigation template. */
-    private String template = null;     
+    private String template = null;
 
     /**
      * Constructor
@@ -96,14 +96,14 @@ public class TemplateNavigation
 
             data.getTemplateInfo().setNavigationTemplate(template);
             module = TurbineTemplate.getNavigationName(template);
-                
+
             if (module == null)
             {
                 returnValue = "Template Service returned null for Navigation Template " + template;
                 throw new Exception(returnValue);
             }
-            
-            ConcreteElement results = 
+
+            ConcreteElement results =
                     NavigationLoader.getInstance().eval(data, module);
             returnValue = results.toString();
         }

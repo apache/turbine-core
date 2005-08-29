@@ -169,7 +169,7 @@ public class DefaultParameterParser
 
         String enc = request.getCharacterEncoding();
         setCharacterEncoding(enc != null
-                ? enc 
+                ? enc
                 : TurbineConstants.PARAMETER_ENCODING_DEFAULT);
 
         // String object re-use at its best.

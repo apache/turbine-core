@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 
-<!-- 
+<!--
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,8 +30,8 @@
 
 <section name="Important note">
 <p>
-    The information in this HOWTO pertains to Turbine 2.2.  Please refer 
-    to the <a href="migrate-from-2_2-howto.html">Migrating from 
+    The information in this HOWTO pertains to Turbine 2.2.  Please refer
+    to the <a href="migrate-from-2_2-howto.html">Migrating from
     2.2 to 2.3</a> page for information on migating to Turbine 2.3.
 </p>
 </section>
@@ -47,8 +47,8 @@
     Of course, this depends quite a bit on how much of Turbine your
     application actually uses.  You may find migrating to 2.2 to be
     quite a chore, but it is well worth the effort. Most of the
-    pain in figuring out this migration process has been documented 
-    in the mailing list archives, but is summarized here for your 
+    pain in figuring out this migration process has been documented
+    in the mailing list archives, but is summarized here for your
     convenience.
 </p>
 </section>
@@ -63,9 +63,9 @@
 
 <section name="Build and Properties Files">
 <p>
-    The structure of the build files used by Turbine has changed 
-    quite a bit with the 2.2 release. The easiest way of obtaining 
-    a reference set of property (and build files) is to install 
+    The structure of the build files used by Turbine has changed
+    quite a bit with the 2.2 release. The easiest way of obtaining
+    a reference set of property (and build files) is to install
     version 2.2 of the TDK and generate the demo application.
 </p>
 <p>
@@ -79,9 +79,9 @@
         to your build directory.</li>
     <li>Merge <code>build.xml</code> from the demo application
         to your existing build file (if you have only ever used the
-        default build file supplied with the tdk then I assume you 
+        default build file supplied with the tdk then I assume you
         can just replace your file with the new one).</li>
-    <li>Copy <code>WEB-INF/conf/TurbineResources.template</code> and 
+    <li>Copy <code>WEB-INF/conf/TurbineResources.template</code> and
         <code>WEB-INF/conf/Torque.template</code>) to your application
         and apply changes as needed (it is up to you as to how much you
         hard code into your application template and how much you allow
@@ -90,7 +90,7 @@
     </ul>
 </p>
 <p>
-    See the Torque 
+    See the Torque
   <a href="http://jakarta.apache.org/turbine/torque/properties-reference.html">
     Properties Reference</a> for full details of the available properties.
 </p>
@@ -98,30 +98,30 @@
 
 <section name="Libraries">
 <p>
-    Turbine and Torque use updated versions of a number of 
-    libraries (jar files). Take a look at the WEB-INF/lib directory 
-    of the TDK sample application to see which libraries have been 
-    updated and replace the files in the lib directory of your 
+    Turbine and Torque use updated versions of a number of
+    libraries (jar files). Take a look at the WEB-INF/lib directory
+    of the TDK sample application to see which libraries have been
+    updated and replace the files in the lib directory of your
     application as needed.
 </p>
 <p>
     Note that if you have applied local changes to Turbine itself
     then you should ensure that your changes have made it into the
-    Turbine 2.2 and Torque 3.0 releases.  If any of your changes 
-    have not made it then you will need to port these changes forward 
+    Turbine 2.2 and Torque 3.0 releases.  If any of your changes
+    have not made it then you will need to port these changes forward
     and build your own versions of the Turbine and Torque jar files
-    (while you are there you may as well create patches and submit 
-    them to the relevant modules in Scarab so that they can be 
+    (while you are there you may as well create patches and submit
+    them to the relevant modules in Scarab so that they can be
     included in future releases).
 </p>
 <p>
     By default Torque will utilize a set of  Velocity templates that
-    you need to extract from the Torque jar file (see the 
-    <code>torque.templatePath</code> property). Unless you have a 
+    you need to extract from the Torque jar file (see the
+    <code>torque.templatePath</code> property). Unless you have a
     need to alter these templates you may prefer to use these directly
-    from the jar file.  To do this you need to set the 
+    from the jar file.  To do this you need to set the
     <code>torque.useClasspath</code> property to <code>true</code> in
-    <code>build.peoperties</code>.  In any case, you should either 
+    <code>build.peoperties</code>.  In any case, you should either
     replace or delete the old versions of these templates from your
     existing project.
 </p>
@@ -242,14 +242,14 @@ try
     someOtherObject.save(conn);
     Transaction.commit(conn);
 }
-catch (TorqueException ex) 
+catch (TorqueException ex)
 {
     try
     {
         Transaction.rollback(conn);
     }
     catch (TorqueException ex2)
-    { 
+    {
         Log.error(ex2);
     }
     Log.error(ex);
@@ -262,10 +262,10 @@ catch (TorqueException ex)
 <p>
     Methods generated by Torque that previously had a return type of
     <code>Vector</code> now have a return type of <code>List</code>.
-    If you have not already been doing so you should switch to 
-    retrieving the results of these methods into variables declared 
-    as <code>List</code>.  While you are at it you might like to 
-    update any of your own code to use <code>ArrayList</code> in 
+    If you have not already been doing so you should switch to
+    retrieving the results of these methods into variables declared
+    as <code>List</code>.  While you are at it you might like to
+    update any of your own code to use <code>ArrayList</code> in
     preference to <code>Vector</code>.
 </p>
 </section>
@@ -277,7 +277,7 @@ catch (TorqueException ex)
     your code to match.
 </p>
 <p>
-    Note that the exception thrown by <code>save()</code> methods is 
+    Note that the exception thrown by <code>save()</code> methods is
     determined by the Torque property <code>torque.saveException</code>
     which defaults to <code>Exception</code>.
 </p>
@@ -295,8 +295,8 @@ catch (TorqueException ex)
 <p>
     Read over the Torque Schema Reference to find out what to change
     in your project-schema.xml file. The main changes are the
-    deprecation of sequence and autoIncrement idMethods and the 
-    addition of the javaType attribute to column elements 
+    deprecation of sequence and autoIncrement idMethods and the
+    addition of the javaType attribute to column elements
     (Torque can now work with object types).
 </p>
 <p>
@@ -352,21 +352,21 @@ public <base class> copy() throws TorqueException
 
 <section name="Maven">
 <p>
-    You may like to consider using 
+    You may like to consider using
     <a href="http://jakarta.apache.org/turbine/maven/">Maven</a> to
-    build your project.  The  document 
+    build your project.  The  document
     <a href="http://wiki.apache.org/jakarta-turbine/TDK/Maven">
-    Starting your project and database with TDK2.2 and Maven</a> 
-    provides some information that can be adapted for this purpose 
-    (jump down to the "Moving The Sample" heading for the 
+    Starting your project and database with TDK2.2 and Maven</a>
+    provides some information that can be adapted for this purpose
+    (jump down to the "Moving The Sample" heading for the
     documentation relevant to an existing project).
 </p>
 </section>
 
 <section name="Updates to this document">
 <p>
-    This document is by no means complete or totally accurate. We welcome 
-    suggestions as to how it might be improved, particularly if you have 
+    This document is by no means complete or totally accurate. We welcome
+    suggestions as to how it might be improved, particularly if you have
     just completed migrating an application by following this howto.
 </p>
 </section>

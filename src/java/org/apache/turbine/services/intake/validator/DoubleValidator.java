@@ -121,7 +121,7 @@ public class DoubleValidator
                 errorMessage = invalidNumberMessage;
                 throw new ValidationException(invalidNumberMessage);
             }
-            
+
             if (d < minValue)
             {
                 errorMessage = minValueMessage;

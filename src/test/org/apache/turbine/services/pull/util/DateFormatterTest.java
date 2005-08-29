@@ -24,7 +24,7 @@ import junit.framework.TestCase;
 
 /**
  * Test class for DateFormatter.
- * 
+ *
  * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  */
@@ -53,7 +53,7 @@ public class DateFormatterTest extends TestCase
         String monthString = (month < 10 ? "0" : "") + month;
         String ddmmyyyy = dayString + "/" + monthString + "/" + year;
         assertEquals(ddmmyyyy, df.format(cal.getTime(), "dd/MM/yyyy"));
-        
+
         String mmddyyyy = "" + monthString + "/" + dayString + "/" + year;
         assertEquals(mmddyyyy, df.format(cal.getTime(), "MM/dd/yyyy"));
     }
@@ -75,7 +75,7 @@ public class DateFormatterTest extends TestCase
     {
         Date today = new Date();
         DateFormatter df = new DateFormatter();
-        assertEquals("Empty pattern should produce empty String", 
+        assertEquals("Empty pattern should produce empty String",
                 "", df.format(today, ""));
     }
 
@@ -86,7 +86,7 @@ public class DateFormatterTest extends TestCase
     {
         Date today = new Date();
         DateFormatter df = new DateFormatter();
-        assertEquals("null pattern should produce empty String", 
+        assertEquals("null pattern should produce empty String",
                 "", df.format(today, null));
     }
 

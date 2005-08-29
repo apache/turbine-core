@@ -180,7 +180,7 @@ public class PermissionSet
      */
     public Permission getPermissionById(int permissionId)
     {
-        return (permissionId != 0) 
+        return (permissionId != 0)
                 ? (Permission) idMap.get(new Integer(permissionId)) : null;
     }
 

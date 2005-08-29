@@ -84,12 +84,12 @@ public class LongField
     }
 
     /**
-     * Provides access to emptyValue such that the value returned will be 
+     * Provides access to emptyValue such that the value returned will be
      * acceptable as an argument parameter to Method.invoke.  Subclasses
-     * that deal with primitive types should ensure that they return an 
-     * appropriate value wrapped in the object wrapper class for the 
+     * that deal with primitive types should ensure that they return an
+     * appropriate value wrapped in the object wrapper class for the
      * primitive type.
-     *   
+     *
      * @return the value to use when the field is empty or an Object that
      * wraps the empty value for primitive types.
      */
@@ -127,7 +127,7 @@ public class LongField
             for (int i = 0; i < inputs.length; i++)
             {
                 values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? new Long(inputs[i]).longValue() 
+                        ? new Long(inputs[i]).longValue()
                         : ((Long) getEmptyValue()).longValue();
             }
             setTestValue(values);
@@ -135,9 +135,9 @@ public class LongField
         else
         {
             String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val) 
+            setTestValue(StringUtils.isNotEmpty(val)
                     ? new Long(val) : (Long) getEmptyValue());
         }
     }
-    
+
 }

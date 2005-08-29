@@ -43,11 +43,11 @@ public class BaseValueParserTest extends ServletTestCase
      *
      * @param name a <code>String</code> value
      */
-    public BaseValueParserTest (String name) 
+    public BaseValueParserTest (String name)
     {
         super(name);
     }
-                                             
+
     /**
      * This setup will be running server side.  We startup Turbine and
      * get our test port from the properties.  This gets run before
@@ -59,8 +59,8 @@ public class BaseValueParserTest extends ServletTestCase
     {
         super.setUp();
         /* Note: we are using the properties file from the cache test
-         *  since we don't really need any specific property at this 
-         *  time.  Future tests may require a test case specific 
+         *  since we don't really need any specific property at this
+         *  time.  Future tests may require a test case specific
          *  properties file to be used.:
          */
         config.setInitParameter("properties",
@@ -70,30 +70,30 @@ public class BaseValueParserTest extends ServletTestCase
         theBaseValueParser = new BaseValueParser();
         stf = new SimpleDateFormat("hh:mm:ss a");
     }
-                                             
+
     /**
      * Shut down our turbine servlet and let our parents clean up also.
      *
      * @exception Exception if an error occurs
      */
-    protected void tearDown() throws Exception 
+    protected void tearDown() throws Exception
     {
         turbine.destroy();
         super.tearDown();
     }
-                                             
+
     /**
      * Return a test suite of all our tests.
      *
      * @return a <code>Test</code> value
      */
-    public static Test suite() 
+    public static Test suite()
     {
         return new TestSuite(BaseValueParserTest.class);
     }
 
     /**
-     * Test that a current time 
+     * Test that a current time
      */
     public void testCurrentTime()
     {
@@ -104,7 +104,7 @@ public class BaseValueParserTest extends ServletTestCase
                   now.get(Calendar.AM_PM),
                   stf.format(now.getTime()));
     }
-    
+
     /**
      * Test a time in the morning.
      */
@@ -132,7 +132,7 @@ public class BaseValueParserTest extends ServletTestCase
         theBaseValueParser.add(TimeSelector.SECOND_SUFFIX, 0);
         theBaseValueParser.add(TimeSelector.AMPM_SUFFIX, Calendar.AM);
 
-        assertNull("Should not have received a date object.", 
+        assertNull("Should not have received a date object.",
                    theBaseValueParser.getDate(""));
     }
 
@@ -170,7 +170,7 @@ public class BaseValueParserTest extends ServletTestCase
 
         Date newDate = theBaseValueParser.getDate("");
         assertNotNull("Could not create date for "+results, newDate);
-       
+
         assertEquals(results, stf.format(newDate));
     }
 }

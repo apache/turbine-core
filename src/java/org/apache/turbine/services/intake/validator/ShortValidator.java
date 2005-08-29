@@ -120,7 +120,7 @@ public class ShortValidator
                 errorMessage = invalidNumberMessage;
                 throw new ValidationException(invalidNumberMessage);
             }
-            
+
             if (s < minValue)
             {
                 errorMessage = minValueMessage;

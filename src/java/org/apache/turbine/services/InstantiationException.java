@@ -22,7 +22,7 @@ import org.apache.turbine.util.TurbineRuntimeException;
  * Thrown by <code>InitableBroker</code> and
  * <code>ServiceBroker</code> classes to indicate problems with
  * instatiation of requested objects.
- * 
+ *
  * Make sure you don't confuse this exception with the java.lang.InstantiationException.
  *
  * @author <a href="mailto:burton@apache.org">Kevin Burton</a>

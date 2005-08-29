@@ -106,7 +106,7 @@ defaultValue:   Default value to be used for the value of the field if one
 
                 Default: null
 
-emptyValue:     Value to be used for the value of the field if it is not 
+emptyValue:     Value to be used for the value of the field if it is not
                 supplied by the parameters returned from an input form.
 
                 Default: null

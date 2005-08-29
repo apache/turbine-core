@@ -32,7 +32,7 @@ public class DefaultsTest
     extends BaseTurbineTest
 {
 	private TemplateService ts = null;
-		
+
     public DefaultsTest(String name)
             throws Exception
     {

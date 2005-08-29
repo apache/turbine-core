@@ -117,7 +117,7 @@ public class DateStringValidator
 
             dateFormats.add(constraint.getValue());
             setDateFormatMessage(constraint.getMessage());
-        } 
+        }
 
         if (StringUtils.isEmpty(dateFormatMessage))
         {
@@ -173,9 +173,9 @@ public class DateStringValidator
     }
 
     /**
-     * Parses the String s according to the rules/formats for this validator.  
-     * The formats provided by the "formatx" rules (where x is &gt;= 1) are 
-     * used <strong>before</strong> the "format" rules to allow for a display 
+     * Parses the String s according to the rules/formats for this validator.
+     * The formats provided by the "formatx" rules (where x is &gt;= 1) are
+     * used <strong>before</strong> the "format" rules to allow for a display
      * format that includes a 4 digit year, but that will parse the date using
      * a format that accepts 2 digit years.
      *
@@ -213,7 +213,7 @@ public class DateStringValidator
 
             // Now test the FORMAT pattern which is the first one in the array.
             // if no format but just FORMATx has been given, all of the patterns
-            // have been shifted "one down", e.g. tested as format2, format3, format4, format1 
+            // have been shifted "one down", e.g. tested as format2, format3, format4, format1
             // in sequence.
             if (date == null)
             {

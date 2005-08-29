@@ -16,14 +16,14 @@
 <!-- ==================================================================== -->
 
 <database name="@DATABASE_DEFAULT@">
-  
+
   <table name="TURBINE_SCHEDULED_JOB" idMethod="idbroker" javaName="JobEntry">
     <column name="JOB_ID" required="true" primaryKey="true" type="INTEGER"/>
-    <column name="SECOND" javaName="Second" default="-1" 
+    <column name="SECOND" javaName="Second" default="-1"
             required="true" type="INTEGER"/>
-    <column name="MINUTE" javaName="Minute" default="-1" 
+    <column name="MINUTE" javaName="Minute" default="-1"
             required="true" type="INTEGER"/>
-    <column name="HOUR" javaName="Hour" default="-1" 
+    <column name="HOUR" javaName="Hour" default="-1"
             required="true" type="INTEGER"/>
     <column name="WEEK_DAY" default="-1" required="true" type="INTEGER"/>
     <column name="DAY_OF_MONTH" default="-1" required="true" type="INTEGER"/>

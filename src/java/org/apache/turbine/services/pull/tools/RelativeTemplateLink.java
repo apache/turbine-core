@@ -17,10 +17,10 @@ package org.apache.turbine.services.pull.tools;
  */
 
 /**
- * This is exactly the same thing as TemplateLink but it returns a 
+ * This is exactly the same thing as TemplateLink but it returns a
  * relative link on toString(). Everything else is identical. This class is
  * here for legacy purposes if you used the old org.apache.turbine.util.template.RelativeLink
- * class and have lots of templates which you don't want to rewrite. 
+ * class and have lots of templates which you don't want to rewrite.
  *
  * <p>
  * For new Code please use TemplateLink and get a relative Link with $link.RelativeLink and
@@ -50,9 +50,9 @@ public class RelativeTemplateLink
     {
         super();
     }
-    
+
     /**
-     * Returns the URI. After rendering the URI, it clears the 
+     * Returns the URI. After rendering the URI, it clears the
      * pathInfo and QueryString portions of the TemplateURI. Equivalent
      * to the getRelativeLink() method of this class.
      *

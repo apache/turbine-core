@@ -104,28 +104,28 @@ public abstract class ActionEvent extends Action
     /** The length of the button to look for. */
     protected static final int LENGTH = BUTTON.length();
 
-    /** 
+    /**
      * If true, the eventSubmit_do<xxx> variable must contain
      * a not null value to be executed.
      */
     private boolean submitValueKey = false;
-    
+
     /**
      * C'tor
      */
     public ActionEvent()
     {
         super();
-        
+
         submitValueKey = Turbine.getConfiguration()
                 .getBoolean(TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_KEY,
                         TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_DEFAULT);
 
-        log.debug(submitValueKey 
+        log.debug(submitValueKey
                 ? "ActionEvent accepts only eventSubmit_do Keys with a value != 0"
                 : "ActionEvent accepts all eventSubmit_do Keys");
     }
-    
+
     /**
      * This overrides the default Action.perform() to execute the
      * doEvent() method. If that fails, then it will execute the
@@ -218,17 +218,17 @@ public abstract class ActionEvent extends Action
     protected final String formatString(String input)
     {
         String tmp = input;
-        
+
         if (StringUtils.isNotEmpty(input))
         {
             tmp = input.toLowerCase();
-            
+
             // Chop off suffixes (for image type)
             input = (tmp.endsWith(".x") || tmp.endsWith(".y"))
                     ? input.substring(0, input.length() - 2)
                     : input;
-            
-            if (ParserUtils.getUrlFolding() 
+
+            if (ParserUtils.getUrlFolding()
                     != ParserUtils.URL_CASE_FOLDING_NONE)
             {
                 tmp = input.toLowerCase().substring(BUTTON_LENGTH + METHOD_NAME_LENGTH);
@@ -259,10 +259,10 @@ public abstract class ActionEvent extends Action
         }
         else
         {
-            // If the action.eventsubmit.needsvalue key is true, 
+            // If the action.eventsubmit.needsvalue key is true,
             // events with a "0" or empty value are ignored.
             // This can be used if you have multiple eventSubmit_do<xxx>
-            // fields in your form which are selected by client side code, 
+            // fields in your form which are selected by client side code,
             // e.g. JavaScript.
             //
             // If this key is unset or missing, nothing changes for the

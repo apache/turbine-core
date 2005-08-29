@@ -34,7 +34,7 @@ public class ClassTest
     extends BaseTurbineTest
 {
 	private TemplateService ts = null;
-	
+
     public ClassTest(String name)
             throws Exception
     {

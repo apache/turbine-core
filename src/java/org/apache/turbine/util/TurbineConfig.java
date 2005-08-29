@@ -78,7 +78,7 @@ public class TurbineConfig
      * Servlet initialization parameter name for the path to
      * TurbineConfiguration.xml file used by Turbine
      */
-    public static final String CONFIGURATION_PATH_KEY = "configuration";    
+    public static final String CONFIGURATION_PATH_KEY = "configuration";
 
     /**
      * Servlet initialization parameter name for the path to

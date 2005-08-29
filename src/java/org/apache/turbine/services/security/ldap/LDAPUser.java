@@ -905,7 +905,7 @@ public class LDAPUser extends BaseObject implements User
     {
         return 0;
     }
-            
+
     /**
      * Not implemented.
      * @return null

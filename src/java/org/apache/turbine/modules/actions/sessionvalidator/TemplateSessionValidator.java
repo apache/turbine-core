@@ -102,7 +102,7 @@ public class TemplateSessionValidator
                 && !TurbineSecurity.isAnonymousUser(data.getUser()))
         {
             // See comments in screens.error.InvalidState.
-            if (data.getParameters().getInt("_session_access_counter") 
+            if (data.getParameters().getInt("_session_access_counter")
                     < (((Integer) data.getUser().getTemp(
                     "_session_access_counter")).intValue() - 1))
             {

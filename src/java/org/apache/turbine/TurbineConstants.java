@@ -221,7 +221,7 @@ public interface TurbineConstants
     String DOCUMENT_TYPE_HTML40FRAMESET = "Html40Frameset";
 
     /** Default doctype root element. */
-    String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY 
+    String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY
             = "default.html.doctype.root.element";
 
     /** Default value for the doctype root element */
@@ -229,7 +229,7 @@ public interface TurbineConstants
             = "HTML";
 
     /** Default doctype dtd. */
-    String DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY 
+    String DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY
             = "default.html.doctype.identifier";
 
     /** Default Doctype dtd value */
@@ -237,7 +237,7 @@ public interface TurbineConstants
             = "-//W3C//DTD HTML 4.01 Transitional//EN";
 
     /** Default doctype url. */
-    String DEFAULT_HTML_DOCTYPE_URI_KEY 
+    String DEFAULT_HTML_DOCTYPE_URI_KEY
             = "default.html.doctype.url";
 
     /** Default doctype url value. */

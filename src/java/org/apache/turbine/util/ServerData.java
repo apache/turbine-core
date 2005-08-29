@@ -253,7 +253,7 @@ public class ServerData
         url.append("://");
         url.append(getServerName());
         if ((getServerScheme().equals(URIConstants.HTTP)
-                && getServerPort() != URIConstants.HTTP_PORT) 
+                && getServerPort() != URIConstants.HTTP_PORT)
             ||
             (getServerScheme().equals(URIConstants.HTTPS)
                 && getServerPort() != URIConstants.HTTPS_PORT)

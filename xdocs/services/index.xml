@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 
-<!-- 
+<!--
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -79,7 +79,7 @@ Scheduled Jobs to be loaded.
 <li>
 <a href="avalon-component-service.html">Avalon Component Service</a>
 <br/>
-Initializes external components which implement the Avalon lifecycle 
+Initializes external components which implement the Avalon lifecycle
 interface, e.g. Torque.
 </li>
 
@@ -98,8 +98,8 @@ Provides a persistant Object Storage mechanism within your application.
 <li>
 <a href="component-service.html">Component Service</a>
 <br/>
-Initializes external components which implement the Stratum lifecycle 
-interface, e.g. Torque and Fulcrum.  Any new components will use the 
+Initializes external components which implement the Stratum lifecycle
+interface, e.g. Torque and Fulcrum.  Any new components will use the
 Avalon lifecycle and thus the Avalon Component Service.
 </li>
 
@@ -218,7 +218,7 @@ The Service for the mapping of templates to their screens and actions.
 <li>
 <a href="torque-security-service.html">Torque Security Service</a>
 <br/>
-This is an implementation of a Security Service which uses Torque 
+This is an implementation of a Security Service which uses Torque
 generated peers to access the required security information.
 </li>
 

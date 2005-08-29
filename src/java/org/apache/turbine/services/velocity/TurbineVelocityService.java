@@ -168,7 +168,7 @@ public class TurbineVelocityService
      */
     public Context getContext()
     {
-        Context globalContext = 
+        Context globalContext =
                 pullModelActive ? pullService.getGlobalContext() : null;
 
         Context ctx = new VelocityContext(globalContext);
@@ -484,12 +484,12 @@ public class TurbineVelocityService
         Configuration conf = getConfiguration();
 
         catchErrors = conf.getBoolean(CATCH_ERRORS_KEY, CATCH_ERRORS_DEFAULT);
-        
+
         conf.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS,
                 SimpleLog4JLogSystem.class.getName());
         conf.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM
                 + ".log4j.category", "velocity");
-        
+
         Velocity.setExtendedProperties(createVelocityProperties(conf));
         Velocity.init();
     }
@@ -530,7 +530,7 @@ public class TurbineVelocityService
                 // no longer returns a vector for multiple value-keys but a
                 // List object. Velocity will choke if we add this object because
                 // org.apache.commons.collections.ExtendedProperties expect a
-                // Vector object. Ah, the joys of incompatible class changes, 
+                // Vector object. Ah, the joys of incompatible class changes,
                 // unwritten assumptions and general Java JAR Hell... =8-O
                 if (value instanceof List)
                 {

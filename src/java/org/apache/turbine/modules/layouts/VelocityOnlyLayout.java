@@ -36,7 +36,7 @@ import org.apache.velocity.context.Context;
  * screens and navigations there should be relatively few reasons to
  * subclass this Layout.
  *
- * To get the same functionality as with VelocityECSLayout, you can use two 
+ * To get the same functionality as with VelocityECSLayout, you can use two
  * supplied VelocityMacros, TurbineHtmlHead and TurbineHtmlBodyAttributes
  * in your templates. These are used to put HtmlPageAttributes into a page
  * before rendering.
@@ -52,7 +52,7 @@ import org.apache.velocity.context.Context;
  * &lt;/html&gt;
  *
  * As the layout template is rendered _after_ the screen template, you
- * can of course, add information to the $page tool in your screen template. 
+ * can of course, add information to the $page tool in your screen template.
  * This will be added correctly to the &lt;head&gt;...&lt;/head&gt; and
  * &lt;body&gt; tags.
  *
@@ -98,7 +98,7 @@ public class VelocityOnlyLayout
         context.put(TurbineConstants.SCREEN_PLACEHOLDER, returnValue);
 
         // variable to reference the navigation screen in the layout template
-        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER, 
+        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER,
                     new TemplateNavigation(data));
 
         // Grab the layout template set in the VelocityPage.

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE taglib PUBLIC 
-  "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN" 
-  "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd"> 
+<!DOCTYPE taglib PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN"
+  "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
 <taglib>
 	<tlibversion>1.0</tlibversion>
 	<jspversion>1.1</jspversion>
@@ -11,7 +11,7 @@
 		<tagclass>org.apache.turbine.services.jsp.tags.HeadTag</tagclass>
 		<bodycontent>JSP</bodycontent>
 	</tag>
-	<tag>   
+	<tag>
 		<name>body</name>
 		<tagclass>org.apache.turbine.services.jsp.tags.BodyTag</tagclass>
 		<bodycontent>JSP</bodycontent>
@@ -21,7 +21,7 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
-	<tag>   
+	<tag>
 		<name>navigation</name>
 		<tagclass>org.apache.turbine.services.jsp.tags.NavigationTag</tagclass>
 		<bodycontent>JSP</bodycontent>
@@ -30,7 +30,7 @@
 			<required>true</required>
 		</attribute>
 	</tag>
-	<tag>   
+	<tag>
 		<name>screen</name>
 		<tagclass>org.apache.turbine.services.jsp.tags.ScreenTag</tagclass>
 		<bodycontent>JSP</bodycontent>
@@ -44,12 +44,12 @@
 			<rtexprvalue>false</rtexprvalue>
 		</attribute>
 	</tag>
-	<tag>   
+	<tag>
 		<name>bodyAttributes</name>
 		<tagclass>org.apache.turbine.services.jsp.tags.BodyAttributesTag</tagclass>
 		<bodycontent>JSP</bodycontent>
 	</tag>
-	<tag>   
+	<tag>
 		<name>wmVar</name>
 		<tagclass>org.apache.turbine.services.jsp.tags.WebMacroVariableTag</tagclass>
 		<bodycontent>JSP</bodycontent>

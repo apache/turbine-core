@@ -146,7 +146,7 @@ public abstract class ObjectUtils
             ObjectInputStream in = null;
             ByteArrayInputStream bin = new ByteArrayInputStream(objectData);
             BufferedInputStream bufin = new BufferedInputStream(bin);
-            
+
             try
             {
                 in = new ObjectInputStream(bufin);

@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 
-<!-- 
+<!--
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,7 +46,7 @@
   org.apache.turbine.services.xmlrpc.util.FileHandler</strong>
   class that will perform these operations for you. Please refer
   to the usage section below for more details.
-</p>  
+</p>
 
 </section>
 
@@ -54,7 +54,7 @@
 
 <source><![CDATA[
 # -------------------------------------------------------------------
-# 
+#
 #  S E R V I C E S
 #
 # -------------------------------------------------------------------
@@ -69,7 +69,7 @@ services.XmlRpcService.classname=org.apache.turbine.services.xmlrpc.TurbineXmlRp
 .
 .
 # -------------------------------------------------------------------
-# 
+#
 #  X M L R P C  S E R V I C E
 #
 # -------------------------------------------------------------------
@@ -87,8 +87,8 @@ services.XmlRpcService.parser=org.apache.xerces.parsers.SAXParser
 
 services.XmlRpcService.port=12345
 
-# If any classes are specified here, the Service will create an 
-# instance of them here and start up a listener on the specified 
+# If any classes are specified here, the Service will create an
+# instance of them here and start up a listener on the specified
 # port.
 #
 # Note that the handlers demonstrated are not very useful.  You
@@ -114,7 +114,7 @@ services.XmlRpcService.port=12345
 services.XmlRpcService.handler.file = org.apache.turbine.services.xmlrpc.util.FileHandler
 services.XmlRpcService.paranoid = false
 services.XmlRpcService.acceptClient = 192.168.1.*
-services.XmlRpcService.denyClient = 
+services.XmlRpcService.denyClient =
 
 ]]></source>
 
@@ -136,7 +136,7 @@ public class XmlRpcExample
 {
     /**
      * We will test the following three operations:
-     * 
+     *
      * 1) Send a file to a remove server
      * 2) Get a file from a remote server
      * 3) Remove a file to a remove server

@@ -56,7 +56,7 @@ public abstract class JavaBaseFactory
      * to reduce the Class.forName() overhead (which can be sizable).
      */
     private Map classCache = Collections.synchronizedMap(new HashMap());
-    
+
     static
     {
         ObjectUtils.addOnce(packages, GenericLoader.getBasePackage());

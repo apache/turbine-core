@@ -26,7 +26,7 @@ import org.apache.turbine.util.uri.DataURI;
 /**
  * Terribly simple tool to translate URIs into Turbine Links.
  * Equivalent to URIUtils.getAbsoluteLink() in a pull tool.
- * 
+ *
  * <p>
  * If you're missing any routines from the 'old' $content tool concerning
  * path_info or query data, you did use the wrong tool then. You should've used
@@ -46,7 +46,7 @@ public class ContentTool
     /** Prefix for Parameters for this tool */
     public static final String CONTENT_TOOL_PREFIX = "tool.content";
 
-    /** 
+    /**
      * Should this tool add Container Encoding to the URIs returned?
      * True might cause trouble e.g. if you run with Apache HTTP Daemon / Tomcat Combo.
      *
@@ -56,7 +56,7 @@ public class ContentTool
 
     /** Default Value for CONTENT_TOOL_ENCODING_KEY */
     public static final boolean CONTENT_TOOL_ENCODING_DEFAULT = false;
-    
+
     /** Should this tool return relative URIs or absolute? Default: Absolute. */
     public static final String CONTENT_TOOL_RELATIVE_KEY = "want.relative";
 
@@ -65,13 +65,13 @@ public class ContentTool
 
     /** Do we want the container to encode the response? */
     boolean wantEncoding = false;
-    
+
     /** Do we want a relative link? */
     boolean wantRelative = false;
-    
+
     /** Caches a DataURI object which provides the translation routines */
     private DataURI dataURI = null;
-    
+
     /**
      * C'tor
      */
@@ -102,7 +102,7 @@ public class ContentTool
         // exception.
         dataURI = new DataURI((RunData) data);
 
-        Configuration conf = 
+        Configuration conf =
                 Turbine.getConfiguration().subset(CONTENT_TOOL_PREFIX);
 
         if (conf != null)
@@ -113,7 +113,7 @@ public class ContentTool
             wantEncoding = conf.getBoolean(CONTENT_TOOL_ENCODING_KEY,
                     CONTENT_TOOL_ENCODING_DEFAULT);
         }
-        
+
         if (!wantEncoding)
         {
             dataURI.clearResponse();
@@ -139,7 +139,7 @@ public class ContentTool
     {
         dataURI.setScriptName(path);
 
-        return wantRelative ? 
+        return wantRelative ?
                 dataURI.getRelativeLink() : dataURI.getAbsoluteLink();
     }
 

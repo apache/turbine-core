@@ -63,11 +63,11 @@ public class VelocityDirectLayout
         Context context = TurbineVelocity.getContext(data);
 
         // variable for the screen in the layout template
-        context.put(TurbineConstants.SCREEN_PLACEHOLDER, 
+        context.put(TurbineConstants.SCREEN_PLACEHOLDER,
                     new TemplateScreen(data));
 
         // variable to reference the navigation screen in the layout template
-        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER, 
+        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER,
                     new TemplateNavigation(data));
 
         // Grab the layout template set in the VelocityPage.

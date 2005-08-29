@@ -178,7 +178,7 @@ public class RoleSet
      */
     public Role getRoleById(int roleId)
     {
-        return (roleId != 0) 
+        return (roleId != 0)
                 ? (Role) idMap.get(new Integer(roleId)) : null;
     }
 

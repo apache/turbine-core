@@ -1,6 +1,3 @@
-
-
-                                        
 /* ---------------------------------------------------------------------- */
 /* TURBINE_PERMISSION                                                      */
 /* ---------------------------------------------------------------------- */
@@ -22,7 +19,7 @@ CREATE TABLE TURBINE_PERMISSION
 
 
 
-                                                
+
 /* ---------------------------------------------------------------------- */
 /* TURBINE_ROLE                                                      */
 /* ---------------------------------------------------------------------- */
@@ -44,7 +41,7 @@ CREATE TABLE TURBINE_ROLE
 
 
 
-                                                
+
 /* ---------------------------------------------------------------------- */
 /* TURBINE_GROUP                                                      */
 /* ---------------------------------------------------------------------- */
@@ -66,7 +63,7 @@ CREATE TABLE TURBINE_GROUP
 
 
 
-                                                
+
 /* ---------------------------------------------------------------------- */
 /* TURBINE_ROLE_PERMISSION                                                      */
 /* ---------------------------------------------------------------------- */
@@ -92,19 +89,19 @@ BEGIN
 ALTER TABLE TURBINE_ROLE_PERMISSION
     ADD CONSTRAINT TURBINE_ROLE_PERMISSION_FK_1 FOREIGN KEY (ROLE_ID)
     REFERENCES TURBINE_ROLE (ROLE_ID)
-END    
+END
 ;
 
 BEGIN
 ALTER TABLE TURBINE_ROLE_PERMISSION
     ADD CONSTRAINT TURBINE_ROLE_PERMISSION_FK_2 FOREIGN KEY (PERMISSION_ID)
     REFERENCES TURBINE_PERMISSION (PERMISSION_ID)
-END    
+END
 ;
 
 
 
-                                                
+
 /* ---------------------------------------------------------------------- */
 /* TURBINE_USER                                                      */
 /* ---------------------------------------------------------------------- */
@@ -134,7 +131,7 @@ CREATE TABLE TURBINE_USER
 
 
 
-                                                
+
 /* ---------------------------------------------------------------------- */
 /* TURBINE_USER_GROUP_ROLE                                                      */
 /* ---------------------------------------------------------------------- */
@@ -163,26 +160,26 @@ BEGIN
 ALTER TABLE TURBINE_USER_GROUP_ROLE
     ADD CONSTRAINT TURBINE_USER_GROUP_ROLE_FK_1 FOREIGN KEY (USER_ID)
     REFERENCES TURBINE_USER (USER_ID)
-END    
+END
 ;
 
 BEGIN
 ALTER TABLE TURBINE_USER_GROUP_ROLE
     ADD CONSTRAINT TURBINE_USER_GROUP_ROLE_FK_2 FOREIGN KEY (GROUP_ID)
     REFERENCES TURBINE_GROUP (GROUP_ID)
-END    
+END
 ;
 
 BEGIN
 ALTER TABLE TURBINE_USER_GROUP_ROLE
     ADD CONSTRAINT TURBINE_USER_GROUP_ROLE_FK_3 FOREIGN KEY (ROLE_ID)
     REFERENCES TURBINE_ROLE (ROLE_ID)
-END    
+END
 ;
 
 
 
-                                                
+
 /* ---------------------------------------------------------------------- */
 /* TURBINE_SCHEDULED_JOB                                                      */
 /* ---------------------------------------------------------------------- */
@@ -209,4 +206,4 @@ CREATE TABLE TURBINE_SCHEDULED_JOB
 
 
 
-                        
+

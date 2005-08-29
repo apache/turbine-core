@@ -140,7 +140,7 @@ public abstract class VelocityActionEvent extends ActionEvent
             // Attempt to execute things the old way..
             if (log.isDebugEnabled())
             {
-                log.debug("Couldn't locate the Event ( " + theButton 
+                log.debug("Couldn't locate the Event ( " + theButton
                         + "), running executeEvents() in "
                         + super.getClass().getName());
             }

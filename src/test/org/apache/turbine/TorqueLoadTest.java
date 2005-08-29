@@ -95,7 +95,7 @@ public class TorqueLoadTest
         // Uncomment once we get a torque 3.1 release post alpha-2
         // Everything up to alpha-2 does not shut down Torque properly.
         // assertFalse("Torque did not shut down properly!", Torque.isInit());
-    }            
+    }
 
     private AvalonComponentService getService()
     {
@@ -113,18 +113,18 @@ public class TorqueLoadTest
     //             throws Exception
     //     {
     //         assertFalse("Torque should not be initialized!", Torque.isInit());
-    
+
     //         TurbineConfig tc = new TurbineConfig(".", "/conf/test/TurbineAvalonService.properties");
-    
+
     //         try
     //         {
     //             tc.initialize();
     //             assertTrue("Torque must be initialized!", Torque.isInit());
-    
-    //             TorqueComponent toc = 
+
+    //             TorqueComponent toc =
     //                     (TorqueComponent) getService().lookup("org.apache.torque.avalon.Torque");
     //             assertTrue("TorqueComponent must be initialized!", toc.isInit());
-    
+
     //             getService().release(toc);
     //         }
     //         catch (Exception e)
@@ -136,6 +136,6 @@ public class TorqueLoadTest
     //             tc.dispose();
     //         }
     //         assertFalse("Torque did not shut down properly!", Torque.isInit());
-    //     }            
+    //     }
 }
 

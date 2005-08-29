@@ -1,5 +1,5 @@
 package org.apache.turbine.modules.screens;
- 
+
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
  *
@@ -37,7 +37,7 @@ public class ErrorTest extends ServletTestCase
 	private RunData data = null;
 	private org.apache.turbine.modules.screens.Error errorScreen = null;
 	private Turbine turbine = null;
-	
+
 	/**
 	 *  Defines the testcase name for JUnit.
 	 *
@@ -107,7 +107,7 @@ public class ErrorTest extends ServletTestCase
 				.getInstance("Error");
 		data.getParameters ().setString ( "param", "param1Value" );
 		errorScreen.doBuild(data);
-		
+
 		assertTrue("Make sure we have our error parameter.",data.getPage().toString().indexOf("param1Value")>-1);
 
 	}

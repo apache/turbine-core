@@ -57,7 +57,7 @@ public class IntakeTool
 
     /** ValueParser instance */
     private ValueParser pp;
-  
+
     HashMap declaredGroups = new HashMap();
     StringBuffer allGroupsSB = new StringBuffer(256);
     StringBuffer groupSB = new StringBuffer(128);
@@ -419,7 +419,7 @@ public class IntakeTool
                     }
                 }
             }
-            
+
             try
             {
                 TurbineIntake.releaseGroup(group);

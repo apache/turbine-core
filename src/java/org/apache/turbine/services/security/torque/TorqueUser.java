@@ -55,7 +55,7 @@ public class TorqueUser
     implements User
 {
     private static Log log = LogFactory.getLog(TorqueUser.class);
-    
+
     /** The date on which the user last accessed the application. */
     private Date lastAccessDate = null;
 
@@ -172,7 +172,7 @@ public class TorqueUser
         }
         catch (Exception e)
         {
-            throw new TurbineSecurityException("User object said " 
+            throw new TurbineSecurityException("User object said "
                     + e.getMessage(), e);
         }
     }

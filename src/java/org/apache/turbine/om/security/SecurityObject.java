@@ -125,7 +125,7 @@ public abstract class SecurityObject extends BaseObject implements Comparable
     }
 
     /**
-     * Unused. There is an ID column in the 
+     * Unused. There is an ID column in the
      * database scheme but it doesn't seem
      * to be used.
      *
@@ -135,9 +135,9 @@ public abstract class SecurityObject extends BaseObject implements Comparable
     {
         return id;
     }
-            
+
     /**
-     * Unused. There is an ID column in the 
+     * Unused. There is an ID column in the
      * database scheme but it doesn't seem
      * to be used.
      *
@@ -149,7 +149,7 @@ public abstract class SecurityObject extends BaseObject implements Comparable
     }
 
     /**
-     * Unused. There is an ID column in the 
+     * Unused. There is an ID column in the
      * database scheme but it doesn't seem
      * to be used.
      *

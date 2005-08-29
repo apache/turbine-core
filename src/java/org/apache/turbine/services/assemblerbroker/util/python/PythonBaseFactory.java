@@ -76,7 +76,7 @@ public abstract class PythonBaseFactory
             throw new Exception(
                 "Python path not found - check your Properties");
         }
-            
+
         log.debug("Screen name for JPython: " + name);
 
         Assembler assembler = null;

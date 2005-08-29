@@ -19,7 +19,7 @@ package org.apache.turbine.util.uri;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * Helper Class to keep a key and a value together in 
+ * Helper Class to keep a key and a value together in
  * one object. Used for URI Parameters
  *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
@@ -30,10 +30,10 @@ public class URIParam
 {
     /** Key */
     private String key = null;
-    
+
     /** Value */
     private Object value = null;
-    
+
     /**
      * Creates a new Object from Key and Value
      *
@@ -46,7 +46,7 @@ public class URIParam
         this.key = key;
         this.value = value;
     }
-    
+
     /**
      * Returns the key.
      *
@@ -57,7 +57,7 @@ public class URIParam
     {
         return (StringUtils.isNotEmpty(key)) ? key : "";
     }
-    
+
     /**
      * Returns the value.
      *

@@ -97,7 +97,7 @@ public class VelocityECSLayout
         context.put(TurbineConstants.SCREEN_PLACEHOLDER, returnValue);
 
         // variable to reference the navigation screen in the layout template
-        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER, 
+        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER,
                     new TemplateNavigation(data));
 
         // Grab the layout template set in the VelocityPage.

@@ -22,7 +22,7 @@ import junit.framework.TestSuite;
 import org.apache.turbine.test.BaseTestCase;
 
 /**
- * Unit testing for Job Entries.  Ensure that removing NumberKey from TurbineNonPersistentScheduler 
+ * Unit testing for Job Entries.  Ensure that removing NumberKey from TurbineNonPersistentScheduler
  * still works.
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
@@ -71,7 +71,7 @@ public class JobEntryTest extends BaseTestCase
         assertFalse(je1.equals(je2));
         je2.setJobId(je1.getJobId());
         assertTrue(je1.equals(je2));
-        
+
     }
 
 }

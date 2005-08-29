@@ -45,7 +45,7 @@ import java.util.List;
  * @version $Id$
  * @deprecated Use org.apache.turbine.util.parser.TSVParser instead.
  */
-public class TSVParser 
+public class TSVParser
         extends org.apache.turbine.util.parser.TSVParser
 {
     /**

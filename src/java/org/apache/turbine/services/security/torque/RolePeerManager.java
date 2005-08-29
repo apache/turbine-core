@@ -111,7 +111,7 @@ public class RolePeerManager
 
             roleObject = getPersistenceClass();
 
-            roleObjectName = conf.getString(ROLE_CLASS_KEY, 
+            roleObjectName = conf.getString(ROLE_CLASS_KEY,
                     roleObject.getName());
 
             // Maybe the user set a new value...

@@ -155,7 +155,7 @@ public class TurbineXmlRpcService
             }
 
             // Set the XML driver to the correct SAX parser class
-            String saxParserClass = 
+            String saxParserClass =
                     conf.getString("parser", SAXParser.class.getName());
 
             XmlRpc.setDriver(saxParserClass);
@@ -306,10 +306,10 @@ public class TurbineXmlRpcService
         }
 
         server.addHandler(handlerName, handler);
-        
-        log.debug("Registered Handler " + handlerName + " as " 
-                + handler.getClass().getName() 
-                + ", Server: " + server 
+
+        log.debug("Registered Handler " + handlerName + " as "
+                + handler.getClass().getName()
+                + ", Server: " + server
                 + ", Webserver: " + webserver);
     }
 

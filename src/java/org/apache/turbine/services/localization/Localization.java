@@ -1,4 +1,3 @@
-
 package org.apache.turbine.services.localization;
 
 /*

@@ -29,7 +29,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
  * <p>As this is designed to be used as a gloal scope pull tool it needs to be
  * threadsafe.
  *
- * <p>This is an application pull tool for the template system. You should 
+ * <p>This is an application pull tool for the template system. You should
  * <b>not</b> use it in a normal application.
  *
  * @author <a href="mailto:qmccombs@nequalsone.com">Quinton McCombs</a>
@@ -43,7 +43,7 @@ public class DateFormatter
     private static final String DATE_FORMAT_DEFAULT = "MM/dd/yyyy";
 
     /**
-     * Property tag for the date format that is to be used for the web 
+     * Property tag for the date format that is to be used for the web
      * application.
      */
     private static final String DATE_FORMAT_KEY = "tool.dateTool.format";
@@ -67,8 +67,8 @@ public class DateFormatter
     }
 
     /**
-     * Refresh the application tool. This is necessary for development work 
-     * where you probably want the tool to refresh itself if it is using 
+     * Refresh the application tool. This is necessary for development work
+     * where you probably want the tool to refresh itself if it is using
      * configuration information that is typically cached after initialization.
      */
     public void refresh()
@@ -91,7 +91,7 @@ public class DateFormatter
      * Formats the given date as a String.
      *
      * @param theDate date to format
-     * @param dateFormatString format string to use.  See 
+     * @param dateFormatString format string to use.  See
      * java.text.SimpleDateFormat for details.
      * @return String value of the date
      */

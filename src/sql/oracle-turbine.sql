@@ -1,6 +1,3 @@
-
-
-                                        
 -----------------------------------------------------------------------------
 -- TURBINE_PERMISSION
 -----------------------------------------------------------------------------
@@ -15,13 +12,13 @@ CREATE TABLE TURBINE_PERMISSION
 );
 
 ALTER TABLE TURBINE_PERMISSION
-    ADD CONSTRAINT TURBINE_PERMISSION_PK 
+    ADD CONSTRAINT TURBINE_PERMISSION_PK
 PRIMARY KEY (PERMISSION_ID);
 
 
 
 
-                                                
+
 -----------------------------------------------------------------------------
 -- TURBINE_ROLE
 -----------------------------------------------------------------------------
@@ -36,13 +33,13 @@ CREATE TABLE TURBINE_ROLE
 );
 
 ALTER TABLE TURBINE_ROLE
-    ADD CONSTRAINT TURBINE_ROLE_PK 
+    ADD CONSTRAINT TURBINE_ROLE_PK
 PRIMARY KEY (ROLE_ID);
 
 
 
 
-                                                
+
 -----------------------------------------------------------------------------
 -- TURBINE_GROUP
 -----------------------------------------------------------------------------
@@ -57,13 +54,13 @@ CREATE TABLE TURBINE_GROUP
 );
 
 ALTER TABLE TURBINE_GROUP
-    ADD CONSTRAINT TURBINE_GROUP_PK 
+    ADD CONSTRAINT TURBINE_GROUP_PK
 PRIMARY KEY (GROUP_ID);
 
 
 
 
-                                                
+
 -----------------------------------------------------------------------------
 -- TURBINE_ROLE_PERMISSION
 -----------------------------------------------------------------------------
@@ -76,7 +73,7 @@ CREATE TABLE TURBINE_ROLE_PERMISSION
 );
 
 ALTER TABLE TURBINE_ROLE_PERMISSION
-    ADD CONSTRAINT TURBINE_ROLE_PERMISSION_PK 
+    ADD CONSTRAINT TURBINE_ROLE_PERMISSION_PK
 PRIMARY KEY (ROLE_ID,PERMISSION_ID);
 
 ALTER TABLE TURBINE_ROLE_PERMISSION
@@ -92,7 +89,7 @@ ALTER TABLE TURBINE_ROLE_PERMISSION
 
 
 
-                                                
+
 -----------------------------------------------------------------------------
 -- TURBINE_USER
 -----------------------------------------------------------------------------
@@ -115,13 +112,13 @@ CREATE TABLE TURBINE_USER
 );
 
 ALTER TABLE TURBINE_USER
-    ADD CONSTRAINT TURBINE_USER_PK 
+    ADD CONSTRAINT TURBINE_USER_PK
 PRIMARY KEY (USER_ID);
 
 
 
 
-                                                
+
 -----------------------------------------------------------------------------
 -- TURBINE_USER_GROUP_ROLE
 -----------------------------------------------------------------------------
@@ -135,7 +132,7 @@ CREATE TABLE TURBINE_USER_GROUP_ROLE
 );
 
 ALTER TABLE TURBINE_USER_GROUP_ROLE
-    ADD CONSTRAINT TURBINE_USER_GROUP_ROLE_PK 
+    ADD CONSTRAINT TURBINE_USER_GROUP_ROLE_PK
 PRIMARY KEY (USER_ID,GROUP_ID,ROLE_ID);
 
 ALTER TABLE TURBINE_USER_GROUP_ROLE
@@ -156,7 +153,7 @@ ALTER TABLE TURBINE_USER_GROUP_ROLE
 
 
 
-                                                
+
 -----------------------------------------------------------------------------
 -- TURBINE_SCHEDULED_JOB
 -----------------------------------------------------------------------------
@@ -176,10 +173,10 @@ CREATE TABLE TURBINE_SCHEDULED_JOB
 );
 
 ALTER TABLE TURBINE_SCHEDULED_JOB
-    ADD CONSTRAINT TURBINE_SCHEDULED_JOB_PK 
+    ADD CONSTRAINT TURBINE_SCHEDULED_JOB_PK
 PRIMARY KEY (JOB_ID);
 
 
 
 
-                        
+

@@ -94,5 +94,5 @@ public class UnixCrypt
         /* UnixCrypt seems to be a really widespread name... */
         return new cryptix.tools.UnixCrypt(seed).crypt(value);
     }
-    
+
 }

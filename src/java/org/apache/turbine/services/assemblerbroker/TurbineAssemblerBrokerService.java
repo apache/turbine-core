@@ -172,7 +172,7 @@ public class TurbineAssemblerBrokerService
             catch (Exception e)
             {
                 throw new TurbineException("Failed to load an assembler for "
-                                           + name + " from the " 
+                                           + name + " from the "
                                            + type + " factory "
                                            + fac.getClass().getName(), e);
             }

@@ -120,7 +120,7 @@ public class LongValidator
                 errorMessage = invalidNumberMessage;
                 throw new ValidationException(invalidNumberMessage);
             }
-            
+
             if (l < minValue)
             {
                 errorMessage = minValueMessage;
