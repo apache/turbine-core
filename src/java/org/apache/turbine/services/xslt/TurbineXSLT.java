@@ -18,15 +18,16 @@ package org.apache.turbine.services.xslt;
 
 import java.io.Reader;
 import java.io.Writer;
+import java.util.Map;
 
 import org.apache.turbine.services.TurbineServices;
-
 import org.w3c.dom.Node;
 
 /**
  * This is a static accesor class for {@link XSLTService}.
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
+ * @author <a href="thomas.vandahl@tewisoft.de">Thomas Vandahl</a>
  * @version $Id$
  */
 public class TurbineXSLT
@@ -65,5 +66,29 @@ public class TurbineXSLT
             throws Exception
     {
         return getService().transform(xslName, in);
+    }
+
+    public static void transform(String xslName, Reader in, Writer out, Map params)
+            throws Exception
+    {
+        getService().transform(xslName, in, out, params);
+    }
+
+    public static String transform(String xslName, Reader in, Map params)
+            throws Exception
+    {
+        return getService().transform(xslName, in, params);
+    }
+
+    public void transform(String xslName, Node in, Writer out, Map params)
+            throws Exception
+    {
+        getService().transform(xslName, in, out, params);
+    }
+
+    public String transform(String xslName, Node in, Map params)
+            throws Exception
+    {
+        return getService().transform(xslName, in, params);
     }
 }
