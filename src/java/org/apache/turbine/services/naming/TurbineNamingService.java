@@ -54,7 +54,7 @@ public class TurbineNamingService
      * A global Map of Property objects which are initialised using
      * parameters from the ResourcesFile
      */
-    private static Map contextPropsList = null;
+    private Map contextPropsList = null;
 
     /** All initial contexts known to this service */
     private Map initialContexts = new HashMap();

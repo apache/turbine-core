@@ -166,14 +166,9 @@ public abstract class ObjectUtils
                     {
                         in.close();
                     }
-                    if (bufin != null)
-                    {
-                        bufin.close();
-                    }
-                    if (bin != null)
-                    {
-                        bin.close();
-                    }
+
+                    bufin.close();
+                    bin.close();
                 }
                 catch (IOException e)
                 {

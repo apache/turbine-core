@@ -38,8 +38,7 @@ import org.apache.turbine.util.security.TurbineSecurityException;
 public class TorquePermission
     extends TorqueObject
     implements Permission,
-               Comparable,
-               Persistent
+               Comparable
 {
     /**
      * Constructs a Permission

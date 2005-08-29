@@ -411,7 +411,7 @@ public class DynamicURI
      */
     public DynamicURI addPathInfo(String name, int value)
     {
-        add(PATH_INFO, name, new Integer(value).toString());
+        add(PATH_INFO, name, String.valueOf(value));
         return this;
     }
 
@@ -424,7 +424,7 @@ public class DynamicURI
      */
     public DynamicURI addPathInfo(String name, long value)
     {
-        add(PATH_INFO, name, new Long(value).toString());
+        add(PATH_INFO, name, String.valueOf(value));
         return this;
     }
 
@@ -489,7 +489,7 @@ public class DynamicURI
      */
     public DynamicURI addQueryData(String name, int value)
     {
-        add(QUERY_DATA, name, new Integer(value).toString());
+        add(QUERY_DATA, name, String.valueOf(value));
         return this;
     }
 
@@ -502,7 +502,7 @@ public class DynamicURI
      */
     public DynamicURI addQueryData(String name, long value)
     {
-        add(QUERY_DATA, name, new Long(value).toString());
+        add(QUERY_DATA, name, String.valueOf(value));
         return this;
     }
 

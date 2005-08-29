@@ -86,7 +86,7 @@ import org.apache.turbine.util.pool.RecyclableSupport;
  */
 public class BaseValueParser
         extends RecyclableSupport
-        implements ValueParser, Recyclable
+        implements ValueParser
 {
     /** Logging */
     private static Log log = LogFactory.getLog(BaseValueParser.class);
@@ -477,7 +477,7 @@ public class BaseValueParser
      */
     public Boolean getBool(String name, boolean defaultValue)
     {
-        return getBooleanObject(name, new Boolean(defaultValue));
+        return getBooleanObject(name, Boolean.valueOf(defaultValue));
     }
 
     /**

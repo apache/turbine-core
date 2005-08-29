@@ -559,7 +559,7 @@ public class LDAPUserManager implements UserManager
     {
         String host = LDAPSecurityConstants.getLDAPHost();
         String port = LDAPSecurityConstants.getLDAPPort();
-        String providerURL = new String("ldap://" + host + ":" + port);
+        String providerURL = "ldap://" + host + ":" + port;
         String ldapProvider = LDAPSecurityConstants.getLDAPProvider();
         String authentication = LDAPSecurityConstants.getLDAPAuthentication();
 

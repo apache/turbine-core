@@ -300,7 +300,7 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
                     }
                     if (value.isBoolean())
                     {
-                        obj2 = new Boolean(value.asBoolean());
+                        obj2 = Boolean.valueOf(value.asBoolean());
                     }
                     if (value.isString())
                     {

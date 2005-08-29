@@ -639,7 +639,7 @@ public class TurbineMapBuilder implements MapBuilder
         TableMap tMap;
 
         // Make some objects.
-        String string = new String("");
+        String string = "";
         Integer integer = new Integer(0);
         java.util.Date date = new Date();
 
