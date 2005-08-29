@@ -28,6 +28,10 @@
 <body>
   <release version="2.3.2-dev" date="in CVS">
     <action type="update" dev="henning">
+      Bump javamail to version 1.3.2<br/>
+      Build with commons-email 1.0-RC6.
+    </action>
+    <action type="fix" dev="henning">
       Fix the build process bug that let some of the reports end up in wrong directories.
     </action>
     <action type="update" dev="henning">

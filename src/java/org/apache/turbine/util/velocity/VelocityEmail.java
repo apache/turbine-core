@@ -16,13 +16,12 @@ package org.apache.turbine.util.velocity;
  * limitations under the License.
  */
 
-import javax.mail.MessagingException;
-
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 
 import org.apache.turbine.Turbine;
@@ -138,11 +137,11 @@ public class VelocityEmail extends SimpleEmail
      * @param toName A String with the TO toName.
      * @param toEmail A String with the TO toEmail.
      * @deprecated use addTo(email,name) instead
-     * @throws MessagingException email address could not be parsed
+     * @throws EmailException email address could not be parsed
      * @return A VelocityEmail (self).
      */
     public VelocityEmail setTo(String toName, String toEmail)
-            throws MessagingException
+            throws EmailException
     {
         addTo(toEmail,toName);
         return this;
@@ -237,10 +236,10 @@ public class VelocityEmail extends SimpleEmail
      * the value of mail.server will be used from TR.props.  If that
      * value was not set, localhost is used.
      *
-     * @throws MessagingException Failure during merging the velocity
+     * @throws EmailException Failure during merging the velocity
      * template or sending the email.
      */
-    public void send() throws MessagingException
+    public String send() throws EmailException
     {
         String body = null;
         try
@@ -250,7 +249,7 @@ public class VelocityEmail extends SimpleEmail
         }
         catch (Exception e)
         {
-            throw new MessagingException(
+            throw new EmailException(
                     "Could not render velocitty template", e);
         }
 
@@ -263,7 +262,7 @@ public class VelocityEmail extends SimpleEmail
 
         setMsg(body);
         setHostName(getMailServer());
-        super.send();
+        return super.send();
     }
 
     /**
