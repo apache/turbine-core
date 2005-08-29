@@ -46,6 +46,9 @@ import org.apache.turbine.util.security.GroupSet;
  */
 public class GroupPeer extends BasePeer
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 2902002237040953323L;
+
     /** The map builder for this Peer. */
     private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
             getMapBuilder(TurbineMapBuilder.class.getName());

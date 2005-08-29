@@ -42,6 +42,9 @@ public class NavigationLoader
     extends GenericLoader
     implements Loader
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 5062299200802529612L;
+
     /** Logging */
     private static Log log = LogFactory.getLog(NavigationLoader.class);
 

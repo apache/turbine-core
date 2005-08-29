@@ -104,6 +104,9 @@ public class Turbine
         extends HttpServlet
         implements TurbineConstants
 {
+    /** SerialVersionUID for serialization */
+    private static final long serialVersionUID = -6895381097045304308L;
+
     /**
      * Name of path info parameter used to indicate the redirected stage of
      * a given user's initial Turbine request
@@ -1017,6 +1020,7 @@ public class Turbine
             }
             catch (Exception ignored)
             {
+                // Ignored
             }
 
             try

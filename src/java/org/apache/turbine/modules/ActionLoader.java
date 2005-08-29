@@ -39,6 +39,9 @@ import org.apache.turbine.util.RunData;
 public class ActionLoader
     extends GenericLoader
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -2285549057406921958L;
+
     /** Logging */
     private static Log log = LogFactory.getLog(ActionLoader.class);
 

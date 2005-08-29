@@ -49,7 +49,10 @@ import com.workingdogs.village.Record;
  */
 public class PermissionPeer extends BasePeer
 {
-    /** The map builder for this Peer. */
+     /** Serial Version UID */
+    private static final long serialVersionUID = 2762005892291909743L;
+
+   /** The map builder for this Peer. */
     private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
             getMapBuilder(TurbineMapBuilder.class.getName());
 

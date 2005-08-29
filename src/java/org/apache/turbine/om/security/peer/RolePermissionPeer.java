@@ -33,7 +33,10 @@ import org.apache.turbine.util.db.map.TurbineMapBuilder;
  */
 public class RolePermissionPeer extends BasePeer
 {
-    /** The map builder for this Peer. */
+    /** Serial Version UID */
+    private static final long serialVersionUID = 4149656810524167640L;
+
+   /** The map builder for this Peer. */
     private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
             getMapBuilder(TurbineMapBuilder.class.getName());
 

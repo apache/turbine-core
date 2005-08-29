@@ -40,6 +40,9 @@ public class LayoutLoader
     extends GenericLoader
     implements Loader
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -1996918946937639892L;
+
     /** Logging */
     private static Log log = LogFactory.getLog(LayoutLoader.class);
 

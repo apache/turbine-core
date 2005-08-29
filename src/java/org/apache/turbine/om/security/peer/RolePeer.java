@@ -47,6 +47,9 @@ import com.workingdogs.village.Record;
  */
 public class RolePeer extends BasePeer
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 8236100811297919996L;
+
     /** The map builder for this Peer. */
     private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
             getMapBuilder(TurbineMapBuilder.class.getName());

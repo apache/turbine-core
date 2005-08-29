@@ -40,6 +40,9 @@ public class PageLoader
     extends GenericLoader
     implements Loader
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 272783554001103941L;
+
     /** Logging */
     private static Log log = LogFactory.getLog(PageLoader.class);
 
