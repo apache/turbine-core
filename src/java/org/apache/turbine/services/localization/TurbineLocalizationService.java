@@ -1,7 +1,7 @@
 package org.apache.turbine.services.localization;
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -402,10 +402,10 @@ public class TurbineLocalizationService
              defaultLanguage.equals(locale.getLanguage()) )
         {
             /*
-              log.debug("Requested language '" + locale.getLanguage() +
-              "' matches default: Attempting to guess bundle " +
-              "using default country '" + defaultCountry + '\'');
-            */
+             *              log.debug("Requested language '" + locale.getLanguage() +
+             *              "' matches default: Attempting to guess bundle " +
+             *              "using default country '" + defaultCountry + '\'');
+             */
             Locale withDefaultCountry = new Locale(locale.getLanguage(),
                                                    defaultCountry);
             rb = (ResourceBundle) bundlesByLocale.get(withDefaultCountry);

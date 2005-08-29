@@ -1,6 +1,7 @@
 package org.apache.turbine.services.cache;
- /*
- * Copyright 2001-2004 The Apache Software Foundation.
+
+/*
+ * Copyright 2001-2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -15,13 +16,11 @@ package org.apache.turbine.services.cache;
  * limitations under the License.
  */
 
-// Cactus and Junit imports
 import junit.awtui.TestRunner;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.apache.cactus.ServletTestCase;
 
-// Turbine imports
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.cache.GlobalCacheService;
 import org.apache.turbine.services.cache.CachedObject;

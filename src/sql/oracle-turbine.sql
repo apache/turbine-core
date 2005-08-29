@@ -1,6 +1,20 @@
------------------------------------------------------------------------------
+-- Copyright 2001-2005 The Apache Software Foundation.
+--
+-- Licensed under the Apache License, Version 2.0 (the "License")
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--     http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
+
+-- ---------------------------------------------------------------------------
 -- TURBINE_PERMISSION
------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 drop table TURBINE_PERMISSION cascade constraints;
 
 CREATE TABLE TURBINE_PERMISSION
@@ -19,9 +33,9 @@ PRIMARY KEY (PERMISSION_ID);
 
 
 
------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 -- TURBINE_ROLE
------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 drop table TURBINE_ROLE cascade constraints;
 
 CREATE TABLE TURBINE_ROLE
@@ -40,9 +54,9 @@ PRIMARY KEY (ROLE_ID);
 
 
 
------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 -- TURBINE_GROUP
------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 drop table TURBINE_GROUP cascade constraints;
 
 CREATE TABLE TURBINE_GROUP
@@ -61,9 +75,9 @@ PRIMARY KEY (GROUP_ID);
 
 
 
------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 -- TURBINE_ROLE_PERMISSION
------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 drop table TURBINE_ROLE_PERMISSION cascade constraints;
 
 CREATE TABLE TURBINE_ROLE_PERMISSION
@@ -90,9 +104,9 @@ ALTER TABLE TURBINE_ROLE_PERMISSION
 
 
 
------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 -- TURBINE_USER
------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 drop table TURBINE_USER cascade constraints;
 
 CREATE TABLE TURBINE_USER
@@ -119,9 +133,9 @@ PRIMARY KEY (USER_ID);
 
 
 
------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 -- TURBINE_USER_GROUP_ROLE
------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 drop table TURBINE_USER_GROUP_ROLE cascade constraints;
 
 CREATE TABLE TURBINE_USER_GROUP_ROLE
@@ -154,9 +168,9 @@ ALTER TABLE TURBINE_USER_GROUP_ROLE
 
 
 
------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 -- TURBINE_SCHEDULED_JOB
------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 drop table TURBINE_SCHEDULED_JOB cascade constraints;
 
 CREATE TABLE TURBINE_SCHEDULED_JOB

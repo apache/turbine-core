@@ -1,7 +1,7 @@
 package org.apache.turbine.modules.screens;
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,6 @@ package org.apache.turbine.modules.screens;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-// Turbine stuff.
 
 import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.modules.Screen;
