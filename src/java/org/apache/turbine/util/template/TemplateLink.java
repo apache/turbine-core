@@ -87,7 +87,7 @@ public class TemplateLink
      */
     public void init(Object data)
     {
-        if(!(data instanceof RunData) || data == null)
+        if (!(data instanceof RunData) || data == null)
         {
             throw new IllegalArgumentException(
                     "Argument must be an instance of RunData");

@@ -28,16 +28,16 @@ import java.util.Hashtable;
  * @version $Id$ */
 public interface TemplateEngineService
 {
-    static final String TEMPLATE_EXTENSIONS = "template.extension";
-    static final String DEFAULT_TEMPLATE_EXTENSION = "template.default.extension";
-    static final String DEFAULT_PAGE = "default.page";
-    static final String DEFAULT_SCREEN = "default.screen";
-    static final String DEFAULT_LAYOUT = "default.layout";
-    static final String DEFAULT_NAVIGATION = "default.navigation";
-    static final String DEFAULT_ERROR_SCREEN = "default.error.screen";
-    static final String DEFAULT_LAYOUT_TEMPLATE = "default.layout.template";
-    static final String DEFAULT_SCREEN_TEMPLATE = "default.screen.template";
-    static final String DEFAULT_NAVIGATION_TEMPLATE = "default.navigation.template";
+    String TEMPLATE_EXTENSIONS = "template.extension";
+    String DEFAULT_TEMPLATE_EXTENSION = "template.default.extension";
+    String DEFAULT_PAGE = "default.page";
+    String DEFAULT_SCREEN = "default.screen";
+    String DEFAULT_LAYOUT = "default.layout";
+    String DEFAULT_NAVIGATION = "default.navigation";
+    String DEFAULT_ERROR_SCREEN = "default.error.screen";
+    String DEFAULT_LAYOUT_TEMPLATE = "default.layout.template";
+    String DEFAULT_SCREEN_TEMPLATE = "default.screen.template";
+    String DEFAULT_NAVIGATION_TEMPLATE = "default.navigation.template";
 
     /**
      * Return the configuration of the template engine in

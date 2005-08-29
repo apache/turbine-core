@@ -525,7 +525,7 @@ public class UserPeerManager
     {
         Persistent obj = null;
 
-        if(userObject == null)
+        if (userObject == null)
         {
             // This can happen if the Turbine wants to determine the
             // name of the anonymous user before the security service
@@ -782,7 +782,7 @@ public class UserPeerManager
      */
     public static void setUserName(Persistent obj, String name)
     {
-        if(obj == null)
+        if (obj == null)
         {
             return;
         }
@@ -829,7 +829,7 @@ public class UserPeerManager
     {
         String name = null;
 
-        if(obj == null)
+        if (obj == null)
         {
             return null;
         }
@@ -861,7 +861,7 @@ public class UserPeerManager
      */
     public static void setUserPassword(Persistent obj, String password)
     {
-        if(obj == null)
+        if (obj == null)
         {
             return;
         }
@@ -894,7 +894,7 @@ public class UserPeerManager
     {
         String password = null;
 
-        if(obj == null)
+        if (obj == null)
         {
             return null;
         }
@@ -926,7 +926,7 @@ public class UserPeerManager
      */
     public static void setUserFirstName(Persistent obj, String firstName)
     {
-        if(obj == null)
+        if (obj == null)
         {
             return;
         }
@@ -959,7 +959,7 @@ public class UserPeerManager
     {
         String firstName = null;
 
-        if(obj == null)
+        if (obj == null)
         {
             return null;
         }
@@ -991,7 +991,7 @@ public class UserPeerManager
      */
     public static void setUserLastName(Persistent obj, String lastName)
     {
-        if(obj == null)
+        if (obj == null)
         {
             return;
         }
@@ -1024,7 +1024,7 @@ public class UserPeerManager
     {
         String lastName = null;
 
-        if(obj == null)
+        if (obj == null)
         {
             return null;
         }
@@ -1056,7 +1056,7 @@ public class UserPeerManager
      */
     public static void setUserEmail(Persistent obj, String email)
     {
-        if(obj == null)
+        if (obj == null)
         {
             return;
         }
@@ -1089,7 +1089,7 @@ public class UserPeerManager
     {
         String email = null;
 
-        if(obj == null)
+        if (obj == null)
         {
             return null;
         }
@@ -1121,7 +1121,7 @@ public class UserPeerManager
      */
     public static void setUserConfirmed(Persistent obj, String confirm)
     {
-        if(obj == null)
+        if (obj == null)
         {
             return;
         }
@@ -1154,7 +1154,7 @@ public class UserPeerManager
     {
         String confirm = null;
 
-        if(obj == null)
+        if (obj == null)
         {
             return null;
         }
@@ -1186,7 +1186,7 @@ public class UserPeerManager
      */
     public static void setUserCreateDate(Persistent obj, java.util.Date createDate)
     {
-        if(obj == null)
+        if (obj == null)
         {
             return;
         }
@@ -1219,7 +1219,7 @@ public class UserPeerManager
     {
         java.util.Date createDate = null;
 
-        if(obj == null)
+        if (obj == null)
         {
             return null;
         }
@@ -1251,7 +1251,7 @@ public class UserPeerManager
      */
     public static void setUserLastLogin(Persistent obj, java.util.Date lastLogin)
     {
-        if(obj == null)
+        if (obj == null)
         {
             return;
         }
@@ -1284,7 +1284,7 @@ public class UserPeerManager
     {
         java.util.Date lastLogin = null;
 
-        if(obj == null)
+        if (obj == null)
         {
             return null;
         }
@@ -1316,7 +1316,7 @@ public class UserPeerManager
      */
     public static void setUserObjectdata(Persistent obj, byte [] objectdata)
     {
-        if(obj == null)
+        if (obj == null)
         {
             return;
         }
@@ -1349,7 +1349,7 @@ public class UserPeerManager
     {
         byte [] objectdata = null;
 
-        if(obj == null)
+        if (obj == null)
         {
             return null;
         }
@@ -1381,7 +1381,7 @@ public class UserPeerManager
      */
     public static void setId(Persistent obj, int id)
     {
-        if(obj == null)
+        if (obj == null)
         {
             return;
         }
@@ -1414,7 +1414,7 @@ public class UserPeerManager
     {
         Integer id = null;
 
-        if(obj == null)
+        if (obj == null)
         {
             return new Integer(0);
         }

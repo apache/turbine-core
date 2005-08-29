@@ -47,7 +47,7 @@ public interface RunDataApplicationTool
      *
      * @param data initialization data
      */
-    public void init(Object data);
+    void init(Object data);
 
     /**
      * Refresh the application tool. This is
@@ -58,5 +58,5 @@ public interface RunDataApplicationTool
      *
      * @param data The current RunData Object
      */
-    public void refresh(RunData data);
+    void refresh(RunData data);
 }

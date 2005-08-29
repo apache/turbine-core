@@ -32,6 +32,6 @@ public interface Loader
      * @return An Assembler object or null.
      * @exception Exception a generic exception.
      */
-    public Assembler getAssembler(String name)
+    Assembler getAssembler(String name)
         throws Exception;
 }

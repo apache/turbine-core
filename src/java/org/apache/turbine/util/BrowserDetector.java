@@ -358,7 +358,7 @@ public class BrowserDetector
      * @param s A String.
      * @return The String converted to float.
      */
-    private static final float toFloat(String s)
+    private static float toFloat(String s)
     {
         return Float.valueOf(s).floatValue();
     }
