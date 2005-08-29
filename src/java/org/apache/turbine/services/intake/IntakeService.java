@@ -57,7 +57,7 @@ public interface IntakeService
     String XML_PATH_DEFAULT = "WEB-INF/conf/intake.xml";
 
     /**
-     * The property specifying the location where a serialized version of 
+     * The property specifying the location where a serialized version of
      * the xml specification can be written for faster restarts..
      */
     String SERIAL_XML = "serialize.path";

@@ -62,7 +62,7 @@ public class TurbineURITest extends BaseTestCase
      */
     protected void setUp()
     {
-        ServerData sd = new ServerData("www.testserver.com", 
+        ServerData sd = new ServerData("www.testserver.com",
                 URIConstants.HTTP_PORT, URIConstants.HTTP,
                 "/servlet/turbine", "/context");
         turi = new TurbineURI(sd);

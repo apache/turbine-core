@@ -176,7 +176,7 @@ public class TestSecurityPermission
         }
         catch (Exception e)
         {
-            // 
+            //
             // Ugh. DataBackendError? This means that our query actually hit the database and only the "unique key"
             // prevented us from a double entry. This seems to be a bug
             //

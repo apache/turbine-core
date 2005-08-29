@@ -87,7 +87,7 @@ public class TemplateInfo
 
     /**
      * Get the value of screen for the RunData parameters.  This
-     * information comes from PathInfo or a QueryString. 
+     * information comes from PathInfo or a QueryString.
      *
      * @return A String with the value of screen.
      */

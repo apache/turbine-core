@@ -83,7 +83,7 @@ public class HsqlDB
                 {
                     log.warn("Statement: " + cmd + ": " + sqle.getMessage());
                 }
-                
+
                 commands = commands.substring(targetPos + 2);
             }
         }

@@ -107,8 +107,8 @@ public class GroupPeerManager
 
             groupObject = Class.forName(groupObjectName); // Maybe the user set a new value...
 
-            // If any of the following Field queries fails, the group subsystem 
-            // is unusable. So check this right here at init time, which saves 
+            // If any of the following Field queries fails, the group subsystem
+            // is unusable. So check this right here at init time, which saves
             // us much time and hassle if it fails...
             nameColumn = (String) groupPeerClass.getField(conf
                     .getString(GROUP_NAME_COLUMN_KEY, GROUP_NAME_COLUMN_DEFAULT)
@@ -119,11 +119,11 @@ public class GroupPeerManager
                     ).get(null);
 
             namePropDesc = new PropertyDescriptor(conf
-                    .getString(GROUP_NAME_PROPERTY_KEY, 
+                    .getString(GROUP_NAME_PROPERTY_KEY,
                     GROUP_NAME_PROPERTY_DEFAULT), groupObject);
 
             idPropDesc = new PropertyDescriptor(conf
-                    .getString(GROUP_ID_PROPERTY_KEY, 
+                    .getString(GROUP_ID_PROPERTY_KEY,
                     GROUP_ID_PROPERTY_DEFAULT), groupObject);
         }
         catch (Exception e)

@@ -108,5 +108,5 @@ public class OldJavaCrypt
         encodedStream.write(digest);
         return bas.toString();
     }
-    
+
 }

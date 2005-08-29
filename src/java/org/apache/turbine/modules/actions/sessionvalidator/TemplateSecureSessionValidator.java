@@ -105,7 +105,7 @@ public class TemplateSecureSessionValidator
             String loginTemplate =
                 conf.getString(TurbineConstants.TEMPLATE_LOGIN);
 
-            log.debug("Sending User to the Login Screen (" 
+            log.debug("Sending User to the Login Screen ("
                     + loginTemplate + ")");
             data.getTemplateInfo().setScreenTemplate(loginTemplate);
 
@@ -143,7 +143,7 @@ public class TemplateSecureSessionValidator
                 && !TurbineSecurity.isAnonymousUser(data.getUser()))
         {
             // See comments in screens.error.InvalidState.
-            if (data.getParameters().getInt("_session_access_counter") 
+            if (data.getParameters().getInt("_session_access_counter")
                     < (((Integer) data.getUser().getTemp(
                     "_session_access_counter")).intValue() - 1))
             {

@@ -220,7 +220,7 @@ public class TurbineIntakeService
         {
             for (Iterator it = appDataElements.keySet().iterator(); it.hasNext();)
             {
-                AppData appData = (AppData) it.next();                
+                AppData appData = (AppData) it.next();
 
                 int maxPooledGroups = 0;
                 List glist = appData.getGroups();
@@ -666,13 +666,13 @@ public class TurbineIntakeService
                     {
                         log.warn("Trying to find only a setter for " + propName);
                     }
-                    
+
                     pd = new PropertyDescriptor(propName,
                             Class.forName(className),
                             "set" + StringUtils.capitalise(propName),
                             null); // Java sucks.
                 }
-                
+
                 setter = pd.getWriteMethod();
                 settersForClassName.put(propName, setter);
 
@@ -691,7 +691,7 @@ public class TurbineIntakeService
                 synchronized (getterMap)
                 {
                     Map gettersForClassName = (Map) getterMap.get(className);
-                    
+
                     if (gettersForClassName != null)
                     {
                         try
@@ -751,13 +751,13 @@ public class TurbineIntakeService
                     {
                         log.warn("Trying to find only a getter for " + propName);
                     }
-                    
+
                     pd = new PropertyDescriptor(propName,
                             Class.forName(className),
                             "get" + StringUtils.capitalise(propName),
                             null); // Java sucks some more.
                 }
-                
+
                 getter = pd.getReadMethod();
                 gettersForClassName.put(propName, getter);
 
@@ -776,7 +776,7 @@ public class TurbineIntakeService
                 synchronized (setterMap)
                 {
                     Map settersForClassName = (Map) getterMap.get(className);
-                    
+
                     if (settersForClassName != null)
                     {
                         try

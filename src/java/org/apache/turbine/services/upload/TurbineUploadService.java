@@ -219,7 +219,7 @@ public class TurbineUploadService
         try
         {
             List fileList = fileUpload
-                    .parseRequest(req, 
+                    .parseRequest(req,
                             getSizeThreshold(),
                             getSizeMax(),
                             path);
@@ -232,7 +232,7 @@ public class TurbineUploadService
                     if (fi.isFormField())
                     {
                         log.debug("Found an simple form field: " + fi.getFieldName() +", adding value " + fi.getString());
-                        
+
                         String value = null;
                         try
                         {

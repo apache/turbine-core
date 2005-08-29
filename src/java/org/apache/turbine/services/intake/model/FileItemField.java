@@ -28,7 +28,7 @@ import org.apache.turbine.util.parser.ValueParser;
 
 /**
  * This Intake field is intended to represent a File input element in a HTML form.
- * 
+ *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
@@ -127,7 +127,7 @@ public class FileItemField
         validFlag = true;
 
         FileItem [] fileItems = ((ParameterParser) parser).getFileItems(getKey());
- 
+
         if (fileItems != null)
         {
             setFlag = true;

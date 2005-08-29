@@ -61,22 +61,22 @@ public class TurbineConfigTest
         ServletConfig config = (ServletConfig) tc;
         ServletContext context = config.getServletContext();
 
-        String confFile= Turbine.findInitParameter(context, config, 
-                TurbineConfig.PROPERTIES_PATH_KEY, 
+        String confFile= Turbine.findInitParameter(context, config,
+                TurbineConfig.PROPERTIES_PATH_KEY,
                 null);
         assertEquals(value, confFile);
     }
-    
+
     public void testTurbineXmlConfigWithConfigurationFile() throws Exception
     {
         String value = new File("/conf/test/TurbineConfiguration.xml").getPath();
             txc = new TurbineXmlConfig(".", value);
-            
+
         ServletConfig config = (ServletConfig) txc;
         ServletContext context = config.getServletContext();
-            
-            String confFile= Turbine.findInitParameter(context, config, 
-                    TurbineConfig.CONFIGURATION_PATH_KEY, 
+
+            String confFile= Turbine.findInitParameter(context, config,
+                    TurbineConfig.CONFIGURATION_PATH_KEY,
                     null);
         assertEquals(value, confFile);
         }

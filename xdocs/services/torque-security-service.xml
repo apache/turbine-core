@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 
-<!-- 
+<!--
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,7 +39,7 @@ peers to access the required security information.
 Older versions of the Security Service used hard coded Peers to access
 the security information. The current version can access arbitrary peers
 to retrieve the information and can be adapted to a pre-existing schema and
-use peer classes from outside Turbine. 
+use peer classes from outside Turbine.
 </p>
 
 </section>
@@ -176,7 +176,7 @@ services.SecurityService.torque.userPeer.column.objectdata = OBJECTDATA
 # These are the objects returned by the configured user peer (org.apache.turbine.services.security.torque.om.TurbineUser)
 services.SecurityService.torque.user.class = org.apache.turbine.services.security.torque.om.TurbineUser
 
-# These bean properties are queried from the returned object to retrieve the 
+# These bean properties are queried from the returned object to retrieve the
 # information
 services.SecurityService.torque.user.property.name         = UserName
 services.SecurityService.torque.user.property.id           = UserId
@@ -200,7 +200,7 @@ services.SecurityService.torque.groupPeer.column.id        = GROUP_ID
 # These are the objects returned by the configured group peer (org.apache.turbine.services.security.torque.om.TurbineGroup)
 services.SecurityService.torque.group.class = org.apache.turbine.services.security.torque.om.TurbineGroup
 
-# These bean properties are queried from the returned object to retrieve the 
+# These bean properties are queried from the returned object to retrieve the
 # information
 services.SecurityService.torque.group.property.name        = Name
 services.SecurityService.torque.group.property.id          = GroupId
@@ -216,7 +216,7 @@ services.SecurityService.torque.rolePeer.column.id         = ROLE_ID
 # These are the objects returned by the configured role peer (org.apache.turbine.services.security.torque.om.TurbineRole)
 services.SecurityService.torque.role.class = org.apache.turbine.services.security.torque.om.TurbineRole
 
-# These bean properties are queried from the returned object to retrieve the 
+# These bean properties are queried from the returned object to retrieve the
 # information
 services.SecurityService.torque.role.property.name         = Name
 services.SecurityService.torque.role.property.id           = RoleId
@@ -232,7 +232,7 @@ services.SecurityService.torque.permissionPeer.column.id   = PERMISSION_ID
 # These are the objects returned by the configured permission peer (org.apache.turbine.services.security.torque.om.TurbinePermission)
 services.SecurityService.torque.permission.class = org.apache.turbine.services.security.torque.om.TurbinePermission
 
-# These bean properties are queried from the returned object to retrieve the 
+# These bean properties are queried from the returned object to retrieve the
 # information
 services.SecurityService.torque.permission.property.name   = Name
 services.SecurityService.torque.permission.property.id     = PermissionId
@@ -255,7 +255,7 @@ returns.
 <p>
 The most interesting application for this is to extend some of the tables
 with more columns for additional data. In this example, the User table gets
-extended by two more columns called "TELEPHONE" and "FAX". 
+extended by two more columns called "TELEPHONE" and "FAX".
 </p>
 <p>
 At first we create a new torque schema:
@@ -279,7 +279,7 @@ At first we create a new torque schema:
 
     <unique>
         <unique-column name="LOGIN_NAME"/>
-    </unique>        
+    </unique>
 ]]></source>
 <p>
 Note a few things:
@@ -397,7 +397,7 @@ Consider the following schema:
   <unique>
       <unique-column name="NAME_OF_ROLE"/>
   </unique>
-  
+
 </table>
 ]]></source>
 <p>
@@ -414,7 +414,7 @@ services.SecurityService.torque.rolePeer.column.id         = CUSTOM_ID
 # These are the objects returned by the configured role peer (org.apache.turbine.services.security.torque.om.TurbineRole)
 services.SecurityService.torque.role.class = CustomRole
 
-# These bean properties are queried from the returned object to retrieve the 
+# These bean properties are queried from the returned object to retrieve the
 # information
 services.SecurityService.torque.role.property.name         = NameOfRole
 services.SecurityService.torque.role.property.id           = CustomId

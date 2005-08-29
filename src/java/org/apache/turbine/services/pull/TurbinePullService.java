@@ -295,7 +295,7 @@ public class TurbinePullService
 
         // Create and populate the global context right now
 
-        // This is unholy, because it entwines the VelocityService and 
+        // This is unholy, because it entwines the VelocityService and
         // the Pull Service even further. However, there isn't much we can
         // do for the 2.3 release. Expect this to go post-2.3
         globalContext = velocity.getNewContext();

@@ -39,7 +39,7 @@ public class TurbineAvalonComponentServiceTest
 
     /**
      * Initialize the unit test.  The AvalonComponentService will be configured
-     * and initialized.         
+     * and initialized.
 
      *
      * @param name

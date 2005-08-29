@@ -51,7 +51,7 @@ public abstract class TurbinePull
      * Get the context containing global tools that will be
      * use as part of the Turbine Pull Model.
      *
-     * @return A Context object which contains the 
+     * @return A Context object which contains the
      *         Global Tool instances.
      */
     public static final Context getGlobalContext()

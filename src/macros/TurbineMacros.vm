@@ -19,7 +19,7 @@
 
 ##
 ## Build the <head> ... </head> tag of a web page with VelocityOnly Layout
-## 
+##
 
 #macro (TurbineHtmlHead)
 <head>
@@ -63,7 +63,7 @@
 ##
 ## Build the Tags for the Body start tag of a web page with VelocityOnly Layout
 ## <body #TurbineHtmlBodyAttributes() >
-## 
+##
 
 #macro (TurbineHtmlBodyAttributes)
 #if ($page.BodyAttributes.size() > 0)

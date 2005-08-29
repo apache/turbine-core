@@ -33,7 +33,7 @@ import org.apache.turbine.services.template.TurbineTemplate;
  * This is a pretty simple mapper which returns template pathes for
  * a supplied template name. If the path does not exist, it looks for
  * a templated called "Default" in the same package.
- * This path can be used by the TemplateEngine to access 
+ * This path can be used by the TemplateEngine to access
  * a certain resource to actually render the template.
  *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>

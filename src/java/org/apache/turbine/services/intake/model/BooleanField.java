@@ -78,12 +78,12 @@ public class BooleanField
     }
 
     /**
-     * Provides access to emptyValue such that the value returned will be 
+     * Provides access to emptyValue such that the value returned will be
      * acceptable as an argument parameter to Method.invoke.  Subclasses
-     * that deal with primitive types should ensure that they return an 
-     * appropriate value wrapped in the object wrapper class for the 
+     * that deal with primitive types should ensure that they return an
+     * appropriate value wrapped in the object wrapper class for the
      * primitive type.
-     *   
+     *
      * @return the value to use when the field is empty or an Object that
      * wraps the empty value for primitive types.
      */
@@ -121,7 +121,7 @@ public class BooleanField
             for (int i = 0; i < inputs.length; i++)
             {
                 values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? getBoolean(inputs[i]).booleanValue() 
+                        ? getBoolean(inputs[i]).booleanValue()
                         : ((Boolean) getEmptyValue()).booleanValue();
             }
             setTestValue(values);
@@ -188,5 +188,5 @@ public class BooleanField
         }
         return result;
     }
-    
+
 }

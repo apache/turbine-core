@@ -59,7 +59,7 @@ import org.apache.turbine.services.TurbineBaseService;
  * If you want to initialize Torque by using the AvalonComponentService, you
  * must activate Torque at initialization time by specifying
  *
- * services.AvalonComponentService.lookup = org.apache.torque.Torque 
+ * services.AvalonComponentService.lookup = org.apache.torque.Torque
  *
  * in your TurbineResources.properties.
  *
@@ -127,7 +127,7 @@ public class TurbineAvalonComponentService
      */
     public void initialize() throws Exception
     {
-        org.apache.commons.configuration.Configuration conf 
+        org.apache.commons.configuration.Configuration conf
                 = getConfiguration();
 
         // get the filenames and expand them relative to webapp root
@@ -179,7 +179,7 @@ public class TurbineAvalonComponentService
 
         List lookupComponents = conf.getList(COMPONENT_LOOKUP_KEY,
                 new Vector());
-        
+
         for (Iterator it = lookupComponents.iterator(); it.hasNext();)
         {
             String component = (String) it.next();

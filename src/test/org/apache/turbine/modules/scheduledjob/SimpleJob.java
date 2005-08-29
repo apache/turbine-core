@@ -21,7 +21,7 @@ import org.apache.turbine.services.schedule.JobEntry;
 
 /**
  * Simple job for use with unit testing of the scheduler service.  This
- * job merely increments a static counter variable when it is run.  You 
+ * job merely increments a static counter variable when it is run.  You
  * can check the counter to verify the job has run.
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
@@ -45,7 +45,7 @@ public class SimpleJob
     {
         counter++;
         System.out.println("\n\nI AM RUNNING!\n\n");
-        
+
     }
     /**
      * Returns the counter value.

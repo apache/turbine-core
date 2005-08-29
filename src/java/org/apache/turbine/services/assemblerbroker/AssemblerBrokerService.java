@@ -53,7 +53,7 @@ public interface AssemblerBrokerService
     /** Predefined types for Turbine built-in assemblers: Scheduler Jobs  */
     String SCHEDULEDJOB_TYPE = "scheduledjob";
 
-    /** 
+    /**
      * Register an AssemblerFactory class for a given type
      *
      * @param type Type of the Factory
@@ -61,9 +61,9 @@ public interface AssemblerBrokerService
      */
     void registerFactory(String type, AssemblerFactory factory);
 
-    /** 
+    /**
      * Attempts to load an Assembler of a type with a given name
-     * 
+     *
      * @param type The Type of the Assembler
      * @param name The Name of the Assembler
      * @return An Assembler object for the requested name and type

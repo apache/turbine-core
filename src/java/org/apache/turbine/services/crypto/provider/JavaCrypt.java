@@ -103,5 +103,5 @@ public class JavaCrypt
         byte[] encodedDigest = Base64.encodeBase64(digest);
         return (encodedDigest == null ? null : new String(encodedDigest));
     }
-    
+
 }

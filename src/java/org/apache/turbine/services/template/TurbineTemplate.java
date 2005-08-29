@@ -315,7 +315,7 @@ public abstract class TurbineTemplate
      * @param templatePaths An array of template paths.
      * @return An array of translated template paths.
      * @deprecated Each template engine service should know how to translate
-     *             a request onto a file. 
+     *             a request onto a file.
      */
     public static final String[] translateTemplatePaths(String[] templatePaths)
     {

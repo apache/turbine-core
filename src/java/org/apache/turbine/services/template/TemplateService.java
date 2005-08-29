@@ -275,7 +275,7 @@ public interface TemplateService
      * @param templatePaths An array of template paths.
      * @return An array of translated template paths.
      * @deprecated Each template engine service should know how to translate
-     *             a request onto a file. 
+     *             a request onto a file.
      */
     String[] translateTemplatePaths(String[] templatePaths);
 

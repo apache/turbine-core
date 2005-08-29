@@ -72,7 +72,7 @@ public class TurbineComponentService
         Configuration loaderConf = new BaseConfiguration();
 
         String[] names = getConfiguration().getStringArray(NAME);
-        
+
         log.warn("The ComponentService is deprecated!");
 
         for (int i = 0; i < names.length; i++)

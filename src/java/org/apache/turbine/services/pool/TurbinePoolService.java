@@ -175,7 +175,7 @@ public class TurbinePoolService
             // each pool fills up at least to half its capacity.
             if (debugPool && (pool.size() < (pool.capacity() / 2)))
             {
-                log.debug("Size: " + pool.size() 
+                log.debug("Size: " + pool.size()
                         + ", capacity: " + pool.capacity());
                 return null;
             }
@@ -339,20 +339,20 @@ public class TurbinePoolService
 
         debugPool = conf.getBoolean(POOL_DEBUG_KEY,
                 POOL_DEBUG_DEFAULT);
-        
+
         if (debugPool)
         {
             log.info("Activated Pool Debugging!");
         }
 
         factoryService = TurbineFactory.getService();
-        
+
         if (factoryService == null)
         {
             throw new InitializationException("Factory Service is not configured"
                     + " but required for the Pool Service!");
         }
-        
+
         setInit(true);
     }
 
@@ -470,7 +470,7 @@ public class TurbinePoolService
     {
         Object instance = pollInstance(clazz.getName(), null, null);
         return (instance == null)
-                ? factoryService.getInstance(clazz.getName()) 
+                ? factoryService.getInstance(clazz.getName())
                 : instance;
     }
 
@@ -570,7 +570,7 @@ public class TurbinePoolService
         HashMap repository = poolRepository;
         repository = (repository != null)
                 ? (HashMap) repository.clone() : new HashMap();
-        
+
         capacity = (capacity <= 0) ? poolCapacity : capacity;
 
         repository.put(className, new PoolBuffer(capacity));

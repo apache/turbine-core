@@ -55,7 +55,7 @@ public class ServletUtils
 
     /**
      * The part of the URI which separates the protocol indicator (i.e. the
-     * scheme) from the rest of the URI. 
+     * scheme) from the rest of the URI.
      * @deprecated use URIConstants.URI_SCHEME_SEPARATOR;
      */
     public static final String URI_SCHEME_SEPARATOR = URIConstants.URI_SCHEME_SEPARATOR;
@@ -92,21 +92,21 @@ public class ServletUtils
             sb.append(text);
             text = sb.toString();
         }
-        
+
         ServletContext context = config.getServletContext();
         String base = context.getRealPath("/");
-        
+
         base = (StringUtils.isEmpty(base))
-            ? config.getInitParameter(Turbine.BASEDIR_KEY) 
+            ? config.getInitParameter(Turbine.BASEDIR_KEY)
             : base;
-            
+
         if (StringUtils.isEmpty(base))
         {
             return text;
         }
 
         String separator = System.getProperty("path.separator");
-        
+
         StringTokenizer tokenizer = new StringTokenizer(text,
                 separator);
         StringBuffer buffer = new StringBuffer();

@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 
-<!-- 
+<!--
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,9 +31,9 @@
 
     <section name="Important note">
       <p>
-        The information in this HOWTO pertains to Turbine 2.2.  Please refer 
-        to the <a href="../services/torque-security-service.html">Torque 
-        Security Service</a> page for information on extending TurbineUser 
+        The information in this HOWTO pertains to Turbine 2.2.  Please refer
+        to the <a href="../services/torque-security-service.html">Torque
+        Security Service</a> page for information on extending TurbineUser
         in Turbine 2.3 and beyond.
       </p>
     </section>
@@ -217,8 +217,8 @@
           There are two ways in which additional data in your extended TurbineUser
           object can be stored.  The first, and simplest method, is to store it in
           the perm hashtable.  As described earlier, any data in the perm hashtable
-          not mapped to a database column will get serialized into the 
-          TURBINE_USER.OBJECTDATA column.  The second, and perferred method, is to 
+          not mapped to a database column will get serialized into the
+          TURBINE_USER.OBJECTDATA column.  The second, and perferred method, is to
           use additional database column(s) for storage.
       </p>
       <p>
@@ -261,7 +261,7 @@
       <p>
           If you choose to use additional database columns, you will not have
           any of the drawbacks mentioned above.  Using the additional columns
-          is the approach that should be taken unless you have a 
+          is the approach that should be taken unless you have a
           <strong>VERY</strong> good reason not to do so.
       </p>
     </section>

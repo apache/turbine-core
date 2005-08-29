@@ -40,7 +40,7 @@
           <param-value>value1 used for testing</param-value>
         </init-param>
     </servlet>
-    
+
     <servlet-mapping>
         <servlet-name>ServletRedirector</servlet-name>
         <url-pattern>/ServletRedirector/</url-pattern>

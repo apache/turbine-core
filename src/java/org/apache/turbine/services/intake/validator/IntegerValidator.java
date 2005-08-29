@@ -120,7 +120,7 @@ public class IntegerValidator
                 errorMessage = invalidNumberMessage;
                 throw new ValidationException(invalidNumberMessage);
             }
-            
+
             if (i < minValue)
             {
                 errorMessage = minValueMessage;

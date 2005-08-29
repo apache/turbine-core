@@ -141,7 +141,7 @@ public class StringValidator
             {
                 /** perl5 matcher */
                 Perl5Matcher patternMatcher = new Perl5Matcher();
-            
+
                 boolean patternMatch =
                         patternMatcher.matches(testValue, maskPattern);
 

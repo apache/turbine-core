@@ -187,7 +187,7 @@ public class BrowserDetector
             String agentSubstring = null;
             if (versionEndIndex < 0)
             {
-                agentSubstring 
+                agentSubstring
                         = userAgentString.substring(versionStartIndex + 1);
             }
             else
@@ -206,7 +206,7 @@ public class BrowserDetector
         if (userAgentString.indexOf(MSIE) != -1)
         {
             // Ex: Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)
-            versionStartIndex = (userAgentString.indexOf(MSIE) 
+            versionStartIndex = (userAgentString.indexOf(MSIE)
                     + MSIE.length() + 1);
             versionEndIndex = userAgentString.indexOf(";", versionStartIndex);
 
@@ -233,7 +233,7 @@ public class BrowserDetector
         if (userAgentString.indexOf(OPERA) != -1)
         {
             //Ex: Mozilla/4.0 (Windows NT 4.0;US) Opera 3.61  [en]
-            versionStartIndex = (userAgentString.indexOf(OPERA) 
+            versionStartIndex = (userAgentString.indexOf(OPERA)
                     + OPERA.length() + 1);
             versionEndIndex = userAgentString.indexOf(" ", versionStartIndex);
 

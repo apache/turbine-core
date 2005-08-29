@@ -115,18 +115,18 @@ public class BooleanValidator
     {
         Boolean result = null;
 
-        for (int cnt = 0; 
+        for (int cnt = 0;
              cnt < Math.max(trueValues.length, falseValues.length); cnt++)
         {
             // Short-cut evaluation or bust!
-            if ((cnt < trueValues.length) && 
+            if ((cnt < trueValues.length) &&
                     stringValue.equalsIgnoreCase(trueValues[cnt]))
             {
                 result = Boolean.TRUE;
                 break;
             }
 
-            if ((cnt < falseValues.length) && 
+            if ((cnt < falseValues.length) &&
                     stringValue.equalsIgnoreCase(falseValues[cnt]))
             {
                 result = Boolean.FALSE;

@@ -285,8 +285,8 @@ public class Turbine
         // /WEB-INF/conf/TurbineResources.properties relative to the
         // web application root.
 
-        String confFile= findInitParameter(context, config, 
-                TurbineConfig.CONFIGURATION_PATH_KEY, 
+        String confFile= findInitParameter(context, config,
+                TurbineConfig.CONFIGURATION_PATH_KEY,
                 null);
 
         String confPath;
@@ -337,7 +337,7 @@ public class Turbine
                 p.load(new FileInputStream(log4jFile));
                 p.setProperty(APPLICATION_ROOT_KEY, getApplicationRoot());
                 PropertyConfigurator.configure(p);
-            
+
                 log.info("Configured log4j from " + log4jFile);
             }
             catch (FileNotFoundException fnf)
@@ -351,7 +351,7 @@ public class Turbine
         // Now report our successful configuration to the world
         log.info("Loaded configuration  (" + confStyle + ") from " + confFile + " (" + confPath + ")");
 
-        
+
         setTurbineServletConfig(config);
         setTurbineServletContext(context);
 

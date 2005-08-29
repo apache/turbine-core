@@ -1,6 +1,3 @@
-
-
-                                        
 -----------------------------------------------------------------------------
 -- ID_TABLE
 -----------------------------------------------------------------------------
@@ -17,10 +14,10 @@ CREATE TABLE ID_TABLE
 );
 
 ALTER TABLE ID_TABLE
-    ADD CONSTRAINT ID_TABLE_PK 
+    ADD CONSTRAINT ID_TABLE_PK
 PRIMARY KEY (ID_TABLE_ID);
 
 
 
 
-                        
+

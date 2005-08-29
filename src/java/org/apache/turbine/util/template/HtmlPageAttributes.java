@@ -624,16 +624,16 @@ public class HtmlPageAttributes
         }
 
     }
-    
+
     /**
-     * Retrieve the default Doctype as configured by the 
-     * TurbineResources.peoperties 
+     * Retrieve the default Doctype as configured by the
+     * TurbineResources.peoperties
      * default.doctype.root.element, default.doctype.identifier and
-     * default.doctype.url properties (defaults are "HTML", 
-     * "-//W3C//DTD HTML 4.01 Transitional//EN" and 
+     * default.doctype.url properties (defaults are "HTML",
+     * "-//W3C//DTD HTML 4.01 Transitional//EN" and
      * "http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd" respectively).
-     * 
-     * @return the DOCTYPE tag constructed from the properties in 
+     *
+     * @return the DOCTYPE tag constructed from the properties in
      * TurbineResources.properties.
      */
     public String getDefaultDoctype()
@@ -664,10 +664,10 @@ public class HtmlPageAttributes
         }
         return doctype;
     }
-    
+
     /**
      * Build the doctype element.
-     * 
+     *
      * @param tag the tag whose DTD is being declared.
      * @param identifier the identifier for the doctype declaration.
      * @param uri the uri for the doctype declaration.
@@ -694,5 +694,5 @@ public class HtmlPageAttributes
 
         return doctypeBuf.toString();
     }
-    
+
 }

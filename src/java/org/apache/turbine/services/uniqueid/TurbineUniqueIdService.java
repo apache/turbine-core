@@ -75,11 +75,11 @@ public class TurbineUniqueIdService
             //
             // @todo This needs definitely further working.
             String url = Turbine.getDefaultServerData().toString();
-            
+
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte [] bytesId = md.digest(url.getBytes("UTF-8"));
             turbineId = new String(Base64.encodeBase64(bytesId));
-            
+
             log.info("This is Turbine instance running at: " + url);
             log.info("The instance id is #" + turbineId);
             setInit(true);

@@ -59,7 +59,7 @@ public class InitContextsAction
         // instance.
 
         Hashtable contextPropsList = new Hashtable();
-        for (Iterator contextKeys = conf.getKeys("context."); 
+        for (Iterator contextKeys = conf.getKeys("context.");
                 contextKeys.hasNext();)
         {
             String key = (String) contextKeys.next();
@@ -79,7 +79,7 @@ public class InitContextsAction
                              conf.getString(key));
             contextPropsList.put(contextName, contextProps);
         }
-        for (Iterator contextPropsKeys = contextPropsList.keySet().iterator(); 
+        for (Iterator contextPropsKeys = contextPropsList.keySet().iterator();
                 contextPropsKeys.hasNext();)
         {
             String key = (String) contextPropsKeys.next();

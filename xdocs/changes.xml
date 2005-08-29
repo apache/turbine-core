@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 
-<!-- 
+<!--
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,7 +28,7 @@
 <body>
   <release version="2.3.2-dev" date="in CVS">
     <action type="update" dev="henning">
-      Get rid of direct File() access in TurbineXSLTService and replace it with URL 
+      Get rid of direct File() access in TurbineXSLTService and replace it with URL
       access through the servlet container. The change also allows to place the
       repository of XSL files elsewhere.
       Replace the cache Map() with a LRUMap() to avoid infinite memory growth.
@@ -51,7 +51,7 @@
     </action>
     <action type="update" dev="henning">
       Make the default encoding for incoming requests configureable. This allows you to post
-      forms from UTF-8 or other encodings into Turbine. 
+      forms from UTF-8 or other encodings into Turbine.
     </action>
     <action type="update" dev="seade">
       Update DateFormatter to use DateFormatUtils from commons lang.
@@ -89,7 +89,7 @@
        Fix the brown paper bag bug that made RC1 unusable
        with Velocity. This is an implicit incompatibility between
        a change in Commons Configuration and an assumption in
-       Turbine that threw a class cast exception in Commons 
+       Turbine that threw a class cast exception in Commons
        Collections and crashed Velocity. Isn't Java a cool thing?
     </action>
     <action type="update" issue="TTWS63">
@@ -125,43 +125,43 @@
       <action type="update">
        Intake now handles multiValued="true" on type="int" fields correctly.
        The get/set methods of the underlying object need to deal with an array
-       of ints.  The intake processing for other primitive types has also been 
+       of ints.  The intake processing for other primitive types has also been
        updated, though not tested to the same extent as int.
     </action>
     <action type="update">
-       The intake validators were fixed so that fields with required=false 
+       The intake validators were fixed so that fields with required=false
        rules no longer attempt to execute the remaining rules when no
        input is provided.  A minLength > 0 rule is no longer synonymous
        with required=true.
     </action>
     <action type="update">
-       Actions triggered from html input elements with type="button" are 
+       Actions triggered from html input elements with type="button" are
        now processed correctly (the trailing ".x" and ".y" are removed from
        the event names).
     </action>
     <action type="update">
-       Intake was fixed so that fields with required elements with value=false 
-       can later be enabled with field.setRequired(true) (i.e. you should 
+       Intake was fixed so that fields with required elements with value=false
+       can later be enabled with field.setRequired(true) (i.e. you should
        do this rather than using the deprecated required-message element).
     </action>
     <action type="update">
-       Intake was fixed so that DateString will use the "formatn" (where n 
-       &gt;= 1) rules to parse the input and then the "format" rule to format 
+       Intake was fixed so that DateString will use the "formatn" (where n
+       &gt;= 1) rules to parse the input and then the "format" rule to format
        it (the "format" rule is also used to parse the date if there are no
-       "formatn" rules or they are not able to parse it).  In order to 
+       "formatn" rules or they are not able to parse it).  In order to
        retrieve the correctly formatted DateString value you need to use
-       <em>$group.foo.StringValue</em> rather than <em>$group.foo.Value</em> 
+       <em>$group.foo.StringValue</em> rather than <em>$group.foo.Value</em>
        (you can do this for all values, not just DateString).
     </action>
     <action type="update">
-       Intake now makes use of the the emptyValue attribute from the field 
-       elements when mapping from the group to the object when no value has 
+       Intake now makes use of the the emptyValue attribute from the field
+       elements when mapping from the group to the object when no value has
        been set.  This makes it possible to clear values in an existing object
-       that is being overwritten with Intake data using 
+       that is being overwritten with Intake data using
        <em>group.setProperties(obj)</em> (or you can provide non-null values
-       in your intake.xml file).  Make sure you do not inadvertently include 
-       the primary key for the object in the intake group without actually 
-       setting it to the appropriate value (it shouldn't be in the group 
+       in your intake.xml file).  Make sure you do not inadvertently include
+       the primary key for the object in the intake group without actually
+       setting it to the appropriate value (it shouldn't be in the group
        anyway).
     </action>
     <action type="update">
@@ -173,9 +173,9 @@
        via <em>tool.dateTool.format</em> in TurbineResources.properties.
     </action>
     <action type="update">
-       DirectResponseLayout is provided to allow direct writing to 
+       DirectResponseLayout is provided to allow direct writing to
        ServletOutputStream when VelocityOnlyLayout is the default.  To use it
-       you need to add <em>data.declareDirectResponse();</em> and then 
+       you need to add <em>data.declareDirectResponse();</em> and then
        <em>data.setLayout("DirectResponseLayout");</em> to your action class.
        Thanks to Peter Courcoux for the code.
     </action>
@@ -204,12 +204,12 @@
       before you can recompile the source code.
     </action>
     	<action type="update">
-      The IntakeService has been refactored, introducing two Abstract classes; the 
-      DefaultValidator and the NumberValidator. They both contain rules which are 
+      The IntakeService has been refactored, introducing two Abstract classes; the
+      DefaultValidator and the NumberValidator. They both contain rules which are
       applicable to all Validator's and NumbeValidator's respectively. Unnecessary use
       was being made of (Old) NumberValidator which used BigDecimals, cleaned this up
-      implementing concrete classes for all Number Types. Simplified definition of 
-      (number &amp; required) rules in Intake.xml.  	
+      implementing concrete classes for all Number Types. Simplified definition of
+      (number &amp; required) rules in Intake.xml.
   	</action>
     <action type="update">
       The LoginUser action no longer checks to see if the user object is already
@@ -257,21 +257,21 @@
       The handling of "," as a separator in template names was tightened and
       clarified. Many places where you could get away with using "/" as a separator
       or use a leading "/" for a template name now no longer work. There is a long
-      description on how to use and not to use this in the javadoc for 
+      description on how to use and not to use this in the javadoc for
       org.apache.turbine.services.template.TurbineTemplateService. If you want to volunteer
       for work on Turbine, feel free to whip this into an xdoc and put it into the
       documentation tree.
     </action>
     <action type="update">
       Some classes have been moved into different packages to allow cleanup and
-      clarification of their usage. The old locations are still available but 
+      clarification of their usage. The old locations are still available but
       deprecated. Examples are the parser classes from org.apache.turbine.util to
       org.apache.turbine.util.parser and some of the pull tools from org.apache.turbine.util.pull
       to org.apache.turbine.services.pull.tools
     </action>
     <action type="update">
       getSizeMax() in the UploadService interface and implementations changed
-      from int to long to reflect a change that was made in the underlying 
+      from int to long to reflect a change that was made in the underlying
       commons-fileupload component.
     </action>
       <action type="update">
@@ -284,7 +284,7 @@
 	 Added a Howto describing using Hibernate with Turbine.  The actual code is
 	 currently not part of the Turbine distrib due to licensing issues, but is very
 	 easy to implement due to Turbine support of Avalon Components.
-    </action>    
+    </action>
     <action type="update">
 	 Changed TurbineUser so that when either perment or temporary values are
 	 stored, if the required hashtable was missing, then it was created.  This
@@ -386,7 +386,7 @@
 		   Configuration values can be overridden.  If you specify JNDI and the .xml, if a value
 		   is found in JNDI, then it is used.  Useful for overriding environment specific values
 		   like mail servers or whether Velocity templates are reloadable.
-         </action>         
+         </action>
            </action>
     <action type="update">
       added Log4j configuration and startup.
@@ -517,7 +517,7 @@
       The TurbineDB Service has been deprecated. Use Torque and the Component Service to start Torque.
     </action>
     <action type="update">
-      It is possible to debug pressure on the PoolService by setting services.PoolService.pool.debug to true 
+      It is possible to debug pressure on the PoolService by setting services.PoolService.pool.debug to true
       in the TurbineResources.properties.
     </action>
     <action type="update">
@@ -530,22 +530,22 @@
         based pages.
     </action>
     <action type="update">
-      The ComponentService (using the stratum lifecycle interfaces) is 
-      deprecated. It will be removed after the 2.3 release as the stratum 
+      The ComponentService (using the stratum lifecycle interfaces) is
+      deprecated. It will be removed after the 2.3 release as the stratum
       package is unmaintained. We use the new AvalonComponentService to
-      initialize Torque. 
+      initialize Torque.
     </action>
     <action type="update">
-      ActionEvent and VelocityActionEvent can "ignore" eventSubmit_&lt;xxx&gt; events if they 
+      ActionEvent and VelocityActionEvent can "ignore" eventSubmit_&lt;xxx&gt; events if they
       contain an empty or a zero value. This behaviour is controlled by the "action.eventsubmit.needsvalue"
       property that defaults to "off", which  means no change from the pre-2.3 behaviour. The new behaviour
-      is  useful if you have multiple event fields in a form and only one should be selected 
+      is  useful if you have multiple event fields in a form and only one should be selected
       (e.g. by a client side java script application).
     </action>
     <action type="update">
       VelocityService now uses the EventCartridge Code to catch and log invocation errors from templates.
       This is very useful when debugging pull tools, because you get the actual exception in the log and
-      not only the velocity internal stack trace. You can switch this behaviour off by setting 
+      not only the velocity internal stack trace. You can switch this behaviour off by setting
       "services.VelocityService.catch.errors" to off or false.
     </action>
     <action type="update">
@@ -722,7 +722,7 @@ services to make them work with Turbine 3.x<br/>
     <action type="update">
       Documentation improvements.
     </action>
-  
+
     <action type="update">
       fixed error in Mssql unique.vm template (removed a blank line)
     </action>

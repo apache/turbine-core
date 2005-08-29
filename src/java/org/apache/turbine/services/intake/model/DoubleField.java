@@ -82,12 +82,12 @@ public class DoubleField
     }
 
     /**
-     * Provides access to emptyValue such that the value returned will be 
+     * Provides access to emptyValue such that the value returned will be
      * acceptable as an argument parameter to Method.invoke.  Subclasses
-     * that deal with primitive types should ensure that they return an 
-     * appropriate value wrapped in the object wrapper class for the 
+     * that deal with primitive types should ensure that they return an
+     * appropriate value wrapped in the object wrapper class for the
      * primitive type.
-     *   
+     *
      * @return the value to use when the field is empty or an Object that
      * wraps the empty value for primitive types.
      */
@@ -99,7 +99,7 @@ public class DoubleField
         }
         else
         {
-            return (null == getEmptyValue()) 
+            return (null == getEmptyValue())
                     ? new Double(0.0) : getEmptyValue();
         }
     }
@@ -126,7 +126,7 @@ public class DoubleField
             for (int i = 0; i < inputs.length; i++)
             {
                 values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? new Double(inputs[i]).doubleValue() 
+                        ? new Double(inputs[i]).doubleValue()
                         : ((Double) getEmptyValue()).doubleValue();
             }
             setTestValue(values);
@@ -134,9 +134,9 @@ public class DoubleField
         else
         {
             String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val) 
+            setTestValue(StringUtils.isNotEmpty(val)
                     ? new Double(val) : (Double) getEmptyValue());
         }
     }
-    
+
 }

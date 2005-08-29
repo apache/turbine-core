@@ -37,7 +37,7 @@ import org.apache.turbine.Turbine;
  * @version $Id$
  */
 public class TurbineCacheTest extends ServletTestCase {
-    
+
     private Turbine turbine = null;
     private static final String cacheKey = new String("CacheKey");
     private static final String cacheKey_2 = new String("CacheKey_2");
@@ -53,7 +53,7 @@ public class TurbineCacheTest extends ServletTestCase {
     {
         super( name );
     }
-    
+
     /**
      * Start the tests.
      *
@@ -100,7 +100,7 @@ public class TurbineCacheTest extends ServletTestCase {
         turbine.destroy();
         super.tearDown();
     }
-    
+
     /**
      * Simple test that verify an object can be created and deleted.
      * @throws Exception
@@ -110,26 +110,26 @@ public class TurbineCacheTest extends ServletTestCase {
         String testString = new String( "This is a test");
         Object retrievedObject = null;
         CachedObject cacheObject1 = null;
-        
+
         GlobalCacheService globalCache = (GlobalCacheService)TurbineServices
         .getInstance()
         .getService( GlobalCacheService.SERVICE_NAME );
-        
+
         // Create object
         cacheObject1 = new CachedObject(testString);
         assertNotNull( "Failed to create a cachable object 1", cacheObject1);
-        
+
         // Add object to cache
         globalCache.addObject(cacheKey, cacheObject1);
-        
+
         // Get object from cache
         retrievedObject = globalCache.getObject(cacheKey);
         assertNotNull( "Did not retrieved a cached object 1", retrievedObject);
         assertTrue( "Did not retrieved a correct, expected cached object 1", retrievedObject == cacheObject1);
-        
+
         // Remove object from cache
         globalCache.removeObject(cacheKey);
-        
+
         // Verify object removed from cache
         retrievedObject = null;
         cacheObject1 = null;
@@ -147,11 +147,11 @@ public class TurbineCacheTest extends ServletTestCase {
         {
             throw e;
         }
-        
+
         // Remove object from cache that does NOT exist in the cache
         globalCache.removeObject(cacheKey);
     }
-    
+
     /**
      * Simple test that adds, retrieves, and deletes 2 object.
      *
@@ -163,11 +163,11 @@ public class TurbineCacheTest extends ServletTestCase {
         Object retrievedObject = null;
         CachedObject cacheObject1 = null;
         CachedObject cacheObject2 = null;
-        
+
         GlobalCacheService globalCache = (GlobalCacheService)TurbineServices
         .getInstance()
         .getService( GlobalCacheService.SERVICE_NAME );
-        
+
         // Create and add Object #1
         cacheObject1 = new CachedObject(testString);
         assertNotNull( "Failed to create a cachable object 1", cacheObject1);
@@ -175,7 +175,7 @@ public class TurbineCacheTest extends ServletTestCase {
         retrievedObject = globalCache.getObject(cacheKey);
         assertNotNull( "Did not retrieved a cached object 1", retrievedObject);
         assertEquals( "Did not retrieved correct cached object", cacheObject1, retrievedObject);
-        
+
         // Create and add Object #2
         cacheObject2 = new CachedObject(testString);
         assertNotNull( "Failed to create a cachable object 2", cacheObject2);
@@ -183,49 +183,49 @@ public class TurbineCacheTest extends ServletTestCase {
         retrievedObject = globalCache.getObject(cacheKey_2);
         assertNotNull( "Did not retrieved a cached object 2", retrievedObject);
         assertEquals( "Did not retrieved correct cached object 2", cacheObject2, retrievedObject);
-        
+
         // Get object #1
         retrievedObject = globalCache.getObject(cacheKey);
         assertNotNull( "Did not retrieved a cached object 1. Attempt #2", retrievedObject);
         assertEquals( "Did not retrieved correct cached object 1. Attempt #2", cacheObject1, retrievedObject);
-        
+
         // Get object #1
         retrievedObject = globalCache.getObject(cacheKey);
         assertNotNull( "Did not retrieved a cached object 1. Attempt #3", retrievedObject);
         assertEquals( "Did not retrieved correct cached object 1. Attempt #3", cacheObject1, retrievedObject);
-        
+
         // Get object #2
         retrievedObject = globalCache.getObject(cacheKey_2);
         assertNotNull( "Did not retrieved a cached object 2. Attempt #2", retrievedObject);
         assertEquals( "Did not retrieved correct cached object 2 Attempt #2", cacheObject2, retrievedObject);
-        
+
         // Remove objects
         globalCache.removeObject(cacheKey);
         globalCache.removeObject(cacheKey_2);
     }
-    
+
     /**
      * Verify that an object will throw the ObjectExpiredException
      * when it now longer exists in cache.
      *
      * @throws Exception
-     */    
+     */
     public void testObjectExpiration() throws Exception
     {
         String testString = new String( "This is a test");
         Object retrievedObject = null;
         CachedObject cacheObject = null;
-        
+
         GlobalCacheService globalCache = (GlobalCacheService)TurbineServices
         .getInstance()
         .getService( GlobalCacheService.SERVICE_NAME );
-        
+
         // Create and add Object that expires in 1000 millis (1 second)
         cacheObject = new CachedObject(testString, 1000);
         assertNotNull( "Failed to create a cachable object", cacheObject);
         long addTime = System.currentTimeMillis();
         globalCache.addObject(cacheKey, cacheObject);
-        
+
         // Try to get un-expired object
         try
         {
@@ -242,10 +242,10 @@ public class TurbineCacheTest extends ServletTestCase {
         {
             throw e;
         }
-        
+
         // Sleep 1500 Millis (1.5 seconds)
         Thread.sleep(1500);
-        
+
         // Try to get expired object
         try
         {
@@ -262,7 +262,7 @@ public class TurbineCacheTest extends ServletTestCase {
         {
             throw e;
         }
-        
+
         // Remove objects
         globalCache.removeObject(cacheKey);
     }
@@ -273,34 +273,34 @@ public class TurbineCacheTest extends ServletTestCase {
      * This test can take server minutes.
      *
      * @throws Exception
-     */    
+     */
     public void testCacheFlush() throws Exception
     {
         String testString = new String( "This is a test");
         Object retrievedObject = null;
         CachedObject cacheObject = null;
-        
+
         GlobalCacheService globalCache = (GlobalCacheService)TurbineServices
         .getInstance()
         .getService( GlobalCacheService.SERVICE_NAME );
-        
-        // Create and add Object that expires in 1 turbine Refresh + 1 millis 
+
+        // Create and add Object that expires in 1 turbine Refresh + 1 millis
         cacheObject = new CachedObject(testString, (TURBINE_CACHE_REFRESH*5) + 1);
         assertNotNull( "Failed to create a cachable object", cacheObject);
         long addTime = System.currentTimeMillis();
         globalCache.addObject(cacheKey, cacheObject);
-                
+
         // 1 Refresh
         Thread.sleep(TURBINE_CACHE_REFRESH + 1);
         assertTrue("No object in cache before flush", (0 < globalCache.getNumberOfObjects()));
-        
+
         // Flush Cache
         globalCache.flushCache();
 
         // Wait 15 seconds, 3 Refresh
         Thread.sleep((TURBINE_CACHE_REFRESH * 2) + 1);
         assertEquals("After refresh", 0, globalCache.getNumberOfObjects());
-        
+
         // Remove objects
         globalCache.removeObject(cacheKey);
     }
@@ -308,7 +308,7 @@ public class TurbineCacheTest extends ServletTestCase {
     /**
      * Verify the Cache count is correct.
      * @throws Exception
-     */    
+     */
     public void testObjectCount() throws Exception
     {
         GlobalCacheService globalCache = (GlobalCacheService)TurbineServices
@@ -323,7 +323,7 @@ public class TurbineCacheTest extends ServletTestCase {
 
         globalCache.addObject(cacheKey, cacheObject);
         assertEquals("After adding 1 Object", 1, globalCache.getNumberOfObjects());
-        
+
         // Wait until we're passed 1 refresh, but not half way.
         Thread.sleep(TURBINE_CACHE_REFRESH + TURBINE_CACHE_REFRESH/3);
         assertEquals("After one refresh", 1, globalCache.getNumberOfObjects());
@@ -342,23 +342,23 @@ public class TurbineCacheTest extends ServletTestCase {
      * This test can take serveral minutes.
      *
      * @throws Exception
-     */    
+     */
     public void testRefreshableObject() throws Exception
     {
         String testString = new String( "This is a test");
         Object retrievedObject = null;
         RefreshableCachedObject cacheObject = null;
-        
+
         GlobalCacheService globalCache = (GlobalCacheService)TurbineServices
         .getInstance()
         .getService( GlobalCacheService.SERVICE_NAME );
-        
+
         // Create and add Object that expires in TEST_EXPIRETIME millis.
         cacheObject = new RefreshableCachedObject(new RefreshableObject(), TEST_EXPIRETIME);
         assertNotNull( "Failed to create a cachable object", cacheObject);
         long addTime = System.currentTimeMillis();
         globalCache.addObject(cacheKey, cacheObject);
-        
+
         // Try to get un-expired object
         try
         {
@@ -375,10 +375,10 @@ public class TurbineCacheTest extends ServletTestCase {
         {
             throw e;
         }
-        
+
         // Wait 1 Turbine cache refresh + 1 second.
         Thread.sleep(TEST_EXPIRETIME + 1000);
-        
+
         // Try to get expired object
         try
         {
@@ -398,12 +398,12 @@ public class TurbineCacheTest extends ServletTestCase {
         {
             throw e;
         }
-        
+
         // See if object will expires (testing every second for 100 seconds.  It sould not!
         for (int i=0; i<100; i++)
         {
             Thread.sleep(1000); // Sleep 0.5 seconds
-            
+
             // Try to get expired object
             try
             {
@@ -427,7 +427,7 @@ public class TurbineCacheTest extends ServletTestCase {
         // Remove objects
         globalCache.removeObject(cacheKey);
     }
-    
+
     /**
      * Verify a cached object will be delete after it has been
      * untouched beyond it's TimeToLive.
@@ -435,17 +435,17 @@ public class TurbineCacheTest extends ServletTestCase {
      * This test can take serveral minutes.
      *
      * @throws Exception
-     */    
+     */
     public void testRefreshableTimeToLive() throws Exception
     {
         String testString = new String( "This is a test");
         Object retrievedObject = null;
         RefreshableCachedObject cacheObject = null;
-        
+
         GlobalCacheService globalCache = (GlobalCacheService)TurbineServices
         .getInstance()
         .getService( GlobalCacheService.SERVICE_NAME );
-        
+
         // Create and add Object that expires in TEST_EXPIRETIME millis.
         cacheObject = new RefreshableCachedObject(new RefreshableObject(), TEST_EXPIRETIME);
         assertNotNull( "Failed to create a cachable object", cacheObject);
@@ -457,7 +457,7 @@ public class TurbineCacheTest extends ServletTestCase {
         // Add object to Cache
         long addTime = System.currentTimeMillis();
         globalCache.addObject(cacheKey, cacheObject);
-        
+
         // Try to get un-expired object
         try
         {
@@ -474,10 +474,10 @@ public class TurbineCacheTest extends ServletTestCase {
         {
             throw e;
         }
-        
+
         // Wait long enough to allow object to expire, but do not exceed TTL
         Thread.sleep(TEST_TIMETOLIVE - 2000);
-        
+
         // Try to get expired object
         try
         {
@@ -497,10 +497,10 @@ public class TurbineCacheTest extends ServletTestCase {
         {
             throw e;
         }
-        
+
         // Wait long enough to allow object to expire and exceed TTL
         Thread.sleep(TEST_TIMETOLIVE +5000);
-        
+
         // Try to get expired object
         try
         {
@@ -523,9 +523,9 @@ public class TurbineCacheTest extends ServletTestCase {
      */
     class RefreshableObject implements Refreshable
     {
-        
+
         private int refreshCount = 0;
-        
+
         /**
          * Increment the refresh counter
          */
@@ -533,7 +533,7 @@ public class TurbineCacheTest extends ServletTestCase {
         {
             this.refreshCount++;
         }
-        
+
         /**
          * Reutrn the number of time this object has been refreshed
          *

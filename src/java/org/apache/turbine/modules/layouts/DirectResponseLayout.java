@@ -21,8 +21,8 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**
- * This layout allows an action to manipulate the ServletOutputStream directly. 
- * It requires that data.declareDirectResponse() has been called to indicate 
+ * This layout allows an action to manipulate the ServletOutputStream directly.
+ * It requires that data.declareDirectResponse() has been called to indicate
  * that the OutputStream is being handled elsewhere.
  *
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
@@ -45,5 +45,5 @@ public class DirectResponseLayout extends Layout
                 "data.declareDirectResponse() has not been called");
         }
     }
-    
+
 }

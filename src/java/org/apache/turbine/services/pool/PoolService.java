@@ -39,13 +39,13 @@ public interface PoolService
 {
     /** The key under which this service is stored in TurbineServices. */
     String SERVICE_NAME = "PoolService";
-    
+
     /** The default pool capacity. */
     int DEFAULT_POOL_CAPACITY = 128;
-    
+
     /** The name of the pool capacity property */
     String POOL_CAPACITY_KEY = "pool.capacity";
-    
+
     /** Are we running in debug mode? */
     String POOL_DEBUG_KEY = "pool.debug";
 

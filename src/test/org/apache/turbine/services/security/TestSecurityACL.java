@@ -108,7 +108,7 @@ public class TestSecurityACL
 
         assertEquals(0, acl.getRoles().size());
         assertEquals(1, acl.getRoles(turbine).size());
-        assertEquals(0, acl.getPermissions().size());       
+        assertEquals(0, acl.getPermissions().size());
         assertEquals(2, acl.getPermissions(turbine).size());
     }
 

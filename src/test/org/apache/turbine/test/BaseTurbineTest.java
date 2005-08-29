@@ -37,7 +37,7 @@ public abstract class BaseTurbineTest
     private File log4jFile = new File("conf/test/Log4j.properties");
 
     private static TurbineConfig turbineConfig = null;
-    
+
     public BaseTurbineTest(String name, String config)
             throws Exception
     {

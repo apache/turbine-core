@@ -120,7 +120,7 @@ public class FloatValidator
                 errorMessage = invalidNumberMessage;
                 throw new ValidationException(invalidNumberMessage);
             }
-            
+
             if (f < minValue)
             {
                 errorMessage = minValueMessage;

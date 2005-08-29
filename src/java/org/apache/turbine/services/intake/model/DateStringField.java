@@ -45,7 +45,7 @@ public class DateStringField
     private static DateFormat df;
 
     static
-    { 
+    {
         df = DateFormat.getInstance();
         df.setLenient(true);
     }

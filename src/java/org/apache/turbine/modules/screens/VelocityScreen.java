@@ -90,20 +90,20 @@ public class VelocityScreen
         throws Exception
     {
         String screenData = null;
-        
+
         Context context = TurbineVelocity.getContext(data);
 
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
         String templateName
             = TurbineTemplate.getScreenTemplateName(screenTemplate);
-        
+
         // The Template Service could not find the Screen
         if (StringUtils.isEmpty(templateName))
         {
             log.error("Screen " + screenTemplate + " not found!");
             throw new Exception("Could not find screen for " + screenTemplate);
         }
-        
+
         try
         {
             // if a layout has been defined return the results, otherwise
@@ -127,15 +127,15 @@ public class VelocityScreen
             // directory.
             context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
             context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
-            
+
             templateName = Turbine.getConfiguration()
                 .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
                            TurbineConstants.TEMPLATE_ERROR_VM);
-            
+
             screenData = TurbineVelocity.handleRequest(
                 context, prefix + templateName);
         }
-        
+
         // package the response in an ECS element
         StringElement output = new StringElement();
         output.setFilterState(false);

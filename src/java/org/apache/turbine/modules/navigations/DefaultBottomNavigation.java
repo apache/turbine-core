@@ -48,7 +48,7 @@ import org.apache.turbine.util.uri.TurbineURI;
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
- * @deprecated The use of ECS for the view is deprecated. 
+ * @deprecated The use of ECS for the view is deprecated.
  * Use a templating solution.
  */
 public class DefaultBottomNavigation extends Navigation
@@ -118,7 +118,7 @@ public class DefaultBottomNavigation extends Navigation
             // a <PRE></PRE> tag so that they can be displayed on the
             // page. This is of course only for example purposes.
             PRE pre = new PRE();
-            
+
             for (Iterator it = data.getParameters().keySet().iterator();
                  it.hasNext();)
             {

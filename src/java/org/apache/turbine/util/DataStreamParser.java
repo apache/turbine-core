@@ -44,7 +44,7 @@ import java.util.List;
  * @version $Id$
  * @deprecated Use org.apache.turbine.util.parser.DataStreamParser instead.
  */
-public abstract class DataStreamParser 
+public abstract class DataStreamParser
         extends org.apache.turbine.util.parser.DataStreamParser
 {
     /**

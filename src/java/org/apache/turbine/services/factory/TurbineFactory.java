@@ -54,7 +54,7 @@ public abstract class TurbineFactory
     {
         return getService().getInstance(className);
     }
-    
+
     /**
      * Gets an instance of a named class using a specified class loader.
      *
@@ -121,7 +121,7 @@ public abstract class TurbineFactory
                 params,
                 signature);
     }
-            
+
 
     /**
      * Tests if specified class loaders are supported for a named class.

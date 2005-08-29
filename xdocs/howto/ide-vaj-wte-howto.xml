@@ -17,7 +17,7 @@
         Java WebSphere Test Environment.
       </p>
       <p>
-        This tutorial works with VAJava 3.5.2 and 3.5.3. Please tell us if you 
+        This tutorial works with VAJava 3.5.2 and 3.5.3. Please tell us if you
         find that it works with other versions.
       </p>
 
@@ -39,11 +39,11 @@
       <p>
         You need to create a project : Turbine
       </p>
-      
+
       <p>
-        Import into Turbine project all JARS/SRC associated with the specific 
+        Import into Turbine project all JARS/SRC associated with the specific
         Turbine release
-      </p>      
+      </p>
 
     </section>
 
@@ -77,7 +77,7 @@
           create another 2 subdirectories : <code>servlets</code> and
           <code>web</code>.
         </p>
-        
+
         <p>
 	Create the following directories (which is similiar to the TDK distribution)
 	under the web directory.
@@ -87,11 +87,11 @@
 	<li> stylesheets</li>
 	<li> templates</li>
 	<li> WEB-INF/conf</li>
-        </p>    
+        </p>
         <p>
-        Copy the TurbineResource.properties file to the "WEB-INF/conf" directory. The templates, 
+        Copy the TurbineResource.properties file to the "WEB-INF/conf" directory. The templates,
         logs etc. directories are quite self explanetory I think.
-        </p>    
+        </p>
 
       </section>
 
@@ -113,9 +113,9 @@
       <code>org.apache.turbine.Turbine</code>
       <servlet-path>/ServletRedirector</servlet-path>
       <autostart>true</autostart>
-   </servlet> 
+   </servlet>
  </webapp>
-]]></source>          
+]]></source>
         </p>
 
       </section>

@@ -149,7 +149,7 @@ public abstract class TurbineDB
 
     /**
      * This method returns a DBConnection from the pool with the
-     * specified name. The pool must be specified in the property file using 
+     * specified name. The pool must be specified in the property file using
      * the following syntax:
      *
      * <pre>
