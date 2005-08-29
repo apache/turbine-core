@@ -39,6 +39,9 @@ import org.apache.turbine.util.RunData;
 public class ScheduledJobLoader
     extends GenericLoader
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 7207944483452185019L;
+
     /** Logging */
     private static Log log = LogFactory.getLog(ScheduledJobLoader.class);
 

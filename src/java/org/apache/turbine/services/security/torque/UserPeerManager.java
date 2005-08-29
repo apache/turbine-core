@@ -49,6 +49,9 @@ import org.apache.turbine.util.security.DataBackendException;
 public class UserPeerManager
     implements UserPeerManagerConstants
 {
+    /** Serial UID */
+    private static final long serialVersionUID = 6943046259921811593L;
+
     /** The class of the Peer the TorqueSecurityService uses */
     private static Class userPeerClass = null;
 

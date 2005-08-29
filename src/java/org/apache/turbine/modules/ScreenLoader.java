@@ -42,6 +42,9 @@ public class ScreenLoader
     extends GenericLoader
     implements Loader
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -4825216334500657398L;
+
     /** Logging */
     private static Log log = LogFactory.getLog(ScreenLoader.class);
 

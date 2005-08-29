@@ -51,6 +51,9 @@ import org.apache.turbine.util.security.DataBackendException;
  */
 public class TurbineUserPeer extends BasePeer implements UserPeer
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -5981268145973167352L;
+
     /** The mapBuilder for this Peer. */
     private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
             getMapBuilder(TurbineMapBuilder.class.getName());

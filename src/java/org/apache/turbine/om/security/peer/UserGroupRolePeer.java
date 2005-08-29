@@ -31,6 +31,9 @@ import org.apache.turbine.util.db.map.TurbineMapBuilder;
  */
 public class UserGroupRolePeer extends BasePeer
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -9097451661613525751L;
+
     /** The map builder for this Peer. */
     private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
             getMapBuilder(TurbineMapBuilder.class.getName());
