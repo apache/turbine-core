@@ -1,6 +1,19 @@
+-- Copyright 2001-2005 The Apache Software Foundation.
+--
+-- Licensed under the Apache License, Version 2.0 (the "License")
+-- you may not use this file except in compliance with the License.
+-- You may obtain a copy of the License at
+--
+--     http://www.apache.org/licenses/LICENSE-2.0
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the License is distributed on an "AS IS" BASIS,
+-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the License for the specific language governing permissions and
+-- limitations under the License.
 /* --------------------------------------------------------------------------
 TURBINE_PERMISSION
--------------------------------------------------------------------------- */
+-- ------------------------------------------------------------------------ */
 CREATE TABLE TURBINE_PERMISSION
 (
     "PERMISSION_ID" INTEGER NOT NULL,
@@ -14,7 +27,7 @@ CREATE TABLE TURBINE_PERMISSION
 
 /* --------------------------------------------------------------------------
 TURBINE_ROLE
--------------------------------------------------------------------------- */
+-- ------------------------------------------------------------------------ */
 CREATE TABLE TURBINE_ROLE
 (
     "ROLE_ID" INTEGER NOT NULL,
@@ -28,7 +41,7 @@ CREATE TABLE TURBINE_ROLE
 
 /* --------------------------------------------------------------------------
 TURBINE_GROUP
--------------------------------------------------------------------------- */
+-- ------------------------------------------------------------------------ */
 CREATE TABLE TURBINE_GROUP
 (
     "GROUP_ID" INTEGER NOT NULL,
@@ -42,7 +55,7 @@ CREATE TABLE TURBINE_GROUP
 
 /* --------------------------------------------------------------------------
 TURBINE_ROLE_PERMISSION
--------------------------------------------------------------------------- */
+-- ------------------------------------------------------------------------ */
 CREATE TABLE TURBINE_ROLE_PERMISSION
 (
     "ROLE_ID" INTEGER NOT NULL,
@@ -54,7 +67,7 @@ CREATE TABLE TURBINE_ROLE_PERMISSION
 
 /* --------------------------------------------------------------------------
 TURBINE_USER
--------------------------------------------------------------------------- */
+-- ------------------------------------------------------------------------ */
 CREATE TABLE TURBINE_USER
 (
     "USER_ID" INTEGER NOT NULL,
@@ -76,7 +89,7 @@ CREATE TABLE TURBINE_USER
 
 /* --------------------------------------------------------------------------
 TURBINE_USER_GROUP_ROLE
--------------------------------------------------------------------------- */
+-- ------------------------------------------------------------------------ */
 CREATE TABLE TURBINE_USER_GROUP_ROLE
 (
     "USER_ID" INTEGER NOT NULL,
@@ -89,7 +102,7 @@ CREATE TABLE TURBINE_USER_GROUP_ROLE
 
 /* --------------------------------------------------------------------------
 TURBINE_SCHEDULED_JOB
--------------------------------------------------------------------------- */
+-- ------------------------------------------------------------------------ */
 CREATE TABLE TURBINE_SCHEDULED_JOB
 (
     "JOB_ID" INTEGER NOT NULL,
