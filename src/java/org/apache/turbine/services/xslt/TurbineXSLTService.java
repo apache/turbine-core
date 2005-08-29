@@ -16,31 +16,30 @@ package org.apache.turbine.services.xslt;
  * limitations under the License.
  */
 
-import java.io.File;
+import java.io.IOException;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
-
-import java.util.HashMap;
+import java.net.URL;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.collections.map.LRUMap;
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.lang.StringUtils;
-
-import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-
+import org.apache.turbine.services.servlet.TurbineServlet;
 import org.w3c.dom.Node;
 
 /**
@@ -50,6 +49,7 @@ import org.w3c.dom.Node;
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
  * @author <a href="mailto:rubys@us.ibm.com">Sam Ruby</a>
+ * @author <a href="thomas.vandahl@tewisoft.de">Thomas Vandahl</a>
  * @version $Id$
  */
 public class TurbineXSLTService
@@ -70,7 +70,7 @@ public class TurbineXSLTService
     /**
      * Cache of compiled StyleSheetRoots.
      */
-    protected Map cache = new HashMap();
+    private LRUMap cache = new LRUMap(20);
 
     /**
      * Factory for producing templates and null transformers
@@ -82,21 +82,12 @@ public class TurbineXSLTService
      * xsl files and initiates the cache.
      */
     public void init()
-        throws InitializationException
+            throws InitializationException
     {
         Configuration conf = getConfiguration();
 
-        path = Turbine.getRealPath(conf.getString(STYLESHEET_PATH, null));
-
-        if (StringUtils.isNotEmpty(path))
-        {
-            if (!path.endsWith("/") && !path.endsWith ("\\"))
-            {
-                path = path + File.separator;
-            }
-        }
-
-        caching = conf.getBoolean(STYLESHEET_CACHING);
+        path = conf.getString(STYLESHEET_PATH, STYLESHEET_PATH_DEFAULT);
+        caching = conf.getBoolean(STYLESHEET_CACHING, STYLESHEET_CACHING_DEFAULT);
 
         tfactory = TransformerFactory.newInstance();
 
@@ -104,47 +95,57 @@ public class TurbineXSLTService
     }
 
     /**
-     * Get a valid and existing filename from a template name.
-     * The extension is removed and replaced with .xsl.  If this
-     * file does not exist the method attempts to find default.xsl.
-     * If it fails to find default.xsl it returns null.
+     * Try to create a valid url object from the style parameter.
+     *
+     * @param style the xsl-Style
+     * @return a <code>URL</code> object or null if the style sheet could not be found
      */
-    protected String getFileName(String templateName)
+    private URL getStyleURL(String style)
     {
-        // First we chop of the existing extension
-        int colon = templateName.lastIndexOf(".");
-        if (colon > 0)
-        {
-            templateName = templateName.substring(0, colon);
-        }
+        StringBuffer sb = new StringBuffer(128);
 
-        // Now we try to find the file ...
-        File f = new File(path + templateName + ".xsl");
-        if (f.exists())
+        if (StringUtils.isNotEmpty(path))
         {
-            return path + templateName + ".xsl";
+            if (path.charAt(0) != '/')
+            {
+                sb.append('/');
+            }
+
+            sb.append(path);
+
+            if (path.charAt(path.length() - 1) != '/')
+            {
+                sb.append('/');
+            }
         }
         else
         {
-            // ... or the default file
-            f = new File(path + "default.xsl");
-            if (f.exists())
-            {
-                return path + "default.xsl";
-            }
-            else
-            {
-                return null;
-            }
+            sb.append('/');
         }
+
+        // we chop off the existing extension
+        int colon = style.lastIndexOf(".");
+
+        if (colon > 0)
+        {
+            sb.append(style.substring(0, colon));
+        }
+        else
+        {
+            sb.append(style);
+        }
+
+        sb.append(".xsl");
+
+        return TurbineServlet.getResource(sb.toString());
     }
 
     /**
-     * Compile Templates from an input file.
+     * Compile Templates from an input URL.
      */
-    protected Templates compileTemplates(String source) throws Exception
+    protected Templates compileTemplates(URL source) throws Exception
     {
-        StreamSource xslin = new StreamSource(new File(source));
+        StreamSource xslin = new StreamSource(source.openStream());
         Templates root = tfactory.newTemplates(xslin);
         return root;
     }
@@ -169,11 +170,14 @@ public class TurbineXSLTService
                 return (Templates) cache.get(xslName);
             }
 
-            String fn = getFileName(xslName);
+            URL url = getStyleURL(xslName);
 
-            if (fn == null) return null;
+            if (url == null)
+            {
+                return null;
+            }
 
-            Templates sr = compileTemplates(fn);
+            Templates sr = compileTemplates(url);
 
             if (caching)
             {
@@ -185,24 +189,36 @@ public class TurbineXSLTService
 
     }
 
-    protected void transform(String xslName, Source xmlin, Result xmlout)
-            throws Exception
+    /**
+     * Transform the input source into the output source using the given style
+     *
+     * @param style the stylesheet parameter
+     * @param in the input source
+     * @param out the output source
+     * @param params XSLT parameter for the style sheet
+     *
+     * @throws TransformerException
+     */
+    protected void transform(String style, Source in, Result out, Map params)
+            throws TransformerException, IOException, Exception
     {
-        Templates sr = getTemplates(xslName);
-        Transformer transformer;
+        Templates styleTemplate = getTemplates(style);
 
+        Transformer transformer = (styleTemplate != null)
+                ? styleTemplate.newTransformer()
+                : tfactory.newTransformer();
 
-        // If there is no stylesheet we just echo the xml
-        if (sr == null)
+        if (params != null)
         {
-            transformer = tfactory.newTransformer();
-        }
-        else
-        {
-            transformer = sr.newTransformer();
+            for (Iterator it = params.entrySet().iterator(); it.hasNext(); )
+            {
+                Map.Entry entry = (Map.Entry) it.next();
+                transformer.setParameter(String.valueOf(entry.getKey()), entry.getValue());
+            }
         }
 
-        transformer.transform(xmlin, xmlout);
+        //      Start the transformation and rendering process
+        transformer.transform(in, out);
     }
 
     /**
@@ -214,13 +230,14 @@ public class TurbineXSLTService
         Source xmlin = new StreamSource(in);
         Result xmlout = new StreamResult(out);
 
-        transform(xslName, xmlin, xmlout);
+        transform(xslName, xmlin, xmlout, null);
     }
 
     /**
      * Execute an xslt
      */
-    public String transform(String xslName, Reader in) throws Exception
+    public String transform(String xslName, Reader in)
+            throws Exception
     {
         StringWriter sw = new StringWriter();
         transform(xslName, in, sw);
@@ -231,22 +248,67 @@ public class TurbineXSLTService
      * Execute an xslt
      */
     public void transform (String xslName, Node in, Writer out)
-        throws Exception
+            throws Exception
     {
         Source xmlin = new DOMSource(in);
         Result xmlout = new StreamResult(out);
 
-        transform(xslName, xmlin, xmlout);
+        transform(xslName, xmlin, xmlout, null);
     }
 
     /**
      * Execute an xslt
      */
     public String transform (String xslName, Node in)
-        throws Exception
+            throws Exception
     {
         StringWriter sw = new StringWriter();
         transform(xslName, in, sw);
+        return sw.toString();
+    }
+
+    /**
+     * Execute an xslt
+     */
+    public void transform(String xslName, Reader in, Writer out, Map params)
+            throws Exception
+    {
+        Source xmlin = new StreamSource(in);
+        Result xmlout = new StreamResult(out);
+
+        transform(xslName, xmlin, xmlout, params);
+    }
+
+    /**
+     * Execute an xslt
+     */
+    public String transform(String xslName, Reader in, Map params) throws Exception
+    {
+        StringWriter sw = new StringWriter();
+        transform(xslName, in, sw, params);
+        return sw.toString();
+    }
+
+    /**
+     * Execute an xslt
+     */
+    public void transform (String xslName, Node in, Writer out, Map params)
+            throws Exception
+    {
+        Source xmlin = new DOMSource(in);
+        Result xmlout = new StreamResult(out);
+
+        transform(xslName, xmlin, xmlout, params);
+    }
+
+    /**
+     * Execute an xslt
+     */
+    public String transform (String xslName, Node in, Map params)
+            throws Exception
+    {
+        StringWriter sw = new StringWriter();
+        transform(xslName, in, sw, params);
         return sw.toString();
     }
 

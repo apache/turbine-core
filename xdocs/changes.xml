@@ -28,6 +28,15 @@
 <body>
   <release version="2.3.2-dev" date="in CVS">
     <action type="update" dev="henning">
+      Get rid of direct File() access in TurbineXSLTService and replace it with URL 
+      access through the servlet container. The change also allows to place the
+      repository of XSL files elsewhere.
+      Replace the cache Map() with a LRUMap() to avoid infinite memory growth.
+      Add transform() methods having an additional parameter to forward a parameter
+      set to the XSLT. The parameters can be used in the style sheet.
+      Patches contributed by Thomas Vandahl.
+    </action>
+    <action type="update" dev="henning">
       Change UIManager to allow customization of directories and default values.
       Get rid of File() in UIManager.
       Allow UIManager to return relative links if configured.
