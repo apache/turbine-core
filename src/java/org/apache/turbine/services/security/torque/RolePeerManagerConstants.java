@@ -44,50 +44,50 @@ import org.apache.turbine.services.security.torque.om.TurbineRolePeer;
 public interface RolePeerManagerConstants
 {
     /** The key within the security service properties for the role class implementation */
-    public static final String ROLE_CLASS_KEY =
+    String ROLE_CLASS_KEY =
         "torque.role.class";
 
     /** The key within the security service properties for the role peer class implementation */
-    public static final String ROLE_PEER_CLASS_KEY =
+    String ROLE_PEER_CLASS_KEY =
         "torque.rolePeer.class";
 
     /** Role peer default class */
-    public static final String ROLE_PEER_CLASS_DEFAULT =
+    String ROLE_PEER_CLASS_DEFAULT =
             TurbineRolePeer.class.getName();
 
     /** The column name for the login name field. */
-    public static final String ROLE_NAME_COLUMN_KEY =
+    String ROLE_NAME_COLUMN_KEY =
         "torque.rolePeer.column.name";
 
     /** The column name for the id field. */
-    public static final String ROLE_ID_COLUMN_KEY =
+    String ROLE_ID_COLUMN_KEY =
         "torque.rolePeer.column.id";
 
 
     /** The default value for the column name constant for the login name field. */
-    public static final String ROLE_NAME_COLUMN_DEFAULT =
+    String ROLE_NAME_COLUMN_DEFAULT =
         "ROLE_NAME";
 
     /** The default value for the column name constant for the id field. */
-    public static final String ROLE_ID_COLUMN_DEFAULT =
+    String ROLE_ID_COLUMN_DEFAULT =
         "ROLE_ID";
 
 
     /** The property name of the bean property for the login name field. */
-    public static final String ROLE_NAME_PROPERTY_KEY =
+    String ROLE_NAME_PROPERTY_KEY =
         "torque.role.property.name";
 
     /** The property name of the bean property for the id field. */
-    public static final String ROLE_ID_PROPERTY_KEY =
+    String ROLE_ID_PROPERTY_KEY =
         "torque.role.property.id";
 
 
     /** The default value of the bean property for the login name field. */
-    public static final String ROLE_NAME_PROPERTY_DEFAULT =
+    String ROLE_NAME_PROPERTY_DEFAULT =
         "Name";
 
     /** The default value of the bean property for the id field. */
-    public static final String ROLE_ID_PROPERTY_DEFAULT =
+    String ROLE_ID_PROPERTY_DEFAULT =
         "RoleId";
 
 }

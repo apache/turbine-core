@@ -246,11 +246,20 @@ public class SequencedHashtable extends Hashtable
      * @return      The previous value coressponding the <code>key</code>, or
      *              <code>null</code> if none existed.
      */
-    private final synchronized Object remove(int index, Object key)
+    private synchronized Object remove(int index, Object key)
     {
-        if (index == UNKNOWN_INDEX) index = indexOf(key);
-        if (key == null) key = get(index);
-        if (index != UNKNOWN_INDEX) keySequence.remove(index);
+        if (index == UNKNOWN_INDEX)
+        {
+            index = indexOf(key);
+        }
+        if (key == null)
+        {
+            key = get(index);
+        }
+        if (index != UNKNOWN_INDEX)
+        {
+            keySequence.remove(index);
+        }
         return super.remove(key);
     }
 

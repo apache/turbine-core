@@ -63,104 +63,104 @@ public interface SecurityService
         extends Service
 {
     /** The name of the service */
-    static final String SERVICE_NAME = "SecurityService";
+    String SERVICE_NAME = "SecurityService";
 
     /**
      * the key within services's properties for user implementation
      * classname (user.class)
      */
-    static final String USER_CLASS_KEY = "user.class";
+    String USER_CLASS_KEY = "user.class";
 
     /**
      * the default implementation of User interface
      * (org.apache.turbine.om.security.TurbineUser)
      */
-    static final String USER_CLASS_DEFAULT
+    String USER_CLASS_DEFAULT
             = TurbineUser.class.getName();
 
     /**
      * The key within services' properties for the GROUP
      * implementation classname (group.class)
      */
-    static final String GROUP_CLASS_KEY = "group.class";
+    String GROUP_CLASS_KEY = "group.class";
 
     /**
      * The default implementation of the Group interface
      * (org.apache.turbine.om.security.TurbineGroup)
      */
-    static final String GROUP_CLASS_DEFAULT
+    String GROUP_CLASS_DEFAULT
             = TurbineGroup.class.getName();
 
     /**
      * The key within services' properties for the PERMISSION
      * implementation classname (permission.class)
      */
-    static final String PERMISSION_CLASS_KEY = "permission.class";
+    String PERMISSION_CLASS_KEY = "permission.class";
 
     /**
      * The default implementation of the Permissions interface
      * (org.apache.turbine.om.security.TurbinePermission)
      */
-    static final String PERMISSION_CLASS_DEFAULT
+    String PERMISSION_CLASS_DEFAULT
             = TurbinePermission.class.getName();
 
     /**
      * The key within services' properties for the ROLE
      * implementation classname (role.class)
      */
-    static final String ROLE_CLASS_KEY = "role.class";
+    String ROLE_CLASS_KEY = "role.class";
 
     /**
      * The default implementation of the Role Interface
      * (org.apache.turbine.om.security.TurbineRole)
      */
-    static final String ROLE_CLASS_DEFAULT
+    String ROLE_CLASS_DEFAULT
             = TurbineRole.class.getName();
 
     /**
      * The key within services' properties for the
      * ACL implementation classname (acl.class)
      */
-    static final String ACL_CLASS_KEY = "acl.class";
+    String ACL_CLASS_KEY = "acl.class";
 
     /**
      * The default implementation of the Acl Interface
      * (org.apache.turbine.util.security.TurbineAccessControlList)
      */
-    static final String ACL_CLASS_DEFAULT
+    String ACL_CLASS_DEFAULT
             = TurbineAccessControlList.class.getName();
 
     /**
      * the key within services's properties for user implementation
      * classname (user.manager)
      */
-    static final String USER_MANAGER_KEY = "user.manager";
+    String USER_MANAGER_KEY = "user.manager";
 
     /**
      * the default implementation of UserManager interface
      * (org.apache.turbine.services.security.DBUserManager)
      */
-    static final String USER_MANAGER_DEFAULT
+    String USER_MANAGER_DEFAULT
             = DBUserManager.class.getName();
 
     /**
      * the key within services's properties for secure passwords flag
      * (secure.passwords)
      */
-    static final String SECURE_PASSWORDS_KEY = "secure.passwords";
+    String SECURE_PASSWORDS_KEY = "secure.passwords";
 
     /** the value of secure passwords flag (false) */
-    static final String SECURE_PASSWORDS_DEFAULT = "false";
+    String SECURE_PASSWORDS_DEFAULT = "false";
 
     /**
      * the key within services's properties for secure passwords algorithm
      * (secure.passwords.algorithm)
      */
-    static final String SECURE_PASSWORDS_ALGORITHM_KEY
+    String SECURE_PASSWORDS_ALGORITHM_KEY
             = "secure.passwords.algorithm";
 
     /** the default algorithm for password encryption (SHA) */
-    static final String SECURE_PASSWORDS_ALGORITHM_DEFAULT = "SHA";
+    String SECURE_PASSWORDS_ALGORITHM_DEFAULT = "SHA";
 
     /*-----------------------------------------------------------------------
       Management of User objects

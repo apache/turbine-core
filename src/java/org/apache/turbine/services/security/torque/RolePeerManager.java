@@ -240,7 +240,7 @@ public class RolePeerManager
     {
         Persistent obj = null;
 
-        if(roleObject == null)
+        if (roleObject == null)
         {
             // This can happen if the Turbine wants to determine the
             // name of the anonymous user before the security service
@@ -280,7 +280,7 @@ public class RolePeerManager
         List results = doSelect(criteria);
         RoleSet rs = new RoleSet();
 
-        for(Iterator it = results.iterator(); it.hasNext(); )
+        for (Iterator it = results.iterator(); it.hasNext(); )
         {
             rs.add((Role) it.next());
         }
@@ -517,7 +517,7 @@ public class RolePeerManager
      */
     public static void setRoleName(Persistent obj, String name)
     {
-        if(obj == null)
+        if (obj == null)
         {
             return;
         }
@@ -550,7 +550,7 @@ public class RolePeerManager
     {
         String name = null;
 
-        if(obj == null)
+        if (obj == null)
         {
             return null;
         }
@@ -582,7 +582,7 @@ public class RolePeerManager
      */
     public static void setId(Persistent obj, int id)
     {
-        if(obj == null)
+        if (obj == null)
         {
             return;
         }
@@ -615,7 +615,7 @@ public class RolePeerManager
     {
         Integer id = null;
 
-        if(obj == null)
+        if (obj == null)
         {
             return new Integer(0);
         }

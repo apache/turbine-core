@@ -159,7 +159,7 @@ public class UUIdGenerator
     /**
      * Generates the new base id
      */
-    private final void generateNewBaseId() throws Exception
+    private void generateNewBaseId() throws Exception
     {
         long now = System.currentTimeMillis();
         byte[] nowBytes = org.apache.java.lang.Bytes.toBytes(now);

@@ -105,7 +105,9 @@ public class FormMessages
         {
             values = ((Vector) table.get(key));
             if (!values.contains(value))
+            {
                 values.addElement(value);
+            }
         }
     }
 
@@ -116,7 +118,7 @@ public class FormMessages
      * @param key A String with the key.
      * @return A Vector with the pair key/value, or null.
      */
-    private final Vector getValues(Hashtable table, String key)
+    private Vector getValues(Hashtable table, String key)
     {
         return (Vector) table.get(key);
     }

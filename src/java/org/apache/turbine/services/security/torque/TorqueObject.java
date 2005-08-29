@@ -101,7 +101,7 @@ public abstract class TorqueObject
     public ObjectKey getPrimaryKey()
     {
         Persistent p = getPersistentObj();
-        if(p != null)
+        if (p != null)
         {
             return p.getPrimaryKey();
         }

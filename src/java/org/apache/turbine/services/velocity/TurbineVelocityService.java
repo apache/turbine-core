@@ -463,7 +463,7 @@ public class TurbineVelocityService
      * @exception TurbineException Thrown every time.  Adds additional
      *                             information to <code>e</code>.
      */
-    private static final void renderingError(String filename, Exception e)
+    private static void renderingError(String filename, Exception e)
             throws TurbineException
     {
         String err = "Error rendering Velocity template: " + filename;
@@ -593,7 +593,7 @@ public class TurbineVelocityService
                         log.debug("Result (absolute jar path): " + path);
                     }
                 }
-                else if(path.startsWith(ABSOLUTE_PREFIX))
+                else if (path.startsWith(ABSOLUTE_PREFIX))
                 {
                     // skip file:// -> 7 chars
                     path = Turbine.getRealPath(path.substring(7));
@@ -601,7 +601,7 @@ public class TurbineVelocityService
                     log.debug("Result (absolute URL Path): " + path);
                 }
                 // Test if this might be some sort of URL that we haven't encountered yet.
-                else if(path.indexOf("://") < 0)
+                else if (path.indexOf("://") < 0)
                 {
                     path = Turbine.getRealPath(path);
 

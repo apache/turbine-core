@@ -39,7 +39,7 @@ public interface AccessControlList
         extends Serializable
 {
     /** The default Session key for the Access Control List */
-    public static final java.lang.String SESSION_KEY = "turbine.AccessControlList";
+    String SESSION_KEY = "turbine.AccessControlList";
 
     /**
      * Retrieves a set of Roles an user is assigned in a Group.

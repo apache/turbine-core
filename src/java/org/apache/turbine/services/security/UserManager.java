@@ -184,7 +184,7 @@ public interface UserManager
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public void saveOnSessionUnbind(User user)
+    void saveOnSessionUnbind(User user)
             throws UnknownEntityException, DataBackendException;
 
     /**

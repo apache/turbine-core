@@ -398,8 +398,8 @@ public class TurbineLocalizationService
                                               Map bundlesByLocale)
     {
         ResourceBundle rb = null;
-        if ( !StringUtils.isNotEmpty(locale.getCountry()) &&
-             defaultLanguage.equals(locale.getLanguage()) )
+        if (!StringUtils.isNotEmpty(locale.getCountry()) &&
+             defaultLanguage.equals(locale.getLanguage()))
         {
             /*
              *              log.debug("Requested language '" + locale.getLanguage() +
@@ -414,8 +414,8 @@ public class TurbineLocalizationService
                 rb = getBundleIgnoreException(bundleName, withDefaultCountry);
             }
         }
-        else if ( !StringUtils.isNotEmpty(locale.getLanguage()) &&
-                  defaultCountry.equals(locale.getCountry()) )
+        else if (!StringUtils.isNotEmpty(locale.getLanguage()) &&
+                  defaultCountry.equals(locale.getCountry()))
         {
             Locale withDefaultLanguage = new Locale(defaultLanguage,
                                                     locale.getCountry());
@@ -440,7 +440,7 @@ public class TurbineLocalizationService
      * returning <code>null</code> instead of throwing
      * <code>MissingResourceException</code>.
      */
-    private final ResourceBundle getBundleIgnoreException(String bundleName,
+    private ResourceBundle getBundleIgnoreException(String bundleName,
                                                           Locale locale)
     {
         try

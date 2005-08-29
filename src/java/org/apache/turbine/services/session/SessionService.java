@@ -38,7 +38,7 @@ public interface SessionService extends Service
     /**
      * The key under which this service is stored in TurbineServices.
      */
-    static final String SERVICE_NAME = "SessionService";
+    String SERVICE_NAME = "SessionService";
 
     /**
      * Gets all active sessions

@@ -63,176 +63,176 @@ public interface UserPeerManagerConstants
     extends Serializable
 {
     /** The key within the security service properties for the user class implementation */
-    public static final String USER_CLASS_KEY =
+    String USER_CLASS_KEY =
         "torque.user.class";
 
     /** The key within the security service properties for the user peer class implementation */
-    public static final String USER_PEER_CLASS_KEY =
+    String USER_PEER_CLASS_KEY =
         "torque.userPeer.class";
 
     /** User peer default class */
-    public static final String USER_PEER_CLASS_DEFAULT =
+    String USER_PEER_CLASS_DEFAULT =
         TurbineUserPeer.class.getName();
 
     /** The column name for the login name field. */
-    public static final String USER_NAME_COLUMN_KEY =
+    String USER_NAME_COLUMN_KEY =
         "torque.userPeer.column.name";
 
     /** The column name for the id field. */
-    public static final String USER_ID_COLUMN_KEY =
+    String USER_ID_COLUMN_KEY =
         "torque.userPeer.column.id";
 
     /** The column name for the password field. */
-    public static final String USER_PASSWORD_COLUMN_KEY =
+    String USER_PASSWORD_COLUMN_KEY =
         "torque.userPeer.column.password";
 
     /** The column name for the first name field. */
-    public static final String USER_FIRST_NAME_COLUMN_KEY =
+    String USER_FIRST_NAME_COLUMN_KEY =
         "torque.userPeer.column.firstname";
 
     /** The column name for the last name field. */
-    public static final String USER_LAST_NAME_COLUMN_KEY =
+    String USER_LAST_NAME_COLUMN_KEY =
         "torque.userPeer.column.lastname";
 
     /** The column name for the email field. */
-    public static final String USER_EMAIL_COLUMN_KEY =
+    String USER_EMAIL_COLUMN_KEY =
         "torque.userPeer.column.email";
 
     /** The column name for the confirm field. */
-    public static final String USER_CONFIRM_COLUMN_KEY =
+    String USER_CONFIRM_COLUMN_KEY =
         "torque.userPeer.column.confirm";
 
     /** The column name for the create date field. */
-    public static final String USER_CREATE_COLUMN_KEY =
+    String USER_CREATE_COLUMN_KEY =
         "torque.userPeer.column.createdate";
 
     /** The column name for the last login field. */
-    public static final String USER_LAST_LOGIN_COLUMN_KEY =
+    String USER_LAST_LOGIN_COLUMN_KEY =
         "torque.userPeer.column.lastlogin";
 
     /** The column name for the objectdata field. */
-    public static final String USER_OBJECTDATA_COLUMN_KEY =
+    String USER_OBJECTDATA_COLUMN_KEY =
         "torque.userPeer.column.objectdata";
 
 
     /** The default value for the column name constant for the login name field. */
-    public static final String USER_NAME_COLUMN_DEFAULT =
+    String USER_NAME_COLUMN_DEFAULT =
         "LOGIN_NAME";
 
     /** The default value for the column name constant for the id field. */
-    public static final String USER_ID_COLUMN_DEFAULT =
+    String USER_ID_COLUMN_DEFAULT =
         "USER_ID";
 
     /** The default value for the column name constant for the password field. */
-    public static final String USER_PASSWORD_COLUMN_DEFAULT =
+    String USER_PASSWORD_COLUMN_DEFAULT =
         "PASSWORD_VALUE";
 
     /** The default value for the column name constant for the first name field. */
-    public static final String USER_FIRST_NAME_COLUMN_DEFAULT =
+    String USER_FIRST_NAME_COLUMN_DEFAULT =
         "FIRST_NAME";
 
     /** The default value for the column name constant for the last name field. */
-    public static final String USER_LAST_NAME_COLUMN_DEFAULT =
+    String USER_LAST_NAME_COLUMN_DEFAULT =
         "LAST_NAME";
 
     /** The default value for the column name constant for the email field. */
-    public static final String USER_EMAIL_COLUMN_DEFAULT =
+    String USER_EMAIL_COLUMN_DEFAULT =
         "EMAIL";
 
     /** The default value for the column name constant for the confirm field. */
-    public static final String USER_CONFIRM_COLUMN_DEFAULT =
+    String USER_CONFIRM_COLUMN_DEFAULT =
         "CONFIRM_VALUE";
 
     /** The default value for the column name constant for the create date field. */
-    public static final String USER_CREATE_COLUMN_DEFAULT =
+    String USER_CREATE_COLUMN_DEFAULT =
         "CREATED";
 
     /** The default value for the column name constant for the last login field. */
-    public static final String USER_LAST_LOGIN_COLUMN_DEFAULT =
+    String USER_LAST_LOGIN_COLUMN_DEFAULT =
         "LAST_LOGIN";
 
     /** The default value for the column name constant for the objectdata field. */
-    public static final String USER_OBJECTDATA_COLUMN_DEFAULT =
+    String USER_OBJECTDATA_COLUMN_DEFAULT =
         "OBJECTDATA";
 
     /** The property name of the bean property for the login name field. */
-    public static final String USER_NAME_PROPERTY_KEY =
+    String USER_NAME_PROPERTY_KEY =
         "torque.user.property.name";
 
     /** The property name of the bean property for the id field. */
-    public static final String USER_ID_PROPERTY_KEY =
+    String USER_ID_PROPERTY_KEY =
         "torque.user.property.id";
 
     /** The property name of the bean property for the password field. */
-    public static final String USER_PASSWORD_PROPERTY_KEY =
+    String USER_PASSWORD_PROPERTY_KEY =
         "torque.user.property.password";
 
     /** The property name of the bean property for the first name field. */
-    public static final String USER_FIRST_NAME_PROPERTY_KEY =
+    String USER_FIRST_NAME_PROPERTY_KEY =
         "torque.user.property.firstname";
 
     /** The property name of the bean property for the last name field. */
-    public static final String USER_LAST_NAME_PROPERTY_KEY =
+    String USER_LAST_NAME_PROPERTY_KEY =
         "torque.user.property.lastname";
 
     /** The property name of the bean property for the email field. */
-    public static final String USER_EMAIL_PROPERTY_KEY =
+    String USER_EMAIL_PROPERTY_KEY =
         "torque.user.property.email";
 
     /** The property name of the bean property for the confirm field. */
-    public static final String USER_CONFIRM_PROPERTY_KEY =
+    String USER_CONFIRM_PROPERTY_KEY =
         "torque.user.property.confirm";
 
     /** The property name of the bean property for the create date field. */
-    public static final String USER_CREATE_PROPERTY_KEY =
+    String USER_CREATE_PROPERTY_KEY =
         "torque.user.property.createdate";
 
     /** The property name of the bean property for the last login field. */
-    public static final String USER_LAST_LOGIN_PROPERTY_KEY =
+    String USER_LAST_LOGIN_PROPERTY_KEY =
         "torque.user.property.lastlogin";
 
     /** The property name of the bean property for the last login field. */
-    public static final String USER_OBJECTDATA_PROPERTY_KEY =
+    String USER_OBJECTDATA_PROPERTY_KEY =
         "torque.user.property.objectdata";
 
     /** The default value of the bean property for the login name field. */
-    public static final String USER_NAME_PROPERTY_DEFAULT =
+    String USER_NAME_PROPERTY_DEFAULT =
         "UserName";
 
     /** The default value of the bean property for the id field. */
-    public static final String USER_ID_PROPERTY_DEFAULT =
+    String USER_ID_PROPERTY_DEFAULT =
         "UserId";
 
     /** The default value of the bean property for the password field. */
-    public static final String USER_PASSWORD_PROPERTY_DEFAULT =
+    String USER_PASSWORD_PROPERTY_DEFAULT =
         "Password";
 
     /** The default value of the bean property for the first name field. */
-    public static final String USER_FIRST_NAME_PROPERTY_DEFAULT =
+    String USER_FIRST_NAME_PROPERTY_DEFAULT =
         "FirstName";
 
     /** The default value of the bean property for the last name field. */
-    public static final String USER_LAST_NAME_PROPERTY_DEFAULT =
+    String USER_LAST_NAME_PROPERTY_DEFAULT =
         "LastName";
 
     /** The default value of the bean property for the email field. */
-    public static final String USER_EMAIL_PROPERTY_DEFAULT =
+    String USER_EMAIL_PROPERTY_DEFAULT =
         "Email";
 
     /** The default value of the bean property for the confirm field. */
-    public static final String USER_CONFIRM_PROPERTY_DEFAULT =
+    String USER_CONFIRM_PROPERTY_DEFAULT =
         "Confirmed";
 
     /** The default value of the bean property for the create date field. */
-    public static final String USER_CREATE_PROPERTY_DEFAULT =
+    String USER_CREATE_PROPERTY_DEFAULT =
         "CreateDate";
 
     /** The default value of the bean property for the last login field. */
-    public static final String USER_LAST_LOGIN_PROPERTY_DEFAULT =
+    String USER_LAST_LOGIN_PROPERTY_DEFAULT =
         "LastLogin";
 
     /** The default value of the bean property for the objectdata field. */
-    public static final String USER_OBJECTDATA_PROPERTY_DEFAULT =
+    String USER_OBJECTDATA_PROPERTY_DEFAULT =
         "Objectdata";
 };
 

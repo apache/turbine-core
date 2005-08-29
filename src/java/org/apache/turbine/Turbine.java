@@ -970,7 +970,7 @@ public class Turbine
      * @param res Servlet response.
      * @param t The exception to report.
      */
-    private final void handleException(RunData data, HttpServletResponse res,
+    private void handleException(RunData data, HttpServletResponse res,
                                        Throwable t)
     {
         // make sure that the stack trace makes it the log
