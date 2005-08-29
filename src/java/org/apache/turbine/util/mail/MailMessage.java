@@ -534,7 +534,7 @@ public class MailMessage
         }
         else
         {
-            debug = new Boolean(str).booleanValue();
+            debug = Boolean.valueOf(str).booleanValue();
         }
     }
 

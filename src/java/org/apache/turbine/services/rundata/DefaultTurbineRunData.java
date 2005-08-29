@@ -50,7 +50,6 @@ import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.SystemError;
 import org.apache.turbine.util.parser.CookieParser;
 import org.apache.turbine.util.parser.ParameterParser;
-import org.apache.turbine.util.pool.Recyclable;
 import org.apache.turbine.util.pool.RecyclableSupport;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.template.TemplateInfo;
@@ -80,7 +79,7 @@ import org.apache.turbine.util.template.TemplateInfo;
  */
 public class DefaultTurbineRunData
         extends RecyclableSupport
-        implements TurbineRunData, Recyclable
+        implements TurbineRunData
 {
     /** The default locale. */
     private static Locale defaultLocale = null;

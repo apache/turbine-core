@@ -77,7 +77,7 @@ public class LDAPUser extends BaseObject implements User
         createDate = new java.util.Date();
         tempStorage = new Hashtable(10);
         permStorage = new Hashtable(10);
-        setHasLoggedIn(new Boolean(false));
+        setHasLoggedIn(Boolean.FALSE);
     }
 
     /**

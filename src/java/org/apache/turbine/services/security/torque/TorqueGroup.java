@@ -51,8 +51,7 @@ import org.apache.turbine.util.security.TurbineSecurityException;
 public class TorqueGroup
     extends TorqueObject
     implements Group,
-               Comparable,
-               Persistent
+               Comparable
 {
     /**
      * Constructs a new Group.

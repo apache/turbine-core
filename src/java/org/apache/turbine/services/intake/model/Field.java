@@ -251,7 +251,7 @@ public abstract class Field
         Rule reqRule = (Rule) field.getRuleMap().get("required");
         if (reqRule != null)
         {
-            alwaysRequired = new Boolean(reqRule.getValue()).booleanValue();
+            alwaysRequired = Boolean.valueOf(reqRule.getValue()).booleanValue();
             ifRequiredMessage = reqRule.getMessage();
         }
 

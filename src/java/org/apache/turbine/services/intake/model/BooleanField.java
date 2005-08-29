@@ -54,7 +54,7 @@ public class BooleanField
             return;
         }
 
-        defaultValue = new Boolean(prop);
+        defaultValue = Boolean.valueOf(prop);
     }
 
     /**
@@ -74,7 +74,7 @@ public class BooleanField
             return;
         }
 
-        emptyValue = new Boolean(prop);
+        emptyValue = Boolean.valueOf(prop);
     }
 
     /**
@@ -163,7 +163,7 @@ public class BooleanField
         }
         else
         {
-            result = new Boolean(stringValue);
+            result = Boolean.valueOf(stringValue);
         }
 
         return result;

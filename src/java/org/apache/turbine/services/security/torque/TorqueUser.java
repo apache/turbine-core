@@ -52,8 +52,7 @@ import org.apache.turbine.util.security.TurbineSecurityException;
 
 public class TorqueUser
     extends TorqueObject
-    implements User,
-               Persistent
+    implements User
 {
     private static Log log = LogFactory.getLog(TorqueUser.class);
     

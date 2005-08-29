@@ -42,8 +42,7 @@ import org.apache.torque.om.Persistent;
 public class TorqueRole
     extends TorqueObject
     implements Role,
-               Comparable,
-               Persistent
+               Comparable
 {
     /** The permissions for this role. */
     private PermissionSet permissionSet = null;

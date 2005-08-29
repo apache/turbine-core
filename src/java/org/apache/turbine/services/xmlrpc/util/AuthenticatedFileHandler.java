@@ -67,7 +67,7 @@ public class AuthenticatedFileHandler
         {
             if (method.equals("send"))
             {
-                obj = new Boolean(this.send((String) params.elementAt(0),
+                obj = Boolean.valueOf(this.send((String) params.elementAt(0),
                         (String) params.elementAt(1),
                         (String) params.elementAt(2)));
             }
@@ -82,12 +82,12 @@ public class AuthenticatedFileHandler
             {
                 AuthenticatedFileHandler.remove((String) params.elementAt(0),
                         (String) params.elementAt(1));
-                obj = new Boolean("true");
+                obj = Boolean.TRUE;
             }
         }
         else
         {
-            obj = new Boolean("false");
+            obj = Boolean.FALSE;
         }
 
         return (Object) obj;

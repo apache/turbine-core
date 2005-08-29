@@ -16,8 +16,6 @@ package org.apache.turbine.services.pull.tools;
  * limitations under the License.
  */
 
-import org.apache.turbine.services.pull.ApplicationTool;
-
 /**
  * This class allows one to specify paths in the setPage method 
  * using '/' slash as opposed to the ',' used in TemplateLink.
@@ -40,8 +38,6 @@ import org.apache.turbine.services.pull.ApplicationTool;
  */
 public class TemplateLinkWithSlash
     extends TemplateLink
-    implements ApplicationTool
-
 {
     /**
      * Default constructor

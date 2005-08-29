@@ -16,8 +16,6 @@ package org.apache.turbine.services.pull.tools;
  * limitations under the License.
  */
 
-import org.apache.turbine.services.pull.ApplicationTool;
-
 /**
  * This is exactly the same thing as TemplateLink but it returns a 
  * relative link on toString(). Everything else is identical. This class is
@@ -42,8 +40,6 @@ import org.apache.turbine.services.pull.ApplicationTool;
  */
 public class RelativeTemplateLink
     extends TemplateLink
-    implements ApplicationTool
-
 {
     /**
      * Default constructor
