@@ -16,17 +16,17 @@ package org.apache.turbine.services.pull.util;
  * limitations under the License.
  */
 
-import java.io.FileInputStream;
-
+import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.services.pull.TurbinePull;
+import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.uri.DataURI;
@@ -73,6 +73,7 @@ import org.apache.turbine.util.uri.DataURI;
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:james_coltman@majorband.co.uk">James Coltman</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @author <a href="thomas.vandahl@tewisoft.de">Thomas Vandahl</a>
  * @version $Id$
  */
 public class UIManager implements ApplicationTool
@@ -93,10 +94,34 @@ public class UIManager implements ApplicationTool
     private static final String IMAGES_DIRECTORY = "/images";
 
     /**
-     * Property tag for the skin that is to be
+     * Property tag for the default skin that is to be
      * used for the web application.
      */
     private static final String SKIN_PROPERTY = "tool.ui.skin";
+
+    /**
+     * Property tag for the image directory inside the skin that is to be
+     * used for the web application.
+     */
+    private static final String IMAGEDIR_PROPERTY = "tool.ui.dir.image";
+
+    /**
+     * Property tag for the skin directory that is to be
+     * used for the web application.
+     */
+    private static final String SKINDIR_PROPERTY = "tool.ui.dir.skin";
+
+    /**
+     * Property tag for the css file that is to be
+     * used for the web application.
+     */
+    private static final String CSS_PROPERTY = "tool.ui.css";
+
+    /**
+     * Property tag for the css file that is to be
+     * used for the web application.
+     */
+    private static final String RELATIVE_PROPERTY = "tool.ui.want.relative";
 
     /**
      * Default skin name. This name actually represents
@@ -110,7 +135,7 @@ public class UIManager implements ApplicationTool
      * Attribute name of skinName value in User's temp hashmap.
      */
     private static final String SKIN_ATTRIBUTE =
-        UIManager.class.getName()+ ".skin";
+            UIManager.class.getName()+ ".skin";
 
     /**
      * The actual skin being used for the webapp.
@@ -131,7 +156,7 @@ public class UIManager implements ApplicationTool
     /**
      * The file name for the skin style sheet.
      */
-    private static final String SKIN_CSS_FILE = "skin.css";
+    private static final String DEFAULT_SKIN_CSS_FILE = "skin.css";
 
     /**
      * This the resources directory relative to the
@@ -139,6 +164,10 @@ public class UIManager implements ApplicationTool
      * URIs for retrieving images in image().
      */
     private String resourcesDirectory;
+    private String imagesDirectory;
+    private String cssFile;
+
+    private boolean wantRelative = false;
 
     /**
      * Properties to hold the name/value pairs
@@ -156,7 +185,17 @@ public class UIManager implements ApplicationTool
         /**
          * Store the resources directory for use in image().
          */
+        Configuration cfg = Turbine.getConfiguration();
         resourcesDirectory = TurbinePull.getResourcesDirectory();
+
+        if (resourcesDirectory.charAt(resourcesDirectory.length() -1) == '/')
+        {
+            resourcesDirectory = resourcesDirectory.substring(0, resourcesDirectory.length() - 2);
+        }
+        if (resourcesDirectory.charAt(0) == '/')
+        {
+            resourcesDirectory = resourcesDirectory.substring(1);
+        }
 
         if (data == null)
         {
@@ -174,8 +213,31 @@ public class UIManager implements ApplicationTool
             setSkin((User) data);
         }
 
-        skinsDirectory =
-                TurbinePull.getAbsolutePathToResourcesDirectory() + SKINS_DIRECTORY;
+        skinsDirectory = cfg.getString(SKINDIR_PROPERTY, SKINS_DIRECTORY);
+        if (skinsDirectory.charAt(skinsDirectory.length() - 1) == '/')
+        {
+            skinsDirectory = skinsDirectory.substring(0, skinsDirectory.length() - 2);
+        }
+
+        if (skinsDirectory.charAt(0) == '/')
+        {
+            skinsDirectory = skinsDirectory.substring(1);
+        }
+
+        imagesDirectory = cfg.getString(IMAGEDIR_PROPERTY, IMAGES_DIRECTORY);
+        if (imagesDirectory.charAt(imagesDirectory.length() - 1) == '/')
+        {
+            imagesDirectory = imagesDirectory.substring(0, imagesDirectory.length() - 2);
+        }
+
+        if (imagesDirectory.charAt(0) == '/')
+        {
+            imagesDirectory = imagesDirectory.substring(1);
+        }
+
+        cssFile = cfg.getString(CSS_PROPERTY, DEFAULT_SKIN_CSS_FILE);
+
+        wantRelative = cfg.getBoolean(RELATIVE_PROPERTY, false);
 
         loadSkin();
     }
@@ -232,15 +294,18 @@ public class UIManager implements ApplicationTool
         StringBuffer sb = new StringBuffer();
 
         sb.append(resourcesDirectory).
-                append(SKINS_DIRECTORY).
-                append("/").
+                append('/').
+                append(skinsDirectory).
+                append('/').
                 append(getSkin()).
-                append(IMAGES_DIRECTORY).
-                append("/").
+                append('/').
+                append(imagesDirectory).
+                append('/').
                 append(imageId);
 
         du.setScriptName(sb.toString());
-        return du.getAbsoluteLink();
+
+        return wantRelative ? du.getRelativeLink() : du.getAbsoluteLink();
     }
 
     /**
@@ -257,15 +322,17 @@ public class UIManager implements ApplicationTool
         StringBuffer sb = new StringBuffer();
 
         sb.append(resourcesDirectory).
-           append(SKINS_DIRECTORY).
-           append("/").
-           append(getSkin()).
-           append(IMAGES_DIRECTORY).
-           append("/").
-           append(imageId);
+                append('/').
+                append(skinsDirectory).
+                append('/').
+                append(getSkin()).
+                append('/').
+                append(imagesDirectory).
+                append('/').
+                append(imageId);
 
         du.setScriptName(sb.toString());
-        return du.getAbsoluteLink();
+        return wantRelative ? du.getRelativeLink() : du.getAbsoluteLink();
     }
 
     /**
@@ -284,18 +351,7 @@ public class UIManager implements ApplicationTool
      */
     public String getStylecss(RunData data)
     {
-        DataURI du = new DataURI(data);
-        StringBuffer sb = new StringBuffer();
-
-        sb.append(resourcesDirectory).
-                append(SKINS_DIRECTORY).
-                append("/").
-                append(getSkin()).
-                append("/").
-                append(SKIN_CSS_FILE);
-
-        du.setScriptName(sb.toString());
-        return du.getAbsoluteLink();
+        return getScript(cssFile, data);
     }
 
     /**
@@ -306,20 +362,54 @@ public class UIManager implements ApplicationTool
      */
     public String getStylecss()
     {
+        return getScript(cssFile);
+    }
+
+    /**
+     * Retrieve the URL for a given script that is part
+     * of a skin. The script is stored in the
+     * WEBAPP/resources/ui/skins/<SKIN> directory
+     */
+    public String getScript(String filename, RunData data)
+    {
+        DataURI du = new DataURI(data);
+
+        StringBuffer sb = new StringBuffer();
+
+        sb.append(resourcesDirectory).
+                append('/').
+                append(skinsDirectory).
+                append('/').
+                append(getSkin()).
+                append('/').
+                append(filename);
+
+        du.setScriptName(sb.toString());
+        return wantRelative ? du.getRelativeLink() : du.getAbsoluteLink();
+    }
+
+    /**
+     * Retrieve the URL for a given script that is part
+     * of a skin. The script is stored in the
+     * WEBAPP/resources/ui/skins/<SKIN> directory
+     */
+    public String getScript(String filename)
+    {
         ServerData sd = Turbine.getDefaultServerData();
         DataURI du = new DataURI(sd);
 
         StringBuffer sb = new StringBuffer();
 
         sb.append(resourcesDirectory).
-           append(SKINS_DIRECTORY).
-           append("/").
-           append(getSkin()).
-           append("/").
-           append(SKIN_CSS_FILE);
+                append('/').
+                append(skinsDirectory).
+                append('/').
+                append(getSkin()).
+                append('/').
+                append(filename);
 
         du.setScriptName(sb.toString());
-        return du.getAbsoluteLink();
+        return wantRelative ? du.getRelativeLink() : du.getAbsoluteLink();
     }
 
     /**
@@ -333,8 +423,7 @@ public class UIManager implements ApplicationTool
 
         try
         {
-            FileInputStream is = new FileInputStream(
-                    skinsDirectory + "/" + getSkin() + "/" + SKIN_PROPS_FILE);
+            InputStream is = TurbineServlet.getResourceAsStream(getScript(SKIN_PROPS_FILE));
 
             skinProperties.load(is);
         }
@@ -353,7 +442,7 @@ public class UIManager implements ApplicationTool
     {
         this.skinName = Turbine.getConfiguration()
                 .getString(SKIN_PROPERTY,
-                           SKIN_PROPERTY_DEFAULT);
+                        SKIN_PROPERTY_DEFAULT);
     }
 
     /**
