@@ -185,4 +185,15 @@
     <j:set var="outputDirectory" value="" />
   </goal>
 
+  <!-- ================================================================== -->
+  <!-- D I S T : B U I L D _ S R C   P R E   G O A L                      -->
+  <!-- ================================================================== -->
+  <preGoal name="dist:build-src">
+    <copy todir="${maven.dist.src.assembly.dir}/conf/test">
+      <fileset dir="${basedir}/conf/test">
+        <include name="**/*"/>
+      </fileset>
+    </copy>
+  </preGoal>
+
 </project>
