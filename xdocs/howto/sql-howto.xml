@@ -36,18 +36,27 @@
     The Torque generator can be used to create the SQL files to set up the 
     necessary database tables.
    </p>
+  </section>
 
+  <section name="Source distribution">
    <p>
     To create the SQL files for a specific database, run the following maven
     command from the root of the source distribution:
    </p>
 
-   <source>
-    maven -Dtorque.database=&lt;database name&gt; sql
-   </source>
+   <source><![CDATA[
+    maven -Dtorque.database=<database name> sql
+   ]]></source>
 
    <p>
     Default is to create SQL for the MySQL database.
+   </p>
+  </section>
+
+  <section name="Binary distribution">
+   <p>
+    The binary distribution contains the SQL files for various databases in the <code>sql</code>
+    subdirectory.
    </p>
   </section>
  </body>
