@@ -26,6 +26,37 @@
 <body>
   <release version="2.3.2-dev" date="in CVS">
     <action type="update" dev="henning">
+      This release will have JDK 1.4.x as primary build platform. If you intend
+      to build on an older (1.3) JDK, you must uncomment a number of dependency
+      libraries in the project.xml descriptor.
+    </action>
+    <action type="update" dev="henning">
+      Update jar dependencies:<br/>
+      <ul>
+        <li>Framework to 4.3 (including api and impl)</li>
+        <li>Beanutils to 1.7.0</li>
+        <li>Collections to 3.1</li>
+        <li>Configuration to 1.1</li>
+        <li>Digester to 1.7</li>
+        <li>Lang to 2.1</li>
+        <li>dom4j to 1.6.1</li>
+        <li>excalibur-component to 2.1</li>
+        <li>excalibur-instrument to ...-api 2.1</li>
+        <li>excalibur-logger to 2.1</li>
+        <li>excalibur-pool to ...-api 2.1</li>
+        <li>javamail to 1.3.3</li>
+        <li>oro to 2.0.8</li>
+        <li>log4j to 1.2.11</li>
+        <li>logkit to avalon-logkit 2.1</li>
+        <li>stratum to 1.0</li>
+        <li>velocity to 1.4</li>
+        <li>village to 2.0</li>
+        <li>xalan to 2.7.0</li>
+        <li>xmlrpc to 2.0</li>
+        <li>hqldb to 1.7.3.3 (testing)</li>
+      </ul>
+    </action>
+    <action type="update" dev="henning">
       Get rid of direct File() access in TurbineXSLTService and replace it with URL
       access through the servlet container. The change also allows to place the
       repository of XSL files elsewhere.
