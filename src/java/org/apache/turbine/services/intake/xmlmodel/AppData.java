@@ -36,6 +36,9 @@ import org.xml.sax.Attributes;
 public class AppData
         implements Serializable
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -7998777726853272835L;
+
     /** List of groups */
     private List inputs;
 

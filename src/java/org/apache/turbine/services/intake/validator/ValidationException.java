@@ -28,6 +28,9 @@ import org.apache.turbine.services.intake.IntakeException;
 public class ValidationException
         extends IntakeException
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -4511820025175711625L;
+
     /**
      * Creates a new <code>ValidationException</code> instance.
      *

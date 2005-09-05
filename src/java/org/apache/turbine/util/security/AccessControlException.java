@@ -26,6 +26,9 @@ package org.apache.turbine.util.security;
 public class AccessControlException
         extends TurbineSecurityException
 {
+    /** Serial Version ID */
+    private static final long serialVersionUID = -594555809858627271L;
+
     /**
      * Construct an AccessControlException with specified detail message.
      *

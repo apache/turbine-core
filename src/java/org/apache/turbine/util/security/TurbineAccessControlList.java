@@ -40,6 +40,9 @@ import org.apache.turbine.services.security.TurbineSecurity;
 public class TurbineAccessControlList
         implements AccessControlList
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 2678947159949477950L;
+
     /** The sets of roles that the user has in different groups */
     private Map roleSets;
 

@@ -27,6 +27,9 @@ import org.apache.turbine.services.intake.IntakeException;
 public class InvalidMaskException
         extends IntakeException
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 2133836269854500843L;
+
     /**
      * Creates a new <code>InvalidMaskException</code> instance.
      *

@@ -28,6 +28,9 @@ import org.apache.turbine.util.TurbineException;
  */
 public class VelocityEmailException extends TurbineException
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 191063357577698340L;
+
     /**
      * Constructs a new <code>VelocityEmailException</code> without specified
      * detail message.

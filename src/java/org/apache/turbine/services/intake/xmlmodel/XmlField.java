@@ -42,6 +42,9 @@ import org.xml.sax.Attributes;
 public class XmlField
         implements Serializable
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 6403078189106766569L;
+
     private String name;
     private String key;
     private String type;

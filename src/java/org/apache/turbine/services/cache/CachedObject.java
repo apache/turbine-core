@@ -32,6 +32,9 @@ public class CachedObject
         implements Serializable
 {
 
+    /** Serial Version UID */
+    private static final long serialVersionUID = -6196639456343534949L;
+
     /** Cache the object with the Default TTL */
     public static final int DEFAULT = 0;
 

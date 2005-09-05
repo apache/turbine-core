@@ -35,6 +35,9 @@ import org.xml.sax.Attributes;
 public class XmlGroup
         implements Serializable
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -2529039710689787681L;
+
     private List fields;
     private List mapToObjects;
     private String defaultMapToObject;

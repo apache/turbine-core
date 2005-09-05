@@ -28,6 +28,9 @@ import org.apache.commons.lang.exception.NestableError;
  */
 public class SystemError extends NestableError
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 7895965535913675097L;
+
     /**
      * Constructor.
      *

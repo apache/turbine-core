@@ -53,6 +53,9 @@ import javax.servlet.http.HttpSessionListener;
 public class SessionListener
         implements HttpSessionListener, HttpSessionActivationListener, Serializable
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -8083730704842809870L;
+
     // ---- HttpSessionListener implementation -----------------------------
 
     /**

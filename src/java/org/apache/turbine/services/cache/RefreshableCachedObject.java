@@ -36,6 +36,9 @@ public class RefreshableCachedObject
         extends CachedObject
 {
 
+    /** Serial Version UID */
+    private static final long serialVersionUID = 727229797378897180L;
+
     /**
      * How long to wait before removing an untouched object from the cache.
      * Negative numbers mean never remove (the default).

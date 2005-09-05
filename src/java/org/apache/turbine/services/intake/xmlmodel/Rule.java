@@ -31,6 +31,9 @@ import org.xml.sax.Attributes;
 public class Rule
         implements Constraint, Serializable
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 3662886424992562964L;
+
     private String name;
     private String value;
     private String message;

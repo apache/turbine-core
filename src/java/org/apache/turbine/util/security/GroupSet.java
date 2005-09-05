@@ -38,6 +38,9 @@ import org.apache.turbine.om.security.Group;
 public class GroupSet
         extends SecuritySet
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 34735375738993720L;
+
     /**
      * Constructs an empty GroupSet
      */

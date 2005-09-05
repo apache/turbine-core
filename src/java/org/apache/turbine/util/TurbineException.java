@@ -84,6 +84,9 @@ import org.apache.commons.lang.exception.NestableException;
  */
 public class TurbineException extends NestableException
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -2978139489274739700L;
+
     /**
      * Constructs a new <code>TurbineException</code> without specified
      * detail message.

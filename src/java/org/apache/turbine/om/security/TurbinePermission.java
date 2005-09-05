@@ -33,6 +33,9 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  */
 public class TurbinePermission extends SecurityObject implements Permission
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -2193700445644560143L;
+
     /**
      * Constructs a new TurbinePermission.
      */

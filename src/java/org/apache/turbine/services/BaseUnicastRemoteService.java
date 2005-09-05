@@ -34,6 +34,9 @@ import org.apache.commons.configuration.ConfigurationConverter;
 public class BaseUnicastRemoteService extends UnicastRemoteObject
         implements Service
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -7775459623190960297L;
+
     protected Configuration configuration;
     private boolean isInitialized;
     private InitableBroker initableBroker;
