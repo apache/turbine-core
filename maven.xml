@@ -189,11 +189,55 @@
   <!-- D I S T : B U I L D _ S R C   P R E   G O A L                      -->
   <!-- ================================================================== -->
   <preGoal name="dist:build-src">
-    <copy todir="${maven.dist.src.assembly.dir}/conf/test">
-      <fileset dir="${basedir}/conf/test">
-        <include name="**/*"/>
+    <copy todir="${maven.dist.src.assembly.dir}/conf">
+      <fileset dir="${basedir}/conf">
+        <include name="test/*"/>
+        <include name="checkstyle-license.txt"/>
+        <include name="turbine-checkstyle.xml"/>
       </fileset>
     </copy>
+
+    <copy todir="${maven.dist.src.assembly.dir}/xdocs">
+      <fileset dir="xdocs"/>
+    </copy>
+  </preGoal>
+
+  <!-- ================================================================== -->
+  <!-- D I S T : B U I L D _ B I N   P R E   G O A L                      -->
+  <!-- ================================================================== -->
+  <!-- copies jars, sample configuration ... to the                       -->
+  <!-- ${maven.dist.bin.assembly.dir} to include them in the binary dists -->
+  <!-- ================================================================== -->
+  <preGoal name="dist:build-bin">
+    <!-- include listed dependencies -->
+    <j:forEach var="dep" items="${pom.dependencies}">
+      <j:if test="${dep.getProperty('dist.bundle') != null &amp;&amp; dep.getProperty('dist.bundle').equalsIgnoreCase('true')}">
+        <copy todir="${maven.dist.bin.assembly.dir}/lib"
+              file="${maven.repo.local}/${dep.getArtifactDirectory()}/jars/${dep.getArtifact()}"/>
+      </j:if>
+    </j:forEach>
+
+    <!-- copy the contents of the conf directory -->
+    <!-- to the right place -->
+    <copy todir="${maven.dist.bin.assembly.dir}/conf" failonerror="false">
+      <fileset dir="conf">
+        <include name="componentConfiguration.xml" />
+        <include name="roleConfiguration.xml" />
+        <include name="Log4j.properties" />
+        <include name="TurbineResources.properties" />
+      </fileset>
+    </copy>
+
+    <u:tokenize var="databaseList" delim="," trim="true">db2,hypersonic,interbase,mysql,oracle,postgresql,sybase</u:tokenize>
+    <j:forEach var="torque.database" items="${databaseList}">
+      <attainGoal name="sql"/>
+      <j:set var="outputDirectory" value="" />
+      <copy todir="${maven.dist.bin.assembly.dir}/sql/${torque.database}" >
+        <fileset dir="${torque.sql.dir}">
+          <include name="*.sql"/>
+        </fileset>
+      </copy>
+    </j:forEach>
   </preGoal>
 
 </project>
