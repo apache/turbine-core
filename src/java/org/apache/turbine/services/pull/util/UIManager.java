@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
@@ -186,16 +187,8 @@ public class UIManager implements ApplicationTool
          * Store the resources directory for use in image().
          */
         Configuration cfg = Turbine.getConfiguration();
-        resourcesDirectory = TurbinePull.getResourcesDirectory();
 
-        if (resourcesDirectory.charAt(resourcesDirectory.length() -1) == '/')
-        {
-            resourcesDirectory = resourcesDirectory.substring(0, resourcesDirectory.length() - 2);
-        }
-        if (resourcesDirectory.charAt(0) == '/')
-        {
-            resourcesDirectory = resourcesDirectory.substring(1);
-        }
+        resourcesDirectory = stripSlashes(TurbinePull.getResourcesDirectory());
 
         if (data == null)
         {
@@ -213,33 +206,38 @@ public class UIManager implements ApplicationTool
             setSkin((User) data);
         }
 
-        skinsDirectory = cfg.getString(SKINDIR_PROPERTY, SKINS_DIRECTORY);
-        if (skinsDirectory.charAt(skinsDirectory.length() - 1) == '/')
-        {
-            skinsDirectory = skinsDirectory.substring(0, skinsDirectory.length() - 2);
-        }
+        skinsDirectory = stripSlashes(cfg.getString(SKINDIR_PROPERTY, SKINS_DIRECTORY));
 
-        if (skinsDirectory.charAt(0) == '/')
-        {
-            skinsDirectory = skinsDirectory.substring(1);
-        }
-
-        imagesDirectory = cfg.getString(IMAGEDIR_PROPERTY, IMAGES_DIRECTORY);
-        if (imagesDirectory.charAt(imagesDirectory.length() - 1) == '/')
-        {
-            imagesDirectory = imagesDirectory.substring(0, imagesDirectory.length() - 2);
-        }
-
-        if (imagesDirectory.charAt(0) == '/')
-        {
-            imagesDirectory = imagesDirectory.substring(1);
-        }
+        imagesDirectory = stripSlashes(cfg.getString(IMAGEDIR_PROPERTY, IMAGES_DIRECTORY));
 
         cssFile = cfg.getString(CSS_PROPERTY, DEFAULT_SKIN_CSS_FILE);
 
         wantRelative = cfg.getBoolean(RELATIVE_PROPERTY, false);
 
         loadSkin();
+    }
+
+    private String stripSlashes(final String path)
+    {
+        if (StringUtils.isEmpty(path))
+        {
+            return "";
+        }
+
+        String ret = path;
+        int len = ret.length() - 1;
+
+        if (ret.charAt(len) == '/')
+        {
+            ret = ret.substring(0, len);
+        }
+
+        if (len > 0 && ret.charAt(0) == '/')
+        {
+            ret = ret.substring(1);
+        }
+
+        return ret;
     }
 
     /**
@@ -301,7 +299,7 @@ public class UIManager implements ApplicationTool
                 append('/').
                 append(imagesDirectory).
                 append('/').
-                append(imageId);
+                append(stripSlashes(imageId));
 
         du.setScriptName(sb.toString());
 
@@ -329,7 +327,7 @@ public class UIManager implements ApplicationTool
                 append('/').
                 append(imagesDirectory).
                 append('/').
-                append(imageId);
+                append(stripSlashes(imageId));
 
         du.setScriptName(sb.toString());
         return wantRelative ? du.getRelativeLink() : du.getAbsoluteLink();
@@ -382,7 +380,7 @@ public class UIManager implements ApplicationTool
                 append('/').
                 append(getSkin()).
                 append('/').
-                append(filename);
+                append(stripSlashes(filename));
 
         du.setScriptName(sb.toString());
         return wantRelative ? du.getRelativeLink() : du.getAbsoluteLink();
@@ -406,7 +404,7 @@ public class UIManager implements ApplicationTool
                 append('/').
                 append(getSkin()).
                 append('/').
-                append(filename);
+                append(stripSlashes(filename));
 
         du.setScriptName(sb.toString());
         return wantRelative ? du.getRelativeLink() : du.getAbsoluteLink();

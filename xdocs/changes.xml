@@ -25,6 +25,10 @@
 
 <body>
   <release version="2.3.2-dev" date="in CVS">
+    <action type="fix" dev="henning" issue="TTWS16">
+      Make sure that UIManager strips leading and trailing
+      slashes from referenced objects and configured pathes.
+    </action>
     <action type="update" dev="henning">
       Add a maven goal to generate SQL with Torque. Removed old SQL files
       from src/sql. Add some documentation on how to build the SQL files.
