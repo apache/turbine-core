@@ -32,6 +32,9 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
  */
 public class TurbineRuntimeException extends NestableRuntimeException
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 4748124104580250109L;
+
     /**
      * Constructs a new <code>TurbineRuntimeException</code> without specified
      * detail message.

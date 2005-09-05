@@ -29,6 +29,9 @@ import org.apache.commons.collections.SequencedHashMap;
 public class BufferCache
     extends SequencedHashMap
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 5206274963401520445L;
+
     /**
      * The default maximum cache size.
      */

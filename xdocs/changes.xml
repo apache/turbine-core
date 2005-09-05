@@ -25,6 +25,9 @@
 
 <body>
   <release version="2.3.2-dev" date="in CVS">
+    <action type="update" dev="henning">
+      All serializable classes have explicit SerialVersionUID fields.
+    </action>
     <action type="fix" dev="henning" issue="TTWS16">
       Make sure that UIManager strips leading and trailing
       slashes from referenced objects and configured pathes.

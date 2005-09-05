@@ -50,6 +50,9 @@ import org.apache.turbine.services.security.TurbineSecurity;
  */
 public class TurbineUser extends SecurityObject implements User
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -6090627713197456117L;
+
     /** Logging */
     private static Log log = LogFactory.getLog(TurbineUser.class);
 

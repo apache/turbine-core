@@ -26,4 +26,6 @@ package org.apache.turbine.services.cache;
 public class ObjectExpiredException
         extends Exception
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -1738086608041485799L;
 }

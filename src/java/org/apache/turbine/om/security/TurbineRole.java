@@ -34,6 +34,9 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  */
 public class TurbineRole extends SecurityObject implements Role
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -1354408789347969126L;
+
     /**
      * Constructs a new Role
      */

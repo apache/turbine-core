@@ -48,6 +48,9 @@ import org.apache.turbine.services.security.TurbineSecurity;
 public class LDAPUser extends BaseObject implements User
 {
 
+    /** Serial Version UID */
+    private static final long serialVersionUID = 3953123276619326752L;
+
     /** Logging */
     private static Log log = LogFactory.getLog(LDAPUser.class);
 

@@ -26,6 +26,9 @@ import org.apache.turbine.util.TurbineException;
  */
 public class IntakeException extends TurbineException
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -5061948861026893142L;
+
     /**
      * Constructs a new <code>TurbineException</code> without specified
      * detail message.

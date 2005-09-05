@@ -29,6 +29,9 @@ import org.apache.turbine.util.TurbineException;
  */
 public class InitializationException extends TurbineException
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 974475242666061904L;
+
     /**
      * Construct an InitializationException with specified detail message.
      *

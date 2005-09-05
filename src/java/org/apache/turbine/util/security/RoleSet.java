@@ -38,6 +38,9 @@ import org.apache.turbine.om.security.Role;
 public class RoleSet
         extends SecuritySet
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -5521518890129125912L;
+
     /**
      * Constructs an empty RoleSet
      */

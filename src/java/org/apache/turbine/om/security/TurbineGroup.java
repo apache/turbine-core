@@ -41,6 +41,9 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  */
 public class TurbineGroup extends SecurityObject implements Group
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -6034684697021752649L;
+
     /**
      * Constructs a new Group.
      */

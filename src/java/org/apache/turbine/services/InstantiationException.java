@@ -32,6 +32,9 @@ import org.apache.turbine.util.TurbineRuntimeException;
  */
 public class InstantiationException extends TurbineRuntimeException
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -6657313997260441099L;
+
     /**
      * Construct an InstantiationException with specified detail
      * message.

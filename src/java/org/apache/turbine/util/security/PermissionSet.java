@@ -39,6 +39,9 @@ import org.apache.turbine.om.security.Permission;
 public class PermissionSet
     extends SecuritySet
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 8276935936763076884L;
+
     /**
      * Constructs an empty PermissionSet
      */

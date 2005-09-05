@@ -27,6 +27,9 @@ package org.apache.turbine.util.security;
 public class EntityExistsException
         extends TurbineSecurityException
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = -1599279419997911108L;
+
     /**
      * Construct an EntityExistsException with specified detail message.
      *

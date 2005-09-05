@@ -80,8 +80,8 @@ public class MultipartStream
 {
     /**
      * The maximum lenght of <code>header-part</code> that will be
-     * processed (10 kilobytes = 10240 bytes.
-     )*/
+     * processed (10 kilobytes = 10240 bytes.)
+     */
     public static final int HEADER_PART_SIZE_MAX = 10240;
 
     /** The stream were data is read from. */
@@ -610,6 +610,9 @@ public class MultipartStream
     public class MalformedStreamException
             extends IOException
     {
+        /** Serial Version UID */
+        private static final long serialVersionUID = 3813694874163574138L;
+
         /**
          * Constructs a <code>MalformedStreamException</code> with no
          * detail message.
@@ -637,6 +640,9 @@ public class MultipartStream
     public class IllegalBoundaryException
             extends IOException
     {
+        /** Serial Version UID */
+        private static final long serialVersionUID = -2883885421190362860L;
+
         /**
          * Constructs an <code>IllegalBoundaryException</code> with no
          * detail message.

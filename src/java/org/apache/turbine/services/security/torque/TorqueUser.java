@@ -54,6 +54,9 @@ public class TorqueUser
     extends TorqueObject
     implements User
 {
+    /** Serial Version UID */
+    private static final long serialVersionUID = 6623129207135917717L;
+
     private static Log log = LogFactory.getLog(TorqueUser.class);
 
     /** The date on which the user last accessed the application. */
