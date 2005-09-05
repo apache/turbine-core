@@ -175,4 +175,14 @@
 
   </goal>
 
+  <!-- ================================================== -->
+  <!-- Build SQL files                                    -->
+  <!-- ================================================== -->
+  <goal name="sql" description="generate Torque SQL">
+    <echo>Building SQL files for ${torque.database}</echo>
+    <attainGoal name="torque:sql"/>
+    <attainGoal name="torque:id-table-init-sql"/>
+    <j:set var="outputDirectory" value="" />
+  </goal>
+
 </project>

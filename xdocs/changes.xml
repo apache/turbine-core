@@ -26,6 +26,10 @@
 <body>
   <release version="2.3.2-dev" date="in CVS">
     <action type="update" dev="henning">
+      Add a maven goal to generate SQL with Torque. Removed old SQL files
+      from src/sql. Add some documentation on how to build the SQL files.
+    </action>
+    <action type="update" dev="henning">
       This release will have JDK 1.4.x as primary build platform. If you intend
       to build on an older (1.3) JDK, you must uncomment a number of dependency
       libraries in the project.xml descriptor.
