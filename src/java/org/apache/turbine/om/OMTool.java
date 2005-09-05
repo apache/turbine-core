@@ -19,7 +19,6 @@ package org.apache.turbine.om;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.turbine.Turbine;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.pool.Recyclable;
 
@@ -52,10 +51,10 @@ public class OMTool implements ApplicationTool, Recyclable
     public OMTool()throws Exception
     {
         omMap = new HashMap();
-        String className = Turbine.getConfiguration()
-                .getString("tool.om.factory");
-        //        RetrieverFactory omFactory =
-        //            (RetrieverFactory)Class.forName(className).newInstance();
+        // String className = Turbine.getConfiguration()
+        //         .getString("tool.om.factory");
+        //         RetrieverFactory omFactory =
+        //             (RetrieverFactory)Class.forName(className).newInstance();
     }
 
     /**

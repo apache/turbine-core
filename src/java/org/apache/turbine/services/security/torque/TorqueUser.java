@@ -18,18 +18,13 @@ package org.apache.turbine.services.security.torque;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
-
 import java.sql.Connection;
-
 import java.util.Date;
 import java.util.Hashtable;
 
 import javax.servlet.http.HttpSessionBindingEvent;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.torque.om.Persistent;
-
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.ObjectUtils;
@@ -56,8 +51,6 @@ public class TorqueUser
 {
     /** Serial Version UID */
     private static final long serialVersionUID = 6623129207135917717L;
-
-    private static Log log = LogFactory.getLog(TorqueUser.class);
 
     /** The date on which the user last accessed the application. */
     private Date lastAccessDate = null;

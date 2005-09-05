@@ -16,17 +16,12 @@ package org.apache.turbine.modules.navigations;
  * limitations under the License.
  */
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
-
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -44,9 +39,6 @@ import org.apache.velocity.context.Context;
 public class VelocityNavigation
         extends TemplateNavigation
 {
-    /** Logging */
-    private static Log log = LogFactory.getLog(VelocityNavigation.class);
-
     /** The prefix for lookup up navigation pages */
     private String prefix = TurbineConstants.NAVIGATION_PREFIX + "/";
 
