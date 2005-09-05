@@ -16,23 +16,16 @@ package org.apache.turbine.services.security.db;
  * limitations under the License.
  */
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.lang.StringUtils;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.torque.om.BaseObject;
 import org.apache.torque.om.ObjectKey;
 import org.apache.torque.om.Persistent;
 import org.apache.torque.util.Criteria;
-
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.om.security.peer.TurbineUserPeer;
 import org.apache.turbine.services.security.TurbineSecurity;
@@ -64,9 +57,6 @@ import org.apache.turbine.util.security.UnknownEntityException;
 public class DBUserManager
         implements UserManager
 {
-    /** Logging */
-    private static Log log = LogFactory.getLog(DBUserManager.class);
-
     /**
      * Initializes the UserManager
      *

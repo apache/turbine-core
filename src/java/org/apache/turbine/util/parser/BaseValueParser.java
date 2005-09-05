@@ -19,16 +19,11 @@ package org.apache.turbine.util.parser;
 import java.beans.IndexedPropertyDescriptor;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-
 import java.io.UnsupportedEncodingException;
-
 import java.lang.reflect.Method;
-
 import java.math.BigDecimal;
-
 import java.text.DateFormat;
 import java.text.ParseException;
-
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -36,21 +31,17 @@ import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.StringKey;
-
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.util.DateSelector;
 import org.apache.turbine.util.TimeSelector;
-import org.apache.turbine.util.pool.Recyclable;
 import org.apache.turbine.util.pool.RecyclableSupport;
 
 /**
