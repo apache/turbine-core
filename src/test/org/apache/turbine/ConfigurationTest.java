@@ -16,8 +16,6 @@ package org.apache.turbine;
  * limitations under the License.
  */
 
-import java.util.List;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 

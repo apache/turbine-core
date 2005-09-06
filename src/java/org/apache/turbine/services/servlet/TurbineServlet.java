@@ -27,7 +27,7 @@ import org.apache.turbine.services.TurbineServices;
  * Simple static accessor to the EngineContextService
  *
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">RaphaÃ«l Luta</a>
  * @author <a href="mailto:ekkerbj@netscape.net">Jeff Brekke</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @version $Id$

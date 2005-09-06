@@ -31,7 +31,7 @@ import org.apache.turbine.services.security.SecurityService;
  *
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:greg@shwoop.com">Greg Ritter</a>
- * @author <a href="mailto:luta.raphael@networks.vivendi.net">Raphaël Luta</a>
+ * @author <a href="mailto:luta.raphael@networks.vivendi.net">RaphaÃ«l Luta</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
