@@ -345,7 +345,7 @@
       <email>john@zenplex.com</email>
     </contributor>
     <contributor>
-      <name>Magn&#250;s &#254;&#243;r Torfason</name>
+      <name>Magnús Þór Torfason</name>
       <email>magnus@handpoint.com</email>
     </contributor>
     <contributor>
@@ -674,7 +674,7 @@
       </properties>
     </dependency>
 
-<!-- 
+<!--
 ========================================================================
 ==                                                                    ==
 == uncomment these dependencies if you are using a 1.3 JDK            ==
@@ -724,7 +724,7 @@
 -->
 
 
-<!-- 
+<!--
 ========================================================================
 ==                                                                    ==
 == needed only for testing                                            ==
@@ -753,7 +753,7 @@
       <type>jar</type>
     </dependency>
 
-<!-- 
+<!--
 ========================================================================
 ==                                                                    ==
 == needed only for testing                                            ==
@@ -762,7 +762,7 @@
 -->
 
 
-<!-- 
+<!--
 ========================================================================
 ==                                                                    ==
 == maven related plugins                                              ==
@@ -862,7 +862,7 @@
     </dependency>
   </dependencies>
 
-<!-- 
+<!--
 ========================================================================
 ==                                                                    ==
 == maven related plugins                                              ==

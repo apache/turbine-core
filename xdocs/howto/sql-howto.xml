@@ -33,7 +33,7 @@
      <li>The Security service for user and related security information</li>
     </ul>
 
-    The Torque generator can be used to create the SQL files to set up the 
+    The Torque generator can be used to create the SQL files to set up the
     necessary database tables.
    </p>
   </section>

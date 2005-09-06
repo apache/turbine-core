@@ -28,7 +28,7 @@ import org.apache.turbine.services.Service;
  * resolve or get access to external resources</p>
  *
  * @author <a href="mailto:ekkerbj@netscape.net">Jeff Brekke</a>
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">RaphaÃ«l Luta</a>
  * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
  * @version $Id$
  */

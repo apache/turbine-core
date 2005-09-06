@@ -3,7 +3,6 @@ package org.apache.turbine.services.pull.util;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.services.pull.PullService;
 import org.apache.turbine.services.pull.TurbinePull;
 import org.apache.turbine.test.BaseTurbineTest;
@@ -43,7 +42,7 @@ public class UIManagerTest
     {
         PullService pullService = TurbinePull.getService();
         assertNotNull(pullService);
-        
+
         Context globalContext = pullService.getGlobalContext();
         assertNotNull(globalContext);
 
@@ -83,11 +82,11 @@ public class UIManagerTest
         String imgUrl3 = ui.image(img3);
         assertEquals("CSS URL does not match", "http:///turbine-resources/turbine-skins/myskin/turbine-images" + img3, imgUrl3);
     }
-    
+
     public void testPathologicalCases()
     {
     	UIManager ui = getTool();
-    	
+
     	String img = "";
         String imgUrl = ui.image(img);
         assertEquals("Could not strip empty String", "http:///turbine-resources/turbine-skins/myskin/turbine-images/", imgUrl);

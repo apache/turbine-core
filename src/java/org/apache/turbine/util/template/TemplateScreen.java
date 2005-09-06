@@ -40,7 +40,7 @@ import org.apache.turbine.util.RunData;
  * </code>
  * </p>
  *
- * @author <a href="raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="raphael@apache.org">RaphaÃ«l Luta</a>
  * @version $Id$
  */
 public class TemplateScreen
