@@ -22,10 +22,12 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.set.CompositeSet;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -294,6 +296,35 @@ public class DefaultParameterParser
             fileParameters.put(convert(name), newItems);
         }
     }
+
+    /**
+     * Gets the set of keys
+     *
+     * @return A <code>Set</code> of the keys.
+     */
+    public Set keySet()
+    {
+        return new CompositeSet(new Set[] { super.keySet(), fileParameters.keySet() } );
+    }
+
+    /**
+     * Determine whether a given key has been inserted.  All keys are
+     * stored in lowercase strings, so override method to account for
+     * this.
+     *
+     * @param key An Object with the key to search for.
+     * @return True if the object is found.
+     */
+    public boolean containsKey(Object key)
+    {
+        if (super.containsKey(key))
+        {
+            return true;
+        }
+
+        return fileParameters.containsKey(convert(String.valueOf(key)));
+    }
+
 
     /**
      * Return a FileItem object for the given name.  If the name does

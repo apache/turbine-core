@@ -25,6 +25,9 @@
 
 <body>
   <release version="2.3.2-dev" date="in CVS">
+    <action type="fix" dev="henning" issue="TTWS58">
+      file upload items should be listed in DefaultParameterParser.keySet().
+    </action>
     <action type="update" dev="henning">
       All serializable classes have explicit SerialVersionUID fields.
     </action>
