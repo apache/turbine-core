@@ -209,13 +209,7 @@
   <!-- ${maven.dist.bin.assembly.dir} to include them in the binary dists -->
   <!-- ================================================================== -->
   <preGoal name="dist:build-bin">
-    <!-- include listed dependencies -->
-    <j:forEach var="dep" items="${pom.dependencies}">
-      <j:if test="${dep.getProperty('dist.bundle') != null &amp;&amp; dep.getProperty('dist.bundle').equalsIgnoreCase('true')}">
-        <copy todir="${maven.dist.bin.assembly.dir}/lib"
-              file="${maven.repo.local}/${dep.getArtifactDirectory()}/jars/${dep.getArtifact()}"/>
-      </j:if>
-    </j:forEach>
+    <attainGoal name="copy-dist-libs"/>
 
     <!-- copy the contents of the conf directory -->
     <!-- to the right place -->
@@ -239,5 +233,15 @@
       </copy>
     </j:forEach>
   </preGoal>
+
+  <goal name="copy-dist-libs">
+    <!-- include listed dependencies -->
+    <j:forEach var="dep" items="${pom.dependencies}">
+      <j:if test="${dep.getProperty('dist.bundle') != null &amp;&amp; dep.getProperty('dist.bundle').equalsIgnoreCase('true')}">
+        <copy todir="${maven.dist.bin.assembly.dir}/lib"
+              file="${maven.repo.local}/${dep.getArtifactDirectory()}/jars/${dep.getArtifact()}"/>
+      </j:if>
+    </j:forEach>
+  </goal>
 
 </project>
