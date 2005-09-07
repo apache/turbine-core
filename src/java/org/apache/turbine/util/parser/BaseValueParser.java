@@ -310,7 +310,7 @@ public class BaseValueParser
      */
     public boolean containsKey(Object key)
     {
-        return parameters.containsKey(convert((String)key));
+        return parameters.containsKey(convert(String.valueOf(key)));
     }
 
     /**
@@ -349,7 +349,7 @@ public class BaseValueParser
      */
     public Enumeration keys()
     {
-        return Collections.enumeration(parameters.keySet());
+        return Collections.enumeration(keySet());
     }
 
     /**
@@ -369,7 +369,7 @@ public class BaseValueParser
      */
     public Object[] getKeys()
     {
-        return parameters.keySet().toArray();
+        return keySet().toArray();
     }
 
     /**
