@@ -1,7 +1,7 @@
 package org.apache.turbine.services.ui;
 
 /*
- * Copyright 2003-2004 The Apache Software Foundation.
+ * Copyright 2003-2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,9 @@ import java.io.FilenameFilter;
 import java.util.HashMap;
 import java.util.Properties;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -35,7 +38,8 @@ import org.apache.turbine.util.uri.DataURI;
  * a default skin.  Use TurbineUI to access skin properties from your screen 
  * classes and action code. UITool is provided as a pull tool for accessing 
  * skin properties from your templates. 
- * 
+ *
+ * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  * @see UIService
  * @see UITool
@@ -61,8 +65,7 @@ public class TurbineUIService
         }
     }
 
-    private static org.apache.commons.logging.Log log =
-        org.apache.commons.logging.LogFactory.getLog(TurbineUIService.class);
+    private static Log log = LogFactory.getLog(TurbineUIService.class);
 
     /**
      * The location of the skins within the application resources directory.
@@ -172,6 +175,23 @@ public class TurbineUIService
     }
 
     /**
+     * Retrieve a skin property from the default skin for the webapp.  If the 
+     * property is not defined in the webapp skin the value for the default skin 
+     * will be provided.  If the webapp skin does not exist the default skin 
+     * will be used.  If the default skin does not exist then <code>null</code> 
+     * will be returned.
+     * 
+     * @param key the key to retrieve.
+     * @return the value of the property for the webapp skin (defaulting to the 
+     * default skin), the default skin or <code>null</code>, depending on 
+     * whether or not the property or skins exist.
+     */
+    public String get(String key)
+    {
+        return get(getWebappSkinName(), key);
+    }
+
+    /**
      * Provide access to the list of available skin names.
      * 
      * @return the available skin names.
@@ -221,16 +241,12 @@ public class TurbineUIService
      * configured for the web application if it does not exist, or the default
      * skin if that does not exist, or an empty Parameters object if even that 
      * cannot be found.
-     * 
-     * @param skinName the name of the skin whose Properties is to be retrieved.
-     * @return the properties for the named skin, the webapp skin, the default
-     * skin or an empty Properties, depending on which skins exist.
      */
     private synchronized Properties loadSkin(String skinName)
     {
         Properties defaultSkinProperties = null;
         
-        if (!skinName.equals(SKIN_PROPERTY_DEFAULT))
+        if (!StringUtils.equals(skinName, SKIN_PROPERTY_DEFAULT))
         {
             defaultSkinProperties = getSkinProperties(SKIN_PROPERTY_DEFAULT);
         }
@@ -250,18 +266,18 @@ public class TurbineUIService
         catch (Exception e)
         {
             log.error("Cannot load skin: " + skinName, e);
-            if (!skinName.equals(getWebappSkinName()) 
-                    && !skinName.equals(SKIN_PROPERTY_DEFAULT))
+            if (!StringUtils.equals(skinName, getWebappSkinName()) 
+                    && !StringUtils.equals(skinName, SKIN_PROPERTY_DEFAULT))
             {
                 log.error("Attempting to return the skin configured for " 
                         + "webapp instead of " + skinName);
                 return getSkinProperties(getWebappSkinName());
             }
-            else if (!skinName.equals(SKIN_PROPERTY_DEFAULT))
+            else if (!StringUtils.equals(skinName, SKIN_PROPERTY_DEFAULT))
             {
-                log.error("Attempting to return the default skin instead of " 
+                log.error("Return the default skin instead of " 
                         + skinName);
-                return getSkinProperties(SKIN_PROPERTY_DEFAULT);
+                return skinProperties; // Already contains the default skin.
             }
             else
             {

@@ -1,7 +1,7 @@
 package org.apache.turbine.services.ui;
 
 /*
- * Copyright 2003-2004 The Apache Software Foundation.
+ * Copyright 2003-2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,10 @@ import org.apache.turbine.util.ServerData;
  * a default skin.  Use TurbineUI to access skin properties from your screen 
  * classes and action code. UITool is provided as a pull tool for accessing 
  * skin properties from your templates.
- * 
+ *
  * <p>Skins are lazy loaded in that they are not loaded until first used.
- * 
+ *
+ * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  * @see UIService
  * @see UITool
@@ -84,6 +85,20 @@ public interface UIService extends Service
      * depending on whether or not the property or skins exist.
      */
     public String get(String skinName, String key);
+
+    /**
+     * Retrieve a skin property from the default skin for the webapp.  If the 
+     * property is not defined in the webapp skin the value for the default skin 
+     * will be provided.  If the webapp skin does not exist the default skin 
+     * will be used.  If the default skin does not exist then <code>null</code> 
+     * will be returned.
+     * 
+     * @param key the key to retrieve.
+     * @return the value of the property for the webapp skin (defaulting to the 
+     * default skin), the default skin or <code>null</code>, depending on 
+     * whether or not the property or skins exist.
+     */
+    public String get(String key);
 
     /**
      * Retrieve the URL for an image that is part of a skin. The images are 
