@@ -1,7 +1,7 @@
 package org.apache.turbine.services.ui;
 
 /*
- * Copyright 2003-2004 The Apache Software Foundation.
+ * Copyright 2003-2005 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -45,8 +45,9 @@ import org.apache.turbine.util.ServerData;
  * <p>
  *
  * This is an application pull tool for the template system. You should 
- * <b>not</b> use it in a normal application (use UIService instead).
+ * <strong>not</strong> use it in a normal application (use UIService instead).
  *
+ * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  * @see UIService
  */
