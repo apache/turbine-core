@@ -17,17 +17,14 @@ package org.apache.turbine.util.velocity;
  */
 
 import org.apache.commons.lang.StringUtils;
-
+import org.apache.commons.lang.WordUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.velocity.TurbineVelocity;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -256,8 +253,8 @@ public class VelocityEmail extends SimpleEmail
         // If the caller desires word-wrapping, do it here
         if (wordWrap > 0)
         {
-            body = org.apache.turbine.util.StringUtils.wrapText(body,
-                    System.getProperty("line.separator"), wordWrap);
+            body = WordUtils.wrap(body, wordWrap,
+                    System.getProperty("line.separator"), false);
         }
 
         setMsg(body);
