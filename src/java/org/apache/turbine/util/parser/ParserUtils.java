@@ -88,28 +88,33 @@ public abstract class ParserUtils
      */
     public static String convertAndTrim(String value, int fold)
     {
-        String tmp = value.trim();
+        String tmp = null;
 
-        switch (fold)
+        if (value != null)
         {
-        case URL_CASE_FOLDING_NONE:
+            tmp = value.trim();
+
+            switch (fold)
             {
-                break;
-            }
-        case URL_CASE_FOLDING_LOWER:
-            {
-                tmp = tmp.toLowerCase();
-                break;
-            }
-        case URL_CASE_FOLDING_UPPER:
-            {
-                tmp = tmp.toUpperCase();
-                break;
-            }
-        default:
-            {
-                log.error("Passed " + fold + " as fold rule, which is illegal!");
-                break;
+            case URL_CASE_FOLDING_NONE:
+                {
+                    break;
+                }
+            case URL_CASE_FOLDING_LOWER:
+                {
+                    tmp = tmp.toLowerCase();
+                    break;
+                }
+            case URL_CASE_FOLDING_UPPER:
+                {
+                    tmp = tmp.toUpperCase();
+                    break;
+                }
+            default:
+                {
+                    log.error("Passed " + fold + " as fold rule, which is illegal!");
+                    break;
+                }
             }
         }
         return tmp;
