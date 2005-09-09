@@ -483,11 +483,17 @@ public class BaseValueParserTest
 
         assertEquals("Wrong string value", testValue, bvp.getString("foo"));
 
-        bvp.remove("foo");
+        assertNotNull(bvp.remove("foo"));
 
         assertEquals("Wrong number of keys", 0, bvp.keySet().size());
 
         assertNull(bvp.getString("foo"));
+
+        // Test non-existing key
+        assertNull(bvp.remove("baz"));
+
+        // Test removing null value
+        assertNull(bvp.remove(null));
     }
         
     public void testRemoveArray()
@@ -1169,6 +1175,96 @@ public class BaseValueParserTest
 
         assertEquals("Wrong number of keys", 1, bvp.keySet().size());
 
+    }
+
+    public void testAddNullArrays()
+    {
+        String [] res = null;
+
+        BaseValueParser bvp = new BaseValueParser();
+        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+
+        bvp.add("foo", new String [] { "foo", "bar" });
+        res = bvp.getStrings("foo");
+        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of values", 2, res.length);
+
+        // null value should not change contents
+        bvp.add("foo", (String) null);
+        res = bvp.getStrings("foo");
+        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of values", 2, res.length);
+
+        // null value should not change contents
+        bvp.add("foo", (String []) null);
+        res = bvp.getStrings("foo");
+        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of values", 2, res.length);
+
+        // empty String array should not change contents
+        bvp.add("foo", new String [0]);
+        res = bvp.getStrings("foo");
+        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of values", 2, res.length);
+
+        // String array with null value should not change contents
+        bvp.add("foo", new String [] { null });
+        res = bvp.getStrings("foo");
+        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of values", 2, res.length);
+
+        // String array with null value should only add non-null values
+        bvp.add("foo", new String [] { "bla", null, "foo" });
+        res = bvp.getStrings("foo");
+        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of values", 4, res.length);
+    }
+
+    public void testNonExistingResults()
+    {
+        BaseValueParser bvp = new BaseValueParser();
+        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+
+        assertEquals("Wrong value for non existing key", 0.0, bvp.getDouble("foo"), 0.001);
+        assertNull(bvp.getDoubles("foo"));
+        assertNull(bvp.getDoubleObject("foo"));
+        assertNull(bvp.getDoubleObjects("foo"));
+
+        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+
+        assertNull(bvp.getString("foo"));
+        assertNull(bvp.getStrings("foo"));
+
+        assertEquals("Wrong value for non existing key", 0.0f, bvp.getFloat("foo"), 0.001);
+        assertNull(bvp.getFloats("foo"));
+        assertNull(bvp.getFloatObject("foo"));
+        assertNull(bvp.getFloatObjects("foo"));
+
+        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+
+        assertEquals("Wrong value for non existing key", 0.0, bvp.getBigDecimal("foo").doubleValue(), 0.001);
+        assertNull(bvp.getBigDecimals("foo"));
+
+        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+
+        assertEquals("Wrong value for non existing key", 0, bvp.getInt("foo"));
+        assertNull(bvp.getInts("foo"));
+        assertNull(bvp.getIntObject("foo"));
+        assertNull(bvp.getIntObjects("foo"));
+
+        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+
+        assertEquals("Wrong value for non existing key", 0, bvp.getLong("foo"));
+        assertNull(bvp.getLongs("foo"));
+        assertNull(bvp.getLongObject("foo"));
+        assertNull(bvp.getLongObjects("foo"));
+
+        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+
+        assertEquals("Wrong value for non existing key", 0, bvp.getByte("foo"));
+        assertNull(bvp.getByteObject("foo"));
+
+        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
     }
 }
 
