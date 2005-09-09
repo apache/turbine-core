@@ -199,7 +199,10 @@ public class BaseValueParser
      */
     public void add(String name, Integer value)
     {
-        add(name, value.toString());
+        if (value != null)
+        {
+            add(name, value.toString());
+        }
     }
 
     /**
@@ -221,19 +224,22 @@ public class BaseValueParser
      */
     public void add(String name, String value)
     {
-        String[] items = this.getStrings(name);
-        if (items == null)
+        if (value != null)
         {
-            items = new String[1];
-            items[0] = value;
-            parameters.put(convert(name), items);
-        }
-        else
-        {
-            String[] newItems = new String[items.length + 1];
-            System.arraycopy(items, 0, newItems, 0, items.length);
-            newItems[items.length] = value;
-            parameters.put(convert(name), newItems);
+            String[] items = this.getStrings(name);
+            if (items == null)
+            {
+                items = new String[1];
+                items[0] = value;
+                putParam(name, items);
+            }
+            else
+            {
+                String[] newItems = new String[items.length + 1];
+                System.arraycopy(items, 0, newItems, 0, items.length);
+                newItems[items.length] = value;
+                putParam(name, newItems);
+            }
         }
     }
 
@@ -1276,7 +1282,7 @@ public class BaseValueParser
         String result = null;
         try
         {
-            Object value = parameters.get(convert(name));
+            Object value = getParam(name);
             if (value != null)
             {
                 value = ((String[]) value)[0];
@@ -1340,7 +1346,7 @@ public class BaseValueParser
     {
         if (value != null)
         {
-            parameters.put(convert(name), new String[]{value});
+            putParam(name, new String[]{value});
         }
     }
 
@@ -1353,7 +1359,7 @@ public class BaseValueParser
      */
     public String[] getStrings(String name)
     {
-        return (String[]) parameters.get(convert(name));
+        return (String[]) getParam(name);
     }
 
     /**
@@ -1384,7 +1390,7 @@ public class BaseValueParser
     {
         if (values != null)
         {
-            parameters.put(convert(name), values);
+            putParam(name, values);
         }
     }
 
@@ -1775,5 +1781,38 @@ public class BaseValueParser
         log.warn("Parameter (" + paramName
                 + ") with value of ("
                 + value + ") could not be converted to a " + type);
+    }
+
+    /**
+     * Puts a key into the parameters map. Makes sure that the name is always
+     * mapped correctly. This method also enforces the usage of arrays for the
+     * parameters.
+     *
+     * @param name A String with the name.
+     * @param value An array of Objects with the values.
+     *
+     */
+    protected void putParam(final String name, final String [] value)
+    {
+        String key = convert(name);
+        if (key != null)
+        {
+            parameters.put(key, value);
+        }
+    }
+
+    /**
+     * fetches a key from the parameters map. Makes sure that the name is
+     * always mapped correctly.
+     *
+     * @param name A string with the name
+     *
+     * @return the value object array or null if not set
+     */
+    protected String [] getParam(final String name)
+    {
+        String key = convert(name);
+
+        return (key != null) ? (String []) parameters.get(key) : null;
     }
 }

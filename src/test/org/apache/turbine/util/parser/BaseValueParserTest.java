@@ -1150,5 +1150,25 @@ public class BaseValueParserTest
         assertEquals("Wrong value in bean", 12345l,   bp.getLongValue());
         assertEquals("Wrong value in bean", Boolean.TRUE, bp.getBooleanValue());
     }
+
+    public void testAddNulls()
+    {
+        BaseValueParser bvp = new BaseValueParser();
+
+        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+
+        bvp.add("foo", (Integer) null);
+
+        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+
+        bvp.add("foo", (String) null);
+
+        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+
+        bvp.add("bar", "null");
+
+        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+
+    }
 }
 
