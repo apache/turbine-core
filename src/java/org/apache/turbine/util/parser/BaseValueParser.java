@@ -129,7 +129,7 @@ public class BaseValueParser
      * Recycles the parser with a character encoding.
      *
      * @param characterEncoding the character encoding.
-     *x
+     *
      * @todo Is this method used anywhere? Does it make any sense at all?
      */
     public void recycle(String characterEncoding)
@@ -228,7 +228,7 @@ public class BaseValueParser
     {
         if (value != null)
         {
-            String [] items = this.getParam(name);
+            String [] items = getParam(name);
             items = (String []) ArrayUtils.add(items, value);
             putParam(name, items);
         }
@@ -1659,7 +1659,7 @@ public class BaseValueParser
             sb.append('{');
             sb.append(name);
             sb.append('=');
-            String [] params = this.getParam(name);
+            Object [] params = getToStringParam(name);
 
             if (params == null)
             {
@@ -1686,6 +1686,19 @@ public class BaseValueParser
         }
 
         return sb.toString();
+    }
+
+    /**
+     * This method is only used in toString() and can be used by 
+     * derived classes to add their local parameters to the toString()
+
+     * @param name A string with the name
+     *
+     * @return the value object array or null if not set
+     */
+    protected Object [] getToStringParam(final String name)
+    {
+        return getParam(name);
     }
 
     /**
