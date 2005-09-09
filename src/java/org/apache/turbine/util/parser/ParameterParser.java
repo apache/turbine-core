@@ -91,9 +91,22 @@ public interface ParameterParser
      * files to be associated with single HTML input element.
      *
      * @param name A String with the name.
-     * @param value A FileItem with the value.
+     * @param item A FileItem with the value.
+     *
+     * @deprecated Use add(String name, FileItem item) instead.
      */
-    void append(String name, FileItem value);
+    void append(String name, FileItem item);
+
+    /**
+     * Add a FileItem object as a parameters.  If there are any
+     * FileItems already associated with the name, append to the
+     * array.  The reason for this is that RFC 1867 allows multiple
+     * files to be associated with single HTML input element.
+     *
+     * @param name A String with the name.
+     * @param item A FileItem with the value.
+     */
+    void add(String name, FileItem item);
 
     /**
      * Return a FileItem object for the given name.  If the name does

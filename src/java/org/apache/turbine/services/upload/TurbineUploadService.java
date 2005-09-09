@@ -44,15 +44,15 @@ import org.apache.turbine.util.parser.ParameterParser;
  *
  * <p> Files will be stored in temporary disk storage on in memory,
  * depending on request size, and will be available from the {@link
- * org.apache.turbine.util.ParameterParser} as {@link
- * org.apache.turbine.util.upload.FileItem}s.
+ * org.apache.turbine.util.parser.ParameterParser} as {@link
+ * org.apache.commons.fileupload.FileItem}s.
  *
  * <p>This implementation of {@link UploadService} handles multiple
  * files per single html widget, sent using multipar/mixed encoding
  * type, as specified by RFC 1867.  Use {@link
- * org.apache.turbine.util.ParameterParser#getFileItems(String)} to
+ * org.apache.turbine.util.parser.ParameterParser#getFileItems(String)} to
  * acquire an array of {@link
- * org.apache.turbine.util.upload.FileItem}s associated with given
+ * org.apache.commons.fileupload.FileItem}s associated with given
  * html widget.
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
@@ -245,14 +245,14 @@ public class TurbineUploadService
                                     + "Used the default when reading form data.");
                             value = fi.getString();
                         }
-                        params.append(fi.getFieldName(), value);
+                        params.add(fi.getFieldName(), value);
                     }
                     else
                     {
                         log.debug("Found an uploaded file: " + fi.getFieldName());
                         log.debug("It has " + fi.getSize() + " Bytes and is " + (fi.isInMemory() ? "" : "not ") + "in Memory");
                         log.debug("Adding FileItem as " + fi.getFieldName() + " to the params");
-                        params.append(fi.getFieldName(), fi);
+                        params.add(fi.getFieldName(), fi);
                     }
                 }
             }

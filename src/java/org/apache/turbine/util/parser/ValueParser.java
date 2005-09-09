@@ -150,6 +150,8 @@ public interface ValueParser
      *
      * @param name A String with the name.
      * @param value A String with the value.
+     *
+     * @deprecated Use add(name, value) instead.
      */
     void append(String name, String value);
 

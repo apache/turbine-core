@@ -26,7 +26,7 @@ import org.apache.turbine.util.parser.ParameterParser;
  * <p> This service handles parsing <code>multipart/form-data</code>
  * POST requests and turing them into form fields and uploaded files.
  * This can be either performed automatically by the {@link
- * org.apache.turbine.util.ParameterParser} or manually by an user
+ * org.apache.turbine.util.parser.ParameterParser} or manually by an user
  * definded {@link org.apache.turbine.modules.Action}.
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
@@ -88,7 +88,7 @@ public interface UploadService
      * <p> The default value of 'automatic' property
      * (<code>false</code>).  If set to <code>true</code>, parsing the
      * multipart request will be performed automaticaly by {@link
-     * org.apache.turbine.util.ParameterParser}.  Otherwise, an {@link
+     * org.apache.turbine.util.parser.ParameterParser}.  Otherwise, an {@link
      * org.apache.turbine.modules.Action} may decide to to parse the
      * request by calling {@link #parseRequest(HttpServletRequest,
      * ParameterParser, String) parseRequest} manually.
