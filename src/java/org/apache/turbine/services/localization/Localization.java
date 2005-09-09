@@ -241,11 +241,11 @@ public abstract class Localization
     }
 
     /**
-     * @deprecated Call getString(data.getRequest()) instead.
+     * @deprecated Call getString(key, data.getRequest()) instead.
      */
     public static String getString(RunData data, String key)
     {
-        return getBundle(data.getRequest()).getString(key);
+        return getString(key, data.getRequest());
     }
 
     /**
