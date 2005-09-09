@@ -34,6 +34,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.collections.iterators.ArrayIterator;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -226,20 +228,9 @@ public class BaseValueParser
     {
         if (value != null)
         {
-            String[] items = this.getStrings(name);
-            if (items == null)
-            {
-                items = new String[1];
-                items[0] = value;
-                putParam(name, items);
-            }
-            else
-            {
-                String[] newItems = new String[items.length + 1];
-                System.arraycopy(items, 0, newItems, 0, items.length);
-                newItems[items.length] = value;
-                putParam(name, newItems);
-            }
+            String [] items = this.getParam(name);
+            items = (String []) ArrayUtils.add(items, value);
+            putParam(name, items);
         }
     }
 
@@ -253,9 +244,17 @@ public class BaseValueParser
      */
     public void add(String name, String [] value)
     {
-        for (int i = 0 ; i < value.length; i++)
+        // ArrayUtils.addAll() looks promising but it would also add
+        // null values into the parameters array, so we can't use that.
+        if (value != null)
         {
-            add(name, value[i]);
+            for (int i = 0 ; i < value.length; i++)
+            {
+                if (value[i] != null)
+                {
+                    add(name, value[i]);
+                }
+            }
         }
     }
 
@@ -453,7 +452,7 @@ public class BaseValueParser
     public Boolean getBooleanObject(String name, Boolean defaultValue)
     {
         Boolean result = getBooleanObject(name);
-        return (result==null ? defaultValue : result);
+        return (result == null ? defaultValue : result);
     }
 
     /**
@@ -495,17 +494,20 @@ public class BaseValueParser
     {
         double result = defaultValue;
         String value = getString(name);
-        if (StringUtils.isNotEmpty(value))
+
+        try
         {
-            try
-            {
-                result = Double.valueOf(value).doubleValue();
-            }
-            catch (NumberFormatException e)
-            {
-                logConvertionFailure(name, value, "Double");
-            }
+            result = Double.parseDouble(value);
         }
+        catch (NumberFormatException e)
+        {
+            logConvertionFailure(name, value, "Double");
+        }
+        catch (NullPointerException e)
+        {
+            logConvertionFailure(name, value, "Double");
+        }
+
         return result;
     }
 
@@ -531,22 +533,23 @@ public class BaseValueParser
     public double[] getDoubles(String name)
     {
         double[] result = null;
-        String value[] = getStrings(name);
+        String value[] = getParam(name);
         if (value != null)
         {
             result = new double[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                if (StringUtils.isNotEmpty(value[i]))
+                try
                 {
-                    try
-                    {
-                        result[i] = Double.parseDouble(value[i]);
-                    }
-                    catch (NumberFormatException e)
-                    {
-                        logConvertionFailure(name, value[i], "Double");
-                    }
+                    result[i] = Double.parseDouble(value[i]);
+                }
+                catch (NumberFormatException e)
+                {
+                    logConvertionFailure(name, value[i], "Double");
+                }
+                catch (NullPointerException e)
+                {
+                    logConvertionFailure(name, value[i], "Double");
                 }
             }
         }
@@ -564,7 +567,7 @@ public class BaseValueParser
     public Double getDoubleObject(String name, Double defaultValue)
     {
         Double result = getDoubleObject(name);
-        return (result==null ? defaultValue : result);
+        return (result == null ? defaultValue : result);
     }
 
     /**
@@ -578,16 +581,18 @@ public class BaseValueParser
     {
         Double result = null;
         String value = getString(name);
-        if (StringUtils.isNotEmpty(value))
+
+        try
         {
-            try
-            {
-                result = new Double(value);
-            }
-            catch(NumberFormatException e)
-            {
-                logConvertionFailure(name, value, "Double");
-            }
+            result = new Double(value);
+        }
+        catch(NumberFormatException e)
+        {
+            logConvertionFailure(name, value, "Double");
+        }
+        catch(NullPointerException e)
+        {
+            logConvertionFailure(name, value, "Double");
         }
         return result;
     }
@@ -602,22 +607,23 @@ public class BaseValueParser
     public Double[] getDoubleObjects(String name)
     {
         Double[] result = null;
-        String value[] = getStrings(convert(name));
+        String value[] = getParam(name);
         if (value != null)
         {
             result = new Double[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                if (StringUtils.isNotEmpty(value[i]))
+                try
                 {
-                    try
-                    {
-                        result[i] = Double.valueOf(value[i]);
-                    }
-                    catch (NumberFormatException e)
-                    {
-                        logConvertionFailure(name, value[i], "Double");
-                    }
+                    result[i] = Double.valueOf(value[i]);
+                }
+                catch (NumberFormatException e)
+                {
+                    logConvertionFailure(name, value[i], "Double");
+                }
+                catch (NullPointerException e)
+                {
+                    logConvertionFailure(name, value[i], "Double");
                 }
             }
         }
@@ -636,17 +642,20 @@ public class BaseValueParser
     {
         float result = defaultValue;
         String value = getString(name);
-        if (StringUtils.isNotEmpty(value))
+
+        try
         {
-            try
-            {
-                result = Float.valueOf(value).floatValue();
-            }
-            catch (NumberFormatException e)
-            {
-                logConvertionFailure(name, value, "Float");
-            }
+            result = Float.parseFloat(value);
         }
+        catch (NumberFormatException e)
+        {
+            logConvertionFailure(name, value, "Float");
+        }
+        catch (NullPointerException e)
+        {
+            logConvertionFailure(name, value, "Float");
+        }
+
         return result;
     }
 
@@ -672,22 +681,23 @@ public class BaseValueParser
     public float[] getFloats(String name)
     {
         float[] result = null;
-        String value[] = getStrings(name);
+        String value[] = getParam(name);
         if (value != null)
         {
             result = new float[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                if (StringUtils.isNotEmpty(value[i]))
+                try
                 {
-                    try
-                    {
-                        result[i] = Float.parseFloat(value[i]);
-                    }
-                    catch (NumberFormatException e)
-                    {
-                        logConvertionFailure(name, value[i], "Float");
-                    }
+                    result[i] = Float.parseFloat(value[i]);
+                }
+                catch (NumberFormatException e)
+                {
+                    logConvertionFailure(name, value[i], "Float");
+                }
+                catch (NullPointerException e)
+                {
+                    logConvertionFailure(name, value[i], "Float");
                 }
             }
         }
@@ -705,7 +715,7 @@ public class BaseValueParser
     public Float getFloatObject(String name, Float defaultValue)
     {
         Float result = getFloatObject(name);
-        return (result==null ? defaultValue : result);
+        return (result == null ? defaultValue : result);
     }
 
     /**
@@ -719,17 +729,20 @@ public class BaseValueParser
     {
         Float result = null;
         String value = getString(name);
-        if (StringUtils.isNotEmpty(value))
+
+        try
         {
-            try
-            {
-                result = new Float(value);
-            }
-            catch(NumberFormatException e)
-            {
-                logConvertionFailure(name, value, "Float");
-            }
+            result = new Float(value);
         }
+        catch(NumberFormatException e)
+        {
+            logConvertionFailure(name, value, "Float");
+        }
+        catch(NullPointerException e)
+        {
+            logConvertionFailure(name, value, "Float");
+        }
+
         return result;
     }
 
@@ -743,22 +756,23 @@ public class BaseValueParser
     public Float[] getFloatObjects(String name)
     {
         Float[] result = null;
-        String value[] = getStrings(convert(name));
+        String value[] = getParam(name);
         if (value != null)
         {
             result = new Float[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                if (StringUtils.isNotEmpty(value[i]))
+                try
                 {
-                    try
-                    {
-                        result[i] = Float.valueOf(value[i]);
-                    }
-                    catch (NumberFormatException e)
-                    {
-                        logConvertionFailure(name, value[i], "Float");
-                    }
+                    result[i] = Float.valueOf(value[i]);
+                }
+                catch (NumberFormatException e)
+                {
+                    logConvertionFailure(name, value[i], "Float");
+                }
+                catch (NullPointerException e)
+                {
+                    logConvertionFailure(name, value[i], "Float");
                 }
             }
         }
@@ -777,17 +791,20 @@ public class BaseValueParser
     {
         BigDecimal result = defaultValue;
         String value = getString(name);
-        if (StringUtils.isNotEmpty(value))
+
+        try
         {
-            try
-            {
-                result = new BigDecimal(value);
-            }
-            catch (NumberFormatException e)
-            {
-                logConvertionFailure(name, value, "BigDecimal");
-            }
+            result = new BigDecimal(value);
         }
+        catch (NumberFormatException e)
+        {
+            logConvertionFailure(name, value, "BigDecimal");
+        }
+        catch (NullPointerException e)
+        {
+            logConvertionFailure(name, value, "BigDecimal");
+        }
+
         return result;
     }
 
@@ -813,22 +830,23 @@ public class BaseValueParser
     public BigDecimal[] getBigDecimals(String name)
     {
         BigDecimal[] result = null;
-        String value[] = getStrings(name);
+        String value[] = getParam(name);
         if (value != null)
         {
             result = new BigDecimal[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                if(StringUtils.isNotEmpty(value[i]))
+                try
                 {
-                    try
-                    {
-                        result[i] = new BigDecimal(value[i]);
-                    }
-                    catch (NumberFormatException e)
-                    {
-                        logConvertionFailure(name, value[i], "BigDecimal");
-                    }
+                    result[i] = new BigDecimal(value[i]);
+                }
+                catch (NumberFormatException e)
+                {
+                    logConvertionFailure(name, value[i], "BigDecimal");
+                }
+                catch (NullPointerException e)
+                {
+                    logConvertionFailure(name, value[i], "BigDecimal");
                 }
             }
         }
@@ -847,17 +865,20 @@ public class BaseValueParser
     {
         int result = defaultValue;
         String value = getString(name);
-        if (StringUtils.isNotEmpty(value))
+
+        try
         {
-            try
-            {
-                result = Integer.valueOf(value).intValue();
-            }
-            catch (NumberFormatException e)
-            {
-                logConvertionFailure(name, value, "Integer");
-            }
+            result = Integer.valueOf(value).intValue();
         }
+        catch (NumberFormatException e)
+        {
+            logConvertionFailure(name, value, "Integer");
+        }
+        catch (NullPointerException e)
+        {
+            logConvertionFailure(name, value, "Integer");
+        }
+
         return result;
     }
 
@@ -925,22 +946,23 @@ public class BaseValueParser
     public int[] getInts(String name)
     {
         int[] result = null;
-        String value[] = getStrings(name);
+        String value[] = getParam(name);
         if (value != null)
         {
             result = new int[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                if (StringUtils.isNotEmpty(value[i]))
+                try
                 {
-                    try
-                    {
-                        result[i] = Integer.parseInt(value[i]);
-                    }
-                    catch (NumberFormatException e)
-                    {
-                        logConvertionFailure(name, value[i], "Integer");
-                    }
+                    result[i] = Integer.parseInt(value[i]);
+                }
+                catch (NumberFormatException e)
+                {
+                    logConvertionFailure(name, value[i], "Integer");
+                }
+                catch (NullPointerException e)
+                {
+                    logConvertionFailure(name, value[i], "Integer");
                 }
             }
         }
@@ -958,7 +980,7 @@ public class BaseValueParser
     public Integer getIntObject(String name, Integer defaultValue)
     {
         Integer result = getIntObject(name);
-        return (result==null ? defaultValue : result);
+        return (result == null ? defaultValue : result);
     }
 
     /**
@@ -972,17 +994,20 @@ public class BaseValueParser
     {
         Integer result = null;
         String value = getString(name);
-        if (StringUtils.isNotEmpty(value))
+
+        try
         {
-            try
-            {
-                result = new Integer(value);
-            }
-            catch(NumberFormatException e)
-            {
-                logConvertionFailure(name, value, "Integer");
-            }
+            result = new Integer(value);
         }
+        catch(NumberFormatException e)
+        {
+            logConvertionFailure(name, value, "Integer");
+        }
+        catch(NullPointerException e)
+        {
+            logConvertionFailure(name, value, "Integer");
+        }
+
         return result;
     }
 
@@ -996,22 +1021,23 @@ public class BaseValueParser
     public Integer[] getIntObjects(String name)
     {
         Integer[] result = null;
-        String value[] = getStrings(convert(name));
+        String value[] = getParam(name);
         if (value != null)
         {
             result = new Integer[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                if (StringUtils.isNotEmpty(value[i]))
+                try
                 {
-                    try
-                    {
-                        result[i] = Integer.valueOf(value[i]);
-                    }
-                    catch (NumberFormatException e)
-                    {
-                        logConvertionFailure(name, value[i], "Integer");
-                    }
+                    result[i] = Integer.valueOf(value[i]);
+                }
+                catch (NumberFormatException e)
+                {
+                    logConvertionFailure(name, value[i], "Integer");
+                }
+                catch (NullPointerException e)
+                {
+                    logConvertionFailure(name, value[i], "Integer");
                 }
             }
         }
@@ -1043,17 +1069,20 @@ public class BaseValueParser
     {
         long result = defaultValue;
         String value = getString(name);
-        if (StringUtils.isNotEmpty(value))
+
+        try
         {
-            try
-            {
-                result = Long.valueOf(value).longValue();
-            }
-            catch (NumberFormatException e)
-            {
-                logConvertionFailure(name, value, "Long");
-            }
+            result = Long.valueOf(value).longValue();
         }
+        catch (NumberFormatException e)
+        {
+            logConvertionFailure(name, value, "Long");
+        }
+        catch (NullPointerException e)
+        {
+            logConvertionFailure(name, value, "Long");
+        }
+
         return result;
     }
 
@@ -1079,22 +1108,23 @@ public class BaseValueParser
     public long[] getLongs(String name)
     {
         long[] result = null;
-        String value[] = getStrings(name);
+        String value[] = getParam(name);
         if (value != null)
         {
             result = new long[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                if (StringUtils.isNotEmpty(value[i]))
+                try
                 {
-                    try
-                    {
-                        result[i] = Long.parseLong(value[i]);
-                    }
-                    catch (NumberFormatException e)
-                    {
-                        logConvertionFailure(name, value[i], "Long");
-                    }
+                    result[i] = Long.parseLong(value[i]);
+                }
+                catch (NumberFormatException e)
+                {
+                    logConvertionFailure(name, value[i], "Long");
+                }
+                catch (NullPointerException e)
+                {
+                    logConvertionFailure(name, value[i], "Long");
                 }
             }
         }
@@ -1111,22 +1141,23 @@ public class BaseValueParser
     public Long[] getLongObjects(String name)
     {
         Long[] result = null;
-        String value[] = getStrings(convert(name));
+        String value[] = getParam(name);
         if (value != null)
         {
             result = new Long[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                if (StringUtils.isNotEmpty(value[i]))
+                try
                 {
-                    try
-                    {
-                        result[i] = Long.valueOf(value[i]);
-                    }
-                    catch (NumberFormatException e)
-                    {
-                        logConvertionFailure(name, value[i], "Long");
-                    }
+                    result[i] = Long.valueOf(value[i]);
+                }
+                catch (NumberFormatException e)
+                {
+                    logConvertionFailure(name, value[i], "Long");
+                }
+                catch (NullPointerException e)
+                {
+                    logConvertionFailure(name, value[i], "Long");
                 }
             }
         }
@@ -1144,17 +1175,20 @@ public class BaseValueParser
     {
         Long result = null;
         String value = getString(name);
-        if (StringUtils.isNotEmpty(value))
+
+        try
         {
-            try
-            {
-                result = new Long(value);
-            }
-            catch(NumberFormatException e)
-            {
-                logConvertionFailure(name, value, "Long");
-            }
+            result = new Long(value);
         }
+        catch(NumberFormatException e)
+        {
+            logConvertionFailure(name, value, "Long");
+        }
+        catch(NullPointerException e)
+        {
+            logConvertionFailure(name, value, "Long");
+        }
+
         return result;
     }
 
@@ -1169,7 +1203,7 @@ public class BaseValueParser
     public Long getLongObject(String name, Long defaultValue)
     {
         Long result = getLongObject(name);
-        return (result==null ? defaultValue : result);
+        return (result == null ? defaultValue : result);
     }
 
     /**
@@ -1184,17 +1218,20 @@ public class BaseValueParser
     {
         byte result = defaultValue;
         String value = getString(name);
-        if (StringUtils.isNotEmpty(value))
+
+        try
         {
-            try
-            {
-                result = Byte.valueOf(value).byteValue();
-            }
-            catch (NumberFormatException e)
-            {
-                logConvertionFailure(name, value, "Byte");
-            }
+            result = Byte.valueOf(value).byteValue();
         }
+        catch (NumberFormatException e)
+        {
+            logConvertionFailure(name, value, "Byte");
+        }
+        catch (NullPointerException e)
+        {
+            logConvertionFailure(name, value, "Byte");
+        }
+
         return result;
     }
 
@@ -1224,7 +1261,7 @@ public class BaseValueParser
     {
         byte result[] = null;
         String value = getString(name);
-        if (StringUtils.isNotEmpty(value))
+        if (value != null)
         {
             result = value.getBytes(getCharacterEncoding());
         }
@@ -1242,7 +1279,7 @@ public class BaseValueParser
     public Byte getByteObject(String name, Byte defaultValue)
     {
         Byte result = getByteObject(name);
-        return (result==null ? defaultValue : result);
+        return (result == null ? defaultValue : result);
     }
 
     /**
@@ -1256,17 +1293,20 @@ public class BaseValueParser
     {
         Byte result = null;
         String value = getString(name);
-        if (StringUtils.isNotEmpty(value))
+
+        try
         {
-            try
-            {
-                result = new Byte(value);
-            }
-            catch(NumberFormatException e)
-            {
-                logConvertionFailure(name, value, "Byte");
-            }
+            result = new Byte(value);
         }
+        catch(NumberFormatException e)
+        {
+            logConvertionFailure(name, value, "Byte");
+        }
+        catch(NullPointerException e)
+        {
+            logConvertionFailure(name, value, "Byte");
+        }
+
         return result;
     }
 
@@ -1275,31 +1315,15 @@ public class BaseValueParser
      * exist, return null.
      *
      * @param name A String with the name.
-     * @return A String.
+     * @return A String or null if the key is unknown.
      */
     public String getString(String name)
     {
-        String result = null;
-        try
-        {
-            Object value = getParam(name);
-            if (value != null)
-            {
-                value = ((String[]) value)[0];
-            }
-            if (value == null || value.equals("null"))
-            {
-                return null;
-            }
-            result = (String) value;
-        }
-        catch (ClassCastException e)
-        {
-            log.fatal("Parameter ("
-                    + name + ") wasn not stored as a String", e);
-        }
+        String [] value = getParam(name);
 
-        return result;
+        return (value == null
+                || value.length == 0)
+                ? null : value[0];
     }
 
     /**
@@ -1359,7 +1383,7 @@ public class BaseValueParser
      */
     public String[] getStrings(String name)
     {
-        return (String[]) getParam(name);
+        return getParam(name);
     }
 
     /**
@@ -1372,7 +1396,7 @@ public class BaseValueParser
      */
     public String[] getStrings(String name, String[] defaultValue)
     {
-        String[] value = getStrings(name);
+        String[] value = getParam(name);
 
         return (value == null || value.length == 0)
             ? defaultValue : value;
@@ -1415,7 +1439,7 @@ public class BaseValueParser
      */
     public Object[] getObjects(String name)
     {
-        return getStrings(name);
+        return getParam(name);
     }
 
     /**
@@ -1631,46 +1655,36 @@ public class BaseValueParser
         for (Iterator iter = keySet().iterator(); iter.hasNext();)
         {
             String name = (String) iter.next();
-            try
+
+            sb.append('{');
+            sb.append(name);
+            sb.append('=');
+            String [] params = this.getParam(name);
+
+            if (params == null)
             {
-                sb.append('{');
-                sb.append(name);
-                sb.append('=');
-                String[] params = this.getStrings(name);
-                if (params.length <= 1)
+                sb.append("unknown?");
+            }
+            else if (params.length == 0)
+            {
+                sb.append("empty");
+            }
+            else
+            {
+                sb.append('[');
+                for (Iterator it = new ArrayIterator(params); it.hasNext(); )
                 {
-                    sb.append(params[0]);
-                }
-                else
-                {
-                    for (int i = 0; i < params.length; i++)
+                    sb.append(it.next());
+                    if (it.hasNext())
                     {
-                        if (i != 0)
-                        {
-                            sb.append(", ");
-                        }
-                        sb.append('[')
-                                .append(params[i])
-                                .append(']');
+                        sb.append(", ");
                     }
                 }
-                sb.append("}\n");
+                sb.append(']');
             }
-            catch (Exception ee)
-            {
-                try
-                {
-                    sb.append('{');
-                    sb.append(name);
-                    sb.append('=');
-                    sb.append("ERROR?");
-                    sb.append("}\n");
-                }
-                catch (Exception eee)
-                {
-                }
-            }
+            sb.append("}\n");
         }
+
         return sb.toString();
     }
 
@@ -1778,9 +1792,12 @@ public class BaseValueParser
     private void logConvertionFailure(String paramName,
                                       String value, String type)
     {
-        log.warn("Parameter (" + paramName
-                + ") with value of ("
-                + value + ") could not be converted to a " + type);
+        if (log.isWarnEnabled())
+        {
+            log.warn("Parameter (" + paramName
+                    + ") with value of ("
+                    + value + ") could not be converted to a " + type);
+        }
     }
 
     /**
