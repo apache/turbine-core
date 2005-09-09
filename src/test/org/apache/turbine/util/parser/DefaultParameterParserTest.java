@@ -43,7 +43,7 @@ public class DefaultParameterParserTest
         super(name, "conf/test/TurbineResources.properties");
     }
 
-    public static Test suite()
+    public static TestSuite suite()
     {
         return new TestSuite(DefaultParameterParserTest.class);
     }
@@ -76,6 +76,17 @@ public class DefaultParameterParserTest
         assertTrue(dpp.containsKey("other-field"));
 
         assertFalse(dpp.containsKey("missing-field"));
+    }
+
+    public void testToString()
+    {
+        DefaultParameterParser dpp = new DefaultParameterParser();
+        DefaultFileItemFactory factory = new DefaultFileItemFactory(10240, null);
+
+        FileItem test = factory.createItem("upload-field", "application/octet-stream", false, null);
+        dpp.append("upload-field", test);
+
+        System.out.println(dpp.toString());
     }
 }
 

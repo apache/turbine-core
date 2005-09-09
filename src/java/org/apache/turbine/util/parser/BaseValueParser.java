@@ -111,7 +111,7 @@ public class BaseValueParser
      */
     public BaseValueParser()
     {
-        super();
+        this(TurbineConstants.PARAMETER_ENCODING_DEFAULT);
     }
 
     /**
@@ -120,29 +120,20 @@ public class BaseValueParser
     public BaseValueParser(String characterEncoding)
     {
         super();
-        recycle(characterEncoding);
-    }
-
-    /**
-     * Recycles the parser.
-     */
-    public void recycle()
-    {
-        recycle(TurbineConstants.PARAMETER_ENCODING_DEFAULT);
+        setCharacterEncoding(characterEncoding);
     }
 
     /**
      * Recycles the parser with a character encoding.
      *
      * @param characterEncoding the character encoding.
+     *x
+     * @todo Is this method used anywhere? Does it make any sense at all?
      */
     public void recycle(String characterEncoding)
     {
         setCharacterEncoding(characterEncoding);
-        if (!isDisposed())
-        {
-            super.recycle();
-        }
+        super.recycle();
     }
 
     /**
@@ -230,7 +221,20 @@ public class BaseValueParser
      */
     public void add(String name, String value)
     {
-        append(name, value);
+        String[] items = this.getStrings(name);
+        if (items == null)
+        {
+            items = new String[1];
+            items[0] = value;
+            parameters.put(convert(name), items);
+        }
+        else
+        {
+            String[] newItems = new String[items.length + 1];
+            System.arraycopy(items, 0, newItems, 0, items.length);
+            newItems[items.length] = value;
+            parameters.put(convert(name), newItems);
+        }
     }
 
     /**
@@ -256,23 +260,12 @@ public class BaseValueParser
      *
      * @param name A String with the name.
      * @param value A String with the value.
+     *
+     * @deprecated Use add(name, value) instead.
      */
     public void append(String name, String value)
     {
-        String[] items = this.getStrings(name);
-        if (items == null)
-        {
-            items = new String[1];
-            items[0] = value;
-            parameters.put(convert(name), items);
-        }
-        else
-        {
-            String[] newItems = new String[items.length + 1];
-            System.arraycopy(items, 0, newItems, 0, items.length);
-            newItems[items.length] = value;
-            parameters.put(convert(name), newItems);
-        }
+        add(name, value);
     }
 
     /**
