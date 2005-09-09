@@ -16,7 +16,6 @@ package org.apache.turbine.util.pool;
  * limitations under the License.
  */
 
-import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.apache.turbine.test.BaseTestCase;

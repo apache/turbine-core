@@ -18,12 +18,10 @@ package org.apache.turbine.util.parser;
 
 import java.util.Iterator;
 
-import org.apache.commons.fileupload.DefaultFileItemFactory;
-import org.apache.commons.fileupload.FileItem;
-
-import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.apache.commons.fileupload.DefaultFileItemFactory;
+import org.apache.commons.fileupload.FileItem;
 import org.apache.turbine.test.BaseTurbineTest;
 
 /**
@@ -50,17 +48,17 @@ public class DefaultParameterParserTest
 
     public void testFileItemsInKeySet()
     {
-        DefaultParameterParser dpp = new DefaultParameterParser();
+        ParameterParser pp = new DefaultParameterParser();
         DefaultFileItemFactory factory = new DefaultFileItemFactory(10240, null);
 
-        assertEquals("keySet() is not empty!", 0, dpp.keySet().size());
+        assertEquals("keySet() is not empty!", 0, pp.keySet().size());
 
         FileItem test = factory.createItem("upload-field", "application/octet-stream", false, null);
-        dpp.append("upload-field", test);
+        pp.add("upload-field", test);
 
-        assertEquals("FileItem not found in keySet()!", 1, dpp.keySet().size());
+        assertEquals("FileItem not found in keySet()!", 1, pp.keySet().size());
 
-        Iterator it = dpp.keySet().iterator();
+        Iterator it = pp.keySet().iterator();
         assertTrue(it.hasNext());
 
         String name = (String) it.next();
@@ -68,25 +66,25 @@ public class DefaultParameterParserTest
 
         assertFalse(it.hasNext());
 
-        dpp.append("other-field", "foo");
+        pp.add("other-field", "foo");
 
-        assertEquals("Wrong number of fields found ", 2, dpp.getKeys().length);
+        assertEquals("Wrong number of fields found ", 2, pp.getKeys().length);
 
-        assertTrue(dpp.containsKey("upload-field"));
-        assertTrue(dpp.containsKey("other-field"));
+        assertTrue(pp.containsKey("upload-field"));
+        assertTrue(pp.containsKey("other-field"));
 
-        assertFalse(dpp.containsKey("missing-field"));
+        assertFalse(pp.containsKey("missing-field"));
     }
 
     public void testToString()
     {
-        DefaultParameterParser dpp = new DefaultParameterParser();
+        ParameterParser pp = new DefaultParameterParser();
         DefaultFileItemFactory factory = new DefaultFileItemFactory(10240, null);
 
         FileItem test = factory.createItem("upload-field", "application/octet-stream", false, null);
-        dpp.append("upload-field", test);
+        pp.add("upload-field", test);
 
-        System.out.println(dpp.toString());
+        assertTrue(pp.toString().startsWith("{upload-field=[org.apache.commons.fileupload.DefaultFileItem"));
     }
 }
 
