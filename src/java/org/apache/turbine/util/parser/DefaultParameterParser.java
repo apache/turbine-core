@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.set.CompositeSet;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -110,7 +111,7 @@ public class DefaultParameterParser
      */
     public DefaultParameterParser(String characterEncoding)
     {
-        super (characterEncoding);
+        super(characterEncoding);
         configureUploadService();
     }
 
@@ -147,11 +148,11 @@ public class DefaultParameterParser
      */
     public HttpServletRequest getRequest()
     {
-        return this.request;
+        return request;
     }
 
     /**
-     * Sets the servlet request to be parser.  This requires a
+     * Sets the servlet request to the parser.  This requires a
      * valid HttpServletRequest object.  It will attempt to parse out
      * the GET/POST/PATH_INFO data and store the data into a Map.
      * There are convenience methods for retrieving the data as a
@@ -174,17 +175,18 @@ public class DefaultParameterParser
                 ? enc
                 : TurbineConstants.PARAMETER_ENCODING_DEFAULT);
 
-        // String object re-use at its best.
-        String tmp = null;
-
-        tmp = request.getHeader("Content-type");
+        String contentType = request.getHeader("Content-type");
 
         if (uploadServiceIsAvailable
                 && uploadService.getAutomatic()
-                && tmp != null
-                && tmp.startsWith("multipart/form-data"))
+                && contentType != null
+                && contentType.startsWith("multipart/form-data"))
         {
-            log.debug("Running the Turbine Upload Service");
+            if (log.isDebugEnabled())
+            {
+                log.debug("Running the Turbine Upload Service");
+            }
+
             try
             {
                 TurbineUpload.parseRequest(request, this);
@@ -198,32 +200,34 @@ public class DefaultParameterParser
         for (Enumeration names = request.getParameterNames();
              names.hasMoreElements();)
         {
-            tmp = (String) names.nextElement();
-            add(convert(tmp),
-                    request.getParameterValues(tmp));
+            String paramName = (String) names.nextElement();
+            add(paramName,
+                    request.getParameterValues(paramName));
         }
 
         // Also cache any pathinfo variables that are passed around as
         // if they are query string data.
         try
         {
-            StringTokenizer st =
-                    new StringTokenizer(request.getPathInfo(), "/");
             boolean isNameTok = true;
-            String pathPart = null;
-            while (st.hasMoreTokens())
+            String paramName = null;
+            String paramValue = null;
+
+            for ( StringTokenizer st =
+                          new StringTokenizer(request.getPathInfo(), "/");
+                  st.hasMoreTokens();)
             {
                 if (isNameTok)
                 {
-                    tmp = URLDecoder.decode(st.nextToken());
+                    paramName = URLDecoder.decode(st.nextToken());
                     isNameTok = false;
                 }
                 else
                 {
-                    pathPart = URLDecoder.decode(st.nextToken());
-                    if (tmp.length() > 0)
+                    paramValue = URLDecoder.decode(st.nextToken());
+                    if (paramName.length() > 0)
                     {
-                        add(convert(tmp), pathPart);
+                        add(paramName, paramValue);
                     }
                     isNameTok = true;
                 }
@@ -267,7 +271,22 @@ public class DefaultParameterParser
      */
     public byte[] getUploadData()
     {
-        return this.uploadData;
+        return uploadData;
+    }
+
+    /**
+     * Add a FileItem object as a parameters.  If there are any
+     * FileItems already associated with the name, append to the
+     * array.  The reason for this is that RFC 1867 allows multiple
+     * files to be associated with single HTML input element.
+     *
+     * @param name A String with the name.
+     * @param value A FileItem with the value.
+     * @deprecated Use add(String name, FileItem item)
+     */
+    public void append(String name, FileItem item)
+    {
+        add(name, item);
     }
 
     /**
@@ -279,26 +298,15 @@ public class DefaultParameterParser
      * @param name A String with the name.
      * @param value A FileItem with the value.
      */
-    public void append(String name, FileItem value)
+    public void add(String name, FileItem item)
     {
-        FileItem[] items = this.getFileItems(name);
-        if (items == null)
-        {
-            items = new FileItem[1];
-            items[0] = value;
-            fileParameters.put(convert(name), items);
-        }
-        else
-        {
-            FileItem[] newItems = new FileItem[items.length + 1];
-            System.arraycopy(items, 0, newItems, 0, items.length);
-            newItems[items.length] = value;
-            fileParameters.put(convert(name), newItems);
-        }
+        FileItem[] items = getFileItemParam(name);
+        items = (FileItem []) ArrayUtils.add(items, item);
+        putFileItemParam(name, items);
     }
 
     /**
-     * Gets the set of keys
+     * Gets the set of keys (FileItems and regular parameters)
      *
      * @return A <code>Set</code> of the keys.
      */
@@ -335,43 +343,75 @@ public class DefaultParameterParser
      */
     public FileItem getFileItem(String name)
     {
-        try
-        {
-            FileItem value = null;
-            Object object = fileParameters.get(convert(name));
-            if (object != null)
-            {
-                value = ((FileItem[]) object)[0];
-            }
-            return value;
-        }
-        catch (ClassCastException e)
-        {
-            log.error("Parameter ("
-                    + name + ") is not an instance of FileItem", e);
-            return null;
-        }
+        FileItem [] value = getFileItemParam(name);
+
+        return (value == null
+                || value.length == 0)
+                ? null : value[0];
     }
 
     /**
      * Return an array of FileItem objects for the given name.  If the
-     * name does not exist or the object stored is not a FileItem
-     * array, return null.
+     * name does not exist, return null.
      *
      * @param name A String with the name.
-     * @return A FileItem[].
+     * @return An Array of  FileItems or null.
      */
     public FileItem[] getFileItems(String name)
     {
-        try
+        return getFileItemParam(name);
+    }
+
+    /**
+     * Puts a key into the parameters map. Makes sure that the name is always
+     * mapped correctly. This method also enforces the usage of arrays for the
+     * parameters.
+     *
+     * @param name A String with the name.
+     * @param value An array of Objects with the values.
+     *
+     */
+    protected void putFileItemParam(final String name, final FileItem [] value)
+    {
+        String key = convert(name);
+        if (key != null)
         {
-            return (FileItem[]) fileParameters.get(convert(name));
+            fileParameters.put(key, value);
         }
-        catch (ClassCastException e)
+    }
+
+    /**
+     * fetches a key from the parameters map. Makes sure that the name is
+     * always mapped correctly.
+     *
+     * @param name A string with the name
+     *
+     * @return the value object array or null if not set
+     */
+    protected FileItem [] getFileItemParam(final String name)
+    {
+        String key = convert(name);
+
+        return (key != null) ? (FileItem []) fileParameters.get(key) : null;
+    }
+
+    /**
+     * This method is only used in toString() and can be used by 
+     * derived classes to add their local parameters to the toString()
+
+     * @param name A string with the name
+     *
+     * @return the value object array or null if not set
+     */
+    protected Object [] getToStringParam(final String name)
+    {
+        if (super.containsKey(name))
         {
-            log.error("Parameter ("
-                    + name + ") is not an instance of FileItem[]", e);
-            return null;
+            return getParam(name);
+        }
+        else
+        {
+            return getFileItemParam(name);
         }
     }
 }
