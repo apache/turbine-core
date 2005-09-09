@@ -232,7 +232,7 @@ public abstract class ActionEvent extends Action
                     != ParserUtils.URL_CASE_FOLDING_NONE)
             {
                 tmp = input.toLowerCase().substring(BUTTON_LENGTH + METHOD_NAME_LENGTH);
-                tmp = METHOD_NAME_PREFIX + StringUtils.capitalise(tmp);
+                tmp = METHOD_NAME_PREFIX + StringUtils.capitalize(tmp);
             }
             else
             {

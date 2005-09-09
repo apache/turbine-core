@@ -669,7 +669,7 @@ public class TurbineIntakeService
 
                     pd = new PropertyDescriptor(propName,
                             Class.forName(className),
-                            "set" + StringUtils.capitalise(propName),
+                            "set" + StringUtils.capitalize(propName),
                             null); // Java sucks.
                 }
 
@@ -754,7 +754,7 @@ public class TurbineIntakeService
 
                     pd = new PropertyDescriptor(propName,
                             Class.forName(className),
-                            "get" + StringUtils.capitalise(propName),
+                            "get" + StringUtils.capitalize(propName),
                             null); // Java sucks some more.
                 }
 
