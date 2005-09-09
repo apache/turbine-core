@@ -25,6 +25,11 @@
 
 <body>
   <release version="2.3.2-dev" date="in CVS">
+    <action type="update" dev="henning">
+      Reworked BaseValueParser and DefaultParameterParser to be more
+      resilient against bad or missing values. Added a number of Unit tests
+      to check for these.
+    </action>
     <action type="fix" dev="henning" issue="TTWS58">
       file upload items should be listed in DefaultParameterParser.keySet().
     </action>
