@@ -25,18 +25,22 @@
 
 <body>
   <release version="2.3.2-dev" date="in CVS">
+    <action type="fix" dev="henning" issue="TTWS62" due-to="Dan Price">
+      Added a change to the Localization facade class which should help
+      Jetspeed 1.x with Localization.
+    </action>
     <action type="update" dev="henning">
       Reworked BaseValueParser and DefaultParameterParser to be more
       resilient against bad or missing values. Added a number of Unit tests
       to check for these.
     </action>
-    <action type="fix" dev="henning" issue="TTWS58">
+    <action type="fix" dev="henning" issue="TTWS58" due-to="Edmund Urbani">
       file upload items should be listed in DefaultParameterParser.keySet().
     </action>
     <action type="update" dev="henning">
       All serializable classes have explicit SerialVersionUID fields.
     </action>
-    <action type="fix" dev="henning" issue="TTWS16">
+    <action type="fix" dev="henning" issue="TTWS16" due-to="Oliver Eikemeier">
       Make sure that UIManager strips leading and trailing
       slashes from referenced objects and configured pathes.
     </action>
