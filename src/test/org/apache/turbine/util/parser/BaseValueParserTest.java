@@ -18,20 +18,12 @@ package org.apache.turbine.util.parser;
 
 import java.math.BigDecimal;
 
-import java.util.Iterator;
-
-import org.apache.commons.fileupload.DefaultFileItemFactory;
-import org.apache.commons.fileupload.FileItem;
-
-import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.apache.turbine.TurbineConstants;
-
+import org.apache.turbine.test.BaseTurbineTest;
 import org.apache.turbine.util.DateSelector;
 import org.apache.turbine.util.TimeSelector;
-
-import org.apache.turbine.test.BaseTurbineTest;
 
 /**
  * test whether the Default parameter parser returns its uploaded file items
@@ -57,106 +49,106 @@ public class BaseValueParserTest
 
     public void testSetup()
     {
-        BaseValueParser bvp = new BaseValueParser();
-        assertFalse(bvp.isDisposed());
+        BaseValueParser vp = new BaseValueParser();
+        assertFalse(vp.isDisposed());
 
-        assertEquals("Wrong Character Encoding", TurbineConstants.PARAMETER_ENCODING_DEFAULT, bvp.getCharacterEncoding());
+        assertEquals("Wrong Character Encoding", TurbineConstants.PARAMETER_ENCODING_DEFAULT, vp.getCharacterEncoding());
     }
 
     public void testSetupWithEncoding()
     {
         String encoding = "ISO-8859-2";
 
-        BaseValueParser bvp = new BaseValueParser(encoding);
-        assertFalse(bvp.isDisposed());
+        BaseValueParser vp = new BaseValueParser(encoding);
+        assertFalse(vp.isDisposed());
 
-        assertEquals("Wrong Character Encoding", encoding, bvp.getCharacterEncoding());
+        assertEquals("Wrong Character Encoding", encoding, vp.getCharacterEncoding());
     }
 
     public void testChangeEncoding()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong Character Encoding", TurbineConstants.PARAMETER_ENCODING_DEFAULT, bvp.getCharacterEncoding());
+        assertEquals("Wrong Character Encoding", TurbineConstants.PARAMETER_ENCODING_DEFAULT, vp.getCharacterEncoding());
 
         String encoding = "ISO-8859-2";
-        bvp.setCharacterEncoding(encoding);
+        vp.setCharacterEncoding(encoding);
 
-        assertEquals("Wrong Character Encoding", encoding, bvp.getCharacterEncoding());
+        assertEquals("Wrong Character Encoding", encoding, vp.getCharacterEncoding());
     }
 
     public void testClear()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        bvp.add("foo", "bar");
+        vp.add("foo", "bar");
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        bvp.clear();
+        vp.clear();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
     }
 
     public void testDispose()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        BaseValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        bvp.add("foo", "bar");
+        vp.add("foo", "bar");
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        bvp.dispose();
+        vp.dispose();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
-        assertTrue(bvp.isDisposed());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
+        assertTrue(vp.isDisposed());
     }
 
     public void testKeyArray()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        bvp.add("foo", "bar");
+        vp.add("foo", "bar");
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        bvp.add("bar", "foo");
+        vp.add("bar", "foo");
 
-        assertEquals("Wrong number of keys", 2, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 2, vp.keySet().size());
         
-        bvp.add("bar", "baz");
+        vp.add("bar", "baz");
 
-        assertEquals("Wrong number of keys", 2, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 2, vp.keySet().size());
     }
 
     public void testDoubleAdd()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         double testValue = 2.0;
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        assertEquals("Wrong string value", "2.0", bvp.getString("foo"));
-        assertEquals("Wrong double value", (double) testValue, bvp.getDouble("foo"), 0.001);
-        assertEquals("Wrong Double value", (double) testValue, bvp.getDoubleObject("foo").doubleValue(), 0.001);
+        assertEquals("Wrong string value", "2.0", vp.getString("foo"));
+        assertEquals("Wrong double value", (double) testValue, vp.getDouble("foo"), 0.001);
+        assertEquals("Wrong Double value", (double) testValue, vp.getDoubleObject("foo").doubleValue(), 0.001);
 
-        double [] doubles = bvp.getDoubles("foo");
+        double [] doubles = vp.getDoubles("foo");
         assertEquals("Wrong Array Size", 1, doubles.length);
 
         assertEquals("Wrong double array value", testValue, doubles[0], 0.001);
 
-        Double [] doubleObjs = bvp.getDoubleObjects("foo");
+        Double [] doubleObjs = vp.getDoubleObjects("foo");
         assertEquals("Wrong Array Size", 1, doubleObjs.length);
 
         assertEquals("Wrong Double array value", testValue, doubleObjs[0].doubleValue(), 0.001);
@@ -164,26 +156,26 @@ public class BaseValueParserTest
 
     public void testIntAdd()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         int testValue = 123;
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        assertEquals("Wrong string value", "123", bvp.getString("foo"));
-        assertEquals("Wrong int value", (int) testValue, bvp.getInt("foo"));
-        assertEquals("Wrong Int value", (int) testValue, bvp.getIntObject("foo").intValue());
+        assertEquals("Wrong string value", "123", vp.getString("foo"));
+        assertEquals("Wrong int value", (int) testValue, vp.getInt("foo"));
+        assertEquals("Wrong Int value", (int) testValue, vp.getIntObject("foo").intValue());
 
-        int [] ints = bvp.getInts("foo");
+        int [] ints = vp.getInts("foo");
         assertEquals("Wrong Array Size", 1, ints.length);
 
         assertEquals("Wrong int array value", testValue, ints[0]);
 
-        Integer [] intObjs = bvp.getIntObjects("foo");
+        Integer [] intObjs = vp.getIntObjects("foo");
         assertEquals("Wrong Array Size", 1, intObjs.length);
 
         assertEquals("Wrong Int array value", testValue, intObjs[0].intValue());
@@ -191,26 +183,26 @@ public class BaseValueParserTest
 
     public void testIntegerAdd()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         Integer testValue = new Integer(123);
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        assertEquals("Wrong string value", "123", bvp.getString("foo"));
-        assertEquals("Wrong int value", (int) testValue.intValue(), bvp.getInt("foo"));
-        assertEquals("Wrong Int value", (int) testValue.intValue(), bvp.getIntObject("foo").intValue());
+        assertEquals("Wrong string value", "123", vp.getString("foo"));
+        assertEquals("Wrong int value", (int) testValue.intValue(), vp.getInt("foo"));
+        assertEquals("Wrong Int value", (int) testValue.intValue(), vp.getIntObject("foo").intValue());
 
-        int [] ints = bvp.getInts("foo");
+        int [] ints = vp.getInts("foo");
         assertEquals("Wrong Array Size", 1, ints.length);
 
         assertEquals("Wrong int array value", testValue.intValue(), ints[0]);
 
-        Integer [] intObjs = bvp.getIntObjects("foo");
+        Integer [] intObjs = vp.getIntObjects("foo");
         assertEquals("Wrong Array Size", 1, intObjs.length);
 
         assertEquals("Wrong Int array value", testValue.intValue(), intObjs[0].intValue());
@@ -218,26 +210,26 @@ public class BaseValueParserTest
 
     public void testLongAdd()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         long testValue = 9223372036854775807l;
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        assertEquals("Wrong string value", "9223372036854775807", bvp.getString("foo"));
-        assertEquals("Wrong long value", (long) testValue, bvp.getLong("foo"));
-        assertEquals("Wrong Long value", (long) testValue, bvp.getLongObject("foo").longValue());
+        assertEquals("Wrong string value", "9223372036854775807", vp.getString("foo"));
+        assertEquals("Wrong long value", (long) testValue, vp.getLong("foo"));
+        assertEquals("Wrong Long value", (long) testValue, vp.getLongObject("foo").longValue());
 
-        long [] longs = bvp.getLongs("foo");
+        long [] longs = vp.getLongs("foo");
         assertEquals("Wrong Array Size", 1, longs.length);
 
         assertEquals("Wrong long array value", testValue, longs[0]);
 
-        Long [] longObjs = bvp.getLongObjects("foo");
+        Long [] longObjs = vp.getLongObjects("foo");
         assertEquals("Wrong Array Size", 1, longObjs.length);
 
         assertEquals("Wrong Long array value", testValue, longObjs[0].longValue());
@@ -245,26 +237,26 @@ public class BaseValueParserTest
 
     public void testLongToInt()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         long testValue = 1234l;
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        assertEquals("Wrong string value", "1234", bvp.getString("foo"));
-        assertEquals("Wrong int value", (int) testValue, bvp.getInt("foo"));
-        assertEquals("Wrong Int value", (int) testValue, bvp.getIntObject("foo").intValue());
+        assertEquals("Wrong string value", "1234", vp.getString("foo"));
+        assertEquals("Wrong int value", (int) testValue, vp.getInt("foo"));
+        assertEquals("Wrong Int value", (int) testValue, vp.getIntObject("foo").intValue());
 
-        int [] ints = bvp.getInts("foo");
+        int [] ints = vp.getInts("foo");
         assertEquals("Wrong Array Size", 1, ints.length);
 
         assertEquals("Wrong int array value", testValue, ints[0]);
 
-        Integer [] intObjs = bvp.getIntObjects("foo");
+        Integer [] intObjs = vp.getIntObjects("foo");
         assertEquals("Wrong Array Size", 1, intObjs.length);
 
         assertEquals("Wrong Int array value", testValue, intObjs[0].intValue());
@@ -272,26 +264,26 @@ public class BaseValueParserTest
 
     public void testIntToLong()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         int testValue = 123;
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        assertEquals("Wrong string value", "123", bvp.getString("foo"));
-        assertEquals("Wrong long value", (long) testValue, bvp.getLong("foo"));
-        assertEquals("Wrong Long value", (long) testValue, bvp.getLongObject("foo").longValue());
+        assertEquals("Wrong string value", "123", vp.getString("foo"));
+        assertEquals("Wrong long value", (long) testValue, vp.getLong("foo"));
+        assertEquals("Wrong Long value", (long) testValue, vp.getLongObject("foo").longValue());
 
-        long [] longs = bvp.getLongs("foo");
+        long [] longs = vp.getLongs("foo");
         assertEquals("Wrong Array Size", 1, longs.length);
 
         assertEquals("Wrong long array value", testValue, longs[0]);
 
-        Long [] longObjs = bvp.getLongObjects("foo");
+        Long [] longObjs = vp.getLongObjects("foo");
         assertEquals("Wrong Array Size", 1, longObjs.length);
 
         assertEquals("Wrong Long array value", testValue, longObjs[0].longValue());
@@ -299,26 +291,26 @@ public class BaseValueParserTest
 
     public void testIntToDouble()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         int testValue = 123;
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        assertEquals("Wrong string value", "123", bvp.getString("foo"));
-        assertEquals("Wrong double value", (double) testValue, bvp.getDouble("foo"), 0.001);
-        assertEquals("Wrong Double value", (double) testValue, bvp.getDoubleObject("foo").doubleValue(), 0.001);
+        assertEquals("Wrong string value", "123", vp.getString("foo"));
+        assertEquals("Wrong double value", (double) testValue, vp.getDouble("foo"), 0.001);
+        assertEquals("Wrong Double value", (double) testValue, vp.getDoubleObject("foo").doubleValue(), 0.001);
 
-        double [] doubles = bvp.getDoubles("foo");
+        double [] doubles = vp.getDoubles("foo");
         assertEquals("Wrong Array Size", 1, doubles.length);
 
         assertEquals("Wrong double array value", testValue, doubles[0], 0.001);
 
-        Double [] doubleObjs = bvp.getDoubleObjects("foo");
+        Double [] doubleObjs = vp.getDoubleObjects("foo");
         assertEquals("Wrong Array Size", 1, doubleObjs.length);
 
         assertEquals("Wrong Double array value", testValue, doubleObjs[0].doubleValue(), 0.001);
@@ -326,26 +318,26 @@ public class BaseValueParserTest
 
     public void testLongToDouble()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         long testValue = 9223372036854775807l;
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        assertEquals("Wrong string value", "9223372036854775807", bvp.getString("foo"));
-        assertEquals("Wrong double value", (double) testValue, bvp.getDouble("foo"), 0.001);
-        assertEquals("Wrong Double value", (double) testValue, bvp.getDoubleObject("foo").doubleValue(), 0.001);
+        assertEquals("Wrong string value", "9223372036854775807", vp.getString("foo"));
+        assertEquals("Wrong double value", (double) testValue, vp.getDouble("foo"), 0.001);
+        assertEquals("Wrong Double value", (double) testValue, vp.getDoubleObject("foo").doubleValue(), 0.001);
 
-        double [] doubles = bvp.getDoubles("foo");
+        double [] doubles = vp.getDoubles("foo");
         assertEquals("Wrong Array Size", 1, doubles.length);
 
         assertEquals("Wrong double array value", testValue, doubles[0], 0.001);
 
-        Double [] doubleObjs = bvp.getDoubleObjects("foo");
+        Double [] doubleObjs = vp.getDoubleObjects("foo");
         assertEquals("Wrong Array Size", 1, doubleObjs.length);
 
         assertEquals("Wrong Double array value", testValue, doubleObjs[0].doubleValue(), 0.001);
@@ -353,19 +345,19 @@ public class BaseValueParserTest
 
     public void testStringAdd()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         String testValue = "the quick brown fox";
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        assertEquals("Wrong string value", testValue, bvp.getString("foo"));
+        assertEquals("Wrong string value", testValue, vp.getString("foo"));
 
-        String [] Strings = bvp.getStrings("foo");
+        String [] Strings = vp.getStrings("foo");
         assertEquals("Wrong Array Size", 1, Strings.length);
 
         assertEquals("Wrong String array value", testValue, Strings[0]);
@@ -373,27 +365,27 @@ public class BaseValueParserTest
 
     public void testStringToInt()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         String testValue = "123456";
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        assertEquals("Wrong string value", testValue, bvp.getString("foo"));
+        assertEquals("Wrong string value", testValue, vp.getString("foo"));
 
-        assertEquals("Wrong int value", Integer.parseInt(testValue), bvp.getInt("foo"));
-        assertEquals("Wrong Int value", Integer.valueOf(testValue).intValue(), bvp.getIntObject("foo").intValue());
+        assertEquals("Wrong int value", Integer.parseInt(testValue), vp.getInt("foo"));
+        assertEquals("Wrong Int value", Integer.valueOf(testValue).intValue(), vp.getIntObject("foo").intValue());
 
-        int [] ints = bvp.getInts("foo");
+        int [] ints = vp.getInts("foo");
         assertEquals("Wrong Array Size", 1, ints.length);
 
         assertEquals("Wrong int array value", Integer.parseInt(testValue), ints[0]);
 
-        Integer [] intObjs = bvp.getIntObjects("foo");
+        Integer [] intObjs = vp.getIntObjects("foo");
         assertEquals("Wrong Array Size", 1, intObjs.length);
 
         assertEquals("Wrong Int array value", Integer.valueOf(testValue).intValue(), intObjs[0].intValue());
@@ -401,27 +393,27 @@ public class BaseValueParserTest
 
     public void testStringToLong()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         String testValue = "123456";
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        assertEquals("Wrong string value", testValue, bvp.getString("foo"));
+        assertEquals("Wrong string value", testValue, vp.getString("foo"));
 
-        assertEquals("Wrong long value", Long.parseLong(testValue), bvp.getLong("foo"));
-        assertEquals("Wrong Long value", Long.valueOf(testValue).longValue(), bvp.getLongObject("foo").longValue());
+        assertEquals("Wrong long value", Long.parseLong(testValue), vp.getLong("foo"));
+        assertEquals("Wrong Long value", Long.valueOf(testValue).longValue(), vp.getLongObject("foo").longValue());
 
-        long [] longs = bvp.getLongs("foo");
+        long [] longs = vp.getLongs("foo");
         assertEquals("Wrong Array Size", 1, longs.length);
 
         assertEquals("Wrong long array value", Long.parseLong(testValue), longs[0]);
 
-        Long [] longObjs = bvp.getLongObjects("foo");
+        Long [] longObjs = vp.getLongObjects("foo");
         assertEquals("Wrong Array Size", 1, longObjs.length);
 
         assertEquals("Wrong Long array value", Long.valueOf(testValue).longValue(), longObjs[0].longValue());
@@ -429,19 +421,19 @@ public class BaseValueParserTest
 
     public void testStringArray()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
         
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
         
         String [] testValue = new String [] {
             "foo", "bar", "baz"
         };
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        String [] res = bvp.getStrings("foo");
+        String [] res = vp.getStrings("foo");
 
         assertEquals("Wrong number of elements", 3, res.length);
 
@@ -450,11 +442,11 @@ public class BaseValueParserTest
             assertEquals("Wrong value", res[i], testValue[i]);
         }
 
-        assertEquals("Wrong element returned", testValue[0], bvp.getString("foo"));
+        assertEquals("Wrong element returned", testValue[0], vp.getString("foo"));
 
-        bvp.add("foo", "xxx");
+        vp.add("foo", "xxx");
 
-        res = bvp.getStrings("foo");
+        res = vp.getStrings("foo");
 
         assertEquals("Wrong number of elements", 4, res.length);
 
@@ -466,55 +458,55 @@ public class BaseValueParserTest
         assertEquals(res[3], "xxx");
 
         // should append at the end.
-        assertEquals("Wrong element returned", testValue[0], bvp.getString("foo"));
+        assertEquals("Wrong element returned", testValue[0], vp.getString("foo"));
     }
 
     public void testRemove()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         String testValue = "the quick brown fox";
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        assertEquals("Wrong string value", testValue, bvp.getString("foo"));
+        assertEquals("Wrong string value", testValue, vp.getString("foo"));
 
-        assertNotNull(bvp.remove("foo"));
+        assertNotNull(vp.remove("foo"));
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        assertNull(bvp.getString("foo"));
+        assertNull(vp.getString("foo"));
 
         // Test non-existing key
-        assertNull(bvp.remove("baz"));
+        assertNull(vp.remove("baz"));
 
         // Test removing null value
-        assertNull(bvp.remove(null));
+        assertNull(vp.remove(null));
     }
         
     public void testRemoveArray()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         String testValue = "the quick brown fox";
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        assertEquals("Wrong string value", testValue, bvp.getString("foo"));
+        assertEquals("Wrong string value", testValue, vp.getString("foo"));
 
-        String [] res = bvp.getStrings("foo");
+        String [] res = vp.getStrings("foo");
 
         assertEquals("Wrong number of elements", 2, res.length);
 
@@ -523,156 +515,156 @@ public class BaseValueParserTest
             assertEquals("Wrong value", res[i], testValue);
         }
 
-        bvp.remove("foo");
+        vp.remove("foo");
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        assertNull(bvp.getString("foo"));
+        assertNull(vp.getString("foo"));
     }
 
     public void testContainsKey()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        bvp.add("foo", "bar");
-        bvp.add("bar", new String [] { "foo", "bar" });
+        vp.add("foo", "bar");
+        vp.add("bar", new String [] { "foo", "bar" });
 
-        assertTrue(bvp.containsKey("foo"));
-        assertTrue(bvp.containsKey("bar"));
-        assertFalse(bvp.containsKey("baz"));
+        assertTrue(vp.containsKey("foo"));
+        assertTrue(vp.containsKey("bar"));
+        assertFalse(vp.containsKey("baz"));
     }
 
     public void testDateSelector()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        BaseValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
-        assertFalse(bvp.containsDateSelectorKeys("foo"));
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
+        assertFalse(vp.containsDateSelectorKeys("foo"));
 
-        bvp.add("foo" + DateSelector.DAY_SUFFIX, "1");
+        vp.add("foo" + DateSelector.DAY_SUFFIX, "1");
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
-        assertFalse(bvp.containsDateSelectorKeys("foo"));
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
+        assertFalse(vp.containsDateSelectorKeys("foo"));
 
-        bvp.add("foo" + DateSelector.MONTH_SUFFIX, "1");
+        vp.add("foo" + DateSelector.MONTH_SUFFIX, "1");
 
-        assertEquals("Wrong number of keys", 2, bvp.keySet().size());
-        assertFalse(bvp.containsDateSelectorKeys("foo"));
+        assertEquals("Wrong number of keys", 2, vp.keySet().size());
+        assertFalse(vp.containsDateSelectorKeys("foo"));
 
-        bvp.add("foo" + DateSelector.YEAR_SUFFIX, "2005");
+        vp.add("foo" + DateSelector.YEAR_SUFFIX, "2005");
 
-        assertEquals("Wrong number of keys", 3, bvp.keySet().size());
-        assertTrue(bvp.containsDateSelectorKeys("foo"));
+        assertEquals("Wrong number of keys", 3, vp.keySet().size());
+        assertTrue(vp.containsDateSelectorKeys("foo"));
     }
 
     public void testTimeSelector()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        BaseValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
-        assertFalse(bvp.containsTimeSelectorKeys("foo"));
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
+        assertFalse(vp.containsTimeSelectorKeys("foo"));
 
-        bvp.add("foo" + TimeSelector.HOUR_SUFFIX, "22");
+        vp.add("foo" + TimeSelector.HOUR_SUFFIX, "22");
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
-        assertFalse(bvp.containsTimeSelectorKeys("foo"));
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
+        assertFalse(vp.containsTimeSelectorKeys("foo"));
 
-        bvp.add("foo" + TimeSelector.MINUTE_SUFFIX, "58");
+        vp.add("foo" + TimeSelector.MINUTE_SUFFIX, "58");
 
-        assertEquals("Wrong number of keys", 2, bvp.keySet().size());
-        assertFalse(bvp.containsTimeSelectorKeys("foo"));
+        assertEquals("Wrong number of keys", 2, vp.keySet().size());
+        assertFalse(vp.containsTimeSelectorKeys("foo"));
 
-        bvp.add("foo" + TimeSelector.SECOND_SUFFIX, "0");
+        vp.add("foo" + TimeSelector.SECOND_SUFFIX, "0");
 
-        assertEquals("Wrong number of keys", 3, bvp.keySet().size());
-        assertTrue(bvp.containsTimeSelectorKeys("foo"));
+        assertEquals("Wrong number of keys", 3, vp.keySet().size());
+        assertTrue(vp.containsTimeSelectorKeys("foo"));
     }
 
     public void testBooleanObject()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        bvp.add("t1", "true");
-        bvp.add("t2", "yes");
-        bvp.add("t3", "on");
-        bvp.add("t4", "1");
-        bvp.add("t5", 1);
+        vp.add("t1", "true");
+        vp.add("t2", "yes");
+        vp.add("t3", "on");
+        vp.add("t4", "1");
+        vp.add("t5", 1);
 
-        bvp.add("f1", "false");
-        bvp.add("f2", "no");
-        bvp.add("f3", "off");
-        bvp.add("f4", "0");
-        bvp.add("f5", 0);
+        vp.add("f1", "false");
+        vp.add("f2", "no");
+        vp.add("f3", "off");
+        vp.add("f4", "0");
+        vp.add("f5", 0);
 
-        bvp.add("e1", "nix");
-        bvp.add("e2", "weg");
-        bvp.add("e3", 200);
-        bvp.add("e4", -2.5);
+        vp.add("e1", "nix");
+        vp.add("e2", "weg");
+        vp.add("e3", 200);
+        vp.add("e4", -2.5);
 
-        assertEquals("Value is not true", Boolean.TRUE, bvp.getBooleanObject("t1"));
-        assertEquals("Value is not true", Boolean.TRUE, bvp.getBooleanObject("t2"));
-        assertEquals("Value is not true", Boolean.TRUE, bvp.getBooleanObject("t3"));
-        assertEquals("Value is not true", Boolean.TRUE, bvp.getBooleanObject("t4"));
-        assertEquals("Value is not true", Boolean.TRUE, bvp.getBooleanObject("t5"));
+        assertEquals("Value is not true", Boolean.TRUE, vp.getBooleanObject("t1"));
+        assertEquals("Value is not true", Boolean.TRUE, vp.getBooleanObject("t2"));
+        assertEquals("Value is not true", Boolean.TRUE, vp.getBooleanObject("t3"));
+        assertEquals("Value is not true", Boolean.TRUE, vp.getBooleanObject("t4"));
+        assertEquals("Value is not true", Boolean.TRUE, vp.getBooleanObject("t5"));
 
-        assertEquals("Value is not false", Boolean.FALSE, bvp.getBooleanObject("f1"));
-        assertEquals("Value is not false", Boolean.FALSE, bvp.getBooleanObject("f2"));
-        assertEquals("Value is not false", Boolean.FALSE, bvp.getBooleanObject("f3"));
-        assertEquals("Value is not false", Boolean.FALSE, bvp.getBooleanObject("f4"));
-        assertEquals("Value is not false", Boolean.FALSE, bvp.getBooleanObject("f5"));
+        assertEquals("Value is not false", Boolean.FALSE, vp.getBooleanObject("f1"));
+        assertEquals("Value is not false", Boolean.FALSE, vp.getBooleanObject("f2"));
+        assertEquals("Value is not false", Boolean.FALSE, vp.getBooleanObject("f3"));
+        assertEquals("Value is not false", Boolean.FALSE, vp.getBooleanObject("f4"));
+        assertEquals("Value is not false", Boolean.FALSE, vp.getBooleanObject("f5"));
 
-        assertNull(bvp.getBooleanObject("e1"));
-        assertNull(bvp.getBooleanObject("e2"));
-        assertNull(bvp.getBooleanObject("e3"));
-        assertNull(bvp.getBooleanObject("e4"));
+        assertNull(vp.getBooleanObject("e1"));
+        assertNull(vp.getBooleanObject("e2"));
+        assertNull(vp.getBooleanObject("e3"));
+        assertNull(vp.getBooleanObject("e4"));
 
-        assertNull(bvp.getBooleanObject("does-not-exist"));
+        assertNull(vp.getBooleanObject("does-not-exist"));
     }
 
     public void testBoolDefault()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        bvp.add("t1", "true");
-        bvp.add("f1", "false");
+        vp.add("t1", "true");
+        vp.add("f1", "false");
 
-        assertTrue(bvp.getBoolean("t1"));
-        assertFalse(bvp.getBoolean("f1"));
+        assertTrue(vp.getBoolean("t1"));
+        assertFalse(vp.getBoolean("f1"));
 
-        assertFalse(bvp.getBoolean("does not exist"));
+        assertFalse(vp.getBoolean("does not exist"));
 
-        assertTrue(bvp.getBoolean("t1", false));
-        assertFalse(bvp.getBoolean("f1", true));
+        assertTrue(vp.getBoolean("t1", false));
+        assertFalse(vp.getBoolean("f1", true));
 
-        assertFalse(bvp.getBoolean("does not exist", false));
-        assertTrue(bvp.getBoolean("does not exist", true));
+        assertFalse(vp.getBoolean("does not exist", false));
+        assertTrue(vp.getBoolean("does not exist", true));
     }
 
     public void testBooleanDefault()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        bvp.add("t1", "true");
-        bvp.add("f1", "false");
+        vp.add("t1", "true");
+        vp.add("f1", "false");
 
-        assertEquals("Value is not true",  Boolean.TRUE, bvp.getBooleanObject("t1"));
-        assertEquals("Value is not false", Boolean.FALSE, bvp.getBooleanObject("f1"));
+        assertEquals("Value is not true",  Boolean.TRUE, vp.getBooleanObject("t1"));
+        assertEquals("Value is not false", Boolean.FALSE, vp.getBooleanObject("f1"));
 
-        assertNull(bvp.getBooleanObject("does not exist"));
+        assertNull(vp.getBooleanObject("does not exist"));
 
-        assertEquals("Value is not true",  Boolean.TRUE, bvp.getBooleanObject("t1", Boolean.FALSE));
-        assertEquals("Value is not true",  Boolean.TRUE, bvp.getBooleanObject("t1", null));
-        assertEquals("Value is not false", Boolean.FALSE, bvp.getBooleanObject("f1", Boolean.TRUE));
-        assertEquals("Value is not false", Boolean.FALSE, bvp.getBooleanObject("f1", null));
+        assertEquals("Value is not true",  Boolean.TRUE, vp.getBooleanObject("t1", Boolean.FALSE));
+        assertEquals("Value is not true",  Boolean.TRUE, vp.getBooleanObject("t1", null));
+        assertEquals("Value is not false", Boolean.FALSE, vp.getBooleanObject("f1", Boolean.TRUE));
+        assertEquals("Value is not false", Boolean.FALSE, vp.getBooleanObject("f1", null));
 
-        assertNull(bvp.getBooleanObject("does not exist", null));
+        assertNull(vp.getBooleanObject("does not exist", null));
     }
 
     public void testDoubleArray()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
         
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
         
         double [] testValue = {
             1.0, 2.0, 3.0
@@ -680,15 +672,15 @@ public class BaseValueParserTest
 
         for (int i = 0; i < testValue.length; i++)
         {
-            bvp.add("foo", testValue[i]);
+            vp.add("foo", testValue[i]);
 
-            String [] res = bvp.getStrings("foo");
+            String [] res = vp.getStrings("foo");
             assertEquals("Wrong number of elements", res.length, i + 1);
         }
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        double [] res = bvp.getDoubles("foo");
+        double [] res = vp.getDoubles("foo");
 
         assertEquals("Wrong number of elements", 3, res.length);
 
@@ -697,7 +689,7 @@ public class BaseValueParserTest
             assertEquals("Wrong value", res[i], testValue[i], 0.001);
         }
 
-        Double [] resObj = bvp.getDoubleObjects("foo");
+        Double [] resObj = vp.getDoubleObjects("foo");
 
         assertEquals("Wrong number of elements", 3, resObj.length);
 
@@ -706,11 +698,11 @@ public class BaseValueParserTest
             assertEquals("Wrong value", resObj[i].doubleValue(), testValue[i], 0.001);
         }
 
-        assertEquals("Wrong element returned", testValue[0], bvp.getDoubleObject("foo").doubleValue(), 0.001);
+        assertEquals("Wrong element returned", testValue[0], vp.getDoubleObject("foo").doubleValue(), 0.001);
 
-        bvp.add("foo", 4.0);
+        vp.add("foo", 4.0);
 
-        res = bvp.getDoubles("foo");
+        res = vp.getDoubles("foo");
 
         assertEquals("Wrong number of elements", 4, res.length);
 
@@ -721,7 +713,7 @@ public class BaseValueParserTest
 
         assertEquals(res[3], 4.0, 0.001);
 
-        resObj = bvp.getDoubleObjects("foo");
+        resObj = vp.getDoubleObjects("foo");
 
         assertEquals("Wrong number of elements", 4, resObj.length);
 
@@ -733,14 +725,14 @@ public class BaseValueParserTest
         assertEquals(resObj[3].doubleValue(), 4.0, 0.001);
 
         // should append at the end.
-        assertEquals("Wrong element returned", testValue[0], bvp.getDouble("foo"), 0.001);
+        assertEquals("Wrong element returned", testValue[0], vp.getDouble("foo"), 0.001);
     }
 
     public void testFloatArray()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
         
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
         
         float [] testValue = {
             1.0f, 2.0f, 3.0f
@@ -748,15 +740,15 @@ public class BaseValueParserTest
 
         for (int i = 0; i < testValue.length; i++)
         {
-            bvp.add("foo", testValue[i]);
+            vp.add("foo", testValue[i]);
 
-            String [] res = bvp.getStrings("foo");
+            String [] res = vp.getStrings("foo");
             assertEquals("Wrong number of elements", res.length, i + 1);
         }
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        float [] res = bvp.getFloats("foo");
+        float [] res = vp.getFloats("foo");
 
         assertEquals("Wrong number of elements", 3, res.length);
 
@@ -765,7 +757,7 @@ public class BaseValueParserTest
             assertEquals("Wrong value", res[i], testValue[i], 0.001f);
         }
 
-        Float [] resObj = bvp.getFloatObjects("foo");
+        Float [] resObj = vp.getFloatObjects("foo");
 
         assertEquals("Wrong number of elements", 3, resObj.length);
 
@@ -774,11 +766,11 @@ public class BaseValueParserTest
             assertEquals("Wrong value", resObj[i].floatValue(), testValue[i], 0.001f);
         }
 
-        assertEquals("Wrong element returned", testValue[0], bvp.getFloatObject("foo").floatValue(), 0.001f);
+        assertEquals("Wrong element returned", testValue[0], vp.getFloatObject("foo").floatValue(), 0.001f);
 
-        bvp.add("foo", 4.0f);
+        vp.add("foo", 4.0f);
 
-        res = bvp.getFloats("foo");
+        res = vp.getFloats("foo");
 
         assertEquals("Wrong number of elements", 4, res.length);
 
@@ -789,7 +781,7 @@ public class BaseValueParserTest
 
         assertEquals(res[3], 4.0f, 0.001f);
 
-        resObj = bvp.getFloatObjects("foo");
+        resObj = vp.getFloatObjects("foo");
 
         assertEquals("Wrong number of elements", 4, resObj.length);
 
@@ -801,14 +793,14 @@ public class BaseValueParserTest
         assertEquals(resObj[3].floatValue(), 4.0f, 0.001f);
 
         // should append at the end.
-        assertEquals("Wrong element returned", testValue[0], bvp.getFloat("foo"), 0.001f);
+        assertEquals("Wrong element returned", testValue[0], vp.getFloat("foo"), 0.001f);
     }
 
     public void testBigDecimalArray()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
         
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
         
         long [] testValue = {
             12345678,87654321,1092837465,
@@ -816,15 +808,15 @@ public class BaseValueParserTest
 
         for (int i = 0; i < testValue.length; i++)
         {
-            bvp.add("foo", testValue[i]);
+            vp.add("foo", testValue[i]);
 
-            String [] res = bvp.getStrings("foo");
+            String [] res = vp.getStrings("foo");
             assertEquals("Wrong number of elements", res.length, i + 1);
         }
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        BigDecimal [] res = bvp.getBigDecimals("foo");
+        BigDecimal [] res = vp.getBigDecimals("foo");
 
         assertEquals("Wrong number of elements", 3, res.length);
 
@@ -833,11 +825,11 @@ public class BaseValueParserTest
             assertEquals("Wrong value", res[i].longValue(), testValue[i]);
         }
 
-        assertEquals("Wrong element returned", testValue[0], bvp.getBigDecimal("foo").longValue());
+        assertEquals("Wrong element returned", testValue[0], vp.getBigDecimal("foo").longValue());
 
-        bvp.add("foo", 77777777);
+        vp.add("foo", 77777777);
 
-        res = bvp.getBigDecimals("foo");
+        res = vp.getBigDecimals("foo");
 
         assertEquals("Wrong number of elements", 4, res.length);
 
@@ -849,14 +841,14 @@ public class BaseValueParserTest
         assertEquals(res[3].longValue(), 77777777);
 
         // should append at the end.
-        assertEquals("Wrong element returned", testValue[0], bvp.getBigDecimal("foo").longValue());
+        assertEquals("Wrong element returned", testValue[0], vp.getBigDecimal("foo").longValue());
     }
 
     public void testIntegerArray()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
         
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
         
         int [] testValue = {
             1, 2, 3
@@ -864,15 +856,15 @@ public class BaseValueParserTest
 
         for (int i = 0; i < testValue.length; i++)
         {
-            bvp.add("foo", testValue[i]);
+            vp.add("foo", testValue[i]);
 
-            String [] res = bvp.getStrings("foo");
+            String [] res = vp.getStrings("foo");
             assertEquals("Wrong number of elements", res.length, i + 1);
         }
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        int [] res = bvp.getInts("foo");
+        int [] res = vp.getInts("foo");
 
         assertEquals("Wrong number of elements", 3, res.length);
 
@@ -881,7 +873,7 @@ public class BaseValueParserTest
             assertEquals("Wrong value", res[i], testValue[i]);
         }
 
-        Integer [] resObj = bvp.getIntObjects("foo");
+        Integer [] resObj = vp.getIntObjects("foo");
 
         assertEquals("Wrong number of elements", 3, resObj.length);
 
@@ -890,11 +882,11 @@ public class BaseValueParserTest
             assertEquals("Wrong value", resObj[i].intValue(), testValue[i]);
         }
 
-        assertEquals("Wrong element returned", testValue[0], bvp.getIntObject("foo").intValue());
+        assertEquals("Wrong element returned", testValue[0], vp.getIntObject("foo").intValue());
 
-        bvp.add("foo", 4);
+        vp.add("foo", 4);
 
-        res = bvp.getInts("foo");
+        res = vp.getInts("foo");
 
         assertEquals("Wrong number of elements", 4, res.length);
 
@@ -905,7 +897,7 @@ public class BaseValueParserTest
 
         assertEquals(res[3], 4);
 
-        resObj = bvp.getIntObjects("foo");
+        resObj = vp.getIntObjects("foo");
 
         assertEquals("Wrong number of elements", 4, resObj.length);
 
@@ -917,14 +909,14 @@ public class BaseValueParserTest
         assertEquals(resObj[3].intValue(), 4);
 
         // should append at the end.
-        assertEquals("Wrong element returned", testValue[0], bvp.getInt("foo"));
+        assertEquals("Wrong element returned", testValue[0], vp.getInt("foo"));
     }
 
     public void testLongArray()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
         
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
         
         long [] testValue = {
             1l, 2l, 3l
@@ -932,15 +924,15 @@ public class BaseValueParserTest
 
         for (int i = 0; i < testValue.length; i++)
         {
-            bvp.add("foo", testValue[i]);
+            vp.add("foo", testValue[i]);
 
-            String [] res = bvp.getStrings("foo");
+            String [] res = vp.getStrings("foo");
             assertEquals("Wrong number of elements", res.length, i + 1);
         }
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        long [] res = bvp.getLongs("foo");
+        long [] res = vp.getLongs("foo");
 
         assertEquals("Wrong number of elements", 3, res.length);
 
@@ -949,7 +941,7 @@ public class BaseValueParserTest
             assertEquals("Wrong value", res[i], testValue[i]);
         }
 
-        Long [] resObj = bvp.getLongObjects("foo");
+        Long [] resObj = vp.getLongObjects("foo");
 
         assertEquals("Wrong number of elements", 3, resObj.length);
 
@@ -958,11 +950,11 @@ public class BaseValueParserTest
             assertEquals("Wrong value", resObj[i].longValue(), testValue[i]);
         }
 
-        assertEquals("Wrong element returned", testValue[0], bvp.getLongObject("foo").longValue());
+        assertEquals("Wrong element returned", testValue[0], vp.getLongObject("foo").longValue());
 
-        bvp.add("foo", 4);
+        vp.add("foo", 4);
 
-        res = bvp.getLongs("foo");
+        res = vp.getLongs("foo");
 
         assertEquals("Wrong number of elements", 4, res.length);
 
@@ -973,7 +965,7 @@ public class BaseValueParserTest
 
         assertEquals(res[3], 4);
 
-        resObj = bvp.getLongObjects("foo");
+        resObj = vp.getLongObjects("foo");
 
         assertEquals("Wrong number of elements", 4, resObj.length);
 
@@ -985,29 +977,29 @@ public class BaseValueParserTest
         assertEquals(resObj[3].longValue(), 4);
 
         // should append at the end.
-        assertEquals("Wrong element returned", testValue[0], bvp.getLong("foo"));
+        assertEquals("Wrong element returned", testValue[0], vp.getLong("foo"));
     }
 
     public void testByteArray()
             throws Exception
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
         
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
         
         String  testValue = "abcdefg";
 
-        bvp.add("foo", testValue);
+        vp.add("foo", testValue);
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        byte [] res = bvp.getBytes("foo");
+        byte [] res = vp.getBytes("foo");
 
         assertEquals("Wrong number of elements", 7, res.length);
 
         for (int i = 0; i < res.length; i++)
         {
-            byte [] testByte = testValue.substring(i, i + 1).getBytes(bvp.getCharacterEncoding());
+            byte [] testByte = testValue.substring(i, i + 1).getBytes(vp.getCharacterEncoding());
             assertEquals("More than one byte for a char!", 1, testByte.length);
             assertEquals("Wrong value", res[i], testByte[0]);
         }
@@ -1015,9 +1007,9 @@ public class BaseValueParserTest
 
     public void testByte()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
         
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         String [] testValue = {
             "0", "127", "-1",
@@ -1027,104 +1019,104 @@ public class BaseValueParserTest
         
         for (int i = 0; i < testValue.length; i++)
         {
-            bvp.add("foo" + i, testValue[i]);
+            vp.add("foo" + i, testValue[i]);
         }
 
-        assertEquals("Wrong number of keys", 6, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 6, vp.keySet().size());
 
-        assertEquals("Wrong value", (byte) 0,    bvp.getByte("foo0"));
-        assertEquals("Wrong value", (byte) 127,  bvp.getByte("foo1"));
-        assertEquals("Wrong value", (byte) -1,   bvp.getByte("foo2"));
-        assertEquals("Wrong value", (byte) 0,    bvp.getByte("foo3"));
-        assertEquals("Wrong value", (byte) -127, bvp.getByte("foo4"));
-        assertEquals("Wrong value", (byte) 100,  bvp.getByte("foo5"));
+        assertEquals("Wrong value", (byte) 0,    vp.getByte("foo0"));
+        assertEquals("Wrong value", (byte) 127,  vp.getByte("foo1"));
+        assertEquals("Wrong value", (byte) -1,   vp.getByte("foo2"));
+        assertEquals("Wrong value", (byte) 0,    vp.getByte("foo3"));
+        assertEquals("Wrong value", (byte) -127, vp.getByte("foo4"));
+        assertEquals("Wrong value", (byte) 100,  vp.getByte("foo5"));
 
-        assertEquals("Wrong value", new Byte((byte) 0),    bvp.getByteObject("foo0"));
-        assertEquals("Wrong value", new Byte((byte) 127),  bvp.getByteObject("foo1"));
-        assertEquals("Wrong value", new Byte((byte) -1),   bvp.getByteObject("foo2"));
-        assertEquals("Wrong value", new Byte((byte) 0),    bvp.getByteObject("foo3"));
-        assertEquals("Wrong value", new Byte((byte) -127), bvp.getByteObject("foo4"));
-        assertEquals("Wrong value", new Byte((byte) 100),  bvp.getByteObject("foo5"));
+        assertEquals("Wrong value", new Byte((byte) 0),    vp.getByteObject("foo0"));
+        assertEquals("Wrong value", new Byte((byte) 127),  vp.getByteObject("foo1"));
+        assertEquals("Wrong value", new Byte((byte) -1),   vp.getByteObject("foo2"));
+        assertEquals("Wrong value", new Byte((byte) 0),    vp.getByteObject("foo3"));
+        assertEquals("Wrong value", new Byte((byte) -127), vp.getByteObject("foo4"));
+        assertEquals("Wrong value", new Byte((byte) 100),  vp.getByteObject("foo5"));
 
     }
 
     public void testStringDefault()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
         
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        bvp.add("foo", "bar");
+        vp.add("foo", "bar");
 
-        assertEquals("Wrong value found", "bar", bvp.getString("foo", "xxx"));
-        assertEquals("Wrong value found", "bar", bvp.getString("foo", null));
+        assertEquals("Wrong value found", "bar", vp.getString("foo", "xxx"));
+        assertEquals("Wrong value found", "bar", vp.getString("foo", null));
 
-        assertEquals("Wrong value found", "baz", bvp.getString("does-not-exist", "baz"));
-        assertNull(bvp.getString("does-not-exist", null));
+        assertEquals("Wrong value found", "baz", vp.getString("does-not-exist", "baz"));
+        assertNull(vp.getString("does-not-exist", null));
     }
 
     public void testSetString()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        bvp.add("foo", "bar");
+        vp.add("foo", "bar");
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        bvp.add("bar", "foo");
+        vp.add("bar", "foo");
 
-        assertEquals("Wrong number of keys", 2, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 2, vp.keySet().size());
         
-        bvp.add("bar", "baz");
+        vp.add("bar", "baz");
 
-        assertEquals("Wrong number of keys", 2, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 2, vp.keySet().size());
 
-        String [] res = bvp.getStrings("bar");
+        String [] res = vp.getStrings("bar");
         assertEquals("Wrong number of values", 2, res.length);
         assertEquals("Wrong value found", "foo", res[0]);
         assertEquals("Wrong value found", "baz", res[1]);
 
-        bvp.setString("bar", "xxx");
+        vp.setString("bar", "xxx");
 
-        assertEquals("Wrong number of keys", 2, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 2, vp.keySet().size());
 
-        res = bvp.getStrings("bar");
+        res = vp.getStrings("bar");
         assertEquals("Wrong number of values", 1, res.length);
         assertEquals("Wrong value found", "xxx", res[0]);
     }
 
     public void testSetStrings()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        bvp.add("foo", "bar");
+        vp.add("foo", "bar");
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        bvp.add("bar", "foo");
+        vp.add("bar", "foo");
 
-        assertEquals("Wrong number of keys", 2, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 2, vp.keySet().size());
         
-        bvp.add("bar", "baz");
+        vp.add("bar", "baz");
 
-        assertEquals("Wrong number of keys", 2, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 2, vp.keySet().size());
 
-        String [] res = bvp.getStrings("bar");
+        String [] res = vp.getStrings("bar");
         assertEquals("Wrong number of values", 2, res.length);
         assertEquals("Wrong value found", "foo", res[0]);
         assertEquals("Wrong value found", "baz", res[1]);
 
         String [] newValues = new String [] { "aaa", "bbb", "ccc", "ddd" };
 
-        bvp.setStrings("bar", newValues);
+        vp.setStrings("bar", newValues);
 
-        assertEquals("Wrong number of keys", 2, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 2, vp.keySet().size());
 
-        res = bvp.getStrings("bar");
+        res = vp.getStrings("bar");
         assertEquals("Wrong number of values", newValues.length, res.length);
 
         for (int i = 0 ; i < newValues.length; i++)
@@ -1136,18 +1128,18 @@ public class BaseValueParserTest
     public void testSetProperties()
             throws Exception
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        bvp.add("longvalue", 12345l);
-        bvp.add("doublevalue", 2.0);
-        bvp.add("intValue", 200);
-        bvp.add("stringvalue", "foobar");
-        bvp.add("booleanvalue", "true");
+        vp.add("longvalue", 12345l);
+        vp.add("doublevalue", 2.0);
+        vp.add("intValue", 200);
+        vp.add("stringvalue", "foobar");
+        vp.add("booleanvalue", "true");
 
         PropertyBean bp = new PropertyBean();
         bp.setDoNotTouchValue("abcdef");
 
-        bvp.setProperties(bp);
+        vp.setProperties(bp);
 
         assertEquals("Wrong value in bean", "abcdef", bp.getDoNotTouchValue());
         assertEquals("Wrong value in bean", "foobar", bp.getStringValue());
@@ -1159,21 +1151,21 @@ public class BaseValueParserTest
 
     public void testAddNulls()
     {
-        BaseValueParser bvp = new BaseValueParser();
+        ValueParser vp = new BaseValueParser();
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        bvp.add("foo", (Integer) null);
+        vp.add("foo", (Integer) null);
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        bvp.add("foo", (String) null);
+        vp.add("foo", (String) null);
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        bvp.add("bar", "null");
+        vp.add("bar", "null");
 
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
     }
 
@@ -1181,90 +1173,90 @@ public class BaseValueParserTest
     {
         String [] res = null;
 
-        BaseValueParser bvp = new BaseValueParser();
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        ValueParser vp = new BaseValueParser();
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        bvp.add("foo", new String [] { "foo", "bar" });
-        res = bvp.getStrings("foo");
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        vp.add("foo", new String [] { "foo", "bar" });
+        res = vp.getStrings("foo");
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
         assertEquals("Wrong number of values", 2, res.length);
 
         // null value should not change contents
-        bvp.add("foo", (String) null);
-        res = bvp.getStrings("foo");
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        vp.add("foo", (String) null);
+        res = vp.getStrings("foo");
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
         assertEquals("Wrong number of values", 2, res.length);
 
         // null value should not change contents
-        bvp.add("foo", (String []) null);
-        res = bvp.getStrings("foo");
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        vp.add("foo", (String []) null);
+        res = vp.getStrings("foo");
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
         assertEquals("Wrong number of values", 2, res.length);
 
         // empty String array should not change contents
-        bvp.add("foo", new String [0]);
-        res = bvp.getStrings("foo");
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        vp.add("foo", new String [0]);
+        res = vp.getStrings("foo");
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
         assertEquals("Wrong number of values", 2, res.length);
 
         // String array with null value should not change contents
-        bvp.add("foo", new String [] { null });
-        res = bvp.getStrings("foo");
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        vp.add("foo", new String [] { null });
+        res = vp.getStrings("foo");
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
         assertEquals("Wrong number of values", 2, res.length);
 
         // String array with null value should only add non-null values
-        bvp.add("foo", new String [] { "bla", null, "foo" });
-        res = bvp.getStrings("foo");
-        assertEquals("Wrong number of keys", 1, bvp.keySet().size());
+        vp.add("foo", new String [] { "bla", null, "foo" });
+        res = vp.getStrings("foo");
+        assertEquals("Wrong number of keys", 1, vp.keySet().size());
         assertEquals("Wrong number of values", 4, res.length);
     }
 
     public void testNonExistingResults()
     {
-        BaseValueParser bvp = new BaseValueParser();
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        ValueParser vp = new BaseValueParser();
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        assertEquals("Wrong value for non existing key", 0.0, bvp.getDouble("foo"), 0.001);
-        assertNull(bvp.getDoubles("foo"));
-        assertNull(bvp.getDoubleObject("foo"));
-        assertNull(bvp.getDoubleObjects("foo"));
+        assertEquals("Wrong value for non existing key", 0.0, vp.getDouble("foo"), 0.001);
+        assertNull(vp.getDoubles("foo"));
+        assertNull(vp.getDoubleObject("foo"));
+        assertNull(vp.getDoubleObjects("foo"));
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        assertNull(bvp.getString("foo"));
-        assertNull(bvp.getStrings("foo"));
+        assertNull(vp.getString("foo"));
+        assertNull(vp.getStrings("foo"));
 
-        assertEquals("Wrong value for non existing key", 0.0f, bvp.getFloat("foo"), 0.001);
-        assertNull(bvp.getFloats("foo"));
-        assertNull(bvp.getFloatObject("foo"));
-        assertNull(bvp.getFloatObjects("foo"));
+        assertEquals("Wrong value for non existing key", 0.0f, vp.getFloat("foo"), 0.001);
+        assertNull(vp.getFloats("foo"));
+        assertNull(vp.getFloatObject("foo"));
+        assertNull(vp.getFloatObjects("foo"));
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        assertEquals("Wrong value for non existing key", 0.0, bvp.getBigDecimal("foo").doubleValue(), 0.001);
-        assertNull(bvp.getBigDecimals("foo"));
+        assertEquals("Wrong value for non existing key", 0.0, vp.getBigDecimal("foo").doubleValue(), 0.001);
+        assertNull(vp.getBigDecimals("foo"));
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        assertEquals("Wrong value for non existing key", 0, bvp.getInt("foo"));
-        assertNull(bvp.getInts("foo"));
-        assertNull(bvp.getIntObject("foo"));
-        assertNull(bvp.getIntObjects("foo"));
+        assertEquals("Wrong value for non existing key", 0, vp.getInt("foo"));
+        assertNull(vp.getInts("foo"));
+        assertNull(vp.getIntObject("foo"));
+        assertNull(vp.getIntObjects("foo"));
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        assertEquals("Wrong value for non existing key", 0, bvp.getLong("foo"));
-        assertNull(bvp.getLongs("foo"));
-        assertNull(bvp.getLongObject("foo"));
-        assertNull(bvp.getLongObjects("foo"));
+        assertEquals("Wrong value for non existing key", 0, vp.getLong("foo"));
+        assertNull(vp.getLongs("foo"));
+        assertNull(vp.getLongObject("foo"));
+        assertNull(vp.getLongObjects("foo"));
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        assertEquals("Wrong value for non existing key", 0, bvp.getByte("foo"));
-        assertNull(bvp.getByteObject("foo"));
+        assertEquals("Wrong value for non existing key", 0, vp.getByte("foo"));
+        assertNull(vp.getByteObject("foo"));
 
-        assertEquals("Wrong number of keys", 0, bvp.keySet().size());
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
     }
 }
 
