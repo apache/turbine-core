@@ -31,18 +31,15 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.xerces.parsers.SAXParser;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.xmlrpc.util.FileTransfer;
+import org.apache.turbine.util.TurbineException;
 import org.apache.xmlrpc.WebServer;
 import org.apache.xmlrpc.XmlRpc;
 import org.apache.xmlrpc.XmlRpcClient;
 import org.apache.xmlrpc.XmlRpcServer;
 import org.apache.xmlrpc.secure.SecureWebServer;
-
-import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.xmlrpc.util.FileTransfer;
-import org.apache.turbine.util.TurbineException;
 
 /**
  * This is a service which will make an xml-rpc call to a remote
@@ -156,9 +153,12 @@ public class TurbineXmlRpcService
 
             // Set the XML driver to the correct SAX parser class
             String saxParserClass =
-                    conf.getString("parser", SAXParser.class.getName());
+                    conf.getString("parser", null);
 
-            XmlRpc.setDriver(saxParserClass);
+            if (saxParserClass != null)
+            {
+                XmlRpc.setDriver(saxParserClass);
+            }
 
             // Check if there are any handlers to register at startup
             for (Iterator keys = conf.getKeys("handler"); keys.hasNext();)
