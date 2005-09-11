@@ -42,6 +42,7 @@ import java.util.List;
  *
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:martin@mvdb.net">Martin van den Bemt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public class CSVParser extends DataStreamParser
