@@ -23,12 +23,10 @@ import java.io.Reader;
 import java.io.StreamTokenizer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * DataStreamParser is used to parse a stream with a fixed format and
@@ -51,18 +49,11 @@ import org.apache.commons.logging.LogFactory;
  *
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:martin@mvdb.net">Martin van den Bemt</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
 public abstract class DataStreamParser implements Iterator
 {
-    /** Logging */
-    private static Log log = LogFactory.getLog(DataStreamParser.class);
-
-    /**
-     * Conditional compilation flag.
-     */
-    private static final boolean DEBUG = false;
-
     /**
      * The constant for empty fields
      */
@@ -71,7 +62,7 @@ public abstract class DataStreamParser implements Iterator
     /**
      * The list of column names.
      */
-    private List columnNames;
+    private List columnNames = Collections.EMPTY_LIST;
 
     /**
      * The stream tokenizer for reading values from the input reader.
@@ -110,19 +101,21 @@ public abstract class DataStreamParser implements Iterator
     public DataStreamParser(Reader in, List columnNames,
                             String characterEncoding)
     {
-        this.columnNames = columnNames;
+        setColumnNames(columnNames);
+
         this.characterEncoding = characterEncoding;
 
         if (this.characterEncoding == null)
         {
-            // try and get the characterEncoding from the reader
-            this.characterEncoding = "US-ASCII";
-            try
+            if (in instanceof InputStreamReader)
             {
                 this.characterEncoding = ((InputStreamReader) in).getEncoding();
             }
-            catch (ClassCastException e)
+
+            if (this.characterEncoding == null)
             {
+                // try and get the characterEncoding from the reader
+                this.characterEncoding = "US-ASCII";
             }
         }
 
@@ -169,7 +162,19 @@ public abstract class DataStreamParser implements Iterator
      */
     public void setColumnNames(List columnNames)
     {
-        this.columnNames = columnNames;
+        if (columnNames != null)
+        {
+            this.columnNames = columnNames;
+        }
+    }
+
+    /**
+     * get the list of column names.
+     *
+     */
+    public List getColumnNames()
+    {
+        return columnNames;
     }
 
     /**
@@ -182,37 +187,52 @@ public abstract class DataStreamParser implements Iterator
     public void readColumnNames()
             throws IOException
     {
-        columnNames = new ArrayList();
-        int lastTtype = 0;
-        int fieldCounter = 1;
+        List columnNames = new ArrayList();
+        int fieldCounter = 0;
 
-        neverRead = false;
-        tokenizer.nextToken();
-        while (tokenizer.ttype == StreamTokenizer.TT_WORD || tokenizer.ttype == StreamTokenizer.TT_EOL
-                || tokenizer.ttype == '"' || tokenizer.ttype == fieldSeparator)
+        if (hasNextRow())
         {
-            if (tokenizer.ttype != fieldSeparator && tokenizer.ttype != StreamTokenizer.TT_EOL)
+            String colName = null;
+            boolean foundEol = false;
+
+            while(!foundEol)
             {
-                columnNames.add(tokenizer.sval);
-                fieldCounter++;
+                tokenizer.nextToken();
+
+                if (tokenizer.ttype == '"'
+                        || tokenizer.ttype == StreamTokenizer.TT_WORD)
+                {
+                    // tokenizer.ttype is either '"' or TT_WORD
+                    colName = tokenizer.sval;
+                }
+                else
+                {
+                    // fieldSeparator, EOL or EOF
+                    fieldCounter++;
+
+                    if (colName == null)
+                    {
+                        colName = EMPTYFIELDNAME + fieldCounter;
+                    }
+
+                    columnNames.add(colName);
+                    colName = null;
+                }
+
+                // EOL and EOF are checked independently from existing fields.
+                if (tokenizer.ttype == StreamTokenizer.TT_EOL)
+                {
+                    foundEol = true;
+                }
+                else if (tokenizer.ttype == StreamTokenizer.TT_EOF)
+                {
+                    // Keep this token in the tokenizer for hasNext()
+                    tokenizer.pushBack();
+                    foundEol = true;
+                }
             }
-            else if (tokenizer.ttype == fieldSeparator && lastTtype == fieldSeparator)
-            {
-                // we have an empty field name
-                columnNames.add(EMPTYFIELDNAME + fieldCounter);
-                fieldCounter++;
-            }
-            else if (lastTtype == fieldSeparator && tokenizer.ttype == StreamTokenizer.TT_EOL)
-            {
-                columnNames.add(EMPTYFIELDNAME + fieldCounter);
-                break;
-            }
-            else if (tokenizer.ttype == StreamTokenizer.TT_EOL)
-            {
-                break;
-            }
-            lastTtype = tokenizer.ttype;
-            tokenizer.nextToken();
+
+            setColumnNames(columnNames);
         }
     }
 
@@ -323,7 +343,7 @@ public abstract class DataStreamParser implements Iterator
         }
         catch (IOException e)
         {
-            log.error("IOException in CSVParser.hasNext", e);
+            throw new RuntimeException(e);
         }
 
         return hasNext;
@@ -347,8 +367,7 @@ public abstract class DataStreamParser implements Iterator
         }
         catch (IOException e)
         {
-            log.error("IOException in CSVParser.next", e);
-            throw new NoSuchElementException();
+            throw new RuntimeException(e);
         }
 
         return nextRow;
