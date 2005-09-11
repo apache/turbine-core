@@ -497,7 +497,7 @@ public class BaseValueParser
 
         try
         {
-            result = Double.parseDouble(value);
+            result = Double.parseDouble(StringUtils.trim(value));
         }
         catch (NumberFormatException e)
         {
@@ -584,7 +584,7 @@ public class BaseValueParser
 
         try
         {
-            result = new Double(value);
+            result = new Double(StringUtils.trim(value));
         }
         catch(NumberFormatException e)
         {
@@ -645,7 +645,7 @@ public class BaseValueParser
 
         try
         {
-            result = Float.parseFloat(value);
+            result = Float.parseFloat(StringUtils.trim(value));
         }
         catch (NumberFormatException e)
         {
@@ -732,7 +732,7 @@ public class BaseValueParser
 
         try
         {
-            result = new Float(value);
+            result = new Float(StringUtils.trim(value));
         }
         catch(NumberFormatException e)
         {
@@ -794,7 +794,7 @@ public class BaseValueParser
 
         try
         {
-            result = new BigDecimal(value);
+            result = new BigDecimal(StringUtils.trim(value));
         }
         catch (NumberFormatException e)
         {
@@ -868,7 +868,7 @@ public class BaseValueParser
 
         try
         {
-            result = Integer.valueOf(value).intValue();
+            result = Integer.parseInt(StringUtils.trim(value));
         }
         catch (NumberFormatException e)
         {
@@ -997,7 +997,7 @@ public class BaseValueParser
 
         try
         {
-            result = new Integer(value);
+            result = new Integer(StringUtils.trim(value));
         }
         catch(NumberFormatException e)
         {
@@ -1072,7 +1072,7 @@ public class BaseValueParser
 
         try
         {
-            result = Long.valueOf(value).longValue();
+            result = Long.parseLong(StringUtils.trim(value));
         }
         catch (NumberFormatException e)
         {
@@ -1178,7 +1178,7 @@ public class BaseValueParser
 
         try
         {
-            result = new Long(value);
+            result = new Long(StringUtils.trim(value));
         }
         catch(NumberFormatException e)
         {
@@ -1221,7 +1221,7 @@ public class BaseValueParser
 
         try
         {
-            result = Byte.valueOf(value).byteValue();
+            result = Byte.parseByte(StringUtils.trim(value));
         }
         catch (NumberFormatException e)
         {
@@ -1296,7 +1296,7 @@ public class BaseValueParser
 
         try
         {
-            result = new Byte(value);
+            result = new Byte(StringUtils.trim(value));
         }
         catch(NumberFormatException e)
         {
@@ -1689,7 +1689,7 @@ public class BaseValueParser
     }
 
     /**
-     * This method is only used in toString() and can be used by 
+     * This method is only used in toString() and can be used by
      * derived classes to add their local parameters to the toString()
 
      * @param name A string with the name
