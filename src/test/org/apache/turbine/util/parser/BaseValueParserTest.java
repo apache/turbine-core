@@ -121,7 +121,7 @@ public class BaseValueParserTest
         vp.add("bar", "foo");
 
         assertEquals("Wrong number of keys", 2, vp.keySet().size());
-        
+
         vp.add("bar", "baz");
 
         assertEquals("Wrong number of keys", 2, vp.keySet().size());
@@ -422,9 +422,9 @@ public class BaseValueParserTest
     public void testStringArray()
     {
         ValueParser vp = new BaseValueParser();
-        
+
         assertEquals("Wrong number of keys", 0, vp.keySet().size());
-        
+
         String [] testValue = new String [] {
             "foo", "bar", "baz"
         };
@@ -487,7 +487,7 @@ public class BaseValueParserTest
         // Test removing null value
         assertNull(vp.remove(null));
     }
-        
+
     public void testRemoveArray()
     {
         ValueParser vp = new BaseValueParser();
@@ -663,9 +663,9 @@ public class BaseValueParserTest
     public void testDoubleArray()
     {
         ValueParser vp = new BaseValueParser();
-        
+
         assertEquals("Wrong number of keys", 0, vp.keySet().size());
-        
+
         double [] testValue = {
             1.0, 2.0, 3.0
         };
@@ -731,9 +731,9 @@ public class BaseValueParserTest
     public void testFloatArray()
     {
         ValueParser vp = new BaseValueParser();
-        
+
         assertEquals("Wrong number of keys", 0, vp.keySet().size());
-        
+
         float [] testValue = {
             1.0f, 2.0f, 3.0f
         };
@@ -799,9 +799,9 @@ public class BaseValueParserTest
     public void testBigDecimalArray()
     {
         ValueParser vp = new BaseValueParser();
-        
+
         assertEquals("Wrong number of keys", 0, vp.keySet().size());
-        
+
         long [] testValue = {
             12345678,87654321,1092837465,
         };
@@ -847,9 +847,9 @@ public class BaseValueParserTest
     public void testIntegerArray()
     {
         ValueParser vp = new BaseValueParser();
-        
+
         assertEquals("Wrong number of keys", 0, vp.keySet().size());
-        
+
         int [] testValue = {
             1, 2, 3
         };
@@ -915,9 +915,9 @@ public class BaseValueParserTest
     public void testLongArray()
     {
         ValueParser vp = new BaseValueParser();
-        
+
         assertEquals("Wrong number of keys", 0, vp.keySet().size());
-        
+
         long [] testValue = {
             1l, 2l, 3l
         };
@@ -984,9 +984,9 @@ public class BaseValueParserTest
             throws Exception
     {
         ValueParser vp = new BaseValueParser();
-        
+
         assertEquals("Wrong number of keys", 0, vp.keySet().size());
-        
+
         String  testValue = "abcdefg";
 
         vp.add("foo", testValue);
@@ -1008,7 +1008,7 @@ public class BaseValueParserTest
     public void testByte()
     {
         ValueParser vp = new BaseValueParser();
-        
+
         assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         String [] testValue = {
@@ -1016,7 +1016,7 @@ public class BaseValueParserTest
             "0", "-127", "100"
         };
 
-        
+
         for (int i = 0; i < testValue.length; i++)
         {
             vp.add("foo" + i, testValue[i]);
@@ -1043,7 +1043,7 @@ public class BaseValueParserTest
     public void testStringDefault()
     {
         ValueParser vp = new BaseValueParser();
-        
+
         assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
         vp.add("foo", "bar");
@@ -1068,7 +1068,7 @@ public class BaseValueParserTest
         vp.add("bar", "foo");
 
         assertEquals("Wrong number of keys", 2, vp.keySet().size());
-        
+
         vp.add("bar", "baz");
 
         assertEquals("Wrong number of keys", 2, vp.keySet().size());
@@ -1100,7 +1100,7 @@ public class BaseValueParserTest
         vp.add("bar", "foo");
 
         assertEquals("Wrong number of keys", 2, vp.keySet().size());
-        
+
         vp.add("bar", "baz");
 
         assertEquals("Wrong number of keys", 2, vp.keySet().size());
