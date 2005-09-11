@@ -20,7 +20,7 @@
   <pomVersion>3</pomVersion>
   <name>jakarta-turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.3.2-rc1</currentVersion>
+  <currentVersion>2.3.2-rc2-dev</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -41,7 +41,7 @@
     available for use in other applications.
   </description>
   <url>http://jakarta.apache.org/turbine/development/turbine-2.3/</url>
-  <issueTrackingUrl>http://issues.apache.org/scarab/issues</issueTrackingUrl>
+  <issueTrackingUrl>http://issues.apache.org/jira/</issueTrackingUrl>
   <siteAddress>people.apache.org</siteAddress>
   <siteDirectory>/www/jakarta.apache.org/turbine/turbine/development/turbine-2.3/</siteDirectory>
   <distributionSite>www.apache.org</distributionSite>
