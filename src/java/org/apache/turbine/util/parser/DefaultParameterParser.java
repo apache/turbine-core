@@ -396,7 +396,7 @@ public class DefaultParameterParser
     }
 
     /**
-     * This method is only used in toString() and can be used by 
+     * This method is only used in toString() and can be used by
      * derived classes to add their local parameters to the toString()
 
      * @param name A string with the name

@@ -11,3 +11,4 @@ conf/CodeWrestler\.excludes$
 conf/openldap/turbine\.schema$
 conf/openldap/turbine\.ldif$
 conf/openldap/slapd\.conf$
+/target/

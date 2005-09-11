@@ -1,13 +1,5 @@
 package org.apache.turbine.services.pull.util;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-import org.apache.turbine.services.pull.PullService;
-import org.apache.turbine.services.pull.TurbinePull;
-import org.apache.turbine.test.BaseTurbineTest;
-import org.apache.velocity.context.Context;
-
 /*
  * Copyright 2001-2005 The Apache Software Foundation.
  *
@@ -23,6 +15,15 @@ import org.apache.velocity.context.Context;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import junit.framework.Test;
+import junit.framework.TestSuite;
+
+import org.apache.turbine.services.pull.PullService;
+import org.apache.turbine.services.pull.TurbinePull;
+import org.apache.turbine.test.BaseTurbineTest;
+import org.apache.velocity.context.Context;
+
 
 public class UIManagerTest
         extends BaseTurbineTest
