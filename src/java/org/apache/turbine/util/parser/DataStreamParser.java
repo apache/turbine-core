@@ -139,15 +139,10 @@ public abstract class DataStreamParser implements Iterator
      */
     protected void initTokenizer(StreamTokenizer tokenizer)
     {
-        // set all numeric characters as ordinary characters
-        // (switches off number parsing)
-        tokenizer.ordinaryChars('0', '9');
-        tokenizer.ordinaryChars('-', '-');
-        tokenizer.ordinaryChars('.', '.');
+        tokenizer.resetSyntax();
 
         // leave out the comma sign (,), we need it for empty fields
-
-        tokenizer.wordChars(' ', Integer.MAX_VALUE);
+        tokenizer.wordChars(' ', Character.MAX_VALUE);
 
         // and  set the quote mark as the quoting character
         tokenizer.quoteChar('"');
@@ -266,41 +261,48 @@ public abstract class DataStreamParser implements Iterator
         }
 
         Iterator it = columnNames.iterator();
-        tokenizer.nextToken();
-        while (tokenizer.ttype == StreamTokenizer.TT_WORD
-                || tokenizer.ttype == '"' || tokenizer.ttype == fieldSeparator)
+
+        String currVal = "";
+        String colName = null;
+
+        boolean foundEol = false;
+        while (!foundEol || it.hasNext())
         {
-            int lastTtype = 0;
-            // note this means that if there are more values than
-            // column names, the extra values are discarded.
-            if (it.hasNext())
+            if (!foundEol)
             {
-                String colname = it.next().toString();
-                String colval = tokenizer.sval;
-                if (tokenizer.ttype != fieldSeparator && lastTtype != fieldSeparator)
-                {
-                    if (DEBUG)
-                    {
-                        log.debug("DataStreamParser.nextRow(): " +
-                                colname + "=" + colval);
-                    }
-                    lineValues.add(colname, colval);
-                }
-                else if (tokenizer.ttype == fieldSeparator && lastTtype != fieldSeparator)
-                {
-                    lastTtype = tokenizer.ttype;
-                    tokenizer.nextToken();
-                    if (tokenizer.ttype != fieldSeparator && tokenizer.sval != null)
-                    {
-                        lineValues.add(colname, tokenizer.sval);
-                    }
-                    else if (tokenizer.ttype == StreamTokenizer.TT_EOL)
-                    {
-                        tokenizer.pushBack();
-                    }
-                }
+                tokenizer.nextToken();
             }
-            tokenizer.nextToken();
+
+            if (colName == null && it.hasNext())
+            {
+                colName = String.valueOf(it.next());
+            }
+
+            if (tokenizer.ttype == '"'
+                    || tokenizer.ttype == StreamTokenizer.TT_WORD)
+            {
+                // tokenizer.ttype is either '"' or TT_WORD
+                currVal = tokenizer.sval;
+            }
+            else
+            {
+                // fieldSeparator, EOL or EOF
+                lineValues.add(colName, currVal);
+                colName = null;
+                currVal = "";
+            }
+
+            // EOL and EOF are checked independently from existing fields.
+            if (tokenizer.ttype == StreamTokenizer.TT_EOL)
+            {
+                foundEol = true;
+            }
+            else if (tokenizer.ttype == StreamTokenizer.TT_EOF)
+            {
+                // Keep this token in the tokenizer for hasNext()
+                tokenizer.pushBack();
+                foundEol = true;
+            }
         }
 
         return lineValues;
