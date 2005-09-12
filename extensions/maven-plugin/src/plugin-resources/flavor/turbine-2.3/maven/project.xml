@@ -396,7 +396,7 @@
     <sourceDirectory>@TURBINE_PLUGIN_SRC_COMPILE@</sourceDirectory>
 
     <!-- Unit test classes -->
-    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <unitTestSourceDirectory>@TURBINE_PLUGIN_SRC_TEST@</unitTestSourceDirectory>
     <unitTest>
       <includes>
         <include>**/Test*.java</include>
