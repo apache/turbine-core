@@ -19,7 +19,7 @@
   <organization/>
   <inceptionYear>2004</inceptionYear>
   <package>@TURBINE_APP_PACKAGE@</package>
-  <releases/>
+  <versions/>
   <developers/>
 
   <dependencies>
