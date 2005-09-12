@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<!-- 
-/*
- * Copyright 2001-2004 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- -->
+<!--
+ Copyright 2003-2005 The Apache Software Foundation.
+
+ Licensed under the Apache License, Version 2.0 (the "License")
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
 
 <!-- ======================================================================== -->
 <!--                                                                          -->
@@ -52,8 +50,8 @@
   <goal name="turbine:setup" description="Setup a new Turbine web application"
     prereqs="turbine:init">
 
-    <!--  Load the setup file. You can redefine its name with the 
-          turbine.setup.properties property 
+    <!--  Load the setup file. You can redefine its name with the
+          turbine.setup.properties property
     -->
     <j:if test="${context.getVariable('turbine.setup.properties') == null || context.getVariable('turbine.setup.properties') == ''}">
       <j:set var="turbine.setup.properties" value="setup.properties"/>
@@ -140,7 +138,7 @@
           Package:        ${turbine.app.package}
           OM-Layer:       ${turbine.app.om.layer}
 
-          Root Directory: ${turbine.plugin.root.dir} 
+          Root Directory: ${turbine.plugin.root.dir}
           Base Directory: ${turbine.plugin.base.dir}
           web.xml:        ${maven.war.webxml}
     </echo>
@@ -175,7 +173,7 @@
                                 frompath="maven"
                                 include="**/*"/>
 
-    <!-- Try to rebuild the setup.properties file. 
+    <!-- Try to rebuild the setup.properties file.
          If it already exists, don't clobber it!
     -->
     <u:available file="${plugin.resources}/setup">
@@ -246,7 +244,7 @@
                                 include="**/*"
                                 exclude="**/application*"/>
 
-    <!-- filtering="false" is intentional! The file variables are 
+    <!-- filtering="false" is intentional! The file variables are
          replaced when the files are copied inside the application.
     -->
 
@@ -309,9 +307,9 @@
         prereqs="turbine:war">
     <ant:echo>
 *********************************************************************************
-***                                                                           ***   
+***                                                                           ***
 *** turbine:webapp is deprecated and will be removed. Please use turbine:war! ***
-***                                                                           ***   
+***                                                                           ***
 *********************************************************************************
     </ant:echo>
   </goal>
@@ -331,7 +329,7 @@
          webxml="${maven.war.webxml}">
 
       <!-- we include classes and libs explicitly with the lib and classes tag below.
-           The web.xml file is defined by the webxml attribute above 
+           The web.xml file is defined by the webxml attribute above
       -->
 
       <fileset dir="${webapp.build}">
@@ -398,7 +396,7 @@
 
  An inplace application cannot be deployed. Instead you should modify
  your web container to serve an application located at
- 
+
  ${absPath}
 
 --------------------------------------------------------------------------
@@ -426,8 +424,8 @@
       <j:if test="${dep.getProperty('war.bundle') != null &amp;&amp; dep.getProperty('war.bundle').equalsIgnoreCase('true')}">
         <copy todir="${turbine.target.dir}/WEB-INF/lib"
           file="${maven.repo.local}/${dep.getArtifactDirectory()}/jars/${dep.getArtifact()}"/>
-      </j:if>  
-    </j:forEach>            
+      </j:if>
+    </j:forEach>
 
     <copy todir="${turbine.target.dir}/WEB-INF/classes" filtering="no">
       <fileset dir="${pom.build.SourceDirectory}">
@@ -469,7 +467,7 @@
         <echo>Skipping configuration because turbine.plugin.deploy.images.skip is true</echo>
       </j:otherwise>
     </j:choose>
-    
+
     <j:choose>
       <j:when test="${context.getVariable('turbine.plugin.deploy.pages.skip') == null || !context.getVariable('turbine.plugin.deploy.pages.skip').equalsIgnoreCase('true')}">
         <u:available file="${turbine.plugin.src.pages}">
@@ -482,7 +480,7 @@
         <echo>Skipping configuration because turbine.plugin.deploy.pages.skip is true</echo>
       </j:otherwise>
     </j:choose>
-    
+
     <j:choose>
       <j:when test="${context.getVariable('turbine.plugin.deploy.resources.skip') == null || !context.getVariable('turbine.plugin.deploy.resources.skip').equalsIgnoreCase('true')}">
         <u:available file="${turbine.plugin.src.resources}">
@@ -495,7 +493,7 @@
         <echo>Skipping configuration because turbine.plugin.deploy.resources.skip is true</echo>
       </j:otherwise>
     </j:choose>
-    
+
     <j:choose>
       <j:when test="${context.getVariable('turbine.plugin.deploy.scripts.skip') == null || !context.getVariable('turbine.plugin.deploy.scripts.skip').equalsIgnoreCase('true')}">
         <u:available file="${turbine.plugin.src.scripts}">
@@ -508,7 +506,7 @@
         <echo>Skipping configuration because turbine.plugin.deploy.scripts.skip is true</echo>
       </j:otherwise>
     </j:choose>
-    
+
     <j:choose>
       <j:when test="${context.getVariable('turbine.plugin.deploy.style.skip') == null || !context.getVariable('turbine.plugin.deploy.style.skip').equalsIgnoreCase('true')}">
         <u:available file="${turbine.plugin.src.style}">
@@ -521,7 +519,7 @@
         <echo>Skipping configuration because turbine.plugin.deploy.style.skip is true</echo>
       </j:otherwise>
     </j:choose>
-    
+
     <j:choose>
       <j:when test="${context.getVariable('turbine.plugin.deploy.templates.skip') == null || !context.getVariable('turbine.plugin.deploy.templates.skip').equalsIgnoreCase('true')}">
         <u:available file="${turbine.plugin.src.templates}">
@@ -539,7 +537,7 @@
   <!-- ======================================================================== -->
   <!-- turbine:deploy                                                           -->
   <!-- ======================================================================== -->
-  
+
   <!-- ======================================================================== -->
   <!--                                                                          -->
   <!-- turbine:install-libs                                                     -->
@@ -557,8 +555,8 @@
         <j:if test="${dep.getProperty('war.bundle') != null &amp;&amp; dep.getProperty('war.bundle').equalsIgnoreCase('true')}">
           <copy todir="${turbine.plugin.target.lib}"
                 file="${maven.repo.local}/${dep.getArtifactDirectory()}/jars/${dep.getArtifact()}"/>
-        </j:if>  
-      </j:forEach>            
+        </j:if>
+      </j:forEach>
     </j:if>
   </goal>
   <!-- ======================================================================== -->
@@ -579,7 +577,7 @@
   <!--                                                                          -->
   <!-- Cleanup inplace generated artifacts.                                     -->
   <!--                                                                          -->
-  <!-- ======================================================================== -->     
+  <!-- ======================================================================== -->
   <goal name="turbine:clean-clean">
     <j:choose>
       <j:when test="${context.getVariable('turbine.plugin.mode').equalsIgnoreCase('inplace')}">
@@ -598,7 +596,7 @@
         </ant:delete>
       </j:when>
     </j:choose>
-  </goal>    
+  </goal>
   <!-- ======================================================================== -->
   <!-- clean                                                                    -->
   <!-- ======================================================================== -->
@@ -716,7 +714,7 @@
         <echo>Skipping configuration because turbine.plugin.deploy.config.skip is true</echo>
       </j:otherwise>
     </j:choose>
-     
+
     <j:choose>
       <j:when test="${context.getVariable('turbine.plugin.deploy.images.skip') == null || !context.getVariable('turbine.plugin.deploy.images.skip').equalsIgnoreCase('true')}">
         <u:available file="${turbine.plugin.src.images}">
@@ -730,7 +728,7 @@
         <echo>Skipping configuration because turbine.plugin.deploy.images.skip is true</echo>
       </j:otherwise>
     </j:choose>
-     
+
     <j:choose>
       <j:when test="${context.getVariable('turbine.plugin.deploy.pages.skip') == null || !context.getVariable('turbine.plugin.deploy.pages.skip').equalsIgnoreCase('true')}">
         <u:available file="${turbine.plugin.src.pages}">
@@ -743,7 +741,7 @@
         <echo>Skipping configuration because turbine.plugin.deploy.pages.skip is true</echo>
       </j:otherwise>
     </j:choose>
-     
+
     <j:choose>
       <j:when test="${context.getVariable('turbine.plugin.deploy.resources.skip') == null || !context.getVariable('turbine.plugin.deploy.resources.skip').equalsIgnoreCase('true')}">
         <u:available file="${turbine.plugin.src.resources}">
@@ -757,7 +755,7 @@
         <echo>Skipping configuration because turbine.plugin.deploy.resources.skip is true</echo>
       </j:otherwise>
     </j:choose>
-     
+
     <j:choose>
       <j:when test="${context.getVariable('turbine.plugin.deploy.scripts.skip') == null || !context.getVariable('turbine.plugin.deploy.scripts.skip').equalsIgnoreCase('true')}">
         <u:available file="${turbine.plugin.src.scripts}">
@@ -771,7 +769,7 @@
         <echo>Skipping configuration because turbine.plugin.deploy.scripts.skip is true</echo>
       </j:otherwise>
     </j:choose>
-     
+
     <j:choose>
       <j:when test="${context.getVariable('turbine.plugin.deploy.style.skip') == null || !context.getVariable('turbine.plugin.deploy.style.skip').equalsIgnoreCase('true')}">
         <u:available file="${turbine.plugin.src.style}">
@@ -785,7 +783,7 @@
         <echo>Skipping configuration because turbine.plugin.deploy.style.skip is true</echo>
       </j:otherwise>
     </j:choose>
-     
+
     <j:choose>
       <j:when test="${context.getVariable('turbine.plugin.deploy.templates.skip') == null || !context.getVariable('turbine.plugin.deploy.templates.skip').equalsIgnoreCase('true')}">
         <u:available file="${turbine.plugin.src.templates}">
@@ -842,7 +840,7 @@
           <ant:copy tofile="${tofile}" filtering="${filtering}" overwrite="true"
             file="${plugin.resources}/flavor/common/${fromfile}"/>
         </u:available>
-    
+
         <u:available file="${plugin.resources}/flavor/${flavor}/${fromfile}">
           <ant:copy tofile="${tofile}" filtering="${filtering}" overwrite="true"
             file="${plugin.resources}/flavor/${flavor}/${fromfile}"/>
@@ -896,7 +894,7 @@
 
       <!--  Can you actually believe _this_ maven stupidity? Obviously property
             files loaded by the core are subject to some magic that changes the
-            embedded variables to their values. 
+            embedded variables to their values.
 
             Emulate this by some heavy maven magic. Gee, is there actually _any_
             documentation on this?
@@ -979,7 +977,7 @@
     <or>
       <ant:available type="dir" file="${plugin.resources}/flavor/${turbine.app.flavor}/maven" />
     </or>
-    </ant:condition>    
+    </ant:condition>
 
     <j:if test="${flavorExists != 'true'}">
         <fail>
@@ -998,7 +996,7 @@
     <or>
       <ant:available type="dir" file="${plugin.resources}/om-layer/${turbine.app.om.layer}/conf" />
     </or>
-    </ant:condition>    
+    </ant:condition>
 
     <j:if test="${omLayerExists != 'true'}">
         <fail>
@@ -1036,14 +1034,14 @@
       </j:otherwise>
     </j:choose>
 
-    <!-- 
+    <!--
          Location of the base files (maven.xml, project.properties) is turbine.app.root.dir.
          This is valid only for the turbine:setup; when running the runtime targets, this is
          always the current ('.') directory
- 
+
          Location of the file tree is turbine.app.base.dir, relative to turbine.app.root.dir
     -->
-         
+
     <j:choose>
       <j:when test="${context.getVariable('turbine.app.subdir').equalsIgnoreCase('false')}">
         <ant:property name="turbine.plugin.root.dir" value="."/>
@@ -1052,7 +1050,7 @@
          <ant:property name="turbine.plugin.root.dir" value="${turbine.app.name}"/>
        </j:otherwise>
     </j:choose>
- 
+
     <j:choose>
       <j:when test="${pluginMode.equalsIgnoreCase('inplace')}">
         <ant:property name="turbine.plugin.base.dir" value="${turbine.plugin.inplace.dir}"/>
@@ -1147,7 +1145,7 @@
         tofile="${torque.schema.dir}/${turbine.app.name}-id-table-schema.xml"/>
 
       <!-- If we have different data source for Application and Security, we must
-           also set up two ID Table XML files 
+           also set up two ID Table XML files
       -->
       <j:set var="securityOmName" value="${turbine.app.om.security.name}"/>
       <j:set var="omName" value="${turbine.app.om.name}"/>
@@ -1211,7 +1209,7 @@
         <j:set var="turbineInternalOmUpToDate" value="false"/>
       </j:otherwise>
     </j:choose>
- 
+
   </goal>
   <!-- ================================================================== -->
   <!-- turbine:om-check                                                   -->
@@ -1278,27 +1276,27 @@
   <!-- ======================================================================== -->
   <goal name="turbine:install-demo">
 
-    <meta:copyTurbineDemoDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.templates}" 
+    <meta:copyTurbineDemoDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.templates}"
                           filtering="true"
                           frompath="templates"
                           include="**/*"/>
 
-    <meta:copyTurbineDemoDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.images}" 
+    <meta:copyTurbineDemoDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.images}"
                           filtering="false"
                           frompath="images"
                           include="**/*"/>
 
-    <meta:copyTurbineDemoDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.resources}" 
+    <meta:copyTurbineDemoDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.resources}"
                           filtering="true"
                           frompath="resources"
                           include="**/*"/>
 
-    <meta:copyTurbineDemoDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.style}" 
+    <meta:copyTurbineDemoDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.style}"
                           filtering="true"
                           frompath="style"
                           include="**/*"/>
 
-    <meta:copyTurbineDemoDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.pages}" 
+    <meta:copyTurbineDemoDir todir="${turbine.plugin.root.dir}/${turbine.plugin.src.pages}"
                           filtering="true"
                           frompath="pages"
                           include="**/*"/>
