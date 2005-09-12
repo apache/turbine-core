@@ -56,11 +56,12 @@ configuration files, so be careful!).
 <tr>
 <td>turbine.app.flavor</td>
 <td>Yes</td>
-<td>turbine-2.3.1</td>
+<td>turbine-2.3.2</td>
 <td>Defines the dependencies and the release version of Turbine that the new application should use. Currently supported versions are:<br/>
     <ul>
     <li>turbine-2.3</li>
     <li>turbine-2.3.1</li>
+    <li>turbine-2.3.2 (currently uses 2.3.2-rc1)</li>
     </ul>
     See the <a href="flavors.html">Flavors page</a> for more information.</td>
 </tr>
