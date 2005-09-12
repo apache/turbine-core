@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-/*
- * Copyright 2001-2004 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- -->
-	
+<!--
+ Copyright 2003-2005 The Apache Software Foundation.
+
+ Licensed under the Apache License, Version 2.0 (the "License")
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
 <document>
   <properties>
     <title>IDE Howto</title>
@@ -56,7 +54,7 @@
       <li>Download Eclipse from the the <a href="http://www.eclipse.org/">Eclipse Website</a> and install it.</li>
       <li>Download Jakarta Tomcat from the <a href="http://jakarta.apache.org/tomcat/">Tomcat website</a>. This will
           be the web container that we use for running and debugging the Turbine application.</li>
-      <li>For development, it is also very useful if you can start and stop Tomcat directly from Eclipse. A very 
+      <li>For development, it is also very useful if you can start and stop Tomcat directly from Eclipse. A very
           useful Plugin for Eclipse is <a href="http://www.sysdeo.com/eclipse/tomcatPlugin.html">the Sysdeo Tomcat Plugin</a></li>
     </ul>
 
@@ -81,7 +79,7 @@ maven -Dturbine.app.name=helloworld -Dturbine.plugin.mode=inplace -Dturbine.plug
      This generates a new inplace application that can be used with an IDE.
     </p>
     <p>
-     Build the OM Peer classes:     
+     Build the OM Peer classes:
 
 <source><![CDATA[
 maven torque:om
@@ -110,7 +108,7 @@ maven eclipse
 
      The last two commands should be re-run everytime the values in
      the application project descriptor change unless you do not intend
-     to rebuild your project outside of Eclipse. 
+     to rebuild your project outside of Eclipse.
      </p>
     </subsection>
 
