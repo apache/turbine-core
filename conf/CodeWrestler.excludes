@@ -1,0 +1,8 @@
+#
+# This is an exclude file to parse the turbine-2 code base using CodeWrestler,
+# available from http://henning.schmiedehausen.org/eyewiki/Wiki.jsp?page=CodeWrestler
+#
+/target/
+# Don't add license headers to the plugin-resources files. These will end up in the
+# application to be set up and this will probably be not under Apache 2.0 license.
+/src/plugin-resources/
