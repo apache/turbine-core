@@ -28,6 +28,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.lang.exception.NestableRuntimeException;
+
 /**
  * DataStreamParser is used to parse a stream with a fixed format and
  * generate ValueParser objects which can be used to extract the values
@@ -343,7 +345,7 @@ public abstract class DataStreamParser implements Iterator
         }
         catch (IOException e)
         {
-            throw new RuntimeException(e);
+            throw new NestableRuntimeException(e);
         }
 
         return hasNext;
@@ -367,7 +369,7 @@ public abstract class DataStreamParser implements Iterator
         }
         catch (IOException e)
         {
-            throw new RuntimeException(e);
+            throw new NestableRuntimeException(e);
         }
 
         return nextRow;
