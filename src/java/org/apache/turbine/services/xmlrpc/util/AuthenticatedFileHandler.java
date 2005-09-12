@@ -67,7 +67,8 @@ public class AuthenticatedFileHandler
         {
             if (method.equals("send"))
             {
-                obj = Boolean.valueOf(this.send((String) params.elementAt(0),
+                // JDK 1.3 has no Boolean.valueOf(boolean)
+                obj = new Boolean(this.send((String) params.elementAt(0),
                         (String) params.elementAt(1),
                         (String) params.elementAt(2)));
             }

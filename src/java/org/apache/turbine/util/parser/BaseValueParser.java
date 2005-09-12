@@ -466,7 +466,8 @@ public class BaseValueParser
      */
     public Boolean getBool(String name, boolean defaultValue)
     {
-        return getBooleanObject(name, Boolean.valueOf(defaultValue));
+        // JDK 1.3 has no Boolean.valueOf(boolean)
+        return getBooleanObject(name, new Boolean(defaultValue));
     }
 
     /**
