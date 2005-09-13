@@ -891,8 +891,6 @@
     <unitTest>
       <includes>
         <include>**/*Test.java</include>
-      </includes>
-      <includes>
         <include>**/Test*.java</include>
       </includes>
       <excludes>
