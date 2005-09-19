@@ -25,6 +25,9 @@
   <body>
     <release version="1.3-rc2" date="in Subversion">
      <action dev="henning" type="fix">
+       The data source definition properties for Torque were missing a dsfactory component.
+     </action>
+     <action dev="henning" type="fix">
        The plugin created POMs that were not maven 1.1 compatible.
      </action>
     </release>
