@@ -421,7 +421,17 @@ public class UIManager implements ApplicationTool
 
         try
         {
-            InputStream is = TurbineServlet.getResourceAsStream(getScript(SKIN_PROPS_FILE));
+            StringBuffer sb = new StringBuffer();
+
+            sb.append(resourcesDirectory).
+                    append('/').
+                    append(skinsDirectory).
+                    append('/').
+                    append(getSkin()).
+                    append('/').
+                    append(SKIN_PROPS_FILE);
+
+            InputStream is = TurbineServlet.getResourceAsStream(sb.toString());
 
             skinProperties.load(is);
         }

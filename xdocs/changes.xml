@@ -25,6 +25,10 @@
 
 <body>
   <release version="2.3.2-rc2" date="in Subversion">
+    <action type="fix" dev="henning" issue="TRB-5" due-to="Thomas Vandahl">
+      The skin properties file must not be loaded as stream from the filesystem
+      and not using the getScript() method.
+    </action>
     <action type="update" dev="henning">
       Make sure that the source can still be compiled and tested under JDK 1.3.1.
     </action>
