@@ -19,43 +19,83 @@ $Id$
 Turbine Top Level README
 --------------------------------------------------------------------------
 
-Welcome to Turbine.  For more information about Turbine, please look
-at the HTML documentation in the docs/ directory.
+Building Turbine from Source
+============================
 
-Here is a description of what each of the top level directories
-contains.  Please consult the documentation in each of the lower level
-directories for information that is specific to their contents.
+Turbine requires Apache Maven (http://maven.apache.org/) as build
+tool. Please download and install maven from its download page at
+http://maven.apache.org/start/download.html
 
-bin/        This is a temporary directory for building the project.
-conf/       This is where the sample configurations live.
-docs/       This is where the documentation and database schemas live.
-            All of the files in this directory are mirrored onto
-            the live website.
-lib/        This is where the additional libraries and .jar
-            files reside.
-src/        This is where all of the source code to Turbine lives.
+As of September 2005, the official released maven version is
+1.0.2. This is the version recommended to build Turbine. The current
+Maven 1.1-beta2 version does build the jar, but not the site
+(see http://jira.codehaus.org/browse/MAVEN-1690).
 
-In order to get started with Turbine, you must build it first.
-Turbine uses Maven for its build environment.  You can find installation
-information about Maven online at http://maven.apache.org/ .
-Once Maven has been installed, just type 'maven'.  The default behavior is to
-compile, run the unit tests, and build the jar.  Some other useful goals:
+As of Turbine 2.3, you must also have the Torque plugin for Maven
+installed to build Turbine. Install it using the following
+plugin:download instruction:
 
-maven site:generate   - generate the site documention
+maven -DartifactId=maven-torque-plugin -DgroupId=torque -Dversion=3.1.1 plugin:download
 
-As of Turbine 2.3, you must also have the Torque plugin for Maven installed
-to build Turbine.  Information on how to install the plugin is available
-at http://db.apache.org/torque/maven-howto.html.
+The turbine jar is built by running the "maven jar:jar" command in the
+root directory of the Turbine source distribution.
 
-During the build process, you may run into a few unsatisfied dependencies.
-These particular jar files are from Sun and can not be downloaded with Maven.
-You will need to download these yourself from the URL's listed below and
-manually copy the jar files into your local maven repository
-($MAVEN_HOME/repository).
 
-http://java.sun.com/products/javabeans/glasgow/jaf.html
-http://java.sun.com/products/javamail/
-http://java.sun.com/products/jdbc/
-http://java.sun.com/products/jndi/
+Using JDK 1.4 or newer
+----------------------
 
--The Turbine Team
+The following jars cannot be downloaded from the central maven
+repository at www.ibiblio.org/maven/ due to license restrictions:
+
+- activation 1.0.2 from http://java.sun.com/products/javabeans/glasgow/jaf.html
+- javamail 1.3.3 from http://java.sun.com/products/javamail/
+
+Please download these jars and install them into your local repository at
+
+MAVEN_REPO_LOCAL/javax.activation/jars/activation-1.0.2.jar
+MAVEN_REPO_LOCAL/javax.mail/jars/mail-1.3.3.jar
+
+
+Using JDK 1.3
+-------------
+
+In addition to the jars mentioned above, you must also modify the
+project.xml file shipped with Turbine which is in the root directory
+of the source distribution. Open this file in an editor and search for
+the "uncomment these dependencies if you are using a 1.3 JDK" line. In
+between the two comment blocks, there are a number of dependencies
+commented out which are required for JDK 1.3. Remove the two lines
+that read "REMOVE THIS LINE".
+
+You will also need two additional jars that cannot be downloaded from
+the central maven repository at www.ibiblio.org/maven/ due to license
+restrictions:
+
+- jdbc 2.0 from http://java.sun.com/products/jdbc/
+- jndi 1.2.1 from http://java.sun.com/products/jndi/
+
+Please download these jars and install them into your local repository at
+
+MAVEN_REPO_LOCAL/javax.sql/jars/jdbc-stdext-2.0.jar
+MAVEN_REPO_LOCAL/javax.naming/jars/jndi-1.2.1.jar
+
+
+Using a J2EE distribution
+-------------------------
+
+All jars mentioned above are part of J2EE distributions. Turbine
+should build without any missing dependencies in a J2EE
+environment. However, you might have to copy the mail.jar,
+activation.jar, jndi.jar and jdbc.jar to the appropriate locations in
+your local maven repository as described above.
+
+
+Further documentation
+=====================
+
+The main Turbine documentation site is at the Apache Jakarta Project
+Homepage at http://jakarta.apache.org/turbine/. You can also build the
+most current documentation for this source tree by executing "maven
+site" in the root directory of the source distribution after building
+the jar.
+
