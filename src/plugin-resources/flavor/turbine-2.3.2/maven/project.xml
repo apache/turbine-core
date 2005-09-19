@@ -365,7 +365,7 @@
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.0.4</version>
-      <url>http://logging.apache.org/log4j/</url>
+      <url>http://jakarta.apache.org/commons/logging/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -385,7 +385,7 @@
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.11</version>
-      <url>http://jakarta.apache.org/log4j/</url>
+      <url>http://logging.apache.org/log4j/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
