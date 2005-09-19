@@ -24,7 +24,7 @@
 </properties>
 
 <body>
-  <release version="2.3.2-rc2" date="in Subversion">
+  <release version="2.3.2-rc2" date="2005-09-19">
     <action type="fix" dev="henning" issue="TRB-5" due-to="Thomas Vandahl">
       The skin properties file must be loaded as stream from the filesystem
       and not using the getScript() method.
