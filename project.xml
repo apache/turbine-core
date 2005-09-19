@@ -20,7 +20,7 @@
   <pomVersion>3</pomVersion>
   <name>jakarta-turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.3.2-rc2-dev</currentVersion>
+  <currentVersion>2.3.2-rc2</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -43,9 +43,9 @@
   <url>http://jakarta.apache.org/turbine/development/turbine-2.3/</url>
   <issueTrackingUrl>http://issues.apache.org/jira/browse/TRB</issueTrackingUrl>
   <siteAddress>people.apache.org</siteAddress>
-  <siteDirectory>/www/jakarta.apache.org/turbine/turbine/development/turbine-2.3/</siteDirectory>
-  <distributionSite>www.apache.org</distributionSite>
-  <distributionDirectory>/www/www.apache.org/dist/java-repository/</distributionDirectory>
+  <siteDirectory>/www/cvs.apache.org/dist/jakarta/turbine/releases/rc/turbine-2.3.2-rc2/docs</siteDirectory>
+  <distributionSite>cvs.apache.org</distributionSite>
+  <distributionDirectory>/www/cvs.apache.org/dist/jakarta/turbine/releases/rc/turbine-2.3.2-rc2</distributionDirectory>
 
   <repository>
     <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/turbine/core/branches/TURBINE_2_3_BRANCH</connection>
@@ -89,6 +89,10 @@
     <version>
       <name>2.3.2-RC1</name>
       <tag>TURBINE_2_3_2_RC1</tag>
+    </version>
+    <version>
+      <name>2.3.2-RC2</name>
+      <tag>TURBINE_2_3_2_RC2</tag>
     </version>
   </versions>
 
@@ -687,7 +691,7 @@
 <!--  REMOVE THIS LINE
     <dependency>
       <groupId>javax.sql</groupId>
-      <artifactId>jdbc-stdext-2.0</artifactId>
+      <artifactId>jdbc-stdext</artifactId>
       <version>2.0</version>
       <url>http://java.sun.com/products/jdbc/</url>
       <type>jar</type>
