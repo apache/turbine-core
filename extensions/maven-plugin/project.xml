@@ -29,7 +29,7 @@
   <id>maven-turbine-plugin</id>
   <name>Maven Environment for Turbine Applications Plugin</name>
   <groupId>turbine</groupId>
-  <currentVersion>1.3-rc2</currentVersion>
+  <currentVersion>1.3-rc3-dev</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -46,9 +46,9 @@
   <url>http://jakarta.apache.org/turbine/meta/</url>
   <issueTrackingUrl>http://issues.apache.org/jira/</issueTrackingUrl>
   <siteAddress>people.apache.org</siteAddress>
-  <siteDirectory>/www/cvs.apache.org/dist/jakarta/turbine/releases/rc/meta-1.3-rc2/docs</siteDirectory>
+  <siteDirectory>/www/cvs.apache.org/dist/jakarta/turbine/releases/rc/meta-1.3-rc3/docs</siteDirectory>
   <distributionSite>cvs.apache.org</distributionSite>
-  <distributionDirectory>/www/cvs.apache.org/dist/jakarta/turbine/releases/rc/meta-1.3-rc2</distributionDirectory>
+  <distributionDirectory>/www/cvs.apache.org/dist/jakarta/turbine/releases/rc/meta-1.3-rc3</distributionDirectory>
 
   <repository>
     <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/turbine/core/trunk/extensions/maven-plugin/</connection>
