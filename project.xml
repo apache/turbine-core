@@ -374,7 +374,7 @@
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-yaafi</artifactId>
       <version>1.0.4</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-mimetype</url>
+      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
