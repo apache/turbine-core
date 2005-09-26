@@ -412,6 +412,7 @@ public class BaseValueParser
     {
         Boolean result = null;
         String value = getString(name);
+
         if (StringUtils.isNotEmpty(value))
         {
             if (value.equals("1") ||
@@ -496,19 +497,17 @@ public class BaseValueParser
         double result = defaultValue;
         String value = getString(name);
 
-        try
+        if (StringUtils.isNotEmpty(value))
         {
-            result = Double.parseDouble(StringUtils.trim(value));
+            try
+            {
+                result = Double.parseDouble(StringUtils.trim(value));
+            }
+            catch (NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "Double");
+            }
         }
-        catch (NumberFormatException e)
-        {
-            logConvertionFailure(name, value, "Double");
-        }
-        catch (NullPointerException e)
-        {
-            logConvertionFailure(name, value, "Double");
-        }
-
         return result;
     }
 
@@ -540,17 +539,16 @@ public class BaseValueParser
             result = new double[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                try
+                if (StringUtils.isNotEmpty(value[i]))
                 {
-                    result[i] = Double.parseDouble(value[i]);
-                }
-                catch (NumberFormatException e)
-                {
-                    logConvertionFailure(name, value[i], "Double");
-                }
-                catch (NullPointerException e)
-                {
-                    logConvertionFailure(name, value[i], "Double");
+                    try
+                    {
+                        result[i] = Double.parseDouble(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        logConvertionFailure(name, value[i], "Double");
+                    }
                 }
             }
         }
@@ -583,17 +581,16 @@ public class BaseValueParser
         Double result = null;
         String value = getString(name);
 
-        try
+        if (StringUtils.isNotEmpty(value))
         {
-            result = new Double(StringUtils.trim(value));
-        }
-        catch(NumberFormatException e)
-        {
-            logConvertionFailure(name, value, "Double");
-        }
-        catch(NullPointerException e)
-        {
-            logConvertionFailure(name, value, "Double");
+            try
+            {
+                result = new Double(StringUtils.trim(value));
+            }
+            catch(NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "Double");
+            }
         }
         return result;
     }
@@ -614,17 +611,16 @@ public class BaseValueParser
             result = new Double[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                try
+                if (StringUtils.isNotEmpty(value[i]))
                 {
-                    result[i] = Double.valueOf(value[i]);
-                }
-                catch (NumberFormatException e)
-                {
-                    logConvertionFailure(name, value[i], "Double");
-                }
-                catch (NullPointerException e)
-                {
-                    logConvertionFailure(name, value[i], "Double");
+                    try
+                    {
+                        result[i] = Double.valueOf(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        logConvertionFailure(name, value[i], "Double");
+                    }
                 }
             }
         }
@@ -644,19 +640,17 @@ public class BaseValueParser
         float result = defaultValue;
         String value = getString(name);
 
-        try
+        if (StringUtils.isNotEmpty(value))
         {
-            result = Float.parseFloat(StringUtils.trim(value));
+            try
+            {
+                result = Float.parseFloat(StringUtils.trim(value));
+            }
+            catch (NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "Float");
+            }
         }
-        catch (NumberFormatException e)
-        {
-            logConvertionFailure(name, value, "Float");
-        }
-        catch (NullPointerException e)
-        {
-            logConvertionFailure(name, value, "Float");
-        }
-
         return result;
     }
 
@@ -688,17 +682,16 @@ public class BaseValueParser
             result = new float[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                try
+                if (StringUtils.isNotEmpty(value[i]))
                 {
-                    result[i] = Float.parseFloat(value[i]);
-                }
-                catch (NumberFormatException e)
-                {
-                    logConvertionFailure(name, value[i], "Float");
-                }
-                catch (NullPointerException e)
-                {
-                    logConvertionFailure(name, value[i], "Float");
+                    try
+                    {
+                        result[i] = Float.parseFloat(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        logConvertionFailure(name, value[i], "Float");
+                    }
                 }
             }
         }
@@ -731,17 +724,16 @@ public class BaseValueParser
         Float result = null;
         String value = getString(name);
 
-        try
+        if (StringUtils.isNotEmpty(value))
         {
-            result = new Float(StringUtils.trim(value));
-        }
-        catch(NumberFormatException e)
-        {
-            logConvertionFailure(name, value, "Float");
-        }
-        catch(NullPointerException e)
-        {
-            logConvertionFailure(name, value, "Float");
+            try
+            {
+                result = new Float(StringUtils.trim(value));
+            }
+            catch(NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "Float");
+            }
         }
 
         return result;
@@ -763,17 +755,16 @@ public class BaseValueParser
             result = new Float[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                try
+                if (StringUtils.isNotEmpty(value[i]))
                 {
-                    result[i] = Float.valueOf(value[i]);
-                }
-                catch (NumberFormatException e)
-                {
-                    logConvertionFailure(name, value[i], "Float");
-                }
-                catch (NullPointerException e)
-                {
-                    logConvertionFailure(name, value[i], "Float");
+                    try
+                    {
+                        result[i] = Float.valueOf(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        logConvertionFailure(name, value[i], "Float");
+                    }
                 }
             }
         }
@@ -793,17 +784,16 @@ public class BaseValueParser
         BigDecimal result = defaultValue;
         String value = getString(name);
 
-        try
+        if (StringUtils.isNotEmpty(value))
         {
-            result = new BigDecimal(StringUtils.trim(value));
-        }
-        catch (NumberFormatException e)
-        {
-            logConvertionFailure(name, value, "BigDecimal");
-        }
-        catch (NullPointerException e)
-        {
-            logConvertionFailure(name, value, "BigDecimal");
+            try
+            {
+                result = new BigDecimal(StringUtils.trim(value));
+            }
+            catch (NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "BigDecimal");
+            }
         }
 
         return result;
@@ -837,17 +827,16 @@ public class BaseValueParser
             result = new BigDecimal[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                try
+                if (StringUtils.isNotEmpty(value[i]))
                 {
-                    result[i] = new BigDecimal(value[i]);
-                }
-                catch (NumberFormatException e)
-                {
-                    logConvertionFailure(name, value[i], "BigDecimal");
-                }
-                catch (NullPointerException e)
-                {
-                    logConvertionFailure(name, value[i], "BigDecimal");
+                    try
+                    {
+                        result[i] = new BigDecimal(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        logConvertionFailure(name, value[i], "BigDecimal");
+                    }
                 }
             }
         }
@@ -867,17 +856,16 @@ public class BaseValueParser
         int result = defaultValue;
         String value = getString(name);
 
-        try
+        if (StringUtils.isNotEmpty(value))
         {
-            result = Integer.parseInt(StringUtils.trim(value));
-        }
-        catch (NumberFormatException e)
-        {
-            logConvertionFailure(name, value, "Integer");
-        }
-        catch (NullPointerException e)
-        {
-            logConvertionFailure(name, value, "Integer");
+            try
+            {
+                result = Integer.parseInt(StringUtils.trim(value));
+            }
+            catch (NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "Integer");
+            }
         }
 
         return result;
@@ -953,17 +941,16 @@ public class BaseValueParser
             result = new int[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                try
+                if (StringUtils.isNotEmpty(value[i]))
                 {
-                    result[i] = Integer.parseInt(value[i]);
-                }
-                catch (NumberFormatException e)
-                {
-                    logConvertionFailure(name, value[i], "Integer");
-                }
-                catch (NullPointerException e)
-                {
-                    logConvertionFailure(name, value[i], "Integer");
+                    try
+                    {
+                        result[i] = Integer.parseInt(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        logConvertionFailure(name, value[i], "Integer");
+                    }
                 }
             }
         }
@@ -996,17 +983,16 @@ public class BaseValueParser
         Integer result = null;
         String value = getString(name);
 
-        try
+        if (StringUtils.isNotEmpty(value))
         {
-            result = new Integer(StringUtils.trim(value));
-        }
-        catch(NumberFormatException e)
-        {
-            logConvertionFailure(name, value, "Integer");
-        }
-        catch(NullPointerException e)
-        {
-            logConvertionFailure(name, value, "Integer");
+            try
+            {
+                result = new Integer(StringUtils.trim(value));
+            }
+            catch(NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "Integer");
+            }
         }
 
         return result;
@@ -1028,17 +1014,16 @@ public class BaseValueParser
             result = new Integer[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                try
+                if (StringUtils.isNotEmpty(value[i]))
                 {
-                    result[i] = Integer.valueOf(value[i]);
-                }
-                catch (NumberFormatException e)
-                {
-                    logConvertionFailure(name, value[i], "Integer");
-                }
-                catch (NullPointerException e)
-                {
-                    logConvertionFailure(name, value[i], "Integer");
+                    try
+                    {
+                        result[i] = Integer.valueOf(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        logConvertionFailure(name, value[i], "Integer");
+                    }
                 }
             }
         }
@@ -1071,17 +1056,16 @@ public class BaseValueParser
         long result = defaultValue;
         String value = getString(name);
 
-        try
+        if (StringUtils.isNotEmpty(value))
         {
-            result = Long.parseLong(StringUtils.trim(value));
-        }
-        catch (NumberFormatException e)
-        {
-            logConvertionFailure(name, value, "Long");
-        }
-        catch (NullPointerException e)
-        {
-            logConvertionFailure(name, value, "Long");
+            try
+            {
+                result = Long.parseLong(StringUtils.trim(value));
+            }
+            catch (NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "Long");
+            }
         }
 
         return result;
@@ -1115,17 +1099,16 @@ public class BaseValueParser
             result = new long[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                try
+                if (StringUtils.isNotEmpty(value[i]))
                 {
-                    result[i] = Long.parseLong(value[i]);
-                }
-                catch (NumberFormatException e)
-                {
-                    logConvertionFailure(name, value[i], "Long");
-                }
-                catch (NullPointerException e)
-                {
-                    logConvertionFailure(name, value[i], "Long");
+                    try
+                    {
+                        result[i] = Long.parseLong(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        logConvertionFailure(name, value[i], "Long");
+                    }
                 }
             }
         }
@@ -1148,17 +1131,16 @@ public class BaseValueParser
             result = new Long[value.length];
             for (int i = 0; i < value.length; i++)
             {
-                try
+                if (StringUtils.isNotEmpty(value[i]))
                 {
-                    result[i] = Long.valueOf(value[i]);
-                }
-                catch (NumberFormatException e)
-                {
-                    logConvertionFailure(name, value[i], "Long");
-                }
-                catch (NullPointerException e)
-                {
-                    logConvertionFailure(name, value[i], "Long");
+                    try
+                    {
+                        result[i] = Long.valueOf(value[i]);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        logConvertionFailure(name, value[i], "Long");
+                    }
                 }
             }
         }
@@ -1177,17 +1159,16 @@ public class BaseValueParser
         Long result = null;
         String value = getString(name);
 
-        try
+        if (StringUtils.isNotEmpty(value))
         {
-            result = new Long(StringUtils.trim(value));
-        }
-        catch(NumberFormatException e)
-        {
-            logConvertionFailure(name, value, "Long");
-        }
-        catch(NullPointerException e)
-        {
-            logConvertionFailure(name, value, "Long");
+            try
+            {
+                result = new Long(StringUtils.trim(value));
+            }
+            catch(NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "Long");
+            }
         }
 
         return result;
@@ -1220,17 +1201,16 @@ public class BaseValueParser
         byte result = defaultValue;
         String value = getString(name);
 
-        try
+        if (StringUtils.isNotEmpty(value))
         {
-            result = Byte.parseByte(StringUtils.trim(value));
-        }
-        catch (NumberFormatException e)
-        {
-            logConvertionFailure(name, value, "Byte");
-        }
-        catch (NullPointerException e)
-        {
-            logConvertionFailure(name, value, "Byte");
+            try
+            {
+                result = Byte.parseByte(StringUtils.trim(value));
+            }
+            catch (NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "Byte");
+            }
         }
 
         return result;
@@ -1295,17 +1275,16 @@ public class BaseValueParser
         Byte result = null;
         String value = getString(name);
 
-        try
+        if (StringUtils.isNotEmpty(value))
         {
-            result = new Byte(StringUtils.trim(value));
-        }
-        catch(NumberFormatException e)
-        {
-            logConvertionFailure(name, value, "Byte");
-        }
-        catch(NullPointerException e)
-        {
-            logConvertionFailure(name, value, "Byte");
+            try
+            {
+                result = new Byte(StringUtils.trim(value));
+            }
+            catch(NumberFormatException e)
+            {
+                logConvertionFailure(name, value, "Byte");
+            }
         }
 
         return result;
