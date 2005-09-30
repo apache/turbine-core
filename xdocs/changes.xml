@@ -24,6 +24,11 @@
 </properties>
 
 <body>
+  <release version="2.3.2" date="2005-09-30">
+    <action type="fix" dev="seade">
+      Exceptions that occur in Actions once again redirect to the error page.
+    </action>
+  </release>
   <release version="2.3.2-rc2" date="2005-09-19">
     <action type="fix" dev="henning" issue="TRB-5" due-to="Thomas Vandahl">
       The skin properties file must be loaded as stream from the filesystem
