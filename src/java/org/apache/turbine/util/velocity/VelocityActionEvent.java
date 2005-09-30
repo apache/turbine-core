@@ -122,10 +122,9 @@ public abstract class VelocityActionEvent extends ActionEvent
                     "ActionEvent: The button was null");
         }
 
-        Method method = null;
         try
         {
-            method = getClass().getMethod(theButton, methodParams);
+            Method method = getClass().getMethod(theButton, methodParams);
             Object[] methodArgs = new Object[] { data, context };
 
             if (log.isDebugEnabled())
@@ -150,7 +149,14 @@ public abstract class VelocityActionEvent extends ActionEvent
         catch (InvocationTargetException ite)
         {
             Throwable t = ite.getTargetException();
-            log.error("Invokation of " + method , t);
+            if (t instanceof Exception)
+            {
+                throw (Exception) t;
+            }
+            else
+            {
+                throw ite;
+            }
         }
         finally
         {
