@@ -29,7 +29,7 @@
   <id>maven-turbine-plugin</id>
   <name>Maven Environment for Turbine Applications Plugin</name>
   <groupId>turbine</groupId>
-  <currentVersion>1.3</currentVersion>
+  <currentVersion>1.4-dev</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -48,7 +48,7 @@
   <siteAddress>people.apache.org</siteAddress>
   <siteDirectory>/www/jakarta.apache.org/turbine/meta</siteDirectory>
   <distributionSite>cvs.apache.org</distributionSite>
-  <distributionDirectory>/www/www.apache.org/dist/java-repository</distributionDirectory>
+  <distributionDirectory>/www/cvs.apache.org/dist/jakarta/turbine/java-repository</distributionDirectory>
 
   <repository>
     <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/turbine/core/trunk/extensions/maven-plugin/</connection>
@@ -99,6 +99,7 @@
         <role>Java Developer</role>
       </roles>
     </developer>
+
     <developer>
       <name>Henning P. Schmiedehausen</name>
       <id>henning</id>
@@ -110,12 +111,6 @@
       <timezone>2</timezone>
     </developer>
   </developers>
-  <versions>
-    <version>
-      <name>1.2-rc1</name>
-      <tag>META_1_2_RC1</tag>
-    </version>
-  </versions>
 
   <contributors>
     <contributor>
