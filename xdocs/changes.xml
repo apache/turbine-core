@@ -24,6 +24,8 @@
 </properties>
 
 <body>
+  <release version="2.3.3-dev" date="in Subversion">
+  </release>
   <release version="2.3.2" date="2005-10-03">
     <action type="fix" dev="seade">
       Exceptions that occur in Actions once again redirect to the error page.

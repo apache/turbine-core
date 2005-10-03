@@ -20,7 +20,7 @@
   <pomVersion>3</pomVersion>
   <name>jakarta-turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.3.2</currentVersion>
+  <currentVersion>2.3.3-dev</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -45,12 +45,12 @@
   <siteAddress>people.apache.org</siteAddress>
   <siteDirectory>/www/jakarta.apache.org/turbine/turbine/development/turbine-2.3/</siteDirectory>
   <distributionSite>cvs.apache.org</distributionSite>
-  <distributionDirectory>/www/www.apache.org/dist/java-repository/turbine</distributionDirectory>
+  <distributionDirectory>/www/cvs.apache.org/dist/jakarta/turbine/java-repository</distributionDirectory>
 
   <repository>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/turbine/core/tags/TURBINE_2_3_2</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/jakarta/turbine/tags/TURBINE_2_3_2</developerConnection>
-    <url>http://svn.apache.org/viewcvs/jakarta/turbine/core/tags/TURBINE_2_3_2/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/turbine/core/branches/TURBINE_2_3_BRANCH/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/jakarta/turbine/branches/TURBINE_2_3_BRANCH/</developerConnection>
+    <url>http://svn.apache.org/viewcvs/jakarta/turbine/core/branches/TURBINE_2_3_BRANCH/</url>
   </repository>
 
   <versions>
