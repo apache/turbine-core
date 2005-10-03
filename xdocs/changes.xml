@@ -24,7 +24,7 @@
 </properties>
 
 <body>
-  <release version="2.3.2" date="2005-09-30">
+  <release version="2.3.2" date="2005-10-03">
     <action type="fix" dev="seade">
       Exceptions that occur in Actions once again redirect to the error page.
     </action>
