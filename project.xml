@@ -43,9 +43,9 @@
   <url>http://jakarta.apache.org/turbine/development/turbine-2.3/</url>
   <issueTrackingUrl>http://issues.apache.org/jira/browse/TRB</issueTrackingUrl>
   <siteAddress>people.apache.org</siteAddress>
-  <siteDirectory>/www/cvs.apache.org/dist/jakarta/turbine/releases/rc/turbine-2.3.2-rc3/docs</siteDirectory>
+  <siteDirectory>/www/jakarta.apache.org/turbine/turbine/development/turbine-2.3/</siteDirectory>
   <distributionSite>cvs.apache.org</distributionSite>
-  <distributionDirectory>/www/cvs.apache.org/dist/jakarta/turbine/releases/rc/turbine-2.3.2-rc3</distributionDirectory>
+  <distributionDirectory>/www/www.apache.org/dist/java-repository/turbine</distributionDirectory>
 
   <repository>
     <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/turbine/core/tags/TURBINE_2_3_2</connection>
