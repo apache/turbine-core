@@ -48,28 +48,28 @@
     <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2/</url>
   </repository>
 
-<releases>
-    <release>
-      <version>2.1</version>
+<versions>
+    <version>
+      <id>2.1</id>
       <tag>TURBINE_2_1</tag>
-    </release>
-    <release>
-      <version>2.2</version>
+    </version>
+    <version>
+      <id>2.2</id>
       <tag>TURBINE_2_2_0</tag>
-    </release>
-    <release>
-      <version>2.3-rc1</version>
+    </version>
+    <version>
+      <id>2.3-rc1</id>
       <tag>TURBINE_2_3_RC1</tag>
-    </release>
-    <release>
-      <version>2.3-rc2</version>
+    </version>
+    <version>
+      <id>2.3-rc2</id>
       <tag>TURBINE_2_3_RC2</tag>
-    </release>
-    <release>
-      <version>2.3</version>
+    </version>
+    <version>
+      <id>2.3</id>
       <tag>TURBINE_2_3</tag>
-    </release>
-  </releases>
+    </version>
+  </versions>
 
   <mailingLists>
     <mailingList>
@@ -421,7 +421,7 @@
     </dependency>
     <dependency>
       <id>commons-configuration</id>
-      <version>1.0</version>
+      <version>1.1</version>
       <url>http://jakarta.apache.org/commons/configuration/</url>
     </dependency>
     <dependency>
@@ -431,7 +431,7 @@
     </dependency>
     <dependency>
       <id>commons-email</id>
-      <version>20030310.165926</version>
+      <version>1.0</version>
       <url>http://jakarta.apache.org/commons/sandbox/email/</url>
     </dependency>
     <dependency>
@@ -451,7 +451,7 @@
     </dependency>
     <dependency>
       <id>commons-pool</id>
-      <version>1.1</version>
+      <version>1.2</version>
       <url>http://jakarta.apache.org/commons/pool/</url>
     </dependency>
     <dependency>
@@ -637,9 +637,6 @@
       <excludes>
       </excludes>
     </unitTest>
-    <integrationUnitTestSourceDirectory/>
-    <integrationUnitTest/>
-    <aspectSourceDirectory/>
   </build>
 
   <reports>    
