@@ -18,20 +18,16 @@ package org.apache.turbine.util.velocity;
  */
 
 
-import javax.mail.MessagingException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.velocity.TurbineVelocity;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -145,7 +141,7 @@ public class VelocityEmail extends SimpleEmail
      * @return A VelocityEmail (self).
      */
     public VelocityEmail setTo(String toName, String toEmail)
-            throws MessagingException
+            throws EmailException
     {
         addTo(toEmail,toName);
         return this;
@@ -240,10 +236,10 @@ public class VelocityEmail extends SimpleEmail
      * the value of mail.server will be used from TR.props.  If that
      * value was not set, localhost is used.
      *
-     * @throws MessagingException Failure during merging the velocity
+     * @throws EmailException Failure during merging the velocity
      * template or sending the email.
      */
-    public void send() throws MessagingException
+    public String send() throws EmailException
     {
         String body = null;
         try
@@ -253,7 +249,7 @@ public class VelocityEmail extends SimpleEmail
         }
         catch (Exception e)
         {
-            throw new MessagingException(
+            throw new EmailException(
                     "Could not render velocitty template", e);
         }
 
@@ -266,7 +262,7 @@ public class VelocityEmail extends SimpleEmail
 
         setMsg(body);
         setHostName(getMailServer());
-        super.send();
+        return super.send();
     }
 
     /**

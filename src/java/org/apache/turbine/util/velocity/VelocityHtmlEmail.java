@@ -19,24 +19,18 @@ package org.apache.turbine.util.velocity;
 
 
 import java.net.URL;
-
 import java.util.Hashtable;
 
-import javax.mail.MessagingException;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.HtmlEmail;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -202,9 +196,9 @@ public class VelocityHtmlEmail extends HtmlEmail
     /**
      * Actually send the mail.
      *
-     * @exception MessagingException thrown if mail cannot be sent.
+     * @exception EmailException thrown if mail cannot be sent.
      */
-    public void send() throws MessagingException
+    public String send() throws EmailException
     {
         context.put("mail", this);
 
@@ -223,10 +217,10 @@ public class VelocityHtmlEmail extends HtmlEmail
         }
         catch (Exception e)
         {
-            throw new MessagingException("Cannot parse velocity template", e);
+            throw new EmailException("Cannot parse velocity template", e);
         }
         setHostName(getMailServer());
-        super.send();
+        return super.send();
     }
 
     /**
