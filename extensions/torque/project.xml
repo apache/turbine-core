@@ -87,9 +87,6 @@
         <include>**/*Test.java</include>
       </includes>
     </unitTest>
-    <integrationUnitTestSourceDirectory/>
-    <integrationUnitTest/>
-    <aspectSourceDirectory/>
   </build>
 
 
