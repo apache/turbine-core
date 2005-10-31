@@ -26,6 +26,7 @@ import org.apache.turbine.util.TurbineException;
  *
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
+ * @deprecated This is no longer required.
  */
 public abstract class TurbinePool
 {

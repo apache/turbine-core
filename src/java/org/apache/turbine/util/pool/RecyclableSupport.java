@@ -18,7 +18,10 @@ package org.apache.turbine.util.pool;
  */
 
 
-import org.apache.turbine.services.pool.TurbinePool;
+import org.apache.avalon.framework.service.ServiceException;
+import org.apache.fulcrum.pool.PoolService;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 
 /**
  * A support class for recyclable objects implementing default methods.
@@ -26,19 +29,25 @@ import org.apache.turbine.services.pool.TurbinePool;
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
  */
-public class RecyclableSupport implements Recyclable
+public class RecyclableSupport implements org.apache.fulcrum.pool.Recyclable
 {
     /**
      * The disposed flag.
      */
     private boolean disposed;
+    
+    /**
+     * Reference to the Fulcrum Pool service
+     */
+    private PoolService pool;
 
     /**
      * Constructs a new recyclable support and calls the default recycle method.
+     * @throws ServiceException 
      */
-    public void Recyclable()
+    public void Recyclable() throws ServiceException
     {
-        recycle();
+    		recycle();
     }
 
     /**
@@ -72,16 +81,15 @@ public class RecyclableSupport implements Recyclable
      * to put itself into a pool for recycling.
      *
      * @return true, if disposal was accepted by the pool.
+     * @throws ServiceException 
      */
-    protected boolean doDispose()
+    protected boolean doDispose() throws ServiceException
     {
-        try
-        {
-            return TurbinePool.putInstance(this);
-        }
-        catch (RuntimeException x)
-        {
-            return false;
-        }
+    		if (pool == null) {
+    			AvalonComponentService acs = (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
+    			pool = (PoolService)acs.lookup(PoolService.ROLE);
+    		}
+    		return pool.putInstance(this);
+  
     }
 }

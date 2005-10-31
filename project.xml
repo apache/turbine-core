@@ -516,6 +516,15 @@
     </dependency>         
     <dependency>
       <groupId>fulcrum</groupId>
+      <artifactId>fulcrum-pool</artifactId>
+      <version>1.0.3</version>
+      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-pool</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>     
+    <dependency>
+      <groupId>fulcrum</groupId>
       <artifactId>fulcrum-mimetype</artifactId>
       <version>1.0.4</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-mimetype</url>

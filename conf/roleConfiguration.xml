@@ -40,6 +40,10 @@
     <role
         name="org.apache.fulcrum.factory.FactoryService"
         shorthand="factory"
-        default-class="org.apache.fulcrum.factory.DefaultFactoryService"/>             
+        default-class="org.apache.fulcrum.factory.DefaultFactoryService"/>
+    <role
+        name="org.apache.fulcrum.pool.PoolService"
+        shorthand="pool"
+        default-class="org.apache.fulcrum.pool.DefaultPoolService"/>                     
 </role-list>
 

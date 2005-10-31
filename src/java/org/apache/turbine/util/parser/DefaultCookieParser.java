@@ -26,7 +26,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.pool.Recyclable;
+import org.apache.fulcrum.pool.Recyclable;
 import org.apache.turbine.util.uri.DataURI;
 import org.apache.turbine.util.uri.URI;
 

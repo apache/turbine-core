@@ -32,8 +32,9 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.pool.PoolService;
-import org.apache.turbine.services.pool.TurbinePool;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.fulcrum.pool.PoolService;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.services.velocity.TurbineVelocity;
@@ -189,7 +190,9 @@ public class TurbinePullService
     {
         try
         {
-            pool = TurbinePool.getService();
+        	   AvalonComponentService acs = (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
+		   pool = (PoolService)acs.lookup(PoolService.ROLE);
+
 
             if (pool == null)
             {

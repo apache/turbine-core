@@ -46,7 +46,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.util.DateSelector;
 import org.apache.turbine.util.TimeSelector;
-import org.apache.turbine.util.pool.Recyclable;
+import org.apache.fulcrum.pool.Recyclable;
 import org.apache.turbine.util.pool.RecyclableSupport;
 
 /**

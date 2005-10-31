@@ -26,13 +26,16 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.avalon.framework.service.ServiceException;
 import org.apache.commons.configuration.Configuration;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.pool.PoolService;
-import org.apache.turbine.services.pool.TurbinePool;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
+import org.apache.fulcrum.pool.PoolException;
+import org.apache.fulcrum.pool.PoolService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineException;
@@ -86,6 +89,7 @@ public class TurbineRunDataService
      * Initializes the service by setting the pool capacity.
      *
      * @throws InitializationException if initialization fails.
+     * @throws ServiceException 
      */
     public void init()
             throws InitializationException
@@ -133,8 +137,13 @@ public class TurbineRunDataService
                 }
             }
         }
-        pool = TurbinePool.getService();
-
+		AvalonComponentService acs = (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
+		try {
+			pool = (PoolService)acs.lookup(PoolService.ROLE);
+		}
+		catch (ServiceException se) {
+			throw new InitializationException("Problem looking up Pool Service:" + se);
+		}
         if (pool == null)
         {
             throw new InitializationException("RunData Service requires"
@@ -171,6 +180,7 @@ public class TurbineRunDataService
      * @return a new or recycled RunData object.
      * @throws TurbineException if the operation fails.
      * @throws IllegalArgumentException if any of the parameters are null.
+     * @throws  
      */
     public RunData getRunData(String key,
                               HttpServletRequest req,
@@ -205,14 +215,26 @@ public class TurbineRunDataService
         TurbineRunData data;
         try
         {
-            data = (TurbineRunData) pool.getInstance(cfg[0]);
-            ParameterParser pp = (ParameterParser) pool.getInstance(cfg[1]);
+        		Class runDataClazz = Class.forName(cfg[0]);
+        		Class parameterParserClazz = Class.forName(cfg[1]);
+        		Class cookieParserClazz = Class.forName(cfg[2]);
+        		
+            data = (TurbineRunData) pool.getInstance(runDataClazz);
+            ParameterParser pp = (ParameterParser) pool.getInstance(parameterParserClazz);
             data.setParameterParser(pp);
-            CookieParser cp = (CookieParser) pool.getInstance(cfg[2]);
+            CookieParser cp = (CookieParser) pool.getInstance(cookieParserClazz);
             data.setCookieParser(cp);
             // also copy data directly into pipelineData
             pipelineDataMap.put(ParameterParser.class, pp);
             pipelineDataMap.put(CookieParser.class, cp);
+        }
+        catch (PoolException pe)
+        {
+            throw new TurbineException("RunData configuration '" + key + "' is illegal caused a pool exception", pe);
+        }
+        catch (ClassNotFoundException x)
+        {
+            throw new TurbineException("RunData configuration '" + key + "' is illegal", x);
         }
         catch (ClassCastException x)
         {

@@ -30,6 +30,7 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
+ * @deprecated Please use org.apache.fulcrum.factory.FactoryService instead.
  */
 public abstract class TurbineFactory
 {

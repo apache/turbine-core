@@ -1,4 +1,4 @@
-package org.apache.turbine.util;
+package org.apache.turbine.util.parser;
 
 
 /*
@@ -32,7 +32,7 @@ import org.apache.turbine.util.parser.ParserUtils;
  * Testing of the BaseValueParser class
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
- * @version $Id$
+ * @version $Id: BaseValueParserTest.java 222043 2004-12-06 17:47:33Z painter $
  */
 public class BaseValueParserTest extends BaseTestCase
 {
@@ -630,6 +630,12 @@ public class BaseValueParserTest extends BaseTestCase
             assertEquals(compare[i], arrayResult[i]);
         }
 
+    }
+    
+    public void testRecycling() throws Exception {
+    		parser.setCharacterEncoding("fake");
+    		parser.recycle();
+    		assertEquals("US-ASCII",parser.getCharacterEncoding());
     }
 
 }

@@ -22,11 +22,14 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.avalon.framework.service.ServiceException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.fulcrum.pool.PoolException;
+import org.apache.fulcrum.pool.PoolService;
 
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.pool.TurbinePool;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.rundata.DefaultTurbineRunData;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.services.rundata.TurbineRunData;
@@ -56,6 +59,10 @@ public class RunDataFactory
      */
     private static boolean tryRunDataService = true;
 
+    /**
+     * The fulcrum pool service
+     */
+    private static PoolService pool;
     /**
      * Open way to get RunData information across Turbine..
      *
@@ -109,8 +116,14 @@ public class RunDataFactory
         }
 
         // Failed, create a default implementation using the Pool Service.
-        TurbineRunData data =
-                (TurbineRunData) TurbinePool.getInstance(DefaultTurbineRunData.class);
+        TurbineRunData data;
+		try {
+			data = (TurbineRunData) getPoolService().getInstance(DefaultTurbineRunData.class);
+		} catch (ServiceException e) {
+			throw new TurbineException(e);
+		} catch (PoolException e) {
+			throw new TurbineException(e);
+		}
 
         // Cache some information that will be used elsewhere.
         data.setRequest(req);
@@ -176,7 +189,11 @@ public class RunDataFactory
         }
 
         // Failed, use the Pool Service instead.
-        TurbinePool.putInstance(data);
+        try {
+			getPoolService().putInstance(data);
+		} catch (ServiceException e) {
+			throw new RuntimeException(e);
+		}
     }
     
     /**
@@ -186,5 +203,13 @@ public class RunDataFactory
     private static RunDataService getRunDataService(){
         return (RunDataService) TurbineServices
         .getInstance().getService(RunDataService.SERVICE_NAME);
+    }
+    
+    private static PoolService getPoolService() throws ServiceException {
+		if (pool == null) {
+			AvalonComponentService acs = (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
+			pool = (PoolService)acs.lookup(PoolService.ROLE);
+		}
+    		return pool;
     }
 }

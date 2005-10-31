@@ -24,12 +24,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.avalon.framework.service.ServiceException;
 import org.apache.commons.configuration.Configuration;
 
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.fulcrum.factory.FactoryException;
+import org.apache.fulcrum.factory.FactoryService;
+import org.apache.fulcrum.pool.PoolService;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
@@ -40,7 +44,8 @@ import org.apache.turbine.modules.PageLoader;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.factory.TurbineFactory;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.template.mapper.BaseTemplateMapper;
 import org.apache.turbine.services.template.mapper.ClassMapper;
@@ -769,12 +774,16 @@ public class TurbineTemplateService
 
             try
             {
-                tm = (Mapper) TurbineFactory.getInstance(mapperClass);
+    			   AvalonComponentService acs = (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
+    			   FactoryService factory = (FactoryService)acs.lookup(FactoryService.ROLE);
+    			   tm = (Mapper) factory.getInstance(mapperClass);
             }
-            catch (TurbineException te)
-            {
-                throw new InitializationException("", te);
-            }
+            catch (FactoryException e) {
+            		throw new InitializationException("", e);
+		    } 
+            catch (ServiceException se) {
+				throw new InitializationException("Problem looking up Factory service",se);
+			}
 
             tm.setUseCache(useCache);
             tm.setCacheSize(mapperCacheSize[i]);
