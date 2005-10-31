@@ -39,6 +39,7 @@ import org.apache.turbine.util.pool.ObjectInputStreamForContext;
  *
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
+ * @deprecated Please use org.apache.fulcrum.factory.FactoryService
  */
 public class TurbineFactoryService
         extends TurbineBaseService

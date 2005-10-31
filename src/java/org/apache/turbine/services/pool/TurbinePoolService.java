@@ -52,6 +52,7 @@ import org.apache.turbine.util.pool.Recyclable;
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
+ * @deprecated Please use the org.apache.fulcrum.pool.PoolService instead
  */
 public class TurbinePoolService
         extends TurbineBaseService

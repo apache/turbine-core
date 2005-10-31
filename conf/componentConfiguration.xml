@@ -35,4 +35,5 @@
       </xmlPaths>
     </intake>    
     <factory/>    
+    <pool/>
 </componentConfig>

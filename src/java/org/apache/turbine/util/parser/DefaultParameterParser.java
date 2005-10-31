@@ -39,7 +39,7 @@ import org.apache.turbine.services.upload.TurbineUpload;
 import org.apache.turbine.services.upload.UploadService;
 
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.pool.Recyclable;
+import org.apache.fulcrum.pool.Recyclable;
 
 /**
  * DefaultParameterParser is a utility object to handle parsing and

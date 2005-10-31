@@ -24,6 +24,7 @@ package org.apache.turbine.util.pool;
  *
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @version $Id$
+ * @deprecated  Use org.apache.fulcrum.pool.Recyclable instead
  */
 public interface Recyclable
 {
