@@ -1,6 +1,5 @@
 package org.apache.turbine.services.mimetype;
 
-
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
  *
@@ -17,18 +16,19 @@ package org.apache.turbine.services.mimetype;
  * limitations under the License.
  */
 
-
 import java.util.Locale;
 
 import org.apache.fulcrum.mimetype.MimeTypeService;
+import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+
 /**
  * Unit test for Accessing the Fulcrum Mimetype component within Turbine.
  * 
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:sgoeschl@apache.org">Siegfried Goeschl</a>
  * @version $Id$
  */
 public class FulcrumMimetypeComponentTest extends BaseTestCase
@@ -40,10 +40,8 @@ public class FulcrumMimetypeComponentTest extends BaseTestCase
     }
     public void testComponent() throws Exception
     {
-        AvalonComponentService acs =
-            (AvalonComponentService) TurbineServices.getInstance().getService(
-                    AvalonComponentService.SERVICE_NAME);
-        MimeTypeService mimeTypeService = (MimeTypeService) acs.lookup(MimeTypeService.class.getName());
+        ServiceManager serviceManager = TurbineServices.getInstance();
+        MimeTypeService mimeTypeService = (MimeTypeService) serviceManager.getService(MimeTypeService.class.getName());
 
         Locale locale = new Locale("en", "US");
         String s = mimeTypeService.getCharSet(locale);

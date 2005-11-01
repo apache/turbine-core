@@ -20,7 +20,6 @@ package org.apache.turbine.services.rundata;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,21 +33,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.ecs.Document;
 import org.apache.ecs.Element;
 import org.apache.ecs.StringElement;
 import org.apache.fulcrum.mimetype.MimeTypeService;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.DefaultPipelineData;
+import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.FormMessages;
 import org.apache.turbine.util.ServerData;
@@ -320,10 +316,10 @@ public class DefaultTurbineRunData
             if (!locale.equals(Locale.US))
             {
                 log.debug("We don't have US Locale!");
-                AvalonComponentService ecm= (AvalonComponentService)TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
+                ServiceManager serviceManager = TurbineServices.getInstance();
 				MimeTypeService mimeTypeService=null;
                 try {
-					mimeTypeService= (MimeTypeService)ecm.lookup(MimeTypeService.ROLE);
+					mimeTypeService= (MimeTypeService)serviceManager.getService(MimeTypeService.ROLE);
                 }
                 catch (Exception e){
                     throw new RuntimeException(e);

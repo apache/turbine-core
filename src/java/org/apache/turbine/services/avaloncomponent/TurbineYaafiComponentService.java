@@ -18,9 +18,6 @@ package org.apache.turbine.services.avaloncomponent;
  */
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import org.apache.avalon.framework.activity.Disposable;
 import org.apache.avalon.framework.activity.Initializable;
@@ -38,6 +35,7 @@ import org.apache.fulcrum.yaafi.framework.factory.ServiceContainerConfiguration;
 import org.apache.fulcrum.yaafi.framework.factory.ServiceContainerFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.InstantiationException;
 import org.apache.turbine.services.TurbineBaseService;
 
 /**
@@ -131,7 +129,8 @@ public class TurbineYaafiComponentService
 
         // create the configuration for YAAFI
 
-        ServiceContainerConfiguration config = this.createServiceContainerConfiguration(conf);
+        ServiceContainerConfiguration config = 
+            this.createServiceContainerConfiguration(conf);
 
         config.setLogger( this.createAvalonLogger() );
         config.setApplicationRootDir( homePath );
@@ -147,19 +146,6 @@ public class TurbineYaafiComponentService
         catch (Exception e)
         {
             String msg = "Initializing YAAFI failed";
-            log.error(msg,e);
-            throw e;
-        }        
-        
-        // lookup the services to be backward compatible
-        
-        try
-        {
-            this.lookupServices(conf);
-        }
-        catch (Exception e)
-        {
-            String msg = "Looking up the Avalon services failed";
             log.error(msg,e);
             throw e;
         }                
@@ -190,11 +176,8 @@ public class TurbineYaafiComponentService
     }
 
     /**
-     * Releases the component
+     * Releases the component.
      *
-     * @param source. The path to the handler for this component For example, if the object is a
-     *            java.sql.Connection object sourced from the "/turbine-merlin/datasource"
-     *            component, the call would be :- release("/turbine-merlin/datasource", conn);
      * @param component the component to release
      */
     public void release(Object component)
@@ -312,39 +295,38 @@ public class TurbineYaafiComponentService
         return result;
     }
     
+    // -------------------------------------------------------------
+    // TurbineServiceProvider
+    // -------------------------------------------------------------
+    
     /**
-     * Lookup the services defined in the Turbine config file. This
-     * code is taken from the ECM implementation but I'm not sure
-     * why it is needed at all.
-     *
-     * @throws Exception generic exception
-     * @todo not sure why we need the additional component lookup
-     */    
-    private void lookupServices( Configuration conf )
-    	throws Exception
+     * @see org.apache.turbine.services.TurbineServiceProvider#exists(java.lang.String)
+     */
+    public boolean exists(String roleName)
     {
-        List lookupComponents = conf.getList(
-            COMPONENT_LOOKUP_KEY,
-            new ArrayList()
-            );
-
-	    for (Iterator it = lookupComponents.iterator(); it.hasNext();)
-	    {
-	        String serviceName = (String) it.next();
-	        
-	        try
-	        {
-                Object service = this.container.lookup(serviceName);
-                log.info("Lookup for service " + serviceName + " successful");
-                this.container.release(service);
-
-	        }
-	        catch (Exception e)
-	        {
-	            String msg = "Lookup for service " + serviceName + " failed!";
-	            log.error(msg);
-	            throw e;
-	        }
-	    }                        
+        return this.hasService(roleName);
+    }
+    
+    /**
+     * @see org.apache.turbine.services.TurbineServiceProvider#get(java.lang.String)
+     */
+    public Object get(String roleName) throws InstantiationException
+    {
+        try
+        {
+            return this.lookup(roleName);
+        }
+        catch (ServiceException e)
+        {
+            String msg = "Unable to get the following service : " + roleName;
+            log.error(msg);
+            throw new InstantiationException(msg);
+        }
+        catch (Throwable t)
+        {
+            String msg = "Unable to get the following service : " + roleName;
+            log.error(msg,t);
+            throw new InstantiationException(msg,t);
+        }        
     }
 }

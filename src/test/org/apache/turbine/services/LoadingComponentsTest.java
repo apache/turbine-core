@@ -16,6 +16,8 @@ package org.apache.turbine.services;
  * limitations under the License.
  */
 
+import java.util.Locale;
+
 import org.apache.fulcrum.cache.DefaultGlobalCacheService;
 import org.apache.fulcrum.crypto.CryptoService;
 import org.apache.fulcrum.factory.FactoryService;
@@ -25,12 +27,14 @@ import org.apache.fulcrum.mimetype.MimeTypeService;
 import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+
 /**
  * Unit test for verifing that we can load all the appropriate components from the
  * appropriate Container.  For now that is just ECM (AvalonComponentService)
  * but in the future with mixed containers there could be multiple.
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:sgoeschl@apache.org">Siegfried Goeschl</a>
  * @version $Id$
  */
 public class LoadingComponentsTest extends BaseTestCase
@@ -40,25 +44,103 @@ public class LoadingComponentsTest extends BaseTestCase
     {
         super(name);
     }
-    public void testLoading() throws Exception
+    
+    /**
+     * Test to load a couple of Avalon services directly by the
+     * AvalonComponentService.
+     * 
+     * @throws Exception loading failed
+     */
+    public void testLoadingByAvalonComponentService() throws Exception
     {
-        AvalonComponentService ecm =
+        AvalonComponentService avalonComponentService =
             (AvalonComponentService) TurbineServices.getInstance().getService(
                     AvalonComponentService.SERVICE_NAME);
-        DefaultGlobalCacheService dgcs = (DefaultGlobalCacheService)ecm.lookup(DefaultGlobalCacheService.ROLE);
-        assertNotNull(dgcs);
         
-        CryptoService cs = (CryptoService)ecm.lookup(CryptoService.ROLE);
+        assertNotNull(avalonComponentService);
+        
+        DefaultGlobalCacheService dgcs = (DefaultGlobalCacheService)avalonComponentService.lookup(DefaultGlobalCacheService.ROLE);
+        assertNotNull(dgcs);        
+        CryptoService cs = (CryptoService)avalonComponentService.lookup(CryptoService.ROLE);
         assertNotNull(cs);
-        LocalizationService ls = (LocalizationService)ecm.lookup(LocalizationService.ROLE);
+        LocalizationService ls = (LocalizationService)avalonComponentService.lookup(LocalizationService.ROLE);
         assertNotNull(ls);
-        IntakeService intake = (IntakeService)ecm.lookup(IntakeService.ROLE);
+        IntakeService intake = (IntakeService)avalonComponentService.lookup(IntakeService.ROLE);
         assertNotNull(intake);
-        FactoryService fs = (FactoryService)ecm.lookup(FactoryService.ROLE);
+        FactoryService fs = (FactoryService)avalonComponentService.lookup(FactoryService.ROLE);
         assertNotNull(fs);
-        MimeTypeService mimetype = (MimeTypeService)ecm.lookup(MimeTypeService.ROLE);
+        MimeTypeService mimetype = (MimeTypeService)avalonComponentService.lookup(MimeTypeService.ROLE);
         assertNotNull(mimetype);
     }
+
+    /**
+     * Test to load a couple of Avalon services by using the
+     * TurbineServices which delegate the service retrieval to
+     * the AvalonComponentService
+     * 
+     * @throws Exception loading failed
+     */
+    public void testLoadingByTurbineServices() throws Exception
+    {
+        ServiceManager serviceManager = TurbineServices.getInstance();
+
+        DefaultGlobalCacheService dgcs = (DefaultGlobalCacheService)serviceManager.getService(DefaultGlobalCacheService.ROLE);
+        assertNotNull(dgcs);        
+        CryptoService cs = (CryptoService)serviceManager.getService(CryptoService.ROLE);
+        assertNotNull(cs);
+        LocalizationService ls = (LocalizationService)serviceManager.getService(LocalizationService.ROLE);
+        assertNotNull(ls);
+        IntakeService intake = (IntakeService)serviceManager.getService(IntakeService.ROLE);
+        assertNotNull(intake);
+        FactoryService fs = (FactoryService)serviceManager.getService(FactoryService.ROLE);
+        assertNotNull(fs);
+        MimeTypeService mimetype = (MimeTypeService)serviceManager.getService(MimeTypeService.ROLE);
+        assertNotNull(mimetype);
+    }
+
+    /**
+     * Lookup up an unknown servie
+     * @throws Exception
+     */
+    public void testLookupUnknownService() throws Exception
+    {
+        ServiceManager serviceManager = TurbineServices.getInstance();
+        
+        try
+        {
+            serviceManager.getService("foo");
+            fail("We expect an InstantiationException");
+        }
+        catch (InstantiationException e)
+        {
+            // that'w what we expect
+            return;
+        }
+        catch (Throwable t)
+        {
+            fail("We expect an InstantiationException");
+        }                             
+    }
+
+    /**
+     * Shutdown the AvalonComponentService where the MimeTypeService
+     * resides and lookup the MimeTypeService. This should trigger
+     * a late initialization of AvalonComponentService and returns
+     * a fully functional MimeTypeService.
+     */
+    public void testAvalonComponentServiceShutdown() throws Exception
+    {
+        ServiceManager serviceManager = TurbineServices.getInstance();
+        serviceManager.shutdownService(AvalonComponentService.SERVICE_NAME);
+        
+        MimeTypeService mimeTypeService = (MimeTypeService) serviceManager.getService(MimeTypeService.class.getName());
+        assertNotNull(mimeTypeService);
+        
+        Locale locale = new Locale("en", "US");
+        String s = mimeTypeService.getCharSet(locale);
+        assertEquals("ISO-8859-1", s);
+    }
+    
     public void setUp() throws Exception
     {
         tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");

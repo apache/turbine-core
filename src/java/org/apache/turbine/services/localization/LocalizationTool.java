@@ -23,10 +23,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.localization.LocalizationService;
 import org.apache.turbine.services.InstantiationException;
+import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
+
 /**
  * A pull tool which provides lookups for localized text by delegating
  * to the configured Fulcrum <code>LocalizationService</code>.
@@ -55,14 +56,17 @@ public class LocalizationTool implements ApplicationTool
     {
         if (localizationService == null)
         {
-            AvalonComponentService ecm =
-                (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
-                try {
-            localizationService = (LocalizationService)ecm.lookup(LocalizationService.ROLE);
-                }
-                catch (Exception e) {
-                    throw new InstantiationException("Problem looking up Localization Service:"+e.getMessage());
-                }
+            ServiceManager serviceManager = TurbineServices.getInstance();
+            try 
+            {
+                localizationService = (LocalizationService)serviceManager.getService(
+                    LocalizationService.ROLE
+                    );
+            }
+            catch (Exception e) 
+            {
+                throw new InstantiationException("Problem looking up Localization Service:"+e.getMessage());
+            }
         }
         return localizationService;
     }

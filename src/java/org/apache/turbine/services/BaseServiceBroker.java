@@ -1,6 +1,5 @@
 package org.apache.turbine.services;
 
-
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
  *
@@ -19,6 +18,7 @@ package org.apache.turbine.services;
 
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 
@@ -38,6 +38,9 @@ import org.apache.commons.logging.LogFactory;
  * <li>Providing <code>Services</code> with a configuration based on
  * system wide configuration mechanism.</li>
  * </ul>
+ * <li>Integration of TurbineServiceProviders for looking up 
+ * non-local services
+ * </ul>
  *
  * @author <a href="mailto:burton@apache.org">Kevin Burton</a>
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
@@ -52,19 +55,19 @@ public abstract class BaseServiceBroker implements ServiceBroker
     /**
      * Mapping of Service names to class names.
      */
-    protected Configuration mapping = new BaseConfiguration();
+    private Configuration mapping = new BaseConfiguration();
 
     /**
      * A repository of Service instances.
      */
-    protected Hashtable services = new Hashtable();
+    private Hashtable services = new Hashtable();
 
     /**
      * Configuration for the services broker.
      * The configuration should be set by the application
      * in which the services framework is running.
      */
-    protected Configuration configuration;
+    private Configuration configuration;
 
     /**
      * A prefix for <code>Service</code> properties in
@@ -89,7 +92,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * the requirement of having init(Object) all
      * together.
      */
-    protected Hashtable serviceObjects = new Hashtable();
+    private Hashtable serviceObjects = new Hashtable();
 
     /** Logging */
     private static Log log = LogFactory.getLog(BaseServiceBroker.class);
@@ -98,8 +101,13 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * Application root path as set by the
      * parent application.
      */
-    protected String applicationRoot;
+    private String applicationRoot;
 
+    /**
+     * mapping from service names to instances of TurbineServiceProviders
+     */
+    private Hashtable serviceProviderInstanceMap = new Hashtable();
+    
     /**
      * Default constructor, protected as to only be useable by subclasses.
      *
@@ -107,6 +115,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      */
     protected BaseServiceBroker()
     {
+        // nothing to do
     }
 
     /**
@@ -170,6 +179,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
     /**
      * Get an application specific service object.
      *
+     * @param name the name of the service object
      * @return Object application specific service object
      */
     public Object getServiceObject(String name)
@@ -383,12 +393,13 @@ public abstract class BaseServiceBroker implements ServiceBroker
             if (service != null && service.getInit())
             {
                 service.shutdown();
+                
                 if (service.getInit() && service instanceof BaseService)
                 {
                     // BaseService::shutdown() does this by default,
                     // but could've been overriden poorly.
                     ((BaseService) service).setInit(false);
-                }
+                }                
             }
         }
         catch (InstantiationException e)
@@ -440,39 +451,53 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * @exception InstantiationException if the service is unknown or
      * can't be initialized.
      */
-    public Service getService(String name) throws InstantiationException
+    public Object getService(String name) throws InstantiationException
     {
         Service service;
-        try
+        
+        if (this.isLocalService(name))
         {
-            service = getServiceInstance(name);
-            if (!service.getInit())
-            {
-                synchronized (service.getClass())
-                {
-                    if (!service.getInit())
-                    {
-                        log.info("Start Initializing service (late): " + name);
-                        service.init();
-                        log.info("Finish Initializing service (late): " + name);
-                    }
-                }
-            }
-            if (!service.getInit())
-            {
-                // this exception will be caught & rethrown by this very method.
-                // getInit() returning false indicates some initialization issue,
-                // which in turn prevents the InitableBroker from passing a
-                // reference to a working instance of the initable to the client.
-                throw new InitializationException(
-                        "init() failed to initialize service " + name);
-            }
-            return service;
+	        try
+	        {
+	            service = getServiceInstance(name);
+	            if (!service.getInit())
+	            {
+	                synchronized (service.getClass())
+	                {
+	                    if (!service.getInit())
+	                    {
+	                        log.info("Start Initializing service (late): " + name);
+	                        service.init();
+	                        log.info("Finish Initializing service (late): " + name);
+	                    }
+	                }
+	            }
+	            if (!service.getInit())
+	            {
+	                // this exception will be caught & rethrown by this very method.
+	                // getInit() returning false indicates some initialization issue,
+	                // which in turn prevents the InitableBroker from passing a
+	                // reference to a working instance of the initable to the client.
+	                throw new InitializationException(
+	                        "init() failed to initialize service " + name);
+	            }
+	            return service;
+	        }
+	        catch (InitializationException e)
+	        {
+	            throw new InstantiationException("Service " + name +
+	                    " failed to initialize", e);
+	        }
         }
-        catch (InitializationException e)
+        else if (this.isNonLocalService(name))
         {
-            throw new InstantiationException("Service " + name +
-                    " failed to initialize", e);
+            return this.getNonLocalService(name);
+        }
+        else
+        {
+            throw new InstantiationException(
+                "ServiceBroker: unknown service " + name
+                + " requested");
         }
     }
 
@@ -502,7 +527,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
         {
             
             String className=null;
-            if (!mapping.containsKey(name))
+            if (!this.isLocalService(name))
             {
                 throw new InstantiationException(
                         "ServiceBroker: unknown service " + name
@@ -517,8 +542,15 @@ public abstract class BaseServiceBroker implements ServiceBroker
                 {
                     try
                     {
-                        service = (Service)
-                                Class.forName(className).newInstance();
+                        service = (Service) Class.forName(className).newInstance();
+                        
+                        // check if the newly created service is also a 
+                        // service provider - if so then remember it                        
+                        if (service instanceof TurbineServiceProvider)
+                        {
+                            this.serviceProviderInstanceMap.put(name,service);
+                        }
+                        
                     }
                     // those two errors must be passed to the VM
                     catch (ThreadDeath t)
@@ -608,4 +640,75 @@ public abstract class BaseServiceBroker implements ServiceBroker
     {
         return applicationRoot;
     }
+
+    /**
+     * Determines if the requested service is managed by this
+     * ServiceBroker. 
+     *
+     * @param name The name of the Service requested.
+     * @return true if the service is managed by the this ServiceBroker
+     */
+    protected boolean isLocalService(String name)
+    {
+        return this.mapping.containsKey(name);
+    }
+
+    /**
+     * Determines if the requested service is managed by an initialized
+     * TurbineServiceProvider. We use the service names to lookup
+     * the TurbineServiceProvider to ensure that we get a fully
+     * inititialized service.
+     *
+     * @param name The name of the Service requested.
+     * @return true if the service is managed by a TurbineServiceProvider
+     */
+    protected boolean isNonLocalService(String name)
+    {
+        String serviceName = null;
+        TurbineServiceProvider turbineServiceProvider = null;
+        Enumeration list = this.serviceProviderInstanceMap.keys();
+        
+        while (list.hasMoreElements())
+        {            
+            serviceName = (String) list.nextElement();
+            turbineServiceProvider = (TurbineServiceProvider) this.getService(serviceName);
+            
+            if (turbineServiceProvider.exists(name))
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    /**
+     * Get a non-local service managed by a TurbineServiceProvider.
+     *
+     * @param name The name of the Service requested.
+     * @return the requested service
+     * @throws InstantiationException the service couldn't be instantiated
+     */
+    protected Object getNonLocalService(String name)
+    	throws InstantiationException
+    {
+        String serviceName = null;
+        TurbineServiceProvider turbineServiceProvider = null;
+        Enumeration list = this.serviceProviderInstanceMap.keys();
+        
+        while (list.hasMoreElements())
+        {
+            serviceName = (String) list.nextElement();
+            turbineServiceProvider = (TurbineServiceProvider) this.getService(serviceName);
+            
+            if (turbineServiceProvider.exists(name))
+            {
+                return turbineServiceProvider.get(name);
+            }
+        }
+        
+        throw new InstantiationException(
+            "ServiceBroker: unknown non-local service " + name
+            + " requested");
+    }    
 }
