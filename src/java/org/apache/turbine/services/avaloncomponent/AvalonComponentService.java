@@ -18,6 +18,7 @@ package org.apache.turbine.services.avaloncomponent;
 
 import org.apache.avalon.framework.service.ServiceManager;
 import org.apache.turbine.services.Service;
+import org.apache.turbine.services.TurbineServiceProvider;
 
 /**
  * This service allows access to avalon components.
@@ -27,7 +28,7 @@ import org.apache.turbine.services.Service;
  * @version $Id$
  */
 public interface AvalonComponentService
-        extends Service, ServiceManager
+        extends Service, ServiceManager, TurbineServiceProvider
 {
     /** The publically visible name of the service */
     String SERVICE_NAME = "AvalonComponentService";

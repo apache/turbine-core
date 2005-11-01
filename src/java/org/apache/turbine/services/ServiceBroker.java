@@ -89,7 +89,7 @@ public interface ServiceBroker
      * @exception InstantiationException if the service is unknown or
      * can't be initialized.
      */
-    Service getService(String name) throws InstantiationException;
+    Object getService(String name) throws InstantiationException;
 
     /**
      * Returns the configuration of a specific service. Services

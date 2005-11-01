@@ -24,10 +24,9 @@ import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.avalon.framework.service.ServiceException;
 import org.apache.commons.lang.exception.NestableRuntimeException;
+import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -244,14 +243,12 @@ public class Localization
     protected static final LocalizationService getService()
     {
         try {
-            AvalonComponentService acs = (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
-            return  (LocalizationService)acs.lookup(LocalizationService.class.getName());
+            ServiceManager serviceManager = TurbineServices.getInstance();
+            return  (LocalizationService)serviceManager.getService(LocalizationService.class.getName());
         }
-        catch (ServiceException se){
-            throw new NestableRuntimeException(se);
+        catch (Exception e){
+            throw new NestableRuntimeException(e);
         }
-        
-        
     }
 
     /**
@@ -272,11 +269,11 @@ public class Localization
 
     public static boolean isInitialized() {
         try {
-            AvalonComponentService acs = (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
-            acs.lookup(LocalizationService.class.getName());
+            ServiceManager serviceManager = TurbineServices.getInstance();
+            serviceManager.getService(LocalizationService.class.getName());
             return true;
         }
-        catch (ServiceException se){
+        catch (Exception e){
             return false;
         }
     }

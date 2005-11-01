@@ -26,7 +26,6 @@ import org.apache.fulcrum.intake.IntakeService;
 import org.apache.fulcrum.intake.model.Group;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
@@ -36,6 +35,7 @@ import org.apache.turbine.util.TurbineConfig;
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockHttpSession;
 import com.mockobjects.servlet.MockServletConfig;
+
 /**
  * Unit test for Localization Tool.  Verifies that localization works the same using the
  * deprecated Turbine localization service as well as the new Fulcrum Localization
@@ -104,17 +104,14 @@ public class IntakeToolTest extends BaseTestCase
         RunData runData = rds.getRunData(request, response, config);
         return runData;
     }
+    
     public void setUp() throws Exception
     {
         tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
-        tc.initialize();
-        
-		AvalonComponentService avalon =
-			(AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
-						
-		avalon.lookup(IntakeService.class.getName());
-						
+        tc.initialize();        
+        TurbineServices.getInstance().getService(IntakeService.class.getName());
     }
+    
     public void tearDown() throws Exception
     {
         if (tc != null)

@@ -39,6 +39,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.InstantiationException;
 import org.apache.turbine.services.TurbineBaseService;
 
 /**
@@ -248,5 +249,40 @@ public class TurbineAvalonComponentService
     public boolean hasService(String roleName)
     {
         return manager.hasComponent(roleName);
+    }
+
+    // -------------------------------------------------------------
+    // TurbineServiceProvider
+    // -------------------------------------------------------------
+    
+    /**
+     * @see org.apache.turbine.services.TurbineServiceProvider#exists(java.lang.String)
+     */
+    public boolean exists(String roleName)
+    {
+        return this.hasService(roleName);
+    }
+    
+    /**
+     * @see org.apache.turbine.services.TurbineServiceProvider#get(java.lang.String)
+     */
+    public Object get(String roleName) throws InstantiationException
+    {
+        try
+        {
+            return this.lookup(roleName);
+        }
+        catch (ServiceException e)
+        {
+            String msg = "Unable to get the following service : " + roleName;
+            log.error(msg);
+            throw new InstantiationException(msg);
+        }
+        catch (Throwable t)
+        {
+            String msg = "Unable to get the following service : " + roleName;
+            log.error(msg,t);
+            throw new InstantiationException(msg,t);
+        }                
     }
 }

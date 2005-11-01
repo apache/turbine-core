@@ -33,9 +33,9 @@ import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.factory.FactoryService;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.DataBackendException;
@@ -152,10 +152,10 @@ public abstract class BaseSecurityService
                 SecurityService.SECURE_PASSWORDS_ALGORITHM_KEY,
                 SecurityService.SECURE_PASSWORDS_ALGORITHM_DEFAULT);
 
-        AvalonComponentService ecm = (AvalonComponentService)TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
         CryptoService cs = null;
         try {
-            cs = (CryptoService)ecm.lookup(CryptoService.ROLE);
+            ServiceManager serviceManager = TurbineServices.getInstance();
+            cs = (CryptoService)serviceManager.getService(CryptoService.ROLE);
         }
         catch (Exception e){
             throw new RuntimeException("Could not access Crypto Service",e);

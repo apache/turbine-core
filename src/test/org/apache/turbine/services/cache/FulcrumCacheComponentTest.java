@@ -18,8 +18,8 @@ package org.apache.turbine.services.cache;
 
 import org.apache.fulcrum.cache.CachedObject;
 import org.apache.fulcrum.cache.GlobalCacheService;
+import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 /**
@@ -38,13 +38,11 @@ public class FulcrumCacheComponentTest extends BaseTestCase
     }
     public void testComponentAndFacaded() throws Exception
     {
-		AvalonComponentService acs = (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
-		GlobalCacheService cache = (GlobalCacheService)acs.lookup(GlobalCacheService.ROLE);
+        ServiceManager serviceManager = TurbineServices.getInstance();
+		GlobalCacheService cache = (GlobalCacheService)serviceManager.getService(GlobalCacheService.ROLE);
 		CachedObject inputObject = new CachedObject(new Double(10.2));
 		cache.addObject("testObj",inputObject);
-
     }
-
     
     public void setUp() throws Exception
     {
