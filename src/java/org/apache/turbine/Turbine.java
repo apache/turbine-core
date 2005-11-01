@@ -48,7 +48,7 @@ import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.pipeline.TurbinePipeline;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
+// import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.template.TurbineTemplate;
@@ -379,14 +379,6 @@ public class Turbine
 	  	log.debug("Initializing pipeline");
 	  
 	  	pipeline.initialize();
-
-        
-        //
-        // Be sure, that our essential services get run early
-        //
-        configuration.setProperty(TurbineServices.SERVICE_PREFIX +
-                                  AvalonComponentService.SERVICE_NAME + ".earlyInit",
-                                  Boolean.TRUE);
 
         getServiceManager().setConfiguration(configuration);
 
