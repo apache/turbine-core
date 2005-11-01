@@ -25,6 +25,17 @@
   <body>
     <release version="2.4-M2" date="in cvs">
       <action dev="sgoeschl" type="update">
+				Setting all members of BaseServiceBroker to private as it should be.
+      </action>
+      <action dev="sgoeschl" type="update">
+        Removed hack in Turbine.java forcing an early init of the AvalonComponentService. The
+        removal could potentially break existing code if the AvalonComponentService is not
+        configured to be early initialized since the requested service wouldn't be found.
+      </action>
+      <action dev="sgoeschl" type="update">
+        Implementing transparent service lookup using TurbineServiceProviders
+      </action>
+      <action dev="sgoeschl" type="update">
         The AvalonComponentService does not use the deprecated Component interface and ComponentException.
       </action>
       <action dev="sgoeschl" type="update">
