@@ -71,7 +71,7 @@
     make it easy to create re-usable components (such as
     ParameterParsing, Database Connection Pools, Job Scheduling,
     GlobalCaches, integration with other tools such as Torque, Velocity,
-    etc...) all under a <a href="../common/license.html">license</a>
+    etc...) all under a <a href="../../common/license.html">license</a>
     (Apache) that allows you to create useful websites for your
     customers without worrying about viral code. Turbine is not the end
     all answer, but it sure is a nice way to make your development life
@@ -85,7 +85,7 @@
     high level systems for the web designers to use, but the low level
     framework is strictly for web engineers. Turbine is not a web
     application server. It is a tool for building web applications. Your
-    <a href="http://jakarta.apache.org/tomcat/">servlet engine</a> is your
+    <a href="http://tomcat.apache.org/">servlet engine</a> is your
     application server and the application that you develop using this
     framework is your web application.
  </p>
