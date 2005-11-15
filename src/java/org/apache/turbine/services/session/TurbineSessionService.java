@@ -146,7 +146,17 @@ public class TurbineSessionService
      */
     public User getUserFromSession(HttpSession session)
     {
-        return (User) session.getAttribute(User.SESSION_KEY);
+        // Not sure of other containers, but Tomcat 5.0.28 sometimes returns
+        // invalid sessions which will result in IllegalStateException when 
+        // session.getAttribute() is invoked below.
+        try
+        {
+            return (User) session.getAttribute(User.SESSION_KEY);
+        }
+        catch (IllegalStateException e)
+        {
+            return null;
+        }
     }
 
     /**
