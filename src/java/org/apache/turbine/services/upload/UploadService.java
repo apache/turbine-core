@@ -34,6 +34,7 @@ import org.apache.turbine.util.parser.ParameterParser;
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @version $Id$
+ * @deprecated Please use org.apache.fulcrum.upload.UploadService
  */
 public interface UploadService
         extends Service

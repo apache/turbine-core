@@ -33,8 +33,8 @@ import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.rundata.DefaultTurbineRunData;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.services.rundata.TurbineRunData;
-import org.apache.turbine.util.parser.DefaultCookieParser;
-import org.apache.turbine.util.parser.DefaultParameterParser;
+import org.apache.fulcrum.parser.DefaultCookieParser;
+import org.apache.fulcrum.parser.DefaultParameterParser;
 
 /**
  * Creates instances of RunData for use within Turbine or 3rd party

@@ -49,6 +49,7 @@ import org.apache.turbine.util.uri.URI;
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
  * @version $Id$
+ * @deprecated Please use org.apache.fulcrum.parser.CookieParser 
  */
 public interface CookieParser
         extends ValueParser

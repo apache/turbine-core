@@ -57,6 +57,7 @@ import org.apache.turbine.util.uri.URI;
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
+ * @deprecated Please use org.apache.fulcrum.parser.DefaultCookieParser 
  */
 public class DefaultCookieParser
         extends BaseValueParser

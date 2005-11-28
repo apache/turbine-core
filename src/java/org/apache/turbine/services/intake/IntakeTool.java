@@ -29,11 +29,12 @@ import org.apache.fulcrum.intake.Intake;
 import org.apache.fulcrum.intake.IntakeException;
 import org.apache.fulcrum.intake.Retrievable;
 import org.apache.fulcrum.intake.model.Group;
+import org.apache.fulcrum.pool.Recyclable;
 
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.parser.ValueParser;
-import org.apache.turbine.util.pool.Recyclable;
+import org.apache.fulcrum.parser.ValueParser;
+
 
 /**
  * The main class through which Intake is accessed.  Provides easy access

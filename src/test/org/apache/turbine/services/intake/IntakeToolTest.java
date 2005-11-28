@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.fulcrum.intake.IntakeService;
 import org.apache.fulcrum.intake.model.Group;
+import org.apache.fulcrum.parser.DefaultParameterParser;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.rundata.RunDataService;
@@ -37,11 +38,9 @@ import com.mockobjects.servlet.MockHttpSession;
 import com.mockobjects.servlet.MockServletConfig;
 
 /**
- * Unit test for Localization Tool.  Verifies that localization works the same using the
- * deprecated Turbine localization service as well as the new Fulcrum Localization
- * component.
+ * Unit test for Intake Tool, wrapping the Fulcrum Intake service.
  *
- * @author <a href="maiintakeToolo:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
  */
 public class IntakeToolTest extends BaseTestCase
@@ -102,6 +101,7 @@ public class IntakeToolTest extends BaseTestCase
         HttpServletResponse response = new MockHttpServletResponse();
         ServletConfig config = new MockServletConfig();
         RunData runData = rds.getRunData(request, response, config);
+        assertEquals("Verify we are using Fulcrum parameter parser",DefaultParameterParser.class,runData.getParameters().getClass());
         return runData;
     }
     

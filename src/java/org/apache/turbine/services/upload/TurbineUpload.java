@@ -36,6 +36,7 @@ import org.apache.turbine.util.parser.ParameterParser;
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
+ * @deprecated Please use org.apache.fulcrum.upload.UploadService
  */
 public abstract class TurbineUpload
 {

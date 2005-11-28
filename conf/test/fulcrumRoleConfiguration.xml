@@ -38,6 +38,17 @@
         name="org.apache.fulcrum.pool.PoolService"
         shorthand="pool"
         default-class="org.apache.fulcrum.pool.DefaultPoolService"/> 
+
+    <role
+        name="org.apache.fulcrum.upload.UploadService"
+        shorthand="upload"
+        default-class="org.apache.fulcrum.upload.DefaultUploadService"
+    />        
+    <role
+        name="org.apache.fulcrum.parser.ParameterParser"
+        shorthand="parser"
+        default-class="org.apache.fulcrum.parser.DefaultParameterParser"
+    />
         
     <!--role name="org.apache.torque.avalon.Torque"
           shorthand="torque"
