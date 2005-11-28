@@ -61,6 +61,7 @@ import org.apache.turbine.util.parser.ParameterParser;
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
+ * @deprecated Please use org.apache.fulcrum.upload.UploadService
  */
 public class TurbineUploadService
         extends TurbineBaseService

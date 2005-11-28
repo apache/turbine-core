@@ -67,6 +67,7 @@ import org.apache.fulcrum.pool.Recyclable;
  * @author <a href="mailto:sean@informage.net">Sean Legassick</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
+ * @deprecated Please use org.apache.fulcrum.parser.DefaultParameterParser
  */
 public class DefaultParameterParser
     extends BaseValueParser

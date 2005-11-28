@@ -531,7 +531,26 @@
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
-    </dependency>        
+    </dependency>      
+     <dependency>
+      <groupId>fulcrum</groupId>
+      <artifactId>fulcrum-parser</artifactId>
+      <version>1.0.2-dev</version>
+      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-parser</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>     
+     <dependency>
+      <groupId>fulcrum</groupId>
+      <artifactId>fulcrum-upload</artifactId>
+      <version>1.0.3</version>
+      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-upload</url>
+      <properties>
+        <war.bundle.jar>true</war.bundle.jar>
+      </properties>
+    </dependency>      
+      
     <dependency>
       <id>javamail</id>
       <version>1.3.1</version>

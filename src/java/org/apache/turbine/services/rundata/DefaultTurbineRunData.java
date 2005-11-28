@@ -49,9 +49,9 @@ import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.FormMessages;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.SystemError;
-import org.apache.turbine.util.parser.CookieParser;
-import org.apache.turbine.util.parser.ParameterParser;
-import org.apache.turbine.util.pool.Recyclable;
+import org.apache.fulcrum.parser.CookieParser;
+import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.fulcrum.pool.Recyclable;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.template.TemplateInfo;
 
