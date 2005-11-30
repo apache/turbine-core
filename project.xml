@@ -593,11 +593,11 @@
       <version>2.3</version>
       <url>http://java.sun.com/products/servlet/</url>
     </dependency>
-    <dependency>
+    <!--dependency>
       <id>torque</id>
       <version>3.1.1</version>
       <url>http://db.apache.org/torque/</url>
-    </dependency>
+    </dependency-->
     <!--
     <dependency>
       <groupId>turbine</groupId>
