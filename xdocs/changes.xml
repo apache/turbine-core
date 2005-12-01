@@ -24,8 +24,12 @@
 
   <body>
     <release version="2.4-M2" date="in cvs">
+      <action dev="seade" type="fix">
+        BrowserDetector was throwing a NPE for recent versions of Opera - this
+        has been fixed.
+      </action>
       <action dev="sgoeschl" type="update">
-				Setting all members of BaseServiceBroker to private as it should be.
+        Setting all members of BaseServiceBroker to private as it should be.
       </action>
       <action dev="sgoeschl" type="update">
         Removed hack in Turbine.java forcing an early init of the AvalonComponentService. The

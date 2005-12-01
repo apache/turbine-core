@@ -232,10 +232,15 @@ public class BrowserDetector
         // Modificaton by Chris Mospaw <mospaw@polk-county.com>
         if (userAgentString.indexOf(OPERA) != -1)
         {
-            //Ex: Mozilla/4.0 (Windows NT 4.0;US) Opera 3.61  [en]
+            // Ex: Mozilla/4.0 (Windows NT 4.0;US) Opera 3.61  [en]
+            // Ex: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; en) Opera 8.02
             versionStartIndex = (userAgentString.indexOf(OPERA) 
                     + OPERA.length() + 1);
             versionEndIndex = userAgentString.indexOf(" ", versionStartIndex);
+            if (versionEndIndex == -1)
+            {
+                versionEndIndex = userAgentString.length();
+            }
 
             browserName = OPERA;
             try
