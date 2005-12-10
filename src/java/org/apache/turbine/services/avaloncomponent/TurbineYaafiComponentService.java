@@ -21,11 +21,8 @@ import java.io.IOException;
 
 import org.apache.avalon.framework.activity.Disposable;
 import org.apache.avalon.framework.activity.Initializable;
-import org.apache.avalon.framework.logger.ConsoleLogger;
-import org.apache.avalon.framework.logger.Jdk14Logger;
-import org.apache.avalon.framework.logger.Log4JLogger;
+import org.apache.avalon.framework.logger.CommonsLogger;
 import org.apache.avalon.framework.logger.Logger;
-import org.apache.avalon.framework.logger.NullLogger;
 import org.apache.avalon.framework.service.ServiceException;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
@@ -265,33 +262,7 @@ public class TurbineYaafiComponentService
      */
     protected Logger createAvalonLogger()
     {
-        Logger result = null;
-        
-        if( log instanceof org.apache.commons.logging.impl.Log4JLogger )
-        {
-            log.debug("Using an Avalon Log4JLogger");
-            result = new Log4JLogger( 
-                ((org.apache.commons.logging.impl.Log4JLogger) log).getLogger()
-                );
-        }
-        else if( log instanceof org.apache.commons.logging.impl.Jdk14Logger )
-        {
-            log.debug("Using an Avalon Jdk14Logger");
-            result = new Jdk14Logger( 
-                ((org.apache.commons.logging.impl.Jdk14Logger) log).getLogger()
-                );
-        }
-        else if( log instanceof org.apache.commons.logging.impl.NoOpLog )
-        {
-            log.debug("Using an Avalon NullLogger");
-            result = new NullLogger();
-        }
-        else
-        {
-            log.debug("Using an Avalon ConsoleLogger");
-            result = new ConsoleLogger();
-        }
-        
+        Logger result = new CommonsLogger(log, AVALON_LOG_CATEGORY);
         return result;
     }
     
