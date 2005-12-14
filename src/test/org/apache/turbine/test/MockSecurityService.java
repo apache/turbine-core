@@ -21,8 +21,6 @@ package org.apache.turbine.test;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
@@ -45,9 +43,7 @@ import org.apache.turbine.util.security.UnknownEntityException;
  */
 public class MockSecurityService extends BaseSecurityService
 {
-    /** Logging */
-    private static Log log = LogFactory.getLog(MockSecurityService.class);
-
+   
     /**
      * The key within services's properties for user implementation
      * classname (user.class)  - Leandro
