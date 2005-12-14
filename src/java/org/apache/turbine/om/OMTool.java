@@ -21,8 +21,8 @@ package org.apache.turbine.om;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.fulcrum.pool.Recyclable;
 import org.apache.turbine.services.pull.ApplicationTool;
-import org.apache.turbine.util.pool.Recyclable;
 
 /**
  * A Pull tool to make om objects available to a template
