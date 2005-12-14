@@ -23,8 +23,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.localization.LocalizationService;
 import org.apache.turbine.services.InstantiationException;
-import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
 
@@ -56,12 +56,12 @@ public class LocalizationTool implements ApplicationTool
     {
         if (localizationService == null)
         {
-            ServiceManager serviceManager = TurbineServices.getInstance();
+        	   AvalonComponentService acs = (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
+        	 
             try 
             {
-                localizationService = (LocalizationService)serviceManager.getService(
-                    LocalizationService.ROLE
-                    );
+            	  localizationService = (LocalizationService)acs.lookup(LocalizationService.ROLE);
+
             }
             catch (Exception e) 
             {
