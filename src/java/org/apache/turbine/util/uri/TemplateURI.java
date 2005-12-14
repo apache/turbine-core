@@ -21,10 +21,10 @@ package org.apache.turbine.util.uri;
 import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.fulcrum.parser.ParameterParser;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
-import org.apache.turbine.util.parser.ParameterParser;
 
 /**
  * This class allows you to keep all the information needed for a single
