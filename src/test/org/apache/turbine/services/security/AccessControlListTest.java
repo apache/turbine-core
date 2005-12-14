@@ -26,17 +26,18 @@ import org.apache.commons.configuration.Configuration;
 
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.factory.FactoryService;
-import org.apache.turbine.services.factory.TurbineFactoryService;
 import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.MockSecurityService;
+import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.TurbineAccessControlList;
 
 public class AccessControlListTest
     extends BaseTestCase
 {
+	
+	private static TurbineConfig tc = null;
     private static final String PREFIX = "services." +
         SecurityService.SERVICE_NAME + '.';
 
@@ -45,6 +46,19 @@ public class AccessControlListTest
     {
         super(name);
     }
+    
+    public void setUp() throws Exception
+    {
+        tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
+        tc.initialize();
+    }
+    public void tearDown() throws Exception
+    {
+        if (tc != null)
+        {
+            tc.dispose();
+        }
+    }    
 
     public void testSelection() throws Exception
     {
@@ -64,8 +78,8 @@ public class AccessControlListTest
 
           /* Ugh */
 
-          cfg.setProperty("services." + FactoryService.SERVICE_NAME + ".classname",
-                          TurbineFactoryService.class.getName());
+ //         cfg.setProperty("services." + FactoryService.SERVICE_NAME + ".classname",
+   //                       TurbineFactoryService.class.getName());
 
           serviceManager.setConfiguration(cfg);
 
