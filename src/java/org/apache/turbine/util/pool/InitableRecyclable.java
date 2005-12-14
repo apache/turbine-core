@@ -18,6 +18,7 @@ package org.apache.turbine.util.pool;
  */
 
 
+import org.apache.fulcrum.pool.Recyclable;
 import org.apache.turbine.util.TurbineException;
 
 /**
