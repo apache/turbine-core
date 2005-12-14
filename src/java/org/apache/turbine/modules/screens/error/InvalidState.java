@@ -22,11 +22,11 @@ import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.ElementContainer;
 
 import org.apache.ecs.html.A;
+import org.apache.fulcrum.parser.ParameterParser;
 
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.uri.TurbineURI;
 
 /**
