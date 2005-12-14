@@ -1,5 +1,7 @@
 package org.apache.turbine.util.pool;
 
+import org.apache.fulcrum.pool.Recyclable;
+
 
 /*
  * Copyright 2001-2004 The Apache Software Foundation.
