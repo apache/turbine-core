@@ -29,10 +29,10 @@ import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.fulcrum.parser.ParameterParser;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
-import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.parser.ParserUtils;
 
 /**
