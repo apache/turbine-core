@@ -28,6 +28,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.crypto.CryptoAlgorithm;
 import org.apache.fulcrum.crypto.CryptoService;
+import org.apache.fulcrum.factory.FactoryService;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
@@ -36,7 +37,7 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.factory.FactoryService;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
@@ -292,8 +293,9 @@ public abstract class BaseSecurityService
 
         try
         {
-            aclFactoryService = (FactoryService) TurbineServices.getInstance().
-                    getService(FactoryService.SERVICE_NAME);
+     	   AvalonComponentService acs = (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
+
+            aclFactoryService = (FactoryService) acs.lookup(FactoryService.ROLE);
         }
         catch (Exception e)
         {
