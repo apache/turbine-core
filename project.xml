@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,15 +37,15 @@
   <shortDescription>A servlet based framework.</shortDescription>
   <description>Turbine is a servlet based framework that allows experienced Java developers to quickly build secure web applications. Parts of Turbine can also be used independently of the web portion of Turbine as well. In other words, we strive to make portions of Turbine easily available for use in other applications.</description>
   <url>http://jakarta.apache.org/turbine/turbine/development/turbine-2.4/</url>
-  <issueTrackingUrl>http://issues.apache.org/scarab/issues</issueTrackingUrl>
-  <siteAddress>jakarta.apache.org</siteAddress>
+  <issueTrackingUrl>http://issues.apache.org/jira/browse/TRB</issueTrackingUrl>
+  <siteAddress>people.apache.org</siteAddress>
   <siteDirectory>/www/jakarta.apache.org/turbine/turbine/development/turbine-2.4/</siteDirectory>
   <distributionDirectory>/www/www.apache.org/dist/jakarta/turbine</distributionDirectory>
 
   <repository>
-    <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2</connection>
-    <developerConnection>scm:cvs:ext:${maven.username}@cvs.apache.org:/home/cvs:jakarta-turbine-2</developerConnection>
-    <url>http://cvs.apache.org/viewcvs/jakarta-turbine-2/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/turbine/core/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/jakarta/turbine/trunk/</developerConnection>
+    <url>http://svn.apache.org/viewvc/jakarta/turbine/core/trunk/</url>
   </repository>
 
 <versions>
@@ -76,13 +76,13 @@
       <name>Turbine User List</name>
       <subscribe>turbine-user-subscribe@jakarta.apache.org</subscribe>
       <unsubscribe>turbine-user-unsubscribe@jakarta.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/eyebrowse/SummarizeList?listName=turbine-user@jakarta.apache.org</archive>
+      <archive>http://mail-archives.apache.org/mod_mbox/jakarta-turbine-user/</archive>
     </mailingList>
     <mailingList>
       <name>Turbine Developer List</name>
       <subscribe>turbine-dev-subscribe@jakarta.apache.org</subscribe>
       <unsubscribe>turbine-dev-unsubscribe@jakarta.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/eyebrowse/SummarizeList?listName=turbine-dev@jakarta.apache.org</archive>
+      <archive>http://mail-archives.apache.org/mod_mbox/jakarta-turbine-dev/</archive>
     </mailingList>
   </mailingLists>
 
@@ -556,7 +556,7 @@
     <dependency>
       <groupId>javax.mail</groupId>
       <artifactId>mail</artifactId>
-      <version>1.3.1</version>
+      <version>1.3.3</version>
       <url>http://java.sun.com/products/javamail/</url>
       <type>jar</type>
     </dependency>

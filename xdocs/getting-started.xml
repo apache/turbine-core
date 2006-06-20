@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2006 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,17 +35,9 @@ is available.
 </p>
 
 <p>
-The first thing that you should do is download and install the <a
-href="http://jakarta.apache.org/turbine/tdk/">Turbine Developer Kit</a>
-(TDK). The TDK has everything that you need to get started with Turbine,
-including the <a href="http://jakarta.apache.org/tomcat/">Tomcat Servlet
-Engine</a> which is preconfigured to run Turbine. The TDK also has
-sample applications as well as scripts that allow you to quickly build
-your own application. As time progresses, we will be including more and
-more helpful information in the TDK.  Please see the
-<a href="http://jakarta.apache.org/turbine/tdk/tdk-howto.html">Turbine
-Development Kit Howto</a> for more information.
-</p>
+Currently, the best way to get started with Turbine is to use the
+<a href="/turbine/meta/">Maven Environment for Turbine Applications (M.E.T.A.)</a>.
+ </p>
 </section>
 
 <section name="Code Organization">

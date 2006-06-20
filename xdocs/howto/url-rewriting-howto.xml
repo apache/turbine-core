@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2006 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,8 +66,7 @@ application a short name like 'po' and placed it correctly in the
 webapps directory, then you won't need to do anything special. Tomcat
 will find the directory, and add a context. If you have a long
 application name like 'mywonderfulapp', add the following lines to
-Tomcat's server.xml file (in the TDK you'll find this here:
-<code>tdk/conf/server.xml</code>):
+Tomcat's server.xml file:
 </p>
 
 <source><![CDATA[

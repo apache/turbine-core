@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2006 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,11 @@
  <body>
 
  <section name="3 Steps to get the Catalina included with TDK to work with JBoss2.2.1">
+ <p>
+ Comment 2006-06-20: This is so unbelievably old (we no longer produce the TDK
+ and JBoss is now at version 4.0.x).
+ </p>
+
  <p>
  By: <a href="mailto:john NOSPAM murphyfutures.com">John Menke</a><br/>
  </p>

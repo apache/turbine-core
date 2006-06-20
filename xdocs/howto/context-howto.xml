@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2006 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,6 +64,7 @@ exposed in RunData include;
     setMessage(String message) <br />
     setRedirectUri(String ruri) <br />
     setTitle(String title) <br />
+    setLayoutTemplate(String title) <br />
 </ul>
 </p>
 
@@ -103,34 +104,6 @@ Template is processed. Through this a User can potentially choose how they would
 like their webpage to appear by choosing one of many differant Layouts or
 choices you, the webdesigner provide.
 </p>
-
-<p>
-Currently the setLayoutTemplate(), getLayoutTemplate(), setScreenTemplate() and
-getScreenTemplate() methods arent available in TDKa9. Until the next build of
-the TDK contains RunData with those methods, the setLayoutTemplate method can
-still be accessed through the TemplateInfo Object that RunData exposes.
-For example;
-</p>
-
-<source test=""><![CDATA[
-    $data.getTemplateInfo().setLayoutTemplate("/PrintableLayout.vm")
-
-    or
-
-    #set $template = $data.getTemplateInfo()<br />
-    $template.setLayoutTemplate("/PrintableLayout.vm")
-
-    or
-
-    #set $template = $data.getTemplateInfo()<br />
-    $!template.setLayoutTemplate("/PrintableLayout.vm")
-
-]]></source>
-
-<p>
-In the third example, the ! stops the echo of the Velocty Directive echoing to
-screen.
-</p>
 </section>
 
 <section name="Using the TemplateLink Object">
@@ -147,8 +120,8 @@ via;
 ]]></source>
 
 <p>
-which when added to a Velocity template in the TDK that is running as localhost,
-would return;
+which when added to a Velocity template would (depending on the servlet
+configuration) return;
 </p>
 
 <p>
@@ -343,7 +316,7 @@ public class Image extends DynamicURI
         "://" +
         getServerName()  + //www.foo.com
         ":" +
-        getServerPort() + //port webserver running on (8080 for TDK)
+        getServerPort() + //port webserver running on
 
         //the context for tomcat adds a / so no need to add another
 

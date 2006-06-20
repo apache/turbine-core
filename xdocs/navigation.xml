@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2006 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,8 +37,8 @@
       <item name="Changes"               href="/changes-report.html"/>
     </menu>
     <menu name="Extensions">
-      <item name="Maven Plugin"            href="/maven-turbine-plugin/index.html"/>
-      <item name="Torque Impl of Services" href="/turbine-torque-impl/index.html"/>  
+      <item name="Maven Plugin - M.E.T.A."            href="/turbine/meta/"/>
+      <!-- item name="Torque Impl of Services" href="/turbine-torque-impl/index.html"/ -->
       <item name="Related Projects" href="/related-projects.html"/>    
     </menu>
     <menu name="Documentation">
@@ -80,7 +80,6 @@
         <item name="Extend User Howto"   href="/howto/extend-user-howto.html"/>
         <item name="Hibernate OM Howto"  href="/howto/hibernate-howto.html"/>
         <item name="Intake Howto"        href="/howto/intake-howto.html"/>
-        <item name="JBoss Howto"         href="/howto/jboss-howto.html"/>
         <item name="JSP Howto"           href="/howto/jsp-howto.html"/>
         <item name="Migrating 2.1 to 2.2" href="/howto/migrate-from-2_1-howto.html"/>
         <item name="Migrating 2.2 to 2.3" href="/howto/migrate-from-2_2-howto.html"/>
@@ -92,8 +91,8 @@
         <item name="Velocity Context Howto" href="/howto/context-howto.html"/>
         <item name="Velocity Site Howto" href="/howto/velocity-site-howto.html"/>
         <item name="VelocityOnlyLayout Howto" href="/howto/velocityonlylayout-howto.html"/>
-        <item name="Wiki Howtos" href="http://wiki.apache.org/jakarta-turbine/Turbine2"/>
       </item>
+      <item name="Wiki"          href="http://wiki.apache.org/jakarta-turbine/FrontPage"/>
       <item name="JavaDocs"		 href="/apidocs/index.html"/>
     </menu>
 

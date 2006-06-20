@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2006 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,8 +48,7 @@ for another explanation of how the Pull Service works with Tools.
 </p>
 
 <p>
-The push model is found in the Flux/NewApp application that is distributed
-with the TDK 2.1.  It is based on a one-to-one mapping of Java Screen
+The push model is based on a one-to-one mapping of Java Screen
 classes and Velocity template files.  The Screen class puts key/value pairs
 into the Context.  The <a href="context-howto.html">Context Howto</a>
 explains this approach.

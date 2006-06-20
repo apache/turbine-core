@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!-- 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2006 The Apache Software Foundation.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@
     systems</a>, Yahoo style link conservatories and <a
     href="http://scarab.tigris.org/">project / bug / issue</a> tracking systems as
     well as cool XML integration applications like <a
-    href="http://jakarta.apache.org/jetspeed/">Jetspeed</a>.
+    href="http://portals.apache.org/jetspeed-1/">Jetspeed</a>.
  </p>
 
  <p>
@@ -135,19 +135,11 @@
 <section name="Where do I get releases?">
 
   <p>
-    The Turbine Development Kit (TDK) is a package that bundles a copy
-    of Turbine, Tomcat, jar files, documentation and other utilities in
-    order to help you get started with Turbine as quickly as possible.
-    Everything is pre-configured and ready to go. To get started, simply
-    follow the instructions in the TDK download.
-  </p>
-
-  <p>
-    You can find released versions of
-    Turbine,
-    the <a href="../tdk/index.html">TDK</a>,
-    and <a href="http://db.apache.org/torque/">Torque</a> from
-    <a href="http://db.apache.org/torque/status.html">here</a>.
+    Currently, the best way to get started with Turbine is to use the
+    <a href="/turbine/meta/">Maven Environment for Turbine Applications (M.E.T.A.)</a>.
+    You may also need <a href="http://db.apache.org/torque/">Torque</a> which
+    you can download from
+    <a href="http://db.apache.org/torque/download.html">here</a>.
   </p>
 
 </section>
