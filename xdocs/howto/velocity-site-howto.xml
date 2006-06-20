@@ -275,14 +275,25 @@ like this to the HTML:
 ]]></source>
 
 <p>
-As you can see above, a "," rather than a "/" is used to separate elements of
-the template path.  By changing the default pull tool for $link to
-<code>TemplateLinkWithSlash</code> you could use "/" as the separator however
-this is not recommended as it is less efficient (internally they are converted
-to "," so as to avoid problems parsing pathinfo).
-The above will create a fully formed URI with the session information
-encoded into the link if the client browser has cookies turned off.
+As you can see above, I used a "," instead of a "/".  The above will create
+a fully formed URI with the session information encoded into the link if the \
+client browser has cookies turned off.
 </p>
+
+<p>
+    If you really want to use a slash instead of the comma when using the $link
+    tool, you will need to make a change to your TurbineResources.properties
+    file.  You need to change the value of <code>tool.request.link</code> from
+    <code>org.apache.turbine.util.template.TemplateLink</code> to
+    <code>org.apache.turbine.util.template.TemplateLinkWithSlash</code>.
+</p>
+<p>
+    You will incur a slight performance hit since this class will replace the
+    slash for with a comma for you.  The URL that is build as a result will be
+    identical.
+</p>
+
+
 
 </section>
 
