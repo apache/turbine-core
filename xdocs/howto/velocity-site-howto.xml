@@ -316,10 +316,9 @@ lookup code as described below:
 </p>
 
 <source><![CDATA[
-#if ( $data.getMessage() )
-{
-    $data.getMessage()
-}
+#if($data.Message)
+    $data.Message
+#end
 
 <table width="100%">
 
