@@ -275,9 +275,13 @@ like this to the HTML:
 ]]></source>
 
 <p>
-As you can see above, I used a "," instead of a "/". You can use either
-one here. The above will create a fully formed URI with the session information
-encoded into the link if the clients brower has cookies turned off.
+As you can see above, a "," rather than a "/" is used to separate elements of
+the template path.  By changing the default pull tool for $link to
+<code>TemplateLinkWithSlash</code> you could use "/" as the separator however
+this is not recommended as it is less efficient (internally they are converted
+to "," so as to avoid problems parsing pathinfo).
+The above will create a fully formed URI with the session information
+encoded into the link if the client browser has cookies turned off.
 </p>
 
 </section>
