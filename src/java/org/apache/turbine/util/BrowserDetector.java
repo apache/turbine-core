@@ -1,7 +1,7 @@
 package org.apache.turbine.util;
 
 /*
- * Copyright 2001-2005 The Apache Software Foundation.
+ * Copyright 2001-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -233,9 +233,14 @@ public class BrowserDetector
         if (userAgentString.indexOf(OPERA) != -1)
         {
             //Ex: Mozilla/4.0 (Windows NT 4.0;US) Opera 3.61  [en]
+            // Ex: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; en) Opera 8.02
             versionStartIndex = (userAgentString.indexOf(OPERA)
                     + OPERA.length() + 1);
             versionEndIndex = userAgentString.indexOf(" ", versionStartIndex);
+            if (versionEndIndex == -1)
+            {
+                versionEndIndex = userAgentString.length();
+            }
 
             browserName = OPERA;
             try
@@ -358,7 +363,7 @@ public class BrowserDetector
      * @param s A String.
      * @return The String converted to float.
      */
-    private static float toFloat(String s)
+    private static final float toFloat(String s)
     {
         return Float.valueOf(s).floatValue();
     }
