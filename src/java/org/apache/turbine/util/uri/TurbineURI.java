@@ -1,8 +1,7 @@
 package org.apache.turbine.util.uri;
 
-
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Copyright 2001-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -16,7 +15,6 @@ package org.apache.turbine.util.uri;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 import java.net.URLEncoder;
 
@@ -770,9 +768,11 @@ public class TurbineURI
 
                 if(StringUtils.isEmpty(val))
                 {
-                    // Fixme?
-                    log.debug("Found a null value for " + key);
-                    output.append("null");
+                    if (val == null && log.isDebugEnabled())
+                    {
+                        log.debug("Found a null value for " + key);
+                    }
+                    output.append(val);
                 }
                 else
                 {

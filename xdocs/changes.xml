@@ -23,7 +23,10 @@
   </properties>
 
   <body>
-    <release version="2.4-M2" date="in cvs">
+    <release version="2.4-M2" date="in Subversion">
+      <action type="fix" dev="seade" issue="TRB-16" due-to="J&uuml;rgen Hoffmann">
+        TurbineURI was mishandling the empty String.
+      </action>
       <action dev="seade" type="update">
         Updated jar dependency: javamail to 1.3.3
       </action>
