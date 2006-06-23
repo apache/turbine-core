@@ -25,6 +25,8 @@ import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.ServerData;
+import org.apache.turbine.util.parser.DefaultParameterParser;
+import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.parser.ParserUtils;
 
 /**
@@ -139,6 +141,31 @@ public class TurbineURITest extends BaseTestCase
         turi.addPathInfo("test", null);
         assertEquals("/context/servlet/turbine/test/null", turi.getRelativeLink());
         turi.removePathInfo("test");
+        assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+    }
+
+    public void testAddEmptyParameterParser()
+    {
+        ParameterParser pp = new DefaultParameterParser();
+        turi.add(1, pp); // 1 = query data
+        assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+    }
+    
+    public void testAddParameterParser()
+    {
+        ParameterParser pp = new DefaultParameterParser();
+        pp.add("test", "");
+        turi.add(1, pp); // 1 = query data
+        assertEquals("/context/servlet/turbine?test=", turi.getRelativeLink());
+        turi.removeQueryData("test");
+        assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+        
+        pp = new DefaultParameterParser();
+        pp.add("test", (String) null);
+        turi.add(1, pp); // 1 = query data
+        // Should make the following work so as to be consistent with directly added values. 
+        //assertEquals("/context/servlet/turbine?test=null", turi.getRelativeLink());
+        turi.removeQueryData("test");
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
     }
     
