@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!--
- Copyright 2001-2005 The Apache Software Foundation.
+ Copyright 2001-2006 The Apache Software Foundation.
 
  Licensed under the Apache License, Version 2.0 (the "License")
  you may not use this file except in compliance with the License.
@@ -25,6 +25,10 @@
 
 <body>
   <release version="2.3.3-dev" date="in Subversion">
+    <action type="fix" dev="eade" issue="TRB-14" due-to="J&uuml;rgen Hoffmann">
+      Intake was not loading the correct Default Validators when the rules for
+      a field are empty.
+    </action>
   </release>
   <release version="2.3.2" date="2005-10-03">
     <action type="fix" dev="seade">
