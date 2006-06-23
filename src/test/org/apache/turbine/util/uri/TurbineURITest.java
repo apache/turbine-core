@@ -1,7 +1,7 @@
 package org.apache.turbine.util.uri;
 
 /*
- * Copyright 2001-2005 The Apache Software Foundation.
+ * Copyright 2001-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import org.apache.turbine.util.parser.ParserUtils;
  * Testing of the TurbineURI class
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  */
 public class TurbineURITest extends BaseTestCase
@@ -108,4 +109,37 @@ public class TurbineURITest extends BaseTestCase
         assertEquals("TurbineURI must not have a pathInfo", false, turi.hasPathInfo());
     }
 
+    public void testEmptyAndNullQueryData()
+    {
+        // Check empty String
+        assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+        turi.addQueryData("test", "");
+        assertEquals("/context/servlet/turbine?test=", turi.getRelativeLink());
+        turi.removeQueryData("test");
+        
+        // Check null
+        assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+        turi.addQueryData("test", null);
+        assertEquals("/context/servlet/turbine?test=null", turi.getRelativeLink());
+        turi.removeQueryData("test");
+        assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+    }
+
+    public void testEmptyAndNullPathInfo()
+    {
+        // Check empty String
+        assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+        turi.addPathInfo("test", "");
+        // Kind of susspect result - might result in "//" in the URL.
+        assertEquals("/context/servlet/turbine/test/", turi.getRelativeLink());
+        turi.removePathInfo("test");
+        
+        // Check null
+        assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+        turi.addPathInfo("test", null);
+        assertEquals("/context/servlet/turbine/test/null", turi.getRelativeLink());
+        turi.removePathInfo("test");
+        assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+    }
+    
 }
