@@ -340,7 +340,7 @@ public abstract class Field
             {
                 log.debug(name + ": Found our Key in the request, setting Value");
             }
-            if (StringUtils.isNotEmpty(pp.getString(getKey())))
+            if (pp.getString(getKey()) != null)
             {
                 setFlag = true;
             }
@@ -885,7 +885,25 @@ public abstract class Field
 
         try
         {
-            setter.invoke(obj, valArray);
+            /*
+             * In the case we map a Group to an Object using mapToObject, and we
+             * want to add an additional Field which should not be mapped, and
+             * we leave the mapToProperty empty, we will get a NPE here. So we
+             * have to double check, if we really have a setter set.
+             */
+            if(setter != null)
+            {
+                setter.invoke(obj, valArray);
+            }
+            else if (isDebugEnabled)
+            {
+                log.debug(name + ": has a null setter for the mapToProperty"
+                        + " Attribute, although all Fields should be mapped"
+                        + " to " + mapToObject + ". If this is unwanted, You"
+                        + " should doublecheck the mapToProperty Attribute, and"
+                        + " consult the logs. The Turbine Intake Serice will"
+                        + " have logged a detailed Message with the error.");
+            }                
         }
         catch (IllegalAccessException e)
         {
