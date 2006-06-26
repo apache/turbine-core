@@ -18,6 +18,10 @@ package org.apache.turbine.util.uri;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
+//import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+//import org.apache.commons.fileupload.FileItem;
+import org.apache.fulcrum.parser.DefaultParameterParser;
+import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
@@ -129,4 +133,43 @@ public class TurbineURITest extends BaseTestCase
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
     }
 
+    public void testAddEmptyParameterParser()
+    {
+        ParameterParser pp = new DefaultParameterParser();
+        turi.add(1, pp); // 1 = query data
+        assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+}
+    public void testAddParameterParser()
+    {
+        ParameterParser pp = new DefaultParameterParser();
+        pp.add("test", "");
+        turi.add(1, pp); // 1 = query data
+        assertEquals("/context/servlet/turbine?test=", turi.getRelativeLink());
+        turi.removeQueryData("test");
+        assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+        
+        pp = new DefaultParameterParser();
+        pp.add("test", (String) null);
+        turi.add(1, pp); // 1 = query data
+        // Should make the following work so as to be consistent with directly added values. 
+        //assertEquals("/context/servlet/turbine?test=null", turi.getRelativeLink());
+        turi.removeQueryData("test");
+        assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+
+        // TRB-8
+        //
+        // This is commented out for now as it results in a ClassCastException.
+        // The 2_3 branch parser changes need to be merged into the fulcrum code. 
+        //
+        //pp = new DefaultParameterParser();
+        //DiskFileItemFactory factory = new DiskFileItemFactory(10240, null);
+        //FileItem test = factory.createItem("upload-field", "application/octet-stream", false, null);
+        //pp.append("upload-field", test);
+        //// The following causes a ClassCastException with or without the TRB-8 fix.
+        //turi.add(1, pp); // 1 = query data
+        //assertEquals("/context/servlet/turbine?upload-field=", turi.getRelativeLink());
+        //turi.removeQueryData("upload-field");
+        //assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+    }
+    
 }

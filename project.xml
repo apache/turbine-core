@@ -442,6 +442,11 @@
       <url>http://jakarta.apache.org/commons/fileupload/</url>
     </dependency>
     <dependency>
+      <id>commons-io</id>
+      <version>1.1</version>
+      <url>http://jakarta.apache.org/commons/io/</url>
+    </dependency>
+    <dependency>
       <id>commons-lang</id>
       <version>2.1</version>
       <url>http://jakarta.apache.org/commons/lang/</url>
