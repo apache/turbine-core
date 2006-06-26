@@ -842,9 +842,16 @@ public class TurbineURI
                     !key.equalsIgnoreCase(CGI_SCREEN_PARAM))
             {
                 String[] values = pp.getStrings(key);
-                for (int i = 0; i < values.length; i++)
+                if(values != null)
                 {
-                    add(type, key, values[i]);
+                    for (int i = 0; i < values.length; i++)
+                    {
+                        add(type, key, values[i]);
+                    }
+                }
+                else
+                {
+                    add(type, key, "");
                 }
             }
         }

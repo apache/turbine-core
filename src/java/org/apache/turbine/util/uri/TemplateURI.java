@@ -1,7 +1,7 @@
 package org.apache.turbine.util.uri;
 
 /*
- * Copyright 2001-2005 The Apache Software Foundation.
+ * Copyright 2001-2006 The Apache Software Foundation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -265,15 +265,22 @@ public class TemplateURI
         for(Iterator it = pp.keySet().iterator(); it.hasNext();)
         {
             String key = (String) it.next();
-
+            
             if (!key.equalsIgnoreCase(CGI_ACTION_PARAM) &&
                     !key.equalsIgnoreCase(CGI_SCREEN_PARAM) &&
                     !key.equalsIgnoreCase(CGI_TEMPLATE_PARAM))
             {
                 String[] values = pp.getStrings(key);
-                for (int i = 0; i < values.length; i++)
+                if(values != null)
                 {
-                    add(type, key, values[i]);
+                    for (int i = 0; i < values.length; i++)
+                    {
+                        add(type, key, values[i]);
+                    }
+                }
+                else 
+                {
+                    add(type, key, "");
                 }
             }
         }

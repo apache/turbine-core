@@ -20,6 +20,8 @@ import junit.framework.TestSuite;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.fileupload.DefaultFileItemFactory;
+import org.apache.commons.fileupload.FileItem;
 
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
@@ -150,7 +152,7 @@ public class TurbineURITest extends BaseTestCase
         turi.add(1, pp); // 1 = query data
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
     }
-    
+
     public void testAddParameterParser()
     {
         ParameterParser pp = new DefaultParameterParser();
@@ -166,6 +168,16 @@ public class TurbineURITest extends BaseTestCase
         // Should make the following work so as to be consistent with directly added values. 
         //assertEquals("/context/servlet/turbine?test=null", turi.getRelativeLink());
         turi.removeQueryData("test");
+        assertEquals("/context/servlet/turbine", turi.getRelativeLink());
+
+        // TRB-8
+        pp = new DefaultParameterParser();
+        DefaultFileItemFactory factory = new DefaultFileItemFactory(10240, null);
+        FileItem test = factory.createItem("upload-field", "application/octet-stream", false, null);
+        pp.add("upload-field", test);
+        turi.add(1, pp); // 1 = query data
+        assertEquals("/context/servlet/turbine?upload-field=", turi.getRelativeLink());
+        turi.removeQueryData("upload-field");
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
     }
     
