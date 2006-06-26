@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!--
- Copyright 2001-2005 The Apache Software Foundation.
+ Copyright 2001-2006 The Apache Software Foundation.
 
  Licensed under the Apache License, Version 2.0 (the "License")
  you may not use this file except in compliance with the License.
@@ -106,7 +106,7 @@ contributed</a> to Turbine over the last 2+ years.</strong>
     <li>
         Integration with JavaMail to make sending email painless</li>
     <li>
-        Integration with JavaMail and Velocity/WebMacro to allow you to send
+        Integration with JavaMail and Velocity to allow you to send
         processed Velocity templates as email!</li>
     <li>
         Built using Maven</li>
