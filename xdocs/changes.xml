@@ -28,7 +28,7 @@
         A FileItem in a ParameterParser added to TurbineURI or TemplateURI was
         resulting in a NPE.
       </action>
-      <action type="fix" dev="seade" issue="TRB-16" due-to="J&uuml;rgen Hoffmann">
+      <action type="fix" dev="seade" issue="TRB-16" due-to="J&#252;rgen Hoffmann">
         TurbineURI was mishandling the empty String.
       </action>
       <action dev="seade" type="update">
