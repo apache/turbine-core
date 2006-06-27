@@ -37,7 +37,7 @@
       <item name="Changes"               href="/changes-report.html"/>
     </menu>
     <menu name="Extensions">
-      <item name="Maven Plugin - M.E.T.A."            href="/turbine/meta/"/>
+      <item name="Maven Plugin - M.E.T.A." href="http://jakarta.apache.org/turbine/meta/"/>
       <!-- item name="Torque Impl of Services" href="/turbine-torque-impl/index.html"/ -->
       <item name="Related Projects" href="/related-projects.html"/>    
     </menu>
