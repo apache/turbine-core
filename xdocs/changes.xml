@@ -25,11 +25,11 @@
 
 <body>
   <release version="2.3.3-dev" date="in Subversion">
-    <action type="update" dev="seade" issue="TRB-9" due-to="J&uuml;rgen Hoffmann">
+    <action type="update" dev="seade" issue="TRB-9" due-to="J&#252;rgen Hoffmann">
       Intake now handles the case where the mapToObject does not map to all
       fields in the group.
     </action>
-    <action type="fix" dev="seade" issue="TRB-9" due-to="J&uuml;rgen Hoffmann">
+    <action type="fix" dev="seade" issue="TRB-9" due-to="J&#252;rgen Hoffmann">
       Intake was not handling empty values correctly.
     </action>
     <action type="fix" dev="seade" issue="TRB-8" due-to="Gunther Olesch">
