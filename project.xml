@@ -186,6 +186,16 @@
       <email>siegfried.goeschl@it20one.at</email>
       <organization>IT20one GmbH</organization>
     </developer>
+    <developer>
+      <name>J&#252;rgen Hoffmann</name>
+      <id>hoffmann</id>
+      <email>jh@byteaction.de</email>
+      <organization>ByteAction GmbH</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+      <timezone>2</timezone>
+    </developer>
   </developers>
 
   <contributors>
