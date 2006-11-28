@@ -42,6 +42,7 @@ import org.apache.turbine.util.parser.ValueParser;
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="jh@byteaction.de">J&#252;rgen Hoffmann</a>
  * @version $Id$
  */
 public class Group
@@ -317,7 +318,7 @@ public class Group
         else
         {
             throw new IntakeException("Intake Field name: " + fieldName +
-                    " not found!");
+                    " not found in Group " + name);
         }
     }
 
