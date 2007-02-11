@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Vector;
 
 import javax.servlet.ServletConfig;
+import javax.xml.parsers.SAXParser;
 
 import org.apache.commons.configuration.Configuration;
 
@@ -43,7 +44,6 @@ import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.xmlrpc.util.FileTransfer;
 import org.apache.turbine.util.TurbineException;
 
-import org.apache.xerces.parsers.SAXParser;
 
 import org.apache.xmlrpc.WebServer;
 import org.apache.xmlrpc.XmlRpc;
