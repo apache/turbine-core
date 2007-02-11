@@ -35,7 +35,12 @@
   <gumpRepositoryId>jakarta</gumpRepositoryId>
 
   <shortDescription>A servlet based framework.</shortDescription>
-  <description>Turbine is a servlet based framework that allows experienced Java developers to quickly build secure web applications. Parts of Turbine can also be used independently of the web portion of Turbine as well. In other words, we strive to make portions of Turbine easily available for use in other applications.</description>
+  <description>
+      Turbine is a servlet based framework that allows experienced Java developers
+      to quickly build secure web applications. Parts of Turbine can also be used independently 
+      of the web portion of Turbine as well. In other words, we strive to make portions of 
+      Turbine easily available for use in other applications.
+  </description>
   <url>http://jakarta.apache.org/turbine/turbine/development/turbine-2.4/</url>
   <issueTrackingUrl>http://issues.apache.org/jira/browse/TRB</issueTrackingUrl>
   <siteAddress>people.apache.org</siteAddress>
@@ -50,24 +55,48 @@
 
 <versions>
     <version>
-      <id>2.1</id>
+      <name>2.1</name>
       <tag>TURBINE_2_1</tag>
     </version>
     <version>
-      <id>2.2</id>
+      <name>2.2</name>
       <tag>TURBINE_2_2_0</tag>
     </version>
     <version>
-      <id>2.3-rc1</id>
+      <name>2.3-rc1</name>
       <tag>TURBINE_2_3_RC1</tag>
     </version>
     <version>
-      <id>2.3-rc2</id>
+      <name>2.3-rc2</name>
       <tag>TURBINE_2_3_RC2</tag>
     </version>
     <version>
-      <id>2.3</id>
+      <name>2.3</name>
       <tag>TURBINE_2_3</tag>
+    </version>
+    <version>
+      <name>2.3.1-RC1</name>
+      <tag>TURBINE_2_3_1_RC1</tag>
+    </version>
+    <version>
+      <name>2.3.1-RC2</name>
+      <tag>TURBINE_2_3_1_RC2</tag>
+    </version>
+    <version>
+      <name>2.3.1</name>
+      <tag>TURBINE_2_3_1</tag>
+    </version>
+    <version>
+      <name>2.3.2-RC1</name>
+      <tag>TURBINE_2_3_2_RC1</tag>
+    </version>
+    <version>
+      <name>2.3.2-RC2</name>
+      <tag>TURBINE_2_3_2_RC2</tag>
+    </version>
+    <version>
+      <name>2.3.2</name>
+      <tag>TURBINE_2_3_2</tag>
     </version>
   </versions>
 
@@ -185,6 +214,16 @@
       <id>sgoeschl</id>
       <email>siegfried.goeschl@it20one.at</email>
       <organization>IT20one GmbH</organization>
+    </developer>
+    <developer>
+      <name>Thomas Vandahl</name>
+      <id>tv</id>
+      <email>tv@apache.org</email>
+      <organization>TeWiSoft GmbH</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+      <timezone>+1</timezone>
     </developer>
     <developer>
       <name>J&#252;rgen Hoffmann</name>
@@ -349,33 +388,89 @@
     </contributor>
   </contributors>
 
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <dependencies>
 
+    <!-- Start of Avalon dependencies -->
+    <dependency>
+      <groupId>avalon-framework</groupId>
+      <artifactId>avalon-framework-api</artifactId>
+      <version>4.3</version>
+      <url>http://excalibur.apache.org/framework/index.html</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>avalon-framework</groupId>
+      <artifactId>avalon-framework-impl</artifactId>
+      <version>4.3</version>
+      <url>http://excalibur.apache.org/framework/index.html</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>avalon-logkit</groupId>
+      <artifactId>avalon-logkit</artifactId>
+      <version>2.1</version>
+      <url></url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
+    </dependency>
+    <!-- End of Avalon dependencies -->
+    
     <!-- Start of ECM dependencies -->
     <dependency>
-      <id>logkit</id>
-      <version>1.2</version>
-      <url>http://jakarta.apache.org/avalon/logkit/</url>
+      <groupId>excalibur-component</groupId>
+      <artifactId>excalibur-component</artifactId>
+      <version>2.1</version>
+      <url>http://excalibur.apache.org/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>excalibur-component</id>
-      <version>1.1</version>
-      <url>http://jakarta.apache.org/avalon/</url>
+      <groupId>excalibur-instrument</groupId>
+      <artifactId>excalibur-instrument-api</artifactId>
+      <version>2.1</version>
+      <url>http://excalibur.apache.org/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>excalibur-instrument</id>
-      <version>1.0</version>
-      <url>http://jakarta.apache.org/avalon/</url>
+      <groupId>excalibur-logger</groupId>
+      <artifactId>excalibur-logger</artifactId>
+      <version>2.1</version>
+      <url>http://excalibur.apache.org/logger.html</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>excalibur-logger</id>
-      <version>1.0.1</version>
-      <url>http://jakarta.apache.org/avalon/</url>
-    </dependency>
-    <dependency>
-      <id>excalibur-pool</id>
-      <version>1.2</version>
-      <url>http://jakarta.apache.org/avalon/</url>
+      <groupId>excalibur-pool</groupId>
+      <artifactId>excalibur-pool-api</artifactId>
+      <version>2.1</version>
+      <url>http://excalibur.apache.org/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <!-- End of ECM dependencies -->
 
@@ -386,7 +481,7 @@
       <version>1.0.4</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi</url>
       <properties>
-        <war.bundle.jar>true</war.bundle.jar>
+        <dist.bundle>true</dist.bundle>
       </properties>
     </dependency>
     <!-- End of YAAFI dependencies -->
@@ -398,101 +493,163 @@
       <url>http://java.sun.com/products/javabeans/glasgow/jaf.html</url>
       <type>jar</type>
     </dependency>
-   <dependency>
-      <groupId>avalon-framework</groupId>
-      <artifactId>avalon-framework-api</artifactId>
-      <version>4.3</version>
-      <url>http://avalon.apache.org/framework/</url>
-      <properties>
-        <war.bundle>true</war.bundle>
-      </properties>
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.3.3</version>
+      <url>http://java.sun.com/products/javamail/</url>
+      <type>jar</type>
     </dependency>
-   <dependency>
-      <groupId>avalon-framework</groupId>
-      <artifactId>avalon-framework-impl</artifactId>
-      <version>4.3</version>
-      <url>http://avalon.apache.org/framework/</url>
-      <properties>
-        <war.bundle>true</war.bundle>
-      </properties>
-    </dependency>
+
+    <!-- Jakarta Commons dependencies -->
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils-core</artifactId>
       <version>1.7.0</version>
       <url>http://jakarta.apache.org/commons/beanutils.html</url>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>commons-codec</id>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
       <version>1.3</version>
+      <url>http://jakarta.apache.org/commons/codec/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>commons-collections</id>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
       <version>3.1</version>
       <url>http://jakarta.apache.org/commons/collections/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>commons-configuration</id>
-      <version>1.2</version>
+      <groupId>commons-configuration</groupId>
+      <artifactId>commons-configuration</artifactId>
+      <version>1.3</version>
       <url>http://jakarta.apache.org/commons/configuration/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>commons-digester</id>
+      <groupId>commons-digester</groupId>
+      <artifactId>commons-digester</artifactId>
       <version>1.7</version>
       <url>http://jakarta.apache.org/commons/digester/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>commons-email</id>
+      <groupId>commons-email</groupId>
+      <artifactId>commons-email</artifactId>
       <version>1.0</version>
-      <url>http://jakarta.apache.org/commons/sandbox/email/</url>
+      <url>http://jakarta.apache.org/commons/email/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>commons-fileupload</id>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
       <version>1.1</version>
       <url>http://jakarta.apache.org/commons/fileupload/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>commons-io</id>
-      <version>1.1</version>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>1.3</version>
       <url>http://jakarta.apache.org/commons/io/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>commons-lang</id>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
       <version>2.1</version>
       <url>http://jakarta.apache.org/commons/lang/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>commons-logging</id>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
       <version>1.0.4</version>
-      <url>http://jakarta.apache.org/commons/logging.html</url>
+      <url>http://jakarta.apache.org/commons/logging/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>commons-pool</id>
-      <version>1.2</version>
+      <groupId>commons-pool</groupId>
+      <artifactId>commons-pool</artifactId>
+      <version>1.3</version>
       <url>http://jakarta.apache.org/commons/pool/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>cryptix</id>
+      <groupId>cryptix</groupId>
+      <artifactId>cryptix</artifactId>
       <version>3.2.0</version>
       <url>http://www.cryptix.org/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>dom4j</id>
+      <groupId>dom4j</groupId>
+      <artifactId>dom4j</artifactId>
       <version>1.6.1</version>
       <url>http://www.dom4j.org/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>ecs</id>
+      <groupId>ecs</groupId>
+      <artifactId>ecs</artifactId>
       <version>1.4.2</version>
       <url>http://jakarta.apache.org/ecs/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
+
+    <!-- Fulcrum Components dependencies -->
     <dependency>
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-cache</artifactId>
       <version>1.0.5</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-cache</url>
       <properties>
-        <war.bundle.jar>true</war.bundle.jar>
+        <dist.bundle>true</dist.bundle>
       </properties>
     </dependency>
     <dependency>
@@ -501,7 +658,7 @@
       <version>1.0.5</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-crypto</url>
       <properties>
-        <war.bundle.jar>true</war.bundle.jar>
+        <dist.bundle>true</dist.bundle>
       </properties>
     </dependency>
     <dependency>
@@ -510,7 +667,7 @@
       <version>1.0.6-dev</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-localization</url>
       <properties>
-        <war.bundle.jar>true</war.bundle.jar>
+        <dist.bundle>true</dist.bundle>
       </properties>
     </dependency>
     <dependency>
@@ -519,7 +676,7 @@
       <version>1.0.4-dev</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/intake</url>
       <properties>
-        <war.bundle.jar>true</war.bundle.jar>
+        <dist.bundle>true</dist.bundle>
       </properties>
     </dependency>
     <dependency>
@@ -528,7 +685,7 @@
       <version>1.0.3</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-factory</url>
       <properties>
-        <war.bundle.jar>true</war.bundle.jar>
+        <dist.bundle>true</dist.bundle>
       </properties>
     </dependency>
     <dependency>
@@ -537,7 +694,7 @@
       <version>1.0.3</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-pool</url>
       <properties>
-        <war.bundle.jar>true</war.bundle.jar>
+        <dist.bundle>true</dist.bundle>
       </properties>
     </dependency>
     <dependency>
@@ -546,7 +703,7 @@
       <version>1.0.4</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-mimetype</url>
       <properties>
-        <war.bundle.jar>true</war.bundle.jar>
+        <dist.bundle>true</dist.bundle>
       </properties>
     </dependency>
      <dependency>
@@ -555,7 +712,7 @@
       <version>1.0.2-dev</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-parser</url>
       <properties>
-        <war.bundle.jar>true</war.bundle.jar>
+        <dist.bundle>true</dist.bundle>
       </properties>
     </dependency>
      <dependency>
@@ -564,97 +721,153 @@
       <version>1.0.3</version>
       <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-upload</url>
       <properties>
-        <war.bundle.jar>true</war.bundle.jar>
+        <dist.bundle>true</dist.bundle>
       </properties>
     </dependency>
 
     <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
-      <version>1.3.3</version>
-      <url>http://java.sun.com/products/javamail/</url>
-      <type>jar</type>
-    </dependency>
-    <dependency>
-      <id>jdbc</id>
-      <version>2.0</version>
-      <url>http://java.sun.com/products/jdbc/</url>
-    </dependency>
-    <dependency>
-      <id>jndi</id>
-      <version>1.2.1</version>
-      <url>http://java.sun.com/products/jndi/</url>
-    </dependency>
-    <dependency>
-      <id>junit</id>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <url>http://www.junit.org/</url>
     </dependency>
     <!-- ORO must be loaded before Jython, as Jython includes some ORO -->
     <!-- classes which cause the Maven JXR plug-in to fail. -->
-    <dependency>
-      <id>oro</id>
-      <version>2.0.7</version>
+     <dependency>
+      <groupId>oro</groupId>
+      <artifactId>oro</artifactId>
+      <version>2.0.8</version>
       <url>http://jakarta.apache.org/oro/</url>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
-    <dependency>
-      <id>jython</id>
+     <dependency>
+      <groupId>jython</groupId>
+      <artifactId>jython</artifactId>
       <version>2.1</version>
       <url>http://www.jython.org/</url>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>log4j</id>
-      <version>1.2.8</version>
-      <url>http://jakarta.apache.org/log4j/</url>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.12</version>
+      <url>http://logging.apache.org/log4j/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>servletapi</id>
+      <groupId>servletapi</groupId>
+      <artifactId>servletapi</artifactId>
       <version>2.3</version>
       <url>http://java.sun.com/products/servlet/</url>
+      <type>jar</type>
     </dependency>
-    <!--dependency>
-      <id>torque</id>
-      <version>3.1.1</version>
+
+	<!-- Torque dependencies -->
+    <!-- dependency>
+      <groupId>torque</groupId>
+      <artifactId>torque</artifactId>
+      <version>3.2</version>
       <url>http://db.apache.org/torque/</url>
-    </dependency-->
-    <!--
-    <dependency>
-      <groupId>turbine</groupId>
-      <artifactId>turbine-torque-impl</artifactId>
-      <version>2.4-dev</version>
-      <url>http://jakarta.apache.org/turbine/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
-    -->
     <dependency>
-      <id>velocity</id>
+      <groupId>village</groupId>
+      <artifactId>village</artifactId>
+      <version>2.0</version>
+      <url>http://www.softwareforge.de/projects/village/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
+    </dependency -->
+
+    <dependency>
+      <groupId>xmlrpc</groupId>
+      <artifactId>xmlrpc</artifactId>
+      <version>2.0</version>
+      <url>http://ws.apache.org/xmlrpc/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
+    </dependency>
+
+    <dependency>
+      <groupId>velocity</groupId>
+      <artifactId>velocity</artifactId>
       <version>1.4</version>
       <url>http://jakarta.apache.org/velocity/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
+
+<!--
+========================================================================
+==                                                                    ==
+== uncomment these dependencies if you are using a 1.3 JDK            ==
+==                                                                    ==
+========================================================================
+-->
+
+<!--  REMOVE THIS LINE
     <dependency>
-      <id>village</id>
+      <groupId>javax.sql</groupId>
+      <artifactId>jdbc-stdext</artifactId>
       <version>2.0</version>
-      <url>http://share.whichever.com/index.php?SCREEN=village</url>
+      <url>http://java.sun.com/products/jdbc/</url>
+      <type>jar</type>
     </dependency>
     <dependency>
-      <id>xalan</id>
-      <version>2.5.1</version>
+      <groupId>javax.naming</groupId>
+      <artifactId>jndi</artifactId>
+      <version>1.2.1</version>
+      <url>http://java.sun.com/products/jndi/</url>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>xalan</groupId>
+      <artifactId>xalan</artifactId>
+      <version>2.7.0</version>
       <url>http://xml.apache.org/xalan-j/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>xerces:xercesImpl</id>
+      <groupId>xerces</groupId>
+      <artifactId>xercesImpl</artifactId>
       <version>2.4.0</version>
       <url>http://xml.apache.org/xerces2-j/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
     </dependency>
     <dependency>
-      <id>xml-apis</id>
+      <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
       <version>1.0.b2</version>
       <url>http://xml.apache.org/commons/</url>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
+      <type>jar</type>
     </dependency>
-    <dependency>
-      <id>xmlrpc</id>
-      <version>1.2-b1</version>
-      <url>http://xml.apache.org/xmlrpc/</url>
-    </dependency>
+REMOVE THIS LINE -->
+
     <dependency>
       <groupId>xstream</groupId>
       <artifactId>xstream</artifactId>
@@ -683,7 +896,7 @@
     <dependency>
       <groupId>torque</groupId>
       <artifactId>maven-torque-plugin</artifactId>
-      <version>3.1.1</version>
+      <version>3.2</version>
       <type>plugin</type>
     </dependency>
 

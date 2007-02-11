@@ -4,8 +4,8 @@
 -->
 
 <componentConfig>
-	<cache cacheInitialSize="20" cacheCheckFrequency="5"/>   
-	<mimetype/>
+    <cache cacheInitialSize="20" cacheCheckFrequency="5"/>   
+    <mimetype/>
     <crypto>
       <algorithm>
       	<unix>org.apache.fulcrum.crypto.provider.UnixCrypt</unix>
@@ -19,7 +19,7 @@
         <bundle>org.apache.turbine.services.localization.BarBundle</bundle>        
       </bundles>
     </localization>
-	<intake>
+    <intake>
       <serialDataPath>target/appData.ser</serialDataPath>
       <xmlPaths>
         <xmlPath>conf/test/intake.xml</xmlPath>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<fulcrum-yaafi>
+  <componentRoles>
+    <location>conf/test/fulcrumRoleConfiguration.xml</location>
+  </componentRoles>
+  <componentConfiguration>
+    <location>conf/test/fulcrumComponentConfiguration.xml</location>
+  </componentConfiguration>
+  <parameters>
+    <location>conf/test/fulcrumParameterConfiguration.properties</location>
+  </parameters>
+</fulcrum-yaafi>              
