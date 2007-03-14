@@ -44,6 +44,9 @@ public class TorqueRole
     implements Role,
                Comparable
 {
+
+	private static final long serialVersionUID = -7774684697021445523L;
+
     /** The permissions for this role. */
     private PermissionSet permissionSet = null;
 

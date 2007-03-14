@@ -16,6 +16,8 @@ package org.apache.turbine.services.security.torque;
  * limitations under the License.
  */
 
+import java.io.Serializable;
+
 import java.sql.Connection;
 
 import org.apache.torque.om.ObjectKey;
@@ -36,8 +38,12 @@ import org.apache.turbine.util.security.TurbineSecurityException;
 public abstract class TorqueObject
     implements SecurityEntity,
                Comparable,
-               Persistent
+               Persistent,
+               Serializable
 {
+
+	static final long serialVersionUID = 5619862273774652856L;
+
     /** The underlying database Object which is proxied */
     protected Persistent obj = null;
 

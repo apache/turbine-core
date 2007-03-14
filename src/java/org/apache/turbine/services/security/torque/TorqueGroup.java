@@ -53,6 +53,10 @@ public class TorqueGroup
     implements Group,
                Comparable
 {
+
+	/** Serial Version UID */
+	private static final long serialVersionUID = -2034684697021752888L;
+
     /**
      * Constructs a new Group.
      */
