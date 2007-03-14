@@ -40,6 +40,9 @@ public class TorquePermission
     implements Permission,
                Comparable
 {
+
+	private static final long serialVersionUID = -5524685597021445523L;
+
     /**
      * Constructs a Permission
      */
