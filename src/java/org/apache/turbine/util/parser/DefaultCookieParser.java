@@ -24,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.pool.Recyclable;
 import org.apache.turbine.util.uri.DataURI;
 import org.apache.turbine.util.uri.URI;
@@ -151,7 +152,7 @@ public class DefaultCookieParser
         String enc = request.getCharacterEncoding();
         setCharacterEncoding(enc != null ? enc : "US-ASCII");
 
-        cookiePath = new DataURI(data);
+        cookiePath = new DataURI(new ServerData(request));
 
         Cookie[] cookies = request.getCookies();
 
