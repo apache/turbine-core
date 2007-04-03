@@ -19,6 +19,7 @@ package org.apache.turbine.services.intake.model;
 import java.math.BigDecimal;
 
 import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -131,7 +132,7 @@ public class BigDecimalField
     {
         if (getLocale() != null)
         {
-            DecimalFormatSymbols internal = new DecimalFormatSymbols();
+            DecimalFormatSymbols internal = new DecimalFormatSymbols(Locale.US);
             DecimalFormatSymbols user = new DecimalFormatSymbols(getLocale());
 
             if (!internal.equals(user))
