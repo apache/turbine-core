@@ -25,6 +25,11 @@
 
 <body>
   <release version="2.3.3-dev" date="in Subversion">
+    <action type="add" dev="tv">
+      Extended Intake to care for localization and to allow user-defined
+      field types (type "custom"). The Validator interface has been extended
+      so custom validators must be adjusted unless they extend DefaultValidator.
+    </action>
     <action type="update" dev="seade" issue="TRB-9" due-to="J&#252;rgen Hoffmann">
       Intake now handles the case where the mapToObject does not map to all
       fields in the group.
