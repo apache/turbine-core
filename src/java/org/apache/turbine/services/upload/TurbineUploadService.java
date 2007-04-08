@@ -18,21 +18,18 @@ package org.apache.turbine.services.upload;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-
 import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.configuration.Configuration;
-
-import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
-
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -68,7 +65,10 @@ public class TurbineUploadService
     private static Log log = LogFactory.getLog(TurbineUploadService.class);
 
     /** A File Upload object for the actual uploading */
-    protected DiskFileUpload fileUpload = null;
+    protected ServletFileUpload fileUpload = null;
+
+    /** A File Item Factory object for the actual uploading */
+    protected DiskFileItemFactory itemFactory = null;
 
     /** Auto Upload yes? */
     private boolean automatic;
@@ -127,10 +127,11 @@ public class TurbineUploadService
 
         log.debug("Auto Upload " + automatic);
 
-        fileUpload = new DiskFileUpload();
+        itemFactory = new DiskFileItemFactory();
+        itemFactory.setSizeThreshold(sizeThreshold);
+        itemFactory.setRepository(new File(repoPath));
+        fileUpload = new ServletFileUpload(itemFactory);
         fileUpload.setSizeMax(sizeMax);
-        fileUpload.setSizeThreshold(sizeThreshold);
-        fileUpload.setRepositoryPath(repoPath);
 
         setInit(true);
     }
@@ -154,7 +155,7 @@ public class TurbineUploadService
      */
     public int getSizeThreshold()
     {
-        return fileUpload.getSizeThreshold();
+        return itemFactory.getSizeThreshold();
     }
 
     /**
@@ -179,7 +180,7 @@ public class TurbineUploadService
      */
     public String getRepository()
     {
-        return fileUpload.getRepositoryPath();
+        return itemFactory.getRepository().getAbsolutePath();
     }
 
     /**
@@ -218,11 +219,7 @@ public class TurbineUploadService
 
         try
         {
-            List fileList = fileUpload
-                    .parseRequest(req,
-                            getSizeThreshold(),
-                            getSizeMax(),
-                            path);
+            List fileList = fileUpload.parseRequest(req);
 
             if (fileList != null)
             {
