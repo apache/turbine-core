@@ -32,9 +32,8 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
  * @version $Id$
  */
 public class FloatField
-        extends Field
+        extends AbstractNumberField
 {
-
     /**
      * Constructor.
      *
@@ -130,7 +129,7 @@ public class FloatField
             for (int i = 0; i < inputs.length; i++)
             {
                 values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? new Float(inputs[i]).floatValue()
+                        ? new Float(canonicalizeDecimalInput(inputs[i])).floatValue()
                         : ((Float) getEmptyValue()).floatValue();
             }
             setTestValue(values);
@@ -138,8 +137,9 @@ public class FloatField
         else
         {
             String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val)
-                    ? new Float(val) : getEmptyValue());
+            setTestValue(StringUtils.isNotEmpty(val) 
+                    ? new Float(canonicalizeDecimalInput(val))
+                    : getEmptyValue());
         }
     }
 

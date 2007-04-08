@@ -17,10 +17,13 @@ package org.apache.turbine.services.intake.validator;
  */
 
 import java.math.BigDecimal;
-
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.turbine.services.intake.model.Field;
 
 /**
  * Validates BigDecimals with the following constraints in addition to those
@@ -38,6 +41,8 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:jh@byteaction.de">J&uuml;rgen Hoffmann</a>
+ * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
  * @version $Id$
  */
 public class BigDecimalValidator
@@ -95,14 +100,43 @@ public class BigDecimalValidator
     }
 
     /**
+     * Determine whether a field meets the criteria specified
+     * in the constraints defined for this validator
+     *
+     * @param field a <code>Field</code> to be tested
+     * @exception ValidationException containing an error message if the
+     * testValue did not pass the validation tests.
+     */
+    public void assertValidity(Field field)
+            throws ValidationException
+    {
+        Locale locale = field.getLocale();
+        
+        if (field.isMultiValued())
+        {
+            String[] stringValues = (String[])field.getTestValue();
+            
+            for (int i = 0; i < stringValues.length; i++)
+            {
+                assertValidity(stringValues[i], locale);
+            }
+        }
+        else
+        {
+            assertValidity((String)field.getTestValue(), locale);
+        }
+    }
+    
+    /**
      * Determine whether a testValue meets the criteria specified
      * in the constraints defined for this validator
      *
      * @param testValue a <code>String</code> to be tested
+     * @param locale the Locale of the associated field
      * @exception ValidationException containing an error message if the
      * testValue did not pass the validation tests.
      */
-    public void assertValidity(String testValue)
+    public void assertValidity(String testValue, Locale locale)
             throws ValidationException
     {
         super.assertValidity(testValue);
@@ -110,11 +144,13 @@ public class BigDecimalValidator
         if (required || StringUtils.isNotEmpty(testValue))
         {
             BigDecimal bd = null;
+            NumberFormat nf = NumberFormat.getInstance(locale);
             try
             {
-                bd = new BigDecimal(testValue);
+                Number number = nf.parse(testValue);
+                bd = new BigDecimal(number.doubleValue());
             }
-            catch (RuntimeException e)
+            catch (ParseException e)
             {
                 errorMessage = invalidNumberMessage;
                 throw new ValidationException(invalidNumberMessage);

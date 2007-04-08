@@ -18,9 +18,6 @@ package org.apache.turbine.services.intake.model;
 
 import java.math.BigDecimal;
 
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
-
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.turbine.services.intake.IntakeException;
@@ -32,10 +29,11 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
  * @version $Id$
  */
 public class BigDecimalField
-        extends Field
+        extends AbstractNumberField
 {
     /**
      * Constructor.
@@ -109,38 +107,14 @@ public class BigDecimalField
             for (int i = 0; i < inputs.length; i++)
             {
                 values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? canonicalizeDecimalInput(inputs[i]) : (BigDecimal) getEmptyValue();
+                        ? new BigDecimal(canonicalizeDecimalInput(inputs[i])) : (BigDecimal) getEmptyValue();
             }
             setTestValue(values);
         }
         else
         {
             String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val) ? canonicalizeDecimalInput(val) : (BigDecimal) getEmptyValue());
+            setTestValue(StringUtils.isNotEmpty(val) ? new BigDecimal(canonicalizeDecimalInput(val)) : (BigDecimal) getEmptyValue());
         }
-    }
-
-    /**
-     * Canonicalizes an user-inputted <code>BigDecimal</code> string
-     * to the system's internal format.
-     *
-     * @param bigDecimal Text conforming to a <code>BigDecimal</code>
-     * description for a set of <code>DecimalFormatSymbols</code>.
-     * @return The canonicalized representation.
-     */
-    protected final BigDecimal canonicalizeDecimalInput(String bigDecimal)
-    {
-        if (getLocale() != null)
-        {
-            DecimalFormatSymbols internal = new DecimalFormatSymbols(Locale.US);
-            DecimalFormatSymbols user = new DecimalFormatSymbols(getLocale());
-
-            if (!internal.equals(user))
-            {
-                bigDecimal = bigDecimal.replace(user.getDecimalSeparator(),
-                        internal.getDecimalSeparator());
-            }
-        }
-        return new BigDecimal(bigDecimal);
     }
 }

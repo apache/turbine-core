@@ -50,6 +50,7 @@ import org.apache.turbine.util.parser.ValueParser;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:jh@byteaction.de">J&uuml;rgen Hoffmann</a>
+ * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
  * @version $Id$
  */
 public abstract class Field
@@ -60,8 +61,11 @@ public abstract class Field
     /** CGI Key for "value if absent" */
     private static final String VALUE_IF_ABSENT_KEY = "_vifa_";
 
-    /** Default Package */
-    public static final String defaultFieldPackage = "org.apache.turbine.services.intake.validator.";
+    /** Default Validator Package */
+    public static final String defaultValidatorPackage = "org.apache.turbine.services.intake.validator.";
+
+    /** Default Field Package */
+    public static final String defaultFieldPackage = "org.apache.turbine.services.intake.model.";
 
     // the following are set from the xml file and are permanent (final)
 
@@ -206,7 +210,7 @@ public abstract class Field
         else if (validatorClassName != null
                 && validatorClassName.indexOf('.') == -1)
         {
-            validatorClassName = defaultFieldPackage + validatorClassName;
+            validatorClassName = defaultValidatorPackage + validatorClassName;
         }
 
         if (validatorClassName != null)
@@ -378,12 +382,23 @@ public abstract class Field
     }
 
     /**
+     * Returns the <code>Group</code> this field belongs to 
+     * or <code>null</code> if unknown.
+     *
+     * @return The group this field belongs to.
+     */
+    public Group getGroup()
+    {
+        return group;
+    }
+
+    /**
      * Returns the <code>Locale</code> used when localizing data for
      * this field, or <code>null</code> if unknown.
      *
      * @return Where to localize for.
      */
-    protected Locale getLocale()
+    public Locale getLocale()
     {
         return locale;
     }
@@ -405,6 +420,16 @@ public abstract class Field
     public Validator getValidator()
     {
         return validator;
+    }
+
+    /**
+     * Flag to determine whether the field has been declared as multi-valued.
+     *
+     * @return value of isMultiValued.
+     */
+    public boolean isMultiValued()
+    {
+        return isMultiValued;
     }
 
     /**
@@ -591,22 +616,19 @@ public abstract class Field
                 }
             }
 
-
             if (validator != null)
             {
                 // set the test value as a String[] which might be replaced by
                 // the correct type if the input is valid.
                 setTestValue(parser.getStrings(getKey()));
-                for (int i = 0; i < stringValues.length; i++)
+                
+                try
                 {
-                    try
-                    {
-                        validator.assertValidity(stringValues[i]);
-                    }
-                    catch (ValidationException ve)
-                    {
-                        setMessage(ve.getMessage());
-                    }
+                    validator.assertValidity(this);
+                }
+                catch (ValidationException ve)
+                {
+                    setMessage(ve.getMessage());
                 }
             }
 
@@ -632,7 +654,7 @@ public abstract class Field
 
                 try
                 {
-                    validator.assertValidity(stringValue);
+                    validator.assertValidity(this);
                     log.debug(name + ": Value is ok");
                     doSetValue();
                 }

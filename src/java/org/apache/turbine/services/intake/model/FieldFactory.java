@@ -16,6 +16,7 @@ package org.apache.turbine.services.intake.model;
  * limitations under the License.
  */
 
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
  * @version $Id$
  */
 public abstract class FieldFactory
@@ -152,6 +154,52 @@ public abstract class FieldFactory
                     throws IntakeException
             {
                 return new LongField(f, g);
+            }
+        }
+        );
+        fieldCtors.put("custom", new FieldFactory.FieldCtor()
+        {
+            public Field getInstance(XmlField f, Group g)
+                    throws IntakeException
+            {
+                String fieldClass = f.getFieldClass();
+                
+                if (fieldClass != null
+                        && fieldClass.indexOf('.') == -1)
+                {
+                    fieldClass = Field.defaultFieldPackage + fieldClass;
+                }
+
+                if (fieldClass != null)
+                {
+                    Class field;
+                    
+                    try
+                    {
+                        field = Class.forName(fieldClass);
+                        Constructor constructor = 
+                            field.getConstructor(new Class[] { XmlField.class, Group.class });
+                        
+                        return (Field)constructor.newInstance(new Object[] { f, g });
+                    }
+                    catch (ClassNotFoundException e)
+                    {
+                        throw new IntakeException(
+                                "Could not load Field class("
+                                + fieldClass + ")", e);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new IntakeException(
+                                "Could not create new instance of Field("
+                                + fieldClass + ")", e);
+                    }
+                }
+                else
+                {
+                    throw new IntakeException(
+                            "Custom field types must define a fieldClass");
+                }
             }
         }
         );
