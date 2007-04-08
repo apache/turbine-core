@@ -655,7 +655,7 @@ public class RolePeerManager
             Object[] params = new Object[0];
 
             persistenceClass =  (Class) rolePeerClass
-                .getMethod("getOMClass", null)
+                .getMethod("getOMClass", (Class[])null)
                 .invoke(null, params);
         }
         catch (Exception e)
