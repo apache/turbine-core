@@ -37,6 +37,7 @@ import org.xml.sax.Attributes;
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
+ * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
  * @version $Id$
  */
 public class XmlField
@@ -60,6 +61,7 @@ public class XmlField
     private String defaultValue;
     private String emptyValue;
     private String displaySize;
+    private String fieldClass;
 
     /**
      * Default Constructor
@@ -99,6 +101,7 @@ public class XmlField
         }
 
         setMapToProperty(attrib.getValue("mapToProperty"));
+        setFieldClass(attrib.getValue("fieldClass"));
         setValidator(attrib.getValue("validator"));
         setDefaultValue(attrib.getValue("defaultValue"));
         setEmptyValue(attrib.getValue("emptyValue"));
@@ -362,6 +365,26 @@ public class XmlField
     public void setIfRequiredMessage(String v)
     {
         this.ifRequiredMessage = v;
+    }
+
+    /**
+     * Get the value of fieldClass.
+     *
+     * @return value of fieldClass.
+     */
+    public String getFieldClass()
+    {
+        return fieldClass;
+    }
+
+    /**
+     * Set the value of fieldClass.
+     *
+     * @param v  Value to assign to fieldClass.
+     */
+    public void setFieldClass(String v)
+    {
+        this.fieldClass = v;
     }
 
     /**

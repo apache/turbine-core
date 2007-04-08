@@ -29,7 +29,7 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
  * @version $Id$
  */
 public class DoubleField
-        extends Field
+        extends AbstractNumberField
 {
     /**
      * Constructor.
@@ -82,7 +82,7 @@ public class DoubleField
     }
 
     /**
-     * Provides access to emptyValue such that the value returned will be
+     * Provides access to emptyValue such that the value returned will be 
      * acceptable as an argument parameter to Method.invoke.  Subclasses
      * that deal with primitive types should ensure that they return an
      * appropriate value wrapped in the object wrapper class for the
@@ -126,7 +126,7 @@ public class DoubleField
             for (int i = 0; i < inputs.length; i++)
             {
                 values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? new Double(inputs[i]).doubleValue()
+                        ? new Double(canonicalizeDecimalInput(inputs[i])).doubleValue()
                         : ((Double) getEmptyValue()).doubleValue();
             }
             setTestValue(values);
@@ -134,8 +134,9 @@ public class DoubleField
         else
         {
             String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val)
-                    ? new Double(val) : (Double) getEmptyValue());
+            setTestValue(StringUtils.isNotEmpty(val) 
+                    ? new Double(canonicalizeDecimalInput(val))
+                    : (Double) getEmptyValue());
         }
     }
 

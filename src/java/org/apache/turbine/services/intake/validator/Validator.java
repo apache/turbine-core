@@ -1,5 +1,7 @@
 package org.apache.turbine.services.intake.validator;
 
+import org.apache.turbine.services.intake.model.Field;
+
 /*
  * Copyright 2001-2005 The Apache Software Foundation.
  *
@@ -20,6 +22,7 @@ package org.apache.turbine.services.intake.validator;
  * Validator api.
  *
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
+ * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
  * @version $Id$
  */
 public interface Validator
@@ -52,11 +55,33 @@ public interface Validator
     String REQUIRED_RULE_NAME = "required";
 
     /**
+     * Determine whether a field meets the criteria specified
+     * in the constraints defined for this validator
+     *
+     * @param field a <code>Field</code> to be tested
+     * @return true if valid, false otherwise
+     */
+    boolean isValid(Field field);
+
+    /**
+     * Determine whether a field meets the criteria specified
+     * in the constraints defined for this validator
+     *
+     * @param field a <code>Field</code> to be tested
+     * @exception ValidationException containing an error message if the
+     * testValue did not pass the validation tests.
+     */
+    void assertValidity(Field field)
+            throws ValidationException;
+
+    /**
      * Determine whether a testValue meets the criteria specified
      * in the constraints defined for this validator
      *
      * @param testValue a <code>String</code> to be tested
      * @return true if valid, false otherwise
+     * 
+     * @deprecated use isValid(Field) instead
      */
     boolean isValid(String testValue);
 

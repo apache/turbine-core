@@ -21,6 +21,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.services.intake.model.Field;
 
 /**
  * DefaultValidator that will compare a testValue against the following
@@ -39,6 +40,7 @@ import org.apache.commons.logging.LogFactory;
  * @author <a href="mailto:jmcnally@collab.net">John McNally</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:Colin.Chalmers@maxware.nl">Colin Chalmers</a>
+ * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
  * @version $Id$
  */
 abstract public class DefaultValidator
@@ -126,11 +128,61 @@ abstract public class DefaultValidator
     }
 
     /**
+     * Determine whether a field meets the criteria specified
+     * in the constraints defined for this validator
+     *
+     * @param field a <code>Field</code> to be tested
+     * @return true if valid, false otherwise
+     */
+    public boolean isValid(Field field)
+    {
+        boolean valid = false;
+        try
+        {
+            assertValidity(field);
+            valid = true;
+        }
+        catch (ValidationException ve)
+        {
+            valid = false;
+        }
+        return valid;
+    }
+
+    /**
+     * Determine whether a field meets the criteria specified
+     * in the constraints defined for this validator
+     *
+     * @param field a <code>Field</code> to be tested
+     * @exception ValidationException containing an error message if the
+     * testValue did not pass the validation tests.
+     */
+    public void assertValidity(Field field)
+            throws ValidationException
+    {
+    	if (field.isMultiValued())
+    	{
+    		String[] stringValues = (String[])field.getTestValue();
+    		
+    		for (int i = 0; i < stringValues.length; i++)
+    		{
+    			assertValidity(stringValues[i]);
+    		}
+    	}
+    	else
+    	{
+    		assertValidity((String)field.getTestValue());
+    	}
+    }
+
+    /**
      * Determine whether a testValue meets the criteria specified
      * in the constraints defined for this validator
      *
      * @param testValue a <code>String</code> to be tested
      * @return true if valid, false otherwise
+     * 
+     * @deprecated use isValid(Field) instead
      */
     public boolean isValid(String testValue)
     {

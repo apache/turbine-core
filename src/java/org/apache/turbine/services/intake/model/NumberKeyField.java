@@ -103,7 +103,7 @@ public class NumberKeyField
             String val = parser.getString(getKey());
             if (StringUtils.isNotEmpty(val))
             {
-                BigDecimal bd = canonicalizeDecimalInput(val);
+                BigDecimal bd = new BigDecimal(canonicalizeDecimalInput(val));
                 setTestValue(new NumberKey(bd));
             }
             else
