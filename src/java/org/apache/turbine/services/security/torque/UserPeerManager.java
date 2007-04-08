@@ -1455,7 +1455,7 @@ public class UserPeerManager
             Object[] params = new Object[0];
 
             persistenceClass =  (Class) userPeerClass
-                .getMethod("getOMClass", null)
+                .getMethod("getOMClass", (Class[])null)
                 .invoke(null, params);
         }
         catch (Exception e)

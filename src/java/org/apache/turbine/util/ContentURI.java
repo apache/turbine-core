@@ -88,8 +88,8 @@ public class ContentURI
         try
         {
             Class runDataClass = RunData.class;
-            Method meth = runDataClass.getDeclaredMethod("getContextPath", null);
-            contextPath = (String) meth.invoke(data, null);
+            Method meth = runDataClass.getDeclaredMethod("getContextPath", (Class[])null);
+            contextPath = (String) meth.invoke(data, (Object[])null);
         }
         catch (Exception e)
         {

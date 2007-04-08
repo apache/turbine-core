@@ -820,7 +820,7 @@ public abstract class Field
     {
         try
         {
-            validValue = getter.invoke(obj, null);
+            validValue = getter.invoke(obj, (Object[])null);
         }
         catch (IllegalAccessException e)
         {

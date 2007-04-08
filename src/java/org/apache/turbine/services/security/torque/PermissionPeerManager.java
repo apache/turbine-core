@@ -676,7 +676,7 @@ public class PermissionPeerManager
             Object[] params = new Object[0];
 
             persistenceClass =  (Class) persistentPeerClass
-                .getMethod("getOMClass", null)
+                .getMethod("getOMClass", (Class[])null)
                 .invoke(null, params);
         }
         catch (Exception e)
