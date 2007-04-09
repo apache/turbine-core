@@ -20,8 +20,8 @@ import java.util.Iterator;
 
 import junit.framework.TestSuite;
 
-import org.apache.commons.fileupload.DefaultFileItemFactory;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.turbine.test.BaseTurbineTest;
 
 /**
@@ -49,7 +49,7 @@ public class DefaultParameterParserTest
     public void testFileItemsInKeySet()
     {
         ParameterParser pp = new DefaultParameterParser();
-        DefaultFileItemFactory factory = new DefaultFileItemFactory(10240, null);
+        DiskFileItemFactory factory = new DiskFileItemFactory(10240, null);
 
         assertEquals("keySet() is not empty!", 0, pp.keySet().size());
 
@@ -79,7 +79,7 @@ public class DefaultParameterParserTest
     public void testToString()
     {
         ParameterParser pp = new DefaultParameterParser();
-        DefaultFileItemFactory factory = new DefaultFileItemFactory(10240, null);
+        DiskFileItemFactory factory = new DiskFileItemFactory(10240, null);
 
         FileItem test = factory.createItem("upload-field", "application/octet-stream", false, null);
         pp.add("upload-field", test);

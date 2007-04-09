@@ -16,7 +16,7 @@ package org.apache.turbine.util;
  * limitations under the License.
  */
 
-import org.apache.commons.collections.SequencedHashMap;
+import org.apache.commons.collections.map.LRUMap;
 
 /**
  * A fixed length object cache implementing the LRU algorithm.  Convenient for
@@ -25,9 +25,11 @@ import org.apache.commons.collections.SequencedHashMap;
  * @author <a href="mailto:dlr@collab.net">Daniel Rall</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
+ * 
+ * @deprecated use LRUMap from commons-collections directly
  */
 public class BufferCache
-    extends SequencedHashMap
+    extends LRUMap
 {
     /** Serial Version UID */
     private static final long serialVersionUID = 5206274963401520445L;
@@ -36,12 +38,6 @@ public class BufferCache
      * The default maximum cache size.
      */
     private static final int DEFAULT_MAX_SIZE = 35;
-
-    /**
-     * The size of the cache.  The newest elements in the sequence are kept
-     * toward the end.
-     */
-    private int maxSize;
 
     /**
      * Creates a new instance with default storage buffer pre-allocated.
@@ -59,7 +55,6 @@ public class BufferCache
     public BufferCache(int maxSize)
     {
         super(maxSize);
-        this.maxSize = maxSize;
     }
 
     /**
@@ -73,13 +68,6 @@ public class BufferCache
      */
     public synchronized Object put(Object key, Object value)
     {
-        int size = size();
-        if (size > 0 && size + 1 >= maxSize)
-        {
-            // Stay within constraints of allocated buffer by releasing the
-            // eldest buffered object.
-            remove(0);
-        }
         return super.put(key, value);
     }
 
