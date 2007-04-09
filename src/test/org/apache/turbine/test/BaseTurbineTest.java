@@ -16,7 +16,6 @@ package org.apache.turbine.test;
  * limitations under the License.
  */
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,8 +33,6 @@ import org.apache.turbine.util.TurbineConfig;
 public abstract class BaseTurbineTest
         extends BaseTestCase
 {
-    private File log4jFile = new File("conf/test/Log4j.properties");
-
     private static TurbineConfig turbineConfig = null;
 
     public BaseTurbineTest(String name, String config)
