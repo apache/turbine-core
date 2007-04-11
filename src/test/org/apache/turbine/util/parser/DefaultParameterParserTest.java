@@ -16,6 +16,8 @@ package org.apache.turbine.util.parser;
  * limitations under the License.
  */
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 
 import junit.framework.TestSuite;
@@ -76,15 +78,19 @@ public class DefaultParameterParserTest
         assertFalse(pp.containsKey("missing-field"));
     }
 
-    public void testToString()
+    public void testToString() throws IOException
     {
         ParameterParser pp = new DefaultParameterParser();
-        DiskFileItemFactory factory = new DiskFileItemFactory(10240, null);
+        DiskFileItemFactory factory = new DiskFileItemFactory(10240, new File("."));
 
         FileItem test = factory.createItem("upload-field", "application/octet-stream", false, null);
+        
+        // Necessary to avoid a NullPointerException in toString()
+        test.getOutputStream();
+        
         pp.add("upload-field", test);
 
-        assertTrue(pp.toString().startsWith("{upload-field=[org.apache.commons.fileupload.DefaultFileItem"));
+        assertTrue(pp.toString().startsWith("{upload-field=[name=null,"));
     }
 }
 
