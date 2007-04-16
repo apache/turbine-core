@@ -58,10 +58,9 @@ public abstract class TurbineUpload
      */
     public static boolean isAvailable()
     {
-        UploadService upload = null;
         try
         {
-            upload = getService();
+            getService();
         }
         catch (InstantiationException ie)
         {
