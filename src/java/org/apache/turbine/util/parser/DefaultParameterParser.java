@@ -219,12 +219,12 @@ public class DefaultParameterParser
             {
                 if (isNameTok)
                 {
-                    paramName = URLDecoder.decode(st.nextToken());
+                    paramName = URLDecoder.decode(st.nextToken(), getCharacterEncoding());
                     isNameTok = false;
                 }
                 else
                 {
-                    paramValue = URLDecoder.decode(st.nextToken());
+                    paramValue = URLDecoder.decode(st.nextToken(), getCharacterEncoding());
                     if (paramName.length() > 0)
                     {
                         add(paramName, paramValue);
