@@ -18,7 +18,6 @@ package org.apache.turbine.services.localization;
 
 import java.util.Locale;
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -43,11 +42,6 @@ public class LocalizationTool implements ApplicationTool
      * <code>Accept-Language</code> header.  Reset on each request.
      */
     protected Locale locale;
-
-    /**
-     * The bundle for this request.
-     */
-    private ResourceBundle bundle;
 
     /**
      * The name of the bundle for this tool to use.
@@ -109,9 +103,49 @@ public class LocalizationTool implements ApplicationTool
      */
     protected String getBundleName(Object data)
     {
-        return Localization.getDefaultBundleName();
+        return bundleName;
     }
 
+    /**
+     * Formats a localized value using the provided object.
+     *
+     * @param key The identifier for the localized text to retrieve,
+     * @param arg1 The object to use as {0} when formatting the localized text.
+     * @return Formatted localized text.
+     * @see #format(String, Locale, String, Object[])
+     */
+    public String format(String key, Object arg1)
+    {
+        return Localization.format(getBundleName(null), getLocale(), key, arg1);
+    }
+
+    /**
+     * Formats a localized value using the provided objects.
+     *
+     * @param key The identifier for the localized text to retrieve,
+     * @param arg1 The object to use as {0} when formatting the localized text.
+     * @param arg2 The object to use as {1} when formatting the localized text.
+     * @return Formatted localized text.
+     * @see #format(String, Locale, String, Object[])
+     */
+    public String format(String key, Object arg1, Object arg2)
+    {
+        return Localization.format(getBundleName(null), getLocale(), key, arg1, arg2);
+    }
+
+    /**
+     * Formats a localized value using the provided objects.
+     *
+     * @param key The identifier for the localized text to retrieve,
+     * @param args The objects to use as {0}, {1}, etc. when
+     *             formatting the localized text.
+     * @return Formatted localized text.
+     */
+    public String format(String key, Object[] args)
+    {
+        return Localization.format(getBundleName(null), getLocale(), key, args);
+    }
+    
 
     // ApplicationTool implmentation
 
@@ -126,7 +160,7 @@ public class LocalizationTool implements ApplicationTool
             // Pull necessary information out of RunData while we have
             // a reference to it.
             locale = Localization.getLocale(((RunData) data).getRequest());
-            bundleName = getBundleName(data);
+            bundleName = Localization.getDefaultBundleName();
         }
     }
 
@@ -136,7 +170,6 @@ public class LocalizationTool implements ApplicationTool
     public void refresh()
     {
         locale = null;
-        bundle = null;
         bundleName = null;
     }
 }

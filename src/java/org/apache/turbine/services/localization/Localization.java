@@ -230,6 +230,55 @@ public abstract class Localization
     }
 
     /**
+     * Formats a localized value using the provided object.
+     *
+     * @param bundleName The bundle in which to look for the localizable text.
+     * @param locale The locale for which to format the text.
+     * @param key The identifier for the localized text to retrieve,
+     * @param arg1 The object to use as {0} when formatting the localized text.
+     * @return Formatted localized text.
+     * @see #format(String, Locale, String, Object[])
+     */
+    public static String format(String bundleName, Locale locale,
+                                String key, Object arg1)
+    {
+        return getService().format(bundleName, locale, key, arg1);
+    }
+
+    /**
+     * Formats a localized value using the provided objects.
+     *
+     * @param bundleName The bundle in which to look for the localizable text.
+     * @param locale The locale for which to format the text.
+     * @param key The identifier for the localized text to retrieve,
+     * @param arg1 The object to use as {0} when formatting the localized text.
+     * @param arg2 The object to use as {1} when formatting the localized text.
+     * @return Formatted localized text.
+     * @see #format(String, Locale, String, Object[])
+     */
+    public static String format(String bundleName, Locale locale,
+                                String key, Object arg1, Object arg2)
+    {
+        return getService().format(bundleName, locale, key, arg1, arg2);
+    }
+
+    /**
+     * Formats a localized value using the provided objects.
+     *
+     * @param bundleName The bundle in which to look for the localizable text.
+     * @param locale The locale for which to format the text.
+     * @param key The identifier for the localized text to retrieve,
+     * @param args The objects to use as {0}, {1}, etc. when
+     *             formatting the localized text.
+     * @return Formatted localized text.
+     */
+    public static String format(String bundleName, Locale locale,
+                                String key, Object[] args)
+    {
+        return getService().format(bundleName, locale, key, args);
+    }
+
+    /**
      * Gets the <code>LocalizationService</code> implementation.
      *
      * @return the LocalizationService implementation.
