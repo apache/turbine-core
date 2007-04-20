@@ -16,6 +16,7 @@ package org.apache.turbine.services.localization;
  * limitations under the License.
  */
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -577,4 +578,74 @@ public class TurbineLocalizationService
         return null;
     }
 
+    /**
+     * Formats a localized value using the provided object.
+     *
+     * @param bundleName The bundle in which to look for the localizable text.
+     * @param locale The locale for which to format the text.
+     * @param key The identifier for the localized text to retrieve,
+     * @param arg1 The object to use as {0} when formatting the localized text.
+     * @return Formatted localized text.
+     * @see #format(String, Locale, String, Object[])
+     */
+    public String format(String bundleName, Locale locale,
+                         String key, Object arg1)
+    {
+        return format(bundleName, locale, key, new Object[] { arg1 });
+    }
+
+    /**
+     * Formats a localized value using the provided objects.
+     *
+     * @param bundleName The bundle in which to look for the localizable text.
+     * @param locale The locale for which to format the text.
+     * @param key The identifier for the localized text to retrieve,
+     * @param arg1 The object to use as {0} when formatting the localized text.
+     * @param arg2 The object to use as {1} when formatting the localized text.
+     * @return Formatted localized text.
+     * @see #format(String, Locale, String, Object[])
+     */
+    public String format(String bundleName, Locale locale,
+                         String key, Object arg1, Object arg2)
+    {
+        return format(bundleName, locale, key, new Object[] { arg1, arg2 });
+    }
+    
+    /**
+     * Looks up the value for <code>key</code> in the
+     * <code>ResourceBundle</code> referenced by
+     * <code>bundleName</code>, then formats that value for the
+     * specified <code>Locale</code> using <code>args</code>.
+     *
+     * @param bundleName The bundle in which to look for the localizable text.
+     * @param locale The locale for which to format the text.
+     * @param key The identifier for the localized text to retrieve,
+     * @param args The objects to use when formatting the localized text.
+     * 
+     * @return Localized, formatted text identified by
+     * <code>key</code>.
+     */
+    public String format(String bundleName, Locale locale,
+                         String key, Object[] args)
+    {
+        if (locale == null)
+        {
+            // When formatting Date objects and such, MessageFormat
+            // cannot have a null Locale.
+            locale = getLocale((String) null);
+        }
+        String value = getString(bundleName, locale, key);
+        if (args == null)
+        {
+            args = NO_ARGS;
+        }
+        // FIXME: after switching to JDK 1.4, it will be possible to clean
+        // this up by providing the Locale along with the string in the
+        // constructor to MessageFormat.  Until 1.4, the following workaround
+        // is required for constructing the format with the appropriate locale:
+        MessageFormat messageFormat = new MessageFormat("");
+        messageFormat.setLocale(locale);
+        messageFormat.applyPattern(value);
+        return messageFormat.format(args);
+    }
 }
