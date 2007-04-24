@@ -59,13 +59,14 @@ public class LocalizationTool implements ApplicationTool
                 (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
                 try {
             localizationService = (LocalizationService)ecm.lookup(LocalizationService.ROLE);
-                }
+            }
                 catch (Exception e) {
                     throw new InstantiationException("Problem looking up Localization Service:"+e.getMessage());
-                }
+            }
         }
         return localizationService;
     }
+
     /**
      * Creates a new instance.  Used by <code>PullService</code>.
      */
@@ -73,6 +74,7 @@ public class LocalizationTool implements ApplicationTool
     {
         refresh();
     }
+
     /**
      * <p>Performs text lookups for localization.</p>
      *
@@ -98,6 +100,7 @@ public class LocalizationTool implements ApplicationTool
             return null;
         }
     }
+
     /**
      * Gets the current locale.
      *
@@ -107,10 +110,11 @@ public class LocalizationTool implements ApplicationTool
     {
         return locale;
     }
+
     /**
      * The return value of this method is used to set the name of the
      * bundle used by this tool.  Useful as a hook for using a
-     * different bundle than specifed in your
+     * different bundle than specified in your
      * <code>LocalizationService</code> configuration.
      *
      * @param data The inputs passed from {@link #init(Object)}.
@@ -120,7 +124,52 @@ public class LocalizationTool implements ApplicationTool
     {
         return getLocalizationService().getDefaultBundleName();
     }
-    // ApplicationTool implmentation
+
+    /**
+     * Formats a localized value using the provided object.
+     *
+     * @param key The identifier for the localized text to retrieve,
+     * @param arg1 The object to use as {0} when formatting the localized text.
+     * @return Formatted localized text.
+     * @see #format(String, Locale, String, Object[])
+     */
+    public String format(String key, Object arg1)
+    {
+        return getLocalizationService()
+                .format(getBundleName(null), getLocale(), key, arg1);
+    }
+
+    /**
+     * Formats a localized value using the provided objects.
+     *
+     * @param key The identifier for the localized text to retrieve,
+     * @param arg1 The object to use as {0} when formatting the localized text.
+     * @param arg2 The object to use as {1} when formatting the localized text.
+     * @return Formatted localized text.
+     * @see #format(String, Locale, String, Object[])
+     */
+    public String format(String key, Object arg1, Object arg2)
+    {
+        return getLocalizationService()
+                .format(getBundleName(null), getLocale(), key, arg1, arg2);
+    }
+
+    /**
+     * Formats a localized value using the provided objects.
+     *
+     * @param key The identifier for the localized text to retrieve,
+     * @param args The objects to use as {0}, {1}, etc. when
+     *             formatting the localized text.
+     * @return Formatted localized text.
+     */
+    public String format(String key, Object[] args)
+    {
+        return getLocalizationService()
+                .format(getBundleName(null), getLocale(), key, args);
+    }
+
+    // ApplicationTool implementation
+
     /**
      * Sets the request to get the <code>Accept-Language</code> header
      * from (reset on each request).
@@ -134,6 +183,7 @@ public class LocalizationTool implements ApplicationTool
             locale = getLocalizationService().getLocale(((RunData) data).getRequest());
         }
     }
+
     /**
      * No-op.
      */
