@@ -16,6 +16,7 @@ package org.apache.turbine.services.localization;
  * limitations under the License.
  */
 
+import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 
@@ -145,7 +146,21 @@ public class LocalizationTool implements ApplicationTool
     {
         return Localization.format(getBundleName(null), getLocale(), key, args);
     }
-    
+
+    /**
+     * Formats a localized value using the provided objects.  This variation
+     * allows for a List so that the velocity ["arg1", "arg2", "arg3"] syntax
+     * is supported.
+     *
+     * @param key The identifier for the localized text to retrieve,
+     * @param args The objects to use as {0}, {1}, etc. when
+     *             formatting the localized text.
+     * @return Formatted localized text.
+     */
+    public String format(String key, List args)
+    {
+        return Localization.format(getBundleName(null), getLocale(), key, args.toArray());
+    }
 
     // ApplicationTool implmentation
 
