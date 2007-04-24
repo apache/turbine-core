@@ -23,6 +23,7 @@ import java.util.Iterator;
 import junit.framework.TestSuite;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.turbine.test.BaseTurbineTest;
 
@@ -91,6 +92,47 @@ public class DefaultParameterParserTest
         pp.add("upload-field", test);
 
         assertTrue(pp.toString().startsWith("{upload-field=[name=null,"));
+    }
+
+    /**
+     * This Test method checks the DefaultParameterParser which carries two Sets inside it.
+     * The suggested problem (TRB-10) was that pp.keySet() returns both Keys, but
+     * pp.getStrings("key") only checks for keys which are not FileItems.  This makes no
+     * sense because a FileItem is not a String and would never be returned by
+     * getStrings() anyway.  The test case is retained anyway since there are
+     * outstanding issues in this area with respect to 2.4.
+     *
+     * @throws Exception
+     */
+    public void testAddPathInfo() throws Exception
+    {
+        ParameterParser pp = new DefaultParameterParser();
+        FileItemFactory factory = new DiskFileItemFactory(10240, null);
+
+        assertEquals("keySet() is not empty!", 0, pp.keySet().size());
+
+        FileItem test = factory.createItem("upload-field", "application/octet-stream", false, null);
+        pp.add("upload-field", test);
+
+        assertEquals("FileItem not found in keySet()!", 1, pp.keySet().size());
+
+        Iterator it = pp.keySet().iterator();
+        assertTrue(it.hasNext());
+
+        String name = (String) it.next();
+        assertEquals("Wrong name found", "upload-field", name);
+
+        assertFalse(it.hasNext());
+
+        pp.add("other-field", "foo");
+
+        assertEquals("Wrong number of fields found ", 2, pp.getKeys().length);
+
+        assertTrue(pp.containsKey("upload-field"));
+        assertTrue(pp.containsKey("other-field"));
+
+        assertNull("The returned should be null because a FileItem is not a String", pp.getStrings("upload-field"));
+        assertFalse(pp.containsKey("missing-field"));        
     }
 }
 
