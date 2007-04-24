@@ -1,3 +1,8 @@
+
+The Yaafi SystemProperty service makes this redundant.  See:
+http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/services/systempropertyservice.html
+
+
 The SystemProperties service aims to provide a convenient way of getting 
 properties defined in TurbineResources.properties into System.properties.
 
