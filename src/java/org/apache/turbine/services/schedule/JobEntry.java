@@ -53,7 +53,7 @@ public interface JobEntry extends Comparable
     /**
 	 * Check to see if job is currently active/running
 	 * 
-	 * @return true if job is currently geing run by the workerthread,
+	 * @return true if job is currently being run by the workerthread,
 	 *         otherwise false
 	 */
     public boolean isActive();
