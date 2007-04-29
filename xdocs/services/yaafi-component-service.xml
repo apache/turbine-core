@@ -1,0 +1,234 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.    
+-->
+
+<document>
+
+ <properties>
+  <title>Turbine Services - Yaafi Component Service</title>
+  <author email="seade@backstagetech.com.au">Scott Eade</author>
+ </properties>
+
+<body>
+
+<section name="Avalon Component Service">
+<p>
+The Yaafi Component service loads external modules which implement the
+<a href="http://avalon.apache.org/">Avalon</a> lifecycle interfaces.  This is
+a bridge between the Turbine 2.3 we have today and the
+<a href="http://jakarta.apache.org/turbine/fulcrum/">Fulcrum</a> components
+that until now have only been available to Turbine 2.4 (yet to be released).
+</p>
+
+<p>
+Most of the Fulcrum components should work using this service, however it is
+only being added in Turbine 2.3.3, so you should ensure that you perform your
+own testing to verify the desired behaviour of your application, though note
+that the author is successfully running <a href="http://db.apache.org/torque/">
+Torque</a>, 
+<a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-quartz/index.html">
+Fulcrum Quartz</a> as well as making use for Yaafi's 
+<a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/services/servicemanagerservice.html">
+ServiceManager</a> and 
+<a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/services/systempropertyservice.html">
+SystemProperty</a> services - all under Turbine 2.3.
+</p>
+
+</section>
+
+<section name="Dependencies">
+
+<p>
+If you are using Yaafi Component Service you will need to add Yaafi as a
+dependency (the following is from a Maven 2 POM):
+</p>
+<source><![CDATA[
+    <dependency>
+      <groupId>fulcrum</groupId>
+      <artifactId>fulcrum-yaafi</artifactId>
+      <version>1.0.4</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+]]></source>
+
+<p>
+If you are no longer using the 
+<a href="http://jakarta.apache.org/turbine/turbine/turbine-2.3.2/services/avalon-component-service.html">
+Avalon Component Service</a> you can stop your build from including the
+Excalibur dependencies thus (again from a Maven 2 POM):
+</p>
+<source><![CDATA[
+    <!-- 
+    The following four dependencies are for the Turbine AvalonComponentService.
+    They are not needed when using Yaafi Component Service as a replacement.
+    -->
+    <dependency>
+      <groupId>excalibur-component</groupId>
+      <artifactId>excalibur-component</artifactId>
+      <version>2.1</version>
+      <type>jar</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>excalibur-instrument</groupId>
+      <artifactId>excalibur-instrument-api</artifactId>
+      <version>2.1</version>
+      <type>jar</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>excalibur-logger</groupId>
+      <artifactId>excalibur-logger</artifactId>
+      <version>2.1</version>
+      <type>jar</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>excalibur-pool</groupId>
+      <artifactId>excalibur-pool-api</artifactId>
+      <version>2.1</version>
+      <type>jar</type>
+      <scope>provided</scope>
+    </dependency>
+]]></source>
+
+<p>
+Whether or not you need the above will depend on how these dependencies are
+declared in the final version of the Turbine 2.3 POM (just including Yaafi
+should be enough if they are declared as optional).
+</p>
+</section>
+
+<section name="Configuration">
+
+<source><![CDATA[
+# -------------------------------------------------------------------
+#
+#  S E R V I C E S
+#
+# -------------------------------------------------------------------
+# Classes for Turbine Services should be defined here.
+# Format: services.[name].classname=[implementing class]
+#
+# To specify properties of a service use the following syntax:
+# service.[name].[property]=[value]
+
+services.YaafiComponentService.classname=org.apache.turbine.services.avaloncomponent.ACSYaafiComponentService
+services.YaafiComponentService.earlyInit=true
+...
+
+# -------------------------------------------------------------------
+#
+#  Y A A F I   C O M P O N E N T   S E R V I C E
+#
+# -------------------------------------------------------------------
+# Components implementing the avalon lifecycle interfaces can be
+# loaded, configured and initialized by Turbine
+# -------------------------------------------------------------------
+
+services.YaafiComponentService.containerConfiguration = /WEB-INF/conf/containerConfiguration.xml
+]]></source>
+<p>
+In /WEB-INF/conf you should provide containerConfiguration.xml:
+</p>
+<source><![CDATA[
+<fulcrum-yaafi>
+  <componentRoles>
+    <location>/WEB-INF/conf/componentRoles.xml</location>
+  </componentRoles>
+  <componentConfiguration>
+    <location>/WEB-INF/conf/componentConfiguration.xml</location>
+  </componentConfiguration>
+</fulcrum-yaafi>
+]]></source>
+<p>
+componentRoles.xml:
+</p>
+<source><![CDATA[
+<role-list>
+    <role name="org.apache.fulcrum.yaafi.service.servicemanager.ServiceManagerService"
+          default-class="org.apache.fulcrum.yaafi.service.servicemanager.ServiceManagerServiceImpl"/>
+    <role name="org.apache.fulcrum.yaafi.service.systemproperty.SystemPropertyService"
+          shorthand="SystemPropertyService"
+          default-class="org.apache.fulcrum.yaafi.service.systemproperty.SystemPropertyServiceImpl"
+          early-init="true"/>  
+    <role name="org.apache.torque.avalon.Torque"
+          shorthand="torque"
+          default-class="org.apache.torque.avalon.TorqueComponent"/>
+    <!-- Details of other components and services you want to use. -->
+</role-list>]]></source>
+<p>
+and componentConfiguration.xml:
+</p>
+<source><![CDATA[
+<componentConfig>
+    <SystemPropertyService>
+        <property name="my.property">my property value</property>
+    </SystemPropertyService>
+
+    <torque>
+        <configfile>WEB-INF/conf/Torque.properties</configfile>
+    </torque>
+    
+    <!-- Configuration for other components and services. -->
+</componentConfig>
+]]></source>
+<p>
+No changes to torque.properties are required.
+</p>
+<p>
+If all goes well you should see the following in your log file when Turbine
+starts up (actual output will depend on your logging configuration):
+</p>
+<source><![CDATA[
+...INFO...services.BaseServiceBroker - Added Mapping for Service: ACSYaafiComponentService
+...INFO...services.BaseServiceBroker - Start Initializing service (early): ACSYaafiComponentService
+...INFO...avaloncomponent.ACSYaafiComponentService - Initializing ACSYaafiComponentService ...
+...
+...DEBUG...avalon - Incarnating the service org.apache.fulcrum.yaafi.service.servicemanager.ServiceManagerService
+...
+...DEBUG...avalon - Incarnating the service SystemPropertyService
+...
+...DEBUG...avalon - Incarnating the service torque
+...INFO...avalon - YAAFI Avalon Service Container is up and running
+...INFO...services.BaseServiceBroker - Finish Initializing service (early): ACSYaafiComponentService
+]]></source>
+
+</section>
+
+<section name="Usage">
+
+<p>
+If you plan to use the decoupled Torque in your application, you should leave
+the Yaafi Component Service configured at all times. It is started at early
+startup time.  See the 
+<a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/index.html">
+Yaafi documentation</a> for more information and for details of the various 
+<a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/services/index.html">
+services</a> that it provides and the 
+<a href="http://jakarta.apache.org/turbine/fulcrum/">Fulcrum site</a> for
+details of the other components that are available.
+</p>
+</section>
+
+</body>
+
+</document>
