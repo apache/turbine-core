@@ -36,7 +36,6 @@ import org.apache.log4j.Logger;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.servlet.TurbineServlet;
 
 /**
  * An implementation of Turbine service initializing the YAAFI container
