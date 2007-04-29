@@ -596,6 +596,16 @@
       </properties>
     </dependency>
     <dependency>
+      <groupId>fulcrum</groupId>
+      <artifactId>fulcrum-yaafi</artifactId>
+      <version>1.0.4</version>
+      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
+    </dependency>
+    <dependency>
       <groupId>javax.activation</groupId>
       <artifactId>activation</artifactId>
       <version>1.0.2</version>

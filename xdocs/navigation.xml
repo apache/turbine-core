@@ -68,6 +68,7 @@
         <item name="Velocity Service"    href="/services/velocity-service.html"/>
         <item name="XML-RPC Service"     href="/services/xmlrpc-service.html"/>
         <item name="XSLT Service"        href="/services/xslt-service.html"/>
+        <item name="Yaafi Component Service" href="/services/yaafi-component-service.html"/>
       </item>
       <item name="Howtos"                href="/howto/index.html" collapse="true">
         <item name="Action Events Howto" href="/howto/action-event-howto.html"/>
