@@ -25,6 +25,10 @@
 
 <body>
   <release version="2.3.3-dev" date="in Subversion">
+    <action type="add" dev="tv">
+      Extended HtmlPageAttributes to allow generic &lt;link /&gt; tags in the
+      HTML head section.
+    </action>
     <action type="add" dev="seade" issue="TRB-27" due-to="Thomas Vandahl">
       Added Thomas's variation on Siegfried's TurbineYaafiComponentService that
       allows Fulcrum components to be used in Turbine 2.3 in a fulcrum-yaafi
