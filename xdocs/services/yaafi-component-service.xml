@@ -111,9 +111,27 @@ Excalibur dependencies thus (again from a Maven 2 POM):
 ]]></source>
 
 <p>
+If you accessing Torque via the Yaafi Component Service you also no longer need
+Stratum (once more from a Maven 2 POM):
+</p>
+<source><![CDATA[
+    <!-- 
+	Stratum is a dependency of turbine, however it is only required when the
+	AvalonComponentService is used.
+    -->
+    <dependency>
+      <groupId>stratum</groupId>
+      <artifactId>stratum</artifactId>
+      <version>1.0</version>
+      <type>jar</type>
+      <scope>provided</scope>
+    </dependency>
+]]></source>
+
+<p>
 Whether or not you need the above will depend on how these dependencies are
 declared in the final version of the Turbine 2.3 POM (just including Yaafi
-should be enough if they are declared as optional).
+should be enough if they are all declared as optional).
 </p>
 </section>
 
