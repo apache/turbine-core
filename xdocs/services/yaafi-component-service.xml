@@ -70,8 +70,7 @@ dependency (the following is from a Maven 2 POM):
 ]]></source>
 
 <p>
-If you are no longer using the 
-<a href="http://jakarta.apache.org/turbine/turbine/turbine-2.3.2/services/avalon-component-service.html">
+If you are no longer using the <a href="avalon-component-service.html">
 Avalon Component Service</a> you can stop your build from including the
 Excalibur dependencies thus (again from a Maven 2 POM):
 </p>
@@ -111,13 +110,15 @@ Excalibur dependencies thus (again from a Maven 2 POM):
 ]]></source>
 
 <p>
-If you accessing Torque via the Yaafi Component Service you also no longer need
-Stratum (once more from a Maven 2 POM):
+If you accessing Torque via the Yaafi Component Service (as opposed to the now
+very old <a href="component-service.html">TurbineComponentService</a>) you also
+no longer need <a href="http://jakarta.apache.org/turbine/stratum/index.html">
+Stratum</a> (once more from a Maven 2 POM):
 </p>
 <source><![CDATA[
     <!-- 
 	Stratum is a dependency of turbine, however it is only required when the
-	AvalonComponentService is used.
+	TurbineComponentService is used.
     -->
     <dependency>
       <groupId>stratum</groupId>
@@ -129,9 +130,12 @@ Stratum (once more from a Maven 2 POM):
 ]]></source>
 
 <p>
-Whether or not you need the above will depend on how these dependencies are
-declared in the final version of the Turbine 2.3 POM (just including Yaafi
-should be enough if they are all declared as optional).
+The above is based on the
+<a href="http://repo1.maven.org/maven2/turbine/turbine/2.3.2/turbine-2.3.2.pom">
+turbine-2.3.2 pom</a> that exists in the default maven 2 repository.  Whether or
+not you need the above will depend on how these dependencies are declared in the
+final version of the Turbine 2.3 POM (just including Yaafi should be enough if
+they are all declared as optional).
 </p>
 </section>
 
