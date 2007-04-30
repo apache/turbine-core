@@ -25,8 +25,7 @@
     <links>
       <item name="Turbine Home"		   href="http://jakarta.apache.org/turbine/"/>
       <item name="Fulcrum"                 href="http://jakarta.apache.org/turbine/fulcrum/"/>
-      <item name="TDK"                     href="http://jakarta.apache.org/turbine/tdk/"/>
-      <item name="JCS"                     href="http://jakarta.apache.org/turbine/jcs/"/>
+      <item name="META"                    href="http://jakarta.apache.org/turbine/meta/"/>
     </links>
 
     <menu name="General Information">

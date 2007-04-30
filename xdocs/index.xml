@@ -43,12 +43,11 @@
 
  <p>
     A couple example web applications that can benefit from using this
-    framework include <a
-    href="http://www.restorationhardware.com/">e-commerce shopping cart
-    systems</a>, Yahoo style link conservatories and project / <a
-    href="http://scarab.tigris.org/">bug / issue</a> tracking systems as
+    framework include e-commerce shopping cart
+    systems, Yahoo style link conservatories and project / <a
+    href="http://scarab.tigris.org/">bug/issue</a> tracking systems as
     well as cool XML integration applications like <a
-    href="http://jakarta.apache.org/jetspeed/">Jetspeed</a>.
+    href="http://portals.apache.org/jetspeed-1/">Jetspeed</a>.
  </p>
 
  <p>
@@ -85,7 +84,7 @@
     high level systems for the web designers to use, but the low level
     framework is strictly for web engineers. Turbine is not a web
     application server. It is a tool for building web applications. Your
-    <a href="http://jakarta.apache.org/tomcat/">servlet engine</a> is your
+    <a href="http://tomcat.apache.org/">servlet engine</a> is your
     application server and the application that you develop using this
     framework is your web application.
  </p>
@@ -98,7 +97,7 @@
 
  <p>
     Turbine can be integrated with existing <a
-    href="http://jakarta.apache.org/velocity/">Velocity</a>, <a
+    href="http://velocity.apache.org/engine/">Velocity</a>, <a
     href="http://java.sun.com/products/jsp/">Java Server Pages (JSP)</a>
     and <a href="http://cocoon.apache.org/">Cocoon</a> technologies by
     specially creating Screens that use Services to parse templates.
@@ -135,19 +134,9 @@
 <section name="Where do I get releases?">
 
   <p>
-    The Turbine Development Kit (TDK) is a package that bundles a copy
-    of Turbine, Tomcat, jar files, documentation and other utilities in
-    order to help you get started with Turbine as quickly as possible.
-    Everything is pre-configured and ready to go. To get started, simply
-    follow the instructions in the TDK download.
-  </p>
-
-  <p>
-    You can find released versions of
-    Turbine,
-    the <a href="../tdk/index.html">TDK</a>,
-    and <a href="http://db.apache.org/torque/">Torque</a> from
-    <a href="http://db.apache.org/torque/status.html">here</a>.
+    Please refer to the main
+    <a href="http://jakarta.apache.org/turbine/download.html">Turbine Download
+    page</a>.
   </p>
 
 </section>
@@ -170,7 +159,7 @@ the current Turbine code.
         We have a <a href="http://jakarta.apache.org/site/mail.html">Turbine mailing
         lists</a> for discussion.</li>
     <li>
-        You can also access the <a href="cvs-usage.html">Turbine CVS
+        You can also access the <a href="cvs-usage.html">Turbine SVN
         repository</a></li>
 </ul>
 
