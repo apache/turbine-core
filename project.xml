@@ -40,7 +40,7 @@
     well. In other words, we strive to make portions of Turbine easily
     available for use in other applications.
   </description>
-  <url>http://jakarta.apache.org/turbine/development/turbine-2.3/</url>
+  <url>http://jakarta.apache.org/turbine/turbine/development/turbine-2.3/</url>
   <issueTrackingUrl>http://issues.apache.org/jira/browse/TRB</issueTrackingUrl>
   <siteAddress>people.apache.org</siteAddress>
   <siteDirectory>/www/jakarta.apache.org/turbine/turbine/development/turbine-2.3/</siteDirectory>
