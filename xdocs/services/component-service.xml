@@ -48,7 +48,14 @@ As of version 2.3 Turbine now provides an
 <a href="avalon-component-service.html">Avalon Component Service</a>
 that can be used to configure Torque.  In future releases additional
 components will be migrated to Avalon components, most likely as part
-of Fulcrum.
+of Fulcrum.  Turbine 2.3.3 also provides a
+<a href="yaafi-component-service.html">Yaafi Component Service</a> for hosting
+components in a
+<a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/index.html">
+Fulcrum Yaafi</a> container.  <strong>The ComponentService and it's implementing
+class, TurbineComponentService, are deprecated in favor of the Avalon and Yaafi
+component services - it will not be included in releases of Turbine beyond 2.3.
+</strong>
 </p>
 
 </section>
