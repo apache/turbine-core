@@ -52,7 +52,7 @@
             in the xdocs directory in the source distribution.  To submit additional
             documentation in this form or patches to existing documentation, please
             create an issue is the
-            <a href="http://issues.apache.org/scarab/issues">issue tracking system</a>
+            <a href="http://issues.apache.org/jira/browse/TRB">issue tracking system</a>
             and attach the patch files (or new files).
         </li>
         <li>
@@ -74,7 +74,7 @@
             The javadocs are another very important form of documentation for the project.
             Changes to this form of documentation should be in the form of patches.  To submit
             them, create a new issue in the
-            <a href="http://issues.apache.org/scarab/issues">issue tracking system</a>
+            <a href="http://issues.apache.org/jira/browse/TRB">issue tracking system</a>
             and attach your patch(s).
         </li>
     </ul>
@@ -92,7 +92,7 @@
 
 <p>
     If you do discover a defect in the Turbine product, please create a defect issue in
-    the <a href="http://issues.apache.org/scarab/issues">issue tracking system</a> clearly
+    the <a href="http://issues.apache.org/jira/browse/TRB">issue tracking system</a> clearly
     discribing the problem.  If you can take the time to track down the source of the problem,
     it would certainly help speed the process of getting it corrected.  Of course, actually
     fixing the problem and attaching a patch to the issue would be greatly appreciated.

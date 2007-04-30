@@ -22,6 +22,7 @@
   <title>Turbine Getting Started</title>
   <author email="jon@latchkey.com">Jon S. Stevens</author>
   <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  <author email="seade@backstagetech.com.au">Scott Eade</author>
  </properties>
 
 <body>
@@ -36,16 +37,12 @@ is available.
 </p>
 
 <p>
-The first thing that you should do is download and install the <a
-href="http://jakarta.apache.org/turbine/tdk/">Turbine Developer Kit</a>
-(TDK). The TDK has everything that you need to get started with Turbine,
-including the <a href="http://jakarta.apache.org/tomcat/">Tomcat Servlet
-Engine</a> which is preconfigured to run Turbine. The TDK also has
-sample applications as well as scripts that allow you to quickly build
-your own application. As time progresses, we will be including more and
-more helpful information in the TDK.  Please see the
-<a href="http://jakarta.apache.org/turbine/tdk/tdk-howto.html">Turbine
-Development Kit Howto</a> for more information.
+The first thing that you should do is download and install a Servlet Engine (e.g.
+<a href="http://tomcat.apache.org/">Apache Tomcat</a> and
+<a href="http://maven.apache.org/maven-1.x/">Maven 1</a>.  Then take a look at
+the documentation for the <a href="http://jakarta.apache.org/turbine/meta/">
+Maven Environment for Turbine Application (M.E.T.A.)</a> plugin - it includes
+details of how to set up a Turbine application.
 </p>
 </section>
 
@@ -137,8 +134,8 @@ TurbineConfig object.
 
 <section name="Further Questions and Comments">
 <p>
-If you have further questions or comments, please send them to the <a
-href="http://jakarta.apache.org/site/mail.html">Turbine Mailing list</a>.
+If you have further questions or comments, please send them to the
+<a href="mail-lists.html">Turbine Mailing list</a>.
 </p>
 </section>
 
