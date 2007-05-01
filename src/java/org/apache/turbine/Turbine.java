@@ -21,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
@@ -34,29 +33,21 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationFactory;
 import org.apache.commons.configuration.PropertiesConfiguration;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.lang.exception.ExceptionUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.log4j.PropertyConfigurator;
-
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.PageLoader;
-
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
-import org.apache.turbine.services.component.ComponentService;
-import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.services.rundata.TurbineRunDataFacade;
+import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.services.velocity.VelocityService;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
@@ -369,10 +360,6 @@ public class Turbine
         //
         // Be sure, that our essential services get run early
         //
-        configuration.setProperty(TurbineServices.SERVICE_PREFIX +
-                                  ComponentService.SERVICE_NAME + ".earlyInit",
-                                  Boolean.TRUE);
-
         configuration.setProperty(TurbineServices.SERVICE_PREFIX +
                                   AvalonComponentService.SERVICE_NAME + ".earlyInit",
                                   Boolean.TRUE);
