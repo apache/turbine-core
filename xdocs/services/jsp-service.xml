@@ -41,7 +41,7 @@ use JSP.
 <p>
 While Turbine supports the use of many templating systems, we definitely
 have our favorite system to use and recommend and that is <a
-href="http://jakarta.apache.org/velocity/">Velocity</a>.
+href="http://velocity.apache.org/engine/">Velocity</a>.
 </p>
 
 </section>

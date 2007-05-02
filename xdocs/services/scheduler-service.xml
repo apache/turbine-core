@@ -24,6 +24,7 @@
  <properties>
   <title>Turbine Services - Scheduler Service</title>
   <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  <author email="seade@backstagetech.com.au">Scott Eade</author>
  </properties>
 
 <body>
@@ -58,6 +59,18 @@
             Velocity template.
         </li>
     </ul>
+</p>
+
+<p>
+<strong>The Scheduler Service contains a bug whereby system time changes that
+move the clock backwards can result in all tasks scheduled for execution
+occurring twice (this happens at the end of DST here below the equator).</strong>
+</p>
+
+<p>
+<strong>As of Turbine 2.3.3 the Scheduler Service is deprecated.  Please use the
+<a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-quartz/">Fulcrum
+Quartz</a> component instead.</strong>
 </p>
 
 </section>

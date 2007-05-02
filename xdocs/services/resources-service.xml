@@ -35,7 +35,7 @@
 Within Turbine was a service for reading and accessing data in Property
 files. The classes that accomplish this have been borrowed from the
 Apache JServ project, moved many time and finally ended up in the <a
-href="http://jakarta.apache.org/commons/sandbox/configuration">commons-configuration</a>
+href="http://jakarta.apache.org/commons/configuration/">commons-configuration</a>
  sub-project. So we removed the Service itself and now use commons-configuration everywhere.
 </p>
 

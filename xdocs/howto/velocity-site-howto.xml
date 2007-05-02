@@ -31,7 +31,7 @@
 
 <p>
 In Turbine, we have excellent integration with the template tool
-<a href="http://jakarta.apache.org/velocity/">Velocity</a>,
+<a href="http://velocity.apache.org/engine/">Velocity</a>,
 we call this VelocitySite building. The reason why we want to wrap Turbine
 around Velocity instead of using it on its own is to provide a completely
 MVC model for building web applications where the framework has control
@@ -49,7 +49,7 @@ re-usable.
 Knowledge of how Velocity works and what a Velocity Context object is
 are required for understanding this documentation. This documentation also
 assumes that you are using a Servlet API 2.2 and higher serlvet engine
-such as <a href="http://jakarta.apache.org/tomcat/">Tomcat</a> because
+such as <a href="http://tomcat.apache.org/">Tomcat</a> because
 we are now targeting towards using WAR archives. Although, this should
 work with older servlet engines as well...it just may be slightly harder
 for you to setup. You should also be familiar with the rest of the Turbine
@@ -161,7 +161,7 @@ role_editor.vm maps to Role_editor.class
 The result will be a fully formed HTML document with the <em>$hello</em>
 replaced with the value: "this is a test...". If you want to make the URI
 above shorter or easier to read, you could simply re-write things using
-<a href="http://www.apache.org/docs/mod/mod_rewrite.html">mod_rewrite</a>.
+<a href="http://httpd.apache.org/docs/1.3/mod/mod_rewrite.html">mod_rewrite</a>.
 For example, by removing the "<em>/servlet/Turbine/template</em>" portion
 of the URI.
 </p>

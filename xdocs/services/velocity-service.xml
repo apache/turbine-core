@@ -31,6 +31,11 @@
 <section name="Velocity Service">
 
 <p>
+The Velocity Service is used to process
+<a href="http://velocity.apache.org/engine/">Velocity</a> templates from within
+a Turbine Screen. It is used in conjunction with the
+<a href="template-service.html">Template Service</a> as a Templating Engine for
+templates ending in "vm".
 </p>
 
 </section>
@@ -67,7 +72,7 @@ services.VelocityService.classname = org.apache.turbine.services.velocity.Turbin
 services.VelocityService.template.extension = vm
 services.VelocityService.default.page = VelocityPage
 services.VelocityService.default.screen = VelocityScreen
-services.VelocityService.default.layout = VelocityECSLayout
+services.VelocityService.default.layout = VelocityOnlyLayout
 services.VelocityService.default.navigation = VelocityNavigation
 services.VelocityService.default.error.screen = VelocityErrorScreen
 services.VelocityService.default.layout.template = Default.vm
@@ -96,6 +101,14 @@ services.VelocityService.classpath.resource.loader.class = org.apache.velocity.r
 </section>
 
 <section name="Usage">
+
+<p>
+The Velocity Service registers itself as translation engine with the Template
+Service and it gets accessed from there. After configuring it in your properties,
+it should never be necessary to call methods from this service directly. Please
+refer to the <a href="../howto/context-howto.html">Velocity Context Howto</a>
+for details of how to use this service.
+</p>
 
 </section>
 

@@ -130,8 +130,7 @@ $intake.declareGroups()
             <p>
                 In order to use Turbine's Action event system, the submit buttons
                 must adhere to the naming specification defined by
-                <a href="http://jakarta.apache.org/turbine/turbine-2/howto/action-event-howto.html">
-                Turbine's Action event system</a>.
+                <a href="action-event-howto.html">Turbine's Action event system</a>.
             </p>
 
             <subsection name="*** IMPORTANT NOTE ***">
@@ -249,7 +248,7 @@ $intake.declareGroups()
                 <p>
                     For a complete list of valid attributes of the group
                     element, please see the
-                    <a href="http://jakarta.apache.org/turbine/turbine-2/services/intake-service.html">
+                    <a href="../services/intake-service.html">
                     intake-service document</a> on the Turbine web site.
                 </p>
             </subsection>
@@ -330,7 +329,7 @@ $intake.declareGroups()
                 <p>
                     For a complete list of valid attributes of the field
                     element, please see the
-                    <a href="http://jakarta.apache.org/turbine/turbine-2/services/intake-service.html">
+                    <a href="../services/intake-service.html">
                     intake-service document</a> on the Turbine web site.
                 </p>
             </subsection>
@@ -351,7 +350,7 @@ $intake.declareGroups()
                 <p/>
                 <p>
                     For more info on the supported rules, please see the
-                    <a href="http://jakarta.apache.org/turbine/turbine-2/services/intake-service.html">
+                    <a href="../services/intake-service.html">
                     intake-service document</a> on the Turbine web site:
                 </p>
             </subsection>

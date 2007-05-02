@@ -31,9 +31,9 @@
 
 <section name="Introduction">
 <p>
-    The VelocityECSLayout has been deprecated in Turbine 2.3. This document
-    is intended to help you convert your application to use the
-    VelocityOnlyLayout.
+    <strong>The VelocityECSLayout was deprecated in Turbine 2.3 (and removed in
+    2.3.3).</strong> This document is intended to help you convert your
+    application to use the VelocityOnlyLayout.
 </p>
 <p>
     The VelocityOnlyLayout does not use ECS to generate the HTML page for
