@@ -1,19 +1,22 @@
 package org.apache.turbine.util;
 
 /*
- * Copyright 2001-2005 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import org.apache.turbine.om.security.Permission;
@@ -24,16 +27,16 @@ import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
  * Utility for doing security checks in Screens and Actions.
- * 
+ *
  * Sample usage:<br>
- * 
+ *
  * <pre><code>
  *  SecurityCheck mycheck =
  *    new SecurityCheck(data, &quot;Unauthorized to do this!&quot;, &quot;WrongPermission&quot;);
  *  if (!mycheck.hasPermission(&quot;add_user&quot;);
  *    return;
  * </code></pre>
- * 
+ *
  * @author <a href="mailto:mbryson@mindspring.com">Dave Bryson</a>
  * @author <a href="jh@byteaction.de">J&#252;rgen Hoffmann</a>
  * @version $Id$
@@ -54,7 +57,7 @@ public class SecurityCheck
 
     /**
      * Constructor.
-     * 
+     *
      * @param data
      *            A Turbine RunData object.
      * @param message
@@ -69,7 +72,7 @@ public class SecurityCheck
 
     /**
      * Constructor.
-     * 
+     *
      * @param data
      *            A Turbine RunData object.
      * @param message
@@ -89,7 +92,7 @@ public class SecurityCheck
 
     /**
      * Does the user have this role?
-     * 
+     *
      * @param role
      *            A Role.
      * @return True if the user has this role.
@@ -113,7 +116,7 @@ public class SecurityCheck
 
     /**
      * Does the user have this role?
-     * 
+     *
      * @param role
      *            A String.
      * @return True if the user has this role.
@@ -138,13 +141,13 @@ public class SecurityCheck
             {
                 throw(e);
             }
-        }         
+        }
         return hasRole(TurbineSecurity.getRoleByName(role));
     }
 
     /**
      * Does the user have this permission?
-     * 
+     *
      * @param permission
      *            A Permission.
      * @return True if the user has this permission.
@@ -170,10 +173,10 @@ public class SecurityCheck
      * Does the user have this permission? If initialze is set to <code>true</code>
      * The permission will be created and granted to the first available Role of
      * the user, that the SecurityCheck is running against.
-     * 
+     *
      * If the User has no Roles, the first Role via TurbineSecurity is granted the
      * permission.
-     * 
+     *
      * @param permission
      *            A String.
      * @return True if the user has this permission.
@@ -192,11 +195,11 @@ public class SecurityCheck
             if(initialize)
             {
                 permissionObject = TurbineSecurity.createPermission(permission);
-                
+
                 Role role = null;
                 RoleSet roles = data.getACL().getRoles();
                 if(roles.size() > 0) role = roles.getRolesArray()[0];
-                
+
                 if(role == null)
                 {
                     /*
@@ -206,7 +209,7 @@ public class SecurityCheck
                     roles = TurbineSecurity.getAllRoles();
                     if(roles.size() > 0) role = roles.getRolesArray()[0];
                 }
-                
+
                 if(role != null)
                 {
                     /*
@@ -220,14 +223,14 @@ public class SecurityCheck
             {
                 throw(e);
             }
-        }         
+        }
         return hasPermission(permissionObject);
     }
 
     /**
      * Get the message that should be displayed. This is initialized in the
      * constructor.
-     * 
+     *
      * @return A String.
      */
     public String getMessage()
@@ -238,7 +241,7 @@ public class SecurityCheck
     /**
      * Get the screen that should be displayed. This is initialized in the
      * constructor.
-     * 
+     *
      * @return A String.
      */
     public String getFailScreen()

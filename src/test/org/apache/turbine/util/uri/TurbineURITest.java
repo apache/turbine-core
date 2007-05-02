@@ -1,19 +1,22 @@
 package org.apache.turbine.util.uri;
 
 /*
- * Copyright 2001-2006 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import junit.framework.TestSuite;
@@ -119,7 +122,7 @@ public class TurbineURITest extends BaseTestCase
         turi.addQueryData("test", "");
         assertEquals("/context/servlet/turbine?test=", turi.getRelativeLink());
         turi.removeQueryData("test");
-        
+
         // Check null
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
         turi.addQueryData("test", null);
@@ -136,7 +139,7 @@ public class TurbineURITest extends BaseTestCase
         // Kind of susspect result - might result in "//" in the URL.
         assertEquals("/context/servlet/turbine/test/", turi.getRelativeLink());
         turi.removePathInfo("test");
-        
+
         // Check null
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
         turi.addPathInfo("test", null);
@@ -160,11 +163,11 @@ public class TurbineURITest extends BaseTestCase
         assertEquals("/context/servlet/turbine?test=", turi.getRelativeLink());
         turi.removeQueryData("test");
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
-        
+
         pp = new DefaultParameterParser();
         pp.add("test", (String) null);
         turi.add(1, pp); // 1 = query data
-        // Should make the following work so as to be consistent with directly added values. 
+        // Should make the following work so as to be consistent with directly added values.
         //assertEquals("/context/servlet/turbine?test=null", turi.getRelativeLink());
         turi.removeQueryData("test");
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
@@ -179,5 +182,5 @@ public class TurbineURITest extends BaseTestCase
         turi.removeQueryData("upload-field");
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
     }
-    
+
 }

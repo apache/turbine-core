@@ -16,7 +16,7 @@ package org.apache.turbine.services.avaloncomponent;
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
- * under the License.    
+ * under the License.
  */
 
 import java.io.File;
@@ -196,7 +196,7 @@ public class ACSYaafiComponentService extends TurbineBaseService implements
 
     /**
      * Create a ServiceContainerConfiguration based on the Turbine configuration
-     * 
+     *
      * @param conf the Turbine configuration
      * @param appRoot the absolute path to the application root directory
      * @return the YAAFI configuration
