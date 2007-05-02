@@ -16,6 +16,7 @@ package org.apache.turbine.om.security.peer;
  * limitations under the License.
  */
 
+import org.apache.torque.TorqueException;
 import org.apache.torque.util.BasePeer;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
@@ -37,20 +38,35 @@ public class RolePermissionPeer extends BasePeer
     private static final long serialVersionUID = 4149656810524167640L;
 
    /** The map builder for this Peer. */
-    private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
-            getMapBuilder(TurbineMapBuilder.class.getName());
+    private static final TurbineMapBuilder MAP_BUILDER;
 
     /** The table name for this peer. */
-    public static final String TABLE_NAME = MAP_BUILDER.getTableRolePermission();
+    public static final String TABLE_NAME;
 
     /** The column name for the permission id field. */
-    public static final String PERMISSION_ID
-            = MAP_BUILDER.getRolePermission_PermissionId();
+    public static final String PERMISSION_ID;
 
     /** The column name for the role id field. */
-    public static final String ROLE_ID = MAP_BUILDER.getRolePermission_RoleId();
+    public static final String ROLE_ID;
 
 
+    static
+    {
+        try
+        {
+            MAP_BUILDER = (TurbineMapBuilder)/* Torque. */getMapBuilder(TurbineMapBuilder.class.getName());
+        }
+        catch (TorqueException e)
+        {
+            log.error("Could not initialize Peer", e);
+            throw new RuntimeException(e);
+        }
+
+        TABLE_NAME = MAP_BUILDER.getTableRolePermission();
+        PERMISSION_ID = MAP_BUILDER.getRolePermission_PermissionId();
+        ROLE_ID = MAP_BUILDER.getRolePermission_RoleId();
+    }
+    
     /**
      * Deletes the mappings for a role_id.
      *

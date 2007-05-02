@@ -25,6 +25,31 @@
 
 <body>
   <release version="2.3.3-dev" date="in Subversion">
+    <action type="remove" dev="tv">
+      Remove the ComponentService. This has been deprecated long ago.
+      It has been replaced by the different incarnations of 
+      AvalonComponentService.
+    </action>
+    <action type="remove" dev="tv">
+      Remove long deprecated classes.
+      <ul>
+      	<li>org.apache.turbine.util.SequencedHashtable</li>
+        <li>org.apache.turbine.util.StringStackBuffer</li>
+        <li>org.apache.turbine.util.FileUtils</li>
+        <li>org.apache.turbine.util.BufferCache</li>
+        <li>org.apache.turbine.util.QuickSort</li>
+        <li>org.apache.turbine.util.Comparable</li>
+        <li>org.apache.turbine.util.Log</li>
+        <li>org.apache.turbine.util.mail.*</li>
+        <li>org.apache.turbine.util.validation.*</li>
+        <li>org.apache.turbine.util.upload.*</li>
+        <li>org.apache.java.lang.*</li>
+        <li>org.apache.java.security.*</li>
+        <li>org.apache.turbine.util.db.*</li>
+   	    <li>org.apache.turbine.services.resources.TurbineResources</li>
+	    <li>org.apache.turbine.services.db.*</li>
+      </ul>
+    </action>
     <action type="add" dev="tv">
       Extended HtmlPageAttributes to allow generic &lt;link /&gt; tags in the
       HTML head section.
@@ -33,6 +58,9 @@
       Added Thomas's variation on Siegfried's TurbineYaafiComponentService that
       allows Fulcrum components to be used in Turbine 2.3 in a fulcrum-yaafi
       container.
+    </action>
+    <action type="add" dev="tv">
+      Extended the LocalizationService to provide formatting facilities.
     </action>
     <action type="add" dev="tv">
       Extended Intake to care for localization and to allow user-defined

@@ -17,15 +17,9 @@ package org.apache.turbine.om.security.peer;
  */
 
 import java.sql.Connection;
-
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-
-import com.workingdogs.village.Column;
-import com.workingdogs.village.Record;
-import com.workingdogs.village.Schema;
-import com.workingdogs.village.Value;
 
 import org.apache.torque.TorqueException;
 import org.apache.torque.map.TableMap;
@@ -33,12 +27,16 @@ import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.Persistent;
 import org.apache.torque.util.BasePeer;
 import org.apache.torque.util.Criteria;
-
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
 import org.apache.turbine.util.security.DataBackendException;
+
+import com.workingdogs.village.Column;
+import com.workingdogs.village.Record;
+import com.workingdogs.village.Schema;
+import com.workingdogs.village.Value;
 
 /**
  * This class handles all the database access for the User/User
@@ -55,73 +53,102 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
     private static final long serialVersionUID = -5981268145973167352L;
 
     /** The mapBuilder for this Peer. */
-    private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
-            getMapBuilder(TurbineMapBuilder.class.getName());
+    private static final TurbineMapBuilder MAP_BUILDER;
 
     // column names
     /** The column name for the visitor id field. */
-    private static final String USER_ID_COLUMN = MAP_BUILDER.getUserId();
+    private static final String USER_ID_COLUMN;
 
     /** This is the value that is stored in the database for confirmed users. */
-    public static final String CONFIRM_DATA
-            = org.apache.turbine.om.security.User.CONFIRM_DATA;
+    public static final String CONFIRM_DATA;
 
     /** The column name for the visitor id field. */
-    private static final String OBJECT_DATA_COLUMN = MAP_BUILDER.getObjectData();
+    private static final String OBJECT_DATA_COLUMN;
 
     /** The table name for this peer. */
-    private static final String TABLE_NAME = MAP_BUILDER.getTableUser();
+    private static final String TABLE_NAME;
 
     // Criteria Keys
     /** The key name for the visitor id field. */
-    public static final String USER_ID = MAP_BUILDER.getUser_UserId();
+    public static final String USER_ID;
 
     /** The key name for the username field. */
-    public static final String USERNAME = MAP_BUILDER.getUser_Username();
+    public static final String USERNAME;
 
     /** The key name for the password field. */
-    public static final String PASSWORD = MAP_BUILDER.getUser_Password();
+    public static final String PASSWORD;
 
     /** The key name for the first name field. */
-    public static final String FIRST_NAME = MAP_BUILDER.getUser_FirstName();
+    public static final String FIRST_NAME;
 
     /** The key name for the last name field. */
-    public static final String LAST_NAME = MAP_BUILDER.getUser_LastName();
+    public static final String LAST_NAME;
 
     /** The key name for the modified field. */
-    public static final String MODIFIED = MAP_BUILDER.getUser_Modified();
+    public static final String MODIFIED;
 
     /** The key name for the created field. */
-    public static final String CREATED = MAP_BUILDER.getUser_Created();
+    public static final String CREATED;
 
     /** The key name for the email field. */
-    public static final String EMAIL = MAP_BUILDER.getUser_Email();
+    public static final String EMAIL;
 
     /** The key name for the last_login field. */
-    public static final String LAST_LOGIN = MAP_BUILDER.getUser_LastLogin();
+    public static final String LAST_LOGIN;
 
     /** The key name for the confirm_value field. */
-    public static final String CONFIRM_VALUE
-            = MAP_BUILDER.getUser_ConfirmValue();
+    public static final String CONFIRM_VALUE;
 
     /** The key name for the object_data field. */
-    public static final String OBJECT_DATA = MAP_BUILDER.getUser_ObjectData();
+    public static final String OBJECT_DATA;
 
     /** The schema. */
-    private static Schema schema = initTableSchema(TABLE_NAME);
+    private static Schema schema;
 
     /** The columns. */
-    private static Column[] columns
-            = initTableColumns(schema);
+    private static Column[] columns;
 
     /** The names of the columns. */
-    public static String[] columnNames = initColumnNames(columns);
+    public static String[] columnNames;
 
     /** The keys for the criteria. */
-    public static String[] criteriaKeys
-            = initCriteriaKeys(TABLE_NAME, columnNames);
+    public static String[] criteriaKeys;
 
+    static
+    {
+        try
+        {
+            MAP_BUILDER = (TurbineMapBuilder)/* Torque. */getMapBuilder(TurbineMapBuilder.class.getName());
+        }
+        catch (TorqueException e)
+        {
+            log.error("Could not initialize Peer", e);
+            throw new RuntimeException(e);
+        }
 
+        USER_ID_COLUMN = MAP_BUILDER.getUserId();
+        CONFIRM_DATA = org.apache.turbine.om.security.User.CONFIRM_DATA;
+        OBJECT_DATA_COLUMN = MAP_BUILDER.getObjectData();
+        TABLE_NAME = MAP_BUILDER.getTableUser();
+
+        USER_ID = MAP_BUILDER.getUser_UserId();
+        USERNAME = MAP_BUILDER.getUser_Username();
+        PASSWORD = MAP_BUILDER.getUser_Password();
+        FIRST_NAME = MAP_BUILDER.getUser_FirstName();
+        LAST_NAME = MAP_BUILDER.getUser_LastName();
+        MODIFIED = MAP_BUILDER.getUser_Modified();
+        CREATED = MAP_BUILDER.getUser_Created();
+        EMAIL = MAP_BUILDER.getUser_Email();
+        LAST_LOGIN = MAP_BUILDER.getUser_LastLogin();
+        CONFIRM_VALUE = MAP_BUILDER.getUser_ConfirmValue();
+        OBJECT_DATA = MAP_BUILDER.getUser_ObjectData();
+
+        schema = initTableSchema(TABLE_NAME);
+        columns = initTableColumns(schema);
+        columnNames = initColumnNames(columns);
+        criteriaKeys = initCriteriaKeys(TABLE_NAME, columnNames);
+    }
+    
     /**
      * Get the name of this table.
      *

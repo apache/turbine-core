@@ -660,19 +660,9 @@
       </properties>
     </dependency>
     <dependency>
-      <groupId>stratum</groupId>
-      <artifactId>stratum</artifactId>
-      <version>1.0</version>
-      <url>http://jakarta.apache.org/turbine/stratum/</url>
-      <type>jar</type>
-      <properties>
-        <dist.bundle>true</dist.bundle>
-      </properties>
-    </dependency>
-    <dependency>
       <groupId>torque</groupId>
       <artifactId>torque</artifactId>
-      <version>3.1.1</version>
+      <version>3.2</version>
       <url>http://db.apache.org/torque/</url>
       <type>jar</type>
       <properties>
@@ -683,6 +673,16 @@
       <groupId>velocity</groupId>
       <artifactId>velocity</artifactId>
       <version>1.4</version>
+      <url>http://jakarta.apache.org/velocity/</url>
+      <type>jar</type>
+      <properties>
+        <dist.bundle>true</dist.bundle>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>velocity</groupId>
+      <artifactId>texen</artifactId>
+      <version>1.0</version>
       <url>http://jakarta.apache.org/velocity/</url>
       <type>jar</type>
       <properties>
@@ -824,7 +824,7 @@ REMOVE THIS LINE -->
     <dependency>
       <groupId>torque</groupId>
       <artifactId>maven-torque-plugin</artifactId>
-      <version>3.1.1</version>
+      <version>3.2</version>
       <type>plugin</type>
     </dependency>
 

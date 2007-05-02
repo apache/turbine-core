@@ -21,6 +21,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+
 import org.apache.torque.TorqueException;
 import org.apache.torque.om.BaseObject;
 import org.apache.torque.om.NumberKey;
@@ -35,6 +36,7 @@ import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.PermissionSet;
+
 import com.workingdogs.village.Record;
 
 /**
@@ -52,24 +54,39 @@ public class PermissionPeer extends BasePeer
      /** Serial Version UID */
     private static final long serialVersionUID = 2762005892291909743L;
 
-   /** The map builder for this Peer. */
-    private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
-            getMapBuilder(TurbineMapBuilder.class.getName());
+    /** The map builder for this Peer. */
+    private static final TurbineMapBuilder MAP_BUILDER;
 
     /** The table name for this peer. */
-    private static final String TABLE_NAME = MAP_BUILDER.getTablePermission();
+    private static final String TABLE_NAME;
 
     /** The column name for the permission id field. */
-    public static final String PERMISSION_ID
-            = MAP_BUILDER.getPermission_PermissionId();
-
-    /** The column name for the name field. */
-    public static final String NAME = MAP_BUILDER.getPermission_Name();
+    public static final String PERMISSION_ID;
 
     /** The column name for the ObjectData field */
-    public static final String OBJECTDATA
-            = MAP_BUILDER.getPermission_ObjectData();
+    public static final String OBJECTDATA;
 
+    /** The column name for the name field. */
+    public static final String NAME;
+
+    static
+    {
+        try
+        {
+            MAP_BUILDER = (TurbineMapBuilder)/* Torque. */getMapBuilder(TurbineMapBuilder.class.getName());
+        }
+        catch (TorqueException e)
+        {
+            log.error("Could not initialize Peer", e);
+            throw new RuntimeException(e);
+        }
+
+        TABLE_NAME = MAP_BUILDER.getTablePermission();
+        PERMISSION_ID = MAP_BUILDER.getPermission_PermissionId();
+        NAME = MAP_BUILDER.getPermission_Name();
+        OBJECTDATA = MAP_BUILDER.getPermission_ObjectData();
+    }
+    
     /**
      * Retrieves/assembles a PermissionSet
      *

@@ -19,6 +19,7 @@ package org.apache.turbine.om.security.peer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.torque.TorqueException;
 import org.apache.torque.om.BaseObject;
 import org.apache.torque.om.NumberKey;
@@ -33,6 +34,7 @@ import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.RoleSet;
+
 import com.workingdogs.village.Record;
 
 
@@ -51,21 +53,38 @@ public class RolePeer extends BasePeer
     private static final long serialVersionUID = 8236100811297919996L;
 
     /** The map builder for this Peer. */
-    private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
-            getMapBuilder(TurbineMapBuilder.class.getName());
+    private static final TurbineMapBuilder MAP_BUILDER;
 
     /** The table name for this peer. */
-    private static final String TABLE_NAME = MAP_BUILDER.getTableRole();
+    private static final String TABLE_NAME;
 
     /** The column name for the role id field. */
-    public static final String ROLE_ID = MAP_BUILDER.getRole_RoleId();
+    public static final String ROLE_ID;
 
     /** The column name for the name field. */
-    public static final String NAME = MAP_BUILDER.getRole_Name();
+    public static final String NAME;
 
     /** The column name for the ObjectData field */
-    public static final String OBJECTDATA = MAP_BUILDER.getRole_ObjectData();
+    public static final String OBJECTDATA;
 
+    static
+    {
+        try
+        {
+            MAP_BUILDER = (TurbineMapBuilder)/* Torque. */getMapBuilder(TurbineMapBuilder.class.getName());
+        }
+        catch (TorqueException e)
+        {
+            log.error("Could not initialize Peer", e);
+            throw new RuntimeException(e);
+        }
+
+        TABLE_NAME = MAP_BUILDER.getTableRole();
+        ROLE_ID = MAP_BUILDER.getRole_RoleId();
+        NAME = MAP_BUILDER.getRole_Name();
+        OBJECTDATA = MAP_BUILDER.getRole_ObjectData();
+    }
+    
     /**
      * Retrieves/assembles a RoleSet based on the Criteria passed in
      *

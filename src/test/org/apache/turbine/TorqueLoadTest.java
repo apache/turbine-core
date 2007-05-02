@@ -20,6 +20,7 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 import org.apache.torque.Torque;
+import org.apache.torque.avalon.TorqueComponent;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.test.BaseTestCase;
@@ -65,36 +66,8 @@ public class TorqueLoadTest
         Torque.init("conf/test/TorqueTest.properties");
         assertTrue("Torque must be initialized!", Torque.isInit());
         Torque.shutdown();
-        // Uncomment once we get a torque 3.1 release post alpha-2
-        // Everything up to alpha-2 does not shut down Torque properly.
-        // assertFalse("Torque did not shut down properly!", Torque.isInit());
-    }
 
-    /**
-     * Load Torque with the ComponentService
-     */
-    public void testTorqueComponentServiceInit()
-            throws Exception
-    {
-        assertFalse("Torque should not be initialized!", Torque.isInit());
-
-        TurbineConfig tc = new TurbineConfig(".", "/conf/test/TurbineComponentService.properties");
-        try
-        {
-            tc.initialize();
-            assertTrue("Torque must be initialized!", Torque.isInit());
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-        finally
-        {
-            tc.dispose();
-        }
-        // Uncomment once we get a torque 3.1 release post alpha-2
-        // Everything up to alpha-2 does not shut down Torque properly.
-        // assertFalse("Torque did not shut down properly!", Torque.isInit());
+        assertFalse("Torque did not shut down properly!", Torque.isInit());
     }
 
     private AvalonComponentService getService()
@@ -103,39 +76,35 @@ public class TorqueLoadTest
                 .getService(AvalonComponentService.SERVICE_NAME);
     }
 
-    // Uncomment once we get a torque 3.1 release post alpha-2
-    // The current version of Torque doesn't run right with the AvalonComponentService
-    //
-    //    /**
-    //     * Load Torque with the AvalonComponentService
-    //     */
-    //     public void testTorqueAvalonServiceInit()
-    //             throws Exception
-    //     {
-    //         assertFalse("Torque should not be initialized!", Torque.isInit());
+    /**
+     * Load Torque with the AvalonComponentService
+     */
+    public void testTorqueAvalonServiceInit()
+            throws Exception
+    {
+         assertFalse("Torque should not be initialized!", Torque.isInit());
+         TurbineConfig tc = new TurbineConfig(".", "/conf/test/TurbineAvalonService.properties");
 
-    //         TurbineConfig tc = new TurbineConfig(".", "/conf/test/TurbineAvalonService.properties");
+         try
+         {
+             tc.initialize();
+             assertTrue("Torque must be initialized!", Torque.isInit());
 
-    //         try
-    //         {
-    //             tc.initialize();
-    //             assertTrue("Torque must be initialized!", Torque.isInit());
+             TorqueComponent toc =
+                     (TorqueComponent) getService().lookup("org.apache.torque.avalon.Torque");
+             assertTrue("TorqueComponent must be initialized!", toc.isInit());
 
-    //             TorqueComponent toc =
-    //                     (TorqueComponent) getService().lookup("org.apache.torque.avalon.Torque");
-    //             assertTrue("TorqueComponent must be initialized!", toc.isInit());
-
-    //             getService().release(toc);
-    //         }
-    //         catch (Exception e)
-    //         {
-    //             throw e;
-    //         }
-    //         finally
-    //         {
-    //             tc.dispose();
-    //         }
-    //         assertFalse("Torque did not shut down properly!", Torque.isInit());
-    //     }
+             getService().release(toc);
+         }
+         catch (Exception e)
+         {
+             throw e;
+         }
+         finally
+         {
+             tc.dispose();
+         }
+         assertFalse("Torque did not shut down properly!", Torque.isInit());
+    }
 }
 
