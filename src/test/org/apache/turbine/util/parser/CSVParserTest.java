@@ -1,19 +1,22 @@
 package org.apache.turbine.util.parser;
 
 /*
- * Copyright 2001-2005 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import java.io.File;
@@ -640,7 +643,7 @@ public class CSVParserTest
     public void testEmptyColumnNames()
             throws Exception
     {
-        String readLine = 
+        String readLine =
                 "eins,zwei,drei,vier,fuenf,sechs,sieben,acht,neun,null\n"
                 + "0,1,2,3,4,5,6,7,8,9\n";
 
@@ -669,7 +672,7 @@ public class CSVParserTest
     public void testReadColumnNames()
             throws Exception
     {
-        String readLine = 
+        String readLine =
                 "eins,zwei,drei,vier,fuenf,sechs,sieben,acht,neun,null\n"
                 + "0,1,2,3,4,5,6,7,8,9\n";
 
@@ -711,7 +714,7 @@ public class CSVParserTest
     public void testJustReadColumnNames()
             throws Exception
     {
-        String readLine = 
+        String readLine =
                 "eins,zwei,drei,vier,fuenf,sechs,sieben,acht,neun,null\n";
 
         String [] fields = { "eins", "zwei", "drei", "vier", "fuenf", "sechs", "sieben", "acht", "neun", "null", };
@@ -739,7 +742,7 @@ public class CSVParserTest
     public void testJustReadColumnNamesEOF()
             throws Exception
     {
-        String readLine = 
+        String readLine =
                 "eins,zwei,drei,vier,fuenf,sechs,sieben,acht,neun,null";
 
         String [] fields = { "eins", "zwei", "drei", "vier", "fuenf", "sechs", "sieben", "acht", "neun", "null", };
@@ -767,7 +770,7 @@ public class CSVParserTest
     public void testJustReadColumnNamesQuoted()
             throws Exception
     {
-        String readLine = 
+        String readLine =
                 "\"eins\",\"zwei\",\"drei\",\"vier\",\"fuenf\",\"sechs\",\"sieben\",\"acht\",\"neun\",\"null\"\n";
 
         String [] fields = { "eins", "zwei", "drei", "vier", "fuenf", "sechs", "sieben", "acht", "neun", "null", };
@@ -795,7 +798,7 @@ public class CSVParserTest
     public void testJustReadColumnNamesQuotedEOF()
             throws Exception
     {
-        String readLine = 
+        String readLine =
                 "\"eins\",\"zwei\",\"drei\",\"vier\",\"fuenf\",\"sechs\",\"sieben\",\"acht\",\"neun\",\"null\"";
 
         String [] fields = { "eins", "zwei", "drei", "vier", "fuenf", "sechs", "sieben", "acht", "neun", "null", };
@@ -822,7 +825,7 @@ public class CSVParserTest
     public void testJustReadColumnNamesQuotedMissing()
             throws Exception
     {
-        String readLine = 
+        String readLine =
                 "\"eins\",\"zwei\",\"drei\",\"vier\",\"fuenf\",\"sechs\",\"sieben\",\"acht\",\"neun\",\"null\n";
 
         String [] fields = { "eins", "zwei", "drei", "vier", "fuenf", "sechs", "sieben", "acht", "neun", "null", };
@@ -850,7 +853,7 @@ public class CSVParserTest
     public void testColumnNamesMissing()
             throws Exception
     {
-        String readLine = 
+        String readLine =
                 "eins,zwei,drei,vier,,sechs,,acht,neun,\n";
 
         String [] fields = { "eins", "zwei", "drei", "vier", "UNKNOWNFIELD5", "sechs", "UNKNOWNFIELD7", "acht", "neun", "UNKNOWNFIELD10", };
@@ -878,7 +881,7 @@ public class CSVParserTest
     public void testAllColumnNamesMissing()
             throws Exception
     {
-        String readLine = 
+        String readLine =
                 ",,,\n0,1,2,3,4,5,6,7,8,9\n";
 
         String [] fields = { "UNKNOWNFIELD1", "UNKNOWNFIELD2", "UNKNOWNFIELD3", "UNKNOWNFIELD4", };

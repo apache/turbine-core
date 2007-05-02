@@ -16,7 +16,7 @@
  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  KIND, either express or implied.  See the License for the
  specific language governing permissions and limitations
- under the License.    
+ under the License.
 -->
 
 <document>
@@ -42,11 +42,11 @@ Most of the Fulcrum components should work using this service, however it is
 only being added in Turbine 2.3.3, so you should ensure that you perform your
 own testing to verify the desired behaviour of your application, though note
 that the author is successfully running <a href="http://db.apache.org/torque/">
-Torque</a>, 
+Torque</a>,
 <a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-quartz/index.html">
-Fulcrum Quartz</a> as well as making use for Yaafi's 
+Fulcrum Quartz</a> as well as making use for Yaafi's
 <a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/services/servicemanagerservice.html">
-ServiceManager</a> and 
+ServiceManager</a> and
 <a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/services/systempropertyservice.html">
 SystemProperty</a> services - all under Turbine 2.3.
 </p>
@@ -75,7 +75,7 @@ Avalon Component Service</a> you can stop your build from including the
 Excalibur dependencies thus (again from a Maven 2 POM):
 </p>
 <source><![CDATA[
-    <!-- 
+    <!--
     The following four dependencies are for the Turbine AvalonComponentService.
     They are not needed when using Yaafi Component Service as a replacement.
     -->
@@ -116,7 +116,7 @@ no longer need <a href="http://jakarta.apache.org/turbine/stratum/index.html">
 Stratum</a> (once more from a Maven 2 POM):
 </p>
 <source><![CDATA[
-    <!-- 
+    <!--
 	Stratum is a dependency of turbine, however it is only required when the
 	TurbineComponentService is used.
     -->
@@ -191,7 +191,7 @@ componentRoles.xml:
     <role name="org.apache.fulcrum.yaafi.service.systemproperty.SystemPropertyService"
           shorthand="SystemPropertyService"
           default-class="org.apache.fulcrum.yaafi.service.systemproperty.SystemPropertyServiceImpl"
-          early-init="true"/>  
+          early-init="true"/>
     <role name="org.apache.torque.avalon.Torque"
           shorthand="torque"
           default-class="org.apache.torque.avalon.TorqueComponent"/>
@@ -209,7 +209,7 @@ and componentConfiguration.xml:
     <torque>
         <configfile>WEB-INF/conf/Torque.properties</configfile>
     </torque>
-    
+
     <!-- Configuration for other components and services. -->
 </componentConfig>
 ]]></source>
@@ -241,11 +241,11 @@ starts up (actual output will depend on your logging configuration):
 <p>
 If you plan to use the decoupled Torque in your application, you should leave
 the Yaafi Component Service configured at all times. It is started at early
-startup time.  See the 
+startup time.  See the
 <a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/index.html">
-Yaafi documentation</a> for more information and for details of the various 
+Yaafi documentation</a> for more information and for details of the various
 <a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/services/index.html">
-services</a> that it provides and the 
+services</a> that it provides and the
 <a href="http://jakarta.apache.org/turbine/fulcrum/">Fulcrum site</a> for
 details of the other components that are available.
 </p>
