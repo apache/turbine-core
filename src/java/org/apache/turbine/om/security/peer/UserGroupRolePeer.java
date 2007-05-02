@@ -16,8 +16,8 @@ package org.apache.turbine.om.security.peer;
  * limitations under the License.
  */
 
+import org.apache.torque.TorqueException;
 import org.apache.torque.util.BasePeer;
-
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
 
 /**
@@ -35,21 +35,38 @@ public class UserGroupRolePeer extends BasePeer
     private static final long serialVersionUID = -9097451661613525751L;
 
     /** The map builder for this Peer. */
-    private static final TurbineMapBuilder MAP_BUILDER = (TurbineMapBuilder)
-            getMapBuilder(TurbineMapBuilder.class.getName());
+    private static final TurbineMapBuilder MAP_BUILDER;
 
     /** The table name for this peer. */
-    public static final String TABLE_NAME = MAP_BUILDER.getTableUserGroupRole();
+    public static final String TABLE_NAME;
 
     /** The column name for the visitor id field. */
-    public static final String USER_ID = MAP_BUILDER.getUserGroupRole_UserId();
+    public static final String USER_ID;
 
     /** The column name for the group id field. */
-    public static final String GROUP_ID = MAP_BUILDER.getUserGroupRole_GroupId();
+    public static final String GROUP_ID;
 
     /** The column name for the role id field. */
-    public static final String ROLE_ID = MAP_BUILDER.getUserGroupRole_RoleId();
+    public static final String ROLE_ID;
 
+    static
+    {
+        try
+        {
+            MAP_BUILDER = (TurbineMapBuilder)/* Torque. */getMapBuilder(TurbineMapBuilder.class.getName());
+        }
+        catch (TorqueException e)
+        {
+            log.error("Could not initialize Peer", e);
+            throw new RuntimeException(e);
+        }
+
+        TABLE_NAME = MAP_BUILDER.getTableUserGroupRole();
+        USER_ID = MAP_BUILDER.getUserGroupRole_UserId();
+        GROUP_ID = MAP_BUILDER.getUserGroupRole_GroupId();
+        ROLE_ID = MAP_BUILDER.getUserGroupRole_RoleId();
+    }
+    
     /**
      * Get the name of this table.
      *
