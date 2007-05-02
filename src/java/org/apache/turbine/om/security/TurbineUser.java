@@ -46,6 +46,10 @@ import org.apache.turbine.services.security.TurbineSecurity;
  * @author <a href="mailto:cberry@gluecode.com">Craig D. Berry</a>
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * 
+ * @deprecated Use {@link org.apache.turbine.services.security.torque.TorqueUser}
+ * instead.
+ * 
  * @version $Id$
  */
 public class TurbineUser extends SecurityObject implements User

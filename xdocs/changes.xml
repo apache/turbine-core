@@ -25,6 +25,10 @@
 
 <body>
   <release version="2.3.3-dev" date="in Subversion">
+    <action type="update" dev="tv">
+      Deprecated the DBSecurityService and its associated classes. It has been
+      replaced by the TorqueSecurityService.
+    </action>
     <action type="remove" dev="tv">
       Remove the ComponentService. This has been deprecated long ago.
       It has been replaced by the different incarnations of 

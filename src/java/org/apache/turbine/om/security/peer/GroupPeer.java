@@ -44,6 +44,10 @@ import com.workingdogs.village.Record;
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * 
+ * @deprecated Use {@link org.apache.turbine.services.security.torque.TorqueSecurityService}
+ * instead.
+ * 
  * @version $Id$
  */
 public class GroupPeer extends BasePeer

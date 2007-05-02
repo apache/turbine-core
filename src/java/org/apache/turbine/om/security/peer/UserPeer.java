@@ -23,6 +23,10 @@ package org.apache.turbine.om.security.peer;
  * the default User implementation and it's related Peer class.
  *
  * @author <a href="mailto:leandro@ibnetwork.com.br">Leandro Rodrigo Saad Cruz</a>
+ * 
+ * @deprecated Use {@link org.apache.turbine.services.security.torque.TorqueSecurityService}
+ * instead.
+ * 
  * @version $Id$
  */
 public interface UserPeer
