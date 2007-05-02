@@ -37,6 +37,10 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * <br>
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
+ * 
+ * @deprecated Use {@link org.apache.turbine.services.security.torque.TorqueGroup}
+ * instead.
+ * 
  * @version $Id$
  */
 public class TurbineGroup extends SecurityObject implements Group

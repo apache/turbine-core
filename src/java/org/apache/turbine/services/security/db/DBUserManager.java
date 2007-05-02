@@ -52,6 +52,10 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * 
+ * @deprecated Use {@link org.apache.turbine.services.security.torque.TorqueUserManager}
+ * instead.
+ * 
  * @version $Id$
  */
 public class DBUserManager

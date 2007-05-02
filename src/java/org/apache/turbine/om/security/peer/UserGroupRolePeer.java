@@ -27,6 +27,10 @@ import org.apache.turbine.util.db.map.TurbineMapBuilder;
  * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * 
+ * @deprecated Use {@link org.apache.turbine.services.security.torque.TorqueSecurityService}
+ * instead.
+ * 
  * @version $Id$
  */
 public class UserGroupRolePeer extends BasePeer

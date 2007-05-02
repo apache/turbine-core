@@ -29,6 +29,10 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * @author <a href="mailto:frank.kim@clearink.com">Frank Y. Kim</a>
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
+ * 
+ * @deprecated Use {@link org.apache.turbine.services.security.torque.TorquePermission}
+ * instead.
+ * 
  * @version $Id$
  */
 public class TurbinePermission extends SecurityObject implements Permission
