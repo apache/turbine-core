@@ -46,7 +46,7 @@
         <item name="Avalon Component Service" href="/services/avalon-component-service.html"/>
         <item name="Crypto Service"      href="/services/crypto-service.html"/>
         <item name="Cache Service"       href="/services/cache-service.html"/>
-        <item name="Component Service"   href="/services/component-service.html"/>
+        <!-- item name="Component Service"   href="/services/component-service.html"/ -->
         <item name="Factory Service"     href="/services/factory-service.html"/>
         <item name="Intake Service"      href="/services/intake-service.html"/>
         <item name="JSP Service"         href="/services/jsp-service.html"/>

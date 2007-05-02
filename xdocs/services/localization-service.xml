@@ -23,6 +23,7 @@
  <properties>
   <title>Turbine Services - Localization Service</title>
   <author email="jvanzyl@apache.org">Jason van Zyl</author>
+  <author email="seade@backstagetech.com.au">Scott Eade</author>
  </properties>
 
 <body>
@@ -50,7 +51,7 @@ to your application.
 # To specify properties of a service use the following syntax:
 # service.[name].[property]=[value]
 
-services.GlobalCacheService.classname=org.apache.turbine.services.cache.TurbineGlobalCacheService
+services.LocalizationService.classname=org.apache.turbine.services.localization.TurbineLocalizationService
 .
 .
 .
@@ -58,13 +59,39 @@ services.GlobalCacheService.classname=org.apache.turbine.services.cache.TurbineG
 
 </section>
 
-<section name="Usage">
+<section name="Resource Bundles">
 
+<p>
+Resource bundles are basically property files.  You might have one for the "en"
+locale thus:
+</p>
+
+<source><![CDATA[
+LABEL_ORGANIZATION = organisation
+CURRENT_RECORD = Record {0} of {1}
+]]></source>
+
+<p>
+and another for the "en_US" locale thus:
+</p>
+
+<source><![CDATA[
+LABEL_ORGANIZATION = organization
+]]></source>
+
+<p>
+Please see the <em>java.util.ListResourceBundle</em> and
+<em>java.util.ResourceBundle</em> classes for more information.
+</p>
+
+</section>
+
+<section name="Usage">
 
 <source><![CDATA[
 
 TurbineServices.getInstance().getService(LocalizationService.LOCALIZATION)
-    .getString("DISPLAYPROJECTS_TITLE");
+    .getString("LABEL_ORGANIZATION");
 
 ]]></source>
 
@@ -74,7 +101,7 @@ Wow. That is a lot of typing. That could be easily shortened to this:
 
 <source><![CDATA[
 
-Localization.getString("DISPLAYPROJECTS_TITLE");
+Localization.getString("LABEL_ORGANIZATION");
 
 ]]></source>
 
@@ -87,7 +114,7 @@ this:
 
 <source><![CDATA[
 
-Localization.getString(data, "DISPLAYPROJECTS_TITLE");
+Localization.getString(data, "LABEL_ORGANIZATION");
 
 ]]></source>
 
@@ -98,13 +125,46 @@ the browser. Can you say Dynamic Localization? ;-)
 </p>
 
 <p>
-For creating the file where you get the value of the String, please
-see the <em>java.util.ListResourceBundle</em> and
-<em>java.util.ResourceBundle</em> classes for more information.
-<a href="http://java.apache.org/jyve/">Jyve</a> also contains example usage
-of this code because that was the first place where this code was originally
-developed.
+Equivalents of the format() methods illustrated below are also available for
+handling localized strings with arguments defined as "{0}", "{1}", etc.
 </p>
+
+</section>
+
+<section name="Usage from a template">
+
+<p>
+Turbine provides a <a href="../pullmodel-howto.html">Pull tool</a> to make it
+very easy to access localized text from within your templates.  To configure
+this you need to add the following to your TrubineResouces.properties:
+</p>
+
+<source><![CDATA[
+tool.request.l10n = org.apache.turbine.services.localization.LocalizationTool
+]]></source>
+
+<p>
+You can then use it in your templates thus:
+</p>
+
+<source><![CDATA[
+$l10n.LABEL_ORGANIZATION
+]]></source>
+
+<p>
+A string with arguments can be used thus:
+</p>
+
+<source><![CDATA[
+// No arguments
+$l10n.LABEL_ORGANIZATION
+// One argument
+$l10n.format("STRING_KEY_ONE_ARG" "arg1")
+// Two arguments
+$l10n.format("CURRENT_RECORD" "1", "5")
+// Two arguments
+$l10n.format("STRING_KEY_3_OR_MORE_ARGS" ["arg1", "arg2", "arg3"])
+]]></source>
 
 </section>
 

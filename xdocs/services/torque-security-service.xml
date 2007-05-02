@@ -149,7 +149,7 @@ rows. As you will see later, you can reconfigure the "Peer" and
 <section name="Turbine supplied table schema">
 <p>
 The Peers and objects supplied with the Torque Security Service were generated
-from a Torque Schema. Its definition is <a href="/services/torque-security-schema.html">shown here</a>.
+from a Torque Schema. Its definition is <a href="torque-security-schema.html">shown here</a>.
 </p>
 <p>
 Turbine uses the following configuration for accessing the Torque

@@ -31,7 +31,7 @@
 <section name="Overview">
 <p>
 This is the Turbine included schema for generating Torque Peers for
-the <a href="/services/torque-security-service.html">Torque Security Service</a>:
+the <a href="torque-security-service.html">Torque Security Service</a>:
 </p>
 <table>
 <tr>

@@ -474,7 +474,7 @@ and then accessed in the velocity template by;
 
 <p>
 where the two methods are public methods in the Book Object, in this case built
-by the <a href="torque.html">Torque Tool</a>. These methods would return;
+by the <a href="http://db.apache.org/torque/">Torque</a>. These methods would return;
 </p>
 
 <source test=""><![CDATA[

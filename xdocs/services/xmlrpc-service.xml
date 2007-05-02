@@ -33,9 +33,6 @@
 <p>
   The XML-RPC service is the easiest way to add distributed
   computing and B2B capabilities to your Turbine web application.
-  The current implementation is based on the Helma XML-RPC
-  package which can be found <a href="http://classic.helma.at/hannes/xmlrpc/">
-  here</a>.
 </p>
 
 <p>

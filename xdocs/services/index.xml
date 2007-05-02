@@ -81,7 +81,8 @@ Scheduled Jobs to be loaded.
 <a href="avalon-component-service.html">Avalon Component Service</a>
 <br/>
 Initializes external components which implement the Avalon lifecycle
-interface, e.g. Torque.
+interface, e.g. Torque.  See also the <a href="yaafi-component-service.html">
+Yaafi Component Service</a>
 </li>
 
 <li>
@@ -94,14 +95,6 @@ Provides encryption algorithms like MD5 and SHA message digests as well as old-f
 <a href="cache-service.html">Cache Service</a>
 <br/>
 Provides a persistant Object Storage mechanism within your application.
-</li>
-
-<li>
-<a href="component-service.html">Component Service</a>
-<br/>
-Initializes external components which implement the Stratum lifecycle
-interface, e.g. Torque and Fulcrum.  Any new components will use the
-Avalon lifecycle and thus the Avalon Component Service.
 </li>
 
 <li>
@@ -240,7 +233,7 @@ a FileItem Object.
 <li>
 <a href="velocity-service.html">Velocity Service</a>
 <br/>
-<b>[TO DO]</b> The service for the processing of Velocity Templates from within
+The service for the processing of Velocity Templates from within
 the Turbine Layout/Navigations and Screen structure.
 </li>
 
@@ -254,6 +247,16 @@ This service manages xml-rpc calls to a remote Server.
 <a href="xslt-service.html">XSLT Service</a>
 <br/>
 The service which  is used to transform XML with an XSLT stylesheet.
+</li>
+
+<li>
+<a href="yaafi-component-service.html">Yaafi Component Service</a>
+<br/>
+The Yaafi Component service loads external modules which implement the
+<a href="http://avalon.apache.org/">Avalon</a> lifecycle interfaces.  This is
+a bridge between the Turbine 2.3 we have today and the
+<a href="http://jakarta.apache.org/turbine/fulcrum/">Fulcrum</a> components
+that until now have only been available to Turbine 2.4 (yet to be released).
 </li>
 
 </ul>

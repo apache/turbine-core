@@ -44,6 +44,10 @@ href="torque-security-service.html"> Torque Security Service</a> for
 configuration details.
 </p>
 
+<p>
+As of Turbine 2.3.3 the DBSecurityService is deprecated.
+</p>
+
 </section>
 
 <section name="Configuration">

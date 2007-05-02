@@ -110,26 +110,6 @@ Excalibur dependencies thus (again from a Maven 2 POM):
 ]]></source>
 
 <p>
-If you accessing Torque via the Yaafi Component Service (as opposed to the now
-very old <a href="component-service.html">TurbineComponentService</a>) you also
-no longer need <a href="http://jakarta.apache.org/turbine/stratum/index.html">
-Stratum</a> (once more from a Maven 2 POM):
-</p>
-<source><![CDATA[
-    <!--
-	Stratum is a dependency of turbine, however it is only required when the
-	TurbineComponentService is used.
-    -->
-    <dependency>
-      <groupId>stratum</groupId>
-      <artifactId>stratum</artifactId>
-      <version>1.0</version>
-      <type>jar</type>
-      <scope>provided</scope>
-    </dependency>
-]]></source>
-
-<p>
 The above is based on the
 <a href="http://repo1.maven.org/maven2/turbine/turbine/2.3.2/turbine-2.3.2.pom">
 turbine-2.3.2 pom</a> that exists in the default maven 2 repository.  Whether or

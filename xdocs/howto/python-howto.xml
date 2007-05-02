@@ -29,7 +29,7 @@
  <body>
   <section name="Turbine Python Support">
   <p>
-    Turbine has support for creating assemblers (see the <a href="fsd.html">
+    Turbine has support for creating assemblers (see the <a href="../fsd.html">
     specifications</a>) with Python, by making use of
     <a href="http://www.jpython.org">JPython technology</a>.
   </p>
