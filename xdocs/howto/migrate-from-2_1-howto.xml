@@ -89,8 +89,9 @@
 </p>
 <p>
     See the Torque
-  <a href="http://jakarta.apache.org/turbine/torque/properties-reference.html">
-    Properties Reference</a> for full details of the available properties.
+  <a href="http://db.apache.org/torque/releases/torque-3.1/generator/properties-reference.html">
+    Properties Reference</a> for full details of the available properties (link
+    is to 3.1, rather than the 3.0 release of torque).
 </p>
 </section>
 
@@ -134,7 +135,7 @@
     moved to different classes.
 </p>
 <p>
-    <a href="http://jakarta.apache.org/turbine/torque/changes.html#Torque%203.0-b3">
+    <a href="http://db.apache.org/torque/changes-report.html#3_0-B3">
     [Here]</a> is list of the most common import changes.
 </p>
 </section>
@@ -284,7 +285,7 @@ catch (TorqueException ex)
 <section name="Extending Turbine User">
 <p>
     See
-    <a href="http://jakarta.apache.org/turbine/turbine-2/howto/extend-user-howto.html">
+    <a href="extend-user-howto.html">
     Extending Turbine User How-To</a> for this information.
 </p>
 </section>
@@ -351,13 +352,16 @@ public <base class> copy() throws TorqueException
 <section name="Maven">
 <p>
     You may like to consider using
-    <a href="http://jakarta.apache.org/turbine/maven/">Maven</a> to
+    <a href="http://maven.apache.org/">Maven</a> to
     build your project.  The  document
     <a href="http://wiki.apache.org/jakarta-turbine/TDK/Maven">
     Starting your project and database with TDK2.2 and Maven</a>
     provides some information that can be adapted for this purpose
     (jump down to the "Moving The Sample" heading for the
     documentation relevant to an existing project).
+</p>
+<p>
+    Better still, use <a href="http://jakarta.apache.org/turbine/meta/">META</a>.
 </p>
 </section>
 

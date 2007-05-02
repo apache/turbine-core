@@ -265,7 +265,7 @@ org.apache.turbine.services.pull.tools.TemplateLinkWithSlash
     In the past you may have used a customised MapBuilder
     (database.maps.builder in TurbineResources.properties) as part of
     extending your user object - this is no longer required if you use the
-    Torque Security Service.  In addidion to this you need to ensure that
+    Torque Security Service.  In addition to this you need to ensure that
     you replace any references you may have made to the old security related
     peer classes in any Criteria with the new classes that Torque generates
     for you as referring to the old ones will result in an inconsistent
@@ -278,7 +278,7 @@ org.apache.turbine.services.pull.tools.TemplateLinkWithSlash
 <p>
 	You will need to use Maven b9 or above in order to build the Torque
 	Security Service and even then you should install the latest available
-	release of the <a href="http://db.apache.org/torque/maven-howto.html">
+	release of the <a href="http://db.apache.org/torque/releases/torque-3.1.1/maven-howto.html">
 	Torque generator</a> plugin.
 </p>
 </section>
