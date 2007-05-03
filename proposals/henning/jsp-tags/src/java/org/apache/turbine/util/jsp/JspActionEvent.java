@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import java.util.Enumeration;
 import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.services.jsp.TurbineJsp;
-import org.apache.turbine.util.ParameterParser;
+import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 

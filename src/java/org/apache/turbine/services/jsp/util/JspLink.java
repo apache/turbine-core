@@ -40,7 +40,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * @author Jon S. Stevens <a href="mailto:jon@latchkey.com">jon@latchkey.com</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
- * deprecated Use {@org.apache.turbine.services.pull.tools.TemplateLink} instead.
+ * @deprecated Use {@org.apache.turbine.services.pull.tools.TemplateLink} instead.
  */
 public class JspLink
     extends DynamicURI

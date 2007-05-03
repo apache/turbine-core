@@ -34,7 +34,7 @@
 The Turbine Templating Services attach references to default Objects in the
 Turbine Context as part of their initialization. In the case of the
 TurbineVelocityService these references point to RunData, TemplateLink and
-TemplatePageAttributes. These three are put into the Context in the
+HtmlPageAttributes. These three are put into the Context in the
 TurbineVelocityService class. The Context stores the Objects in a Hashtable
 with a key and the Object.
 </p>
@@ -194,9 +194,9 @@ exposed are;
 </p>
 </section>
 
-<section name="Using the TemplatePageAttributes Object">
+<section name="Using the HtmlPageAttributes Object">
 <p>
-The TemplatePageAttributes is accessed from within the context by the keyword
+The HtmlPageAttributes is accessed from within the context by the keyword
 "page" and provides methods to modify the various HTML attributes of the
 templating system. The Template context can be used to dictate the style of
 the HTML page in the navigation and layout templates as well as modify these
@@ -226,13 +226,12 @@ leftmargin or topmargin attributes via;
 </p>
 
 <source test=""><![CDATA[
-    $page.addAttribute("topmargin", 0)
+    $page.addBodyAttribute("topmargin", 0)
 ]]></source>
 
 <p>
-Note though that the addAttribute method only adds attributes to the Body tag.
 For a full list of methods exposed to the page reference view the Javadocs for
-TemplatePageAttributes. Other methods exposed to the page reference are;
+HtmlPageAttributes. Other methods exposed to the page reference are;
 </p>
 
 <p>

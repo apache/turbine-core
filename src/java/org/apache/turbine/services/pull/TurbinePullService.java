@@ -68,7 +68,7 @@ import org.apache.velocity.context.Context;
  * tool.global.ui    = org.apache.turbine.util.pull.UIManager
  * tool.global.mm    = org.apache.turbine.util.pull.MessageManager
  * tool.request.link = org.apache.turbine.services.pull.tools.TemplateLink
- * tool.request.page = org.apache.turbine.util.template.TemplatePageAttributes
+ * tool.request.page = org.apache.turbine.util.template.HtmlPageAttributes
  *
  * Then:
  *
@@ -79,7 +79,7 @@ import org.apache.velocity.context.Context;
  * Tools are accessible in all templates by the <id> given
  * to the tool. So for the above listings the UIManager would
  * be available as $ui, the MessageManager as $mm, the TemplateLink
- * as $link and the TemplatePageAttributes as $page.
+ * as $link and the HtmlPageAttributes as $page.
  *
  * You should avoid using tool names called "global", "request",
  * "session" or "persistent" because of clashes with the possible Scopes.
