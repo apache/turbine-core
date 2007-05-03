@@ -221,15 +221,18 @@ tool.request.content = org.apache.turbine.services.pull.tools.ContentTool
 ]]>
 </source>
 <p>
-	If you used some of the other tools for creating URL's, then there are
-	analogous new ones as well:
+	If you used some of the other tools for creating URL's, replace them with
+    the tools above and look for the configuration settings
 </p>
 	<source>
 <![CDATA[
-org.apache.turbine.services.pull.tools.RelativeTemplateLink
-org.apache.turbine.services.pull.tools.TemplateLinkWithSlash
+tool.link.want.relative = true
+tool.content.want.relative = true
 ]]>
 </source>
+<p>
+    Using template links with slashes is no longer supported.
+</p>
 </section>
 
 <section name="Ensure you refer to your templates correctly">
