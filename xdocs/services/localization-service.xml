@@ -89,10 +89,8 @@ Please see the <em>java.util.ListResourceBundle</em> and
 <section name="Usage">
 
 <source><![CDATA[
-
 TurbineServices.getInstance().getService(LocalizationService.LOCALIZATION)
     .getString("LABEL_ORGANIZATION");
-
 ]]></source>
 
 <p>
@@ -100,22 +98,18 @@ Wow. That is a lot of typing. That could be easily shortened to this:
 </p>
 
 <source><![CDATA[
-
 Localization.getString("LABEL_ORGANIZATION");
-
 ]]></source>
 
 <p>
 The hard example above was given as an example of using Services. The easy
 example is the one that you really should be using. Another cool feature
-of the Localization class is that you can pass in a RunData object like
+of the Localization class is that you can pass in a HttpRequest object like
 this:
 </p>
 
 <source><![CDATA[
-
-Localization.getString(data, "LABEL_ORGANIZATION");
-
+Localization.getString("LABEL_ORGANIZATION", data.getRequest());
 ]]></source>
 
 <p>
@@ -125,9 +119,25 @@ the browser. Can you say Dynamic Localization? ;-)
 </p>
 
 <p>
-Equivalents of the format() methods illustrated below are also available for
-handling localized strings with arguments defined as "{0}", "{1}", etc.
+The Localization class also supports the formatting of localized strings containing 
+parameters, such as in
 </p>
+
+<source><![CDATA[
+Localization.format(Localization.getDefaultBundle(), 
+    Localization.getLocale(data.getRequest(),
+    "CURRENT_RECORD",
+    recno, all);
+]]></source>
+
+<p>
+This actually doesn't look too nice, however the call using the LocalizationTool
+from a Velocity template (see below) just deflates to
+</p>
+
+<source><![CDATA[
+$l10n.format("CURRENT_RECORD", $recno, $all);
+]]></source>
 
 </section>
 
@@ -136,7 +146,7 @@ handling localized strings with arguments defined as "{0}", "{1}", etc.
 <p>
 Turbine provides a <a href="../pullmodel-howto.html">Pull tool</a> to make it
 very easy to access localized text from within your templates.  To configure
-this you need to add the following to your TrubineResouces.properties:
+this you need to add the following to your TurbineResouces.properties:
 </p>
 
 <source><![CDATA[
