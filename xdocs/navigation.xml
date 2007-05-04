@@ -65,6 +65,7 @@
         <item name="Template Service"    href="/services/template-service.html"/>
         <item name="Torque Security Service" href="/services/torque-security-service.html"/>
         <item name="Torque Security Service Schema" href="/services/torque-security-schema.html"/>
+        <item name="UI Service"          href="/services/ui-service.html"/>
         <item name="Unique ID Service"   href="/services/uniqueid-service.html"/>
         <item name="Upload Service"      href="/services/upload-service.html"/>
         <item name="Velocity Service"    href="/services/velocity-service.html"/>

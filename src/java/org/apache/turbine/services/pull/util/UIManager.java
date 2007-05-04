@@ -78,6 +78,7 @@ import org.apache.turbine.util.uri.DataURI;
  * @author <a href="mailto:james_coltman@majorband.co.uk">James Coltman</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="thomas.vandahl@tewisoft.de">Thomas Vandahl</a>
+ * @deprecated Use UITool instead.
  * @version $Id$
  */
 public class UIManager implements ApplicationTool
@@ -183,6 +184,7 @@ public class UIManager implements ApplicationTool
      * Initialize the UIManager object.
      *
      * @param data This is null, RunData or User depending upon specified tool scope.
+     * @deprecated Use UITool.init() instead.
      */
     public void init(Object data)
     {
@@ -249,6 +251,8 @@ public class UIManager implements ApplicationTool
      * are necessary to refresh itself. This is necessary
      * for sane development where you probably want the
      * tools to refresh themselves on every request.
+     * 
+     * @deprecated Use UITool.refresh() instead.
      */
     public void refresh()
     {
@@ -260,6 +264,8 @@ public class UIManager implements ApplicationTool
     /**
      * Retrieve a property from the properties held
      * within the properties file for this skin.
+     *
+     * @deprecated Use UITool.get(String key) instead.
      */
     public String get(String key)
     {
@@ -268,6 +274,8 @@ public class UIManager implements ApplicationTool
 
     /**
      * Retrieve the skin name.
+     *
+     * @deprecated Use UITool.getSkin() instead.
      */
     public String getSkin()
     {
@@ -283,10 +291,12 @@ public class UIManager implements ApplicationTool
      * Use this if for some reason your server name,
      * server scheme, or server port change on a
      * per request basis. I'm not sure if this
-     * would happend in a load balanced situation.
+     * would happen in a load balanced situation.
      * I think in most cases the image(String image)
      * method would probably be enough, but I'm not
      * absolutely positive.
+     *
+     * @deprecated Use UITool.image(String imageId, RunData data) instead.
      */
     public String image(String imageId, RunData data)
     {
@@ -314,6 +324,8 @@ public class UIManager implements ApplicationTool
      * of a skin. The images are stored in the
      * WEBAPP/resources/ui/skins/&lt;SKIN&gt;/images
      * directory.
+     *
+     * @deprecated Use UITool.image(String imageId) instead.
      */
     public String image(String imageId)
     {
@@ -349,6 +361,8 @@ public class UIManager implements ApplicationTool
      * I think in most cases the style()
      * method would probably be enough, but I'm not
      * absolutely positive.
+     *
+     * @deprecated Use UITool.getStylecss(RunData data) instead.
      */
     public String getStylecss(RunData data)
     {
@@ -360,6 +374,8 @@ public class UIManager implements ApplicationTool
      * of a skin. The style is stored in the
      * WEBAPP/resources/ui/skins/&lt;SKIN&gt; directory with the
      * filename skin.css
+     *
+     * @deprecated Use UITool.getStylecss() instead.
      */
     public String getStylecss()
     {
@@ -370,6 +386,8 @@ public class UIManager implements ApplicationTool
      * Retrieve the URL for a given script that is part
      * of a skin. The script is stored in the
      * WEBAPP/resources/ui/skins/<SKIN> directory
+     *
+     * @deprecated Use UITool.getScript(String filename, RunData data) instead.
      */
     public String getScript(String filename, RunData data)
     {
@@ -393,6 +411,8 @@ public class UIManager implements ApplicationTool
      * Retrieve the URL for a given script that is part
      * of a skin. The script is stored in the
      * WEBAPP/resources/ui/skins/<SKIN> directory
+     *
+     * @deprecated Use UITool.getScript(String filename) instead.
      */
     public String getScript(String filename)
     {
@@ -448,6 +468,8 @@ public class UIManager implements ApplicationTool
      * Set the skin name to the skin from the TR.props
      * file. If the property is not present use the
      * default skin.
+     *
+     * @deprecated Use UITool.setSkin() instead.
      */
     public void setSkin()
     {
@@ -460,6 +482,7 @@ public class UIManager implements ApplicationTool
      * Set the skin name to the specified skin.
      *
      * @param skinName the skin name to use.
+     * @deprecated Use UITool.setSkin(String skinName) instead.
      */
     public void setSkin(String skinName)
     {
@@ -474,6 +497,7 @@ public class UIManager implements ApplicationTool
      * determine the skin to use based on information held in the request.
      *
      * @param data a RunData instance
+     * @deprecated Use UITool.setSkin(RunData data) instead.
      */
     protected void setSkin(RunData data)
     {
@@ -488,6 +512,7 @@ public class UIManager implements ApplicationTool
      * specified in TR.properties.
      *
      * @param user a User instance
+     * @deprecated Use UITool.setSkin(User user) instead.
      */
     protected void setSkin(User user)
     {
@@ -506,6 +531,7 @@ public class UIManager implements ApplicationTool
      *
      * @param user a User instance
      * @param skin the skin name for the session
+     * @deprecated Use UITool.setSkin(User user, String skin) instead.
      */
     public static void setSkin(User user, String skin)
     {
