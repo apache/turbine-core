@@ -50,7 +50,7 @@ public class UIManagerTest
         Context globalContext = pullService.getGlobalContext();
         assertNotNull(globalContext);
 
-        return (UIManager) globalContext.get("ui");
+        return (UIManager) globalContext.get("uimanager");
     }
 
     public void testTool()

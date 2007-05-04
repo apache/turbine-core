@@ -217,6 +217,12 @@ generated peers to access the required security information.
 </li>
 
 <li>
+<a href="ui-service.html">UI Service</a>
+<br/>
+The UI (User Interface) Service provides for application skinning.
+</li>
+
+<li>
 <a href="uniqueid-service.html">Unique ID Service</a>
 <br/>
 Allows for the creation of Context unique and pseudo random identifiers.

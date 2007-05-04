@@ -28,6 +28,10 @@
 
 <body>
   <release version="2.3.3-dev" date="in Subversion">
+    <action type="add" dev="seade">
+      Added UI Service as a replacement for the UIManager pull tool (now
+      deprecated in favor of the backwards compatible UITool).
+    </action>
     <action type="update" dev="tv">
       Deprecated the DBSecurityService and its associated classes. It has been
       replaced by the TorqueSecurityService.
