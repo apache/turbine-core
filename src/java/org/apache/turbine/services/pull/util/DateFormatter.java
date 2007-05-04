@@ -113,4 +113,17 @@ public class DateFormatter
         return result;
     }
 
+    /**
+     * Formats the given date as a String.
+     *
+     * @param theDate date to format
+     * @param dateFormatString format string to use.  See 
+     * java.text.SimpleDateFormat for details.
+     * @return String value of the date
+     */
+    public String format(long theDate, String dateFormatString)
+    {
+        return DateFormatUtils.format(theDate, dateFormatString);
+    }
+
 }
