@@ -21,11 +21,13 @@ package org.apache.turbine.services.ui;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -57,23 +59,7 @@ public class TurbineUIService
         extends TurbineBaseService
         implements UIService
 {
-    /**
-     * A FilenameFilter that returns only directories.
-     * TODO Replace with commons-io DirectoryFileFilter
-     */
-    private class DirectoryFileFilter implements FilenameFilter
-    {
-        public boolean accept(File dir, String fileName)
-        {
-            File file = new File(dir, fileName);
-            if (file.isDirectory())
-            {
-                return true;
-            }
-            return false;
-        }
-    }
-
+    /** Logging. */
     private static Log log = LogFactory.getLog(TurbineUIService.class);
 
     /**
@@ -123,13 +109,15 @@ public class TurbineUIService
     public static final String SKIN_PROPERTY_DEFAULT = "default";
 
     /**
-     * The skins directory.
+     * The skins directory, qualified by the resources directory (which is
+     * relative to the webapp context). This is used for constructing URIs and
+     * for retrieving skin files.
      */
     private String skinsDirectory;
 
     /**
-     * The file within the skin directory that actually contains the name/value 
-     * pairs for the skin.
+     * The file within the skin directory that contains the name/value pairs for
+     * the skin.
      */
     private static final String SKIN_PROPS_FILE = "skin.props";
 
@@ -139,13 +127,19 @@ public class TurbineUIService
     private static final String DEFAULT_SKIN_CSS_FILE = "skin.css";
 
     /**
-     * This the resources directory relative to the webapp context. Used for
-     * constructing correct URIs for retrieving skin files.
+     * The directory within the skin directory that contains the skin images.
      */
-    private String resourcesDirectory;
     private String imagesDirectory;
+
+    /**
+     * The name of the css file within the skin directory.
+     */
     private String cssFile;
 
+    /**
+     * The flag that determines if the links that are returned are are absolute
+     * or relative.
+     */
     private boolean wantRelative = false;
 
     /**
@@ -235,7 +229,7 @@ public class TurbineUIService
     public String[] getSkinNames()
     {
         File skinsDir = new File(skinsDirectory);
-        return skinsDir.list(new DirectoryFileFilter());
+        return skinsDir.list(DirectoryFileFilter.INSTANCE);
     }
 
     /**
@@ -291,7 +285,6 @@ public class TurbineUIService
         Properties skinProperties = new Properties(defaultSkinProperties);
         
         StringBuffer sb = new StringBuffer();
-        sb.append('/').append(resourcesDirectory);
         sb.append('/').append(skinsDirectory);
         sb.append('/').append(skinName);
         sb.append('/').append(SKIN_PROPS_FILE);
@@ -302,6 +295,8 @@ public class TurbineUIService
 
         try
         {
+            // This will NPE if the directory associated with the skin does not
+            // exist, but it is habdled correctly below.
             InputStream is = TurbineServlet.getResourceAsStream(sb.toString());
 
             skinProperties.load(is);
@@ -480,8 +475,7 @@ public class TurbineUIService
     private String getSkinResource(ServerData serverData, String skinName,
             String subDir, String resourceName)
     {
-        StringBuffer sb = new StringBuffer(resourcesDirectory);
-        sb.append("/").append(skinsDirectory);
+        StringBuffer sb = new StringBuffer(skinsDirectory);
         sb.append("/").append(skinName);
         if (subDir != null)
         {
@@ -505,10 +499,15 @@ public class TurbineUIService
 
         // Get the resources directory that is specified in the TR.props or 
         // default to "resources", relative to the webapp.
-        resourcesDirectory = stripSlashes(TurbinePull.getResourcesDirectory());
+        StringBuffer sb = new StringBuffer();
+        sb.append(stripSlashes(TurbinePull.getResourcesDirectory()));
+        sb.append("/");
+        sb.append(stripSlashes(
+                cfg.getString(SKINDIR_PROPERTY, SKINS_DIRECTORY)));
+        skinsDirectory = sb.toString();
 
-        skinsDirectory = stripSlashes(cfg.getString(SKINDIR_PROPERTY, SKINS_DIRECTORY));
-        imagesDirectory = stripSlashes(cfg.getString(IMAGEDIR_PROPERTY, IMAGES_DIRECTORY));
+        imagesDirectory = stripSlashes(
+                cfg.getString(IMAGEDIR_PROPERTY, IMAGES_DIRECTORY));
         cssFile = cfg.getString(CSS_PROPERTY, DEFAULT_SKIN_CSS_FILE);
         wantRelative = cfg.getBoolean(RELATIVE_PROPERTY, false);
 
