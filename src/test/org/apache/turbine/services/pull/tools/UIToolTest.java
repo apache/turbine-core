@@ -64,7 +64,7 @@ public class UIToolTest
         UITool ui = getTool();
 
         String cssUrl = ui.getStylecss();
-        assertEquals("CSS URL does not match", "http:///turbine-resources/turbine-skins/myskin/skins.css", cssUrl);
+        assertEquals("CSS URL does not match", "http:///conf/test/turbine-resources/turbine-skins/myskin/skins.css", cssUrl);
     }
 
     public void testImageSlashes()
@@ -74,17 +74,17 @@ public class UIToolTest
         String img = "myimage.gif";
 
         String imgUrl = ui.image(img);
-        assertEquals("CSS URL does not match", "http:///turbine-resources/turbine-skins/myskin/turbine-images/" + img, imgUrl);
+        assertEquals("CSS URL does not match", "http:///conf/test/turbine-resources/turbine-skins/myskin/turbine-images/" + img, imgUrl);
 
         String img2 = "foo/myimage.gif";
 
         String imgUrl2 = ui.image(img2);
-        assertEquals("CSS URL does not match", "http:///turbine-resources/turbine-skins/myskin/turbine-images/" + img2, imgUrl2);
+        assertEquals("CSS URL does not match", "http:///conf/test/turbine-resources/turbine-skins/myskin/turbine-images/" + img2, imgUrl2);
 
         String img3 = "/foo/myimage.gif";
 
         String imgUrl3 = ui.image(img3);
-        assertEquals("CSS URL does not match", "http:///turbine-resources/turbine-skins/myskin/turbine-images" + img3, imgUrl3);
+        assertEquals("CSS URL does not match", "http:///conf/test/turbine-resources/turbine-skins/myskin/turbine-images" + img3, imgUrl3);
     }
 
     public void testPathologicalCases()
@@ -93,14 +93,39 @@ public class UIToolTest
 
     	String img = "";
         String imgUrl = ui.image(img);
-        assertEquals("Could not strip empty String", "http:///turbine-resources/turbine-skins/myskin/turbine-images/", imgUrl);
+        assertEquals("Could not strip empty String", "http:///conf/test/turbine-resources/turbine-skins/myskin/turbine-images/", imgUrl);
 
     	img = "/";
         imgUrl = ui.image(img);
-        assertEquals("Could not strip single Slash", "http:///turbine-resources/turbine-skins/myskin/turbine-images/", imgUrl);
+        assertEquals("Could not strip single Slash", "http:///conf/test/turbine-resources/turbine-skins/myskin/turbine-images/", imgUrl);
 
     	img = "//";
         imgUrl = ui.image(img);
-        assertEquals("Could not strip double Slash", "http:///turbine-resources/turbine-skins/myskin/turbine-images/", imgUrl);
+        assertEquals("Could not strip double Slash", "http:///conf/test/turbine-resources/turbine-skins/myskin/turbine-images/", imgUrl);
+    }
+
+    public void testGetSkinNames()
+    {
+        UITool ui = getTool();
+
+        String[] skinNames = ui.getSkinNames();
+        assertEquals(2, skinNames.length);
+
+        // Not completely sure this will always be in the same order.
+        assertEquals("myotherskin", skinNames[0]);
+        assertEquals("myskin", skinNames[1]);
+    }
+
+    public void testSkinValues()
+    {
+        UITool ui = getTool();
+
+        // Default skin
+        //skin_property_1 = skin_property_1_my_skin
+        assertEquals("skin_property_1_my_skin", ui.get("skin_property_1"));
+        
+        ui.setSkin("myotherskin");
+        //skin_property_1 = skin_property_1_my_other_skin
+        assertEquals("skin_property_1_my_other_skin", ui.get("skin_property_1"));
     }
 }
