@@ -109,11 +109,13 @@ public class UIToolTest
         UITool ui = getTool();
 
         String[] skinNames = ui.getSkinNames();
-        assertEquals(2, skinNames.length);
+        // two real skins + ".svn"
+        assertEquals(3, skinNames.length);
 
         // Not completely sure this will always be in the same order.
-        assertEquals("myotherskin", skinNames[0]);
-        assertEquals("myskin", skinNames[1]);
+        assertEquals(".svn", skinNames[0]); // Not actually a skin
+        assertEquals("myotherskin", skinNames[1]);
+        assertEquals("myskin", skinNames[2]);
     }
 
     public void testSkinValues()

@@ -228,7 +228,7 @@ public class TurbineUIService
      */
     public String[] getSkinNames()
     {
-        File skinsDir = new File(skinsDirectory);
+        File skinsDir = new File(TurbineServlet.getRealPath(skinsDirectory));
         return skinsDir.list(DirectoryFileFilter.INSTANCE);
     }
 
