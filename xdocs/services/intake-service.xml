@@ -25,6 +25,7 @@
   <title>Turbine Services - Intake Service</title>
   <author email="jmcnally@collab.net">John McNally</author>
   <author email="jon@latchkey.com">Jon S. Stevens</author>
+  <author email="tv@apache.org">Thomas Vandahl</author>
  </properties>
 
  <body>
@@ -51,9 +52,9 @@ looks something like this:
 ------------------
      Intake
 ------------------
- Business Objects  <- Torque Generated
+ Business Objects  <- e.g. Torque Generated
 ------------------
-      Peers        <- Torque Generated
+      Peers        <- e.g. Torque Generated
 ------------------
       RDBMS
 ------------------
@@ -67,9 +68,10 @@ is good for validating the form data. Intake provides the ability to do
 regular expression matching in order to make sure that form fields
 contain the data that they should contain. For example, if someone
 should only enter a number into a form field, it can be validated with a
-regular expression. Lastly, Intake can provides a centralized source for
-error messages. If the validation fails, the error message defined in
-the XML file can be shown to the user.
+regular expression. Intake also supports the input of localized values and
+does the right thing based on the Locale the user requested. Lastly, Intake can 
+provide a centralized source for error messages. If the validation fails, the 
+error message defined in the XML file can be shown to the user.
 </p>
 
 </section>
@@ -107,7 +109,7 @@ tool.request.intake=org.apache.turbine.services.intake.IntakeTool
 
 <section name="Usage">
 <p>
-Intake is implemented as a Turbine Service and a Pull Tool.  An XML
+Intake is implemented as a Turbine Service and a Pull Tool. An XML
 specification is parsed during the service initialization and used by
 the pull tool while processing request data and generating the response.
 </p>
@@ -146,20 +148,20 @@ groups from Scarab's intake.xml:
             mapToObject="om.AttributeValue">
     <field name="Value" key="val" type="String">
         <rule name="maxLength" value="255">Value length cannot be &gt; 255</rule>
-        <required-message>This module requires data for this
-                          attribute.
-        </required-message>
+        <rule name="required" value="true">This module requires data for 
+                this attribute.
+        </rule>
     </field>
     <field name="Url" key="url" type="String" mapToProperty="Value">
         <rule name="maxLength" value="255">Url length cannot be &gt; 255</rule>
         <rule name="mask" value="^$|http.+">Please enter an url starting with "http"</rule>
-        <required-message>This module requires a valid url.</required-message>
+        <rule name="required" value="true">This module requires a valid url.</rule>
     </field>
     <field name="OptionId" key="optionid" type="NumberKey">
         <rule name="mask" value="^$|[0-9]+">Please select a valid choice</rule>
-        <required-message>This module requires that you select an option
-                          for this attribute.
-        </required-message>
+        <rule name="required" value="true">This module requires that you select 
+                an option for this attribute.
+        </rule>
     </field>
 </group>
 
@@ -186,9 +188,9 @@ SQL schema.
 </p>
 
 <p>
-The group tag has a class attribute which is the name that will be used
+The group tag has a <code>name</code> attribute which is the name that will be used
 within templates and java code to refer to the group.  It also contains a
-key attribute which will be used in the query parameters.  The key is
+<code>key</code> attribute which will be used in the query parameters.  The key is
 not referenced in any code, so it can be a short name (even 1 character) as
 long as it is uniquely identifies the group from the rest.
 </p>
@@ -198,14 +200,38 @@ be a default; the individual fields within a group can map to different
 objects.
 </p>
 <p>
-Fields have attributes: name and key which serve similar function to the
-group's class and key attributes.  It has mapToObject and mapToProperty fields
+Fields have attributes: <code>name</code> and <code>key</code> which serve 
+similar function to the group's <code>name</code> and <code>key</code>  
+attributes.  It has <code>mapToObject</code> and <code>mapToProperty</code> fields
 that can be used to associate a business object to the field for prepopulating
 the field as well as assigning the field data to the bean after successful
-validation.  The field must have a type, which can be simple types such as
-String and Integer.  It is planned that more complex types, such as
-Email, Url, or Date, will be added that will add functionality that is
-difficult or not possible with a simple regex mask.
+validation.  The field must have a <code>type</code> out of the following
+supported types:
+<ul>
+  <li><code>boolean</code></li>
+  <li><code>BigDecimal</code> This field type supports localization.</li>
+  <li><code>int</code></li>
+  <li><code>float</code> This field type supports localization.</li>
+  <li><code>FileItem</code></li>
+  <li><code>String</code> (default)</li>
+  <li><code>DateString</code></li>
+  <li><code>StringKey</code> (deprecated, do not use for new applications)</li>
+  <li><code>NumberKey</code></li>
+  <li><code>ComboKey</code></li>
+  <li><code>double</code> This field type supports localization.</li>
+  <li><code>short</code></li>
+  <li><code>long</code></li>
+  <li><code>custom</code> Custom field types can be defined by using this type.
+  The class name of the customized field must be given in the <code>fieldClass</code>
+  attribute then. The custom class must extend the class 
+  <code>org.apache.turbine.services.intake.model.Field</code>. This way, more 
+  complex types, such as Email, Url, or Date, can be added that add functionality 
+  that is difficult or not possible with a simple regex mask.</li>
+</ul>
+The field types supporting localization will parse the given strings from the
+request using the locale from the <a href="localization-service.html">Turbine 
+Localization Service</a> to allow the entry of floating point numbers with
+localized decimal separators.
 </p>
 <p>
 The field can define rule elements.  The basic fields include rules for
@@ -512,14 +538,14 @@ populated object. This will be covered in detail further on.
 <source><![CDATA[
 <field name="Value" key="val" type="String">
     <rule name="maxLength" value="255">Value length cannot be &gt; 255</rule>
-    <required-message>This module requires data for this
-                      attribute.
-    </required-message>
+    <rule name="required" value="true">This module requires data for 
+        this attribute.
+    </rule>
 </field>
 <field name="Url" key="url" type="String" mapToProperty="Value">
     <rule name="maxLength" value="255">Url length cannot be &gt; 255</rule>
     <rule name="mask" value="^$|http.+">Please enter an url starting with "http"</rule>
-    <required-message>This module requires a valid url.</required-message>
+    <rule name="required" value="true">This module requires a valid url.</rule>
 </field>
 ]]></source>
 
@@ -629,26 +655,26 @@ Back to explaining the fields, lets look at the example again:
 </p>
 
 <source><![CDATA[
-    <field name="Value" key="val" type="String">
-        <rule name="maxLength" value="255">Value length cannot be &gt; 255</rule>
-        <required-message>This module requires data for this
-                          attribute.
-        </required-message>
-    </field>
-    <field name="Url" key="url" type="String" mapToProperty="Value">
-        <rule name="maxLength" value="255">Url length cannot be &gt; 255</rule>
-        <rule name="mask" value="^$|http.+">Please enter an url starting with "http"</rule>
-        <required-message>This module requires a valid url.</required-message>
-    </field>
+<field name="Value" key="val" type="String">
+    <rule name="maxLength" value="255">Value length cannot be &gt; 255</rule>
+    <rule name="required" value="true">This module requires data for 
+        this attribute.
+    </rule>
+</field>
+<field name="Url" key="url" type="String" mapToProperty="Value">
+    <rule name="maxLength" value="255">Url length cannot be &gt; 255</rule>
+    <rule name="mask" value="^$|http.+">Please enter an url starting with "http"</rule>
+    <rule name="required" value="true">This module requires a valid url.</rule>
+</field>
 ]]></source>
 
-  </section>
+</section>
 
-  <section name="Multiple groups of the same class in one form">
+<section name="Multiple groups of the same class in one form">
 
 <p>
 This example uses a form from Scarab that assigns values to various
-attribute's that are relevant for an issue (bug).  Attributes include
+attribute's that are relevant for an issue (bug). Attributes include
 summary, operating system, platform, assigned to, etc.  Some of the
 attributes are required, but not all.
 </p>
@@ -663,7 +689,6 @@ The template:
 #set ($user = $scarabR.User)
 #set ($module = $user.CurrentModule)
 #set ($issue = $user.ReportingIssue)
-
 
 <form method="get" action="$action">
 
@@ -694,28 +719,24 @@ The template:
           <br>
           #attrValueSelect ($attVal $field "")
     #else
-
           <font color="red">
             #attrValueErrorMsg ( $attVal $field )
           </font>
           <br>
         #if ($attVal.Attribute.AttributeType.Name == "long-string" )
-
-            <textarea name= "$attrInput.Value.Key" cols="40"
+           <textarea name= "$attrInput.Value.Key" cols="40"
                rows="5">$!attrInput.Value</textarea>
         #else
-
            <input name= "$attrInput.Value.Key"
                 value="$!attrInput.Value" size="20" type="text">
-
         #end
 <br><br>
   #end
 #end
 
 <p>
-            <input type="submit"
-                name="eventSubmit_doEnterissue" value="Submit Issue">
+    <input type="submit"
+        name="eventSubmit_doEnterissue" value="Submit Issue">
 
 $intake.declareGroups()
 </form>
@@ -867,9 +888,9 @@ job to another job.
 john mcnally
 ]]></source>
 
-  </section>
+</section>
 
-  <section name="Default Values for fields">
+<section name="Default values for fields">
 
 <p>
 If you want to use input fields which should default to non-empty values for,
@@ -928,6 +949,50 @@ would assign the null value to the bean field.</p>
 
 </section>
 
- </body>
+<section name="Display attributes for fields">
+<p>
+The Intake DTD allows additional attributes that can help you in your
+template. The <code>displayName</code> can be used to provide a label
+for the given field. The <code>displaySize</code> can be used to define
+the displayed size of the field (either numerical or as a CSS-style).
+The Intake tool $intake provides these values as 
+<code>$field.DisplayName</code> and <code>$field.DisplaySize</code>,
+respectively.
+</p>
+
+<source><![CDATA[
+<group name="test" key="test">
+    <field name="Value" key="val" type="String" 
+           displayName="Test Value"
+           displaySize="150px"
+    />
+</group>
+]]></source>
+
+<p>This could be used in the template like this:</p>
+
+<source><![CDATA[
+#set ($tg = $intake.test.Default)
+
+$tg.Value.DisplayName:
+<input type="text" name="$tg.Value.Key" value="$!tg.Value.HTMLString"
+    style="width:${tg.Value.DisplaySize};" />
+]]></source>
+
+</section>
+
+<section name="Custom validators">
+<p>
+todo
+</p>
+</section>
+
+<section name="Validating dependent fields">
+<p>
+todo
+</p>
+</section>
+
+</body>
 
 </document>
