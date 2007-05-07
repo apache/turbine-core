@@ -77,7 +77,7 @@
 # where an explicit category is not specified.
 
 log4j.category.default = INFO, default
-log4j.category.org.apache.turbine.services.pull.util.UIManager = DEBUG, default
+log4j.category.org.apache.turbine.services.pull.tools.UITool = DEBUG, default
 
 log4j.appender.default = org.apache.log4j.RollingFileAppender
 log4j.appender.default.file = logs/turbine.log

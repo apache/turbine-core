@@ -100,7 +100,7 @@ import org.apache.velocity.context.Context;
  *  authorized: tool is instantiated once for each user session once the
  *              user logs in. After this, it is a normal session tool.
  *
- *  persistent: tool is instantitated once for each user session once
+ *  persistent: tool is instantiated once for each user session once
  *              the user logs in and is is stored in the user's permanent
  *              hashtable.
  *              This means for a logged in user the tool will be persisted
