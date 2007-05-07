@@ -103,22 +103,20 @@ contributed</a> to Turbine over the last 2+ years.</strong>
         Logging via commons-logging, backed by Log4j.
     </li>
     <li>
-        A centralized configuration using commons-configuration tomake it easy
+        A centralized configuration using commons-configuration to make it easy
         to retrieve properties.
     </li>
     <li>
-        Integration with JavaMail to make sending email painless</li>
+        Integration with commons-email to make sending email painless</li>
     <li>
-        Integration with JavaMail and Velocity to allow you to send
+        Integration with commons-email and Velocity to allow you to send
         processed Velocity templates as email!</li>
     <li>
         Built using Maven</li>
     <li>
-        Initial application development WAR archive creation tool using Ant</li>
-    <li>
         Turbine Servlet works cleanly with Servlet API 2.1 and higher</li>
     <li>
-        Works with JDK 1.2.x and higher - 100% Pure Java</li>
+        Works with JDK 1.3 and higher - 100% Pure Java</li>
 </ul>
 
 </section>

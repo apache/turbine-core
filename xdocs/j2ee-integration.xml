@@ -127,12 +127,10 @@ of Turbine.
     <td>
 <p>
 Turbine provides good support for working with JDBC through the <a
-href="http://share.whichever.com/village/">Village API</a>, the <a
-href="http://jakarta.apache.org/turbine/torque/user-guide.html">
+href="http://www.softwareforge.de/projects/village">Village API</a>, the <a
+href="http://db.apache.org/torque/">
 Torque Object Relational Tool</a> and its connection
-pooling facilities. The connection pool is not yet fully J2EE
-"compatible" in that it does not support DataSources. However, at some
-point we may choose to implement that. Note, again, Turbine does not
+pooling facilities. Note, again, Turbine does not
 prevent you from using your own Connection pooling mechanism, we simply
 created one because at the time, we needed one and ours works just fine.
 </p>
