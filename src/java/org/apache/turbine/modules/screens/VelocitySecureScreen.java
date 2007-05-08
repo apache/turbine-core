@@ -28,7 +28,7 @@ import org.apache.velocity.context.Context;
  * VelocitySecureScreen
  *
  * Always performs a Security Check that you've defined before
- * executing the doBuildtemplate().  You should extend this class and
+ * executing the doBuildTemplate().  You should extend this class and
  * add the specific security check needed.  If you have a number of
  * screens that need to perform the same check, you could make a base
  * screen by extending this class and implementing the isAuthorized().
@@ -71,8 +71,7 @@ public abstract class VelocitySecureScreen
     /**
      * Implement this method to perform the security check needed.
      * You should set the template in this method that you want the
-     * user to be sent to if they're unauthorized.  See the
-     * VelocitySecurityCheck utility.
+     * user to be sent to if they're unauthorized.
      *
      * @param data Turbine information.
      * @return True if the user is authorized to access the screen.
