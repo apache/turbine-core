@@ -49,6 +49,7 @@
         <!-- item name="Component Service"   href="/services/component-service.html"/ -->
         <item name="Factory Service"     href="/services/factory-service.html"/>
         <item name="Intake Service"      href="/services/intake-service.html"/>
+        <item name="JSON-RPC Service"    href="/services/jsonrpc-service.html"/>
         <item name="JSP Service"         href="/services/jsp-service.html"/>
         <item name="Localization Service" href="/services/localization-service.html"/>
         <item name="Logging Service"     href="/services/logging-service.html"/>

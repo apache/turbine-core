@@ -643,6 +643,16 @@
       </properties>
     </dependency>
     <dependency>
+      <groupId>com.metaparadigm</groupId>
+      <artifactId>json-rpc</artifactId>
+      <version>1.0</version>
+      <url>http://oss.metaparadigm.com/jsonrpc/</url>
+      <type>jar</type>
+      <properties>
+      <war.bundle>true</war.bundle>
+      </properties>
+    </dependency> 
+    <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.12</version>
