@@ -131,6 +131,9 @@ public abstract class Field
     /** Has the field passed the validation test? */
     protected boolean validFlag;
 
+    /** Has the field been validated? */
+    protected boolean validated;
+
     /** Does the field require a value? */
     protected boolean required;
 
@@ -324,6 +327,7 @@ public abstract class Field
     {
         this.parser = pp;
         validFlag = true;
+        validated = false;
 
         // If the parser is for a HTTP request, use the request it's
         // associated with to grok the locale.
@@ -351,14 +355,14 @@ public abstract class Field
             {
                 setFlag = true;
             }
-            validate();
+            // validate();
         }
         else if (pp.containsKey(getValueIfAbsent()) &&
                 pp.getString(getValueIfAbsent()) != null)
         {
             pp.add(getKey(), pp.getString(getValueIfAbsent()));
             setFlag = true;
-            validate();
+            // validate();
         }
 
         initialized = true;
@@ -379,6 +383,7 @@ public abstract class Field
         if (!initialized)
         {
             validFlag = true;
+            validated = false;
         }
         retrievable = obj;
         return this;
@@ -494,6 +499,7 @@ public abstract class Field
         initialized = false;
         setFlag = false;
         validFlag = false;
+        validated = false;
         required = false;
         message = null;
         retrievable = null;
@@ -536,6 +542,16 @@ public abstract class Field
     public boolean isValid()
     {
         return validFlag;
+    }
+
+    /**
+     * Flag to determine whether the field has been validated.
+     *
+     * @return value of validated.
+     */
+    public boolean isValidated()
+    {
+        return validated;
     }
 
     /**
@@ -602,7 +618,7 @@ public abstract class Field
     /**
      * Compares request data with constraints and sets the valid flag.
      */
-    protected boolean validate()
+    public boolean validate()
     {
         log.debug(name + ": validate()");
 
@@ -615,7 +631,7 @@ public abstract class Field
                 log.debug(name + ": Multi-Valued");
                 for (int i = 0; i < stringValues.length; i++)
                 {
-                    log.debug(name + ": " + i + ". Wert: " + stringValues[i]);
+                    log.debug(name + ": " + i + ". Value: " + stringValues[i]);
                 }
             }
 
@@ -672,6 +688,8 @@ public abstract class Field
                 doSetValue();
             }
         }
+        
+        validated = true;
 
         return validFlag;
     }
