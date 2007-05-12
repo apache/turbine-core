@@ -185,6 +185,13 @@ public class Group
         {
             fieldsArray[i].init(pp);
         }
+        for (int i = fieldsArray.length - 1; i >= 0; i--)
+        {
+            if (fieldsArray[i].isSet() && !fieldsArray[i].isValidated())
+            {
+                fieldsArray[i].validate();
+            }
+        }
         return this;
     }
 
