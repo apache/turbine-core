@@ -29,4 +29,28 @@
 			<rule value="true" name="required">ValidValue</rule>
 		</field>
 	</group>
+    <group name="DateRangeTest" key="rt">
+        <field name="DateMin" key="dmin" type="DateString">
+            <rule value="MM/dd/yyyy" name="format">Invalid format</rule>
+        </field>
+        <field name="DateMax" key="dmax" type="DateString"
+            validator="DateRangeValidator">
+            <rule value="MM/dd/yyyy" name="format">Invalid format</rule>
+            <rule value="DateMin" name="greater-than">Value must be greater than DateMin</rule>
+        </field>
+        <field name="DateMax2" key="dmax2" type="DateString"
+            validator="DateRangeValidator">
+            <rule value="MM/dd/yyyy" name="format">Invalid format</rule>
+            <rule value="DateMin" name="less-than">Value must be less than DateMin</rule>
+        </field>
+    </group>
+    <group name="IntRangeTest" key="irt">
+        <field name="IntMin" key="imin" type="int" />
+        <field name="IntMax" key="imax" type="int" validator="IntegerRangeValidator">
+            <rule value="IntMin" name="greater-than-or-equal">Value must be greater than or equal to IntMin</rule>
+        </field>
+        <field name="IntMax2" key="imax2" type="int" validator="IntegerRangeValidator">
+            <rule value="IntMin" name="less-than-or-equal">Value must be less than or equal to IntMin</rule>
+        </field>
+    </group>
 </input-data>
