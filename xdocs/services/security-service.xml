@@ -33,19 +33,25 @@
 
 <p>
 The Security Service is for authenticating users and assigning them roles
-and permissions in groups.
+and permissions in groups. Different implementations are available, which
+can be deployed in dependence of your application needs:
+  <ul>
+    <li>DBSecurityService (deprecated as of Turbine 2.3.3)</li>
+    <li>TorqueSecurityService (recommended default)</li>
+    <li>LDAPSecurityService</li>
+  </ul> 
 </p>
 <p>
 In Turbine 2.3 a replacement for the default DBSecurityService is
 provided that makes it possible to map the security service onto an
 pre existing user structure and much easier to extend the TurbineUser
 table to include additional columns - see <a
-href="torque-security-service.html"> Torque Security Service</a> for
-configuration details.
-</p>
-
-<p>
-As of Turbine 2.3.3 the DBSecurityService is deprecated.
+href="torque-security-service.html">Torque Security Service</a> for
+configuration details. The LDAPSecurityService allows to attach to an
+existing legacy server for authentication. Groups, roles and permissions
+can be provided by the TorqueSecurityService, for example. See the
+<a href="ldap-security-service.html">LDAP Security Service</a> for an
+example on how to attach Turbine to Active Directory.
 </p>
 
 </section>

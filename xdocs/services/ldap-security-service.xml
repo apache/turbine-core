@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+ <properties>
+  <title>Turbine Services - LDAP Security Service</title>
+  <author email="tv@apache.org">Thomas Vandahl</author>
+ </properties>
+
+<body>
+
+<section name="LDAP Security Service">
+
+<p>
+This is an implementation of a Security Service which uses 
+an LDAP server to authenticate users.
+</p>
+
+<p>
+This service provides authentication only by default. Group, role and
+permission information should be managed elsewhere, for example in a
+database. The following configuration example uses the default database
+classes for this and authenticates against an Active Directory server.
+</p>
+
+</section>
+
+<section name="Configuring the Security Service">
+<p>
+You need to configure Turbine to use the LDAP Security Service and the LDAP User Manager:
+</p>
+<source><![CDATA[
+services.SecurityService.classname=org.apache.turbine.services.security.ldap.LDAPSecurityService
+services.SecurityService.user.manager=org.apache.turbine.services.security.ldap.LDAPUserManager
+]]></source>
+
+<p>
+As mentioned before, LDAP does not yet provide custom Group, User and 
+Role objects so you must use it with the default TurbineGroup, TurbineRole 
+and TurbinePermission objects. There is a generic LDAP user and a specialized
+Active Directory user. We use the latter for this example.
+</p>
+
+<source><![CDATA[
+# Class for User.
+#services.SecurityService.user.class=org.apache.turbine.services.security.ldap.LDAPUser
+services.SecurityService.user.class=org.apache.turbine.services.security.ldap.ActiveDirectoryUser
+
+# Class for Group.
+services.SecurityService.group.class=org.apache.turbine.om.security.TurbineGroup
+
+# Class for Role.
+services.SecurityService.role.class=org.apache.turbine.om.security.TurbineRole
+
+# Class for Permission.
+services.SecurityService.permission.class=org.apache.turbine.om.security.TurbinePermission
+]]></source>
+
+<p>
+Now the security service needs to know your LDAP configuration. Note that using
+<code>sAMAccountName</code> as user name allows you to log in with the same name
+as in Windows. You can, however, use any other attribute, like 
+<code>userPrincipalName</code> (eMail-address), for example.
+</p>
+
+<source><![CDATA[
+services.SecurityService.ldap.security.authentication=simple
+services.SecurityService.ldap.port=389
+services.SecurityService.ldap.host=ad.acme.com
+
+#
+# The user name of the admin user. The admin user should be able to
+# read from the LDAP repository.
+# Characteres '/' are replaced by '=' and '%' are replaced by ','.
+#
+# Default: none
+#
+services.SecurityService.ldap.admin.username=CN/JoeAdmin%CN/Users%DC/acme%DC/com
+services.SecurityService.ldap.admin.password=password
+
+#
+# The directory base to search.
+# '/' are replaced by '=' and '%' are replaced by ','.
+#
+# Default: none
+#
+services.SecurityService.ldap.basesearch=CN/Users%DC/acme%DC/com
+
+services.SecurityService.ldap.dn.attribute=distinguishedName
+services.SecurityService.ldap.provider=com.sun.jndi.ldap.LdapCtxFactory
+
+# Active Directory settings
+# services.SecurityService.ldap.user.userid=userAccountControl
+services.SecurityService.ldap.user.username=sAMAccountName
+#services.SecurityService.ldap.user.username=cn
+services.SecurityService.ldap.user.firstname=givenName
+services.SecurityService.ldap.user.lastname=sn
+services.SecurityService.ldap.user.email=userPrincipalName
+services.SecurityService.ldap.user.password=userPassword
+]]></source>
+
+<p>
+See the <a href="security-service.html">Security Service</a> page
+for details of these and other properties that may also need to be configured.
+</p>
+
+</section>
+
+</body>
+</document>
