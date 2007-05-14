@@ -101,7 +101,7 @@ services.SchedulerService.classname=org.apache.turbine.services.schedule.Turbine
 
 #
 # Set enabled to true to start the scheduler.  The scheduler can be
-# stopped and started after Turbine has been intialized.  See the
+# stopped and started after Turbine has been initialized.  See the
 # javadocs for org.apache.turbine.services.schedule.TurbineScheduler
 # for the methods calls.
 #
@@ -207,7 +207,7 @@ information the Service uses to determine the frequency of the Task.
 Note that the object is in the com.mycompany.modules. This assumes that the
 package com.mycompany.modules is in the Turbine module path, which is in the
 module.packages directive in the TurbineResources.properties.
-The ScheduledJobLoader object loads the Task upon Turbine initilization also
+The ScheduledJobLoader object loads the Task upon Turbine initialization also
 searches for a <i>scheduledjobs</i> package which contains the Task object.
 </p>
 
@@ -363,7 +363,7 @@ public class AddScheduledTask extends VelocityAction
 </p>
 
 <p>
-    The Scheduler Service uses a seperate thread for each Task it runs to ensure
+    The Scheduler Service uses a separate thread for each Task it runs to ensure
     that every job runs on time. It's the programmer's responsibility to ensure
     that proper precautions to handle issues such as synchronization and long
     running jobs. As always, check through the relevant Javadocs and source code

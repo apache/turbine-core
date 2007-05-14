@@ -36,7 +36,7 @@ putting the user-group-permission tables in an LDAP directory. We want to
 start with the fact that for the schema proposed we have taken all new
 objectClasses and Attributes preceded by turbine to indicate that they are
 Turbine specific. We have thought about using the standard and available
-LDAP objectClasses and atributes, but finally decided to start the
+LDAP objectClasses and attributes, but finally decided to start the
 discussion with the turbine stuff.
 </p>
 <p>
@@ -172,11 +172,11 @@ are DN pointing to the turbinePermission objects. turbineUser will hold
 all user related information. turbineGroup can hold in the
 turbineGroupMember DNs of turbineUser objects. Thus having multiple
 users being member of a group. There is however no relation with role at
-this stage. The releation role - user is stored in the turbineRole
+this stage. The relation role - user is stored in the turbineRole
 having multiple DNs in turbineRoleMember. Then we have a user - role
 relation thus giving user permission via roles they can perform. There
 is no relation between role - user - group in one record. This could be
-possible with the DB model, but we could you put this dependancy in the
+possible with the DB model, but we could you put this dependency in the
 hierarchical structure of a directory. With the separate user - role and
 user - group relations we thought we'd have the most desired relations.
 </p>
@@ -184,7 +184,7 @@ user - group relations we thought we'd have the most desired relations.
 Please note that the Object Identifiers (OID) in this example are not
 real ones. When we go for the turbine objectClasses and attributes
 Turbine (or Apache) have to register (if they not already have) their
-own OID starting point in the IANA tree. We are fully open for dicussion
+own OID starting point in the IANA tree. We are fully open for discussion
 and appreciate your feedback on the mailing list.
 </p>
 </section>

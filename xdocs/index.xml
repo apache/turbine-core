@@ -116,10 +116,10 @@
     principles to the entire process of building a complex secure web application.
     We try to follow the
     <a href="http://www.javaworld.com/javaworld/jw-12-1999/jw-12-ssj-jspmvc.html">Model
-    2 methodology</a> yet expand on it to encompass "View" techologies other
+    2 methodology</a> yet expand on it to encompass "View" technologies other
     than just JSP as well as more mature methodologies such as
     <a href="./howto/action-event-howto.html">Action
-    Event</a> handling. Turbine is consided as Model 2 <strong>+ 1</strong>. :-) Please
+    Event</a> handling. Turbine is considered as Model 2 <strong>+ 1</strong>. :-) Please
     see the <a href="model2+1.html">discussion</a> of Model 2+1 for more information.
  </p>
 

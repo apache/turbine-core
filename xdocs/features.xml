@@ -34,7 +34,7 @@
 <p>
 This document is for bragging about all of Turbine's features and inherent
 coolness. Turbine is well over 200 classes and contains a boat load of
-features and API's. Many of these can also be used indepently of Turbine.
+features and API's. Many of these can also be used independently of Turbine.
 Almost all of the default implementations can be easily overridden with
 your own implementations. Turbine also has extensive Javadoc documentation
 for nearly all of the classes as well as in-code comments. At the risk

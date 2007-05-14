@@ -76,7 +76,7 @@ services.MyServiceName.earlyInit = true
          <li>
            Your Service will be instantiated exactly once. So it must be
            threadsafe and must not use class global variables for
-           session-dependend information.
+           session-dependent information.
          </li>
          <li>
            You should provide an init() method which is called when your

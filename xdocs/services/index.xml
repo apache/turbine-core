@@ -53,7 +53,7 @@ allows for the Services to be accessed from anywhere within your code.
 
 <p>
 The Life Cycle of a Service begins with the Services constructor. A Service
-does not do much in it's contructor. Especially it should not allocate any
+does not do much in it's constructor. Especially it should not allocate any
 costly resources like large memory structure, DB or Network connections, etc.
 The Service may be in the properties file, but unless a client using the
 application needs the Service in question, there is no point starting the
@@ -94,7 +94,7 @@ Provides encryption algorithms like MD5 and SHA message digests as well as old-f
 <li>
 <a href="cache-service.html">Cache Service</a>
 <br/>
-Provides a persistant Object Storage mechanism within your application.
+Provides a persistent Object Storage mechanism within your application.
 </li>
 
 <li>
@@ -163,8 +163,8 @@ and disposal of Objects in the pool.
 <a href="pull-service.html">Pull Service</a>
 <br/>
 Manages the creation of application tools that are available to all templates
-in a Turbine application. The tools can have global scope, request scope, session
-scope or persistant scope within your application.
+in a Turbine application. The tools can have global scope, request scope or
+session scope within your application.
 </li>
 
 <li>

@@ -55,7 +55,7 @@ addition due to way actions are used (hence Model 2 + 1).
 </p>
 
 <p>
-Turbine does not directly support the Hierachical MVC pattern, but
+Turbine does not directly support the Hierarchical MVC pattern, but
 it cout be used this way by defining multiple module and template
 paths (would impact performance). Note that in the HMVC each MVC
 instance is self-contained and separable from the rest.

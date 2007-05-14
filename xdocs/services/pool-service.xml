@@ -59,7 +59,7 @@ can be extended to get a minimal implementation of the interface.
 <p>
 An ArrayCtorRecyclable interface extends the Recyclable interface providing
 a more efficient recycle method with less reflection for recycling frequently
-used objects having constuctors with parameters.
+used objects having constructors with parameters.
 </p>
 
 </section>
@@ -104,7 +104,7 @@ services.PoolService.pool.capacity = 128
 
 <p>
 The Pool Service can be called instead of the Factory Service, when instantiating
-objects that are needed repeatedly e.g. for processing client requests. Intances
+objects that are needed repeatedly e.g. for processing client requests. Instances
 of RunData implementations, ParameterParser and CookieParser implementations,
 Pull Service tools, etc, are typical examples of pooled objects. Used objects
 must be returned to the Pool Service for recycling. The TurbinePool class is a

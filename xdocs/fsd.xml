@@ -192,7 +192,7 @@ representation of the components of an Html page.
 </p>
 
 <p>
-The loaders are responsible for dynamicially loading each of the five modules.
+The loaders are responsible for dynamically loading each of the five modules.
 These loaders have an option to cache the module objects in memory for extremely
 fast loading times.
 </p>
@@ -200,7 +200,7 @@ fast loading times.
 <p>
 The loaders use intelligent factories in that we have added a property to
 TurbineResources.properties that allows you to define the "Loader Classpath". In
-other words, it is possible to physicially keep all of your web applications
+other words, it is possible to physically keep all of your web applications
 modules in their own package classpath and the loaders will be responsible for
 finding the right file to execute.
 </p>
@@ -218,7 +218,7 @@ multiple web applications can be combined to form a complete system.
 since multiple threads may try to execute a single module at the exact same time.
 These rules apply to general servlet programming so they are not that difficult
 to understand. The basic rule is to not try to define any class global variables
-within each of the modules unless it has been wrapped in a syncronized statement.
+within each of the modules unless it has been wrapped in a synchronized statement.
 </p>
 
 </section>
@@ -232,7 +232,7 @@ factory that creates requested modules from java class files.
 
 <p>
 You can easily create your own factories by implementing a simple interface
-and registering them in the TurbineResource.properities.  This allows you a lot
+and registering them in the TurbineResource.properties.  This allows you a lot
 of flexibility in the sense that you can load Turbine modules from <strong>any
 </strong> source that is able to provide you with a java object, for example an
 RMI server or scripting options like Rhino and JPython.  Keep in mind that
@@ -261,7 +261,7 @@ system with a username and password before executing the pages, then set the
 "Login" screen to be something else. This is done in the Turbine Servlet under
 the data.session.isNew() check. Until the user actually logs in, it is only possible
 to store temporary data for that users session. When the user logs in, it is
-possible to store permant information by simply putting data into a hashtable.
+possible to store permanent information by simply putting data into a hashtable.
 The implementation of the User object (ie: TurbineUser) in the framework takes care
 of the issues involved with serializing that information to a resource such as a
 database or file on the hard disk.
@@ -414,7 +414,7 @@ because it will allow you to easily add global functionality to your system.
 <p>
 The DateSelector class generates Html popup menus for month/day/year. The beauty
 of this class is that you can provide a date for it to start with and it will
-automaticially generate the Html popups with that date.
+automatically generate the Html popups with that date.
 </p>
 
 <p>

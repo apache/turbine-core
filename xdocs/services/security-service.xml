@@ -122,7 +122,7 @@ services.SecurityService.permission.class=org.apache.turbine.om.security.Turbine
 #
 # This is the class that implements the ACL interface.
 # You want to override this setting only if you want your ACL
-# implementation to provide application specific addtional
+# implementation to provide application specific additional
 # functionality.
 #
 
@@ -165,7 +165,7 @@ services.SecurityService.secure.passwords.algorithm=SHA
 
 # Configuration for the LDAP Security Service implementation
 
-#services.SecurityService.ldap.security.athentication=simple
+#services.SecurityService.ldap.security.authentication=simple
 #services.SecurityService.ldap.port=<LDAP PORT>
 #services.SecurityService.ldap.host=<LDAP HOST>
 #services.SecurityService.ldap.admin.username=<ADMIN USERNAME>
@@ -184,7 +184,7 @@ services.SecurityService.secure.passwords.algorithm=SHA
 # services.SecurityService.ldap.security.authentication=simple
 
 #
-# The host name where the LDAP server is listenting.
+# The host name where the LDAP server is listening.
 #
 # Default: localhost
 #
@@ -192,7 +192,7 @@ services.SecurityService.secure.passwords.algorithm=SHA
 # services.SecurityService.ldap.host=localhost
 
 #
-# The port number where the LDAP server is listenting.
+# The port number where the LDAP server is listening.
 #
 # Default: 389
 #
@@ -202,7 +202,7 @@ services.SecurityService.secure.passwords.algorithm=SHA
 #
 # The user name of the admin user. The admin user should be able to
 # read from the LDAP repository.
-# Characteres '/' are replaced by '=' and '%' are replaced by ','.
+# Characters '/' are replaced by '=' and '%' are replaced by ','.
 #
 # Default: none
 #

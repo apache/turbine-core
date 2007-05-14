@@ -167,7 +167,7 @@ security your application requires.
     <td>
 <p>
 You can use container managed security if you wish, and Turbine provides you with
-mechanism for application manged security, in case you need them.
+mechanism for application managed security, in case you need them.
 </p>
 <p>
 The main problem with container managed security is that it cannot be managed

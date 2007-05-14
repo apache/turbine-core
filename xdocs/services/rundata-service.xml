@@ -253,7 +253,7 @@ flag are only existing in Turbine's memory. Neither become a part of
 RunData's HttpSession until they are saved into the session through
 data.save(). The AccessCounter is persistent storage and is saved into
 the database. The AccessCounter for the session counts the number of
-pages that are requested throgh Turbine for the user's session. Once
+pages that are requested through Turbine for the user's session. Once
 their session logs out or the session times out, that information is
 lost. The user.setPerm() method allows for information to be stored
 persistently into the database as a HashTable entry. The example above

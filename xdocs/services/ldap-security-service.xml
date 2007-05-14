@@ -90,7 +90,7 @@ services.SecurityService.ldap.host=ad.acme.com
 #
 # The user name of the admin user. The admin user should be able to
 # read from the LDAP repository.
-# Characteres '/' are replaced by '=' and '%' are replaced by ','.
+# Characters '/' are replaced by '=' and '%' are replaced by ','.
 #
 # Default: none
 #

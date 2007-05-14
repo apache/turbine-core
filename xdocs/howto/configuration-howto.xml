@@ -42,7 +42,7 @@ multiple sources.
 <p>
 In the classic development environment, the developer has one environment, there is
 a QA environment, and then production.  While all of these environments strive to be
-as similar as possible, there are often difference betweent them.  For instance, in
+as similar as possible, there are often difference between them.  For instance, in
 the development environment, you might want to not have Turbine cache templates, that
 way, as you change them, they are just reloaded.  But in test and production you might
 need them to be non reloading for performance.  There are many other situations like this.
@@ -126,7 +126,7 @@ This file will contain lines like this:
 
 <p>
 The configurations specified first override the values of configurations specified
-afterwords.  So, if the configuration value "mail.server" is specified as mymailserver.mycompany.com in
+afterwards.  So, if the configuration value "mail.server" is specified as mymailserver.mycompany.com in
 your JNDI settings, and localhost in the TurbineResources.properties, then when you issue:
 </p>
 <source>

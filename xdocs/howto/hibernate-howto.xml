@@ -49,7 +49,7 @@
       </p>
       <p>
         Please review the content available from the Hibernate homepage.  This howto assumes
-        you already are confortable with the various Hibernate concepts.
+        you already are comfortable with the various Hibernate concepts.
       </p>
       <p>
     In this example, we will take a simple schema with a single table and integrate Hibernate into
@@ -90,7 +90,7 @@
       <source>
       /src/java/com/my/project/bizobj business objects reside
       /src/java/com/my/project/om POJO objects mapped to database reside
-      /src/java/com/my/project/om/persist manager objects that faciliate retrieve POJO objects
+      /src/java/com/my/project/om/persist manager objects that facilitate retrieve POJO objects
       /src/java/com/my/project/om/filter Servlet Filter lives that maintains the Hibernate Session
       /src/java/ where hibernate.hbm.xml and hibernate.cfg.xml files live
 
@@ -209,7 +209,7 @@
 
     <section name="Create static ServiceLocator class.">
       <p>
-    Currently this class is not integrated into Turbine, so you will need to provide an implemation yourself.
+    Currently this class is not integrated into Turbine, so you will need to provide an implementation yourself.
     This provides a static method of retrieving your Hibernate Session.
       </p>
 
@@ -307,7 +307,8 @@ public class ServiceLocator
 
     <section name="Create Servlet Filter.">
       <p>
-        The servlet Filter is required if you use lazy loading of objects because you need to open a Hibernate sesion, and keeps it open through the view layer.
+        The servlet Filter is required if you use lazy loading of objects because
+        you need to open a Hibernate session, and keeps it open through the view layer.
         This ensures that each user get's their own Hibernate Session.  ?? Should this be done
         through some sort of SessionValidator?
 

@@ -51,7 +51,7 @@ their documentation.
 </p>
 
 <p>
-Three parts of the url will be addresed:
+Three parts of the url will be addressed:
 <ol>
 <li>the web application context (CONTEXT in the example above),</li>
 <li>the servlet prefix (servlet),</li>
@@ -84,7 +84,7 @@ Tomcat's server.xml file (in the TDK you'll find this here:
 ]]></source>
 
 <p>
-Everthing after the docBase= line is obviously up to you. This tells
+Everything after the docBase= line is obviously up to you. This tells
 Tomcat to add a context named 'po' with the docbase of your
 application.
 </p>
