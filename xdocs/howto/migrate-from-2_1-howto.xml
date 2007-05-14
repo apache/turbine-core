@@ -33,7 +33,7 @@
 <p>
     The information in this HOWTO pertains to Turbine 2.2.  Please refer
     to the <a href="migrate-from-2_2-howto.html">Migrating from
-    2.2 to 2.3</a> page for information on migating to Turbine 2.3.
+    2.2 to 2.3</a> page for information on migrating to Turbine 2.3.
 </p>
 </section>
 
@@ -123,7 +123,7 @@
     need to alter these templates you may prefer to use these directly
     from the jar file.  To do this you need to set the
     <code>torque.useClasspath</code> property to <code>true</code> in
-    <code>build.peoperties</code>.  In any case, you should either
+    <code>build.properties</code>.  In any case, you should either
     replace or delete the old versions of these templates from your
     existing project.
 </p>

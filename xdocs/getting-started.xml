@@ -87,7 +87,7 @@ parts of Turbine are:
 <li>
 org.apache.turbine.modules - This is where the code for the Modules
 system is stored. The different Modules are described in more detail in
-the <a href="fsd.html">funtional specification document</a>.
+the <a href="fsd.html">functional specification document</a>.
 </li>
 <li>
 org.apache.turbine.om - OM stands for Object Model. This is where the

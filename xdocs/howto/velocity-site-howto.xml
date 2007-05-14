@@ -106,7 +106,7 @@ You simply stuff objects into the Velocity Context and that is it! Next,
 you will want to create a .vm template of the same name as your class:
 HelloWorld.vm...within that template you will put the BODY portion of your
 page. In other words, there is no reason to put the header/footer into
-this file since that will be built seperately (more documentation on that
+this file since that will be built separately (more documentation on that
 futher down...). You should save this document in your <em>templates/screens/</em>
 directory.
 </p>
@@ -178,7 +178,7 @@ in with the page.
 If you want to do something that is more complicated than this that
 is reflected across all of your Screens, then you should write a class
 that is a subclass of VelocityScreen and then put your specific code
-in there. For example, if you wanted a security method to be called automaticially
+in there. For example, if you wanted a security method to be called automatically
 without having to normally call super() to get it from an overridden method
 in the superclass, you could have something like this (semi-pseudo untested
 code):
@@ -229,7 +229,7 @@ always do a security check before displaying the content. The benefit of
 this is that all you need to do to add security to your screen is to simply
 subclass this class instead of VelocityScreen. There is also no need
 to remember to call super() since the doBuild() method will be called for
-you automaticially by Turbine. You can start to see how Turbine is simply
+you automatically by Turbine. You can start to see how Turbine is simply
 an extension of the servlet framework itself. For example, the Servlet
 Engine will call HttpServlet's service() method for you, just like Turbine
 will call your doBuild() method for you. Tight integration with tools like
@@ -279,7 +279,7 @@ like this to the HTML:
 <p>
 As you can see above, I used a "," instead of a "/". You can use either
 one here. The above will create a fully formed URI with the session information
-encoded into the link if the clients brower has cookies turned off.
+encoded into the link if the clients browser has cookies turned off.
 </p>
 
 </section>
@@ -332,7 +332,7 @@ enforces the View portion of the MVC model because the "body" and "navigation"
 portions of your page simply becomes a variable that you can plug into
 any number of Layouts and in any location. If you want to write code so
 that the Layout is determined by a variable in the database or in the HTTP
-request or whever, all you need to do is write your own VelocitySiteLayout
+request or whatever, all you need to do is write your own VelocitySiteLayout
 and override some of the methods in there to determine the layout based
 on your own conditions instead of the system default conditions.
 </p>

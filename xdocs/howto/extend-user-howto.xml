@@ -94,7 +94,7 @@
             This interface is used by the Security Service and a few other
             services as well.  This is the reason behind not generating TurbineUser
             through Torque.  It would have no idea how to provide an implementation
-            of the User interface leaving that inplementaion to you.
+            of the User interface leaving that implementation to you.
         </p>
         <p>
             The MapBuilder for TurbineUser is
@@ -122,8 +122,8 @@
         </p>
         <p>
             Another interesting fact about TurbineUser is the way in which data stored in
-            the database is accessed.  Instaed of using using private attributes for storage
-            within the object, all attibutes are stored in a hashtable (known herein as the
+            the database is accessed.  Instead of using using private attributes for storage
+            within the object, all attributes are stored in a hashtable (known herein as the
             perm hashtable).  Access to the perm hashtable is controlled through the
             getPerm/setPerm methods.
         </p>
@@ -198,12 +198,12 @@
       </source>
         <p>
             Notice the attribute on the database tag for defaultJavaType.  I used
-            "object" as the value.  The default is "primative".  You do not have to
+            "object" as the value.  The default is "primitive".  You do not have to
             use "object"!!!
         </p>
         <p>
             In the last version of Turbine (2.1), the only option was to use the
-            primative types.  However, this posed a small problem.  It was not
+            primitive types.  However, this posed a small problem.  It was not
             possible to have number or boolean types that contained null values.
             If a null value was found in the database for columns of these types,
             the value returned from the OM object was 0 or false, respectively.
@@ -219,7 +219,7 @@
           object can be stored.  The first, and simplest method, is to store it in
           the perm hashtable.  As described earlier, any data in the perm hashtable
           not mapped to a database column will get serialized into the
-          TURBINE_USER.OBJECTDATA column.  The second, and perferred method, is to
+          TURBINE_USER.OBJECTDATA column.  The second, and preferred method, is to
           use additional database column(s) for storage.
       </p>
       <p>
@@ -344,7 +344,7 @@ public class TurbineMapBuilderAdapter extends TurbineMapBuilder
       <p>
           Now we will implement the pair of adapters we referred to in our
           schema.  First we implement TurbineUserAdapter to provide access
-          to the primary key as well any additional attibutes we are adding.
+          to the primary key as well any additional attributes we are adding.
       </p>
       <source>
 <![CDATA[
@@ -367,7 +367,7 @@ public class TurbineUserAdapter extends TurbineUser
      * Gets the userId of the user.  This is also the primary key
      * of the TURBINE_USER table.  The return type of Integer is
      * valid only if the javaType for the ExtendedUser table
-     * is "object".  If it is "primative", the return type
+     * is "object".  If it is "primitive", the return type
      * should be changed to int.
      * @return the user id
      */
@@ -489,7 +489,7 @@ public class TurbineUserPeerAdapter extends TurbineUserPeer
         <p>
             Next, you will need to manually create any additional database columns
             that you will be using in TURBINE_USER.  Make sure that the name of the
-            columns match what you speificied in TurbineUserPeerAdapter.
+            columns match what you specified in TurbineUserPeerAdapter.
         </p>
         <p>
             We can now use project-om ant task to generate our OM layer using
@@ -607,7 +607,7 @@ book.save();
                 it.
             </p>
             <p>
-                Implementing the methods yourself might be the simpliest route for someone
+                Implementing the methods yourself might be the simplest route for someone
                 new to Turbine and Torque.  This simply involves overriding the addBook()
                 method in the example above with the two lines shown previously.  Of course,
                 You would have to do this for each and every one that Torque generates
@@ -687,12 +687,12 @@ ${table.JavaName}Peer.doUpdate(($table.JavaName)this, dbCon);
                 if this problem will affect you.
             </p>
             <p>
-                The real solution to this problem is in modifing Turbine in such a way to
+                The real solution to this problem is in modifying Turbine in such a way to
                 allow Torque to generate the TurbineUser object.  This would eliminate the
                 need to extend TurbineUser altogether.  There would still be the need to add
                 additional columns and/or create FK references to the TURBINE_USER table.  It
-                would would only involve modifing the schema files and letting Torque do
-                all of the work instead of creating the adapter classes and modifing the
+                would would only involve modifying the schema files and letting Torque do
+                all of the work instead of creating the adapter classes and modifying the
                 map builder.
             </p>
             <p>

@@ -33,14 +33,14 @@
     <p> On this page, you can find a functional breakdown of Turbine codebase.
     This should help you in getting familiar with the tools that Turbine offers
     to you. Also, it will help you locate people that are experts in the field
-    of a specific functional block, so you can contac them if you encouter
+    of a specific functional block, so you can contact them if you encounter
     a problem, or better yet have made a patch that fixes it. </p>
 
     <p><a href="project-map/core.html"><b>Turbine Core</b></a></p>
 
     <p> In the Core part of Turbine you will find the Turbine Servlet, the
     single entry point to your application, and the classes that form the
-    framework of HTTP-interfaced application following MVC desing pattern.
+    framework of HTTP-interfaced application following MVC design pattern.
     Here you will find the base classes you will have to extend to fill
     in the framework with your application's logic. See the
     <a href="fsd.html">specification</a> for more details. </p>

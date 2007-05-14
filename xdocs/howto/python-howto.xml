@@ -64,7 +64,7 @@
   <section name="Setting Up Python for Turbine">
     <p>
         The first thing is to download JPython from www.jpython.org and copy
-        the jpython.jar file into your turibe/lib directory.  Now you need to
+        the jpython.jar file into your turbine/lib directory.  Now you need to
         prepare and compile the jpython files like this:
 <source>
 build prepare-python

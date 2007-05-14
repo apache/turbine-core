@@ -186,7 +186,7 @@ import org.apache.commons.logging.LogFactory;
 <section name="earlyInit Parameter For Selected Services">
 <p>
     In order to get some services to work under 2.3, it is necessary to set
-    an earlyInit parameter in TurbineResources.propertiess:
+    an earlyInit parameter in TurbineResources.properties:
 </p>
 <source>
 <![CDATA[
@@ -204,7 +204,7 @@ services.SessionService.earlyInit=true
 <p>
 	Under 2.3 there are new URI handling tools with a significant refactoring
 	of how relative and absolute URL's are handled in Turbine. Briefly, the
-	new tools avoid the confusion that arose previoulsy from mixing tools
+	new tools avoid the confusion that arose previously from mixing tools
 	with internal classes, providing uniform access to the various URI types
 	in Turbine. <strong>These new tools are backwards-compatible with your old
 	$link and $content tools, so you should not have to change any of your

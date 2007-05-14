@@ -32,7 +32,8 @@
 <section name="Unique ID Service">
 
 <p>
-The UniqueId Service is an identifier generator that provides access to Turbine instance specific ID's in several different formats.
+The UniqueId Service is an identifier generator that provides access to Turbine
+instance specific ID's in several different formats.
 
 </p>
 
@@ -66,9 +67,11 @@ services.UniqueIdService.classname=org.apache.turbine.services.uniqueid.TurbineU
 The Facade class, TurbineUniqueId, exposes three methods that produce unique identifiers:
 </p>
 
-<li>getInstanceId() returns an identifier for this Turbine instance that is unique both on the server and worldwide.</li>
+<li>getInstanceId() returns an identifier for this Turbine instance that is
+ unique both on the server and worldwide.</li>
 <li>getPseudorandomId() returns a unique identifier that looks like random data.</li>
-<li>getUniqueId() returns an identifier that is unique within this instance but does not have random-like appearance.</li>
+<li>getUniqueId() returns an identifier that is unique within this instance but
+ does not have random-like appearance.</li>
 
 <p>
 As an example of the output for these Id's, the following is a screen:
@@ -126,7 +129,9 @@ The output is:
 
 
 <p>
-Internally Turbine uses the service for naming of temporary files stored on the server as part of the Upload Service. The FileItem is named with the getInstanceId() method to avoid temporary file clashes until the system retrieves the file.
+Internally Turbine uses the service for naming of temporary files stored on the
+server as part of the Upload Service. The FileItem is named with the getInstanceId()
+method to avoid temporary file clashes until the system retrieves the file.
 </p>
 
 </section>

@@ -113,7 +113,7 @@ services.SessionService.earlyInit=true
 ]]></source>
 
 <p>
-    There is also a pull tool avilable for accessing this service.  To make it
+    There is also a pull tool available for accessing this service.  To make it
     available for use in your velocity templates, add the following line to
     your TR.props file.
 </p>

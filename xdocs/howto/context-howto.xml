@@ -104,37 +104,10 @@ advantage of the PrintableLayout Template add to the Template;
 This will strip the Screen Template of its Navigational components. These
 convenience methods can also be used to expose and to set the Layout when the
 Template is processed. Through this a User can potentially choose how they would
-like their webpage to appear by choosing one of many differant Layouts or
+like their webpage to appear by choosing one of many different Layouts or
 choices you, the webdesigner provide.
 </p>
 
-<p>
-Currently the setLayoutTemplate(), getLayoutTemplate(), setScreenTemplate() and
-getScreenTemplate() methods arent available in TDKa9. Until the next build of
-the TDK contains RunData with those methods, the setLayoutTemplate method can
-still be accessed through the TemplateInfo Object that RunData exposes.
-For example;
-</p>
-
-<source test=""><![CDATA[
-    $data.getTemplateInfo().setLayoutTemplate("PrintableLayout.vm")
-
-    or
-
-    #set $template = $data.getTemplateInfo()<br />
-    $template.setLayoutTemplate("PrintableLayout.vm")
-
-    or
-
-    #set $template = $data.getTemplateInfo()<br />
-    $!template.setLayoutTemplate("PrintableLayout.vm")
-
-]]></source>
-
-<p>
-In the third example, the ! stops the echo of the Velocty Directive echoing to
-screen.
-</p>
 </section>
 
 <section name="Using the TemplateLink Object">
@@ -166,7 +139,11 @@ where "newapp" is the chosen webapp deployment name.
 </p>
 
 <p>
-However the HTML page will load itself into a screen and not be embedded withint the Layouts and Navigations. If you still wish static content to be embedded within the specified layouts and navigations it is easier to add the static content as a velocity template and not take advantage of any of the dynamic content addition the Velocity Context allows.
+However the HTML page will load itself into a screen and not be embedded within
+the Layouts and Navigations. If you still wish static content to be embedded
+within the specified layouts and navigations it is easier to add the static
+content as a velocity template and not take advantage of any of the dynamic
+content addition the Velocity Context allows.
 </p>
 
 
@@ -375,7 +352,7 @@ template and can be accessed by;
 
 <p>
 Which is much simpler than the original attempt at dynamically creating an image
-URL. To make this Image object accessible across all Screens, sublass the
+URL. To make this Image object accessible across all Screens, subclass the
 VelocityScreen Object with one that overrides the doBuildTemplate() method by
 adding the Image object to the Velocity Context. Then use this class as the
 parent class for the Screens that need access to the Image Object. For more

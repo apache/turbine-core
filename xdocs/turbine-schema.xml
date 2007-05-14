@@ -43,7 +43,7 @@ href="torque/index.html">Torque Report</a>.
 The naming scheme is that the Turbine specific tables are prefixed with
 "TURBINE_". This is to avoid name collisions with applications for common tables
 such as PERMISSION or ROLE and also to avoid name collisions with reserved
-keywords in differant databases.
+keywords in different databases.
 </p>
 
 <p>
@@ -305,7 +305,7 @@ with the TURBINE_USER_GROUP_ROLE table maps this functionality.
 </table>
 <p>
 The TURBINE_ROLE_PERMISSION table is a bridging table between TURBINE_ROLE and
-TURBINE_PERMISSION that allows a several differant roles to make use of the
+TURBINE_PERMISSION that allows a several different roles to make use of the
 same permission.
 </p>
 </subsection>

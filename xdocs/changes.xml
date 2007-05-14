@@ -158,7 +158,7 @@
     </action>
     <action type="fix" dev="henning" issue="TTWS16" due-to="Oliver Eikemeier">
       Make sure that UIManager strips leading and trailing
-      slashes from referenced objects and configured pathes.
+      slashes from referenced objects and configured paths.
     </action>
     <action type="update" dev="henning">
       Add a maven goal to generate SQL with Torque. Removed old SQL files
@@ -218,7 +218,7 @@
       Fix the build process bug that let some of the reports end up in wrong directories.
     </action>
     <action type="update" dev="henning">
-      Make the default encoding for incoming requests configureable. This allows you to post
+      Make the default encoding for incoming requests configurable. This allows you to post
       forms from UTF-8 or other encodings into Turbine.
     </action>
     <action type="update" dev="seade">
@@ -337,7 +337,7 @@
        format rules and not just to the default locale format.
     </action>
     <action type="update">
-       DateFormatter now allows for a differnet date format to be provided
+       DateFormatter now allows for a different date format to be provided
        via <em>tool.dateTool.format</em> in TurbineResources.properties.
     </action>
     <action type="update">
@@ -450,11 +450,11 @@
     </action>
     <action type="update">
 	 Added a Howto describing using Hibernate with Turbine.  The actual code is
-	 currently not part of the Turbine distrib due to licensing issues, but is very
+	 currently not part of the Turbine distribution due to licensing issues, but is very
 	 easy to implement due to Turbine support of Avalon Components.
     </action>
     <action type="update">
-	 Changed TurbineUser so that when either perment or temporary values are
+	 Changed TurbineUser so that when either permanent or temporary values are
 	 stored, if the required hashtable was missing, then it was created.  This
 	 happened in conjunction with the PassiveUserManager.  Additionally, the
 	 setTempStorage(Hashtable newTempStorage) did not actually assign the new
@@ -522,7 +522,7 @@
         action (insert or update) for you.  addJob(job) simply calls updateJob(job).
       </action>
       <action type="update">
-        A new fascade class has been created for easier access to the Scheduler Service.
+        A new facade class has been created for easier access to the Scheduler Service.
         It is org.apache.turbine.services.schedule.TurbineScheduler.
       </action>
           </action>
