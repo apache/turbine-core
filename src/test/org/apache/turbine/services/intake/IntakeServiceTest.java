@@ -121,10 +121,13 @@ public class IntakeServiceTest extends BaseTurbineTest
         
         assertFalse("StringRF should not be set", stringRF.isSet());
         assertTrue("StringRF should be valid", stringRF.isValid());
+        assertNull(stringRF.getValue());
         assertFalse("IntRF should not be set", intRF.isSet());
         assertTrue("IntRF should be valid", intRF.isValid());
+        assertNull(intRF.getValue());
         assertFalse("DateRF should not be set", dateRF.isSet());
         assertTrue("DateRF should be valid", dateRF.isValid());
+        assertNull(dateRF.getValue());
     }
     
     /**
