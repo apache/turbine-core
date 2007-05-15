@@ -53,4 +53,22 @@
             <rule value="IntMin" name="less-than-or-equal">Value must be less than or equal to IntMin</rule>
         </field>
     </group>
+    <group name="RequiredFalseTest" key="rft">
+        <field name="StringRF" key="stringrf" type="String">
+            <rule name="required" value="false">Please enter a value.</rule>
+            <rule name="minLength" value="3">Please enter 3 characters only.</rule>
+            <rule name="maxLength" value="3">Please enter 3 characters only.</rule>
+        </field>
+        <field name="IntRF" key="intrf" type="int">
+            <rule name="required" value="false">Please enter the a value.</rule>
+            <rule name="minValue" value="1">The value for this field must be between 1 and 250 inclusive.</rule>
+            <rule name="maxValue" value="250">The value for this field must be between 1 and 250 inclusive.</rule>
+            <rule name="invalidNumber" value="true">The value entered must be a number.</rule>
+        </field>
+        <field name="DateRF" key="daterf" type="DateString">
+            <rule name="required" value="false">Please enter a value.</rule>
+            <rule name="format" value="d/MM/yyyy">Please enter a sensible date ("dd/mm/yyyy").</rule>
+            <rule name="format1" value="d/MM/yy">Please enter a sensible date ("dd/mm/yyyy").</rule>
+        </field>
+    </group>
 </input-data>
