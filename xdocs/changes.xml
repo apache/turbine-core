@@ -28,6 +28,10 @@
 
 <body>
   <release version="2.3.3-dev" date="in Subversion">
+    <action type="fix" dev="seade">
+      isSet() was returning <code>true</code> for Intake Fields even when no
+      value was provided.  Fixed and test case added.
+    </action>
     <action type="add" dev="tv">
       Added an extension of LDAPUser named ActiveDirectoryUser to simplify the
       authentication against AD servers. Added some documentation with a

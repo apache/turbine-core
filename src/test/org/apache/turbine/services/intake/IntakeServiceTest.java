@@ -39,6 +39,7 @@ public class IntakeServiceTest extends BaseTurbineTest
     Group booleanTestGroup = null;
     Group rangeTestGroup = null;
     Group integerRangeTestGroup = null;
+    Group requiredFalseTestGroup = null;
 
     public IntakeServiceTest(String name) throws Exception
     {
@@ -49,6 +50,7 @@ public class IntakeServiceTest extends BaseTurbineTest
         booleanTestGroup = intakeService.getGroup("BooleanTest");
         rangeTestGroup = intakeService.getGroup("DateRangeTest");
         integerRangeTestGroup = intakeService.getGroup("IntRangeTest");
+        requiredFalseTestGroup = intakeService.getGroup("RequiredFalseTest");
     }
 
 
@@ -105,6 +107,26 @@ public class IntakeServiceTest extends BaseTurbineTest
         assertFalse("The integer range should not be valid", imax2.isValid());
     }
 
+    public void testRequiredFalse() throws IntakeException
+    {
+        ParameterParser pp = new DefaultParameterParser();
+        pp.add("rft_0stringrf", "");
+        pp.add("rft_0intrf", "");
+        pp.add("rft_0daterf", "");
+        requiredFalseTestGroup.init(Group.NEW, pp);
+        
+        Field stringRF = requiredFalseTestGroup.get("StringRF");
+        Field intRF = requiredFalseTestGroup.get("IntRF");
+        Field dateRF = requiredFalseTestGroup.get("DateRF");
+        
+        assertFalse("StringRF should not be set", stringRF.isSet());
+        assertTrue("StringRF should be valid", stringRF.isValid());
+        assertFalse("IntRF should not be set", intRF.isSet());
+        assertTrue("IntRF should be valid", intRF.isValid());
+        assertFalse("DateRF should not be set", dateRF.isSet());
+        assertTrue("DateRF should be valid", dateRF.isValid());
+    }
+    
     /**
      * Factory method for creating a TestSuite for this class.
      *

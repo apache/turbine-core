@@ -351,7 +351,7 @@ public abstract class Field
             {
                 log.debug(name + ": Found our Key in the request, setting Value");
             }
-            if (pp.getString(getKey()) != null)
+            if (StringUtils.isNotEmpty(pp.getString(getKey())))
             {
                 setFlag = true;
             }
