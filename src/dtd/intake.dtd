@@ -25,7 +25,7 @@
 The input-data element is the root of the intake XML
 definition file.
 
-basePackage: Base package to use for specifing the class names of
+basePackage: Base package to use for specifying the class names of
              mapped objects.  This value will be prepended to the
              class name of the mapped object to form the
              fully qualified class name.
@@ -178,7 +178,7 @@ mapToProperty:  Name of the property within the mapped object that
                 of the details of determining the methods, see the javadocs
                 for java.beans.PropertyDescriptor.
 
-                Note: Specifing an empty string for the value of this attribute
+                Note: Specifying an empty string for the value of this attribute
                 will have the effect of not mapping this field.  This is very
                 useful in cases where the group has a value for mapToObject but
                 there are fields in the group which should not be mapped.
@@ -205,7 +205,7 @@ Used in:        group
 >
 
 <!--
-The rule element is used to decribe validation rules for fields.
+The rule element is used to describe validation rules for fields.
 
 name:       Name of the rule.  The valid rule names vary by field type.
 
