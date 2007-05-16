@@ -54,12 +54,12 @@ public abstract class ObjectUtils
     }
 
     /**
-     * Adds an object to a vector, making sure the object is in the
-     * vector only once.
+     * Adds an object to a list, making sure the object is in the
+     * list only once.
      *
-     * @param v The vector.
+     * @param l The list.
      * @param o The object.
-     * @deprecated No replacement
+     * @deprecated Use org.apache.commons.collections.SetUniqueList instead.
      */
     public static void addOnce(List l, Object o)
     {
