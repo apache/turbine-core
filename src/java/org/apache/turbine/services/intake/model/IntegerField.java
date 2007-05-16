@@ -71,7 +71,7 @@ public class IntegerField
      * Set the empty Value. This value is used if Intake
      * maps a field to a parameter returned by the user and
      * the corresponding field is either empty (empty string)
-     * or non-existant.
+     * or non-existent.
      *
      * @param prop The value to use if the field is empty.
      */

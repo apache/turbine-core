@@ -942,9 +942,9 @@ public abstract class Field
             {
                 log.debug(name + ": has a null setter for the mapToProperty"
                         + " Attribute, although all Fields should be mapped"
-                        + " to " + mapToObject + ". If this is unwanted, You"
-                        + " should doublecheck the mapToProperty Attribute, and"
-                        + " consult the logs. The Turbine Intake Serice will"
+                        + " to " + mapToObject + ". If this is unwanted, you"
+                        + " should double check the mapToProperty Attribute, and"
+                        + " consult the logs. The Turbine Intake Service will"
                         + " have logged a detailed Message with the error.");
             }
         }
