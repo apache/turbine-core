@@ -19,6 +19,9 @@ package org.apache.turbine.services.intake;
  * under the License.
  */
 
+import java.util.Calendar;
+import java.util.Date;
+
 import junit.framework.TestSuite;
 
 import org.apache.turbine.services.ServiceManager;
@@ -40,6 +43,7 @@ public class IntakeServiceTest extends BaseTurbineTest
     Group rangeTestGroup = null;
     Group integerRangeTestGroup = null;
     Group requiredFalseTestGroup = null;
+    Group requiredTrueTestGroup = null;
 
     public IntakeServiceTest(String name) throws Exception
     {
@@ -51,8 +55,8 @@ public class IntakeServiceTest extends BaseTurbineTest
         rangeTestGroup = intakeService.getGroup("DateRangeTest");
         integerRangeTestGroup = intakeService.getGroup("IntRangeTest");
         requiredFalseTestGroup = intakeService.getGroup("RequiredFalseTest");
+        requiredTrueTestGroup = intakeService.getGroup("RequiredTrueTest");
     }
-
 
     public void testEmptyBooleanField() throws IntakeException
     {
@@ -107,29 +111,150 @@ public class IntakeServiceTest extends BaseTurbineTest
         assertFalse("The integer range should not be valid", imax2.isValid());
     }
 
+    /**
+     * This test attempts to verify that an intake field returns false for
+     * isSet() when an empty field is submitted (IMHO this was a bug prior to
+     * revision 538232 (i.e. release 2.3.3).
+     *
+     * @throws IntakeException
+     */
     public void testRequiredFalse() throws IntakeException
     {
         ParameterParser pp = new DefaultParameterParser();
         pp.add("rft_0stringrf", "");
+        pp.add("rft_0integerrf", "");
         pp.add("rft_0intrf", "");
         pp.add("rft_0daterf", "");
         requiredFalseTestGroup.init(Group.NEW, pp);
-        
+
         Field stringRF = requiredFalseTestGroup.get("StringRF");
+        Field integerRF = requiredFalseTestGroup.get("IntegerRF");
         Field intRF = requiredFalseTestGroup.get("IntRF");
         Field dateRF = requiredFalseTestGroup.get("DateRF");
-        
+
         assertFalse("StringRF should not be set", stringRF.isSet());
         assertTrue("StringRF should be valid", stringRF.isValid());
         assertNull(stringRF.getValue());
+        assertFalse("IntegerRF should not be set", integerRF.isSet());
+        assertTrue("IntegerRF should be valid", integerRF.isValid());
+        assertNull(integerRF.getValue());
         assertFalse("IntRF should not be set", intRF.isSet());
         assertTrue("IntRF should be valid", intRF.isValid());
-        assertNull(intRF.getValue());
+        assertNull(intRF.getValue()); // zero?
         assertFalse("DateRF should not be set", dateRF.isSet());
         assertTrue("DateRF should be valid", dateRF.isValid());
         assertNull(dateRF.getValue());
     }
-    
+
+    /**
+     * This test attempts to verify that with the isSet() fix applied to Field
+     * (see testRequiredFalse()) an empty field will still clear existing
+     * values.
+     *
+     * @throws IntakeException
+     */
+    public void testClearValues() throws IntakeException
+    {
+        RequiredFalseGroupTestObject rfgto = new RequiredFalseGroupTestObject();
+        rfgto.setStringRF("originalString");
+        rfgto.setIntegerRF(new Integer(5));
+        rfgto.setIntRF(6);
+        Date testDate = new Date();
+        rfgto.setDateRF(testDate);
+
+        ParameterParser pp = new DefaultParameterParser();
+        pp.add("rft_0stringrf", "");
+        pp.add("rft_0integerrf", "");
+        pp.add("rft_0intrf", "");
+        pp.add("rft_0daterf", "");
+        requiredFalseTestGroup.init(Group.NEW, pp);
+
+        requiredFalseTestGroup.setProperties(rfgto);
+        assertNull("String value should have been cleared.", rfgto.getStringRF());
+        assertNull("Date value should have been cleared.", rfgto.getDateRF());
+        assertEquals("int value should have been cleared to zero.", 0, rfgto.getIntRF());
+
+        // The following commented out test fails.
+        // The trouble is that the use of reflection forces Intake to use Integer rather than int
+        // when invoking the setter method on the object to which the group is being mapped.
+
+        //assertNull("Integer value should have been cleared to null, but instead it is "
+        //        + rfgto.getIntegerRF(), rfgto.getIntegerRF());
+
+        // The net result is that Intake is currently not well suited to validating
+        // Integer fields where a null value needs to be distinguished from a zero.
+    }
+
+    /**
+     * This test attempts to verify that with that valid values coming from
+     * intake map through to an object correctly.
+     *
+     * @throws IntakeException
+     */
+    public void testSetValues() throws IntakeException
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        Date testDate = cal.getTime();
+        // This is in dd/mm/yyyy format, as defined in the intake.xml for this group.
+        String testDateString = cal.get(Calendar.DAY_OF_MONTH) + "/"
+                + (cal.get(Calendar.MONTH) + 1) + "/" + (cal.get(Calendar.YEAR));
+
+        ParameterParser pp = new DefaultParameterParser();
+        pp.add("rft_0stringrf", "ABC"); // rules require 3 characters.
+        pp.add("rft_0integerrf", new Integer(10));
+        pp.add("rft_0intrf", 11);
+        pp.add("rft_0daterf", testDateString);
+        requiredFalseTestGroup.init(Group.NEW, pp);
+
+        Field stringRF = requiredFalseTestGroup.get("StringRF");
+        Field integerRF = requiredFalseTestGroup.get("IntegerRF");
+        Field intRF = requiredFalseTestGroup.get("IntRF");
+        Field dateRF = requiredFalseTestGroup.get("DateRF");
+
+        assertTrue("StringRF should be set", stringRF.isSet());
+        assertTrue("StringRF should be valid", stringRF.isValid());
+        assertEquals("ABC", stringRF.getValue());
+        assertTrue("IntegerRF should be set", integerRF.isSet());
+        assertTrue("IntegerRF should be valid", integerRF.isValid());
+        assertEquals(new Integer(10), integerRF.getValue());
+        assertTrue("IntRF should be set", intRF.isSet());
+        assertTrue("IntRF should be valid", intRF.isValid());
+        assertEquals(11, ((Integer) intRF.getValue()).intValue());
+        assertTrue("DateRF should be set", dateRF.isSet());
+        assertTrue("DateRF should be valid", dateRF.isValid());
+        assertEquals(testDate, dateRF.getValue());
+
+        RequiredFalseGroupTestObject rfgto = new RequiredFalseGroupTestObject();
+        requiredFalseTestGroup.setProperties(rfgto);
+        assertEquals("ABC", rfgto.getStringRF());
+        assertEquals(new Integer(10), rfgto.getIntegerRF());
+        assertEquals(11, rfgto.getIntRF());
+        assertEquals(testDate, rfgto.getDateRF());
+    }
+
+    /**
+     * Test that a required field with no value assigned is invalid.
+     *
+     * @throws IntakeException
+     */
+    public void testRequiredTrue() throws IntakeException
+    {
+        ParameterParser pp = new DefaultParameterParser();
+        pp.add("rft_0stringrf", "");
+        requiredTrueTestGroup.init(Group.NEW, pp);
+
+        Field stringRT = requiredTrueTestGroup.get("StringRT");
+
+        assertFalse("StringRT should not be set", stringRT.isSet());
+        assertFalse("StringRT should not be valid", stringRT.isValid());
+        assertNull(stringRT.getValue());
+    }
+
     /**
      * Factory method for creating a TestSuite for this class.
      *
