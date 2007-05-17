@@ -628,10 +628,13 @@ public abstract class Field
 
             if (isDebugEnabled)
             {
-                log.debug(name + ": Multi-Valued");
-                for (int i = 0; i < stringValues.length; i++)
+                log.debug(name + ": Multi-Valued, Value is " + stringValue);
+                if (stringValues != null)
                 {
-                    log.debug(name + ": " + i + ". Value: " + stringValues[i]);
+                    for (int i = 0; i < stringValues.length; i++)
+                    {
+                        log.debug(name + ": " + i + ". Value: " + stringValues[i]);
+                    }
                 }
             }
 
@@ -639,7 +642,7 @@ public abstract class Field
             {
                 // set the test value as a String[] which might be replaced by
                 // the correct type if the input is valid.
-                setTestValue(parser.getStrings(getKey()));
+                setTestValue(stringValues);
 
                 try
                 {
