@@ -167,10 +167,18 @@ abstract public class DefaultValidator
     	{
     		String[] stringValues = (String[])field.getTestValue();
 
-    		for (int i = 0; i < stringValues.length; i++)
-    		{
-    			assertValidity(stringValues[i]);
-    		}
+            if (stringValues == null)
+            {
+                // We still want to pick up required fields.
+                assertValidity((String) null);
+            }
+            else
+            {
+                for (int i = 0; i < stringValues.length; i++)
+                {
+                    assertValidity(stringValues[i]);
+                }
+            }
     	}
     	else
     	{

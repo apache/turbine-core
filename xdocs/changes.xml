@@ -29,6 +29,10 @@
 <body>
   <release version="2.3.3-dev" date="in Subversion">
     <action type="fix" dev="seade">
+      Fixed a couple of NullPointerExceptions that can occur when Intake is
+      validating multiValued fields.
+    </action>
+    <action type="fix" dev="seade">
       isSet() was returning <code>true</code> for Intake Fields even when no
       value was provided.  Fixed and test case added.
     </action>
