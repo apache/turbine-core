@@ -112,9 +112,8 @@ public class IntakeServiceTest extends BaseTurbineTest
     }
 
     /**
-     * This test attempts to verify that an intake field returns false for
-     * isSet() when an empty field is submitted (IMHO this was a bug prior to
-     * revision 538232 (i.e. release 2.3.3).
+     * This test verifies that an intake field returns true for isSet() even
+     * when an empty field is submitted.
      *
      * @throws IntakeException
      */
@@ -132,23 +131,22 @@ public class IntakeServiceTest extends BaseTurbineTest
         Field intRF = requiredFalseTestGroup.get("IntRF");
         Field dateRF = requiredFalseTestGroup.get("DateRF");
 
-        assertFalse("StringRF should not be set", stringRF.isSet());
+        assertTrue("StringRF should be set", stringRF.isSet());
         assertTrue("StringRF should be valid", stringRF.isValid());
         assertNull(stringRF.getValue());
-        assertFalse("IntegerRF should not be set", integerRF.isSet());
+        assertTrue("IntegerRF should be set", integerRF.isSet());
         assertTrue("IntegerRF should be valid", integerRF.isValid());
         assertNull(integerRF.getValue());
-        assertFalse("IntRF should not be set", intRF.isSet());
+        assertTrue("IntRF should be set", intRF.isSet());
         assertTrue("IntRF should be valid", intRF.isValid());
         assertNull(intRF.getValue()); // zero?
-        assertFalse("DateRF should not be set", dateRF.isSet());
+        assertTrue("DateRF should be set", dateRF.isSet());
         assertTrue("DateRF should be valid", dateRF.isValid());
         assertNull(dateRF.getValue());
     }
 
     /**
-     * This test attempts to verify that with the isSet() fix applied to Field
-     * (see testRequiredFalse()) an empty field will still clear existing
+     * This test verify that an empty field can be used to clear existing
      * values.
      *
      * @throws IntakeException
@@ -245,13 +243,55 @@ public class IntakeServiceTest extends BaseTurbineTest
     public void testRequiredTrue() throws IntakeException
     {
         ParameterParser pp = new DefaultParameterParser();
-        pp.add("rft_0stringrf", "");
+        pp.add("rtt_0stringrt", "");
         requiredTrueTestGroup.init(Group.NEW, pp);
 
         Field stringRT = requiredTrueTestGroup.get("StringRT");
 
-        assertFalse("StringRT should not be set", stringRT.isSet());
+        assertTrue("StringRT should be set", stringRT.isSet());
         assertFalse("StringRT should not be valid", stringRT.isValid());
+        assertEquals("", stringRT.getValue());
+    }
+
+    /**
+     * This test verifies that a newly created group is not initiated in an
+     * error state.
+     *
+     * @throws IntakeException
+     */
+    public void testInitialErrorState() throws IntakeException
+    {
+        ParameterParser pp = new DefaultParameterParser();
+        requiredFalseTestGroup.init(Group.NEW, pp);
+
+        Field stringRF = requiredFalseTestGroup.get("StringRF");
+        Field integerRF = requiredFalseTestGroup.get("IntegerRF");
+        Field intRF = requiredFalseTestGroup.get("IntRF");
+        Field dateRF = requiredFalseTestGroup.get("DateRF");
+
+        assertFalse("StringRF should not be set", stringRF.isSet());
+        assertTrue("StringRF should be valid", stringRF.isValid());
+        assertEquals("StringRF should have no messages.", "", stringRF.getMessage());
+        assertNull(stringRF.getValue());
+        assertFalse("IntegerRF should not be set", integerRF.isSet());
+        assertTrue("IntegerRF should be valid", integerRF.isValid());
+        assertEquals("IntegerRF should have no messages", "", integerRF.getMessage());
+        assertNull(integerRF.getValue());
+        assertFalse("IntRF should not be set", intRF.isSet());
+        assertTrue("IntRF should be valid", intRF.isValid());
+        assertEquals("IntRF should have no messages", "", intRF.getMessage());
+        assertNull(intRF.getValue());
+        assertFalse("DateRF should not be set", dateRF.isSet());
+        assertTrue("DateRF should be valid", dateRF.isValid());
+        assertEquals("DateRF should have no messages", "", dateRF.getMessage());
+        assertNull(dateRF.getValue());
+
+        requiredTrueTestGroup.init(Group.NEW, pp);
+        Field stringRT = requiredTrueTestGroup.get("StringRT");
+
+        assertFalse("StringRT should not be set", stringRT.isSet());
+        assertTrue("StringRT should be valid", stringRT.isValid());
+        assertEquals("StringRT should have no messages.", "", stringRT.getMessage());
         assertNull(stringRT.getValue());
     }
 

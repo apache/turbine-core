@@ -351,7 +351,7 @@ public abstract class Field
             {
                 log.debug(name + ": Found our Key in the request, setting Value");
             }
-            if (StringUtils.isNotEmpty(pp.getString(getKey())))
+            if (pp.getString(getKey()) != null)
             {
                 setFlag = true;
             }
@@ -555,8 +555,10 @@ public abstract class Field
     }
 
     /**
-     * Flag set to true, if the test value has been set to
-     * anything other than an empty value.
+     * Flag set to true, if the test value has been set by the parser (even to
+     * an empty value, so don't used this to determine if the field contains a
+     * non-empty value).  Validation will only be executed for fields that have
+     * been set in this manner.
      *
      * @return a <code>boolean</code> value
      */
@@ -912,7 +914,7 @@ public abstract class Field
             throw new IntakeException(
                     "Attempted to assign an invalid input.");
         }
-        if (isSet())
+        if (isSet() && null != getTestValue())
         {
             valArray[0] = getTestValue();
             if (isDebugEnabled)

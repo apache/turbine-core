@@ -187,8 +187,7 @@ public class Group
         }
         for (int i = fieldsArray.length - 1; i >= 0; i--)
         {
-            if ((fieldsArray[i].isSet() || fieldsArray[i].isRequired())
-                    && !fieldsArray[i].isValidated())
+            if (fieldsArray[i].isSet() && !fieldsArray[i].isValidated())
             {
                 fieldsArray[i].validate();
             }

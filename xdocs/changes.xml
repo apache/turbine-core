@@ -33,8 +33,9 @@
       validating multiValued fields.
     </action>
     <action type="fix" dev="seade">
-      isSet() was returning <code>true</code> for Intake Fields even when no
-      value was provided.  Fixed and test case added.
+      Fixed a NullPointerExceptions that can occur when Intake is used to
+      validate a primitive field.  Clarified the meaning of Field.isSet() in
+      Javadoc.
     </action>
     <action type="add" dev="tv">
       Added an extension of LDAPUser named ActiveDirectoryUser to simplify the
