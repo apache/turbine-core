@@ -76,36 +76,37 @@ Excalibur dependencies thus (again from a Maven 2 POM):
 </p>
 <source><![CDATA[
     <!--
-    The following four dependencies are for the Turbine AvalonComponentService.
-    They are not needed when using Yaafi Component Service as a replacement.
+    There are a few Turbine dependencies, included for the AvalonComponentService,
+    that are not needed when using YaafiComponentService as a replacement.
     -->
     <dependency>
-      <groupId>excalibur-component</groupId>
-      <artifactId>excalibur-component</artifactId>
-      <version>2.1</version>
+      <groupId>org.apache.turbine</groupId>
+      <artifactId>turbine</artifactId>
+      <version>2.3.2</version>
       <type>jar</type>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>excalibur-instrument</groupId>
-      <artifactId>excalibur-instrument-api</artifactId>
-      <version>2.1</version>
-      <type>jar</type>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>excalibur-logger</groupId>
-      <artifactId>excalibur-logger</artifactId>
-      <version>2.1</version>
-      <type>jar</type>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>excalibur-pool</groupId>
-      <artifactId>excalibur-pool-api</artifactId>
-      <version>2.1</version>
-      <type>jar</type>
-      <scope>provided</scope>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>excalibur-component</groupId>
+          <artifactId>excalibur-component</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>junitperf</groupId>
+          <artifactId>junitperf</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>excalibur-instrument</groupId>
+          <artifactId>excalibur-instrument-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>excalibur-logger</groupId>
+          <artifactId>excalibur-logger</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>excalibur-pool</groupId>
+          <artifactId>excalibur-pool-api</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 ]]></source>
 
@@ -114,7 +115,7 @@ The above is based on the
 <a href="http://repo1.maven.org/maven2/turbine/turbine/2.3.2/turbine-2.3.2.pom">
 turbine-2.3.2 pom</a> that exists in the default maven 2 repository.  Whether or
 not you need the above will depend on how these dependencies are declared in the
-final version of the Turbine 2.3 POM (just including Yaafi should be enough if
+final version of the Turbine 2.3.3 POM (just including Yaafi should be enough if
 they are all declared as optional).
 </p>
 </section>
