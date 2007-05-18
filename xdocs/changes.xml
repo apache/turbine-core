@@ -28,6 +28,18 @@
 
 <body>
   <release version="2.3.3-dev" date="in Subversion">
+    <action type="update" dev="seade">
+      Update jar dependencies:<br/>
+      <ul>
+        <li>commons-collections to 3.2</li>
+        <li>commons-configuration to 1.4</li>
+        <li>commons-dbcp to 1.2.2</li>
+        <li>commons-digester to 1.8</li>
+        <li>commons-lang to 2.3</li>
+        <li>commons-pool to 1.3</li>
+        <li>log4j to 1.2.14</li>
+      </ul>
+    </action>
     <action type="fix" dev="seade">
       Fixed a couple of NullPointerExceptions that can occur when Intake is
       validating multiValued fields.
