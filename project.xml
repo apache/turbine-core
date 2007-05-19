@@ -685,8 +685,8 @@
     <dependency>
       <groupId>velocity</groupId>
       <artifactId>velocity</artifactId>
-      <version>1.4</version>
-      <url>http://jakarta.apache.org/velocity/</url>
+      <version>1.5</version>
+      <url>http://velocity.apache.org/engine/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>
@@ -696,7 +696,7 @@
       <groupId>velocity</groupId>
       <artifactId>texen</artifactId>
       <version>1.0</version>
-      <url>http://jakarta.apache.org/velocity/</url>
+      <url>http://velocity.apache.org/texen/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>
