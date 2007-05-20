@@ -983,14 +983,92 @@ $tg.Value.DisplayName:
 
 <section name="Custom validators">
 <p>
-todo
+Fields can have custom validators through the help of the 
+<code>validator</code> attribute. If the validator class is not
+qualified (i.e. has no package) the package 
+<code>org.apache.turbine.services.intake.validator</code> is
+assumed. Validator classes must implement the 
+<code>org.apache.turbine.services.intake.validator.Validator</code>
+interface. If the validator needs initialization from the list
+of constraints (based on the <code>rule</code> elements in the
+definition file), it also must implement 
+<code>org.apache.turbine.services.intake.validator.InitableByConstraintMap</code>.
+It is recommended to extend one of the existing validator classes
+which live in the <code>org.apache.turbine.services.intake.validator</code> 
+package. In this validator class, override <code>assertValidity(String)</code>,
+don't forget to call <code>super.assertValidity(testValue)</code> and add
+your own checks to the validator.
 </p>
+<p>
+For validator classes extending <code>DefaultValidator</code>
+the most important method to implement is <code>assertValidity()</code>.
+There are two signatures of this method. If you just need to compare
+the value entered to a list of database entries, for example, it
+is sufficient to implement <code>assertValidity(String)</code>. The
+default code handles multi-valued fields and other stuff for you. If
+you want to do advanced checks and comparisons, you need to implement
+<code>assertValidity(Field)</code>. Here you can check for locale,
+associated group and values of other fields in the same group. See
+the following section for examples.
+</p>
+
 </section>
 
 <section name="Validating dependent fields">
 <p>
-todo
+Sometimes it is necessary to validate fields not only against a set of
+constant rules but also against the values of other fields in the same
+form or group. For these cases, Intake provides the helper class
+<code>FieldReference</code>. It provides additional rules to compare
+fields to other fields:
 </p>
+<table>
+  <tr>
+    <th>Rule Name</th>
+    <th>Comparison</th>
+    <th>Rule Value</th>
+  </tr>
+  <tr>
+    <td>less-than</td>
+    <td align="center">&lt;</td>
+    <td>&lt;name of other field&gt;</td>
+  </tr>
+  <tr>
+    <td>greater-than</td>
+    <td align="center">&gt;</td>
+    <td>&lt;name of other field&gt;</td>
+  </tr>
+  <tr>
+    <td>less-than-or-equal</td>
+    <td align="center">&lt;=</td>
+    <td>&lt;name of other field&gt;</td>
+  </tr>
+  <tr>
+    <td>greater-than-or-equal</td>
+    <td align="center">&gt;=</td>
+    <td>&lt;name of other field&gt;</td>
+  </tr>
+</table>
+<p>
+Two examples of implementations of these comparison rules are 
+available as <code>DateRangeValidator</code> and
+<code>IntegerRangeValidator</code>. An example on how to use these
+is shown below.
+</p>
+<source><![CDATA[
+<group name="DateRange" key="dr">
+    <field name="DateFrom" key="dmin" type="DateString">
+        <rule value="MM/dd/yyyy" name="format">Invalid format</rule>
+    </field>
+    <field name="DateTo" key="dmax" type="DateString"
+        validator="DateRangeValidator">
+        <rule value="MM/dd/yyyy" name="format">Invalid format</rule>
+        <rule value="DateFrom" name="greater-than">
+            To-Date must be greater than From-Date</rule>
+    </field>
+</group>
+]]></source>
+
 </section>
 
 </body>
