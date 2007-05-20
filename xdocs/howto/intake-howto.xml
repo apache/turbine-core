@@ -21,25 +21,26 @@
 
 <document>
     <properties>
-        <title>"Simple" Intake How-to for Turbine 2.1</title>
+        <title>"Simple" Intake How-to for Turbine 2.3.3</title>
         <author email="dantest@yorku.ca">Daniel Kha</author>
         <author email="seade@backstagetech.com.au">Scott Eade</author>
+        <author email="tv@apache.org">Thomas Vandahl</author>
     </properties>
 
     <body>
         <section name="Introduction">
             <p>
                 First of all I'd like to note that this document is based on my
-                experience in using Intake for Turbine 2.1.  I've tried to make
+                experience in using Intake for Turbine 2.3.3.  I've tried to make
                 it as correct as possible but I don't guarantee anything.  This
                 has been written as a guide for a new Intake user and assumes
-                some familiarity with Turbine 2.1.
+                some familiarity with Turbine 2.3.3.
             </p>
             <p>
                 To use intake, the following steps are required:
 
                 <ol>
-                    <li>Create your turbine template with a form.</li>
+                    <li>Create your Turbine template with a form.</li>
                     <li>Create the intake.xml file.</li>
                     <li>Create a business object to represent the intake group
                         we are working with (this is optional).</li>
@@ -50,11 +51,13 @@
             <p>
                 Some additional information concerning removing Intake group
                 information from the request is included at the bottom of this
-                document.
+                document. See the 
+                <a href="../services/intake-service.html">Intake Service Documentation</a>
+                for additional in-depth information on the features of Intake.
             </p>
         </section>
 
-        <section name="Step 1: Create your turbine template with a form">
+        <section name="Step 1: Create your Turbine template with a form">
             <p>
                 The first thing to do is the create the form in your template
                 (e.g. a velocity template file, a .vm file).  Just create the
@@ -174,7 +177,7 @@ $intake.declareGroups()
             </p>
             <source><![CDATA[
 <!DOCTYPE input-data SYSTEM
-           "http://jakarta.apache.org/turbine/dtd/intake_2_3.dtd">
+           "http://jakarta.apache.org/turbine/dtd/intake_2_3_3.dtd">
 <input-data basePackage="ca.yorku.devteam.inca.clients.skeleton.">
     ...group elements goes here...
 </input-data>
@@ -248,8 +251,8 @@ $intake.declareGroups()
                 <p>
                     For a complete list of valid attributes of the group
                     element, please see the
-                    <a href="../services/intake-service.html">
-                    intake-service document</a> on the Turbine web site.
+                    <a href="../services/intake-service.html">Intake Service Documentation</a> 
+                    on the Turbine web site.
                 </p>
             </subsection>
 
@@ -273,8 +276,7 @@ $intake.declareGroups()
                 ]]></source>
                 <p/>
                 <p>
-                    A field element can have the following attributes:
-
+                    Important attributes of the field element are like the following:
                     <ul>
                         <li>"name" attribute
                             <ul>
@@ -303,9 +305,10 @@ $intake.declareGroups()
                                 <li>
                                     required, the type of the field so that
                                     intake will know what to expect.  Valid
-                                    types I know of are: String, Integer (I
-                                    believe these map to the corresponding Java
-                                    types).  Please see the intake.dtd for the
+                                    types I know of are: String, Integer,
+                                    DateString, BigDecimal etc. Please see the 
+                                    <a href="../services/intake-service.html">Intake Service Documentation</a>
+                                    or the DTD in intake.dtd for the
                                     allowed values.
                                 </li>
                             </ul>
@@ -329,29 +332,42 @@ $intake.declareGroups()
                 <p>
                     For a complete list of valid attributes of the field
                     element, please see the
-                    <a href="../services/intake-service.html">
-                    intake-service document</a> on the Turbine web site.
+                    <a href="../services/intake-service.html">Intake Service Documentation</a> 
+                    on the Turbine web site.
                 </p>
             </subsection>
 
             <subsection name="&lt;rule&gt; elements">
                 <p>
                     In each field element, you can have rules defined.  The
-                    supported rule elements for Intake in Turbine 2.1 are:
+                    supported rule elements for Intake depend on the validators used.
+                    The standard validators provide the following rules:
                 </p>
                 <source><![CDATA[
+<!-- DefaultValidator -->
 <rule name="required" value="true">Error message for required failed</rule>
 <rule name="minLength" value="4">Error message for required min length failed</rule>
 <rule name="maxLength" value="9">Error message for required max length failed</rule>
-<rule name="mask" value="^[0-9]+$">Error message for regular expression failed</rule>
-<rule name="notANumberMessage">Error message for Number fields when the entry is not a number</rule>
 
+<!-- StringValidator -->
+<rule name="mask" value="^[0-9]+$">Error message for regular expression failed</rule>
+
+<!-- BigDecimalValidator, DoubleValidator, FloatValidator, IntegerValidator, -->
+<!-- LongValidator, ShortValidator                                           -->
+<rule name="invalidNumber">Error message when the entry is not a number</rule>
+<rule name="minValue" value="0">Error message for values less than minValue</rule>
+<rule name="maxValue" value="100">Error message for values greater than maxValue</rule>
+
+<!-- DateStringValidator -->
+<rule name="format" value="MM/dd/yyyy">Error message for invalid dates</rule>
+<rule name="format[1-9]" value="MM/dd/yyyy">Error message for invalid dates</rule>
                 ]]></source>
                 <p/>
                 <p>
-                    For more info on the supported rules, please see the
-                    <a href="../services/intake-service.html">
-                    intake-service document</a> on the Turbine web site:
+                    For more info on the supported rules and on additional rules
+                    for comparing fields with each other, please see the
+                    <a href="../services/intake-service.html">Intake Service Documentation</a> 
+                    on the Turbine web site.
                 </p>
             </subsection>
         </section>
@@ -373,8 +389,8 @@ $intake.declareGroups()
                 was designed to work with a database so the methods
                 get/setQueryKey doesn't make much sense if your business object
                 isn't based on a database model.  For my use, I just force the
-                key to be "_0" which is the default key used by Intake (as of
-                Turbine 2.1).  You could, of course, implement it as a normal
+                key to be "_0" which is the default key used by Intake. 
+                You could, of course, implement it as a normal
                 data field to allow the template to set the query key and then
                 in the Action to get the query key.  But then you'll have to
                 keep track of the key you use in both the template file and
@@ -422,7 +438,8 @@ Group group = intake.get("LoginGroup", key);
  * Performs user login
  */
 public void doLogin(RunData data, Context context)
-        throws Exception {
+        throws Exception 
+{
     // Get intake group
     IntakeTool intake =
             (IntakeTool)context.get("intake");
@@ -439,11 +456,14 @@ public void doLogin(RunData data, Context context)
     // template to be the same one as the user was filling out.  Otherwise
     // the user will just see the next template.  See the "important note"
     // in step 1.
-    if (!group.isAllValid()) {
+    if (!group.isAllValid()) 
+    {
         Log.debug("Group elements INVALID");
         setTemplate(data, "Login.vm");
         return;
-    } else {
+    } 
+    else 
+    {
         // If all is validated then you can set the next template and/or
         // continue processing...it's up to you.  You can also use
         // setPage() in the template file to set the next template to show
@@ -471,7 +491,8 @@ public void doLogin(RunData data, Context context)
  * Performs user login
  */
 public void doLogin(RunData data, Context context)
-        throws Exception {
+        throws Exception 
+{
     // Get intake group
     IntakeTool intake =
             (IntakeTool)context.get("intake");
@@ -484,11 +505,14 @@ public void doLogin(RunData data, Context context)
     // template to be the same one as the user was filling out.  Otherwise
     // the user will just see the next template.  See the "important note"
     // in step 1.
-    if (!group.isAllValid()) {
+    if (!group.isAllValid()) 
+    {
         Log.debug("Group elements INVALID");
         setTemplate(data, "Login.vm");
         return;
-    } else {
+    } 
+    else 
+    {
         // If all is validated then you can set the next template and/or
         // continue processing...it's up to you.  You can also use
         // setPage() in the template file to set the next template to show
