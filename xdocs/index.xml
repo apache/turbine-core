@@ -98,7 +98,7 @@
 
  <p>
     Turbine can be integrated with existing <a
-    href="http://jakarta.apache.org/velocity/">Velocity</a>, <a
+    href="http://velocity.apache.org/engine/">Velocity</a>, <a
     href="http://java.sun.com/products/jsp/">Java Server Pages (JSP)</a>
     and <a href="http://cocoon.apache.org/">Cocoon</a> technologies by
     specially creating Screens that use Services to parse templates.
@@ -162,7 +162,7 @@ the current Turbine code.
         We have a <a href="http://jakarta.apache.org/site/mail.html">Turbine mailing
         lists</a> for discussion.</li>
     <li>
-        You can also access the <a href="cvs-usage.html">Turbine CVS 
+        You can also access the <a href="cvs-usage.html">Turbine SVN 
         repository</a></li>
 </ul>
 
