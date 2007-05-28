@@ -38,14 +38,14 @@ turbine.
   </parent>
   <groupId>org.apache.turbine</groupId>
   <artifactId>turbine</artifactId>
-  <name>jakarta-turbine-2</name>
+  <name>turbine-2</name>
   <version>2.3.3-dev</version>
   <description>Turbine is a servlet based framework that allows experienced Java
     developers to quickly build secure web applications. Parts of Turbine
     can also be used independently of the web portion of Turbine as
     well. In other words, we strive to make portions of Turbine easily
     available for use in other applications.</description>
-  <url>http://jakarta.apache.org/turbine/turbine/development/turbine-2.3/</url>
+  <url>http://turbine.apache.org/turbine/development/turbine-2.3/</url>
   <issueManagement>
     <url>http://issues.apache.org/jira/browse/TRB</url>
   </issueManagement>
@@ -53,15 +53,15 @@ turbine.
   <mailingLists>
     <mailingList>
       <name>Turbine User List</name>
-      <subscribe>turbine-user-subscribe@jakarta.apache.org</subscribe>
-      <unsubscribe>turbine-user-unsubscribe@jakarta.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/mod_mbox/jakarta-turbine-user/</archive>
+      <subscribe>user-subscribe@turbine.apache.org</subscribe>
+      <unsubscribe>user-unsubscribe@turbine.apache.org</unsubscribe>
+      <archive>http://mail-archives.apache.org/mod_mbox/turbine-user/</archive>
     </mailingList>
     <mailingList>
       <name>Turbine Developer List</name>
-      <subscribe>turbine-dev-subscribe@jakarta.apache.org</subscribe>
-      <unsubscribe>turbine-dev-unsubscribe@jakarta.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/mod_mbox/jakarta-turbine-dev/</archive>
+      <subscribe>dev-subscribe@turbine.apache.org</subscribe>
+      <unsubscribe>dev-unsubscribe@turbine.apache.org</unsubscribe>
+      <archive>http://mail-archives.apache.org/mod_mbox/turbine-dev/</archive>
     </mailingList>
   </mailingLists>
   <developers>
@@ -474,7 +474,7 @@ turbine.
   </scm>
   <organization>
     <name>Apache Software Foundation</name>
-    <url>http://jakarta.apache.org/</url>
+    <url>http://turbine.apache.org/</url>
   </organization>
   <build>
     <sourceDirectory>target/src</sourceDirectory>
