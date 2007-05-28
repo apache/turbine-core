@@ -32,8 +32,8 @@
   <currentVersion>1.4-dev</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
-    <url>http://jakarta.apache.org/</url>
-    <logo>/images/jakarta.png</logo>
+    <url>http://turbine.apache.org/</url>
+    <logo>/images/turbine.png</logo>
   </organization>
   <logo>/images/logo.gif</logo>
   <inceptionYear>2003</inceptionYear>
@@ -43,10 +43,10 @@
     defined setup for starting new Turbine applications.
   </description>
   <shortDescription>Maven Environment for Turbine Applications</shortDescription>
-  <url>http://jakarta.apache.org/turbine/meta/</url>
+  <url>http://turbine.apache.org/meta/</url>
   <issueTrackingUrl>http://issues.apache.org/jira/</issueTrackingUrl>
   <siteAddress>people.apache.org</siteAddress>
-  <siteDirectory>/www/jakarta.apache.org/turbine/meta</siteDirectory>
+  <siteDirectory>/www/turbine.apache.org/meta</siteDirectory>
   <distributionSite>cvs.apache.org</distributionSite>
   <distributionDirectory>/www/cvs.apache.org/dist/jakarta/turbine/java-repository</distributionDirectory>
 
@@ -59,15 +59,15 @@
   <mailingLists>
     <mailingList>
       <name>Turbine User List</name>
-      <subscribe>turbine-user-subscribe@jakarta.apache.org</subscribe>
-      <unsubscribe>turbine-user-unsubscribe@jakarta.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/mod_mbox/jakarta-turbine-user/</archive>
+      <subscribe>user-subscribe@turbine.apache.org</subscribe>
+      <unsubscribe>user-unsubscribe@turbine.apache.org</unsubscribe>
+      <archive>http://mail-archives.apache.org/mod_mbox/turbine-user/</archive>
     </mailingList>
     <mailingList>
       <name>Turbine Developer List</name>
-      <subscribe>turbine-dev-subscribe@jakarta.apache.org</subscribe>
-      <unsubscribe>turbine-dev-unsubscribe@jakarta.apache.org</unsubscribe>
-      <archive>http://mail-archives.apache.org/mod_mbox/jakarta-turbine-dev/</archive>
+      <subscribe>dev-subscribe@turbine.apache.org</subscribe>
+      <unsubscribe>dev-unsubscribe@turbine.apache.org</unsubscribe>
+      <archive>http://mail-archives.apache.org/mod_mbox/turbine-dev/</archive>
     </mailingList>
   </mailingLists>
 
