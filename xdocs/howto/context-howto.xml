@@ -279,7 +279,7 @@ pain, doing it twice stinks, if the screen requires several images .... and
 there are many screens .... it is a productivity killer. The Velocity Context
 can be used to store this information and expose it to all the Screens
 requiring it. To do this we can create an Image Object which extends the Turbine
-DynamicURI Object. The following class is Jakarta Tomcat specific;
+DynamicURI Object. The following class is Apache Tomcat specific;
 </p>
 
 
