@@ -20,15 +20,15 @@
 -->
 
 <project name="Turbine"
-        href="http://jakarta.apache.org/turbine/">
+        href="http://turbine.apache.org/">
 
   <title>Turbine</title>
 
   <body>
     <links>
-      <item name="Turbine Home"		   href="http://jakarta.apache.org/turbine/"/>
-      <item name="Fulcrum"                 href="http://jakarta.apache.org/turbine/fulcrum/"/>
-      <item name="META"                    href="http://jakarta.apache.org/turbine/meta/"/>
+      <item name="Turbine Home"		href="http://turbine.apache.org/"/>
+      <item name="Fulcrum"          href="http://turbine.apache.org/fulcrum/"/>
+      <item name="META"             href="http://turbine.apache.org/meta/"/>
     </links>
 
     <menu name="General Information">
