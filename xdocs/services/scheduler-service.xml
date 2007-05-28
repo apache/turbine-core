@@ -135,7 +135,7 @@ tool.request.scheduler=org.apache.turbine.services.schedule.SchedulerTool
     stored in <code>scheduler-schema.xml</code>.  If you want to
     add additional fields to track more information about your
     scheduled tasks, you can modify this file to do so.  You will
-    need to rebuild Turbine using MAven after making your modifications.
+    need to rebuild Turbine using Maven after making your modifications.
 </p>
 
 </section>
