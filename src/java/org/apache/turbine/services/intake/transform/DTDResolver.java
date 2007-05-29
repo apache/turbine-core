@@ -43,7 +43,7 @@ import org.xml.sax.InputSource;
 public class DTDResolver implements EntityResolver
 {
     private static final String WEB_SITE_DTD =
-            "http://jakarta.apache.org/turbine/dtd/intake_2_3_3.dtd";
+            "http://turbine.apache.org/dtd/intake_2_3_3.dtd";
 
     /** InputSource for <code>intake.dtd</code>. */
     private InputSource intakeDTD = null;
@@ -98,7 +98,7 @@ public class DTDResolver implements EntityResolver
         }
         else if (systemId == null)
         {
-            log.info("Resolver: used intake.dtd from Jakarta Web site");
+            log.info("Resolver: used intake.dtd from Turbine Web site");
             return getInputSource(WEB_SITE_DTD);
         }
         else
