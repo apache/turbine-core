@@ -19,11 +19,11 @@
   <title>Maven Environment for Turbine Applications (M.E.T.A.)</title>
   <body>
     <links>
-      <item name="Turbine Home"		   href="http://jakarta.apache.org/turbine/"/>
-      <item name="Turbine 2.3"		   href="http://jakarta.apache.org/turbine/development/turbine-2.3/"/>
-      <item name="Turbine 2.4"		   href="http://jakarta.apache.org/turbine/development/turbine-2.4/"/>
-      <item name="Fulcrum"                 href="http://jakarta.apache.org/turbine/fulcrum/"/>
-      <item name="M.E.T.A."                href="http://jakarta.apache.org/turbine/meta/"/>
+      <item name="Turbine Home"		   href="http://turbine.apache.org/"/>
+      <item name="Turbine 2.3"		   href="http://turbine.apache.org/development/turbine-2.3/"/>
+      <item name="Turbine 2.4"		   href="http://turbine.apache.org/development/turbine-2.4/"/>
+      <item name="Fulcrum"             href="http://turbine.apache.org/fulcrum/"/>
+      <item name="META"                href="http://turbine.apache.org/meta/"/>
     </links>
 
     <menu name="Overview">
