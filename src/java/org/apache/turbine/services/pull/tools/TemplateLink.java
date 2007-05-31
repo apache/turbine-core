@@ -111,6 +111,10 @@ public class TemplateLink
         // exception.
 
         templateURI = new TemplateURI((RunData) data);
+        
+        // Set the Server Scheme Based on the use.ssl Property from TR.props
+        // If false, http is used and if true https is used.
+        templateURI.setSecure();
 
         Configuration conf =
                 Turbine.getConfiguration().subset(TEMPLATE_LINK_PREFIX);
