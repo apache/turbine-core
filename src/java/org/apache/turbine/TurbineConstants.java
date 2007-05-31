@@ -327,4 +327,24 @@ public interface TurbineConstants
 
     /** Default Encoding for Parameter Parser */
     String PARAMETER_ENCODING_DEFAULT = "ISO-8859-1";
+
+    /** Default serverName for ServerData */
+    static final String DEFAULT_SERVER_NAME_KEY
+            = "serverdata.default.serverName";
+
+    /** Default serverPort for ServerData */
+    static final String DEFAULT_SERVER_PORT_KEY
+            = "serverdata.default.serverPort";
+
+    /** Default serverScheme for ServerData */
+    static final String DEFAULT_SERVER_SCHEME_KEY
+            = "serverdata.default.serverScheme";
+
+    /** Default scriptName for ServerData */
+    static final String DEFAULT_SCRIPT_NAME_KEY
+            = "serverdata.default.scriptName";
+
+    /** Default contextPath for ServerData */
+    static final String DEFAULT_CONTEXT_PATH_KEY
+            = "serverdata.default.contextPath";
 }

@@ -92,6 +92,7 @@ import org.apache.turbine.util.uri.URIConstants;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  */
 public class Turbine
@@ -565,8 +566,14 @@ public class Turbine
         {
             log.error("ServerData Information requested from Turbine before first request!");
             // Will be overwritten once the first request is run;
-            serverData = new ServerData(null, URIConstants.HTTP_PORT,
-                    URIConstants.HTTP, null, null);
+            serverData = new ServerData(
+                    configuration.getString(DEFAULT_SERVER_NAME_KEY),
+                    configuration.getInt(DEFAULT_SERVER_PORT_KEY,
+                            URIConstants.HTTP_PORT),
+                    configuration.getString(DEFAULT_SERVER_SCHEME_KEY,
+                            URIConstants.HTTP),
+                    configuration.getString(DEFAULT_SCRIPT_NAME_KEY),
+                    configuration.getString(DEFAULT_CONTEXT_PATH_KEY));
         }
         return serverData;
     }
