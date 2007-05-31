@@ -25,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
@@ -114,7 +115,12 @@ public class TemplateLink
         
         // Set the Server Scheme Based on the use.ssl Property from TR.props
         // If false, http is used and if true https is used.
-        templateURI.setSecure();
+        boolean useSSL = Turbine.getConfiguration().getBoolean(TurbineConstants.USE_SSL_KEY, TurbineConstants.USE_SSL_DEFAULT);
+        if(useSSL)
+        {
+            templateURI.setServerScheme(useSSL ? TemplateURI.HTTPS : TemplateURI.HTTP);
+            templateURI.setServerPort(TemplateURI.HTTPS_PORT);
+        }
 
         Configuration conf =
                 Turbine.getConfiguration().subset(TEMPLATE_LINK_PREFIX);
