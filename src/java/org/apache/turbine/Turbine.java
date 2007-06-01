@@ -555,19 +555,29 @@ public class Turbine
      * Return all the Turbine Servlet information (Server Name, Port,
      * Scheme in a ServerData structure. This is generated from the
      * values set when initializing the Turbine and may not be correct
-     * if you're running in a clustered structure. This might be used
-     * if you need a DataURI and have no RunData object handy-
+     * if you're running in a clustered structure. You can provide default
+     * values in your configuration for cases where access is requied before
+     * your application is first accessed by a user.  This might be used
+     * if you need a DataURI and have no RunData object handy.
      *
      * @return An initialized ServerData object
      */
     public static ServerData getDefaultServerData()
     {
-        if(serverData == null)
+        if (serverData == null)
         {
-            log.error("ServerData Information requested from Turbine before first request!");
+            String serverName
+                    = configuration.getString(DEFAULT_SERVER_NAME_KEY);
+            if (serverName == null)
+            {
+                log.error("ServerData Information requested from Turbine before first request!");
+            }
+            else
+            {
+                log.info("ServerData Information retrieved from configuration.");
+            }
             // Will be overwritten once the first request is run;
-            serverData = new ServerData(
-                    configuration.getString(DEFAULT_SERVER_NAME_KEY),
+            serverData = new ServerData(serverName,
                     configuration.getInt(DEFAULT_SERVER_PORT_KEY,
                             URIConstants.HTTP_PORT),
                     configuration.getString(DEFAULT_SERVER_SCHEME_KEY,
