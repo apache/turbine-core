@@ -75,7 +75,7 @@ public class TemplateLink
     private String template = null;
 
     /** TemplateURI used as backend for this object */
-    private TemplateURI templateURI = null;
+    protected TemplateURI templateURI = null;
 
     /** Logging */
     private static Log log = LogFactory.getLog(TemplateLink.class);
@@ -113,15 +113,6 @@ public class TemplateLink
 
         templateURI = new TemplateURI((RunData) data);
         
-        // Set the Server Scheme Based on the use.ssl Property from TR.props
-        // If false, http is used and if true https is used.
-        boolean useSSL = Turbine.getConfiguration().getBoolean(TurbineConstants.USE_SSL_KEY, TurbineConstants.USE_SSL_DEFAULT);
-        if(useSSL)
-        {
-            templateURI.setServerScheme(useSSL ? TemplateURI.HTTPS : TemplateURI.HTTP);
-            templateURI.setServerPort(TemplateURI.HTTPS_PORT);
-        }
-
         Configuration conf =
                 Turbine.getConfiguration().subset(TEMPLATE_LINK_PREFIX);
 
