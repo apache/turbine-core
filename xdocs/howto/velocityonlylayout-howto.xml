@@ -216,7 +216,7 @@ services.VelocityService.velocimacro.library = macros/TurbineMacros.vm
 <section name="Writing Directly To ServletOutputStream">
 <p>
     See
-	<a href="http://wiki.apache.org/jakarta-turbine/Turbine2/VelocityOnlyLayout">
+	<a href="http://wiki.apache.org/turbine/Turbine2/VelocityOnlyLayout">
 	VelocityOnlyLayout</a> on the Apache wiki for some information concerning
 	writing directly to ServletOutputStream.
 </p>
