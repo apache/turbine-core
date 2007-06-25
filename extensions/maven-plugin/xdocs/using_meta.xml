@@ -34,7 +34,7 @@ The M.E.T.A. plugin can operate in different modes. Currently it supports the fo
 container by running the <a href="goals.html#turbine_deploy">turbine:deploy</a> goal.</li>
 <li><b>inplace</b> - The source code and the class files are kept together. Your web container will access
 the files in the development location and no explicit deployment to the container is necessary.
-This mode is similar to developing with the deprecated <a href="http://jakarta.apache.org/turbine/tdk/">Turbine Development Kit</a>.</li>
+This mode is similar to developing with the deprecated <a href="http://turbine.apache.org/tdk/">Turbine Development Kit</a>.</li>
 </ul>
 
 Modes are discussed on the <a href="modes.html">Modes</a> page.</p>
@@ -190,9 +190,9 @@ Turbine supports the retrieval of information from databases through
 various OM layers. The most popular is <a
 href="http://db.apache.org/torque/">Torque</a> and Turbine itself uses
 Torque for the <a
-href="http://jakarta.apache.org/turbine/turbine/turbine-2.3.1/services/security-service.html">Security
+href="http://turbine.apache.org/turbine/turbine-2.3.1/services/security-service.html">Security
 Service</a> and the <a
-href="http://jakarta.apache.org/turbine/turbine/turbine-2.3.1/services/scheduler-service.html">Scheduler
+href="http://turbine.apache.org/turbine/turbine-2.3.1/services/scheduler-service.html">Scheduler
 Service</a>. With the M.E.T.A. plugin, different OM layers can be
 configured. The default is to use Torque. The OM layer is configured
 by setting the <a
@@ -239,7 +239,7 @@ All your application code and Turbine support files are copied into a
 web container which is outside your development tree.  You must
 configure the appserver plugin (which also gives you the power to
 start and stop your container from maven. See the <a
-href="http://maven.apache.org/reference/plugins/appserver/">appserver
+href="http://maven.apache.org/maven-1.x/reference/plugins/appserver/">appserver
 plugin documentation</a> for more information) and its configuration
 is then used by M.E.T.A. The required appserver properties are listed
 on the <a href="properties.html">Properties Page</a>.

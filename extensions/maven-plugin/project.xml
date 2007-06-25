@@ -134,10 +134,25 @@
    <dependency>
       <groupId>torque</groupId>
       <artifactId>maven-torque-plugin</artifactId>
-      <version>3.1.1</version>
+      <version>3.2</version>
       <url>http://db.apache.org/torque/</url>
       <type>plugin</type>
     </dependency>
+
+    <dependency>
+      <groupId>maven</groupId>
+      <artifactId>maven-changelog-plugin</artifactId>
+      <version>1.8.2</version>
+      <type>plugin</type>
+    </dependency>
+
+    <dependency>
+      <groupId>maven</groupId>
+      <artifactId>maven-scm-plugin</artifactId>
+      <version>1.5</version>
+      <type>plugin</type>
+    </dependency>
+
   </dependencies>
 
   <build>

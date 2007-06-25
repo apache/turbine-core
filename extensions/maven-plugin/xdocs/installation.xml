@@ -44,7 +44,7 @@ maven -DartifactId=maven-turbine-plugin -DgroupId=turbine -Dversion=1.3 plugin:d
 
 <p>
 Installing the plugin through the <code>plugin:download</code> is the preferred to go.
-Alternatively, you can get it from the <a href="http://jakarta.apache.org/turbine/download.html">Turbine download page</a>.
+Alternatively, you can get it from the <a href="http://turbine.apache.org/download.html">Turbine download page</a>.
 </p>
 
 <table>
@@ -58,7 +58,7 @@ To install it manually, you copy this jar file into your local plugin
 directory, which is either referenced by MAVEN_HOME_LOCAL/plugins or
 the global plugins directory at MAVEN_HOME/plugins. Which one to use
 depends on your maven installation. You find some documentation on how
-to do this <a href="http://maven.apache.org/start/install.html">on the
+to do this <a href="http://maven.apache.org/maven-1.x/start/install.html">on the
 maven install page</a>.
 </p>
 
