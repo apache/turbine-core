@@ -36,7 +36,7 @@ The following modes are currently supported:
 container by running the <a href="goals.html#turbine_deploy">turbine:deploy</a> goal.</li>
 <li><b>inplace</b> - The source code and the class files are kept together . Your web container will access
 the files in the development location and no explicit deployment to the container is necessary.
-This mode is similar to developing with the deprecated <a href="http://jakarta.apache.org/turbine/tdk/">Turbine Development Kit</a>.</li>
+This mode is similar to developing with the deprecated <a href="http://turbine.apache.org/tdk/">Turbine Development Kit</a>.</li>
 </ul>
 
 </p>
@@ -71,7 +71,7 @@ the application to a web container.
 This is the recommended mode to develop a Turbine application. It
 keeps the source files separate from the generated and compiled
 files. The development tree conforms to the <a
-href="http://maven.apache.org/reference/dirlayout.html">maven common
+href="http://maven.apache.org/maven-1.x/reference/dirlayout.html">maven common
 directory layout</a>.
 </p>
 
@@ -111,7 +111,7 @@ directory layout</a>.
 
 <p>
 This mode is suitable when moving from the <a
-href="http://jakarta.apache.org/turbine/tdk/">Turbine Development
+href="http://turbine.apache.org/tdk/">Turbine Development
 Kit</a> to M.E.T.A. or when you can customize your web container to
 access your development location. Its tree layout is directly usable
 as a web application.

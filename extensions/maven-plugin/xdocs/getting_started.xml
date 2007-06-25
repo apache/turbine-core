@@ -109,7 +109,7 @@ maven turbine:deploy
 ]]></source>
 
 Restart your web container or force it to reload its applications.<br/>
-Point your browser to the deployed application (if you use <a href="http://jakarta.apache.org/tomcat/">Tomcat</a>
+Point your browser to the deployed application (if you use <a href="http://tomcat.apache.org/">Tomcat</a>
 running on your local machine, this would be
 <a href="http://localhost:8080/helloworld/">http://localhost:8080/helloworld/</a>).</p>
 

@@ -94,11 +94,11 @@
   security-enabled application.<br/>
   M.E.T.A. supplies table definition and preset data to be used in
   conjunction with the <a
-  href="http://jakarta.apache.org/turbine/turbine/turbine-2.3.1/services/torque-security-service.html">Torque
+  href="http://turbine.apache.org/turbine/turbine-2.3.1/services/torque-security-service.html">Torque
   Security Service</a>. The Schema is similar to the <a
-  href="http://jakarta.apache.org/turbine/turbine/turbine-2.3.1/services/torque-security-schema.html">Default
+  href="http://turbine.apache.org/turbine/turbine-2.3.1/services/torque-security-schema.html">Default
   Schema</a> described on the <a
-  href="http://jakarta.apache.org/turbine/">Turbine web site</a>.</p>
+  href="http://turbine.apache.org/">Turbine web site</a>.</p>
 
   <p>
   M.E.T.A. also provides a demo for presetting security tables from an XML

@@ -43,7 +43,7 @@
      for other IDEs like <a
      href="http://www.netbeans.org/">netBeans</a>, <a
      href="http://www.jetbrains.com/idea/">IntelliJ IDEA</a>, <a
-     href="http://www.borland.com/jbuilder/">JBuilder</a> or any other
+     href="http://www.codegear.com/products/jbuilder/">JBuilder</a> or any other
      IDEs are welcome.
     </p>
 
@@ -52,10 +52,10 @@
     <p>Setting up Eclipse and Tomcat for M.E.T.A. is very easy to do:</p>
     <ul>
       <li>Download Eclipse from the the <a href="http://www.eclipse.org/">Eclipse Website</a> and install it.</li>
-      <li>Download Jakarta Tomcat from the <a href="http://jakarta.apache.org/tomcat/">Tomcat website</a>. This will
+      <li>Download Tomcat from the <a href="http://tomcat.apache.org/">Tomcat website</a>. This will
           be the web container that we use for running and debugging the Turbine application.</li>
       <li>For development, it is also very useful if you can start and stop Tomcat directly from Eclipse. A very
-          useful Plugin for Eclipse is <a href="http://www.sysdeo.com/eclipse/tomcatPlugin.html">the Sysdeo Tomcat Plugin</a></li>
+          useful Plugin for Eclipse is <a href="http://www.eclipsetotale.com/tomcatPlugin.html">the Sysdeo Tomcat Plugin</a></li>
     </ul>
 
     <p>Now configure Eclipse to your installed tomcat by setting its
