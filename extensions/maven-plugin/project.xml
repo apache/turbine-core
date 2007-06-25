@@ -51,9 +51,9 @@
   <distributionDirectory>/www/cvs.apache.org/dist/jakarta/turbine/java-repository</distributionDirectory>
 
   <repository>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/turbine/core/trunk/extensions/maven-plugin/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/jakarta/turbine/core/trunk/extensions/maven-plugin/</developerConnection>
-    <url>http://svn.apache.org/viewcvs/jakarta/turbine/core/trunk/extensions/maven-plugin/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/core/trunk/extensions/maven-plugin/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/trunk/extensions/maven-plugin/</developerConnection>
+    <url>http://svn.apache.org/viewcvs/turbine/core/trunk/extensions/maven-plugin/</url>
   </repository>
 
   <mailingLists>
