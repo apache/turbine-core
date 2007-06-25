@@ -48,9 +48,9 @@
   <distributionDirectory>/www/www.apache.org/dist/jakarta/turbine</distributionDirectory>
 
   <repository>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/turbine/core/trunk/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/jakarta/turbine/trunk/</developerConnection>
-    <url>http://svn.apache.org/viewvc/jakarta/turbine/core/trunk/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/core/trunk/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/trunk/</developerConnection>
+    <url>http://svn.apache.org/viewvc/turbine/core/trunk/</url>
   </repository>
 
 <versions>
