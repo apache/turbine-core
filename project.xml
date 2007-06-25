@@ -51,9 +51,9 @@
   <distributionDirectory>/www/cvs.apache.org/dist/jakarta/turbine/java-repository</distributionDirectory>
 
   <repository>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/jakarta/turbine/core/branches/TURBINE_2_3_BRANCH/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/jakarta/turbine/branches/TURBINE_2_3_BRANCH/</developerConnection>
-    <url>http://svn.apache.org/viewcvs/jakarta/turbine/core/branches/TURBINE_2_3_BRANCH/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/core/branches/TURBINE_2_3_BRANCH/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/branches/TURBINE_2_3_BRANCH/</developerConnection>
+    <url>http://svn.apache.org/viewcvs/turbine/core/branches/TURBINE_2_3_BRANCH/</url>
   </repository>
 
   <versions>
