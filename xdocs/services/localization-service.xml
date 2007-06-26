@@ -55,6 +55,21 @@ services.LocalizationService.classname=org.apache.turbine.services.localization.
 .
 .
 .
+# -------------------------------------------------------------------
+#
+#  L O C A L I Z A T I O N  S E R V I C E
+#
+# -------------------------------------------------------------------
+
+# Default ResourceBundle and language/country codes used by the
+# TurbineLocalizationService.
+#
+locale.default.bundle=MyBundle
+locale.default.language=en
+locale.default.country=
+.
+.
+.
 ]]></source>
 
 </section>
@@ -144,7 +159,7 @@ $l10n.format("CURRENT_RECORD", $recno, $all);
 <section name="Usage from a template">
 
 <p>
-Turbine provides a <a href="../pullmodel-howto.html">Pull tool</a> to make it
+Turbine provides a <a href="../howto/pullmodel-howto.html">Pull tool</a> to make it
 very easy to access localized text from within your templates.  To configure
 this you need to add the following to your TurbineResouces.properties:
 </p>
