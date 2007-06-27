@@ -29,6 +29,11 @@
 <body>
   <release version="2.3.3-dev" date="in Subversion">
     <action type="add" dev="seade">
+      The init() method in LocalizationTool is no longer declared as final -
+      you can now extend this class to provide alternative ways of initializing
+      the locale.
+    </action>
+    <action type="add" dev="seade">
       Default ServerData values can now be specified in
       TurbineResources.properties.
     </action>
