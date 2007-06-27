@@ -50,7 +50,7 @@ public class LocalizationTool implements ApplicationTool
     /**
      * The name of the bundle for this tool to use.
      */
-    private String bundleName;
+    protected String bundleName;
 
     /**
      * Creates a new instance.  Used by <code>PullService</code>.
@@ -171,7 +171,7 @@ public class LocalizationTool implements ApplicationTool
      * Sets the request to get the <code>Accept-Language</code> header
      * from (reset on each request).
      */
-    public final void init(Object data)
+    public void init(Object data)
     {
         if (data instanceof RunData)
         {
