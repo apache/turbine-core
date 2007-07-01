@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -36,14 +35,6 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.apache.velocity.app.event.EventCartridge;
-import org.apache.velocity.app.event.MethodExceptionEventHandler;
-import org.apache.velocity.context.Context;
-import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.pull.PullService;
@@ -51,6 +42,12 @@ import org.apache.turbine.services.pull.TurbinePull;
 import org.apache.turbine.services.template.BaseTemplateEngineService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.event.EventCartridge;
+import org.apache.velocity.app.event.MethodExceptionEventHandler;
+import org.apache.velocity.context.Context;
+import org.apache.velocity.runtime.log.Log4JLogChute;
 
 /**
  * This is a Service that can process Velocity templates from within a
@@ -103,6 +100,9 @@ public class TurbineVelocityService
 
     /** Shall we catch Velocity Errors and report them in the log file? */
     private boolean catchErrors = true;
+
+    /** Default encoding to use if not specified in the RunData object. */
+    private String defaultEncoding = DEFAULT_CHAR_SET;
 
     /** Internal Reference to the pull Service */
     private PullService pullService = null;
@@ -409,14 +409,7 @@ public class TurbineVelocityService
     {
         String encoding = getEncoding(context);
 
-        if (encoding != null)
-        {
-            Velocity.mergeTemplate(filename, encoding, context, writer);
-        }
-        else
-        {
-            Velocity.mergeTemplate(filename, context, writer);
-        }
+        Velocity.mergeTemplate(filename, encoding, context, writer);
     }
 
     /**
@@ -454,7 +447,7 @@ public class TurbineVelocityService
             encoding = ((RunData) data).getTemplateEncoding();
         }
 
-        return encoding;
+        return (StringUtils.isEmpty(encoding)) ? defaultEncoding : encoding;
     }
 
     /**
@@ -487,9 +480,14 @@ public class TurbineVelocityService
         Configuration conf = getConfiguration();
 
         catchErrors = conf.getBoolean(CATCH_ERRORS_KEY, CATCH_ERRORS_DEFAULT);
+        
+        if (conf.containsKey(Velocity.INPUT_ENCODING))
+        {
+            defaultEncoding = conf.getString(Velocity.INPUT_ENCODING);
+        }
 
         conf.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS,
-                SimpleLog4JLogSystem.class.getName());
+                Log4JLogChute.class.getName());
         conf.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM
                 + ".log4j.category", "velocity");
 
@@ -629,7 +627,7 @@ public class TurbineVelocityService
      */
     public boolean templateExists(String template)
     {
-        return Velocity.templateExists(template);
+        return Velocity.resourceExists(template);
     }
 
     /**
