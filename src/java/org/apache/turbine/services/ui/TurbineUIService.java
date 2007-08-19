@@ -20,8 +20,6 @@ package org.apache.turbine.services.ui;
  */
 
 import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
@@ -35,6 +33,7 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.pull.TurbinePull;
+import org.apache.turbine.services.pull.tools.UITool;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.uri.DataURI;
