@@ -20,6 +20,7 @@ package org.apache.turbine.services.xslt;
  */
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -148,21 +149,20 @@ public class TurbineXSLTService
      */
     protected Templates compileTemplates(URL source) throws Exception
     {
-        StreamSource xslin = new StreamSource(source.openStream());
-        Templates root = tfactory.newTemplates(xslin);
+        InputStream in = source.openStream();
+        StreamSource xslin = new StreamSource(in, source.toString());
+        Templates root = TransformerFactory.newInstance().newTemplates(xslin);
+        in.close();
+        
         return root;
     }
 
     /**
      * Retrieves Templates.  If caching is switched on the
      * first attempt is to load the Templates from the cache.
-     * If caching is switched of or if the Stylesheet is not found
+     * If caching is switched off or if the Stylesheet is not found
      * in the cache a new StyleSheetRoot is compiled from an input
      * file.
-     * <p>
-     * This method is synchronized on the xsl cache so that a thread
-     * does not attempt to load a StyleSheetRoot from the cache while
-     * it is still being compiled.
      */
     protected Templates getTemplates(String xslName) throws Exception
     {
@@ -172,24 +172,26 @@ public class TurbineXSLTService
             {
                 return (Templates) cache.get(xslName);
             }
+        }
 
-            URL url = getStyleURL(xslName);
+        URL url = getStyleURL(xslName);
 
-            if (url == null)
-            {
-                return null;
-            }
+        if (url == null)
+        {
+            return null;
+        }
 
-            Templates sr = compileTemplates(url);
+        Templates sr = compileTemplates(url);
 
+        synchronized (cache)
+        {
             if (caching)
             {
                 cache.put(xslName, sr);
             }
-
-            return sr;
         }
 
+        return sr;
     }
 
     /**
@@ -213,7 +215,7 @@ public class TurbineXSLTService
 
         if (params != null)
         {
-            for (Iterator it = params.entrySet().iterator(); it.hasNext(); )
+            for (Iterator it = params.entrySet().iterator(); it.hasNext();)
             {
                 Map.Entry entry = (Map.Entry) it.next();
                 transformer.setParameter(String.valueOf(entry.getKey()), entry.getValue());
