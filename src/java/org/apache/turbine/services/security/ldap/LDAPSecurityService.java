@@ -22,6 +22,7 @@ package org.apache.turbine.services.security.ldap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
+
 import javax.naming.NameAlreadyBoundException;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
@@ -39,9 +40,6 @@ import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
-import org.apache.turbine.om.security.TurbineGroup;
-import org.apache.turbine.om.security.TurbinePermission;
-import org.apache.turbine.om.security.TurbineRole;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.BaseSecurityService;
 import org.apache.turbine.services.security.TurbineSecurity;
@@ -421,49 +419,6 @@ public class LDAPSecurityService extends BaseSecurityService
      */
 
     /**
-     * Retrieves a new Group. It creates
-     * a new Group based on the Services Group implementation. It does not
-     * create a new Group in the system though. Use addGroup for that.
-     * <strong>Not implemented</strong>
-     *
-     * @param groupName The name of the Group to be retrieved.
-     * @return a Group.
-     */
-    public Group getNewGroup(String groupName)
-    {
-        return (Group) new TurbineGroup(groupName);
-    }
-
-    /**
-     * Retrieves a new Role. It creates
-     * a new Role based on the Services Role implementation. It does not
-     * create a new Role in the system though. Use addRole for that.
-     * <strong>Not implemented</strong>
-     *
-     * @param roleName The name of the Group to be retrieved.
-     * @return a Role.
-     */
-    public Role getNewRole(String roleName)
-    {
-        return (Role) new TurbineRole(roleName);
-    }
-
-    /**
-     * Retrieves a new Permission. It creates
-     * a new Permission based on the Services Permission implementation. It
-     * does not create a new Permission in the system though. Use create for
-     * that.
-     * <strong>Not implemented</strong>
-     *
-     * @param permissionName The name of the Permission to be retrieved.
-     * @return a Permission
-     */
-    public Permission getNewPermission(String permissionName)
-    {
-        return (Permission) new TurbinePermission(permissionName);
-    }
-
-    /**
      * Retrieve a set of Groups that meet the specified Criteria.
      *
      * @param criteria Criteria of Group selection.
@@ -497,7 +452,7 @@ public class LDAPSecurityService extends BaseSecurityService
 
                 if (attr != null && attr.get() != null)
                 {
-                    Group group = getNewGroup(attr.get().toString());
+                    Group group = getGroupInstance(attr.get().toString());
 
                     groups.add(group);
                 }
@@ -507,6 +462,11 @@ public class LDAPSecurityService extends BaseSecurityService
         {
             throw new DataBackendException("NamingException caught", ex);
         }
+        catch (UnknownEntityException ex)
+        {
+            throw new DataBackendException("Group instance could not be created.", ex);
+        }
+
         return new GroupSet(groups);
     }
 
@@ -555,7 +515,7 @@ public class LDAPSecurityService extends BaseSecurityService
 
                     while (values.hasMore())
                     {
-                        Role role = getNewRole(values.next().toString());
+                        Role role = getRoleInstance(values.next().toString());
 
                         roles.add(role);
                     }
@@ -568,8 +528,11 @@ public class LDAPSecurityService extends BaseSecurityService
         }
         catch (NamingException ex)
         {
-            throw new DataBackendException(
-                    "NamingException caught:", ex);
+            throw new DataBackendException("NamingException caught:", ex);
+        }
+        catch (UnknownEntityException ex)
+        {
+            throw new DataBackendException("Role instance could not be created.", ex);
         }
 
         return new RoleSet(roles);
@@ -608,7 +571,7 @@ public class LDAPSecurityService extends BaseSecurityService
 
                 if (attr != null && attr.get() != null)
                 {
-                    Role role = getNewRole(attr.get().toString());
+                    Role role = getRoleInstance(attr.get().toString());
 
                     roles.add(role);
                 }
@@ -621,6 +584,10 @@ public class LDAPSecurityService extends BaseSecurityService
         catch (NamingException ex)
         {
             throw new DataBackendException("NamingException caught", ex);
+        }
+        catch (UnknownEntityException ex)
+        {
+            throw new DataBackendException("Role instance could not be created.", ex);
         }
 
         return new RoleSet(roles);
@@ -660,7 +627,7 @@ public class LDAPSecurityService extends BaseSecurityService
 
                 if (attr != null && attr.get() != null)
                 {
-                    Permission perm = getNewPermission(attr.get().toString());
+                    Permission perm = getPermissionInstance(attr.get().toString());
 
                     permissions.add(perm);
                 }
@@ -675,6 +642,11 @@ public class LDAPSecurityService extends BaseSecurityService
             throw new DataBackendException(
                     "The LDAP server specified is unavailable", ex);
         }
+        catch (UnknownEntityException ex)
+        {
+            throw new DataBackendException("Permission instance could not be created.", ex);
+        }
+
         return new PermissionSet(permissions);
     }
 
@@ -722,7 +694,7 @@ public class LDAPSecurityService extends BaseSecurityService
                     while (values.hasMore())
                     {
                         String permName = values.next().toString();
-                        Permission perm = getNewPermission(permName);
+                        Permission perm = getPermissionInstance(permName);
 
                         permissions.put(perm.getName(), perm);
                     }
@@ -734,6 +706,11 @@ public class LDAPSecurityService extends BaseSecurityService
             throw new DataBackendException(
                     "The LDAP server specified is unavailable", ex);
         }
+        catch (UnknownEntityException ex)
+        {
+            throw new DataBackendException("Permission instance could not be created.", ex);
+        }
+        
         return new PermissionSet(permissions.values());
     }
 

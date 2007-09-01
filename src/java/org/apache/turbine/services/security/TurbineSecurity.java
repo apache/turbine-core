@@ -295,11 +295,12 @@ public abstract class TurbineSecurity
      * @return a List of users meeting the criteria.
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
+     * @deprecated use getUserList() instead
      */
     public static User[] getUsers(Criteria criteria)
             throws DataBackendException
     {
-        return getService().getUsers(criteria);
+        return (User[])getService().getUserList(criteria).toArray();
     }
 
     /**

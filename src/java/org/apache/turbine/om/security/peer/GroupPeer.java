@@ -21,18 +21,16 @@ package org.apache.turbine.om.security.peer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import org.apache.torque.Torque;
 import org.apache.torque.TorqueException;
 import org.apache.torque.om.BaseObject;
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.util.BasePeer;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
-import org.apache.turbine.om.security.SecurityObject;
 import org.apache.turbine.om.security.TurbineGroup;
 import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.GroupSet;
@@ -77,7 +75,7 @@ public class GroupPeer extends BasePeer
     {
         try
         {
-            MAP_BUILDER = (TurbineMapBuilder)/* Torque. */getMapBuilder(TurbineMapBuilder.class.getName());
+            MAP_BUILDER = (TurbineMapBuilder) Torque.getMapBuilder(TurbineMapBuilder.class.getName());
         }
         catch (TorqueException e)
         {
@@ -162,15 +160,20 @@ public class GroupPeer extends BasePeer
             {
                 Group obj = TurbineSecurity.getGroupInstance(null);
                 Record row = (Record) rows.get(i);
-                ((SecurityObject) obj).setPrimaryKey(
+                ((TurbineGroup) obj).setPrimaryKey(
                         new NumberKey(row.getValue(1).asInt()));
-                ((SecurityObject) obj).setName(row.getValue(2).asString());
+                ((TurbineGroup) obj).setName(row.getValue(2).asString());
+                
+                // TODO: Clean up OBJECTDATA columns. They are no longer supported
+                /*
                 byte[] objectData = row.getValue(3).asBytes();
                 Map temp = (Map) ObjectUtils.deserialize(objectData);
                 if (temp != null)
                 {
-                    ((SecurityObject) obj).setAttributes(temp);
+                    ((TurbineGroup) obj).setAttributes(temp);
                 }
+                */
+                
                 results.add(obj);
             }
 
@@ -212,7 +215,7 @@ public class GroupPeer extends BasePeer
     {
         Criteria criteria = new Criteria();
         criteria.addSelectColumn(GROUP_ID);
-        criteria.add(NAME, ((SecurityObject) group).getName());
+        criteria.add(NAME, ((TurbineGroup) group).getName());
         List results = BasePeer.doSelect(criteria);
         if (results.size() > 1)
         {
@@ -256,7 +259,7 @@ public class GroupPeer extends BasePeer
     public static Criteria buildCriteria(Group group)
     {
         Criteria criteria = new Criteria();
-        criteria.add(NAME, ((SecurityObject) group).getName());
+        criteria.add(NAME, ((TurbineGroup) group).getName());
         if (!((BaseObject) group).isNew())
         {
             criteria.add(GROUP_ID, ((BaseObject) group).getPrimaryKey());

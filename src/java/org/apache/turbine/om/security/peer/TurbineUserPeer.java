@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.apache.torque.Torque;
 import org.apache.torque.TorqueException;
 import org.apache.torque.map.TableMap;
 import org.apache.torque.om.NumberKey;
@@ -125,7 +126,7 @@ public class TurbineUserPeer extends BasePeer implements UserPeer
     {
         try
         {
-            MAP_BUILDER = (TurbineMapBuilder)/* Torque. */getMapBuilder(TurbineMapBuilder.class.getName());
+            MAP_BUILDER = (TurbineMapBuilder) Torque.getMapBuilder(TurbineMapBuilder.class.getName());
         }
         catch (TorqueException e)
         {

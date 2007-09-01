@@ -19,6 +19,7 @@ package org.apache.turbine.om.security.peer;
  * under the License.
  */
 
+import org.apache.torque.Torque;
 import org.apache.torque.TorqueException;
 import org.apache.torque.util.BasePeer;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
@@ -60,7 +61,7 @@ public class UserGroupRolePeer extends BasePeer
     {
         try
         {
-            MAP_BUILDER = (TurbineMapBuilder)/* Torque. */getMapBuilder(TurbineMapBuilder.class.getName());
+            MAP_BUILDER = (TurbineMapBuilder) Torque.getMapBuilder(TurbineMapBuilder.class.getName());
         }
         catch (TorqueException e)
         {
