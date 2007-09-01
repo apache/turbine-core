@@ -14,45 +14,45 @@
 -- KIND, either express or implied.  See the License for the
 -- specific language governing permissions and limitations
 -- under the License.
-alter table turbine_user_group_role drop constraint FK576574BAF73AEE0F;
-alter table turbine_user_group_role drop constraint FK576574BA1E2E76DB;
-alter table turbine_user_group_role drop constraint FK576574BA52119584;
-alter table turbine_role_permission drop constraint FK78A122C852119584;
-alter table turbine_role_permission drop constraint FK78A122C8AAA7A58B;
-drop table turbine_group if exists;
-drop table turbine_permission if exists;
-drop table turbine_role if exists;
-drop table turbine_user_group_role if exists;
-drop table turbine_role_permission if exists;
-drop table turbine_user if exists;
-drop table id_table if exists;
-create table turbine_group (
+alter table TURBINE_USER_GROUP_ROLE drop constraint FK576574BAF73AEE0F;
+alter table TURBINE_USER_GROUP_ROLE drop constraint FK576574BA1E2E76DB;
+alter table TURBINE_USER_GROUP_ROLE drop constraint FK576574BA52119584;
+alter table TURBINE_ROLE_PERMISSION drop constraint FK78A122C852119584;
+alter table TURBINE_ROLE_PERMISSION drop constraint FK78A122C8AAA7A58B;
+drop table TURBINE_GROUP if exists;
+drop table TURBINE_PERMISSION if exists;
+drop table TURBINE_ROLE if exists;
+drop table TURBINE_USER_GROUP_ROLE if exists;
+drop table TURBINE_ROLE_PERMISSION if exists;
+drop table TURBINE_USER if exists;
+drop table ID_TABLE if exists;
+create table TURBINE_GROUP (
    group_id BIGINT not null,
    group_name VARCHAR(64) not null,
    primary key (group_id)
 );
-create table turbine_permission (
+create table TURBINE_PERMISSION (
    permission_id BIGINT not null,
    permission_name VARCHAR(64) not null,
    primary key (permission_id)
 );
-create table turbine_role (
+create table TURBINE_ROLE (
    role_id BIGINT not null,
    role_name VARCHAR(64) not null,
    primary key (role_id)
 );
-create table turbine_user_group_role (
+create table TURBINE_USER_GROUP_ROLE (
    role_id BIGINT not null,
    user_id BIGINT not null,
    group_id BIGINT not null,
    primary key (role_id, user_id, group_id)
 );
-create table turbine_role_permission (
+create table TURBINE_ROLE_PERMISSION (
    role_id BIGINT not null,
    permission_id BIGINT not null,
    primary key (permission_id, role_id)
 );
-create table turbine_user (
+create table TURBINE_USER (
    user_id BIGINT not null,
    login_name VARCHAR(64) not null,
    password_value VARCHAR(64) not null,
@@ -66,15 +66,15 @@ create table turbine_user (
    objectdata VARBINARY(255),
    primary key (user_id)
 );
-alter table turbine_user_group_role add constraint FK576574BAF73AEE0F foreign key (user_id) references turbine_user;
-alter table turbine_user_group_role add constraint FK576574BA1E2E76DB foreign key (group_id) references turbine_group;
-alter table turbine_user_group_role add constraint FK576574BA52119584 foreign key (role_id) references turbine_role;
-alter table turbine_role_permission add constraint FK78A122C852119584 foreign key (role_id) references turbine_role;
-alter table turbine_role_permission add constraint FK78A122C8AAA7A58B foreign key (permission_id) references turbine_permission;
+alter table TURBINE_USER_GROUP_ROLE add constraint FK576574BAF73AEE0F foreign key (user_id) references turbine_user;
+alter table TURBINE_USER_GROUP_ROLE add constraint FK576574BA1E2E76DB foreign key (group_id) references turbine_group;
+alter table TURBINE_USER_GROUP_ROLE add constraint FK576574BA52119584 foreign key (role_id) references turbine_role;
+alter table TURBINE_ROLE_PERMISSION add constraint FK78A122C852119584 foreign key (role_id) references turbine_role;
+alter table TURBINE_ROLE_PERMISSION add constraint FK78A122C8AAA7A58B foreign key (permission_id) references turbine_permission;
 
 
 
-create table id_table (
+create table ID_TABLE (
    id integer not null,
    table_name varchar (255) not null,
    next_id integer not null,
