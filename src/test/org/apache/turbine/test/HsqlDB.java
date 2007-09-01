@@ -20,7 +20,6 @@ package org.apache.turbine.test;
  */
 
 import java.io.FileReader;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -29,7 +28,6 @@ import java.sql.Statement;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.hsqldb.jdbcDriver;
 
 public class HsqlDB
@@ -44,10 +42,10 @@ public class HsqlDB
 
         this.connection = DriverManager.getConnection(uri, "sa", "");
 
-            if (StringUtils.isNotEmpty(loadFile))
-            {
-                loadSqlFile(loadFile);
-            }
+        if (StringUtils.isNotEmpty(loadFile))
+        {
+            loadSqlFile(loadFile);
+        }
     }
 
     public Connection getConnection()
@@ -74,17 +72,30 @@ public class HsqlDB
         {
             statement = connection.createStatement();
             String commands = getFileContents(fileName);
-
+            
             for (int targetPos = commands.indexOf(';'); targetPos > -1; targetPos = commands.indexOf(';'))
             {
-                String cmd = commands.substring(0, targetPos + 1);
-                try
+                String cmd = commands.substring(0, targetPos + 1).trim();
+                
+                if (cmd.startsWith("--"))
                 {
-                    statement.execute(cmd);
+                    // comment
+                    int lineend = commands.indexOf('\n');
+                    if (lineend > -1)
+                    {
+                        targetPos = lineend - 1;
+                    }
                 }
-                catch (SQLException sqle)
+                else
                 {
-                    log.warn("Statement: " + cmd + ": " + sqle.getMessage());
+                    try
+                    {
+                        statement.execute(cmd);
+                    }
+                    catch (SQLException sqle)
+                    {
+                        log.warn("Statement: " + cmd + ": " + sqle.getMessage());
+                    }
                 }
 
                 commands = commands.substring(targetPos + 2);
