@@ -22,9 +22,9 @@ package org.apache.turbine.om.security.peer;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 
+import org.apache.torque.Torque;
 import org.apache.torque.TorqueException;
 import org.apache.torque.om.BaseObject;
 import org.apache.torque.om.NumberKey;
@@ -32,10 +32,9 @@ import org.apache.torque.util.BasePeer;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
-import org.apache.turbine.om.security.SecurityObject;
+import org.apache.turbine.om.security.TurbinePermission;
 import org.apache.turbine.om.security.TurbineRole;
 import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.PermissionSet;
@@ -80,7 +79,7 @@ public class PermissionPeer extends BasePeer
     {
         try
         {
-            MAP_BUILDER = (TurbineMapBuilder)/* Torque. */getMapBuilder(TurbineMapBuilder.class.getName());
+            MAP_BUILDER = (TurbineMapBuilder) Torque.getMapBuilder(TurbineMapBuilder.class.getName());
         }
         catch (TorqueException e)
         {
@@ -174,15 +173,20 @@ public class PermissionPeer extends BasePeer
             {
                 Permission obj = TurbineSecurity.getPermissionInstance(null);
                 Record row = (Record) rows.get(i);
-                ((SecurityObject) obj).setPrimaryKey(
+                ((TurbinePermission) obj).setPrimaryKey(
                         new NumberKey(row.getValue(1).asInt()));
-                ((SecurityObject) obj).setName(row.getValue(2).asString());
+                ((TurbinePermission) obj).setName(row.getValue(2).asString());
+                
+                // TODO: Clean up OBJECTDATA columns. They are no longer supported
+                /*
                 byte[] objectData = row.getValue(3).asBytes();
                 Map temp = (Map) ObjectUtils.deserialize(objectData);
                 if (temp != null)
                 {
-                    ((SecurityObject) obj).setAttributes(temp);
+                    ((TurbinePermission) obj).setAttributes(temp);
                 }
+                */
+                
                 results.add(obj);
             }
 
@@ -208,7 +212,7 @@ public class PermissionPeer extends BasePeer
             criteria.add(PERMISSION_ID,
                     ((BaseObject) permission).getPrimaryKey());
         }
-        criteria.add(NAME, ((SecurityObject) permission).getName());
+        criteria.add(NAME, ((TurbinePermission) permission).getName());
 
         /*
          * This is causing the the removal and updating of
@@ -257,12 +261,12 @@ public class PermissionPeer extends BasePeer
     {
         Criteria criteria = new Criteria();
         criteria.addSelectColumn(PERMISSION_ID);
-        criteria.add(NAME, ((SecurityObject) permission).getName());
+        criteria.add(NAME, ((TurbinePermission) permission).getName());
         List results = BasePeer.doSelect(criteria);
         if (results.size() > 1)
         {
             throw new DataBackendException("Multiple permissions named '"
-                    + ((SecurityObject) permission).getName() + "' exist!");
+                    + ((TurbinePermission) permission).getName() + "' exist!");
         }
         return (results.size() == 1);
     }

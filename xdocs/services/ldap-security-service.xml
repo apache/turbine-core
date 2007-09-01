@@ -66,13 +66,13 @@ Active Directory user. We use the latter for this example.
 services.SecurityService.user.class=org.apache.turbine.services.security.ldap.ActiveDirectoryUser
 
 # Class for Group.
-services.SecurityService.group.class=org.apache.turbine.om.security.TurbineGroup
+services.SecurityService.group.class=org.apache.turbine.services.security.torque.TorqueGroup
 
 # Class for Role.
-services.SecurityService.role.class=org.apache.turbine.om.security.TurbineRole
+services.SecurityService.role.class=org.apache.turbine.services.security.torque.TorqueRole
 
 # Class for Permission.
-services.SecurityService.permission.class=org.apache.turbine.om.security.TurbinePermission
+services.SecurityService.permission.class=org.apache.turbine.services.security.torque.TorquePermission
 ]]></source>
 
 <p>

@@ -19,9 +19,7 @@ package org.apache.turbine.om.security;
  * under the License.
  */
 
-import java.sql.Connection;
-import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.util.security.TurbineSecurityException;
+import org.apache.turbine.services.security.torque.TorquePermission;
 
 /**
  * This class represents the permissions that a Role has to access
@@ -38,79 +36,8 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  *
  * @version $Id$
  */
-public class TurbinePermission extends SecurityObject implements Permission
+public class TurbinePermission extends TorquePermission
 {
     /** Serial Version UID */
     private static final long serialVersionUID = -2193700445644560143L;
-
-    /**
-     * Constructs a new TurbinePermission.
-     */
-    public TurbinePermission()
-    {
-        super();
-    }
-
-    /**
-     * Constructs a new TurbinePermission with the sepcified name.
-     *
-     * @param name The name of the new object.
-     */
-    public TurbinePermission(String name)
-    {
-        super(name);
-    }
-
-    /**
-     * Makes changes made to the Permission attributes permanent.
-     *
-     * @throws TurbineSecurityException if there is a problem while saving data.
-     */
-    public void save() throws TurbineSecurityException
-    {
-        TurbineSecurity.savePermission(this);
-    }
-
-    /**
-     * not implemented
-     *
-     * @param conn
-     * @throws Exception
-     */
-    public void save(Connection conn) throws Exception
-    {
-        throw new Exception("not implemented");
-    }
-
-    /**
-     * not implemented
-     *
-     * @param dbname
-     * @throws Exception
-     */
-    public void save(String dbname) throws Exception
-    {
-        throw new Exception("not implemented");
-    }
-
-    /**
-     * Removes a permission from the system.
-     *
-     * @throws TurbineSecurityException if the Permission could not be removed.
-     */
-    public void remove() throws TurbineSecurityException
-    {
-        TurbineSecurity.removePermission(this);
-    }
-
-    /**
-     * Renames the permission.
-     *
-     * @param name The new Permission name.
-     * @throws TurbineSecurityException if the Permission could not be renamed.
-     */
-    public void rename(String name) throws TurbineSecurityException
-    {
-        TurbineSecurity.renamePermission(this, name);
-    }
 }

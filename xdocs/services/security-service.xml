@@ -25,6 +25,7 @@
   <title>Turbine Services - Security Service</title>
   <author email="jvanzyl@apache.org">Jason van Zyl</author>
   <author email="hps@intermeta.de">Henning P. Schmiedehausen</author>
+  <author email="tv@apache.org">Thomas Vandahl</author>
  </properties>
 
 <body>
@@ -72,9 +73,9 @@ example on how to attach Turbine to Active Directory.
 
 #
 # Here you specify, which Security Service is used. This example
-# uses the Database (DB) Security Service. There is no default.
+# uses the Torque Security Service. There is no default.
 
-services.SecurityService.classname=org.apache.turbine.services.security.db.DBSecurityService
+services.SecurityService.classname=org.apache.turbine.services.security.torque.TorqueSecurityService
 .
 .
 .
@@ -94,8 +95,8 @@ services.SecurityService.classname=org.apache.turbine.services.security.db.DBSec
 #
 # Adjust this setting if you change the Setting of the SecurityService class (see above).
 
-# Default: org.apache.turbine.services.security.db.DBUserManager
-services.SecurityService.user.manager = org.apache.turbine.services.security.db.DBUserManager
+# Default: org.apache.turbine.services.security.torque.TorqueUserManager
+services.SecurityService.user.manager = org.apache.turbine.services.security.torque.TorqueUserManager
 
 #
 # These are the default classes used by the Security Service to
@@ -107,17 +108,17 @@ services.SecurityService.user.manager = org.apache.turbine.services.security.db.
 # For LDAP use:
 # services.SecurityService.user.class=org.apache.turbine.services.security.ldap.LDAPUser
 # LDAP does not yet provide custom Group, User and Role objects so you
-# must use it with the default TurbineGroup, TurbineRole and
-# TurbinePermission objects.
+# must use it with the default TorqueGroup, TorqueRole and
+# TorquePermission objects.
 #
-# Class for User. Default: org.apache.turbine.om.security.TurbineUser
-services.SecurityService.user.class=org.apache.turbine.om.security.TurbineUser
-# Class for Group. Default: org.apache.turbine.om.security.TurbineGroup
-services.SecurityService.group.class=org.apache.turbine.om.security.TurbineGroup
-# Class for Role. Default: org.apache.turbine.om.security.TurbineRole
-services.SecurityService.role.class=org.apache.turbine.om.security.TurbineRole
-# Class for Permission. Default: org.apache.turbine.om.security.TurbinePermission
-services.SecurityService.permission.class=org.apache.turbine.om.security.TurbinePermission
+# Class for User. Default: org.apache.turbine.services.security.torque.TorqueUser
+services.SecurityService.user.class=org.apache.turbine.services.security.torque.TorqueUser
+# Class for Group. Default: org.apache.turbine.services.security.torque.TorqueGroup
+services.SecurityService.group.class=org.apache.turbine.services.security.torque.TorqueGroup
+# Class for Role. Default: org.apache.turbine.services.security.torque.TorqueRole
+services.SecurityService.role.class=org.apache.turbine.services.security.torque.TorqueRole
+# Class for Permission. Default: org.apache.turbine.services.security.torque.TorquePermission
+services.SecurityService.permission.class=org.apache.turbine.services.security.torque.TorquePermission
 
 #
 # This is the class that implements the ACL interface.
@@ -128,17 +129,6 @@ services.SecurityService.permission.class=org.apache.turbine.om.security.Turbine
 
 # Default: org.apache.turbine.util.security.TurbineAccessControlList
 services.SecurityService.acl.class = org.apache.turbine.util.security.TurbineAccessControlList
-
-#
-# This setting is DBSecurityService specific - this class is consulted for the names
-# of the columns in the users' tables for the purpose of creating join queries.
-# If you use your own User implementation in conjunction with DBSecurityService,
-# it's peer class must implement org.apache.turbine.om.security.peer.UserPeer interface,
-# and you need to specify the name of the peer class here.
-#
-# Default: org.apache.turbine.om.security.peer.TurbineUserPeer
-#
-services.SecurityService.userPeer.class=org.apache.turbine.om.security.peer.TurbineUserPeer
 
 #
 # This is used by the SecurityService to make the password checking
@@ -307,7 +297,7 @@ objects used to implement the User, Group, Role and Permission
 interfaces. These objects are typically service specific, so you
 should consult the documentation to the Security Service
 implementation, which objects should be used. The default are the
-object classes from the DB Security Service:
+object classes from the Torque Security Service:
 
 <table>
 <tr>
@@ -318,22 +308,22 @@ object classes from the DB Security Service:
 <tr>
 <td>User</td>
 <td>service.SecurityService.user.class</td>
-<td>org.apache.turbine.om.security.TurbineUser</td>
+<td>org.apache.turbine.services.security.torque.TorqueUser</td>
 </tr>
 <tr>
 <td>Group</td>
 <td>service.SecurityService.group.class</td>
-<td>org.apache.turbine.om.security.TurbineGroup</td>
+<td>org.apache.turbine.services.security.torque.TorqueGroup</td>
 </tr>
 <tr>
 <td>Role</td>
 <td>service.SecurityService.role.class</td>
-<td>org.apache.turbine.om.security.TurbineRole</td>
+<td>org.apache.turbine.services.security.torque.TorqueRole</td>
 </tr>
 <tr>
 <td>Permission</td>
 <td>service.SecurityService.permission.class</td>
-<td>org.apache.turbine.om.security.TurbinePermission</td>
+<td>org.apache.turbine.services.security.torque.TorquePermission</td>
 </tr>
 </table>
 </p>
@@ -341,20 +331,20 @@ object classes from the DB Security Service:
 
 <section name="Access Control List">
 <p>
-The Fulcrum security system is built on Access Control Lists
+The Turbine security system is built on Access Control Lists
 (ACL). There is a default implementation included with the security
 service. If, for any reason, you need a different ACL implementation,
 you can change it with the <i>services.SecurityService.acl.class</i>
-property in Fulcrum.properties. If you provide a different class here,
+property in TurbineResources.properties. If you provide a different class here,
 it must implement the
-<i>org.apache.fulcrum.security.util.AccessControlList</i> interface.
+<i>org.apache.turbine.util.security.AccessControlList</i> interface.
 </p>
 
 <p>
 Warning! In earlier versions of the Security Service,
-<i>org.apache.fulcrum.security.util.AccessControlList</i> was not an
+<i>org.apache.turbine.util.security.AccessControlList</i> was not an
 interface but a class and the implementation wasn't configurable. If
-you upgrade to this version of Fulcrum from an earlier version and get
+you upgrade to this version of Turbine from an earlier version and get
 "IncompatibleClassChange" exceptions regarding to the
 AccessControlList class, then you need to recompile your application
 (there is no need to <b>rewrite</b> it, but you must <b>recompile</b>

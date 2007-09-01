@@ -21,8 +21,8 @@ package org.apache.turbine.om.security.peer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import org.apache.torque.Torque;
 import org.apache.torque.TorqueException;
 import org.apache.torque.om.BaseObject;
 import org.apache.torque.om.NumberKey;
@@ -33,7 +33,6 @@ import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.TurbineRole;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.db.map.TurbineMapBuilder;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.RoleSet;
@@ -78,7 +77,7 @@ public class RolePeer extends BasePeer
     {
         try
         {
-            MAP_BUILDER = (TurbineMapBuilder)/* Torque. */getMapBuilder(TurbineMapBuilder.class.getName());
+            MAP_BUILDER = (TurbineMapBuilder) Torque.getMapBuilder(TurbineMapBuilder.class.getName());
         }
         catch (TorqueException e)
         {
@@ -175,12 +174,16 @@ public class RolePeer extends BasePeer
                 ((TurbineRole) obj).setPrimaryKey(
                         new NumberKey(row.getValue(1).asInt()));
                 ((TurbineRole) obj).setName(row.getValue(2).asString());
+                
+                // TODO: Clean up OBJECTDATA columns. They are no longer supported
+                /*
                 byte[] objectData = row.getValue(3).asBytes();
                 Map temp = (Map) ObjectUtils.deserialize(objectData);
                 if (temp != null)
                 {
                     ((TurbineRole) obj).setAttributes(temp);
                 }
+                */
                 results.add(obj);
             }
 
