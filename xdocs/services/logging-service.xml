@@ -35,8 +35,8 @@
 <p>
 Turbine's logging service is exceptionally powerful. And it was
 proprietary. So we ripped it out post Turbine 2.2 and replaced it with
-<a href="http://jakarta.apache.org/commons/logging">commons-logging</a>
- backed by <a href="http://jakarta.apache.org/log4j/">Log4j</a>. You
+<a href="http://commons.apache.org/logging">commons-logging</a>
+ backed by <a href="http://logging.apache.org/log4j/">Log4j</a>. You
 configure the new logging with a Log4j.properties file which can be
 configured with the log4j.file property in TurbineResource.properties:
 </p>

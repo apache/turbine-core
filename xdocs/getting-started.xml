@@ -43,7 +43,7 @@ is available.
 The first thing that you should do is download and install a Servlet Engine (e.g.
 <a href="http://tomcat.apache.org/">Apache Tomcat</a> and
 <a href="http://maven.apache.org/maven-1.x/">Maven 1</a>.  Then take a look at
-the documentation for the <a href="http://jakarta.apache.org/turbine/meta/">
+the documentation for the <a href="http://turbine.apache.org/meta/">
 Maven Environment for Turbine Application (M.E.T.A.)</a> plugin - it includes
 details of how to set up a Turbine application.
 </p>

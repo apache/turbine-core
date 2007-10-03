@@ -33,7 +33,7 @@
 The Yaafi Component service loads external modules which implement the
 <a href="http://avalon.apache.org/">Avalon</a> lifecycle interfaces.  This is
 a bridge between the Turbine 2.3 we have today and the
-<a href="http://jakarta.apache.org/turbine/fulcrum/">Fulcrum</a> components
+<a href="http://turbine.apache.org/fulcrum/">Fulcrum</a> components
 that until now have only been available to Turbine 2.4 (yet to be released).
 </p>
 
@@ -43,11 +43,11 @@ only being added in Turbine 2.3.3, so you should ensure that you perform your
 own testing to verify the desired behaviour of your application, though note
 that the author is successfully running <a href="http://db.apache.org/torque/">
 Torque</a>,
-<a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-quartz/index.html">
+<a href="http://turbine.apache.org/fulcrum/fulcrum-quartz/">
 Fulcrum Quartz</a> as well as making use for Yaafi's
-<a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/services/servicemanagerservice.html">
+<a href="http://turbine.apache.org/fulcrum/fulcrum-yaafi/services/servicemanagerservice.html">
 ServiceManager</a> and
-<a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/services/systempropertyservice.html">
+<a href="http://turbine.apache.org/fulcrum/fulcrum-yaafi/services/systempropertyservice.html">
 SystemProperty</a> services - all under Turbine 2.3.
 </p>
 
@@ -223,11 +223,11 @@ starts up (actual output will depend on your logging configuration):
 If you plan to use the decoupled Torque in your application, you should leave
 the Yaafi Component Service configured at all times. It is started at early
 startup time.  See the
-<a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/index.html">
+<a href="http://turbine.apache.org/fulcrum/fulcrum-yaafi/">
 Yaafi documentation</a> for more information and for details of the various
-<a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/services/index.html">
+<a href="http://turbine.apache.org/fulcrum/fulcrum-yaafi/services/">
 services</a> that it provides and the
-<a href="http://jakarta.apache.org/turbine/fulcrum/">Fulcrum site</a> for
+<a href="http://turbine.apache.org/fulcrum/">Fulcrum site</a> for
 details of the other components that are available.
 </p>
 </section>
