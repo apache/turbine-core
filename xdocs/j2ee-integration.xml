@@ -143,7 +143,7 @@ created one because at the time, we needed one and ours works just fine.
 Turbine provides excellent support for using JSP in its model of working
 - which is based on the Model 2 style with enhancements, such as solving
 the Action portion of the Model. However, we <a
-href="http://jakarta.apache.org/velocity/ymtd/ymtd.html">strongly
+href="http://wiki.apache.org/velocity/YouMakeTheDecision">strongly
 suggest</a> that you do not use JSP and seek out other alternatives.
 </p>
     </td>

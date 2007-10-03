@@ -138,7 +138,7 @@
 
   <p>
     Please refer to the main
-    <a href="http://jakarta.apache.org/turbine/download.html">Turbine Download
+    <a href="http://turbine.apache.org/download.html">Turbine Download
     page</a>.
   </p>
 
@@ -159,7 +159,7 @@ the current Turbine code.
 
 <ul>
     <li>
-        We have a <a href="http://jakarta.apache.org/site/mail.html">Turbine mailing
+        We have a <a href="http://turbine.apache.org/contact.html">Turbine mailing
         lists</a> for discussion.</li>
     <li>
         You can also access the <a href="cvs-usage.html">Turbine SVN

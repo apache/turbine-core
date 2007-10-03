@@ -69,7 +69,7 @@ occurring twice (this happens at the end of DST here below the equator).</strong
 
 <p>
 <strong>As of Turbine 2.3.3 the Scheduler Service is deprecated.  Please use the
-<a href="http://jakarta.apache.org/turbine/fulcrum/fulcrum-quartz/">Fulcrum
+<a href="http://turbine.apache.org/fulcrum/fulcrum-quartz/">Fulcrum
 Quartz</a> component instead.</strong>
 </p>
 

@@ -364,7 +364,7 @@ public <base class> copy() throws TorqueException
     documentation relevant to an existing project).
 </p>
 <p>
-    Better still, use <a href="http://jakarta.apache.org/turbine/meta/">META</a>.
+    Better still, use <a href="http://turbine.apache.org/meta/">META</a>.
 </p>
 </section>
 

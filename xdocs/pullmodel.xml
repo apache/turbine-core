@@ -38,7 +38,7 @@ $Date$
 <p>
 This document is to explain a different type of philosophy for working with
 Context based MVC tools like WebMacro (WM) and <a
-href="http://jakarta.apache.org/velocity/">Velocity</a> (V) than I think that
+href="http://velocity.apache.org/engine/">Velocity</a> (V) than I think that
 the Turbine community is used to. The requirement for this philosophy has come
 up recently during <a href="http://scarab.tigris.org/">Scarab</a>
 development and I would like to share and document it with you all. Many thanks
@@ -146,7 +146,7 @@ they have missed the boat on this in one way or another.
 
 <p>
 Comments are appreciated. Please post them to the Turbine
-<a href="http://jakarta.apache.org/site/mail.html">mailing list</a>.
+<a href="http://turbine.apache.org/contact.html">mailing list</a>.
 </p>
 
 </section>

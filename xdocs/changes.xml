@@ -309,7 +309,7 @@
         commons-logging explicitly.  If you relied on this behaviour,
         you must add a commons-logging.properties file to your
         application as described in the <a
-        href="http://jakarta.apache.org/commons/logging/apidocs/org/apache/commons/logging/package-summary.html">commons
+        href="http://commons.apache.org/logging/apidocs/org/apache/commons/logging/package-summary.html">commons
         logging documentation</a>
     </action>
     <action type="update">commons-configuration was upgraded to 1.0-rc1. All getVector() method calls on the
@@ -819,7 +819,7 @@
       <action type="update">
         The coupled version of Torque has been removed from Turbine 2.2!
 Get a full list of changes at the
-<a href="http://jakarta.apache.org/turbine/torque/changes">Torque-site</a>.
+<a href="http://db.apache.org/torque/changes-report.html">Torque-site</a>.
       </action>
 
       <action type="update">
