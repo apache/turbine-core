@@ -95,8 +95,6 @@
   </classpathentry>
   <classpathentry kind="var" path="MAVEN_REPO/commons-pool/jars/commons-pool-1.1.jar">
   </classpathentry>
-  <classpathentry kind="var" path="MAVEN_REPO/cryptix/jars/cryptix-3.2.0.jar">
-  </classpathentry>
   <classpathentry kind="var" path="MAVEN_REPO/dom4j/jars/dom4j-1.4.jar">
   </classpathentry>
   <classpathentry kind="var" path="MAVEN_REPO/ecs/jars/ecs-1.4.2.jar">

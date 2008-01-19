@@ -403,7 +403,7 @@
       <groupId>avalon-framework</groupId>
       <artifactId>avalon-framework-api</artifactId>
       <version>4.3</version>
-      <url>http://excalibur.apache.org/framework/index.html</url>
+      <url>http://excalibur.apache.org/framework/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>
@@ -413,7 +413,7 @@
       <groupId>avalon-framework</groupId>
       <artifactId>avalon-framework-impl</artifactId>
       <version>4.3</version>
-      <url>http://excalibur.apache.org/framework/index.html</url>
+      <url>http://excalibur.apache.org/framework/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>
@@ -478,8 +478,8 @@
     <dependency>
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-yaafi</artifactId>
-      <version>1.0.4</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi</url>
+      <version>1.0.5</version>
+      <url>http://turbine.apache.org/fulcrum/fulcrum-yaafi</url>
       <properties>
         <dist.bundle>true</dist.bundle>
       </properties>
@@ -506,7 +506,7 @@
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils-core</artifactId>
       <version>1.7.0</version>
-      <url>http://jakarta.apache.org/commons/beanutils.html</url>
+      <url>http://commons.apache.org/beanutils.html</url>
       <properties>
         <dist.bundle>true</dist.bundle>
       </properties>
@@ -515,7 +515,7 @@
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
       <version>1.3</version>
-      <url>http://jakarta.apache.org/commons/codec/</url>
+      <url>http://commons.apache.org/codec/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>
@@ -525,7 +525,7 @@
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
       <version>3.1</version>
-      <url>http://jakarta.apache.org/commons/collections/</url>
+      <url>http://commons.apache.org/collections/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>
@@ -535,7 +535,7 @@
       <groupId>commons-configuration</groupId>
       <artifactId>commons-configuration</artifactId>
       <version>1.3</version>
-      <url>http://jakarta.apache.org/commons/configuration/</url>
+      <url>http://commons.apache.org/configuration/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>
@@ -545,7 +545,7 @@
       <groupId>commons-digester</groupId>
       <artifactId>commons-digester</artifactId>
       <version>1.7</version>
-      <url>http://jakarta.apache.org/commons/digester/</url>
+      <url>http://commons.apache.org/digester/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>
@@ -555,7 +555,7 @@
       <groupId>commons-email</groupId>
       <artifactId>commons-email</artifactId>
       <version>1.0</version>
-      <url>http://jakarta.apache.org/commons/email/</url>
+      <url>http://commons.apache.org/email/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>
@@ -565,7 +565,7 @@
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
       <version>1.1</version>
-      <url>http://jakarta.apache.org/commons/fileupload/</url>
+      <url>http://commons.apache.org/fileupload/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>
@@ -575,7 +575,7 @@
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>1.3</version>
-      <url>http://jakarta.apache.org/commons/io/</url>
+      <url>http://commons.apache.org/io/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>
@@ -585,7 +585,7 @@
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
       <version>2.1</version>
-      <url>http://jakarta.apache.org/commons/lang/</url>
+      <url>http://commons.apache.org/lang/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>
@@ -595,7 +595,7 @@
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.0.4</version>
-      <url>http://jakarta.apache.org/commons/logging/</url>
+      <url>http://commons.apache.org/logging/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>
@@ -605,17 +605,7 @@
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>
       <version>1.3</version>
-      <url>http://jakarta.apache.org/commons/pool/</url>
-      <type>jar</type>
-      <properties>
-        <dist.bundle>true</dist.bundle>
-      </properties>
-    </dependency>
-    <dependency>
-      <groupId>cryptix</groupId>
-      <artifactId>cryptix</artifactId>
-      <version>3.2.0</version>
-      <url>http://www.cryptix.org/</url>
+      <url>http://commons.apache.org/pool/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>
@@ -647,7 +637,7 @@
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-cache</artifactId>
       <version>1.0.5</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-cache</url>
+      <url>http://turbine.apache.org/fulcrum/fulcrum-cache</url>
       <properties>
         <dist.bundle>true</dist.bundle>
       </properties>
@@ -655,8 +645,8 @@
     <dependency>
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-crypto</artifactId>
-      <version>1.0.5</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-crypto</url>
+      <version>1.0.6</version>
+      <url>http://turbine.apache.org/fulcrum/fulcrum-crypto</url>
       <properties>
         <dist.bundle>true</dist.bundle>
       </properties>
@@ -665,7 +655,7 @@
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-localization</artifactId>
       <version>1.0.6-dev</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-localization</url>
+      <url>http://turbine.apache.org/fulcrum/fulcrum-localization</url>
       <properties>
         <dist.bundle>true</dist.bundle>
       </properties>
@@ -674,7 +664,7 @@
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-intake</artifactId>
       <version>1.0.4-dev</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/intake</url>
+      <url>http://turbine.apache.org/fulcrum/intake</url>
       <properties>
         <dist.bundle>true</dist.bundle>
       </properties>
@@ -683,7 +673,7 @@
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-factory</artifactId>
       <version>1.0.3</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-factory</url>
+      <url>http://turbine.apache.org/fulcrum/fulcrum-factory</url>
       <properties>
         <dist.bundle>true</dist.bundle>
       </properties>
@@ -692,7 +682,7 @@
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-pool</artifactId>
       <version>1.0.3</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-pool</url>
+      <url>http://turbine.apache.org/fulcrum/fulcrum-pool</url>
       <properties>
         <dist.bundle>true</dist.bundle>
       </properties>
@@ -701,7 +691,7 @@
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-mimetype</artifactId>
       <version>1.0.4</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-mimetype</url>
+      <url>http://turbine.apache.org/fulcrum/fulcrum-mimetype</url>
       <properties>
         <dist.bundle>true</dist.bundle>
       </properties>
@@ -710,7 +700,7 @@
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-parser</artifactId>
       <version>1.0.2-dev</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-parser</url>
+      <url>http://turbine.apache.org/fulcrum/fulcrum-parser</url>
       <properties>
         <dist.bundle>true</dist.bundle>
       </properties>
@@ -719,7 +709,7 @@
       <groupId>fulcrum</groupId>
       <artifactId>fulcrum-upload</artifactId>
       <version>1.0.3</version>
-      <url>http://jakarta.apache.org/turbine/fulcrum/fulcrum-upload</url>
+      <url>http://turbine.apache.org/fulcrum/fulcrum-upload</url>
       <properties>
         <dist.bundle>true</dist.bundle>
       </properties>
