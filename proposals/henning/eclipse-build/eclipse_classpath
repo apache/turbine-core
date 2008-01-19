@@ -15,7 +15,6 @@
     <classpathentry kind="lib" path="target/lib/commons-lang-1.0.1.jar"/>
     <classpathentry kind="lib" path="target/lib/commons-logging-1.0.3.jar"/>
     <classpathentry kind="lib" path="target/lib/commons-pool-1.0.1.jar"/>
-    <classpathentry kind="lib" path="target/lib/cryptix-3.2.0.jar"/>
     <classpathentry kind="lib" path="target/lib/dom4j-1.4.jar"/>
     <classpathentry kind="lib" path="target/lib/ecs-1.4.2.jar"/>
     <classpathentry kind="lib" path="target/lib/excalibur-component-1.1.jar"/>

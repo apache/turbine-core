@@ -32,8 +32,7 @@
 
 <p>
 The Crypto Service allows an application to request various encryption
-algorithms provided by the normal Java crypto providers and 3rd party
-providers such as <a href="http://www.cryptix.org/">Cryptix</a>.
+algorithms.
 </p>
 
 </section>
@@ -155,8 +154,7 @@ actually encrypt something. Just request the "cleartext" algorithm.
 <b>UnixCrypt</b> (org.apache.turbine.services.crypto.provider.UnixCrypt). This is an
 implementation of the Unix crypt(3) algorithm. Its main use is when
 you need to access legacy information or databases which already
-contain crypted passwords. UnixCrypt needs the cryptix32.jar from <a
-href="http://www.cryptix.org/">Cryptix</a>.
+contain crypted passwords.
 </li>
 <li>
 <b>JavaCrypt</b> (org.apache.turbine.services.crypto.provider.JavaCrypt). This is a
@@ -176,5 +174,3 @@ APPLICATIONS!.
 </section>
 </body>
 </document>
-
-

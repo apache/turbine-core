@@ -529,16 +529,6 @@
       </properties>
     </dependency>
     <dependency>
-      <groupId>cryptix</groupId>
-      <artifactId>cryptix</artifactId>
-      <version>3.2.0</version>
-      <url>http://www.cryptix.org/</url>
-      <type>jar</type>
-      <properties>
-        <dist.bundle>true</dist.bundle>
-      </properties>
-    </dependency>
-    <dependency>
       <groupId>dom4j</groupId>
       <artifactId>dom4j</artifactId>
       <version>1.6.1</version>
