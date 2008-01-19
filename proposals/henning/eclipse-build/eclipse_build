@@ -190,7 +190,6 @@
     <get verbose="true" usetimestamp="true" src="http://www.ibiblio.org/maven/commons-lang/jars/commons-lang-1.0.1.jar" dest="${libdir}/commons-lang-1.0.1.jar"/>
     <get verbose="true" usetimestamp="true" src="http://www.ibiblio.org/maven/commons-logging/jars/commons-logging-1.0.3.jar" dest="${libdir}/commons-logging-1.0.3.jar"/>
     <get verbose="true" usetimestamp="true" src="http://www.ibiblio.org/maven/commons-pool/jars/commons-pool-1.0.1.jar" dest="${libdir}/commons-pool-1.0.1.jar"/>
-    <get verbose="true" usetimestamp="true" src="http://www.ibiblio.org/maven/cryptix/jars/cryptix-3.2.0.jar" dest="${libdir}/cryptix-3.2.0.jar"/>
     <get verbose="true" usetimestamp="true" src="http://www.ibiblio.org/maven/dom4j/jars/dom4j-1.4.jar" dest="${libdir}/dom4j-1.4.jar"/>
     <get verbose="true" usetimestamp="true" src="http://www.ibiblio.org/maven/ecs/jars/ecs-1.4.2.jar" dest="${libdir}/ecs-1.4.2.jar"/>
     <get verbose="true" usetimestamp="true" src="http://www.ibiblio.org/maven/excalibur-component/jars/excalibur-component-1.1.jar" dest="${libdir}/excalibur-component-1.1.jar"/>

@@ -21,6 +21,8 @@ package org.apache.turbine.services.crypto.provider;
 
 import org.apache.turbine.services.crypto.CryptoAlgorithm;
 
+import java.util.Random;
+
 /**
  * Implements Standard Unix crypt(3) for use with the Crypto Service.
  *
@@ -83,7 +85,7 @@ public class UnixCrypt
     {
         if (seed == null)
         {
-            java.util.Random randomGenerator = new java.util.Random();
+            Random randomGenerator = new java.util.Random();
             int numSaltChars = SALT_CHARS.length;
 
             seed = (new StringBuffer())
@@ -94,8 +96,7 @@ public class UnixCrypt
                     .toString();
         }
 
-        /* UnixCrypt seems to be a really widespread name... */
-        return new cryptix.tools.UnixCrypt(seed).crypt(value);
+        return org.apache.turbine.services.crypto.impl.UnixCrypt.crypt(seed, value);
     }
 
 }
