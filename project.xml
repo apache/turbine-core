@@ -47,8 +47,8 @@
   <issueTrackingUrl>http://issues.apache.org/jira/browse/TRB</issueTrackingUrl>
   <siteAddress>people.apache.org</siteAddress>
   <siteDirectory>/www/turbine.apache.org/turbine/development/turbine-2.3/</siteDirectory>
-  <distributionSite>cvs.apache.org</distributionSite>
-  <distributionDirectory>/www/cvs.apache.org/dist/jakarta/turbine/java-repository</distributionDirectory>
+  <distributionSite>www.apache.org</distributionSite>
+  <distributionDirectory>/www/www.apache.org/dist/java-repository/</distributionDirectory>
 
   <repository>
     <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/core/branches/TURBINE_2_3_BRANCH/</connection>
