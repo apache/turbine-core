@@ -1,19 +1,22 @@
 package org.apache.turbine.services;
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import java.util.Locale;
@@ -44,11 +47,11 @@ public class LoadingComponentsTest extends BaseTestCase
     {
         super(name);
     }
-    
+
     /**
      * Test to load a couple of Avalon services directly by the
      * AvalonComponentService.
-     * 
+     *
      * @throws Exception loading failed
      */
     public void testLoadingByAvalonComponentService() throws Exception
@@ -56,11 +59,11 @@ public class LoadingComponentsTest extends BaseTestCase
         AvalonComponentService avalonComponentService =
             (AvalonComponentService) TurbineServices.getInstance().getService(
                     AvalonComponentService.SERVICE_NAME);
-        
+
         assertNotNull(avalonComponentService);
-        
+
         DefaultGlobalCacheService dgcs = (DefaultGlobalCacheService)avalonComponentService.lookup(DefaultGlobalCacheService.ROLE);
-        assertNotNull(dgcs);        
+        assertNotNull(dgcs);
         CryptoService cs = (CryptoService)avalonComponentService.lookup(CryptoService.ROLE);
         assertNotNull(cs);
         LocalizationService ls = (LocalizationService)avalonComponentService.lookup(LocalizationService.ROLE);
@@ -77,7 +80,7 @@ public class LoadingComponentsTest extends BaseTestCase
      * Test to load a couple of Avalon services by using the
      * TurbineServices which delegate the service retrieval to
      * the AvalonComponentService
-     * 
+     *
      * @throws Exception loading failed
      */
     public void testLoadingByTurbineServices() throws Exception
@@ -85,7 +88,7 @@ public class LoadingComponentsTest extends BaseTestCase
         ServiceManager serviceManager = TurbineServices.getInstance();
 
         DefaultGlobalCacheService dgcs = (DefaultGlobalCacheService)serviceManager.getService(DefaultGlobalCacheService.ROLE);
-        assertNotNull(dgcs);        
+        assertNotNull(dgcs);
         CryptoService cs = (CryptoService)serviceManager.getService(CryptoService.ROLE);
         assertNotNull(cs);
         LocalizationService ls = (LocalizationService)serviceManager.getService(LocalizationService.ROLE);
@@ -105,7 +108,7 @@ public class LoadingComponentsTest extends BaseTestCase
     public void testLookupUnknownService() throws Exception
     {
         ServiceManager serviceManager = TurbineServices.getInstance();
-        
+
         try
         {
             serviceManager.getService("foo");
@@ -119,7 +122,7 @@ public class LoadingComponentsTest extends BaseTestCase
         catch (Throwable t)
         {
             fail("We expect an InstantiationException");
-        }                             
+        }
     }
 
     /**
@@ -132,15 +135,15 @@ public class LoadingComponentsTest extends BaseTestCase
     {
         ServiceManager serviceManager = TurbineServices.getInstance();
         serviceManager.shutdownService(AvalonComponentService.SERVICE_NAME);
-        
+
         MimeTypeService mimeTypeService = (MimeTypeService) serviceManager.getService(MimeTypeService.class.getName());
         assertNotNull(mimeTypeService);
-        
+
         Locale locale = new Locale("en", "US");
         String s = mimeTypeService.getCharSet(locale);
         assertEquals("ISO-8859-1", s);
     }
-    
+
     public void setUp() throws Exception
     {
         tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");

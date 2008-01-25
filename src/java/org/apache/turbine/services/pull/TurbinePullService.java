@@ -2,19 +2,22 @@ package org.apache.turbine.services.pull;
 
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
@@ -302,7 +305,7 @@ public class TurbinePullService
 
         // Create and populate the global context right now
 
-        // This is unholy, because it entwines the VelocityService and 
+        // This is unholy, because it entwines the VelocityService and
         // the Pull Service even further. However, there isn't much we can
         // do for the 2.3 release. Expect this to go post-2.3
         globalContext = velocity.getNewContext();
@@ -453,8 +456,8 @@ public class TurbinePullService
                 populateWithPermTools(persistentTools, context, pipelineData, user);
             }
         }
-    }    
-    
+    }
+
     /**
      * Populate the given context with the global tools
      *
@@ -516,7 +519,7 @@ public class TurbinePullService
         }
     }
 
-    
+
     /**
      * Populate the given context with the request-scope tools
      *
@@ -723,8 +726,8 @@ public class TurbinePullService
         }
     }
 
-    
-    
+
+
     /**
      * Populate the given context with the perm-scoped tools.
      *
@@ -891,8 +894,8 @@ public class TurbinePullService
         }
     }
 
-    
-    
+
+
     /**
      * Return the absolute path to the resources directory
      * used by the application tools.
@@ -1004,7 +1007,7 @@ public class TurbinePullService
                 RunData data = getRunData((PipelineData)param);
                 ((ApplicationTool) tool).init(data);
             }
-        } 
+        }
         else
         {
             if (tool instanceof PipelineDataApplicationTool)
@@ -1050,7 +1053,7 @@ public class TurbinePullService
             ((RunDataApplicationTool) tool).refresh(data);
         }
     }
-    
+
     private RunData getRunData(PipelineData pipelineData)
     {
         if(!(pipelineData instanceof RunData)){

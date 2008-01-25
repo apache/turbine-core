@@ -1,20 +1,22 @@
 package org.apache.turbine.services.avaloncomponent;
 
 /*
- * Copyright 2004 Apache Software Foundation
- * Licensed  under the  Apache License,  Version 2.0  (the "License");
- * you may not use  this file  except in  compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed  under the  License is distributed on an "AS IS" BASIS,
- * WITHOUT  WARRANTIES OR CONDITIONS  OF ANY KIND, either  express  or
- * implied.
- *
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import java.io.IOException;
@@ -61,7 +63,7 @@ public class TurbineYaafiComponentService
 
     /** YAFFI container */
     private ServiceContainer container;
-    
+
     // -------------------------------------------------------------
     // Service initialization
     // -------------------------------------------------------------
@@ -126,14 +128,14 @@ public class TurbineYaafiComponentService
 
         // create the configuration for YAAFI
 
-        ServiceContainerConfiguration config = 
+        ServiceContainerConfiguration config =
             this.createServiceContainerConfiguration(conf);
 
         config.setLogger( this.createAvalonLogger() );
         config.setApplicationRootDir( homePath );
 
         // initialize the container
-        
+
         try
         {
             this.container = ServiceContainerFactory.create(
@@ -145,7 +147,7 @@ public class TurbineYaafiComponentService
             String msg = "Initializing YAAFI failed";
             log.error(msg,e);
             throw e;
-        }                
+        }
     }
 
     /**
@@ -189,7 +191,7 @@ public class TurbineYaafiComponentService
     {
         return this.container.hasService(roleName);
     }
-    
+
     /**
      * Create a ServiceContainerConfiguration based on the Turbine configuration
      *
@@ -265,11 +267,11 @@ public class TurbineYaafiComponentService
         Logger result = new CommonsLogger(log, AVALON_LOG_CATEGORY);
         return result;
     }
-    
+
     // -------------------------------------------------------------
     // TurbineServiceProvider
     // -------------------------------------------------------------
-    
+
     /**
      * @see org.apache.turbine.services.TurbineServiceProvider#exists(java.lang.String)
      */
@@ -277,7 +279,7 @@ public class TurbineYaafiComponentService
     {
         return this.hasService(roleName);
     }
-    
+
     /**
      * @see org.apache.turbine.services.TurbineServiceProvider#get(java.lang.String)
      */
@@ -298,6 +300,6 @@ public class TurbineYaafiComponentService
             String msg = "Unable to get the following service : " + roleName;
             log.error(msg,t);
             throw new InstantiationException(msg,t);
-        }        
+        }
     }
 }

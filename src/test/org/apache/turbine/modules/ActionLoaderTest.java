@@ -1,19 +1,22 @@
 package org.apache.turbine.modules;
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
@@ -41,11 +44,11 @@ import org.apache.turbine.util.TurbineConfig;
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockServletConfig;
 /**
- * This test case is to verify whether exceptions in Velocity actions are 
+ * This test case is to verify whether exceptions in Velocity actions are
  * properly bubbled up when action.event.bubbleexception=true.  Or, if
  * action.event.bubbleexception=false, then the exceptions should be
  * logged and sunk.
- * 
+ *
  * @author     <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
@@ -104,9 +107,9 @@ public class ActionLoaderTest extends BaseTestCase {
 		super(arg0);
 	}
 	/**
-	 * This unit test verifies that if your standard doPerform is called, 
+	 * This unit test verifies that if your standard doPerform is called,
 	 * and it throws an Exception, the exception is bubbled up out of the ActionLoader...
-	 * 
+	 *
 	 * @throws Exception If something goes wrong with the unit test
 	 */
 	public void testDoPerformBubblesException() throws Exception {
@@ -122,7 +125,7 @@ public class ActionLoaderTest extends BaseTestCase {
 		} catch (Exception e) {
 			//good
 		}
-		
+
 		try {
 			ActionLoader.getInstance().exec(pipelineData, data.getAction());
 			fail("Should have thrown an exception");
@@ -133,7 +136,7 @@ public class ActionLoaderTest extends BaseTestCase {
 	/**
 	   * This unit test verifies that if an Action Event doEventSubmit_ is called, and it throws an Exception, the
 	   * exception is bubbled up out of the ActionLoader...
-	   * 
+	   *
 	   * @throws Exception If something goes wrong with the unit test
 	   */
 	public void testActionEventBubblesException() throws Exception {
@@ -163,10 +166,10 @@ public class ActionLoaderTest extends BaseTestCase {
 	}
 
 	/**
-	 * This unit test verifies that if your standard doPerform is called, 
+	 * This unit test verifies that if your standard doPerform is called,
 	 * and it throws an Exception, if the action.event.bubbleexception
      * property is set to false then the exception is NOT bubbled up
-	 * 
+	 *
 	 * @throws Exception If something goes wrong with the unit test
 	 */
 	public void testDoPerformDoesntBubbleException() throws Exception {
@@ -180,22 +183,22 @@ public class ActionLoaderTest extends BaseTestCase {
 		data.setAction("VelocityActionThrowsException");
 		try {
 			ActionLoader.getInstance().exec(data, data.getAction());
-		
+
 		} catch (Exception e) {
 			fail("Should NOT have thrown an exception:" + e.getMessage());
-		}	
+		}
 		try {
 			ActionLoader.getInstance().exec(pipelineData, data.getAction());
-		
+
 		} catch (Exception e) {
 			fail("Should NOT have thrown an exception:" + e.getMessage());
 		}
 	}
 	/**
-     * This unit test verifies that if an Action Event doEventSubmit_ is called, 
+     * This unit test verifies that if an Action Event doEventSubmit_ is called,
      * and it throws an Exception, if the action.event.bubbleexception
      * property is set to false then the exception is NOT bubbled up
-     * 
+     *
      * @throws Exception If something goes wrong with the unit test
      */
 	public void testActionEventDoesntBubbleException() throws Exception {
@@ -211,14 +214,14 @@ public class ActionLoaderTest extends BaseTestCase {
 		data.getParameters().add("eventSubmit_doCauseexception", "foo");
 		assertTrue(
 			data.getParameters().containsKey("eventSubmit_doCauseexception"));
-		
+
 		try {
-			ActionLoader.getInstance().exec(data, data.getAction());			
+			ActionLoader.getInstance().exec(data, data.getAction());
 		} catch (Exception e) {
 			fail("Should NOT have thrown an exception:" + e.getMessage());
 		}
 		try {
-			ActionLoader.getInstance().exec(pipelineData, data.getAction());			
+			ActionLoader.getInstance().exec(pipelineData, data.getAction());
 		} catch (Exception e) {
 			fail("Should NOT have thrown an exception:" + e.getMessage());
 		}
@@ -243,7 +246,7 @@ public class ActionLoaderTest extends BaseTestCase {
 			//good
 		}
 	}
-	
+
 	public void testDoPerformWithRunData() throws Exception
 	{
 	    RunData data = getRunData(request,response,config);
@@ -254,9 +257,9 @@ public class ActionLoaderTest extends BaseTestCase {
 		    e.printStackTrace();
 		    Assert.fail("Should not have thrown an exception.");
 		}
-	    
+
 	}
-	
+
 	public void testDoPerformWithPipelineData() throws Exception
 	{
 	    RunData data = getRunData(request,response,config);
@@ -274,7 +277,7 @@ public class ActionLoaderTest extends BaseTestCase {
 		assertEquals(numberOfCalls+1,VelocityActionDoesNothing.numberOfCalls);
 		assertEquals(runDataCalls,VelocityActionDoesNothing.runDataCalls);
 		assertEquals(pipelineDataCalls+1,VelocityActionDoesNothing.pipelineDataCalls);
-	    
+
 	}
 
 }

@@ -2,29 +2,32 @@ package org.apache.turbine.services.pull.tools;
 
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
 import org.apache.turbine.services.pull.ApplicationTool;
 
 /**
- * This is exactly the same thing as TemplateLink but it returns a 
+ * This is exactly the same thing as TemplateLink but it returns a
  * relative link on toString(). Everything else is identical. This class is
  * here for legacy purposes if you used the old org.apache.turbine.util.template.RelativeLink
- * class and have lots of templates which you don't want to rewrite. 
+ * class and have lots of templates which you don't want to rewrite.
  *
  * <p>
  * For new Code please use TemplateLink and get a relative Link with $link.RelativeLink and
@@ -56,9 +59,9 @@ public class RelativeTemplateLink
     {
         super();
     }
-    
+
     /**
-     * Returns the URI. After rendering the URI, it clears the 
+     * Returns the URI. After rendering the URI, it clears the
      * pathInfo and QueryString portions of the TemplateURI. Equivalent
      * to the getRelativeLink() method of this class.
      *

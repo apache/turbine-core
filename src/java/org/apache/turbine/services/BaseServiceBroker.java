@@ -1,19 +1,22 @@
 package org.apache.turbine.services;
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
@@ -38,7 +41,7 @@ import org.apache.commons.logging.LogFactory;
  * <li>Providing <code>Services</code> with a configuration based on
  * system wide configuration mechanism.</li>
  * </ul>
- * <li>Integration of TurbineServiceProviders for looking up 
+ * <li>Integration of TurbineServiceProviders for looking up
  * non-local services
  * </ul>
  *
@@ -107,7 +110,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * mapping from service names to instances of TurbineServiceProviders
      */
     private Hashtable serviceProviderInstanceMap = new Hashtable();
-    
+
     /**
      * Default constructor, protected as to only be useable by subclasses.
      *
@@ -393,13 +396,13 @@ public abstract class BaseServiceBroker implements ServiceBroker
             if (service != null && service.getInit())
             {
                 service.shutdown();
-                
+
                 if (service.getInit() && service instanceof BaseService)
                 {
                     // BaseService::shutdown() does this by default,
                     // but could've been overriden poorly.
                     ((BaseService) service).setInit(false);
-                }                
+                }
             }
         }
         catch (InstantiationException e)
@@ -454,7 +457,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
     public Object getService(String name) throws InstantiationException
     {
         Service service;
-        
+
         if (this.isLocalService(name))
         {
 	        try
@@ -525,7 +528,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
 
         if (service == null)
         {
-            
+
             String className=null;
             if (!this.isLocalService(name))
             {
@@ -543,14 +546,14 @@ public abstract class BaseServiceBroker implements ServiceBroker
                     try
                     {
                         service = (Service) Class.forName(className).newInstance();
-                        
-                        // check if the newly created service is also a 
-                        // service provider - if so then remember it                        
+
+                        // check if the newly created service is also a
+                        // service provider - if so then remember it
                         if (service instanceof TurbineServiceProvider)
                         {
                             this.serviceProviderInstanceMap.put(name,service);
                         }
-                        
+
                     }
                     // those two errors must be passed to the VM
                     catch (ThreadDeath t)
@@ -643,7 +646,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
 
     /**
      * Determines if the requested service is managed by this
-     * ServiceBroker. 
+     * ServiceBroker.
      *
      * @param name The name of the Service requested.
      * @return true if the service is managed by the this ServiceBroker
@@ -667,18 +670,18 @@ public abstract class BaseServiceBroker implements ServiceBroker
         String serviceName = null;
         TurbineServiceProvider turbineServiceProvider = null;
         Enumeration list = this.serviceProviderInstanceMap.keys();
-        
+
         while (list.hasMoreElements())
-        {            
+        {
             serviceName = (String) list.nextElement();
             turbineServiceProvider = (TurbineServiceProvider) this.getService(serviceName);
-            
+
             if (turbineServiceProvider.exists(name))
             {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -695,20 +698,20 @@ public abstract class BaseServiceBroker implements ServiceBroker
         String serviceName = null;
         TurbineServiceProvider turbineServiceProvider = null;
         Enumeration list = this.serviceProviderInstanceMap.keys();
-        
+
         while (list.hasMoreElements())
         {
             serviceName = (String) list.nextElement();
             turbineServiceProvider = (TurbineServiceProvider) this.getService(serviceName);
-            
+
             if (turbineServiceProvider.exists(name))
             {
                 return turbineServiceProvider.get(name);
             }
         }
-        
+
         throw new InstantiationException(
             "ServiceBroker: unknown non-local service " + name
             + " requested");
-    }    
+    }
 }

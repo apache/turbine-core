@@ -1,19 +1,22 @@
 package org.apache.turbine.util;
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 /**
@@ -187,7 +190,7 @@ public class BrowserDetector
             String agentSubstring = null;
             if (versionEndIndex < 0)
             {
-                agentSubstring 
+                agentSubstring
                         = userAgentString.substring(versionStartIndex + 1);
             }
             else
@@ -206,7 +209,7 @@ public class BrowserDetector
         if (userAgentString.indexOf(MSIE) != -1)
         {
             // Ex: Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)
-            versionStartIndex = (userAgentString.indexOf(MSIE) 
+            versionStartIndex = (userAgentString.indexOf(MSIE)
                     + MSIE.length() + 1);
             versionEndIndex = userAgentString.indexOf(";", versionStartIndex);
 
@@ -234,7 +237,7 @@ public class BrowserDetector
         {
             // Ex: Mozilla/4.0 (Windows NT 4.0;US) Opera 3.61  [en]
             // Ex: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; en) Opera 8.02
-            versionStartIndex = (userAgentString.indexOf(OPERA) 
+            versionStartIndex = (userAgentString.indexOf(OPERA)
                     + OPERA.length() + 1);
             versionEndIndex = userAgentString.indexOf(" ", versionStartIndex);
             if (versionEndIndex == -1)

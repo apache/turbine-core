@@ -2,19 +2,22 @@ package org.apache.turbine.modules.screens;
 
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
@@ -89,7 +92,7 @@ public class VelocityScreen
     {
     }
 
-    
+
     /**
      * Needs to be implemented to make TemplateScreen like us.  The
      * actual method that you should override is the one with the
@@ -119,8 +122,8 @@ public class VelocityScreen
         doBuildTemplate(pipelineData, TurbineVelocity.getContext(pipelineData));
     }
 
-    
-    
+
+
     /**
      * This builds the Velocity template.
      *
@@ -133,20 +136,20 @@ public class VelocityScreen
         throws Exception
     {
         String screenData = null;
-        
+
         Context context = TurbineVelocity.getContext(data);
 
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
         String templateName
             = TurbineTemplate.getScreenTemplateName(screenTemplate);
-        
+
         // The Template Service could not find the Screen
         if (StringUtils.isEmpty(templateName))
         {
             log.error("Screen " + screenTemplate + " not found!");
             throw new Exception("Could not find screen for " + screenTemplate);
         }
-        
+
         try
         {
             // if a layout has been defined return the results, otherwise
@@ -170,15 +173,15 @@ public class VelocityScreen
             // directory.
             context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
             context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
-            
+
             templateName = Turbine.getConfiguration()
                 .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
                            TurbineConstants.TEMPLATE_ERROR_VM);
-            
+
             screenData = TurbineVelocity.handleRequest(
                 context, prefix + templateName);
         }
-        
+
         // package the response in an ECS element
         StringElement output = new StringElement();
         output.setFilterState(false);
@@ -202,20 +205,20 @@ public class VelocityScreen
     {
         RunData data = (RunData) getRunData(pipelineData);
         String screenData = null;
-        
+
         Context context = TurbineVelocity.getContext(pipelineData);
 
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
         String templateName
             = TurbineTemplate.getScreenTemplateName(screenTemplate);
-        
+
         // The Template Service could not find the Screen
         if (StringUtils.isEmpty(templateName))
         {
             log.error("Screen " + screenTemplate + " not found!");
             throw new Exception("Could not find screen for " + screenTemplate);
         }
-        
+
         try
         {
             // if a layout has been defined return the results, otherwise
@@ -239,15 +242,15 @@ public class VelocityScreen
             // directory.
             context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
             context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
-            
+
             templateName = Turbine.getConfiguration()
                 .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
                            TurbineConstants.TEMPLATE_ERROR_VM);
-            
+
             screenData = TurbineVelocity.handleRequest(
                 context, prefix + templateName);
         }
-        
+
         // package the response in an ECS element
         StringElement output = new StringElement();
         output.setFilterState(false);
@@ -258,8 +261,8 @@ public class VelocityScreen
         }
         return output;
     }
-    
-    
+
+
     /**
      * Return the Context needed by Velocity.
      *
@@ -272,7 +275,7 @@ public class VelocityScreen
     {
         return TurbineVelocity.getContext(data);
     }
-    
+
     /**
      * Return the Context needed by Velocity.
      *

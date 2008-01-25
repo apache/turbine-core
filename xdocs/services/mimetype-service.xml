@@ -1,21 +1,22 @@
 <?xml version="1.0"?>
-<!-- 
-/*
- * Copyright 2001-2004 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- -->
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
 
 <document>
 
@@ -41,7 +42,7 @@ directory or the current class jar depending on the implementation.
 
 <source><![CDATA[
 # -------------------------------------------------------------------
-# 
+#
 #  S E R V I C E S
 #
 # -------------------------------------------------------------------
@@ -56,24 +57,24 @@ services.MimeTypeService.classname=org.apache.turbine.services.mimetype.TurbineM
 .
 .
 # -------------------------------------------------------------------
-# 
+#
 #  M I M E T Y P E  S E R V I C E
 #
 # -------------------------------------------------------------------
 
-# This property specifies a file containing mappings between MIME 
+# This property specifies a file containing mappings between MIME
 # content types and the corresponding file name extensions. The
-# service itself contains a hardcoded set of most common mappings. 
-# The file must use the same syntax as the mime.types file of 
-# the Apache Server, i.e. 
+# service itself contains a hardcoded set of most common mappings.
+# The file must use the same syntax as the mime.types file of
+# the Apache Server, i.e.
 # <mimetype> <ext1> <ext2>...
 #
 #services.MimeTypeService.mime.types=/WEB-INF/conf/mime.types
 
-# This property specifies a file containing mappings between locales 
-# and the corresponding character encodings. The service itself 
-# contains a hardcoded set of most common mappings. 
-# The file should use the Java property file syntax, i.e. 
+# This property specifies a file containing mappings between locales
+# and the corresponding character encodings. The service itself
+# contains a hardcoded set of most common mappings.
+# The file should use the Java property file syntax, i.e.
 # <lang_country_variant>=<charset>
 #
 #services.MimeTypeService.charsets=/WEB-INF/conf/charset.properties
@@ -92,7 +93,7 @@ applications can use it for customized encoding and content type resolving.
 
 <p>
 The mappings between locales and the corresponding character encodings
-are specified using the Java property file syntax, where the locale 
+are specified using the Java property file syntax, where the locale
 specification is the key of the property key and the charset is the value
 of the property. The locale specification consists of three parts:
 </p>
@@ -103,7 +104,7 @@ of the property. The locale specification consists of three parts:
 
 <p>
 The variant can be whatever is appropriate for the application, like a
-markup language specification, a browser specification, etc. The service 
+markup language specification, a browser specification, etc. The service
 looks for charsets using the following search order:
 </p>
 
@@ -120,14 +121,14 @@ _<country>=<charset>
 <p>
 The service contains defaults for several language mappings and more specific
 ones can be specified in an optional property file, e.g. __wml=UTF-8. The name
-of the property file can be given with a service property named "charsets". 
+of the property file can be given with a service property named "charsets".
 The service caches results of the search, which should guarantee good performance.
 </p>
 
 <p>
 The mappings between MIME types and the corresponding file name extensions
 are specified using the same syntax as the mime.types file of the Apache Server,
-i.e.: 
+i.e.:
 </p>
 
 <source><![CDATA[
@@ -135,14 +136,14 @@ i.e.:
 ]]></source>
 
 <p>
-The service contains defaults for most common MIME types, like text/plain, 
+The service contains defaults for most common MIME types, like text/plain,
 text/html, text/x-hdml, text/vnd.wap.wml, image/gif and image/jpeg. More
 specific ones can be specified in an optional MIME types file. The name of
 the MIME types file can be given with a service property named "mime.types".
 </p>
 
 <p>
-The TurbineMimeTypes class is a static accessor for the most common 
+The TurbineMimeTypes class is a static accessor for the most common
 MimeType Service methods.
 </p>
 

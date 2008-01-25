@@ -2,19 +2,22 @@ package org.apache.turbine.services.rundata;
 
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
@@ -89,7 +92,7 @@ public class TurbineRunDataService
      * Initializes the service by setting the pool capacity.
      *
      * @throws InitializationException if initialization fails.
-     * @throws ServiceException 
+     * @throws ServiceException
      */
     public void init()
             throws InitializationException
@@ -189,7 +192,7 @@ public class TurbineRunDataService
             throws TurbineException,
             IllegalArgumentException
     {
-        // a map to hold information to be added to pipelineData 
+        // a map to hold information to be added to pipelineData
         Map pipelineDataMap = new HashMap();
         // The RunData object caches all the information that is needed for
         // the execution lifetime of a single request. A RunData object
@@ -218,7 +221,7 @@ public class TurbineRunDataService
         		Class runDataClazz = Class.forName(cfg[0]);
         		Class parameterParserClazz = Class.forName(cfg[1]);
         		Class cookieParserClazz = Class.forName(cfg[2]);
-        		
+
             data = (TurbineRunData) pool.getInstance(runDataClazz);
             ParameterParser pp = (ParameterParser) pool.getInstance(parameterParserClazz);
             data.setParameterParser(pp);
@@ -247,7 +250,7 @@ public class TurbineRunDataService
         // also copy data directly into pipelineData
         pipelineDataMap.put(HttpServletRequest.class, req);
         pipelineDataMap.put(HttpServletResponse.class, res);
-        
+
         // Set the servlet configuration.
         data.setServletConfig(config);
         // also copy data directly into pipelineData

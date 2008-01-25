@@ -1,21 +1,22 @@
 <?xml version="1.0"?>
-<!-- 
-/*
- * Copyright 2001-2004 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- -->
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
 
 <document>
 
@@ -32,7 +33,7 @@ Intake uses an xml specification to perform web form input validation
 and mapping input data to a bean's properties.  In other words, Intake
 will allow a web application to take web form input, validate it and
 then map the data to an object. Tools like the <a
-href="http://db.apache.org/torque/">Torque</a> help provide mapping of 
+href="http://db.apache.org/torque/">Torque</a> help provide mapping of
 Objects to the database and Intake helps map web form data to Objects.
 </p>
 
@@ -74,7 +75,7 @@ the XML file can be shown to the user.
 
 <source><![CDATA[
 # -------------------------------------------------------------------
-# 
+#
 #  S E R V I C E S
 #
 # -------------------------------------------------------------------
@@ -88,7 +89,7 @@ services.IntakeService.classname= \
 org.apache.turbine.services.intake.TurbineIntakeService
 
 # -------------------------------------------------------------------
-# 
+#
 #  I N T A K E   S E R V I C E
 #
 # -------------------------------------------------------------------
@@ -110,8 +111,8 @@ the pull tool while processing request data and generating the response.
 
 <p>
 Intake is made available in the Velocity context with the default value
-of $intake. The name of the variable that is used is what is configured 
-for the tool. For example, the current configuration is "tool.request.intake". 
+of $intake. The name of the variable that is used is what is configured
+for the tool. For example, the current configuration is "tool.request.intake".
 To change the name of the variable to "foo", it would be "tool.request.foo".
 </p>
 
@@ -138,11 +139,11 @@ groups from Scarab's intake.xml:
 <source><![CDATA[
 <input-data basePackage="org.tigris.scarab.">
 
-<group name="AttributeValue" key="attv" 
+<group name="AttributeValue" key="attv"
             mapToObject="om.AttributeValue">
     <field name="Value" key="val" type="String">
         <rule name="maxLength" value="255">Value length cannot be &gt; 255</rule>
-        <required-message>This module requires data for this 
+        <required-message>This module requires data for this
                           attribute.
         </required-message>
     </field>
@@ -153,7 +154,7 @@ groups from Scarab's intake.xml:
     </field>
     <field name="OptionId" key="optionid" type="NumberKey">
         <rule name="mask" value="^$|[0-9]+">Please select a valid choice</rule>
-        <required-message>This module requires that you select an option 
+        <required-message>This module requires that you select an option
                           for this attribute.
         </required-message>
     </field>
@@ -163,7 +164,7 @@ groups from Scarab's intake.xml:
     <field name="Username" key="u" type="String">
         <rule name="minLength" value="1">Please enter an email address</rule>
         <rule name="mask" value=".+@.+\..+">Please enter a valid email address</rule>
-    </field> 
+    </field>
     <field name="Password" key="p" type="String">
         <rule name="minLength" value="1">Please enter a password</rule>
     </field>
@@ -183,9 +184,9 @@ SQL schema.
 
 <p>
 The group tag has a class attribute which is the name that will be used
-within templates and java code to refer to the group.  It also contains a 
+within templates and java code to refer to the group.  It also contains a
 key attribute which will be used in the query parameters.  The key is
-not referenced in any code, so it can be a short name (even 1 character) as 
+not referenced in any code, so it can be a short name (even 1 character) as
 long as it is uniquely identifies the group from the rest.
 </p>
 <p>
@@ -200,7 +201,7 @@ that can be used to associate a business object to the field for prepopulating
 the field as well as assigning the field data to the bean after successful
 validation.  The field must have a type, which can be simple types such as
 String and Integer.  It is planned that more complex types, such as
-Email, Url, or Date, will be added that will add functionality that is 
+Email, Url, or Date, will be added that will add functionality that is
 difficult or not possible with a simple regex mask.
 </p>
 <p>
@@ -229,7 +230,7 @@ lets look at the fields in the group.
 <field name="Username" key="u" type="String">
     <rule name="minLength" value="1">Please enter an email address</rule>
     <rule name="mask" value=".+@.+\..+">Please enter a valid email address</rule>
-</field> 
+</field>
 <field name="Password" key="p" type="String">
     <rule name="minLength" value="1">Please enter a password</rule>
 </field>
@@ -257,10 +258,10 @@ within a Velocity template:
 (1) <form action="$link.setPage("Login.vm")" method="POST" name="login" >
 (2)    <input type="hidden" name="action" value="Login">
 (3)    #if ($data.Parameters.nextTemplate)
-(4)    <input type="hidden" name="nextTemplate" 
+(4)    <input type="hidden" name="nextTemplate"
               value="$data.Parameters.nextTemplate">
        #else
-(5)    <input type="hidden" name="nextTemplate" value="Start.vm">    
+(5)    <input type="hidden" name="nextTemplate" value="Start.vm">
        #end
 
 <p>
@@ -282,7 +283,7 @@ Password:
 (11)        $loginGroup.Password.Message<br>
         #end
 (12)   <input name= "$loginGroup.Password.Key"
-              value="" size="25" type="text" 
+              value="" size="25" type="text"
               onChange="document.login.submit();">
 </p>
 
@@ -364,19 +365,19 @@ top. Each of the important lines have been numbered for easy reference.
 </p>
 
 <p>
-Below is an example of the HTML that is sent to the browser after the 
+Below is an example of the HTML that is sent to the browser after the
 page has been requested:
 </p>
 
 <source><![CDATA[
-<form action="http://foo:8080/scarab/servlet/scarab/template/Login.vm" 
+<form action="http://foo:8080/scarab/servlet/scarab/template/Login.vm"
       method="POST" name="login" >
     <input type="hidden" name="action" value="Login">
-        <input type="hidden" name="nextTemplate" value="Start.vm">    
-    
+        <input type="hidden" name="nextTemplate" value="Start.vm">
+
 <p>
 Email Address:
-    
+
        <input name= "login_0u"
         value="" size="25" type="text">
 </p>
@@ -423,18 +424,18 @@ public void doLogin( RunData data, Context context ) throws Exception
 {
     IntakeTool intake = (IntakeTool) context.get("intake");
 
-    if ( intake.isAllValid() &amp;&amp; checkUser(data, context) ) 
+    if ( intake.isAllValid() &amp;&amp; checkUser(data, context) )
     {
         String template = data.getParameters()
-            .getString(ScarabConstants.NEXT_TEMPLATE, 
+            .getString(ScarabConstants.NEXT_TEMPLATE,
             TurbineResources.getString("template.homepage", "Start.vm") );
         setTemplate(data, template);
     }
-    else 
+    else
     {
         // Retrieve an anonymous user
         data.setUser (TurbineSecurity.getAnonymousUser());
-        setTemplate(data, 
+        setTemplate(data,
             data.getParameters()
                 .getString(ScarabConstants.TEMPLATE, "Login.vm"));
     }
@@ -489,7 +490,7 @@ the matching beans.
 <section name="Attribute Value example">
 
 <source><![CDATA[
-<group name="AttributeValue" key="attv" 
+<group name="AttributeValue" key="attv"
             mapToObject="om.AttributeValue">
 ]]></source>
 
@@ -508,7 +509,7 @@ populated object. This will be covered in detail further on.
 <source><![CDATA[
 <field name="Value" key="val" type="String">
     <rule name="maxLength" value="255">Value length cannot be &gt; 255</rule>
-    <required-message>This module requires data for this 
+    <required-message>This module requires data for this
                       attribute.
     </required-message>
 </field>
@@ -532,7 +533,7 @@ text entry box that allows you to edit a Url. The filename is:
 #set ( $action = $link.setPage("EditUrl.vm").setAction("SaveUrl") )
 <form action="$action"
       method="post">
- 
+
 #set ( $attributeValue = $issue.AttributeValue("URL") )
 #set ( $group = $intake.AttributeValue.mapTo($attributeValue) )
 
@@ -565,8 +566,8 @@ which has a name and value attributes. The $group.Url.Key tells Intake
 to retrieve the key information for the field. This would evaluate to
 "attv_0url". What this is a combination of the group key (attv), a "_0"
 is the result of retrieving the "$intake.AttributeValue.Default" and the
-"url" is the field key. The value attribute would evaluate to just an 
-empty String the first time around. The $intake.declareGroups() is a 
+"url" is the field key. The value attribute would evaluate to just an
+empty String the first time around. The $intake.declareGroups() is a
 special method that will create a hidden input field that declares which
 groups have been added to the page. We will discuss that in more detail
 further down.
@@ -578,7 +579,7 @@ what the form above would look like:
 </p>
 
 <source><![CDATA[
-<form action="http://server/s/servlet/s/template/EnterUrl.vm/action/EnterUrlAction" 
+<form action="http://server/s/servlet/s/template/EnterUrl.vm/action/EnterUrlAction"
       method="post">
 
 Enter Url:
@@ -601,9 +602,9 @@ public void doEnter( RunData data, Context context ) throws Exception
 {
     IntakeTool intake = (IntakeTool)context
         .get(ScarabConstants.INTAKE_TOOL);
-    
+
     // check to see if the fields are valid
-    if ( intake.isAllValid() ) 
+    if ( intake.isAllValid() )
     {
         // get the "AttributeValue" Group
         AttributeValue av = new AttributeValue();
@@ -627,7 +628,7 @@ Back to explaining the fields, lets look at the example again:
 <source><![CDATA[
     <field name="Value" key="val" type="String">
         <rule name="maxLength" value="255">Value length cannot be &gt; 255</rule>
-        <required-message>This module requires data for this 
+        <required-message>This module requires data for this
                           attribute.
         </required-message>
     </field>
@@ -641,12 +642,12 @@ Back to explaining the fields, lets look at the example again:
   </section>
 
   <section name="Multiple groups of the same class in one form">
-  
+
 <p>
 This example uses a form from Scarab that assigns values to various
 attribute's that are relevant for an issue (bug).  Attributes include
-summary, operating system, platform, assigned to, etc.  Some of the 
-attributes are required, but not all.  
+summary, operating system, platform, assigned to, etc.  Some of the
+attributes are required, but not all.
 </p>
 
 <p>
@@ -666,14 +667,14 @@ The template:
 <hr><br>Please fill in the following:<br><br>
 
 #foreach ( $attVal in $issue.OrderedModuleAttributeValues )
-  #set ( $attrInput = $intake.AttributeValue.mapTo($attVal) ) 
+  #set ( $attrInput = $intake.AttributeValue.mapTo($attVal) )
 
   #if ( $attVal.Attribute.AttributeType.ValidationKey )
         #set ( $field = $attVal.Attribute.AttributeType.ValidationKey )
   #elseif ($attVal.Attribute.AttributeType.Name == "combo-box" )
         #set ( $field = "OptionId" )
   #else
-        #set ( $field = "Value" )  
+        #set ( $field = "Value" )
   #end
 
     #if ( $attVal.isRequired() )
@@ -695,9 +696,9 @@ The template:
             #attrValueErrorMsg ( $attVal $field )
           </font>
           <br>
-        #if ($attVal.Attribute.AttributeType.Name == "long-string" )        
+        #if ($attVal.Attribute.AttributeType.Name == "long-string" )
 
-            <textarea name= "$attrInput.Value.Key" cols="40" 
+            <textarea name= "$attrInput.Value.Key" cols="40"
                rows="5">$!attrInput.Value</textarea>
         #else
 
@@ -710,7 +711,7 @@ The template:
 #end
 
 <p>
-            <input type="submit" 
+            <input type="submit"
                 name="eventSubmit_doEnterissue" value="Submit Issue">
 
 $intake.declareGroups()
@@ -721,7 +722,7 @@ $intake.declareGroups()
 The main new thing added here is that the $intake group is mapped to a business
 object.  A business object that is to be used in this way is expected to
 implement the Retrievable interface, which provides a method to get a
-String key which uniquely identifies the object.  
+String key which uniquely identifies the object.
 </p>
 <p>
 The action:
@@ -744,28 +745,28 @@ public void doEnterissue( RunData data, Context context )
     summary.setRequired(true);
     issue.setVocabulary(new Vocabulary(summary.toString()));
 
-    if ( intake.isAllValid() ) 
+    if ( intake.isAllValid() )
     {
         Iterator i = issue.getModuleAttributeValuesMap()
             .values().iterator();
-        while (i.hasNext()) 
+        while (i.hasNext())
         {
             aval = (AttributeValue)i.next();
             group = intake.get("AttributeValue", aval.getQueryKey());
-            if ( group != null ) 
+            if ( group != null )
             {
                 group.setProperties(aval);
-            }                
+            }
         }
-        
-        if ( issue.containsMinimumAttributeValues() ) 
+
+        if ( issue.containsMinimumAttributeValues() )
         {
             issue.save();
 
             String template = data.getParameters()
-                .getString(ScarabConstants.NEXT_TEMPLATE, 
+                .getString(ScarabConstants.NEXT_TEMPLATE,
                            "entry,Wizard3.vm");
-            setTemplate(data, template);            
+            setTemplate(data, template);
         }
     }
 }
@@ -781,43 +782,43 @@ to an associated bean.
 
 <source><![CDATA[
 Dan Diephouse wrote:
-> 
+>
 > I want to validate a form that updates my business object properties
 > with intake.  I got the latest cvs of turbine-2 repository and built a
 > new distribution of the turbine jar.  I can easily use intake to add
 > validate items I add to my databse, but I'm running in to a snag when
 > trying to modify them.  I've defined by business object in the intake
 > validation file.  I use the following code to update my item:
-> 
+>
 >          IntakeTool intake = (IntakeTool) context.get("intake");
-> 
+>
 >          ParameterParser pp = data.getParameters();
-> 
+>
 >          if ( intake.isAllValid() ) {
 >              Job j = new Job();
 >              j.setNew(false);
 >              group.setProperties(j);
-> 
+>
 >              JobPeer.doUpdate(j);
-> 
+>
 > Error-->    data.getParameters().add("jobid", j.getJobId().toString());
 >              data.setMessage("Job updated.");
 >          } else {
 >              data.setMessage("There was an error updating the job.
 > Check below for further information.");
 >          }
-> 
+>
 > It runs OK, until I try and retrieve the JobId.  I get a Null Pointer
 > exception.  Is there something I'm doing wrong here?  Or is this a bug?
 >   Do I need to specify that this is not a new object to intake?  I would
 > include my template, but there are lots of fields so its really long.
 > But here's a little summary with most fields gone:
-> 
+>
 > #set ( $job = $basecamp.getJob() )   - This gets a job from a pull tool
 > #set ( $jobGroup = $intake.Job.mapTo($job) )
-> <input type=hidden name="$jobGroup.JobId.Key" 
+> <input type=hidden name="$jobGroup.JobId.Key"
 > value="$jobGroup.JobId.Value">
-> 
+>
 > #if ( !$jobGroup.Title.isValid() )
 > $jobGroup.Title.Message<br>
 > #end
@@ -828,9 +829,9 @@ Dan Diephouse wrote:
 > .
 > .
 > $intake.declareGroups()
-> 
+>
 > Thanks,
-> 
+>
 > Dan Diephouse
 
 This is not how i usually do things, but I guess it could work.  One
@@ -842,7 +843,7 @@ parameters look like.
 
 Here is what I consider a normal course of events:
 
-1.  In the template:  
+1.  In the template:
 
 $job = $foo.Job
 #set ( $jobGroup = $intake.Job.mapTo($job) )

@@ -2,19 +2,22 @@ package org.apache.turbine.util.velocity;
 
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
@@ -57,7 +60,7 @@ public abstract class VelocityActionEvent extends ActionEvent
             = new Class [] { RunData.class, Context.class };
 
     /** Indicates whether or not this module has been initialized. */
-    protected boolean initialized = false; 
+    protected boolean initialized = false;
 
     /**
      * You need to implement this in your classes that extend this
@@ -80,11 +83,11 @@ public abstract class VelocityActionEvent extends ActionEvent
 			throws Exception
 	{
 	      RunData data = (RunData) getRunData(pipelineData);
-	      doPerform(data);	    
+	      doPerform(data);
 	}
     /**
      * Provides a means of initializing the module.
-     * 
+     *
      * @throws Exception a generic exception.
      */
     protected abstract void initialize()
@@ -198,7 +201,7 @@ public abstract class VelocityActionEvent extends ActionEvent
             // Attempt to execute things the old way..
             if (log.isDebugEnabled())
             {
-                log.debug("Couldn't locate the Event ( " + theButton 
+                log.debug("Couldn't locate the Event ( " + theButton
                         + "), running executeEvents() in "
                         + super.getClass().getName());
             }
@@ -216,7 +219,7 @@ public abstract class VelocityActionEvent extends ActionEvent
             pp.remove(key);
         }
     }
-    
+
     /**
      * This method should be called to execute the event based system.
      *
@@ -275,7 +278,7 @@ public abstract class VelocityActionEvent extends ActionEvent
             // Attempt to execute things the old way..
             if (log.isDebugEnabled())
             {
-                log.debug("Couldn't locate the Event ( " + theButton 
+                log.debug("Couldn't locate the Event ( " + theButton
                         + "), running executeEvents() in "
                         + super.getClass().getName());
             }

@@ -1,22 +1,23 @@
 package org.apache.turbine.modules;
 
-
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
-
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -96,10 +97,10 @@ public abstract class ActionEvent extends Action
 	 */
 	public abstract void doPerform(RunData data)
 			throws Exception;
-	
+
 	/**
 	 * You need to implement this in your classes that extend this class.
-	 * This should revert to being abstract when RunData has gone. 
+	 * This should revert to being abstract when RunData has gone.
 	 * @param data Turbine information.
 	 * @exception Exception a generic exception.
 	 */
@@ -107,9 +108,9 @@ public abstract class ActionEvent extends Action
 			throws Exception
 	{
 	      RunData data = (RunData) getRunData(pipelineData);
-	      doPerform(data);	    
+	      doPerform(data);
 	}
-	
+
 
 	/** The name of the button to look for. */
 	protected static final String BUTTON = "eventSubmit_";
@@ -122,42 +123,42 @@ public abstract class ActionEvent extends Action
 	/** The length of the button to look for. */
 	protected static final int LENGTH = BUTTON.length();
 
-	/** 
+	/**
 	 * If true, the eventSubmit_do<xxx> variable must contain
 	 * a not null value to be executed.
 	 */
 	private boolean submitValueKey = false;
 
-	/** 
-	 * If true, then exceptions raised in eventSubmit_do<xxx> methods 
+	/**
+	 * If true, then exceptions raised in eventSubmit_do<xxx> methods
 	 * as well as in doPerform methods are bubbled up to the Turbine
 	 * servlet's handleException method.
 	 */
-	protected boolean bubbleUpException = true;    
+	protected boolean bubbleUpException = true;
 	/**
 	 * C'tor
 	 */
 	public ActionEvent()
 	{
 		super();
-        
+
 		submitValueKey = Turbine.getConfiguration()
 				.getBoolean(TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_KEY,
 						TurbineConstants.ACTION_EVENTSUBMIT_NEEDSVALUE_DEFAULT);
 		bubbleUpException = Turbine.getConfiguration()
 				.getBoolean(TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP,
-						TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP_DEFAULT);                        
+						TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP_DEFAULT);
 
 		if (log.isDebugEnabled()){
-		log.debug(submitValueKey 
+		log.debug(submitValueKey
 				? "ActionEvent accepts only eventSubmit_do Keys with a value != 0"
 				: "ActionEvent accepts all eventSubmit_do Keys");
-		log.debug(bubbleUpException 
+		log.debug(bubbleUpException
 				  ? "ActionEvent will bubble exceptions up to Turbine.handleException() method"
-				  : "ActionEvent will not bubble exceptions up.");                
+				  : "ActionEvent will not bubble exceptions up.");
 		}
 	}
-    
+
 	/**
 	 * This overrides the default Action.perform() to execute the
 	 * doEvent() method. If that fails, then it will execute the
@@ -200,7 +201,7 @@ public abstract class ActionEvent extends Action
 		}
 	}
 
-	
+
 	/**
 	 * This method should be called to execute the event based system.
 	 *
@@ -272,9 +273,9 @@ public abstract class ActionEvent extends Action
 	public void executeEvents(PipelineData pipelineData)
 			throws Exception
 	{
-	    
+
 	    RunData data = (RunData) getRunData(pipelineData);
-	    
+
 		// Name of the button.
 		String theButton = null;
 		// Parameter parser.
@@ -327,8 +328,8 @@ public abstract class ActionEvent extends Action
 		}
 	}
 
-	
-	
+
+
 	/**
 	 * This method does the conversion of the lowercase method name
 	 * into the proper case.
@@ -339,17 +340,17 @@ public abstract class ActionEvent extends Action
 	protected final String formatString(String input)
 	{
 		String tmp = input;
-        
+
 		if (StringUtils.isNotEmpty(input))
 		{
 			tmp = input.toLowerCase();
-            
+
 			// Chop off suffixes (for image type)
 			input = (tmp.endsWith(".x") || tmp.endsWith(".y"))
 					? input.substring(0, input.length() - 2)
 					: input;
-            
-			if (ParserUtils.getUrlFolding() 
+
+			if (ParserUtils.getUrlFolding()
 					!= ParserUtils.URL_CASE_FOLDING_NONE)
 			{
 				tmp = input.toLowerCase().substring(BUTTON_LENGTH + METHOD_NAME_LENGTH);
@@ -380,10 +381,10 @@ public abstract class ActionEvent extends Action
 		}
 		else
 		{
-			// If the action.eventsubmit.needsvalue key is true, 
+			// If the action.eventsubmit.needsvalue key is true,
 			// events with a "0" or empty value are ignored.
 			// This can be used if you have multiple eventSubmit_do<xxx>
-			// fields in your form which are selected by client side code, 
+			// fields in your form which are selected by client side code,
 			// e.g. JavaScript.
 			//
 			// If this key is unset or missing, nothing changes for the

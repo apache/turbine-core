@@ -2,19 +2,22 @@ package org.apache.turbine.pipeline;
 
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
@@ -74,21 +77,21 @@ public class DefaultLoginValveTest extends BaseTestCase
         request.setupGetContentType("html/text");
         request.setupAddHeader("Content-type", "html/text");
         request.setupAddHeader("Accept-Language", "en-US");
-        
-       
-        
-       
-        
-        
+
+
+
+
+
+
         session = new EnhancedMockHttpSession();
         response = new MockHttpServletResponse();
-        
+
         session.setupGetAttribute(User.SESSION_KEY, null);
-       
+
         request.setSession(session);
-        
-        
-        
+
+
+
         sc = config;
         tc =
             new TurbineConfig(
@@ -96,24 +99,24 @@ public class DefaultLoginValveTest extends BaseTestCase
             "/conf/test/CompleteTurbineResources.properties");
         tc.initialize();
     }
-    
+
     /**
      * Tests the Valve.
      */
     public void testDefaults() throws Exception
     {
-        
+
         Vector v = new Vector();
         v.add(LoginUser.CGI_USERNAME);
         v.add(LoginUser.CGI_PASSWORD);
         request.setupGetParameterNames(v.elements());
-        
+
         request.setupAddParameter(LoginUser.CGI_USERNAME,"username");
         request.setupAddParameter(LoginUser.CGI_PASSWORD,"password");
-        
+
         RunData runData = getRunData(request,response,config);
         runData.setAction(TurbineConstants.ACTION_LOGIN_DEFAULT);
-        
+
         Pipeline pipeline = new TurbinePipeline();
         PipelineData pipelineData = runData;
 
@@ -127,9 +130,9 @@ public class DefaultLoginValveTest extends BaseTestCase
         assertTrue(user.hasLoggedIn());
 
     }
-    
-   
-  
-    
-   
+
+
+
+
+
 }

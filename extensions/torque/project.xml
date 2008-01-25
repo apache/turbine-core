@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- 
-/*
- * Copyright 2001-2004 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- -->
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
 
 <project>
   <extend>${basedir}/../../project.xml</extend>
@@ -23,17 +24,17 @@
   <name>Turbine Torque Impl</name>
   <id>turbine-torque-impl</id>
   <currentVersion>2.4-dev</currentVersion>
-  
+
   <package>org.apache.turbine</package>
 
- 
+
   <shortDescription>Torque Generated Code for Turbine</shortDescription>
   <description>
   	Torque provides autogeneration of objects and sql based on an xml schema document.   This
     project contains the generated code required by Turbine for Torque implementations of the
     Schedule service and the Security Service.
   </description>
-  
+
 
   <repository>
     <connection>scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-turbine-2/extensions/torque</connection>
@@ -68,15 +69,15 @@
       <version>2.0-dev-20030825</version>
       <url>http://share.whichever.com/index.php?SCREEN=village</url>
     </dependency>
-    
+
     <!-- Needed to compile OM code -->
-	<dependency> 
-      <groupId>torque</groupId> 
-      <artifactId>maven-torque-plugin</artifactId> 
-      <version>3.2-20031017</version> 
-      <url>http://maven-plugins.sourceforge.net/maven-tasks-plugin/</url> 
+	<dependency>
+      <groupId>torque</groupId>
+      <artifactId>maven-torque-plugin</artifactId>
+      <version>3.2-20031017</version>
+      <url>http://maven-plugins.sourceforge.net/maven-tasks-plugin/</url>
       <type>plugin</type>
-    </dependency>     
+    </dependency>
   </dependencies>
 
   <build>
