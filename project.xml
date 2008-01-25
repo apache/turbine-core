@@ -693,10 +693,10 @@
       </properties>
     </dependency>
     <dependency>
-      <groupId>village</groupId>
+      <groupId>torque</groupId>
       <artifactId>village</artifactId>
-      <version>2.0</version>
-      <url>http://www.softwareforge.de/projects/village/</url>
+      <version>3.3-RC3</version>
+      <url>http://db.apache.org/torque/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>

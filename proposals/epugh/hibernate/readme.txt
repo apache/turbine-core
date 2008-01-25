@@ -4,7 +4,7 @@ already!
 <dependency>
       <id>avalon-framework</id>
       <version>4.1.4</version>
-      <url>http://jakarta.apache.org/avalon</url>
+      <url>http://excalibur.apache.org</url>
       <properties>        
       <war.bundle.jar>true</war.bundle.jar>
       </properties>      
@@ -12,7 +12,7 @@ already!
     <dependency>
       <id>excalibur-collections</id>
       <version>1.0</version>
-      <url>http://jakarta.apache.org/avalon</url>
+      <url>http://excalibur.apache.org</url>
       <properties>        
       <war.bundle.jar>true</war.bundle.jar>
       </properties>          
@@ -20,7 +20,7 @@ already!
     <dependency>
       <id>excalibur-component</id>
       <version>1.1</version>
-      <url>http://jakarta.apache.org/avalon</url>
+      <url>http://excalibur.apache.org</url>
       <properties>        
       <war.bundle.jar>true</war.bundle.jar>
       </properties>          
@@ -28,7 +28,7 @@ already!
     <dependency>
       <id>excalibur-instrument</id>
       <version>1.0</version>
-      <url>http://jakarta.apache.org/avalon</url>
+      <url>http://excalibur.apache.org</url>
       <properties>        
       <war.bundle.jar>true</war.bundle.jar>
       </properties>          
@@ -36,7 +36,7 @@ already!
     <dependency>
       <id>excalibur-logger</id>
       <version>1.0.1</version>
-      <url>http://jakarta.apache.org/avalon</url>
+      <url>http://excalibur.apache.org</url>
       <properties>        
       <war.bundle.jar>true</war.bundle.jar>
       </properties>          
@@ -44,7 +44,7 @@ already!
     <dependency>
       <id>excalibur-pool</id>
       <version>1.2</version>
-      <url>http://jakarta.apache.org/avalon</url>
+      <url>http://excalibur.apache.org</url>
       <properties>        
       <war.bundle.jar>true</war.bundle.jar>
       </properties>          
@@ -60,7 +60,7 @@ already!
     <dependency>
       <id>logkit</id>
       <version>1.0.1</version>
-      <url>http://jakarta.apache.org/avalon/logkit/</url>
+      <url>http://excalibur.apache.org/logkit/</url>
       <properties>
         <war.bundle.jar>true</war.bundle.jar>
       </properties>
