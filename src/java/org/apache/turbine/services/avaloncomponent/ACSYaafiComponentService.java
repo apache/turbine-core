@@ -149,7 +149,7 @@ public class ACSYaafiComponentService extends TurbineBaseService implements
         }
         catch (Throwable t)
         {
-            this.logger.error("Initializing YAAFI failed", t);
+            throw new Exception("Initializing YAAFI failed", t);
         }
     }
 
