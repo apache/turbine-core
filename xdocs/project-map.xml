@@ -60,7 +60,7 @@
     that allows you to create the HTML/XML/WML presentation layer of your
     application independently form your Java sources. The services provided
     are actually wrappers around templating packages developed independently
-    from Turbine, such as <a href="http://jakarta.apache.org/velocity">Velocity</a>.
+    from Turbine, such as <a href="http://velocity.apache.org">Velocity</a>.
     Also, there is a service that allows you to use Sun's JSP technology for
     creating templates. Other services that fall into this block are
     the Pull service, allowing you to create tool boxes (read more about

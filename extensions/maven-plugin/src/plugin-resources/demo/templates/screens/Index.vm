@@ -24,7 +24,7 @@
 <div align="center"><h1>Congratulations, it worked!</h1></div>
 
 You're now successfully running a <a
-href="http://jakarta.apache.org/turbine/">Turbine</a> based
+href="http://turbine.apache.org/">Turbine</a> based
 application, deployed to <font color="red">$data.ServerData.ContextPath</a></font> on
 your web container.<p/>
 

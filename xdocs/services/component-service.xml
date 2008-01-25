@@ -33,9 +33,9 @@ org.apache.stratum.lifecycle Interfaces for use with Turbine 2.
 </p>
 <p>
 Main usage for this are the <a href="http://db.apache.org/torque/">
-Torque</a> and <a href="http://jakarta.apache.org/turbine/fulcrum/">
+Torque</a> and <a href="http://turbine.apache.org/fulcrum/">
 Fulcrum</a> components of the <a
-hef="http://jakarta.apache.org/turbine/">Turbine</a> project.
+hef="http://turbine.apache.org/">Turbine</a> project.
 </p>
 
 <p>

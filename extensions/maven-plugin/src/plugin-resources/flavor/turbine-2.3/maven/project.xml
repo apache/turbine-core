@@ -90,7 +90,7 @@
     <dependency>
       <id>commons-email</id>
       <version>20030310.165926</version>
-      <url>http://jakarta.apache.org/commons/sandbox/email</url>
+      <url>http://commons.apache.org/email</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -98,7 +98,7 @@
     <dependency>
       <id>commons-fileupload</id>
       <version>1.0</version>
-      <url>http://jakarta.apache.org/commons/fileupload/index.html</url>
+      <url>http://commons.apache.org/fileupload/index.html</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -130,7 +130,7 @@
     <dependency>
       <id>excalibur-component</id>
       <version>1.1</version>
-      <url>http://jakarta.apache.org/avalon/</url>
+      <url>http://excalibur.apache.org/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -138,7 +138,7 @@
     <dependency>
       <id>excalibur-instrument</id>
       <version>1.0</version>
-      <url>http://jakarta.apache.org/avalon/</url>
+      <url>http://excalibur.apache.org/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -146,7 +146,7 @@
     <dependency>
       <id>excalibur-logger</id>
       <version>1.0.1</version>
-      <url>http://jakarta.apache.org/avalon/</url>
+      <url>http://excalibur.apache.org/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -154,7 +154,7 @@
     <dependency>
       <id>excalibur-pool</id>
       <version>1.2</version>
-      <url>http://jakarta.apache.org/avalon/</url>
+      <url>http://excalibur.apache.org/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -212,7 +212,7 @@
     <dependency>
       <id>velocity</id>
       <version>1.3.1</version>
-      <url>http://jakarta.apache.org/velocity/</url>
+      <url>http://velocity.apache.org/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -243,7 +243,7 @@
     <dependency>
       <id>commons-dbcp</id>
       <version>1.1</version>
-      <url>http://jakarta.apache.org/commons/</url>
+      <url>http://commons.apache.org/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -251,7 +251,7 @@
     <dependency>
       <id>jcs</id>
       <version>20030822.182132</version>
-      <url>http://jakarta.apache.org/turbine/jcs/</url>
+      <url>http://jakarta.apache.org/jcs/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -266,7 +266,7 @@
     <dependency>
       <id>avalon-framework</id>
       <version>4.1.4</version>
-      <url>http://jakarta.apache.org/avalon/</url>
+      <url>http://excalibur.apache.org/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -274,7 +274,7 @@
     <dependency>
       <id>commons-beanutils</id>
       <version>1.6.1</version>
-      <url>http://jakarta.apache.org/commons/beanutils.html</url>
+      <url>http://commons.apache.org/beanutils.html</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -282,7 +282,7 @@
     <dependency>
       <id>commons-collections</id>
       <version>2.1</version>
-      <url>http://jakarta.apache.org/commons/collections.html</url>
+      <url>http://commons.apache.org/collections.html</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -290,7 +290,7 @@
     <dependency>
       <id>commons-configuration</id>
       <version>20030706.202021</version>
-      <url>http://jakarta.apache.org/commons/configuration/index.html</url>
+      <url>http://commons.apache.org/configuration/index.html</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -298,7 +298,7 @@
     <dependency>
       <id>commons-digester</id>
       <version>1.5</version>
-      <url>http://jakarta.apache.org/commons/digester/index.html</url>
+      <url>http://commons.apache.org/digester/index.html</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -306,7 +306,7 @@
     <dependency>
       <id>commons-lang</id>
       <version>1.0.1</version>
-      <url>http://jakarta.apache.org/commons/lang.html</url>
+      <url>http://commons.apache.org/lang.html</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -314,7 +314,7 @@
     <dependency>
       <id>commons-logging</id>
       <version>1.0.3</version>
-      <url>http://jakarta.apache.org/commons/logging.html</url>
+      <url>http://commons.apache.org/logging.html</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -322,7 +322,7 @@
     <dependency>
       <id>commons-pool</id>
       <version>20030825.183949</version>
-      <url>http://jakarta.apache.org/commons/pool/</url>
+      <url>http://commons.apache.org/pool/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -354,7 +354,7 @@
     <dependency>
       <id>logkit</id>
       <version>1.0.1</version>
-      <url>http://jakarta.apache.org/avalon/logkit/</url>
+      <url>http://excalibur.apache.org/logkit/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -362,7 +362,7 @@
     <dependency>
       <id>stratum</id>
       <version>1.0-b3</version>
-      <url>http://jakarta.apache.org/turbine/stratum/</url>
+      <url>http://turbine.apache.org/stratum/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>

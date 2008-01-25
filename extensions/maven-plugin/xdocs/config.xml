@@ -151,7 +151,7 @@ file is never clobbered!<br/>
         package. This is loaded from the &lt;appname&gt;.properties
         file. Unlike normal properties files, Turbine uses
         ExtendedProperties from <a
-        href="http://jakarta.apache.org/commons/configuration/">Jakarta
+        href="http://commons.apache.org/configuration/">Jakarta
         Commons Configuration</a> which merge together (normal
         Properties would overwrite, so this might be confusing to
         newcomers). If you add your own packages to your application

@@ -1,6 +1,6 @@
 
 The Yaafi SystemProperty service makes this redundant.  See:
-http://jakarta.apache.org/turbine/fulcrum/fulcrum-yaafi/services/systempropertyservice.html
+http://turbine.apache.org/fulcrum/fulcrum-yaafi/services/systempropertyservice.html
 
 
 The SystemProperties service aims to provide a convenient way of getting 

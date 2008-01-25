@@ -99,7 +99,7 @@
       <groupId>commons-email</groupId>
       <artifactId>commons-email</artifactId>
       <version>20030310.165926</version>
-      <url>http://jakarta.apache.org/commons/sandbox/email</url>
+      <url>http://commons.apache.org/sandbox/email</url>
       <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
@@ -109,7 +109,7 @@
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
       <version>1.0</version>
-      <url>http://jakarta.apache.org/commons/fileupload/index.html</url>
+      <url>http://commons.apache.org/fileupload/index.html</url>
       <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
@@ -248,7 +248,7 @@
       <groupId>velocity</groupId>
       <artifactId>velocity</artifactId>
       <version>1.3.1</version>
-      <url>http://jakarta.apache.org/velocity/</url>
+      <url>http://velocity.apache.org/</url>
       <type>jar</type>
       <properties>
         <war.bundle>true</war.bundle>
@@ -285,7 +285,7 @@
       <groupId>commons-dbcp</groupId>
       <artifactId>commons-dbcp</artifactId>
       <version>1.2.1</version>
-      <url>http://jakarta.apache.org/commons/</url>
+      <url>http://commons.apache.org/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -295,7 +295,7 @@
       <groupId>jcs</groupId>
       <artifactId>jcs</artifactId>
       <version>20030822.182132</version>
-      <url>http://jakarta.apache.org/turbine/jcs/</url>
+      <url>http://jakarta.apache.org/jcs/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -312,7 +312,7 @@
       <groupId>avalon-framework</groupId>
       <artifactId>avalon-framework</artifactId>
       <version>4.1.4</version>
-      <url>http://jakarta.apache.org/avalon/</url>
+      <url>http://excalibur.apache.org/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -322,7 +322,7 @@
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
       <version>1.6.1</version>
-      <url>http://jakarta.apache.org/commons/beanutils.html</url>
+      <url>http://commons.apache.org/beanutils.html</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -332,7 +332,7 @@
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
       <version>3.0</version>
-      <url>http://jakarta.apache.org/commons/collections.html</url>
+      <url>http://commons.apache.org/collections.html</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -342,7 +342,7 @@
       <groupId>commons-configuration</groupId>
       <artifactId>commons-configuration</artifactId>
       <version>1.0</version>
-      <url>http://jakarta.apache.org/commons/configuration/index.html</url>
+      <url>http://commons.apache.org/configuration/index.html</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -352,7 +352,7 @@
       <groupId>commons-digester</groupId>
       <artifactId>commons-digester</artifactId>
       <version>1.5</version>
-      <url>http://jakarta.apache.org/commons/digester/index.html</url>
+      <url>http://commons.apache.org/digester/index.html</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -362,7 +362,7 @@
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
       <version>2.0</version>
-      <url>http://jakarta.apache.org/commons/lang.html</url>
+      <url>http://commons.apache.org/lang.html</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -372,7 +372,7 @@
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.0.4</version>
-      <url>http://jakarta.apache.org/commons/logging.html</url>
+      <url>http://commons.apache.org/logging.html</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -382,7 +382,7 @@
       <groupId>commons-pool</groupId>
       <artifactId>commons-pool</artifactId>
       <version>1.2</version>
-      <url>http://jakarta.apache.org/commons/pool/</url>
+      <url>http://commons.apache.org/pool/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -422,7 +422,7 @@
       <groupId>logkit</groupId>
       <artifactId>logkit</artifactId>
       <version>1.0.1</version>
-      <url>http://jakarta.apache.org/avalon/logkit/</url>
+      <url>http://excalibur.apache.org/logkit/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>
@@ -432,7 +432,7 @@
       <groupId>stratum</groupId>
       <artifactId>stratum</artifactId>
       <version>1.0-b5</version>
-      <url>http://jakarta.apache.org/turbine/stratum/</url>
+      <url>http://turbine.apache.org/stratum/</url>
       <properties>
         <war.bundle>true</war.bundle>
       </properties>

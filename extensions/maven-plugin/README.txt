@@ -82,7 +82,7 @@ Plugin documentation
 ********************
 
 The plugin documentation is in xdoc format and can be accessed through
-the M.E.T.A. homepage at http://jakarta.apache.org/turbine/meta/ or by
+the M.E.T.A. homepage at http://turbine.apache.org/meta/ or by
 building the site for the plugin by running
 
 maven site
