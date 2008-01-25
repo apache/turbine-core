@@ -93,8 +93,8 @@ your local maven repository as described above.
 Further documentation
 =====================
 
-The main Turbine documentation site is at the Apache Jakarta Project
-Homepage at http://jakarta.apache.org/turbine/. You can also build the
+The main Turbine documentation site is at the Apache Turbine Project
+Homepage at http://turbine.apache.org/. You can also build the
 most current documentation for this source tree by executing "maven
 site" in the root directory of the source distribution after building
 the jar.
