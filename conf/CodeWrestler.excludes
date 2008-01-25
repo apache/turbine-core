@@ -1,0 +1,14 @@
+#
+# This is an exclude file to parse the turbine-2 code base using CodeWrestler,
+# available from http://henning.schmiedehausen.org/eyewiki/Wiki.jsp?page=CodeWrestler
+#
+.*\.ai$
+.*\.psd$
+.*\.dia$
+/proposals/
+src/announcements
+conf/CodeWrestler\.excludes$
+conf/openldap/turbine\.schema$
+conf/openldap/turbine\.ldif$
+conf/openldap/slapd\.conf$
+/target/
