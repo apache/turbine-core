@@ -1,22 +1,23 @@
 package org.apache.turbine;
 
-
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
-
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -116,7 +117,7 @@ public class Turbine
      * so we use this flag to prevent it.
      */
     private static boolean firstInit = true;
-    
+
 	/**
 	 * The pipeline to use when processing requests.
 	 */
@@ -279,8 +280,8 @@ public class Turbine
         // /WEB-INF/conf/TurbineResources.properties relative to the
         // web application root.
 
-        String confFile= findInitParameter(context, config, 
-                TurbineConfig.CONFIGURATION_PATH_KEY, 
+        String confFile= findInitParameter(context, config,
+                TurbineConfig.CONFIGURATION_PATH_KEY,
                 null);
 
         String confPath;
@@ -345,7 +346,7 @@ public class Turbine
         // Now report our successful configuration to the world
         log.info("Loaded configuration  (" + confStyle + ") from " + confFile + " (" + confPath + ")");
 
-        
+
         setTurbineServletConfig(config);
         setTurbineServletContext(context);
 
@@ -359,7 +360,7 @@ public class Turbine
         configuration.setProperty(APPLICATION_ROOT_KEY, applicationRoot);
         configuration.setProperty(WEBAPP_ROOT_KEY, webappRoot);
 
-        
+
 
 		// Retrieve the pipeline class and then initialize it.  The pipeline
         // handles the processing of a webrequest/response cycle.
@@ -368,16 +369,16 @@ public class Turbine
 		  	configuration.getString(
 			  "pipeline.default.descriptor",
 					  TurbinePipeline.CLASSIC_PIPELINE);
-  		
+
         descriptorPath = getRealPath(descriptorPath);
-  
+
   		log.debug("Using descriptor path: " + descriptorPath);
-        Reader reader = new BufferedReader(new FileReader(descriptorPath));  
+        Reader reader = new BufferedReader(new FileReader(descriptorPath));
         XStream pipelineMapper = new XStream(new DomDriver()); // does not require XPP3 library
         pipeline = (Pipeline) pipelineMapper.fromXML(reader);
-            
+
 	  	log.debug("Initializing pipeline");
-	  
+
 	  	pipeline.initialize();
 
         getServiceManager().setConfiguration(configuration);
@@ -619,7 +620,7 @@ public class Turbine
 
         // Placeholder for the RunData object.
         //RunData data = null;
-        
+
         PipelineData pipelineData = null;//new DefaultPipelineData();
         try
         {
@@ -638,14 +639,14 @@ public class Turbine
                     // Store the context path for tools like ContentURI and
                     // the UIManager that use webapp context path information
                     // for constructing URLs.
-                    serverData = new ServerData(req);            
+                    serverData = new ServerData(req);
 
                     // Mark that we're done.
                     firstDoGet = false;
                     log.info("Turbine: first Request successful");
                 }
 
-            }            
+            }
 
             // Get general RunData here...
             // Perform turbine specific initialization below.
@@ -653,13 +654,13 @@ public class Turbine
            // Map runDataMap = new HashMap();
             //runDataMap.put(RunData.class, data);
             // put the data into the pipeline
-           // pipelineData.put(RunData.class, runDataMap);            
+           // pipelineData.put(RunData.class, runDataMap);
 
             // Stages of Pipeline implementation execution
 			// configurable via attached Valve implementations in a
 			// XML properties file.
 			pipeline.invoke(pipelineData);
-  
+
         }
         catch (Exception e)
         {
@@ -851,10 +852,10 @@ public class Turbine
     {
         return TurbineServices.getInstance();
     }
-    
+
     /**
      * Get a RunData from the pipelineData. Once RunData is fully replaced
-     * by PipelineData this should not be required. 
+     * by PipelineData this should not be required.
      * @param pipelineData
      * @return
      */
@@ -864,7 +865,7 @@ public class Turbine
         data = (RunData)pipelineData;
         return data;
     }
-    
+
     /**
      * Static Helper method for looking up the RunDataService
      * @return A RunDataService
@@ -872,5 +873,5 @@ public class Turbine
     private static RunDataService getRunDataService(){
         return (RunDataService) TurbineServices
         .getInstance().getService(RunDataService.SERVICE_NAME);
-    }    
+    }
 }

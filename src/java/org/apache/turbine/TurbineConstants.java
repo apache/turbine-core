@@ -1,23 +1,27 @@
 package org.apache.turbine;
 
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import org.apache.turbine.pipeline.TurbinePipeline;
 
 
-/*
- * Copyright 2001-2004 The Apache Software Foundation.
- *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 
 /**
@@ -231,7 +235,7 @@ public interface TurbineConstants
 	String DOCUMENT_TYPE_HTML40FRAMESET = "Html40Frameset";
 
 	/** Default doctype root element. */
-	String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY 
+	String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY
 			= "default.html.doctype.root.element";
 
 	/** Default value for the doctype root element */
@@ -239,7 +243,7 @@ public interface TurbineConstants
 			= "HTML";
 
 	/** Default doctype dtd. */
-	String DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY 
+	String DEFAULT_HTML_DOCTYPE_IDENTIFIER_KEY
 			= "default.html.doctype.identifier";
 
 	/** Default Doctype dtd value */
@@ -247,7 +251,7 @@ public interface TurbineConstants
 			= "-//W3C//DTD HTML 4.01 Transitional//EN";
 
 	/** Default doctype url. */
-	String DEFAULT_HTML_DOCTYPE_URI_KEY 
+	String DEFAULT_HTML_DOCTYPE_URI_KEY
 			= "default.html.doctype.url";
 
 	/** Default doctype url value. */
@@ -328,12 +332,12 @@ public interface TurbineConstants
 
 	/** Prefix for scheduler job related classes */
 	String SCHEDULEDJOB_PREFIX = "scheduledjobs";
-	
+
 	/**
 	 * The fully qualified class name of the default {@link
 	 * org.apache.turbine.Pipeline} implementation to use in the
 	 * {@link org.apache.turbine.Turbine} servlet.
 	 */
 	public static final String STANDARD_PIPELINE =
-		TurbinePipeline.class.getName();	
+		TurbinePipeline.class.getName();
 }

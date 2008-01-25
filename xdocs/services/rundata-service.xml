@@ -1,21 +1,22 @@
 <?xml version="1.0"?>
-<!-- 
-/*
- * Copyright 2001-2004 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- -->
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
 
 <document>
 
@@ -64,7 +65,7 @@ Turbine to initialize with.
 
 <source><![CDATA[
 # -------------------------------------------------------------------
-# 
+#
 #  S E R V I C E S
 #
 # -------------------------------------------------------------------
@@ -85,7 +86,7 @@ services.TurbineRunDataService.classname=org.apache.turbine.services.rundata.Tur
 # -------------------------------------------------------------------
 # Default implementations of base interfaces for request processing.
 # Additional configurations can be defined by using other keys
-# in the place of the <default> key.  
+# in the place of the <default> key.
 # -------------------------------------------------------------------
 
 services.RunDataService.default.run.data=org.apache.turbine.services.rundata.DefaultTurbineRunData
@@ -129,7 +130,7 @@ getRequest()
 getResponse()
 getServletContext()
 getSession()
-getStatusCode()  
+getStatusCode()
 ]]></source>
 
 <p>
@@ -139,7 +140,7 @@ of the body of the servlet response.
 </p>
 
 <p>
-The method setLocale() is called to specify explicitly the locale 
+The method setLocale() is called to specify explicitly the locale
 of the response. If setLocale() is not called, the "locale.default.language"
 and "locale.default.country" properties from Turbine Resources are used to
 determine the locale. If these properties are not set, the JVM's default
@@ -150,7 +151,7 @@ locale determines the locale.
 If the locale is set to something else than the default locale or Locale.US,
 an explicit encoding is not specified with the setCharSet() method or the
 "locale.default.charset" property, and the main MIME type of the content is
-"text", the getContentType() method adds a locale specific encoding (charset) 
+"text", the getContentType() method adds a locale specific encoding (charset)
 to the content type automatically.
 </p>
 
@@ -191,7 +192,7 @@ their returning interaction:
 
 <source><![CDATA[
 //in Login Action class
-public void doPerform(RunData data, Context context) 
+public void doPerform(RunData data, Context context)
     throws Exception
 {
     //get the Parameters, username and password
@@ -207,7 +208,7 @@ public void doPerform(RunData data, Context context)
                              TurbineSecurity
                               .getAuthenticatedUser(loginname, password);
 
-        //put User into Session 
+        //put User into Session
         data.setUser(user);
 
         //mark the User as logged in
@@ -218,13 +219,13 @@ public void doPerform(RunData data, Context context)
 
         //add to the access counter for the session
         user.incrementAccessCounterForSession();
- 
+
         //check to see if user is to have
         //their status changed to valued
         if(user.getAccessCounter() > 500 )
         {
             //set into persistant storage
-            //that our visitor is now a 
+            //that our visitor is now a
             //valued user
             user.setPerm("valued", new Boolean(true));
         }
@@ -283,11 +284,11 @@ public void doPerform(RunData data, Context context) throws Exception
     /**
      * Where "units" is the HTML Input Form name
      */
-    int units = params.getInt("units");  
+    int units = params.getInt("units");
 
     /**
      * Get the description, if there is no entry from the
-     * HTML input form, set the default as "No Description". 
+     * HTML input form, set the default as "No Description".
      */
     String description = params.getString("description","No Description");
 
@@ -370,7 +371,7 @@ setAction()
 setLayout()
 setLayoutTemplate()
 setScreen()
-setScreenTemplate()    
+setScreenTemplate()
 ]]></source>
 
 <p>
@@ -399,7 +400,7 @@ getMessageAsHTML()
 getMessages()   //returns a FormMessages Object
 setMessage(String msg)
 setMessage(Element msg)
-setMessage(FormMessages msgs)  
+setMessage(FormMessages msgs)
 ]]></source>
 
 <p>

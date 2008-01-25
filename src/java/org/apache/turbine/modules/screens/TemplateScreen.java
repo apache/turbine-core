@@ -2,19 +2,22 @@ package org.apache.turbine.modules.screens;
 
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
@@ -79,7 +82,7 @@ public abstract class TemplateScreen
         doBuildTemplate(data);
     }
 
-    
+
     /**
      * This method should be implemented by Base template classes.  It
      * should contain the specific template service code to generate
@@ -109,12 +112,12 @@ public abstract class TemplateScreen
         return buildTemplate(data);
     }
 
-    
+
     /**
      * This method can be overridden to write code that executes when
      * the template has been built (called from a finally clause, so
      * executes regardless of whether an exception is thrown or not)
-     * 
+     *
      * @deprecated Use PipelineData version instead.
      */
     protected void doPostBuildTemplate(RunData data)
@@ -132,7 +135,7 @@ public abstract class TemplateScreen
         // empty
     }
 
-    
+
     /**
      * This method is called by the Screenloader to construct the
      * Screen.
@@ -186,8 +189,8 @@ public abstract class TemplateScreen
         return out;
     }
 
-    
-    
+
+
     /**
      * This method is used when you want to short circuit a Screen and
      * change the template that will be executed next. <b>Note that the current
@@ -235,7 +238,7 @@ public abstract class TemplateScreen
         RunData data = (RunData)pipelineData;
         setTemplate(data, template);
     }
-    
+
     /**
      * You can call this within a Screen to cause an internal redirect
      * to happen.  It essentially allows you to stop execution in one
@@ -292,8 +295,8 @@ public abstract class TemplateScreen
         ScreenLoader.getInstance().exec(pipelineData, screen);
     }
 
-    
-    
+
+
     /**
      * You can call this within a Screen to cause an internal redirect
      * to happen.  It essentially allows you to stop execution in one
@@ -318,7 +321,7 @@ public abstract class TemplateScreen
     {
         doRedirect(data, TurbineTemplate.getScreenName(template), template);
     }
-    
+
     /**
      * You can call this within a Screen to cause an internal redirect
      * to happen.  It essentially allows you to stop execution in one
@@ -343,5 +346,5 @@ public abstract class TemplateScreen
         doRedirect(pipelineData, template);
     }
 
-    
+
 }

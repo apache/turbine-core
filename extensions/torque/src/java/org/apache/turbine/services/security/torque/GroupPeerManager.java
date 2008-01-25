@@ -1,20 +1,22 @@
 package org.apache.turbine.services.security.torque;
 
-
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 import java.beans.PropertyDescriptor;
@@ -108,8 +110,8 @@ public class GroupPeerManager
 
             groupObject = Class.forName(groupObjectName); // Maybe the user set a new value...
 
-            // If any of the following Field queries fails, the group subsystem 
-            // is unusable. So check this right here at init time, which saves 
+            // If any of the following Field queries fails, the group subsystem
+            // is unusable. So check this right here at init time, which saves
             // us much time and hassle if it fails...
             nameColumn = (String) groupPeerClass.getField(conf
                     .getString(GROUP_NAME_COLUMN_KEY, GROUP_NAME_COLUMN_DEFAULT)
@@ -120,11 +122,11 @@ public class GroupPeerManager
                     ).get(null);
 
             namePropDesc = new PropertyDescriptor(conf
-                    .getString(GROUP_NAME_PROPERTY_KEY, 
+                    .getString(GROUP_NAME_PROPERTY_KEY,
                     GROUP_NAME_PROPERTY_DEFAULT), groupObject);
 
             idPropDesc = new PropertyDescriptor(conf
-                    .getString(GROUP_ID_PROPERTY_KEY, 
+                    .getString(GROUP_ID_PROPERTY_KEY,
                     GROUP_ID_PROPERTY_DEFAULT), groupObject);
         }
         catch (Exception e)

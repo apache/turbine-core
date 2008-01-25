@@ -2,19 +2,22 @@ package org.apache.turbine.pipeline;
 
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
@@ -33,17 +36,17 @@ import org.apache.turbine.util.uri.URIConstants;
  * specified by the configuration property Turbine.TEMPLATE_HOMEPAGE.
  *
  * FIXME: The request parameter which determines the template should be
- *        configurable. 
+ *        configurable.
  *
  * @author <a href="mailto:james@jamestaylor.org">James Taylor</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
-public class DetermineTargetValve 
+public class DetermineTargetValve
     extends AbstractValve
 {
     private static final Log log
         = LogFactory.getLog( DetermineTargetValve.class );
-        
+
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
@@ -58,21 +61,21 @@ public class DetermineTargetValve
             if ( target != null )
             {
                 runData.setScreen( target );
-                
+
                 log.debug( "Set screen target from request parameter" );
             }
             else
             {
             /*    data.setScreen( Turbine.getConfiguration().getString(
                     Turbine.TEMPLATE_HOMEPAGE ) );
-                    
+
                 log.debug( "Set target using default value" );
                 */
 				log.debug( "No target screen" );
             }
-            
+
         }
-        
+
         if ( log.isDebugEnabled() )
         {
             log.debug( "Screen Target is now: " + runData.getScreen() );

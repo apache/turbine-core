@@ -2,19 +2,22 @@ package org.apache.turbine.services.pull.tools;
 
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
@@ -70,7 +73,7 @@ public class TemplateLink
 
     /** Do we want a relative link? */
     boolean wantRelative = false;
-        
+
     /** cache of the template name for getPage() */
     private String template = null;
 
@@ -121,7 +124,7 @@ public class TemplateLink
             templateURI = new TemplateURI((RunData) data);
         }
 
-        Configuration conf = 
+        Configuration conf =
                 Turbine.getConfiguration().subset(TEMPLATE_LINK_PREFIX);
 
         if (conf != null)
@@ -547,14 +550,14 @@ public class TemplateLink
 
     /**
      * Returns the URI. After rendering the URI, it clears the
-     * pathInfo and QueryString portions of the TemplateURI. 
+     * pathInfo and QueryString portions of the TemplateURI.
      *
      * @return A String with the URI in the form
      * http://foo.com/Turbine/template/index.wm/hello/world
      */
     public String getLink()
     {
-        return wantRelative ? 
+        return wantRelative ?
                 getRelativeLink() : getAbsoluteLink();
     }
 
@@ -576,7 +579,7 @@ public class TemplateLink
     /**
      * Returns the absolute URI leaving the source intact. Use this
      * if you need the path_info and query data multiple times.
-     * This is equivalent to $link.AbsoluteLink but does not reset 
+     * This is equivalent to $link.AbsoluteLink but does not reset
      * the path_info and query data.
      *
      * @return A String with the URI in the form
@@ -605,7 +608,7 @@ public class TemplateLink
      * Same as getLink().
      *
      * @return A String with the URI represented by this object.
-     * 
+     *
      */
     public String toString()
     {

@@ -2,19 +2,22 @@ package org.apache.turbine.util.parser;
 
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
@@ -41,11 +44,11 @@ public class BaseValueParserTest extends ServletTestCase
      *
      * @param name a <code>String</code> value
      */
-    public BaseValueParserTest (String name) 
+    public BaseValueParserTest (String name)
     {
         super(name);
     }
-                                             
+
     /**
      * This setup will be running server side.  We startup Turbine and
      * get our test port from the properties.  This gets run before
@@ -57,8 +60,8 @@ public class BaseValueParserTest extends ServletTestCase
     {
         super.setUp();
         /* Note: we are using the properties file from the cache test
-         *  since we don't really need any specific property at this 
-         *  time.  Future tests may require a test case specific 
+         *  since we don't really need any specific property at this
+         *  time.  Future tests may require a test case specific
          *  properties file to be used.:
          */
         config.setInitParameter("properties",
@@ -68,20 +71,20 @@ public class BaseValueParserTest extends ServletTestCase
         theBaseValueParser = new BaseValueParser();
         stf = new SimpleDateFormat("hh:mm:ss a");
     }
-                                             
+
     /**
      * Shut down our turbine servlet and let our parents clean up also.
      *
      * @exception Exception if an error occurs
      */
-    protected void tearDown() throws Exception 
+    protected void tearDown() throws Exception
     {
         turbine.destroy();
         super.tearDown();
-    }                                            
+    }
 
     /**
-     * Test that a current time 
+     * Test that a current time
      */
     public void testCurrentTime()
     {
@@ -92,7 +95,7 @@ public class BaseValueParserTest extends ServletTestCase
                   now.get(Calendar.AM_PM),
                   stf.format(now.getTime()));
     }
-    
+
     /**
      * Test a time in the morning.
      */
@@ -120,7 +123,7 @@ public class BaseValueParserTest extends ServletTestCase
         theBaseValueParser.add(TimeSelector.SECOND_SUFFIX, 0);
         theBaseValueParser.add(TimeSelector.AMPM_SUFFIX, Calendar.AM);
 
-        assertNull("Should not have received a date object.", 
+        assertNull("Should not have received a date object.",
                    theBaseValueParser.getDate(""));
     }
 
@@ -158,7 +161,7 @@ public class BaseValueParserTest extends ServletTestCase
 
         Date newDate = theBaseValueParser.getDate("");
         assertNotNull("Could not create date for "+results, newDate);
-       
+
         assertEquals(results, stf.format(newDate));
     }
 }

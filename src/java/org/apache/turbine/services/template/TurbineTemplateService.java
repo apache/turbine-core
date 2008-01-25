@@ -2,19 +2,22 @@ package org.apache.turbine.services.template;
 
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
@@ -599,13 +602,13 @@ public class TurbineTemplateService
     /**
      * Translates the supplied template paths into their Turbine-canonical
      * equivalent (probably absolute paths). This is used if the templating
-     * engine (e.g. JSP) does not provide any means to load a page but 
+     * engine (e.g. JSP) does not provide any means to load a page but
      * the page path is passed to the servlet container.
      *
      * @param templatePaths An array of template paths.
      * @return An array of translated template paths.
      * @deprecated Each template engine service should know how to translate
-     *             a request onto a file. 
+     *             a request onto a file.
      */
     public String[] translateTemplatePaths(String[] templatePaths)
     {
@@ -745,14 +748,14 @@ public class TurbineTemplateService
 
         char [] mapperSeparator = new char [] { '.', '.', '.', '.', '/', '/', '/' };
 
-        Loader [] mapperLoader = new Loader [] { 
+        Loader [] mapperLoader = new Loader [] {
             PageLoader.getInstance(),
             ScreenLoader.getInstance(),
             LayoutLoader.getInstance(),
             NavigationLoader.getInstance(),
             null, null, null};
 
-        String [] mapperPrefix = new String [] { 
+        String [] mapperPrefix = new String [] {
             null, null, null, null,
             TurbineConstants.LAYOUT_PREFIX,
             TurbineConstants.SCREEN_PREFIX,
@@ -765,7 +768,7 @@ public class TurbineTemplateService
             mapperProperty.append(mapperNames[i]);
             mapperProperty.append(".class");
 
-            String mapperClass = 
+            String mapperClass =
                     conf.getString(mapperProperty.toString(), mapperClasses[i]);
 
             log.info("Using " + mapperClass + " to map " + mapperNames[i] + " elements");
@@ -780,7 +783,7 @@ public class TurbineTemplateService
             }
             catch (FactoryException e) {
             		throw new InitializationException("", e);
-		    } 
+		    }
             catch (ServiceException se) {
 				throw new InitializationException("Problem looking up Factory service",se);
 			}

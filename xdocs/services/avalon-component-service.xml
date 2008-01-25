@@ -1,21 +1,22 @@
 <?xml version="1.0"?>
-<!-- 
-/*
- * Copyright 2001-2004 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- -->
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
 
 <document>
 
@@ -31,10 +32,10 @@ The Avalon Component service loads external modules which implement the
 <a href="http://avalon.apache.org/">Avalon</a> lifecycle interfaces.
 </p>
 <p>
-The only supported component at this point in time is 
+The only supported component at this point in time is
 <a href="http://db.apache.org/torque/">Torque</a>, though the
 <a href="http://jakarta.apache.org/turbine/fulcrum/">Fulcrum</a>
-components are likely to be migrated to become Avalon components 
+components are likely to be migrated to become Avalon components
 in the future.
 </p>
 
@@ -57,7 +58,7 @@ those defined for Turbine and the components you are loading:
 
 	<source><![CDATA[
 # -------------------------------------------------------------------
-# 
+#
 #  S E R V I C E S
 #
 # -------------------------------------------------------------------
@@ -76,7 +77,7 @@ services.AvalonComponentService.classname = org.apache.turbine.services.avalonco
 #  A V A L O N   C O M P O N E N T   S E R V I C E
 #
 # -------------------------------------------------------------------
-# Components implementing the avalon lifecycle interfaces can be 
+# Components implementing the avalon lifecycle interfaces can be
 # loaded, configured and initialized by Turbine
 # -------------------------------------------------------------------
 
@@ -108,7 +109,7 @@ and roleConfiguration.xml:
 No changes to torque.properties are required.
 </p>
 <p>
-If all goes well you should see the following in your log file when 
+If all goes well you should see the following in your log file when
 Turbine starts up:
 </p>
 <source><![CDATA[

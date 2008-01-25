@@ -1,21 +1,22 @@
 <?xml version="1.0"?>
-<!-- 
-/*
- * Copyright 2001-2004 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- -->
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
 
 <document>
 
@@ -28,10 +29,10 @@
 <section name="Configurating Turbine">
 <p>
 With Turbine 2.3, there are now two different ways to configure Turbine.  The old
-classic way was to provide a TurbineResources.properties file in the standard 
+classic way was to provide a TurbineResources.properties file in the standard
 properties format.  However, added to 2.3 is the ability to specify an XML based
 TurbineConfiguration.xml file that instructs Turbine how to load properties from
-multiple sources.  
+multiple sources.
 </p>
 </section>
 
@@ -39,7 +40,7 @@ multiple sources.
 <p>
 In the classic development environment, the developer has one environment, there is
 a QA environment, and then production.  While all of these environments strive to be
-as similar as possible, there are often difference betweent them.  For instance, in 
+as similar as possible, there are often difference betweent them.  For instance, in
 the development environment, you might want to not have Turbine cache templates, that
 way, as you change them, they are just reloaded.  But in test and production you might
 need them to be non reloading for performance.  There are many other situations like this.
@@ -68,11 +69,11 @@ web.xml file:
             <param-name>properties</param-name>
                     <param-value>
                             /WEB-INF/conf/TurbineResources.properties
-            </param-value>   
+            </param-value>
         </init-param>
-        
+
         <load-on-startup>1</load-on-startup>
-    </servlet> 
+    </servlet>
 ]]></source>
 
 <p>
@@ -85,12 +86,12 @@ control it's behavior, then you need to provide a TurbineConfiguration.xml file!
 <p>
 The TurbineConfiguration.xml file doesn't contain any configuration data itself, instead
 it points at other files that may have configuration data.  Turbine leverages Commons-Configuration's
-ConfigurationFactory to access the data.  For more information, look at 
+ConfigurationFactory to access the data.  For more information, look at
 <a href="http://jakarta.apache.org/commons/sandbox/configuration/">Configuration</a> homepage.
 </p>
 
 <p>
-To specify the location of your TurbineConfiguration.xml file, just change your servlet init 
+To specify the location of your TurbineConfiguration.xml file, just change your servlet init
 parameters to this:
 </p>
 <source test=""><![CDATA[
@@ -101,11 +102,11 @@ parameters to this:
             <param-name>configuration</param-name>
             <param-value>
                     /WEB-INF/conf/TurbineConfiguration.xml
-            </param-value>     
+            </param-value>
         </init-param>
-        
+
         <load-on-startup>1</load-on-startup>
-    </servlet> 
+    </servlet>
 ]]>
 </source>
 
@@ -122,7 +123,7 @@ This file will contain lines like this:
 ]]></source>
 
 <p>
-The configurations specified first override the values of configurations specified 
+The configurations specified first override the values of configurations specified
 afterwords.  So, if the configuration value "mail.server" is specified as mymailserver.mycompany.com in
 your JNDI settings, and localhost in the TurbineResources.properties, then when you issue:
 </p>

@@ -2,19 +2,22 @@ package org.apache.turbine.pipeline;
 
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
@@ -51,7 +54,7 @@ public class ExecutePageValve
      */
     public ExecutePageValve()
     {
- 
+
     }
 
     /**
@@ -82,7 +85,7 @@ public class ExecutePageValve
         throws Exception
     {
         RunData data = (RunData)getRunData(pipelineData);
-        
+
         // Start the execution phase. DefaultPage will execute the
         // appropriate action as well as get the Layout from the
         // Screen and then execute that. The Layout is then
@@ -95,10 +98,10 @@ public class ExecutePageValve
         // than just the default page.  If you do, add logic to
         // DefaultPage to do what you want.
 
-        // see if this should be static or not...  Or loaded from 
+        // see if this should be static or not...  Or loaded from
         // Turbine.java.
         templateService = TurbineTemplate.getService();
-        
+
         String defaultPage = (templateService == null)
         ? null :templateService.getDefaultPageName(data);
 

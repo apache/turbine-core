@@ -1,21 +1,22 @@
 <?xml version="1.0"?>
-<!-- 
-/*
- * Copyright 2001-2004 The Apache Software Foundation.
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *      http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- -->
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
 
 <document>
 
@@ -33,15 +34,15 @@
 <p>
     You may find that migrating to 2.3 is not all that difficult -
     it should certainly be less trouble than migrating from 2.1 to
-    2.2. Most of the pain in figuring out this migration process 
-    has been documented in the mailing list archives, but is 
+    2.2. Most of the pain in figuring out this migration process
+    has been documented in the mailing list archives, but is
     summarized here for your convenience.
 </p>
 </section>
 
 <section name="Deprecated And Removed Services">
 <p>
-    In 2.3, many services have been deprecated or removed wholly. 
+    In 2.3, many services have been deprecated or removed wholly.
     Below are the changes I made to get my 2.2 app to work under 2.3.
 </p>
 <p>
@@ -52,13 +53,13 @@
  services.PoolBrokerService.classname=org.apache.turbine.services.db.TurbinePoolBrokerService
  services.MapBrokerService.classname=org.apache.turbine.services.db.TurbineMapBrokerService
  services.ResourceService.classname=org.apache.turbine.services.resources.TurbineResourceService
- services.LoggingService.classname=org.apache.turbine.services.logging.TurbineLoggingService 
+ services.LoggingService.classname=org.apache.turbine.services.logging.TurbineLoggingService
 ]]>
 </source>
 <p>
-    Note: Removing LoggingService removes all logging stuff from 
-    TurbineResources.properties as well! Now you use a Log4j.properties: 
-    WEB-INF\conf\Log4j.properties. You need at least an empty file, 
+    Note: Removing LoggingService removes all logging stuff from
+    TurbineResources.properties as well! Now you use a Log4j.properties:
+    WEB-INF\conf\Log4j.properties. You need at least an empty file,
     otherwise log4j complains, but something like this will be better:
 </p>
 <source>
@@ -121,7 +122,7 @@ log4j.appender.scheduledjobs.layout.conversionPattern = %d %-5p [%-10t] %c{1} - 
 
 <section name="Commons-logging Replaces Built-in Logging">
 <p>
-    In 2.3, the built in logging has been deprecated in favor of using 
+    In 2.3, the built in logging has been deprecated in favor of using
     commons-logging. Therefore, where ever you have this import:
 </p>
 <source>
@@ -139,7 +140,7 @@ import org.apache.commons.logging.LogFactory;
 ]]>
 </source>
 <p>
-	Also, instead of calling static methods of the old Log object: 
+	Also, instead of calling static methods of the old Log object:
 	Log.debug("my message") you will need instead to do this:
 </p>
 	<source>
@@ -152,11 +153,11 @@ import org.apache.commons.logging.LogFactory;
 ]]>
 </source>
 <p>
-	The advantage of this is that now in your logging messages, you will know 
-	what class the message is coming from, versus the old way where all you 
-	got was the message and you would have to embed the name of the action to 
-	know what was emitting the logging message! Also, this makes your 
-	underlying logging architecture pluggable. If you use jdk1.4, you can 
+	The advantage of this is that now in your logging messages, you will know
+	what class the message is coming from, versus the old way where all you
+	got was the message and you would have to embed the name of the action to
+	know what was emitting the logging message! Also, this makes your
+	underlying logging architecture pluggable. If you use jdk1.4, you can
 	plug in the java logging, or use log4j.  See the example Log4j.properties
 	file above to see a few of the possibilities.
 </p>
@@ -164,23 +165,23 @@ import org.apache.commons.logging.LogFactory;
 
 <section name="Use VelocityOnly Layout">
 <p>
-    Change from VelocityECSLayout to VelocityOnly Layout - see: 
+    Change from VelocityECSLayout to VelocityOnly Layout - see:
 	<a href="velocityonlylayout-howto.html">VelocityOnlyLayout Howto</a>.
 </p>
 </section>
 
 <section name="New Dependencies">
 <p>
-    In order to make the Turbine jar smaller, some things have been moved to 
-    commons. There are in fact a raft of new dependencies that you should 
-    ensure you use as part of your application - see: 
+    In order to make the Turbine jar smaller, some things have been moved to
+    commons. There are in fact a raft of new dependencies that you should
+    ensure you use as part of your application - see:
     <a href="../dependencies.html">Dependencies</a>.
 </p>
 </section>
 
 <section name="earlyInit Parameter For Selected Services">
 <p>
-    In order to get some services to work under 2.3, it is necessary to set 
+    In order to get some services to work under 2.3, it is necessary to set
     an earlyInit parameter in TurbineResources.propertiess:
 </p>
 <source>
@@ -197,16 +198,16 @@ services.SessionService.earlyInit=true
 
 <section name="New Optional URI Handling Tools">
 <p>
-	Under 2.3 there are new URI handling tools with a significant refactoring 
-	of how relative and absolute URL's are handled in Turbine. Briefly, the 
-	new tools avoid the confusion that arose previoulsy from mixing tools 
-	with internal classes, providing uniform access to the various URI types 
-	in Turbine. <strong>These new tools are backwards-compatible with your old 
-	$link and $content tools, so you should not have to change any of your 
+	Under 2.3 there are new URI handling tools with a significant refactoring
+	of how relative and absolute URL's are handled in Turbine. Briefly, the
+	new tools avoid the confusion that arose previoulsy from mixing tools
+	with internal classes, providing uniform access to the various URI types
+	in Turbine. <strong>These new tools are backwards-compatible with your old
+	$link and $content tools, so you should not have to change any of your
 	templates if you decide to use the new tools.</strong>
 </p>
 <p>
-	To use the new tools, simply redefine the following pull tools in your 
+	To use the new tools, simply redefine the following pull tools in your
 	TurbineResources.properties:
 </p>
 	<source>
@@ -216,7 +217,7 @@ tool.request.content = org.apache.turbine.services.pull.tools.ContentTool
 ]]>
 </source>
 <p>
-	If you used some of the other tools for creating URL's, then there are 
+	If you used some of the other tools for creating URL's, then there are
 	analogous new ones as well:
 </p>
 	<source>
@@ -229,10 +230,10 @@ org.apache.turbine.services.pull.tools.TemplateLinkWithSlash
 
 <section name="Ensure you refer to your templates correctly">
 <p>
-    Places where you might previously have got away with using forward slashes 
-    ("/") in your references to template names will need to be corrected (note 
-    that this does not apply to the Velocity #parse() and #include() 
-    statements which operate at a lower level). See: 
+    Places where you might previously have got away with using forward slashes
+    ("/") in your references to template names will need to be corrected (note
+    that this does not apply to the Velocity #parse() and #include()
+    statements which operate at a lower level). See:
     <a href="../services/template-service.html">Template Service</a>.
 </p>
 </section>
@@ -244,24 +245,24 @@ org.apache.turbine.services.pull.tools.TemplateLinkWithSlash
     when validating these files.  Deprecation warnings may be produced while
     these files are being processed - as with your application code you should
     aim to update these files so that no deprecation warnings are produced
-    before the next Turbine release. 
+    before the next Turbine release.
 </p>
 </section>
 
 <section name="Extending Turbine User">
 <p>
-    Refer to <a href="../services/torque-security-service.html">Torque 
+    Refer to <a href="../services/torque-security-service.html">Torque
     Security Service</a> for information on extending TurbineUser in Turbine
     2.3 - this is now much easier than it was in previous releases.  You
-    may also want to refer to 
+    may also want to refer to
     <a href="http://mail-archives.apache.org/eyebrowse/ReadMsg?listName=turbine-dev@jakarta.apache.org&amp;msgNo=15077">
-    this message from the mail archive</a> - the quoted text from Henning is 
-    great and Wei points to a couple of additional messages that may also 
+    this message from the mail archive</a> - the quoted text from Henning is
+    great and Wei points to a couple of additional messages that may also
     prove useful.
 </p>
 <p>
-    In the past you may have used a customised MapBuilder 
-    (database.maps.builder in TurbineResources.properties) as part of 
+    In the past you may have used a customised MapBuilder
+    (database.maps.builder in TurbineResources.properties) as part of
     extending your user object - this is no longer required if you use the
     Torque Security Service.  In addidion to this you need to ensure that
     you replace any references you may have made to the old security related
@@ -274,8 +275,8 @@ org.apache.turbine.services.pull.tools.TemplateLinkWithSlash
 
 <section name="Building Torque OM Classes">
 <p>
-	You will need to use Maven b9 or above in order to build the Torque 
-	Security Service and even then you should install the latest available 
+	You will need to use Maven b9 or above in order to build the Torque
+	Security Service and even then you should install the latest available
 	release of the <a href="http://db.apache.org/torque/maven-howto.html">
 	Torque generator</a> plugin.
 </p>
@@ -283,8 +284,8 @@ org.apache.turbine.services.pull.tools.TemplateLinkWithSlash
 
 <section name="Updates to this document">
 <p>
-    This document is by no means complete or totally accurate. We welcome 
-    suggestions as to how it might be improved, particularly if you have 
+    This document is by no means complete or totally accurate. We welcome
+    suggestions as to how it might be improved, particularly if you have
     just completed migrating an application by following this howto.
 </p>
 </section>

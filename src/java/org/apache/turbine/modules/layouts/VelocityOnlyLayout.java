@@ -2,19 +2,22 @@ package org.apache.turbine.modules.layouts;
 
 
 /*
- * Copyright 2001-2004 The Apache Software Foundation.
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- * Licensed under the Apache License, Version 2.0 (the "License")
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
@@ -39,7 +42,7 @@ import org.apache.velocity.context.Context;
  * screens and navigations there should be relatively few reasons to
  * subclass this Layout.
  *
- * To get the same functionality as with VelocityECSLayout, you can use two 
+ * To get the same functionality as with VelocityECSLayout, you can use two
  * supplied VelocityMacros, TurbineHtmlHead and TurbineHtmlBodyAttributes
  * in your templates. These are used to put HtmlPageAttributes into a page
  * before rendering.
@@ -55,7 +58,7 @@ import org.apache.velocity.context.Context;
  * &lt;/html&gt;
  *
  * As the layout template is rendered _after_ the screen template, you
- * can of course, add information to the $page tool in your screen template. 
+ * can of course, add information to the $page tool in your screen template.
  * This will be added correctly to the &lt;head&gt;...&lt;/head&gt; and
  * &lt;body&gt; tags.
  *
@@ -102,7 +105,7 @@ public class VelocityOnlyLayout
         context.put(TurbineConstants.SCREEN_PLACEHOLDER, returnValue);
 
         // variable to reference the navigation screen in the layout template
-        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER, 
+        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER,
                     new TemplateNavigation(data));
 
         // Grab the layout template set in the VelocityPage.
@@ -120,7 +123,7 @@ public class VelocityOnlyLayout
         data.getOut().print(TurbineVelocity
                 .handleRequest(context, prefix + templateName));
     }
-    
+
     /**
      * Build the layout.  Also sets the ContentType and Locale headers
      * of the HttpServletResponse object.
@@ -151,7 +154,7 @@ public class VelocityOnlyLayout
         context.put(TurbineConstants.SCREEN_PLACEHOLDER, returnValue);
 
         // variable to reference the navigation screen in the layout template
-        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER, 
+        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER,
                     new TemplateNavigation(data));
 
         // Grab the layout template set in the VelocityPage.
@@ -170,5 +173,5 @@ public class VelocityOnlyLayout
                 .handleRequest(context, prefix + templateName));
     }
 
-    
+
 }
