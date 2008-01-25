@@ -468,8 +468,8 @@ turbine.
     </license>
   </licenses>
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos//core/branches/TURBINE_2_3_BRANCH</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos//branches/TURBINE_2_3_BRANCH</developerConnection>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/core/branches/TURBINE_2_3_BRANCH</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/branches/TURBINE_2_3_BRANCH</developerConnection>
     <url>http://svn.apache.org/viewcvs/turbine/core/branches/TURBINE_2_3_BRANCH/</url>
   </scm>
   <organization>
@@ -782,7 +782,7 @@ turbine.
     </dependency>
 <!--    <dependency>-->
 <!--      <groupId>org.apache.torque</groupId>-->
-<!--      <artifactId>runtime</artifactId>-->
+<!--      <artifactId>torque-runtime</artifactId>-->
 <!--      <version>3.3</version>-->
 <!--      <type>jar</type>-->
 <!--      <scope>compile</scope>-->
@@ -801,6 +801,13 @@ turbine.
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.apache.torque</groupId>-->
+<!--      <artifactId>village</artifactId>-->
+<!--      <version>3.3</version>-->
+<!--      <type>jar</type>-->
+<!--      <scope>compile</scope>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>village</groupId>
       <artifactId>village</artifactId>
@@ -842,12 +849,12 @@ turbine.
     <repository>
       <id>default</id>
       <name>Default Repository</name>
-      <url>cvs.apache.org//www/cvs.apache.org/dist/jakarta/turbine/releases/rc/turbine-2.3.3-rc1</url>
+      <url>people.apache.org//www/www.apache.org/dist/turbine/releases/rc/turbine-2.3.3-rc1</url>
     </repository>
     <site>
       <id>default</id>
       <name>Default Site</name>
-      <url>scp://people.apache.org//www/cvs.apache.org/dist/jakarta/turbine/releases/rc/turbine-2.3.3-rc1/docs</url>
+      <url>scp://people.apache.org//www/turbine.apache.org</url>
     </site>
   </distributionManagement>
 </project>
