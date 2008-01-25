@@ -27,7 +27,7 @@
 <!-- ======================================================================== -->
 
 <!DOCTYPE input-data PUBLIC "JAKARTA//TURBINE intake.dtd//EN"
-                                        "http://jakarta.apache.org/turbine/dtd/intake_2_3.dtd">
+                                        "http://turbine.apache.org/dtd/intake_2_3.dtd">
 
 <input-data>
   <group name="dummy" key="dummy">

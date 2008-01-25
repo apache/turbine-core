@@ -33,7 +33,7 @@
   xmlns:ant="jelly:ant"
   xmlns:maven="jelly:maven"
   xmlns:define="jelly:define"
-  xmlns:meta="http://jakarta.apache.org/turbine/meta/taglib"
+  xmlns:meta="http://turbine.apache.org/meta/taglib"
 >
 
 <!-- ======================================================================== -->
@@ -820,7 +820,7 @@
   <!--                                                                          -->
   <!-- ======================================================================== -->
   <goal name="turbine:init">
-    <define:taglib uri="http://jakarta.apache.org/turbine/meta/taglib">
+    <define:taglib uri="http://turbine.apache.org/meta/taglib">
       <define:tag name="requiredPropertyMissing">
         <fail>
 --------------------------------------------------------------------------

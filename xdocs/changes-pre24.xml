@@ -519,7 +519,7 @@ Changes between Turbine 2.2-b1 and 2.2-b2.
 <p>
 <b>The coupled version of Torque has been removed from Turbine 2.2!</b> <br/>
 Get a full list of changes at the
-<a href="http://jakarta.apache.org/turbine/torque/changes">Torque-site</a>.
+<a href="http://db.apache.org/torque/changes">Torque-site</a>.
 </p>
 
 <subsection name="Changes that could break older environments">

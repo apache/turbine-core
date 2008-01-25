@@ -34,7 +34,7 @@ The Avalon Component service loads external modules which implement the
 <p>
 The only supported component at this point in time is
 <a href="http://db.apache.org/torque/">Torque</a>, though the
-<a href="http://jakarta.apache.org/turbine/fulcrum/">Fulcrum</a>
+<a href="http://turbine.apache.org/fulcrum/">Fulcrum</a>
 components are likely to be migrated to become Avalon components
 in the future.
 </p>

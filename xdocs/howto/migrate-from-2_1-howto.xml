@@ -89,7 +89,7 @@
 </p>
 <p>
     See the Torque
-  <a href="http://jakarta.apache.org/turbine/torque/properties-reference.html">
+  <a href="http://db.apache.org/torque/properties-reference.html">
     Properties Reference</a> for full details of the available properties.
 </p>
 </section>
@@ -134,7 +134,7 @@
     moved to different classes.
 </p>
 <p>
-    <a href="http://jakarta.apache.org/turbine/torque/changes.html#Torque%203.0-b3">
+    <a href="http://db.apache.org/torque/changes.html#Torque%203.0-b3">
     [Here]</a> is list of the most common import changes.
 </p>
 </section>
@@ -284,7 +284,7 @@ catch (TorqueException ex)
 <section name="Extending Turbine User">
 <p>
     See
-    <a href="http://jakarta.apache.org/turbine/turbine-2/howto/extend-user-howto.html">
+    <a href="http://turbine.apache.org/turbine-2/howto/extend-user-howto.html">
     Extending Turbine User How-To</a> for this information.
 </p>
 </section>
@@ -351,7 +351,7 @@ public <base class> copy() throws TorqueException
 <section name="Maven">
 <p>
     You may like to consider using
-    <a href="http://jakarta.apache.org/turbine/maven/">Maven</a> to
+    <a href="http://maven.apache.org/maven-1.x/">Maven</a> to
     build your project.  The document
     <a href="http://wiki.apache.org/turbine/TDK/Maven">
     Starting your project and database with TDK2.2 and Maven</a>

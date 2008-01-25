@@ -30,7 +30,7 @@
 
 <p>
 In Turbine, we have excellent integration with the template tool
-<a href="http://jakarta.apache.org/velocity/">Velocity</a>,
+<a href="http://velocity.apache.org/">Velocity</a>,
 we call this VelocitySite building. The reason why we want to wrap Turbine
 around Velocity instead of using it on its own is to provide a completely
 MVC model for building web applications where the framework has control

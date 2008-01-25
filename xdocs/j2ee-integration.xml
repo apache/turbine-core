@@ -124,8 +124,8 @@ of Turbine.
     <td>
 <p>
 Turbine provides good support for working with JDBC through the <a
-href="http://share.whichever.com/village/">Village API</a>, the <a
-href="http://jakarta.apache.org/turbine/torque/user-guide.html">
+href="http://db.apache.org/torque/">Village API</a>, the <a
+href="http://db.apache.org/torque/user-guide.html">
 Torque Object Relational Tool</a> and its connection
 pooling facilities. The connection pool is not yet fully J2EE
 "compatible" in that it does not support DataSources. However, at some
@@ -142,7 +142,7 @@ created one because at the time, we needed one and ours works just fine.
 Turbine provides excellent support for using JSP in its model of working
 - which is based on the Model 2 style with enhancements, such as solving
 the Action portion of the Model. However, we <a
-href="http://jakarta.apache.org/velocity/ymtd/ymtd.html">strongly
+href="http://velocity.apache.org/ymtd/ymtd.html">strongly
 suggest</a> that you do not use JSP and seek out other alternatives.
 </p>
     </td>

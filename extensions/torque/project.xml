@@ -47,7 +47,7 @@
     <dependency>
       <id>turbine</id>
       <version>2.4-dev</version>
-      <url>http://jakarta.apache.org/turbine</url>
+      <url>http://turbine.apache.org</url>
     </dependency>
     <dependency>
       <id>jdbc</id>

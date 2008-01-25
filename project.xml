@@ -798,7 +798,7 @@
       <groupId>velocity</groupId>
       <artifactId>velocity</artifactId>
       <version>1.4</version>
-      <url>http://jakarta.apache.org/velocity/</url>
+      <url>http://velocity.apache.org/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>

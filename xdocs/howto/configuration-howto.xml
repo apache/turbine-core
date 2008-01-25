@@ -87,7 +87,7 @@ control it's behavior, then you need to provide a TurbineConfiguration.xml file!
 The TurbineConfiguration.xml file doesn't contain any configuration data itself, instead
 it points at other files that may have configuration data.  Turbine leverages Commons-Configuration's
 ConfigurationFactory to access the data.  For more information, look at
-<a href="http://jakarta.apache.org/commons/sandbox/configuration/">Configuration</a> homepage.
+<a href="http://turbine.apache.org/sandbox/configuration/">Configuration</a> homepage.
 </p>
 
 <p>

@@ -29,7 +29,7 @@
 <section name="Localization Tool">
 
 <p>
-This is a tool the provides access to the <a href="http://jakarta.apache.org/turbine/fulcrum/multiproject/fulcrum-localization/index.html">Fulcrum Localization</a> component.
+This is a tool the provides access to the <a href="http://turbine.apache.org/fulcrum/multiproject/fulcrum-localization/index.html">Fulcrum Localization</a> component.
 This makes it easy to use the Localization Component.  For more uses, you can also directly load up the component.  See the LocalizationToolTest for
 sample code.
 </p>
