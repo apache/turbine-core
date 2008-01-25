@@ -32,7 +32,7 @@
 <section name="Avalon Component Service">
 <p>
 The Avalon Component service loads external modules which implement the
-<a href="http://avalon.apache.org/">Avalon</a> lifecycle interfaces.
+<a href="http://excalibur.apache.org/">Avalon</a> lifecycle interfaces.
 </p>
 <p>
 The only supported component is <a href="http://db.apache.org/torque/">Torque</a>.
