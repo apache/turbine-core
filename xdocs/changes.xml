@@ -29,6 +29,9 @@
 <body>
   <release version="2.3.3-dev" date="in Subversion">
     <action type="update" dev="seade">
+      Update to latest release of Fulcrum Yaafi.
+    </action>
+    <action type="update" dev="seade">
       Eliminate cryptix dependency. The cryptix library contains strong
       encryption algorithms causing problems using the software
       outside of the US (ECCN).  This is a partial backport from Fulcrum so
