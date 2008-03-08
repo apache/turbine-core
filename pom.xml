@@ -780,17 +780,10 @@ turbine.
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
-<!--    <dependency>-->
-<!--      <groupId>org.apache.torque</groupId>-->
-<!--      <artifactId>torque-runtime</artifactId>-->
-<!--      <version>3.3</version>-->
-<!--      <type>jar</type>-->
-<!--      <scope>compile</scope>-->
-<!--    </dependency>-->
     <dependency>
-      <groupId>torque</groupId>
-      <artifactId>torque</artifactId>
-      <version>3.2</version>
+      <groupId>org.apache.torque</groupId>
+      <artifactId>torque-runtime</artifactId>
+      <version>3.3</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
@@ -801,17 +794,10 @@ turbine.
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
-<!--    <dependency>-->
-<!--      <groupId>org.apache.torque</groupId>-->
-<!--      <artifactId>village</artifactId>-->
-<!--      <version>3.3</version>-->
-<!--      <type>jar</type>-->
-<!--      <scope>compile</scope>-->
-<!--    </dependency>-->
     <dependency>
-      <groupId>village</groupId>
+      <groupId>org.apache.torque</groupId>
       <artifactId>village</artifactId>
-      <version>2.0</version>
+      <version>3.3</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>

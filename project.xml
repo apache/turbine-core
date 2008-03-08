@@ -665,7 +665,7 @@
     <dependency>
       <groupId>torque</groupId>
       <artifactId>torque</artifactId>
-      <version>3.3-RC3</version>
+      <version>3.3</version>
       <url>http://db.apache.org/torque/</url>
       <type>jar</type>
       <properties>
@@ -695,7 +695,7 @@
     <dependency>
       <groupId>torque</groupId>
       <artifactId>village</artifactId>
-      <version>3.3-RC3</version>
+      <version>3.3</version>
       <url>http://db.apache.org/torque/</url>
       <type>jar</type>
       <properties>
