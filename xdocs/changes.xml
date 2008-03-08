@@ -28,6 +28,9 @@
 
 <body>
   <release version="2.3.3-dev" date="in Subversion">
+    <action type="update" dev="tv">
+      Update to latest release of Torque.
+    </action>
     <action type="update" dev="seade">
       Update to latest release of Fulcrum Yaafi.
     </action>
