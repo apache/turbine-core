@@ -28,6 +28,10 @@
 
 <body>
   <release version="2.3.3-dev" date="in Subversion">
+    <action type="update" dev="seade">
+      Improved handling of null values for query parameter and path info values
+      in TurbineURI (avoids a NPE, logs warning message).
+    </action>
     <action type="update" dev="tv">
       Update to latest release of Torque.
     </action>

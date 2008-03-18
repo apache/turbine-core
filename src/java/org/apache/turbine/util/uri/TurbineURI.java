@@ -387,7 +387,7 @@ public class TurbineURI
      */
     public void addPathInfo(String name, Object value)
     {
-        add(PATH_INFO, name, value.toString());
+        add(PATH_INFO, name, null == value ? null : value.toString());
     }
 
     /**
@@ -442,7 +442,7 @@ public class TurbineURI
      */
     public void addQueryData(String name, Object value)
     {
-        add(QUERY_DATA, name, value.toString());
+        add(QUERY_DATA, name, null == value ? null : value.toString());
     }
 
     /**
@@ -775,16 +775,22 @@ public class TurbineURI
             {
                 URIParam uriParam = (URIParam) it.next();
                 String key = URLEncoder.encode(uriParam.getKey());
-                String val = String.valueOf(uriParam.getValue());
+                String val = null == uriParam.getValue()
+                        ? null : String.valueOf(uriParam.getValue());
 
                 output.append(key);
                 output.append(valueDelim);
 
                 if(StringUtils.isEmpty(val))
                 {
-                    if (val == null && log.isDebugEnabled())
+                    if (val == null)
                     {
-                        log.debug("Found a null value for " + key);
+                        if (log.isWarnEnabled())
+                        {
+                            log.warn("Found a null value for " + key);
+                        }
+                        // For backwards compatibility:
+                        val = "null";
                     }
                     output.append(val);
                 }
