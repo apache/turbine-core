@@ -20,13 +20,12 @@ package org.apache.turbine.util.parser;
  */
 
 import java.io.UnsupportedEncodingException;
-
 import java.math.BigDecimal;
-
 import java.text.DateFormat;
-
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.Locale;
 import java.util.Set;
 
 import org.apache.torque.om.NumberKey;
@@ -96,6 +95,36 @@ public interface ValueParser
      */
     String getCharacterEncoding();
 
+    /**
+     * Set the locale that will be used by this ValueParser.
+     */
+    void setLocale(Locale l);
+
+    /**
+     * Get the locale that will be used by this ValueParser.
+     */
+    Locale getLocale();
+
+    /**
+     * Set the date format that will be used by this ValueParser.
+     */
+    void setDateFormat(DateFormat df);
+
+    /**
+     * Get the date format that will be used by this ValueParser.
+     */
+    DateFormat getDateFormat();
+
+    /**
+     * Set the number format that will be used by this ValueParser.
+     */
+    void setNumberFormat(NumberFormat nf);
+
+    /**
+     * Get the number format that will be used by this ValueParser.
+     */
+    NumberFormat getNumberFormat();
+    
     /**
      * Trims the string data and applies the conversion specified in
      * the property given by URL_CASE_FOLDING. It returns a new
