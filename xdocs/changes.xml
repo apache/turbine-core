@@ -28,6 +28,12 @@
 
 <body>
   <release version="2.3.3-dev" date="in Subversion">
+    <action type="add" dev="tv">
+      Made ValueParser and BaseValueParser locale-aware. Note that the default
+      locale used is always the default value of the JVM which is different from 
+      the previous behaviour where the locale used was sometimes Locale.US (for
+      float, double and BigDecimal) and sometimes the JVM-default (for dates).
+    </action>
     <action type="update" dev="seade">
       Improved handling of null values for query parameter and path info values
       in TurbineURI (avoids a NPE, logs warning message).

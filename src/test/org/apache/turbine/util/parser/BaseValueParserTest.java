@@ -20,6 +20,9 @@ package org.apache.turbine.util.parser;
  */
 
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import junit.framework.TestSuite;
 
@@ -133,18 +136,19 @@ public class BaseValueParserTest
     public void testDoubleAdd()
     {
         ValueParser vp = new BaseValueParser();
+        vp.setLocale(Locale.US);
 
         assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        double testValue = 2.0;
+        double testValue = 2.2;
 
         vp.add("foo", testValue);
 
         assertEquals("Wrong number of keys", 1, vp.keySet().size());
 
-        assertEquals("Wrong string value", "2.0", vp.getString("foo"));
-        assertEquals("Wrong double value", (double) testValue, vp.getDouble("foo"), 0.001);
-        assertEquals("Wrong Double value", (double) testValue, vp.getDoubleObject("foo").doubleValue(), 0.001);
+        assertEquals("Wrong string value", "2.2", vp.getString("foo"));
+        assertEquals("Wrong double value", testValue, vp.getDouble("foo"), 0.001);
+        assertEquals("Wrong Double value", testValue, vp.getDoubleObject("foo").doubleValue(), 0.001);
 
         double [] doubles = vp.getDoubles("foo");
         assertEquals("Wrong Array Size", 1, doubles.length);
@@ -155,6 +159,13 @@ public class BaseValueParserTest
         assertEquals("Wrong Array Size", 1, doubleObjs.length);
 
         assertEquals("Wrong Double array value", testValue, doubleObjs[0].doubleValue(), 0.001);
+        
+        vp.clear();
+        vp.setLocale(Locale.GERMANY);
+        
+        String testDouble = "2,3";
+        vp.add("foo", testDouble);
+        assertEquals("Wrong double value", 2.3, vp.getDouble("foo"), 0.001);
     }
 
     public void testIntAdd()
@@ -581,6 +592,33 @@ public class BaseValueParserTest
 
         assertEquals("Wrong number of keys", 3, vp.keySet().size());
         assertTrue(vp.containsTimeSelectorKeys("foo"));
+    }
+
+    public void testDate()
+    {
+        BaseValueParser vp = new BaseValueParser();
+        vp.setLocale(Locale.US);
+
+        assertEquals("Wrong number of keys", 0, vp.keySet().size());
+
+        vp.add("foo", "03/21/2008");
+        
+        Calendar cal = Calendar.getInstance(Locale.US);
+        cal.clear();
+        cal.set(2008, 2, 21, 0, 0, 0);
+
+        assertEquals("Wrong Date value (US)", cal.getTime(), vp.getDate("foo"));
+
+        vp.clear();
+        vp.setLocale(Locale.GERMANY);
+
+        vp.add("foo", "21.03.2008");
+        
+        cal = Calendar.getInstance(Locale.GERMANY);
+        cal.clear();
+        cal.set(2008, 2, 21, 0, 0, 0);
+
+        assertEquals("Wrong Date value (German)", cal.getTime(), vp.getDate("foo"));
     }
 
     public void testBooleanObject()
