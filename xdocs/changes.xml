@@ -28,6 +28,10 @@
 
 <body>
   <release version="2.3.3-dev" date="in Subversion">
+    <action type="update" dev="tv">
+      Set the locale of the ParameterParser and the CookieParser from the default
+      locale of RunData.
+    </action>
     <action type="add" dev="tv">
       Made ValueParser and BaseValueParser locale-aware. Note that the default
       locale used is always the default value of the JVM which is different from 
