@@ -215,8 +215,14 @@ public class TurbineRunDataService
         try
         {
             data = (TurbineRunData) pool.getInstance(cfg[0]);
-            data.setParameterParser((ParameterParser) pool.getInstance(cfg[1]));
-            data.setCookieParser((CookieParser) pool.getInstance(cfg[2]));
+            
+            ParameterParser pp = (ParameterParser) pool.getInstance(cfg[1]);
+            pp.setLocale(data.getLocale());
+            data.setParameterParser(pp);
+            
+            CookieParser cp = (CookieParser) pool.getInstance(cfg[2]);
+            cp.setLocale(data.getLocale());
+            data.setCookieParser(cp);
         }
         catch (ClassCastException x)
         {
