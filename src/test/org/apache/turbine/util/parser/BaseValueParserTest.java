@@ -21,7 +21,6 @@ package org.apache.turbine.util.parser;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import junit.framework.TestSuite;
@@ -166,6 +165,10 @@ public class BaseValueParserTest
         String testDouble = "2,3";
         vp.add("foo", testDouble);
         assertEquals("Wrong double value", 2.3, vp.getDouble("foo"), 0.001);
+        
+        vp.add("unparsable2", "1a");
+        Double result = vp.getDoubleObject("unparsable2");
+        assertNull("Double object should be null", result);
     }
 
     public void testIntAdd()
@@ -1275,7 +1278,7 @@ public class BaseValueParserTest
 
         assertEquals("Wrong number of keys", 0, vp.keySet().size());
 
-        assertEquals("Wrong value for non existing key", 0.0, vp.getBigDecimal("foo").doubleValue(), 0.001);
+        assertNull(vp.getBigDecimal("foo"));
         assertNull(vp.getBigDecimals("foo"));
 
         assertEquals("Wrong number of keys", 0, vp.keySet().size());
