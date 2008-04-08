@@ -585,7 +585,7 @@ public class BaseValueParserTest extends BaseTestCase
         // unparsable value
         parser.add("unparsable", "a");
         result = parser.getBigDecimal("unparsable");
-        assertEquals(new BigDecimal(0), result);
+        assertNull(result);
 
         // array
         parser.add("array", "1");
