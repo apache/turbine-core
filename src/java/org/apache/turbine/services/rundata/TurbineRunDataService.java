@@ -23,6 +23,7 @@ package org.apache.turbine.services.rundata;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletConfig;
@@ -248,6 +249,17 @@ public class TurbineRunDataService
             // also copy data directly into pipelineData
             pipelineDataMap.put(ParameterParser.class, pp);
             pipelineDataMap.put(CookieParser.class, cp);
+            
+            Locale locale = req.getLocale();
+            
+            if (locale == null)
+            {
+                // get the default from the Turbine configuration
+                locale = data.getLocale();
+            }
+            
+            // set the locale detected and propagate it to the parsers
+            data.setLocale(locale);
         }
         catch (PoolException pe)
         {
