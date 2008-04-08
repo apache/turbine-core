@@ -23,13 +23,13 @@ package org.apache.turbine.util.parser;
 
 import java.math.BigDecimal;
 
-import org.apache.commons.configuration.BaseConfiguration;
-import org.apache.commons.configuration.Configuration;
-import org.apache.turbine.services.ServiceManager;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.test.BaseTestCase;
+import org.apache.avalon.framework.service.ServiceException;
 import org.apache.fulcrum.parser.BaseValueParser;
-import org.apache.turbine.util.parser.ParserUtils;
+import org.apache.fulcrum.parser.ParserService;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
+import org.apache.turbine.test.BaseTestCase;
+import org.apache.turbine.util.TurbineConfig;
 
 /**
  * Testing of the Fulcrum BaseValueParser class
@@ -40,6 +40,10 @@ import org.apache.turbine.util.parser.ParserUtils;
 public class BaseValueParserTest extends BaseTestCase
 {
     private org.apache.fulcrum.parser.BaseValueParser parser;
+
+    private ParserService parserService;
+
+    private static TurbineConfig tc = null;
 
     /**
      * Constructor for test.
@@ -52,13 +56,11 @@ public class BaseValueParserTest extends BaseTestCase
         super(testName);
 
         // Setup configuration
-        ServiceManager serviceManager = TurbineServices.getInstance();
-        serviceManager.setApplicationRoot(".");
-        Configuration cfg = new BaseConfiguration();
-        cfg.setProperty(ParserUtils.URL_CASE_FOLDING_KEY,
-                ParserUtils.URL_CASE_FOLDING_LOWER_VALUE );
-        serviceManager.setConfiguration(cfg);
-
+        tc =
+            new TurbineConfig(
+                ".",
+                "/conf/test/CompleteTurbineResources.properties");
+        tc.initialize();
     }
 
     /**
@@ -66,7 +68,22 @@ public class BaseValueParserTest extends BaseTestCase
      */
     protected void setUp()
     {
-        parser = new BaseValueParser();
+        AvalonComponentService acs = 
+            (AvalonComponentService)TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
+        
+        try
+        {
+            parserService = (ParserService)acs.lookup(ParserService.ROLE);
+            parser = (BaseValueParser) parserService.getParser(BaseValueParser.class);
+        }
+        catch (ServiceException e)
+        {
+            fail(e.getMessage());
+        }
+        catch (InstantiationException e)
+        {
+            fail(e.getMessage());
+        }
     }
 
     /**
@@ -74,6 +91,11 @@ public class BaseValueParserTest extends BaseTestCase
      */
     protected void tearDown()
     {
+        if (tc != null) 
+        {
+            tc.dispose();
+        }
+        
         parser = null;
     }
 

@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.Assert;
@@ -34,7 +33,6 @@ import org.apache.turbine.modules.actions.VelocityActionDoesNothing;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.DefaultPipelineData;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.test.EnhancedMockHttpSession;
@@ -54,13 +52,12 @@ import com.mockobjects.servlet.MockServletConfig;
  */
 public class ActionLoaderTest extends BaseTestCase {
 	private static TurbineConfig tc = null;
-	private static TemplateService ts = null;
 	private MockServletConfig config = null;
 	private EnhancedMockHttpServletRequest request = null;
 	private EnhancedMockHttpSession session = null;
 	private HttpServletResponse response = null;
-	private static ServletConfig sc = null;
-	/*
+
+    /*
 	 * @see TestCase#setUp()
 	 */
 	protected void setUp() throws Exception {
@@ -83,7 +80,6 @@ public class ActionLoaderTest extends BaseTestCase {
 		response = new MockHttpServletResponse();
 		session.setupGetAttribute(User.SESSION_KEY, null);
 		request.setSession(session);
-		sc = config;
 		tc =
 			new TurbineConfig(
 				".",

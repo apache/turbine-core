@@ -46,6 +46,7 @@ import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.DefaultCookieParser;
 import org.apache.fulcrum.parser.DefaultParameterParser;
 import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.fulcrum.parser.ParserService;
 
 /**
  * The RunData Service provides the implementations for RunData and
@@ -80,6 +81,9 @@ public class TurbineRunDataService
 
     /** Private reference to the pool service for object recycling */
     private PoolService pool = null;
+
+    /** Private reference to the parser service for parser recycling */
+    private ParserService parserService = null;
 
     /**
      * Constructs a RunData Service.
@@ -147,10 +151,24 @@ public class TurbineRunDataService
 		catch (ServiceException se) {
 			throw new InitializationException("Problem looking up Pool Service:" + se);
 		}
+        
         if (pool == null)
         {
             throw new InitializationException("RunData Service requires"
                 + " configured Pool Service!");
+        }
+
+        try {
+            parserService = (ParserService)acs.lookup(ParserService.ROLE);
+        }
+        catch (ServiceException se) {
+            throw new InitializationException("Problem looking up Parser Service:" + se);
+        }
+        
+        if (parserService == null)
+        {
+            throw new InitializationException("RunData Service requires"
+                + " configured Parser Service!");
         }
 
         setInit(true);
@@ -218,14 +236,14 @@ public class TurbineRunDataService
         TurbineRunData data;
         try
         {
-        		Class runDataClazz = Class.forName(cfg[0]);
-        		Class parameterParserClazz = Class.forName(cfg[1]);
-        		Class cookieParserClazz = Class.forName(cfg[2]);
+    		Class runDataClazz = Class.forName(cfg[0]);
+    		Class parameterParserClazz = Class.forName(cfg[1]);
+    		Class cookieParserClazz = Class.forName(cfg[2]);
 
             data = (TurbineRunData) pool.getInstance(runDataClazz);
-            ParameterParser pp = (ParameterParser) pool.getInstance(parameterParserClazz);
+            ParameterParser pp = (ParameterParser) parserService.getParser(parameterParserClazz);
             data.setParameterParser(pp);
-            CookieParser cp = (CookieParser) pool.getInstance(cookieParserClazz);
+            CookieParser cp = (CookieParser) parserService.getParser(cookieParserClazz);
             data.setCookieParser(cp);
             // also copy data directly into pipelineData
             pipelineDataMap.put(ParameterParser.class, pp);
@@ -242,6 +260,10 @@ public class TurbineRunDataService
         catch (ClassCastException x)
         {
             throw new TurbineException("RunData configuration '" + key + "' is illegal", x);
+        }
+        catch (InstantiationException e)
+        {
+            throw new TurbineException("RunData configuration '" + key + "' is illegal", e);
         }
 
         // Set the request and response.
@@ -277,8 +299,8 @@ public class TurbineRunDataService
     {
         if (data instanceof TurbineRunData)
         {
-            pool.putInstance(((TurbineRunData) data).getParameterParser());
-            pool.putInstance(((TurbineRunData) data).getCookieParser());
+            parserService.putParser(((TurbineRunData) data).getParameterParser());
+            parserService.putParser(((TurbineRunData) data).getCookieParser());
 
             return pool.putInstance(data);
         }

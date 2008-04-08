@@ -25,6 +25,10 @@
 
   <body>
     <release version="2.4-M2" date="in Subversion">
+      <action type="update" dev="tv" issue="TRB-39">
+        Make sure that Turbine uses the ParserService to get 
+        correctly initialized parser objects.
+      </action>
       <action type="fix" dev="seade">
         Added missing format() methods to LocalizationTool.
       </action>
