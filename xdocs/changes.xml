@@ -29,6 +29,17 @@
 <body>
   <release version="2.3.3-dev" date="in Subversion">
     <action type="update" dev="tv">
+      Important change: The BaseValueParser now consistently returns null for 
+      all get-methods that return an Object, if the parameter name does not exist.
+      This changes the behaviour of getBigDecimal which used to return 0 in this 
+      case.
+    </action>
+    <action type="update" dev="tv">
+      Initialize the locale of RunData, the ParameterParser and the CookieParser 
+      from the HttpServletRequest. Make RunData.setLocale propagate the locale 
+      setting to the parsers.
+    </action>
+    <action type="update" dev="tv">
       Set the locale of the ParameterParser and the CookieParser from the default
       locale of RunData.
     </action>
