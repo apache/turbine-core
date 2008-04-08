@@ -52,6 +52,11 @@
         default-class="org.apache.fulcrum.localization.DefaultLocalizationService"/>
 
     <role
+        name="org.apache.fulcrum.upload.UploadService"
+        shorthand="upload"
+        default-class="org.apache.fulcrum.upload.DefaultUploadService"/>
+
+    <role
         name="org.apache.fulcrum.intake.IntakeService"
         shorthand="intake"
         default-class="org.apache.fulcrum.intake.IntakeServiceImpl"/>
@@ -60,9 +65,16 @@
         name="org.apache.fulcrum.factory.FactoryService"
         shorthand="factory"
         default-class="org.apache.fulcrum.factory.DefaultFactoryService"/>
+        
     <role
         name="org.apache.fulcrum.pool.PoolService"
         shorthand="pool"
         default-class="org.apache.fulcrum.pool.DefaultPoolService"/>
+        
+    <role
+        name="org.apache.fulcrum.parser.ParserService"
+        shorthand="parser"
+        default-class="org.apache.fulcrum.parser.DefaultParserService"/>
+        
 </role-list>
 
