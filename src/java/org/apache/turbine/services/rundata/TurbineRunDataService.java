@@ -21,6 +21,7 @@ package org.apache.turbine.services.rundata;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletConfig;
@@ -217,12 +218,21 @@ public class TurbineRunDataService
             data = (TurbineRunData) pool.getInstance(cfg[0]);
             
             ParameterParser pp = (ParameterParser) pool.getInstance(cfg[1]);
-            pp.setLocale(data.getLocale());
             data.setParameterParser(pp);
             
             CookieParser cp = (CookieParser) pool.getInstance(cfg[2]);
-            cp.setLocale(data.getLocale());
             data.setCookieParser(cp);
+
+            Locale locale = req.getLocale();
+            
+            if (locale == null)
+            {
+                // get the default from the Turbine configuration
+                locale = data.getLocale();
+            }
+            
+            // set the locale detected and propagate it to the parsers
+            data.setLocale(locale);
         }
         catch (ClassCastException x)
         {

@@ -971,6 +971,17 @@ public class DefaultTurbineRunData
     public void setLocale(Locale locale)
     {
         this.locale = locale;
+        
+        // propagate the locale to the parsers
+        if (this.parameters != null)
+        {
+            parameters.setLocale(locale);
+        }
+
+        if (this.cookies != null)
+        {
+            cookies.setLocale(locale);
+        }
     }
 
     /**
