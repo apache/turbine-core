@@ -571,7 +571,7 @@ public class BaseValueParserTest extends BaseTestCase
     {
         // no param
         BigDecimal result = parser.getBigDecimal("invalid");
-        assertEquals(new BigDecimal(0), result);
+        assertNull(result);
 
         // default
         result = parser.getBigDecimal("default", new BigDecimal(3));
