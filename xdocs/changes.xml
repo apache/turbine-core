@@ -29,6 +29,11 @@
 <body>
   <release version="2.3.3-dev" date="in Subversion">
     <action type="update" dev="tv">
+      Use the localize features of the parser to simplify the value assignment
+      in Intake fields. Made handling of empty values consistent over all number
+      field types.
+    </action>
+    <action type="update" dev="tv">
       Important change: The BaseValueParser now consistently returns null for 
       all get-methods that return an Object, if the parameter name does not exist.
       This changes the behaviour of getBigDecimal which used to return 0 in this 
