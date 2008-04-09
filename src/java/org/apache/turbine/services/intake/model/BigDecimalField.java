@@ -21,8 +21,6 @@ package org.apache.turbine.services.intake.model;
 
 import java.math.BigDecimal;
 
-import org.apache.commons.lang.StringUtils;
-
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.BigDecimalValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
@@ -36,7 +34,7 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
  * @version $Id$
  */
 public class BigDecimalField
-        extends AbstractNumberField
+        extends Field
 {
     /**
      * Constructor.
@@ -105,19 +103,21 @@ public class BigDecimalField
     {
         if (isMultiValued)
         {
-            String[] inputs = parser.getStrings(getKey());
-            BigDecimal[] values = new BigDecimal[inputs.length];
-            for (int i = 0; i < inputs.length; i++)
+            BigDecimal[] values = parser.getBigDecimals(getKey());
+
+            for (int i = 0; i < values.length; i++)
             {
-                values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? new BigDecimal(canonicalizeDecimalInput(inputs[i])) : (BigDecimal) getEmptyValue();
+                if (values[i] == null)
+                {
+                    values[i] = (BigDecimal) getEmptyValue();
+                }
             }
+
             setTestValue(values);
         }
         else
         {
-            String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val) ? new BigDecimal(canonicalizeDecimalInput(val)) : (BigDecimal) getEmptyValue());
+            setTestValue(parser.getBigDecimal(getKey(), (BigDecimal)getEmptyValue()));
         }
     }
 }

@@ -19,8 +19,6 @@ package org.apache.turbine.services.intake.model;
  * under the License.
  */
 
-import org.apache.commons.lang.StringUtils;
-
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.FloatValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
@@ -35,7 +33,7 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
  * @version $Id$
  */
 public class FloatField
-        extends AbstractNumberField
+        extends Field
 {
     /**
      * Constructor.
@@ -127,22 +125,21 @@ public class FloatField
     {
         if (isMultiValued)
         {
-            String[] inputs = parser.getStrings(getKey());
+            Float[] inputs = parser.getFloatObjects(getKey());
             float[] values = new float[inputs.length];
+
             for (int i = 0; i < inputs.length; i++)
             {
-                values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? new Float(canonicalizeDecimalInput(inputs[i])).floatValue()
-                        : ((Float) getEmptyValue()).floatValue();
+                values[i] = inputs[i] == null 
+                        ? ((Float) getEmptyValue()).floatValue() 
+                        : inputs[i].floatValue();
             }
+
             setTestValue(values);
         }
         else
         {
-            String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val)
-                    ? new Float(canonicalizeDecimalInput(val))
-                    : getEmptyValue());
+            setTestValue(parser.getFloatObject(getKey(), (Float)getEmptyValue()));
         }
     }
 

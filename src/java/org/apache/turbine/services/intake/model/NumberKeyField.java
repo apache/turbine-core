@@ -21,10 +21,7 @@ package org.apache.turbine.services.intake.model;
 
 import java.math.BigDecimal;
 
-import org.apache.commons.lang.StringUtils;
-
 import org.apache.torque.om.NumberKey;
-
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.NumberKeyValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
@@ -37,7 +34,7 @@ import org.apache.turbine.services.intake.xmlmodel.XmlField;
  * @version $Id$
  */
 public class NumberKeyField
-        extends BigDecimalField
+        extends Field
 {
 
     /**
@@ -69,6 +66,26 @@ public class NumberKeyField
     }
 
     /**
+     * Set the empty Value. This value is used if Intake
+     * maps a field to a parameter returned by the user and
+     * the corresponding field is either empty (empty string)
+     * or non-existant.
+     *
+     * @param prop The value to use if the field is empty.
+     */
+    public void setEmptyValue(String prop)
+    {
+        emptyValue = null;
+
+        if (prop == null)
+        {
+            return;
+        }
+
+        emptyValue = new NumberKey(prop);
+    }
+
+    /**
      * A suitable validator.
      *
      * @return A suitable validator
@@ -85,33 +102,28 @@ public class NumberKeyField
     {
         if (isMultiValued)
         {
-            String[] inputs = parser.getStrings(getKey());
+            BigDecimal[] inputs = parser.getBigDecimals(getKey());
             NumberKey[] values = new NumberKey[inputs.length];
+
             for (int i = 0; i < inputs.length; i++)
             {
-                if (StringUtils.isNotEmpty(inputs[i]))
-                {
-                    values[i] = new NumberKey(
-                            canonicalizeDecimalInput(inputs[i]));
-                }
-                else
-                {
-                    values[i] = null;
-                }
+                values[i] = inputs[i] == null
+                        ? (NumberKey) getEmptyValue()
+                        : new NumberKey(inputs[i]);
             }
+
             setTestValue(values);
         }
         else
         {
-            String val = parser.getString(getKey());
-            if (StringUtils.isNotEmpty(val))
+            BigDecimal value = parser.getBigDecimal(getKey());
+            if (value == null)
             {
-                BigDecimal bd = new BigDecimal(canonicalizeDecimalInput(val));
-                setTestValue(new NumberKey(bd));
+                setTestValue(getEmptyValue());
             }
             else
             {
-                setTestValue(null);
+                setTestValue(new NumberKey(value));
             }
         }
     }
