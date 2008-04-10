@@ -19,9 +19,6 @@ package org.apache.turbine.services.intake.model;
  * under the License.
  */
 
-import java.text.ParseException;
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.BooleanValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
@@ -119,57 +116,22 @@ public class BooleanField
     {
         if (isMultiValued)
         {
-            String[] inputs = parser.getStrings(getKey());
+            Boolean[] inputs = parser.getBooleanObjects(getKey());
             boolean[] values = new boolean[inputs.length];
+
             for (int i = 0; i < inputs.length; i++)
             {
-                values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? getBoolean(inputs[i]).booleanValue()
-                        : ((Boolean) getEmptyValue()).booleanValue();
+                values[i] = inputs[i] == null 
+                        ? ((Boolean) getEmptyValue()).booleanValue() 
+                        : inputs[i].booleanValue();
             }
+
             setTestValue(values);
         }
         else
         {
-            String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val) ? getBoolean(val) : (Boolean) getEmptyValue());
+            setTestValue(parser.getBooleanObject(getKey(), (Boolean)getEmptyValue()));
         }
-    }
-
-    /**
-     * Parses a string into a Boolean object.  If the field has a validator
-     * and the validator is an instance of BooleanValidator, the parse()
-     * method is used to convert the string into the Boolean.  Otherwise,
-     * the string value is passed to the constructor to the Boolean
-     * object.
-     *
-     * @param stringValue string to parse
-     * @return a <code>Boolean</code> object
-     */
-    private Boolean getBoolean(String stringValue)
-    {
-        Boolean result = null;
-
-        if (validator != null && validator instanceof BooleanValidator)
-        {
-            BooleanValidator bValidator = (BooleanValidator) validator;
-            try
-            {
-                result = bValidator.parse(stringValue);
-            }
-            catch (ParseException e)
-            {
-                // do nothing.  This should never be thrown since this method will not be
-                // executed unless the Validator has already been able to parse the
-                // string value
-            }
-        }
-        else
-        {
-            result = Boolean.valueOf(stringValue);
-        }
-
-        return result;
     }
 
     /**

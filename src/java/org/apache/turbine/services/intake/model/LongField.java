@@ -19,8 +19,6 @@ package org.apache.turbine.services.intake.model;
  * under the License.
  */
 
-import org.apache.commons.lang.StringUtils;
-
 import org.apache.turbine.services.intake.IntakeException;
 import org.apache.turbine.services.intake.validator.LongValidator;
 import org.apache.turbine.services.intake.xmlmodel.XmlField;
@@ -125,22 +123,21 @@ public class LongField
     {
         if (isMultiValued)
         {
-            String[] inputs = parser.getStrings(getKey());
+            Long[] inputs = parser.getLongObjects(getKey());
             long[] values = new long[inputs.length];
+
             for (int i = 0; i < inputs.length; i++)
             {
-                values[i] = StringUtils.isNotEmpty(inputs[i])
-                        ? new Long(inputs[i]).longValue()
-                        : ((Long) getEmptyValue()).longValue();
+                values[i] = inputs[i] == null 
+                        ? ((Long) getEmptyValue()).longValue() 
+                        : inputs[i].longValue();
             }
+
             setTestValue(values);
         }
         else
         {
-            String val = parser.getString(getKey());
-            setTestValue(StringUtils.isNotEmpty(val)
-                    ? new Long(val) : (Long) getEmptyValue());
+            setTestValue(parser.getLongObject(getKey(), (Long)getEmptyValue()));
         }
     }
-
 }

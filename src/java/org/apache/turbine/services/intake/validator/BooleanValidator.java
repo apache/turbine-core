@@ -39,6 +39,7 @@ import org.apache.commons.lang.StringUtils;
  * <li>YES</li>
  * <li>Y</li>
  * <li>1</li>
+ * <li>ON</li>
  * </ul>
  * Valid values for Boolean.FALSE:
  * <ul>
@@ -47,6 +48,7 @@ import org.apache.commons.lang.StringUtils;
  * <li>NO</li>
  * <li>N</li>
  * <li>0</li>
+ * <li>OFF</li>
  * </ul>
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
@@ -57,10 +59,10 @@ public class BooleanValidator
         extends DefaultValidator
 {
     /** String values which would evaluate to Boolean.TRUE */
-    private static String[] trueValues = {"TRUE","T","YES","Y","1"};
+    private static String[] trueValues = {"TRUE","T","YES","Y","1","ON"};
 
     /** String values which would evaluate to Boolean.FALSE */
-    private static String[] falseValues = {"FALSE","F","NO","N","0"};
+    private static String[] falseValues = {"FALSE","F","NO","N","0","OFF"};
 
     /**
      * Default Constructor
