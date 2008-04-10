@@ -946,8 +946,17 @@ REMOVE THIS LINE -->
         </resource>
       </resources>
     </unitTest>
-    <integrationUnitTestSourceDirectory/>
-    <aspectSourceDirectory/>
+    <resources>
+      <resource>
+        <directory>${basedir}</directory>
+        <targetPath>META-INF</targetPath>
+        <includes>
+          <include>NOTICE</include>
+        </includes>
+      </resource>
+    </resources>
+    <!-- integrationUnitTestSourceDirectory/ -->
+    <!-- aspectSourceDirectory/ -->
   </build>
 
   <reports>
