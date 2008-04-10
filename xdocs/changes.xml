@@ -27,7 +27,10 @@
 </properties>
 
 <body>
-  <release version="2.3.3-dev" date="in Subversion">
+  <release version="2.3.3-b1" date="2008-04-10">
+    <action type="update" dev="hoffmann">
+      Preparing for the Release of Turbine 2.3.3
+    </action>
     <action type="update" dev="tv">
       Further simplify the value assignment in Intake fields.
     </action>
