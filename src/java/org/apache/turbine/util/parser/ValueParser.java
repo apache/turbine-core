@@ -318,6 +318,24 @@ public interface ValueParser
     Boolean getBooleanObject(String name, Boolean defaultValue);
 
     /**
+     * Return an array of booleans for the given name.  If the name does
+     * not exist, return null.
+     *
+     * @param name A String with the name.
+     * @return A boolean[].
+     */
+    boolean[] getBooleans(String name);
+
+    /**
+     * Return an array of Booleans for the given name.  If the name does
+     * not exist, return null.
+     *
+     * @param name A String with the name.
+     * @return A Boolean[].
+     */
+    Boolean[] getBooleanObjects(String name);
+
+    /**
      * Return a double for the given name.  If the name does not
      * exist, return defaultValue.
      *
