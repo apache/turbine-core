@@ -612,14 +612,14 @@
       <groupId>javax.activation</groupId>
       <artifactId>activation</artifactId>
       <version>1.1.1</version>
-      <url>http://download.java.net/maven/1/javax.activation/jars</url>
+      <url>http://java.sun.com/javase/technologies/desktop/javabeans/jaf/</url>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>javax.mail</groupId>
       <artifactId>mail</artifactId>
       <version>1.4.1</version>
-      <url>http://download.java.net/maven/1/javax.mail/jars</url>
+      <url>http://java.sun.com/products/javamail/</url>
       <type>jar</type>
     </dependency>
     <dependency>
@@ -837,7 +837,7 @@ REMOVE THIS LINE -->
     <dependency>
       <groupId>torque</groupId>
       <artifactId>maven-torque-plugin</artifactId>
-      <version>3.3-RC3</version>
+      <version>3.3</version>
       <type>plugin</type>
     </dependency>
 
