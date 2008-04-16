@@ -203,6 +203,16 @@
     <copy todir="${maven.dist.src.assembly.dir}/xdocs">
       <fileset dir="xdocs"/>
     </copy>
+    
+    <copy todir="${maven.dist.src.assembly.dir}">
+      <fileset dir="${basedir}">
+        <include name="pom.xml"/>
+        <include name="project.xml"/>
+        <include name="project.properties"/>
+        <include name="NOTICE"/>
+        <include name="LICENSE.txt"/>
+      </fileset>
+    </copy>
   </preGoal>
 
   <!-- ================================================================== -->
@@ -223,6 +233,11 @@
         <include name="Log4j.properties" />
         <include name="TurbineResources.properties" />
       </fileset>
+    </copy>
+
+    <copy todir="${maven.dist.bin.assembly.dir}" failonerror="false">
+      <fileset file='${basedir}/NOTICE'/>
+      <fileset file='${basedir}/LICENSE.txt'/>
     </copy>
 
     <u:tokenize var="databaseList" delim="," trim="true">db2,hypersonic,interbase,mysql,oracle,postgresql,sybase</u:tokenize>
