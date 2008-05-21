@@ -55,30 +55,9 @@ Please download these jars and install them into your local repository at
 MAVEN_REPO_LOCAL/javax.activation/jars/activation-1.0.2.jar
 MAVEN_REPO_LOCAL/javax.mail/jars/mail-1.3.3.jar
 
-
-Using JDK 1.3
--------------
-
-In addition to the jars mentioned above, you must also modify the
-project.xml file shipped with Turbine which is in the root directory
-of the source distribution. Open this file in an editor and search for
-the "uncomment these dependencies if you are using a 1.3 JDK" line. In
-between the two comment blocks, there are a number of dependencies
-commented out which are required for JDK 1.3. Remove the two lines
-that read "REMOVE THIS LINE".
-
-You will also need two additional jars that cannot be downloaded from
-the central maven repository at www.ibiblio.org/maven/ due to license
-restrictions:
-
-- jdbc 2.0 from http://java.sun.com/products/jdbc/
-- jndi 1.2.1 from http://java.sun.com/products/jndi/
-
-Please download these jars and install them into your local repository at
-
-MAVEN_REPO_LOCAL/javax.sql/jars/jdbc-stdext-2.0.jar
-MAVEN_REPO_LOCAL/javax.naming/jars/jndi-1.2.1.jar
-
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+IMPORTANT NOTICE FOR USERS OF JDK 1.3. IT IS NO LONGER SUPPORTED
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 Using a J2EE distribution
 -------------------------
