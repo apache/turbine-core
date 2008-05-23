@@ -237,10 +237,10 @@ public class VelocityHtmlEmail extends HtmlEmail
      * @param surl A String.
      * @param name A String.
      * @return A String with the cid of the embedded file.
-     * @exception VelocityEmailException
+     * @exception EmailException
      * @see HtmlEmail#embed(URL surl, String name) embed.
      */
-    public String embed(String surl, String name) throws VelocityEmailException
+    public String embed(String surl, String name) throws EmailException
     {
         String cid = "";
         try
