@@ -22,6 +22,7 @@ package org.apache.turbine.services.pull.tools;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.turbine.services.pull.PullService;
 import org.apache.turbine.services.pull.TurbinePull;
 import org.apache.turbine.test.BaseTurbineTest;
@@ -109,13 +110,12 @@ public class UIToolTest
         UITool ui = getTool();
 
         String[] skinNames = ui.getSkinNames();
-        // two real skins + ".svn"
-        assertEquals(3, skinNames.length);
+        // Remove the ".svn" dir that may be present.
+        skinNames = (String[]) ArrayUtils.removeElement(skinNames, ".svn");
+        assertEquals(2, skinNames.length);
 
-        // Not completely sure this will always be in the same order.
-        assertEquals(".svn", skinNames[0]); // Not actually a skin
-        assertEquals("myotherskin", skinNames[1]);
-        assertEquals("myskin", skinNames[2]);
+        assertTrue(ArrayUtils.contains(skinNames, "myotherskin"));
+        assertTrue(ArrayUtils.contains(skinNames, "myskin"));
     }
 
     public void testSkinValues()
