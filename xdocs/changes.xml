@@ -27,9 +27,29 @@
 </properties>
 
 <body>
-  <release version="2.3.3-b1" date="2008-04-10">
+  <release version="2.3.3-RC1" date="2008-05-??">
     <action type="update" dev="hoffmann">
       Preparing for the Release of Turbine 2.3.3
+    </action>
+    <action type="update" dev="seade">
+      VelocityHtmlEmail now throws EmailException rather than
+      VelocityEmailException.  This has been done for compatibility with
+      commons-email-1.1, even though commons-email-1.0 is being used for now.
+    </action>
+    <action type="update" dev="seade">
+      Update jar dependencies:<br/>
+      <ul>
+        <li>javax.activation to 1.1.1</li>
+        <li>javax.mail to 1.4.1</li>
+        <li>commons-configuration to 1.5</li>
+        <li>commons-fileupload to 1.2.1</li>
+        <li>commons-io to 1.4</li>
+        <li>commons-logging to 1.1.1</li>
+        <li>commons-lang to 2.4</li>
+        <li>commons-pool to 1.4</li>
+        <li>log4j to 1.2.15</li>
+        <li>servletapi to 2.4</li>
+      </ul>
     </action>
     <action type="update" dev="tv">
       Further simplify the value assignment in Intake fields.
