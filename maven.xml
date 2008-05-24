@@ -197,13 +197,14 @@
         <include name="test/*"/>
         <include name="checkstyle-license.txt"/>
         <include name="turbine-checkstyle.xml"/>
+        <include name="test/turbine-resources/**/*"/>
       </fileset>
     </copy>
 
     <copy todir="${maven.dist.src.assembly.dir}/xdocs">
       <fileset dir="xdocs"/>
     </copy>
-    
+
     <copy todir="${maven.dist.src.assembly.dir}">
       <fileset dir="${basedir}">
         <include name="pom.xml"/>
