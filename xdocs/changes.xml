@@ -27,9 +27,29 @@
 </properties>
 
 <body>
-  <release version="2.3.3-b1" date="2008-04-10">
+  <release version="2.3.3-RC1" date="2008-06-12">
     <action type="update" dev="hoffmann">
       Preparing for the Release of Turbine 2.3.3
+    </action>
+    <action type="update" dev="seade">
+      VelocityHtmlEmail now throws EmailException rather than
+      VelocityEmailException.  This has been done for compatibility with
+      commons-email-1.1, even though commons-email-1.0 is being used for now.
+    </action>
+    <action type="update" dev="seade">
+      Update jar dependencies:<br/>
+      <ul>
+        <li>javax.activation to 1.1.1</li>
+        <li>javax.mail to 1.4.1</li>
+        <li>commons-configuration to 1.5</li>
+        <li>commons-fileupload to 1.2.1</li>
+        <li>commons-io to 1.4</li>
+        <li>commons-logging to 1.1.1</li>
+        <li>commons-lang to 2.4</li>
+        <li>commons-pool to 1.4</li>
+        <li>log4j to 1.2.15</li>
+        <li>servletapi to 2.4</li>
+      </ul>
     </action>
     <action type="update" dev="tv">
       Further simplify the value assignment in Intake fields.
@@ -44,14 +64,14 @@
       field types.
     </action>
     <action type="update" dev="tv">
-      Important change: The BaseValueParser now consistently returns null for 
+      Important change: The BaseValueParser now consistently returns null for
       all get-methods that return an Object, if the parameter name does not exist.
-      This changes the behaviour of getBigDecimal which used to return 0 in this 
+      This changes the behaviour of getBigDecimal which used to return 0 in this
       case.
     </action>
     <action type="update" dev="tv">
-      Initialize the locale of RunData, the ParameterParser and the CookieParser 
-      from the HttpServletRequest. Make RunData.setLocale propagate the locale 
+      Initialize the locale of RunData, the ParameterParser and the CookieParser
+      from the HttpServletRequest. Make RunData.setLocale propagate the locale
       setting to the parsers.
     </action>
     <action type="update" dev="tv">
@@ -60,7 +80,7 @@
     </action>
     <action type="add" dev="tv">
       Made ValueParser and BaseValueParser locale-aware. Note that the default
-      locale used is always the default value of the JVM which is different from 
+      locale used is always the default value of the JVM which is different from
       the previous behaviour where the locale used was sometimes Locale.US (for
       float, double and BigDecimal) and sometimes the JVM-default (for dates).
     </action>
@@ -151,7 +171,7 @@
     <action type="remove" dev="tv">
       Remove long deprecated classes.
       <ul>
-      	<li>org.apache.turbine.util.SequencedHashtable</li>
+        <li>org.apache.turbine.util.SequencedHashtable</li>
         <li>org.apache.turbine.util.StringStackBuffer</li>
         <li>org.apache.turbine.util.FileUtils</li>
         <li>org.apache.turbine.util.BufferCache</li>
@@ -164,8 +184,8 @@
         <li>org.apache.java.lang.*</li>
         <li>org.apache.java.security.*</li>
         <li>org.apache.turbine.util.db.*</li>
-   	    <li>org.apache.turbine.services.resources.TurbineResources</li>
-	    <li>org.apache.turbine.services.db.*</li>
+         <li>org.apache.turbine.services.resources.TurbineResources</li>
+      <li>org.apache.turbine.services.db.*</li>
       </ul>
     </action>
     <action type="add" dev="tv">
@@ -440,13 +460,13 @@
     <action type="update">
        Upgraded to commons-pool-1.1
     </action>
-  	 <action type="update">
-   	   HttpUtils.httpDateFormat had the year set as 'yyyyy', should be 'yyyy' therefore
-   	   setting expiry dates failed.
-  	 </action>
-  	 <action type="update">
-  	   TTWS60: HtmlPageAttributes setBackground sets the incorrect key name.
-  	 </action>
+     <action type="update">
+        HttpUtils.httpDateFormat had the year set as 'yyyyy', should be 'yyyy' therefore
+        setting expiry dates failed.
+     </action>
+     <action type="update">
+       TTWS60: HtmlPageAttributes setBackground sets the incorrect key name.
+     </action>
   </release>
 
 <release version="Turbine 2.3">
@@ -461,14 +481,14 @@
       use at least Maven 1.0b9, you will have to install it manually
       before you can recompile the source code.
     </action>
-    	<action type="update">
+      <action type="update">
       The IntakeService has been refactored, introducing two Abstract classes; the
       DefaultValidator and the NumberValidator. They both contain rules which are
       applicable to all Validator's and NumbeValidator's respectively. Unnecessary use
       was being made of (Old) NumberValidator which used BigDecimals, cleaned this up
       implementing concrete classes for all Number Types. Simplified definition of
       (number &amp; required) rules in Intake.xml.
-  	</action>
+    </action>
     <action type="update">
       The LoginUser action no longer checks to see if the user object is already
       in the session and returns if it is found.  The user will always be there
@@ -533,30 +553,30 @@
       commons-fileupload component.
     </action>
       <action type="update">
-	 Added ability to specify either the class TurbineResources.properties file
-	 or a new TurbineConfiguration.xml file.  TurbineConfiguration.xml allows
-	 Turbine to pull it's configuration values from multiple locations.  Please
-	 read the howto for more information.
+   Added ability to specify either the class TurbineResources.properties file
+   or a new TurbineConfiguration.xml file.  TurbineConfiguration.xml allows
+   Turbine to pull it's configuration values from multiple locations.  Please
+   read the howto for more information.
     </action>
     <action type="update">
-	 Added a Howto describing using Hibernate with Turbine.  The actual code is
-	 currently not part of the Turbine distribution due to licensing issues, but is very
-	 easy to implement due to Turbine support of Avalon Components.
+   Added a Howto describing using Hibernate with Turbine.  The actual code is
+   currently not part of the Turbine distribution due to licensing issues, but is very
+   easy to implement due to Turbine support of Avalon Components.
     </action>
     <action type="update">
-	 Changed TurbineUser so that when either permanent or temporary values are
-	 stored, if the required hashtable was missing, then it was created.  This
-	 happened in conjunction with the PassiveUserManager.  Additionally, the
-	 setTempStorage(Hashtable newTempStorage) did not actually assign the new
-	 Hashtable.  Cleaned up some of the code so the parallel permanent and temp
-	 data storage methods followed the same patterns.  Created a cactus testcase
-	 to test TurbineUser.
+   Changed TurbineUser so that when either permanent or temporary values are
+   stored, if the required hashtable was missing, then it was created.  This
+   happened in conjunction with the PassiveUserManager.  Additionally, the
+   setTempStorage(Hashtable newTempStorage) did not actually assign the new
+   Hashtable.  Cleaned up some of the code so the parallel permanent and temp
+   data storage methods followed the same patterns.  Created a cactus testcase
+   to test TurbineUser.
     </action>
     <action type="update">
-	 Changed scheduler so that if it is NOT enabled, then it doesn't attempt
-	 to connect to the database and retrieve jobs.  This prevents a spurious
-	 no data source error from showing up in the turbine logs on startup.  Added
-	 a cactus test to test the fix.
+   Changed scheduler so that if it is NOT enabled, then it doesn't attempt
+   to connect to the database and retrieve jobs.  This prevents a spurious
+   no data source error from showing up in the turbine logs on startup.  Added
+   a cactus test to test the fix.
     </action>
     <action type="update">
       A new pull tool is available in the session scope called $sessionData.
@@ -641,9 +661,9 @@
            Configuration values can now be stored in XML, .properties, as well as JNDI Tree.
          </action>
          <action type="update">
-		   Configuration values can be overridden.  If you specify JNDI and the .xml, if a value
-		   is found in JNDI, then it is used.  Useful for overriding environment specific values
-		   like mail servers or whether Velocity templates are reloadable.
+       Configuration values can be overridden.  If you specify JNDI and the .xml, if a value
+       is found in JNDI, then it is used.  Useful for overriding environment specific values
+       like mail servers or whether Velocity templates are reloadable.
          </action>
            </action>
     <action type="update">
