@@ -27,6 +27,11 @@
 </properties>
 
 <body>
+  <release version="2.3.3" date="in SVN">
+    <action type="fix" dev="tv" issue="TRB-70" due-to="Susi Berrington">
+      Fix a memory leak due to an invalid map key type.
+    </action>
+  </release>
   <release version="2.3.3-RC1" date="2008-06-12">
     <action type="update" dev="hoffmann">
       Preparing for the Release of Turbine 2.3.3

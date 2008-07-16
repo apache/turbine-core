@@ -82,13 +82,11 @@ public abstract class JavaBaseFactory
         {
             for (Iterator it = packages.iterator(); it.hasNext();)
             {
-                StringBuffer className = new StringBuffer();
+                StringBuffer sb = new StringBuffer();
 
-                className.append(it.next());
-                className.append('.');
-                className.append(packageName);
-                className.append('.');
-                className.append(name);
+                sb.append(it.next()).append('.').append(packageName).append('.').append(name);
+                
+                String className = sb.toString();
 
                 log.debug("Trying " + className);
 
