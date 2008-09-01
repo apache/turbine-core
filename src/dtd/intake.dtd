@@ -75,7 +75,7 @@ mapToObject:    Class name of the object that will be mapped to the
 
                 Default: null
 
-poolCapacity:   Capacity of the pool used to store instances of the fields
+pool-capacity:  Capacity of the pool used to store instances of the fields
                 within this group.
 
                 Default: 128
@@ -202,6 +202,7 @@ Used in:        group
   validator CDATA #IMPLIED
   defaultValue CDATA #IMPLIED
   emptyValue CDATA #IMPLIED
+  fieldClass CDATA #IMPLIED
 >
 
 <!--

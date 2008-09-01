@@ -28,6 +28,10 @@
 
 <body>
   <release version="2.3.3" date="in SVN">
+    <action type="fix" dev="seade">
+      Minor correction to intake.dtd - added missing fieldClass attribute
+      to field element.
+    </action>
     <action type="fix" dev="tv" issue="TRB-70" due-to="Susi Berrington">
       Fix a memory leak due to an invalid map key type.
     </action>
