@@ -24,7 +24,7 @@ import junit.framework.TestSuite;
 
 import org.apache.turbine.test.BaseTurbineTest;
 
-import com.metaparadigm.jsonrpc.JSONRPCBridge;
+import org.jabsorb.JSONRPCBridge;
 
 
 public class JsonrpcServicelTest

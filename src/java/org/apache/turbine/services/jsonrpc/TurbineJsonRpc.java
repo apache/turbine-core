@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.turbine.services.TurbineServices;
 
-import com.metaparadigm.jsonrpc.JSONRPCBridge;
+import org.jabsorb.JSONRPCBridge;
 
 /**
  * This is a static accessor class for {@link JsonRpcService}.

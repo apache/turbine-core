@@ -28,7 +28,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.TurbineBaseService;
 
-import com.metaparadigm.jsonrpc.JSONRPCBridge;
+import org.jabsorb.JSONRPCBridge;
 
 /**
  * This is a service that will respond to JSON-RPC calls.
