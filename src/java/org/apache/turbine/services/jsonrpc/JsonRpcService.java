@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.turbine.services.Service;
 
-import com.metaparadigm.jsonrpc.JSONRPCBridge;
+import org.jabsorb.JSONRPCBridge;
 
 /**
  * The interface an JsonRpcService implements.

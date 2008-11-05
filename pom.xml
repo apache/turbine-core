@@ -39,7 +39,7 @@ turbine.
   <groupId>org.apache.turbine</groupId>
   <artifactId>turbine</artifactId>
   <name>turbine-2</name>
-  <version>2.3.3-b1</version>
+  <version>2.3.3-RC1</version>
   <description>Turbine is a servlet based framework that allows experienced Java
     developers to quickly build secure web applications. Parts of Turbine
     can also be used independently of the web portion of Turbine as
@@ -516,9 +516,9 @@ turbine.
 <!--        <configuration/>-->
 <!--      </plugin>-->
       <plugin>
-        <groupId>torque</groupId>
-        <artifactId>maven-torque-plugin</artifactId>
-        <version>3.2</version>
+        <groupId>org.apache.torque</groupId>
+        <artifactId>torque-maven-plugin</artifactId>
+        <version>3.3</version>
         <configuration/>
       </plugin>
       <plugin>
@@ -767,9 +767,9 @@ turbine.
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.metaparadigm</groupId>
-      <artifactId>json-rpc</artifactId>
-      <version>1.0</version>
+      <groupId>org.jabsorb</groupId>
+      <artifactId>jabsorb</artifactId>
+      <version>1.3</version>
       <type>jar</type>
       <scope>compile</scope>
       <optional>true</optional>
