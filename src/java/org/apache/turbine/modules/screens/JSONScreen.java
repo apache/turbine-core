@@ -31,7 +31,7 @@ import org.apache.turbine.modules.screens.RawScreen;
 import org.apache.turbine.services.jsonrpc.TurbineJsonRpc;
 import org.apache.turbine.util.RunData;
 
-import org.jabsorb.JSONRPCBridge;
+import com.metaparadigm.jsonrpc.JSONRPCBridge;
 
 /**
  * A Screen class for dealing with JSON-RPC requests.  Typically you would
@@ -69,7 +69,7 @@ import org.jabsorb.JSONRPCBridge;
  * }
  * </code>
  *
- * <p>This code is derived from the org.jabsorb.JSONRPCServlet
+ * <p>This code is derived from the com.metaparadigm.jsonrpc.JSONRPCServlet
  *
  * @author brad@folkens.com
  * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
@@ -77,11 +77,7 @@ import org.jabsorb.JSONRPCBridge;
  */
 public class JSONScreen extends RawScreen
 {
-    /**
-     * Depending on your needs you may want to suffix this with the characterset
-     * thus: "application/json;charset=utf-8"
-     */
-    protected static final String JSONRPC_CONTENT_TYPE = "application/json";
+    protected static final String JSONRPC_CONTENT_TYPE = "text/plain";
 
     protected final static int BUFFER_SIZE = 4096;
 
@@ -111,13 +107,13 @@ public class JSONScreen extends RawScreen
         data.declareDirectResponse();
         HttpServletRequest request = data.getRequest();
         
-        String charset = request.getCharacterEncoding();
-        if(charset == null)
-        {
-            charset = data.getCharSet();
-        }
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(request.getInputStream(), charset));
+        //String charset = request.getCharacterEncoding();
+        //if(charset == null)
+        //{
+        //    charset = "UTF-8";
+        //}
+        //BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), charset));
+        BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
 
         // Read the request
         CharArrayWriter cdata = new CharArrayWriter();
@@ -136,7 +132,7 @@ public class JSONScreen extends RawScreen
         Object json_res = TurbineJsonRpc.processCall(cdata, json_bridge, request);
 
         PrintWriter out = new PrintWriter(
-                new OutputStreamWriter(data.getResponse().getOutputStream(), charset));
+                new OutputStreamWriter(data.getResponse().getOutputStream()));
         out.print(json_res.toString());
         out.flush();
         out.close();

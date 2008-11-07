@@ -72,7 +72,7 @@ import org.apache.turbine.util.RunData;
  * }
  * </code>
  *
- * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
+ * @author <a href="mailto:seade@policypoint.net">Scott Eade</a>
  * @version $Id$
  */
 public abstract class JSONSecureScreen extends JSONScreen

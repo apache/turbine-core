@@ -32,7 +32,7 @@
 
 <p>
 The JSON-RPC Service supports JavaScript to Java AJAX communications using
-<a href="http://jabsorb.org/">jabsorb</a>.
+<a href="http://oss.metaparadigm.com/jsonrpc/">JSON-RPC-Java</a>.
 </p>
 
 </section>
@@ -152,7 +152,8 @@ function jsonEval(evalStr) {
 
 <p>
 In these pages you also need to include the JavaScript necessary to process the
-JSON calls - this file is available as part of the jabsorb distribution:
+JSON calls - this file is available as part of the JSON-RPC-Java distribution
+(it is included in the <code>webapps\jaonrpc</code> directory):
 </p>
 
 <source><![CDATA[

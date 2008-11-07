@@ -29,16 +29,6 @@
 <body>
   <release version="2.3.3" date="in SVN">
     <action type="fix" dev="seade">
-      Corrected JSONScreen to set the correct content type and to cater for
-      the response character set.
-    </action>
-    <action type="update" dev="seade">
-      Updated the JSON-RPC Service from
-      <a href="http://oss.metaparadigm.com/jsonrpc/">JSON-RPC-Java</a> to its
-      replacement, <a href="http://jabsorb.org">jabsorb</a>.  Applications
-      should update the related JavaScript files.
-    </action>
-    <action type="fix" dev="seade">
       Minor correction to intake.dtd - added missing fieldClass attribute
       to field element.
     </action>
