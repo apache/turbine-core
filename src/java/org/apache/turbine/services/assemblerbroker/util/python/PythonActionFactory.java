@@ -21,7 +21,7 @@ package org.apache.turbine.services.assemblerbroker.util.python;
  */
 
 
-import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.Assembler;
 
 /**
@@ -47,6 +47,6 @@ public class PythonActionFactory
     public Assembler getAssembler(String name)
         throws Exception
     {
-        return getAssembler(TurbineConstants.ACTION_PREFIX, name);
+        return getAssembler(Action.PREFIX, name);
     }
 }

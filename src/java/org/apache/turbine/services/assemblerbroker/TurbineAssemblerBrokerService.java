@@ -27,9 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -124,12 +124,17 @@ public class TurbineAssemblerBrokerService
         factories = new HashMap();
         try
         {
-            registerFactories(AssemblerBrokerService.ACTION_TYPE);
-            registerFactories(AssemblerBrokerService.SCREEN_TYPE);
-            registerFactories(AssemblerBrokerService.NAVIGATION_TYPE);
-            registerFactories(AssemblerBrokerService.LAYOUT_TYPE);
-            registerFactories(AssemblerBrokerService.PAGE_TYPE);
-            registerFactories(AssemblerBrokerService.SCHEDULEDJOB_TYPE);
+            Configuration conf = getConfiguration();
+            
+            for (Iterator i = conf.getKeys(); i.hasNext();)
+            {
+                String type = (String)i.next();
+                
+                if (!"classname".equalsIgnoreCase(type))
+                {
+                    registerFactories(type);
+                }
+            }
         }
         catch (TurbineException e)
         {

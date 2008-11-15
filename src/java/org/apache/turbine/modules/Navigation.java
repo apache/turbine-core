@@ -36,6 +36,26 @@ import org.apache.turbine.util.RunData;
 public abstract class Navigation
     extends Assembler
 {
+    /** Prefix for navigation related classes and templates */
+    public static final String PREFIX = "navigations";
+    
+    /** Property for the size of the navigation cache if caching is on */
+    public static final String CACHE_SIZE_KEY = "navigation.cache.size";
+    
+    /** The default size for the navigation cache */
+    public static final int CACHE_SIZE_DEFAULT = 10;
+
+    /** Represents Navigation Objects */
+    public static final String NAME = "navigation";
+
+    /**
+     * @see org.apache.turbine.modules.Assembler#getPrefix()
+     */
+    public String getPrefix()
+    {
+        return PREFIX;
+    }
+
     /**
      * A subclass must override this method to build itself.
      * Subclasses override this method to store the navigation in
@@ -75,7 +95,7 @@ public abstract class Navigation
     protected ConcreteElement doBuild(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = (RunData)getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         return doBuild(data);
     }
 

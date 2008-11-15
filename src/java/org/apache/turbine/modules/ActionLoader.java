@@ -28,7 +28,6 @@ import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
-import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -42,14 +41,13 @@ import org.apache.turbine.util.RunData;
  */
 public class ActionLoader
     extends GenericLoader
+    implements Loader
 {
     /** Logging */
     private static Log log = LogFactory.getLog(ActionLoader.class);
 
     /** The single instance of this class. */
-    private static ActionLoader instance = new ActionLoader(
-        Turbine.getConfiguration().getInt(TurbineConstants.ACTION_CACHE_SIZE_KEY,
-                                          TurbineConstants.ACTION_CACHE_SIZE_DEFAULT));
+    private static ActionLoader instance = new ActionLoader(getConfiguredCacheSize());
 
     /** The Assembler Broker Service */
     private static AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
@@ -113,6 +111,29 @@ public class ActionLoader
         getInstance(name).perform(pipelineData);
     }
 
+    /**
+     * Pulls out an instance of the object by name.  Name is just the
+     * single name of the object. This is equal to getInstance but
+     * returns an Assembler object and is needed to fulfil the Loader
+     * interface.
+     *
+     * @param name Name of object instance.
+     * @return An Action with the specified name, or null.
+     * @exception Exception a generic exception.
+     */
+    public Assembler getAssembler(String name)
+        throws Exception
+    {
+        return getInstance(name);
+    }
+
+    /**
+     * @see org.apache.turbine.modules.Loader#getCacheSize()
+     */
+    public int getCacheSize()
+    {
+        return ActionLoader.getConfiguredCacheSize();
+    }
 
     /**
      * Pulls out an instance of the object by name. Name is just the
@@ -140,8 +161,7 @@ public class ActionLoader
             try
             {
                 // Attempt to load the screen
-                action = (Action) ab.getAssembler(
-                        AssemblerBrokerService.ACTION_TYPE, name);
+                action = (Action) ab.getAssembler(Action.NAME, name);
             }
             catch (ClassCastException cce)
             {
@@ -160,8 +180,12 @@ public class ActionLoader
                 List packages = Turbine.getConfiguration()
                     .getList(TurbineConstants.MODULE_PACKAGES);
 
-                ObjectUtils.addOnce(packages,
-                        GenericLoader.getBasePackage());
+                String basePackage = GenericLoader.getBasePackage();
+
+                if (!packages.contains(basePackage))
+                {
+                    packages.add(basePackage);
+                }
 
                 throw new ClassNotFoundException(
                         "\n\n\tRequested Action not found: " + name +
@@ -185,5 +209,16 @@ public class ActionLoader
     public static ActionLoader getInstance()
     {
         return instance;
+    }
+    
+    /**
+     * Helper method to get the configured cache size for this module
+     * 
+     * @return the configure cache size
+     */
+    private static int getConfiguredCacheSize()
+    {
+        return Turbine.getConfiguration().getInt(Action.CACHE_SIZE_KEY,
+                Action.CACHE_SIZE_DEFAULT);
     }
 }

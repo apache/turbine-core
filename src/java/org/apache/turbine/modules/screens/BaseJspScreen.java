@@ -22,10 +22,7 @@ package org.apache.turbine.modules.screens;
 
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.ecs.ConcreteElement;
-
-import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.jsp.TurbineJsp;
 import org.apache.turbine.services.template.TurbineTemplate;
@@ -45,7 +42,7 @@ public class BaseJspScreen
         extends TemplateScreen
 {
     /** The prefix for lookup up screen pages */
-    private String prefix = TurbineConstants.SCREEN_PREFIX + "/";
+    private String prefix = getPrefix() + "/";
 
     /**
      * Method that sets up beans and forward the request to the JSP.
@@ -87,7 +84,7 @@ public class BaseJspScreen
     public ConcreteElement buildTemplate(PipelineData pipelineData)
             throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
         // get the name of the JSP we want to use
         String templateName
@@ -117,6 +114,7 @@ public class BaseJspScreen
     protected void doBuildTemplate(RunData data)
         throws Exception
     {
+        // abstract method
     }
 
     /**
@@ -128,6 +126,7 @@ public class BaseJspScreen
     protected void doBuildTemplate(PipelineData pipelineData)
         throws Exception
     {
+        // abstract method
     }
 
 }

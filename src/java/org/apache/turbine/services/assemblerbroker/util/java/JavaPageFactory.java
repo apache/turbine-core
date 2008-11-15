@@ -21,8 +21,8 @@ package org.apache.turbine.services.assemblerbroker.util.java;
  */
 
 
-import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Assembler;
+import org.apache.turbine.modules.Page;
 
 /**
  * A screen factory that attempts to load a java class from
@@ -43,6 +43,6 @@ public class JavaPageFactory
      */
     public Assembler getAssembler(String name)
     {
-        return getAssembler(TurbineConstants.PAGE_PREFIX, name);
+        return getAssembler(Page.PREFIX, name);
     }
 }

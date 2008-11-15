@@ -49,10 +49,7 @@ public class NavigationLoader
     private static Log log = LogFactory.getLog(NavigationLoader.class);
 
     /** The single instance of this class. */
-    private static NavigationLoader instance =
-        new NavigationLoader(Turbine.getConfiguration()
-                         .getInt(TurbineConstants.NAVIGATION_CACHE_SIZE_KEY,
-                                 TurbineConstants.NAVIGATION_CACHE_SIZE_DEFAULT));
+    private static NavigationLoader instance = new NavigationLoader(getConfiguredCacheSize());
 
     /** The Assembler Broker Service */
     private static AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
@@ -171,6 +168,14 @@ public class NavigationLoader
     }
 
     /**
+     * @see org.apache.turbine.modules.Loader#getCacheSize()
+     */
+    public int getCacheSize()
+    {
+        return NavigationLoader.getConfiguredCacheSize();
+    }
+
+    /**
      * Pulls out an instance of the Navigation by name.  Name is just the
      * single name of the Navigation.
      *
@@ -198,8 +203,7 @@ public class NavigationLoader
                 if (ab != null)
                 {
                     // Attempt to load the navigation
-                    navigation = (Navigation) ab.getAssembler(
-                        AssemblerBrokerService.NAVIGATION_TYPE, name);
+                    navigation = (Navigation) ab.getAssembler(Navigation.NAME, name);
                 }
             }
             catch (ClassCastException cce)
@@ -244,5 +248,16 @@ public class NavigationLoader
     public static NavigationLoader getInstance()
     {
         return instance;
+    }
+
+    /**
+     * Helper method to get the configured cache size for this module
+     * 
+     * @return the configure cache size
+     */
+    private static int getConfiguredCacheSize()
+    {
+        return Turbine.getConfiguration().getInt(Navigation.CACHE_SIZE_KEY,
+                Navigation.CACHE_SIZE_DEFAULT);
     }
 }

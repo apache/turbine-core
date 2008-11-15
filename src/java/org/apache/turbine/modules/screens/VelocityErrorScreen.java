@@ -74,7 +74,7 @@ public class VelocityErrorScreen
     protected void doBuildTemplate(PipelineData pipelineData, Context context)
             throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doBuildTemplate(data);
     }
 

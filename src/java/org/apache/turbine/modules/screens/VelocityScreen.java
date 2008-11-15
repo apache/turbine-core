@@ -22,22 +22,15 @@ package org.apache.turbine.modules.screens;
 
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.lang.exception.ExceptionUtils;
-
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.template.TurbineTemplate;
-
 import org.apache.turbine.services.velocity.TurbineVelocity;
-
 import org.apache.turbine.util.RunData;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -59,7 +52,7 @@ public class VelocityScreen
     extends TemplateScreen
 {
     /** The prefix for lookup up screen pages */
-    private String prefix = TurbineConstants.SCREEN_PREFIX + "/";
+    private String prefix = getPrefix() + "/";
 
     /**
      * Velocity Screens extending this class should overide this
@@ -203,7 +196,7 @@ public class VelocityScreen
     public ConcreteElement buildTemplate(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         String screenData = null;
 
         Context context = TurbineVelocity.getContext(pipelineData);

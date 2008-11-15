@@ -62,7 +62,7 @@ public class DirectResponseLayout extends Layout
     public void doBuild(PipelineData pipelineData)
     throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doBuild(data);
     }
 

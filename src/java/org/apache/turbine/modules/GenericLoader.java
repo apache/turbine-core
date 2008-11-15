@@ -89,7 +89,7 @@ public abstract class GenericLoader
     public void exec(PipelineData pipelineData, String name)
             throws Exception
     {
-        RunData data = (RunData)getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         exec(data, name);
     }
 

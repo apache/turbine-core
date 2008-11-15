@@ -21,8 +21,8 @@ package org.apache.turbine.services.assemblerbroker.util.python;
  */
 
 
-import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Assembler;
+import org.apache.turbine.modules.Screen;
 
 /**
  * A screen factory that attempts to load a python class in the
@@ -47,6 +47,6 @@ public class PythonScreenFactory
     public Assembler getAssembler(String name)
         throws Exception
     {
-        return getAssembler(TurbineConstants.SCREEN_PREFIX, name);
+        return getAssembler(Screen.PREFIX, name);
     }
 }

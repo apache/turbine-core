@@ -90,13 +90,13 @@ public class InvalidState
     /**
      * Build the Screen.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception, a generic exception.
      */
     public ConcreteElement doBuild(PipelineData pipelineData)
             throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         return doBuild(data);
     }
 

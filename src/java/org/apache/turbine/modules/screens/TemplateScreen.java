@@ -78,7 +78,7 @@ public abstract class TemplateScreen
     protected void doBuildTemplate(PipelineData pipelineData)
     throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doBuildTemplate(data);
     }
 
@@ -108,7 +108,7 @@ public abstract class TemplateScreen
     public ConcreteElement buildTemplate(PipelineData pipelineData)
     throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         return buildTemplate(data);
     }
 
@@ -289,12 +289,11 @@ public abstract class TemplateScreen
     public void doRedirect(PipelineData pipelineData, String screen, String template)
             throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         log.debug("doRedirect(data, " + screen + ", " + template + ")");
         setTemplate(data, template);
         ScreenLoader.getInstance().exec(pipelineData, screen);
     }
-
 
 
     /**

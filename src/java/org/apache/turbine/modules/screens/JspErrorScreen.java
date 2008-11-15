@@ -60,7 +60,7 @@ public class JspErrorScreen
     protected void doBuildTemplate(PipelineData pipelineData)
         throws Exception
     {
-            RunData data = (RunData) getRunData(pipelineData);
+            RunData data = getRunData(pipelineData);
             doBuildTemplate(data);
     }
 

@@ -131,7 +131,7 @@ public class Error extends Screen
      */
     public ConcreteElement doBuild(PipelineData pipelineData) throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         return doBuild(data);
     }
 }

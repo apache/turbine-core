@@ -68,7 +68,7 @@ public abstract class VelocitySecureScreen
                                             Context context)
             throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doBuildTemplate(data);
     }
 
@@ -135,7 +135,7 @@ public abstract class VelocitySecureScreen
     protected boolean isAuthorized(PipelineData pipelineData)
     throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         return isAuthorized(data);
     }
 

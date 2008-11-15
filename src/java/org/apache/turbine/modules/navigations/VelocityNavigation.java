@@ -24,7 +24,7 @@ package org.apache.turbine.modules.navigations;
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
 
-import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.modules.Navigation;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.services.velocity.TurbineVelocity;
@@ -49,7 +49,7 @@ public class VelocityNavigation
         extends TemplateNavigation
 {
     /** The prefix for lookup up navigation pages */
-    private String prefix = TurbineConstants.NAVIGATION_PREFIX + "/";
+    private String prefix = Navigation.PREFIX + "/";
 
     /**
      * Velocity Navigations extending this class should overide this

@@ -33,6 +33,26 @@ import org.apache.turbine.util.RunData;
 public abstract class Page
     extends Assembler
 {
+    /** Prefix for page related classes and templates */
+    public static final String PREFIX = "pages";
+    
+    /** Property for the size of the page cache if caching is on */
+    public static final String CACHE_SIZE_KEY = "page.cache.size";
+    
+    /** The default size for the page cache */
+    public static final int CACHE_SIZE_DEFAULT = 5;
+
+    /** Represents Page Objects */
+    public static final String NAME = "page";
+
+    /**
+     * @see org.apache.turbine.modules.Assembler#getPrefix()
+     */
+    public String getPrefix()
+    {
+        return PREFIX;
+    }
+
     /**
      * A subclass must override this method to build itself.
      * Subclasses override this method to store the page in RunData or
@@ -56,7 +76,7 @@ public abstract class Page
     protected void doBuild(PipelineData pipelineData)
     	throws Exception
     {
-        RunData data = (RunData)getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doBuild(data);
     }
 

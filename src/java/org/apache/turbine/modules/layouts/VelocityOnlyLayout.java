@@ -75,7 +75,7 @@ public class VelocityOnlyLayout
     private static Log log = LogFactory.getLog(VelocityOnlyLayout.class);
 
     /** The prefix for lookup up layout pages */
-    private String prefix = TurbineConstants.LAYOUT_PREFIX + "/";
+    private String prefix = Layout.PREFIX + "/";
 
     /**
      * Build the layout.  Also sets the ContentType and Locale headers

@@ -37,4 +37,11 @@ public interface Loader
      */
     public Assembler getAssembler(String name)
         throws Exception;
+    
+    /**
+     * Get the size of a possibly configured cache
+     * 
+     * @return the size of the cache in bytes
+     */
+    public int getCacheSize();
 }

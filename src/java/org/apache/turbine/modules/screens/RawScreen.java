@@ -75,7 +75,7 @@ public abstract class RawScreen extends Screen
     protected final ConcreteElement doBuild(PipelineData pipelineData)
             throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         return doBuild(data);
     }
 
@@ -99,7 +99,7 @@ public abstract class RawScreen extends Screen
      */
     protected String getContentType(PipelineData pipelineData)
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         return getContentType(data);
     }
 
@@ -127,7 +127,7 @@ public abstract class RawScreen extends Screen
     protected void doOutput(PipelineData pipelineData)
             throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doOutput(data);
     }
 

@@ -42,15 +42,14 @@ import org.apache.turbine.util.RunData;
  */
 public class ScheduledJobLoader
     extends GenericLoader
+    implements Loader
 {
     /** Logging */
     private static Log log = LogFactory.getLog(ScheduledJobLoader.class);
 
     /** The single instance of this class. */
     private static ScheduledJobLoader instance =
-        new ScheduledJobLoader(Turbine.getConfiguration()
-            .getInt(TurbineConstants.SCHEDULED_JOB_CACHE_SIZE_KEY,
-                TurbineConstants.SCHEDULED_JOB_CACHE_SIZE_DEFAULT));
+        new ScheduledJobLoader(getConfiguredCacheSize());
 
     /** The Assembler Broker Service */
     private static AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
@@ -123,6 +122,30 @@ public class ScheduledJobLoader
 
     /**
      * Pulls out an instance of the object by name.  Name is just the
+     * single name of the object. This is equal to getInstance but
+     * returns an Assembler object and is needed to fulfil the Loader
+     * interface.
+     *
+     * @param name Name of object instance.
+     * @return A ScheduledJob with the specified name, or null.
+     * @exception Exception a generic exception.
+     */
+    public Assembler getAssembler(String name)
+        throws Exception
+    {
+        return getInstance(name);
+    }
+
+    /**
+     * @see org.apache.turbine.modules.Loader#getCacheSize()
+     */
+    public int getCacheSize()
+    {
+        return ScheduledJobLoader.getConfiguredCacheSize();
+    }
+
+    /**
+     * Pulls out an instance of the object by name.  Name is just the
      * single name of the object.
      *
      * @param name Name of object instance.
@@ -149,8 +172,7 @@ public class ScheduledJobLoader
                 if (ab != null)
                 {
                     // Attempt to load the job
-                    job = (ScheduledJob) ab.getAssembler(
-                        AssemblerBrokerService.SCHEDULEDJOB_TYPE, name);
+                    job = (ScheduledJob) ab.getAssembler(ScheduledJob.NAME, name);
                 }
             }
             catch (ClassCastException cce)
@@ -194,5 +216,16 @@ public class ScheduledJobLoader
     public static ScheduledJobLoader getInstance()
     {
         return instance;
+    }
+
+    /**
+     * Helper method to get the configured cache size for this module
+     * 
+     * @return the configure cache size
+     */
+    private static int getConfiguredCacheSize()
+    {
+        return Turbine.getConfiguration().getInt(ScheduledJob.CACHE_SIZE_KEY,
+                ScheduledJob.CACHE_SIZE_DEFAULT);
     }
 }

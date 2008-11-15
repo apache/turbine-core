@@ -36,6 +36,26 @@ import org.apache.turbine.services.schedule.JobEntry;
  */
 public abstract class ScheduledJob extends Assembler
 {
+    /** Prefix for scheduler job related classes */
+    public static final String PREFIX = "scheduledjobs";
+    
+    /** The key for the schedulder job cache size if module caching is on. */
+    public static final String CACHE_SIZE_KEY = "scheduledjob.cache.size";
+    
+    /** The default size of the schedulder job cache if module caching is on. */
+    public static final int CACHE_SIZE_DEFAULT = 10;
+
+    /** Represents Scheduled Job Objects */
+    public static final String NAME = "scheduledjob";
+
+    /**
+     * @see org.apache.turbine.modules.Assembler#getPrefix()
+     */
+    public String getPrefix()
+    {
+        return PREFIX;
+    }
+
     /**
      * Run the Jobentry from the scheduler queue.
      *
