@@ -53,7 +53,7 @@ public class IntakeTool
         implements ApplicationTool, Recyclable
 {
     /** Used for logging */
-    private static Log log = LogFactory.getLog(IntakeTool.class);
+    protected static Log log = LogFactory.getLog(IntakeTool.class);
 
     /** Constant for default key */
     public static final String DEFAULT_KEY = "_0";
@@ -62,14 +62,14 @@ public class IntakeTool
     public static final String INTAKE_GRP = "intake-grp";
 
     /** Groups from intake.xml */
-    private HashMap groups;
+    protected HashMap groups;
 
     /** ValueParser instance */
-    private ValueParser pp;
+    protected ValueParser pp;
 
-    HashMap declaredGroups = new HashMap();
-    StringBuffer allGroupsSB = new StringBuffer(256);
-    StringBuffer groupSB = new StringBuffer(128);
+    private HashMap declaredGroups = new HashMap();
+    private StringBuffer allGroupsSB = new StringBuffer(256);
+    private StringBuffer groupSB = new StringBuffer(128);
 
     /** The cache of PullHelpers. **/
     private Map pullMap;
@@ -231,11 +231,11 @@ public class IntakeTool
         String groupName;
 
         /**
-         * Private constructor to force use of factory method.
+         * Protected constructor to force use of factory method.
          *
          * @param groupName
          */
-        private PullHelper(String groupName)
+        protected PullHelper(String groupName)
         {
             this.groupName = groupName;
         }
