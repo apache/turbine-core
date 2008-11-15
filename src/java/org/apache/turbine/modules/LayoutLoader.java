@@ -48,10 +48,7 @@ public class LayoutLoader
     private static Log log = LogFactory.getLog(LayoutLoader.class);
 
     /** The single instance of this class. */
-    private static LayoutLoader instance =
-        new LayoutLoader(Turbine.getConfiguration()
-                         .getInt(TurbineConstants.LAYOUT_CACHE_SIZE_KEY,
-                                 TurbineConstants.LAYOUT_CACHE_SIZE_DEFAULT));
+    private static LayoutLoader instance = new LayoutLoader(getConfiguredCacheSize());
 
     /** The Assembler Broker Service */
     private static AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
@@ -116,8 +113,6 @@ public class LayoutLoader
         getInstance(name).build(pipelineData);
     }
 
-
-
     /**
      * Pulls out an instance of the object by name.  Name is just the
      * single name of the object. This is equal to getInstance but
@@ -132,6 +127,14 @@ public class LayoutLoader
         throws Exception
     {
         return getInstance(name);
+    }
+
+    /**
+     * @see org.apache.turbine.modules.Loader#getCacheSize()
+     */
+    public int getCacheSize()
+    {
+        return LayoutLoader.getConfiguredCacheSize();
     }
 
     /**
@@ -162,8 +165,7 @@ public class LayoutLoader
                 if (ab != null)
                 {
                     // Attempt to load the layout
-                    layout = (Layout) ab.getAssembler(
-                        AssemblerBrokerService.LAYOUT_TYPE, name);
+                    layout = (Layout) ab.getAssembler(Layout.NAME, name);
                 }
             }
             catch (ClassCastException cce)
@@ -208,5 +210,16 @@ public class LayoutLoader
     public static LayoutLoader getInstance()
     {
         return instance;
+    }
+
+    /**
+     * Helper method to get the configured cache size for this module
+     * 
+     * @return the configure cache size
+     */
+    private static int getConfiguredCacheSize()
+    {
+        return Turbine.getConfiguration().getInt(Layout.CACHE_SIZE_KEY,
+                Layout.CACHE_SIZE_DEFAULT);
     }
 }

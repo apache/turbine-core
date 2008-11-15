@@ -40,24 +40,6 @@ public interface AssemblerBrokerService
     /** Name of the Service */
     String SERVICE_NAME = "AssemblerBrokerService";
 
-    /** Predefined types for Turbine built-in assemblers: Actions  */
-    String ACTION_TYPE = "action";
-
-    /** Predefined types for Turbine built-in assemblers: Screens  */
-    String SCREEN_TYPE = "screen";
-
-    /** Predefined types for Turbine built-in assemblers: Navigations  */
-    String NAVIGATION_TYPE = "navigation";
-
-    /** Predefined types for Turbine built-in assemblers: Layouts  */
-    String LAYOUT_TYPE = "layout";
-
-    /** Predefined types for Turbine built-in assemblers: Pages  */
-    String PAGE_TYPE = "page";
-
-    /** Predefined types for Turbine built-in assemblers: Scheduler Jobs  */
-    String SCHEDULEDJOB_TYPE = "scheduledjob";
-
     /**
      * Register an AssemblerFactory class for a given type
      *

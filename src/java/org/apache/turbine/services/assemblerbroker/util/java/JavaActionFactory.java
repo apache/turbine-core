@@ -21,7 +21,7 @@ package org.apache.turbine.services.assemblerbroker.util.java;
  */
 
 
-import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.Assembler;
 
 /**
@@ -43,6 +43,6 @@ public class JavaActionFactory
      */
     public Assembler getAssembler(String name)
     {
-        return getAssembler(TurbineConstants.ACTION_PREFIX, name);
+        return getAssembler(Action.PREFIX, name);
     }
 }

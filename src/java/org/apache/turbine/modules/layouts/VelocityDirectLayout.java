@@ -55,7 +55,7 @@ public class VelocityDirectLayout
     private static Log log = LogFactory.getLog(VelocityDirectLayout.class);
 
     /** The prefix for lookup up layout pages */
-    private String prefix = TurbineConstants.LAYOUT_PREFIX + "/";
+    private String prefix = Layout.PREFIX + "/";
 
     /**
      * Method called by LayoutLoader.

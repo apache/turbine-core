@@ -48,10 +48,7 @@ public class PageLoader
     private static Log log = LogFactory.getLog(PageLoader.class);
 
     /** The single instance of this class. */
-    private static PageLoader instance =
-        new PageLoader(Turbine.getConfiguration()
-                       .getInt(TurbineConstants.PAGE_CACHE_SIZE_KEY,
-                               TurbineConstants.PAGE_CACHE_SIZE_DEFAULT));
+    private static PageLoader instance = new PageLoader(getConfiguredCacheSize());
 
     /** The Assembler Broker Service */
     private static AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
@@ -135,6 +132,14 @@ public class PageLoader
     }
 
     /**
+     * @see org.apache.turbine.modules.Loader#getCacheSize()
+     */
+    public int getCacheSize()
+    {
+        return PageLoader.getConfiguredCacheSize();
+    }
+
+    /**
      * Pulls out an instance of the page by name.  Name is just the
      * single name of the page.
      *
@@ -162,8 +167,7 @@ public class PageLoader
                 if (ab != null)
                 {
                     // Attempt to load the screen
-                    page = (Page) ab.getAssembler(
-                        AssemblerBrokerService.PAGE_TYPE, name);
+                    page = (Page) ab.getAssembler(Page.NAME, name);
                 }
             }
             catch (ClassCastException cce)
@@ -208,5 +212,16 @@ public class PageLoader
     public static PageLoader getInstance()
     {
         return instance;
+    }
+
+    /**
+     * Helper method to get the configured cache size for this module
+     * 
+     * @return the configure cache size
+     */
+    private static int getConfiguredCacheSize()
+    {
+        return Turbine.getConfiguration().getInt(Page.CACHE_SIZE_KEY,
+                Page.CACHE_SIZE_DEFAULT);
     }
 }

@@ -38,6 +38,26 @@ import org.apache.turbine.util.RunData;
 public abstract class Screen
     extends Assembler
 {
+    /** Prefix for screen related classes and templates */
+    public static final String PREFIX = "screens";
+    
+    /** Property for the size of the screen cache if caching is on */
+    public static final String CACHE_SIZE_KEY = "screen.cache.size";
+    
+    /** The default size for the screen cache */
+    public static final int CACHE_SIZE_DEFAULT = 50;
+
+    /** Represents Screen Objects */
+    public static final String NAME = "screen";
+
+    /**
+     * @see org.apache.turbine.modules.Assembler#getPrefix()
+     */
+    public String getPrefix()
+    {
+        return PREFIX;
+    }
+
     /**
      * A subclass must override this method to build itself.
      * Subclasses override this method to store the screen in RunData
@@ -50,7 +70,7 @@ public abstract class Screen
     protected ConcreteElement doBuild(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         return doBuild(data);
     }
 
@@ -84,7 +104,7 @@ public abstract class Screen
      */
     public String getLayout(PipelineData pipelineData)
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         return data.getLayout();
     }
 
@@ -96,13 +116,9 @@ public abstract class Screen
      */
     public void setLayout(PipelineData pipelineData, String layout)
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         data.setLayout(layout);
     }
-
-
-
-
 
     /**
      * A subclass must override this method to build itself.

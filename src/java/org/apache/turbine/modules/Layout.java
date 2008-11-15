@@ -32,6 +32,26 @@ import org.apache.turbine.util.RunData;
 public abstract class Layout
     extends Assembler
 {
+    /** Prefix for layout related classes and templates */
+    public static final String PREFIX = "layouts";
+    
+    /** Property for the size of the layout cache if caching is on */
+    public static final String CACHE_SIZE_KEY = "layout.cache.size";
+    
+    /** The default size for the layout cache */
+    public static final int CACHE_SIZE_DEFAULT = 10;
+
+    /** Represents Layout Objects */
+    public static final String NAME = "layout";
+
+    /**
+     * @see org.apache.turbine.modules.Assembler#getPrefix()
+     */
+    public String getPrefix()
+    {
+        return PREFIX;
+    }
+
     /**
      * A subclass must override this method to build itself.
      * Subclasses override this method to store the layout in RunData
@@ -69,7 +89,7 @@ public abstract class Layout
      */
     protected void doBuild(PipelineData pipelineData) throws Exception
     {
-        RunData data = (RunData)getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doBuild(data);
     }
 

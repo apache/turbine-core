@@ -42,7 +42,7 @@ public class JspLayout
     extends Layout
 {
     /** The prefix for lookup up layout pages */
-    private String prefix = TurbineConstants.LAYOUT_PREFIX + "/";
+    private String prefix = Layout.PREFIX + "/";
 
     /**
      * Method called by LayoutLoader.

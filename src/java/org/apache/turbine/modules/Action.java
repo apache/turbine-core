@@ -31,6 +31,26 @@ import org.apache.turbine.util.RunData;
  */
 public abstract class Action extends Assembler
 {
+    /** Prefix for action related classes and templates */
+    public static final String PREFIX = "actions";
+
+    /** Property for the size of the module cache if caching is on */
+    public static final String CACHE_SIZE_KEY = "action.cache.size";
+
+    /** The default size for the action cache */
+    public static final int CACHE_SIZE_DEFAULT = 20;
+    
+    /** Represents Action Objects */
+    public static final String NAME = "action";
+
+    /**
+     * @see org.apache.turbine.modules.Assembler#getPrefix()
+     */
+    public String getPrefix()
+    {
+        return PREFIX;
+    }
+
     /**
      * A subclass must override this method to perform itself.  The
      * Action can also set the screen that is associated with RunData.
@@ -63,7 +83,7 @@ public abstract class Action extends Assembler
      */
     public void doPerform(PipelineData pipelineData) throws Exception
     {
-        RunData data = (RunData)getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doPerform(data);
     }
 

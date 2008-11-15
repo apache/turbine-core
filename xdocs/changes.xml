@@ -26,6 +26,12 @@
   <body>
     <release version="2.4-M2" date="in Subversion">
       <action type="update" dev="tv">
+        Removed the references to the different module types from TurbineConstants
+        and tried to reduce the number of inter-dependencies in the module, loader
+        and broker-classes. This should lead to a transparent module configuration
+        without any hard-wired module types.
+      </action>
+      <action type="update" dev="tv">
         Ported the class cache for JavaBaseFactory from Turbine 2.3 
       </action>
       <action type="update" dev="tv">

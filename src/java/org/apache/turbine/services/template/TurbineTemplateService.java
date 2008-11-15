@@ -22,33 +22,30 @@ package org.apache.turbine.services.template;
 
 
 import java.io.File;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.avalon.framework.service.ServiceException;
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.factory.FactoryException;
 import org.apache.fulcrum.factory.FactoryService;
-import org.apache.fulcrum.pool.PoolService;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.LayoutLoader;
 import org.apache.turbine.modules.Loader;
+import org.apache.turbine.modules.Navigation;
 import org.apache.turbine.modules.NavigationLoader;
+import org.apache.turbine.modules.Page;
 import org.apache.turbine.modules.PageLoader;
+import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.template.mapper.BaseTemplateMapper;
 import org.apache.turbine.services.template.mapper.ClassMapper;
@@ -58,7 +55,6 @@ import org.apache.turbine.services.template.mapper.LayoutTemplateMapper;
 import org.apache.turbine.services.template.mapper.Mapper;
 import org.apache.turbine.services.template.mapper.ScreenTemplateMapper;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.uri.URIConstants;
 
 /**
@@ -191,26 +187,14 @@ public class TurbineTemplateService
     /** Represents Page Objects */
     public static final int PAGE_KEY = 0;
 
-    /** Represents Page Objects */
-    public static final String PAGE_NAME = "page";
-
     /** Represents Screen Objects */
     public static final int SCREEN_KEY = 1;
-
-    /** Represents Screen Objects */
-    public static final String SCREEN_NAME = "screen";
 
     /** Represents Layout Objects */
     public static final int LAYOUT_KEY = 2;
 
-    /** Represents Layout Objects */
-    public static final String LAYOUT_NAME = "layout";
-
     /** Represents Navigation Objects */
     public static final int NAVIGATION_KEY = 3;
-
-    /** Represents Navigation Objects */
-    public static final String NAVIGATION_NAME = "navigation";
 
     /** Represents Layout Template Objects */
     public static final int LAYOUT_TEMPLATE_KEY = 4;
@@ -269,6 +253,7 @@ public class TurbineTemplateService
      */
     public TurbineTemplateService()
     {
+        // empty
     }
 
     /**
@@ -430,7 +415,7 @@ public class TurbineTemplateService
      */
     public String getDefaultPageName(String template)
     {
-        return ((Mapper) mapperRegistry[PAGE_KEY]).getDefaultName(template);
+        return (mapperRegistry[PAGE_KEY]).getDefaultName(template);
     }
 
     /**
@@ -443,7 +428,7 @@ public class TurbineTemplateService
      */
     public String getDefaultScreenName(String template)
     {
-        return ((Mapper) mapperRegistry[SCREEN_KEY]).getDefaultName(template);
+        return (mapperRegistry[SCREEN_KEY]).getDefaultName(template);
     }
 
     /**
@@ -456,7 +441,7 @@ public class TurbineTemplateService
      */
     public String getDefaultLayoutName(String template)
     {
-        return ((Mapper) mapperRegistry[LAYOUT_KEY]).getDefaultName(template);
+        return (mapperRegistry[LAYOUT_KEY]).getDefaultName(template);
     }
 
     /**
@@ -469,7 +454,7 @@ public class TurbineTemplateService
      */
     public String getDefaultNavigationName(String template)
     {
-        return ((Mapper) mapperRegistry[NAVIGATION_KEY]).getDefaultName(template);
+        return (mapperRegistry[NAVIGATION_KEY]).getDefaultName(template);
     }
 
     /**
@@ -482,7 +467,7 @@ public class TurbineTemplateService
      */
     public String getDefaultLayoutTemplateName(String template)
     {
-        return ((Mapper) mapperRegistry[LAYOUT_TEMPLATE_KEY]).getDefaultName(template);
+        return (mapperRegistry[LAYOUT_TEMPLATE_KEY]).getDefaultName(template);
     }
 
     /**
@@ -524,7 +509,7 @@ public class TurbineTemplateService
     public String getScreenName(String template)
         throws Exception
     {
-        return ((Mapper) mapperRegistry[SCREEN_KEY]).getMappedName(template);
+        return (mapperRegistry[SCREEN_KEY]).getMappedName(template);
     }
 
     /**
@@ -538,7 +523,7 @@ public class TurbineTemplateService
     public String getLayoutName(String template)
         throws Exception
     {
-        return ((Mapper) mapperRegistry[LAYOUT_KEY]).getMappedName(template);
+        return (mapperRegistry[LAYOUT_KEY]).getMappedName(template);
     }
 
     /**
@@ -552,7 +537,7 @@ public class TurbineTemplateService
     public String getNavigationName(String template)
         throws Exception
     {
-        return ((Mapper) mapperRegistry[NAVIGATION_KEY]).getMappedName(template);
+        return (mapperRegistry[NAVIGATION_KEY]).getMappedName(template);
     }
 
     /**
@@ -567,7 +552,7 @@ public class TurbineTemplateService
     public String getScreenTemplateName(String template)
         throws Exception
     {
-        return ((Mapper) mapperRegistry[SCREEN_TEMPLATE_KEY]).getMappedName(template);
+        return (mapperRegistry[SCREEN_TEMPLATE_KEY]).getMappedName(template);
     }
 
     /**
@@ -581,7 +566,7 @@ public class TurbineTemplateService
     public String getLayoutTemplateName(String template)
         throws Exception
     {
-        return ((Mapper) mapperRegistry[LAYOUT_TEMPLATE_KEY]).getMappedName(template);
+        return (mapperRegistry[LAYOUT_TEMPLATE_KEY]).getMappedName(template);
     }
 
     /**
@@ -596,7 +581,7 @@ public class TurbineTemplateService
     public String getNavigationTemplateName(String template)
         throws Exception
     {
-        return ((Mapper) mapperRegistry[NAVIGATION_TEMPLATE_KEY]).getMappedName(template);
+        return (mapperRegistry[NAVIGATION_TEMPLATE_KEY]).getMappedName(template);
     }
 
     /**
@@ -700,8 +685,8 @@ public class TurbineTemplateService
         mapperRegistry = new Mapper [TEMPLATE_TYPES];
 
         String [] mapperNames = new String [] {
-            PAGE_NAME,SCREEN_NAME, LAYOUT_NAME,
-            NAVIGATION_NAME, LAYOUT_TEMPLATE_NAME, SCREEN_TEMPLATE_NAME, NAVIGATION_TEMPLATE_NAME
+            Page.NAME,Screen.NAME, Layout.NAME,
+            Navigation.NAME, LAYOUT_TEMPLATE_NAME, SCREEN_TEMPLATE_NAME, NAVIGATION_TEMPLATE_NAME
         };
 
         String [] mapperClasses = new String [] {
@@ -715,25 +700,13 @@ public class TurbineTemplateService
         };
 
         int [] mapperCacheSize = new int [] {
-            0,
-            conf.getInt(
-                    TurbineConstants.SCREEN_CACHE_SIZE_KEY,
-                    TurbineConstants.SCREEN_CACHE_SIZE_DEFAULT),
-            conf.getInt(
-                    TurbineConstants.LAYOUT_CACHE_SIZE_KEY,
-                    TurbineConstants.LAYOUT_CACHE_SIZE_DEFAULT),
-            conf.getInt(
-                    TurbineConstants.NAVIGATION_CACHE_SIZE_KEY,
-                    TurbineConstants.NAVIGATION_CACHE_SIZE_DEFAULT),
-            conf.getInt(
-                    TurbineConstants.LAYOUT_CACHE_SIZE_KEY,
-                    TurbineConstants.LAYOUT_CACHE_SIZE_DEFAULT),
-            conf.getInt(
-                    TurbineConstants.SCREEN_CACHE_SIZE_KEY,
-                    TurbineConstants.SCREEN_CACHE_SIZE_DEFAULT),
-            conf.getInt(
-                    TurbineConstants.NAVIGATION_CACHE_SIZE_KEY,
-                    TurbineConstants.NAVIGATION_CACHE_SIZE_DEFAULT)
+            PageLoader.getInstance().getCacheSize(),
+            ScreenLoader.getInstance().getCacheSize(),
+            LayoutLoader.getInstance().getCacheSize(),
+            NavigationLoader.getInstance().getCacheSize(),
+            LayoutLoader.getInstance().getCacheSize(),
+            ScreenLoader.getInstance().getCacheSize(),
+            NavigationLoader.getInstance().getCacheSize()
         };
 
         String [] mapperDefaultProperty = new String [] {
@@ -757,9 +730,9 @@ public class TurbineTemplateService
 
         String [] mapperPrefix = new String [] {
             null, null, null, null,
-            TurbineConstants.LAYOUT_PREFIX,
-            TurbineConstants.SCREEN_PREFIX,
-            TurbineConstants.NAVIGATION_PREFIX  };
+            Layout.PREFIX,
+            Screen.PREFIX,
+            Navigation.PREFIX  };
 
         for (int i = 0; i < TEMPLATE_TYPES; i++)
         {
@@ -777,16 +750,13 @@ public class TurbineTemplateService
 
             try
             {
-    			   AvalonComponentService acs = (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
-    			   FactoryService factory = (FactoryService)acs.lookup(FactoryService.ROLE);
-    			   tm = (Mapper) factory.getInstance(mapperClass);
+    		    FactoryService factory = (FactoryService)TurbineServices.getInstance().getService(FactoryService.ROLE);
+    		    tm = (Mapper) factory.getInstance(mapperClass);
             }
-            catch (FactoryException e) {
-            		throw new InitializationException("", e);
+            catch (FactoryException e) 
+            {
+        		throw new InitializationException("", e);
 		    }
-            catch (ServiceException se) {
-				throw new InitializationException("Problem looking up Factory service",se);
-			}
 
             tm.setUseCache(useCache);
             tm.setCacheSize(mapperCacheSize[i]);

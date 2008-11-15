@@ -74,42 +74,6 @@ public interface TurbineConstants
 	/** Default value of the Turbine Module Caching */
 	boolean MODULE_CACHE_DEFAULT = true;
 
-	/** Property for the size of the action cache if caching is on */
-	String ACTION_CACHE_SIZE_KEY = "action.cache.size";
-
-	/** The default size for the action cache */
-	int ACTION_CACHE_SIZE_DEFAULT = 20;
-
-	/** Property for the size of the layout cache if caching is on */
-	String LAYOUT_CACHE_SIZE_KEY = "layout.cache.size";
-
-	/** The default size for the layout cache */
-	int LAYOUT_CACHE_SIZE_DEFAULT = 10;
-
-	/** Property for the size of the navigation cache if caching is on */
-	String NAVIGATION_CACHE_SIZE_KEY = "navigation.cache.size";
-
-	/** The default size for the navigation cache */
-	int NAVIGATION_CACHE_SIZE_DEFAULT = 10;
-
-	/** Property for the size of the page cache if caching is on */
-	String PAGE_CACHE_SIZE_KEY = "page.cache.size";
-
-	/** The default size for the page cache */
-	int PAGE_CACHE_SIZE_DEFAULT = 5;
-
-	/** Property for the size of the screen cache if caching is on */
-	String SCREEN_CACHE_SIZE_KEY = "screen.cache.size";
-
-	/** The default size for the screen cache */
-	int SCREEN_CACHE_SIZE_DEFAULT = 50;
-
-	/** The key for the schedulder job cache size if module caching is on. */
-	String SCHEDULED_JOB_CACHE_SIZE_KEY = "scheduledjob.cache.size";
-
-	/** The default size of the schedulder job cache if module caching is on. */
-	int SCHEDULED_JOB_CACHE_SIZE_DEFAULT = 10;
-
 	/** The packages where Turbine will look for modules. */
 	String MODULE_PACKAGES = "module.packages";
 
@@ -314,24 +278,6 @@ public interface TurbineConstants
 
 	/** Context Key for the Stack Trace */
 	String STACK_TRACE_PLACEHOLDER = "stackTrace";
-
-	/** Prefix for layout related classes and templates */
-	String LAYOUT_PREFIX = "layouts";
-
-	/** Prefix for screen related classes and templates */
-	String SCREEN_PREFIX = "screens";
-
-	/** Prefix for navigation related classes and templates */
-	String NAVIGATION_PREFIX = "navigations";
-
-	/** Prefix for action related classes and templates */
-	String ACTION_PREFIX = "actions";
-
-	/** Prefix for page related classes and templates */
-	String PAGE_PREFIX = "pages";
-
-	/** Prefix for scheduler job related classes */
-	String SCHEDULEDJOB_PREFIX = "scheduledjobs";
 
 	/**
 	 * The fully qualified class name of the default {@link
