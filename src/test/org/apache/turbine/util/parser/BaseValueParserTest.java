@@ -23,11 +23,9 @@ package org.apache.turbine.util.parser;
 
 import java.math.BigDecimal;
 
-import org.apache.avalon.framework.service.ServiceException;
 import org.apache.fulcrum.parser.BaseValueParser;
 import org.apache.fulcrum.parser.ParserService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 
@@ -68,17 +66,10 @@ public class BaseValueParserTest extends BaseTestCase
      */
     protected void setUp()
     {
-        AvalonComponentService acs = 
-            (AvalonComponentService)TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
-        
         try
         {
-            parserService = (ParserService)acs.lookup(ParserService.ROLE);
+            parserService = (ParserService)TurbineServices.getInstance().getService(ParserService.ROLE);
             parser = (BaseValueParser) parserService.getParser(BaseValueParser.class);
-        }
-        catch (ServiceException e)
-        {
-            fail(e.getMessage());
         }
         catch (InstantiationException e)
         {

@@ -19,12 +19,10 @@ package org.apache.turbine.util.uri;
  * under the License.
  */
 
-import org.apache.avalon.framework.service.ServiceException;
 import org.apache.fulcrum.parser.DefaultParameterParser;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.parser.ParserService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
@@ -72,18 +70,7 @@ public class TurbineURITest extends BaseTestCase
                 "/context");
         turi = new TurbineURI(sd);
 
-        AvalonComponentService acs = 
-            (AvalonComponentService)TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
-
-        try
-        {
-            parserService = (ParserService)acs.lookup(ParserService.ROLE);
-        }
-        catch (ServiceException e)
-        {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+        parserService = (ParserService)TurbineServices.getInstance().getService(ParserService.ROLE);
     }
 
     /**

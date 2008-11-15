@@ -32,22 +32,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.avalon.framework.service.ServiceException;
 import org.apache.commons.configuration.Configuration;
-
-import org.apache.turbine.Turbine;
-import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
-import org.apache.fulcrum.pool.PoolException;
-import org.apache.fulcrum.pool.PoolService;
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.ServerData;
-import org.apache.turbine.util.TurbineException;
 import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.DefaultCookieParser;
 import org.apache.fulcrum.parser.DefaultParameterParser;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.parser.ParserService;
+import org.apache.fulcrum.pool.PoolException;
+import org.apache.fulcrum.pool.PoolService;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.services.InitializationException;
+import org.apache.turbine.services.TurbineBaseService;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.ServerData;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * The RunData Service provides the implementations for RunData and
@@ -145,13 +143,8 @@ public class TurbineRunDataService
                 }
             }
         }
-		AvalonComponentService acs = (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
-		try {
-			pool = (PoolService)acs.lookup(PoolService.ROLE);
-		}
-		catch (ServiceException se) {
-			throw new InitializationException("Problem looking up Pool Service:" + se);
-		}
+        
+		pool = (PoolService)TurbineServices.getInstance().getService(PoolService.ROLE);
         
         if (pool == null)
         {
@@ -159,12 +152,7 @@ public class TurbineRunDataService
                 + " configured Pool Service!");
         }
 
-        try {
-            parserService = (ParserService)acs.lookup(ParserService.ROLE);
-        }
-        catch (ServiceException se) {
-            throw new InitializationException("Problem looking up Parser Service:" + se);
-        }
+        parserService = (ParserService)TurbineServices.getInstance().getService(ParserService.ROLE);
         
         if (parserService == null)
         {
