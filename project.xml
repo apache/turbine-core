@@ -23,7 +23,7 @@
   <name>turbine-2</name>
   <groupId>turbine</groupId>
   <id>turbine</id>
-  <currentVersion>2.4-SNAPSHOT</currentVersion>
+  <currentVersion>4.0-dev</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://turbine.apache.org/</url>
@@ -228,7 +228,7 @@
       <timezone>+1</timezone>
     </developer>
     <developer>
-      <name>J&#252;rgen Hoffmann</name>
+      <name>Jürgen Hoffmann</name>
       <id>hoffmann</id>
       <email>jh@byteaction.de</email>
       <organization>ByteAction GmbH</organization>
@@ -381,7 +381,7 @@
       <email>john@zenplex.com</email>
     </contributor>
     <contributor>
-      <name>Magn&#250;s &#254;&#243;r Torfason</name>
+      <name>Magnús þór Torfason</name>
       <email>magnus@handpoint.com</email>
     </contributor>
     <contributor>
@@ -723,18 +723,7 @@
       <version>3.8.1</version>
       <url>http://www.junit.org/</url>
     </dependency>
-    <!-- ORO must be loaded before Jython, as Jython includes some ORO -->
-    <!-- classes which cause the Maven JXR plug-in to fail. -->
-     <dependency>
-      <groupId>oro</groupId>
-      <artifactId>oro</artifactId>
-      <version>2.0.8</version>
-      <url>http://jakarta.apache.org/oro/</url>
-      <properties>
-        <dist.bundle>true</dist.bundle>
-      </properties>
-    </dependency>
-     <dependency>
+    <dependency>
       <groupId>jython</groupId>
       <artifactId>jython</artifactId>
       <version>2.1</version>
@@ -765,7 +754,7 @@
     <!-- dependency>
       <groupId>torque</groupId>
       <artifactId>torque</artifactId>
-      <version>3.2</version>
+      <version>3.3</version>
       <url>http://db.apache.org/torque/</url>
       <type>jar</type>
       <properties>
@@ -773,10 +762,10 @@
       </properties>
     </dependency>
     <dependency>
-      <groupId>village</groupId>
+      <groupId>torque</groupId>
       <artifactId>village</artifactId>
-      <version>2.0</version>
-      <url>http://www.softwareforge.de/projects/village/</url>
+      <version>3.3</version>
+      <url>http://db.apache.org/torque/</url>
       <type>jar</type>
       <properties>
         <dist.bundle>true</dist.bundle>
@@ -804,61 +793,6 @@
         <dist.bundle>true</dist.bundle>
       </properties>
     </dependency>
-
-<!--
-========================================================================
-==                                                                    ==
-== uncomment these dependencies if you are using a 1.3 JDK            ==
-==                                                                    ==
-========================================================================
--->
-
-<!--  REMOVE THIS LINE
-    <dependency>
-      <groupId>javax.sql</groupId>
-      <artifactId>jdbc-stdext</artifactId>
-      <version>2.0</version>
-      <url>http://java.sun.com/products/jdbc/</url>
-      <type>jar</type>
-    </dependency>
-    <dependency>
-      <groupId>javax.naming</groupId>
-      <artifactId>jndi</artifactId>
-      <version>1.2.1</version>
-      <url>http://java.sun.com/products/jndi/</url>
-      <type>jar</type>
-    </dependency>
-    <dependency>
-      <groupId>xalan</groupId>
-      <artifactId>xalan</artifactId>
-      <version>2.7.0</version>
-      <url>http://xml.apache.org/xalan-j/</url>
-      <type>jar</type>
-      <properties>
-        <dist.bundle>true</dist.bundle>
-      </properties>
-    </dependency>
-    <dependency>
-      <groupId>xerces</groupId>
-      <artifactId>xercesImpl</artifactId>
-      <version>2.4.0</version>
-      <url>http://xml.apache.org/xerces2-j/</url>
-      <type>jar</type>
-      <properties>
-        <dist.bundle>true</dist.bundle>
-      </properties>
-    </dependency>
-    <dependency>
-      <groupId>xml-apis</groupId>
-      <artifactId>xml-apis</artifactId>
-      <version>1.0.b2</version>
-      <url>http://xml.apache.org/commons/</url>
-      <properties>
-        <dist.bundle>true</dist.bundle>
-      </properties>
-      <type>jar</type>
-    </dependency>
-REMOVE THIS LINE -->
 
     <dependency>
       <groupId>xstream</groupId>
@@ -888,7 +822,7 @@ REMOVE THIS LINE -->
     <dependency>
       <groupId>torque</groupId>
       <artifactId>maven-torque-plugin</artifactId>
-      <version>3.2</version>
+      <version>3.3</version>
       <type>plugin</type>
     </dependency>
 
@@ -1008,8 +942,6 @@ REMOVE THIS LINE -->
     <report>maven-linkcheck-plugin</report>
     -->
     <report>maven-tasklist-plugin</report>
-
-
   </reports>
 
 </project>
