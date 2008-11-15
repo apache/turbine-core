@@ -26,6 +26,12 @@
   <body>
     <release version="2.4-M2" date="in Subversion">
       <action type="update" dev="tv">
+        Ported the class cache for JavaBaseFactory from Turbine 2.3 
+      </action>
+      <action type="update" dev="tv">
+        Use the transparent service lookup in all service lookups
+      </action>
+      <action type="update" dev="tv">
         Initialize the locale of RunData, the ParameterParser and the CookieParser 
         from the HttpServletRequest. Make RunData.setLocale propagate the locale 
         setting to the parsers.

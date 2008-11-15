@@ -26,23 +26,19 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.fulcrum.pool.PoolService;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.fulcrum.pool.PoolService;
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -193,9 +189,7 @@ public class TurbinePullService
     {
         try
         {
-        	   AvalonComponentService acs = (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
-		   pool = (PoolService)acs.lookup(PoolService.ROLE);
-
+		    pool = (PoolService)TurbineServices.getInstance().getService(PoolService.ROLE);
 
             if (pool == null)
             {

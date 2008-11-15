@@ -88,12 +88,8 @@ public class TurbineAvalonComponentServiceTest
     {
         try
         {
-            AvalonComponentService cs = (AvalonComponentService)
-                    TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
-
-            TestComponent tc = (TestComponent) cs.lookup(TestComponent.ROLE);
+            TestComponent tc = (TestComponent)TurbineServices.getInstance().getService(TestComponent.ROLE);
             tc.test();
-            cs.release(tc);
         }
         catch(Exception e)
         {

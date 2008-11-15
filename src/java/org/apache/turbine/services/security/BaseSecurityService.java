@@ -40,7 +40,6 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.EntityExistsException;
@@ -296,9 +295,7 @@ public abstract class BaseSecurityService
 
         try
         {
-     	   AvalonComponentService acs = (AvalonComponentService) TurbineServices.getInstance().getService(AvalonComponentService.SERVICE_NAME);
-
-            aclFactoryService = (FactoryService) acs.lookup(FactoryService.ROLE);
+            aclFactoryService = (FactoryService)TurbineServices.getInstance().getService(FactoryService.ROLE);
         }
         catch (Exception e)
         {
