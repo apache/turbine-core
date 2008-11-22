@@ -23,7 +23,7 @@
   <pomVersion>3</pomVersion>
   <name>turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.3.3-RC1</currentVersion>
+  <currentVersion>2.3.3</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://turbine.apache.org/</url>
@@ -43,7 +43,7 @@
     well. In other words, we strive to make portions of Turbine easily
     available for use in other applications.
   </description>
-  <url>http://turbine.apache.org/turbine/turbine-2.3.3-rc1/index.html</url>
+  <url>http://turbine.apache.org/turbine/turbine-2.3.3/index.html</url>
   <issueTrackingUrl>http://issues.apache.org/jira/browse/TRB</issueTrackingUrl>
   <siteAddress>people.apache.org</siteAddress>
   <siteDirectory>/www/turbine.apache.org/turbine/development/turbine-2.3/</siteDirectory>
@@ -105,6 +105,11 @@
       <name>2.3.3-RC1</name>
       <tag>TURBINE_2_3_3_RC1</tag>
       <id>2.3.3-RC1</id>
+    </version>
+    <version>
+      <name>2.3.3</name>
+      <tag>TURBINE_2_3_3</tag>
+      <id>2.3.3</id>
     </version>
   </versions>
 
