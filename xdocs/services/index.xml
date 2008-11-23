@@ -112,13 +112,6 @@ parameter naming framework.
 </li>
 
 <li>
-<a href="jsonrpc-service.html">JSON-RPC Service</a>
-<br/>
-The JSON-RPC Service supports JavaScript to Java AJAX communications using
-<a href="http://oss.metaparadigm.com/jsonrpc/">JSON-RPC-Java</a>.
-</li>
-
-<li>
 <a href="jsp-service.html">JSP Service</a>
 <br/>
 The JSP Service is the set of classes that process JSP files inside the

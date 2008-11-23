@@ -158,12 +158,6 @@
       and for integer ranges.
     </action>
     <action type="add" dev="seade">
-      Added JSON-RPC Service to support JavaScript to Java AJAX communications
-      using <a href="http://oss.metaparadigm.com/jsonrpc/">JSON-RPC-Java</a>.
-      For further details see <a href="services/jsonrpc-service.html">JSON-RPC
-      Service</a>.
-    </action>
-    <action type="add" dev="seade">
       Added UI Service as a replacement for the UIManager pull tool (now
       deprecated in favor of the backwards compatible UITool).
       For further details see <a href="services/ui-service.html">UI Service</a>.
