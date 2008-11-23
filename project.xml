@@ -23,7 +23,7 @@
   <pomVersion>3</pomVersion>
   <name>turbine-2</name>
   <id>turbine</id>
-  <currentVersion>2.3.3</currentVersion>
+  <currentVersion>2.3.4-dev</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://turbine.apache.org/</url>
