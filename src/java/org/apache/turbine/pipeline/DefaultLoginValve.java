@@ -48,7 +48,6 @@ import org.apache.turbine.util.template.TemplateInfo;
  */
 public class DefaultLoginValve
     extends AbstractValve
-    implements TurbineConstants
 {
     /**
      * Here we can setup objects that are thread safe and can be
@@ -97,9 +96,9 @@ public class DefaultLoginValve
         String actionName = data.getAction();
         if (data.hasAction() &&
             actionName.equalsIgnoreCase
-            (Turbine.getConfiguration().getString(ACTION_LOGIN_KEY)) ||
+            (Turbine.getConfiguration().getString(TurbineConstants.ACTION_LOGIN_KEY)) ||
             actionName.equalsIgnoreCase
-            (Turbine.getConfiguration().getString(ACTION_LOGOUT_KEY)))
+            (Turbine.getConfiguration().getString(TurbineConstants.ACTION_LOGOUT_KEY)))
         {
             // If a User is logging in, we should refresh the
             // session here.  Invalidating session and starting a
@@ -113,7 +112,7 @@ public class DefaultLoginValve
             // only keys stored in the session are "turbine.user"
             // and "turbine.acl".
             if (actionName.equalsIgnoreCase
-                (Turbine.getConfiguration().getString(ACTION_LOGIN_KEY)))
+                (Turbine.getConfiguration().getString(TurbineConstants.ACTION_LOGIN_KEY)))
             {
                 Enumeration names = data.getSession().getAttributeNames();
                 if (names != null)

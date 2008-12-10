@@ -40,7 +40,6 @@ import org.apache.turbine.util.TurbineException;
  */
 public class DefaultSessionValidationValve
     extends AbstractValve
-    implements TurbineConstants
 {
     protected SessionValidator sessionValidator = null;
 
@@ -68,8 +67,9 @@ public class DefaultSessionValidationValve
             // TurbineResources.properties...screen.homepage; or, you
             // can specify your own SessionValidator action.
             ActionLoader.getInstance().exec(pipelineData,
-                    Turbine.getConfiguration().getString(ACTION_SESSION_VALIDATOR_KEY,
-                            ACTION_SESSION_VALIDATOR_DEFAULT));
+                    Turbine.getConfiguration().getString(
+                            TurbineConstants.ACTION_SESSION_VALIDATOR_KEY,
+                            TurbineConstants.ACTION_SESSION_VALIDATOR_DEFAULT));
         }
         catch (Exception e)
         {

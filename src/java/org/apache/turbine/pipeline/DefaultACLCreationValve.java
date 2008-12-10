@@ -40,7 +40,6 @@ import org.apache.turbine.util.TurbineException;
  */
 public class DefaultACLCreationValve
     extends AbstractValve
-    implements TurbineConstants
 {
     protected AccessController accessController = null;
 
@@ -69,8 +68,9 @@ public class DefaultACLCreationValve
             // out the ACL to force it to be rebuilt based on more
             // information.
             ActionLoader.getInstance().exec(
-                    pipelineData, Turbine.getConfiguration().getString(ACTION_ACCESS_CONTROLLER_KEY,
-                            ACTION_ACCESS_CONTROLLER_DEFAULT));
+                    pipelineData, Turbine.getConfiguration().getString(
+                            TurbineConstants.ACTION_ACCESS_CONTROLLER_KEY,
+                            TurbineConstants.ACTION_ACCESS_CONTROLLER_DEFAULT));
         }
         catch (Exception e)
         {
