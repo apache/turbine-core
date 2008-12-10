@@ -40,7 +40,6 @@ import org.apache.turbine.util.TurbineException;
  */
 public class DefaultSessionTimeoutValve
     extends AbstractValve
-    implements TurbineConstants
 {
     protected int timeout;
 
@@ -55,8 +54,8 @@ public class DefaultSessionTimeoutValve
 
         // Get the session timeout.
 
-    	timeout = cfg.getInt(SESSION_TIMEOUT_KEY,
-        	        SESSION_TIMEOUT_DEFAULT);
+    	timeout = cfg.getInt(TurbineConstants.SESSION_TIMEOUT_KEY,
+                TurbineConstants.SESSION_TIMEOUT_DEFAULT);
 
     }
 
@@ -69,7 +68,7 @@ public class DefaultSessionTimeoutValve
         RunData runData = (RunData)getRunData(pipelineData);
         // If the session is new take this opportunity to
         // set the session timeout if specified in TR.properties
-        if (runData.getSession().isNew() && timeout != SESSION_TIMEOUT_DEFAULT)
+        if (runData.getSession().isNew() && timeout != TurbineConstants.SESSION_TIMEOUT_DEFAULT)
         {
             runData.getSession().setMaxInactiveInterval(timeout);
         }

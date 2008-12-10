@@ -100,8 +100,10 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  */
 public class Turbine
         extends HttpServlet
-        implements TurbineConstants
 {
+    /** Serialversion */
+    private static final long serialVersionUID = -6317118078613623990L;
+
     /**
      * Name of path info parameter used to indicate the redirected stage of
      * a given user's initial Turbine request
@@ -232,14 +234,14 @@ public class Turbine
         // to be developed from CVS. This feature will carry over
         // into 3.0.
         applicationRoot = findInitParameter(context, config,
-                APPLICATION_ROOT_KEY,
-                APPLICATION_ROOT_DEFAULT);
+                TurbineConstants.APPLICATION_ROOT_KEY,
+                TurbineConstants.APPLICATION_ROOT_DEFAULT);
 
         webappRoot = config.getServletContext().getRealPath("/");
         // log.info("Web Application root is " + webappRoot);
         // log.info("Application root is "     + applicationRoot);
 
-        if (applicationRoot == null || applicationRoot.equals(WEB_CONTEXT))
+        if (applicationRoot == null || applicationRoot.equals(TurbineConstants.WEB_CONTEXT))
         {
             applicationRoot = webappRoot;
             // log.info("got empty or 'webContext' Application root. Application root now: " + applicationRoot);
@@ -314,8 +316,8 @@ public class Turbine
         //
         // Set up logging as soon as possible
         //
-        String log4jFile = configuration.getString(LOG4J_CONFIG_FILE,
-                                                   LOG4J_CONFIG_FILE_DEFAULT);
+        String log4jFile = configuration.getString(TurbineConstants.LOG4J_CONFIG_FILE,
+                                                   TurbineConstants.LOG4J_CONFIG_FILE_DEFAULT);
 
         log4jFile = getRealPath(log4jFile);
 
@@ -327,7 +329,7 @@ public class Turbine
         try
         {
             p.load(new FileInputStream(log4jFile));
-            p.setProperty(APPLICATION_ROOT_KEY, getApplicationRoot());
+            p.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot());
             PropertyConfigurator.configure(p);
 
             //
@@ -357,10 +359,8 @@ public class Turbine
         //
         // ${applicationRoot}
         // ${webappRoot}
-        configuration.setProperty(APPLICATION_ROOT_KEY, applicationRoot);
-        configuration.setProperty(WEBAPP_ROOT_KEY, webappRoot);
-
-
+        configuration.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, applicationRoot);
+        configuration.setProperty(TurbineConstants.WEBAPP_ROOT_KEY, webappRoot);
 
 		// Retrieve the pipeline class and then initialize it.  The pipeline
         // handles the processing of a webrequest/response cycle.
@@ -411,8 +411,8 @@ public class Turbine
                                                  ServletConfig config)
     {
         String path = findInitParameter(context, config,
-                                        LOGGING_ROOT_KEY,
-                                        LOGGING_ROOT_DEFAULT);
+                                        TurbineConstants.LOGGING_ROOT_KEY,
+                                        TurbineConstants.LOGGING_ROOT_DEFAULT);
 
         File logDir = new File(getRealPath(path));
         if (!logDir.exists())
@@ -437,7 +437,7 @@ public class Turbine
         String path = null;
 
         // Try the name as provided first.
-        boolean usingNamespace = name.startsWith(CONFIG_NAMESPACE);
+        boolean usingNamespace = name.startsWith(TurbineConstants.CONFIG_NAMESPACE);
         while (true)
         {
             path = config.getInitParameter(name);
@@ -454,7 +454,7 @@ public class Turbine
                     else
                     {
                         // Try again using Turbine's namespace.
-                        name = CONFIG_NAMESPACE + '.' + name;
+                        name = TurbineConstants.CONFIG_NAMESPACE + '.' + name;
                         usingNamespace = true;
                         continue;
                     }
@@ -729,23 +729,25 @@ public class Turbine
             data.setStackTrace(ExceptionUtils.getStackTrace(t), t);
 
             // setup the screen
-            data.setScreen(configuration.getString(SCREEN_ERROR_KEY,
-                    SCREEN_ERROR_DEFAULT));
+            data.setScreen(configuration.getString(
+                    TurbineConstants.SCREEN_ERROR_KEY,
+                    TurbineConstants.SCREEN_ERROR_DEFAULT));
 
             // do more screen setup for template execution if needed
             if (data.getTemplateInfo() != null)
             {
                 data.getTemplateInfo()
                     .setScreenTemplate(configuration.getString(
-                            TEMPLATE_ERROR_KEY, TEMPLATE_ERROR_VM));
+                            TurbineConstants.TEMPLATE_ERROR_KEY, 
+                            TurbineConstants.TEMPLATE_ERROR_VM));
             }
 
             // Make sure to not execute an action.
             data.setAction("");
 
             PageLoader.getInstance().exec(pipelineData,
-                    configuration.getString(PAGE_DEFAULT_KEY,
-                            PAGE_DEFAULT_DEFAULT));
+                    configuration.getString(TurbineConstants.PAGE_DEFAULT_KEY,
+                            TurbineConstants.PAGE_DEFAULT_DEFAULT));
 
             data.getResponse().setContentType(data.getContentType());
             data.getResponse().setStatus(data.getStatusCode());

@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import junit.framework.TestCase;
 
 import org.apache.log4j.PropertyConfigurator;
-import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
@@ -66,7 +66,7 @@ public abstract class BaseTestCase
         try
         {
             p.load(new FileInputStream(log4jFile));
-            p.setProperty(Turbine.APPLICATION_ROOT_KEY, new File(".").getAbsolutePath());
+            p.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, new File(".").getAbsolutePath());
             PropertyConfigurator.configure(p);
 
         }
