@@ -32,7 +32,7 @@
   <id>maven-turbine-plugin</id>
   <name>Maven Environment for Turbine Applications Plugin</name>
   <groupId>turbine</groupId>
-  <currentVersion>1.4-dev</currentVersion>
+  <currentVersion>1.5-dev</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://turbine.apache.org/</url>
@@ -137,7 +137,7 @@
    <dependency>
       <groupId>torque</groupId>
       <artifactId>maven-torque-plugin</artifactId>
-      <version>3.2</version>
+      <version>3.3</version>
       <url>http://db.apache.org/torque/</url>
       <type>plugin</type>
     </dependency>
