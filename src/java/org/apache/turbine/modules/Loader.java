@@ -1,5 +1,7 @@
 package org.apache.turbine.modules;
 
+import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -26,18 +28,8 @@ package org.apache.turbine.modules;
  * @version $Id$
  */
 
-public interface Loader
+public interface Loader extends AssemblerFactory
 {
-    /**
-     * Pulls out an instance of an Assembler Object by name.
-     *
-     * @param name Name of requested Object.
-     * @return An Assembler object or null.
-     * @exception Exception a generic exception.
-     */
-    public Assembler getAssembler(String name)
-        throws Exception;
-    
     /**
      * Get the size of a possibly configured cache
      * 
