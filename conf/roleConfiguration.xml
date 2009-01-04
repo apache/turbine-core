@@ -31,7 +31,7 @@
           shorthand="torque"
           default-class="org.apache.torque.avalon.TorqueComponent" />
 
-  <role
+    <role
         name="org.apache.fulcrum.cache.GlobalCacheService"
         shorthand="cache"
         default-class="org.apache.fulcrum.cache.DefaultGlobalCacheService"/>

@@ -19,7 +19,6 @@ package org.apache.turbine.modules;
  * under the License.
  */
 
-import java.util.Hashtable;
 import java.util.List;
 
 import org.apache.turbine.Turbine;
@@ -42,7 +41,7 @@ import org.apache.turbine.util.RunData;
 public abstract class GenericLoader
 {
     /** The Assembler Broker Service */
-    protected static AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
+    protected AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
 
     /** @serial This can be serialized */
     private boolean reload = false;
@@ -51,8 +50,7 @@ public abstract class GenericLoader
     private static final String TURBINE_PACKAGE = "org.apache.turbine.modules";
 
     /** Packages paths for Turbine */
-    private static final List TURBINE_PACKAGES = 
-        Turbine.getConfiguration().getList(TurbineConstants.MODULE_PACKAGES);
+    private static List TURBINE_PACKAGES = null;
 
     /**
      * Basic constructor for creating a loader.
@@ -143,6 +141,12 @@ public abstract class GenericLoader
      */
     public static List getPackages()
     {
+        if (TURBINE_PACKAGES == null)
+        {
+            TURBINE_PACKAGES =
+                Turbine.getConfiguration().getList(TurbineConstants.MODULE_PACKAGES);
+        }
+
         List packages = TURBINE_PACKAGES;
         
         if (!packages.contains(TURBINE_PACKAGE))
