@@ -61,6 +61,7 @@ public class TurbineAvalonComponentServiceTest
         // decide here wether to start ECM or YAAFI
         // cfg.setProperty(PREFIX + "classname", TurbineAvalonComponentService.class.getName());
         cfg.setProperty(PREFIX + "classname", TurbineYaafiComponentService.class.getName());
+        cfg.setProperty(PREFIX + "earlyInit", "true");
 
         // we want to configure the service to load test TEST configuration files
         cfg.setProperty(PREFIX + "componentConfiguration",

@@ -20,6 +20,8 @@ package org.apache.turbine.test;
  */
 
 
+import java.util.Locale;
+
 import com.mockobjects.servlet.MockHttpServletRequest;
 
 /**
@@ -39,12 +41,29 @@ public class EnhancedMockHttpServletRequest extends MockHttpServletRequest
         super();
         // TODO Auto-generated constructor stub
     }
-    public int getServerPort(){
-      return 8080;
+    
+    /**
+     * @see com.mockobjects.servlet.MockHttpServletRequest#getCharacterEncoding()
+     */
+    public String getCharacterEncoding()
+    {
+        return "US-ASCII";
     }
 
-    public String getCharacterEncoding(){
-    return "US-ASCII";
+    /**
+     * @see com.mockobjects.servlet.MockHttpServletRequest#getServerPort()
+     */
+    public int getServerPort()
+    {
+        return 8080;
+    }
+
+    /**
+     * @see com.mockobjects.servlet.MockHttpServletRequest#getLocale()
+     */
+    public Locale getLocale()
+    {
+        return Locale.US;
     }
 
 }
