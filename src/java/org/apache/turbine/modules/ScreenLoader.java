@@ -23,15 +23,9 @@ package org.apache.turbine.modules;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
-import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
-import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -47,14 +41,8 @@ public class ScreenLoader
     extends GenericLoader
     implements Loader
 {
-    /** Logging */
-    private static Log log = LogFactory.getLog(ScreenLoader.class);
-
     /** The single instance of this class. */
-    private static ScreenLoader instance = new ScreenLoader(getConfiguredCacheSize());
-
-    /** The Assembler Broker Service */
-    private static AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
+    private static ScreenLoader instance = new ScreenLoader();
 
     /**
      * These ctor's are private to force clients to use getInstance()
@@ -63,29 +51,6 @@ public class ScreenLoader
     private ScreenLoader()
     {
         super();
-    }
-
-    /**
-     * These ctor's are private to force clients to use getInstance()
-     * to access this class.
-     */
-    private ScreenLoader(int i)
-    {
-        super(i);
-    }
-
-    /**
-     * Adds an instance of an object into the hashtable.
-     *
-     * @param name Name of object.
-     * @param screen Screen to be associated with name.
-     */
-    private void addInstance(String name, Screen screen)
-    {
-        if (cache())
-        {
-            this.put(name, screen);
-        }
     }
 
     /**
@@ -124,6 +89,7 @@ public class ScreenLoader
         // Execute screen
         return getInstance(name).build(pipelineData);
     }
+    
     /**
      * Attempts to load and execute the Screen. This is used when you
      * want to execute a Screen which returns its output via the
@@ -153,6 +119,7 @@ public class ScreenLoader
 	{
         this.eval(pipelineData, name);
 	}
+    
     /**
      * Pulls out an instance of the object by name.  Name is just the
      * single name of the object. This is equal to getInstance but
@@ -190,55 +157,36 @@ public class ScreenLoader
     {
         Screen screen = null;
 
-        // Check if the screen is already in the cache
-        if (cache() && this.containsKey(name))
+        try
         {
-            screen = (Screen) this.get(name);
-            log.debug("Found Screen " + name + " in the cache!");
-        }
-        else
-        {
-            log.debug("Loading Screen " + name + " from the Assembler Broker");
-
-            try
+            if (ab != null)
             {
-                if (ab != null)
-                {
-                    // Attempt to load the screen
-                    screen = (Screen) ab.getAssembler(Screen.NAME, name);
-                }
-            }
-            catch (ClassCastException cce)
-            {
-                // This can alternatively let this exception be thrown
-                // So that the ClassCastException is shown in the
-                // browser window.  Like this it shows "Screen not Found"
-                screen = null;
-            }
-
-            if (screen == null)
-            {
-                // If we did not find a screen we should try and give
-                // the user a reason for that...
-                // FIX ME: The AssemblerFactories should each add it's
-                // own string here...
-                List packages = Turbine.getConfiguration()
-                    .getList(TurbineConstants.MODULE_PACKAGES);
-
-                ObjectUtils.addOnce(packages,
-                        GenericLoader.getBasePackage());
-
-                throw new ClassNotFoundException(
-                        "\n\n\tRequested Screen not found: " + name +
-                        "\n\tTurbine looked in the following " +
-                        "modules.packages path: \n\t" + packages.toString() + "\n");
-            }
-            else if (cache())
-            {
-                // The new instance is added to the cache
-                addInstance(name, screen);
+                // Attempt to load the screen
+                screen = (Screen) ab.getAssembler(Screen.NAME, name);
             }
         }
+        catch (ClassCastException cce)
+        {
+            // This can alternatively let this exception be thrown
+            // So that the ClassCastException is shown in the
+            // browser window.  Like this it shows "Screen not Found"
+            screen = null;
+        }
+
+        if (screen == null)
+        {
+            // If we did not find a screen we should try and give
+            // the user a reason for that...
+            // FIX ME: The AssemblerFactories should each add it's
+            // own string here...
+            List packages = GenericLoader.getPackages();
+            
+            throw new ClassNotFoundException(
+                    "\n\n\tRequested Screen not found: " + name +
+                    "\n\tTurbine looked in the following " +
+                    "modules.packages path: \n\t" + packages.toString() + "\n");
+        }
+
         return screen;
     }
 

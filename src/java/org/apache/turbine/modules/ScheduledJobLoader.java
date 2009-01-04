@@ -23,14 +23,8 @@ package org.apache.turbine.modules;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
-import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.schedule.JobEntry;
-import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -44,15 +38,8 @@ public class ScheduledJobLoader
     extends GenericLoader
     implements Loader
 {
-    /** Logging */
-    private static Log log = LogFactory.getLog(ScheduledJobLoader.class);
-
     /** The single instance of this class. */
-    private static ScheduledJobLoader instance =
-        new ScheduledJobLoader(getConfiguredCacheSize());
-
-    /** The Assembler Broker Service */
-    private static AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
+    private static ScheduledJobLoader instance = new ScheduledJobLoader();
 
     /**
      * These ctor's are private to force clients to use getInstance()
@@ -61,29 +48,6 @@ public class ScheduledJobLoader
     private ScheduledJobLoader()
     {
         super();
-    }
-
-    /**
-     * These ctor's are private to force clients to use getInstance()
-     * to access this class.
-     */
-    private ScheduledJobLoader(int i)
-    {
-        super(i);
-    }
-
-    /**
-     * Adds an instance of an object into the hashtable.
-     *
-     * @param name Name of object.
-     * @param job Job to be associated with name.
-     */
-    private void addInstance(String name, ScheduledJob job)
-    {
-        if (cache())
-        {
-            this.put(name, job);
-        }
     }
 
     /**
@@ -157,54 +121,36 @@ public class ScheduledJobLoader
     {
         ScheduledJob job = null;
 
-        // Check if the screen is already in the cache
-        if (cache() && this.containsKey(name))
+        try
         {
-            job = (ScheduledJob) this.get(name);
-            log.debug("Found Job " + name + " in the cache!");
-        }
-        else
-        {
-            log.debug("Loading Job " + name + " from the Assembler Broker");
-
-            try
+            if (ab != null)
             {
-                if (ab != null)
-                {
-                    // Attempt to load the job
-                    job = (ScheduledJob) ab.getAssembler(ScheduledJob.NAME, name);
-                }
-            }
-            catch (ClassCastException cce)
-            {
-                // This can alternatively let this exception be thrown
-                // So that the ClassCastException is shown in the
-                // browser window.  Like this it shows "Screen not Found"
-                job = null;
-            }
-
-            if (job == null)
-            {
-                // If we did not find a screen we should try and give
-                // the user a reason for that...
-                // FIX ME: The AssemblerFactories should each add it's
-                // own string here...
-                List packages = Turbine.getConfiguration()
-                    .getList(TurbineConstants.MODULE_PACKAGES);
-
-                ObjectUtils.addOnce(packages, GenericLoader.getBasePackage());
-
-                throw new ClassNotFoundException(
-                        "\n\n\tRequested ScheduledJob not found: " + name +
-                        "\n\tTurbine looked in the following " +
-                        "modules.packages path: \n\t" + packages.toString() + "\n");
-            }
-            else if (cache())
-            {
-                // The new instance is added to the cache
-                addInstance(name, job);
+                // Attempt to load the job
+                job = (ScheduledJob) ab.getAssembler(ScheduledJob.NAME, name);
             }
         }
+        catch (ClassCastException cce)
+        {
+            // This can alternatively let this exception be thrown
+            // So that the ClassCastException is shown in the
+            // browser window.  Like this it shows "Screen not Found"
+            job = null;
+        }
+
+        if (job == null)
+        {
+            // If we did not find a scheduled job we should try and give
+            // the user a reason for that...
+            // FIX ME: The AssemblerFactories should each add it's
+            // own string here...
+            List packages = GenericLoader.getPackages();
+
+            throw new ClassNotFoundException(
+                    "\n\n\tRequested ScheduledJob not found: " + name +
+                    "\n\tTurbine looked in the following " +
+                    "modules.packages path: \n\t" + packages.toString() + "\n");
+        }
+
         return job;
     }
 

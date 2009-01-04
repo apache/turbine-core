@@ -27,9 +27,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import org.apache.commons.collections.map.LRUMap;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
@@ -56,7 +59,13 @@ public class TurbineAssemblerBrokerService
 
     /** A structure that holds the registered AssemblerFactories */
     private Map factories = null;
-
+    
+    /** A cache that holds the generated Assemblers */
+    private Map assemblerCache = null;
+    
+    /** Caching on/off */
+    private boolean isCaching;
+    
     /**
      * Get a list of AssemblerFactories of a certain type
      *
@@ -122,6 +131,7 @@ public class TurbineAssemblerBrokerService
         throws InitializationException
     {
         factories = new HashMap();
+        
         try
         {
             Configuration conf = getConfiguration();
@@ -141,6 +151,20 @@ public class TurbineAssemblerBrokerService
             throw new InitializationException(
                     "AssemblerBrokerService failed to initialize", e);
         }
+        
+        isCaching = Turbine.getConfiguration()
+            .getBoolean(TurbineConstants.MODULE_CACHE_KEY,
+                        TurbineConstants.MODULE_CACHE_DEFAULT);
+     
+        if (isCaching)
+        {
+            int cacheSize = Turbine.getConfiguration()
+                .getInt(TurbineConstants.MODULE_CACHE_SIZE_KEY,
+                        TurbineConstants.MODULE_CACHE_SIZE_DEFAULT);
+            
+            assemblerCache = new LRUMap(cacheSize);
+        }
+        
         setInit(true);
     }
 
@@ -169,24 +193,42 @@ public class TurbineAssemblerBrokerService
     public Assembler getAssembler(String type, String name)
         throws TurbineException
     {
-        List facs = getFactoryGroup(type);
-
+        String key = type + ":" + name;
         Assembler assembler = null;
-        for (Iterator it = facs.iterator(); (assembler == null) && it.hasNext();)
+        
+        if (isCaching && assemblerCache.containsKey(key))
         {
-            AssemblerFactory fac = (AssemblerFactory) it.next();
-            try
+            assembler = (Assembler)assemblerCache.get(key);
+            log.debug("Found " + key + " in the cache!");
+        }
+        else
+        {
+            log.debug("Loading " + key);
+            List facs = getFactoryGroup(type);
+    
+            for (Iterator it = facs.iterator(); (assembler == null) && it.hasNext();)
             {
-                assembler = fac.getAssembler(name);
-            }
-            catch (Exception e)
-            {
-                throw new TurbineException("Failed to load an assembler for "
-                                           + name + " from the "
-                                           + type + " factory "
-                                           + fac.getClass().getName(), e);
+                AssemblerFactory fac = (AssemblerFactory) it.next();
+                
+                try
+                {
+                    assembler = fac.getAssembler(name);
+                }
+                catch (Exception e)
+                {
+                    throw new TurbineException("Failed to load an assembler for "
+                                               + name + " from the "
+                                               + type + " factory "
+                                               + fac.getClass().getName(), e);
+                }
+                
+                if (isCaching && assembler != null)
+                {
+                    assemblerCache.put(key, assembler);
+                }
             }
         }
+        
         return assembler;
     }
 }

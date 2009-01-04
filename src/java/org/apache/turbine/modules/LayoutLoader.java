@@ -21,14 +21,8 @@ package org.apache.turbine.modules;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
-import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
-import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -44,14 +38,8 @@ public class LayoutLoader
     extends GenericLoader
     implements Loader
 {
-    /** Logging */
-    private static Log log = LogFactory.getLog(LayoutLoader.class);
-
     /** The single instance of this class. */
-    private static LayoutLoader instance = new LayoutLoader(getConfiguredCacheSize());
-
-    /** The Assembler Broker Service */
-    private static AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
+    private static LayoutLoader instance = new LayoutLoader();
 
     /**
      * These ctor's are private to force clients to use getInstance()
@@ -60,29 +48,6 @@ public class LayoutLoader
     private LayoutLoader()
     {
         super();
-    }
-
-    /**
-     * These ctor's are private to force clients to use getInstance()
-     * to access this class.
-     */
-    private LayoutLoader(int i)
-    {
-        super(i);
-    }
-
-    /**
-     * Adds an instance of an object into the hashtable.
-     *
-     * @param name Name of object.
-     * @param layout Layout to be associated with name.
-     */
-    private void addInstance(String name, Layout layout)
-    {
-        if (cache())
-        {
-            this.put(name, layout);
-        }
     }
 
     /**
@@ -150,55 +115,36 @@ public class LayoutLoader
     {
         Layout layout = null;
 
-        // Check if the layout is already in the cache
-        if (cache() && this.containsKey(name))
+        try
         {
-            layout = (Layout) this.get(name);
-            log.debug("Found Layout " + name + " in the cache!");
-        }
-        else
-        {
-            log.debug("Loading Layout " + name + " from the Assembler Broker");
-
-            try
+            if (ab != null)
             {
-                if (ab != null)
-                {
-                    // Attempt to load the layout
-                    layout = (Layout) ab.getAssembler(Layout.NAME, name);
-                }
-            }
-            catch (ClassCastException cce)
-            {
-                // This can alternatively let this exception be thrown
-                // So that the ClassCastException is shown in the
-                // browser window.  Like this it shows "Screen not Found"
-                layout = null;
-            }
-
-            if (layout == null)
-            {
-                // If we did not find a screen we should try and give
-                // the user a reason for that...
-                // FIX ME: The AssemblerFactories should each add it's
-                // own string here...
-                List packages = Turbine.getConfiguration()
-                    .getList(TurbineConstants.MODULE_PACKAGES);
-
-                ObjectUtils.addOnce(packages,
-                        GenericLoader.getBasePackage());
-
-                throw new ClassNotFoundException(
-                        "\n\n\tRequested Layout not found: " + name +
-                        "\n\tTurbine looked in the following " +
-                        "modules.packages path: \n\t" + packages.toString() + "\n");
-            }
-            else if (cache())
-            {
-                // The new instance is added to the cache
-                addInstance(name, layout);
+                // Attempt to load the layout
+                layout = (Layout) ab.getAssembler(Layout.NAME, name);
             }
         }
+        catch (ClassCastException cce)
+        {
+            // This can alternatively let this exception be thrown
+            // So that the ClassCastException is shown in the
+            // browser window.  Like this it shows "Screen not Found"
+            layout = null;
+        }
+
+        if (layout == null)
+        {
+            // If we did not find a layout we should try and give
+            // the user a reason for that...
+            // FIX ME: The AssemblerFactories should each add it's
+            // own string here...
+            List packages = GenericLoader.getPackages();
+
+            throw new ClassNotFoundException(
+                    "\n\n\tRequested Layout not found: " + name +
+                    "\n\tTurbine looked in the following " +
+                    "modules.packages path: \n\t" + packages.toString() + "\n");
+        }
+
         return layout;
     }
 

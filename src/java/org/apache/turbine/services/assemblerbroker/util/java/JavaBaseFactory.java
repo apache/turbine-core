@@ -29,13 +29,9 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.GenericLoader;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
-import org.apache.turbine.util.ObjectUtils;
 
 /**
  * A screen factory that attempts to load a java class from
@@ -49,8 +45,7 @@ public abstract class JavaBaseFactory
     implements AssemblerFactory
 {
     /** A vector of packages. */
-    private static List packages =
-        Turbine.getConfiguration().getList(TurbineConstants.MODULE_PACKAGES);
+    private static List packages = GenericLoader.getPackages();
 
     /** Logging */
     protected Log log = LogFactory.getLog(this.getClass());
@@ -60,11 +55,6 @@ public abstract class JavaBaseFactory
      * to reduce the Class.forName() overhead (which can be sizable).
      */
     private Map classCache = Collections.synchronizedMap(new HashMap());
-
-    static
-    {
-        ObjectUtils.addOnce(packages, GenericLoader.getBasePackage());
-    }
 
     /**
      * Get an Assembler.

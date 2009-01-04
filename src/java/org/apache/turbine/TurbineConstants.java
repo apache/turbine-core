@@ -74,6 +74,12 @@ public interface TurbineConstants
 	/** Default value of the Turbine Module Caching */
 	boolean MODULE_CACHE_DEFAULT = true;
 
+    /** Property that controls the module cache size. */
+    String MODULE_CACHE_SIZE_KEY = "module.cache.size";
+
+    /** Default value of the Turbine Module Cache Size */
+    int MODULE_CACHE_SIZE_DEFAULT = 128;
+
 	/** The packages where Turbine will look for modules. */
 	String MODULE_PACKAGES = "module.packages";
 

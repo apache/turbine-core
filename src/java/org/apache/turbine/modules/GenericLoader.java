@@ -20,10 +20,13 @@ package org.apache.turbine.modules;
  */
 
 import java.util.Hashtable;
+import java.util.List;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -37,16 +40,19 @@ import org.apache.turbine.util.RunData;
  * @version $Id$
  */
 public abstract class GenericLoader
-    extends Hashtable
 {
+    /** The Assembler Broker Service */
+    protected static AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
+
     /** @serial This can be serialized */
     private boolean reload = false;
 
-    /** @serial This can be serialized */
-    private boolean isCaching = true;
-
     /** Base packages path for Turbine */
     private static final String TURBINE_PACKAGE = "org.apache.turbine.modules";
+
+    /** Packages paths for Turbine */
+    private static final List TURBINE_PACKAGES = 
+        Turbine.getConfiguration().getList(TurbineConstants.MODULE_PACKAGES);
 
     /**
      * Basic constructor for creating a loader.
@@ -54,30 +60,6 @@ public abstract class GenericLoader
     public GenericLoader()
     {
         super();
-        isCaching = Turbine.getConfiguration()
-            .getBoolean(TurbineConstants.MODULE_CACHE_KEY,
-                        TurbineConstants.MODULE_CACHE_DEFAULT);
-    }
-
-    /**
-     * Basic constructor for creating a loader.
-     */
-    public GenericLoader(int i)
-    {
-        super(i);
-        isCaching = Turbine.getConfiguration()
-            .getBoolean(TurbineConstants.MODULE_CACHE_KEY,
-                        TurbineConstants.MODULE_CACHE_DEFAULT);
-    }
-
-    /**
-     * If set to true, then cache the Loader objects.
-     *
-     * @return True if the Loader objects are being cached.
-     */
-    public boolean cache()
-    {
-        return this.isCaching;
     }
 
     /**
@@ -153,6 +135,32 @@ public abstract class GenericLoader
         return TURBINE_PACKAGE;
     }
 
+    /**
+     * Gets the package list where Turbine should find its
+     * modules.
+     *
+     * @return A List with the package names (including the base package).
+     */
+    public static List getPackages()
+    {
+        List packages = TURBINE_PACKAGES;
+        
+        if (!packages.contains(TURBINE_PACKAGE))
+        {
+            packages.add(TURBINE_PACKAGE);
+        }
+
+        return packages;
+    }
+
+    /**
+     * Helper method to cast from PipelineData to RunData. This will go when
+     * the pipeline is fully implemented and the RunData-methods are removed
+     * 
+     * @param pipelineData a PipelineData object
+     * 
+     * @return the input object casted to RunData
+     */
     private RunData getRunData(PipelineData pipelineData)
     {
         if(!(pipelineData instanceof RunData)){
@@ -160,5 +168,4 @@ public abstract class GenericLoader
         }
         return (RunData)pipelineData;
     }
-
 }
