@@ -22,7 +22,9 @@ package org.apache.turbine.services.assemblerbroker.util.java;
 
 
 import org.apache.turbine.modules.Assembler;
+import org.apache.turbine.modules.Loader;
 import org.apache.turbine.modules.Page;
+import org.apache.turbine.modules.PageLoader;
 
 /**
  * A screen factory that attempts to load a java class from
@@ -44,5 +46,15 @@ public class JavaPageFactory
     public Assembler getAssembler(String name)
     {
         return getAssembler(Page.PREFIX, name);
+    }
+
+    /**
+     * Get the loader for this type of assembler
+     * 
+     * @return a Loader
+     */
+    public Loader getLoader()
+    {
+        return PageLoader.getInstance();
     }
 }

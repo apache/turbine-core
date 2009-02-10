@@ -22,6 +22,7 @@ package org.apache.turbine.services.assemblerbroker.util.java;
 
 
 import org.apache.turbine.modules.Action;
+import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Loader;
 
@@ -35,7 +36,6 @@ import org.apache.turbine.modules.Loader;
  */
 public class JavaActionFactory
     extends JavaBaseFactory
-    implements Loader
 {
     /**
      * Get an Assembler.
@@ -48,9 +48,13 @@ public class JavaActionFactory
         return getAssembler(Action.PREFIX, name);
     }
 
-    public int getCacheSize()
+    /**
+     * Get the loader for this type of assembler
+     * 
+     * @return a Loader
+     */
+    public Loader getLoader()
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return ActionLoader.getInstance();
     }
 }
