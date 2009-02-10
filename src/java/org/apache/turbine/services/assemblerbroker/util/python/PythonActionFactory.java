@@ -22,7 +22,9 @@ package org.apache.turbine.services.assemblerbroker.util.python;
 
 
 import org.apache.turbine.modules.Action;
+import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.Assembler;
+import org.apache.turbine.modules.Loader;
 
 /**
  * A screen factory that attempts to load a python class in the
@@ -48,5 +50,15 @@ public class PythonActionFactory
         throws Exception
     {
         return getAssembler(Action.PREFIX, name);
+    }
+
+    /**
+     * Get the loader for this type of assembler
+     * 
+     * @return a Loader
+     */
+    public Loader getLoader()
+    {
+        return ActionLoader.getInstance();
     }
 }

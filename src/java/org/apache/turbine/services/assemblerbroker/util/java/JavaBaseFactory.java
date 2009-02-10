@@ -31,6 +31,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.GenericLoader;
+import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
 
 /**
@@ -132,5 +133,23 @@ public abstract class JavaBaseFactory
         log.debug("Returning: " + assembler);
 
         return assembler;
+    }
+
+    /**
+     * Get the loader for this type of assembler
+     * 
+     * @return a Loader
+     */
+    public abstract Loader getLoader();
+    
+    /**
+     * Get the size of a possibly configured cache
+     * 
+     * @return the size of the cache in bytes
+     */
+    public int getCacheSize()
+    
+    {
+        return getLoader().getCacheSize();
     }
 }

@@ -23,6 +23,8 @@ package org.apache.turbine.services.assemblerbroker.util.python;
 
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Layout;
+import org.apache.turbine.modules.LayoutLoader;
+import org.apache.turbine.modules.Loader;
 
 /**
  * A screen factory that attempts to load a python class in the
@@ -48,5 +50,15 @@ public class PythonLayoutFactory
         throws Exception
     {
         return getAssembler(Layout.PREFIX, name);
+    }
+
+    /**
+     * Get the loader for this type of assembler
+     * 
+     * @return a Loader
+     */
+    public Loader getLoader()
+    {
+        return LayoutLoader.getInstance();
     }
 }
