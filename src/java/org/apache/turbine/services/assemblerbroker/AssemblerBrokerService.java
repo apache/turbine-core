@@ -22,6 +22,7 @@ package org.apache.turbine.services.assemblerbroker;
 
 
 import org.apache.turbine.modules.Assembler;
+import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.Service;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
 import org.apache.turbine.util.TurbineException;
@@ -58,4 +59,12 @@ public interface AssemblerBrokerService
      * @throws TurbineException Something went wrong while looking for the Assembler
      */
     Assembler getAssembler(String type, String name) throws TurbineException;
+
+    /**
+     * Get a Loader for the given assembler type
+     *
+     * @param type The Type of the Assembler
+     * @return A Loader instance for the requested type
+     */
+    Loader getLoader(String type);
 }

@@ -34,6 +34,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Assembler;
+import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
@@ -230,5 +231,28 @@ public class TurbineAssemblerBrokerService
         }
         
         return assembler;
+    }
+
+    /**
+     * Get a Loader for the given assembler type
+     *
+     * @param type The Type of the Assembler
+     * @return A Loader instance for the requested type
+     */
+    public Loader getLoader(String type)
+    {
+        Loader loader = null;
+        
+        log.debug("Getting Loader for " + type);
+        List facs = getFactoryGroup(type);
+
+        for (Iterator it = facs.iterator(); (loader == null) && it.hasNext();)
+        {
+            AssemblerFactory fac = (AssemblerFactory) it.next();
+            
+            loader = fac.getLoader();
+        }
+        
+        return loader;
     }
 }

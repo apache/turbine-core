@@ -22,6 +22,7 @@ package org.apache.turbine.services.assemblerbroker;
 
 
 import org.apache.turbine.modules.Assembler;
+import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
 import org.apache.turbine.util.TurbineException;
@@ -73,5 +74,16 @@ public abstract class TurbineAssemblerBroker
         throws TurbineException
     {
         return getService().getAssembler(type, name);
+    }
+
+    /**
+     * Get a Loader for the given assembler type
+     *
+     * @param type The Type of the Assembler
+     * @return A Loader instance for the requested type
+     */
+    public static Loader getLoader(String type)
+    {
+        return getService().getLoader(type);
     }
 }
