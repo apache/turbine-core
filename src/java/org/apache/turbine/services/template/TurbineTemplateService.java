@@ -35,17 +35,14 @@ import org.apache.fulcrum.factory.FactoryService;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Layout;
-import org.apache.turbine.modules.LayoutLoader;
 import org.apache.turbine.modules.Loader;
 import org.apache.turbine.modules.Navigation;
-import org.apache.turbine.modules.NavigationLoader;
 import org.apache.turbine.modules.Page;
-import org.apache.turbine.modules.PageLoader;
 import org.apache.turbine.modules.Screen;
-import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.template.mapper.BaseTemplateMapper;
 import org.apache.turbine.services.template.mapper.ClassMapper;
@@ -682,11 +679,16 @@ public class TurbineTemplateService
         // We could use a List object here and extend the number of managed objects
         // dynamically. However, by using an Object Array, we get much more performance
         // out of the Template Service.
-        mapperRegistry = new Mapper [TEMPLATE_TYPES];
+        mapperRegistry = new Mapper[TEMPLATE_TYPES];
 
         String [] mapperNames = new String [] {
-            Page.NAME,Screen.NAME, Layout.NAME,
-            Navigation.NAME, LAYOUT_TEMPLATE_NAME, SCREEN_TEMPLATE_NAME, NAVIGATION_TEMPLATE_NAME
+            Page.NAME, Screen.NAME, Layout.NAME, Navigation.NAME, 
+            LAYOUT_TEMPLATE_NAME, SCREEN_TEMPLATE_NAME, NAVIGATION_TEMPLATE_NAME
+        };
+
+        String [] mapperKeys = new String [] {
+            Page.NAME, Screen.NAME, Layout.NAME, Navigation.NAME, 
+            Layout.NAME, Screen.NAME, Navigation.NAME
         };
 
         String [] mapperClasses = new String [] {
@@ -698,17 +700,24 @@ public class TurbineTemplateService
             ScreenTemplateMapper.class.getName(),
             DirectTemplateMapper.class.getName()
         };
-
-        int [] mapperCacheSize = new int [] {
-            PageLoader.getInstance().getCacheSize(),
-            ScreenLoader.getInstance().getCacheSize(),
-            LayoutLoader.getInstance().getCacheSize(),
-            NavigationLoader.getInstance().getCacheSize(),
-            LayoutLoader.getInstance().getCacheSize(),
-            ScreenLoader.getInstance().getCacheSize(),
-            NavigationLoader.getInstance().getCacheSize()
-        };
-
+        
+        AssemblerBrokerService ab = (AssemblerBrokerService)TurbineServices.getInstance()
+                                        .getService(AssemblerBrokerService.SERVICE_NAME);
+        
+        int [] mapperCacheSize = new int [mapperKeys.length];
+        Loader [] mapperLoader = new Loader [mapperKeys.length];
+        
+        for (int i = 0; i < mapperKeys.length; i++)
+        {
+            mapperLoader[i] = ab.getLoader(mapperKeys[i]);
+            mapperCacheSize[i] = (mapperLoader[i] != null) ? mapperLoader[i].getCacheSize() : 0;
+        }
+        
+        // HACK: to achieve the same behaviour as before
+        mapperLoader[LAYOUT_TEMPLATE_KEY] = null;
+        mapperLoader[SCREEN_TEMPLATE_KEY] = null;
+        mapperLoader[NAVIGATION_TEMPLATE_KEY] = null;
+        
         String [] mapperDefaultProperty = new String [] {
             TemplateEngineService.DEFAULT_PAGE,
             TemplateEngineService.DEFAULT_SCREEN,
@@ -720,13 +729,6 @@ public class TurbineTemplateService
         };
 
         char [] mapperSeparator = new char [] { '.', '.', '.', '.', '/', '/', '/' };
-
-        Loader [] mapperLoader = new Loader [] {
-            PageLoader.getInstance(),
-            ScreenLoader.getInstance(),
-            LayoutLoader.getInstance(),
-            NavigationLoader.getInstance(),
-            null, null, null};
 
         String [] mapperPrefix = new String [] {
             null, null, null, null,
