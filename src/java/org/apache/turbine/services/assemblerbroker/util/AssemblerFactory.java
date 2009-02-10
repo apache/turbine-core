@@ -21,7 +21,7 @@ package org.apache.turbine.services.assemblerbroker.util;
  */
 
 
-import org.apache.turbine.modules.Assembler;
+import org.apache.turbine.modules.Loader;
 
 /**
  * Interface for AssemblerFactory's
@@ -29,14 +29,12 @@ import org.apache.turbine.modules.Assembler;
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
  * @version $Id$
  */
-public interface AssemblerFactory
+public interface AssemblerFactory extends Loader
 {
     /**
-     * Get an Assembler.
-     *
-     * @param name name of the requested Assembler
-     * @return an Assembler
-     * @throws Exception generic exception
+     * Get the loader for this type of assembler
+     * 
+     * @return a Loader
      */
-    Assembler getAssembler(String name) throws Exception;
+    Loader getLoader();
 }
