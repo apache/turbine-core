@@ -29,12 +29,9 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.pull.ApplicationTool;
@@ -176,7 +173,7 @@ public class TurbineJspService
         // get the RequestDispatcher for the JSP
         RequestDispatcher dispatcher = data.getServletContext()
             .getRequestDispatcher(relativeTemplateName);
-
+        
         try
         {
             if (isForward)
@@ -186,7 +183,7 @@ public class TurbineJspService
             }
             else
             {
-                data.getOut().flush();
+                data.getResponse().getWriter().flush();
                 // include the JSP
                 dispatcher.include(data.getRequest(), data.getResponse());
             }
@@ -197,9 +194,9 @@ public class TurbineJspService
             // error message to the browser, to speed up debugging
             try
             {
-                data.getOut().print("Error encountered processing a template: "
+                data.getResponse().getWriter().print("Error encountered processing a template: "
                     + templateName);
-                e.printStackTrace(data.getOut());
+                e.printStackTrace(data.getResponse().getWriter());
             }
             catch (IOException ignored)
             {

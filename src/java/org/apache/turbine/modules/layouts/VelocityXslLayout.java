@@ -30,8 +30,10 @@ import org.apache.ecs.ConcreteElement;
 
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Layout;
+import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.services.xslt.TurbineXSLT;
 import org.apache.turbine.util.RunData;
@@ -66,6 +68,18 @@ public class VelocityXslLayout extends Layout
     /** The prefix for lookup up layout pages */
     private String prefix = Layout.PREFIX + "/";
 
+    private ScreenLoader screenLoader;
+
+    /**
+     * Default constructor
+     */
+    public VelocityXslLayout()
+    {
+        super();
+
+        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.NAME);
+    }
+
     /**
      * Build the layout.  Also sets the ContentType and Locale headers
      * of the HttpServletResponse object.
@@ -88,7 +102,7 @@ public class VelocityXslLayout extends Layout
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.
         ConcreteElement results =
-            ScreenLoader.getInstance().eval(data, screenName);
+            screenLoader.eval(data, screenName);
 
         String returnValue = (results == null) ? "" : results.toString();
 
@@ -114,7 +128,7 @@ public class VelocityXslLayout extends Layout
         // back to the browser
         TurbineXSLT.transform(
             data.getTemplateInfo().getScreenTemplate(),
-                new StringReader(temp), data.getOut());
+                new StringReader(temp), data.getResponse().getWriter());
     }
 
     /**
@@ -127,7 +141,7 @@ public class VelocityXslLayout extends Layout
     public void doBuild(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         // Get the context needed by Velocity.
         Context context = TurbineVelocity.getContext(pipelineData);
 
@@ -140,7 +154,7 @@ public class VelocityXslLayout extends Layout
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.
         ConcreteElement results =
-            ScreenLoader.getInstance().eval(pipelineData, screenName);
+            screenLoader.eval(pipelineData, screenName);
 
         String returnValue = (results == null) ? "" : results.toString();
 
@@ -166,7 +180,6 @@ public class VelocityXslLayout extends Layout
         // back to the browser
         TurbineXSLT.transform(
             data.getTemplateInfo().getScreenTemplate(),
-                new StringReader(temp), data.getOut());
+                new StringReader(temp), data.getResponse().getWriter());
     }
-
 }

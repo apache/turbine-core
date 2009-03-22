@@ -39,12 +39,13 @@ import org.apache.turbine.util.TurbineException;
 public class DetermineRedirectRequestedValve
     extends AbstractValve
 {
-    Log log = LogFactory.getLog(DetermineRedirectRequestedValve.class);
+    private static final Log log = LogFactory.getLog(DetermineRedirectRequestedValve.class);
     /**
      * Creates a new instance.
      */
     public DetermineRedirectRequestedValve()
     {
+        // empty constructor
     }
 
     /**
@@ -74,7 +75,7 @@ public class DetermineRedirectRequestedValve
     protected void redirectRequested(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = (RunData)getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         // handle a redirect request
         boolean requestRedirected = ((data.getRedirectURI() != null)
         && (data.getRedirectURI().length() > 0));
@@ -115,7 +116,7 @@ public class DetermineRedirectRequestedValve
                     // Set the status code.
                     data.getResponse().setStatus(data.getStatusCode());
                     // Output the Page.
-                    data.getPage().output(data.getOut());
+                    data.getPage().output(data.getResponse().getWriter());
                 }
             }
             catch (Exception e)

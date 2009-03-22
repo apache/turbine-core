@@ -25,8 +25,10 @@ import java.io.IOException;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.actions.sessionvalidator.SessionValidator;
+import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -42,12 +44,24 @@ public class DefaultSessionValidationValve
     extends AbstractValve
 {
     protected SessionValidator sessionValidator = null;
-
+    private ActionLoader actionLoader;
 
     public DefaultSessionValidationValve()
         throws Exception
     {
+        // empty constructor
+    }
 
+    /**
+     * Initialize this valve for use in a pipeline.
+     * 
+     * @see org.apache.turbine.pipeline.AbstractValve#initialize()
+     */
+    public void initialize() throws Exception
+    {
+        super.initialize();
+        
+        this.actionLoader = (ActionLoader)TurbineAssemblerBroker.getLoader(Action.NAME);
     }
 
     /**
@@ -66,7 +80,7 @@ public class DefaultSessionValidationValve
             // screen other than Login, you need to change that within
             // TurbineResources.properties...screen.homepage; or, you
             // can specify your own SessionValidator action.
-            ActionLoader.getInstance().exec(pipelineData,
+            actionLoader.exec(pipelineData,
                     Turbine.getConfiguration().getString(
                             TurbineConstants.ACTION_SESSION_VALIDATOR_KEY,
                             TurbineConstants.ACTION_SESSION_VALIDATOR_DEFAULT));

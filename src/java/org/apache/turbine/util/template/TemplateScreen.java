@@ -23,10 +23,10 @@ package org.apache.turbine.util.template;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.ecs.ConcreteElement;
-
+import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
+import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -59,6 +59,8 @@ public class TemplateScreen
     /* The name of the screen template. */
     private String screen;
 
+    private ScreenLoader screenLoader;
+
     /**
      * Constructor
      *
@@ -68,6 +70,7 @@ public class TemplateScreen
     {
         this.data = data;
         this.screen = data.getScreen();
+        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.NAME);
     }
 
     /**
@@ -93,8 +96,7 @@ public class TemplateScreen
 
         try
         {
-            ConcreteElement results = ScreenLoader.getInstance()
-                    .eval(data, this.screen);
+            ConcreteElement results = screenLoader.eval(data, this.screen);
 
             if (results != null)
             {

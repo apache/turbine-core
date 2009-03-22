@@ -26,6 +26,14 @@
   <body>
     <release version="4.0-dev" date="in Subversion">
       <action type="update" dev="tv">
+        Moved the initialization of the pipeline so that all services are
+        initialized first and can be used in the pipeline.
+      </action>
+      <action type="update" dev="tv">
+        Added a getLoader() method to the AssemblerBrokerService to allow dynamic
+        loaders. Loaders are expected to be provided by the module factories.
+      </action>
+      <action type="update" dev="tv">
         Moved the different loader caches into the AssemblerBrokerService and 
         centralized several loader features. The loaders do no longer extend
         Hashtable.

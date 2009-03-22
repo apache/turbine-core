@@ -117,6 +117,7 @@ public class DefaultACLCreationValveTest extends BaseTestCase
 
         DefaultACLCreationValve valve = new DefaultACLCreationValve();
         pipeline.addValve(valve);
+        pipeline.initialize();
 
         pipeline.invoke(pipelineData);
         User user = runData.getUser();

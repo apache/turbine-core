@@ -23,8 +23,9 @@ package org.apache.turbine.services.jsp.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
+import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
 
@@ -51,6 +52,8 @@ public class JspScreenPlaceholder
     /* The RunData object */
     private RunData data;
 
+    private ScreenLoader screenLoader;
+
     /**
      * Constructor
      *
@@ -59,6 +62,7 @@ public class JspScreenPlaceholder
     public JspScreenPlaceholder(RunData data)
     {
         this.data = data;
+        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.NAME);
     }
 
     /**
@@ -72,7 +76,7 @@ public class JspScreenPlaceholder
         {
             template = data.getTemplateInfo().getScreenTemplate();
             module = TurbineTemplate.getScreenName(template);
-            ScreenLoader.getInstance().exec(data, module);
+            screenLoader.exec(data, module);
         }
         catch (Exception e)
         {
@@ -81,11 +85,12 @@ public class JspScreenPlaceholder
             log.error(message, e);
             try
             {
-                data.getOut().print("Error processing navigation template: "
+                data.getResponse().getWriter().print("Error processing navigation template: "
                         + template + " using module: " + module);
             }
             catch (java.io.IOException ioe)
             {
+                // ignore
             }
         }
     }

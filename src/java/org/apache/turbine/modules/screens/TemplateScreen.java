@@ -30,6 +30,7 @@ import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
 
+import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.template.TurbineTemplate;
 
 import org.apache.turbine.util.RunData;
@@ -56,6 +57,18 @@ public abstract class TemplateScreen
 {
     /** Logging */
     protected Log log = LogFactory.getLog(this.getClass());
+
+    private ScreenLoader screenLoader;
+
+    /**
+     * Default constructor
+     */
+    public TemplateScreen()
+    {
+        super();
+
+        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(NAME);
+    }
 
     /**
      * This method should be overidden by subclasses that wish to add
@@ -264,7 +277,7 @@ public abstract class TemplateScreen
     {
         log.debug("doRedirect(data, " + screen + ", " + template + ")");
         setTemplate(data, template);
-        ScreenLoader.getInstance().exec(data, screen);
+        screenLoader.exec(data, screen);
     }
 
     /**
@@ -292,7 +305,7 @@ public abstract class TemplateScreen
         RunData data = getRunData(pipelineData);
         log.debug("doRedirect(data, " + screen + ", " + template + ")");
         setTemplate(data, template);
-        ScreenLoader.getInstance().exec(pipelineData, screen);
+        screenLoader.exec(pipelineData, screen);
     }
 
 

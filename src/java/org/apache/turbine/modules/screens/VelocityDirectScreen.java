@@ -77,7 +77,7 @@ public class VelocityDirectScreen
         {
             TurbineVelocity.handleRequest(context,
                                           prefix + templateName,
-                                          data.getOut());
+                                          data.getResponse().getOutputStream());
 
         }
         catch (Exception e)
@@ -94,7 +94,7 @@ public class VelocityDirectScreen
 
             TurbineVelocity.handleRequest(context,
                     prefix + templateName,
-                    data.getOut());
+                    data.getResponse().getOutputStream());
         }
 
         return null;
@@ -110,44 +110,44 @@ public class VelocityDirectScreen
     public ConcreteElement buildTemplate(PipelineData pipelineData)
         throws Exception
     {
-            RunData data = getRunData(pipelineData);
-            Context context = TurbineVelocity.getContext(pipelineData);
+        RunData data = getRunData(pipelineData);
+        Context context = TurbineVelocity.getContext(pipelineData);
 
-            String screenTemplate = data.getTemplateInfo().getScreenTemplate();
-            String templateName
-                = TurbineTemplate.getScreenTemplateName(screenTemplate);
+        String screenTemplate = data.getTemplateInfo().getScreenTemplate();
+        String templateName
+            = TurbineTemplate.getScreenTemplateName(screenTemplate);
 
-            // The Template Service could not find the Screen
-            if (StringUtils.isEmpty(templateName))
-            {
-                log.error("Screen " + screenTemplate + " not found!");
-                throw new Exception("Could not find screen for " + screenTemplate);
-            }
+        // The Template Service could not find the Screen
+        if (StringUtils.isEmpty(templateName))
+        {
+            log.error("Screen " + screenTemplate + " not found!");
+            throw new Exception("Could not find screen for " + screenTemplate);
+        }
 
-            try
-            {
-                TurbineVelocity.handleRequest(context,
-                                              prefix + templateName,
-                                              data.getOut());
+        try
+        {
+            TurbineVelocity.handleRequest(context,
+                                          prefix + templateName,
+                                          data.getResponse().getOutputStream());
 
-            }
-            catch (Exception e)
-            {
-                // If there is an error, build a $processingException and
-                // attempt to call the error.vm template in the screens
-                // directory.
-                context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
-                context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
+        }
+        catch (Exception e)
+        {
+            // If there is an error, build a $processingException and
+            // attempt to call the error.vm template in the screens
+            // directory.
+            context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
+            context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
 
-                templateName = Turbine.getConfiguration()
-                    .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
-                               TurbineConstants.TEMPLATE_ERROR_VM);
+            templateName = Turbine.getConfiguration()
+                .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
+                           TurbineConstants.TEMPLATE_ERROR_VM);
 
-                TurbineVelocity.handleRequest(context,
-                        prefix + templateName,
-                        data.getOut());
-            }
+            TurbineVelocity.handleRequest(context,
+                    prefix + templateName,
+                    data.getResponse().getOutputStream());
+        }
 
-            return null;
+        return null;
     }
 }

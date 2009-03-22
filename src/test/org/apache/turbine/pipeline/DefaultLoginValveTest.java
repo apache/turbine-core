@@ -122,6 +122,7 @@ public class DefaultLoginValveTest extends BaseTestCase
 
         DefaultLoginValve valve = new DefaultLoginValve();
         pipeline.addValve(valve);
+        pipeline.initialize();
 
         pipeline.invoke(pipelineData);
         User user = runData.getUser();

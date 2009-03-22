@@ -123,6 +123,7 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
 
         DefaultSessionValidationValve valve = new DefaultSessionValidationValve();
         pipeline.addValve(valve);
+        pipeline.initialize();
 
         pipeline.invoke(pipelineData);
         User user = runData.getUser();
@@ -155,6 +156,7 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
 
         DefaultSessionValidationValve valve = new DefaultSessionValidationValve();
         pipeline.addValve(valve);
+        pipeline.initialize();
 
         pipeline.invoke(pipelineData);
         User user = runData.getUser();
