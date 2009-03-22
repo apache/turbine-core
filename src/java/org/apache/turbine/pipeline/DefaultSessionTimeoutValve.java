@@ -65,7 +65,7 @@ public class DefaultSessionTimeoutValve
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
-        RunData runData = (RunData)getRunData(pipelineData);
+        RunData runData = getRunData(pipelineData);
         // If the session is new take this opportunity to
         // set the session timeout if specified in TR.properties
         if (runData.getSession().isNew() && timeout != TurbineConstants.SESSION_TIMEOUT_DEFAULT)

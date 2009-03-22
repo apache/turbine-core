@@ -48,6 +48,7 @@ public class CleanUpValve
      */
     public CleanUpValve()
     {
+        // empty constructor
     }
 
     /**
@@ -77,7 +78,7 @@ public class CleanUpValve
     protected void cleanUp(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = (RunData)getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         // If a module has set data.acl = null, remove acl from
         // the session.
         if (data.getACL() == null)

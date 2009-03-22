@@ -45,43 +45,43 @@ public class DetermineTargetValve
     extends AbstractValve
 {
     private static final Log log
-        = LogFactory.getLog( DetermineTargetValve.class );
+        = LogFactory.getLog(DetermineTargetValve.class);
 
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke( PipelineData pipelineData, ValveContext context )
+    public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
-        RunData runData = (RunData)getRunData(pipelineData);
-        if ( ! runData.hasScreen() )
+        RunData runData = getRunData(pipelineData);
+        if (! runData.hasScreen())
         {
             String target = runData.getParameters().getString(URIConstants.CGI_SCREEN_PARAM);
 
-            if ( target != null )
+            if (target != null)
             {
-                runData.setScreen( target );
+                runData.setScreen(target);
 
-                log.debug( "Set screen target from request parameter" );
+                log.debug("Set screen target from request parameter");
             }
             else
             {
-            /*    data.setScreen( Turbine.getConfiguration().getString(
-                    Turbine.TEMPLATE_HOMEPAGE ) );
+            /*    data.setScreen(Turbine.getConfiguration().getString(
+                    Turbine.TEMPLATE_HOMEPAGE));
 
-                log.debug( "Set target using default value" );
+                log.debug("Set target using default value");
                 */
-				log.debug( "No target screen" );
+				log.debug("No target screen");
             }
 
         }
 
-        if ( log.isDebugEnabled() )
+        if (log.isDebugEnabled())
         {
-            log.debug( "Screen Target is now: " + runData.getScreen() );
+            log.debug("Screen Target is now: " + runData.getScreen());
         }
 
         // Pass control to the next Valve in the Pipeline
-        context.invokeNext( pipelineData );
+        context.invokeNext(pipelineData);
     }
 }

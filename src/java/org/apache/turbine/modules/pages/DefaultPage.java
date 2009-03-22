@@ -29,12 +29,15 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.ecs.Doctype;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
+import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.LayoutLoader;
 import org.apache.turbine.modules.Page;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -98,6 +101,22 @@ public class DefaultPage
     /** Logging */
     protected Log log = LogFactory.getLog(this.getClass());
 
+    protected ActionLoader actionLoader;
+    protected ScreenLoader screenLoader;
+    protected LayoutLoader layoutLoader;
+
+    /**
+     * Default constructor
+     */
+    public DefaultPage()
+    {
+        super();
+
+        this.actionLoader = (ActionLoader)TurbineAssemblerBroker.getLoader(Action.NAME);
+        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.NAME);
+        this.layoutLoader = (LayoutLoader)TurbineAssemblerBroker.getLoader(Layout.NAME);
+    }
+
     /**
      * Builds the Page.
      *
@@ -116,7 +135,7 @@ public class DefaultPage
         // can re-define the template definition.
         if (data.hasAction())
         {
-            ActionLoader.getInstance().exec(data, data.getAction());
+            actionLoader.exec(data, data.getAction());
         }
 
         // if a redirect was setup in data, don't do anything else
@@ -141,19 +160,18 @@ public class DefaultPage
         // The Screen can override the getLayout() method to re-define
         // the Layout depending on data passed in via the
         // data.parameters object.
-        ScreenLoader sl = ScreenLoader.getInstance();
-        Screen aScreen = sl.getInstance(screenName);
+        Screen aScreen = screenLoader.getInstance(screenName);
         String layout = aScreen.getLayout(data);
 
         // If the Layout has been set to be null, attempt to execute
         // the Screen that has been defined.
         if (layout != null)
         {
-            LayoutLoader.getInstance().exec(data, layout);
+            layoutLoader.exec(data, layout);
         }
         else
         {
-            ScreenLoader.getInstance().exec(data, screenName);
+            screenLoader.exec(data, screenName);
         }
 
         // Do any post build actions (overridable by subclasses -
@@ -170,7 +188,7 @@ public class DefaultPage
     public void doBuild(PipelineData pipelineData)
             throws Exception
     {
-        RunData data = (RunData)getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         // Template pages can use this to set up the context, so it is
         // available to the Action and Screen.  It does nothing here.
         doBuildBeforeAction(pipelineData);
@@ -179,7 +197,7 @@ public class DefaultPage
         // can re-define the template definition.
         if (data.hasAction())
         {
-            ActionLoader.getInstance().exec(pipelineData, data.getAction());
+            actionLoader.exec(pipelineData, data.getAction());
         }
 
         // if a redirect was setup in data, don't do anything else
@@ -204,19 +222,18 @@ public class DefaultPage
         // The Screen can override the getLayout() method to re-define
         // the Layout depending on data passed in via the
         // data.parameters object.
-        ScreenLoader sl = ScreenLoader.getInstance();
-        Screen aScreen = sl.getInstance(screenName);
+        Screen aScreen = screenLoader.getInstance(screenName);
         String layout = aScreen.getLayout(pipelineData);
 
         // If the Layout has been set to be null, attempt to execute
         // the Screen that has been defined.
         if (layout != null)
         {
-            LayoutLoader.getInstance().exec(pipelineData, layout);
+            layoutLoader.exec(pipelineData, layout);
         }
         else
         {
-            ScreenLoader.getInstance().exec(pipelineData, screenName);
+            screenLoader.exec(pipelineData, screenName);
         }
 
         // Do any post build actions (overridable by subclasses -
@@ -238,6 +255,7 @@ public class DefaultPage
     protected void doBuildBeforeAction(RunData data)
             throws Exception
     {
+        // do nothing by default
     }
 
     /**
@@ -251,6 +269,7 @@ public class DefaultPage
     protected void doBuildAfterAction(RunData data)
             throws Exception
     {
+        // do nothing by default
     }
 
     /**
@@ -263,6 +282,7 @@ public class DefaultPage
     protected void doPostBuild(RunData data)
             throws Exception
     {
+        // do nothing by default
     }
 
 
@@ -277,6 +297,7 @@ public class DefaultPage
     protected void doBuildBeforeAction(PipelineData pipelineData)
             throws Exception
     {
+        // do nothing by default
     }
 
     /**
@@ -289,6 +310,7 @@ public class DefaultPage
     protected void doBuildAfterAction(PipelineData pipelineData)
             throws Exception
     {
+        // do nothing by default
     }
 
     /**
@@ -301,9 +323,8 @@ public class DefaultPage
     protected void doPostBuild(PipelineData pipelineData)
             throws Exception
     {
+        // do nothing by default
     }
-
-
 
     /**
      * Set the default Doctype.  If Doctype is set to null, it will

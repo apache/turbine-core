@@ -91,7 +91,7 @@ public class VelocityDirectLayout
 
         // Finally, generate the layout template and send it to the browser
         TurbineVelocity.handleRequest(context,
-                prefix + templateName, data.getOut());
+                prefix + templateName, data.getResponse().getOutputStream());
     }
 
     /**
@@ -104,7 +104,7 @@ public class VelocityDirectLayout
     public void doBuild(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         // Get the context needed by Velocity.
         Context context = TurbineVelocity.getContext(pipelineData);
 
@@ -129,7 +129,7 @@ public class VelocityDirectLayout
 
         // Finally, generate the layout template and send it to the browser
         TurbineVelocity.handleRequest(context,
-                prefix + templateName, data.getOut());
+                prefix + templateName, data.getResponse().getOutputStream());
     }
 
 

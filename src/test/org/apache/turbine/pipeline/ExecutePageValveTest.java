@@ -126,6 +126,7 @@ public class ExecutePageValveTest extends BaseTestCase
         PipelineData pipelineData = runData;
         ExecutePageValve valve = new ExecutePageValve();
         pipeline.addValve(valve);
+        pipeline.initialize();
 
         int numberOfCalls = VelocityActionDoesNothing.numberOfCalls;
         pipeline.invoke(pipelineData);

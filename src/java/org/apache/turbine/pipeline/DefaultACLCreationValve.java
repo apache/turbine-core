@@ -25,8 +25,10 @@ import java.io.IOException;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.actions.AccessController;
+import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -42,6 +44,7 @@ public class DefaultACLCreationValve
     extends AbstractValve
 {
     protected AccessController accessController = null;
+    private ActionLoader actionLoader;
 
     /**
      * Here we can setup objects that are thread safe and can be
@@ -51,7 +54,19 @@ public class DefaultACLCreationValve
     public DefaultACLCreationValve()
         throws Exception
     {
-
+        // empty constructor
+    }
+    
+    /**
+     * Initialize this valve for use in a pipeline.
+     * 
+     * @see org.apache.turbine.pipeline.AbstractValve#initialize()
+     */
+    public void initialize() throws Exception
+    {
+        super.initialize();
+        
+        this.actionLoader = (ActionLoader)TurbineAssemblerBroker.getLoader(Action.NAME);
     }
 
     /**
@@ -67,7 +82,7 @@ public class DefaultACLCreationValve
             // into the session for serialization.  Modules can null
             // out the ACL to force it to be rebuilt based on more
             // information.
-            ActionLoader.getInstance().exec(
+            actionLoader.exec(
                     pipelineData, Turbine.getConfiguration().getString(
                             TurbineConstants.ACTION_ACCESS_CONTROLLER_KEY,
                             TurbineConstants.ACTION_ACCESS_CONTROLLER_DEFAULT));

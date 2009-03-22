@@ -41,38 +41,38 @@ public class DetermineActionValve
     extends AbstractValve
 {
     private static final Log log
-        = LogFactory.getLog( DetermineActionValve.class );
+        = LogFactory.getLog(DetermineActionValve.class);
 
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
-    public void invoke( PipelineData pipelineData, ValveContext context )
+    public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
-        RunData data = (RunData)getRunData(pipelineData);
-        if ( ! data.hasAction() )
+        RunData data = getRunData(pipelineData);
+        if (! data.hasAction())
         {
             String action =
-                data.getParameters().getString( URIConstants.CGI_ACTION_PARAM );
+                data.getParameters().getString(URIConstants.CGI_ACTION_PARAM);
 
-            if ( action != null )
+            if (action != null)
             {
-                data.setAction( action );
+                data.setAction(action);
 
-                log.debug( "Set action from request parameter" );
+                log.debug("Set action from request parameter");
             }
             else
             {
-                log.debug( "No action" );
+                log.debug("No action");
             }
         }
 
-        if ( log.isDebugEnabled() )
+        if (log.isDebugEnabled())
         {
-            log.debug( "Action is now: " + data.getAction() );
+            log.debug("Action is now: " + data.getAction());
         }
 
         // Pass control to the next Valve in the Pipeline
-        context.invokeNext( pipelineData );
+        context.invokeNext(pipelineData);
     }
 }

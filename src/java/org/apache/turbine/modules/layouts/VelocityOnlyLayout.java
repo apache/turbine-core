@@ -23,17 +23,16 @@ package org.apache.turbine.modules.layouts;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.ecs.ConcreteElement;
-
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Layout;
+import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateNavigation;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -77,6 +76,18 @@ public class VelocityOnlyLayout
     /** The prefix for lookup up layout pages */
     private String prefix = Layout.PREFIX + "/";
 
+    private ScreenLoader screenLoader;
+
+    /**
+     * Default constructor
+     */
+    public VelocityOnlyLayout()
+    {
+        super();
+
+        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.NAME);
+    }
+
     /**
      * Build the layout.  Also sets the ContentType and Locale headers
      * of the HttpServletResponse object.
@@ -97,7 +108,7 @@ public class VelocityOnlyLayout
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.
         ConcreteElement results =
-            ScreenLoader.getInstance().eval(data, screenName);
+            screenLoader.eval(data, screenName);
 
         String returnValue = (results == null) ? "" : results.toString();
 
@@ -120,8 +131,8 @@ public class VelocityOnlyLayout
         log.debug("Now trying to render layout " + templateName);
 
         // Finally, generate the layout template and send it to the browser
-        data.getOut().print(TurbineVelocity
-                .handleRequest(context, prefix + templateName));
+        TurbineVelocity.handleRequest(context,
+                prefix + templateName, data.getResponse().getOutputStream());
     }
 
     /**
@@ -135,7 +146,7 @@ public class VelocityOnlyLayout
     public void doBuild(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         // Get the context needed by Velocity.
         Context context = TurbineVelocity.getContext(pipelineData);
 
@@ -146,7 +157,7 @@ public class VelocityOnlyLayout
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.
         ConcreteElement results =
-            ScreenLoader.getInstance().eval(pipelineData, screenName);
+            screenLoader.eval(pipelineData, screenName);
 
         String returnValue = (results == null) ? "" : results.toString();
 
@@ -169,9 +180,7 @@ public class VelocityOnlyLayout
         log.debug("Now trying to render layout " + templateName);
 
         // Finally, generate the layout template and send it to the browser
-        data.getOut().print(TurbineVelocity
-                .handleRequest(context, prefix + templateName));
+        TurbineVelocity.handleRequest(context,
+                prefix + templateName, data.getResponse().getOutputStream());
     }
-
-
 }

@@ -44,6 +44,7 @@ public abstract class AbstractValve
     public void initialize()
         throws Exception
     {
+        // empty
     }
 
     /**

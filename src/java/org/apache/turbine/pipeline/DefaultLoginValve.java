@@ -31,7 +31,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
+import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
@@ -49,6 +51,8 @@ import org.apache.turbine.util.template.TemplateInfo;
 public class DefaultLoginValve
     extends AbstractValve
 {
+    private ActionLoader actionLoader;
+
     /**
      * Here we can setup objects that are thread safe and can be
      * reused. We setup the session validator and the access
@@ -57,6 +61,19 @@ public class DefaultLoginValve
     public DefaultLoginValve()
         throws Exception
     {
+        // empty constructor
+    }
+
+    /**
+     * Initialize this valve for use in a pipeline.
+     * 
+     * @see org.apache.turbine.pipeline.AbstractValve#initialize()
+     */
+    public void initialize() throws Exception
+    {
+        super.initialize();
+        
+        this.actionLoader = (ActionLoader)TurbineAssemblerBroker.getLoader(Action.NAME);
     }
 
     /**
@@ -87,7 +104,7 @@ public class DefaultLoginValve
     protected void process(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = (RunData)getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         // Special case for login and logout, this must happen before the
         // session validator is executed in order either to allow a user to
         // even login, or to ensure that the session validator gets to
@@ -142,7 +159,7 @@ public class DefaultLoginValve
             }
 
 
-            ActionLoader.getInstance().exec(pipelineData, data.getAction());
+            actionLoader.exec(pipelineData, data.getAction());
             cleanupTemplateContext(data);
             data.setAction(null);
         }

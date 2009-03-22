@@ -23,14 +23,11 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.modules.Page;
 import org.apache.turbine.modules.PageLoader;
-import org.apache.turbine.pipeline.AbstractValve;
-import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.pipeline.ValveContext;
+import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
@@ -47,14 +44,28 @@ import org.apache.turbine.util.TurbineException;
 public class ExecutePageValve
     extends AbstractValve
 {
-    Log log = LogFactory.getLog(ExecutePageValve.class);
-    TemplateService templateService;
+    private TemplateService templateService;
+    private PageLoader pageLoader;
+    
     /**
      * Creates a new instance.
      */
     public ExecutePageValve()
     {
-
+        // empty constructor
+    }
+    
+    /**
+     * Initialize this valve for use in a pipeline.
+     * 
+     * @see org.apache.turbine.pipeline.AbstractValve#initialize()
+     */
+    public void initialize() throws Exception
+    {
+        super.initialize();
+        
+        this.templateService = TurbineTemplate.getService();
+        this.pageLoader = (PageLoader)TurbineAssemblerBroker.getLoader(Page.NAME);
     }
 
     /**
@@ -84,7 +95,7 @@ public class ExecutePageValve
     protected void executePage(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = (RunData)getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
 
         // Start the execution phase. DefaultPage will execute the
         // appropriate action as well as get the Layout from the
@@ -97,10 +108,6 @@ public class ExecutePageValve
         // security purposes.  You should really never need more
         // than just the default page.  If you do, add logic to
         // DefaultPage to do what you want.
-
-        // see if this should be static or not...  Or loaded from
-        // Turbine.java.
-        templateService = TurbineTemplate.getService();
 
         String defaultPage = (templateService == null)
         ? null :templateService.getDefaultPageName(data);
@@ -122,7 +129,6 @@ public class ExecutePageValve
                     TurbineConstants.PAGE_DEFAULT_DEFAULT);
         }
 
-        PageLoader.getInstance().exec(pipelineData, defaultPage);
-
+        pageLoader.exec(pipelineData, defaultPage);
     }
 }

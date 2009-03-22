@@ -81,7 +81,7 @@ public class JspNavigation
             log.error(message, e);
             try
             {
-                data.getOut().print("Error processing navigation template: "
+                data.getResponse().getWriter().print("Error processing navigation template: "
                         + template + " using module: " + module);
             }
             catch (java.io.IOException ioe)
