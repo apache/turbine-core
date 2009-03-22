@@ -362,7 +362,15 @@ public class Turbine
         configuration.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, applicationRoot);
         configuration.setProperty(TurbineConstants.WEBAPP_ROOT_KEY, webappRoot);
 
-		// Retrieve the pipeline class and then initialize it.  The pipeline
+        getServiceManager().setConfiguration(configuration);
+
+        // Initialize the service manager. Services
+        // that have its 'earlyInit' property set to
+        // a value of 'true' will be started when
+        // the service manager is initialized.
+        getServiceManager().init();
+
+        // Retrieve the pipeline class and then initialize it.  The pipeline
         // handles the processing of a webrequest/response cycle.
 
 	    String descriptorPath =
@@ -380,14 +388,6 @@ public class Turbine
 	  	log.debug("Initializing pipeline");
 
 	  	pipeline.initialize();
-
-        getServiceManager().setConfiguration(configuration);
-
-        // Initialize the service manager. Services
-        // that have its 'earlyInit' property set to
-        // a value of 'true' will be started when
-        // the service manager is initialized.
-        getServiceManager().init();
     }
 
     /**
