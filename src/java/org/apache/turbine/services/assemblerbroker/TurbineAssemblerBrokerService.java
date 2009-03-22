@@ -64,6 +64,9 @@ public class TurbineAssemblerBrokerService
     /** A cache that holds the generated Assemblers */
     private Map assemblerCache = null;
     
+    /** A cache that holds the Loaders */
+    private Map loaderCache = null;
+    
     /** Caching on/off */
     private boolean isCaching;
     
@@ -164,6 +167,7 @@ public class TurbineAssemblerBrokerService
                         TurbineConstants.MODULE_CACHE_SIZE_DEFAULT);
             
             assemblerCache = new LRUMap(cacheSize);
+            loaderCache = new LRUMap(cacheSize);
         }
         
         setInit(true);
@@ -243,14 +247,32 @@ public class TurbineAssemblerBrokerService
     {
         Loader loader = null;
         
-        log.debug("Getting Loader for " + type);
-        List facs = getFactoryGroup(type);
-
-        for (Iterator it = facs.iterator(); (loader == null) && it.hasNext();)
+        if (isCaching && loaderCache.containsKey(type))
         {
-            AssemblerFactory fac = (AssemblerFactory) it.next();
-            
-            loader = fac.getLoader();
+            loader = (Loader)loaderCache.get(type);
+            log.debug("Found " + type + " loader in the cache!");
+        }
+        else
+        {
+            log.debug("Getting Loader for " + type);
+            List facs = getFactoryGroup(type);
+    
+            for (Iterator it = facs.iterator(); (loader == null) && it.hasNext();)
+            {
+                AssemblerFactory fac = (AssemblerFactory) it.next();
+                
+                loader = fac.getLoader();
+            }
+        
+            if (isCaching && loader != null)
+            {
+                assemblerCache.put(type, loader);
+            }
+        }
+        
+        if (loader == null)
+        {
+            log.warn("Loader for " + type + " is null.");
         }
         
         return loader;
