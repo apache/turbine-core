@@ -21,8 +21,6 @@ package org.apache.turbine.util;
  */
 
 
-import org.apache.commons.lang.exception.NestableException;
-
 /**
  * The base class of all exceptions thrown by Turbine.
  *
@@ -86,7 +84,7 @@ import org.apache.commons.lang.exception.NestableException;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  */
-public class TurbineException extends NestableException
+public class TurbineException extends Exception
 {
     /**
      * Constructs a new <code>TurbineException</code> without specified
@@ -94,6 +92,7 @@ public class TurbineException extends NestableException
      */
     public TurbineException()
     {
+        super();
     }
 
     /**
