@@ -28,7 +28,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.fulcrum.intake.Intake;
+import org.apache.fulcrum.intake.IntakeServiceFacade;
 import org.apache.fulcrum.intake.IntakeException;
 import org.apache.fulcrum.intake.Retrievable;
 import org.apache.fulcrum.intake.model.Group;
@@ -79,7 +79,7 @@ public class IntakeTool
      */
     public IntakeTool()
     {
-        String[] groupNames = Intake.getGroupNames();
+        String[] groupNames = IntakeServiceFacade.getGroupNames();
         int groupCount = 0;
         if (groupNames != null)
         {
@@ -105,14 +105,14 @@ public class IntakeTool
         String[] groupNames = null;
         if (groupKeys == null || groupKeys.length == 0)
         {
-            groupNames = Intake.getGroupNames();
+            groupNames = IntakeServiceFacade.getGroupNames();
         }
         else
         {
             groupNames = new String[groupKeys.length];
             for (int i = groupKeys.length - 1; i >= 0; i--)
             {
-                groupNames[i] = Intake.getGroupName(groupKeys[i]);
+                groupNames[i] = IntakeServiceFacade.getGroupName(groupKeys[i]);
             }
 
         }
@@ -121,7 +121,7 @@ public class IntakeTool
         {
             try
             {
-                List foundGroups = Intake.getGroup(groupNames[i])
+                List foundGroups = IntakeServiceFacade.getGroup(groupNames[i])
                     .getObjects(pp);
 
                 if (foundGroups != null)
@@ -277,14 +277,14 @@ public class IntakeTool
         {
             Group g = null;
 
-            String inputKey = Intake.getGroupKey(groupName) + key;
+            String inputKey = IntakeServiceFacade.getGroupKey(groupName) + key;
             if (groups.containsKey(inputKey))
             {
                 g = (Group) groups.get(inputKey);
             }
             else if (create)
             {
-                g = Intake.getGroup(groupName);
+                g = IntakeServiceFacade.getGroup(groupName);
                 groups.put(inputKey, g);
                 g.init(key, pp);
             }
@@ -305,7 +305,7 @@ public class IntakeTool
 
             try
             {
-                String inputKey = Intake.getGroupKey(groupName)
+                String inputKey = IntakeServiceFacade.getGroupKey(groupName)
                         + obj.getQueryKey();
                 if (groups.containsKey(inputKey))
                 {
@@ -313,7 +313,7 @@ public class IntakeTool
                 }
                 else
                 {
-                    g = Intake.getGroup(groupName);
+                    g = IntakeServiceFacade.getGroup(groupName);
                     groups.put(inputKey, g);
                 }
 
@@ -372,11 +372,11 @@ public class IntakeTool
     {
         if (groupName == null)
         {
-            throw new IntakeException("Intake.get: groupName == null");
+            throw new IntakeException("IntakeServiceFacade.get: groupName == null");
         }
         if (key == null)
         {
-            throw new IntakeException("Intake.get: key == null");
+            throw new IntakeException("IntakeServiceFacade.get: key == null");
         }
 
         PullHelper ph = get(groupName);
@@ -392,11 +392,11 @@ public class IntakeTool
     {
         if (groupName == null)
         {
-            throw new IntakeException("Intake.get: groupName == null");
+            throw new IntakeException("IntakeServiceFacade.get: groupName == null");
         }
         if (key == null)
         {
-            throw new IntakeException("Intake.get: key == null");
+            throw new IntakeException("IntakeServiceFacade.get: key == null");
         }
 
         PullHelper ph = get(groupName);
@@ -433,7 +433,7 @@ public class IntakeTool
 
             try
             {
-                Intake.releaseGroup(group);
+                IntakeServiceFacade.releaseGroup(group);
             }
             catch (IntakeException ie)
             {
@@ -500,7 +500,7 @@ public class IntakeTool
 
             try
             {
-                Intake.releaseGroup(g);
+                IntakeServiceFacade.releaseGroup(g);
             }
             catch (IntakeException ie)
             {
