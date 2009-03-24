@@ -1,0 +1,1254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+   Licensed to the Apache Software Foundation (ASF) under one or more
+   contributor license agreements.  See the NOTICE file distributed with
+   this work for additional information regarding copyright ownership.
+   The ASF licenses this file to You under the Apache License, Version 2.0
+   (the "License"); you may not use this file except in compliance with
+   the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+-->
+<!--
+Note: While this pom includes many of the elements required in order to build
+the project, maven 1 is the only supported build system for turbine.
+
+This pom is provided to make it easier for projects built with maven 2 to use
+turbine.
+-->
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.apache</groupId>
+     <artifactId>apache</artifactId>
+     <version>4</version>
+  </parent>
+  <groupId>org.apache.turbine</groupId>
+  <artifactId>turbine</artifactId>
+  <name>turbine-4</name>
+  <version>4.0-dev</version>
+  <description>Turbine is a servlet based framework that allows experienced Java
+    developers to quickly build secure web applications. Parts of Turbine
+    can also be used independently of the web portion of Turbine as
+    well. In other words, we strive to make portions of Turbine easily
+    available for use in other applications.</description>
+  <url>http://turbine.apache.org/</url>
+  
+  <issueManagement>
+    <system>jira</system>    
+    <url>http://issues.apache.org/jira/browse/TRB</url>
+  </issueManagement>
+
+  <inceptionYear>2000</inceptionYear>
+
+  <distributionManagement>
+    <repository>
+      <id>default</id>
+      <name>Default Repository</name>
+      <url>people.apache.org/www/www.apache.org/dist/turbine/releases/</url>
+    </repository>
+    <site>
+      <id>default</id>
+      <name>Default Site</name>
+      <url>scp://people.apache.org/www/turbine.apache.org</url>
+    </site>
+  </distributionManagement>
+
+  <mailingLists>
+    <mailingList>
+      <name>Turbine User List</name>
+      <subscribe>user-subscribe@turbine.apache.org</subscribe>
+      <unsubscribe>user-unsubscribe@turbine.apache.org</unsubscribe>
+      <archive>http://mail-archives.apache.org/mod_mbox/turbine-user/</archive>
+    </mailingList>
+    <mailingList>
+      <name>Turbine Developer List</name>
+      <subscribe>dev-subscribe@turbine.apache.org</subscribe>
+      <unsubscribe>dev-unsubscribe@turbine.apache.org</unsubscribe>
+      <archive>http://mail-archives.apache.org/mod_mbox/turbine-dev/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+    <developer>
+      <id>brekke</id>
+      <name>Jeff Brekke</name>
+      <email>ekkerbj@yahoo.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </developer>
+    <developer>
+      <id>hoffmann</id>
+      <name>Jürgen Hoffmann</name>
+      <email>hoffmann@apache.org</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </developer>
+    <developer>
+      <id>daveb</id>
+      <name>Dave Bryson</name>
+      <email>mbryson@mont.mindspring.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </developer>
+    <developer>
+      <id>burton</id>
+      <name>Kevin A. Burton</name>
+      <email>burton@relativity.yi.org</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </developer>
+    <developer>
+      <id>dobbs</id>
+      <name>Eric Dobbs</name>
+      <email>dobbs@apache.org</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </developer>
+    <developer>
+      <id>seade</id>
+      <name>Scott Eade</name>
+      <email>seade@backstagetech.com.au</email>
+      <url/>
+      <organization>Backstage Technologies Pty. Ltd.</organization>
+      <timezone/>
+    </developer>
+    <developer>
+      <id>fedor</id>
+      <name>Fedor Karpelevitch</name>
+      <email>fedor@karpelevitch.net</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </developer>
+    <developer>
+      <id>legassick</id>
+      <name>Sean Legassick</name>
+      <email>sean@informage.net</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </developer>
+    <developer>
+      <id>jmcnally</id>
+      <name>John McNally</name>
+      <email>jmcnally@collab.net</email>
+      <url/>
+      <organization>CollabNet, Inc.</organization>
+      <timezone/>
+    </developer>
+    <developer>
+      <id>quintonm</id>
+      <name>Quinton McCombs</name>
+      <email>quintonm@bellsouth.net</email>
+      <url/>
+      <organization>NEqualsOne</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+      <timezone/>
+    </developer>
+    <developer>
+      <id>mpoeschl</id>
+      <name>Martin Poeschl</name>
+      <email>mpoeschl@marmot.at</email>
+      <url/>
+      <organization>tucana.at</organization>
+      <timezone/>
+    </developer>
+    <developer>
+      <id>epugh</id>
+      <name>Eric Pugh</name>
+      <email>epugh@upstate.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </developer>
+    <developer>
+      <id>dlr</id>
+      <name>Daniel Rall</name>
+      <email>dlr@finemaltcoding.com</email>
+      <url/>
+      <organization>CollabNet, Inc.</organization>
+      <timezone/>
+    </developer>
+    <developer>
+      <id>henning</id>
+      <name>Henning P. Schmiedehausen</name>
+      <email>hps@intermeta.de</email>
+      <url/>
+      <organization>INTERMETA - Gesellschaft fuer Mehrwertdienste mbH</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+      <timezone>2</timezone>
+    </developer>
+    <developer>
+      <id>kschrader</id>
+      <name>Kurt Schrader</name>
+      <email>kschrader@karmalab.org</email>
+      <url/>
+      <organization>University of Michigan</organization>
+      <timezone/>
+    </developer>
+    <developer>
+      <id>jon</id>
+      <name>Jon Scott Stevens</name>
+      <email>jon@latchkey.com</email>
+      <url/>
+      <organization>CollabNet, Inc.</organization>
+      <timezone/>
+    </developer>
+  </developers>
+  <contributors>
+    <contributor>
+      <name>Gary Bartlett</name>
+      <email>gary_a_bartlett@yahoo.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Youngho Cho</name>
+      <email>youngho@nannet.co.kr</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Frank Conradie</name>
+      <email>frank@opticode.co.za</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Gonzalo A. Diethelm</name>
+      <email>gonzalo.diethelm@iname.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>David Duddleston</name>
+      <email>david@i2a.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Christopher Elkins</name>
+      <email>celkins@scardini.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>M. Sean Gilligan</name>
+      <email>Sean_Gilligan@catalla.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Jian He</name>
+      <email>hjnet@163.net</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Humberto Hernandez</name>
+      <email>hhernandez@itweb.com.mx</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Nissim Karpenstein</name>
+      <email>nissim@nksystems.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Rafal Krzewski</name>
+      <email>krzewski@e-point.pl</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Chris Kimpton</name>
+      <email>kimptoc.mail@bigfoot.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Brian Lawler</name>
+      <email>brian@tribenetwork.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Josh Lucas</name>
+      <email>josh@stonecottage.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Carl Ludwig</name>
+      <email>carl@destinymusic.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Jonas Mauras</name>
+      <email>jm@mediaphil.de</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Brett McLaughlin</name>
+      <email>bmclaugh@algx.net</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Leon Messerschmidt</name>
+      <email>leon@opticode.co.za</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Chris Meyer</name>
+      <email>cmeyer@gatan.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Steven Nagy</name>
+      <email>snagy@web-publicity.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Kasper Nielsen</name>
+      <email>kav@kav.dk</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Paul O'Leary</name>
+      <email>paul@evolventtech.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Giacomo Pati</name>
+      <email>Giacomo.Pati@pwr.ch</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Mark Porter</name>
+      <email>mark.porter@canlink.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Jeff Prickett</name>
+      <email>jeffprickett@mindspring.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Ilkka Priha</name>
+      <email>ilkka.priha@simsoft.fi</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Cameron Riley</name>
+      <email>criley@ekmail.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Greg Ritter</name>
+      <email>greg@shwoop.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Ingo Schuster</name>
+      <email>ingo@raleigh.ibm.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Costas Stergiou</name>
+      <email>csterg@aias.gr</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>George Stewart</name>
+      <email>georgestewart@yahoo.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Ralf Stranzenbach</name>
+      <email>ralf@reswi.ruhr.de</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Hakan Tandogan</name>
+      <email>hakan42@gmx.de</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Scott C. Tavares</name>
+      <email>stavares@home.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>John Thorhauer</name>
+      <email>john@zenplex.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Magnús Þór Torfason</name>
+      <email>magnus@handpoint.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Thomas Vandahl</name>
+      <email>thomas.vandahl@tewisoft.de</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+    <contributor>
+      <name>Scott Weaver</name>
+      <email>sweaver@rippe.com</email>
+      <url/>
+      <organization/>
+      <timezone/>
+    </contributor>
+  </contributors>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      <comments/>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/core/trunk</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/trunk</developerConnection>
+    <url>http://svn.apache.org/viewcvs/turbine/core/trunk/</url>
+  </scm>
+  <organization>
+    <name>The Apache Software Foundation</name>
+    <url>http://turbine.apache.org/</url>
+  </organization>
+  
+  <build>
+    <sourceDirectory>src/java</sourceDirectory>
+    <testSourceDirectory>src/test</testSourceDirectory>
+
+    <resources>
+      <resource>
+        <directory>${basedir}</directory>
+        <targetPath>META-INF</targetPath>
+        <includes>
+          <include>NOTICE.txt</include>
+          <include>LICENSE.txt</include>
+        </includes>
+      </resource>
+    </resources>
+    
+    <testResources>
+      <testResource>
+        <targetPath/>
+        <directory>conf/test</directory>
+        <includes>
+          <include>commons-logging.properties</include>
+        </includes>
+      </testResource>
+    </testResources>
+    
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>1.0-alpha-3</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>2.0.4</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.4.3</version>
+          <!-- configuration>
+            <includes>
+              <include>**/*Test.java</include>
+              <include>**/Test*.java</include>
+            </includes>
+            <excludes>
+              <exclude>**/test/*.java</exclude>
+            </excludes>
+          </configuration -->
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>2.2-beta-2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.0-beta-7</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>2.3</version>
+          <configuration>
+            <encoding>${turbine.encoding}</encoding>
+            <docEncoding>${turbine.docEncoding}</docEncoding>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>2.0.2</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>1.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    
+    <plugins>
+      <!-- TODO: later use toolchain support to do compilation on an external JDK 1.3+ compiler -->
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${maven.compile.source}</source>
+          <target>${maven.compile.target}</target>
+          <encoding>${turbine.encoding}</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Specification-Title>${project.name}</Specification-Title>
+              <Specification-Version>${project.version}</Specification-Version>
+              <Specification-Vendor>${project.organization.name}</Specification-Vendor>
+              <Implementation-Title>${project.name}</Implementation-Title>
+              <Implementation-Version>${project.version}</Implementation-Version>
+              <Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
+              <Implementation-Vendor-Id>org.apache</Implementation-Vendor-Id>
+              <X-Compile-Source-JDK>${maven.compile.source}</X-Compile-Source-JDK>
+              <X-Compile-Target-JDK>${maven.compile.target}</X-Compile-Target-JDK>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>      
+      <plugin>
+        <!-- generate the IntelliJ project files -->
+        <artifactId>maven-idea-plugin</artifactId>
+        <configuration>
+          <jdkLevel>${maven.compile.source}</jdkLevel>
+          <downloadSources>true</downloadSources>
+        </configuration>
+      </plugin>      
+      <plugin>
+        <!-- generate the Eclipse project files -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <downloadSources>true</downloadSources>
+          <downloadJavadocs>true</downloadJavadocs>
+        </configuration>
+      </plugin>      
+      <plugin>
+        <!--
+          - Copy LICENSE.txt and NOTICE.txt so that they are included
+          - in the -javadoc jar file for the component.
+          -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>javadoc.resources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <copy todir="${project.build.directory}/apidocs/META-INF">
+                  <fileset dir="${basedir}">
+                    <include name="LICENSE.txt" />
+                    <include name="NOTICE.txt" />
+                  </fileset>
+                </copy>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <!-- attach the source code when building a jar -->
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>create-source-jar</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <phase>package</phase>
+          </execution>
+        </executions>
+      </plugin>      
+      <plugin>
+        <!-- build the source and binary distribution packages -->
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>bin</descriptorRef>
+            <descriptorRef>project</descriptorRef>            
+            <descriptorRef>src</descriptorRef>
+          </descriptorRefs>        
+          <tarLongFileMode>gnu</tarLongFileMode>
+        </configuration>
+      </plugin>      
+
+      <plugin>
+        <groupId>org.apache.torque</groupId>
+        <artifactId>torque-maven-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <targetDatabase>mysql</targetDatabase>
+          <targetPackage>org.apache.turbine.services.security.torque.om</targetPackage>
+          <correctGetters>true</correctGetters>
+        </configuration>
+        <!-- executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>om</goal>
+              <goal>documentation</goal>
+            </goals>
+          </execution>
+        </executions -->
+        <dependencies>
+          <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.0.4</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+    
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.0.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.3</version>
+        <configuration> 
+          <aggregate>false</aggregate>
+          <source>${maven.compile.source}</source>
+          <encoding>${turbine.encoding}</encoding>
+          <docEncoding>${turbine.docEncoding}</docEncoding>
+          <linksource>true</linksource>
+          <links>
+            <link>http://java.sun.com/javase/6/docs/api/</link>
+          </links>
+        </configuration> 
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>2.1</version>
+        <configuration> 
+          <aggregate>false</aggregate>
+        </configuration> 
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>2.0-beta-6</version>
+        <configuration>
+          <!-- Exclude the navigation file for Maven 1 sites
+               and the changes file used by the changes-plugin,
+               as they interfere with the site generation. -->
+          <moduleExcludes>
+            <xdoc>navigation.xml,changes.xml</xdoc>
+          </moduleExcludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.4.3</version>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jdepend-maven-plugin</artifactId>
+        <version>2.0-beta-1</version>
+      </plugin>
+      <plugin>
+        <!-- check the Apache Licence in all source files -->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>rat-maven-plugin</artifactId>
+        <version>1.0-alpha-3</version>
+      </plugin>      
+      <plugin>
+        <!-- get test coverage for regression tests -->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>cobertura-maven-plugin</artifactId>
+        <version>2.2</version>
+      </plugin>      
+      <plugin>
+        <!-- generate the changes report from changes.xml -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <version>2.0-beta-3</version>
+        <configuration>
+            <xmlPath>${basedir}/xdocs/changes.xml</xmlPath>
+        </configuration>                      
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>changes-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>            
+      <plugin>
+        <!-- generate the PMD reports -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <minimumTokens>200</minimumTokens>
+          <targetJdk>${maven.compile.source}</targetJdk>
+          <rulesets>
+            <ruleset>/rulesets/basic.xml</ruleset>
+            <ruleset>/rulesets/finalizers.xml</ruleset>            
+            <ruleset>/rulesets/imports.xml</ruleset>
+            <ruleset>/rulesets/unusedcode.xml</ruleset>
+          </rulesets>
+        </configuration>
+      </plugin>      
+      <plugin>
+        <!-- generate the tag list report -->
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>taglist-maven-plugin</artifactId>
+        <version>2.1</version>
+      </plugin>    
+    </plugins>
+  </reporting>
+  
+  <dependencies>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.4</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>javax.activation</groupId>
+      <artifactId>activation</artifactId>
+      <version>1.1</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.4.1</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avalon.framework</groupId>
+      <artifactId>avalon-framework-api</artifactId>
+      <version>4.3.1</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avalon.framework</groupId>
+      <artifactId>avalon-framework-impl</artifactId>
+      <version>4.3.1</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.3</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-configuration</groupId>
+      <artifactId>commons-configuration</artifactId>
+      <version>1.5</version>
+      <type>jar</type>
+      <exclusions>
+        <exclusion>
+          <groupId>commons-beanutils</groupId>
+          <artifactId>commons-beanutils</artifactId>
+        </exclusion>
+      </exclusions>      
+    </dependency>
+    <dependency>
+      <groupId>commons-email</groupId>
+      <artifactId>commons-email</artifactId>
+      <version>1.0</version>
+      <type>jar</type>
+      <exclusions>
+        <exclusion>
+          <groupId>dumbster</groupId>
+          <artifactId>dumbster</artifactId>
+        </exclusion>
+      </exclusions>      
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.4</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1.1</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>ecs</groupId>
+      <artifactId>ecs</artifactId>
+      <version>1.4.2</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.fulcrum</groupId>
+      <artifactId>fulcrum-cache</artifactId>
+      <version>1.1.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.fulcrum</groupId>
+      <artifactId>fulcrum-factory</artifactId>
+      <version>1.0.4-SNAPSHOT</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.fulcrum</groupId>
+      <artifactId>fulcrum-pool</artifactId>
+      <version>1.0.4-SNAPSHOT</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.fulcrum</groupId>
+      <artifactId>fulcrum-localization</artifactId>
+      <version>1.0.6-SNAPSHOT</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.fulcrum</groupId>
+      <artifactId>fulcrum-parser</artifactId>
+      <version>1.0.2-SNAPSHOT</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.fulcrum</groupId>
+      <artifactId>fulcrum-intake</artifactId>
+      <version>1.0.6-SNAPSHOT</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.fulcrum</groupId>
+      <artifactId>fulcrum-yaafi</artifactId>
+      <version>1.0.6-SNAPSHOT</version>
+      <type>jar</type>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.fulcrum</groupId>
+      <artifactId>fulcrum-crypto</artifactId>
+      <version>1.0.7-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>fulcrum</groupId>
+      <artifactId>fulcrum-mimetype</artifactId>
+      <version>1.0.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.excalibur.component</groupId>
+      <artifactId>excalibur-component</artifactId>
+      <version>2.2.1</version>
+      <type>jar</type>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.excalibur.containerkit</groupId>
+      <artifactId>excalibur-logger</artifactId>
+      <version>2.2.1</version>
+      <type>jar</type>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>jython</groupId>
+      <artifactId>jython</artifactId>
+      <version>2.1</version>
+      <type>jar</type>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.metaparadigm</groupId>
+      <artifactId>json-rpc</artifactId>
+      <version>1.0</version>
+      <type>jar</type>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.15</version>
+      <type>jar</type>
+      <exclusions>
+        <exclusion>
+            <groupId>com.sun.jdmk</groupId>
+            <artifactId>jmxtools</artifactId>
+        </exclusion>
+        <exclusion>
+            <groupId>com.sun.jmx</groupId>
+            <artifactId>jmxri</artifactId>
+        </exclusion>
+        <exclusion>
+            <groupId>javax.jms</groupId>
+            <artifactId>jms</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>1.6.1</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.torque</groupId>
+      <artifactId>torque-runtime</artifactId>
+      <version>3.3</version>
+      <type>jar</type>
+      <exclusions>
+        <exclusion>
+            <groupId>avalon-framework</groupId>
+            <artifactId>avalon-framework-api</artifactId>
+        </exclusion>
+        <exclusion>
+            <groupId>avalon-logkit</groupId>
+            <artifactId>avalon-logkit</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>xmlrpc</groupId>
+      <artifactId>xmlrpc</artifactId>
+      <version>2.0</version>
+      <type>jar</type>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.thoughtworks.xstream</groupId>
+      <artifactId>xstream</artifactId>
+      <version>1.3</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>1.7.1</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>mockobjects</groupId>
+      <artifactId>mockobjects-jdk1.4-j2ee1.3</artifactId>
+      <version>0.09</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>mockobjects</groupId>
+      <artifactId>mockobjects-core</artifactId>
+      <version>0.09</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  
+  <profiles>
+    <profile>
+      <id>release</id>
+      <distributionManagement>
+        <repository>
+          <id>apache.releases</id>
+          <name>Apache Release Distribution Repository</name>
+          <url>${turbine.deployment.protocol}://people.apache.org/www/people.apache.org/repo/m2-ibiblio-rsync-repository</url>
+        </repository>
+      </distributionManagement>
+      <build>
+        <plugins>
+          <!-- We want to sign the artifact, the POM, and all attached artifacts -->
+          <plugin>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <configuration>
+              <passphrase>${gpg.passphrase}</passphrase>
+            </configuration>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-install-plugin</artifactId>
+            <configuration>
+              <createChecksum>true</createChecksum>
+            </configuration>
+          </plugin>
+          <plugin>
+            <artifactId>maven-release-plugin</artifactId>
+            <configuration>
+              <!-- Pass these arguments to the deploy plugin. -->
+              <arguments>-Prelease</arguments>
+            </configuration>
+          </plugin>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>create-javadoc-jar</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <phase>package</phase>
+                <configuration>
+                  <source>${maven.compile.source}</source>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>rc</id>
+      <distributionManagement>
+        <repository>
+          <id>apache.snapshots</id>
+          <name>Apache Development Snapshot Repository</name>
+          <url>${turbine.deployment.protocol}://people.apache.org/www/turbine.apache.org/builds/turbine/core/${project.artifactId}/${turbine.release.version}/${turbine.rc.version}/staged</url>
+        </repository>
+        <snapshotRepository>
+          <id>apache.snapshots</id>
+          <name>Apache Development Snapshot Repository</name>
+          <url>${turbine.deployment.protocol}://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository</url>
+        </snapshotRepository>
+      </distributionManagement>
+      <build>
+        <plugins>
+          <!-- We want to sign the artifact, the POM, and all attached artifacts -->
+          <plugin>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <configuration>
+              <passphrase>${gpg.passphrase}</passphrase>
+            </configuration>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-install-plugin</artifactId>
+            <configuration>
+              <createChecksum>true</createChecksum>
+            </configuration>
+          </plugin>
+          <plugin>
+            <artifactId>maven-site-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>site</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-release-plugin</artifactId>
+            <configuration>
+              <!-- Pass these arguments to the deploy plugin. -->
+              <arguments>-Prc</arguments>
+            </configuration>
+          </plugin>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>create-javadoc-jar</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+                <phase>package</phase>
+                <configuration>
+                  <source>${maven.compile.source}</source>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>attached</goal>
+                </goals>
+                <phase>package</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>    
+  </profiles>
+
+  <properties>
+  
+    <!-- Default configuration for compiler source and target JVM -->
+    <maven.compile.source>1.4</maven.compile.source>
+    <maven.compile.target>1.4</maven.compile.target>
+    
+    <!-- Default values for the download-page generation by commons-build-plugin -->
+    <commons.release.name>${project.artifactId}-${turbine.release.version}</commons.release.name>
+    <commons.binary.suffix>-bin</commons.binary.suffix>
+
+    <!-- The RC version used in the staging repository URL. -->
+    <turbine.rc.version>RC1</turbine.rc.version>
+
+    <!--
+      Make the deployment protocol pluggable. This allows to switch to
+      other protocols like scpexe, which some users prefer over scp.
+    -->
+    <turbine.deployment.protocol>scp</turbine.deployment.protocol>
+    
+    <!--
+      Encoding of Java source files: Make sure, that the compiler and
+      the javadoc generator use the right encoding. Subprojects may
+      overwrite this, if they are using another encoding.
+    -->
+    <turbine.encoding>utf-8</turbine.encoding>
+    <turbine.docEncoding>${turbine.encoding}</turbine.docEncoding>
+
+    <!-- maven-surefire-plugin -->
+    <test>**/*Test</test>
+  </properties>
+  
+</project>
