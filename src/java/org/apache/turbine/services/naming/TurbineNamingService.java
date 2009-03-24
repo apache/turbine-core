@@ -30,15 +30,11 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.Turbine;
-import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.util.RunData;
 
 /**
  * This class is the default implementation of NamingService, which
