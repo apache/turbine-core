@@ -507,8 +507,15 @@ turbine.
         <directory>${basedir}</directory>
         <targetPath>META-INF</targetPath>
         <includes>
-          <include>NOTICE.txt</include>
+          <include>NOTICE</include>
           <include>LICENSE.txt</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>src/macros</directory>
+        <targetPath>macros</targetPath>
+        <includes>
+          <include>TurbineMacros.vm</include>
         </includes>
       </resource>
     </resources>
@@ -600,8 +607,16 @@ turbine.
           <target>${maven.compile.target}</target>
           <encoding>${turbine.encoding}</encoding>
         </configuration>
-      </plugin>
-      <plugin>
+        </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.4.3</version>
+            <configuration>
+              <forkMode>perTest</forkMode>
+            </configuration>
+          </plugin>
+        <plugin>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <archive>
@@ -655,7 +670,7 @@ turbine.
                 <copy todir="${project.build.directory}/apidocs/META-INF">
                   <fileset dir="${basedir}">
                     <include name="LICENSE.txt" />
-                    <include name="NOTICE.txt" />
+                    <include name="NOTICE" />
                   </fileset>
                 </copy>
               </tasks>
