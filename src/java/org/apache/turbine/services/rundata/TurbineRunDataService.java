@@ -30,7 +30,6 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.avalon.framework.service.ServiceException;
 import org.apache.commons.configuration.Configuration;
 import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.DefaultCookieParser;

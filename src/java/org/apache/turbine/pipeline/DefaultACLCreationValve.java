@@ -27,9 +27,7 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
-import org.apache.turbine.modules.actions.AccessController;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -43,7 +41,6 @@ import org.apache.turbine.util.TurbineException;
 public class DefaultACLCreationValve
     extends AbstractValve
 {
-    protected AccessController accessController = null;
     private ActionLoader actionLoader;
 
     /**

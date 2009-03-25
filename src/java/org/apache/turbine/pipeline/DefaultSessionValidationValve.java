@@ -27,9 +27,7 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
-import org.apache.turbine.modules.actions.sessionvalidator.SessionValidator;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -43,7 +41,6 @@ import org.apache.turbine.util.TurbineException;
 public class DefaultSessionValidationValve
     extends AbstractValve
 {
-    protected SessionValidator sessionValidator = null;
     private ActionLoader actionLoader;
 
     public DefaultSessionValidationValve()
