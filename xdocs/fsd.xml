@@ -29,10 +29,10 @@
 <section name="Specification">
 
 <p>
-Turbine is made up of five different modules which serve a specific
-service within the Turbine framework. In order for the reader to understand
-the general flow of the Turbine framework, each of these modules is explained
-in detail below.
+Turbine is made up of different modules which serve a specific service within 
+the Turbine framework. Five of them are used in the standard configuration. 
+In order for the reader to understand the general flow of the Turbine framework, 
+each of these modules is explained in detail below.
 </p>
 
 <p>
@@ -43,10 +43,30 @@ in detail below.
 
 </section>
 
+<section name="The Pipeline">
+
+<p>
+In Turbine 4, the way a request is processed is controlled by the 
+<em>Pipeline</em>. This concept has been "borrowed" from the Tomcat
+project. A pipeline consists of <em>Valves</em> which control the single
+processing steps and allow to decide which path the request is to take.
+This allows for extending and adjusting the request processing by adding
+or modifying valves and adding or modifying modules.
+<br />
+Add pipeline schema and link to docs about creating a new module here.
+</p>
+
+<p>
+The default pipeline contains valves to verify session validity, access
+control and login/logout operations.
+</p>
+
+</section>
+
 <section name="Action">
 
 <p>
-The Action module represents a chunk of code that performs task. For
+The Action module represents a chunk of code that performs a task. For
 example, when a user submits an Html form, one of the hidden fields
 is which Action to execute in order to process the form information.
 The processing generally includes form validation as well as storing
@@ -57,7 +77,7 @@ results of the Action.
 </p>
 
 <p>
-The process looks like this:
+The process of the classic pipeline looks like this (somewhat simplified):
 </p>
 
 <table>
@@ -95,6 +115,27 @@ into Turbine because your Action's can simply make calls to your EJB's to proces
 business logic.
 </p>
 
+<p>
+Sometimes it may seem to be difficult to decide which parts of an application 
+should go to Actions and which parts go to Pages (or Screens). To help you with
+these decisions, our recommended rules of thumb are
+<ul>
+  <li>
+    Screens <em>show</em> something. That is, they <em>read</em> data, for 
+    example a record from a database.
+  </li>
+  <li>
+    Actions <em>do</em> something. That is, they <em>write</em> data, for
+    example from a form to the database.
+  </li>
+  <li>
+    When an Action is finished, it should generally clean up after itself so that
+    a following Screen or other module will find the same state as if no action was 
+    performed. In the given example that would mean that the Action writes its data
+    to the database and the Screen would reload it from there.
+  </li>
+</ul>
+</p>
 </section>
 
 <section name="Page">
@@ -190,7 +231,7 @@ representation of the components of an Html page.
 </p>
 
 <p>
-The loaders are responsible for dynamicially loading each of the five modules.
+The loaders are responsible for dynamically loading each of the modules.
 These loaders have an option to cache the module objects in memory for extremely
 fast loading times.
 </p>
@@ -198,7 +239,7 @@ fast loading times.
 <p>
 The loaders use intelligent factories in that we have added a property to
 TurbineResources.properties that allows you to define the "Loader Classpath". In
-other words, it is possible to physicially keep all of your web applications
+other words, it is possible to physically keep all of your web applications
 modules in their own package classpath and the loaders will be responsible for
 finding the right file to execute.
 </p>
@@ -216,7 +257,7 @@ multiple web applications can be combined to form a complete system.
 since multiple threads may try to execute a single module at the exact same time.
 These rules apply to general servlet programming so they are not that difficult
 to understand. The basic rule is to not try to define any class global variables
-within each of the modules unless it has been wrapped in a syncronized statement.
+within each of the modules unless it has been wrapped in a synchronized statement.
 </p>
 
 </section>
@@ -226,6 +267,14 @@ within each of the modules unless it has been wrapped in a syncronized statement
 Each of the loaders mentioned makes use of one or more factories to create the
 different modules.  By default the only factory that is enabled is the Java
 factory that creates requested modules from java class files.
+</p>
+
+<p>
+Factories are required to provide access to an instance of a Loader (see above)
+that is able to load the specific type of module they are responsible for. They 
+can in fact implement the Loader themselves. Turbine makes no assumptions about
+a module. The wiring of modules is controlled by the valves of the pipeline 
+only. 
 </p>
 
 <p>
@@ -329,7 +378,7 @@ the following concepts:
 
 <p>
 One or more Roles are assigned to a User. A Role is a collection of one or more
-Permission's. The AccessControlList uses an AccessControlBuilder that
+Permissions. The AccessControlList uses an AccessControlBuilder that
 allows you to determine whether or not a User has a Permission to do something
 or not.
 </p>
@@ -347,7 +396,7 @@ You will then use this system within any of modules to determine whether or
 not to execute some code. This will provide you with both a Page level of
 security (does the User have access to this page) as well as a Content level of
 security (does the User have access to see the content on this page, ie:
-hide/show content based on what Role the User is).
+hide/show content based on what Permissions the User has).
 </p>
 
 </section>
@@ -375,26 +424,6 @@ There is a number of utility classes included with Turbine.
 </p>
 
 <p>
-The Database pooling classes are helpful for defining the methods for obtaining
-a connection to the database. This code is implemented as a singleton system so
-that all you need to do is get an instance of the database class, get a
-connection and go. There is no need to pass around a Connection object. Turbine
-comes with pool implementations for many of the most popular databases. Creating
-your own is quite simple as well, all you need to do is look at the existing
-code and create your own. If you need help or want someone to create one for
-your database, simply ask on the mailing list.
-</p>
-
-<p>
-The *Peer classes are a great idea on how to abstract the database accesses so
-that all you need to do is pass in a Criteria object and execute doInsert(),
-doSelect(), doUpdate() or doDelete(). While not necessarily part of the Turbine
-framework, because each implementation is different depending on your needs, it
-is a great model to work from. Take a look at the TurbineUserPeer.java file for a
-good example of this methodology in use.
-</p>
-
-<p>
 The ParameterParser class takes all of the GET/POST/PATH_INFO data and parses it
 into a hashtable where it can be easily retrieved in a number of forms with the
 provided get* methods. This is how you can have access to form data that has
@@ -413,13 +442,6 @@ because it will allow you to easily add global functionality to your system.
 The DateSelector class generates Html popup menus for month/day/year. The beauty
 of this class is that you can provide a date for it to start with and it will
 automaticially generate the Html popups with that date.
-</p>
-
-<p>
-The Mail classes make it easy to send email via the JavaMail API's. These
-classes are just very simple classes and there is not a huge amount of
-functionality here. Essentially they allow you to get the job done and that is
-about it. Contributions to improve these classes are appreciated.
 </p>
 
 </section>
