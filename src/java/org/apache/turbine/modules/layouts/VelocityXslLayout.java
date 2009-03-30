@@ -25,9 +25,8 @@ import java.io.StringReader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.ecs.ConcreteElement;
-
+import org.apache.fulcrum.xslt.XSLTServiceFacade;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.Screen;
@@ -35,10 +34,8 @@ import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.velocity.TurbineVelocity;
-import org.apache.turbine.services.xslt.TurbineXSLT;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateNavigation;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -126,7 +123,7 @@ public class VelocityXslLayout extends Layout
 
         // Finally we do a transformation and send the result
         // back to the browser
-        TurbineXSLT.transform(
+        XSLTServiceFacade.transform(
             data.getTemplateInfo().getScreenTemplate(),
                 new StringReader(temp), data.getResponse().getWriter());
     }
@@ -178,7 +175,7 @@ public class VelocityXslLayout extends Layout
 
         // Finally we do a transformation and send the result
         // back to the browser
-        TurbineXSLT.transform(
+        XSLTServiceFacade.transform(
             data.getTemplateInfo().getScreenTemplate(),
                 new StringReader(temp), data.getResponse().getWriter());
     }

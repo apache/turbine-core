@@ -53,12 +53,12 @@ turbine.
     <repository>
       <id>default</id>
       <name>Default Repository</name>
-      <url>people.apache.org/www/www.apache.org/dist/turbine/releases/</url>
+      <url>${turbine.deployment.protocol}://people.apache.org/www/www.apache.org/dist/turbine/releases/</url>
     </repository>
     <site>
       <id>default</id>
       <name>Default Site</name>
-      <url>scp://people.apache.org/www/turbine.apache.org</url>
+      <url>${turbine.deployment.protocol}://people.apache.org/www/turbine.apache.org</url>
     </site>
   </distributionManagement>
 
@@ -974,9 +974,14 @@ turbine.
       <version>1.0.7-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>fulcrum</groupId>
+      <groupId>org.apache.fulcrum</groupId>
+      <artifactId>fulcrum-xslt</artifactId>
+      <version>1.0.4-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-mimetype</artifactId>
-      <version>1.0.4</version>
+      <version>1.0.5-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.excalibur.component</groupId>
@@ -1252,7 +1257,7 @@ turbine.
       Make the deployment protocol pluggable. This allows to switch to
       other protocols like scpexe, which some users prefer over scp.
     -->
-    <turbine.deployment.protocol>scp</turbine.deployment.protocol>
+    <turbine.deployment.protocol>scpexe</turbine.deployment.protocol>
     
     <!--
       Encoding of Java source files: Make sure, that the compiler and
