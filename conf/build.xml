@@ -37,9 +37,6 @@
   <property name="master" value="${master.home}/TurbineResources.master"/>
   <property name="copy" value="${target.dir}/TurbineResources.properties"/>
 
-  <property name="fulcrum.master" value="${master.home}/Fulcrum.master"/>
-  <property name="fulcrum.copy" value="${target.dir}/Fulcrum.properties"/>
-
   <!-- =================================================================== -->
   <!-- T R   P R O P S                                                     -->
   <!-- =================================================================== -->
@@ -51,11 +48,8 @@
 
     <echo message="Creating TurbineResources ..."/>
     <delete file="${copy}"/>
-    <delete file="${fulcrum.copy}"/>
 
     <copy file="${master}" tofile="${copy}" filtering="on"/>
-    <copy file="${fulcrum.master}" tofile="${fulcrum.copy}" filtering="on"/>
-
   </target>
 
   <!-- =================================================================== -->
