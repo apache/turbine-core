@@ -76,5 +76,9 @@
         shorthand="parser"
         default-class="org.apache.fulcrum.parser.DefaultParserService"/>
         
+    <role
+        name="org.apache.fulcrum.xslt.XSLTService"
+        shorthand="xslt"
+        default-class="org.apache.fulcrum.xslt.DefaultXSLTService"/>
 </role-list>
 
