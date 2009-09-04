@@ -1,17 +1,20 @@
 --------------------------------------------------------------------------
-Copyright 2001-2004 The Apache Software Foundation
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+   http://www.apache.org/licenses/LICENSE-2.0
 
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
 --------------------------------------------------------------------------
 
 --------------------------------------------------------------------------
@@ -26,14 +29,12 @@ Here is a description of what each of the top level directories
 contains.  Please consult the documentation in each of the lower level
 directories for information that is specific to their contents.
 
-bin/        This is a temporary directory for building the project.
 conf/       This is where the sample configurations live.
-docs/       This is where the documentation and database schemas live.
+xdocs/      This is where the documentation and database schemas live.
             All of the files in this directory are mirrored onto
             the live website.
-lib/        This is where the additional libraries and .jar
-            files reside.
 src/        This is where all of the source code to Turbine lives.
+target/     This is a temporary directory for building the project.
 
 In order to get started with Turbine, you must build it first.
 Turbine uses Maven for its build environment.  You can find installation
@@ -46,16 +47,5 @@ maven site:generate   - generate the site documention
 As of Turbine 2.3, you must also have the Torque plugin for Maven installed
 to build Turbine.  Information on how to install the plugin is available
 at http://db.apache.org/torque/maven-howto.html.
-
-During the build process, you may run into a few unsatisfied dependencies.
-These particular jar files are from Sun and can not be downloaded with Maven.
-You will need to download these yourself from the URL's listed below and
-manually copy the jar files into your local maven repository
-($MAVEN_HOME/repository).
-
-http://java.sun.com/products/javabeans/glasgow/jaf.html
-http://java.sun.com/products/javamail/
-http://java.sun.com/products/jdbc/
-http://java.sun.com/products/jndi/
 
 -The Turbine Team
