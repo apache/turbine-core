@@ -945,7 +945,7 @@
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-parser</artifactId>
-      <version>1.0.2-SNAPSHOT</version>
+      <version>1.0.2</version>
       <type>jar</type>
     </dependency>
     <dependency>
@@ -964,7 +964,7 @@
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-crypto</artifactId>
-      <version>1.0.7-SNAPSHOT</version>
+      <version>1.0.7</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
