@@ -27,7 +27,7 @@
   <groupId>org.apache.turbine</groupId>
   <artifactId>turbine</artifactId>
   <name>turbine-4</name>
-  <version>4.0-dev</version>
+  <version>4.0-M1-SNAPSHOT</version>
   <description>Turbine is a servlet based framework that allows experienced Java
     developers to quickly build secure web applications. Parts of Turbine
     can also be used independently of the web portion of Turbine as
@@ -921,8 +921,9 @@
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-cache</artifactId>
-      <version>1.1.0</version>
+      <version>1.1.0-SNAPSHOT</version>
       <type>jar</type>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
@@ -951,7 +952,7 @@
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-intake</artifactId>
-      <version>1.0.6-SNAPSHOT</version>
+      <version>1.0.6</version>
       <type>jar</type>
     </dependency>
     <dependency>
@@ -969,7 +970,7 @@
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
       <artifactId>fulcrum-xslt</artifactId>
-      <version>1.0.4-SNAPSHOT</version>
+      <version>1.1.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.fulcrum</groupId>
