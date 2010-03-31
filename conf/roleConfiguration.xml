@@ -34,7 +34,7 @@
     <role
         name="org.apache.fulcrum.cache.GlobalCacheService"
         shorthand="cache"
-        default-class="org.apache.fulcrum.cache.DefaultGlobalCacheService"/>
+        default-class="org.apache.fulcrum.cache.impl.DefaultGlobalCacheService"/>
 
     <role
         name="org.apache.fulcrum.mimetype.MimeTypeService"
