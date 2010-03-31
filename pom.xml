@@ -1067,6 +1067,13 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.apache.fulcrum</groupId>
+      <artifactId>fulcrum-upload</artifactId>
+      <version>1.0.4</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>mockobjects</groupId>
       <artifactId>mockobjects-jdk1.4-j2ee1.3</artifactId>
       <version>0.09</version>
