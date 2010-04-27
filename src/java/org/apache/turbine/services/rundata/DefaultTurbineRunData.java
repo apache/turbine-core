@@ -1,6 +1,5 @@
 package org.apache.turbine.services.rundata;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,7 +18,6 @@ package org.apache.turbine.services.rundata;
  * specific language governing permissions and limitations
  * under the License.
  */
-
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -980,12 +978,13 @@ public class DefaultTurbineRunData
     {
         this.locale = locale;
         
-        if (parameters != null)
+        // propagate the locale to the parsers
+        if (this.parameters != null)
         {
             parameters.setLocale(locale);
         }
 
-        if (cookies != null)
+        if (this.cookies != null)
         {
             cookies.setLocale(locale);
         }
@@ -1358,6 +1357,11 @@ public class DefaultTurbineRunData
      * Gets the parameter parser without parsing the parameters.
      *
      * @return the parameter parser.
+     * @todo Does this method make sense? Pulling the parameter out of
+     *       the run data object before setting a request (which happens
+     *       only in getParameters() leads to the Parameter parser having
+     *       no object and thus the default or even an undefined encoding
+     *       instead of the actual request character encoding).
      */
     public ParameterParser getParameterParser()
     {

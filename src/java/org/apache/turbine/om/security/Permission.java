@@ -1,6 +1,5 @@
 package org.apache.turbine.om.security;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,6 +19,7 @@ package org.apache.turbine.om.security;
  * under the License.
  */
 
+import java.io.Serializable;
 
 import org.apache.turbine.util.security.TurbineSecurityException;
 
@@ -35,7 +35,7 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public interface Permission extends SecurityEntity
+public interface Permission extends SecurityEntity, Serializable
 {
     /**
      * Makes changes made to the Permission attributes permanent.

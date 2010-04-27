@@ -20,7 +20,6 @@ package org.apache.turbine.util;
  * under the License.
  */
 
-
 import org.apache.commons.lang.exception.NestableRuntimeException;
 
 /**

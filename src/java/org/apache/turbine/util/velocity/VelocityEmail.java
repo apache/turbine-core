@@ -20,8 +20,6 @@ package org.apache.turbine.util.velocity;
  * under the License.
  */
 
-
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.commons.logging.Log;
@@ -140,7 +138,7 @@ public class VelocityEmail extends SimpleEmail
      * @param toName A String with the TO toName.
      * @param toEmail A String with the TO toEmail.
      * @deprecated use addTo(email,name) instead
-     * @throws MessagingException email address could not be parsed
+     * @throws EmailException email address could not be parsed
      * @return A VelocityEmail (self).
      */
     public VelocityEmail setTo(String toName, String toEmail)
@@ -259,8 +257,8 @@ public class VelocityEmail extends SimpleEmail
         // If the caller desires word-wrapping, do it here
         if (wordWrap > 0)
         {
-            body = WordUtils.wrap(body,wordWrap,
-                    System.getProperty("line.separator"),true);
+            body = WordUtils.wrap(body, wordWrap,
+                    System.getProperty("line.separator"), false);
         }
 
         setMsg(body);

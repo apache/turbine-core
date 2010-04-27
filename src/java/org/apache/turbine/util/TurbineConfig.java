@@ -177,6 +177,17 @@ public class TurbineConfig
     }
 
     /**
+     * Initialization requiring a HTTP <code>GET</code> request.
+     */
+    public void init(RunData data)
+    {
+        if (turbine != null)
+        {
+            turbine.init(data);
+        }
+    }
+
+    /**
      * Shutdown the Turbine System, lifecycle style
      *
      */

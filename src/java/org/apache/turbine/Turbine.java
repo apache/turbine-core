@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
@@ -158,6 +159,9 @@ public class Turbine
     /** Our internal configuration object */
     private static Configuration configuration = null;
 
+    /** Default Input encoding if the servlet container does not report an encoding */
+    private String inputEncoding = null;
+
     /** Logging class from commons.logging */
     private static Log log = LogFactory.getLog(Turbine.class);
 
@@ -197,6 +201,7 @@ public class Turbine
                     throw new TurbineException(
                             "No Template Service configured!");
                 }
+
                 if (getRunDataService() == null)
                 {
                     throw new TurbineException(
@@ -211,6 +216,7 @@ public class Turbine
                 log.fatal("Turbine: init() failed: ", e);
                 throw new ServletException("Turbine: init() failed", e);
             }
+            
             log.info("Turbine: init() Ready to Rumble!");
         }
     }
@@ -308,7 +314,7 @@ public class Turbine
             // This should eventually be a Configuration
             // interface so that service and app configuration
             // can be stored anywhere.
-            configuration = (Configuration) new PropertiesConfiguration(confPath);
+            configuration = new PropertiesConfiguration(confPath);
             confStyle = "Properties";
         }
 
@@ -319,35 +325,38 @@ public class Turbine
         String log4jFile = configuration.getString(TurbineConstants.LOG4J_CONFIG_FILE,
                                                    TurbineConstants.LOG4J_CONFIG_FILE_DEFAULT);
 
-        log4jFile = getRealPath(log4jFile);
-
-        //
-        // Load the config file above into a Properties object and
-        // fix up the Application root
-        //
-        Properties p = new Properties();
-        try
+        if (StringUtils.isNotEmpty(log4jFile) &&
+                !log4jFile.equalsIgnoreCase("none"))
         {
-            p.load(new FileInputStream(log4jFile));
-            p.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot());
-            PropertyConfigurator.configure(p);
-
+            log4jFile = getRealPath(log4jFile);
+    
             //
-            // Rebuild our log object with a configured commons-logging
-            log = LogFactory.getLog(this.getClass());
-
-            log.info("Configured log4j from " + log4jFile);
-        }
-        catch (FileNotFoundException fnf)
-        {
-            System.err.println("Could not open Log4J configuration file "
-                               + log4jFile + ": ");
-            fnf.printStackTrace();
+            // Load the config file above into a Properties object and
+            // fix up the Application root
+            //
+            Properties p = new Properties();
+            try
+            {
+                p.load(new FileInputStream(log4jFile));
+                p.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot());
+                PropertyConfigurator.configure(p);
+    
+                //
+                // Rebuild our log object with a configured commons-logging
+                log = LogFactory.getLog(this.getClass());
+    
+                log.info("Configured log4j from " + log4jFile);
+            }
+            catch (FileNotFoundException fnf)
+            {
+                System.err.println("Could not open Log4J configuration file "
+                                   + log4jFile + ": ");
+                fnf.printStackTrace();
+            }
         }
 
         // Now report our successful configuration to the world
         log.info("Loaded configuration  (" + confStyle + ") from " + confFile + " (" + confPath + ")");
-
 
         setTurbineServletConfig(config);
         setTurbineServletContext(context);
@@ -467,6 +476,32 @@ public class Turbine
     }
 
     /**
+     * Initializes the services which need <code>RunData</code> to
+     * initialize themselves (post startup).
+     *
+     * @param data The first <code>GET</code> request.
+     */
+    public final void init(PipelineData data)
+    {
+        synchronized (Turbine.class)
+        {
+            if (firstDoGet)
+            {
+                // All we want to do here is save some servlet
+                // information so that services and processes
+                // that don't have direct access to a RunData
+                // object can still know something about
+                // the servlet environment.
+                saveServletInfo(data);
+
+                // Mark that we're done.
+                firstDoGet = false;
+                log.info("Turbine: first Request successful");
+            }
+        }
+    }
+
+    /**
      * Return the current configuration with all keys included
      *
      * @return a Configuration Object
@@ -532,19 +567,35 @@ public class Turbine
      * Return all the Turbine Servlet information (Server Name, Port,
      * Scheme in a ServerData structure. This is generated from the
      * values set when initializing the Turbine and may not be correct
-     * if you're running in a clustered structure. This might be used
-     * if you need a DataURI and have no RunData object handy-
+     * if you're running in a clustered structure. You can provide default
+     * values in your configuration for cases where access is requied before
+     * your application is first accessed by a user.  This might be used
+     * if you need a DataURI and have no RunData object handy.
      *
      * @return An initialized ServerData object
      */
     public static ServerData getDefaultServerData()
     {
-        if(serverData == null)
+        if (serverData == null)
         {
-            log.error("ServerData Information requested from Turbine before first request!");
+            String serverName
+                    = configuration.getString(TurbineConstants.DEFAULT_SERVER_NAME_KEY);
+            if (serverName == null)
+            {
+                log.error("ServerData Information requested from Turbine before first request!");
+            }
+            else
+            {
+                log.info("ServerData Information retrieved from configuration.");
+            }
             // Will be overwritten once the first request is run;
-            serverData = new ServerData(null, URIConstants.HTTP_PORT,
-                    URIConstants.HTTP, null, null);
+            serverData = new ServerData(serverName,
+                    configuration.getInt(TurbineConstants.DEFAULT_SERVER_PORT_KEY,
+                            URIConstants.HTTP_PORT),
+                    configuration.getString(TurbineConstants.DEFAULT_SERVER_SCHEME_KEY,
+                            URIConstants.HTTP),
+                    configuration.getString(TurbineConstants.DEFAULT_SCRIPT_NAME_KEY),
+                    configuration.getString(TurbineConstants.DEFAULT_CONTEXT_PATH_KEY));
         }
         return serverData;
     }
@@ -615,13 +666,8 @@ public class Turbine
     public final void doGet(HttpServletRequest req, HttpServletResponse res)
             throws IOException, ServletException
     {
-        // set to true if the request is to be redirected by the page
-        boolean requestRedirected = false;
+        PipelineData pipelineData = null;
 
-        // Placeholder for the RunData object.
-        //RunData data = null;
-
-        PipelineData pipelineData = null;//new DefaultPipelineData();
         try
         {
             // Check to make sure that we started up properly.
@@ -629,25 +675,27 @@ public class Turbine
             {
                 throw initFailure;
             }
-            // If this is the first invocation, perform some
-            // initialization.  Certain services need RunData to initialize
-            // themselves.
-            if (firstDoGet)
-            {
-                synchronized (Turbine.class)
-                {
-                    // Store the context path for tools like ContentURI and
-                    // the UIManager that use webapp context path information
-                    // for constructing URLs.
-                    serverData = new ServerData(req);
 
-                    // Mark that we're done.
-                    firstDoGet = false;
-                    log.info("Turbine: first Request successful");
+            //
+            // If the servlet container gives us no clear indication about the
+            // Encoding of the contents, set it to our default value.
+            if (req.getCharacterEncoding() == null)
+            {
+                if (log.isDebugEnabled())
+                {
+                    log.debug("Changing Input Encoding to " + inputEncoding);
                 }
 
+                try
+                {
+                    req.setCharacterEncoding(inputEncoding);
+                }
+                catch (UnsupportedEncodingException uee)
+                {
+                    log.warn("Could not change request encoding to " + inputEncoding, uee);
+                }
             }
-
+            
             // Get general RunData here...
             // Perform turbine specific initialization below.
             pipelineData = getRunDataService().getRunData(req, res, getServletConfig());
@@ -656,6 +704,14 @@ public class Turbine
             // put the data into the pipeline
            // pipelineData.put(RunData.class, runDataMap);
 
+            // If this is the first invocation, perform some
+            // initialization.  Certain services need RunData to initialize
+            // themselves.
+            if (firstDoGet)
+            {
+                init(pipelineData);
+            }
+            
             // Stages of Pipeline implementation execution
 			// configurable via attached Valve implementations in a
 			// XML properties file.
@@ -717,7 +773,7 @@ public class Turbine
     private final void handleException(PipelineData pipelineData, HttpServletResponse res,
                                        Throwable t)
     {
-        RunData data = (RunData)getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         // make sure that the stack trace makes it the log
         log.error("Turbine.handleException: ", t);
 
@@ -763,6 +819,7 @@ public class Turbine
             }
             catch (Exception ignored)
             {
+                // ignore
             }
 
             try
@@ -772,6 +829,7 @@ public class Turbine
             }
             catch (IOException ignored)
             {
+                // ignore
             }
 
             log.error(data.getStackTrace(), e);
@@ -797,10 +855,31 @@ public class Turbine
             }
             catch (Exception ignored)
             {
+                // ignore
             }
 
             log.error(reallyScrewedNow.getMessage(), reallyScrewedNow);
         }
+    }
+
+    /**
+     * Save some information about this servlet so that
+     * it can be utilized by object instances that do not
+     * have direct access to RunData.
+     *
+     * @param data Turbine request data
+     */
+    public static synchronized void saveServletInfo(PipelineData data)
+    {
+        // Store the context path for tools like ContentURI and
+        // the UIManager that use webapp context path information
+        // for constructing URLs.
+
+        //
+        // Bundle all the information above up into a convenient structure
+        //
+        ServerData requestServerData = (ServerData) data.get(ServerData.class);
+        serverData = (ServerData) requestServerData.clone();
     }
 
     /**
@@ -872,7 +951,8 @@ public class Turbine
      * Static Helper method for looking up the RunDataService
      * @return A RunDataService
      */
-    private static RunDataService getRunDataService(){
+    private static RunDataService getRunDataService()
+    {
         return (RunDataService) TurbineServices
         .getInstance().getService(RunDataService.SERVICE_NAME);
     }
