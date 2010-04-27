@@ -20,6 +20,7 @@ package org.apache.turbine.om.security;
  * under the License.
  */
 
+import java.io.Serializable;
 
 import org.apache.turbine.util.security.PermissionSet;
 import org.apache.turbine.util.security.TurbineSecurityException;
@@ -34,7 +35,7 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public interface Role extends SecurityEntity
+public interface Role extends SecurityEntity, Serializable
 {
     /**
      * Returns the set of Permissions associated with this Role.

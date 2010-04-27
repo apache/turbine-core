@@ -285,11 +285,36 @@ public interface TurbineConstants
 	/** Context Key for the Stack Trace */
 	String STACK_TRACE_PLACEHOLDER = "stackTrace";
 
+    /** Encoding for Parameter Parser */
+    String PARAMETER_ENCODING_KEY = "input.encoding";
+
+    /** Default Encoding for Parameter Parser */
+    String PARAMETER_ENCODING_DEFAULT = "ISO-8859-1";
+
+    /** Default serverName for ServerData */
+    String DEFAULT_SERVER_NAME_KEY
+            = "serverdata.default.serverName";
+
+    /** Default serverPort for ServerData */
+    String DEFAULT_SERVER_PORT_KEY
+            = "serverdata.default.serverPort";
+
+    /** Default serverScheme for ServerData */
+    String DEFAULT_SERVER_SCHEME_KEY
+            = "serverdata.default.serverScheme";
+
+    /** Default scriptName for ServerData */
+    String DEFAULT_SCRIPT_NAME_KEY
+            = "serverdata.default.scriptName";
+
+    /** Default contextPath for ServerData */
+    String DEFAULT_CONTEXT_PATH_KEY
+            = "serverdata.default.contextPath";
+
 	/**
 	 * The fully qualified class name of the default {@link
 	 * org.apache.turbine.Pipeline} implementation to use in the
 	 * {@link org.apache.turbine.Turbine} servlet.
 	 */
-	public static final String STANDARD_PIPELINE =
-		TurbinePipeline.class.getName();
+	String STANDARD_PIPELINE = TurbinePipeline.class.getName();
 }

@@ -281,6 +281,17 @@ public class TurbineURI
     }
 
     /**
+     * Sets the fired eventSubmit= value for this URL.
+     *
+     * @param event The event to fire.
+     *
+     */
+    public void setEvent(String event)
+    {
+        add(PATH_INFO, EVENT_PREFIX + event, event);
+    }
+
+    /**
      * Sets the action= and eventSubmit= values for this URL.
      *
      * By default it adds the information to the path_info instead
@@ -296,7 +307,7 @@ public class TurbineURI
         setAction(action);
         if(StringUtils.isNotEmpty(event))
         {
-            add(PATH_INFO, EVENT_PREFIX + event, event);
+            setEvent(event);
         }
     }
 
@@ -376,7 +387,7 @@ public class TurbineURI
      */
     public void addPathInfo(String name, Object value)
     {
-        add(PATH_INFO, name, value.toString());
+        add(PATH_INFO, name, null == value ? null : value.toString());
     }
 
     /**
@@ -431,7 +442,7 @@ public class TurbineURI
      */
     public void addQueryData(String name, Object value)
     {
-        add(QUERY_DATA, name, value.toString());
+        add(QUERY_DATA, name, null == value ? null : value.toString());
     }
 
     /**
@@ -764,16 +775,22 @@ public class TurbineURI
             {
                 URIParam uriParam = (URIParam) it.next();
                 String key = URLEncoder.encode(uriParam.getKey());
-                String val = String.valueOf(uriParam.getValue());
+                String val = null == uriParam.getValue()
+                        ? null : String.valueOf(uriParam.getValue());
 
                 output.append(key);
                 output.append(valueDelim);
 
                 if(StringUtils.isEmpty(val))
                 {
-                    if (val == null && log.isDebugEnabled())
+                    if (val == null)
                     {
-                        log.debug("Found a null value for " + key);
+                        if (log.isWarnEnabled())
+                        {
+                            log.warn("Found a null value for " + key);
+                        }
+                        // For backwards compatibility:
+                        val = "null";
                     }
                     output.append(val);
                 }

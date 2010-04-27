@@ -24,9 +24,6 @@ package org.apache.turbine.util.template;
 import java.util.Map;
 import java.util.HashMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.uri.URIConstants;
@@ -44,9 +41,6 @@ import org.apache.turbine.util.uri.URIConstants;
  */
 public class TemplateInfo
 {
-    /** Logging */
-    private static Log log = LogFactory.getLog(TemplateInfo.class);
-
 
     /* Constants for tempStorage hash map. */
     public static final String NAVIGATION_TEMPLATE = "00navigation_template00";

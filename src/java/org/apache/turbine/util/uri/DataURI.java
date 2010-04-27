@@ -115,7 +115,7 @@ public class DataURI
      * tui.getAbsoluteLink();
      * </pre></code>
      *
-     *  The above call to absoluteLink() would return the String:
+     *  The above call to getAbsoluteLink() would return the String:
      *
      * <p>
      * http://www.server.com/servlets/Turbine/screen/UserScreen/user/jon
@@ -153,7 +153,7 @@ public class DataURI
      * tui.getRelativeLink();
      * </pre></code>
      *
-     *  The above call to absoluteLink() would return the String:
+     *  The above call to getRelativeLink() would return the String:
      *
      * <p>
      * /servlets/Turbine/screen/UserScreen/user/jon

@@ -20,7 +20,6 @@ package org.apache.turbine.util;
  * under the License.
  */
 
-
 import java.util.HashMap;
 import java.util.Map;
 

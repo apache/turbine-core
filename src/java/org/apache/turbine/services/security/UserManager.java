@@ -1,6 +1,5 @@
 package org.apache.turbine.services.security;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,7 +18,6 @@ package org.apache.turbine.services.security;
  * specific language governing permissions and limitations
  * under the License.
  */
-
 
 import java.util.List;
 
@@ -174,7 +172,7 @@ public interface UserManager
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public void saveOnSessionUnbind(User user)
+    void saveOnSessionUnbind(User user)
             throws UnknownEntityException, DataBackendException;
 
     /**

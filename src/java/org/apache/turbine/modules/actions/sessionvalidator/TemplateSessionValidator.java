@@ -1,6 +1,5 @@
 package org.apache.turbine.modules.actions.sessionvalidator;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,7 +18,6 @@ package org.apache.turbine.modules.actions.sessionvalidator;
  * specific language governing permissions and limitations
  * under the License.
  */
-
 
 import org.apache.commons.configuration.Configuration;
 

@@ -115,8 +115,8 @@ public class HtmlPageAttributes
     /** Script references */
     private List scripts = new ArrayList();
 
-    /** Stylesheet references */
-    private List styleSheets = new ArrayList();
+    /** External references */
+    private List linkTags = new ArrayList();
 
     /** Inline styles */
     private List styles = new ArrayList();
@@ -158,7 +158,7 @@ public class HtmlPageAttributes
         this.title = null;
         this.bodyAttributes.clear();
         this.scripts.clear();
-        this.styleSheets.clear();
+        this.linkTags.clear();
         this.styles.clear();
         this.metaTags.clear();
         this.httpEquivs.clear();
@@ -302,11 +302,11 @@ public class HtmlPageAttributes
     public HtmlPageAttributes addStyleSheet(String styleSheetURL,
                                             String media, String title, String type)
     {
-        StyleSheet ss = new StyleSheet(styleSheetURL);
+        LinkTag ss = new LinkTag("stylesheet", styleSheetURL);
         ss.setMedia(media);
         ss.setTitle(title);
         ss.setType(type);
-        this.styleSheets.add(ss);
+        this.linkTags.add(ss);
         return this;
     }
 
@@ -340,13 +340,68 @@ public class HtmlPageAttributes
     }
 
     /**
+     * Adds a generic external reference
+     *
+     * @param relation type of the reference (prev, next, first, last, top, etc.)
+     * @param linkURL URL of the reference
+     * @return a <code>HtmlPageAttributes</code> (self).
+     */
+    public HtmlPageAttributes addLink(String relation, String linkURL)
+    {
+        return addLink(relation, linkURL, null, null);
+    }
+
+    /**
+     * Adds a generic external reference
+     *
+     * @param relation type of the reference (prev, next, first, last, top, etc.)
+     * @param linkURL URL of the reference
+     * @param title title of the reference
+     * @return a <code>HtmlPageAttributes</code> (self).
+     */
+    public HtmlPageAttributes addLink(String relation, String linkURL, String title)
+    {
+        return addLink(relation, linkURL, title, null);
+    }
+
+    /**
+     * Adds a generic external reference
+     *
+     * @param relation type of the reference (prev, next, first, last, top, etc.)
+     * @param linkURL URL of the reference
+     * @param title title of the reference
+     * @param type content type
+     * @return a <code>HtmlPageAttributes</code> (self).
+     */
+    public HtmlPageAttributes addLink(String relation, String linkURL, String title,
+                                        String type)
+    {
+        LinkTag ss = new LinkTag(relation, linkURL);
+        ss.setTitle(title);
+        ss.setType(type);
+        this.linkTags.add(ss);
+        return this;
+    }
+
+    /**
      * Returns a collection of script URLs
      *
-     * @return list StyleSheet objects (inner class)
+     * @return list LinkTag objects (inner class)
+     * @deprecated use getLinks() instead
      */
     public List getStyleSheets()
     {
-        return this.styleSheets;
+        return this.linkTags;
+    }
+
+    /**
+     * Returns a collection of link URLs
+     *
+     * @return list LinkTag objects (inner class)
+     */
+    public List getLinks()
+    {
+        return this.linkTags;
     }
 
     /**
@@ -531,22 +586,26 @@ public class HtmlPageAttributes
     }
 
     /**
-     * Helper class to hold data about a stylesheet
+     * Helper class to hold data about a &lt;link ... /&gt; html header tag
      */
-    public class StyleSheet
+    public class LinkTag
     {
+        private String relation;
         private String url;
         private String title;
         private String media;
         private String type;
 
         /**
-         * Constructor requiring the URL to be set
+         * Constructor requiring the URL and relation to be set
          *
-         * @param url URL of the external style sheet
+         * @param relation Relation type the external link such as prev, next,
+         *        stylesheet, shortcut icon
+         * @param url URL of the external link
          */
-        public StyleSheet(String url)
+        public LinkTag(String relation, String url)
         {
+            setRelation(relation);
             setUrl(url);
         }
 
@@ -628,6 +687,25 @@ public class HtmlPageAttributes
             this.media = media;
         }
 
+        /**
+         * Gets the relation type of the tag.
+         *
+         * @return name of the relation
+         */
+        public String getRelation()
+        {
+            return (StringUtils.isEmpty(relation) ? "" : relation);
+        }
+
+        /**
+         * Sets the relation type of the tag.
+         *
+         * @param relation name of the relation
+         */
+        public void setRelation(String relation)
+        {
+            this.relation = relation;
+        }
     }
 
     /**
