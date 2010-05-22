@@ -22,7 +22,6 @@ package org.apache.turbine.services;
 import java.util.Locale;
 
 import org.apache.fulcrum.cache.GlobalCacheService;
-import org.apache.fulcrum.cache.impl.DefaultGlobalCacheService;
 import org.apache.fulcrum.crypto.CryptoService;
 import org.apache.fulcrum.factory.FactoryService;
 import org.apache.fulcrum.intake.IntakeService;
@@ -88,8 +87,8 @@ public class LoadingComponentsTest extends BaseTestCase
     {
         ServiceManager serviceManager = TurbineServices.getInstance();
 
-        DefaultGlobalCacheService dgcs = (DefaultGlobalCacheService)serviceManager.getService(DefaultGlobalCacheService.ROLE);
-        assertNotNull(dgcs);
+        GlobalCacheService gcs = (GlobalCacheService)serviceManager.getService(GlobalCacheService.ROLE);
+        assertNotNull(gcs);
         CryptoService cs = (CryptoService)serviceManager.getService(CryptoService.ROLE);
         assertNotNull(cs);
         LocalizationService ls = (LocalizationService)serviceManager.getService(LocalizationService.ROLE);
