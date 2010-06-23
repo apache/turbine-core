@@ -1,6 +1,5 @@
 package org.apache.turbine.services.security.ldap;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,7 +18,6 @@ package org.apache.turbine.services.security.ldap;
  * specific language governing permissions and limitations
  * under the License.
  */
-
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
@@ -80,7 +78,7 @@ public class LDAPUser implements User
         createDate = new java.util.Date();
         tempStorage = new Hashtable(10);
         permStorage = new Hashtable(10);
-        setHasLoggedIn(new Boolean(false));
+        setHasLoggedIn(Boolean.FALSE);
     }
 
     /**
@@ -798,8 +796,6 @@ public class LDAPUser implements User
     {
         this.timeout = time;
     }
-
-
 
     /**
      * Updates the last login date in the database.

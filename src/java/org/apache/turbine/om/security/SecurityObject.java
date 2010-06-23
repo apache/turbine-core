@@ -1,6 +1,5 @@
 package org.apache.turbine.om.security;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,12 +19,9 @@ package org.apache.turbine.om.security;
  * under the License.
  */
 
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-//import org.apache.torque.om.BaseObject;
 
 /**
  * This class represents a generic object used in the Access Control Lists.

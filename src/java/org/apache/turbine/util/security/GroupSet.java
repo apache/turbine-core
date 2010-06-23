@@ -152,20 +152,6 @@ public class GroupSet
      * @param groupName Name of Group.
      * @return Group if argument matched a Group in this
      * GroupSet; null if no match.
-     * @deprecated Use <a href="#getGroupByName">getGroupByName</a> instead.
-     */
-    public Group getGroup(String groupName)
-    {
-        return getGroupByName(groupName);
-    }
-
-    /**
-     * Returns a Group with the given name, if it is contained in
-     * this GroupSet.
-     *
-     * @param groupName Name of Group.
-     * @return Group if argument matched a Group in this
-     * GroupSet; null if no match.
      */
     public Group getGroupByName(String groupName)
     {

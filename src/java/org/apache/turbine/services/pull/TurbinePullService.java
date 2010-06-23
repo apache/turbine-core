@@ -918,9 +918,8 @@ public class TurbinePullService
      * ApplicationTool interface because we
      * know those types of tools have a refresh
      * method.
-     * @deprecated Will be made private after 2.3
      */
-    public void refreshGlobalTools()
+    private void refreshGlobalTools()
     {
         for (Iterator it = globalTools.iterator(); it.hasNext();)
         {
@@ -928,16 +927,6 @@ public class TurbinePullService
             Object tool = globalContext.get(toolData.toolName);
             refreshTool(tool, null);
         }
-    }
-
-    /**
-     * Should we refresh the ToolBox on
-     * a per request basis.
-     * @deprecated No longer needed as Pull and Velocity Service are now more separate.
-     */
-    public boolean refreshToolsPerRequest()
-    {
-        return refreshToolsPerRequest;
     }
 
     /**

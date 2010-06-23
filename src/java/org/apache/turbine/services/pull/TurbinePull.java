@@ -133,36 +133,6 @@ public abstract class TurbinePull
     }
 
     /**
-     * Refresh the global tools. This is necessary
-     * for development work where tools depend
-     * on configuration information. The configuration
-     * information is typically cached after initialization
-     * but during development you might want the tool
-     * to refresh itself on each request.
-     * <p>
-     * If there are objects that don't implement
-     * the ApplicationTool interface, then they won't
-     * be refreshed.
-     * @deprecated No longer needed as Pull and Velocity Service are now more separate.
-     */
-    public static final void refreshGlobalTools()
-    {
-        getService().refreshGlobalTools();
-    }
-
-    /**
-     * Shoud we refresh the tools
-     * on each request. For development purposes.
-     *
-     * @return true if we should refresh the tools on every request.
-     * @deprecated No longer needed as Pull and Velocity Service are now more separate.
-     */
-    public static final boolean refreshToolsPerRequest()
-    {
-        return getService().refreshToolsPerRequest();
-    }
-
-    /**
      * Release tool instances from the given context to the
      * object pool
      *

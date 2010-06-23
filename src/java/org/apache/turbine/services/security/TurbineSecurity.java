@@ -603,22 +603,6 @@ public abstract class TurbineSecurity
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the Group is not present.
-     * @deprecated Use <a href="#getGroupByName">getGroupByName</a> instead.
-     */
-    public static Group getGroup(String groupName)
-            throws DataBackendException, UnknownEntityException
-    {
-        return getService().getGroup(groupName);
-    }
-
-    /**
-     * Retrieve a Group object with specified name.
-     *
-     * @param groupName The name of the Group to be retrieved.
-     * @return an object representing the Group with specified name.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if the Group is not present.
      */
     public static Group getGroupByName(String groupName)
             throws DataBackendException, UnknownEntityException
@@ -664,24 +648,6 @@ public abstract class TurbineSecurity
     }
 
     /**
-     * Retrieves a named Group. If the Group does not exist, it creates
-     * a new Group based on the Services Group implementation. It is ok
-     * to pass in null or "" here and then use Group.setName() at a later
-     * point.
-     *
-     * @param groupName The name of the Group to be retrieved.
-     * @return an object representing the Group with specified name.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @deprecated Use getGroupInstance(String name) instead.
-     */
-    public static Group getNewGroup(String groupName)
-            throws DataBackendException
-    {
-        return getService().getNewGroup(groupName);
-    }
-
-    /**
      * Construct a blank Role object.
      *
      * This method calls getRoleClass, and then creates a new object using
@@ -700,23 +666,6 @@ public abstract class TurbineSecurity
     }
 
     /**
-     * Retrieves a named Role. If the Role does not exist, it creates a new Role
-     * based on the Services Role implementation.
-     * It is ok to pass in null or "" here and then use Role.setName() at
-     * a later point.
-     *
-     * @param roleName The name of the Role to be retrieved.
-     * @return an object representing the Role with specified name.
-     * @throws TurbineSecurityException if the Role could not be retrieved
-     * @deprecated Use getRoleInstance(String name) instead.
-     */
-    public static Role getNewRole(String roleName)
-            throws TurbineSecurityException
-    {
-        return getService().getNewRole(roleName);
-    }
-
-    /**
      * Construct a blank Permission object.
      *
      * This method calls getPermissionClass, and then creates a new object using
@@ -731,40 +680,6 @@ public abstract class TurbineSecurity
             throws UnknownEntityException
     {
         return getService().getPermissionInstance(permName);
-    }
-
-    /**
-     * Retrieves a named Permission. If the Permission does not exist, it
-     * creates a new Permission based on the Services Permission implementation.
-     * It is ok to pass in null or "" here and then use Permission.setName() at
-     * a later point.
-     *
-     * @param permissionName The name of the Permission to be retrieved.
-     * @return an object representing the Permission with specified name.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @deprecated Use getPermissionInstance(String name) instead.
-     */
-    public static Permission getNewPermission(String permissionName)
-            throws DataBackendException
-    {
-        return getService().getNewPermission(permissionName);
-    }
-
-    /**
-     * Retrieve a Role object with specified name.
-     *
-     * @param roleName The name of the Role to be retrieved.
-     * @return an object representing the Role with specified name.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if the Role is not present.
-     * @deprecated Use <a href="#getRoleByName">getRoleByName</a> instead.
-     */
-    public static Role getRole(String roleName)
-            throws DataBackendException, UnknownEntityException
-    {
-        return getService().getRole(roleName);
     }
 
     /**
@@ -799,22 +714,6 @@ public abstract class TurbineSecurity
                    UnknownEntityException
     {
         return getService().getRoleById(roleId);
-    }
-
-    /**
-     * Retrieve a Permission object with specified name.
-     *
-     * @param permissionName The name of the Permission to be retrieved.
-     * @return an object representing the Permission with specified name.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if the Permission is not present.
-     * @deprecated Use <a href="#getPermissionByName">getPermissionByName</a> instead.
-     */
-    public static Permission getPermission(String permissionName)
-            throws DataBackendException, UnknownEntityException
-    {
-        return getService().getPermission(permissionName);
     }
 
     /**

@@ -110,20 +110,6 @@ public abstract class SecuritySet
      * @param roleName Name of the Security Object.
      * @return True if argument matched an Object in this Set; false
      * if no match.
-     * @deprecated Use containsName(groupName) instead.
-     */
-    public boolean contains(String groupName)
-    {
-        return containsName(groupName);
-    }
-
-    /**
-     * Searches if an Object with a given name is in the
-     * Set
-     *
-     * @param roleName Name of the Security Object.
-     * @return True if argument matched an Object in this Set; false
-     * if no match.
      */
     public boolean containsName(String name)
     {
@@ -151,14 +137,6 @@ public abstract class SecuritySet
     public Iterator iterator()
     {
         return nameMap.values().iterator();
-    }
-
-    /**
-     * @deprecated Use iterator() instead.
-     */
-    public Iterator elements()
-    {
-        return iterator();
     }
 
     /**

@@ -95,14 +95,6 @@ public interface TurbineRunData
     void setResponse(HttpServletResponse res);
 
     /**
-     * Sets the servlet session information.
-     *
-     * @param sess a session.
-     * @deprecated No replacement. This method no longer does anything.
-     */
-    void setSession(HttpSession sess);
-
-    /**
      * Sets the servlet configuration used during servlet init.
      *
      * @param config a configuration.

@@ -27,6 +27,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
@@ -48,6 +49,8 @@ import org.apache.turbine.modules.PageLoader;
 import org.apache.turbine.pipeline.Pipeline;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.pipeline.TurbinePipeline;
+import org.apache.turbine.services.Initable;
+import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 // import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
@@ -97,6 +100,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
+ * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
  * @version $Id$
  */
 public class Turbine
@@ -476,7 +480,7 @@ public class Turbine
     }
 
     /**
-     * Initializes the services which need <code>RunData</code> to
+     * Initializes the services which need <code>PipelineData</code> to
      * initialize themselves (post startup).
      *
      * @param data The first <code>GET</code> request.
@@ -494,6 +498,27 @@ public class Turbine
                 // the servlet environment.
                 saveServletInfo(data);
 
+                // Initialize services with the PipelineData instance
+                TurbineServices services = (TurbineServices)TurbineServices.getInstance();
+                
+                for (Iterator i = services.getServiceNames(); i.hasNext();)
+                {
+                	String serviceName = (String)i.next();
+                	Object service = services.getService(serviceName);
+                	
+                	if (service instanceof Initable)
+                	{
+                		try 
+                		{
+							((Initable)service).init(data);
+						} 
+                		catch (InitializationException e) 
+                		{
+                			log.warn("Could not initialize Initable " + serviceName + " with PipelineData", e);
+						}
+                	}
+                }
+                
                 // Mark that we're done.
                 firstDoGet = false;
                 log.info("Turbine: first Request successful");

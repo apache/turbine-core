@@ -304,6 +304,18 @@ public class TurbineConfig
     }
 
     /**
+     * Returns the context path.
+     *
+     * Fixed value "/turbine" is returned
+     *
+     * @return the context path
+     */
+    public String getContextPath() 
+    {
+        return "/turbine";
+	}
+
+	/**
      * Returns a URL to the resource that is mapped to a specified
      * path. The path must begin with a "/" and is interpreted
      * as relative to the current context root.

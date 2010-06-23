@@ -148,23 +148,6 @@ public class TurbineVelocityService
         }
     }
 
-
-    /**
-     * Inits the service using servlet parameters to obtain path to the
-     * configuration file.
-     *
-     * @param config The ServletConfiguration from Turbine
-     *
-     * @throws InitializationException Something went wrong when starting up.
-     * @deprecated use init() instead.
-     */
-    public void init(ServletConfig config)
-            throws InitializationException
-    {
-        init();
-    }
-
-
     /**
      * Create a Context object that also contains the globalContext.
      *
