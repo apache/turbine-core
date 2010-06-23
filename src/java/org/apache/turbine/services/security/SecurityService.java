@@ -707,34 +707,6 @@ public interface SecurityService
     Group getGlobalGroup();
 
     /**
-     * @deprecated Use getGroupInstance(String name) instead.
-     */
-    Group getNewGroup(String groupName);
-
-    /**
-     * @deprecated Use getRoleInstance(String name) instead.
-     */
-    Role getNewRole(String roleName);
-
-    /**
-     * @deprecated Use getPermissionInstance(String name) instead.
-     */
-    Permission getNewPermission(String permissionName);
-
-    /**
-     * Retrieve a Group object with specified name.
-     *
-     * @param name the name of the Group.
-     * @return an object representing the Group with specified name.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if the group does not exist.
-     * @deprecated Use <a href="#getGroupByName">getGroupByName</a> instead.
-     */
-    Group getGroup(String name)
-            throws DataBackendException, UnknownEntityException;
-
-    /**
      * Retrieve a Group object with specified name.
      *
      * @param name the name of the Group.
@@ -770,19 +742,6 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      * @throws UnknownEntityException if the role does not exist.
-     * @deprecated Use <a href="#getRoleByName">getRoleByName</a> instead.
-     */
-    Role getRole(String name)
-            throws DataBackendException, UnknownEntityException;
-
-    /**
-     * Retrieve a Role object with specified name.
-     *
-     * @param name the name of the Role.
-     * @return an object representing the Role with specified name.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if the role does not exist.
      */
     Role getRoleByName(String name)
             throws DataBackendException, UnknownEntityException;
@@ -802,19 +761,6 @@ public interface SecurityService
     Role getRoleById(int id)
             throws DataBackendException,
                    UnknownEntityException;
-
-    /**
-     * Retrieve a Permission object with specified name.
-     *
-     * @param name the name of the Permission.
-     * @return an object representing the Permission with specified name.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if the permission does not exist.
-     * @deprecated Use <a href="#getPermissionByName">getPermissionByName</a> instead.
-     */
-    Permission getPermission(String name)
-            throws DataBackendException, UnknownEntityException;
 
     /**
      * Retrieve a Permission object with specified name.

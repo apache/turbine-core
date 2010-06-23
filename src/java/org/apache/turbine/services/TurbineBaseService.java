@@ -73,11 +73,7 @@ public abstract class TurbineBaseService
     public void init(Object data)
             throws InitializationException
     {
-        if (data instanceof ServletConfig)
-        {
-            init((ServletConfig) data);
-        }
-        else if (data instanceof RunData)
+        if (data instanceof RunData)
         {
             init((RunData) data);
         }
@@ -85,19 +81,6 @@ public abstract class TurbineBaseService
         {
             init((PipelineData) data);
         }
-    }
-
-    /**
-     * Performs early initialization.
-     *
-     * @param config A ServletConfing to use for initialization
-     * activities.
-     * @exception InitializationException if initialization of this
-     * class was not successful.
-     * @deprecated Use init() instead
-     */
-    public void init(ServletConfig config) throws InitializationException
-    {
     }
 
     /**

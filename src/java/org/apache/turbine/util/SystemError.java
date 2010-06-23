@@ -21,7 +21,6 @@ package org.apache.turbine.util;
  */
 
 
-import org.apache.commons.lang.exception.NestableError;
 
 /**
  * Used for wrapping system errors (exceptions) that may occur in the
@@ -31,9 +30,12 @@ import org.apache.commons.lang.exception.NestableError;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public class SystemError extends NestableError
+public class SystemError extends Error
 {
-    /**
+    /** Serial version */
+	private static final long serialVersionUID = -8965344546132616128L;
+
+	/**
      * Constructor.
      *
      * @param cause A Throwable object
@@ -58,34 +60,9 @@ public class SystemError extends NestableError
      *
      * @param cause A Throwable object
      * @param message A String.
-     * @deprecated Use SystemError(String,Throwable) instead.
-     */
-    public SystemError(Throwable cause, String message)
-    {
-        super(message, cause);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param cause A Throwable object
-     * @param message A String.
      */
     public SystemError(String message, Throwable cause)
     {
         super(message, cause);
     }
-
-    /**
-     * Constructor.
-     *
-     * @param cause A Throwable object
-     * @param returnCode A long.
-     * @deprecated No replacement
-     */
-    public SystemError(Throwable cause, long returnCode)
-    {
-        super("Return code = " + Long.toString(returnCode), cause);
-    }
-
 }

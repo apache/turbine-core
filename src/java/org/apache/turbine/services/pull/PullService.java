@@ -147,21 +147,6 @@ public interface PullService
     String getResourcesDirectory();
 
     /**
-     * Refresh the global tools .
-     * @deprecated No longer needed as Pull and Velocity Service are now more separate.
-     */
-    void refreshGlobalTools();
-
-    /**
-     * Shoud we refresh the tools
-     * on each request. For development purposes.
-     *
-     * @return true if we should refresh the tools on every request.
-     * @deprecated No longer needed as Pull and Velocity Service are now more separate.
-     */
-    boolean refreshToolsPerRequest();
-
-    /**
      * Release tool instances from the given context to the
      * object pool
      *

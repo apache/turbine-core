@@ -1,6 +1,5 @@
 package org.apache.turbine.om.security;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,7 +18,6 @@ package org.apache.turbine.om.security;
  * specific language governing permissions and limitations
  * under the License.
  */
-
 
 /**
  * This class represents a Group of Users in the system that are associated

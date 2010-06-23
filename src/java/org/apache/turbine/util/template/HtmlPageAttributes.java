@@ -209,21 +209,6 @@ public class HtmlPageAttributes
      * @param name A String.
      * @param value A String.
      * @return a <code>HtmlPageAttributes</code> (self).
-     * @deprecated Use addBodyAttribute instead.
-     */
-    public HtmlPageAttributes addAttribute(String name, String value)
-    {
-        log.info("Use of the addAttribute(name,value) method is deprecated.  Please use " +
-                "addBodyAttribute(name,value) instead.");
-        return addBodyAttribute(name, value);
-    }
-
-    /**
-     * Adds an attribute to the BODY tag.
-     *
-     * @param name A String.
-     * @param value A String.
-     * @return a <code>HtmlPageAttributes</code> (self).
      */
     public HtmlPageAttributes addBodyAttribute(String name, String value)
     {
@@ -251,20 +236,6 @@ public class HtmlPageAttributes
     {
         this.scripts.add(scriptURL);
         return this;
-    }
-
-    /**
-     * Adds a script reference
-     *
-     * @param scriptURL
-     * @return a <code>HtmlPageAttributes</code> (self).
-     * @deprecated Use addScript instead
-     */
-    public HtmlPageAttributes setScript(String scriptURL)
-    {
-        log.info("Use of the setScript(scriptURL) method is deprecated.  Please use " +
-                "addScript(scriptURL) instead.");
-        return addScript(scriptURL);
     }
 
     /**
@@ -308,35 +279,6 @@ public class HtmlPageAttributes
         ss.setType(type);
         this.linkTags.add(ss);
         return this;
-    }
-
-    /**
-     * Adds a style sheet reference
-     *
-     * @param styleSheetURL
-     * @return a <code>HtmlPageAttributes</code> (self).
-     * @deprecated use addStyleSheet instead
-     */
-    public HtmlPageAttributes setStyleSheet(String styleSheetURL)
-    {
-        log.info("Use of the setStyleSheet(styleSheetURL) method is deprecated.  Please use " +
-                "addStyleSheet(styleSheetURL) instead.");
-        return addStyleSheet(styleSheetURL);
-    }
-
-    /**
-     * Adds a style sheet reference
-     *
-     * @param styleSheetURL
-     * @param media name of the media
-     * @return a <code>HtmlPageAttributes</code> (self).
-     * @deprecated use addStyleSheet instead
-     */
-    public HtmlPageAttributes setStyleSheet(String styleSheetURL, String media)
-    {
-        log.info("Use of the setStyleSheet(styleSheetURL,media) method is deprecated.  " +
-                "Please use addStyleSheet(styleSheetURL,media) instead.");
-        return addStyleSheet(styleSheetURL, media, null, "text/css");
     }
 
     /**
@@ -384,17 +326,6 @@ public class HtmlPageAttributes
     }
 
     /**
-     * Returns a collection of script URLs
-     *
-     * @return list LinkTag objects (inner class)
-     * @deprecated use getLinks() instead
-     */
-    public List getStyleSheets()
-    {
-        return this.linkTags;
-    }
-
-    /**
      * Returns a collection of link URLs
      *
      * @return list LinkTag objects (inner class)
@@ -402,20 +333,6 @@ public class HtmlPageAttributes
     public List getLinks()
     {
         return this.linkTags;
-    }
-
-    /**
-     * Adds a STYLE element to the HEAD of the page with the provided content.
-     *
-     * @param styleText The contents of the <code>style</code> tag.
-     * @return a <code>HtmlPageAttributes</code> (self).
-     * @deprecated use addStyle instead
-     */
-    public HtmlPageAttributes setStyle(String styleText)
-    {
-        log.info("Use of the setStyle(styleText) method is deprecated.  Please use " +
-                "addStyle(styleText) instead.");
-        return addStyle(styleText);
     }
 
     /**

@@ -81,18 +81,6 @@ public class TurbineServletService
     }
 
     /**
-     * Called during Turbine.init()
-     *
-     * @param servletConfig A ServletConfig.
-     *
-     * @deprecated use init() instead.
-     */
-    public void init(ServletConfig servletConfig)
-    {
-        init();
-    }
-
-    /**
      * Returns an URL object for a given URI string.
      * This URI is considered relative to the context.
      *

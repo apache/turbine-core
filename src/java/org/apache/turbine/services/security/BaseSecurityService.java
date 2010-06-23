@@ -307,18 +307,6 @@ public abstract class BaseSecurityService
     }
 
     /**
-     * Initializes the SecurityService, locating the apropriate UserManager
-     *
-     * @param config a ServletConfig, to enforce early initialization
-     * @throws InitializationException Something went wrong in the init stage
-     * @deprecated use init() instead.
-     */
-    public void init(ServletConfig config) throws InitializationException
-    {
-        init();
-    }
-
-    /**
      * Return a Class object representing the system's chosen implementation of
      * of User interface.
      *
@@ -941,22 +929,6 @@ public abstract class BaseSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      * @throws UnknownEntityException if the group does not exist.
-     * @deprecated Use <a href="#getGroupByName">getGroupByName</a> instead.
-     */
-    public Group getGroup(String name)
-            throws DataBackendException, UnknownEntityException
-    {
-        return getGroupByName(name);
-    }
-
-    /**
-     * Retrieve a Group object with specified name.
-     *
-     * @param name the name of the Group.
-     * @return an object representing the Group with specified name.
-     * @throws DataBackendException if there was an error accessing the
-     *         data backend.
-     * @throws UnknownEntityException if the group does not exist.
      */
     public Group getGroupByName(String name)
             throws DataBackendException, UnknownEntityException
@@ -990,22 +962,6 @@ public abstract class BaseSecurityService
                     "The specified group does not exist");
         }
         return group;
-    }
-
-    /**
-     * Retrieve a Role object with specified name.
-     *
-     * @param name the name of the Role.
-     * @return an object representing the Role with specified name.
-     * @throws DataBackendException if there was an error accessing the
-     *         data backend.
-     * @throws UnknownEntityException if the role does not exist.
-     * @deprecated Use <a href="#getRoleByName">getRoleByName</a> instead.
-     */
-    public Role getRole(String name)
-            throws DataBackendException, UnknownEntityException
-    {
-        return getRoleByName(name);
     }
 
     /**
@@ -1051,22 +1007,6 @@ public abstract class BaseSecurityService
         }
         role.setPermissions(getPermissions(role));
         return role;
-    }
-
-    /**
-     * Retrieve a Permission object with specified name.
-     *
-     * @param name the name of the Permission.
-     * @return an object representing the Permission with specified name.
-     * @throws DataBackendException if there was an error accessing the
-     *         data backend.
-     * @throws UnknownEntityException if the permission does not exist.
-     * @deprecated Use <a href="#getPermissionByName">getPermissionByName</a> instead.
-     */
-    public Permission getPermission(String name)
-            throws DataBackendException, UnknownEntityException
-    {
-        return getPermissionByName(name);
     }
 
     /**
@@ -1142,51 +1082,4 @@ public abstract class BaseSecurityService
      */
     public abstract PermissionSet getAllPermissions()
             throws DataBackendException;
-
-
-    /**
-     * @deprecated Use getGroupInstance(String name) instead.
-     */
-    public Group getNewGroup(String groupName)
-    {
-        try
-        {
-            return getGroupInstance(groupName);
-        }
-        catch (UnknownEntityException uee)
-        {
-            uee.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * @deprecated Use getRoleInstance(String name) instead.
-     */
-    public Role getNewRole(String roleName)
-    {
-        try
-        {
-            return getRoleInstance(roleName);
-        }
-        catch (UnknownEntityException uee)
-        {
-            return null;
-        }
-    }
-
-    /**
-     * @deprecated Use getPermissionInstance(String name) instead.
-     */
-    public Permission getNewPermission(String permissionName)
-    {
-        try
-        {
-            return getPermissionInstance(permissionName);
-        }
-        catch (UnknownEntityException uee)
-        {
-            return null;
-        }
-    }
 }

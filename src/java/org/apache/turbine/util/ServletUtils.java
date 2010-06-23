@@ -41,31 +41,6 @@ import org.apache.turbine.util.uri.URIConstants;
 public class ServletUtils
 {
     /**
-     * The default HTTP port number.
-     * @deprecated use URIConstants.HTTP_PORT
-     */
-    public static final int HTTP_PORT = URIConstants.HTTP_PORT;
-
-    /**
-     * The default HTTPS port number.
-     * @deprecated use URIConstants.HTTPS_PORT
-     */
-    public static final int HTTPS_PORT = URIConstants.HTTPS_PORT;
-
-    /**
-     * The default FTP port number.
-     * @deprecated use URIConstants.FTP_PORT
-     */
-    public static final int FTP_PORT = URIConstants.FTP_PORT;
-
-    /**
-     * The part of the URI which separates the protocol indicator (i.e. the
-     * scheme) from the rest of the URI.
-     * @deprecated use URIConstants.URI_SCHEME_SEPARATOR;
-     */
-    public static final String URI_SCHEME_SEPARATOR = URIConstants.URI_SCHEME_SEPARATOR;
-
-    /**
      * Expands a string that points to a relative path or path list,
      * leaving it as an absolute path based on the servlet context.
      * It will return null if the text is empty or the config object
@@ -124,43 +99,5 @@ public class ServletUtils
             }
         }
         return buffer.toString();
-    }
-
-    /**
-     * Defaults to the scheme used in the supplied request.
-     *
-     * @see #hostURL(HttpServletRequest req, String proto)
-     * @deprecated Use ServerData(req).getHostUrl()
-     */
-    public static StringBuffer hostURL(HttpServletRequest req)
-    {
-        return hostURL(req, null);
-    }
-
-    /**
-     * Returns a URL fragment derived from the provided HTTP request,
-     * including the protocol used to address the server (if non-standard
-     * for HTTP/HTTPS).  Returns the fragment as a buffer
-     *
-     * @param req The request to extract information from.
-     * @param scheme The protocol indicator to prefix the host name with, or
-     * the protocol used to address the server with if <code>null</code>.
-     * @return The desired URL fragment.
-     * @deprecated Use ServerData(req).getHostUrl()
-     */
-    public static StringBuffer hostURL(HttpServletRequest req, String scheme)
-    {
-        ServerData serverData = new ServerData(req);
-
-        if (StringUtils.isNotEmpty(scheme))
-        {
-            serverData.setServerScheme(scheme);
-        }
-
-        StringBuffer sb = new StringBuffer();
-
-        serverData.getHostUrl(sb);
-
-        return sb;
     }
 }

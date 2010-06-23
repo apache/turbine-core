@@ -1,6 +1,5 @@
 package org.apache.turbine.services.security.ldap;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,7 +18,6 @@ package org.apache.turbine.services.security.ldap;
  * specific language governing permissions and limitations
  * under the License.
  */
-
 
 import java.util.List;
 import java.util.Hashtable;
@@ -505,7 +503,7 @@ public class LDAPUserManager implements UserManager
     {
         String host = LDAPSecurityConstants.getLDAPHost();
         String port = LDAPSecurityConstants.getLDAPPort();
-        String providerURL = new String("ldap://" + host + ":" + port);
+        String providerURL = "ldap://" + host + ":" + port;
         String ldapProvider = LDAPSecurityConstants.getLDAPProvider();
         String authentication = LDAPSecurityConstants.getLDAPAuthentication();
 
