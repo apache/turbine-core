@@ -53,7 +53,6 @@ import org.apache.turbine.services.Initable;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
-// import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.template.TurbineTemplate;
@@ -903,7 +902,7 @@ public class Turbine
         //
         // Bundle all the information above up into a convenient structure
         //
-        ServerData requestServerData = (ServerData) data.get(ServerData.class);
+        ServerData requestServerData = (ServerData) data.get(Turbine.class, ServerData.class);
         serverData = (ServerData) requestServerData.clone();
     }
 
