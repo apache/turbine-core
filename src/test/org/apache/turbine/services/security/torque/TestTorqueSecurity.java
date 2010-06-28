@@ -25,10 +25,8 @@ import junit.framework.TestSuite;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.services.security.TurbineSecurity;
-
-import org.apache.turbine.test.HsqlDB;
-
 import org.apache.turbine.test.BaseTurbineTest;
+import org.apache.turbine.test.HsqlDB;
 
 public class TestTorqueSecurity
         extends BaseTurbineTest
@@ -40,7 +38,7 @@ public class TestTorqueSecurity
     public TestTorqueSecurity(String name)
             throws Exception
     {
-        super(name, "conf/test/TurbineResources.properties");
+        super(name, "conf/test/CompleteTurbineResources.properties");
         hsqlDB = new HsqlDB("jdbc:hsqldb:.", Turbine.getRealPath("conf/test/create-db.sql"));
     }
 

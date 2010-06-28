@@ -705,23 +705,18 @@
           <targetDatabase>mysql</targetDatabase>
           <targetPackage>org.apache.turbine.services.security.torque.om</targetPackage>
           <correctGetters>true</correctGetters>
+          <outputDir>${project.build.directory}/generated-sources/torque</outputDir> 
+          <schemaDir>src/torque/schema</schemaDir> 
+          <runOnlyOnSchemaChange>true</runOnlyOnSchemaChange>
         </configuration>
-        <!-- executions>
+        <executions>
           <execution>
             <phase>generate-sources</phase>
             <goals>
               <goal>om</goal>
-              <goal>documentation</goal>
             </goals>
           </execution>
-        </executions -->
-        <dependencies>
-          <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.0.4</version>
-          </dependency>
-        </dependencies>
+        </executions>
       </plugin>
     </plugins>
     
@@ -829,7 +824,7 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>taglist-maven-plugin</artifactId>
         <version>2.1</version>
-      </plugin>    
+      </plugin>
     </plugins>
   </reporting>
   
