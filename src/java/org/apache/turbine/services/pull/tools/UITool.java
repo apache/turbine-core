@@ -21,10 +21,11 @@ package org.apache.turbine.services.pull.tools;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.services.ui.TurbineUI;
+import org.apache.turbine.services.ui.UIService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 
@@ -352,6 +353,13 @@ public class UITool implements ApplicationTool
         {
             log.debug("UITool scope is request");
             setSkin((RunData) data);
+        }
+        else if (data instanceof PipelineData)
+        {
+            PipelineData pipelineData = (PipelineData) data;
+            RunData runData = (RunData)pipelineData;
+            log.debug("UITool scope is request");
+            setSkin(runData);
         }
         else if (data instanceof User)
         {
