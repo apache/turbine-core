@@ -19,7 +19,7 @@ package org.apache.turbine.modules.screens;
  * under the License.
  */
 
-import org.apache.turbine.modules.screens.JSONScreen;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -83,6 +83,7 @@ public abstract class JSONSecureScreen extends JSONScreen
      *
      * @param data Turbine information.
      * @exception Exception, a generic exception.
+     * @deprecated Use PipelineData version instead.
      */
     protected void doOutput(RunData data) throws Exception
     {
@@ -98,7 +99,33 @@ public abstract class JSONSecureScreen extends JSONScreen
      * @param data Turbine information.
      * @return <code>true</code> if the user is authorized to access the screen.
      * @exception Exception A generic exception.
+     * @deprecated Use PipelineData version instead.
      */
     protected abstract boolean isAuthorized(RunData data)
+            throws Exception;
+
+    /**
+     * This method overrides the method in JSONScreen to perform a security
+     * check prior to producing the output.
+     *
+     * @param pipelineData Turbine information.
+     * @exception Exception, a generic exception.
+     */
+    protected void doOutput(PipelineData pipelineData) throws Exception
+    {
+        if (isAuthorized(pipelineData))
+        {
+            super.doOutput(pipelineData);
+        }
+    }
+
+    /**
+     * Override this method to perform the necessary security checks.
+     *
+     * @param pipelineData Turbine information.
+     * @return <code>true</code> if the user is authorized to access the screen.
+     * @exception Exception A generic exception.
+     */
+    protected abstract boolean isAuthorized(PipelineData pipelineData)
             throws Exception;
 }

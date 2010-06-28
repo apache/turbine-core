@@ -19,15 +19,15 @@ package org.apache.turbine.modules.screens;
  * under the License.
  */
 
+import java.io.BufferedReader;
+import java.io.CharArrayWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.BufferedReader;
 import java.io.PrintWriter;
-import java.io.CharArrayWriter;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.turbine.modules.screens.RawScreen;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.jsonrpc.TurbineJsonRpc;
 import org.apache.turbine.util.RunData;
 
@@ -81,19 +81,24 @@ public class JSONScreen extends RawScreen
 
     protected final static int BUFFER_SIZE = 4096;
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
+     * @deprecated Use PipelineData version instead.
      */
     protected String getContentType(RunData data)
     {
         return JSONRPC_CONTENT_TYPE;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
+     * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.pipeline.PipelineData)
+     */
+    protected String getContentType(PipelineData pipelineData)
+    {
+        return JSONRPC_CONTENT_TYPE;
+    }
+    
+    /**
      * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
      */
     
@@ -101,6 +106,7 @@ public class JSONScreen extends RawScreen
      * Output the dynamic content.
      *
      * @param data The RunData object.
+     * @deprecated Use PipelineData version instead.
      */
     protected void doOutput(RunData data) throws Exception
     {
