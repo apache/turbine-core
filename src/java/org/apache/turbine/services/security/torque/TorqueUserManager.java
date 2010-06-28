@@ -134,7 +134,7 @@ public class TorqueUserManager
         Criteria criteria = new Criteria();
         criteria.add(UserPeerManager.getNameColumn(), userName);
 
-        List users = retrieveList(criteria);;
+        List users = retrieveList(criteria);
 
         if (users.size() > 1)
         {
@@ -186,7 +186,7 @@ public class TorqueUserManager
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
      */
-    public User[] retrieve(Criteria criteria)
+    public User[] retrieve(Object criteria)
         throws DataBackendException
     {
         return (User [])retrieveList(criteria).toArray(new User[0]);
@@ -206,35 +206,43 @@ public class TorqueUserManager
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
      */
-    public List retrieveList(Criteria criteria)
+    public List retrieveList(Object criteria)
         throws DataBackendException
     {
-        for (Iterator keys = criteria.keySet().iterator(); keys.hasNext(); )
+        if (criteria instanceof Criteria)
         {
-            String key = (String) keys.next();
-
-            // set the table name for all attached criterion
-            Criteria.Criterion[] criterion = criteria
-                .getCriterion(key).getAttachedCriterion();
-
-            for (int i = 0; i < criterion.length; i++)
+            Criteria c = (Criteria)criteria;
+            for (Iterator keys = c.keySet().iterator(); keys.hasNext(); )
             {
-                if (StringUtils.isEmpty(criterion[i].getTable()))
+                String key = (String) keys.next();
+    
+                // set the table name for all attached criterion
+                Criteria.Criterion[] criterion = 
+                    c.getCriterion(key).getAttachedCriterion();
+    
+                for (int i = 0; i < criterion.length; i++)
                 {
-                    criterion[i].setTable(UserPeerManager.getTableName());
+                    if (StringUtils.isEmpty(criterion[i].getTable()))
+                    {
+                        criterion[i].setTable(UserPeerManager.getTableName());
+                    }
                 }
             }
+            List users = null;
+            try
+            {
+                users = UserPeerManager.doSelect(c);
+            }
+            catch (Exception e)
+            {
+                throw new DataBackendException("Failed to retrieve users", e);
+            }
+            return users;
         }
-        List users = null;
-        try
+        else
         {
-            users = UserPeerManager.doSelect(criteria);
+            throw new DataBackendException("Failed to retrieve users with invalid criteria");
         }
-        catch (Exception e)
-        {
-            throw new DataBackendException("Failed to retrieve users", e);
-        }
-        return users;
     }
 
     /**

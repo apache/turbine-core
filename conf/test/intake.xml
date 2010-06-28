@@ -18,7 +18,7 @@
  under the License.
 -->
 <!DOCTYPE input-data SYSTEM
-           "http://turbine.apache.org/dtd/intake_2_3.dtd">
+           "http://turbine.apache.org/dtd/intake_2_4.dtd">
 <input-data basePackage="org.apache.turbine.services.intake.">
 <group name="LoginGroup" key="loginGroupKey" mapToObject="LoginForm">
 <field name="Username" key="loginUsernameKey" type="String"

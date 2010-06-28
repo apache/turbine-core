@@ -25,16 +25,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.torque.TorqueException;
 import org.apache.torque.om.NumberKey;
 import org.apache.torque.om.Persistent;
 import org.apache.torque.util.Criteria;
-
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
@@ -495,27 +492,37 @@ public class TorqueSecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    public GroupSet getGroups(Criteria criteria)
+    public GroupSet getGroups(Object criteria)
         throws DataBackendException
     {
-        Criteria torqueCriteria = new Criteria();
-        Iterator keys = criteria.keySet().iterator();
-        while (keys.hasNext())
+        if (criteria instanceof Criteria)
         {
-            String key = (String) keys.next();
-            torqueCriteria.put(GroupPeerManager.getColumnName(key),
-                    criteria.get(key));
+            Criteria torqueCriteria = new Criteria();
+            Criteria c = (Criteria)criteria;
+            Iterator keys = c.keySet().iterator();
+            while (keys.hasNext())
+            {
+                String key = (String) keys.next();
+                torqueCriteria.put(GroupPeerManager.getColumnName(key),
+                        c.get(key));
+            }
+            List groups = new ArrayList(0);
+            try
+            {
+                groups = GroupPeerManager.doSelect(torqueCriteria);
+            }
+            catch (TorqueException e)
+            {
+                throw new DataBackendException("getGroups(Object) failed", e);
+            }
+
+            return new GroupSet(groups);
         }
-        List groups = new ArrayList(0);
-        try
+        else
         {
-            groups = GroupPeerManager.doSelect(criteria);
+            throw new DataBackendException(
+                    "getGroups(Object) failed with invalid criteria");
         }
-        catch (Exception e)
-        {
-            throw new DataBackendException("getGroups(Criteria) failed", e);
-        }
-        return new GroupSet(groups);
     }
 
     /**
@@ -526,27 +533,36 @@ public class TorqueSecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    public RoleSet getRoles(Criteria criteria)
+    public RoleSet getRoles(Object criteria)
         throws DataBackendException
     {
-        Criteria torqueCriteria = new Criteria();
-        Iterator keys = criteria.keySet().iterator();
-        while (keys.hasNext())
+        if (criteria instanceof Criteria)
         {
-            String key = (String) keys.next();
-            torqueCriteria.put(RolePeerManager.getColumnName(key),
-                    criteria.get(key));
+            Criteria torqueCriteria = new Criteria();
+            Criteria c = (Criteria)criteria;
+            Iterator keys = c.keySet().iterator();
+            while (keys.hasNext())
+            {
+                String key = (String) keys.next();
+                torqueCriteria.put(RolePeerManager.getColumnName(key),
+                        c.get(key));
+            }
+            List roles = new ArrayList(0);
+            try
+            {
+                roles = RolePeerManager.doSelect(torqueCriteria);
+            }
+            catch (TorqueException e)
+            {
+                throw new DataBackendException("getRoles(Criteria) failed", e);
+            }
+            return new RoleSet(roles);
         }
-        List roles = new ArrayList(0);
-        try
+        else
         {
-            roles = RolePeerManager.doSelect(criteria);
+            throw new DataBackendException(
+                    "getRoles(Object) failed with invalid criteria");
         }
-        catch (Exception e)
-        {
-            throw new DataBackendException("getRoles(Criteria) failed", e);
-        }
-        return new RoleSet(roles);
     }
 
     /**
@@ -557,28 +573,38 @@ public class TorqueSecurityService
      * @throws DataBackendException if there was an error accessing the data
      *         backend.
      */
-    public PermissionSet getPermissions(Criteria criteria)
+    public PermissionSet getPermissions(Object criteria)
         throws DataBackendException
     {
-        Criteria torqueCriteria = new Criteria();
-        Iterator keys = criteria.keySet().iterator();
-        while (keys.hasNext())
+        if (criteria instanceof Criteria)
         {
-            String key = (String) keys.next();
-            torqueCriteria.put(PermissionPeerManager.getColumnName(key),
-                    criteria.get(key));
+            Criteria torqueCriteria = new Criteria();
+            Criteria c = (Criteria)criteria;
+            Iterator keys = c.keySet().iterator();
+            while (keys.hasNext())
+            {
+                String key = (String) keys.next();
+                torqueCriteria.put(PermissionPeerManager.getColumnName(key),
+                        c.get(key));
+            }
+            List permissions = new ArrayList(0);
+            try
+            {
+                permissions = PermissionPeerManager.doSelect(torqueCriteria);
+            }
+            catch (TorqueException e)
+            {
+                throw new DataBackendException(
+                    "getPermissions(Object) failed", e);
+            }
+            
+            return new PermissionSet(permissions);
         }
-        List permissions = new ArrayList(0);
-        try
-        {
-            permissions = PermissionPeerManager.doSelect(criteria);
-        }
-        catch (Exception e)
+        else
         {
             throw new DataBackendException(
-                "getPermissions(Criteria) failed", e);
+                    "getPermissions(Object) failed with invalid criteria");
         }
-        return new PermissionSet(permissions);
     }
 
     /**
@@ -1153,6 +1179,65 @@ public class TorqueSecurityService
         throws DataBackendException, Exception
     {
         return PermissionPeerManager.checkExists(permission);
+    }
+
+
+    /**
+     * Retrieves all groups defined in the system.
+     *
+     * @return the names of all groups defined in the system.
+     * @throws DataBackendException if there was an error accessing the
+     *         data backend.
+     */
+    public GroupSet getAllGroups() throws DataBackendException
+    {
+        return getGroups(new Criteria());
+    }
+
+
+    /**
+     * Retrieves all permissions defined in the system.
+     *
+     * @return the names of all roles defined in the system.
+     * @throws DataBackendException if there was an error accessing the
+     *         data backend.
+     */
+    public PermissionSet getAllPermissions() throws DataBackendException
+    {
+        return getPermissions(new Criteria());
+    }
+
+
+    /**
+     * Retrieves all roles defined in the system.
+     *
+     * @return the names of all roles defined in the system.
+     * @throws DataBackendException if there was an error accessing the
+     *         data backend.
+     */
+    public RoleSet getAllRoles() throws DataBackendException
+    {
+        return getRoles(new Criteria());
+    }
+
+
+    /**
+     * Retrieve a set of users that meet the specified criteria.
+     *
+     * As the keys for the criteria, you should use the constants that
+     * are defined in {@link User} interface, plus the names
+     * of the custom attributes you added to your user representation
+     * in the data storage. Use verbatim names of the attributes -
+     * without table name prefix in case of Torque implementation.
+     *
+     * @param criteria The criteria of selection.
+     * @return a List of users meeting the criteria.
+     * @throws DataBackendException if there is a problem accessing the
+     *         storage.
+     */
+    public List getUserList(Object criteria) throws DataBackendException
+    {
+        return getUserManager().retrieveList(criteria);
     }
 
 }
