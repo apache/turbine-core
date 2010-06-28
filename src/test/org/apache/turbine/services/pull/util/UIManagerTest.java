@@ -34,7 +34,7 @@ public class UIManagerTest
     public UIManagerTest(String name)
             throws Exception
     {
-        super(name, "conf/test/TurbineResources.properties");
+        super(name, "conf/test/CompleteTurbineResources.properties");
     }
 
     public static Test suite()
