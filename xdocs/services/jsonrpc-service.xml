@@ -56,17 +56,17 @@ services.JsonRpcService.classname=org.apache.turbine.services.jsonrpc.TurbineJso
 
 <p>
 There are a number of things you need to do in order to add AJAX functionality
-to your webapp.  First you implement the functions:
+to your webapp. First you implement the functions:
 </p>
 
 <source><![CDATA[
 public class MyJsonFunctions
 {
-    private String getHello(String clientParameter)
+    public String getHello(String clientParameter)
     {
         return "Hello " + clientParameter;
     }
-    private String getGoodbye(String clientParameter)
+    public String getGoodbye(String clientParameter)
     {
         return "Goodbye " + clientParameter;
     }
@@ -82,9 +82,7 @@ public class MyJsonScreen extends JSONScreen
 {
     public void doOutput(RunData data) throws Exception
     {
-        User user = data.getUser();
-
-        MyJsonFunctions myFunctions = new MyJsonFunctions(user.getName());
+        MyJsonFunctions myFunctions = new MyJsonFunctions();
 
         // Session specific
         TurbineJsonRpc.registerObject(data.getSession(), "myFunctions", myFunctions);
@@ -153,7 +151,7 @@ function jsonEval(evalStr) {
 <p>
 In these pages you also need to include the JavaScript necessary to process the
 JSON calls - this file is available as part of the JSON-RPC-Java distribution
-(it is included in the <code>webapps\jaonrpc</code> directory):
+(it is included in the <code>webapps\jsonrpc</code> directory):
 </p>
 
 <source><![CDATA[
