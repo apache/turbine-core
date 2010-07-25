@@ -23,15 +23,13 @@ package org.apache.turbine.util.velocity;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
 import java.util.Iterator;
 
+import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
-import org.apache.fulcrum.parser.ParameterParser;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -171,7 +169,7 @@ public abstract class VelocityActionEvent extends ActionEvent
             {
                 if (considerKey(key, pp))
                 {
-                    theButton = formatString(key);
+                    theButton = formatString(key, pp);
                     break;
                 }
             }
@@ -248,7 +246,7 @@ public abstract class VelocityActionEvent extends ActionEvent
             {
                 if (considerKey(key, pp))
                 {
-                    theButton = formatString(key);
+                    theButton = formatString(key, pp);
                     break;
                 }
             }

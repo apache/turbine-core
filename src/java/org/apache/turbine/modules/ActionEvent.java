@@ -24,16 +24,14 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.fulcrum.parser.ParserService;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
-import org.apache.fulcrum.parser.ParameterParser;
-import org.apache.turbine.util.parser.ParserUtils;
 
 /**
  * <p>
@@ -228,7 +226,7 @@ public abstract class ActionEvent extends Action
 			{
 				if (considerKey(key, pp))
 				{
-					theButton = formatString(key);
+					theButton = formatString(key, pp);
 					break;
 				}
 			}
@@ -292,7 +290,7 @@ public abstract class ActionEvent extends Action
 			{
 				if (considerKey(key, pp))
 				{
-					theButton = formatString(key);
+					theButton = formatString(key, pp);
 					break;
 				}
 			}
@@ -335,9 +333,10 @@ public abstract class ActionEvent extends Action
 	 * into the proper case.
 	 *
 	 * @param input The unconverted method name.
+	 * @param pp The parameter parser (for correct folding)
 	 * @return A string with the method name in the proper case.
 	 */
-	protected final String formatString(String input)
+	protected final String formatString(String input, ParameterParser pp)
 	{
 		String tmp = input;
 
@@ -350,8 +349,8 @@ public abstract class ActionEvent extends Action
 					? input.substring(0, input.length() - 2)
 					: input;
 
-			if (ParserUtils.getUrlFolding()
-					!= ParserUtils.URL_CASE_FOLDING_NONE)
+			if (pp.getUrlFolding()
+					!= ParserService.URL_CASE_FOLDING_NONE)
 			{
 				tmp = input.toLowerCase().substring(BUTTON_LENGTH + METHOD_NAME_LENGTH);
 				tmp = METHOD_NAME_PREFIX + StringUtils.capitalize(tmp);
