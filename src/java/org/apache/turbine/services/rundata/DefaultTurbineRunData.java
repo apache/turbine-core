@@ -40,6 +40,9 @@ import org.apache.ecs.Document;
 import org.apache.ecs.Element;
 import org.apache.ecs.StringElement;
 import org.apache.fulcrum.mimetype.MimeTypeService;
+import org.apache.fulcrum.parser.CookieParser;
+import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.fulcrum.pool.Recyclable;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.om.security.User;
@@ -50,9 +53,6 @@ import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.FormMessages;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.SystemError;
-import org.apache.fulcrum.parser.CookieParser;
-import org.apache.fulcrum.parser.ParameterParser;
-import org.apache.fulcrum.pool.Recyclable;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.template.TemplateInfo;
 
@@ -1046,6 +1046,8 @@ public class DefaultTurbineRunData
                 {
                     return contentType + "; charset=" + getDefaultCharSet();
                 }
+                
+                return contentType;
             }
             else
             {
