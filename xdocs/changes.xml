@@ -24,7 +24,22 @@
   </properties>
 
   <body>
-    <release version="4.0-dev" date="in Subversion">
+    <release version="4.0-M1" date="in Subversion">
+      <action type="fix" dev="tv">
+        RunData.getContentType() was returning an empty string when it shouldn't
+      </action>
+      <action type="update" dev="tv">
+        Merged changes of the 2.3-branch into the trunk.
+      </action>
+      <action type="update" dev="tv">
+        Merged JSON-RPC-Service of the 2.3-branch into the trunk.
+      </action>
+      <action type="update" dev="tv">
+        Merged UIService of the 2.3-branch into the trunk.
+      </action>
+      <action type="update" dev="tv">
+        Merged TorqueSecurityService of the 2.3-branch (temporarily) into the trunk.
+      </action>
       <action type="update" dev="tv">
         Replaced the XSLT-Service with its Fulcrum counterpart.
       </action>
