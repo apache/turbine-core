@@ -20,21 +20,19 @@ package org.apache.turbine.util.uri;
  */
 
 import java.net.URLEncoder;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.parser.ParameterParser;
-
+import org.apache.fulcrum.parser.ParserService;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
-import org.apache.turbine.util.parser.ParserUtils;
 
 /**
  * This class allows you to keep all the information needed for a single
@@ -57,6 +55,9 @@ public class TurbineURI
 
     /** Contains the PathInfo and QueryData vectors */
     private List [] dataVectors = null;
+    
+    /** Local reference to the parser service for URI parameter folding */
+    private ParserService parserService;
 
     /*
      * ========================================================================
@@ -257,6 +258,7 @@ public class TurbineURI
         dataVectors = new List[2];
         dataVectors[PATH_INFO]  = new ArrayList();
         dataVectors[QUERY_DATA] = new ArrayList();
+        parserService = (ParserService)TurbineServices.getInstance().getService(ParserService.ROLE);
     }
 
     /**
@@ -822,7 +824,7 @@ public class TurbineURI
             String name,
             String value)
     {
-        URIParam uriParam = new URIParam(ParserUtils.convertAndTrim(name), value);
+        URIParam uriParam = new URIParam(parserService.convertAndTrim(name), value);
 
         dataVectors[type].add(uriParam); // Code so clean you can eat from...
     }
@@ -906,7 +908,7 @@ public class TurbineURI
             String name)
     {
         Collection c = dataVectors[type];
-        String key = ParserUtils.convertAndTrim(name);
+        String key = parserService.convertAndTrim(name);
 
         for (Iterator it = c.iterator(); it.hasNext();)
         {
