@@ -705,7 +705,9 @@
           <targetDatabase>mysql</targetDatabase>
           <targetPackage>org.apache.turbine.services.security.torque.om</targetPackage>
           <correctGetters>true</correctGetters>
-          <outputDir>${project.build.directory}/generated-sources/torque</outputDir> 
+          <baseOutputDir>${project.build.directory}/generated-sources/torque</baseOutputDir>
+          <outputDir>${project.build.sourceDirectory}</outputDir> 
+          <reportFile>../../target/torque/report.${project.artifact.artifactId}.om.generation</reportFile>
           <schemaDir>src/torque/schema</schemaDir> 
           <runOnlyOnSchemaChange>true</runOnlyOnSchemaChange>
         </configuration>
