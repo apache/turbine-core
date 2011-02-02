@@ -51,6 +51,8 @@ public class BaseJspNavigation
      * @param data the Rundata object
      * @throws Exception a generic exception.
      */
+    @Deprecated
+    @Override
     protected void doBuildTemplate(RunData data)
         throws Exception
     {
@@ -62,6 +64,7 @@ public class BaseJspNavigation
      * @param data the PipelineData object
      * @throws Exception a generic exception.
      */
+    @Override
     protected void doBuildTemplate(PipelineData pipelineData)
         throws Exception
     {
@@ -77,6 +80,8 @@ public class BaseJspNavigation
      * @return null - the JSP sends the information
      * @throws Exception a generic exception.
      */
+    @Deprecated
+    @Override
     public ConcreteElement buildTemplate(RunData data)
         throws Exception
     {
@@ -95,10 +100,11 @@ public class BaseJspNavigation
      * @return null - the JSP sends the information
      * @throws Exception a generic exception.
      */
+    @Override
     public ConcreteElement buildTemplate(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         // get the name of the JSP we want to use
         String templateName = data.getTemplateInfo().getNavigationTemplate();
 
