@@ -51,6 +51,8 @@ public abstract class VelocitySecureAction extends VelocityAction
      * @param context Context for web pages.
      * @throws Exception a generic exception.
      */
+    @Deprecated
+    @Override
     public abstract void doPerform(RunData data, Context context)
             throws Exception;
 
@@ -61,10 +63,11 @@ public abstract class VelocitySecureAction extends VelocityAction
      * @param context Context for web pages.
      * @throws Exception a generic exception.
      */
+    @Override
     public void doPerform(PipelineData pipelineData, Context context)
             throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doPerform(data, context);
     }
 
@@ -77,6 +80,8 @@ public abstract class VelocitySecureAction extends VelocityAction
      * @param data Turbine information.
      * @throws Exception a generic exception.
      */
+    @Deprecated
+    @Override
     protected void perform(RunData data) throws Exception
     {
         if (isAuthorized(data))
@@ -92,6 +97,7 @@ public abstract class VelocitySecureAction extends VelocityAction
      * @param data Turbine information.
      * @throws Exception a generic exception.
      */
+    @Override
     protected void perform(PipelineData pipelineData) throws Exception
     {
         if (isAuthorized(pipelineData))
@@ -113,6 +119,7 @@ public abstract class VelocitySecureAction extends VelocityAction
      * @return True if the user is authorized to access the screen.
      * @throws Exception a generic exception.
      */
+    @Deprecated
     protected abstract boolean isAuthorized(RunData data)
             throws Exception;
 
@@ -128,7 +135,7 @@ public abstract class VelocitySecureAction extends VelocityAction
     protected boolean isAuthorized(PipelineData pipelineData)
             throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         return isAuthorized(data);
     }
 

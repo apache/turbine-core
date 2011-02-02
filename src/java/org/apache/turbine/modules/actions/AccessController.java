@@ -83,6 +83,8 @@ public class AccessController
      * @param data Turbine information.
      * @exception TurbineSecurityException problem with the security service.
      */
+    @Deprecated
+    @Override
     public void doPerform(RunData data)
             throws TurbineSecurityException
     {
@@ -119,10 +121,11 @@ public class AccessController
      * @param data Turbine information.
      * @exception TurbineSecurityException problem with the security service.
      */
+    @Override
     public void doPerform(PipelineData pipelineData)
     	throws TurbineSecurityException
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doPerform(data);
     }
 }
