@@ -43,6 +43,8 @@ public class DirectResponseLayout extends Layout
      * @param data Turbine information.
      * @exception TurbineException if a direct response has not been declared.
      */
+    @Deprecated
+    @Override
     public void doBuild(RunData data)
         throws Exception
     {
@@ -59,6 +61,7 @@ public class DirectResponseLayout extends Layout
      * @param data Turbine information.
      * @exception TurbineException if a direct response has not been declared.
      */
+    @Override
     public void doBuild(PipelineData pipelineData)
     throws Exception
     {

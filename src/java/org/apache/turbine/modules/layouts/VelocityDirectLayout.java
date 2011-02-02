@@ -64,6 +64,8 @@ public class VelocityDirectLayout
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
+    @Deprecated
+    @Override
     public void doBuild(RunData data)
         throws Exception
     {
@@ -101,6 +103,7 @@ public class VelocityDirectLayout
      * @param data PipelineData
      * @throws Exception generic exception
      */
+    @Override
     public void doBuild(PipelineData pipelineData)
         throws Exception
     {
