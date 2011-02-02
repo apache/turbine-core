@@ -710,6 +710,7 @@
           <reportFile>../../target/torque/report.${project.artifact.artifactId}.om.generation</reportFile>
           <schemaDir>src/torque/schema</schemaDir> 
           <runOnlyOnSchemaChange>true</runOnlyOnSchemaChange>
+          <enableJava5Features>true</enableJava5Features>
         </configuration>
         <executions>
           <execution>
