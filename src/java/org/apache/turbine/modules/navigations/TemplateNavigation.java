@@ -47,6 +47,7 @@ public abstract class TemplateNavigation
      * @param data Turbine information.
      * @throws Exception a generic exception.
      */
+    @Deprecated
     protected abstract void doBuildTemplate(RunData data)
             throws Exception;
 
@@ -61,7 +62,7 @@ public abstract class TemplateNavigation
     protected void doBuildTemplate(PipelineData pipelineData)
             throws Exception
     {
-	    RunData data = (RunData) getRunData(pipelineData);
+	    RunData data = getRunData(pipelineData);
 	    doBuildTemplate(data);
     }
 
@@ -73,6 +74,7 @@ public abstract class TemplateNavigation
      * @return A ConcreteElement.
      * @throws Exception a generic exception.
      */
+    @Deprecated
     public abstract ConcreteElement buildTemplate(RunData data)
             throws Exception;
 
@@ -86,7 +88,7 @@ public abstract class TemplateNavigation
     public ConcreteElement buildTemplate(PipelineData pipelineData)
     throws Exception
 	{
-	    RunData data = (RunData) getRunData(pipelineData);
+	    RunData data = getRunData(pipelineData);
 	    return buildTemplate(data);
 	}
 
@@ -97,6 +99,7 @@ public abstract class TemplateNavigation
      * @return A ConcreteElement.
      * @throws Exception a generic exception.
      */
+    @Override
     protected ConcreteElement doBuild(RunData data)
             throws Exception
     {
@@ -111,10 +114,11 @@ public abstract class TemplateNavigation
      * @return A ConcreteElement.
      * @throws Exception a generic exception.
      */
+    @Override
     protected ConcreteElement doBuild(PipelineData pipelineData)
             throws Exception
     {
-	    RunData data = (RunData) getRunData(pipelineData);
+	    RunData data = getRunData(pipelineData);
         return doBuild(data);
     }
 

@@ -61,6 +61,7 @@ public class VelocityNavigation
      * @param context Context for web pages.
      * @exception Exception, a generic exception.
      */
+    @Deprecated
     protected void doBuildTemplate(RunData data,
                                    Context context)
             throws Exception
@@ -91,6 +92,8 @@ public class VelocityNavigation
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
+    @Deprecated
+    @Override
     protected void doBuildTemplate(RunData data)
             throws Exception
     {
@@ -106,6 +109,7 @@ public class VelocityNavigation
      * @param pipelineData Turbine information.
      * @exception Exception, a generic exception.
      */
+    @Override
     protected void doBuildTemplate(PipelineData pipelineData)
             throws Exception
     {
@@ -120,6 +124,8 @@ public class VelocityNavigation
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
+    @Deprecated
+    @Override
     public ConcreteElement buildTemplate(RunData data)
             throws Exception
     {
@@ -143,6 +149,7 @@ public class VelocityNavigation
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
+    @Override
     public ConcreteElement buildTemplate(PipelineData pipelineData)
             throws Exception
     {
