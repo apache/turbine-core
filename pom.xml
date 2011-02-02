@@ -1240,10 +1240,10 @@
   <properties>
   
     <!-- Default configuration for compiler source and target JVM -->
-    <maven.compile.source>1.4</maven.compile.source>
-    <maven.compile.target>1.4</maven.compile.target>
+  	<maven.compile.source>1.6</maven.compile.source>
+  	<maven.compile.target>1.6</maven.compile.target>
     
-    <!-- Default values for the download-page generation by commons-build-plugin -->
+  	<!-- Default values for the download-page generation by commons-build-plugin -->
     <commons.release.name>${project.artifactId}-${turbine.release.version}</commons.release.name>
     <commons.binary.suffix>-bin</commons.binary.suffix>
 
