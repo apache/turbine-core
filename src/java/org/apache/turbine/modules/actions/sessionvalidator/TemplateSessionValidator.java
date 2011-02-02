@@ -68,6 +68,8 @@ public class TemplateSessionValidator
      * @exception TurbineException The anonymous user could not be obtained
      *         from the security service
      */
+    @Deprecated
+    @Override
     public void doPerform(RunData data)
             throws TurbineException
     {
@@ -147,10 +149,11 @@ public class TemplateSessionValidator
      * @exception TurbineException The anonymous user could not be obtained
      *         from the security service
      */
+    @Override
     public void doPerform(PipelineData pipelineData)
     throws TurbineException
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doPerform(data);
     }
 
