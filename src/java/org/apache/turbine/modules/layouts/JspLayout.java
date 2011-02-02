@@ -51,6 +51,8 @@ public class JspLayout
      * @param data RunData
      * @throws Exception generic exception
      */
+    @Deprecated
+    @Override
     public void doBuild(RunData data)
         throws Exception
     {
@@ -79,10 +81,11 @@ public class JspLayout
      * @param data PipelineData
      * @throws Exception generic exception
      */
+    @Override
     public void doBuild(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         data.getResponse().setContentType("text/html");
         data.declareDirectResponse();
 
