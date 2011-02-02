@@ -52,6 +52,9 @@ public class InitContextsAction
      * @param data The RunData object for the current request.
      * @exception NamingException could not create InitialContext
      */
+    @SuppressWarnings("unchecked")
+    @Deprecated
+    @Override
     public void doPerform(RunData data)
             throws NamingException
     {
@@ -64,18 +67,18 @@ public class InitContextsAction
         // used by the InitialContext class to create a new context
         // instance.
 
-        Hashtable contextPropsList = new Hashtable();
-        for (Iterator contextKeys = conf.getKeys("context.");
+        Hashtable<String, Properties> contextPropsList = new Hashtable<String, Properties>();
+        for (Iterator<String> contextKeys = conf.getKeys("context.");
                 contextKeys.hasNext();)
         {
-            String key = (String) contextKeys.next();
+            String key = contextKeys.next();
             int start = key.indexOf(".") + 1;
             int end = key.indexOf(".", start);
             String contextName = key.substring(start, end);
             Properties contextProps = null;
             if (contextPropsList.containsKey(contextName))
             {
-                contextProps = (Properties) contextPropsList.get(contextName);
+                contextProps = contextPropsList.get(contextName);
             }
             else
             {
@@ -85,11 +88,11 @@ public class InitContextsAction
                              conf.getString(key));
             contextPropsList.put(contextName, contextProps);
         }
-        for (Iterator contextPropsKeys = contextPropsList.keySet().iterator();
+        for (Iterator<String> contextPropsKeys = contextPropsList.keySet().iterator();
                 contextPropsKeys.hasNext();)
         {
-            String key = (String) contextPropsKeys.next();
-            Properties contextProps = (Properties) contextPropsList.get(key);
+            String key = contextPropsKeys.next();
+            Properties contextProps = contextPropsList.get(key);
             InitialContext context = new InitialContext(contextProps);
             data.getJNDIContexts().put(key, context);
         }
@@ -103,10 +106,11 @@ public class InitContextsAction
      * @param pipelineData The PipelineRunData object for the current request.
      * @exception NamingException could not create InitialContext
      */
+    @Override
     public void doPerform(PipelineData pipelineData)
     throws NamingException
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doPerform(data);
     }
 

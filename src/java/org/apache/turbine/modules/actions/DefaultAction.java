@@ -42,6 +42,8 @@ public class DefaultAction extends Action
      * @param data Turbine information.
      * @throws Exception a generic exception.
      */
+    @Deprecated
+    @Override
     public void doPerform(RunData data)
             throws Exception
     {
@@ -54,10 +56,11 @@ public class DefaultAction extends Action
      * @param data Turbine information.
      * @throws Exception a generic exception.
      */
+    @Override
     public void doPerform(PipelineData pipelineData)
             throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doPerform(data);
     }
 

@@ -48,6 +48,7 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
+@Deprecated
 public class LoginUser
         extends Action
 {
@@ -72,6 +73,7 @@ public class LoginUser
      * @exception TurbineSecurityException could not get instance of the
      *            anonymous user
      */
+    @Override
     public void doPerform(RunData data)
             throws TurbineSecurityException
     {
@@ -155,10 +157,11 @@ public class LoginUser
      * @exception TurbineSecurityException could not get instance of the
      *            anonymous user
      */
+    @Override
     public void doPerform(PipelineData pipelineData)
             throws TurbineSecurityException
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doPerform(data);
     }
 

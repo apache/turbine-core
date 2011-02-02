@@ -62,6 +62,8 @@ public class LogoutUser
      * @exception TurbineSecurityException a problem occured in the security
      *            service.
      */
+    @Deprecated
+    @Override
     public void doPerform(RunData data)
             throws TurbineSecurityException
     {
@@ -129,10 +131,11 @@ public class LogoutUser
      * @exception TurbineSecurityException a problem occured in the security
      *            service.
      */
+    @Override
     public void doPerform(PipelineData pipelineData)
             throws TurbineSecurityException
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doPerform(data);
     }
 }
