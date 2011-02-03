@@ -35,7 +35,7 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public interface JobEntryInterface extends Comparable, Persistent
+public interface JobEntryInterface extends Comparable<JobEntry>, Persistent
 {
 
     /**

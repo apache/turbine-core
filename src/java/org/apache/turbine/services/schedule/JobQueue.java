@@ -38,14 +38,14 @@ public class JobQueue
     /**
      * The queue of <code>JobEntry</code> objects.
      */
-    private Vector queue = null;
+    private Vector<JobEntry> queue = null;
 
     /**
      * Creates a new instance.
      */
     public JobQueue()
     {
-        queue = new Vector(10);
+        queue = new Vector<JobEntry>(10);
     }
 
     /**
@@ -58,7 +58,7 @@ public class JobQueue
     {
         if (queue.size() > 0)
         {
-            return (JobEntry) queue.elementAt(0);
+            return queue.elementAt(0);
         }
         else
         {
@@ -87,7 +87,7 @@ public class JobQueue
         }
         else
         {
-            return (JobEntry) queue.elementAt(index);
+            return queue.elementAt(index);
         }
     }
 
@@ -96,11 +96,12 @@ public class JobQueue
      *
      * @return A Vector of <code>JobEntry</code> objects.
      */
-    public Vector list()
+    @SuppressWarnings("unchecked")
+    public Vector<JobEntry> list()
     {
         if (queue != null && queue.size() > 0)
         {
-            return (Vector) queue.clone();
+            return (Vector<JobEntry>) queue.clone();
         }
         else
         {
@@ -125,7 +126,7 @@ public class JobQueue
      *
      * @param jobEntries A list of the <code>JobEntry</code> objects to load.
      */
-    public synchronized void batchLoad(List jobEntries)
+    public synchronized void batchLoad(List<JobEntry> jobEntries)
     {
         if (jobEntries != null)
         {
@@ -179,12 +180,12 @@ public class JobQueue
      */
     private void sortQueue()
     {
-        Comparator aComparator = new Comparator()
+        Comparator<JobEntry> aComparator = new Comparator<JobEntry>()
         {
-            public int compare(Object o1, Object o2)
+            public int compare(JobEntry o1, JobEntry o2)
             {
-                Long time1 = new Long(((JobEntry) o1).getNextRuntime());
-                Long time2 = new Long(((JobEntry) o2).getNextRuntime());
+                Long time1 = new Long(o1.getNextRuntime());
+                Long time2 = new Long(o2.getNextRuntime());
                 return (time1.compareTo(time2));
             }
         };

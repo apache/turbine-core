@@ -94,6 +94,8 @@ public class TurbineNonPersistentSchedulerService
      * (sorted in ascending order by runtime) and start the scheduler
      * thread.
      */
+    @SuppressWarnings("unchecked")
+    @Override
     public void init()
             throws InitializationException
     {
@@ -104,15 +106,15 @@ public class TurbineNonPersistentSchedulerService
             scheduleQueue = new JobQueue();
             mainLoop = new MainLoop();
 
-            List jobProps = conf.getList("scheduler.jobs");
-            List jobs = new Vector();
+            List<String> jobProps = conf.getList("scheduler.jobs");
+            List<JobEntry> jobs = new Vector<JobEntry>();
             // If there are scheduler.jobs defined then set up a job vector
             // for the scheduleQueue
             if (!jobProps.isEmpty())
             {
                 for (int i = 0; i < jobProps.size(); i++)
                 {
-                    String jobName = (String) jobProps.get(i);
+                    String jobName = jobProps.get(i);
                     String jobPrefix = "scheduler.job." + jobName;
 
                     String jobId = conf.getString(jobPrefix + ".ID", null);
@@ -170,6 +172,8 @@ public class TurbineNonPersistentSchedulerService
      * @param config A ServletConfig.
      * @deprecated use init() instead.
      */
+    @Deprecated
+    @Override
     public void init(ServletConfig config)
             throws InitializationException
     {
@@ -183,6 +187,7 @@ public class TurbineNonPersistentSchedulerService
      * @return A JobEntry.
      * @exception TurbineException could not retrieve job
      */
+    @Override
     public JobEntry getJob(int oid)
             throws TurbineException
     {
@@ -197,6 +202,7 @@ public class TurbineNonPersistentSchedulerService
      * @param je A JobEntry with the job to add.
      * @throws TurbineException job could not be added
      */
+    @Override
     public void addJob(JobEntry je)
             throws TurbineException
     {
@@ -208,6 +214,7 @@ public class TurbineNonPersistentSchedulerService
      *
      * @param je A JobEntry with the job to remove.
      */
+    @Override
     public void removeJob(JobEntry je)
     {
         // Remove from the queue.
@@ -221,6 +228,7 @@ public class TurbineNonPersistentSchedulerService
      * @param je A JobEntry with the job to modify
      * @throws TurbineException job could not be updated
      */
+    @Override
     public void updateJob(JobEntry je)
             throws TurbineException
     {

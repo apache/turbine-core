@@ -20,16 +20,14 @@ package org.apache.turbine.services.rundata;
  */
 
 import javax.servlet.ServletConfig;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.ServerData;
 import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.pool.Recyclable;
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.ServerData;
 
 /**
  * TurbineRunData is an extension to the RunData interface to be

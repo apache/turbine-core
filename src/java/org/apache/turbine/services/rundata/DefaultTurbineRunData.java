@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.naming.Context;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -179,10 +180,10 @@ public class DefaultTurbineRunData
     private int statusCode = HttpServletResponse.SC_OK;
 
     /** This is a List to hold critical system errors. */
-    private List errors = new ArrayList();
+    private List<SystemError> errors = new ArrayList<SystemError>();
 
     /** JNDI Contexts. */
-    private Map jndiContexts;
+    private Map<String, Context> jndiContexts;
 
     /** Holds ServerData (basic properties) about this RunData object. */
     private ServerData serverData;
@@ -207,7 +208,7 @@ public class DefaultTurbineRunData
      * screen.  This is great for debugging variable values when an
      * exception is thrown.
      */
-    private Map debugVariables = new HashMap();
+    private Map<String, Object> debugVariables = new HashMap<String, Object>();
 
     /** Logging */
     private static Log log = LogFactory.getLog(DefaultTurbineRunData.class);
@@ -505,6 +506,7 @@ public class DefaultTurbineRunData
      * @return true if the page is set.
      * @deprecated no replacement planned, ECS is no longer a requirement
      */
+    @Deprecated
     public boolean isPageSet()
     {
         return pageSet;
@@ -516,6 +518,7 @@ public class DefaultTurbineRunData
      * @return a document.
      * @deprecated no replacement planned, ECS is no longer a requirement
      */
+    @Deprecated
     public Document getPage()
     {
         pageSet = true;
@@ -912,6 +915,7 @@ public class DefaultTurbineRunData
      * @return true if out is set.
      * @deprecated no replacement planned, response writer will not be cached
      */
+    @Deprecated
     public boolean isOutSet()
     {
         return outSet;
@@ -925,6 +929,7 @@ public class DefaultTurbineRunData
      * @throws IOException
      * @deprecated no replacement planned, response writer will not be cached
      */
+    @Deprecated
     public PrintWriter getOut()
             throws IOException
     {
@@ -1137,10 +1142,10 @@ public class DefaultTurbineRunData
      *
      * @return a hashtable.
      */
-    public Map getJNDIContexts()
+    public Map<String, Context> getJNDIContexts()
     {
         if (jndiContexts == null)
-            jndiContexts = new HashMap();
+            jndiContexts = new HashMap<String, Context>();
         return jndiContexts;
     }
 
@@ -1149,7 +1154,7 @@ public class DefaultTurbineRunData
      *
      * @param contexts a hashtable.
      */
-    public void setJNDIContexts(Map contexts)
+    public void setJNDIContexts(Map<String, Context> contexts)
     {
         this.jndiContexts = contexts;
     }
@@ -1323,7 +1328,8 @@ public class DefaultTurbineRunData
      * @return a Map of debug variables.
      * @deprecated use {@link #getDebugVariables} instead
      */
-    public Map getVarDebug()
+    @Deprecated
+    public Map<String, Object> getVarDebug()
     {
         return debugVariables;
     }
@@ -1346,7 +1352,7 @@ public class DefaultTurbineRunData
      *
      * @return a Map of debug variables.
      */
-    public Map getDebugVariables()
+    public Map<String, Object> getDebugVariables()
     {
         return this.debugVariables;
     }
@@ -1458,6 +1464,7 @@ public class DefaultTurbineRunData
      * @param out a print writer.
      * @deprecated no replacement planned, response writer will not be cached
      */
+    @Deprecated
     protected void setOut(PrintWriter out)
     {
         this.out = out;
