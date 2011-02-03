@@ -22,6 +22,7 @@ package org.apache.turbine.services.session;
 
 
 import java.util.Collection;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.turbine.om.security.User;
@@ -49,7 +50,7 @@ public class SessionTool
      *
      * @return List of HttpSession objects
      */
-    public Collection getActiveSessions()
+    public Collection<HttpSession> getActiveSessions()
     {
         return TurbineSession.getActiveSessions();
     }
@@ -99,7 +100,7 @@ public class SessionTool
      *
      * @return collection of org.apache.turbine.om.security.User objects
      */
-    public Collection getActiveUsers()
+    public Collection<User> getActiveUsers()
     {
         return TurbineSession.getActiveUsers();
     }
@@ -122,7 +123,7 @@ public class SessionTool
      * @param user the user
      * @return Collection of HtttSession objects
      */
-    public Collection getSessionsForUser(User user)
+    public Collection<HttpSession> getSessionsForUser(User user)
     {
         return TurbineSession.getSessionsForUser(user);
     }

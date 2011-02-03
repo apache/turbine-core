@@ -50,7 +50,7 @@ public interface SessionService extends Service
      *
      * @return Collection of HttpSession objects
      */
-    Collection getActiveSessions();
+    Collection<HttpSession> getActiveSessions();
 
     /**
      * Adds a session to the current list.  This method should only be
@@ -88,7 +88,7 @@ public interface SessionService extends Service
      *
      * @return collection of org.apache.turbine.om.security.User objects
      */
-    Collection getActiveUsers();
+    Collection<User> getActiveUsers();
 
     /**
      * Gets the User object of the the specified HttpSession.
@@ -113,6 +113,6 @@ public interface SessionService extends Service
      * @param user the user
      * @return Collection of HtttSession objects
      */
-    Collection getSessionsForUser(User user);
+    Collection<HttpSession> getSessionsForUser(User user);
 
 }

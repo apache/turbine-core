@@ -43,7 +43,7 @@ public abstract class TurbineSession
      *
      * @return List of HttpSession objects
      */
-    public static Collection getActiveSessions()
+    public static Collection<HttpSession> getActiveSessions()
     {
         return getService().getActiveSessions();
     }
@@ -93,7 +93,7 @@ public abstract class TurbineSession
      *
      * @return collection of org.apache.turbine.om.security.User objects
      */
-    public static Collection getActiveUsers()
+    public static Collection<User> getActiveUsers()
     {
         return getService().getActiveUsers();
     }
@@ -139,7 +139,7 @@ public abstract class TurbineSession
      * @param user the user
      * @return Collection of HtttSession objects
      */
-    public static Collection getSessionsForUser(User user)
+    public static Collection<HttpSession> getSessionsForUser(User user)
     {
         return getService().getSessionsForUser(user);
     }

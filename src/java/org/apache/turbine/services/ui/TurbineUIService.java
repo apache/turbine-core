@@ -144,7 +144,7 @@ public class TurbineUIService
     /**
      * The skin Properties store.
      */
-    private HashMap skins = new HashMap();
+    private HashMap<String, Properties> skins = new HashMap<String, Properties>();
 
     /**
      * Refresh the service by clearing all skins.
@@ -179,7 +179,7 @@ public class TurbineUIService
      */
     private Properties getSkinProperties(String skinName)
     {
-        Properties skinProperties = (Properties) skins.get(skinName);
+        Properties skinProperties = skins.get(skinName);
         return null != skinProperties ? skinProperties : loadSkin(skinName); 
     }
 
@@ -238,7 +238,7 @@ public class TurbineUIService
     {
         synchronized (skins)
         {
-            skins = new HashMap();
+            skins = new HashMap<String, Properties>();
         }
         log.debug("All skins were cleared.");
     }
@@ -492,6 +492,7 @@ public class TurbineUIService
     /**
      * Initializes the service.
      */
+    @Override
     public void init() throws InitializationException
     {
         Configuration cfg = Turbine.getConfiguration();
@@ -516,6 +517,7 @@ public class TurbineUIService
     /**
      * Returns to uninitialized state.
      */
+    @Override
     public void shutdown()
     {
         clearSkins();
