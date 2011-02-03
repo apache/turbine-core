@@ -58,20 +58,20 @@ public class TurbineSessionService
         implements SessionService
 {
     /** Map of active sessions */
-    private Map activeSessions;
+    private Map<String, HttpSession> activeSessions;
 
     /**
      * Gets a list of the active sessions.
      *
      * @return A copy of the list of <code>HttpSession</code> objects.
      */
-    public Collection getActiveSessions()
+    public Collection<HttpSession> getActiveSessions()
     {
         // Sync externally to allow ArrayList's ctor to iterate
         // activeSessions' values in a thread-safe fashion.
         synchronized (activeSessions)
         {
-            return new ArrayList(activeSessions.values());
+            return new ArrayList<HttpSession>(activeSessions.values());
         }
     }
 
@@ -120,17 +120,17 @@ public class TurbineSessionService
      *
      * @return A set of {@link org.apache.turbine.om.security.User} objects.
      */
-    public Collection getActiveUsers()
+    public Collection<User> getActiveUsers()
     {
-        Collection users;
+        Collection<User> users;
         synchronized (activeSessions)
         {
             // Pre-allocate a list which won't need expansion more
             // than once.
-            users = new ArrayList((int) (activeSessions.size() * 0.7));
-            for (Iterator i = activeSessions.values().iterator(); i.hasNext();)
+            users = new ArrayList<User>((int) (activeSessions.size() * 0.7));
+            for (Iterator<HttpSession> i = activeSessions.values().iterator(); i.hasNext();)
             {
-                User u = getUserFromSession((HttpSession) i.next());
+                User u = getUserFromSession(i.next());
                 if (u != null && u.hasLoggedIn())
                 {
                     users.add(u);
@@ -170,7 +170,7 @@ public class TurbineSessionService
      */
     public HttpSession getSession(String sessionId)
     {
-        return (HttpSession) this.activeSessions.get(sessionId);
+        return this.activeSessions.get(sessionId);
     }
 
     /**
@@ -180,14 +180,14 @@ public class TurbineSessionService
      * @param user the user
      * @return Collection of HtttSession objects
      */
-    public Collection getSessionsForUser(User user)
+    public Collection<HttpSession> getSessionsForUser(User user)
     {
-        Collection sessions = new ArrayList();
+        Collection<HttpSession> sessions = new ArrayList<HttpSession>();
         synchronized (activeSessions)
         {
-            for (Iterator i = activeSessions.values().iterator(); i.hasNext();)
+            for (Iterator<HttpSession> i = activeSessions.values().iterator(); i.hasNext();)
             {
-                HttpSession session = (HttpSession) i.next();
+                HttpSession session = i.next();
                 User u = this.getUserFromSession(session);
                 if (user.equals(u))
                 {
@@ -205,9 +205,10 @@ public class TurbineSessionService
     /**
      * Initializes the service
      */
+    @Override
     public void init()
     {
-        this.activeSessions = new Hashtable();
+        this.activeSessions = new Hashtable<String, HttpSession>();
 
         setInit(true);
     }
@@ -215,6 +216,7 @@ public class TurbineSessionService
     /**
      * Returns to uninitialized state.
      */
+    @Override
     public void shutdown()
     {
         this.activeSessions = null;

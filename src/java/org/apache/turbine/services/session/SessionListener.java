@@ -61,6 +61,11 @@ public class SessionListener
     // ---- HttpSessionListener implementation -----------------------------
 
     /**
+     * Serial version.
+     */
+    private static final long serialVersionUID = -8083730704842809870L;
+
+    /**
      * Called by the servlet container when a new session is created
      *
      * @param event Session creation event.

@@ -59,6 +59,7 @@ public class TurbineUniqueIdService
      * <p> Initializes the service upon first Turbine.doGet()
      * invocation.
      */
+    @Override
     public void init()
             throws InitializationException
     {
@@ -90,6 +91,7 @@ public class TurbineUniqueIdService
     /**
      * <p> Writes a message to the log upon system shutdown.
      */
+    @Override
     public void shutdown()
     {
         log.info("Turbine instance running at " + turbineURL + " shutting down.");
