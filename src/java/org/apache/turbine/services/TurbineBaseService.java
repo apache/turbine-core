@@ -21,8 +21,6 @@ package org.apache.turbine.services;
  */
 
 
-import javax.servlet.ServletConfig;
-
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 
@@ -70,6 +68,7 @@ public abstract class TurbineBaseService
      * @exception InitializationException if initialization of this
      * class was not successful.
      */
+    @Override
     public void init(Object data)
             throws InitializationException
     {
@@ -91,6 +90,7 @@ public abstract class TurbineBaseService
      * @exception InitializationException if initialization of this
      * class was not successful.
      */
+    @Deprecated
     public void init(RunData data) throws InitializationException
     {
     }
@@ -117,6 +117,7 @@ public abstract class TurbineBaseService
      * @exception InitializationException, if initialization of this
      * class was not successful.
      */
+    @Override
     public void init() throws InitializationException
     {
         setInit(true);
@@ -128,6 +129,7 @@ public abstract class TurbineBaseService
      * You can use this method to release resources thet your Service
      * allocated when Turbine shuts down.
      */
+    @Override
     public void shutdown()
     {
         setInit(false);

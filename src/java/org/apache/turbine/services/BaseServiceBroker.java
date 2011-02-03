@@ -63,7 +63,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
     /**
      * A repository of Service instances.
      */
-    private Hashtable services = new Hashtable();
+    private Hashtable<String, Service> services = new Hashtable<String, Service>();
 
     /**
      * Configuration for the services broker.
@@ -95,7 +95,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * the requirement of having init(Object) all
      * together.
      */
-    private Hashtable serviceObjects = new Hashtable();
+    private Hashtable<String, Object> serviceObjects = new Hashtable<String, Object>();
 
     /** Logging */
     private static Log log = LogFactory.getLog(BaseServiceBroker.class);
@@ -109,7 +109,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
     /**
      * mapping from service names to instances of TurbineServiceProviders
      */
-    private Hashtable serviceProviderInstanceMap = new Hashtable();
+    private Hashtable<String, Service> serviceProviderInstanceMap = new Hashtable<String, Service>();
 
     /**
      * Default constructor, protected as to only be useable by subclasses.
@@ -206,6 +206,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      *
      * Generic ServiceBroker provides no Services.
      */
+    @SuppressWarnings("unchecked")
     protected void initMapping()
     {
         /*
@@ -220,9 +221,9 @@ public abstract class BaseServiceBroker implements ServiceBroker
          * There's no point in retrieving an ordered set
          * of keys if they aren't kept in order :-)
          */
-        for (Iterator keys = configuration.getKeys(); keys.hasNext();)
+        for (Iterator<String> keys = configuration.getKeys(); keys.hasNext();)
         {
-            String key = (String) keys.next();
+            String key = keys.next();
             String[] keyParts = StringUtils.split(key, ".");
 
             if ((keyParts.length == 3)
@@ -258,7 +259,8 @@ public abstract class BaseServiceBroker implements ServiceBroker
      *
      * @return An Iterator of service names.
      */
-    public Iterator getServiceNames()
+    @SuppressWarnings("unchecked")
+    public Iterator<String> getServiceNames()
     {
         return mapping.getKeys();
     }
@@ -270,7 +272,8 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * @param prefix The prefix against which to test.
      * @return An Iterator of service names which match the prefix.
      */
-    public Iterator getServiceNames(String prefix)
+    @SuppressWarnings("unchecked")
+    public Iterator<String> getServiceNames(String prefix)
     {
         return mapping.getKeys(prefix);
     }
@@ -335,19 +338,19 @@ public abstract class BaseServiceBroker implements ServiceBroker
         if (report)
         {
             // Throw exceptions
-            for (Iterator names = getServiceNames(); names.hasNext();)
+            for (Iterator<String> names = getServiceNames(); names.hasNext();)
             {
-                doInitService((String) names.next());
+                doInitService(names.next());
             }
         }
         else
         {
             // Eat exceptions
-            for (Iterator names = getServiceNames(); names.hasNext();)
+            for (Iterator<String> names = getServiceNames(); names.hasNext();)
             {
                 try
                 {
-                    doInitService((String) names.next());
+                    doInitService(names.next());
                 }
                         // In case of an exception, file an error message; the
                         // system may be still functional, though.
@@ -430,17 +433,17 @@ public abstract class BaseServiceBroker implements ServiceBroker
          * this will fix the problem for now.
          */
 
-        ArrayList reverseServicesList = new ArrayList();
+        ArrayList<String> reverseServicesList = new ArrayList<String>();
 
-        for (Iterator serviceNames = getServiceNames(); serviceNames.hasNext();)
+        for (Iterator<String> serviceNames = getServiceNames(); serviceNames.hasNext();)
         {
-            serviceName = (String) serviceNames.next();
+            serviceName = serviceNames.next();
             reverseServicesList.add(0, serviceName);
         }
 
-        for (Iterator serviceNames = reverseServicesList.iterator(); serviceNames.hasNext();)
+        for (Iterator<String> serviceNames = reverseServicesList.iterator(); serviceNames.hasNext();)
         {
-            serviceName = (String) serviceNames.next();
+            serviceName = serviceNames.next();
             log.info("Shutting down service: " + serviceName);
             shutdownService(serviceName);
         }
@@ -524,7 +527,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
     protected Service getServiceInstance(String name)
             throws InstantiationException
     {
-        Service service = (Service) services.get(name);
+        Service service = services.get(name);
 
         if (service == null)
         {
@@ -539,7 +542,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
             try
             {
                 className = mapping.getString(name);
-                service = (Service) services.get(className);
+                service = services.get(className);
 
                 if (service == null)
                 {
@@ -669,11 +672,11 @@ public abstract class BaseServiceBroker implements ServiceBroker
     {
         String serviceName = null;
         TurbineServiceProvider turbineServiceProvider = null;
-        Enumeration list = this.serviceProviderInstanceMap.keys();
+        Enumeration<String> list = this.serviceProviderInstanceMap.keys();
 
         while (list.hasMoreElements())
         {
-            serviceName = (String) list.nextElement();
+            serviceName = list.nextElement();
             turbineServiceProvider = (TurbineServiceProvider) this.getService(serviceName);
 
             if (turbineServiceProvider.exists(name))
@@ -697,11 +700,11 @@ public abstract class BaseServiceBroker implements ServiceBroker
     {
         String serviceName = null;
         TurbineServiceProvider turbineServiceProvider = null;
-        Enumeration list = this.serviceProviderInstanceMap.keys();
+        Enumeration<String> list = this.serviceProviderInstanceMap.keys();
 
         while (list.hasMoreElements())
         {
-            serviceName = (String) list.nextElement();
+            serviceName = list.nextElement();
             turbineServiceProvider = (TurbineServiceProvider) this.getService(serviceName);
 
             if (turbineServiceProvider.exists(name))

@@ -60,14 +60,14 @@ public abstract class BaseInitableBroker
         implements InitableBroker
 {
     /** A repository of Initable instances. */
-    protected Hashtable initables = new Hashtable();
+    protected Hashtable<String, Initable> initables = new Hashtable<String, Initable>();
 
     /**
      * Names of classes being early-initialized are pushed onto this
      * stack.  A name appearing twice indicates a circular dependency
      * chain.
      */
-    protected Stack stack = new Stack();
+    protected Stack<String> stack = new Stack<String>();
 
     /** Logging */
     private Log log = LogFactory.getLog(this.getClass());
@@ -104,7 +104,7 @@ public abstract class BaseInitableBroker
                         .append(" couldn't be initialized because of circular depency chain:\n");
                 for (int i = pos; i > 0; i--)
                 {
-                    msg.append((String) stack.elementAt(stack.size() - i - 1) + "->");
+                    msg.append(stack.elementAt(stack.size() - i - 1) + "->");
                 }
                 msg.append(className).append('\n');
 
@@ -221,7 +221,7 @@ public abstract class BaseInitableBroker
     protected Initable getInitableInstance(String className)
             throws InstantiationException
     {
-        Initable initable = (Initable) initables.get(className);
+        Initable initable = initables.get(className);
 
         if (initable == null)
         {
