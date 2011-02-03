@@ -610,6 +610,7 @@ public class TemplateLink
      * @return A String with the URI represented by this object.
      *
      */
+    @Override
     public String toString()
     {
         return getLink();

@@ -150,9 +150,9 @@ public class TurbinePullService
     {
         String toolName;
         String toolClassName;
-        Class toolClass;
+        Class<ApplicationTool> toolClass;
 
-        public ToolData(String toolName, String toolClassName, Class toolClass)
+        public ToolData(String toolName, String toolClassName, Class<ApplicationTool> toolClass)
         {
             this.toolName = toolName;
             this.toolClassName = toolClassName;
@@ -161,19 +161,19 @@ public class TurbinePullService
     }
 
     /** Internal list of global tools */
-    private List globalTools;
+    private List<ToolData> globalTools;
 
     /** Internal list of request tools */
-    private List requestTools;
+    private List<ToolData> requestTools;
 
     /** Internal list of session tools */
-    private List sessionTools;
+    private List<ToolData> sessionTools;
 
     /** Internal list of authorized tools */
-    private List authorizedTools;
+    private List<ToolData> authorizedTools;
 
     /** Internal list of persistent tools */
-    private List persistentTools;
+    private List<ToolData> persistentTools;
 
     /** Directory where application tool resources are stored.*/
     private String resourcesDirectory;
@@ -184,6 +184,7 @@ public class TurbinePullService
     /**
      * Called the first time the Service is used.
      */
+    @Override
     public void init()
         throws InitializationException
     {
@@ -313,9 +314,10 @@ public class TurbinePullService
      *
      * @param toolConfig The part of the configuration describing some tools
      */
-    private List getTools(Configuration toolConfig)
+    @SuppressWarnings("unchecked")
+    private List<ToolData> getTools(Configuration toolConfig)
     {
-        List tools = new ArrayList();
+        List<ToolData> tools = new ArrayList<ToolData>();
 
         // There might not be any tools for this prefix
         // so return an empty list.
@@ -324,15 +326,15 @@ public class TurbinePullService
             return tools;
         }
 
-        for (Iterator it = toolConfig.getKeys(); it.hasNext();)
+        for (Iterator<String> it = toolConfig.getKeys(); it.hasNext();)
         {
-            String toolName = (String) it.next();
+            String toolName = it.next();
             String toolClassName = toolConfig.getString(toolName);
 
             try
             {
                 // Create an instance of the tool class.
-                Class toolClass = Class.forName(toolClassName);
+                Class<ApplicationTool> toolClass = (Class<ApplicationTool>) Class.forName(toolClassName);
 
                 // Add the tool to the list being built.
                 tools.add(new ToolData(toolName, toolClassName, toolClass));
@@ -459,9 +461,9 @@ public class TurbinePullService
      */
     private void populateWithGlobalTools(Context context)
     {
-        for (Iterator it = globalTools.iterator(); it.hasNext();)
+        for (Iterator<ToolData> it = globalTools.iterator(); it.hasNext();)
         {
-            ToolData toolData = (ToolData) it.next();
+            ToolData toolData = it.next();
             try
             {
                 Object tool = toolData.toolClass.newInstance();
@@ -490,9 +492,9 @@ public class TurbinePullService
     private void populateWithRequestTools(Context context, RunData data)
     {
         // Iterate the tools
-        for (Iterator it = requestTools.iterator(); it.hasNext();)
+        for (Iterator<ToolData> it = requestTools.iterator(); it.hasNext();)
         {
-            ToolData toolData = (ToolData) it.next();
+            ToolData toolData = it.next();
             try
             {
                 // Fetch Object through the Pool.
@@ -523,9 +525,9 @@ public class TurbinePullService
     private void populateWithRequestTools(Context context, PipelineData pipelineData)
     {
         // Iterate the tools
-        for (Iterator it = requestTools.iterator(); it.hasNext();)
+        for (Iterator<ToolData> it = requestTools.iterator(); it.hasNext();)
         {
-            ToolData toolData = (ToolData) it.next();
+            ToolData toolData = it.next();
             try
             {
                 // Fetch Object through the Pool.
@@ -555,16 +557,16 @@ public class TurbinePullService
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
      */
-    private void populateWithSessionTools(List tools, Context context,
+    private void populateWithSessionTools(List<ToolData> tools, Context context,
             PipelineData pipelineData, User user)
     {
         //Map runDataMap = (Map)pipelineData.get(RunData.class);
         //RunData data = (RunData) runDataMap.get(RunData.class);
         RunData runData = (RunData)pipelineData;
         // Iterate the tools
-        for (Iterator it = tools.iterator(); it.hasNext();)
+        for (Iterator<ToolData> it = tools.iterator(); it.hasNext();)
         {
-            ToolData toolData = (ToolData) it.next();
+            ToolData toolData = it.next();
             try
             {
                 // ensure that tool is created only once for a user
@@ -644,13 +646,13 @@ public class TurbinePullService
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
      */
-    private void populateWithSessionTools(List tools, Context context,
+    private void populateWithSessionTools(List<ToolData> tools, Context context,
             RunData data, User user)
     {
         // Iterate the tools
-        for (Iterator it = tools.iterator(); it.hasNext();)
+        for (Iterator<ToolData> it = tools.iterator(); it.hasNext();)
         {
-            ToolData toolData = (ToolData) it.next();
+            ToolData toolData = it.next();
             try
             {
                 // ensure that tool is created only once for a user
@@ -732,13 +734,13 @@ public class TurbinePullService
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
      */
-    private void populateWithPermTools(List tools, Context context,
+    private void populateWithPermTools(List<ToolData> tools, Context context,
             PipelineData pipelineData, User user)
     {
         // Iterate the tools
-        for (Iterator it = tools.iterator(); it.hasNext();)
+        for (Iterator<ToolData> it = tools.iterator(); it.hasNext();)
         {
-            ToolData toolData = (ToolData) it.next();
+            ToolData toolData = it.next();
             try
             {
                 // ensure that tool is created only once for a user
@@ -815,13 +817,13 @@ public class TurbinePullService
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
      */
-    private void populateWithPermTools(List tools, Context context,
+    private void populateWithPermTools(List<ToolData> tools, Context context,
             RunData data, User user)
     {
         // Iterate the tools
-        for (Iterator it = tools.iterator(); it.hasNext();)
+        for (Iterator<ToolData> it = tools.iterator(); it.hasNext();)
         {
-            ToolData toolData = (ToolData) it.next();
+            ToolData toolData = it.next();
             try
             {
                 // ensure that tool is created only once for a user
@@ -921,9 +923,9 @@ public class TurbinePullService
      */
     private void refreshGlobalTools()
     {
-        for (Iterator it = globalTools.iterator(); it.hasNext();)
+        for (Iterator<ToolData> it = globalTools.iterator(); it.hasNext();)
         {
-            ToolData toolData = (ToolData) it.next();
+            ToolData toolData = it.next();
             Object tool = globalContext.get(toolData.toolName);
             refreshTool(tool, null);
         }
@@ -949,11 +951,11 @@ public class TurbinePullService
      * @param context the Context containing the tools
      * @param tools a List of ToolData objects
      */
-    private void releaseTools(Context context, List tools)
+    private void releaseTools(Context context, List<ToolData> tools)
     {
-        for (Iterator it = tools.iterator(); it.hasNext();)
+        for (Iterator<ToolData> it = tools.iterator(); it.hasNext();)
         {
-            ToolData toolData = (ToolData) it.next();
+            ToolData toolData = it.next();
             Object tool = context.remove(toolData.toolName);
 
             if (tool != null)
@@ -978,7 +980,7 @@ public class TurbinePullService
         {
             if (tool instanceof PipelineDataApplicationTool)
             {
-                ((PipelineDataApplicationTool) tool).init((PipelineData)param);
+                ((PipelineDataApplicationTool) tool).init(param);
             }
             else if (tool instanceof RunDataApplicationTool)
             {
