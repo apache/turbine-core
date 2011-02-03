@@ -75,6 +75,7 @@ public class TurbineSchedulerService
      * @throws InitializationException Something went wrong in the init
      *         stage
      */
+    @Override
     public void init()
             throws InitializationException
     {
@@ -85,14 +86,14 @@ public class TurbineSchedulerService
             mainLoop = new MainLoop();
 
             // Load all from cold storage.
-            List jobs = JobEntryPeer.doSelect(new Criteria());
+            List<JobEntry> jobs = JobEntryPeer.doSelect(new Criteria());
 
             if (jobs != null && jobs.size() > 0)
             {
-                Iterator it = jobs.iterator();
+                Iterator<JobEntry> it = jobs.iterator();
                 while (it.hasNext())
                 {
-                    ((JobEntry) it.next()).calcRunTime();
+                    it.next().calcRunTime();
                 }
                 scheduleQueue.batchLoad(jobs);
 
@@ -119,6 +120,7 @@ public class TurbineSchedulerService
      * @param config A ServletConfig.
      * @deprecated use init() instead.
      */
+    @Deprecated
     public void init(ServletConfig config) throws InitializationException
     {
         init();
@@ -129,6 +131,7 @@ public class TurbineSchedulerService
      *
      * This methods interrupts the housekeeping thread.
      */
+    @Override
     public void shutdown()
     {
         if (getThread() != null)
@@ -241,7 +244,7 @@ public class TurbineSchedulerService
      *
      * @return A List of jobs.
      */
-    public List listJobs()
+    public List<JobEntry> listJobs()
     {
         return scheduleQueue.list();
     }

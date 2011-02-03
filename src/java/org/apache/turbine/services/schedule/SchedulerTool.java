@@ -65,7 +65,7 @@ public class SchedulerTool implements ApplicationTool
      *
      * @return List of JobEntry objects.
      */
-    public List getScheduledJobs()
+    public List<JobEntry> getScheduledJobs()
     {
         return TurbineScheduler.listJobs();
     }

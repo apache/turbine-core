@@ -73,7 +73,7 @@ public class TurbineRunDataService
         DefaultCookieParser.class.getName();
 
     /** The map of configurations. */
-    private Map configurations = new HashMap();
+    private Map<String, Object> configurations = new HashMap<String, Object>();
 
     /** Private reference to the pool service for object recycling */
     private PoolService pool = null;
@@ -93,6 +93,8 @@ public class TurbineRunDataService
      *
      * @throws InitializationException if initialization fails.
      */
+    @SuppressWarnings("unchecked")
+    @Override
     public void init()
             throws InitializationException
     {
@@ -117,9 +119,9 @@ public class TurbineRunDataService
                 PARAMETER_PARSER_KEY,
                 COOKIE_PARSER_KEY
             };
-            for (Iterator i = conf.getKeys(); i.hasNext();)
+            for (Iterator<String> i = conf.getKeys(); i.hasNext();)
             {
-                key = (String) i.next();
+                key = i.next();
                 value = conf.getString(key);
                 for (int j = 0; j < plist.length; j++)
                 {
@@ -130,7 +132,7 @@ public class TurbineRunDataService
                         config = (String[]) configurations.get(key);
                         if (config == null)
                         {
-                            config = (String[]) def.clone();
+                            config = def.clone();
                             configurations.put(key, config);
                         }
                         config[j] = value;
@@ -196,7 +198,7 @@ public class TurbineRunDataService
             IllegalArgumentException
     {
         // a map to hold information to be added to pipelineData
-        Map pipelineDataMap = new HashMap();
+        Map<Class<?>, Object> pipelineDataMap = new HashMap<Class<?>, Object>();
         // The RunData object caches all the information that is needed for
         // the execution lifetime of a single request. A RunData object
         // is created/recycled for each and every request and is passed
@@ -221,9 +223,9 @@ public class TurbineRunDataService
         TurbineRunData data;
         try
         {
-    		Class runDataClazz = Class.forName(cfg[0]);
-    		Class parameterParserClazz = Class.forName(cfg[1]);
-    		Class cookieParserClazz = Class.forName(cfg[2]);
+    		Class<?> runDataClazz = Class.forName(cfg[0]);
+    		Class<?> parameterParserClazz = Class.forName(cfg[1]);
+    		Class<?> cookieParserClazz = Class.forName(cfg[2]);
 
             data = (TurbineRunData) pool.getInstance(runDataClazz);
             ParameterParser pp = (ParameterParser) parserService.getParser(parameterParserClazz);

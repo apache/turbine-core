@@ -64,6 +64,7 @@ public class TurbineServletService
      * a zero parameter variant which queries the Turbine Servlet
      * for its config.
      */
+    @Override
     public void init()
     {
         this.servletConfig = Turbine.getTurbineServletConfig();

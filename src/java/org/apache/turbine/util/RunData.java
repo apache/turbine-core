@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.naming.Context;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -34,11 +36,10 @@ import javax.servlet.http.HttpSession;
 import org.apache.ecs.Document;
 import org.apache.ecs.Element;
 import org.apache.ecs.StringElement;
-
-import org.apache.turbine.om.security.User;
-import org.apache.turbine.pipeline.PipelineData;
 import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.template.TemplateInfo;
 
@@ -127,6 +128,7 @@ public interface RunData extends PipelineData
      * @return true if the page is set.
      * @deprecated no replacement planned, ECS is no longer a requirement
      */
+    @Deprecated
     boolean isPageSet();
 
     /**
@@ -135,6 +137,7 @@ public interface RunData extends PipelineData
      * @return a document.
      * @deprecated no replacement planned, ECS is no longer a requirement
      */
+    @Deprecated
     Document getPage();
 
     /**
@@ -389,6 +392,7 @@ public interface RunData extends PipelineData
      * @return true if out is set.
      * @deprecated no replacement planned, response writer will not be cached
      */
+    @Deprecated
     boolean isOutSet();
 
     /**
@@ -399,6 +403,7 @@ public interface RunData extends PipelineData
      * @throws IOException
      * @deprecated no replacement planned, response writer will not be cached
      */
+    @Deprecated
     PrintWriter getOut()
             throws IOException;
 
@@ -515,14 +520,14 @@ public interface RunData extends PipelineData
      *
      * @return a hashtable.
      */
-    Map getJNDIContexts();
+    Map<String, Context> getJNDIContexts();
 
     /**
      * Sets JNDI Contexts.
      *
      * @param contexts a hashtable.
      */
-    void setJNDIContexts(Map contexts);
+    void setJNDIContexts(Map<String, Context> contexts);
 
     /**
      * Gets the cached server scheme.
@@ -627,7 +632,8 @@ public interface RunData extends PipelineData
      * @return a Map of debug variables.
      * @deprecated use {@link #getDebugVariables} instead
      */
-    Map getVarDebug();
+    @Deprecated
+    Map<String, Object> getVarDebug();
 
     /**
      * Sets a name/value pair in an internal Map that is accessible from the
@@ -644,5 +650,5 @@ public interface RunData extends PipelineData
      *
      * @return a Map of debug variables.
      */
-    Map getDebugVariables();
+    Map<String, Object> getDebugVariables();
 }

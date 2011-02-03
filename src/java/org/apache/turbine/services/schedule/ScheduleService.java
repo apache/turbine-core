@@ -87,7 +87,7 @@ public interface ScheduleService
      *
      * @return A List of jobs.
      */
-    List listJobs();
+    List<JobEntry> listJobs();
 
     /**
      * Determines if the scheduler service is currently active.
