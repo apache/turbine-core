@@ -81,6 +81,7 @@ import org.apache.turbine.util.uri.DataURI;
  * @deprecated Use UITool instead.
  * @version $Id$
  */
+@Deprecated
 public class UIManager implements ApplicationTool
 {
     /** Logging */
@@ -186,6 +187,7 @@ public class UIManager implements ApplicationTool
      * @param data This is null, RunData or User depending upon specified tool scope.
      * @deprecated Use UITool.init() instead.
      */
+    @Deprecated
     public void init(Object data)
     {
         /**
@@ -254,6 +256,7 @@ public class UIManager implements ApplicationTool
      * 
      * @deprecated Use UITool.refresh() instead.
      */
+    @Deprecated
     public void refresh()
     {
         log.debug("Refreshing UI manager");
@@ -267,6 +270,7 @@ public class UIManager implements ApplicationTool
      *
      * @deprecated Use UITool.get(String key) instead.
      */
+    @Deprecated
     public String get(String key)
     {
         return skinProperties.getProperty(key);
@@ -277,6 +281,7 @@ public class UIManager implements ApplicationTool
      *
      * @deprecated Use UITool.getSkin() instead.
      */
+    @Deprecated
     public String getSkin()
     {
         return skinName;
@@ -298,6 +303,7 @@ public class UIManager implements ApplicationTool
      *
      * @deprecated Use UITool.image(String imageId, RunData data) instead.
      */
+    @Deprecated
     public String image(String imageId, RunData data)
     {
         DataURI du = new DataURI(data);
@@ -327,6 +333,7 @@ public class UIManager implements ApplicationTool
      *
      * @deprecated Use UITool.image(String imageId) instead.
      */
+    @Deprecated
     public String image(String imageId)
     {
         ServerData sd = Turbine.getDefaultServerData();
@@ -364,6 +371,7 @@ public class UIManager implements ApplicationTool
      *
      * @deprecated Use UITool.getStylecss(RunData data) instead.
      */
+    @Deprecated
     public String getStylecss(RunData data)
     {
         return getScript(cssFile, data);
@@ -377,6 +385,7 @@ public class UIManager implements ApplicationTool
      *
      * @deprecated Use UITool.getStylecss() instead.
      */
+    @Deprecated
     public String getStylecss()
     {
         return getScript(cssFile);
@@ -389,6 +398,7 @@ public class UIManager implements ApplicationTool
      *
      * @deprecated Use UITool.getScript(String filename, RunData data) instead.
      */
+    @Deprecated
     public String getScript(String filename, RunData data)
     {
         DataURI du = new DataURI(data);
@@ -414,6 +424,7 @@ public class UIManager implements ApplicationTool
      *
      * @deprecated Use UITool.getScript(String filename) instead.
      */
+    @Deprecated
     public String getScript(String filename)
     {
         ServerData sd = Turbine.getDefaultServerData();
@@ -471,6 +482,7 @@ public class UIManager implements ApplicationTool
      *
      * @deprecated Use UITool.setSkin() instead.
      */
+    @Deprecated
     public void setSkin()
     {
         this.skinName = Turbine.getConfiguration()
@@ -484,6 +496,7 @@ public class UIManager implements ApplicationTool
      * @param skinName the skin name to use.
      * @deprecated Use UITool.setSkin(String skinName) instead.
      */
+    @Deprecated
     public void setSkin(String skinName)
     {
         this.skinName = skinName;
@@ -499,6 +512,7 @@ public class UIManager implements ApplicationTool
      * @param data a RunData instance
      * @deprecated Use UITool.setSkin(RunData data) instead.
      */
+    @Deprecated
     protected void setSkin(RunData data)
     {
         setSkin();
@@ -514,6 +528,7 @@ public class UIManager implements ApplicationTool
      * @param user a User instance
      * @deprecated Use UITool.setSkin(User user) instead.
      */
+    @Deprecated
     protected void setSkin(User user)
     {
         if (user.getTemp(SKIN_ATTRIBUTE) == null)
@@ -533,6 +548,7 @@ public class UIManager implements ApplicationTool
      * @param skin the skin name for the session
      * @deprecated Use UITool.setSkin(User user, String skin) instead.
      */
+    @Deprecated
     public static void setSkin(User user, String skin)
     {
         user.setTemp(SKIN_ATTRIBUTE, skin);

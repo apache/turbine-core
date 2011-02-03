@@ -39,7 +39,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
 public class SessionData implements ApplicationTool
 {
     /** Storage of user defined data */
-    private Map dataStorage;
+    private Map<String, Object> dataStorage;
 
     /**
      * Initialize the application tool.
@@ -48,7 +48,7 @@ public class SessionData implements ApplicationTool
      */
     public void init(Object data)
     {
-        dataStorage = new HashMap();
+        dataStorage = new HashMap<String, Object>();
     }
 
     /**
@@ -109,7 +109,7 @@ public class SessionData implements ApplicationTool
      *
      * @return <code>Iterator</code> for the keys
      */
-    public Iterator iterator()
+    public Iterator<String> iterator()
     {
         return dataStorage.keySet().iterator();
     }
