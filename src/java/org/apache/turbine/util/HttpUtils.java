@@ -75,14 +75,11 @@ public class HttpUtils
         {
             data.getResponse().setHeader("Pragma", "no-cache");
             data.getResponse().setHeader("Cache-Control", "no-cache");
-            data.getResponse().setHeader("Expires",
-                    formatHttpDate(new Date()));
+            data.getResponse().setDateHeader("Expires", System.currentTimeMillis());
         }
         else
         {
-            Date expiryDate = new Date(System.currentTimeMillis() + expiry);
-            data.getResponse().setHeader("Expires",
-                    formatHttpDate(expiryDate));
+            data.getResponse().setDateHeader("Expires", System.currentTimeMillis() + expiry);
         }
     }
 }
