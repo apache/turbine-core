@@ -37,7 +37,7 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
  * @version $Id$
  */
-public class TurbineRole extends SecurityObject implements Role
+public class TurbineRole extends SecurityObject<Role> implements Role
 {
     /**
      * Constructs a new Role

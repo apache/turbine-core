@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.turbine.om.security.Permission;
 
 /**
@@ -42,9 +41,12 @@ import org.apache.turbine.om.security.Permission;
  * @version $Id$
  */
 public class PermissionSet
-    extends SecuritySet
+    extends SecuritySet<Permission>
 {
-    /**
+    /** Serial version */
+	private static final long serialVersionUID = 7740960537240820226L;
+
+	/**
      * Constructs an empty PermissionSet
      */
     public PermissionSet()
@@ -60,7 +62,7 @@ public class PermissionSet
      *
      * @param permissions A collection of permissions to be contained in the set.
      */
-    public PermissionSet(Collection permissions)
+    public PermissionSet(Collection<Permission> permissions)
     {
         super();
         add(permissions);
@@ -89,12 +91,11 @@ public class PermissionSet
      * if no change to this PermissionSet occurred (this PermissionSet
      * already contained all members of the added PermissionSet).
      */
-    public boolean add(Collection permissions)
+    public boolean add(Collection<Permission> permissions)
     {
         boolean res = false;
-        for (Iterator it = permissions.iterator(); it.hasNext();)
+        for (Permission p : permissions)
         {
-            Permission p = (Permission) it.next();
             res |= add(p);
         }
         return res;
@@ -112,9 +113,8 @@ public class PermissionSet
     public boolean add(PermissionSet permissionSet)
     {
         boolean res = false;
-        for( Iterator it = permissionSet.iterator(); it.hasNext();)
+        for(Permission p : permissionSet)
         {
-            Permission p = (Permission) it.next();
             res |= add(p);
         }
         return res;
@@ -144,7 +144,7 @@ public class PermissionSet
      */
     public boolean contains(Permission permission)
     {
-        return nameMap.containsValue((Object) permission);
+        return nameMap.containsValue(permission);
     }
 
     /**
@@ -182,7 +182,7 @@ public class PermissionSet
      */
     public Permission[] getPermissionsArray()
     {
-        return (Permission[]) getSet().toArray(new Permission[0]);
+        return getSet().toArray(new Permission[0]);
     }
 
     /**
@@ -196,9 +196,9 @@ public class PermissionSet
         StringBuffer sb = new StringBuffer();
         sb.append("PermissionSet: ");
 
-        for(Iterator it = iterator(); it.hasNext();)
+        for(Iterator<Permission> it = iterator(); it.hasNext();)
         {
-            Permission p = (Permission) it.next();
+            Permission p = it.next();
             sb.append('[');
             sb.append(p.getName());
             sb.append(" -> ");

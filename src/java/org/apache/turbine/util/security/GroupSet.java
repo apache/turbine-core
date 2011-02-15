@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.turbine.om.security.Group;
 
 /**
@@ -41,9 +40,12 @@ import org.apache.turbine.om.security.Group;
  * @version $Id$
  */
 public class GroupSet
-        extends SecuritySet
+        extends SecuritySet<Group>
 {
-    /**
+    /** Serial version */
+	private static final long serialVersionUID = -80412911083063489L;
+
+	/**
      * Constructs an empty GroupSet
      */
     public GroupSet()
@@ -59,7 +61,7 @@ public class GroupSet
      *
      * @param groups A collection of groups to be contained in the set.
      */
-    public GroupSet(Collection groups)
+    public GroupSet(Collection<Group> groups)
     {
         super();
         add(groups);
@@ -88,12 +90,11 @@ public class GroupSet
      * if no change to this GroupSet occurred (this GroupSet
      * already contained all members of the added GroupSet).
      */
-    public boolean add(Collection groups)
+    public boolean add(Collection<Group> groups)
     {
         boolean res = false;
-        for (Iterator it = groups.iterator(); it.hasNext();)
+        for (Group g : groups)
         {
-            Group g = (Group) it.next();
             res |= add(g);
         }
         return res;
@@ -110,9 +111,8 @@ public class GroupSet
     public boolean add(GroupSet groupSet)
     {
         boolean res = false;
-        for( Iterator it = groupSet.iterator(); it.hasNext();)
+        for(Group g : groupSet)
         {
-            Group g = (Group) it.next();
             res |= add(g);
         }
         return res;
@@ -142,7 +142,7 @@ public class GroupSet
      */
     public boolean contains(Group group)
     {
-        return nameMap.containsValue((Object) group);
+        return nameMap.containsValue(group);
     }
 
     /**
@@ -180,7 +180,7 @@ public class GroupSet
      */
     public Group[] getGroupsArray()
     {
-        return (Group[]) getSet().toArray(new Group[0]);
+        return getSet().toArray(new Group[0]);
     }
 
     /**
@@ -194,9 +194,9 @@ public class GroupSet
         StringBuffer sb = new StringBuffer();
         sb.append("GroupSet: ");
 
-        for(Iterator it = iterator(); it.hasNext();)
+        for(Iterator<Group> it = iterator(); it.hasNext();)
         {
-            Group g = (Group) it.next();
+            Group g = it.next();
             sb.append('[');
             sb.append(g.getName());
             sb.append(" -> ");

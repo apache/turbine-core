@@ -26,12 +26,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-
-import org.apache.turbine.modules.Loader;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.template.TemplateService;
 
 /**
@@ -70,6 +67,7 @@ public class ClassMapper
      */
     public ClassMapper()
     {
+    	// empty
     }
 
     /**
@@ -103,15 +101,15 @@ public class ClassMapper
         log.debug("doMapping(" + template + ")");
 
         // Copy our elements into an array
-        List components
-            = new ArrayList(Arrays.asList(StringUtils.split(
+        List<String> components
+            = new ArrayList<String>(Arrays.asList(StringUtils.split(
                                               template,
                                               String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR))));
         int componentSize = components.size() - 1 ;
 
         // This method never gets an empty string passed.
         // So this is never < 0
-        String className = (String) components.get(componentSize);
+        String className = components.get(componentSize);
         components.remove(componentSize--);
 
         log.debug("className is " + className);

@@ -32,7 +32,7 @@ import java.util.Map;
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
-public abstract class SecurityObject implements Comparable
+public abstract class SecurityObject<T extends SecurityEntity> implements Comparable<T>
 {
     /** The name of this object. */
     private String name;
@@ -41,7 +41,7 @@ public abstract class SecurityObject implements Comparable
     private int id;
 
     /** The attributes of this object. */
-    private Map attributes;
+    private Map<String, Object> attributes;
 
     /**
      * Constructs a new SecurityObject
@@ -60,7 +60,7 @@ public abstract class SecurityObject implements Comparable
     {
         setName(name);
         setId(0);
-        setAttributes(Collections.synchronizedMap(new HashMap()));
+        setAttributes(Collections.synchronizedMap(new HashMap<String, Object>()));
     }
 
     /**
@@ -68,7 +68,7 @@ public abstract class SecurityObject implements Comparable
      *
      * @return the object's attributes.
      */
-    public Map getAttributes()
+    public Map<String, Object> getAttributes()
     {
         return attributes;
     }
@@ -78,7 +78,7 @@ public abstract class SecurityObject implements Comparable
      *
      * @param attributes The new attributes of the object.
      */
-    public void setAttributes(Map attributes)
+    public void setAttributes(Map<String, Object> attributes)
     {
         this.attributes = attributes;
     }
@@ -168,13 +168,14 @@ public abstract class SecurityObject implements Comparable
      * @return -1 if the name of the other object is lexically greater than this
      *         group, 1 if it is lexically lesser, 0 if they are equal.
      */
-    public int compareTo(Object obj)
+    public int compareTo(T obj)
     {
         if (this.getClass() != obj.getClass())
         {
             throw new ClassCastException();
         }
-        String name1 = ((SecurityObject) obj).getName();
+
+        String name1 = obj.getName();
         String name2 = this.getName();
 
         return name2.compareTo(name1);

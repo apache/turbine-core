@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.turbine.om.security.Role;
 
 /**
@@ -41,9 +40,12 @@ import org.apache.turbine.om.security.Role;
  * @version $Id$
  */
 public class RoleSet
-        extends SecuritySet
+        extends SecuritySet<Role>
 {
-    /**
+    /** Serial version */
+	private static final long serialVersionUID = 8122474203780997107L;
+
+	/**
      * Constructs an empty RoleSet
      */
     public RoleSet()
@@ -59,7 +61,7 @@ public class RoleSet
      *
      * @param roles A collection of roles to be contained in the set.
      */
-    public RoleSet(Collection roles)
+    public RoleSet(Collection<Role> roles)
     {
         super();
         add(roles);
@@ -88,12 +90,11 @@ public class RoleSet
      * if no change to this RoleSet occurred (this RoleSet
      * already contained all members of the added RoleSet).
      */
-    public boolean add(Collection roles)
+    public boolean add(Collection<Role> roles)
     {
         boolean res = false;
-        for (Iterator it = roles.iterator(); it.hasNext();)
+        for (Role r : roles)
         {
-            Role r = (Role) it.next();
             res |= add(r);
         }
         return res;
@@ -110,9 +111,8 @@ public class RoleSet
     public boolean add(RoleSet roleSet)
     {
         boolean res = false;
-        for( Iterator it = roleSet.iterator(); it.hasNext();)
+        for(Role r : roleSet)
         {
-            Role r = (Role) it.next();
             res |= add(r);
         }
         return res;
@@ -142,7 +142,7 @@ public class RoleSet
      */
     public boolean contains(Role role)
     {
-        return nameMap.containsValue((Object) role);
+        return nameMap.containsValue(role);
     }
 
     /**
@@ -180,7 +180,7 @@ public class RoleSet
      */
     public Role[] getRolesArray()
     {
-        return (Role[]) getSet().toArray(new Role[0]);
+        return getSet().toArray(new Role[0]);
     }
 
     /**
@@ -194,9 +194,9 @@ public class RoleSet
         StringBuffer sb = new StringBuffer();
         sb.append("RoleSet: ");
 
-        for(Iterator it = iterator(); it.hasNext();)
+        for(Iterator<Role> it = iterator(); it.hasNext();)
         {
-            Role r = (Role) it.next();
+            Role r = it.next();
             sb.append('[');
             sb.append(r.getName());
             sb.append(" -> ");

@@ -21,7 +21,6 @@ package org.apache.turbine.util.security;
  */
 
 import java.io.Serializable;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -43,22 +42,25 @@ import org.apache.commons.lang.StringUtils;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public abstract class SecuritySet
-        implements Serializable
+public abstract class SecuritySet<T>
+        implements Serializable, Iterable<T>
 {
-    /** Map for "name" -> "security object" */
-    protected Map nameMap = null;
+    /** Serial version */
+	private static final long serialVersionUID = -1315871299888969431L;
+
+	/** Map for "name" -> "security object" */
+    protected Map<String, T> nameMap = null;
 
     /** Map for "id" -> "security object" */
-    protected Map idMap = null;
+    protected Map<Integer, T> idMap = null;
 
     /**
      * Constructs an empty Set
      */
     public SecuritySet()
     {
-        nameMap = new TreeMap();
-        idMap = new TreeMap();
+        nameMap = new TreeMap<String, T>();
+        idMap = new TreeMap<Integer, T>();
     }
 
     /**
@@ -67,9 +69,9 @@ public abstract class SecuritySet
      * @return A Set Object
      *
      */
-    public Set getSet()
+    public Set<? extends T> getSet()
     {
-        return new HashSet(nameMap.values());
+        return new HashSet<T>(nameMap.values());
     }
 
     /**
@@ -78,7 +80,7 @@ public abstract class SecuritySet
      * @return The Set of Names in this Object,
      *         backed by the actual data.
      */
-    public Set getNames()
+    public Set<String> getNames()
     {
         return nameMap.keySet();
     }
@@ -89,7 +91,7 @@ public abstract class SecuritySet
      * @return The Set of Ids in this Object,
      *         backed by the actual data.
      */
-    public Set getIds()
+    public Set<Integer> getIds()
     {
         return idMap.keySet();
     }
@@ -134,7 +136,7 @@ public abstract class SecuritySet
      *
      * @return An iterator for the Set
      */
-    public Iterator iterator()
+    public Iterator<T> iterator()
     {
         return nameMap.values().iterator();
     }
@@ -157,9 +159,9 @@ public abstract class SecuritySet
     public String toString()
     {
         StringBuffer sbuf = new StringBuffer(12 * size());
-        for(Iterator it = nameMap.keySet().iterator(); it.hasNext(); )
+        for(Iterator<String> it = nameMap.keySet().iterator(); it.hasNext(); )
         {
-            sbuf.append((String) it.next());
+            sbuf.append(it.next());
 
             if(it.hasNext())
             {
