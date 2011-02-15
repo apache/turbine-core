@@ -23,7 +23,6 @@ package org.apache.turbine.modules.layouts;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.pipeline.PipelineData;
@@ -31,7 +30,6 @@ import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateNavigation;
 import org.apache.turbine.util.template.TemplateScreen;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -41,7 +39,7 @@ import org.apache.velocity.context.Context;
  * using a screen. Use this if you have a large page to output
  * and won't buffer it in the memory.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">RaphaÃ«l Luta</a>
  * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
