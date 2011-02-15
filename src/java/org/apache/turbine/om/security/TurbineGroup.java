@@ -44,7 +44,7 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @version $Id$
  */
-public class TurbineGroup extends SecurityObject implements Group
+public class TurbineGroup extends SecurityObject<Group> implements Group
 {
     /**
      * Constructs a new Group.

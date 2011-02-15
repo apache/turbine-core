@@ -22,6 +22,7 @@ package org.apache.turbine.om.security;
 
 
 import java.sql.Connection;
+
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.security.TurbineSecurityException;
 
@@ -36,7 +37,7 @@ import org.apache.turbine.util.security.TurbineSecurityException;
  * @author <a href="mailto:bmclaugh@algx.net">Brett McLaughlin</a>
  * @version $Id$
  */
-public class TurbinePermission extends SecurityObject implements Permission
+public class TurbinePermission extends SecurityObject<Permission> implements Permission
 {
     /**
      * Constructs a new TurbinePermission.

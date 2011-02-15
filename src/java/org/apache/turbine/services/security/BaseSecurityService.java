@@ -23,8 +23,6 @@ package org.apache.turbine.services.security;
 
 import java.util.Map;
 
-import javax.servlet.ServletConfig;
-
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -81,19 +79,19 @@ public abstract class BaseSecurityService
     private UserManager userManager = null;
 
     /** The class of User the SecurityService uses */
-    private Class userClass = null;
+    private Class<? extends User> userClass = null;
 
     /** The class of Group the SecurityService uses */
-    private Class groupClass = null;
+    private Class<? extends Group> groupClass = null;
 
     /** The class of Permission the SecurityService uses */
-    private Class permissionClass = null;
+    private Class<? extends Permission> permissionClass = null;
 
     /** The class of Role the SecurityService uses */
-    private Class roleClass = null;
+    private Class<? extends Role> roleClass = null;
 
     /** The class of ACL the SecurityService uses */
-    private Class aclClass = null;
+    private Class<? extends AccessControlList> aclClass = null;
 
     /** A factory to construct ACL Objects */
     private FactoryService aclFactoryService = null;
@@ -244,11 +242,11 @@ public abstract class BaseSecurityService
 
         try
         {
-            userClass = Class.forName(userClassName);
-            groupClass = Class.forName(groupClassName);
-            permissionClass = Class.forName(permissionClassName);
-            roleClass = Class.forName(roleClassName);
-            aclClass = Class.forName(aclClassName);
+            userClass = (Class<? extends User>) Class.forName(userClassName);
+            groupClass = (Class<? extends Group>) Class.forName(groupClassName);
+            permissionClass = (Class<? extends Permission>) Class.forName(permissionClassName);
+            roleClass = (Class<? extends Role>) Class.forName(roleClassName);
+            aclClass = (Class<? extends AccessControlList>) Class.forName(aclClassName);
         }
         catch (Exception e)
         {
@@ -314,7 +312,7 @@ public abstract class BaseSecurityService
      * @throws UnknownEntityException if the implementation of User interface
      *         could not be determined, or does not exist.
      */
-    public Class getUserClass()
+    public Class<? extends User> getUserClass()
             throws UnknownEntityException
     {
         if (userClass == null)
@@ -340,7 +338,7 @@ public abstract class BaseSecurityService
         User user;
         try
         {
-            user = (User) getUserClass().newInstance();
+            user = getUserClass().newInstance();
         }
         catch (Exception e)
         {
@@ -378,7 +376,7 @@ public abstract class BaseSecurityService
      * @throws UnknownEntityException if the implementation of Group interface
      *         could not be determined, or does not exist.
      */
-    public Class getGroupClass()
+    public Class<? extends Group> getGroupClass()
             throws UnknownEntityException
     {
         if (groupClass == null)
@@ -404,7 +402,7 @@ public abstract class BaseSecurityService
         Group group;
         try
         {
-            group = (Group) getGroupClass().newInstance();
+            group = getGroupClass().newInstance();
         }
         catch (Exception e)
         {
@@ -441,7 +439,7 @@ public abstract class BaseSecurityService
      * @throws UnknownEntityException if the implementation of Permission interface
      *         could not be determined, or does not exist.
      */
-    public Class getPermissionClass()
+    public Class<? extends Permission> getPermissionClass()
             throws UnknownEntityException
     {
         if (permissionClass == null)
@@ -467,7 +465,7 @@ public abstract class BaseSecurityService
         Permission permission;
         try
         {
-            permission = (Permission) getPermissionClass().newInstance();
+            permission = getPermissionClass().newInstance();
         }
         catch (Exception e)
         {
@@ -503,7 +501,7 @@ public abstract class BaseSecurityService
      * @throws UnknownEntityException if the implementation of Role interface
      *         could not be determined, or does not exist.
      */
-    public Class getRoleClass()
+    public Class<? extends Role> getRoleClass()
             throws UnknownEntityException
     {
         if (roleClass == null)
@@ -530,7 +528,7 @@ public abstract class BaseSecurityService
 
         try
         {
-            role = (Role) getRoleClass().newInstance();
+            role = getRoleClass().newInstance();
         }
         catch (Exception e)
         {
@@ -567,7 +565,7 @@ public abstract class BaseSecurityService
      * @throws UnknownEntityException if the implementation of ACL interface
      *         could not be determined, or does not exist.
      */
-    public Class getAclClass()
+    public Class<? extends AccessControlList> getAclClass()
             throws UnknownEntityException
     {
         if (aclClass == null)
@@ -876,6 +874,7 @@ public abstract class BaseSecurityService
             }
             catch (InterruptedException e)
             {
+            	// do nothing
             }
         }
     }

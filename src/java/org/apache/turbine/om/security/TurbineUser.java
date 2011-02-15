@@ -22,7 +22,6 @@ package org.apache.turbine.om.security;
 
 
 import java.sql.Connection;
-
 import java.util.Date;
 import java.util.Hashtable;
 
@@ -30,7 +29,6 @@ import javax.servlet.http.HttpSessionBindingEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.services.security.TurbineSecurity;
 
 /**
@@ -53,7 +51,7 @@ import org.apache.turbine.services.security.TurbineSecurity;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public class TurbineUser extends SecurityObject implements User
+public class TurbineUser extends SecurityObject<User> implements User
 {
     /** Logging */
     private static Log log = LogFactory.getLog(TurbineUser.class);

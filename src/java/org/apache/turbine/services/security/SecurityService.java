@@ -177,7 +177,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the system's implementation of User
      *         interface could not be determined.
      */
-    Class getUserClass()
+    Class<? extends User> getUserClass()
             throws UnknownEntityException;
 
     /**
@@ -214,7 +214,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the system's implementation of Group
      *         interface could not be determined.
      */
-    Class getGroupClass()
+    Class<? extends Group> getGroupClass()
             throws UnknownEntityException;
 
     /**
@@ -251,7 +251,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the system's implementation of Permission
      *         interface could not be determined.
      */
-    Class getPermissionClass()
+    Class<? extends Permission> getPermissionClass()
             throws UnknownEntityException;
 
     /**
@@ -288,7 +288,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the system's implementation of Role
      *         interface could not be determined.
      */
-    Class getRoleClass()
+    Class<? extends Role> getRoleClass()
             throws UnknownEntityException;
 
     /**
@@ -325,7 +325,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the system's implementation of AccessControlList
      *         interface could not be determined.
      */
-    Class getAclClass()
+    Class<? extends AccessControlList> getAclClass()
             throws UnknownEntityException;
 
     /**
@@ -425,7 +425,7 @@ public interface SecurityService
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
      */
-    List getUserList(Object criteria)
+    List<User> getUserList(Object criteria)
             throws DataBackendException;
 
     /**

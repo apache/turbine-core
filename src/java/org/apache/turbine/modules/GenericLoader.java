@@ -50,7 +50,7 @@ public abstract class GenericLoader
     private static final String TURBINE_PACKAGE = "org.apache.turbine.modules";
 
     /** Packages paths for Turbine */
-    private static List TURBINE_PACKAGES = null;
+    private static List<String> TURBINE_PACKAGES = null;
 
     /**
      * Basic constructor for creating a loader.
@@ -139,7 +139,7 @@ public abstract class GenericLoader
      *
      * @return A List with the package names (including the base package).
      */
-    public static List getPackages()
+    public static List<String> getPackages()
     {
         if (TURBINE_PACKAGES == null)
         {
@@ -147,7 +147,7 @@ public abstract class GenericLoader
                 Turbine.getConfiguration().getList(TurbineConstants.MODULE_PACKAGES);
         }
 
-        List packages = TURBINE_PACKAGES;
+        List<String> packages = TURBINE_PACKAGES;
         
         if (!packages.contains(TURBINE_PACKAGE))
         {

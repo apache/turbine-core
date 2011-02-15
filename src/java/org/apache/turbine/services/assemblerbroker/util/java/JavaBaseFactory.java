@@ -22,7 +22,6 @@ package org.apache.turbine.services.assemblerbroker.util.java;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +45,7 @@ public abstract class JavaBaseFactory
     implements AssemblerFactory
 {
     /** A vector of packages. */
-    private static List packages = GenericLoader.getPackages();
+    private static List<String> packages = GenericLoader.getPackages();
 
     /** Logging */
     protected Log log = LogFactory.getLog(this.getClass());
@@ -55,7 +54,8 @@ public abstract class JavaBaseFactory
      * A cache for previously obtained Class instances, which we keep in order
      * to reduce the Class.forName() overhead (which can be sizable).
      */
-    private Map classCache = Collections.synchronizedMap(new HashMap());
+    private Map<String, Class<? extends Assembler>> classCache = 
+    	Collections.synchronizedMap(new HashMap<String, Class<? extends Assembler>>());
 
     /**
      * Get an Assembler.
@@ -72,11 +72,11 @@ public abstract class JavaBaseFactory
 
         if (StringUtils.isNotEmpty(name))
         {
-            for (Iterator it = packages.iterator(); it.hasNext();)
+            for (String p : packages)
             {
                 StringBuffer sb = new StringBuffer();
 
-                sb.append(it.next()).append('.').append(packageName).append('.').append(name);
+                sb.append(p).append('.').append(packageName).append('.').append(name);
                 
                 String className = sb.toString();
 
@@ -84,13 +84,13 @@ public abstract class JavaBaseFactory
 
                 try
                 {
-                    Class servClass = (Class) classCache.get(className);
+                    Class<? extends Assembler> servClass = classCache.get(className);
                     if(servClass == null)
                     {
-                        servClass = Class.forName(className.toString());
+                        servClass = (Class<? extends Assembler>) Class.forName(className.toString());
                         classCache.put(className, servClass);
                     }
-                    assembler = (Assembler) servClass.newInstance();
+                    assembler = servClass.newInstance();
                     break; // for()
                 }
                 catch (ClassNotFoundException cnfe)
@@ -148,7 +148,6 @@ public abstract class JavaBaseFactory
      * @return the size of the cache in bytes
      */
     public int getCacheSize()
-    
     {
         return getLoader().getCacheSize();
     }
