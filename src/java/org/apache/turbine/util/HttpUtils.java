@@ -20,7 +20,6 @@ package org.apache.turbine.util;
  */
 
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -29,7 +28,7 @@ import java.util.TimeZone;
  * This class provides utilities for handling some semi-trivial HTTP stuff that
  * would othterwise be handled elsewhere.
  *
- * @author <a href="mailto:magnus@handpoint.com">Magnús Þór Torfason</a>
+ * @author <a href="mailto:magnus@handpoint.com">MagnÃºs ÃžÃ³r Torfason</a>
  * @version $Id$
  */
 public class HttpUtils

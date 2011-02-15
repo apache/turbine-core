@@ -24,6 +24,7 @@ package org.apache.turbine.services.servlet;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
@@ -40,7 +41,7 @@ import org.apache.turbine.util.ServletUtils;
  * <p>This class requires Servlet API 2.1 or better.</p>
  *
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">RaphaÃ«l Luta</a>
  * @author <a href="mailto:ekkerbj@netscape.net">Jeff Brekke</a>
  * @author <a href="mailto:sgala@hisitech.com">Santiago Gala</a>
  * @author <a href="mailto:jvanzyl@periapt.com.com">Jason van Zyl</a>
