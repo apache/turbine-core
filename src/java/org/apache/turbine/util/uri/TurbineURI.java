@@ -19,6 +19,7 @@ package org.apache.turbine.util.uri;
  * under the License.
  */
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,7 +55,7 @@ public class TurbineURI
     private static Log log = LogFactory.getLog(TurbineURI.class);
 
     /** Contains the PathInfo and QueryData vectors */
-    private List [] dataVectors = null;
+    private List<URIParam> [] dataVectors = null;
     
     /** Local reference to the parser service for URI parameter folding */
     private ParserService parserService;
@@ -256,8 +257,8 @@ public class TurbineURI
     private void init()
     {
         dataVectors = new List[2];
-        dataVectors[PATH_INFO]  = new ArrayList();
-        dataVectors[QUERY_DATA] = new ArrayList();
+        dataVectors[PATH_INFO]  = new ArrayList<URIParam>();
+        dataVectors[QUERY_DATA] = new ArrayList<URIParam>();
         parserService = (ParserService)TurbineServices.getInstance().getService(ParserService.ROLE);
     }
 
@@ -376,7 +377,7 @@ public class TurbineURI
      *
      * @param list A list with URIParam objects.
      */
-    public void addPathInfo(List list)
+    public void addPathInfo(List<URIParam> list)
     {
         add(PATH_INFO, list);
     }
@@ -507,7 +508,7 @@ public class TurbineURI
      *
      * @param list A list with URIParam objects.
      */
-    public void addQueryData(List list)
+    public void addQueryData(List<URIParam> list)
     {
         add(QUERY_DATA, list);
     }
@@ -678,7 +679,7 @@ public class TurbineURI
      * @return A List which contains all query data keys. The keys
      * are URIParam objects.
      */
-    public List getPathInfo()
+    public List<URIParam> getPathInfo()
     {
         return dataVectors[PATH_INFO];
     }
@@ -691,7 +692,7 @@ public class TurbineURI
      * @param pathInfo A List with new param objects.
      */
 
-    public void setPathInfo(List pathInfo)
+    public void setPathInfo(List<URIParam> pathInfo)
     {
         dataVectors[PATH_INFO] = pathInfo;
     }
@@ -702,7 +703,7 @@ public class TurbineURI
      * @return A List which contains all query data keys. The keys
      * are URIParam objects.
      */
-    public List getQueryData()
+    public List<URIParam> getQueryData()
     {
         return dataVectors[QUERY_DATA];
     }
@@ -715,7 +716,7 @@ public class TurbineURI
      * @param queryData A List with new param objects.
      */
 
-    public void setQueryData(List queryData)
+    public void setQueryData(List<URIParam> queryData)
     {
         dataVectors[QUERY_DATA] = queryData;
     }
@@ -769,42 +770,51 @@ public class TurbineURI
      * @param fieldDelim A char which is used to separate key/value pairs
      * @param valueDelim A char which is used to separate key and value
      */
-    private void doEncode(StringBuffer output, Collection list, char fieldDelim, char valueDelim)
+    private void doEncode(StringBuffer output, Collection<URIParam> list, char fieldDelim, char valueDelim)
     {
         if(!list.isEmpty())
         {
-            for(Iterator it = list.iterator(); it.hasNext();)
+        	String encoding = parserService.getParameterEncoding();
+        	
+            for(Iterator<URIParam> it = list.iterator(); it.hasNext();)
             {
-                URIParam uriParam = (URIParam) it.next();
-                String key = URLEncoder.encode(uriParam.getKey());
-                String val = null == uriParam.getValue()
-                        ? null : String.valueOf(uriParam.getValue());
+            	try 
+            	{
+					URIParam uriParam = it.next();
+					String key = URLEncoder.encode(uriParam.getKey(), encoding);
+					String val = null == uriParam.getValue()
+					        ? null : String.valueOf(uriParam.getValue());
 
-                output.append(key);
-                output.append(valueDelim);
+					output.append(key);
+					output.append(valueDelim);
 
-                if(StringUtils.isEmpty(val))
-                {
-                    if (val == null)
-                    {
-                        if (log.isWarnEnabled())
-                        {
-                            log.warn("Found a null value for " + key);
-                        }
-                        // For backwards compatibility:
-                        val = "null";
-                    }
-                    output.append(val);
-                }
-                else
-                {
-                    output.append(URLEncoder.encode(val));
-                }
+					if(StringUtils.isEmpty(val))
+					{
+					    if (val == null)
+					    {
+					        if (log.isWarnEnabled())
+					        {
+					            log.warn("Found a null value for " + key);
+					        }
+					        // For backwards compatibility:
+					        val = "null";
+					    }
+					    output.append(val);
+					}
+					else
+					{
+					    output.append(URLEncoder.encode(val, encoding));
+					}
 
-                if (it.hasNext())
-                {
-                    output.append(fieldDelim);
-                }
+					if (it.hasNext())
+					{
+					    output.append(fieldDelim);
+					}
+				} 
+            	catch (UnsupportedEncodingException e) 
+            	{
+            		log.warn("Unsupported encoding " + encoding);
+				}
             }
         }
     }
@@ -845,7 +855,7 @@ public class TurbineURI
     protected void add(int type,
             ParameterParser pp)
     {
-        for(Iterator it = pp.keySet().iterator(); it.hasNext();)
+        for(Iterator<?> it = pp.keySet().iterator(); it.hasNext();)
         {
             String key = (String) it.next();
 
@@ -881,15 +891,10 @@ public class TurbineURI
      * @param type Type of insertion (@see #add(char type, String name, String value))
      * @param list A List of URIParam objects
      */
-    protected void add(int type,
-            List list)
+    protected void add(int type, List<URIParam> list)
     {
-        for (Iterator it = list.iterator(); it.hasNext();)
+        for (URIParam uriParam : list)
         {
-            // Strictly spoken we don't need this cast. But if we do,
-            // we get class cast right here is someone tries to put
-            // a list with wrong objects into this method.
-            URIParam uriParam = (URIParam) it.next();
             dataVectors[type].add(uriParam);
         }
     }
@@ -904,15 +909,14 @@ public class TurbineURI
      * @param type Type (P or Q) of removal.
      * @param name A String with the name to be removed.
      */
-    protected void remove (int type,
-            String name)
+    protected void remove (int type, String name)
     {
-        Collection c = dataVectors[type];
+        Collection<URIParam> c = dataVectors[type];
         String key = parserService.convertAndTrim(name);
 
-        for (Iterator it = c.iterator(); it.hasNext();)
+        for (Iterator<URIParam> it = c.iterator(); it.hasNext();)
         {
-            URIParam uriParam = (URIParam) it.next();
+            URIParam uriParam = it.next();
 
             if (key.equals(uriParam.getKey()))
             {

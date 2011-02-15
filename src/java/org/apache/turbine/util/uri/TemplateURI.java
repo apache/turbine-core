@@ -25,7 +25,6 @@ import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.fulcrum.parser.ParameterParser;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 
@@ -267,7 +266,7 @@ public class TemplateURI
     protected void add(int type,
             ParameterParser pp)
     {
-        for(Iterator it = pp.keySet().iterator(); it.hasNext();)
+        for(Iterator<?> it = pp.keySet().iterator(); it.hasNext();)
         {
             String key = (String) it.next();
 

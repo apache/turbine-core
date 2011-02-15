@@ -25,6 +25,9 @@
 
   <body>
     <release version="4.0-M1" date="in Subversion">
+      <action type="fix" dev="tv" issue="TRB-80" due-to="Georg Kallidis">
+        TurbineURI was using the deprecated encode methods of URLEncoder.
+      </action>
       <action type="remove" dev="tv">
         Remove remains of old parser management: ParserUtils
       </action>
