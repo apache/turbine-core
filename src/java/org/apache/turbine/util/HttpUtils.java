@@ -26,7 +26,7 @@ import java.util.TimeZone;
 
 /**
  * This class provides utilities for handling some semi-trivial HTTP stuff that
- * would othterwise be handled elsewhere.
+ * would otherwise be handled elsewhere.
  *
  * @author <a href="mailto:magnus@handpoint.com">Magnús Þór Torfason</a>
  * @version $Id$
@@ -50,7 +50,7 @@ public class HttpUtils
      * http.
      *
      * @param date The Date to format
-     * @return A String represeentation of the date
+     * @return A String representation of the date
      */
     public static String formatHttpDate(Date date)
     {
@@ -66,7 +66,7 @@ public class HttpUtils
      * both for HTTP 1.0 and HTTP 1.1.
      *
      * @param data The RunData object we are setting cache information for.
-     * @param expiry The number of seconds untill the document should expire,
+     * @param expiry The number of milliseconds until the document should expire,
      * <code>0</code> indicating immediate expiration (i.e. no caching).
      */
     public static void setCacheHeaders(RunData data, int expiry)
@@ -85,5 +85,4 @@ public class HttpUtils
                     formatHttpDate(expiryDate));
         }
     }
-
 }
