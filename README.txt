@@ -39,10 +39,10 @@ target/     This is a temporary directory for building the project.
 In order to get started with Turbine, you must build it first.
 Turbine uses Maven for its build environment.  You can find installation
 information about Maven online at http://maven.apache.org/ .
-Once Maven has been installed, just type 'maven'.  The default behavior is to
+Once Maven has been installed, just type 'mvn package'.  The default behavior is to
 compile, run the unit tests, and build the jar.  Some other useful goals:
 
-maven site:generate   - generate the site documention
+mvn site   - generate the site documention
 
 As of Turbine 2.3, you must also have the Torque plugin for Maven installed
 to build Turbine.  Information on how to install the plugin is available
