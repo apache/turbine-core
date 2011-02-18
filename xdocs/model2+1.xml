@@ -36,7 +36,7 @@
 ]]></source>
 
 <p>
-Turbine follows the MVC desing pattern.
+Turbine follows the MVC design pattern.
 </p>
 <p>
 <ul>
@@ -53,8 +53,8 @@ addition due to way actions are used (hence Model 2 + 1).
 </p>
 
 <p>
-Turbine does not directly support the Hierachical MVC pattern, but
-it cout be used this way by defining multiple module and template
+Turbine does not directly support the Hierarchical MVC pattern, but
+it could be used this way by defining multiple module and template
 paths (would impact performance). Note that in the HMVC each MVC
 instance is self-contained and separable from the rest.
 </p>
@@ -104,7 +104,7 @@ Oh yea...one more reason for the +1...
 </p>
 
 <p>
-It is the Apache <a href="http://jakarta.apache.org/guidelines/decisions.html">voting style</a>. :-)
+It is the Apache <a href="http://jakarta.apache.org/site/decisions.html">voting style</a>. :-)
 </p>
 
 <p>

@@ -47,8 +47,8 @@ re-usable.
 <p>
 Knowledge of how Velocity works and what a Velocity Context object is
 are required for understanding this documentation. This documentation also
-assumes that you are using a Servlet API 2.2 and higher serlvet engine
-such as <a href="http://jakarta.apache.org/tomcat/">Tomcat</a> because
+assumes that you are using a Servlet API 2.2 and higher servlet engine
+such as <a href="http://tomcat.apache.org/">Tomcat</a> because
 we are now targeting towards using WAR archives. Although, this should
 work with older servlet engines as well...it just may be slightly harder
 for you to setup. You should also be familiar with the rest of the Turbine
@@ -160,7 +160,7 @@ role_editor.vm maps to Role_editor.class
 The result will be a fully formed HTML document with the <em>$hello</em>
 replaced with the value: "this is a test...". If you want to make the URI
 above shorter or easier to read, you could simply re-write things using
-<a href="http://www.apache.org/docs/mod/mod_rewrite.html">mod_rewrite</a>.
+<a href="http://httpd.apache.org/docs/current/mod/mod_rewrite.html">mod_rewrite</a>.
 For example, by removing the "<em>/servlet/Turbine/template</em>" portion
 of the URI.
 </p>
@@ -228,7 +228,7 @@ always do a security check before displaying the content. The benefit of
 this is that all you need to do to add security to your screen is to simply
 subclass this class instead of VelocityScreen. There is also no need
 to remember to call super() since the doBuild() method will be called for
-you automaticially by Turbine. You can start to see how Turbine is simply
+you automatically by Turbine. You can start to see how Turbine is simply
 an extension of the servlet framework itself. For example, the Servlet
 Engine will call HttpServlet's service() method for you, just like Turbine
 will call your doBuild() method for you. Tight integration with tools like
