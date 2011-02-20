@@ -35,9 +35,10 @@
   
   <body>
     <links>
-      <item name="Turbine Home"     href="http://turbine.apache.org/"/>
-      <item name="Fulcrum"          href="http://turbine.apache.org/fulcrum/"/>
-      <item name="META"             href="http://turbine.apache.org/meta/"/>
+      <item name="Apache"           href="http://www.apache.org"/>
+      <item name="Turbine"          href="http://turbine.apache.org/"/>
+      <item name="Fulcrum"          href="../../fulcrum/"/>
+      <item name="META"             href="../../meta/"/>
     </links>
 
     <menu name="General Information">
@@ -49,24 +50,22 @@
       <item name="Changes"               href="/changes-report.html"/>
     </menu>
     <menu name="Documentation">
-      <item name="Changes"               href="/changes-report.html"/>
-      <item name="Core DB Schema"        href="/turbine-schema.html"/>
       <item name="Services"              href="/services/index.html" collapse="true">
         <item name="Assembler Broker Service" href="/services/assemblerbroker-service.html"/>
         <item name="Avalon Component Service" href="/services/avalon-component-service.html"/>
-        <item name="Crypto Service"      href="/services/crypto-service.html"/>
-        <item name="Cache Service"       href="/services/cache-service.html"/>
+        <item name="Crypto Service"      href="../../fulcrum/fulcrum-crypto/"/>
+        <item name="Cache Service"       href="../../fulcrum/fulcrum-cache/"/>
         <item name="Component Service"   href="/services/component-service.html"/>
-        <item name="Factory Service"     href="/services/factory-service.html"/>
-        <item name="Intake Service"      href="/services/intake-service.html"/>
+        <item name="Factory Service"     href="../../fulcrum/fulcrum-factory/"/>
+        <item name="Intake Service"      href="../../fulcrum/fulcrum-intake/"/>
+        <item name="JSON-RPC Service"    href="/services/jsonrpc-service.html"/>
         <item name="JSP Service"         href="/services/jsp-service.html"/>
-        <item name="Localization Service" href="/services/localization-service.html"/>
-        <item name="Logging Service"     href="/services/logging-service.html"/>
-        <item name="MimeType Service"    href="/services/mimetype-service.html"/>
+        <item name="Localization Service" href="../../fulcrum/fulcrum-localization/"/>
+        <item name="MimeType Service"    href="../../fulcrum/fulcrum-mimetype/"/>
         <item name="Naming Service"      href="/services/naming-service.html"/>
-        <item name="Pool Service"        href="/services/pool-service.html"/>
+        <item name="Parser Service"      href="../../fulcrum/fulcrum-parser/"/>
+        <item name="Pool Service"        href="../../fulcrum/fulcrum-pool/"/>
         <item name="Pull Service"        href="/services/pull-service.html"/>
-        <item name="Resources Service"   href="/services/resources-service.html"/>
         <item name="RunData Service"     href="/services/rundata-service.html"/>
         <item name="Scheduler Service"   href="/services/scheduler-service.html"/>
         <item name="Security Service"    href="/services/security-service.html"/>
@@ -75,11 +74,12 @@
         <item name="Template Service"    href="/services/template-service.html"/>
         <item name="Torque Security Service" href="/services/torque-security-service.html"/>
         <item name="Torque Security Service Schema" href="/services/torque-security-schema.html"/>
+        <item name="UI Service"          href="/services/ui-service.html"/>
         <item name="Unique ID Service"   href="/services/uniqueid-service.html"/>
-        <item name="Upload Service"      href="/services/upload-service.html"/>
+        <item name="Upload Service"      href="../../fulcrum/fulcrum-upload/"/>
         <item name="Velocity Service"    href="/services/velocity-service.html"/>
-        <item name="XML-RPC Service"     href="/services/xmlrpc-service.html"/>
-        <item name="XSLT Service"        href="/services/xslt-service.html"/>
+        <item name="XML-RPC Service"     href="../../fulcrum/fulcrum-xmlrpc/"/>
+        <item name="XSLT Service"        href="../../fulcrum/fulcrum-xslt/"/>
       </item>
       <item name="Howtos"                href="/howto/index.html" collapse="true">
         <item name="Action Events Howto" href="/howto/action-event-howto.html"/>
@@ -88,8 +88,6 @@
         <item name="Hibernate OM Howto"  href="/howto/hibernate-howto.html"/>
         <item name="Intake Howto"        href="/howto/intake-howto.html"/>
         <item name="JSP Howto"           href="/howto/jsp-howto.html"/>
-        <item name="Migrating 2.1 to 2.2" href="/howto/migrate-from-2_1-howto.html"/>
-        <item name="Migrating 2.2 to 2.3" href="/howto/migrate-from-2_2-howto.html"/>
         <item name="Pull Model Howto"    href="/howto/pullmodel-howto.html"/>
         <item name="Python Howto"        href="/howto/python-howto.html"/>
         <item name="Security Howto"      href="/howto/security-howto.html"/>
@@ -111,5 +109,9 @@
 
     <menu ref="reports" inherit="bottom" />
 
+    <menu name="ASF" inherit="bottom">
+      <item name="Sponsorship"           href="http://www.apache.org/foundation/sponsorship.html" />
+      <item name="Thanks"                href="http://www.apache.org/foundation/thanks.html" />
+    </menu>
   </body>
 </project>
