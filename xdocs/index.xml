@@ -72,7 +72,7 @@
     make it easy to create re-usable components (such as
     ParameterParsing, Database Connection Pools, Job Scheduling,
     GlobalCaches, integration with other tools such as Torque, Velocity,
-    etc...) all under a <a href="../../common/license.html">license</a>
+    etc...) all under a <a href="license.html">license</a>
     (Apache) that allows you to create useful websites for your
     customers without worrying about viral code. Turbine is not the end
     all answer, but it sure is a nice way to make your development life
@@ -133,7 +133,7 @@
 
  </section>
 
-<section name="Where do I get releases?">
+<!--  section name="Where do I get releases?">
 
   <p>
     Currently, the best way to get started with Turbine is to use the
@@ -143,7 +143,7 @@
     <a href="http://db.apache.org/torque/download.html">here</a>.
   </p>
 
-</section>
+</section -->
 
 <section name="How do I contribute, give feedback, fix bugs and so on?">
 
