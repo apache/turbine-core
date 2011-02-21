@@ -205,6 +205,26 @@
       <organization>CollabNet, Inc.</organization>
       <timezone/>
     </developer>
+    <developer>
+      <name>Thomas Vandahl</name>
+      <id>tv</id>
+      <email>tv@apache.org</email>
+      <organization/>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+      <timezone>2</timezone>
+    </developer>
+    <developer>
+      <name>Ludwig Magnusson</name>
+      <id>ludwig</id>
+      <email>ludwig@apache.org</email>
+      <organization/>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+      <timezone>2</timezone>
+    </developer>
   </developers>
   <contributors>
     <contributor>
@@ -460,13 +480,6 @@
       <timezone/>
     </contributor>
     <contributor>
-      <name>Thomas Vandahl</name>
-      <email>thomas.vandahl@tewisoft.de</email>
-      <url/>
-      <organization/>
-      <timezone/>
-    </contributor>
-    <contributor>
       <name>Scott Weaver</name>
       <email>sweaver@rippe.com</email>
       <url/>
@@ -474,36 +487,18 @@
       <timezone/>
     </contributor>
   </contributors>
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-      <comments/>
-    </license>
-  </licenses>
+
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/core/trunk</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/trunk</developerConnection>
     <url>http://svn.apache.org/viewcvs/turbine/core/trunk/</url>
   </scm>
-  <organization>
-    <name>The Apache Software Foundation</name>
-    <url>http://turbine.apache.org/</url>
-  </organization>
   
   <build>
     <sourceDirectory>src/java</sourceDirectory>
     <testSourceDirectory>src/test</testSourceDirectory>
 
     <resources>
-      <resource>
-        <directory>${basedir}</directory>
-        <targetPath>META-INF</targetPath>
-        <includes>
-          <include>NOTICE</include>
-          <include>LICENSE.txt</include>
-        </includes>
-      </resource>
       <resource>
         <directory>src/macros</directory>
         <targetPath>macros</targetPath>
@@ -523,75 +518,12 @@
       </testResource>
     </testResources>
     
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>1.0-alpha-3</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>2.2</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>2.2</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>2.0.4</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.4.3</version>
-          <!-- configuration>
-            <includes>
-              <include>**/*Test.java</include>
-              <include>**/Test*.java</include>
-            </includes>
-            <excludes>
-              <exclude>**/test/*.java</exclude>
-            </excludes>
-          </configuration -->
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <version>2.2-beta-2</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>2.0-beta-7</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.3</version>
-          <configuration>
-            <encoding>${turbine.encoding}</encoding>
-            <docEncoding>${turbine.docEncoding}</docEncoding>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>2.0.2</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-antrun-plugin</artifactId>
-          <version>1.1</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-    
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <version>2.4</version>
+      </plugin>            
       <!-- TODO: later use toolchain support to do compilation on an external JDK 1.3+ compiler -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -629,7 +561,9 @@
       </plugin>      
       <plugin>
         <!-- generate the IntelliJ project files -->
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-idea-plugin</artifactId>
+        <version>2.2</version>
         <configuration>
           <jdkLevel>${maven.compile.source}</jdkLevel>
           <downloadSources>true</downloadSources>
@@ -639,6 +573,7 @@
         <!-- generate the Eclipse project files -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-eclipse-plugin</artifactId>
+        <version>2.8</version>
         <configuration>
           <downloadSources>true</downloadSources>
           <downloadJavadocs>true</downloadJavadocs>
@@ -671,19 +606,6 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <!-- attach the source code when building a jar -->
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>create-source-jar</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <phase>package</phase>
-          </execution>
-        </executions>
-      </plugin>      
       <plugin>
         <!-- build the source and binary distribution packages -->
         <artifactId>maven-assembly-plugin</artifactId>
@@ -729,13 +651,7 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.0.1</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.3</version>
         <configuration> 
           <aggregate>false</aggregate>
           <source>${maven.compile.source}</source>
@@ -758,13 +674,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
-        <version>2.0-beta-6</version>
         <configuration>
           <!-- Exclude the navigation file for Maven 1 sites
                and the changes file used by the changes-plugin,
                as they interfere with the site generation. -->
           <moduleExcludes>
-            <xdoc>navigation.xml,changes.xml</xdoc>
+            <xdoc>navigation.xml</xdoc>
           </moduleExcludes>
         </configuration>
       </plugin>
@@ -794,10 +709,7 @@
         <!-- generate the changes report from changes.xml -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-changes-plugin</artifactId>
-        <version>2.0-beta-3</version>
-        <configuration>
-            <xmlPath>${basedir}/xdocs/changes.xml</xmlPath>
-        </configuration>                      
+        <version>2.4</version>
         <reportSets>
           <reportSet>
             <reports>
