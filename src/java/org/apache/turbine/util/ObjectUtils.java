@@ -29,9 +29,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.List;
+import java.util.Map;
 
 /**
  * This is where common Object manipulation routines should go.
@@ -51,23 +50,22 @@ public abstract class ObjectUtils
      *
      * @exception Exception A generic exception.
      */
-    public static byte[] serializeHashtable(Hashtable hash)
+    public static byte[] serializeHashtable(Hashtable<String, Object> hash)
         throws Exception
     {
-        Hashtable saveData = new Hashtable(hash.size());
+        Hashtable<String, Serializable> saveData =
+            new Hashtable<String, Serializable>(hash.size());
         String key = null;
         Object value = null;
         byte[] byteArray = null;
 
-        Enumeration keys = hash.keys();
-
-        while (keys.hasMoreElements())
+        for (Map.Entry<String, Object> entry : hash.entrySet())
         {
-            key = (String) keys.nextElement();
-            value = hash.get(key);
+            key = entry.getKey();
+            value = entry.getValue();
             if (value instanceof Serializable)
             {
-                saveData.put (key, value);
+                saveData.put (key, (Serializable)value);
             }
         }
 
@@ -133,6 +131,7 @@ public abstract class ObjectUtils
             }
             catch (Exception e)
             {
+                // ignore
             }
             finally
             {
@@ -142,17 +141,13 @@ public abstract class ObjectUtils
                     {
                         in.close();
                     }
-                    if (bufin != null)
-                    {
-                        bufin.close();
-                    }
-                    if (bin != null)
-                    {
-                        bin.close();
-                    }
+
+                    bufin.close();
+                    bin.close();
                 }
                 catch (IOException e)
                 {
+                    // ignore
                 }
             }
         }

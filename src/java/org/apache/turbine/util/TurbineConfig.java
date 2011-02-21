@@ -33,15 +33,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.avalon.framework.activity.Disposable;
 import org.apache.avalon.framework.activity.Initializable;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 
 /**
@@ -102,16 +103,16 @@ public class TurbineConfig
     protected File root;
 
     /** Servlet container (or emulator) attributes. */
-    protected Map attributes;
+    protected Map<String, Object> attributes;
 
     /** Turbine servlet initialization parameters. */
-    protected Map initParams;
+    protected Map<String, String> initParams;
 
     /** The Turbine servlet instance used for initialization. */
     private Turbine turbine;
 
     /** Logging */
-    private Log log = LogFactory.getLog(this.getClass());
+    private final Log log = LogFactory.getLog(this.getClass());
 
     /**
      * Constructs a new TurbineConfig.
@@ -127,7 +128,8 @@ public class TurbineConfig
      * @param attributes Servlet container (or emulator) attributes.
      * @param initParams initialization parameters.
      */
-    public TurbineConfig(String path, Map attributes, Map initParams)
+    public TurbineConfig(String path, Map<String, Object> attributes,
+            Map<String, String> initParams)
     {
         root = new File(path);
         this.attributes = attributes;
@@ -137,31 +139,29 @@ public class TurbineConfig
     /**
      * @see #TurbineConfig(String path, Map attributes, Map initParams)
      */
-    public TurbineConfig(String path, Map initParams)
+    public TurbineConfig(String path, Map<String, String> initParams)
     {
-        this(path, new HashMap(0), initParams);
+        this(path, new HashMap<String, Object>(0), initParams);
     }
 
     /**
      * Constructs a TurbineConfig.
      *
      * This is a specialized constructor that allows to configure
-     * Turbine easiliy in the common setups.
+     * Turbine easily in the common setups.
      *
      * @param path The web application root (i.e. the path for file lookup).
      * @param properties the relative path to TurbineResources.properties file
      */
     public TurbineConfig(String path, String properties)
     {
-        this(path, new HashMap(1));
+        this(path, new HashMap<String, String>(1));
         initParams.put(PROPERTIES_PATH_KEY, properties);
     }
 
     /**
      * Causes this class to initialize itself which in turn initializes
      * all of the Turbine Services that need to be initialized.
-     *
-     * @see org.apache.stratum.lifecycle.Initializable
      */
     public void initialize()
     {
@@ -266,7 +266,7 @@ public class TurbineConfig
      */
     public String getInitParameter(String name)
     {
-        return (String) initParams.get(name);
+        return initParams.get(name);
     }
 
     /**
@@ -276,7 +276,7 @@ public class TurbineConfig
      */
     public Enumeration getInitParameterNames()
     {
-        return new Vector(initParams.keySet()).elements();
+        return new Vector<String>(initParams.keySet()).elements();
     }
 
     /**
@@ -310,7 +310,7 @@ public class TurbineConfig
      *
      * @return the context path
      */
-    public String getContextPath() 
+    public String getContextPath()
     {
         return "/turbine";
 	}
@@ -357,6 +357,7 @@ public class TurbineConfig
      * @param m a message.
      * @deprecated use log(String,Throwable) instead
      */
+    @Deprecated
     public void log(Exception e, String m)
     {
         log.info(m, e);
@@ -398,7 +399,7 @@ public class TurbineConfig
      */
     public Enumeration getAttributeNames()
     {
-        return new Vector(attributes.keySet()).elements();
+        return new Vector<String>(attributes.keySet()).elements();
     }
 
     // Unimplemented methods follow
@@ -504,6 +505,7 @@ public class TurbineConfig
      * throw <code>UnsuportedOperationException</code> upon invocation
      * @deprecated As of Java Servlet API 2.1, with no direct replacement.
      */
+    @Deprecated
     public Servlet getServlet(String s)
     {
         throw new UnsupportedOperationException();
@@ -516,6 +518,7 @@ public class TurbineConfig
      * throw <code>UnsuportedOperationException</code> upon invocation
      * @deprecated As of Java Servlet API 2.1, with no replacement.
      */
+    @Deprecated
     public Enumeration getServletNames()
     {
         throw new UnsupportedOperationException();
@@ -528,6 +531,7 @@ public class TurbineConfig
      * throw <code>UnsuportedOperationException</code> upon invocation
      * @deprecated As of Java Servlet API 2.0, with no replacement.
      */
+    @Deprecated
     public Enumeration getServlets()
     {
         throw new UnsupportedOperationException();

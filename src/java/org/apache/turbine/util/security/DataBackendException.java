@@ -32,6 +32,9 @@ package org.apache.turbine.util.security;
 public class DataBackendException
         extends TurbineSecurityException
 {
+    /** TODO serialVersionUID */
+    private static final long serialVersionUID = 3069718405955172641L;
+
     /**
      * Construct an DataBackendException with specified detail message.
      *

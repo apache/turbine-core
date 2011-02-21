@@ -21,7 +21,6 @@ package org.apache.turbine.util.security;
  */
 
 
-import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.turbine.om.security.Group;
@@ -45,11 +44,14 @@ import org.apache.turbine.services.security.TurbineSecurity;
 public class TurbineAccessControlList
         implements AccessControlList
 {
+    /** Serial version */
+    private static final long serialVersionUID = 2678947159949477950L;
+
     /** The sets of roles that the user has in different groups */
-    private Map roleSets;
+    private final Map<Group, RoleSet> roleSets;
 
     /** The sets of permissions that the user has in different groups */
-    private Map permissionSets;
+    private final Map<Group, PermissionSet> permissionSets;
 
     /** The name of this ACL. Needed for the SecurityEntity Interface */
     private String name;
@@ -69,7 +71,7 @@ public class TurbineAccessControlList
      * @param roleSets a hashtable containing RoleSet objects keyed with Group objects
      * @param permissionSets a hashtable containing PermissionSet objects keyed with Group objects
      */
-    public TurbineAccessControlList(Map roleSets, Map permissionSets)
+    public TurbineAccessControlList(Map<Group, RoleSet> roleSets, Map<Group, PermissionSet> permissionSets)
     {
         this.roleSets = roleSets;
         this.permissionSets = permissionSets;
@@ -109,7 +111,7 @@ public class TurbineAccessControlList
         {
             return null;
         }
-        return (RoleSet) roleSets.get(group);
+        return roleSets.get(group);
     }
 
     /**
@@ -134,7 +136,7 @@ public class TurbineAccessControlList
         {
             return null;
         }
-        return (PermissionSet) permissionSets.get(group);
+        return permissionSets.get(group);
     }
 
     /**
@@ -179,9 +181,8 @@ public class TurbineAccessControlList
         {
             return false;
         }
-        for (Iterator groups = groupset.iterator(); groups.hasNext();)
+        for (Group group : groupset)
         {
-            Group group = (Group) groups.next();
             RoleSet roles = getRoles(group);
             if (roles != null)
             {
@@ -238,9 +239,8 @@ public class TurbineAccessControlList
         {
             return false;
         }
-        for (Iterator groups = groupset.iterator(); groups.hasNext();)
+        for (Group group : groupset)
         {
-            Group group = (Group) groups.next();
             RoleSet roles = getRoles(group);
             if (roles != null)
             {
@@ -314,9 +314,8 @@ public class TurbineAccessControlList
         {
             return false;
         }
-        for (Iterator groups = groupset.iterator(); groups.hasNext();)
+        for (Group group : groupset)
         {
-            Group group = (Group) groups.next();
             PermissionSet permissions = getPermissions(group);
             if (permissions != null)
             {
@@ -393,9 +392,9 @@ public class TurbineAccessControlList
         {
             return false;
         }
-        for (Iterator groups = groupset.iterator(); groups.hasNext();)
+        for (Object element : groupset)
         {
-            Group group = (Group) groups.next();
+            Group group = (Group) element;
             PermissionSet permissions = getPermissions(group);
             if (permissions != null)
             {

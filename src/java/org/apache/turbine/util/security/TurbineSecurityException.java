@@ -33,6 +33,9 @@ import org.apache.turbine.util.TurbineException;
 public class TurbineSecurityException
         extends TurbineException
 {
+    /** TODO serialVersionUID */
+    private static final long serialVersionUID = 3932095155241924973L;
+
     /**
      * Construct an SecurityException with specified detail message.
      *

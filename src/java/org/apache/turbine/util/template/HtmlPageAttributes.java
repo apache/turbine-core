@@ -21,18 +21,13 @@ package org.apache.turbine.util.template;
  */
 
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.lang.StringUtils;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.pull.ApplicationTool;
@@ -103,29 +98,26 @@ import org.apache.turbine.util.RunData;
 public class HtmlPageAttributes
         implements ApplicationTool
 {
-    /** Logging */
-    private static Log log = LogFactory.getLog(HtmlPageAttributes.class);
-
     /** The title */
     private String title;
 
     /** Body Attributes */
-    private Map bodyAttributes = new HashMap();
+    private final Map<String, String> bodyAttributes = new LinkedHashMap<String, String>();
 
     /** Script references */
-    private List scripts = new ArrayList();
+    private final List<String> scripts = new ArrayList<String>();
 
     /** External references */
-    private List linkTags = new ArrayList();
+    private final List<LinkTag> linkTags = new ArrayList<LinkTag>();
 
     /** Inline styles */
-    private List styles = new ArrayList();
+    private final List<String> styles = new ArrayList<String>();
 
     /** Meta tags for the HEAD */
-    private Map metaTags = new HashMap();
+    private final Map<String, String> metaTags = new LinkedHashMap<String, String>();
 
     /** http-equiv tags */
-    private Map httpEquivs = new HashMap();
+    private final Map<String, String> httpEquivs = new LinkedHashMap<String, String>();
 
     /** Doctype */
     private String doctype = null;
@@ -135,6 +127,7 @@ public class HtmlPageAttributes
      */
     public HtmlPageAttributes()
     {
+        // empty
     }
 
     /**
@@ -497,6 +490,7 @@ public class HtmlPageAttributes
      *
      * @return An empty String ("").
      */
+    @Override
     public String toString()
     {
         return "";

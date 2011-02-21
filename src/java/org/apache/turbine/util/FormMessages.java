@@ -36,20 +36,20 @@ import java.util.Vector;
  */
 public class FormMessages
 {
-    private Hashtable forms_messages;
-    private Hashtable fields_messages;
-    private Hashtable messages_fields;
-    private Hashtable forms_fields;
+    private final Hashtable<String, Vector<String>> forms_messages;
+    private final Hashtable<String, Vector<String>> fields_messages;
+    private final Hashtable<String, Vector<String>> messages_fields;
+    private final Hashtable<String, Vector<String>> forms_fields;
 
     /**
      * Constructor.
      */
     public FormMessages()
     {
-        forms_messages = new Hashtable();
-        fields_messages = new Hashtable();
-        messages_fields = new Hashtable();
-        forms_fields = new Hashtable();
+        forms_messages = new Hashtable<String, Vector<String>>();
+        fields_messages = new Hashtable<String, Vector<String>>();
+        messages_fields = new Hashtable<String, Vector<String>>();
+        forms_fields = new Hashtable<String, Vector<String>>();
     }
 
     /**
@@ -90,25 +90,25 @@ public class FormMessages
      * Adds a pair key/value to a table, making sure not to add
      * duplicate keys.
      *
-     * @param table A Hastable.
+     * @param table A Hashtable.
      * @param key A String with the key.
      * @param value A String with value.
      */
-    private void addValue(Hashtable table,
+    private void addValue(Hashtable<String, Vector<String>> table,
                           String key,
                           String value)
     {
-        Vector values;
+        Vector<String> values;
 
         if (!table.containsKey(key))
         {
-            values = new Vector();
+            values = new Vector<String>();
             values.addElement(value);
             table.put(key, values);
         }
         else
         {
-            values = ((Vector) table.get(key));
+            values = table.get(key);
             if (!values.contains(value))
                 values.addElement(value);
         }
@@ -117,13 +117,13 @@ public class FormMessages
     /**
      * Gets a pair key/value from a table.
      *
-     * @param table A Hastable.
+     * @param table A Hashtable.
      * @param key A String with the key.
      * @return A Vector with the pair key/value, or null.
      */
-    private final Vector getValues(Hashtable table, String key)
+    private final Vector<String> getValues(Hashtable<String, Vector<String>> table, String key)
     {
-        return (Vector) table.get(key);
+        return table.get(key);
     }
 
     /**
@@ -134,7 +134,7 @@ public class FormMessages
      */
     public FormMessage[] getFormMessages(String formName)
     {
-        Vector messages, fields;
+        Vector<String> messages, fields;
         String messageName, fieldName;
         messages = getValues(forms_messages, formName);
         if (messages != null)
@@ -143,12 +143,12 @@ public class FormMessages
             for (int i = 0; i < messages.size(); i++)
             {
                 result[i] = new FormMessage(formName);
-                messageName = (String) messages.elementAt(i);
+                messageName = messages.elementAt(i);
                 result[i].setMessage(messageName);
                 fields = getValues(messages_fields, messageName);
                 for (int j = 0; j < fields.size(); j++)
                 {
-                    fieldName = (String) fields.elementAt(j);
+                    fieldName = fields.elementAt(j);
                     if (formHasField(formName, fieldName))
                     {
                         result[i].setFieldName(fieldName);
@@ -171,7 +171,7 @@ public class FormMessages
     {
         String key = formName + "-" + fieldName;
 
-        Vector messages = getValues(fields_messages, key);
+        Vector<String> messages = getValues(fields_messages, key);
         String messageName;
 
         if (messages != null)
@@ -180,7 +180,7 @@ public class FormMessages
             for (int i = 0; i < messages.size(); i++)
             {
                 result[i] = new FormMessage(formName, fieldName);
-                messageName = (String) messages.elementAt(i);
+                messageName = messages.elementAt(i);
                 result[i].setMessage(messageName);
             }
             return result;

@@ -67,7 +67,8 @@ public class TurbineXmlConfig
      * @param attributes Servlet container (or emulator) attributes.
      * @param initParams initialization parameters.
      */
-    public TurbineXmlConfig(String path, Map attributes, Map initParams)
+    public TurbineXmlConfig(String path, Map<String, Object> attributes,
+            Map<String, String> initParams)
     {
         super(path, attributes, initParams);
     }
@@ -75,9 +76,9 @@ public class TurbineXmlConfig
     /**
      * @see #TurbineXmlConfig(String path, Map attributes, Map initParams)
      */
-    public TurbineXmlConfig(String path, Map initParams)
+    public TurbineXmlConfig(String path, Map<String, String> initParams)
     {
-        this(path, new HashMap(0), initParams);
+        this(path, new HashMap<String, Object>(0), initParams);
     }
 
     /**
@@ -91,7 +92,7 @@ public class TurbineXmlConfig
      */
     public TurbineXmlConfig(String path, String config)
     {
-        this(path, new HashMap(1));
+        this(path, new HashMap<String, String>(1));
         initParams.put(CONFIGURATION_PATH_KEY, config);
     }
 }

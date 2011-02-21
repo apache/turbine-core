@@ -39,10 +39,12 @@ public class SessionTool
 {
     public void init(Object o)
     {
+        // empty
     }
 
     public void refresh()
     {
+        // empty
     }
 
     /**
