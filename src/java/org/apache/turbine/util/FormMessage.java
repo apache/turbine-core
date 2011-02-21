@@ -35,14 +35,14 @@ public class FormMessage
 {
     private String message;
     private String formName;
-    private Vector fieldNames;
+    private final Vector<String> fieldNames;
 
     /**
      * Constructor.
      */
     public FormMessage()
     {
-        fieldNames = new Vector();
+        fieldNames = new Vector<String>();
     }
 
     /**
@@ -150,6 +150,7 @@ public class FormMessage
      * Write out the contents of the message in a friendly manner.
      *
      */
+    @Override
     public String toString()
     {
         StringBuffer sb = new StringBuffer("formName:" + getFormName() + ", fieldNames:");

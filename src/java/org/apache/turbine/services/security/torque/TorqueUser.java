@@ -59,10 +59,10 @@ public class TorqueUser
     private Date lastAccessDate = null;
 
     /** This is data that will survive a servlet engine restart. */
-    private Hashtable permStorage = null;
+    private Hashtable<String, Object> permStorage = null;
 
     /** This is data that will not survive a servlet engine restart. */
-    private Hashtable tempStorage = null;
+    private Hashtable<String, Object> tempStorage = null;
 
     /**
      * Constructor.
@@ -72,7 +72,7 @@ public class TorqueUser
     {
         super();
         setCreateDate(new Date());
-        tempStorage = new Hashtable(10);
+        tempStorage = new Hashtable<String, Object>(10);
         setHasLoggedIn(Boolean.FALSE);
     }
 
@@ -90,7 +90,7 @@ public class TorqueUser
         // Do not set creation date. This is only called on retrieval from
         // storage!
 
-        tempStorage = new Hashtable(10);
+        tempStorage = new Hashtable<String, Object>(10);
         setHasLoggedIn(Boolean.FALSE);
     }
 
@@ -103,6 +103,7 @@ public class TorqueUser
      *
      */
 
+    @Override
     public Persistent getPersistentObj()
     {
         if (obj == null)
@@ -120,6 +121,7 @@ public class TorqueUser
      *
      * @exception Exception This method might throw an exceptions
      */
+    @Override
     public void save(String torqueName)
             throws Exception
     {
@@ -138,6 +140,7 @@ public class TorqueUser
      *
      * @exception Exception This method might throw an exceptions
      */
+    @Override
     public void save(Connection con)
         throws Exception
     {
@@ -151,6 +154,7 @@ public class TorqueUser
      * @throws TurbineSecurityException if there is a problem while
      *  saving data.
      */
+    @Override
     public void save()
         throws TurbineSecurityException
     {
@@ -181,6 +185,7 @@ public class TorqueUser
      *
      * @return The name of the object.
      */
+    @Override
     public String getName()
     {
         return UserPeerManager.getName(getPersistentObj());
@@ -191,6 +196,7 @@ public class TorqueUser
      *
      * @param name The name of the object
      */
+    @Override
     public void setName(String name)
     {
         setUserName(name);
@@ -232,6 +238,7 @@ public class TorqueUser
      * @return The name of the user.
      * @deprecated Use getName() instead.
      */
+    @Deprecated
     public String getUserName()
     {
         return getName();
@@ -550,7 +557,7 @@ public class TorqueUser
      *
      * @return A Hashtable.
      */
-    public Hashtable getPermStorage()
+    public Hashtable<String, Object> getPermStorage()
     {
         if (permStorage == null)
         {
@@ -558,12 +565,12 @@ public class TorqueUser
 
             if (objectdata != null)
             {
-                permStorage = (Hashtable) ObjectUtils.deserialize(objectdata);
+                permStorage = (Hashtable<String, Object>) ObjectUtils.deserialize(objectdata);
             }
 
             if (permStorage == null)
             {
-                permStorage = new Hashtable();
+                permStorage = new Hashtable<String, Object>();
             }
         }
 
@@ -576,7 +583,7 @@ public class TorqueUser
      *
      * @param storage A Hashtable.
      */
-    public void setPermStorage(Hashtable permStorage)
+    public void setPermStorage(Hashtable<String, Object> permStorage)
     {
         if (permStorage != null)
         {
@@ -590,11 +597,11 @@ public class TorqueUser
      *
      * @return A Hashtable.
      */
-    public Hashtable getTempStorage()
+    public Hashtable<String, Object> getTempStorage()
     {
         if (tempStorage == null)
         {
-            tempStorage = new Hashtable();
+            tempStorage = new Hashtable<String, Object>();
         }
         return tempStorage;
     }
@@ -605,7 +612,7 @@ public class TorqueUser
      *
      * @param storage A Hashtable.
      */
-    public void setTempStorage(Hashtable tempStorage)
+    public void setTempStorage(Hashtable<String, Object> tempStorage)
     {
         if (tempStorage != null)
         {

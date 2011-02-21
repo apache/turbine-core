@@ -68,6 +68,8 @@ public abstract class VelocityActionEvent extends ActionEvent
      * @param data A Turbine RunData object.
      * @exception Exception a generic exception.
      */
+    @Deprecated
+    @Override
     public abstract void doPerform(RunData data)
             throws Exception;
 
@@ -77,10 +79,11 @@ public abstract class VelocityActionEvent extends ActionEvent
 	 * @param data Turbine information.
 	 * @exception Exception a generic exception.
 	 */
-	public void doPerform(PipelineData pipelineData)
+	@Override
+    public void doPerform(PipelineData pipelineData)
 			throws Exception
 	{
-	      RunData data = (RunData) getRunData(pipelineData);
+	      RunData data = getRunData(pipelineData);
 	      doPerform(data);
 	}
     /**
@@ -100,6 +103,8 @@ public abstract class VelocityActionEvent extends ActionEvent
      * @param data A Turbine RunData object.
      * @exception Exception a generic exception.
      */
+    @Deprecated
+    @Override
     protected void perform(RunData data)
             throws Exception
     {
@@ -125,16 +130,17 @@ public abstract class VelocityActionEvent extends ActionEvent
      * @param data A Turbine RunData object.
      * @exception Exception a generic exception.
      */
+    @Override
     protected void perform(PipelineData pipelineData)
             throws Exception
     {
-	    RunData data = (RunData) getRunData(pipelineData);
         try
         {
             if (!initialized)
             {
                 initialize();
             }
+
             executeEvents(pipelineData, TurbineVelocity.getContext(pipelineData));
         }
         catch (NoSuchMethodException e)
@@ -149,6 +155,7 @@ public abstract class VelocityActionEvent extends ActionEvent
      * @param context Velocity context information.
      * @exception Exception a generic exception.
      */
+    @Deprecated
     public void executeEvents(RunData data, Context context)
             throws Exception
     {
@@ -228,7 +235,7 @@ public abstract class VelocityActionEvent extends ActionEvent
     public void executeEvents(PipelineData pipelineData, Context context)
             throws Exception
     {
-	    RunData data = (RunData) getRunData(pipelineData);
+	    RunData data = getRunData(pipelineData);
         // Name of the button.
         String theButton = null;
 

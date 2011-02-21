@@ -25,9 +25,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-
-import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.services.template.TemplateEngineService;
+import org.apache.turbine.services.template.TurbineTemplate;
 
 /**
  * A base class for the various mappers which contains common
@@ -46,7 +45,7 @@ public abstract class BaseMapper
     private int cacheSize = 5;
 
     /** The internal template -> name mapping cache */
-    private Map templateCache = null;
+    private Map<String, String> templateCache = null;
 
     /** The name of the default property to pull from the Template Engine Service if the default is requested */
     protected String defaultProperty;
@@ -65,6 +64,7 @@ public abstract class BaseMapper
      */
     public BaseMapper()
     {
+        // empty
     }
 
     /**
@@ -146,7 +146,7 @@ public abstract class BaseMapper
     {
         if (useCache)
         {
-            templateCache = new HashMap(cacheSize);
+            templateCache = new HashMap<String, String>(cacheSize);
         }
     }
 
@@ -199,7 +199,7 @@ public abstract class BaseMapper
 
         if (useCache && templateCache.containsKey(template))
         {
-            return (String) templateCache.get(template);
+            return templateCache.get(template);
         }
 
         String res = doMapping(template);

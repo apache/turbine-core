@@ -20,7 +20,6 @@ package org.apache.turbine.om.security;
  */
 
 import java.io.Serializable;
-
 import java.util.Hashtable;
 
 import javax.servlet.http.HttpSessionBindingListener;
@@ -150,7 +149,7 @@ public interface User
      *
      * @return A Hashtable.
      */
-    Hashtable getPermStorage();
+    Hashtable<String, Object> getPermStorage();
 
     /**
      * This should only be used in the case where we want to save the
@@ -158,7 +157,7 @@ public interface User
      *
      * @return A Hashtable.
      */
-    Hashtable getTempStorage();
+    Hashtable<String, Object> getTempStorage();
 
     /**
      * Get an object from temporary storage.
@@ -286,7 +285,7 @@ public interface User
      *
      * @param storage A Hashtable.
      */
-    void setPermStorage(Hashtable storage);
+    void setPermStorage(Hashtable<String, Object> storage);
 
     /**
      * This should only be used in the case where we want to save the
@@ -294,7 +293,7 @@ public interface User
      *
      * @param storage A Hashtable.
      */
-    void setTempStorage(Hashtable storage);
+    void setTempStorage(Hashtable<String, Object> storage);
 
     /**
      * Put an object into temporary storage.

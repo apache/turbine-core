@@ -22,14 +22,12 @@ package org.apache.turbine.util;
 
 
 import java.util.StringTokenizer;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.turbine.Turbine;
-import org.apache.turbine.util.uri.URIConstants;
 
 /**
  * This is where common Servlet manipulation routines should go.

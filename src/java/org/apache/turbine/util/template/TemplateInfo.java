@@ -21,8 +21,8 @@ package org.apache.turbine.util.template;
  */
 
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
@@ -51,7 +51,7 @@ public class TemplateInfo
     private RunData data = null;
 
     /* Place to store information about templates. */
-    private Map tempStorage = null;
+    private Map<String, Object> tempStorage = null;
 
     /**
      * Constructor
@@ -61,7 +61,7 @@ public class TemplateInfo
     public TemplateInfo(RunData data)
     {
         this.data = data;
-        tempStorage = new HashMap(10);
+        tempStorage = new HashMap<String, Object>(10);
     }
 
     /**

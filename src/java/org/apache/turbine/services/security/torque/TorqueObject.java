@@ -20,12 +20,10 @@ package org.apache.turbine.services.security.torque;
  */
 
 import java.io.Serializable;
-
 import java.sql.Connection;
 
 import org.apache.torque.om.ObjectKey;
 import org.apache.torque.om.Persistent;
-
 import org.apache.turbine.om.security.SecurityEntity;
 import org.apache.turbine.util.security.TurbineSecurityException;
 
@@ -56,6 +54,7 @@ public abstract class TorqueObject
      */
     public TorqueObject()
     {
+        // empty
     }
 
     /**
@@ -258,6 +257,7 @@ public abstract class TorqueObject
      * @param obj The object to compare to.
      * @return    Whether equal to the object specified.
      */
+    @Override
     public boolean equals(Object obj)
     {
         if (obj != null && obj instanceof TorqueObject)
@@ -302,6 +302,7 @@ public abstract class TorqueObject
      *
      * @return an <code>int</code> value
      */
+    @Override
     public int hashCode()
     {
         ObjectKey ok = getPrimaryKey();

@@ -70,6 +70,7 @@ public class TorqueSecurityService
      * @exception InitializationException A problem occured during initialization
      */
 
+    @Override
     public void init()
         throws InitializationException
     {
@@ -111,8 +112,8 @@ public class TorqueSecurityService
         }
         try
         {
-            Hashtable roles = new Hashtable();
-            Hashtable permissions = new Hashtable();
+            Hashtable<Group, RoleSet> roles = new Hashtable<Group, RoleSet>();
+            Hashtable<Group, PermissionSet> permissions = new Hashtable<Group, PermissionSet>();
             // notify the state modifiers (writers) that we want to create
             // the snapshot.
             lockShared();
@@ -120,10 +121,8 @@ public class TorqueSecurityService
             // construct the snapshot:
 
             // foreach group in the system
-            for (Iterator groupsIterator = getAllGroups().iterator();
-                 groupsIterator.hasNext();)
+            for (Group group : getAllGroups())
             {
-                Group group = (Group) groupsIterator.next();
                 // get roles of user in the group
                 RoleSet groupRoles = RolePeerManager.retrieveSet(user, group);
                 // put the Set into roles(group)
@@ -131,10 +130,8 @@ public class TorqueSecurityService
                 // collect all permissions in this group
                 PermissionSet groupPermissions = new PermissionSet();
                 // foreach role in Set
-                for (Iterator rolesIterator = groupRoles.iterator();
-                     rolesIterator.hasNext();)
+                for (Role role : groupRoles)
                 {
-                    Role role = (Role) rolesIterator.next();
                     // get permissions of the role
                     PermissionSet rolePermissions =
                         PermissionPeerManager.retrieveSet(role);
@@ -597,7 +594,7 @@ public class TorqueSecurityService
                 throw new DataBackendException(
                     "getPermissions(Object) failed", e);
             }
-            
+
             return new PermissionSet(permissions);
         }
         else
@@ -1189,6 +1186,7 @@ public class TorqueSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      */
+    @Override
     public GroupSet getAllGroups() throws DataBackendException
     {
         return getGroups(new Criteria());
@@ -1202,6 +1200,7 @@ public class TorqueSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      */
+    @Override
     public PermissionSet getAllPermissions() throws DataBackendException
     {
         return getPermissions(new Criteria());
@@ -1215,6 +1214,7 @@ public class TorqueSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      */
+    @Override
     public RoleSet getAllRoles() throws DataBackendException
     {
         return getRoles(new Criteria());
@@ -1235,7 +1235,7 @@ public class TorqueSecurityService
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
      */
-    public List getUserList(Object criteria) throws DataBackendException
+    public List<User> getUserList(Object criteria) throws DataBackendException
     {
         return getUserManager().retrieveList(criteria);
     }
