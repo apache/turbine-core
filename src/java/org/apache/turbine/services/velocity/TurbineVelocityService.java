@@ -29,8 +29,6 @@ import java.io.Writer;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.servlet.ServletConfig;
-
 import org.apache.commons.collections.ExtendedProperties;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
@@ -49,7 +47,7 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.event.EventCartridge;
 import org.apache.velocity.app.event.MethodExceptionEventHandler;
 import org.apache.velocity.context.Context;
-import org.apache.velocity.runtime.log.SimpleLog4JLogSystem;
+import org.apache.velocity.runtime.log.Log4JLogChute;
 
 /**
  * This is a Service that can process Velocity templates from within a
@@ -117,6 +115,7 @@ public class TurbineVelocityService
      * @throws InitializationException Something went wrong in the init
      *         stage
      */
+    @Override
     public void init()
             throws InitializationException
     {
@@ -509,7 +508,7 @@ public class TurbineVelocityService
         catchErrors = conf.getBoolean(CATCH_ERRORS_KEY, CATCH_ERRORS_DEFAULT);
 
         conf.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS,
-                SimpleLog4JLogSystem.class.getName());
+                Log4JLogChute.class.getName());
         conf.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM
                 + ".log4j.category", "velocity");
 
@@ -632,9 +631,10 @@ public class TurbineVelocityService
      * @param template String template to search for
      * @return True if the template can be loaded by Velocity
      */
+    @Override
     public boolean templateExists(String template)
     {
-        return Velocity.templateExists(template);
+        return Velocity.resourceExists(template);
     }
 
     /**
