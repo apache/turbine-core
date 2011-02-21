@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
@@ -245,13 +245,13 @@
        it (the "format" rule is also used to parse the date if there are no
        "formatn" rules or they are not able to parse it).  In order to
        retrieve the correctly formatted DateString value you need to use
-       <em>$group.foo.StringValue</em> rather than <em>$group.foo.Value</em>
+       $group.foo.StringValue rather than $group.foo.Value
        (you can do this for all values, not just DateString).</action>
 <action dev="" type="fix">Intake now makes use of the the emptyValue attribute from the field
        elements when mapping from the group to the object when no value has
        been set.  This makes it possible to clear values in an existing object
        that is being overwritten with Intake data using
-       <em>group.setProperties(obj)</em> (or you can provide non-null values
+       group.setProperties(obj) (or you can provide non-null values
        in your intake.xml file).  Make sure you do not inadvertently include
        the primary key for the object in the intake group without actually
        setting it to the appropriate value (it shouldn't be in the group
@@ -259,11 +259,11 @@
 <action dev="" type="fix">Fixed the intake DateString flexible rule so that it applies to the
        format rules and not just to the default locale format.</action>
 <action dev="" type="fix"> DateFormatter now allows for a differnet date format to be provided
-       via <em>tool.dateTool.format</em> in TurbineResources.properties.</action>
+       via tool.dateTool.format in TurbineResources.properties.</action>
 <action dev="" type="fix">DirectResponseLayout is provided to allow direct writing to
        ServletOutputStream when VelocityOnlyLayout is the default.  To use it
-       you need to add <em>data.declareDirectResponse();</em> and then
-       <em>data.setLayout("DirectResponseLayout");</em> to your action class.
+       you need to add data.declareDirectResponse(); and then
+       data.setLayout("DirectResponseLayout"); to your action class.
        Thanks to Peter Courcoux for the code.</action>
 </release>
 <release version="PRE 2.4" description="Older Changes Logs">
