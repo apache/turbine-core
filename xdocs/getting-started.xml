@@ -34,33 +34,23 @@ structure of Turbine, please refer to the <a href="fsd.html">Functional
 Specification Document (FSD)</a> as well as the other documentation that
 is available.
 </p>
-
-<p>
-Currently, the best way to get started with Turbine is to use the
-<a href="/turbine/meta/">Maven Environment for Turbine Applications (M.E.T.A.)</a>.
- </p>
 </section>
 
 <section name="Code Organization">
 <p>
-Turbine can be used in three different ways depending on what you need.
-You can choose to only use one way or choose to use all three. It is up
+Turbine can be used in two different ways depending on what you need.
+You can choose to only use one way or choose to use both. It is up
 to you.
 </p>
 
 <ul>
-<li>As a servlet framework with Turbine as the controller.</li>
-<li>As a framework of useful code in your application.</li>
-<li>As a Object-Relational Tool.</li>
+    <li>As a servlet framework with Turbine as the controller.</li>
+    <li>As a framework of useful code in your application.</li>
 </ul>
 
 <p>
 In all cases, it means that you simply link against the API and code
-provided in the turbine.jar file. In other words, if you want to only
-use the Object Relational aspects of Turbine, then you would use Torque
-to build your Object Relational code and then add the turbine.jar into
-your classpath. Another example is if you want to use Turbine's
-connection pool code. All you need to do is tell Turbine where its
+provided in the turbine.jar file. All you need to do is tell Turbine where its
 configuration file is, add turbine.jar to your classpath and then add
 the appropriate Turbine Java code into your application.
 </p>
@@ -83,11 +73,7 @@ the <a href="fsd.html">funtional specification document</a>.
 </li>
 <li>
 org.apache.turbine.om - OM stands for Object Model. This is where the
-code that represents Turbine's Object Model lives. The code in here is
-for handling a lot of Turbine's RDBMS relationships. For example, there
-is code that represents what a Turbine User is as well as code for the
-BaseObject and BasePeer which is for the Peer based Object Relational
-Tool.
+code that represents Turbine's Security Object Model lives.
 </li>
 <li>
 org.apache.turbine.services - This is where the Services Framework
@@ -99,7 +85,7 @@ things.
 <li>
 org.apache.turbine.util - The Util package is just that. A package of
 utility code that is used within Turbine. There is code that will allow
-you to easily send template based email using WebMacro or Velocity as
+you to easily send template based email using Velocity as
 well as many other commonly used web application tools.
 </li>
 </ul>
@@ -130,7 +116,7 @@ TurbineConfig object.
 <section name="Further Questions and Comments">
 <p>
 If you have further questions or comments, please send them to the <a
-href="http://turbine.apache.org/contact.html">Turbine Mailing lists</a>.
+href="mail-lists.html">Turbine Mailing lists</a>.
 </p>
 </section>
 

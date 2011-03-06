@@ -187,7 +187,7 @@
       <roles>
         <role>Java Developer</role>
       </roles>
-      <timezone>2</timezone>
+      <timezone>1</timezone>
     </developer>
     <developer>
       <id>kschrader</id>
@@ -213,7 +213,7 @@
       <roles>
         <role>Java Developer</role>
       </roles>
-      <timezone>2</timezone>
+      <timezone>1</timezone>
     </developer>
     <developer>
       <name>Ludwig Magnusson</name>
@@ -223,7 +223,7 @@
       <roles>
         <role>Java Developer</role>
       </roles>
-      <timezone>2</timezone>
+      <timezone>1</timezone>
     </developer>
   </developers>
   <contributors>
@@ -670,18 +670,6 @@
         <configuration> 
           <aggregate>false</aggregate>
         </configuration> 
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <!-- Exclude the navigation file for Maven 1 sites
-               and the changes file used by the changes-plugin,
-               as they interfere with the site generation. -->
-          <moduleExcludes>
-            <xdoc>navigation.xml</xdoc>
-          </moduleExcludes>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
