@@ -34,18 +34,15 @@ coolness. Turbine is well over 200 classes and contains a boat load of
 features and API's. Many of these can also be used indepently of Turbine.
 Almost all of the default implementations can be easily overridden with
 your own implementations. Turbine also has extensive Javadoc documentation
-for nearly all of the classes as well as in-code comments. At the risk
-of sounding snooty &lt;smile>, Turbine is by far the leader of complex
-web application development tools. No other systems come close to being
-as cleanly implemented and executed. It clearly has been developed by the
-people who do web applications on a daily basis and have to constantly
-solve the same problems over and over again.
+for nearly all of the classes as well as in-code comments. It clearly has 
+been developed by the people who do web applications on a daily basis and 
+have to constantly solve the same problems over and over again.
 </p>
 
 <p>
 <strong>All of these features have been made possible thanks to the over
 30 developers (and growing all the time!) who have <a href="team-list.html">
-contributed</a> to Turbine over the last 2+ years.</strong>
+contributed</a> to Turbine over the last 10+ years.</strong>
 </p>
 
 <ul>
@@ -65,18 +62,10 @@ contributed</a> to Turbine over the last 2+ years.</strong>
         Strict MVC guidelines implemented through many interfaces and abstract
         classes as well as through the template systems.</li>
     <li>
-        Object-Relational tools: DatabaseMap/Peers, Village.</li>
-    <li>
-        IDBroker that abstracts the autoinsert/sequence usage from the database</li>
-    <li>
-        Failsafe Job based scheduler system (ie: a Java based cron)</li>
-    <li>
         GlobalCache (Singleton based system for caching data across servlets and
         requests)</li>
     <li>
         DateSelector (utility for building the HTML for popup date menus)</li>
-    <li>
-        File Upload API</li>
     <li>
         Generic Services API for creating Singletons</li>
     <li>
@@ -117,9 +106,9 @@ contributed</a> to Turbine over the last 2+ years.</strong>
     <li>
         Initial application development WAR archive creation tool using Ant</li>
     <li>
-        Turbine Servlet works cleanly with Servlet API 2.1 and higher</li>
+        Turbine Servlet works cleanly with Servlet API 2.4 and higher</li>
     <li>
-        Works with JDK 1.4 and higher - 100% Pure Java</li>
+        Works with JDK 1.6 and higher - 100% Pure Java</li>
 </ul>
 
 </section>

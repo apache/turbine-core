@@ -34,8 +34,8 @@
 </p>
 
 <p>
-  To build Turbine, from the Turbine home directory just run 'mvn install' the project
-  will be compiled, test cases run, and jar files created.
+  To build Turbine, from the Turbine home directory just run <code>mvn install</code> the 
+  project will be compiled, test cases run, and jar files created.
   This will also install the artifact into your local Maven repository as well.
 </p>
 <p>

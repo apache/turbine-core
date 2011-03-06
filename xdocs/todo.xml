@@ -53,7 +53,6 @@ No current items.
 <p>
   <ul>
     <li>Move forward to a component based architecture (avalonization)  (partly done!)</li>
-    <li>"Steal" the pipeline from the Turbine 3 code base  (done!  epugh)</li>
     <li>Decouple the code base into core, components and toolbox</li>
   </ul>
 </p>
