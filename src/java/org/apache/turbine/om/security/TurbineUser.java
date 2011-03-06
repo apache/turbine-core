@@ -53,6 +53,9 @@ import org.apache.turbine.services.security.TurbineSecurity;
  */
 public class TurbineUser extends SecurityObject<User> implements User
 {
+    /** Serial version */
+    private static final long serialVersionUID = 6380024466902321258L;
+
     /** Logging */
     private static Log log = LogFactory.getLog(TurbineUser.class);
 
@@ -63,10 +66,10 @@ public class TurbineUser extends SecurityObject<User> implements User
     private Date lastAccessDate = null;
 
     /** This is data that will survive a servlet engine restart. */
-    private Hashtable permStorage = null;
+    private Hashtable<String, Object> permStorage = null;
 
     /** This is data that will not survive a servlet engine restart. */
-    private Hashtable tempStorage = null;
+    private Hashtable<String, Object> tempStorage = null;
 
     /**
      * Constructor.
@@ -203,11 +206,11 @@ public class TurbineUser extends SecurityObject<User> implements User
      *
      * @return A Hashtable.
      */
-    public Hashtable getPermStorage()
+    public Hashtable<String, Object> getPermStorage()
     {
         if (permStorage == null)
         {
-            permStorage = new Hashtable(10);
+            permStorage = new Hashtable<String, Object>(10);
         }
         return permStorage;
     }
@@ -270,6 +273,7 @@ public class TurbineUser extends SecurityObject<User> implements User
         }
         catch (Exception e)
         {
+            // ignore
         }
         return tmp;
     }
@@ -290,6 +294,7 @@ public class TurbineUser extends SecurityObject<User> implements User
         }
         catch (Exception e)
         {
+            // ignore
         }
         return tmp;
     }
@@ -423,7 +428,7 @@ public class TurbineUser extends SecurityObject<User> implements User
      *
      * @param permStorage A Hashtable.
      */
-    public void setPermStorage(Hashtable permStorage)
+    public void setPermStorage(Hashtable<String, Object> permStorage)
     {
         this.permStorage = permStorage;
     }
@@ -434,11 +439,11 @@ public class TurbineUser extends SecurityObject<User> implements User
      *
      * @return A Hashtable.
      */
-    public Hashtable getTempStorage()
+    public Hashtable<String, Object> getTempStorage()
     {
         if (tempStorage == null)
         {
-            tempStorage = new Hashtable(10);
+            tempStorage = new Hashtable<String, Object>(10);
         }
         return tempStorage;
     }
@@ -449,7 +454,7 @@ public class TurbineUser extends SecurityObject<User> implements User
      *
      * @param storage A Hashtable.
      */
-    public void setTempStorage(Hashtable tempStorage)
+    public void setTempStorage(Hashtable<String, Object> tempStorage)
     {
         this.tempStorage = tempStorage;
     }
@@ -649,6 +654,7 @@ public class TurbineUser extends SecurityObject<User> implements User
      *
      * @return The name of the user.
      */
+    @Override
     public String getName()
     {
         return (String) getPerm(User.USERNAME);
@@ -660,6 +666,7 @@ public class TurbineUser extends SecurityObject<User> implements User
      *
      * @param name The name of the object.
      */
+    @Override
     public void setName(String name)
     {
         setPerm(User.USERNAME, name);

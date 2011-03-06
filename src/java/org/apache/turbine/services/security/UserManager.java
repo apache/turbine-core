@@ -22,7 +22,6 @@ package org.apache.turbine.services.security;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.util.security.DataBackendException;
@@ -111,6 +110,7 @@ public interface UserManager
      *         storage.
      * @deprecated Use retrieveList(Criteria crit)
      */
+    @Deprecated
     User[] retrieve(Object criteria) throws DataBackendException;
 
     /**
@@ -127,7 +127,7 @@ public interface UserManager
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
      */
-    List retrieveList(Object criteria)
+    List<User> retrieveList(Object criteria)
         throws DataBackendException;
 
     /**

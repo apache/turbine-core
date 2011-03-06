@@ -21,8 +21,6 @@ package org.apache.turbine.modules;
  */
 
 
-import java.util.List;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.schedule.JobEntry;
 import org.apache.turbine.util.RunData;
@@ -35,8 +33,8 @@ import org.apache.turbine.util.RunData;
  * @version $Id$
  */
 public class ScheduledJobLoader
-    extends GenericLoader
-    implements Loader
+    extends GenericLoader<ScheduledJob>
+    implements Loader<ScheduledJob>
 {
     /** The single instance of this class. */
     private static ScheduledJobLoader instance = new ScheduledJobLoader();
@@ -61,7 +59,7 @@ public class ScheduledJobLoader
             throws Exception
     {
         // Execute job
-        getInstance(name).run(job);
+        getAssembler(name).run(job);
     }
 
     /**
@@ -78,6 +76,7 @@ public class ScheduledJobLoader
      * @param name Name of object that will execute the job.
      * @exception Exception a generic exception.
      */
+    @Override
     public void exec(RunData data, String name)
             throws Exception
     {
@@ -94,10 +93,10 @@ public class ScheduledJobLoader
      * @return A ScheduledJob with the specified name, or null.
      * @exception Exception a generic exception.
      */
-    public Assembler getAssembler(String name)
+    public ScheduledJob getAssembler(String name)
         throws Exception
     {
-        return getInstance(name);
+        return getAssembler(ScheduledJob.NAME, name);
     }
 
     /**
@@ -106,52 +105,6 @@ public class ScheduledJobLoader
     public int getCacheSize()
     {
         return ScheduledJobLoader.getConfiguredCacheSize();
-    }
-
-    /**
-     * Pulls out an instance of the object by name.  Name is just the
-     * single name of the object.
-     *
-     * @param name Name of object instance.
-     * @return An ScheduledJob with the specified name, or null.
-     * @exception Exception a generic exception.
-     */
-    public ScheduledJob getInstance(String name)
-            throws Exception
-    {
-        ScheduledJob job = null;
-
-        try
-        {
-            if (ab != null)
-            {
-                // Attempt to load the job
-                job = (ScheduledJob) ab.getAssembler(ScheduledJob.NAME, name);
-            }
-        }
-        catch (ClassCastException cce)
-        {
-            // This can alternatively let this exception be thrown
-            // So that the ClassCastException is shown in the
-            // browser window.  Like this it shows "Screen not Found"
-            job = null;
-        }
-
-        if (job == null)
-        {
-            // If we did not find a scheduled job we should try and give
-            // the user a reason for that...
-            // FIX ME: The AssemblerFactories should each add it's
-            // own string here...
-            List packages = GenericLoader.getPackages();
-
-            throw new ClassNotFoundException(
-                    "\n\n\tRequested ScheduledJob not found: " + name +
-                    "\n\tTurbine looked in the following " +
-                    "modules.packages path: \n\t" + packages.toString() + "\n");
-        }
-
-        return job;
     }
 
     /**
@@ -166,7 +119,7 @@ public class ScheduledJobLoader
 
     /**
      * Helper method to get the configured cache size for this module
-     * 
+     *
      * @return the configure cache size
      */
     private static int getConfiguredCacheSize()

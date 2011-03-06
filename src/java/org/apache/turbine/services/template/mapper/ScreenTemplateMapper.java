@@ -22,7 +22,6 @@ package org.apache.turbine.services.template.mapper;
 
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.turbine.services.template.TemplateEngineService;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.template.TurbineTemplate;
@@ -47,6 +46,7 @@ public class ScreenTemplateMapper
      */
     public ScreenTemplateMapper()
     {
+        super();
     }
 
     /**
@@ -56,6 +56,7 @@ public class ScreenTemplateMapper
      * @param template The template name.
      * @return The matching screen name.
      */
+    @Override
     public String doMapping(String template)
     {
         String [] components = StringUtils.split(template, String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR));

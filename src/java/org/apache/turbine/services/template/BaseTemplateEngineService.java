@@ -24,7 +24,6 @@ package org.apache.turbine.services.template;
 import java.util.Hashtable;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.turbine.services.TurbineBaseService;
 
 /**
@@ -50,7 +49,7 @@ public abstract class BaseTemplateEngineService
      * 5) default navigation
      * 6) default error screen
      */
-    private Hashtable configuration = new Hashtable();
+    private final Hashtable<String, Object> configuration = new Hashtable<String, Object>();
 
     /**
      * @see org.apache.turbine.services.template.TemplateEngineService#registerConfiguration
@@ -64,7 +63,7 @@ public abstract class BaseTemplateEngineService
     /**
      * @see org.apache.turbine.services.template.TemplateEngineService#getTemplateEngineServiceConfiguration
      */
-    public Hashtable getTemplateEngineServiceConfiguration()
+    public Hashtable<String, Object> getTemplateEngineServiceConfiguration()
     {
         return configuration;
     }

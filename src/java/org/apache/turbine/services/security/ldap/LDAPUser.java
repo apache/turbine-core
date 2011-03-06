@@ -49,6 +49,9 @@ import org.apache.turbine.services.security.TurbineSecurity;
 public class LDAPUser implements User
 {
 
+    /** Serial version */
+    private static final long serialVersionUID = -7919950833581382438L;
+
     /** Logging */
     private static Log log = LogFactory.getLog(LDAPUser.class);
 
@@ -64,10 +67,10 @@ public class LDAPUser implements User
     private int timeout = 15;
 
     /** This is data that will survive a servlet engine restart. */
-    private Hashtable permStorage = null;
+    private Hashtable<String, Object> permStorage = null;
 
     /** This is data that will not survive a servlet engine restart. */
-    private Hashtable tempStorage = null;
+    private Hashtable<String, Object> tempStorage = null;
 
     /**
      * Constructor.
@@ -76,8 +79,8 @@ public class LDAPUser implements User
     public LDAPUser()
     {
         createDate = new java.util.Date();
-        tempStorage = new Hashtable(10);
-        permStorage = new Hashtable(10);
+        tempStorage = new Hashtable<String, Object>(10);
+        permStorage = new Hashtable<String, Object>(10);
         setHasLoggedIn(Boolean.FALSE);
     }
 
@@ -447,11 +450,11 @@ public class LDAPUser implements User
      *
      * @return A Hashtable.
      */
-    public Hashtable getPermStorage()
+    public Hashtable<String, Object> getPermStorage()
     {
         if (this.permStorage == null)
         {
-            this.permStorage = new Hashtable();
+            this.permStorage = new Hashtable<String, Object>();
         }
         return this.permStorage;
     }
@@ -720,7 +723,7 @@ public class LDAPUser implements User
      *
      * @param stuff A Hashtable.
      */
-    public void setPermStorage(Hashtable stuff)
+    public void setPermStorage(Hashtable<String, Object> stuff)
     {
         this.permStorage = stuff;
     }
@@ -731,11 +734,11 @@ public class LDAPUser implements User
      *
      * @return A Hashtable.
      */
-    public Hashtable getTempStorage()
+    public Hashtable<String, Object> getTempStorage()
     {
         if (this.tempStorage == null)
         {
-            this.tempStorage = new Hashtable();
+            this.tempStorage = new Hashtable<String, Object>();
         }
         return this.tempStorage;
     }
@@ -746,7 +749,7 @@ public class LDAPUser implements User
      *
      * @param storage A Hashtable.
      */
-    public void setTempStorage(Hashtable storage)
+    public void setTempStorage(Hashtable<String, Object> storage)
     {
         this.tempStorage = storage;
     }
@@ -903,6 +906,7 @@ public class LDAPUser implements User
      */
     public void setId(int id)
     {
+        // not implemented
     }
 
     /**

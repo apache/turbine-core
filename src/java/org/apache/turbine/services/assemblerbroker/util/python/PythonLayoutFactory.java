@@ -21,7 +21,6 @@ package org.apache.turbine.services.assemblerbroker.util.python;
  */
 
 
-import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.LayoutLoader;
 import org.apache.turbine.modules.Loader;
@@ -37,7 +36,7 @@ import org.apache.turbine.modules.Loader;
  * @version $Id$
  */
 public class PythonLayoutFactory
-        extends PythonBaseFactory
+        extends PythonBaseFactory<Layout>
 {
     /**
      * Get an Assembler.
@@ -46,7 +45,7 @@ public class PythonLayoutFactory
      * @return an Assembler
      * @throws Exception generic exception
      */
-    public Assembler getAssembler(String name)
+    public Layout getAssembler(String name)
         throws Exception
     {
         return getAssembler(Layout.PREFIX, name);
@@ -54,10 +53,11 @@ public class PythonLayoutFactory
 
     /**
      * Get the loader for this type of assembler
-     * 
+     *
      * @return a Loader
      */
-    public Loader getLoader()
+    @Override
+    public Loader<Layout> getLoader()
     {
         return LayoutLoader.getInstance();
     }

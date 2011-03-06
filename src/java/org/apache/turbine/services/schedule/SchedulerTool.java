@@ -58,6 +58,7 @@ public class SchedulerTool implements ApplicationTool
      */
     public void refresh()
     {
+        // empty
     }
 
     /**

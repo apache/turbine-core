@@ -93,6 +93,7 @@ public abstract class TurbineBaseService
     @Deprecated
     public void init(RunData data) throws InitializationException
     {
+        // empty
     }
 
     /**
@@ -104,6 +105,7 @@ public abstract class TurbineBaseService
      */
     public void init(PipelineData data) throws InitializationException
     {
+        // empty
     }
 
 

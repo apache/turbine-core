@@ -86,6 +86,9 @@ package org.apache.turbine.util;
  */
 public class TurbineException extends Exception
 {
+    /** Serial version */
+    private static final long serialVersionUID = 6287570348053189763L;
+
     /**
      * Constructs a new <code>TurbineException</code> without specified
      * detail message.

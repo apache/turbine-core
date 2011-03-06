@@ -60,7 +60,7 @@ public class TurbinePipeline
      * a subscript equal to <code>values.length</code> if the basic
      * Valve is currently being processed.
      */
-    protected ThreadLocal state= new ThreadLocal();
+    protected ThreadLocal<Integer> state= new ThreadLocal<Integer>();
 
     /**
      * @see org.apache.turbine.Pipeline#initialize()
@@ -68,8 +68,9 @@ public class TurbinePipeline
     public void initialize()
         throws Exception
     {
-        if (state==null){
-            state = new ThreadLocal();
+        if (state==null)
+        {
+            state = new ThreadLocal<Integer>();
         }
 
         // Valve implementations are added to this Pipeline using the
@@ -174,7 +175,7 @@ public class TurbinePipeline
         throws TurbineException, IOException
     {
         // Initialize the per-thread state for this thread
-        state.set(new Integer(0));
+        state.set(Integer.valueOf(0));
 
         // Invoke the first Valve in this pipeline for this request
         invokeNext(pipelineData);
@@ -187,14 +188,14 @@ public class TurbinePipeline
         throws TurbineException, IOException
     {
         // Identify the current subscript for the current request thread
-        Integer current = (Integer) state.get();
+        Integer current = state.get();
         int subscript = current.intValue();
 
         if (subscript < valves.length)
         {
             // Invoke the requested Valve for the current request
             // thread and increment its thread-local state.
-            state.set(new Integer(subscript + 1));
+            state.set(Integer.valueOf(subscript + 1));
             valves[subscript].invoke(pipelineData, this);
         }
     }

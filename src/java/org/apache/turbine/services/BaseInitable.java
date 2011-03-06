@@ -49,6 +49,7 @@ public class BaseInitable
      */
     public BaseInitable()
     {
+        // empty
     }
 
     /**
@@ -84,6 +85,7 @@ public class BaseInitable
      */
     public void init(Object data) throws InitializationException
     {
+        // empty
     }
 
     /**
@@ -98,6 +100,7 @@ public class BaseInitable
      */
     public void init() throws InitializationException
     {
+        // empty
     }
 
     /**

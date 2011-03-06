@@ -24,7 +24,6 @@ package org.apache.turbine.pipeline;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -66,19 +65,21 @@ public class DefaultLoginValve
 
     /**
      * Initialize this valve for use in a pipeline.
-     * 
+     *
      * @see org.apache.turbine.pipeline.AbstractValve#initialize()
      */
+    @Override
     public void initialize() throws Exception
     {
         super.initialize();
-        
+
         this.actionLoader = (ActionLoader)TurbineAssemblerBroker.getLoader(Action.NAME);
     }
 
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
      */
+    @Override
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
@@ -131,24 +132,24 @@ public class DefaultLoginValve
             if (actionName.equalsIgnoreCase
                 (Turbine.getConfiguration().getString(TurbineConstants.ACTION_LOGIN_KEY)))
             {
-                Enumeration names = data.getSession().getAttributeNames();
+                @SuppressWarnings("unchecked")
+                Enumeration<String> names = data.getSession().getAttributeNames();
                 if (names != null)
                 {
                     // copy keys into a new list, so we can clear the session
                     // and not get ConcurrentModificationException
-                    List nameList = new ArrayList();
+                    List<String> nameList = new ArrayList<String>();
                     while (names.hasMoreElements())
                     {
                         nameList.add(names.nextElement());
                     }
 
                     HttpSession session = data.getSession();
-                    Iterator nameIter = nameList.iterator();
-                    while (nameIter.hasNext())
+                    for (String name : nameList)
                     {
                         try
                         {
-                            session.removeAttribute((String)nameIter.next());
+                            session.removeAttribute(name);
                         }
                         catch (IllegalStateException invalidatedSession)
                         {
@@ -157,7 +158,6 @@ public class DefaultLoginValve
                     }
                 }
             }
-
 
             actionLoader.exec(pipelineData, data.getAction());
             cleanupTemplateContext(data);

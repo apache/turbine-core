@@ -28,15 +28,14 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.fulcrum.intake.IntakeServiceFacade;
 import org.apache.fulcrum.intake.IntakeException;
+import org.apache.fulcrum.intake.IntakeServiceFacade;
 import org.apache.fulcrum.intake.Retrievable;
 import org.apache.fulcrum.intake.model.Group;
+import org.apache.fulcrum.parser.ValueParser;
 import org.apache.fulcrum.pool.Recyclable;
-
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.util.RunData;
-import org.apache.fulcrum.parser.ValueParser;
 
 
 /**
@@ -62,21 +61,22 @@ public class IntakeTool
     public static final String INTAKE_GRP = "intake-grp";
 
     /** Groups from intake.xml */
-    protected HashMap groups;
+    protected HashMap<String, Group> groups;
 
     /** ValueParser instance */
     protected ValueParser pp;
 
-    private HashMap declaredGroups = new HashMap();
-    private StringBuffer allGroupsSB = new StringBuffer(256);
-    private StringBuffer groupSB = new StringBuffer(128);
+    private final HashMap<String, Group> declaredGroups = new HashMap<String, Group>();
+    private final StringBuffer allGroupsSB = new StringBuffer(256);
+    private final StringBuffer groupSB = new StringBuffer(128);
 
     /** The cache of PullHelpers. **/
-    private Map pullMap;
+    private final Map<String, IntakeTool.PullHelper> pullMap;
 
     /**
      * Constructor
      */
+    @SuppressWarnings("null")
     public IntakeTool()
     {
         String[] groupNames = IntakeServiceFacade.getGroupNames();
@@ -85,8 +85,8 @@ public class IntakeTool
         {
             groupCount = groupNames.length;
         }
-        groups = new HashMap((int) (1.25 * groupCount + 1));
-        pullMap = new HashMap((int) (1.25 * groupCount + 1));
+        groups = new HashMap<String, Group>((int) (1.25 * groupCount + 1));
+        pullMap = new HashMap<String, IntakeTool.PullHelper>((int) (1.25 * groupCount + 1));
 
         for (int i = groupCount - 1; i >= 0; i--)
         {
@@ -134,7 +134,7 @@ public class IntakeTool
                     }
                 }
             }
-            catch (Exception e)
+            catch (IntakeException e)
             {
                 log.error(e);
             }
@@ -280,7 +280,7 @@ public class IntakeTool
             String inputKey = IntakeServiceFacade.getGroupKey(groupName) + key;
             if (groups.containsKey(inputKey))
             {
-                g = (Group) groups.get(inputKey);
+                g = groups.get(inputKey);
             }
             else if (create)
             {
@@ -299,7 +299,6 @@ public class IntakeTool
          * @return an Intake Group
          */
         public Group mapTo(Retrievable obj)
-                throws IntakeException
         {
             Group g = null;
 
@@ -309,7 +308,7 @@ public class IntakeTool
                         + obj.getQueryKey();
                 if (groups.containsKey(inputKey))
                 {
-                    g = (Group) groups.get(inputKey);
+                    g = groups.get(inputKey);
                 }
                 else
                 {
@@ -319,7 +318,7 @@ public class IntakeTool
 
                 return g.init(obj);
             }
-            catch (Exception e)
+            catch (IntakeException e)
             {
                 log.error(e);
             }
@@ -332,9 +331,8 @@ public class IntakeTool
      * get a specific group
      */
     public PullHelper get(String groupName)
-            throws IntakeException
     {
-        return (PullHelper) pullMap.get(groupName);
+        return pullMap.get(groupName);
     }
 
     /**
@@ -346,7 +344,7 @@ public class IntakeTool
     public PullHelper get(String groupName, boolean throwExceptions)
             throws IntakeException
     {
-        return (PullHelper) pullMap.get(groupName);
+        return pullMap.get(groupName);
     }
 
     /**

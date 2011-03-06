@@ -21,13 +21,12 @@ package org.apache.turbine.services.assemblerbroker.util.java;
  */
 
 
-import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.LayoutLoader;
 import org.apache.turbine.modules.Loader;
 
 /**
- * A screen factory that attempts to load a java class from
+ * A layout factory that attempts to load a java class from
  * the module packages defined in the TurbineResource.properties.
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
@@ -35,7 +34,7 @@ import org.apache.turbine.modules.Loader;
  * @version $Id$
  */
 public class JavaLayoutFactory
-        extends JavaBaseFactory
+        extends JavaBaseFactory<Layout>
 {
     /**
      * Get an Assembler.
@@ -43,17 +42,18 @@ public class JavaLayoutFactory
      * @param name name of the requested Assembler
      * @return an Assembler
      */
-    public Assembler getAssembler(String name)
+    public Layout getAssembler(String name)
     {
         return getAssembler(Layout.PREFIX, name);
     }
 
     /**
      * Get the loader for this type of assembler
-     * 
+     *
      * @return a Loader
      */
-    public Loader getLoader()
+    @Override
+    public Loader<Layout> getLoader()
     {
         return LayoutLoader.getInstance();
     }

@@ -22,7 +22,6 @@ package org.apache.turbine.services.template.mapper;
 
 
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.turbine.services.template.TemplateService;
 
 /**
@@ -43,6 +42,7 @@ public class DirectMapper
      */
     public DirectMapper()
     {
+        super();
     }
 
     /**
@@ -53,6 +53,7 @@ public class DirectMapper
      * @param template The template name.
      * @return A class name for the given template.
      */
+    @Override
     public String doMapping(String template)
     {
         String [] components

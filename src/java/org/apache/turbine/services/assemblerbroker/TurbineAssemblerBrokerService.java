@@ -59,30 +59,30 @@ public class TurbineAssemblerBrokerService
             = LogFactory.getLog(TurbineAssemblerBrokerService.class);
 
     /** A structure that holds the registered AssemblerFactories */
-    private Map factories = null;
-    
+    private Map<String, List<AssemblerFactory>> factories = null;
+
     /** A cache that holds the generated Assemblers */
-    private Map assemblerCache = null;
-    
+    private Map<String, Assembler> assemblerCache = null;
+
     /** A cache that holds the Loaders */
-    private Map loaderCache = null;
-    
+    private Map<String, Loader> loaderCache = null;
+
     /** Caching on/off */
     private boolean isCaching;
-    
+
     /**
      * Get a list of AssemblerFactories of a certain type
      *
      * @param type type of Assembler
      * @return list of AssemblerFactories
      */
-    private List getFactoryGroup(String type)
+    private List<AssemblerFactory> getFactoryGroup(String type)
     {
         if (!factories.containsKey(type))
         {
-            factories.put(type, new Vector());
+            factories.put(type, new Vector<AssemblerFactory>());
         }
-        return (List) factories.get(type);
+        return factories.get(type);
     }
 
     /**
@@ -131,19 +131,21 @@ public class TurbineAssemblerBrokerService
      *
      * @throws InitializationException
      */
+    @SuppressWarnings("unchecked") // as long as commons-collections does not use generics
+    @Override
     public void init()
         throws InitializationException
     {
-        factories = new HashMap();
-        
+        factories = new HashMap<String, List<AssemblerFactory>>();
+
         try
         {
             Configuration conf = getConfiguration();
-            
+
             for (Iterator i = conf.getKeys(); i.hasNext();)
             {
                 String type = (String)i.next();
-                
+
                 if (!"classname".equalsIgnoreCase(type))
                 {
                     registerFactories(type);
@@ -155,21 +157,21 @@ public class TurbineAssemblerBrokerService
             throw new InitializationException(
                     "AssemblerBrokerService failed to initialize", e);
         }
-        
+
         isCaching = Turbine.getConfiguration()
             .getBoolean(TurbineConstants.MODULE_CACHE_KEY,
                         TurbineConstants.MODULE_CACHE_DEFAULT);
-     
+
         if (isCaching)
         {
             int cacheSize = Turbine.getConfiguration()
                 .getInt(TurbineConstants.MODULE_CACHE_SIZE_KEY,
                         TurbineConstants.MODULE_CACHE_SIZE_DEFAULT);
-            
+
             assemblerCache = new LRUMap(cacheSize);
             loaderCache = new LRUMap(cacheSize);
         }
-        
+
         setInit(true);
     }
 
@@ -200,21 +202,21 @@ public class TurbineAssemblerBrokerService
     {
         String key = type + ":" + name;
         Assembler assembler = null;
-        
+
         if (isCaching && assemblerCache.containsKey(key))
         {
-            assembler = (Assembler)assemblerCache.get(key);
+            assembler = assemblerCache.get(key);
             log.debug("Found " + key + " in the cache!");
         }
         else
         {
             log.debug("Loading " + key);
-            List facs = getFactoryGroup(type);
-    
-            for (Iterator it = facs.iterator(); (assembler == null) && it.hasNext();)
+            List<AssemblerFactory> facs = getFactoryGroup(type);
+
+            for (Iterator<AssemblerFactory> it = facs.iterator(); (assembler == null) && it.hasNext();)
             {
-                AssemblerFactory fac = (AssemblerFactory) it.next();
-                
+                AssemblerFactory fac = it.next();
+
                 try
                 {
                     assembler = fac.getAssembler(name);
@@ -226,14 +228,14 @@ public class TurbineAssemblerBrokerService
                                                + type + " factory "
                                                + fac.getClass().getName(), e);
                 }
-                
+
                 if (isCaching && assembler != null)
                 {
                     assemblerCache.put(key, assembler);
                 }
             }
         }
-        
+
         return assembler;
     }
 
@@ -246,35 +248,35 @@ public class TurbineAssemblerBrokerService
     public Loader getLoader(String type)
     {
         Loader loader = null;
-        
+
         if (isCaching && loaderCache.containsKey(type))
         {
-            loader = (Loader)loaderCache.get(type);
+            loader = loaderCache.get(type);
             log.debug("Found " + type + " loader in the cache!");
         }
         else
         {
             log.debug("Getting Loader for " + type);
             List facs = getFactoryGroup(type);
-    
+
             for (Iterator it = facs.iterator(); (loader == null) && it.hasNext();)
             {
                 AssemblerFactory fac = (AssemblerFactory) it.next();
-                
+
                 loader = fac.getLoader();
             }
-        
+
             if (isCaching && loader != null)
             {
-                assemblerCache.put(type, loader);
+                loaderCache.put(type, loader);
             }
         }
-        
+
         if (loader == null)
         {
             log.warn("Loader for " + type + " is null.");
         }
-        
+
         return loader;
     }
 }

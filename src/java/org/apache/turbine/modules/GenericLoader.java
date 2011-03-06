@@ -38,7 +38,7 @@ import org.apache.turbine.util.RunData;
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-public abstract class GenericLoader
+public abstract class GenericLoader<T extends Assembler>
 {
     /** The Assembler Broker Service */
     protected AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
@@ -81,6 +81,7 @@ public abstract class GenericLoader
      * <code>exec(PipelineData data, String name)</code> instead.
      * @exception Exception a generic exception.
      */
+    @Deprecated
     public abstract void exec(RunData data, String name)
     	throws Exception;
 
@@ -139,6 +140,7 @@ public abstract class GenericLoader
      *
      * @return A List with the package names (including the base package).
      */
+    @SuppressWarnings("unchecked")
     public static List<String> getPackages()
     {
         if (TURBINE_PACKAGES == null)
@@ -148,7 +150,7 @@ public abstract class GenericLoader
         }
 
         List<String> packages = TURBINE_PACKAGES;
-        
+
         if (!packages.contains(TURBINE_PACKAGE))
         {
             packages.add(TURBINE_PACKAGE);
@@ -158,16 +160,64 @@ public abstract class GenericLoader
     }
 
     /**
+     * Pulls out an instance of the object by name.  Name is just the
+     * single name of the object.
+     *
+     * @param type Type of the assembler.
+     * @param name Name of object instance.
+     * @return A Screen with the specified name, or null.
+     * @exception Exception a generic exception.
+     */
+    protected T getAssembler(String type, String name)
+        throws Exception
+    {
+        T asm = null;
+
+        try
+        {
+            if (ab != null)
+            {
+                // Attempt to load the assembler
+                asm = (T) ab.getAssembler(type, name);
+            }
+        }
+        catch (ClassCastException cce)
+        {
+            // This can alternatively let this exception be thrown
+            // So that the ClassCastException is shown in the
+            // browser window.  Like this it shows "Screen not Found"
+            asm = null;
+        }
+
+        if (asm == null)
+        {
+            // If we did not find a screen we should try and give
+            // the user a reason for that...
+            // FIX ME: The AssemblerFactories should each add it's
+            // own string here...
+            List<String> packages = GenericLoader.getPackages();
+
+            throw new ClassNotFoundException(
+                    "\n\n\tRequested " + type + " not found: " + name +
+                    "\n\tTurbine looked in the following " +
+                    "modules.packages path: \n\t" + packages.toString() + "\n");
+        }
+
+        return asm;
+    }
+
+    /**
      * Helper method to cast from PipelineData to RunData. This will go when
      * the pipeline is fully implemented and the RunData-methods are removed
-     * 
+     *
      * @param pipelineData a PipelineData object
-     * 
+     *
      * @return the input object casted to RunData
      */
     private RunData getRunData(PipelineData pipelineData)
     {
-        if(!(pipelineData instanceof RunData)){
+        if(!(pipelineData instanceof RunData))
+        {
             throw new RuntimeException("Can't cast to rundata from pipeline data.");
         }
         return (RunData)pipelineData;

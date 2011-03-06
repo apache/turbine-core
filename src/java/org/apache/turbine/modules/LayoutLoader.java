@@ -19,8 +19,6 @@ package org.apache.turbine.modules;
  * under the License.
  */
 
-import java.util.List;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
@@ -35,8 +33,8 @@ import org.apache.turbine.util.RunData;
  * @version $Id$
  */
 public class LayoutLoader
-    extends GenericLoader
-    implements Loader
+    extends GenericLoader<Layout>
+    implements Loader<Layout>
 {
     /** The single instance of this class. */
     private static LayoutLoader instance = new LayoutLoader();
@@ -58,11 +56,13 @@ public class LayoutLoader
      * @param name Name of object that will execute the layout.
      * @exception Exception a generic exception.
      */
+    @Deprecated
+    @Override
     public void exec(RunData data, String name)
             throws Exception
     {
         // Execute layout
-        getInstance(name).build(data);
+        getAssembler(name).build(data);
     }
 
     /**
@@ -72,10 +72,11 @@ public class LayoutLoader
      * @param name Name of object that will execute the layout.
      * @exception Exception a generic exception.
      */
+    @Override
     public void exec(PipelineData pipelineData, String name)
     		throws Exception
     {
-        getInstance(name).build(pipelineData);
+        getAssembler(name).build(pipelineData);
     }
 
     /**
@@ -88,10 +89,10 @@ public class LayoutLoader
      * @return A Layout with the specified name, or null.
      * @exception Exception a generic exception.
      */
-    public Assembler getAssembler(String name)
+    public Layout getAssembler(String name)
         throws Exception
     {
-        return getInstance(name);
+        return getAssembler(Layout.NAME, name);
     }
 
     /**
@@ -100,52 +101,6 @@ public class LayoutLoader
     public int getCacheSize()
     {
         return LayoutLoader.getConfiguredCacheSize();
-    }
-
-    /**
-     * Pulls out an instance of the Layout by name.  Name is just the
-     * single name of the Layout.
-     *
-     * @param name Name of requested Layout
-     * @return A Layout with the specified name, or null.
-     * @exception Exception a generic exception.
-     */
-    public Layout getInstance(String name)
-            throws Exception
-    {
-        Layout layout = null;
-
-        try
-        {
-            if (ab != null)
-            {
-                // Attempt to load the layout
-                layout = (Layout) ab.getAssembler(Layout.NAME, name);
-            }
-        }
-        catch (ClassCastException cce)
-        {
-            // This can alternatively let this exception be thrown
-            // So that the ClassCastException is shown in the
-            // browser window.  Like this it shows "Screen not Found"
-            layout = null;
-        }
-
-        if (layout == null)
-        {
-            // If we did not find a layout we should try and give
-            // the user a reason for that...
-            // FIX ME: The AssemblerFactories should each add it's
-            // own string here...
-            List packages = GenericLoader.getPackages();
-
-            throw new ClassNotFoundException(
-                    "\n\n\tRequested Layout not found: " + name +
-                    "\n\tTurbine looked in the following " +
-                    "modules.packages path: \n\t" + packages.toString() + "\n");
-        }
-
-        return layout;
     }
 
     /**
@@ -160,7 +115,7 @@ public class LayoutLoader
 
     /**
      * Helper method to get the configured cache size for this module
-     * 
+     *
      * @return the configure cache size
      */
     private static int getConfiguredCacheSize()

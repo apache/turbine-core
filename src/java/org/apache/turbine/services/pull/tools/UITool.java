@@ -30,22 +30,22 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 
 /**
- * Manages all UI elements for a Turbine Application. Any UI element can be 
- * accessed in any template using the $ui handle (assuming you use the default 
- * PullService configuration). So, for example, you could access the background 
+ * Manages all UI elements for a Turbine Application. Any UI element can be
+ * accessed in any template using the $ui handle (assuming you use the default
+ * PullService configuration). So, for example, you could access the background
  * color for your pages by using $ui.bgcolor
  * <p>
- * This implementation provides a single level of inheritance in that if a 
- * property does not exist in a non-default skin, the value from the default 
- * skin will be used. By only requiring values different to those stored in 
+ * This implementation provides a single level of inheritance in that if a
+ * property does not exist in a non-default skin, the value from the default
+ * skin will be used. By only requiring values different to those stored in
  * the default skin to appear in the non-default skins the amount of memory
- * consumed in cases where the UserManager instance is used at a non-global 
- * scope will potentially be reduced due to the fact that a shared instance of 
+ * consumed in cases where the UserManager instance is used at a non-global
+ * scope will potentially be reduced due to the fact that a shared instance of
  * the default skin properties can be used. Note that this inheritance only
  * applies to property values - it does not apply to any images or stylesheets
  * that may form part of your skins.
  * <p>
- * This is an application pull tool for the template system. You should not  
+ * This is an application pull tool for the template system. You should not
  * use it in a normal application!  Within Java code you should use TurbineUI.
  * <p>
  *
@@ -87,7 +87,7 @@ public class UITool implements ApplicationTool
 
     /**
      * Provide access to the list of available skin names.
-     * 
+     *
      * @return the available skin names.
      */
     public String[] getSkinNames()
@@ -96,12 +96,12 @@ public class UITool implements ApplicationTool
     }
 
     /**
-     * Get the name of the default skin name for the web application from the 
-     * TurbineResources.properties file. If the property is not present the 
+     * Get the name of the default skin name for the web application from the
+     * TurbineResources.properties file. If the property is not present the
      * name of the default skin will be returned.  Note that the web application
-     * skin name may be something other than default, in which case its 
+     * skin name may be something other than default, in which case its
      * properties will default to the skin with the name "default".
-     * 
+     *
      * @return the name of the default skin for the web application.
      */
     public String getWebappSkinName()
@@ -112,12 +112,12 @@ public class UITool implements ApplicationTool
     /**
      * Retrieve a skin property.  If the property is not defined in the current
      * skin the value for the default skin will be provided.  If the current
-     * skin does not exist then the skin configured for the webapp will be used.  
-     * If the webapp skin does not exist the default skin will be used.  If the 
+     * skin does not exist then the skin configured for the webapp will be used.
+     * If the webapp skin does not exist the default skin will be used.  If the
      * default skin does not exist then <code>null</code> will be returned.
-     * 
+     *
      * @param key the key to retrieve from the skin.
-     * @return the value of the property for the named skin (defaulting to the 
+     * @return the value of the property for the named skin (defaulting to the
      * default skin), the webapp skin, the default skin or <code>null</code>,
      * depending on whether or not the property or skins exist.
      */
@@ -135,7 +135,7 @@ public class UITool implements ApplicationTool
     }
 
     /**
-     * Set the skin name to the skin from the TurbineResources.properties file. 
+     * Set the skin name to the skin from the TurbineResources.properties file.
      * If the property is not present use the "default" skin.
      */
     public void setSkin()
@@ -154,10 +154,10 @@ public class UITool implements ApplicationTool
     }
 
     /**
-     * Set the skin name when the tool is configured to be loaded on a 
-     * per-request basis. By default it calls getSkin to return the skin 
-     * specified in TurbineResources.properties. Developers can write a subclass 
-     * of UITool that overrides this method to determine the skin to use based 
+     * Set the skin name when the tool is configured to be loaded on a
+     * per-request basis. By default it calls getSkin to return the skin
+     * specified in TurbineResources.properties. Developers can write a subclass
+     * of UITool that overrides this method to determine the skin to use based
      * on information held in the request.
      *
      * @param data a RunData instance
@@ -168,10 +168,10 @@ public class UITool implements ApplicationTool
     }
 
     /**
-     * Set the skin name when the tool is configured to be loaded on a 
-     * per-session basis. If the user's temp hashmap contains a value in the 
-     * attribute specified by the String constant SKIN_ATTRIBUTE then that is 
-     * returned. Otherwise it calls getSkin to return the skin specified in 
+     * Set the skin name when the tool is configured to be loaded on a
+     * per-session basis. If the user's temp hashmap contains a value in the
+     * attribute specified by the String constant SKIN_ATTRIBUTE then that is
+     * returned. Otherwise it calls getSkin to return the skin specified in
      * TurbineResources.properties.
      *
      * @param user a User instance
@@ -200,16 +200,16 @@ public class UITool implements ApplicationTool
     }
 
     /**
-     * Retrieve the URL for an image that is part of the skin. The images are 
+     * Retrieve the URL for an image that is part of the skin. The images are
      * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.
      *
-     * <p>Use this if for some reason your server name, server scheme, or server 
-     * port change on a per request basis. I'm not sure if this would happen in 
+     * <p>Use this if for some reason your server name, server scheme, or server
+     * port change on a per request basis. I'm not sure if this would happen in
      * a load balanced situation. I think in most cases the image(String image)
      * method would probably be enough, but I'm not absolutely positive.
-     * 
+     *
      * @param imageId the id of the image whose URL will be generated.
-     * @param data the RunDate to use as the source of the ServerData to use as 
+     * @param data the RunDate to use as the source of the ServerData to use as
      * the basis for the URL.
      */
     public String image(String imageId, RunData data)
@@ -218,14 +218,14 @@ public class UITool implements ApplicationTool
     }
 
     /**
-     * Retrieve the URL for an image that is part of the skin. The images are 
+     * Retrieve the URL for an image that is part of the skin. The images are
      * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.
      *
-     * <p>Use this if for some reason your server name, server scheme, or server 
-     * port change on a per request basis. I'm not sure if this would happen in 
+     * <p>Use this if for some reason your server name, server scheme, or server
+     * port change on a per request basis. I'm not sure if this would happen in
      * a load balanced situation. I think in most cases the image(String image)
      * method would probably be enough, but I'm not absolutely positive.
-     * 
+     *
      * @param imageId the id of the image whose URL will be generated.
      * @param serverData the serverData to use as the basis for the URL.
      */
@@ -235,9 +235,9 @@ public class UITool implements ApplicationTool
     }
 
     /**
-     * Retrieve the URL for an image that is part of the skin. The images are 
+     * Retrieve the URL for an image that is part of the skin. The images are
      * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.
-     * 
+     *
      * @param imageId the id of the image whose URL will be generated.
      */
     public String image(String imageId)
@@ -246,16 +246,16 @@ public class UITool implements ApplicationTool
     }
 
     /**
-     * Retrieve the URL for the style sheet that is part of the skin. The style 
-     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the 
+     * Retrieve the URL for the style sheet that is part of the skin. The style
+     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the
      * filename skin.css
      *
-     * <p>Use this if for some reason your server name, server scheme, or server 
-     * port change on a per request basis. I'm not sure if this would happen in 
-     * a load balanced situation. I think in most cases the style() method would 
+     * <p>Use this if for some reason your server name, server scheme, or server
+     * port change on a per request basis. I'm not sure if this would happen in
+     * a load balanced situation. I think in most cases the style() method would
      * probably be enough, but I'm not absolutely positive.
-     * 
-     * @param data the RunDate to use as the source of the ServerData to use as 
+     *
+     * @param data the RunDate to use as the source of the ServerData to use as
      * the basis for the URL.
      */
     public String getStylecss(RunData data)
@@ -264,15 +264,15 @@ public class UITool implements ApplicationTool
     }
 
     /**
-     * Retrieve the URL for the style sheet that is part of the skin. The style 
-     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the 
+     * Retrieve the URL for the style sheet that is part of the skin. The style
+     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the
      * filename skin.css
      *
-     * <p>Use this if for some reason your server name, server scheme, or server 
-     * port change on a per request basis. I'm not sure if this would happen in 
-     * a load balanced situation. I think in most cases the style() method would 
+     * <p>Use this if for some reason your server name, server scheme, or server
+     * port change on a per request basis. I'm not sure if this would happen in
+     * a load balanced situation. I think in most cases the style() method would
      * probably be enough, but I'm not absolutely positive.
-     * 
+     *
      * @param serverData the serverData to use as the basis for the URL.
      */
     public String getStylecss(ServerData serverData)
@@ -281,8 +281,8 @@ public class UITool implements ApplicationTool
     }
 
     /**
-     * Retrieve the URL for the style sheet that is part of the skin. The style 
-     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the 
+     * Retrieve the URL for the style sheet that is part of the skin. The style
+     * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the
      * filename skin.css
      */
     public String getStylecss()
@@ -294,13 +294,13 @@ public class UITool implements ApplicationTool
      * Retrieve the URL for a given script that is part of the skin. The script
      * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory.
      *
-     * <p>Use this if for some reason your server name, server scheme, or server 
-     * port change on a per request basis. I'm not sure if this would happen in 
+     * <p>Use this if for some reason your server name, server scheme, or server
+     * port change on a per request basis. I'm not sure if this would happen in
      * a load balanced situation. I think in most cases the image(String image)
      * method would probably be enough, but I'm not absolutely positive.
-     * 
+     *
      * @param filename the name of the script file whose URL will be generated.
-     * @param data the RunDate to use as the source of the ServerData to use as 
+     * @param data the RunDate to use as the source of the ServerData to use as
      * the basis for the URL.
      */
     public String getScript(String filename, RunData data)
@@ -312,11 +312,11 @@ public class UITool implements ApplicationTool
      * Retrieve the URL for a given script that is part of the skin. The script
      * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory.
      *
-     * <p>Use this if for some reason your server name, server scheme, or server 
-     * port change on a per request basis. I'm not sure if this would happen in 
+     * <p>Use this if for some reason your server name, server scheme, or server
+     * port change on a per request basis. I'm not sure if this would happen in
      * a load balanced situation. I think in most cases the image(String image)
      * method would probably be enough, but I'm not absolutely positive.
-     * 
+     *
      * @param filename the name of the script file whose URL will be generated.
      * @param serverData the serverData to use as the basis for the URL.
      */
@@ -339,7 +339,7 @@ public class UITool implements ApplicationTool
     /**
      * Initialize the UITool object.
      *
-     * @param data This is null, RunData or User depending upon specified tool 
+     * @param data This is null, RunData or User depending upon specified tool
      * scope.
      */
     public void init(Object data)

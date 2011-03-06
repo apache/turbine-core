@@ -39,19 +39,21 @@ import java.util.Map;
  */
 public class DefaultPipelineData implements PipelineData
 {
-    private Map map = new HashMap();
+    private final Map<Class<?>, Map<?, ?>> map = new HashMap<Class<?>, Map<?, ?>>();
 
-    public void put(Class key, Map value){
-        map.put(key,value);
+    public void put(Class<?> key, Map<?, ?> value)
+    {
+        map.put(key, value);
     }
 
-    public Object get(Class key){
+    public Map<?, ?> get(Class key)
+    {
         return map.get(key);
     }
 
-    public Object get(Class key, Object innerKey)
+    public Object get(Class<?> key, Object innerKey)
     {
-        Map innerMap = (Map) get(key);
+        Map<?, ?> innerMap = get(key);
         if (innerMap == null)
         {
             return null;

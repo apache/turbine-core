@@ -93,7 +93,9 @@ public abstract class ActionEvent extends Action
 	 * @param data Turbine information.
 	 * @exception Exception a generic exception.
 	 */
-	public abstract void doPerform(RunData data)
+	@Deprecated
+    @Override
+    public abstract void doPerform(RunData data)
 			throws Exception;
 
 	/**
@@ -102,10 +104,11 @@ public abstract class ActionEvent extends Action
 	 * @param data Turbine information.
 	 * @exception Exception a generic exception.
 	 */
-	public void doPerform(PipelineData pipelineData)
+	@Override
+    public void doPerform(PipelineData pipelineData)
 			throws Exception
 	{
-	      RunData data = (RunData) getRunData(pipelineData);
+	      RunData data = getRunData(pipelineData);
 	      doPerform(data);
 	}
 
@@ -165,7 +168,9 @@ public abstract class ActionEvent extends Action
 	 * @param data Turbine information.
 	 * @exception Exception a generic exception.
 	 */
-	protected void perform(RunData data)
+	@Deprecated
+    @Override
+    protected void perform(RunData data)
 			throws Exception
 	{
 		try
@@ -186,7 +191,8 @@ public abstract class ActionEvent extends Action
 	 * @param data Turbine information.
 	 * @exception Exception a generic exception.
 	 */
-	protected void perform(PipelineData pipelineData)
+	@Override
+    protected void perform(PipelineData pipelineData)
 			throws Exception
 	{
 		try
@@ -207,7 +213,8 @@ public abstract class ActionEvent extends Action
 	 * @param data Turbine information.
 	 * @exception Exception a generic exception.
 	 */
-	public void executeEvents(RunData data)
+	@Deprecated
+    public void executeEvents(RunData data)
 			throws Exception
 	{
 		// Name of the button.
@@ -272,7 +279,7 @@ public abstract class ActionEvent extends Action
 			throws Exception
 	{
 
-	    RunData data = (RunData) getRunData(pipelineData);
+	    RunData data = getRunData(pipelineData);
 
 		// Name of the button.
 		String theButton = null;

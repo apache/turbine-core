@@ -21,7 +21,6 @@ package org.apache.turbine.services.assemblerbroker.util.java;
  */
 
 
-import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Loader;
 import org.apache.turbine.modules.Page;
 import org.apache.turbine.modules.PageLoader;
@@ -35,7 +34,7 @@ import org.apache.turbine.modules.PageLoader;
  * @version $Id$
  */
 public class JavaPageFactory
-        extends JavaBaseFactory
+        extends JavaBaseFactory<Page>
 {
     /**
      * Get an Assembler.
@@ -43,17 +42,18 @@ public class JavaPageFactory
      * @param name name of the requested Assembler
      * @return an Assembler
      */
-    public Assembler getAssembler(String name)
+    public Page getAssembler(String name)
     {
         return getAssembler(Page.PREFIX, name);
     }
 
     /**
      * Get the loader for this type of assembler
-     * 
+     *
      * @return a Loader
      */
-    public Loader getLoader()
+    @Override
+    public Loader<Page> getLoader()
     {
         return PageLoader.getInstance();
     }

@@ -22,7 +22,7 @@ package org.apache.turbine.modules.actions.sessionvalidator;
 import org.apache.turbine.modules.Action;
 
 /**
- * The SessionValidator attempts to retrive the User object from the
+ * The SessionValidator attempts to retrieve the User object from the
  * Servlet API session that is associated with the request.  If the
  * data cannot be retrieved, it is handled here.  If the user has not
  * been marked as being logged into the system, the user is rejected
@@ -46,4 +46,5 @@ import org.apache.turbine.modules.Action;
  */
 public abstract class SessionValidator extends Action
 {
+    // empty
 }

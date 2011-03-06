@@ -21,6 +21,7 @@ package org.apache.turbine.services.assemblerbroker.util;
  */
 
 
+import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Loader;
 
 /**
@@ -29,12 +30,12 @@ import org.apache.turbine.modules.Loader;
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
  * @version $Id$
  */
-public interface AssemblerFactory extends Loader
+public interface AssemblerFactory<T extends Assembler> extends Loader<T>
 {
     /**
      * Get the loader for this type of assembler
-     * 
+     *
      * @return a Loader
      */
-    Loader getLoader();
+    Loader<T> getLoader();
 }

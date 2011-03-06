@@ -24,17 +24,13 @@ package org.apache.turbine.services.assemblerbroker.util.python;
 import java.io.File;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
-
 import org.python.core.Py;
 import org.python.util.PythonInterpreter;
 
@@ -48,8 +44,8 @@ import org.python.util.PythonInterpreter;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public abstract class PythonBaseFactory
-        implements AssemblerFactory
+public abstract class PythonBaseFactory<T extends Assembler>
+        implements AssemblerFactory<T>
 {
     /** Key for the python path */
     public static final String PYTHON_PATH = "python.path";
@@ -61,7 +57,7 @@ public abstract class PythonBaseFactory
     private static Log log = LogFactory.getLog(PythonBaseFactory.class);
 
     /** Our configuration */
-    private Configuration conf =
+    private final Configuration conf =
         TurbineAssemblerBroker.getService().getConfiguration();
 
     /**
@@ -72,7 +68,7 @@ public abstract class PythonBaseFactory
      * @return an Assembler
      * @throws Exception generic exception
      */
-    public Assembler getAssembler(String subDirectory, String name)
+    public T getAssembler(String subDirectory, String name)
             throws Exception
     {
         String path = conf.getString(PYTHON_PATH);
@@ -85,7 +81,7 @@ public abstract class PythonBaseFactory
 
         log.debug("Screen name for JPython: " + name);
 
-        Assembler assembler = null;
+        T assembler = null;
 
         String confName = path + "/" + PYTHON_CONFIG_FILE;
 
@@ -146,13 +142,13 @@ public abstract class PythonBaseFactory
                 }
 
                 // Here we convert the python sceen instance to a java instance.
-                assembler = (Assembler) interp.get("scr", Assembler.class);
+                assembler = (T) interp.get("scr", Assembler.class);
             }
             catch (Exception e)
             {
                 // We log the error here because this code is not widely tested
                 // yet. After we tested the code on a range of platforms this
-                // won't be usefull anymore.
+                // won't be useful anymore.
                 log.error("PYTHON SCRIPT SCREEN LOADER ERROR:", e);
                 throw e;
             }
@@ -162,18 +158,18 @@ public abstract class PythonBaseFactory
 
     /**
      * Get the loader for this type of assembler
-     * 
+     *
      * @return a Loader
      */
-    public abstract Loader getLoader();
-    
+    public abstract Loader<T> getLoader();
+
     /**
      * Get the size of a possibly configured cache
-     * 
+     *
      * @return the size of the cache in bytes
      */
     public int getCacheSize()
-    
+
     {
         return getLoader().getCacheSize();
     }

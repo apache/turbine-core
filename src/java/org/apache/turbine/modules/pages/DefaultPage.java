@@ -124,6 +124,8 @@ public class DefaultPage
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
+    @Deprecated
+    @Override
     public void doBuild(RunData data)
             throws Exception
     {
@@ -160,7 +162,7 @@ public class DefaultPage
         // The Screen can override the getLayout() method to re-define
         // the Layout depending on data passed in via the
         // data.parameters object.
-        Screen aScreen = screenLoader.getInstance(screenName);
+        Screen aScreen = screenLoader.getAssembler(screenName);
         String layout = aScreen.getLayout(data);
 
         // If the Layout has been set to be null, attempt to execute
@@ -185,6 +187,7 @@ public class DefaultPage
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
+    @Override
     public void doBuild(PipelineData pipelineData)
             throws Exception
     {
@@ -222,7 +225,7 @@ public class DefaultPage
         // The Screen can override the getLayout() method to re-define
         // the Layout depending on data passed in via the
         // data.parameters object.
-        Screen aScreen = screenLoader.getInstance(screenName);
+        Screen aScreen = screenLoader.getAssembler(screenName);
         String layout = aScreen.getLayout(pipelineData);
 
         // If the Layout has been set to be null, attempt to execute
@@ -252,6 +255,7 @@ public class DefaultPage
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
+    @Deprecated
     protected void doBuildBeforeAction(RunData data)
             throws Exception
     {
@@ -266,6 +270,7 @@ public class DefaultPage
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
+    @Deprecated
     protected void doBuildAfterAction(RunData data)
             throws Exception
     {
@@ -279,6 +284,7 @@ public class DefaultPage
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
+    @Deprecated
     protected void doPostBuild(RunData data)
             throws Exception
     {

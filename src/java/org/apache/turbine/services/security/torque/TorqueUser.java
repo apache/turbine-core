@@ -557,6 +557,7 @@ public class TorqueUser
      *
      * @return A Hashtable.
      */
+    @SuppressWarnings("unchecked")
     public Hashtable<String, Object> getPermStorage()
     {
         if (permStorage == null)

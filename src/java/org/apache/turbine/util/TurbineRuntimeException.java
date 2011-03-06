@@ -20,7 +20,6 @@ package org.apache.turbine.util;
  * under the License.
  */
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
 
 /**
  * This is a base class of runtime exeptions thrown by Turbine.
@@ -33,14 +32,18 @@ import org.apache.commons.lang.exception.NestableRuntimeException;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  */
-public class TurbineRuntimeException extends NestableRuntimeException
+public class TurbineRuntimeException extends RuntimeException
 {
+    /** Serial version */
+    private static final long serialVersionUID = 2538372732215566444L;
+
     /**
      * Constructs a new <code>TurbineRuntimeException</code> without specified
      * detail message.
      */
     public TurbineRuntimeException()
     {
+        super();
     }
 
     /**

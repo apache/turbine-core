@@ -39,7 +39,7 @@ public class DateFormatter
         implements ApplicationTool
 {
     /** Used for formatting date objects */
-    private SimpleDateFormat sdf = new SimpleDateFormat();
+    private final SimpleDateFormat sdf = new SimpleDateFormat();
 
     /** Default date format */
     private static final String DATE_FORMAT_DEFAULT = "MM/dd/yyyy";
@@ -77,6 +77,7 @@ public class DateFormatter
      */
     public void refresh()
     {
+        // empty
     }
 
     /**

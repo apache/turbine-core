@@ -48,7 +48,7 @@ public interface TemplateEngineService
      * Return the configuration of the template engine in
      * the form of a Hashtable.
      */
-    Hashtable getTemplateEngineServiceConfiguration();
+    Hashtable<String, Object> getTemplateEngineServiceConfiguration();
 
     /**
      * Initializes file extension associations and registers with the

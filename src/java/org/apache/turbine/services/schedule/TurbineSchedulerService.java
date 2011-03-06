@@ -26,10 +26,8 @@ import javax.servlet.ServletConfig;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.torque.TorqueException;
 import org.apache.torque.util.Criteria;
-
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.TurbineException;
@@ -46,13 +44,13 @@ public class TurbineSchedulerService
         implements ScheduleService
 {
     /** Logging */
-    private static Log log = LogFactory.getLog(ScheduleService.LOGGER_NAME);
+    protected static Log log = LogFactory.getLog(ScheduleService.LOGGER_NAME);
 
     /** The queue */
     protected JobQueue scheduleQueue = null;
 
     /** Current status of the scheduler */
-    private boolean enabled = false;
+    protected boolean enabled = false;
 
     /** The main loop for starting jobs. */
     protected MainLoop mainLoop;
@@ -308,7 +306,7 @@ public class TurbineSchedulerService
     /**
      * Set thread to null to indicate termination.
      */
-    private synchronized void clearThread()
+    protected synchronized void clearThread()
     {
         thread = null;
     }
@@ -351,7 +349,7 @@ public class TurbineSchedulerService
      * @return A JobEntry.
      * @exception TurbineException a generic exception.
      */
-    private synchronized JobEntry nextJob()
+    protected synchronized JobEntry nextJob()
             throws TurbineException
     {
         try
@@ -388,6 +386,7 @@ public class TurbineSchedulerService
         }
         catch (InterruptedException ex)
         {
+            // ignore
         }
 
         // On interrupt.

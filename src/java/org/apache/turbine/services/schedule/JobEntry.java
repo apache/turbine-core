@@ -24,7 +24,7 @@ public  class JobEntry
     implements Persistent
 {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = -5501116588294474363L;
 
@@ -49,6 +49,7 @@ public  class JobEntry
      */
     public JobEntry()
     {
+        // empty
     }
 
     /**
