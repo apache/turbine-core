@@ -19,8 +19,6 @@ package org.apache.turbine.modules;
  * under the License.
  */
 
-import java.util.List;
-
 import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
@@ -36,8 +34,8 @@ import org.apache.turbine.util.RunData;
  * @version $Id$
  */
 public class NavigationLoader
-    extends GenericLoader
-    implements Loader
+    extends GenericLoader<Navigation>
+    implements Loader<Navigation>
 {
     /** The single instance of this class. */
     private static NavigationLoader instance = new NavigationLoader();
@@ -63,11 +61,12 @@ public class NavigationLoader
      * @param name Name of object that will execute the navigation.
      * @exception Exception a generic exception.
      */
+    @Deprecated
     public ConcreteElement eval(RunData data, String name)
             throws Exception
     {
         // Execute Navigation
-        return getInstance(name).build(data);
+        return getAssembler(name).build(data);
     }
 
     /**
@@ -85,7 +84,7 @@ public class NavigationLoader
             throws Exception
     {
         // Execute Navigation
-        return getInstance(name).build(pipelineData);
+        return getAssembler(name).build(pipelineData);
     }
 
 
@@ -96,6 +95,8 @@ public class NavigationLoader
      * @param name Name of object instance.
      * @exception Exception a generic exception.
      */
+    @Deprecated
+    @Override
     public void exec(RunData data, String name)
             throws Exception
     {
@@ -109,6 +110,7 @@ public class NavigationLoader
      * @param name Name of object instance.
      * @exception Exception a generic exception.
      */
+    @Override
     public void exec(PipelineData pipelineData, String name)
     		throws Exception
     {
@@ -126,10 +128,10 @@ public class NavigationLoader
      * @return A Layout with the specified name, or null.
      * @exception Exception a generic exception.
      */
-    public Assembler getAssembler(String name)
+    public Navigation getAssembler(String name)
         throws Exception
     {
-        return getInstance(name);
+        return getAssembler(Navigation.NAME, name);
     }
 
     /**
@@ -138,52 +140,6 @@ public class NavigationLoader
     public int getCacheSize()
     {
         return NavigationLoader.getConfiguredCacheSize();
-    }
-
-    /**
-     * Pulls out an instance of the Navigation by name.  Name is just the
-     * single name of the Navigation.
-     *
-     * @param name Name of requested Navigation
-     * @return A Navigation with the specified name, or null.
-     * @exception Exception a generic exception.
-     */
-    public Navigation getInstance(String name)
-            throws Exception
-    {
-        Navigation navigation = null;
-
-        try
-        {
-            if (ab != null)
-            {
-                // Attempt to load the navigation
-                navigation = (Navigation) ab.getAssembler(Navigation.NAME, name);
-            }
-        }
-        catch (ClassCastException cce)
-        {
-            // This can alternatively let this exception be thrown
-            // So that the ClassCastException is shown in the
-            // browser window.  Like this it shows "Screen not Found"
-            navigation = null;
-        }
-
-        if (navigation == null)
-        {
-            // If we did not find a navigation we should try and give
-            // the user a reason for that...
-            // FIX ME: The AssemblerFactories should each add it's
-            // own string here...
-            List packages = GenericLoader.getPackages();
-
-            throw new ClassNotFoundException(
-                    "\n\n\tRequested Navigation not found: " + name +
-                    "\n\tTurbine looked in the following " +
-                    "modules.packages path: \n\t" + packages.toString() + "\n");
-        }
-
-        return navigation;
     }
 
     /**
@@ -198,7 +154,7 @@ public class NavigationLoader
 
     /**
      * Helper method to get the configured cache size for this module
-     * 
+     *
      * @return the configure cache size
      */
     private static int getConfiguredCacheSize()

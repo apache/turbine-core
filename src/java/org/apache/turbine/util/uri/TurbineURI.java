@@ -56,7 +56,7 @@ public class TurbineURI
 
     /** Contains the PathInfo and QueryData vectors */
     private List<URIParam> [] dataVectors = null;
-    
+
     /** Local reference to the parser service for URI parameter folding */
     private ParserService parserService;
 
@@ -254,6 +254,7 @@ public class TurbineURI
     /**
      * Init the TurbineURI.
      */
+    @SuppressWarnings("unchecked")
     private void init()
     {
         dataVectors = new List[2];
@@ -728,6 +729,7 @@ public class TurbineURI
      * @return This URI as a String
      *
      */
+    @Override
     public String toString()
     {
         return getAbsoluteLink();
@@ -775,10 +777,10 @@ public class TurbineURI
         if(!list.isEmpty())
         {
         	String encoding = parserService.getParameterEncoding();
-        	
+
             for(Iterator<URIParam> it = list.iterator(); it.hasNext();)
             {
-            	try 
+            	try
             	{
 					URIParam uriParam = it.next();
 					String key = URLEncoder.encode(uriParam.getKey(), encoding);
@@ -810,8 +812,8 @@ public class TurbineURI
 					{
 					    output.append(fieldDelim);
 					}
-				} 
-            	catch (UnsupportedEncodingException e) 
+				}
+            	catch (UnsupportedEncodingException e)
             	{
             		log.warn("Unsupported encoding " + encoding);
 				}

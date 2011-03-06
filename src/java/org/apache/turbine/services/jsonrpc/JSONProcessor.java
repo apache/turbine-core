@@ -28,9 +28,9 @@ public class JSONProcessor
             json_req = new JSONObject(cdata.toString());
             if (log.isDebugEnabled())
             {
-                String methodName = (String) json_req.getString("method");
+                String methodName = json_req.getString("method");
                 JSONArray arguments = json_req.getJSONArray("params");
-                
+
                 // If this a CallableReference it will have a non-zero objectID
                 int object_id = json_req.optInt("objectID");
                 StringBuffer sb = new StringBuffer(".doprocessCall(): call ");

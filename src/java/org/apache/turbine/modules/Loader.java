@@ -27,7 +27,7 @@ package org.apache.turbine.modules;
  * @version $Id$
  */
 
-public interface Loader
+public interface Loader<T extends Assembler>
 {
     /**
      * Get an Assembler.
@@ -36,11 +36,11 @@ public interface Loader
      * @return an Assembler
      * @throws Exception generic exception
      */
-    Assembler getAssembler(String name) throws Exception;
+    T getAssembler(String name) throws Exception;
 
     /**
      * Get the size of a possibly configured cache
-     * 
+     *
      * @return the size of the cache in bytes
      */
     int getCacheSize();

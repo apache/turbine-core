@@ -243,7 +243,7 @@ public class TurbineTemplateService
      * may possess, and other template engines are stuck with file
      * based template hierarchy only.
      */
-    private Map templateEngineRegistry = null;
+    private Map<String, TemplateEngineService> templateEngineRegistry = null;
 
     /**
      * C'tor
@@ -259,6 +259,7 @@ public class TurbineTemplateService
      * @exception InitializationException Something went wrong when
      *                                     setting up the Template Service.
      */
+    @Override
     public void init()
         throws InitializationException
     {
@@ -281,7 +282,7 @@ public class TurbineTemplateService
         log.debug("Default Template:  " + defaultTemplate);
         log.debug("Use Caching:       " + useCache);
 
-        templateEngineRegistry = Collections.synchronizedMap(new HashMap());
+        templateEngineRegistry = Collections.synchronizedMap(new HashMap<String, TemplateEngineService>());
 
         initMapper(config);
         setInit(true);
@@ -592,6 +593,7 @@ public class TurbineTemplateService
      * @deprecated Each template engine service should know how to translate
      *             a request onto a file.
      */
+    @Deprecated
     public String[] translateTemplatePaths(String[] templatePaths)
     {
         for (int i = 0; i < templatePaths.length; i++)
@@ -610,6 +612,7 @@ public class TurbineTemplateService
      * @param templatePaths The paths to check for the template.
      * @deprecated Use templateExists from the various Templating Engines
      */
+    @Deprecated
     public boolean templateExists(String template,
         String[] templatePaths)
     {
@@ -648,7 +651,7 @@ public class TurbineTemplateService
      */
     public TemplateEngineService getTemplateEngineService(String template)
     {
-        return (TemplateEngineService) templateEngineRegistry.get(getExtension(template));
+        return templateEngineRegistry.get(getExtension(template));
     }
 
     /**
@@ -682,12 +685,12 @@ public class TurbineTemplateService
         mapperRegistry = new Mapper[TEMPLATE_TYPES];
 
         String [] mapperNames = new String [] {
-            Page.NAME, Screen.NAME, Layout.NAME, Navigation.NAME, 
+            Page.NAME, Screen.NAME, Layout.NAME, Navigation.NAME,
             LAYOUT_TEMPLATE_NAME, SCREEN_TEMPLATE_NAME, NAVIGATION_TEMPLATE_NAME
         };
 
         String [] mapperKeys = new String [] {
-            Page.NAME, Screen.NAME, Layout.NAME, Navigation.NAME, 
+            Page.NAME, Screen.NAME, Layout.NAME, Navigation.NAME,
             Layout.NAME, Screen.NAME, Navigation.NAME
         };
 
@@ -700,24 +703,24 @@ public class TurbineTemplateService
             ScreenTemplateMapper.class.getName(),
             DirectTemplateMapper.class.getName()
         };
-        
+
         AssemblerBrokerService ab = (AssemblerBrokerService)TurbineServices.getInstance()
                                         .getService(AssemblerBrokerService.SERVICE_NAME);
-        
+
         int [] mapperCacheSize = new int [mapperKeys.length];
         Loader [] mapperLoader = new Loader [mapperKeys.length];
-        
+
         for (int i = 0; i < mapperKeys.length; i++)
         {
             mapperLoader[i] = ab.getLoader(mapperKeys[i]);
             mapperCacheSize[i] = (mapperLoader[i] != null) ? mapperLoader[i].getCacheSize() : 0;
         }
-        
+
         // HACK: to achieve the same behaviour as before
         mapperLoader[LAYOUT_TEMPLATE_KEY] = null;
         mapperLoader[SCREEN_TEMPLATE_KEY] = null;
         mapperLoader[NAVIGATION_TEMPLATE_KEY] = null;
-        
+
         String [] mapperDefaultProperty = new String [] {
             TemplateEngineService.DEFAULT_PAGE,
             TemplateEngineService.DEFAULT_SCREEN,
@@ -755,7 +758,7 @@ public class TurbineTemplateService
     		    FactoryService factory = (FactoryService)TurbineServices.getInstance().getService(FactoryService.ROLE);
     		    tm = (Mapper) factory.getInstance(mapperClass);
             }
-            catch (FactoryException e) 
+            catch (FactoryException e)
             {
         		throw new InitializationException("", e);
 		    }

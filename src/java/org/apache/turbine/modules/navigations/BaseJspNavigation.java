@@ -22,12 +22,9 @@ package org.apache.turbine.modules.navigations;
 
 
 import org.apache.ecs.ConcreteElement;
-
-
 import org.apache.turbine.modules.Navigation;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.jsp.TurbineJsp;
-
 import org.apache.turbine.util.RunData;
 
 /**
@@ -43,7 +40,7 @@ public class BaseJspNavigation
         extends TemplateNavigation
 {
     /** The prefix for lookup up navigation pages */
-    private String prefix = Navigation.PREFIX + "/";
+    private final String prefix = Navigation.PREFIX + "/";
 
     /**
      * Method to be overidden by subclasses to include data in beans, etc.
@@ -56,6 +53,7 @@ public class BaseJspNavigation
     protected void doBuildTemplate(RunData data)
         throws Exception
     {
+        // empty
     }
 
     /**
@@ -68,6 +66,7 @@ public class BaseJspNavigation
     protected void doBuildTemplate(PipelineData pipelineData)
         throws Exception
     {
+        // empty
     }
 
 

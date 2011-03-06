@@ -211,6 +211,8 @@ public abstract class BaseSecurityService
      *
      * @throws InitializationException Something went wrong in the init stage
      */
+    @Override
+    @SuppressWarnings("unchecked")
     public void init()
             throws InitializationException
     {

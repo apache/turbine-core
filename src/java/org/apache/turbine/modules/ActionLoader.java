@@ -19,8 +19,6 @@ package org.apache.turbine.modules;
  * under the License.
  */
 
-import java.util.List;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
@@ -35,8 +33,8 @@ import org.apache.turbine.util.RunData;
  * @version $Id$
  */
 public class ActionLoader
-    extends GenericLoader
-    implements Loader
+    extends GenericLoader<Action>
+    implements Loader<Action>
 {
     /** The single instance of this class. */
     private static ActionLoader instance = new ActionLoader();
@@ -57,11 +55,13 @@ public class ActionLoader
      * @param name Name of object that will execute the action.
      * @exception Exception a generic exception.
      */
+    @Deprecated
+    @Override
     public void exec(RunData data, String name)
             throws Exception
     {
         // Execute action
-        getInstance(name).perform(data);
+        getAssembler(name).perform(data);
     }
 
     /**
@@ -71,10 +71,11 @@ public class ActionLoader
      * @param name Name of object that will execute the action.
      * @exception Exception a generic exception.
      */
+    @Override
     public void exec(PipelineData pipelineData, String name)
     		throws Exception
     {
-        getInstance(name).perform(pipelineData);
+        getAssembler(name).perform(pipelineData);
     }
 
     /**
@@ -87,10 +88,10 @@ public class ActionLoader
      * @return An Action with the specified name, or null.
      * @exception Exception a generic exception.
      */
-    public Assembler getAssembler(String name)
+    public Action getAssembler(String name)
         throws Exception
     {
-        return getInstance(name);
+        return getAssembler(Action.NAME, name);
     }
 
     /**
@@ -102,52 +103,6 @@ public class ActionLoader
     }
 
     /**
-     * Pulls out an instance of the object by name. Name is just the
-     * single name of the object.
-     *
-     * @param name Name of object instance.
-     * @return An Action with the specified name, or null.
-     * @exception Exception a generic exception.
-     */
-    public Action getInstance(String name)
-            throws Exception
-    {
-        Action action = null;
-
-        try
-        {
-            if (ab != null)
-            {
-                // Attempt to load the action
-                action = (Action) ab.getAssembler(Action.NAME, name);
-            }
-        }
-        catch (ClassCastException cce)
-        {
-            // This can alternatively let this exception be thrown
-            // So that the ClassCastException is shown in the
-            // browser window.  Like this it shows "Screen not Found"
-            action = null;
-        }
-
-        if (action == null)
-        {
-            // If we did not find a screen we should try and give
-            // the user a reason for that...
-            // FIX ME: The AssemblerFactories should each add it's
-            // own string here...
-            List packages = GenericLoader.getPackages();
-
-            throw new ClassNotFoundException(
-                    "\n\n\tRequested Action not found: " + name +
-                    "\n\tTurbine looked in the following " +
-                    "modules.packages path: \n\t" + packages.toString() + "\n");
-        }
-
-        return action;
-    }
-
-    /**
      * The method through which this class is accessed.
      *
      * @return The single instance of this class.
@@ -156,10 +111,10 @@ public class ActionLoader
     {
         return instance;
     }
-    
+
     /**
      * Helper method to get the configured cache size for this module
-     * 
+     *
      * @return the configure cache size
      */
     private static int getConfiguredCacheSize()

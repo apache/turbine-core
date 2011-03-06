@@ -70,7 +70,7 @@ public abstract class BaseInitableBroker
     protected Stack<String> stack = new Stack<String>();
 
     /** Logging */
-    private Log log = LogFactory.getLog(this.getClass());
+    private final Log log = LogFactory.getLog(this.getClass());
 
     /**
      * Default constructor of InitableBroker.
@@ -82,6 +82,7 @@ public abstract class BaseInitableBroker
      */
     protected BaseInitableBroker()
     {
+        // empty
     }
 
     /**

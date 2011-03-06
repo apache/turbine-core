@@ -20,18 +20,19 @@ package org.apache.turbine.services.security.torque;
  */
 
 import java.beans.PropertyDescriptor;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.torque.TorqueException;
+import org.apache.torque.om.Persistent;
+import org.apache.torque.util.BasePeer;
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Permission;
 import org.apache.turbine.om.security.Role;
 import org.apache.turbine.services.InitializationException;
@@ -39,11 +40,6 @@ import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.services.security.torque.om.TurbineRolePermissionPeer;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.PermissionSet;
-
-import org.apache.torque.TorqueException;
-import org.apache.torque.om.Persistent;
-import org.apache.torque.util.BasePeer;
-import org.apache.torque.util.Criteria;
 
 /**
  * This class capsulates all direct Peer access for the Permission entities.
@@ -59,10 +55,10 @@ public class PermissionPeerManager
     implements PermissionPeerManagerConstants
 {
     /** The class of the Peer the TorqueSecurityService uses */
-    private static Class persistentPeerClass = null;
+    private static Class<?> persistentPeerClass = null;
 
     /** The class name of the objects returned by the configured peer. */
-    private static Class permissionObject = null;
+    private static Class<?> permissionObject = null;
 
     /** The name of the Table used for Permission Object queries  */
     private static String tableName = null;
@@ -473,7 +469,7 @@ public class PermissionPeerManager
      *
      * @exception TorqueException A problem occured.
      */
-    public static List doSelect(Criteria criteria)
+    public static List<Permission> doSelect(Criteria criteria)
         throws TorqueException
     {
         List list;
@@ -493,7 +489,7 @@ public class PermissionPeerManager
             throw new TorqueException("doSelect failed", e);
         }
 
-        List newList = new ArrayList(list.size());
+        List<Permission> newList = new ArrayList<Permission>(list.size());
 
         //
         // Wrap the returned Objects into TorquePermissions.
@@ -707,12 +703,12 @@ public class PermissionPeerManager
         Permission perm = null;
         try
         {
-            Class permissionWrapperClass = TurbineSecurity.getPermissionClass();
+            Class<? extends Permission> permissionWrapperClass = TurbineSecurity.getPermissionClass();
 
             Class [] clazz = new Class [] { Persistent.class };
             Object [] params = new Object [] { p };
 
-            perm = (Permission) permissionWrapperClass
+            perm = permissionWrapperClass
               .getConstructor(clazz)
               .newInstance(params);
         }

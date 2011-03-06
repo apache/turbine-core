@@ -37,7 +37,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
 public class OMTool implements ApplicationTool, Recyclable
 {
     // private RunData data;
-    private HashMap omMap;
+    protected HashMap<String, Object> omMap;
 
     // note the following could be a static attribute to reduce memory
     // footprint. Might require a service to front load the
@@ -45,17 +45,17 @@ public class OMTool implements ApplicationTool, Recyclable
     // though
 
     /** The cache of PullHelpers. **/
-    private static Map pullMap = new HashMap();
+    private static Map<String, OMTool.PullHelper> pullMap = new HashMap<String, OMTool.PullHelper>();
 
     /**
      *  The Factory responsible for retrieving the
      *  objects from storage
      */
-    private RetrieverFactory omFactory;
+    protected RetrieverFactory omFactory;
 
     public OMTool()throws Exception
     {
-        omMap = new HashMap();
+        omMap = new HashMap<String, Object>();
         //String className = Turbine.getConfiguration()
         //       .getString("tool.om.factory");
         //        RetrieverFactory omFactory =
@@ -82,11 +82,11 @@ public class OMTool implements ApplicationTool, Recyclable
     /**
      * Inner class to present a nice interface to the template designer
      */
-    private class PullHelper
+    protected class PullHelper
     {
         String omName;
 
-        private PullHelper(String omName)
+        protected PullHelper(String omName)
         {
             this.omName = omName;
         }

@@ -50,7 +50,7 @@ public class VelocityScreen
     extends TemplateScreen
 {
     /** The prefix for lookup up screen pages */
-    private String prefix = getPrefix() + "/";
+    private final String prefix = getPrefix() + "/";
 
     /**
      * Velocity Screens extending this class should overide this
@@ -62,10 +62,12 @@ public class VelocityScreen
      * @param context Context for web pages.
      * @exception Exception, a generic exception.
      */
+    @Deprecated
     protected void doBuildTemplate(RunData data,
                                    Context context)
             throws Exception
     {
+        // empty
     }
 
     /**
@@ -81,6 +83,7 @@ public class VelocityScreen
                                    Context context)
             throws Exception
     {
+        // empty
     }
 
 
@@ -93,6 +96,8 @@ public class VelocityScreen
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
+    @Deprecated
+    @Override
     protected void doBuildTemplate(RunData data)
             throws Exception
     {
@@ -107,6 +112,7 @@ public class VelocityScreen
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
+    @Override
     protected void doBuildTemplate(PipelineData pipelineData)
             throws Exception
     {
@@ -123,6 +129,8 @@ public class VelocityScreen
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
+    @Deprecated
+    @Override
     public ConcreteElement buildTemplate(RunData data)
         throws Exception
     {
@@ -191,6 +199,7 @@ public class VelocityScreen
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
+    @Override
     public ConcreteElement buildTemplate(PipelineData pipelineData)
         throws Exception
     {
@@ -262,6 +271,7 @@ public class VelocityScreen
      *
      * @deprecated Use TurbineVelocity.getContext(data)
      */
+    @Deprecated
     public static Context getContext(RunData data)
     {
         return TurbineVelocity.getContext(data);
@@ -275,6 +285,7 @@ public class VelocityScreen
      *
      * @deprecated Use TurbineVelocity.getContext(pipelineData)
      */
+    @Deprecated
     public static Context getContext(PipelineData pipelineData)
     {
         return TurbineVelocity.getContext(pipelineData);

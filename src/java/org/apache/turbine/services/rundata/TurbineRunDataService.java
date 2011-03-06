@@ -73,7 +73,7 @@ public class TurbineRunDataService
         DefaultCookieParser.class.getName();
 
     /** The map of configurations. */
-    private Map<String, Object> configurations = new HashMap<String, Object>();
+    private final Map<String, Object> configurations = new HashMap<String, Object>();
 
     /** Private reference to the pool service for object recycling */
     private PoolService pool = null;
@@ -86,6 +86,7 @@ public class TurbineRunDataService
      */
     public TurbineRunDataService()
     {
+        super();
     }
 
     /**
@@ -141,9 +142,9 @@ public class TurbineRunDataService
                 }
             }
         }
-        
+
 		pool = (PoolService)TurbineServices.getInstance().getService(PoolService.ROLE);
-        
+
         if (pool == null)
         {
             throw new InitializationException("RunData Service requires"
@@ -151,7 +152,7 @@ public class TurbineRunDataService
         }
 
         parserService = (ParserService)TurbineServices.getInstance().getService(ParserService.ROLE);
-        
+
         if (parserService == null)
         {
             throw new InitializationException("RunData Service requires"
@@ -235,15 +236,15 @@ public class TurbineRunDataService
             // also copy data directly into pipelineData
             pipelineDataMap.put(ParameterParser.class, pp);
             pipelineDataMap.put(CookieParser.class, cp);
-            
+
             Locale locale = req.getLocale();
-            
+
             if (locale == null)
             {
                 // get the default from the Turbine configuration
                 locale = data.getLocale();
             }
-            
+
             // set the locale detected and propagate it to the parsers
             data.setLocale(locale);
         }

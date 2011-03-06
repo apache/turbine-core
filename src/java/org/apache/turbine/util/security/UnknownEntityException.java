@@ -32,7 +32,7 @@ package org.apache.turbine.util.security;
 public class UnknownEntityException
         extends TurbineSecurityException
 {
-    /** TODO serialVersionUID */
+    /** Serial version */
     private static final long serialVersionUID = 292295293154904822L;
 
     /**

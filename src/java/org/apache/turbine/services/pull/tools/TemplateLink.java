@@ -22,11 +22,9 @@ package org.apache.turbine.services.pull.tools;
 
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.parser.ParameterParser;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.pull.ApplicationTool;
@@ -90,6 +88,7 @@ public class TemplateLink
      */
     public TemplateLink()
     {
+        // empty
     }
 
     /*

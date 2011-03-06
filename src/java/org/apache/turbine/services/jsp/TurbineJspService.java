@@ -73,6 +73,7 @@ public class TurbineJspService
      * @throws InitializationException Something went wrong in the init
      *         stage
      */
+    @Override
     public void init()
         throws InitializationException
     {
@@ -97,6 +98,7 @@ public class TurbineJspService
      * @throws InitializationException Something went wrong when starting up.
      * @deprecated use init() instead.
      */
+    @Deprecated
     public void init(ServletConfig config)
         throws InitializationException
     {
@@ -173,7 +175,7 @@ public class TurbineJspService
         // get the RequestDispatcher for the JSP
         RequestDispatcher dispatcher = data.getServletContext()
             .getRequestDispatcher(relativeTemplateName);
-        
+
         try
         {
             if (isForward)
@@ -200,6 +202,7 @@ public class TurbineJspService
             }
             catch (IOException ignored)
             {
+                // ignore
             }
 
             // pass the exception to the caller according to the general
@@ -241,6 +244,7 @@ public class TurbineJspService
      * @param template The name of the requested Template
      * @return True if the template is available.
      */
+    @Override
     public boolean templateExists(String template)
     {
         for (int i = 0; i < templatePaths.length; i++)

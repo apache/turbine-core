@@ -24,9 +24,7 @@ package org.apache.turbine.modules.pages;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.services.velocity.VelocityService;
-
 import org.apache.turbine.util.RunData;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -48,6 +46,8 @@ public class VelocityPage
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
+    @Deprecated
+    @Override
     protected void doBuildBeforeAction(RunData data)
         throws Exception
     {
@@ -62,6 +62,7 @@ public class VelocityPage
      * @deprecated. Use PipelineData version instead.
      *
      */
+    @Override
     protected void doPostBuild(RunData data)
         throws Exception
     {
@@ -77,10 +78,11 @@ public class VelocityPage
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
+    @Override
     protected void doBuildBeforeAction(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         Context context = TurbineVelocity.getContext(pipelineData);
         data.getTemplateInfo()
             .setTemplateContext(VelocityService.CONTEXT, context);
@@ -90,6 +92,7 @@ public class VelocityPage
      * Allows the VelocityService to peform post-request actions.
      * (releases the (non-global) tools in the context for reuse later)
      */
+    @Override
     protected void doPostBuild(PipelineData pipelineData)
         throws Exception
     {

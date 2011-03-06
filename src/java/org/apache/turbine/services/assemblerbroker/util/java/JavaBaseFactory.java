@@ -41,8 +41,8 @@ import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
-public abstract class JavaBaseFactory
-    implements AssemblerFactory
+public abstract class JavaBaseFactory<T extends Assembler>
+    implements AssemblerFactory<T>
 {
     /** A vector of packages. */
     private static List<String> packages = GenericLoader.getPackages();
@@ -54,8 +54,8 @@ public abstract class JavaBaseFactory
      * A cache for previously obtained Class instances, which we keep in order
      * to reduce the Class.forName() overhead (which can be sizable).
      */
-    private Map<String, Class<? extends Assembler>> classCache = 
-    	Collections.synchronizedMap(new HashMap<String, Class<? extends Assembler>>());
+    private final Map<String, Class<T>> classCache =
+    	Collections.synchronizedMap(new HashMap<String, Class<T>>());
 
     /**
      * Get an Assembler.
@@ -64,9 +64,10 @@ public abstract class JavaBaseFactory
      * @param name name of the requested Assembler
      * @return an Assembler
      */
-    public Assembler getAssembler(String packageName, String name)
+    @SuppressWarnings("unchecked")
+    public T getAssembler(String packageName, String name)
     {
-        Assembler assembler = null;
+        T assembler = null;
 
         log.debug("Class Fragment is " + name);
 
@@ -77,17 +78,17 @@ public abstract class JavaBaseFactory
                 StringBuffer sb = new StringBuffer();
 
                 sb.append(p).append('.').append(packageName).append('.').append(name);
-                
+
                 String className = sb.toString();
 
                 log.debug("Trying " + className);
 
                 try
                 {
-                    Class<? extends Assembler> servClass = classCache.get(className);
+                    Class<T> servClass = classCache.get(className);
                     if(servClass == null)
                     {
-                        servClass = (Class<? extends Assembler>) Class.forName(className.toString());
+                        servClass = (Class<T>) Class.forName(className.toString());
                         classCache.put(className, servClass);
                     }
                     assembler = servClass.newInstance();
@@ -137,14 +138,14 @@ public abstract class JavaBaseFactory
 
     /**
      * Get the loader for this type of assembler
-     * 
+     *
      * @return a Loader
      */
-    public abstract Loader getLoader();
-    
+    public abstract Loader<T> getLoader();
+
     /**
      * Get the size of a possibly configured cache
-     * 
+     *
      * @return the size of the cache in bytes
      */
     public int getCacheSize()

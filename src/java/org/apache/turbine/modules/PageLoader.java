@@ -19,8 +19,6 @@ package org.apache.turbine.modules;
  * under the License.
  */
 
-import java.util.List;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
@@ -35,8 +33,8 @@ import org.apache.turbine.util.RunData;
  * @version $Id$
  */
 public class PageLoader
-    extends GenericLoader
-    implements Loader
+    extends GenericLoader<Page>
+    implements Loader<Page>
 {
     /** The single instance of this class. */
     private static PageLoader instance = new PageLoader();
@@ -57,11 +55,13 @@ public class PageLoader
      * @param name Name of object that will execute the page.
      * @exception Exception a generic exception.
      */
+    @Deprecated
+    @Override
     public void exec(RunData data, String name)
             throws Exception
     {
         // Execute page
-        getInstance(name).build(data);
+        getAssembler(name).build(data);
     }
 
     /**
@@ -71,11 +71,12 @@ public class PageLoader
      * @param name Name of object that will execute the page.
      * @exception Exception a generic exception.
      */
+    @Override
     public void exec(PipelineData pipelineData, String name)
             throws Exception
     {
         // Execute page
-        getInstance(name).build(pipelineData);
+        getAssembler(name).build(pipelineData);
     }
 
 
@@ -90,10 +91,10 @@ public class PageLoader
      * @return A Screen with the specified name, or null.
      * @exception Exception a generic exception.
      */
-    public Assembler getAssembler(String name)
+    public Page getAssembler(String name)
         throws Exception
     {
-        return getInstance(name);
+        return getAssembler(Page.NAME, name);
     }
 
     /**
@@ -102,52 +103,6 @@ public class PageLoader
     public int getCacheSize()
     {
         return PageLoader.getConfiguredCacheSize();
-    }
-
-    /**
-     * Pulls out an instance of the page by name.  Name is just the
-     * single name of the page.
-     *
-     * @param name Name of object instance.
-     * @return A Page with the specified name, or null.
-     * @exception Exception a generic exception.
-     */
-    public Page getInstance(String name)
-            throws Exception
-    {
-        Page page = null;
-
-        try
-        {
-            if (ab != null)
-            {
-                // Attempt to load the screen
-                page = (Page) ab.getAssembler(Page.NAME, name);
-            }
-        }
-        catch (ClassCastException cce)
-        {
-            // This can alternatively let this exception be thrown
-            // So that the ClassCastException is shown in the
-            // browser window.  Like this it shows "Screen not Found"
-            page = null;
-        }
-
-        if (page == null)
-        {
-            // If we did not find a page we should try and give
-            // the user a reason for that...
-            // FIX ME: The AssemblerFactories should each add it's
-            // own string here...
-            List packages = GenericLoader.getPackages();
-
-            throw new ClassNotFoundException(
-                    "\n\n\tRequested Page not found: " + name +
-                    "\n\tTurbine looked in the following " +
-                    "modules.packages path: \n\t" + packages.toString() + "\n");
-        }
-
-        return page;
     }
 
     /**
@@ -162,7 +117,7 @@ public class PageLoader
 
     /**
      * Helper method to get the configured cache size for this module
-     * 
+     *
      * @return the configure cache size
      */
     private static int getConfiguredCacheSize()

@@ -19,8 +19,8 @@ package org.apache.turbine.services.security.ldap;
  * under the License.
  */
 
-import java.util.List;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Vector;
 
 import javax.naming.AuthenticationException;
@@ -33,7 +33,6 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.services.security.UserManager;
@@ -103,7 +102,7 @@ public class LDAPUserManager implements UserManager
     {
         try
         {
-            User ldapUser = retrieve(username);
+            /* User ldapUser = */ retrieve(username);
         }
         catch (UnknownEntityException ex)
         {
@@ -187,10 +186,11 @@ public class LDAPUserManager implements UserManager
      * @throws DataBackendException Error accessing the data backend.
      * @deprecated Use <a href="#retrieveList">retrieveList</a> instead.
      */
+    @Deprecated
     public User[] retrieve(Object criteria)
             throws DataBackendException
     {
-        return (User []) retrieveList(criteria).toArray(new User[0]);
+        return retrieveList(criteria).toArray(new User[0]);
     }
 
     /**
@@ -207,10 +207,10 @@ public class LDAPUserManager implements UserManager
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
      */
-    public List retrieveList(Object criteria)
+    public List<User> retrieveList(Object criteria)
             throws DataBackendException
     {
-        List users = new Vector(0);
+        List<User> users = new Vector<User>();
 
         try
         {
@@ -511,7 +511,7 @@ public class LDAPUserManager implements UserManager
          * creating an initial context using Sun's client
          * LDAP Provider.
          */
-        Hashtable env = new Hashtable();
+        Hashtable<String, Object> env = new Hashtable<String, Object>();
 
         env.put(Context.INITIAL_CONTEXT_FACTORY, ldapProvider);
         env.put(Context.PROVIDER_URL, providerURL);

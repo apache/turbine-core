@@ -122,6 +122,7 @@ public class VelocityEmail extends SimpleEmail
      */
     public VelocityEmail()
     {
+        super();
     }
 
     /**
@@ -129,6 +130,7 @@ public class VelocityEmail extends SimpleEmail
      */
     public VelocityEmail(Context context)
     {
+        this();
         this.context = context;
     }
 
@@ -141,6 +143,7 @@ public class VelocityEmail extends SimpleEmail
      * @throws EmailException email address could not be parsed
      * @return A VelocityEmail (self).
      */
+    @Deprecated
     public VelocityEmail setTo(String toName, String toEmail)
             throws EmailException
     {
@@ -240,6 +243,7 @@ public class VelocityEmail extends SimpleEmail
      * @throws EmailException Failure during merging the velocity
      * template or sending the email.
      */
+    @Override
     public String send() throws EmailException
     {
         String body = null;
@@ -272,6 +276,7 @@ public class VelocityEmail extends SimpleEmail
      *
      * @return An empty string.
      */
+    @Override
     public String toString()
     {
         try

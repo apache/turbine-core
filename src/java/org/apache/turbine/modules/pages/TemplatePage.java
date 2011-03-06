@@ -23,7 +23,6 @@ package org.apache.turbine.modules.pages;
 
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.template.TurbineTemplate;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -89,6 +88,7 @@ public class TemplatePage
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
+    @Override
     protected void doBuildAfterAction(RunData data)
         throws Exception
     {
@@ -128,10 +128,11 @@ public class TemplatePage
      * @param pipelineData Turbine information.
      * @exception Exception, a generic exception.
      */
+    @Override
     protected void doBuildAfterAction(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         doBuildAfterAction(data);
     }
 

@@ -21,7 +21,6 @@ package org.apache.turbine.services.assemblerbroker.util.python;
  */
 
 
-import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Loader;
 import org.apache.turbine.modules.Page;
 import org.apache.turbine.modules.PageLoader;
@@ -37,7 +36,7 @@ import org.apache.turbine.modules.PageLoader;
  * @version $Id$
  */
 public class PythonPageFactory
-        extends PythonBaseFactory
+        extends PythonBaseFactory<Page>
 {
     /**
      * Get an Assembler.
@@ -46,7 +45,7 @@ public class PythonPageFactory
      * @return an Assembler
      * @throws Exception generic exception
      */
-    public Assembler getAssembler(String name)
+    public Page getAssembler(String name)
         throws Exception
     {
         return getAssembler(Page.PREFIX, name);
@@ -54,10 +53,11 @@ public class PythonPageFactory
 
     /**
      * Get the loader for this type of assembler
-     * 
+     *
      * @return a Loader
      */
-    public Loader getLoader()
+    @Override
+    public Loader<Page> getLoader()
     {
         return PageLoader.getInstance();
     }

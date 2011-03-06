@@ -38,9 +38,9 @@ import java.util.Map;
  */
 public interface PipelineData
 {
-    public void put(Class name, Map value);
+    public void put(Class<?> name, Map<?, ?> value);
 
-    public Object get(Class name);
+    public Map<?, ?> get(Class<?> name);
 
-    public Object get(Class key, Object innerKey);
+    public Object get(Class<?> key, Object innerKey);
 }

@@ -31,7 +31,7 @@ package org.apache.turbine.util.security;
 public class PasswordMismatchException
         extends TurbineSecurityException
 {
-    /** TODO serialVersionUID */
+    /** Serial version */
     private static final long serialVersionUID = -4679484661449307344L;
 
     /**

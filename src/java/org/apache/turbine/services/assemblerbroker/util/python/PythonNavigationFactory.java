@@ -21,7 +21,6 @@ package org.apache.turbine.services.assemblerbroker.util.python;
  */
 
 
-import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Loader;
 import org.apache.turbine.modules.Navigation;
 import org.apache.turbine.modules.NavigationLoader;
@@ -37,7 +36,7 @@ import org.apache.turbine.modules.NavigationLoader;
  * @version $Id$
  */
 public class PythonNavigationFactory
-        extends PythonBaseFactory
+        extends PythonBaseFactory<Navigation>
 {
     /**
      * Get an Assembler.
@@ -46,7 +45,7 @@ public class PythonNavigationFactory
      * @return an Assembler
      * @throws Exception generic exception
      */
-    public Assembler getAssembler(String name)
+    public Navigation getAssembler(String name)
         throws Exception
     {
         return getAssembler(Navigation.PREFIX, name);
@@ -54,10 +53,11 @@ public class PythonNavigationFactory
 
     /**
      * Get the loader for this type of assembler
-     * 
+     *
      * @return a Loader
      */
-    public Loader getLoader()
+    @Override
+    public Loader<Navigation> getLoader()
     {
         return NavigationLoader.getInstance();
     }

@@ -503,7 +503,7 @@ public class TorqueSecurityService
                 torqueCriteria.put(GroupPeerManager.getColumnName(key),
                         c.get(key));
             }
-            List groups = new ArrayList(0);
+            List<Group> groups = new ArrayList<Group>(0);
             try
             {
                 groups = GroupPeerManager.doSelect(torqueCriteria);
@@ -544,7 +544,7 @@ public class TorqueSecurityService
                 torqueCriteria.put(RolePeerManager.getColumnName(key),
                         c.get(key));
             }
-            List roles = new ArrayList(0);
+            List<Role> roles = new ArrayList<Role>(0);
             try
             {
                 roles = RolePeerManager.doSelect(torqueCriteria);
@@ -584,7 +584,7 @@ public class TorqueSecurityService
                 torqueCriteria.put(PermissionPeerManager.getColumnName(key),
                         c.get(key));
             }
-            List permissions = new ArrayList(0);
+            List<Permission> permissions = new ArrayList<Permission>(0);
             try
             {
                 permissions = PermissionPeerManager.doSelect(torqueCriteria);

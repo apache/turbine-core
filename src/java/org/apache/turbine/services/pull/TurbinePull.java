@@ -161,6 +161,7 @@ public abstract class TurbinePull
         }
         catch (Exception e)
         {
+            // ignore
         }
         return null;
     }

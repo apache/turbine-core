@@ -411,6 +411,7 @@ public class TimeSelector
      * @param format Time format.
      * @return A select object with all the hours.
      */
+    @SuppressWarnings("cast")
     public static Select getHourSelector(String name, Calendar now, int format)
     {
         Select hourSelect = new Select().setName(name);
@@ -572,6 +573,7 @@ public class TimeSelector
      *
      * @return A String with the correct HTML for the date selector.
      */
+    @Override
     public String toString()
     {
         return (ecsOutput().toString());

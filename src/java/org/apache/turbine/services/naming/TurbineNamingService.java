@@ -28,6 +28,7 @@ import java.util.Properties;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
@@ -57,15 +58,16 @@ public class TurbineNamingService
      * A global Map of Property objects which are initialised using
      * parameters from the ResourcesFile
      */
-    private static Map contextPropsList = null;
+    private static Map<String, Properties> contextPropsList = null;
 
     /** All initial contexts known to this service */
-    private Map initialContexts = new HashMap();
+    private final Map<String, InitialContext> initialContexts = new HashMap<String, InitialContext>();
 
     /**
      * Called the first time the Service is used.<br>
      *
      */
+    @Override
     public void init()
             throws InitializationException
     {
@@ -79,7 +81,7 @@ public class TurbineNamingService
         Configuration conf = Turbine.getConfiguration();
         try
         {
-            contextPropsList = new HashMap();
+            contextPropsList = new HashMap<String, Properties>();
 
             for (Iterator contextKeys = conf.subset("context").getKeys();
                  contextKeys.hasNext();)
@@ -97,8 +99,7 @@ public class TurbineNamingService
 
                 if (contextPropsList.containsKey(contextName))
                 {
-                    contextProps = (Properties)
-                            contextPropsList.get(contextName);
+                    contextProps = contextPropsList.get(contextName);
                 }
                 else
                 {
@@ -115,14 +116,14 @@ public class TurbineNamingService
                  contextPropsKeys.hasNext();)
             {
                 String key = (String) contextPropsKeys.next();
-                Properties contextProps = (Properties) contextPropsList.get(key);
+                Properties contextProps = contextPropsList.get(key);
                 InitialContext context = new InitialContext(contextProps);
                 initialContexts.put(key, context);
             }
 
             setInit(true);
         }
-        catch (Exception e)
+        catch (NamingException e)
         {
             log.error("Failed to initialize JDNI contexts!", e);
 
@@ -150,7 +151,7 @@ public class TurbineNamingService
 
         if (contextPropsList.containsKey(contextName))
         {
-            contextProps = (Properties) contextPropsList.get(contextName);
+            contextProps = contextPropsList.get(contextName);
         }
         else
         {
