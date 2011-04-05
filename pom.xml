@@ -17,7 +17,7 @@
    limitations under the License.
 
 -->
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache</groupId>
@@ -27,7 +27,7 @@
   <groupId>org.apache.turbine</groupId>
   <artifactId>turbine</artifactId>
   <name>turbine-4</name>
-  <version>4.0-M1-SNAPSHOT</version>
+  <version>4.0-M1</version>
   <description>Turbine is a servlet based framework that allows experienced Java
     developers to quickly build secure web applications. Parts of Turbine
     can also be used independently of the web portion of Turbine as
@@ -75,114 +75,114 @@
       <id>brekke</id>
       <name>Jeff Brekke</name>
       <email>ekkerbj@yahoo.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </developer>
     <developer>
       <id>hoffmann</id>
       <name>Jürgen Hoffmann</name>
       <email>hoffmann@apache.org</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </developer>
     <developer>
       <id>daveb</id>
       <name>Dave Bryson</name>
       <email>mbryson@mont.mindspring.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </developer>
     <developer>
       <id>burton</id>
       <name>Kevin A. Burton</name>
       <email>burton@relativity.yi.org</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </developer>
     <developer>
       <id>dobbs</id>
       <name>Eric Dobbs</name>
       <email>dobbs@apache.org</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </developer>
     <developer>
       <id>seade</id>
       <name>Scott Eade</name>
       <email>seade@backstagetech.com.au</email>
-      <url/>
+      <url />
       <organization>Backstage Technologies Pty. Ltd.</organization>
-      <timezone/>
+      <timezone />
     </developer>
     <developer>
       <id>fedor</id>
       <name>Fedor Karpelevitch</name>
       <email>fedor@karpelevitch.net</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </developer>
     <developer>
       <id>legassick</id>
       <name>Sean Legassick</name>
       <email>sean@informage.net</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </developer>
     <developer>
       <id>jmcnally</id>
       <name>John McNally</name>
       <email>jmcnally@collab.net</email>
-      <url/>
+      <url />
       <organization>CollabNet, Inc.</organization>
-      <timezone/>
+      <timezone />
     </developer>
     <developer>
       <id>quintonm</id>
       <name>Quinton McCombs</name>
       <email>quintonm@bellsouth.net</email>
-      <url/>
+      <url />
       <organization>NEqualsOne</organization>
       <roles>
         <role>Java Developer</role>
       </roles>
-      <timezone/>
+      <timezone />
     </developer>
     <developer>
       <id>mpoeschl</id>
       <name>Martin Poeschl</name>
       <email>mpoeschl@marmot.at</email>
-      <url/>
+      <url />
       <organization>tucana.at</organization>
-      <timezone/>
+      <timezone />
     </developer>
     <developer>
       <id>epugh</id>
       <name>Eric Pugh</name>
       <email>epugh@upstate.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </developer>
     <developer>
       <id>dlr</id>
       <name>Daniel Rall</name>
       <email>dlr@finemaltcoding.com</email>
-      <url/>
+      <url />
       <organization>CollabNet, Inc.</organization>
-      <timezone/>
+      <timezone />
     </developer>
     <developer>
       <id>henning</id>
       <name>Henning P. Schmiedehausen</name>
       <email>hps@intermeta.de</email>
-      <url/>
+      <url />
       <organization>INTERMETA - Gesellschaft fuer Mehrwertdienste mbH</organization>
       <roles>
         <role>Java Developer</role>
@@ -193,23 +193,23 @@
       <id>kschrader</id>
       <name>Kurt Schrader</name>
       <email>kschrader@karmalab.org</email>
-      <url/>
+      <url />
       <organization>University of Michigan</organization>
-      <timezone/>
+      <timezone />
     </developer>
     <developer>
       <id>jon</id>
       <name>Jon Scott Stevens</name>
       <email>jon@latchkey.com</email>
-      <url/>
+      <url />
       <organization>CollabNet, Inc.</organization>
-      <timezone/>
+      <timezone />
     </developer>
     <developer>
       <name>Thomas Vandahl</name>
       <id>tv</id>
       <email>tv@apache.org</email>
-      <organization/>
+      <organization />
       <roles>
         <role>Java Developer</role>
       </roles>
@@ -219,7 +219,7 @@
       <name>Ludwig Magnusson</name>
       <id>ludwig</id>
       <email>ludwig@apache.org</email>
-      <organization/>
+      <organization />
       <roles>
         <role>Java Developer</role>
       </roles>
@@ -230,268 +230,268 @@
     <contributor>
       <name>Gary Bartlett</name>
       <email>gary_a_bartlett@yahoo.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Youngho Cho</name>
       <email>youngho@nannet.co.kr</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Frank Conradie</name>
       <email>frank@opticode.co.za</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Gonzalo A. Diethelm</name>
       <email>gonzalo.diethelm@iname.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>David Duddleston</name>
       <email>david@i2a.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Christopher Elkins</name>
       <email>celkins@scardini.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>M. Sean Gilligan</name>
       <email>Sean_Gilligan@catalla.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Jian He</name>
       <email>hjnet@163.net</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Humberto Hernandez</name>
       <email>hhernandez@itweb.com.mx</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Nissim Karpenstein</name>
       <email>nissim@nksystems.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Rafal Krzewski</name>
       <email>krzewski@e-point.pl</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Chris Kimpton</name>
       <email>kimptoc.mail@bigfoot.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Brian Lawler</name>
       <email>brian@tribenetwork.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Josh Lucas</name>
       <email>josh@stonecottage.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Carl Ludwig</name>
       <email>carl@destinymusic.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Jonas Mauras</name>
       <email>jm@mediaphil.de</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Brett McLaughlin</name>
       <email>bmclaugh@algx.net</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Leon Messerschmidt</name>
       <email>leon@opticode.co.za</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Chris Meyer</name>
       <email>cmeyer@gatan.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Steven Nagy</name>
       <email>snagy@web-publicity.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Kasper Nielsen</name>
       <email>kav@kav.dk</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Paul O'Leary</name>
       <email>paul@evolventtech.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Giacomo Pati</name>
       <email>Giacomo.Pati@pwr.ch</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Mark Porter</name>
       <email>mark.porter@canlink.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Jeff Prickett</name>
       <email>jeffprickett@mindspring.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Ilkka Priha</name>
       <email>ilkka.priha@simsoft.fi</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Cameron Riley</name>
       <email>criley@ekmail.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Greg Ritter</name>
       <email>greg@shwoop.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Ingo Schuster</name>
       <email>ingo@raleigh.ibm.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Costas Stergiou</name>
       <email>csterg@aias.gr</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>George Stewart</name>
       <email>georgestewart@yahoo.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Ralf Stranzenbach</name>
       <email>ralf@reswi.ruhr.de</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Hakan Tandogan</name>
       <email>hakan42@gmx.de</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Scott C. Tavares</name>
       <email>stavares@home.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>John Thorhauer</name>
       <email>john@zenplex.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Magnús Þór Torfason</name>
       <email>magnus@handpoint.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
     <contributor>
       <name>Scott Weaver</name>
       <email>sweaver@rippe.com</email>
-      <url/>
-      <organization/>
-      <timezone/>
+      <url />
+      <organization />
+      <timezone />
     </contributor>
   </contributors>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/core/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/trunk</developerConnection>
-    <url>http://svn.apache.org/viewcvs/turbine/core/trunk/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/core/tags/TURBINE_4_0_M1</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/tags/TURBINE_4_0_M1</developerConnection>
+    <url>http://svn.apache.org/viewcvs/turbine/core/tags/TURBINE_4_0_M1</url>
   </scm>
   
   <build>
@@ -510,7 +510,7 @@
     
     <testResources>
       <testResource>
-        <targetPath/>
+        <targetPath />
         <directory>conf/test</directory>
         <includes>
           <include>commons-logging.properties</include>
