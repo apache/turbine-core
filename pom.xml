@@ -1104,7 +1104,7 @@
           <plugin>
             <artifactId>maven-gpg-plugin</artifactId>
             <configuration>
-              <passphrase>${gpg.passphrase}</passphrase>
+                <mavenExecutorId>forked-path</mavenExecutorId>
             </configuration>
             <executions>
               <execution>
@@ -1173,7 +1173,7 @@
           <plugin>
             <artifactId>maven-gpg-plugin</artifactId>
             <configuration>
-              <passphrase>${gpg.passphrase}</passphrase>
+                <mavenExecutorId>forked-path</mavenExecutorId>
             </configuration>
             <executions>
               <execution>
