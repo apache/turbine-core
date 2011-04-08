@@ -21,15 +21,15 @@
 <document>
 
  <properties>
-  <title>Turbine</title>
+  <title>Apache Turbine&#8482;</title>
  </properties>
 
  <body>
 
- <section name="What is Turbine?">
+ <section name="What is Apache Turbine?">
 
  <p>
-    Turbine is a servlet based framework that allows experienced Java
+    Apache Turbine&#8482; is a servlet based framework that allows experienced Java
     developers to quickly build secure web applications. Parts of
     Turbine can also be used independently of the web portion of Turbine
     as well. In other words, we strive to make portions of Turbine
