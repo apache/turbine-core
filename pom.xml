@@ -27,7 +27,7 @@
   <groupId>org.apache.turbine</groupId>
   <artifactId>turbine</artifactId>
   <name>turbine-4</name>
-  <version>4.0-M2-SNAPSHOT</version>
+  <version>4.0-M1-SNAPSHOT</version>
   <description>Turbine is a servlet based framework that allows experienced Java
     developers to quickly build secure web applications. Parts of Turbine
     can also be used independently of the web portion of Turbine as
@@ -1138,6 +1138,7 @@
           <!-- We want to sign the artifact, the POM, and all attached artifacts -->
           <plugin>
             <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.2</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -1160,21 +1161,6 @@
               <!-- Pass these arguments to the deploy plugin. -->
               <arguments>-Prelease</arguments>
             </configuration>
-          </plugin>
-          <plugin>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>create-javadoc-jar</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-                <phase>package</phase>
-                <configuration>
-                  <source>${maven.compile.source}</source>
-                </configuration>
-              </execution>
-            </executions>
           </plugin>
         </plugins>
       </build>
@@ -1204,6 +1190,7 @@
           <!-- We want to sign the artifact, the POM, and all attached artifacts -->
           <plugin>
             <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.2</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -1227,21 +1214,6 @@
               <arguments>-Prc</arguments>
             </configuration>
           </plugin>
-          <plugin>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>create-javadoc-jar</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-                <phase>package</phase>
-                <configuration>
-                  <source>${maven.compile.source}</source>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
         </plugins>
       </build>
     </profile>    
@@ -1259,7 +1231,7 @@
 
     <!-- The RC version used in the staging repository URL. -->
     <turbine.release.version>${project.version}</turbine.release.version>
-    <turbine.rc.version>RC1</turbine.rc.version>
+    <turbine.rc.version>RC2</turbine.rc.version>
 
     <!--
       Make the deployment protocol pluggable. This allows to switch to
