@@ -783,6 +783,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.7</version>
         <configuration> 
           <aggregate>false</aggregate>
           <source>${maven.compile.source}</source>
@@ -903,13 +904,13 @@
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
-      <version>3.2</version>
+      <version>3.2.1</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>commons-configuration</groupId>
       <artifactId>commons-configuration</artifactId>
-      <version>1.5</version>
+      <version>1.6</version>
       <type>jar</type>
       <exclusions>
         <exclusion>
@@ -919,16 +920,10 @@
       </exclusions>      
     </dependency>
     <dependency>
-      <groupId>commons-email</groupId>
+      <groupId>org.apache.commons</groupId>
       <artifactId>commons-email</artifactId>
-      <version>1.0</version>
+      <version>1.2</version>
       <type>jar</type>
-      <exclusions>
-        <exclusion>
-          <groupId>dumbster</groupId>
-          <artifactId>dumbster</artifactId>
-        </exclusion>
-      </exclusions>      
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -939,7 +934,7 @@
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
-      <version>2.4</version>
+      <version>2.5</version>
       <type>jar</type>
     </dependency>
     <dependency>
