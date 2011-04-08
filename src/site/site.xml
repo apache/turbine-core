@@ -37,8 +37,8 @@
     <links>
       <item name="Apache"           href="http://www.apache.org"/>
       <item name="Turbine"          href="http://turbine.apache.org/"/>
-      <item name="Fulcrum"          href="../../fulcrum/"/>
-      <item name="META"             href="../../meta/"/>
+      <item name="Fulcrum"          href="http://turbine.apache.org/fulcrum/"/>
+      <item name="META"             href="http://turbine.apache.org/meta/"/>
     </links>
 
     <menu name="General Information">
@@ -53,18 +53,18 @@
       <item name="Services"              href="/services/index.html" collapse="true">
         <item name="Assembler Broker Service" href="/services/assemblerbroker-service.html"/>
         <item name="Avalon Component Service" href="/services/avalon-component-service.html"/>
-        <item name="Crypto Service"      href="../../fulcrum/fulcrum-crypto/"/>
-        <item name="Cache Service"       href="../../fulcrum/fulcrum-cache/"/>
+        <item name="Crypto Service"      href="http://turbine.apache.org/fulcrum/fulcrum-crypto/"/>
+        <item name="Cache Service"       href="http://turbine.apache.org/fulcrum/fulcrum-cache/"/>
         <item name="Component Service"   href="/services/component-service.html"/>
-        <item name="Factory Service"     href="../../fulcrum/fulcrum-factory/"/>
-        <item name="Intake Service"      href="../../fulcrum/fulcrum-intake/"/>
+        <item name="Factory Service"     href="http://turbine.apache.org/fulcrum/fulcrum-factory/"/>
+        <item name="Intake Service"      href="http://turbine.apache.org/fulcrum/fulcrum-intake/"/>
         <item name="JSON-RPC Service"    href="/services/jsonrpc-service.html"/>
         <item name="JSP Service"         href="/services/jsp-service.html"/>
-        <item name="Localization Service" href="../../fulcrum/fulcrum-localization/"/>
-        <item name="MimeType Service"    href="../../fulcrum/fulcrum-mimetype/"/>
+        <item name="Localization Service" href="http://turbine.apache.org/fulcrum/fulcrum-localization/"/>
+        <item name="MimeType Service"    href="http://turbine.apache.org/fulcrum/fulcrum-mimetype/"/>
         <item name="Naming Service"      href="/services/naming-service.html"/>
-        <item name="Parser Service"      href="../../fulcrum/fulcrum-parser/"/>
-        <item name="Pool Service"        href="../../fulcrum/fulcrum-pool/"/>
+        <item name="Parser Service"      href="http://turbine.apache.org/fulcrum/fulcrum-parser/"/>
+        <item name="Pool Service"        href="http://turbine.apache.org/fulcrum/fulcrum-pool/"/>
         <item name="Pull Service"        href="/services/pull-service.html"/>
         <item name="RunData Service"     href="/services/rundata-service.html"/>
         <item name="Scheduler Service"   href="/services/scheduler-service.html"/>
@@ -76,10 +76,10 @@
         <item name="Torque Security Service Schema" href="/services/torque-security-schema.html"/>
         <item name="UI Service"          href="/services/ui-service.html"/>
         <item name="Unique ID Service"   href="/services/uniqueid-service.html"/>
-        <item name="Upload Service"      href="../../fulcrum/fulcrum-upload/"/>
+        <item name="Upload Service"      href="http://turbine.apache.org/fulcrum/fulcrum-upload/"/>
         <item name="Velocity Service"    href="/services/velocity-service.html"/>
-        <item name="XML-RPC Service"     href="../../fulcrum/fulcrum-xmlrpc/"/>
-        <item name="XSLT Service"        href="../../fulcrum/fulcrum-xslt/"/>
+        <item name="XML-RPC Service"     href="http://turbine.apache.org/fulcrum/fulcrum-xmlrpc/"/>
+        <item name="XSLT Service"        href="http://turbine.apache.org/fulcrum/fulcrum-xslt/"/>
       </item>
       <item name="Howtos"                href="/howto/index.html" collapse="true">
         <item name="Action Events Howto" href="/howto/action-event-howto.html"/>
@@ -109,9 +109,13 @@
 
     <menu ref="reports" inherit="bottom" />
 
-    <menu name="ASF" inherit="bottom">
-      <item name="Sponsorship"           href="http://www.apache.org/foundation/sponsorship.html" />
-      <item name="Thanks"                href="http://www.apache.org/foundation/thanks.html" />
+    <menu name="Apache">
+        <item name="Apache Website"     href="http://www.apache.org/"/>
+        <item name="License"            href="http://www.apache.org/licenses/" />
+        <item name="How the ASF works"  href="http://www.apache.org/foundation/how-it-works.html"/>
+        <item name="Sponsorship"        href="http://www.apache.org/foundation/sponsorship.html" />
+        <item name="Thanks"             href="http://www.apache.org/foundation/thanks.html" />
+        <item name="Security"           href="http://www.apache.org/security/" />
     </menu>
   </body>
 </project>
