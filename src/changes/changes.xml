@@ -26,6 +26,18 @@
   <body>
     <release version="4.0-M1" date="in Subversion">
       <action type="update" dev="tv">
+        Updated dependency on commons-collections to 3.2.1
+      </action>
+      <action type="update" dev="tv">
+        Updated dependency on commons-configuration to 1.6
+      </action>
+      <action type="update" dev="tv">
+        Updated dependency on commons-lang to 2.5
+      </action>
+      <action type="update" dev="tv">
+        Updated dependency on commons-email to 1.2
+      </action>
+      <action type="update" dev="tv">
         Move to Java-5 generics.
       </action>
       <action type="update" dev="ludwig">
