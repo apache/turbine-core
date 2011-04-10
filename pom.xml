@@ -486,6 +486,13 @@
       <organization />
       <timezone />
     </contributor>
+    <contributor>
+      <name>Siegfried Goeschl</name>
+      <email>sgoeschl@apache.org</email>
+      <url />
+      <organization />
+      <timezone />
+    </contributor>    
   </contributors>
 
   <scm>
