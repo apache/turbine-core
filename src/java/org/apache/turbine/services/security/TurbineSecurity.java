@@ -129,7 +129,7 @@ public abstract class TurbineSecurity
      * @throws UnknownEntityException if the system's implementation of User
      *         interface could not be determined.
      */
-    public static Class<? extends User> getUserClass()
+    public static Class getUserClass()
             throws UnknownEntityException
     {
         return getService().getUserClass();
@@ -143,7 +143,7 @@ public abstract class TurbineSecurity
      * @throws UnknownEntityException if the system's implementation of Group
      *         interface could not be determined.
      */
-    public static Class<? extends Group> getGroupClass()
+    public static Class getGroupClass()
         throws UnknownEntityException
     {
         return getService().getGroupClass();
@@ -157,7 +157,7 @@ public abstract class TurbineSecurity
      * @throws UnknownEntityException if the system's implementation of Permission
      *         interface could not be determined.
      */
-    public static Class<? extends Permission> getPermissionClass()
+    public static Class getPermissionClass()
         throws UnknownEntityException
     {
         return getService().getPermissionClass();
@@ -171,7 +171,7 @@ public abstract class TurbineSecurity
      * @throws UnknownEntityException if the system's implementation of Role
      *         interface could not be determined.
      */
-    public static Class<? extends Role> getRoleClass()
+    public static Class getRoleClass()
         throws UnknownEntityException
     {
         return getService().getRoleClass();

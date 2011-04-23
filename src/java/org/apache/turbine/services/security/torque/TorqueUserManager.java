@@ -186,11 +186,10 @@ public class TorqueUserManager
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
      */
-    @Deprecated
     public User[] retrieve(Object criteria)
         throws DataBackendException
     {
-        return retrieveList(criteria).toArray(new User[0]);
+        return (User [])retrieveList(criteria).toArray(new User[0]);
     }
 
     /**
@@ -207,7 +206,7 @@ public class TorqueUserManager
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
      */
-    public List<User> retrieveList(Object criteria)
+    public List retrieveList(Object criteria)
         throws DataBackendException
     {
         if (criteria instanceof Criteria)
@@ -216,11 +215,11 @@ public class TorqueUserManager
             for (Iterator keys = c.keySet().iterator(); keys.hasNext(); )
             {
                 String key = (String) keys.next();
-
+    
                 // set the table name for all attached criterion
-                Criteria.Criterion[] criterion =
+                Criteria.Criterion[] criterion = 
                     c.getCriterion(key).getAttachedCriterion();
-
+    
                 for (int i = 0; i < criterion.length; i++)
                 {
                     if (StringUtils.isEmpty(criterion[i].getTable()))
@@ -229,7 +228,7 @@ public class TorqueUserManager
                     }
                 }
             }
-            List<User> users = null;
+            List users = null;
             try
             {
                 users = UserPeerManager.doSelect(c);
