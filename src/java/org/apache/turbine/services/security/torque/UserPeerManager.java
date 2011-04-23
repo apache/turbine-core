@@ -20,17 +20,21 @@ package org.apache.turbine.services.security.torque;
  */
 
 import java.beans.PropertyDescriptor;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.torque.TorqueException;
 import org.apache.torque.om.Persistent;
 import org.apache.torque.util.BasePeer;
 import org.apache.torque.util.Criteria;
+
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.security.TurbineSecurity;
@@ -52,10 +56,10 @@ public class UserPeerManager
     private static final long serialVersionUID = 6943046259921811593L;
 
     /** The class of the Peer the TorqueSecurityService uses */
-    private static Class<?> userPeerClass = null;
+    private static Class userPeerClass = null;
 
     /** The class name of the objects returned by the configured peer. */
-    private static Class<?> userObject = null;
+    private static Class userObject = null;
 
     /** The name of the Table used for Group Object queries  */
     private static String tableName = null;
@@ -505,7 +509,6 @@ public class UserPeerManager
      * @return A String with the full name of the column.
      * @deprecated use getColumnName(String name)
      */
-    @Deprecated
     public String getFullColumnName(String name)
     {
         return getColumnName(name);
@@ -716,7 +719,7 @@ public class UserPeerManager
      *
      * @exception TorqueException A problem occured.
      */
-    public static List<User> doSelect(Criteria criteria)
+    public static List doSelect(Criteria criteria)
         throws TorqueException
     {
         List list;
@@ -735,7 +738,7 @@ public class UserPeerManager
         {
             throw new TorqueException("doSelect failed", e);
         }
-        List<User> newList = new ArrayList<User>(list.size());
+        List newList = new ArrayList(list.size());
 
         //
         // Wrap the returned Objects into TorqueUsers.
@@ -813,7 +816,6 @@ public class UserPeerManager
      *
      * @deprecated use getName(obj)
      */
-    @Deprecated
     public static String getUserName(Persistent obj)
     {
         return getName(obj);
@@ -1484,12 +1486,12 @@ public class UserPeerManager
         User u = null;
         try
         {
-            Class<? extends User> userWrapperClass = TurbineSecurity.getUserClass();
+            Class userWrapperClass = TurbineSecurity.getUserClass();
 
             Class [] clazz = new Class [] { Persistent.class };
             Object [] params = new Object [] { p };
 
-            u = userWrapperClass
+            u = (User) userWrapperClass
                 .getConstructor(clazz)
                 .newInstance(params);
         }

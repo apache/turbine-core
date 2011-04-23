@@ -20,17 +20,16 @@ package org.apache.turbine.services.security.torque;
  */
 
 import java.beans.PropertyDescriptor;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.torque.TorqueException;
-import org.apache.torque.om.Persistent;
-import org.apache.torque.util.BasePeer;
-import org.apache.torque.util.Criteria;
+
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.User;
@@ -39,6 +38,11 @@ import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.RoleSet;
+
+import org.apache.torque.TorqueException;
+import org.apache.torque.om.Persistent;
+import org.apache.torque.util.BasePeer;
+import org.apache.torque.util.Criteria;
 
 /**
  * This class capsulates all direct Peer access for the Role entities.
@@ -53,10 +57,10 @@ public class RolePeerManager
     implements RolePeerManagerConstants
 {
     /** The class of the Peer the TorqueSecurityService uses */
-    private static Class<?> rolePeerClass = null;
+    private static Class rolePeerClass = null;
 
     /** The class name of the objects returned by the configured peer. */
-    private static Class<?> roleObject = null;
+    private static Class roleObject = null;
 
     /** The name of the Table used for Role Object queries  */
     private static String tableName = null;
@@ -449,7 +453,7 @@ public class RolePeerManager
      *
      * @exception TorqueException A problem occured.
      */
-    public static List<Role> doSelect(Criteria criteria)
+    public static List doSelect(Criteria criteria)
         throws TorqueException
     {
         List list;
@@ -468,7 +472,7 @@ public class RolePeerManager
         {
             throw new TorqueException("doSelect failed", e);
         }
-        List<Role> newList = new ArrayList<Role>(list.size());
+        List newList = new ArrayList(list.size());
 
         //
         // Wrap the returned Objects into TorqueRoles.
@@ -683,12 +687,12 @@ public class RolePeerManager
         Role r = null;
         try
         {
-            Class<? extends Role> roleWrapperClass = TurbineSecurity.getRoleClass();
+            Class roleWrapperClass = TurbineSecurity.getRoleClass();
 
             Class [] clazz = new Class [] { Persistent.class };
             Object [] params = new Object [] { p };
 
-            r = roleWrapperClass
+            r = (Role) roleWrapperClass
                 .getConstructor(clazz)
                 .newInstance(params);
         }

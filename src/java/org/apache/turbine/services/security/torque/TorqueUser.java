@@ -59,10 +59,10 @@ public class TorqueUser
     private Date lastAccessDate = null;
 
     /** This is data that will survive a servlet engine restart. */
-    private Hashtable<String, Object> permStorage = null;
+    private Hashtable permStorage = null;
 
     /** This is data that will not survive a servlet engine restart. */
-    private Hashtable<String, Object> tempStorage = null;
+    private Hashtable tempStorage = null;
 
     /**
      * Constructor.
@@ -72,7 +72,7 @@ public class TorqueUser
     {
         super();
         setCreateDate(new Date());
-        tempStorage = new Hashtable<String, Object>(10);
+        tempStorage = new Hashtable(10);
         setHasLoggedIn(Boolean.FALSE);
     }
 
@@ -90,7 +90,7 @@ public class TorqueUser
         // Do not set creation date. This is only called on retrieval from
         // storage!
 
-        tempStorage = new Hashtable<String, Object>(10);
+        tempStorage = new Hashtable(10);
         setHasLoggedIn(Boolean.FALSE);
     }
 
@@ -103,7 +103,6 @@ public class TorqueUser
      *
      */
 
-    @Override
     public Persistent getPersistentObj()
     {
         if (obj == null)
@@ -121,7 +120,6 @@ public class TorqueUser
      *
      * @exception Exception This method might throw an exceptions
      */
-    @Override
     public void save(String torqueName)
             throws Exception
     {
@@ -140,7 +138,6 @@ public class TorqueUser
      *
      * @exception Exception This method might throw an exceptions
      */
-    @Override
     public void save(Connection con)
         throws Exception
     {
@@ -154,7 +151,6 @@ public class TorqueUser
      * @throws TurbineSecurityException if there is a problem while
      *  saving data.
      */
-    @Override
     public void save()
         throws TurbineSecurityException
     {
@@ -185,7 +181,6 @@ public class TorqueUser
      *
      * @return The name of the object.
      */
-    @Override
     public String getName()
     {
         return UserPeerManager.getName(getPersistentObj());
@@ -196,7 +191,6 @@ public class TorqueUser
      *
      * @param name The name of the object
      */
-    @Override
     public void setName(String name)
     {
         setUserName(name);
@@ -238,7 +232,6 @@ public class TorqueUser
      * @return The name of the user.
      * @deprecated Use getName() instead.
      */
-    @Deprecated
     public String getUserName()
     {
         return getName();
@@ -557,8 +550,7 @@ public class TorqueUser
      *
      * @return A Hashtable.
      */
-    @SuppressWarnings("unchecked")
-    public Hashtable<String, Object> getPermStorage()
+    public Hashtable getPermStorage()
     {
         if (permStorage == null)
         {
@@ -566,12 +558,12 @@ public class TorqueUser
 
             if (objectdata != null)
             {
-                permStorage = (Hashtable<String, Object>) ObjectUtils.deserialize(objectdata);
+                permStorage = (Hashtable) ObjectUtils.deserialize(objectdata);
             }
 
             if (permStorage == null)
             {
-                permStorage = new Hashtable<String, Object>();
+                permStorage = new Hashtable();
             }
         }
 
@@ -584,7 +576,7 @@ public class TorqueUser
      *
      * @param storage A Hashtable.
      */
-    public void setPermStorage(Hashtable<String, Object> permStorage)
+    public void setPermStorage(Hashtable permStorage)
     {
         if (permStorage != null)
         {
@@ -598,11 +590,11 @@ public class TorqueUser
      *
      * @return A Hashtable.
      */
-    public Hashtable<String, Object> getTempStorage()
+    public Hashtable getTempStorage()
     {
         if (tempStorage == null)
         {
-            tempStorage = new Hashtable<String, Object>();
+            tempStorage = new Hashtable();
         }
         return tempStorage;
     }
@@ -613,7 +605,7 @@ public class TorqueUser
      *
      * @param storage A Hashtable.
      */
-    public void setTempStorage(Hashtable<String, Object> tempStorage)
+    public void setTempStorage(Hashtable tempStorage)
     {
         if (tempStorage != null)
         {

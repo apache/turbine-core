@@ -70,7 +70,6 @@ public class TorqueSecurityService
      * @exception InitializationException A problem occured during initialization
      */
 
-    @Override
     public void init()
         throws InitializationException
     {
@@ -112,8 +111,8 @@ public class TorqueSecurityService
         }
         try
         {
-            Hashtable<Group, RoleSet> roles = new Hashtable<Group, RoleSet>();
-            Hashtable<Group, PermissionSet> permissions = new Hashtable<Group, PermissionSet>();
+            Hashtable roles = new Hashtable();
+            Hashtable permissions = new Hashtable();
             // notify the state modifiers (writers) that we want to create
             // the snapshot.
             lockShared();
@@ -121,8 +120,10 @@ public class TorqueSecurityService
             // construct the snapshot:
 
             // foreach group in the system
-            for (Group group : getAllGroups())
+            for (Iterator groupsIterator = getAllGroups().iterator();
+                 groupsIterator.hasNext();)
             {
+                Group group = (Group) groupsIterator.next();
                 // get roles of user in the group
                 RoleSet groupRoles = RolePeerManager.retrieveSet(user, group);
                 // put the Set into roles(group)
@@ -130,8 +131,10 @@ public class TorqueSecurityService
                 // collect all permissions in this group
                 PermissionSet groupPermissions = new PermissionSet();
                 // foreach role in Set
-                for (Role role : groupRoles)
+                for (Iterator rolesIterator = groupRoles.iterator();
+                     rolesIterator.hasNext();)
                 {
+                    Role role = (Role) rolesIterator.next();
                     // get permissions of the role
                     PermissionSet rolePermissions =
                         PermissionPeerManager.retrieveSet(role);
@@ -503,7 +506,7 @@ public class TorqueSecurityService
                 torqueCriteria.put(GroupPeerManager.getColumnName(key),
                         c.get(key));
             }
-            List<Group> groups = new ArrayList<Group>(0);
+            List groups = new ArrayList(0);
             try
             {
                 groups = GroupPeerManager.doSelect(torqueCriteria);
@@ -544,7 +547,7 @@ public class TorqueSecurityService
                 torqueCriteria.put(RolePeerManager.getColumnName(key),
                         c.get(key));
             }
-            List<Role> roles = new ArrayList<Role>(0);
+            List roles = new ArrayList(0);
             try
             {
                 roles = RolePeerManager.doSelect(torqueCriteria);
@@ -584,7 +587,7 @@ public class TorqueSecurityService
                 torqueCriteria.put(PermissionPeerManager.getColumnName(key),
                         c.get(key));
             }
-            List<Permission> permissions = new ArrayList<Permission>(0);
+            List permissions = new ArrayList(0);
             try
             {
                 permissions = PermissionPeerManager.doSelect(torqueCriteria);
@@ -594,7 +597,7 @@ public class TorqueSecurityService
                 throw new DataBackendException(
                     "getPermissions(Object) failed", e);
             }
-
+            
             return new PermissionSet(permissions);
         }
         else
@@ -1186,7 +1189,6 @@ public class TorqueSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      */
-    @Override
     public GroupSet getAllGroups() throws DataBackendException
     {
         return getGroups(new Criteria());
@@ -1200,7 +1202,6 @@ public class TorqueSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      */
-    @Override
     public PermissionSet getAllPermissions() throws DataBackendException
     {
         return getPermissions(new Criteria());
@@ -1214,7 +1215,6 @@ public class TorqueSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      */
-    @Override
     public RoleSet getAllRoles() throws DataBackendException
     {
         return getRoles(new Criteria());
@@ -1235,7 +1235,7 @@ public class TorqueSecurityService
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
      */
-    public List<User> getUserList(Object criteria) throws DataBackendException
+    public List getUserList(Object criteria) throws DataBackendException
     {
         return getUserManager().retrieveList(criteria);
     }

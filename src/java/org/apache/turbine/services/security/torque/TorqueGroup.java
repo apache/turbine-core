@@ -19,7 +19,10 @@ package org.apache.turbine.services.security.torque;
  * under the License.
  */
 
+import java.util.Iterator;
+
 import org.apache.torque.om.Persistent;
+
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Role;
 import org.apache.turbine.om.security.User;
@@ -245,9 +248,10 @@ public class TorqueGroup
     public void grant(User user, RoleSet roleSet)
         throws TurbineSecurityException
     {
-    	for (Role r : roleSet)
+        Iterator roles = roleSet.iterator();
+        while (roles.hasNext())
         {
-            TurbineSecurity.grant(user, this, r);
+            TurbineSecurity.grant(user, this, (Role) roles.next());
         }
     }
 
@@ -276,9 +280,10 @@ public class TorqueGroup
     public void revoke(User user, RoleSet roleSet)
         throws TurbineSecurityException
     {
-    	for (Role r : roleSet)
+        Iterator roles = roleSet.iterator();
+        while (roles.hasNext())
         {
-            TurbineSecurity.revoke(user, this, r);
+            TurbineSecurity.revoke(user, this, (Role) roles.next());
         }
     }
 
