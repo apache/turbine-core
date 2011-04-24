@@ -486,6 +486,13 @@
       <organization />
       <timezone />
     </contributor>
+    <contributor>
+      <name>Siegfried Goeschl</name>
+      <email>sgoeschl@apache.org</email>
+      <url />
+      <organization />
+      <timezone />
+    </contributor>    
   </contributors>
 
   <scm>
@@ -748,6 +755,32 @@
           </execution>
         </executions>
       </plugin>      
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+      	<artifactId>maven-source-plugin</artifactId>
+      	<version>2.1.2</version>
+      	<executions>
+      		<execution>
+      			<phase>prepare-package</phase>
+      			<goals>
+      				<goal>jar</goal>
+      			</goals>
+      		</execution>
+      	</executions>      	
+      </plugin>
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+      	<artifactId>maven-javadoc-plugin</artifactId>
+      	<version>2.7</version>
+      	<executions>
+      		<execution>
+      			<phase>prepare-package</phase>
+      			<goals>
+      				<goal>jar</goal>
+      			</goals>
+      		</execution>
+      	</executions>
+      </plugin>
     </plugins>
     
   </build>
@@ -757,6 +790,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.7</version>
         <configuration> 
           <aggregate>false</aggregate>
           <source>${maven.compile.source}</source>
@@ -796,7 +830,7 @@
         <!-- get test coverage for regression tests -->
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.2</version>
+        <version>2.4</version>
       </plugin>      
       <plugin>
         <!-- generate the changes report from changes.xml -->
@@ -877,13 +911,13 @@
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
-      <version>3.2</version>
+      <version>3.2.1</version>
       <type>jar</type>
     </dependency>
     <dependency>
       <groupId>commons-configuration</groupId>
       <artifactId>commons-configuration</artifactId>
-      <version>1.5</version>
+      <version>1.6</version>
       <type>jar</type>
       <exclusions>
         <exclusion>
@@ -893,16 +927,10 @@
       </exclusions>      
     </dependency>
     <dependency>
-      <groupId>commons-email</groupId>
+      <groupId>org.apache.commons</groupId>
       <artifactId>commons-email</artifactId>
-      <version>1.0</version>
+      <version>1.2</version>
       <type>jar</type>
-      <exclusions>
-        <exclusion>
-          <groupId>dumbster</groupId>
-          <artifactId>dumbster</artifactId>
-        </exclusion>
-      </exclusions>      
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -913,7 +941,7 @@
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
-      <version>2.4</version>
+      <version>2.5</version>
       <type>jar</type>
     </dependency>
     <dependency>
@@ -1112,6 +1140,7 @@
           <!-- We want to sign the artifact, the POM, and all attached artifacts -->
           <plugin>
             <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.2</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -1135,21 +1164,6 @@
               <arguments>-Prelease</arguments>
             </configuration>
           </plugin>
-          <plugin>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>create-javadoc-jar</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-                <phase>package</phase>
-                <configuration>
-                  <source>${maven.compile.source}</source>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
         </plugins>
       </build>
     </profile>
@@ -1160,7 +1174,7 @@
         <repository>
           <id>apache.releases</id>
           <name>Apache Turbine Release Candidate Staging Repository</name>
-          <url>${turbine.deployment.protocol}://people.apache.org/www/turbine.apache.org/builds/turbine/core/${project.artifactId}/${turbine.release.version}/${turbine.rc.version}/staged</url>
+          <url>${turbine.deployment.protocol}://people.apache.org/www/turbine.apache.org/builds/turbine/core/${turbine.release.version}/${turbine.rc.version}/staged</url>
         </repository>
         <snapshotRepository>
           <id>apache.snapshots</id>
@@ -1170,7 +1184,7 @@
         <site>
           <id>apache.website</id>
           <name>Apache Turbine Release Candidate Staging Site</name>
-          <url>${fulcrum.deployment.protocol}://people.apache.org/www/turbine.apache.org/fulcrum/fulcrum-yaafi-crypto</url>
+          <url>${turbine.deployment.protocol}://people.apache.org/www/turbine.apache.org/builds/turbine/core/${turbine.release.version}/${turbine.rc.version}/site</url>
         </site>
       </distributionManagement>
       <build>
@@ -1178,6 +1192,7 @@
           <!-- We want to sign the artifact, the POM, and all attached artifacts -->
           <plugin>
             <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.2</version>
             <executions>
               <execution>
                 <id>sign-artifacts</id>
@@ -1201,21 +1216,6 @@
               <arguments>-Prc</arguments>
             </configuration>
           </plugin>
-          <plugin>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>create-javadoc-jar</id>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-                <phase>package</phase>
-                <configuration>
-                  <source>${maven.compile.source}</source>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
         </plugins>
       </build>
     </profile>    
@@ -1233,7 +1233,7 @@
 
     <!-- The RC version used in the staging repository URL. -->
     <turbine.release.version>${project.version}</turbine.release.version>
-    <turbine.rc.version>RC1</turbine.rc.version>
+    <turbine.rc.version>RC2</turbine.rc.version>
 
     <!--
       Make the deployment protocol pluggable. This allows to switch to

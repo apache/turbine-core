@@ -20,17 +20,21 @@ package org.apache.turbine.services.security.torque;
  */
 
 import java.beans.PropertyDescriptor;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.torque.TorqueException;
 import org.apache.torque.om.Persistent;
 import org.apache.torque.util.BasePeer;
 import org.apache.torque.util.Criteria;
+
 import org.apache.turbine.om.security.Group;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.security.TurbineSecurity;
@@ -50,10 +54,10 @@ public class GroupPeerManager
     implements GroupPeerManagerConstants
 {
     /** The class of the Peer the TorqueSecurityService uses */
-    private static Class<?> groupPeerClass = null;
+    private static Class groupPeerClass = null;
 
     /** The class name of the objects returned by the configured peer. */
-    private static Class<?> groupObject = null;
+    private static Class groupObject = null;
 
     /** The name of the Table used for Group Object queries  */
     private static String tableName = null;
@@ -413,7 +417,7 @@ public class GroupPeerManager
      *
      * @exception TorqueException A problem occured.
      */
-    public static List<Group> doSelect(Criteria criteria)
+    public static List doSelect(Criteria criteria)
         throws TorqueException
     {
         List list;
@@ -431,7 +435,7 @@ public class GroupPeerManager
         {
             throw new TorqueException("doSelect failed", e);
         }
-        List<Group> newList = new ArrayList<Group>(list.size());
+        List newList = new ArrayList(list.size());
 
         //
         // Wrap the returned Objects into the configured Peer Objects.
@@ -647,12 +651,12 @@ public class GroupPeerManager
         Group g = null;
         try
         {
-            Class<? extends Group> groupWrapperClass = TurbineSecurity.getGroupClass();
+            Class groupWrapperClass = TurbineSecurity.getGroupClass();
 
             Class [] clazz = new Class [] { Persistent.class };
             Object [] params = new Object [] { p };
 
-            g = groupWrapperClass
+            g = (Group) groupWrapperClass
                 .getConstructor(clazz)
                 .newInstance(params);
         }

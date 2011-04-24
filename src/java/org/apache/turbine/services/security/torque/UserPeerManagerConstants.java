@@ -237,6 +237,6 @@ public interface UserPeerManagerConstants
     /** The default value of the bean property for the objectdata field. */
     String USER_OBJECTDATA_PROPERTY_DEFAULT =
         "Objectdata";
-}
+};
 
 

@@ -23,7 +23,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import javax.naming.NameAlreadyBoundException;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
@@ -99,8 +98,8 @@ public class LDAPSecurityService extends BaseSecurityService
         }
         try
         {
-            Hashtable<Group, RoleSet> roles = new Hashtable<Group, RoleSet>();
-            Hashtable<Group, PermissionSet> permissions = new Hashtable<Group, PermissionSet>();
+            Hashtable roles = new Hashtable();
+            Hashtable permissions = new Hashtable();
 
             // notify the state modifiers (writers) that we want to create
             // the snapshot.
@@ -432,7 +431,7 @@ public class LDAPSecurityService extends BaseSecurityService
      */
     public Group getNewGroup(String groupName)
     {
-        return new TurbineGroup(groupName);
+        return (Group) new TurbineGroup(groupName);
     }
 
     /**
@@ -446,7 +445,7 @@ public class LDAPSecurityService extends BaseSecurityService
      */
     public Role getNewRole(String roleName)
     {
-        return new TurbineRole(roleName);
+        return (Role) new TurbineRole(roleName);
     }
 
     /**
@@ -461,7 +460,7 @@ public class LDAPSecurityService extends BaseSecurityService
      */
     public Permission getNewPermission(String permissionName)
     {
-        return new TurbinePermission(permissionName);
+        return (Permission) new TurbinePermission(permissionName);
     }
 
     /**
@@ -474,7 +473,7 @@ public class LDAPSecurityService extends BaseSecurityService
     public GroupSet getGroups(Object criteria)
             throws DataBackendException
     {
-        Vector<Group> groups = new Vector<Group>();
+        Vector groups = new Vector();
 
         try
         {
@@ -521,7 +520,7 @@ public class LDAPSecurityService extends BaseSecurityService
     private RoleSet getRoles(User user, Group group)
             throws DataBackendException
     {
-        Vector<Role> roles = new Vector<Role>();
+        Vector roles = new Vector(0);
 
         try
         {
@@ -585,7 +584,7 @@ public class LDAPSecurityService extends BaseSecurityService
      */
     public RoleSet getRoles(Object criteria) throws DataBackendException
     {
-        Vector<Role> roles = new Vector<Role>();
+        Vector roles = new Vector(0);
 
         try
         {
@@ -637,7 +636,7 @@ public class LDAPSecurityService extends BaseSecurityService
     public PermissionSet getPermissions(Object criteria)
             throws DataBackendException
     {
-        Vector<Permission> permissions = new Vector<Permission>();
+        Vector permissions = new Vector();
 
         try
         {
@@ -690,7 +689,7 @@ public class LDAPSecurityService extends BaseSecurityService
     public PermissionSet getPermissions(Role role)
             throws DataBackendException, UnknownEntityException
     {
-        Hashtable<String, Permission> permissions = new Hashtable<String, Permission>();
+        Hashtable permissions = new Hashtable();
 
         try
         {
@@ -1227,7 +1226,6 @@ public class LDAPSecurityService extends BaseSecurityService
     /* (non-Javadoc)
      * @see org.apache.turbine.services.security.SecurityService#getAllGroups()
      */
-    @Override
     public GroupSet getAllGroups() throws DataBackendException {
         // TODO Auto-generated method stub
         return null;
@@ -1235,7 +1233,6 @@ public class LDAPSecurityService extends BaseSecurityService
     /* (non-Javadoc)
      * @see org.apache.turbine.services.security.SecurityService#getAllPermissions()
      */
-    @Override
     public PermissionSet getAllPermissions() throws DataBackendException {
         // TODO Auto-generated method stub
         return null;
@@ -1243,7 +1240,6 @@ public class LDAPSecurityService extends BaseSecurityService
     /* (non-Javadoc)
      * @see org.apache.turbine.services.security.SecurityService#getAllRoles()
      */
-    @Override
     public RoleSet getAllRoles() throws DataBackendException {
         // TODO Auto-generated method stub
         return null;
@@ -1251,7 +1247,7 @@ public class LDAPSecurityService extends BaseSecurityService
     /* (non-Javadoc)
      * @see org.apache.turbine.services.security.SecurityService#getUserList(java.lang.Object)
      */
-    public List<User> getUserList(Object criteria) throws DataBackendException {
+    public List getUserList(Object criteria) throws DataBackendException {
         // TODO Auto-generated method stub
         return null;
     }
