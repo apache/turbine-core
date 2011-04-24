@@ -1174,7 +1174,7 @@
         <repository>
           <id>apache.releases</id>
           <name>Apache Turbine Release Candidate Staging Repository</name>
-          <url>${turbine.deployment.protocol}://people.apache.org/www/turbine.apache.org/builds/turbine/core/${project.artifactId}/${turbine.release.version}/${turbine.rc.version}/staged</url>
+          <url>${turbine.deployment.protocol}://people.apache.org/www/turbine.apache.org/builds/turbine/core/${turbine.release.version}/${turbine.rc.version}/staged</url>
         </repository>
         <snapshotRepository>
           <id>apache.snapshots</id>
@@ -1184,7 +1184,7 @@
         <site>
           <id>apache.website</id>
           <name>Apache Turbine Release Candidate Staging Site</name>
-          <url>${fulcrum.deployment.protocol}://people.apache.org/www/turbine.apache.org/fulcrum/fulcrum-yaafi-crypto</url>
+          <url>${turbine.deployment.protocol}://people.apache.org/www/turbine.apache.org/builds/turbine/core/${turbine.release.version}/${turbine.rc.version}/site</url>
         </site>
       </distributionManagement>
       <build>
