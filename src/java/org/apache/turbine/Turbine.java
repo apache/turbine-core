@@ -374,6 +374,16 @@ public class Turbine
         configuration.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, applicationRoot);
         configuration.setProperty(TurbineConstants.WEBAPP_ROOT_KEY, webappRoot);
 
+        // Get the default input encoding
+        inputEncoding = configuration.getString(
+                TurbineConstants.PARAMETER_ENCODING_KEY,
+                TurbineConstants.PARAMETER_ENCODING_DEFAULT);
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("Input Encoding has been set to " + inputEncoding);
+        }        
+        
         getServiceManager().setConfiguration(configuration);
 
         // Initialize the service manager. Services
@@ -971,6 +981,16 @@ public class Turbine
         return data;
     }
 
+
+    /**
+     * Returns the default input encoding for the servlet.
+     * 
+     * @return the default input encoding.
+     */
+    public String getDefaultInputEncoding() {
+        return inputEncoding;
+    }
+    
     /**
      * Static Helper method for looking up the RunDataService
      * @return A RunDataService
