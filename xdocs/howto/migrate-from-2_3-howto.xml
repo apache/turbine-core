@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+ <properties>
+  <title>Migrating from 2.3 to 4.0</title>
+ </properties>
+
+<body>
+
+<section name="Introduction">
+<p>
+    This document describes the basic steps needed to migrate an
+    application written for Turbine 2.3 to Turbine 4.0.
+</p>
+<p>
+	Migrating from Turbine 2.3 to Turbine 4.0 is mostly a task of 
+	moving from the old service format to the new one. One of the 
+	biggest purposes with Turbine 4 was to decouple the different services
+	and move them to <a href="http://turbine.apache.org/fulcrum/">Fulcrum</a>.
+	Many of the released components of Fulcrum correspond to 
+	a previous Turbine service that is no longer bundeled with the
+	Turbine core. 
+</p>
+<p>
+	The services has been converted to Avalon components and do not 
+	implement the Service interface any more. Turbine still handles 
+	services that do implement the Service interface though so no
+	rewrite is necessary if you have written services of your own.
+	The new services can also be accessed in pretty much the same way
+	as the old ones, as long as the AvalonComponentService is properly configured.
+</p>
+</section>
+
+<section name="Accessing the new services">
+<p>
+	What needs to be done to access the decoupled services can be 
+	summarised in 4 steps:
+	<ul>
+		<li>Make sure the AvalonComponentService is properly configured</li>
+		<li>Add the services you need to your project dependency and to roleConfiguration.xml</li>
+		<li>Access the Fulcrum services with class name instead of service name</li>
+		<li>Remove any reference to the static facade classes and access the interfaces directly</li>
+	</ul>
+</p>
+<subsection name="Make sure the AvalonComponentService is properly configured">
+<p>
+	The AvalonComponentService allows you to retrieve the new services 
+	via the old TurbineServices interface. Make sure that the AvalonComponentService 
+	is added in your TurbineResources.properties and that you use TurbineYaafiComponentService as 
+	the implementing class. 
+</p>
+<source>
+<![CDATA[
+services.AvalonComponentService.classname=org.apache.turbine.services.avaloncomponent.TurbineYaafiComponentService
+services.AvalonComponentService.earlyInit=true
+]]>
+</source>
+<p>
+	The service <em>must</em> be the first service in TurbineResources.properties and it <em>must</em> be initialized early.
+	Also make sure that <a href="http://turbine.apache.org/fulcrum/fulcrum-yaafi/">Fulcrum YAAFI</a>
+	is added to your project dependency.
+</p>
+</subsection>
+<subsection name="Add the services you need to your project dependency and to roleConfiguration.xml">
+<p>
+	Many services that were previously included in Turbine has been converted to Avalon
+	components and moved to Fulcrum. You only need to add the ones used in your project as
+	a dependency. Each service has its own documentation and it is described on their project
+	page how you can configure them, but common for all is that they need to be added to your
+	roleConfiguration.xml file. Adding a service to roleConfiguration.xml is equivalent to adding
+	a Turbine service to TurbineResources.properties.
+</p>
+</subsection>
+<subsection name="Access the Fulcrum services with class name instead of service name">
+<p>
+	As you may have noticed in the documentation for the Fulcrum components, the name for 
+	the different services is the full class name. Therefore the input parameter in the
+	getService method of TurbineServices needs to be the full class name of the service.
+	Usually this is stored in a static field called ROLE. Ex:
+</p>
+<source>
+<![CDATA[
+ParseService parserService = (ParserService)TurbineServices.getInstance().getService(ParserService.ROLE);
+]]>
+</source>
+</subsection>
+<subsection name="Remove any reference to the static facade classes and access the interfaces directly">
+<p>
+	The new services do not have a static facade class like the old ones 
+	(org.apache.turbine.services.localization.Localization for LocalizationService,
+	org.apache.turbine.services.cache.TurbineGlobalCache for GlobalCacheService etc).
+	If you have used these facade classes, you now need to access the service directly via
+	the interface instead. How to access the classes is described in the previous section. 
+</p>
+</subsection>
+</section>
+</body>
+</document>
