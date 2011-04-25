@@ -36,6 +36,7 @@
         <li><a href="jsp-howto.html">JSP Howto</a></li>
         <li><a href="migrate-from-2_1-howto.html">Migrating from 2.1 to 2.2</a></li>
         <li><a href="migrate-from-2_2-howto.html">Migrating from 2.2 to 2.3</a></li>
+        <li><a href="migrate-from-2_3-howto.html">Migrating from 2.3 to 4.0</a></li>
         <li><a href="pullmodel-howto.html">Pull Model Howto</a></li>
         <li><a href="python-howto.html">Python Howto</a></li>
         <li><a href="security-howto.html">Security Howto</a></li>
