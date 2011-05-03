@@ -17,7 +17,7 @@
 <table bgcolor="#023262" width="100%">
 <tr>
   <td>&nbsp;</td>
-  <td align="right"><img src="$content.getURI("/images/jakarta-logo-blue.gif")"/></td>
+  <td align="right"><img src="$content.getURI("/images/turbine-project.png")"/></td>
 </tr>
 </table>
 

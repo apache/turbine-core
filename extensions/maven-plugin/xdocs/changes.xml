@@ -27,6 +27,9 @@
 
   <body>
     <release version="1.4" date="in Subversion">
+     <action dev="tv" type="add">
+       Added Turbine 2.3.3 flavor
+     </action>
     </release>
 
     <release version="1.3" date="2005-10-03">
