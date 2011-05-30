@@ -57,12 +57,12 @@ public class LocalizationTool implements ApplicationTool
     {
         if (localizationService == null)
         {
-            try 
+            try
             {
                 localizationService = (LocalizationService)TurbineServices.getInstance()
                     .getService(LocalizationService.ROLE);
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 throw new InstantiationException("Problem looking up Localization Service:"+e.getMessage());
             }
@@ -177,7 +177,7 @@ public class LocalizationTool implements ApplicationTool
      * Sets the request to get the <code>Accept-Language</code> header
      * from (reset on each request).
      */
-    public final void init(Object data)
+    public void init(Object data)
     {
         if (data instanceof RunData)
         {
