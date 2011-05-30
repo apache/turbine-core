@@ -70,13 +70,13 @@ public class TemplateLink
 
 
     /** Do we want a relative link? */
-    boolean wantRelative = false;
+    protected boolean wantRelative = false;
 
     /** cache of the template name for getPage() */
-    private String template = null;
+    protected String template = null;
 
     /** TemplateURI used as backend for this object */
-    private TemplateURI templateURI = null;
+    protected TemplateURI templateURI = null;
 
     /** Logging */
     private static Log log = LogFactory.getLog(TemplateLink.class);
