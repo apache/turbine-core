@@ -27,7 +27,7 @@
 <section name="Flavors">
     <p>
     There is more than just one version of Turbine. You might have to build one application using
-    a released version of Turbine (currently 2.3.2) and the next should use a developer version or
+    a released version of Turbine (currently 2.3.3) and the next should use a developer version or
     even a &quot;bleeding edge&quot; snapshot release of the Turbine code. Whatever you want to use,
     the M.E.T.A. plugin helps you selecting the right skeleton for your code.
     </p>
@@ -36,7 +36,7 @@
 <p>
 The default flavor for a new application in <a
 href="using_meta.html#Ad_hoc_setup">ad hoc setup</a> mode is the
-current stable Turbine release (&quot;turbine-2.3.2&quot;). If you want
+current stable Turbine release (&quot;turbine-2.3.3&quot;). If you want
 to use a different flavor, you must either supply it on the command
 line or in your setup.properties file.</p>
 

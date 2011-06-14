@@ -88,6 +88,9 @@
         <item name="Hibernate OM Howto"  href="/howto/hibernate-howto.html"/>
         <item name="Intake Howto"        href="/howto/intake-howto.html"/>
         <item name="JSP Howto"           href="/howto/jsp-howto.html"/>
+       	<item name="Migrating from 2.1 to 2.2" href="migrate-from-2_1-howto.html"/>
+        <item name="Migrating from 2.2 to 2.3" href="migrate-from-2_2-howto.html"/>
+        <item name="Migrating from 2.3 to 4.0" href="migrate-from-2_3-howto.html"/>
         <item name="Pull Model Howto"    href="/howto/pullmodel-howto.html"/>
         <item name="Python Howto"        href="/howto/python-howto.html"/>
         <item name="Security Howto"      href="/howto/security-howto.html"/>

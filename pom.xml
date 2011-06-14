@@ -1233,7 +1233,7 @@
 
     <!-- The RC version used in the staging repository URL. -->
     <turbine.release.version>${project.version}</turbine.release.version>
-    <turbine.rc.version>RC2</turbine.rc.version>
+    <turbine.rc.version>RC3</turbine.rc.version>
 
     <!--
       Make the deployment protocol pluggable. This allows to switch to
