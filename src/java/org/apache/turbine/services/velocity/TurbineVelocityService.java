@@ -88,6 +88,12 @@ public class TurbineVelocityService
     /** Default character set to use if not specified in the RunData object. */
     private static final String DEFAULT_CHAR_SET = "ISO-8859-1";
 
+    /** Encoding used when reading the templates. */
+    private static String defaultInputEncoding;
+    
+    /** Encoding used by the outputstream when handling the requests. */
+    private static String defaultOutputEncoding;
+    
     /** The prefix used for URIs which are of type <code>jar</code>. */
     private static final String JAR_PREFIX = "jar:";
 
@@ -137,6 +143,9 @@ public class TurbineVelocityService
 
             // Register with the template service.
             registerConfiguration(VelocityService.VELOCITY_EXTENSION);
+            
+            defaultInputEncoding = getConfiguration().getString("input.encoding", DEFAULT_CHAR_SET);
+            defaultOutputEncoding = getConfiguration().getString("output.encoding", defaultInputEncoding);
 
             setInit(true);
         }
@@ -295,7 +304,7 @@ public class TurbineVelocityService
         String results = null;
         ByteArrayOutputStream bytes = null;
         OutputStreamWriter writer = null;
-        String charset = getCharSet(context);
+        String charset = getOutputCharSet(context);
 
         try
         {
@@ -344,7 +353,7 @@ public class TurbineVelocityService
                               OutputStream output)
             throws TurbineException
     {
-        String charset  = getCharSet(context);
+        String charset  = getOutputCharSet(context);
         OutputStreamWriter writer = null;
 
         try
@@ -429,11 +438,11 @@ public class TurbineVelocityService
                                 Writer writer)
             throws Exception
     {
-        String encoding = getEncoding(context);
+        String encoding = getTemplateEncoding(context);
 
         if (encoding == null)
         {
-          encoding = DEFAULT_CHAR_SET;
+          encoding = defaultOutputEncoding;
         }
 		Velocity.mergeTemplate(filename, encoding, context, writer);
     }
@@ -444,7 +453,7 @@ public class TurbineVelocityService
      * @param context A Context.
      * @return The character set applied to the resulting String.
      */
-    private String getCharSet(Context context)
+    private String getOutputCharSet(Context context)
     {
         String charset = null;
 
@@ -454,7 +463,7 @@ public class TurbineVelocityService
             charset = ((RunData) data).getCharSet();
         }
 
-        return (StringUtils.isEmpty(charset)) ? DEFAULT_CHAR_SET : charset;
+        return (StringUtils.isEmpty(charset)) ? defaultOutputEncoding : charset;
     }
 
     /**
@@ -463,7 +472,7 @@ public class TurbineVelocityService
      * @param context A Context.
      * @return The encoding applied to the resulting String.
      */
-    private String getEncoding(Context context)
+    private String getTemplateEncoding(Context context)
     {
         String encoding = null;
 
@@ -473,7 +482,7 @@ public class TurbineVelocityService
             encoding = ((RunData) data).getTemplateEncoding();
         }
 
-        return encoding;
+        return encoding != null ? encoding : defaultInputEncoding;
     }
 
     /**
