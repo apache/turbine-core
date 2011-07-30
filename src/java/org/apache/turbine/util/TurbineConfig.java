@@ -274,7 +274,7 @@ public class TurbineConfig
      *
      * @return an Enumeration of initialization parameter names.
      */
-    public Enumeration getInitParameterNames()
+    public Enumeration<String> getInitParameterNames()
     {
         return new Vector<String>(initParams.keySet()).elements();
     }
@@ -397,7 +397,7 @@ public class TurbineConfig
      * Returns an Enumeration containing the attribute names available
      * within this servlet context.
      */
-    public Enumeration getAttributeNames()
+    public Enumeration<String> getAttributeNames()
     {
         return new Vector<String>(attributes.keySet()).elements();
     }
@@ -482,7 +482,7 @@ public class TurbineConfig
      * A method in ServletContext (2.3) interface that is not implemented and
      * will throw <code>UnsuportedOperationException</code> upon invocation
      */
-    public Set getResourcePaths(String s)
+    public Set<String> getResourcePaths(String s)
     {
         throw new UnsupportedOperationException();
     }
@@ -519,7 +519,7 @@ public class TurbineConfig
      * @deprecated As of Java Servlet API 2.1, with no replacement.
      */
     @Deprecated
-    public Enumeration getServletNames()
+    public Enumeration<String> getServletNames()
     {
         throw new UnsupportedOperationException();
     }
@@ -532,7 +532,7 @@ public class TurbineConfig
      * @deprecated As of Java Servlet API 2.0, with no replacement.
      */
     @Deprecated
-    public Enumeration getServlets()
+    public Enumeration<Servlet> getServlets()
     {
         throw new UnsupportedOperationException();
     }

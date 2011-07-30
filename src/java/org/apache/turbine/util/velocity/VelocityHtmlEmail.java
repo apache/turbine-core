@@ -102,7 +102,7 @@ public class VelocityHtmlEmail extends HtmlEmail
     private Context context = null;
 
     /** The map of embedded files. */
-    private Hashtable embmap = null;
+    private Hashtable<String, String> embmap = null;
 
     /** Address of outgoing mail server */
     private String mailServer;
@@ -114,8 +114,7 @@ public class VelocityHtmlEmail extends HtmlEmail
      */
     public VelocityHtmlEmail(RunData data)
     {
-        this.context = TurbineVelocity.getContext(data);
-        embmap = new Hashtable();
+        this(TurbineVelocity.getContext(data));
     }
 
     /**
@@ -125,8 +124,7 @@ public class VelocityHtmlEmail extends HtmlEmail
      */
     public VelocityHtmlEmail(PipelineData pipelineData)
     {
-        this.context = TurbineVelocity.getContext(pipelineData);
-        embmap = new Hashtable();
+        this(TurbineVelocity.getContext(pipelineData));
     }
 
     /**
@@ -137,7 +135,7 @@ public class VelocityHtmlEmail extends HtmlEmail
     public VelocityHtmlEmail(Context context)
     {
         this.context = context;
-        embmap = new Hashtable();
+        embmap = new Hashtable<String, String>();
     }
 
     /**
@@ -247,7 +245,7 @@ public class VelocityHtmlEmail extends HtmlEmail
      * @param surl A String.
      * @param name A String.
      * @return A String with the cid of the embedded file.
-     * 
+     *
      * @see HtmlEmail#embed(URL surl, String name) embed.
      */
     public String embed(String surl, String name)
@@ -256,7 +254,8 @@ public class VelocityHtmlEmail extends HtmlEmail
         try
         {
             URL url = new URL(surl);
-            cid = embed(url, name);
+            cid = super.embed(url, name);
+            embmap.put(name, cid);
         }
         catch (Exception e)
         {
@@ -274,7 +273,7 @@ public class VelocityHtmlEmail extends HtmlEmail
      */
     public String getCid(String filename)
     {
-        String cid = (String) embmap.get(filename);
+        String cid = embmap.get(filename);
         return "cid:" + cid;
     }
 

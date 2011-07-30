@@ -24,6 +24,7 @@ package org.apache.turbine.services;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Properties;
+
 import javax.servlet.ServletConfig;
 
 import org.apache.commons.configuration.Configuration;
@@ -42,7 +43,7 @@ public class BaseUnicastRemoteService extends UnicastRemoteObject
      * Serial version.
      */
     private static final long serialVersionUID = -7775459623190960297L;
-    
+
     protected Configuration configuration;
     private boolean isInitialized;
     private InitableBroker initableBroker;
@@ -80,7 +81,6 @@ public class BaseUnicastRemoteService extends UnicastRemoteObject
     }
 
     public void init(ServletConfig config)
-            throws InitializationException
     {
         setInit(true);
     }

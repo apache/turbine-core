@@ -55,7 +55,7 @@ public abstract class TurbineAssemblerBroker
      * @param type The type of Assembler Factory
      * @param factory The actual Factory Object
      */
-    public static void registerFactory(String type, AssemblerFactory factory)
+    public static void registerFactory(String type, AssemblerFactory<? extends Assembler> factory)
     {
         getService().registerFactory(type, factory);
     }
@@ -63,12 +63,12 @@ public abstract class TurbineAssemblerBroker
     /**
      * Return an Assembler for a given type and object name.
      *
-     * @param type The Type of Assember we want
+     * @param type The Type of Assembler we want
      * @param name The name of the Assembler
      *
      * @return An Assembler Object.
      *
-     * @throws TurbineException If a problem locating the Assember occured.
+     * @throws TurbineException If a problem locating the Assembler occured.
      */
     public static Assembler getAssembler(String type, String name)
         throws TurbineException
@@ -82,7 +82,7 @@ public abstract class TurbineAssemblerBroker
      * @param type The Type of the Assembler
      * @return A Loader instance for the requested type
      */
-    public static Loader getLoader(String type)
+    public static Loader<? extends Assembler> getLoader(String type)
     {
         return getService().getLoader(type);
     }

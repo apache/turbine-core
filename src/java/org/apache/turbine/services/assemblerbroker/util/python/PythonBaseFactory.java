@@ -115,7 +115,7 @@ public abstract class PythonBaseFactory<T extends Assembler>
                         this.getClass().getClassLoader());
 
                 // We import the Python SYS module. Now we don't need to do this
-                // explicitely in the script.  We always use the sys module to
+                // explicitly in the script.  We always use the sys module to
                 // do stuff like loading java package
                 // org.apache.turbine.services.assemblerbroker.util.python;
                 interp.exec("import sys");
@@ -141,7 +141,7 @@ public abstract class PythonBaseFactory<T extends Assembler>
                         + "Expected class name: " + name + "\n");
                 }
 
-                // Here we convert the python sceen instance to a java instance.
+                // Here we convert the python screen instance to a java instance.
                 assembler = (T) interp.get("scr", Assembler.class);
             }
             catch (Exception e)

@@ -23,7 +23,6 @@ package org.apache.turbine.services.assemblerbroker.util.java;
 
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
-import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Loader;
 
 /**
@@ -35,7 +34,7 @@ import org.apache.turbine.modules.Loader;
  * @version $Id$
  */
 public class JavaActionFactory
-    extends JavaBaseFactory
+    extends JavaBaseFactory<Action>
 {
     /**
      * Get an Assembler.
@@ -43,17 +42,17 @@ public class JavaActionFactory
      * @param name name of the requested Assembler
      * @return an Assembler
      */
-    public Assembler getAssembler(String name)
+    public Action getAssembler(String name)
     {
         return getAssembler(Action.PREFIX, name);
     }
 
     /**
      * Get the loader for this type of assembler
-     * 
+     *
      * @return a Loader
      */
-    public Loader getLoader()
+    public Loader<Action> getLoader()
     {
         return ActionLoader.getInstance();
     }

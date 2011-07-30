@@ -57,10 +57,10 @@ public class Error extends Screen
 
         Table table = new Table().setBorder(0);
         boolean hasValues = false;
-        for (Iterator it = data.getParameters().keySet().iterator();
+        for (Iterator<String> it = data.getParameters().keySet().iterator();
              it.hasNext();)
         {
-            String key = (String) it.next();
+            String key = it.next();
             String value = data.getParameters().getString(key);
             TR tr =
                 new TR().addElement(
@@ -71,13 +71,13 @@ public class Error extends Screen
         }
 
         Table table2 = new Table().setBorder(0);
-        Map varDebug = data.getDebugVariables();
+        Map<String, Object> varDebug = data.getDebugVariables();
 
         boolean hasValues2 = false;
-        for (Iterator i = varDebug.keySet().iterator(); i.hasNext();)
+        for (Map.Entry<String, Object> entry : varDebug.entrySet())
         {
-            String key = (String) i.next();
-            String value = varDebug.get(key).toString();
+            String key = entry.getKey();
+            String value = entry.getValue().toString();
             TR tr =
                 new TR().addElement(
                     new TD().addElement(new B(key))).addElement(

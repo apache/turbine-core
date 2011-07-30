@@ -46,7 +46,7 @@ public class DefaultPipelineData implements PipelineData
         map.put(key, value);
     }
 
-    public Map<?, ?> get(Class key)
+    public Map<?, ?> get(Class<?> key)
     {
         return map.get(key);
     }

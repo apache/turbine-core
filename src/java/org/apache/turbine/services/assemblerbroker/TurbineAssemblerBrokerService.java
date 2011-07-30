@@ -59,13 +59,13 @@ public class TurbineAssemblerBrokerService
             = LogFactory.getLog(TurbineAssemblerBrokerService.class);
 
     /** A structure that holds the registered AssemblerFactories */
-    private Map<String, List<AssemblerFactory>> factories = null;
+    private Map<String, List<AssemblerFactory<? extends Assembler>>> factories = null;
 
     /** A cache that holds the generated Assemblers */
     private Map<String, Assembler> assemblerCache = null;
 
     /** A cache that holds the Loaders */
-    private Map<String, Loader> loaderCache = null;
+    private Map<String, Loader<? extends Assembler>> loaderCache = null;
 
     /** Caching on/off */
     private boolean isCaching;
@@ -76,17 +76,17 @@ public class TurbineAssemblerBrokerService
      * @param type type of Assembler
      * @return list of AssemblerFactories
      */
-    private List<AssemblerFactory> getFactoryGroup(String type)
+    private List<AssemblerFactory<? extends Assembler>> getFactoryGroup(String type)
     {
         if (!factories.containsKey(type))
         {
-            factories.put(type, new Vector<AssemblerFactory>());
+            factories.put(type, new Vector<AssemblerFactory<? extends Assembler>>());
         }
         return factories.get(type);
     }
 
     /**
-     * Utiltiy method to register all factories for a given type.
+     * Utility method to register all factories for a given type.
      *
      * @param type type of Assembler
      * @throws TurbineException
@@ -104,7 +104,7 @@ public class TurbineAssemblerBrokerService
             try
             {
                 Object o = Class.forName(factory).newInstance();
-                registerFactory(type, (AssemblerFactory) o);
+                registerFactory(type, (AssemblerFactory<? extends Assembler>) o);
             }
             // these must be passed to the VM
             catch (ThreadDeath e)
@@ -136,7 +136,7 @@ public class TurbineAssemblerBrokerService
     public void init()
         throws InitializationException
     {
-        factories = new HashMap<String, List<AssemblerFactory>>();
+        factories = new HashMap<String, List<AssemblerFactory<? extends Assembler>>>();
 
         try
         {
@@ -181,7 +181,7 @@ public class TurbineAssemblerBrokerService
      * @param type type of Assembler
      * @param factory factory to register
      */
-    public void registerFactory(String type, AssemblerFactory factory)
+    public void registerFactory(String type, AssemblerFactory<? extends Assembler> factory)
     {
         getFactoryGroup(type).add(factory);
     }
@@ -211,11 +211,11 @@ public class TurbineAssemblerBrokerService
         else
         {
             log.debug("Loading " + key);
-            List<AssemblerFactory> facs = getFactoryGroup(type);
+            List<AssemblerFactory<? extends Assembler>> facs = getFactoryGroup(type);
 
-            for (Iterator<AssemblerFactory> it = facs.iterator(); (assembler == null) && it.hasNext();)
+            for (Iterator<AssemblerFactory<? extends Assembler>> it = facs.iterator(); (assembler == null) && it.hasNext();)
             {
-                AssemblerFactory fac = it.next();
+                AssemblerFactory<? extends Assembler> fac = it.next();
 
                 try
                 {
@@ -245,9 +245,9 @@ public class TurbineAssemblerBrokerService
      * @param type The Type of the Assembler
      * @return A Loader instance for the requested type
      */
-    public Loader getLoader(String type)
+    public Loader<? extends Assembler> getLoader(String type)
     {
-        Loader loader = null;
+        Loader<? extends Assembler> loader = null;
 
         if (isCaching && loaderCache.containsKey(type))
         {
@@ -257,12 +257,11 @@ public class TurbineAssemblerBrokerService
         else
         {
             log.debug("Getting Loader for " + type);
-            List facs = getFactoryGroup(type);
+            List<AssemblerFactory<? extends Assembler>> facs = getFactoryGroup(type);
 
-            for (Iterator it = facs.iterator(); (loader == null) && it.hasNext();)
+            for (Iterator<AssemblerFactory<? extends Assembler>> it = facs.iterator(); (loader == null) && it.hasNext();)
             {
-                AssemblerFactory fac = (AssemblerFactory) it.next();
-
+                AssemblerFactory<? extends Assembler> fac = it.next();
                 loader = fac.getLoader();
             }
 

@@ -83,10 +83,6 @@ public abstract class ActionEvent extends Action
 	/** Logging */
 	protected Log log = LogFactory.getLog(this.getClass());
 
-	/** Constant needed for Reflection */
-	private static final Class [] methodParams
-			= new Class [] { RunData.class };
-
 	/**
 	 * You need to implement this in your classes that extend this class.
 	 * @deprecated use PipelineData version instead.
@@ -226,9 +222,9 @@ public abstract class ActionEvent extends Action
 		String key = null;
 
 		// Loop through and find the button.
-		for (Iterator it = pp.keySet().iterator(); it.hasNext();)
+		for (Iterator<String> it = pp.keySet().iterator(); it.hasNext();)
 		{
-			key = (String) it.next();
+			key = it.next();
 			if (key.startsWith(button))
 			{
 				if (considerKey(key, pp))
@@ -248,15 +244,14 @@ public abstract class ActionEvent extends Action
 
 		try
 		{
-			method = getClass().getMethod(theButton, methodParams);
-			Object[] methodArgs = new Object[] { data };
+			method = getClass().getMethod(theButton, RunData.class);
 
 			if (log.isDebugEnabled())
 			{
 				log.debug("Invoking " + method);
 			}
 
-			method.invoke(this, methodArgs);
+			method.invoke(this, data);
 		}
 		catch (InvocationTargetException ite)
 		{
@@ -290,9 +285,9 @@ public abstract class ActionEvent extends Action
 		String key = null;
 
 		// Loop through and find the button.
-		for (Iterator it = pp.keySet().iterator(); it.hasNext();)
+		for (Iterator<String> it = pp.keySet().iterator(); it.hasNext();)
 		{
-			key = (String) it.next();
+			key = it.next();
 			if (key.startsWith(button))
 			{
 				if (considerKey(key, pp))
@@ -312,15 +307,14 @@ public abstract class ActionEvent extends Action
 
 		try
 		{
-			method = getClass().getMethod(theButton, methodParams);
-			Object[] methodArgs = new Object[] { pipelineData };
+			method = getClass().getMethod(theButton, PipelineData.class);
 
 			if (log.isDebugEnabled())
 			{
 				log.debug("Invoking " + method);
 			}
 
-			method.invoke(this, methodArgs);
+			method.invoke(this, pipelineData);
 		}
 		catch (InvocationTargetException ite)
 		{

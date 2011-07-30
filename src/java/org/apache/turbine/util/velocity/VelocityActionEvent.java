@@ -53,10 +53,6 @@ import org.apache.velocity.context.Context;
  */
 public abstract class VelocityActionEvent extends ActionEvent
 {
-    /** Constant needed for Reflection */
-    private static final Class [] methodParams
-            = new Class [] { RunData.class, Context.class };
-
     /** Indicates whether or not this module has been initialized. */
     protected boolean initialized = false;
 
@@ -169,9 +165,9 @@ public abstract class VelocityActionEvent extends ActionEvent
         String key = null;
 
         // Loop through and find the button.
-        for (Iterator it = pp.keySet().iterator(); it.hasNext();)
+        for (Iterator<String> it = pp.keySet().iterator(); it.hasNext();)
         {
-            key = (String) it.next();
+            key = it.next();
             if (key.startsWith(button))
             {
                 if (considerKey(key, pp))
@@ -191,15 +187,14 @@ public abstract class VelocityActionEvent extends ActionEvent
         Method method = null;
         try
         {
-            method = getClass().getMethod(theButton, methodParams);
-            Object[] methodArgs = new Object[] { data, context };
+            method = getClass().getMethod(theButton, RunData.class, Context.class);
 
             if (log.isDebugEnabled())
             {
                 log.debug("Invoking " + method);
             }
 
-            method.invoke(this, methodArgs);
+            method.invoke(this, data, context);
         }
         catch (NoSuchMethodException nsme)
         {
@@ -246,9 +241,9 @@ public abstract class VelocityActionEvent extends ActionEvent
         String key = null;
 
         // Loop through and find the button.
-        for (Iterator it = pp.keySet().iterator(); it.hasNext();)
+        for (Iterator<String> it = pp.keySet().iterator(); it.hasNext();)
         {
-            key = (String) it.next();
+            key = it.next();
             if (key.startsWith(button))
             {
                 if (considerKey(key, pp))
@@ -268,15 +263,14 @@ public abstract class VelocityActionEvent extends ActionEvent
         Method method = null;
         try
         {
-            method = getClass().getMethod(theButton, methodParams);
-            Object[] methodArgs = new Object[] { pipelineData, context };
+            method = getClass().getMethod(theButton, PipelineData.class, Context.class);
 
             if (log.isDebugEnabled())
             {
                 log.debug("Invoking " + method);
             }
 
-            method.invoke(this, methodArgs);
+            method.invoke(this, pipelineData, context);
         }
         catch (NoSuchMethodException nsme)
         {

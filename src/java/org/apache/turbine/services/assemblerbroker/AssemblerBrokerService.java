@@ -47,7 +47,7 @@ public interface AssemblerBrokerService
      * @param type Type of the Factory
      * @param factory The factory object
      */
-    void registerFactory(String type, AssemblerFactory factory);
+    void registerFactory(String type, AssemblerFactory<? extends Assembler> factory);
 
     /**
      * Attempts to load an Assembler of a type with a given name
@@ -66,5 +66,5 @@ public interface AssemblerBrokerService
      * @param type The Type of the Assembler
      * @return A Loader instance for the requested type
      */
-    Loader getLoader(String type);
+    Loader<? extends Assembler> getLoader(String type);
 }

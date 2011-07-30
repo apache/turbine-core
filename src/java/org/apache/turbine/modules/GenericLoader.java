@@ -117,7 +117,7 @@ public abstract class GenericLoader<T extends Assembler>
      * @param reload True if the action must be marked as reload.
      * @return Itself.
      */
-    public GenericLoader setReload(boolean reload)
+    public GenericLoader<T> setReload(boolean reload)
     {
         this.reload = reload;
         return this;
