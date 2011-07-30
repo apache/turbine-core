@@ -198,8 +198,8 @@ public class FormMessages
     private boolean formHasField(String formName,
                                  String fieldName)
     {
-        List fields = getValues(forms_fields, formName);
-        for (Iterator iter = fields.iterator(); iter.hasNext();)
+        List<String> fields = getValues(forms_fields, formName);
+        for (Iterator<String> iter = fields.iterator(); iter.hasNext();)
         {
             if (fieldName.equals(iter.next().toString()))
             {

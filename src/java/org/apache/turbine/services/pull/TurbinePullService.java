@@ -557,7 +557,7 @@ public class TurbinePullService
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
      */
-    @SuppressWarnings({ "unused", "null" })
+    @SuppressWarnings({ "null" })
     private void populateWithSessionTools(List<ToolData> tools, Context context,
             PipelineData pipelineData, User user)
     {
@@ -647,7 +647,7 @@ public class TurbinePullService
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
      */
-    @SuppressWarnings({ "unused", "null" })
+    @SuppressWarnings({ "null" })
     private void populateWithSessionTools(List<ToolData> tools, Context context,
             RunData data, User user)
     {

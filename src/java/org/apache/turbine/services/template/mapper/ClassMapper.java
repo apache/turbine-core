@@ -28,6 +28,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.template.TemplateService;
 
@@ -55,7 +56,7 @@ public class ClassMapper
     implements Mapper
 {
     /** The loader for actually trying out the package names */
-    private Loader loader = null;
+    private Loader<? extends Assembler> loader = null;
 
     /** Logging */
     private static Log log = LogFactory.getLog(ClassMapper.class);
@@ -74,7 +75,7 @@ public class ClassMapper
      * Get the Loader value.
      * @return the Loader value.
      */
-    public Loader getLoader()
+    public Loader<? extends Assembler> getLoader()
     {
         return loader;
     }
@@ -83,7 +84,7 @@ public class ClassMapper
      * Set the Loader value.
      * @param loader The new Loader value.
      */
-    public void setLoader(Loader loader)
+    public void setLoader(Loader<? extends Assembler> loader)
     {
         this.loader = loader;
         log.debug("Loader is " + this.loader);

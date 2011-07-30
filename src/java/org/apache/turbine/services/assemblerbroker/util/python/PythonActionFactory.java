@@ -23,7 +23,6 @@ package org.apache.turbine.services.assemblerbroker.util.python;
 
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
-import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Loader;
 
 /**
@@ -37,7 +36,7 @@ import org.apache.turbine.modules.Loader;
  * @version $Id$
  */
 public class PythonActionFactory
-        extends PythonBaseFactory
+        extends PythonBaseFactory<Action>
 {
     /**
      * Get an Assembler.
@@ -46,7 +45,7 @@ public class PythonActionFactory
      * @return an Assembler
      * @throws Exception generic exception
      */
-    public Assembler getAssembler(String name)
+    public Action getAssembler(String name)
         throws Exception
     {
         return getAssembler(Action.PREFIX, name);
@@ -54,10 +53,10 @@ public class PythonActionFactory
 
     /**
      * Get the loader for this type of assembler
-     * 
+     *
      * @return a Loader
      */
-    public Loader getLoader()
+    public Loader<Action> getLoader()
     {
         return ActionLoader.getInstance();
     }

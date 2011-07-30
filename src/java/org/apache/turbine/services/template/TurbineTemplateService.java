@@ -34,6 +34,7 @@ import org.apache.fulcrum.factory.FactoryException;
 import org.apache.fulcrum.factory.FactoryService;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.Loader;
 import org.apache.turbine.modules.Navigation;
@@ -708,7 +709,7 @@ public class TurbineTemplateService
                                         .getService(AssemblerBrokerService.SERVICE_NAME);
 
         int [] mapperCacheSize = new int [mapperKeys.length];
-        Loader [] mapperLoader = new Loader [mapperKeys.length];
+        Loader<? extends Assembler> [] mapperLoader = new Loader<?>[mapperKeys.length];
 
         for (int i = 0; i < mapperKeys.length; i++)
         {

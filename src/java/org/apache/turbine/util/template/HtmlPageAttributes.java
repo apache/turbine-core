@@ -214,7 +214,7 @@ public class HtmlPageAttributes
      *
      * @return the map
      */
-    public Map getBodyAttributes()
+    public Map<String, String> getBodyAttributes()
     {
         return this.bodyAttributes;
     }
@@ -234,10 +234,10 @@ public class HtmlPageAttributes
     /**
      * Returns a collection of script URLs
      *
-     * @return list of String objects constainings URLs of javascript files
+     * @return list of String objects containing URLs of javascript files
      * to include
      */
-    public List getScripts()
+    public List<String> getScripts()
     {
         return this.scripts;
     }
@@ -323,7 +323,7 @@ public class HtmlPageAttributes
      *
      * @return list LinkTag objects (inner class)
      */
-    public List getLinks()
+    public List<LinkTag> getLinks()
     {
         return this.linkTags;
     }
@@ -345,7 +345,7 @@ public class HtmlPageAttributes
      *
      * @return list of String objects containing the contents of style tags
      */
-    public List getStyles()
+    public List<String> getStyles()
     {
         return this.styles;
     }
@@ -470,7 +470,7 @@ public class HtmlPageAttributes
      *
      * @return Map of http equiv names to the contents
      */
-    public Map getHttpEquivs()
+    public Map<String, String> getHttpEquivs()
     {
         return this.httpEquivs;
     }
@@ -480,7 +480,7 @@ public class HtmlPageAttributes
      *
      * @return Map of http equiv names to the contents
      */
-    public Map getMetaTags()
+    public Map<String, String> getMetaTags()
     {
         return this.metaTags;
     }
@@ -688,5 +688,4 @@ public class HtmlPageAttributes
 
         return doctypeBuf.toString();
     }
-
 }

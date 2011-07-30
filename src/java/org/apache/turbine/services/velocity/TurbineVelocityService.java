@@ -90,10 +90,10 @@ public class TurbineVelocityService
 
     /** Encoding used when reading the templates. */
     private static String defaultInputEncoding;
-    
+
     /** Encoding used by the outputstream when handling the requests. */
     private static String defaultOutputEncoding;
-    
+
     /** The prefix used for URIs which are of type <code>jar</code>. */
     private static final String JAR_PREFIX = "jar:";
 
@@ -143,7 +143,7 @@ public class TurbineVelocityService
 
             // Register with the template service.
             registerConfiguration(VelocityService.VELOCITY_EXTENSION);
-            
+
             defaultInputEncoding = getConfiguration().getString("input.encoding", DEFAULT_CHAR_SET);
             defaultOutputEncoding = getConfiguration().getString("output.encoding", defaultInputEncoding);
 
@@ -295,7 +295,7 @@ public class TurbineVelocityService
      * @param filename The file name of the template.
      * @return The process template as a String.
      *
-     * @throws TurbineException Any exception trown while processing will be
+     * @throws TurbineException Any exception thrown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
     public String handleRequest(Context context, String filename)
@@ -346,7 +346,7 @@ public class TurbineVelocityService
      * @param output A OutputStream where we will write the process template as
      * a String.
      *
-     * @throws TurbineException Any exception trown while processing will be
+     * @throws TurbineException Any exception thrown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
     public void handleRequest(Context context, String filename,
@@ -391,7 +391,7 @@ public class TurbineVelocityService
      * @param writer A Writer where we will write the process template as
      * a String.
      *
-     * @throws TurbineException Any exception trown while processing will be
+     * @throws TurbineException Any exception thrown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
     public void handleRequest(Context context, String filename, Writer writer)
@@ -432,7 +432,7 @@ public class TurbineVelocityService
      * @param writer A OutputStream where we will write the process template as
      * a String.
      *
-     * @throws Exception A problem occured.
+     * @throws Exception A problem occurred.
      */
     private void executeRequest(Context context, String filename,
                                 Writer writer)
@@ -506,7 +506,7 @@ public class TurbineVelocityService
      * Setup the velocity runtime by using a subset of the
      * Turbine configuration which relates to velocity.
      *
-     * @exception Exception An Error occured.
+     * @exception Exception An Error occurred.
      */
     private synchronized void initVelocity()
         throws Exception
@@ -535,7 +535,7 @@ public class TurbineVelocityService
      *
      * @return An ExtendedProperties Object for Velocity
      *
-     * @throws Exception If a problem occured while converting the properties.
+     * @throws Exception If a problem occurred while converting the properties.
      */
 
     public ExtendedProperties createVelocityProperties(Configuration conf)
@@ -550,14 +550,14 @@ public class TurbineVelocityService
         // webapp relative. Copy all other keys verbatim into the
         // veloConfiguration.
 
-        for (Iterator i = conf.getKeys(); i.hasNext();)
+        for (Iterator<String> i = conf.getKeys(); i.hasNext();)
         {
-            String key = (String) i.next();
+            String key = i.next();
             if (!key.endsWith(RESOURCE_LOADER_PATH))
             {
                 Object value = conf.getProperty(key);
-                if (value instanceof List) {
-                    for (Iterator itr = ((List)value).iterator(); itr.hasNext();)
+                if (value instanceof List<?>) {
+                    for (Iterator<?> itr = ((List<?>)value).iterator(); itr.hasNext();)
                     {
                         veloConfig.addProperty(key, itr.next());
                     }
@@ -569,7 +569,7 @@ public class TurbineVelocityService
                 continue; // for()
             }
 
-            List paths = conf.getList(key, null);
+            List<String> paths = conf.getList(key, null);
             if (paths == null)
             {
                 // We don't copy this into VeloProperties, because
@@ -586,10 +586,8 @@ public class TurbineVelocityService
             // jar:file://path-component!/entry-component
             // file://path-component
             // path/component
-            for (Iterator j = paths.iterator(); j.hasNext();)
+            for (String path : paths)
             {
-                String path = (String) j.next();
-
                 log.debug("Translating " + path);
 
                 if (path.startsWith(JAR_PREFIX))
