@@ -19,6 +19,7 @@ package org.apache.turbine.services.avaloncomponent;
  * under the License.
  */
 
+import java.io.File;
 import java.io.IOException;
 
 import org.apache.avalon.framework.activity.Disposable;
@@ -122,20 +123,19 @@ public class TurbineYaafiComponentService
         Configuration conf = this.getConfiguration();
 
         // determine the home directory
-
         String homePath = Turbine.getRealPath("/");
-        log.info( "Using the following home : " + homePath );
+        if (homePath == null)
+        {
+            homePath = Turbine.getApplicationRoot();
+        }
+        File home = new File(homePath);
+        log.info("Using the following home : " + home.getAbsolutePath());
 
         // create the configuration for YAAFI
-
         ServiceContainerConfiguration config =
-            this.createServiceContainerConfiguration(conf);
-
-        config.setLogger( this.createAvalonLogger() );
-        config.setApplicationRootDir( homePath );
+            this.createServiceContainerConfiguration(conf, home);
 
         // initialize the container
-
         try
         {
             this.container = ServiceContainerFactory.create(
@@ -196,13 +196,18 @@ public class TurbineYaafiComponentService
      * Create a ServiceContainerConfiguration based on the Turbine configuration
      *
      * @param conf the Turbine configuration
+     * @param applicationRoot the application root directory
+     *
      * @return the YAAFI configuration
      * @throws IOException creating the YAAFI configuration failed
      */
-    protected ServiceContainerConfiguration createServiceContainerConfiguration( Configuration conf )
+    protected ServiceContainerConfiguration createServiceContainerConfiguration( Configuration conf, File applicationRoot )
         throws IOException
     {
         ServiceContainerConfiguration result = new ServiceContainerConfiguration();
+
+        result.setApplicationRootDir(applicationRoot.getAbsolutePath());
+        result.setLogger( this.createAvalonLogger() );
 
         // are we using a "containerConfiguration.xml" ?!
 
