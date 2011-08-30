@@ -34,12 +34,12 @@
       <meta http-equiv="$httpEquiv" content="$page.HttpEquivs.get($httpEquiv)" />
     #end
   #end
-  #if ($page.StyleSheets.size() > 0)
-    #foreach( $styleSheet in $page.StyleSheets )
-      <link rel="stylesheet" href="$styleSheet.Url"
-        #if($!styleSheet.Type)  type="$styleSheet.Type"   #end
-        #if($!styleSheet.Media) media="$styleSheet.Media" #end
-        #if($!styleSheet.Title) title="$styleSheet.Title" #end
+  #if ($page.Links.size() > 0)
+    #foreach( $linkTag in $page.Links )
+      <link rel="$linkTag.Relation" href="$linkTag.Url"
+        #if($!linkTag.Type)  type="$linkTag.Type"   #end
+        #if($!linkTag.Media) media="$linkTag.Media" #end
+        #if($!linkTag.Title) title="$linkTag.Title" #end
       />
     #end
   #end
