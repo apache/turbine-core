@@ -60,6 +60,14 @@ public class TemplateTest
         assertEquals("Default LayoutTemplate failed", "Default.vm",         ts.getDefaultLayoutTemplateName("foo.vm"));
     }
 
+    public void testTemplateExtension()
+    {
+        assertEquals("Extension extraction failed", "vm", ts.getExtension("Default.vm"));
+        assertEquals("Extension extraction failed", "txt", ts.getExtension("Default.txt"));
+        // TRB-82
+        assertEquals("Extension extraction failed", "vm", ts.getExtension("Default.txt.vm"));
+    }
+
     public void testNonExistingTemplate()
         throws Exception
     {
