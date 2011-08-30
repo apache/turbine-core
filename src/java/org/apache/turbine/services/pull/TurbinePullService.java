@@ -557,7 +557,6 @@ public class TurbinePullService
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
      */
-    @SuppressWarnings({ "null" })
     private void populateWithSessionTools(List<ToolData> tools, Context context,
             PipelineData pipelineData, User user)
     {
@@ -588,16 +587,16 @@ public class TurbinePullService
 
                         // session tools are init'd with the User object
                         initTool(tool, user);
-
-                        // store the newly created tool in the session
-                        runData.getSession().setAttribute(
-                                SESSION_TOOLS_ATTRIBUTE_PREFIX
-                                + tool.getClass().getName(), tool);
                     }
 
                     // *NOT* else
                     if(tool != null)
                     {
+                        // store the newly created tool in the session
+                        runData.getSession().setAttribute(
+                                SESSION_TOOLS_ATTRIBUTE_PREFIX
+                                + tool.getClass().getName(), tool);
+
                         // This is a semantics change. In the old
                         // Turbine, Session tools were initialized and
                         // then refreshed every time they were pulled
@@ -647,7 +646,6 @@ public class TurbinePullService
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
      */
-    @SuppressWarnings({ "null" })
     private void populateWithSessionTools(List<ToolData> tools, Context context,
             RunData data, User user)
     {
@@ -675,16 +673,16 @@ public class TurbinePullService
 
                         // session tools are init'd with the User object
                         initTool(tool, user);
-
-                        // store the newly created tool in the session
-                        data.getSession().setAttribute(
-                                SESSION_TOOLS_ATTRIBUTE_PREFIX
-                                + tool.getClass().getName(), tool);
                     }
 
                     // *NOT* else
                     if(tool != null)
                     {
+                        // store the newly created tool in the session
+                        data.getSession().setAttribute(
+                                SESSION_TOOLS_ATTRIBUTE_PREFIX
+                                + tool.getClass().getName(), tool);
+
                         // This is a semantics change. In the old
                         // Turbine, Session tools were initialized and
                         // then refreshed every time they were pulled

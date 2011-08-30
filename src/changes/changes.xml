@@ -25,6 +25,9 @@
 
   <body>
     <release version="4.0-M2" date="in Subversion">
+      <action type="fix" dev="tv">
+        Fix possible NPE in TurbinePullService.
+      </action>
       <action type="fix" dev="tv" issue="TRB-82">
         Use lastIndexOf() to get the template extension in TurbineTemplateService.
       </action>
