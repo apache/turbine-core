@@ -325,7 +325,7 @@ public class TurbineTemplateService
             return getDefaultExtension();
         }
 
-        int dotIndex = template.indexOf(EXTENSION_SEPARATOR);
+        int dotIndex = template.lastIndexOf(EXTENSION_SEPARATOR);
 
         return (dotIndex < 0) ? getDefaultExtension() : template.substring(dotIndex + 1);
     }
