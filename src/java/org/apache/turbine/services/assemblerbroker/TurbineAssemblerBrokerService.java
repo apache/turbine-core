@@ -21,11 +21,11 @@ package org.apache.turbine.services.assemblerbroker;
  */
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import org.apache.commons.collections.map.LRUMap;
 import org.apache.commons.configuration.Configuration;
@@ -59,13 +59,13 @@ public class TurbineAssemblerBrokerService
             = LogFactory.getLog(TurbineAssemblerBrokerService.class);
 
     /** A structure that holds the registered AssemblerFactories */
-    private Map<String, List<AssemblerFactory<? extends Assembler>>> factories = null;
+    private Map<Class<?>, List<?>> factories = null;
 
     /** A cache that holds the generated Assemblers */
     private Map<String, Assembler> assemblerCache = null;
 
     /** A cache that holds the Loaders */
-    private Map<String, Loader<? extends Assembler>> loaderCache = null;
+    private Map<Class<?>, Loader<? extends Assembler>> loaderCache = null;
 
     /** Caching on/off */
     private boolean isCaching;
@@ -76,13 +76,14 @@ public class TurbineAssemblerBrokerService
      * @param type type of Assembler
      * @return list of AssemblerFactories
      */
-    private List<AssemblerFactory<? extends Assembler>> getFactoryGroup(String type)
+    @SuppressWarnings("unchecked")
+    private <T extends Assembler> List<AssemblerFactory<T>> getFactoryGroup(Class<T> type)
     {
         if (!factories.containsKey(type))
         {
-            factories.put(type, new Vector<AssemblerFactory<? extends Assembler>>());
+            factories.put(type, new ArrayList<AssemblerFactory<T>>());
         }
-        return factories.get(type);
+        return (List<AssemblerFactory<T>>) factories.get(type);
     }
 
     /**
@@ -103,8 +104,10 @@ public class TurbineAssemblerBrokerService
             String factory = (String) it.next();
             try
             {
-                Object o = Class.forName(factory).newInstance();
-                registerFactory(type, (AssemblerFactory<? extends Assembler>) o);
+                @SuppressWarnings("unchecked")
+                AssemblerFactory<? extends Assembler> af =
+                    (AssemblerFactory<? extends Assembler>) Class.forName(factory).newInstance();
+                registerFactory(af);
             }
             // these must be passed to the VM
             catch (ThreadDeath e)
@@ -136,7 +139,7 @@ public class TurbineAssemblerBrokerService
     public void init()
         throws InitializationException
     {
-        factories = new HashMap<String, List<AssemblerFactory<? extends Assembler>>>();
+        factories = new HashMap<Class<?>, List<?>>();
 
         try
         {
@@ -176,14 +179,13 @@ public class TurbineAssemblerBrokerService
     }
 
     /**
-     * Register a new AssemblerFactory under a certain type
+     * Register a new AssemblerFactory
      *
-     * @param type type of Assembler
      * @param factory factory to register
      */
-    public void registerFactory(String type, AssemblerFactory<? extends Assembler> factory)
+    public <T extends Assembler> void registerFactory(AssemblerFactory<T> factory)
     {
-        getFactoryGroup(type).add(factory);
+        getFactoryGroup(factory.getManagedClass()).add(factory);
     }
 
     /**
@@ -197,25 +199,26 @@ public class TurbineAssemblerBrokerService
      * @return an Assembler or null
      * @throws TurbineException
      */
-    public Assembler getAssembler(String type, String name)
+    @SuppressWarnings("unchecked")
+    public <T extends Assembler> T getAssembler(Class<T> type, String name)
         throws TurbineException
     {
         String key = type + ":" + name;
-        Assembler assembler = null;
+        T assembler = null;
 
         if (isCaching && assemblerCache.containsKey(key))
         {
-            assembler = assemblerCache.get(key);
+            assembler = (T) assemblerCache.get(key);
             log.debug("Found " + key + " in the cache!");
         }
         else
         {
             log.debug("Loading " + key);
-            List<AssemblerFactory<? extends Assembler>> facs = getFactoryGroup(type);
+            List<AssemblerFactory<T>> facs = getFactoryGroup(type);
 
-            for (Iterator<AssemblerFactory<? extends Assembler>> it = facs.iterator(); (assembler == null) && it.hasNext();)
+            for (Iterator<AssemblerFactory<T>> it = facs.iterator(); (assembler == null) && it.hasNext();)
             {
-                AssemblerFactory<? extends Assembler> fac = it.next();
+                AssemblerFactory<T> fac = it.next();
 
                 try
                 {
@@ -245,23 +248,24 @@ public class TurbineAssemblerBrokerService
      * @param type The Type of the Assembler
      * @return A Loader instance for the requested type
      */
-    public Loader<? extends Assembler> getLoader(String type)
+    @SuppressWarnings("unchecked")
+    public <T extends Assembler> Loader<T> getLoader(Class<T> type)
     {
-        Loader<? extends Assembler> loader = null;
+        Loader<T> loader = null;
 
         if (isCaching && loaderCache.containsKey(type))
         {
-            loader = loaderCache.get(type);
+            loader = (Loader<T>) loaderCache.get(type);
             log.debug("Found " + type + " loader in the cache!");
         }
         else
         {
             log.debug("Getting Loader for " + type);
-            List<AssemblerFactory<? extends Assembler>> facs = getFactoryGroup(type);
+            List<AssemblerFactory<T>> facs = getFactoryGroup(type);
 
-            for (Iterator<AssemblerFactory<? extends Assembler>> it = facs.iterator(); (loader == null) && it.hasNext();)
+            for (Iterator<AssemblerFactory<T>> it = facs.iterator(); (loader == null) && it.hasNext();)
             {
-                AssemblerFactory<? extends Assembler> fac = it.next();
+                AssemblerFactory<T> fac = it.next();
                 loader = fac.getLoader();
             }
 

@@ -46,7 +46,7 @@ public class ExecutePageValve
 {
     private TemplateService templateService;
     private PageLoader pageLoader;
-    
+
     /**
      * Creates a new instance.
      */
@@ -54,18 +54,18 @@ public class ExecutePageValve
     {
         // empty constructor
     }
-    
+
     /**
      * Initialize this valve for use in a pipeline.
-     * 
+     *
      * @see org.apache.turbine.pipeline.AbstractValve#initialize()
      */
     public void initialize() throws Exception
     {
         super.initialize();
-        
+
         this.templateService = TurbineTemplate.getService();
-        this.pageLoader = (PageLoader)TurbineAssemblerBroker.getLoader(Page.NAME);
+        this.pageLoader = (PageLoader)TurbineAssemblerBroker.getLoader(Page.class);
     }
 
     /**

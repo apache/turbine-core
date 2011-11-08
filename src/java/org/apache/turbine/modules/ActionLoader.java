@@ -80,9 +80,7 @@ public class ActionLoader
 
     /**
      * Pulls out an instance of the object by name.  Name is just the
-     * single name of the object. This is equal to getInstance but
-     * returns an Assembler object and is needed to fulfil the Loader
-     * interface.
+     * single name of the object.
      *
      * @param name Name of object instance.
      * @return An Action with the specified name, or null.
@@ -91,7 +89,7 @@ public class ActionLoader
     public Action getAssembler(String name)
         throws Exception
     {
-        return getAssembler(Action.NAME, name);
+        return getAssembler(Action.class, name);
     }
 
     /**

@@ -61,4 +61,14 @@ public class PythonNavigationFactory
     {
         return NavigationLoader.getInstance();
     }
+
+    /**
+     * Get the class of this assembler
+     *
+     * @return a class
+     */
+    public Class<Navigation> getManagedClass()
+    {
+        return Navigation.class;
+    }
 }

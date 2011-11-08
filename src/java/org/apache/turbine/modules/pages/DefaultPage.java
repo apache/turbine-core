@@ -112,9 +112,9 @@ public class DefaultPage
     {
         super();
 
-        this.actionLoader = (ActionLoader)TurbineAssemblerBroker.getLoader(Action.NAME);
-        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.NAME);
-        this.layoutLoader = (LayoutLoader)TurbineAssemblerBroker.getLoader(Layout.NAME);
+        this.actionLoader = (ActionLoader)TurbineAssemblerBroker.getLoader(Action.class);
+        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.class);
+        this.layoutLoader = (LayoutLoader)TurbineAssemblerBroker.getLoader(Layout.class);
     }
 
     /**

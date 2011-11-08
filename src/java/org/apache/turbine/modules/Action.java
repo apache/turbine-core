@@ -41,7 +41,7 @@ public abstract class Action extends Assembler
     public static final int CACHE_SIZE_DEFAULT = 20;
     
     /** Represents Action Objects */
-    public static final String NAME = "action";
+    public static final String NAMME = "action";
 
     /**
      * @see org.apache.turbine.modules.Assembler#getPrefix()

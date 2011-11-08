@@ -61,4 +61,14 @@ public class PythonScreenFactory
     {
         return ScreenLoader.getInstance();
     }
+
+    /**
+     * Get the class of this assembler
+     *
+     * @return a class
+     */
+    public Class<Screen> getManagedClass()
+    {
+        return Screen.class;
+    }
 }

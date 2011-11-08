@@ -54,12 +54,12 @@ public class TemplateScreen
     private static Log log = LogFactory.getLog(TemplateScreen.class);
 
     /* The RunData object. */
-    private RunData data;
+    private final RunData data;
 
     /* The name of the screen template. */
     private String screen;
 
-    private ScreenLoader screenLoader;
+    private final ScreenLoader screenLoader;
 
     /**
      * Constructor
@@ -70,7 +70,7 @@ public class TemplateScreen
     {
         this.data = data;
         this.screen = data.getScreen();
-        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.NAME);
+        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.class);
     }
 
     /**

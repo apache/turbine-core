@@ -21,16 +21,12 @@ package org.apache.turbine.modules.screens;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.ecs.ConcreteElement;
-
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
-
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.template.TurbineTemplate;
-
 import org.apache.turbine.util.RunData;
 
 /**
@@ -56,7 +52,7 @@ public abstract class TemplateScreen
     /** Logging */
     protected Log log = LogFactory.getLog(this.getClass());
 
-    private ScreenLoader screenLoader;
+    private final ScreenLoader screenLoader;
 
     /**
      * Default constructor
@@ -65,7 +61,7 @@ public abstract class TemplateScreen
     {
         super();
 
-        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(NAME);
+        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.class);
     }
 
     /**

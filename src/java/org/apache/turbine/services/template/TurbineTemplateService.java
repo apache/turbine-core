@@ -674,8 +674,9 @@ public class TurbineTemplateService
      * the Template Service.
      *
      * @param conf The current configuration object.
-     * @throws InitializationException A problem occured trying to set up the mappers.
+     * @throws InitializationException A problem occurred trying to set up the mappers.
      */
+    @SuppressWarnings("unchecked")
     private void initMapper(Configuration conf)
             throws InitializationException
     {
@@ -690,9 +691,9 @@ public class TurbineTemplateService
             LAYOUT_TEMPLATE_NAME, SCREEN_TEMPLATE_NAME, NAVIGATION_TEMPLATE_NAME
         };
 
-        String [] mapperKeys = new String [] {
-            Page.NAME, Screen.NAME, Layout.NAME, Navigation.NAME,
-            Layout.NAME, Screen.NAME, Navigation.NAME
+        Class<?> [] mapperKeys = new Class<?> [] {
+            Page.class, Screen.class, Layout.class, Navigation.class,
+            Layout.class, Screen.class, Navigation.class
         };
 
         String [] mapperClasses = new String [] {
@@ -713,11 +714,11 @@ public class TurbineTemplateService
 
         for (int i = 0; i < mapperKeys.length; i++)
         {
-            mapperLoader[i] = ab.getLoader(mapperKeys[i]);
+            mapperLoader[i] = ab.getLoader((Class<? extends Assembler>)mapperKeys[i]);
             mapperCacheSize[i] = (mapperLoader[i] != null) ? mapperLoader[i].getCacheSize() : 0;
         }
 
-        // HACK: to achieve the same behaviour as before
+        // HACK: to achieve the same behavior as before
         mapperLoader[LAYOUT_TEMPLATE_KEY] = null;
         mapperLoader[SCREEN_TEMPLATE_KEY] = null;
         mapperLoader[NAVIGATION_TEMPLATE_KEY] = null;

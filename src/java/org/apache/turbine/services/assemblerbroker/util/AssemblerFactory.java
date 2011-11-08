@@ -38,4 +38,11 @@ public interface AssemblerFactory<T extends Assembler> extends Loader<T>
      * @return a Loader
      */
     Loader<T> getLoader();
+
+    /**
+     * Get the class of this assembler
+     *
+     * @return a class
+     */
+    Class<T> getManagedClass();
 }

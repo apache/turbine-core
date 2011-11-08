@@ -57,4 +57,14 @@ public class JavaScheduledJobFactory
     {
         return ScheduledJobLoader.getInstance();
     }
+
+    /**
+     * Get the class of this assembler
+     *
+     * @return a class
+     */
+    public Class<ScheduledJob> getManagedClass()
+    {
+        return ScheduledJob.class;
+    }
 }

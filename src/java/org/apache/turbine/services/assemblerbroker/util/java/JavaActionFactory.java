@@ -56,4 +56,14 @@ public class JavaActionFactory
     {
         return ActionLoader.getInstance();
     }
+
+    /**
+     * Get the class of this assembler
+     *
+     * @return a class
+     */
+    public Class<Action> getManagedClass()
+    {
+        return Action.class;
+    }
 }
