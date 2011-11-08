@@ -21,15 +21,14 @@ package org.apache.turbine.modules.actions;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.turbine.Turbine;
 import org.apache.turbine.modules.Action;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.security.TurbineSecurityException;
-
-import org.apache.turbine.om.security.User;
-import org.apache.turbine.pipeline.PipelineData;
 
 /**
  * This action doPerforms an Access Control List and places it into
@@ -127,5 +126,8 @@ public class AccessController
     {
         RunData data = getRunData(pipelineData);
         doPerform(data);
+
+        // Comply with Turbine 4.0 standards
+        pipelineData.get(Turbine.class).put(AccessControlList.class, data.getACL());
     }
 }

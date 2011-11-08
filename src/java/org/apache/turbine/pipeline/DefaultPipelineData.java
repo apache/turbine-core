@@ -31,7 +31,7 @@ import java.util.Map;
  * the <code>invoke()</code> method below.</p>
  *
  * <b>HISTORICAL NOTE</b>:  The "PipelineData" name was assigned to this
- * holder as it functions similarily to the RunData object, but without
+ * holder as it functions similarly to the RunData object, but without
  * the additional methods
  *
  * @author <a href="mailto:epugh@opensourceconnections.com">Eric Pugh</a>
@@ -39,27 +39,45 @@ import java.util.Map;
  */
 public class DefaultPipelineData implements PipelineData
 {
-    private final Map<Class<?>, Map<?, ?>> map = new HashMap<Class<?>, Map<?, ?>>();
+    private final Map<Class<?>, Map<Class<?>, ? super Object>> map =
+        new HashMap<Class<?>, Map<Class<?>, ? super Object>>();
 
-    public void put(Class<?> key, Map<?, ?> value)
+    /**
+     * Put a configured map of objects into the pipeline data object
+     *
+     * @param name the key class
+     * @param value the value map
+     */
+    public void put(Class<?> key, Map<Class<?>, ? super Object> value)
     {
         map.put(key, value);
     }
 
-    public Map<?, ?> get(Class<?> key)
+    /**
+     * Get the configured map of objects for the given key
+     *
+     * @param name the key class
+     * @return the value map or null if no such key exists
+     */
+    public Map<Class<?>, ? super Object> get(Class<?> key)
     {
         return map.get(key);
     }
 
-    public Object get(Class<?> key, Object innerKey)
+    /**
+     * Get a value from the configured map of objects for the given keys
+     *
+     * @param key the key class
+     * @param innerKey the key into the value map
+     * @return the inner value or null if no such keys exist
+     */
+    public <T> T get(Class<?> key, Class<T> innerKey)
     {
-        Map<?, ?> innerMap = get(key);
+        Map<Class<?>, ? super Object> innerMap = get(key);
         if (innerMap == null)
         {
             return null;
         }
-        return innerMap.get(innerKey);
+        return (T) innerMap.get(innerKey);
     }
-
-
 }
