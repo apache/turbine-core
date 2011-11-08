@@ -71,6 +71,7 @@ public class DefaultPipelineData implements PipelineData
      * @param innerKey the key into the value map
      * @return the inner value or null if no such keys exist
      */
+    @SuppressWarnings("unchecked")
     public <T> T get(Class<?> key, Class<T> innerKey)
     {
         Map<Class<?>, ? super Object> innerMap = get(key);
