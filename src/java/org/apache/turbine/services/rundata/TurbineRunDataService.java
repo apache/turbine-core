@@ -204,7 +204,7 @@ public class TurbineRunDataService
         // the execution lifetime of a single request. A RunData object
         // is created/recycled for each and every request and is passed
         // to each and every module. Since each thread has its own RunData
-        // object, it is not necessary to perform syncronization for
+        // object, it is not necessary to perform synchronization for
         // the data within this object.
         if ((req == null)
             || (res == null)

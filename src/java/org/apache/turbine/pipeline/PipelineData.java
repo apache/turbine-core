@@ -38,9 +38,28 @@ import java.util.Map;
  */
 public interface PipelineData
 {
-    public void put(Class<?> name, Map<?, ?> value);
+    /**
+     * Put a configured map of objects into the pipeline data object
+     *
+     * @param name the key class
+     * @param value the value map
+     */
+    public void put(Class<?> name, Map<Class<?>, ? super Object> value);
 
-    public Map<?, ?> get(Class<?> name);
+    /**
+     * Get the configured map of objects for the given key
+     *
+     * @param name the key class
+     * @return the value map or null if no such key exists
+     */
+    public Map<Class<?>, ? super Object> get(Class<?> name);
 
-    public Object get(Class<?> key, Object innerKey);
+    /**
+     * Get a value from the configured map of objects for the given keys
+     *
+     * @param key the key class
+     * @param innerKey the key into the value map
+     * @return the inner value or null if no such keys exist
+     */
+    public <T> T get(Class<?> key, Class<T> innerKey);
 }
