@@ -26,6 +26,9 @@
   <body>
     <release version="4.0-M2" date="in Subversion">
       <action type="update" dev="tv">
+        Switch from String keys to Class keys for AssemblerBrokerService
+      </action>
+      <action type="update" dev="tv">
         Refine interface of PipelineData and add user and acl objects
         to pipelineData.
       </action>

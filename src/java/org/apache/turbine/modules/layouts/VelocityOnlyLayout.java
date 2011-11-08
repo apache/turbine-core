@@ -74,9 +74,9 @@ public class VelocityOnlyLayout
     private static Log log = LogFactory.getLog(VelocityOnlyLayout.class);
 
     /** The prefix for lookup up layout pages */
-    private String prefix = Layout.PREFIX + "/";
+    private final String prefix = Layout.PREFIX + "/";
 
-    private ScreenLoader screenLoader;
+    private final ScreenLoader screenLoader;
 
     /**
      * Default constructor
@@ -85,7 +85,7 @@ public class VelocityOnlyLayout
     {
         super();
 
-        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.NAME);
+        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.class);
     }
 
     /**

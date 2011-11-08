@@ -28,6 +28,7 @@ import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
+import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -51,14 +52,14 @@ public class DefaultSessionValidationValve
 
     /**
      * Initialize this valve for use in a pipeline.
-     * 
+     *
      * @see org.apache.turbine.pipeline.AbstractValve#initialize()
      */
     public void initialize() throws Exception
     {
         super.initialize();
-        
-        this.actionLoader = (ActionLoader)TurbineAssemblerBroker.getLoader(Action.NAME);
+
+        this.actionLoader = (ActionLoader)TurbineAssemblerBroker.getLoader(Action.class);
     }
 
     /**

@@ -73,7 +73,7 @@ public class DefaultLoginValve
     {
         super.initialize();
 
-        this.actionLoader = (ActionLoader)TurbineAssemblerBroker.getLoader(Action.NAME);
+        this.actionLoader = (ActionLoader)TurbineAssemblerBroker.getLoader(Action.class);
     }
 
     /**

@@ -61,4 +61,14 @@ public class PythonPageFactory
     {
         return PageLoader.getInstance();
     }
+
+    /**
+     * Get the class of this assembler
+     *
+     * @return a class
+     */
+    public Class<Page> getManagedClass()
+    {
+        return Page.class;
+    }
 }

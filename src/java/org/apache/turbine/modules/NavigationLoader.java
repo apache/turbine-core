@@ -120,9 +120,7 @@ public class NavigationLoader
 
     /**
      * Pulls out an instance of the object by name.  Name is just the
-     * single name of the object. This is equal to getInstance but
-     * returns an Assembler object and is needed to fulfil the Loader
-     * interface.
+     * single name of the object.
      *
      * @param name Name of object instance.
      * @return A Layout with the specified name, or null.
@@ -131,7 +129,7 @@ public class NavigationLoader
     public Navigation getAssembler(String name)
         throws Exception
     {
-        return getAssembler(Navigation.NAME, name);
+        return getAssembler(Navigation.class, name);
     }
 
     /**

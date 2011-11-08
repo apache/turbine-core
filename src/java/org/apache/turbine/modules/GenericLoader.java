@@ -168,7 +168,7 @@ public abstract class GenericLoader<T extends Assembler>
      * @return A Screen with the specified name, or null.
      * @exception Exception a generic exception.
      */
-    protected T getAssembler(String type, String name)
+    protected T getAssembler(Class<T> type, String name)
         throws Exception
     {
         T asm = null;
@@ -178,7 +178,7 @@ public abstract class GenericLoader<T extends Assembler>
             if (ab != null)
             {
                 // Attempt to load the assembler
-                asm = (T) ab.getAssembler(type, name);
+                asm = ab.getAssembler(type, name);
             }
         }
         catch (ClassCastException cce)

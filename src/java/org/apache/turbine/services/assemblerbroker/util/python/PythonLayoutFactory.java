@@ -61,4 +61,14 @@ public class PythonLayoutFactory
     {
         return LayoutLoader.getInstance();
     }
+
+    /**
+     * Get the class of this assembler
+     *
+     * @return a class
+     */
+    public Class<Layout> getManagedClass()
+    {
+        return Layout.class;
+    }
 }

@@ -42,12 +42,11 @@ public interface AssemblerBrokerService
     String SERVICE_NAME = "AssemblerBrokerService";
 
     /**
-     * Register an AssemblerFactory class for a given type
+     * Register an AssemblerFactory class
      *
-     * @param type Type of the Factory
      * @param factory The factory object
      */
-    void registerFactory(String type, AssemblerFactory<? extends Assembler> factory);
+    <T extends Assembler> void registerFactory(AssemblerFactory<T> factory);
 
     /**
      * Attempts to load an Assembler of a type with a given name
@@ -58,7 +57,7 @@ public interface AssemblerBrokerService
      *
      * @throws TurbineException Something went wrong while looking for the Assembler
      */
-    Assembler getAssembler(String type, String name) throws TurbineException;
+    <T extends Assembler> T getAssembler(Class<T> type, String name) throws TurbineException;
 
     /**
      * Get a Loader for the given assembler type
@@ -66,5 +65,5 @@ public interface AssemblerBrokerService
      * @param type The Type of the Assembler
      * @return A Loader instance for the requested type
      */
-    Loader<? extends Assembler> getLoader(String type);
+    <T extends Assembler> Loader<T> getLoader(Class<T> type);
 }

@@ -50,9 +50,9 @@ public class JspScreenPlaceholder
     private static Log log = LogFactory.getLog(JspNavigation.class);
 
     /* The RunData object */
-    private RunData data;
+    private final RunData data;
 
-    private ScreenLoader screenLoader;
+    private final ScreenLoader screenLoader;
 
     /**
      * Constructor
@@ -62,7 +62,7 @@ public class JspScreenPlaceholder
     public JspScreenPlaceholder(RunData data)
     {
         this.data = data;
-        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.NAME);
+        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.class);
     }
 
     /**
