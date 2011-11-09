@@ -45,6 +45,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.xml.DOMConfigurator;
 import org.apache.turbine.modules.PageLoader;
 import org.apache.turbine.pipeline.Pipeline;
 import org.apache.turbine.pipeline.PipelineData;
@@ -176,7 +177,7 @@ public class Turbine
      *
      * @exception ServletException a servlet exception.
      */
-    public final void init() throws ServletException
+    public void init() throws ServletException
     {
         synchronized (Turbine.class)
         {
@@ -234,7 +235,7 @@ public class Turbine
      * @throws Exception A problem occurred while reading the configuration or performing early startup
      */
 
-    private void configure(ServletConfig config, ServletContext context)
+    protected void configure(ServletConfig config, ServletContext context)
             throws Exception
     {
 
@@ -332,39 +333,52 @@ public class Turbine
                 !log4jFile.equalsIgnoreCase("none"))
         {
             log4jFile = getRealPath(log4jFile);
+            boolean success = false;
 
-            //
-            // Load the config file above into a Properties object and
-            // fix up the Application root
-            //
-            Properties p = new Properties();
-            FileInputStream fis = null;
-
-            try
+            if (log4jFile.endsWith(".xml"))
             {
-                fis = new FileInputStream(log4jFile);
-                p.load(fis);
-                p.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot());
-                PropertyConfigurator.configure(p);
-
+                // load XML type configuration
+                // NOTE: Only system property expansion available
+                DOMConfigurator.configure(log4jFile);
+                success = true;
+            }
+            else
+            {
                 //
+                // Load the config file above into a Properties object and
+                // fix up the Application root
+                //
+                Properties p = new Properties();
+                FileInputStream fis = null;
+
+                try
+                {
+                    fis = new FileInputStream(log4jFile);
+                    p.load(fis);
+                    p.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot());
+                    PropertyConfigurator.configure(p);
+                    success = true;
+                }
+                catch (FileNotFoundException fnf)
+                {
+                    System.err.println("Could not open Log4J configuration file "
+                                       + log4jFile + ": ");
+                    fnf.printStackTrace();
+                }
+                finally
+                {
+                    if (fis != null)
+                    {
+                        fis.close();
+                    }
+                }
+            }
+
+            if (success)
+            {
                 // Rebuild our log object with a configured commons-logging
                 log = LogFactory.getLog(this.getClass());
-
                 log.info("Configured log4j from " + log4jFile);
-            }
-            catch (FileNotFoundException fnf)
-            {
-                System.err.println("Could not open Log4J configuration file "
-                                   + log4jFile + ": ");
-                fnf.printStackTrace();
-            }
-            finally
-            {
-                if (fis != null)
-                {
-                    fis.close();
-                }
             }
         }
 
@@ -439,7 +453,7 @@ public class Turbine
      * @param config Initialization parameters specific to the Turbine
      * servlet.
      */
-    private static void createRuntimeDirectories(ServletContext context,
+    private void createRuntimeDirectories(ServletContext context,
                                                  ServletConfig config)
     {
         String path = findInitParameter(context, config,
@@ -463,7 +477,7 @@ public class Turbine
      * for a global parameter, and using the provided default if not
      * found.
      */
-    protected static final String findInitParameter(ServletContext context,
+    protected String findInitParameter(ServletContext context,
             ServletConfig config, String name, String defaultValue)
     {
         String path = null;
@@ -504,7 +518,7 @@ public class Turbine
      *
      * @param data The first <code>GET</code> request.
      */
-    public final void init(PipelineData data)
+    public void init(PipelineData data)
     {
         synchronized (Turbine.class)
         {
@@ -688,7 +702,7 @@ public class Turbine
      * The <code>Servlet</code> destroy method.  Invokes
      * <code>ServiceBroker</code> tear down method.
      */
-    public final void destroy()
+    public void destroy()
     {
         // Shut down all Turbine Services.
         getServiceManager().shutdownServices();
@@ -706,7 +720,7 @@ public class Turbine
      * @exception IOException a servlet exception.
      * @exception ServletException a servlet exception.
      */
-    public final void doGet(HttpServletRequest req, HttpServletResponse res)
+    public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws IOException, ServletException
     {
         PipelineData pipelineData = null;
@@ -784,7 +798,7 @@ public class Turbine
      * @exception IOException a servlet exception.
      * @exception ServletException a servlet exception.
      */
-    public final void doPost(HttpServletRequest req, HttpServletResponse res)
+    public void doPost(HttpServletRequest req, HttpServletResponse res)
             throws IOException, ServletException
     {
         doGet(req, res);
@@ -795,7 +809,7 @@ public class Turbine
      *
      * @return a string with the servlet information.
      */
-    public final String getServletInfo()
+    public String getServletInfo()
     {
         return "Turbine Servlet";
     }
@@ -813,7 +827,7 @@ public class Turbine
      * @param res Servlet response.
      * @param t The exception to report.
      */
-    private final void handleException(PipelineData pipelineData, HttpServletResponse res,
+    protected void handleException(PipelineData pipelineData, HttpServletResponse res,
                                        Throwable t)
     {
         RunData data = getRunData(pipelineData);
@@ -961,7 +975,7 @@ public class Turbine
     {
         if (path.startsWith("/"))
         {
-            path = path.substring(1);
+            return new File(getApplicationRoot(), path.substring(1)).getAbsolutePath();
         }
 
         return new File(getApplicationRoot(), path).getAbsolutePath();
@@ -996,7 +1010,8 @@ public class Turbine
      *
      * @return the default input encoding.
      */
-    public String getDefaultInputEncoding() {
+    public String getDefaultInputEncoding()
+    {
         return inputEncoding;
     }
 
@@ -1004,9 +1019,9 @@ public class Turbine
      * Static Helper method for looking up the RunDataService
      * @return A RunDataService
      */
-    private static RunDataService getRunDataService()
+    private RunDataService getRunDataService()
     {
         return (RunDataService) TurbineServices
-        .getInstance().getService(RunDataService.SERVICE_NAME);
+            .getInstance().getService(RunDataService.SERVICE_NAME);
     }
 }
