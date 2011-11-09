@@ -184,8 +184,8 @@ public class JobQueue
         {
             public int compare(JobEntry o1, JobEntry o2)
             {
-                Long time1 = new Long(o1.getNextRuntime());
-                Long time2 = new Long(o2.getNextRuntime());
+                Long time1 = Long.valueOf(o1.getNextRuntime());
+                Long time2 = Long.valueOf(o2.getNextRuntime());
                 return (time1.compareTo(time2));
             }
         };

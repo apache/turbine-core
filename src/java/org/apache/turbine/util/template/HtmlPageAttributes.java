@@ -499,7 +499,7 @@ public class HtmlPageAttributes
     /**
      * Helper class to hold data about a &lt;link ... /&gt; html header tag
      */
-    public class LinkTag
+    public static class LinkTag
     {
         private String relation;
         private String url;

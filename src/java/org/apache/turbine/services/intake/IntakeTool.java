@@ -52,7 +52,7 @@ public class IntakeTool
         implements ApplicationTool, Recyclable
 {
     /** Used for logging */
-    protected static Log log = LogFactory.getLog(IntakeTool.class);
+    protected static final Log log = LogFactory.getLog(IntakeTool.class);
 
     /** Constant for default key */
     public static final String DEFAULT_KEY = "_0";

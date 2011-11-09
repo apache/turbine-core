@@ -40,7 +40,7 @@ public class TurbinePipeline
     /**
      * The "Turbine Classic" pipeline.
      */
-    public static String CLASSIC_PIPELINE =
+    public static final String CLASSIC_PIPELINE =
         "WEB-INF/conf/turbine-classic-pipeline.xml";
 
     /**

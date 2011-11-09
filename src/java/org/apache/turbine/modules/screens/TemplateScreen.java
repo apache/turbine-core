@@ -76,7 +76,7 @@ public abstract class TemplateScreen
             throws Exception;
 
     /**
-     * This method should be overidden by subclasses that wish to add
+     * This method should be overridden by subclasses that wish to add
      * specific business logic.
      * Should revert to abstract when RunData has gone.
      * @param data Turbine information.
@@ -349,7 +349,7 @@ public abstract class TemplateScreen
     public void doRedirect(PipelineData pipelineData, String template)
             throws Exception
     {
-        doRedirect(pipelineData, template);
+        doRedirect(pipelineData, TurbineTemplate.getScreenName(template), template);
     }
 
 

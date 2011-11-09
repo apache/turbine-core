@@ -21,12 +21,13 @@ package org.apache.turbine.modules.actions;
 
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Properties;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.pipeline.PipelineData;
@@ -88,13 +89,11 @@ public class InitContextsAction
                              conf.getString(key));
             contextPropsList.put(contextName, contextProps);
         }
-        for (Iterator<String> contextPropsKeys = contextPropsList.keySet().iterator();
-                contextPropsKeys.hasNext();)
+
+        for (Entry<String, Properties> contextProps : contextPropsList.entrySet())
         {
-            String key = contextPropsKeys.next();
-            Properties contextProps = contextPropsList.get(key);
-            InitialContext context = new InitialContext(contextProps);
-            data.getJNDIContexts().put(key, context);
+            InitialContext context = new InitialContext(contextProps.getValue());
+            data.getJNDIContexts().put(contextProps.getKey(), context);
         }
     }
 

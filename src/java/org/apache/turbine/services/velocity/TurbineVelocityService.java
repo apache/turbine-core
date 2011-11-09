@@ -88,12 +88,6 @@ public class TurbineVelocityService
     /** Default character set to use if not specified in the RunData object. */
     private static final String DEFAULT_CHAR_SET = "ISO-8859-1";
 
-    /** Encoding used when reading the templates. */
-    private static String defaultInputEncoding;
-
-    /** Encoding used by the outputstream when handling the requests. */
-    private static String defaultOutputEncoding;
-
     /** The prefix used for URIs which are of type <code>jar</code>. */
     private static final String JAR_PREFIX = "jar:";
 
@@ -101,7 +95,13 @@ public class TurbineVelocityService
     private static final String ABSOLUTE_PREFIX = "file://";
 
     /** Logging */
-    private static Log log = LogFactory.getLog(TurbineVelocityService.class);
+    private static final Log log = LogFactory.getLog(TurbineVelocityService.class);
+
+    /** Encoding used when reading the templates. */
+    private String defaultInputEncoding;
+
+    /** Encoding used by the outputstream when handling the requests. */
+    private String defaultOutputEncoding;
 
     /** Is the pullModelActive? */
     private boolean pullModelActive = false;

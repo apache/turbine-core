@@ -178,7 +178,7 @@ public class Turbine
      */
     public final void init() throws ServletException
     {
-        synchronized (this.getClass())
+        synchronized (Turbine.class)
         {
             super.init();
             ServletConfig config = getServletConfig();
@@ -219,7 +219,7 @@ public class Turbine
                 log.fatal("Turbine: init() failed: ", e);
                 throw new ServletException("Turbine: init() failed", e);
             }
-            
+
             log.info("Turbine: init() Ready to Rumble!");
         }
     }
@@ -231,7 +231,7 @@ public class Turbine
      * @param config The Servlet Configuration supplied by the container
      * @param context The Servlet Context supplied by the container
      *
-     * @throws Exception A problem occured while reading the configuration or performing early startup
+     * @throws Exception A problem occurred while reading the configuration or performing early startup
      */
 
     private void configure(ServletConfig config, ServletContext context)
@@ -332,22 +332,25 @@ public class Turbine
                 !log4jFile.equalsIgnoreCase("none"))
         {
             log4jFile = getRealPath(log4jFile);
-    
+
             //
             // Load the config file above into a Properties object and
             // fix up the Application root
             //
             Properties p = new Properties();
+            FileInputStream fis = null;
+
             try
             {
-                p.load(new FileInputStream(log4jFile));
+                fis = new FileInputStream(log4jFile);
+                p.load(fis);
                 p.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot());
                 PropertyConfigurator.configure(p);
-    
+
                 //
                 // Rebuild our log object with a configured commons-logging
                 log = LogFactory.getLog(this.getClass());
-    
+
                 log.info("Configured log4j from " + log4jFile);
             }
             catch (FileNotFoundException fnf)
@@ -355,6 +358,13 @@ public class Turbine
                 System.err.println("Could not open Log4J configuration file "
                                    + log4jFile + ": ");
                 fnf.printStackTrace();
+            }
+            finally
+            {
+                if (fis != null)
+                {
+                    fis.close();
+                }
             }
         }
 
@@ -382,8 +392,8 @@ public class Turbine
         if (log.isDebugEnabled())
         {
             log.debug("Input Encoding has been set to " + inputEncoding);
-        }        
-        
+        }
+
         getServiceManager().setConfiguration(configuration);
 
         // Initialize the service manager. Services
@@ -509,25 +519,25 @@ public class Turbine
 
                 // Initialize services with the PipelineData instance
                 TurbineServices services = (TurbineServices)TurbineServices.getInstance();
-                
+
                 for (Iterator i = services.getServiceNames(); i.hasNext();)
                 {
                 	String serviceName = (String)i.next();
                 	Object service = services.getService(serviceName);
-                	
+
                 	if (service instanceof Initable)
                 	{
-                		try 
+                		try
                 		{
 							((Initable)service).init(data);
-						} 
-                		catch (InitializationException e) 
+						}
+                		catch (InitializationException e)
                 		{
                 			log.warn("Could not initialize Initable " + serviceName + " with PipelineData", e);
 						}
                 	}
                 }
-                
+
                 // Mark that we're done.
                 firstDoGet = false;
                 log.info("Turbine: first Request successful");
@@ -682,7 +692,6 @@ public class Turbine
     {
         // Shut down all Turbine Services.
         getServiceManager().shutdownServices();
-        System.gc();
 
         firstInit = true;
         firstDoGet = true;
@@ -729,7 +738,7 @@ public class Turbine
                     log.warn("Could not change request encoding to " + inputEncoding, uee);
                 }
             }
-            
+
             // Get general RunData here...
             // Perform turbine specific initialization below.
             pipelineData = getRunDataService().getRunData(req, res, getServletConfig());
@@ -745,7 +754,7 @@ public class Turbine
             {
                 init(pipelineData);
             }
-            
+
             // Stages of Pipeline implementation execution
 			// configurable via attached Valve implementations in a
 			// XML properties file.
@@ -828,7 +837,7 @@ public class Turbine
             {
                 data.getTemplateInfo()
                     .setScreenTemplate(configuration.getString(
-                            TurbineConstants.TEMPLATE_ERROR_KEY, 
+                            TurbineConstants.TEMPLATE_ERROR_KEY,
                             TurbineConstants.TEMPLATE_ERROR_VM));
             }
 
@@ -912,7 +921,7 @@ public class Turbine
         //
         // Bundle all the information above up into a convenient structure
         //
-        ServerData requestServerData = (ServerData) data.get(Turbine.class, ServerData.class);
+        ServerData requestServerData = data.get(Turbine.class, ServerData.class);
         serverData = (ServerData) requestServerData.clone();
     }
 
@@ -984,13 +993,13 @@ public class Turbine
 
     /**
      * Returns the default input encoding for the servlet.
-     * 
+     *
      * @return the default input encoding.
      */
     public String getDefaultInputEncoding() {
         return inputEncoding;
     }
-    
+
     /**
      * Static Helper method for looking up the RunDataService
      * @return A RunDataService
