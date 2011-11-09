@@ -36,6 +36,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.FactoryConfigurationError;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationFactory;
@@ -326,61 +327,7 @@ public class Turbine
         //
         // Set up logging as soon as possible
         //
-        String log4jFile = configuration.getString(TurbineConstants.LOG4J_CONFIG_FILE,
-                                                   TurbineConstants.LOG4J_CONFIG_FILE_DEFAULT);
-
-        if (StringUtils.isNotEmpty(log4jFile) &&
-                !log4jFile.equalsIgnoreCase("none"))
-        {
-            log4jFile = getRealPath(log4jFile);
-            boolean success = false;
-
-            if (log4jFile.endsWith(".xml"))
-            {
-                // load XML type configuration
-                // NOTE: Only system property expansion available
-                DOMConfigurator.configure(log4jFile);
-                success = true;
-            }
-            else
-            {
-                //
-                // Load the config file above into a Properties object and
-                // fix up the Application root
-                //
-                Properties p = new Properties();
-                FileInputStream fis = null;
-
-                try
-                {
-                    fis = new FileInputStream(log4jFile);
-                    p.load(fis);
-                    p.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot());
-                    PropertyConfigurator.configure(p);
-                    success = true;
-                }
-                catch (FileNotFoundException fnf)
-                {
-                    System.err.println("Could not open Log4J configuration file "
-                                       + log4jFile + ": ");
-                    fnf.printStackTrace();
-                }
-                finally
-                {
-                    if (fis != null)
-                    {
-                        fis.close();
-                    }
-                }
-            }
-
-            if (success)
-            {
-                // Rebuild our log object with a configured commons-logging
-                log = LogFactory.getLog(this.getClass());
-                log.info("Configured log4j from " + log4jFile);
-            }
-        }
+        configureLogging();
 
         // Now report our successful configuration to the world
         log.info("Loaded configuration  (" + confStyle + ") from " + confFile + " (" + confPath + ")");
@@ -437,6 +384,78 @@ public class Turbine
     }
 
     /**
+     * Configure the logging facilities of Turbine
+     *
+     * @throws IOException if the configuration file handling fails.
+     */
+    protected void configureLogging() throws IOException
+    {
+        String log4jFile = configuration.getString(TurbineConstants.LOG4J_CONFIG_FILE,
+                TurbineConstants.LOG4J_CONFIG_FILE_DEFAULT);
+
+        if (StringUtils.isNotEmpty(log4jFile) &&
+                !log4jFile.equalsIgnoreCase("none"))
+        {
+            log4jFile = getRealPath(log4jFile);
+            boolean success = false;
+
+            if (log4jFile.endsWith(".xml"))
+            {
+                // load XML type configuration
+                // NOTE: Only system property expansion available
+                try
+                {
+                    DOMConfigurator.configure(log4jFile);
+                    success = true;
+                }
+                catch (FactoryConfigurationError e)
+                {
+                    System.err.println("Could not configure Log4J from configuration file "
+                            + log4jFile + ": ");
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                //
+                // Load the config file above into a Properties object and
+                // fix up the Application root
+                //
+                Properties p = new Properties();
+                FileInputStream fis = null;
+
+                try
+                {
+                    fis = new FileInputStream(log4jFile);
+                    p.load(fis);
+                    p.setProperty(TurbineConstants.APPLICATION_ROOT_KEY, getApplicationRoot());
+                    PropertyConfigurator.configure(p);
+                    success = true;
+                }
+                catch (FileNotFoundException fnf)
+                {
+                    System.err.println("Could not open Log4J configuration file "
+                            + log4jFile + ": ");
+                    fnf.printStackTrace();
+                }
+                finally
+                {
+                    if (fis != null)
+                    {
+                        fis.close();
+                    }
+                }
+            }
+
+            if (success)
+            {
+                // Rebuild our log object with a configured commons-logging
+                log = LogFactory.getLog(this.getClass());
+                log.info("Configured log4j from " + log4jFile);
+            }
+        }
+    }
+    /**
      * Create any directories that might be needed during
      * runtime. Right now this includes:
      *
@@ -453,7 +472,7 @@ public class Turbine
      * @param config Initialization parameters specific to the Turbine
      * servlet.
      */
-    private void createRuntimeDirectories(ServletContext context,
+    protected void createRuntimeDirectories(ServletContext context,
                                                  ServletConfig config)
     {
         String path = findInitParameter(context, config,
