@@ -620,7 +620,7 @@ public class RolePeerManager
 
         if (obj == null)
         {
-            return new Integer(0);
+            return Integer.valueOf(0);
         }
 
         try

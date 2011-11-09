@@ -1419,7 +1419,7 @@ public class UserPeerManager
 
         if (obj == null)
         {
-            return new Integer(0);
+            return Integer.valueOf(0);
         }
 
         try

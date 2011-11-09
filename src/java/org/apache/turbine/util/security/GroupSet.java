@@ -170,7 +170,7 @@ public class GroupSet
     public Group getGroupById(int groupId)
     {
         return (groupId != 0)
-                ? (Group) idMap.get(new Integer(groupId)) : null;
+                ? (Group) idMap.get(Integer.valueOf(groupId)) : null;
     }
 
     /**

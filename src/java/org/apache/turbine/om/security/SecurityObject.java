@@ -146,7 +146,7 @@ public abstract class SecurityObject<T extends SecurityEntity> implements Compar
      */
     public Integer getIdAsObj()
     {
-        return new Integer(id);
+        return Integer.valueOf(id);
     }
 
     /**

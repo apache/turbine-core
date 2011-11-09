@@ -354,7 +354,7 @@ public class TurbineUser extends SecurityObject<User> implements User
      */
     public void setAccessCounter(int cnt)
     {
-        setPerm(User.ACCESS_COUNTER, new Integer(cnt));
+        setPerm(User.ACCESS_COUNTER, Integer.valueOf(cnt));
     }
 
     /**
@@ -365,7 +365,7 @@ public class TurbineUser extends SecurityObject<User> implements User
      */
     public void setAccessCounterForSession(int cnt)
     {
-        setTemp(User.SESSION_ACCESS_COUNTER, new Integer(cnt));
+        setTemp(User.SESSION_ACCESS_COUNTER, Integer.valueOf(cnt));
     }
 
     /**

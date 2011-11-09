@@ -128,7 +128,7 @@ public abstract class SecuritySet<T>
      */
     public boolean containsId(int id)
     {
-        return (id == 0) ? false:  idMap.containsKey(new Integer(id));
+        return (id == 0) ? false:  idMap.containsKey(Integer.valueOf(id));
     }
 
     /**

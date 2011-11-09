@@ -23,7 +23,6 @@ package org.apache.turbine.util;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
-import java.util.Date;
 
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.ElementContainer;
@@ -93,9 +92,17 @@ public class DateSelector
      */
     public DateSelector()
     {
-        this.selName = DEFAULT_PREFIX;
-        this.useDate = Calendar.getInstance();
-        this.useDate.setTime(new Date());
+        this(DEFAULT_PREFIX);
+    }
+
+    /**
+     * Constructor defaults to current date.
+     *
+     * @param selName A String with the selector name.
+     */
+    public DateSelector(String selName)
+    {
+        this(selName, Calendar.getInstance());
     }
 
     /**
@@ -109,18 +116,6 @@ public class DateSelector
     {
         this.useDate = useDate;
         this.selName = selName;
-    }
-
-    /**
-     * Constructor defaults to current date.
-     *
-     * @param selName A String with the selector name.
-     */
-    public DateSelector(String selName)
-    {
-        this.selName = selName;
-        this.useDate = Calendar.getInstance();
-        this.useDate.setTime(new Date());
     }
 
     /**
@@ -414,7 +409,7 @@ public class DateSelector
     {
         if (this.useDate == null)
         {
-            this.useDate.setTime(new Date());
+            this.useDate = Calendar.getInstance();
         }
 
         Select monthSelect = getMonthSelector(selName + MONTH_SUFFIX, useDate);
