@@ -53,11 +53,12 @@ public class TurbineConfigTest
     {
         String value = new File("/conf/test/TemplateService.properties").getPath();
         tc = new TurbineConfig(".", value);
+        Turbine turbine = new Turbine();
 
-        ServletConfig config = (ServletConfig) tc;
+        ServletConfig config = tc;
         ServletContext context = config.getServletContext();
 
-        String confFile= Turbine.findInitParameter(context, config,
+        String confFile= turbine.findInitParameter(context, config,
                 TurbineConfig.PROPERTIES_PATH_KEY,
                 null);
         assertEquals(value, confFile);
@@ -67,11 +68,12 @@ public class TurbineConfigTest
     {
         String value = new File("/conf/test/TurbineConfiguration.xml").getPath();
             txc = new TurbineXmlConfig(".", value);
+        Turbine turbine = new Turbine();
 
-        ServletConfig config = (ServletConfig) txc;
+        ServletConfig config = txc;
         ServletContext context = config.getServletContext();
 
-            String confFile= Turbine.findInitParameter(context, config,
+            String confFile= turbine.findInitParameter(context, config,
                     TurbineConfig.CONFIGURATION_PATH_KEY,
                     null);
         assertEquals(value, confFile);
