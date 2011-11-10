@@ -23,7 +23,6 @@ package org.apache.turbine.services.avaloncomponent;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
@@ -58,10 +57,9 @@ public class TurbineAvalonComponentServiceTest
 
         Configuration cfg = new BaseConfiguration();
 
-        // decide here wether to start ECM or YAAFI
+        // decide here whether to start ECM or YAAFI
         // cfg.setProperty(PREFIX + "classname", TurbineAvalonComponentService.class.getName());
         cfg.setProperty(PREFIX + "classname", TurbineYaafiComponentService.class.getName());
-        cfg.setProperty(PREFIX + "earlyInit", "true");
 
         // we want to configure the service to load test TEST configuration files
         cfg.setProperty(PREFIX + "componentConfiguration",
