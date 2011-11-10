@@ -24,8 +24,11 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
-import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -37,7 +40,7 @@ import org.apache.commons.logging.LogFactory;
  *
  * <ul>
  * <li>Maintaining service name to class name mapping, allowing
- * plugable service implementations.</li>
+ * pluggable service implementations.</li>
  * <li>Providing <code>Services</code> with a configuration based on
  * system wide configuration mechanism.</li>
  * </ul>
@@ -56,14 +59,14 @@ import org.apache.commons.logging.LogFactory;
 public abstract class BaseServiceBroker implements ServiceBroker
 {
     /**
-     * Mapping of Service names to class names.
+     * Mapping of Service names to class names, keep order.
      */
-    private Configuration mapping = new BaseConfiguration();
+    private final Map<String, Class<?>> mapping = new LinkedHashMap<String, Class<?>>();
 
     /**
      * A repository of Service instances.
      */
-    private Hashtable<String, Service> services = new Hashtable<String, Service>();
+    private final Hashtable<String, Service> services = new Hashtable<String, Service>();
 
     /**
      * Configuration for the services broker.
@@ -95,7 +98,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * the requirement of having init(Object) all
      * together.
      */
-    private Hashtable<String, Object> serviceObjects = new Hashtable<String, Object>();
+    private final Hashtable<String, Object> serviceObjects = new Hashtable<String, Object>();
 
     /** Logging */
     private static Log log = LogFactory.getLog(BaseServiceBroker.class);
@@ -109,10 +112,10 @@ public abstract class BaseServiceBroker implements ServiceBroker
     /**
      * mapping from service names to instances of TurbineServiceProviders
      */
-    private Hashtable<String, Service> serviceProviderInstanceMap = new Hashtable<String, Service>();
+    private final Hashtable<String, Service> serviceProviderInstanceMap = new Hashtable<String, Service>();
 
     /**
-     * Default constructor, protected as to only be useable by subclasses.
+     * Default constructor, protected as to only be usable by subclasses.
      *
      * This constructor does nothing.
      */
@@ -191,6 +194,33 @@ public abstract class BaseServiceBroker implements ServiceBroker
     }
 
     /**
+     * Check recursively if the given checkIfc interface is among the implemented
+     * interfaces
+     *
+     * @param checkIfc interface to check for
+     * @param interfaces interfaces to scan
+     * @return true if the interface is implemented
+     */
+    private boolean checkForInterface(Class<?> checkIfc, Class<?>[] interfaces)
+    {
+        for (Class<?> ifc : interfaces)
+        {
+            if (ifc == checkIfc)
+            {
+                return true;
+            }
+
+            Class<?>[] subInterfaces = ifc.getInterfaces();
+            if (checkForInterface(checkIfc, subInterfaces))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Creates a mapping between Service names and class names.
      *
      * The mapping is built according to settings present in
@@ -205,21 +235,19 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * <br>
      *
      * Generic ServiceBroker provides no Services.
+     * @throws InitializationException if a service class could not be found
      */
     @SuppressWarnings("unchecked")
-    protected void initMapping()
+    protected void initMapping() throws InitializationException
     {
+        // we need to temporarily store the earlyInit flags to avoid
+        // ConcurrentModificationExceptions
+        Map<String, String> earlyInitFlags = new LinkedHashMap<String, String>();
+
         /*
          * These keys returned in an order that corresponds
          * to the order the services are listed in
          * the TR.props.
-         *
-         * When the mapping is created we use a Configuration
-         * object to ensure that the we retain the order
-         * in which the order the keys are returned.
-         *
-         * There's no point in retrieving an ordered set
-         * of keys if they aren't kept in order :-)
          */
         for (Iterator<String> keys = configuration.getKeys(); keys.hasNext();)
         {
@@ -235,10 +263,45 @@ public abstract class BaseServiceBroker implements ServiceBroker
 
                 if (!mapping.containsKey(serviceKey))
                 {
-                    mapping.setProperty(serviceKey,
-                            configuration.getString(key));
+                    String className = configuration.getString(key);
+                    try
+                    {
+                        Class<?> clazz = Class.forName(className);
+                        mapping.put(serviceKey, clazz);
+
+                        // detect TurbineServiceProviders
+                        if (checkForInterface(TurbineServiceProvider.class, clazz.getInterfaces()))
+                        {
+                            log.info("Found a TurbineServiceProvider: " + serviceKey + " - initializing it early");
+                            earlyInitFlags.put(SERVICE_PREFIX + serviceKey + ".earlyInit", "true");
+                        }
+                    }
+                    // those two errors must be passed to the VM
+                    catch (ThreadDeath t)
+                    {
+                        throw t;
+                    }
+                    catch (OutOfMemoryError t)
+                    {
+                        throw t;
+                    }
+                    catch (ClassNotFoundException e)
+                    {
+                        throw new InitializationException("Class " + className +
+                            " is unavailable. Check your jars and classes.", e);
+                    }
+                    catch (NoClassDefFoundError e)
+                    {
+                        throw new InitializationException("Class " + className +
+                            " is unavailable. Check your jars and classes.", e);
+                    }
                 }
             }
+        }
+
+        for (Map.Entry<String, String> entry : earlyInitFlags.entrySet())
+        {
+            configuration.setProperty(entry.getKey(), entry.getValue());
         }
     }
 
@@ -246,7 +309,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * Determines whether a service is registered in the configured
      * <code>TurbineResources.properties</code>.
      *
-     * @param serviceName The name of the service whose existance to check.
+     * @param serviceName The name of the service whose existence to check.
      * @return Registration predicate for the desired services.
      */
     public boolean isRegistered(String serviceName)
@@ -259,10 +322,9 @@ public abstract class BaseServiceBroker implements ServiceBroker
      *
      * @return An Iterator of service names.
      */
-    @SuppressWarnings("unchecked")
     public Iterator<String> getServiceNames()
     {
-        return mapping.getKeys();
+        return mapping.keySet().iterator();
     }
 
     /**
@@ -272,10 +334,18 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * @param prefix The prefix against which to test.
      * @return An Iterator of service names which match the prefix.
      */
-    @SuppressWarnings("unchecked")
     public Iterator<String> getServiceNames(String prefix)
     {
-        return mapping.getKeys(prefix);
+        Set<String> keys = new LinkedHashSet<String>(mapping.keySet());
+        for(Iterator<String> key = keys.iterator(); key.hasNext();)
+        {
+            if (!key.next().startsWith(prefix))
+            {
+                key.remove();
+            }
+        }
+
+        return keys.iterator();
     }
 
     /**
@@ -531,76 +601,46 @@ public abstract class BaseServiceBroker implements ServiceBroker
 
         if (service == null)
         {
-
-            String className=null;
             if (!this.isLocalService(name))
             {
                 throw new InstantiationException(
                         "ServiceBroker: unknown service " + name
                         + " requested");
             }
+
             try
             {
-                className = mapping.getString(name);
-                service = services.get(className);
+                Class<?> clazz = mapping.get(name);
 
-                if (service == null)
+                try
                 {
-                    try
-                    {
-                        service = (Service) Class.forName(className).newInstance();
+                    service = (Service) clazz.newInstance();
 
-                        // check if the newly created service is also a
-                        // service provider - if so then remember it
-                        if (service instanceof TurbineServiceProvider)
-                        {
-                            this.serviceProviderInstanceMap.put(name,service);
-                        }
-
-                    }
-                    // those two errors must be passed to the VM
-                    catch (ThreadDeath t)
+                    // check if the newly created service is also a
+                    // service provider - if so then remember it
+                    if (service instanceof TurbineServiceProvider)
                     {
-                        throw t;
-                    }
-                    catch (OutOfMemoryError t)
-                    {
-                        throw t;
-                    }
-                    catch (Throwable t)
-                    {
-                        // Used to indicate error condition.
-                        String msg = null;
-
-                        if (t instanceof NoClassDefFoundError)
-                        {
-                            msg = "A class referenced by " + className +
-                                    " is unavailable. Check your jars and classes.";
-                        }
-                        else if (t instanceof ClassNotFoundException)
-                        {
-                            msg = "Class " + className +
-                                    " is unavailable. Check your jars and classes.";
-                        }
-                        else if (t instanceof ClassCastException)
-                        {
-                            msg = "Class " + className +
-                                    " doesn't implement the Service interface";
-                        }
-                        else
-                        {
-                            msg = "Failed to instantiate " + className;
-                        }
-
-                        throw new InstantiationException(msg, t);
+                        this.serviceProviderInstanceMap.put(name,service);
                     }
                 }
-            }
-            catch (ClassCastException e)
-            {
-                throw new InstantiationException("ServiceBroker: Class "
-                        + className
-                        + " does not implement Service interface.", e);
+                // those two errors must be passed to the VM
+                catch (ClassCastException e)
+                {
+                    throw new InstantiationException("Class " + clazz +
+                            " doesn't implement the Service interface", e);
+                }
+                catch (ThreadDeath t)
+                {
+                    throw t;
+                }
+                catch (OutOfMemoryError t)
+                {
+                    throw t;
+                }
+                catch (Throwable t)
+                {
+                    throw new InstantiationException("Failed to instantiate " + clazz, t);
+                }
             }
             catch (InstantiationException e)
             {
