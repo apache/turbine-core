@@ -27,7 +27,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**
- * Flexible implementation of a {@link org.apache.turbine.Pipeline}.
+ * Flexible implementation of a {@link org.apache.turbine.pipeline.Pipeline}.
  * Originally based on code from Catalina and ideas from Apache httpd.
  *
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
@@ -63,7 +63,7 @@ public class TurbinePipeline
     protected ThreadLocal<Integer> state= new ThreadLocal<Integer>();
 
     /**
-     * @see org.apache.turbine.Pipeline#initialize()
+     * @see org.apache.turbine.pipeline.Pipeline#initialize()
      */
     public void initialize()
         throws Exception
@@ -104,7 +104,7 @@ public class TurbinePipeline
     }
 
     /**
-     * @see org.apache.turbine.Pipeline#addValve(Valve)
+     * @see org.apache.turbine.pipeline.Pipeline#addValve(Valve)
      */
     public void addValve(Valve valve)
     {
@@ -119,7 +119,7 @@ public class TurbinePipeline
     }
 
     /**
-     * @see org.apache.turbine.Pipeline#getValves()
+     * @see org.apache.turbine.pipeline.Pipeline#getValves()
      */
     public Valve[] getValves()
     {
@@ -132,7 +132,7 @@ public class TurbinePipeline
     }
 
     /**
-     * @see org.apache.turbine.Pipeline#removeValve(Valve)
+     * @see org.apache.turbine.pipeline.Pipeline#removeValve(Valve)
      */
     public void removeValve(Valve valve)
     {
@@ -169,7 +169,7 @@ public class TurbinePipeline
     }
 
     /**
-     * @see org.apache.turbine.Pipeline#invoke(RunData)
+     * @see org.apache.turbine.pipeline.Pipeline#invoke(RunData)
      */
     public void invoke(PipelineData pipelineData)
         throws TurbineException, IOException

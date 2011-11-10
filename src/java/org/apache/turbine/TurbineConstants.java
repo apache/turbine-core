@@ -313,7 +313,7 @@ public interface TurbineConstants
 
 	/**
 	 * The fully qualified class name of the default {@link
-	 * org.apache.turbine.Pipeline} implementation to use in the
+	 * org.apache.turbine.pipeline.Pipeline} implementation to use in the
 	 * {@link org.apache.turbine.Turbine} servlet.
 	 */
 	String STANDARD_PIPELINE = TurbinePipeline.class.getName();
