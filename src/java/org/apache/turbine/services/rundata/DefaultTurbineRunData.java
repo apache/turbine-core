@@ -95,30 +95,6 @@ public class DefaultTurbineRunData
     /** The default charset. */
     private static String defaultCharSet = null;
 
-    /** A reference to the GET/POST data parser. */
-    private ParameterParser parameters;
-
-    /** A reference to a cookie parser. */
-    public CookieParser cookies;
-
-    /** The servlet request interface. */
-    private HttpServletRequest req;
-
-    /** The servlet response interface. */
-    private HttpServletResponse res;
-
-    /** The servlet configuration. */
-    private ServletConfig config;
-
-    /**
-     * The servlet context information.
-     * Note that this is from the "Turbine" Servlet context.
-     */
-    private ServletContext servletContext;
-
-    /** The access control list. */
-    private AccessControlList acl;
-
     /** Determines if there is information in the document or not. */
     private boolean pageSet;
 
@@ -137,21 +113,6 @@ public class DefaultTurbineRunData
     /** The character encoding of template files. */
     private String templateEncoding;
 
-    /** Information used by a Template system (such as Velocity/JSP). */
-    private TemplateInfo templateInfo;
-
-    /** This is where output messages from actions should go. */
-    private StringElement message;
-
-    /**
-     * This is a dedicated message class where output messages from
-     * actions should go.
-     */
-    private FormMessages messages;
-
-    /** The user object. */
-    private User user;
-
     /** This is what will build the <title></title> of the document. */
     private String title;
 
@@ -163,9 +124,6 @@ public class DefaultTurbineRunData
      * different places.
      */
     private PrintWriter out;
-
-    /** The locale. */
-    private Locale locale;
 
     /** The HTTP charset. */
     private String charSet;
@@ -180,13 +138,10 @@ public class DefaultTurbineRunData
     private int statusCode = HttpServletResponse.SC_OK;
 
     /** This is a List to hold critical system errors. */
-    private List<SystemError> errors = new ArrayList<SystemError>();
+    private final List<SystemError> errors = new ArrayList<SystemError>();
 
     /** JNDI Contexts. */
     private Map<String, Context> jndiContexts;
-
-    /** Holds ServerData (basic properties) about this RunData object. */
-    private ServerData serverData;
 
     /** @see #getRemoteAddr() */
     private String remoteAddr;
@@ -208,7 +163,7 @@ public class DefaultTurbineRunData
      * screen.  This is great for debugging variable values when an
      * exception is thrown.
      */
-    private Map<String, Object> debugVariables = new HashMap<String, Object>();
+    private final Map<String, Object> debugVariables = new HashMap<String, Object>();
 
     /** Logging */
     private static Log log = LogFactory.getLog(DefaultTurbineRunData.class);
@@ -306,7 +261,7 @@ public class DefaultTurbineRunData
         {
             log.debug("charset is empty!");
             /* Default charset isn't specified, get the locale specific one. */
-            Locale locale = this.locale;
+            Locale locale = getLocale();
             if (locale == null)
             {
                 locale = getDefaultLocale();
@@ -342,6 +297,9 @@ public class DefaultTurbineRunData
     public DefaultTurbineRunData()
     {
         super();
+
+        // a map to hold information to be added to pipelineData
+        put(Turbine.class, new HashMap<Class<?>, Object>());
         recycle();
     }
 
@@ -358,34 +316,24 @@ public class DefaultTurbineRunData
      */
     public void dispose()
     {
-        parameters = null;
-        cookies = null;
-        req = null;
-        res = null;
-        config = null;
-        servletContext = null;
-        acl = null;
+        // empty pipelinedata map
+        get(Turbine.class).clear();
+
         pageSet = false;
         page = null;
         action = null;
         layout = null;
         screen = null;
         templateEncoding = null;
-        templateInfo = null;
-        message = null;
-        messages = null;
-        user = null;
         title = null;
         outSet = false;
         out = null;
-        locale = null;
         charSet = null;
         contentType = "text/html";
         redirectURI = null;
         statusCode = HttpServletResponse.SC_OK;
         errors.clear();
         jndiContexts = null;
-        serverData = null;
         remoteAddr = null;
         remoteHost = null;
         userAgent = null;
@@ -406,12 +354,16 @@ public class DefaultTurbineRunData
     public ParameterParser getParameters()
     {
         // Parse the parameters first, if not yet done.
-        if ((this.parameters != null) &&
-                (this.parameters.getRequest() != this.req))
+        ParameterParser parameters = get(Turbine.class, ParameterParser.class);
+        HttpServletRequest request = get(Turbine.class, HttpServletRequest.class);
+
+        if ((parameters != null) &&
+                (parameters.getRequest() != request))
         {
-            this.parameters.setRequest(this.req);
+            parameters.setRequest(request);
         }
-        return this.parameters;
+
+        return parameters;
     }
 
     /**
@@ -422,12 +374,16 @@ public class DefaultTurbineRunData
     public CookieParser getCookies()
     {
         // Parse the cookies first, if not yet done.
-        if ((this.cookies != null) &&
-                (this.cookies.getRequest() != getRequest()))
+        CookieParser cookies = get(Turbine.class, CookieParser.class);
+        HttpServletRequest request = get(Turbine.class, HttpServletRequest.class);
+
+        if ((cookies != null) &&
+                (cookies.getRequest() != request))
         {
-            this.cookies.setData(getRequest(), getResponse());
+            cookies.setData(request, getResponse());
         }
-        return this.cookies;
+
+        return cookies;
     }
 
     /**
@@ -437,7 +393,7 @@ public class DefaultTurbineRunData
      */
     public HttpServletRequest getRequest()
     {
-        return this.req;
+        return get(Turbine.class, HttpServletRequest.class);
     }
 
     /**
@@ -447,7 +403,7 @@ public class DefaultTurbineRunData
      */
     public HttpServletResponse getResponse()
     {
-        return this.res;
+        return get(Turbine.class, HttpServletResponse.class);
     }
 
     /**
@@ -467,7 +423,7 @@ public class DefaultTurbineRunData
      */
     public ServletConfig getServletConfig()
     {
-        return this.config;
+        return get(Turbine.class, ServletConfig.class);
     }
 
     /**
@@ -477,7 +433,7 @@ public class DefaultTurbineRunData
      */
     public ServletContext getServletContext()
     {
-        return this.servletContext;
+        return get(Turbine.class, ServletContext.class);
     }
 
     /**
@@ -487,7 +443,7 @@ public class DefaultTurbineRunData
      */
     public AccessControlList getACL()
     {
-        return acl;
+        return get(Turbine.class, AccessControlList.class);
     }
 
     /**
@@ -497,7 +453,7 @@ public class DefaultTurbineRunData
      */
     public void setACL(AccessControlList acl)
     {
-        this.acl = acl;
+        get(Turbine.class).put(AccessControlList.class, acl);
     }
 
     /**
@@ -569,7 +525,7 @@ public class DefaultTurbineRunData
      * the Layout to execute.  You can also define that logic here as
      * well if you want it to apply on a global scale.  For example,
      * if you wanted to allow someone to define layout "preferences"
-     * where they could dynamicially change the layout for the entire
+     * where they could dynamically change the layout for the entire
      * site.
      *
      * @return a string.
@@ -711,10 +667,14 @@ public class DefaultTurbineRunData
      */
     public TemplateInfo getTemplateInfo()
     {
+        TemplateInfo templateInfo = get(Turbine.class, TemplateInfo.class);
+
         if (templateInfo == null)
         {
             templateInfo = new TemplateInfo(this);
+            get(Turbine.class).put(TemplateInfo.class, templateInfo);
         }
+
         return templateInfo;
     }
 
@@ -725,8 +685,9 @@ public class DefaultTurbineRunData
      */
     public boolean hasMessage()
     {
-        return (this.message != null)
-            && StringUtils.isNotEmpty(this.message.toString());
+        StringElement message = get(Turbine.class, StringElement.class);
+        return (message != null)
+            && StringUtils.isNotEmpty(message.toString());
     }
 
     /**
@@ -737,7 +698,8 @@ public class DefaultTurbineRunData
      */
     public String getMessage()
     {
-        return (this.message == null ? null : this.message.toString());
+        StringElement message = get(Turbine.class, StringElement.class);
+        return (message == null ? null : message.toString());
     }
 
     /**
@@ -747,7 +709,7 @@ public class DefaultTurbineRunData
      */
     public void setMessage(String msg)
     {
-        this.message = new StringElement(msg);
+        get(Turbine.class).put(StringElement.class, new StringElement(msg));
     }
 
     /**
@@ -769,7 +731,7 @@ public class DefaultTurbineRunData
      */
     public StringElement getMessageAsHTML()
     {
-        return this.message;
+        return get(Turbine.class, StringElement.class);
     }
 
     /**
@@ -779,7 +741,7 @@ public class DefaultTurbineRunData
      */
     public void setMessage(Element msg)
     {
-        this.message = new StringElement(msg);
+        get(Turbine.class).put(StringElement.class, new StringElement(msg));
     }
 
     /**
@@ -792,13 +754,15 @@ public class DefaultTurbineRunData
     {
         if (msg != null)
         {
+            StringElement message = get(Turbine.class, StringElement.class);
+
             if (message != null)
             {
                 message.addElement(msg);
             }
             else
             {
-                message = new StringElement(msg);
+                setMessage(msg);
             }
         }
     }
@@ -808,7 +772,7 @@ public class DefaultTurbineRunData
      */
     public void unsetMessage()
     {
-        this.message = null;
+        get(Turbine.class).remove(StringElement.class);
     }
 
     /**
@@ -819,11 +783,14 @@ public class DefaultTurbineRunData
      */
     public FormMessages getMessages()
     {
-        if (this.messages == null)
+        FormMessages messages = get(Turbine.class, FormMessages.class);
+        if (messages == null)
         {
-            this.messages = new FormMessages();
+            messages = new FormMessages();
+            setMessages(messages);
         }
-        return this.messages;
+
+        return messages;
     }
 
     /**
@@ -833,7 +800,7 @@ public class DefaultTurbineRunData
      */
     public void setMessages(FormMessages msgs)
     {
-        this.messages = msgs;
+        get(Turbine.class).put(FormMessages.class, msgs);
     }
 
     /**
@@ -863,7 +830,11 @@ public class DefaultTurbineRunData
      */
     public boolean userExists()
     {
-        user = getUserFromSession();
+        User user = getUserFromSession();
+
+        // TODO: Check if this side effect is reasonable
+        get(Turbine.class).put(User.class, user);
+
         return (user != null);
     }
 
@@ -874,7 +845,7 @@ public class DefaultTurbineRunData
      */
     public User getUser()
     {
-        return this.user;
+        return get(Turbine.class, User.class);
     }
 
     /**
@@ -885,7 +856,7 @@ public class DefaultTurbineRunData
     public void setUser(User user)
     {
         log.debug("user set: " + user.getName());
-        this.user = user;
+        get(Turbine.class).put(User.class, user);
     }
 
     /**
@@ -936,7 +907,7 @@ public class DefaultTurbineRunData
         // Check to see if null first.
         if (this.out == null)
         {
-            setOut(res.getWriter());
+            setOut(getResponse().getWriter());
         }
         pageSet = false;
         outSet = true;
@@ -966,7 +937,7 @@ public class DefaultTurbineRunData
      */
     public Locale getLocale()
     {
-        Locale locale = this.locale;
+        Locale locale = get(Turbine.class, Locale.class);
         if (locale == null)
         {
             locale = getDefaultLocale();
@@ -981,15 +952,18 @@ public class DefaultTurbineRunData
      */
     public void setLocale(Locale locale)
     {
-        this.locale = locale;
-        
+        get(Turbine.class).put(Locale.class, locale);
+
         // propagate the locale to the parsers
-        if (this.parameters != null)
+        ParameterParser parameters = get(Turbine.class, ParameterParser.class);
+        CookieParser cookies = get(Turbine.class, CookieParser.class);
+
+        if (parameters != null)
         {
             parameters.setLocale(locale);
         }
 
-        if (this.cookies != null)
+        if (cookies != null)
         {
             cookies.setLocale(locale);
         }
@@ -1051,7 +1025,7 @@ public class DefaultTurbineRunData
                 {
                     return contentType + "; charset=" + getDefaultCharSet();
                 }
-                
+
                 return contentType;
             }
             else
@@ -1216,7 +1190,7 @@ public class DefaultTurbineRunData
      */
     public ServerData getServerData()
     {
-        return this.serverData;
+        return get(Turbine.class, ServerData.class);
     }
 
     /**
@@ -1272,7 +1246,8 @@ public class DefaultTurbineRunData
      */
     public void populate()
     {
-        user = getUserFromSession();
+        User user = getUserFromSession();
+        get(Turbine.class).put(User.class, user);
 
         if (user != null)
         {
@@ -1287,7 +1262,7 @@ public class DefaultTurbineRunData
      */
     public void save()
     {
-        getSession().setAttribute(User.SESSION_KEY, user);
+        getSession().setAttribute(User.SESSION_KEY, getUser());
     }
 
     /**
@@ -1373,7 +1348,7 @@ public class DefaultTurbineRunData
      */
     public ParameterParser getParameterParser()
     {
-        return parameters;
+        return get(Turbine.class, ParameterParser.class);
     }
 
     /**
@@ -1383,7 +1358,7 @@ public class DefaultTurbineRunData
      */
     public void setParameterParser(ParameterParser parser)
     {
-        parameters = parser;
+        get(Turbine.class).put(ParameterParser.class, parser);
     }
 
     /**
@@ -1393,7 +1368,7 @@ public class DefaultTurbineRunData
      */
     public CookieParser getCookieParser()
     {
-        return cookies;
+        return get(Turbine.class, CookieParser.class);
     }
 
     /**
@@ -1403,7 +1378,7 @@ public class DefaultTurbineRunData
      */
     public void setCookieParser(CookieParser parser)
     {
-        cookies = parser;
+        get(Turbine.class).put(ParameterParser.class, parser);
     }
 
     /**
@@ -1413,7 +1388,7 @@ public class DefaultTurbineRunData
      */
     public void setRequest(HttpServletRequest req)
     {
-        this.req = req;
+        get(Turbine.class).put(HttpServletRequest.class, req);
     }
 
     /**
@@ -1423,7 +1398,7 @@ public class DefaultTurbineRunData
      */
     public void setResponse(HttpServletResponse res)
     {
-        this.res = res;
+        get(Turbine.class).put(HttpServletResponse.class, res);
     }
 
     /**
@@ -1433,14 +1408,15 @@ public class DefaultTurbineRunData
      */
     public void setServletConfig(ServletConfig config)
     {
-        this.config = config;
+        get(Turbine.class).put(ServletConfig.class, config);
+
         if (config == null)
         {
-            this.servletContext = null;
+            get(Turbine.class).put(ServletContext.class, null);
         }
         else
         {
-            this.servletContext = config.getServletContext();
+            get(Turbine.class).put(ServletContext.class, config.getServletContext());
         }
     }
 
@@ -1451,7 +1427,7 @@ public class DefaultTurbineRunData
      */
     public void setServerData(ServerData serverData)
     {
-        this.serverData = serverData;
+        get(Turbine.class).put(ServerData.class, serverData);
     }
 
     // ********************
