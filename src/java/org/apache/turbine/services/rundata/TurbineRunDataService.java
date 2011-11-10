@@ -36,7 +36,6 @@ import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.parser.ParserService;
 import org.apache.fulcrum.pool.PoolException;
 import org.apache.fulcrum.pool.PoolService;
-import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
@@ -74,6 +73,9 @@ public class TurbineRunDataService
 
     /** The map of configurations. */
     private final Map<String, Object> configurations = new HashMap<String, Object>();
+
+    /** A class cache. */
+    private final Map<String, Class<?>> classCache = new HashMap<String, Class<?>>();
 
     /** Private reference to the pool service for object recycling */
     private PoolService pool = null;
@@ -163,6 +165,18 @@ public class TurbineRunDataService
     }
 
     /**
+     * Shutdown the service
+     *
+     * @see org.apache.turbine.services.TurbineBaseService#shutdown()
+     */
+    @Override
+    public void shutdown()
+    {
+        classCache.clear();
+        super.shutdown();
+    }
+
+    /**
      * Gets a default RunData object.
      *
      * @param req a servlet request.
@@ -198,8 +212,6 @@ public class TurbineRunDataService
             throws TurbineException,
             IllegalArgumentException
     {
-        // a map to hold information to be added to pipelineData
-        Map<Class<?>, Object> pipelineDataMap = new HashMap<Class<?>, Object>();
         // The RunData object caches all the information that is needed for
         // the execution lifetime of a single request. A RunData object
         // is created/recycled for each and every request and is passed
@@ -224,18 +236,32 @@ public class TurbineRunDataService
         TurbineRunData data;
         try
         {
-    		Class<?> runDataClazz = Class.forName(cfg[0]);
-    		Class<?> parameterParserClazz = Class.forName(cfg[1]);
-    		Class<?> cookieParserClazz = Class.forName(cfg[2]);
+    		Class<?> runDataClazz = classCache.get(cfg[0]);
+    		if (runDataClazz == null)
+    		{
+    		    runDataClazz = Class.forName(cfg[0]);
+    		    classCache.put(cfg[0], runDataClazz);
+    		}
+
+            Class<?> parameterParserClazz = classCache.get(cfg[1]);
+            if (parameterParserClazz == null)
+            {
+                parameterParserClazz = Class.forName(cfg[1]);
+                classCache.put(cfg[1], parameterParserClazz);
+            }
+
+            Class<?> cookieParserClazz = classCache.get(cfg[2]);
+            if (cookieParserClazz == null)
+            {
+                cookieParserClazz = Class.forName(cfg[2]);
+                classCache.put(cfg[2], cookieParserClazz);
+            }
 
             data = (TurbineRunData) pool.getInstance(runDataClazz);
             ParameterParser pp = (ParameterParser) parserService.getParser(parameterParserClazz);
             data.setParameterParser(pp);
             CookieParser cp = (CookieParser) parserService.getParser(cookieParserClazz);
             data.setCookieParser(cp);
-            // also copy data directly into pipelineData
-            pipelineDataMap.put(ParameterParser.class, pp);
-            pipelineDataMap.put(CookieParser.class, cp);
 
             Locale locale = req.getLocale();
 
@@ -268,23 +294,14 @@ public class TurbineRunDataService
         // Set the request and response.
         data.setRequest(req);
         data.setResponse(res);
-        // also copy data directly into pipelineData
-        pipelineDataMap.put(HttpServletRequest.class, req);
-        pipelineDataMap.put(HttpServletResponse.class, res);
 
         // Set the servlet configuration.
         data.setServletConfig(config);
-        // also copy data directly into pipelineData
-        pipelineDataMap.put(ServletConfig.class, config);
 
         // Set the ServerData.
         ServerData sd = new ServerData(req);
         data.setServerData(sd);
-        // also copy data directly into pipelineData
-        pipelineDataMap.put(ServerData.class, sd);
 
-        // finally put the pipelineDataMap into the pipelineData object
-        data.put(Turbine.class, pipelineDataMap);
         return data;
     }
 
