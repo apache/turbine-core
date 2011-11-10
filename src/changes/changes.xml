@@ -25,6 +25,13 @@
 
   <body>
     <release version="4.0-M2" date="in Subversion">
+      <action type="add" dev="tv">
+        Add class cache for TurbineRunDataService
+      </action>
+      <action type="update" dev="tv">
+        Remove duplicate data storage in DefaultTurbineRunData and
+        DefaultPipelineData
+      </action>
       <action type="update" dev="tv" issue="TRB-72">
         Services that implement TurbineServiceProvider are inited early by default
       </action>
