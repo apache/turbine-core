@@ -1378,7 +1378,7 @@ public class DefaultTurbineRunData
      */
     public void setCookieParser(CookieParser parser)
     {
-        get(Turbine.class).put(ParameterParser.class, parser);
+        get(Turbine.class).put(CookieParser.class, parser);
     }
 
     /**
