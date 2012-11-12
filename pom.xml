@@ -225,6 +225,16 @@
       </roles>
       <timezone>1</timezone>
     </developer>
+	 <developer>
+      <name>Georg Kallidis</name>
+      <id>gk</id>
+      <email>gk@apache.org</email>
+      <organization />
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+      <timezone>1</timezone>
+    </developer>
   </developers>
   <contributors>
     <contributor>
