@@ -63,6 +63,7 @@ public class UIToolTest
     public void testCssSlashes()
     {
         UITool ui = getTool();
+        ui.setSkin("myskin");
 
         String cssUrl = ui.getStylecss();
         assertEquals("CSS URL does not match", "http:///conf/test/turbine-resources/turbine-skins/myskin/skins.css", cssUrl);
@@ -71,6 +72,7 @@ public class UIToolTest
     public void testImageSlashes()
     {
         UITool ui = getTool();
+        ui.setSkin("myskin");
 
         String img = "myimage.gif";
 
@@ -91,16 +93,17 @@ public class UIToolTest
     public void testPathologicalCases()
     {
     	UITool ui = getTool();
+		ui.setSkin("myskin");
 
     	String img = "";
         String imgUrl = ui.image(img);
         assertEquals("Could not strip empty String", "http:///conf/test/turbine-resources/turbine-skins/myskin/turbine-images/", imgUrl);
 
-    	img = "/";
+        img = "/";
         imgUrl = ui.image(img);
         assertEquals("Could not strip single Slash", "http:///conf/test/turbine-resources/turbine-skins/myskin/turbine-images/", imgUrl);
 
-    	img = "//";
+        img = "//";
         imgUrl = ui.image(img);
         assertEquals("Could not strip double Slash", "http:///conf/test/turbine-resources/turbine-skins/myskin/turbine-images/", imgUrl);
     }

@@ -106,6 +106,10 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
      */
     public void testDefaults() throws Exception
     {
+        
+        // reset
+        Turbine.getConfiguration().setProperty(TurbineConstants.SESSION_TIMEOUT_KEY,
+                TurbineConstants.SESSION_TIMEOUT_DEFAULT); 
         Vector v = new Vector();
         v.add(URIConstants.CGI_ACTION_PARAM);
         request.setupGetParameterNames(v.elements());
