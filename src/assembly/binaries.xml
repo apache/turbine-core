@@ -39,6 +39,12 @@
       <outputDirectory>/</outputDirectory>
       <includes>
         <include>README*</include>
+      </includes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/maven-shared-archive-resources/META-INF</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
         <include>LICENSE*</include>
         <include>NOTICE*</include>
       </includes>
