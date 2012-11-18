@@ -23,11 +23,9 @@ package org.apache.turbine.pipeline;
 
 import java.util.Vector;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.test.EnhancedMockHttpSession;
@@ -48,12 +46,11 @@ import com.mockobjects.servlet.MockServletConfig;
 public class DetermineActionValveTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    private static TemplateService ts = null;
     private MockServletConfig config = null;
     private EnhancedMockHttpServletRequest request = null;
     private EnhancedMockHttpSession session = null;
     private HttpServletResponse response = null;
-    private static ServletConfig sc = null;
+
     /**
      * Constructor
      */
@@ -77,14 +74,11 @@ public class DetermineActionValveTest extends BaseTestCase
         request.setupAddHeader("Content-type", "html/text");
         request.setupAddHeader("Accept-Language", "en-US");
 
-
-
-        Vector v = new Vector();
+        Vector<String> v = new Vector<String>();
         v.add(URIConstants.CGI_ACTION_PARAM);
         request.setupGetParameterNames(v.elements());
 
         request.setupAddParameter(URIConstants.CGI_ACTION_PARAM,"TestAction");
-
 
         session = new EnhancedMockHttpSession();
         response = new MockHttpServletResponse();
@@ -92,9 +86,6 @@ public class DetermineActionValveTest extends BaseTestCase
         session.setupGetAttribute(User.SESSION_KEY, null);
         request.setSession(session);
 
-
-
-        sc = config;
         tc =
             new TurbineConfig(
                     ".",
@@ -117,9 +108,5 @@ public class DetermineActionValveTest extends BaseTestCase
 
         pipeline.invoke(pipelineData);
         assertEquals("TestAction",runData.getAction());
-
-
     }
-
-
 }

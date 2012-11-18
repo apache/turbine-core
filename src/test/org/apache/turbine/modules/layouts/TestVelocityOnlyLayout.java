@@ -35,7 +35,7 @@ public class TestVelocityOnlyLayout extends VelocityOnlyLayout
     public void doBuild(PipelineData pipelineData)
     {
         numberOfCalls++;
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         Assert.assertNotNull("RunData object is null.", data);
     }
 
@@ -44,6 +44,4 @@ public class TestVelocityOnlyLayout extends VelocityOnlyLayout
         numberOfCalls++;
         Assert.assertNotNull("RunData object is null.", runData);
     }
-
-
 }

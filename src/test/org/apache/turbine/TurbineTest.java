@@ -19,10 +19,6 @@ package org.apache.turbine;
  * under the License.
  */
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletResponse;
 import org.apache.turbine.util.TurbineConfig;
@@ -32,7 +28,7 @@ import com.mockobjects.servlet.MockHttpServletRequest;
 /**
  * This testcase verifies that TurbineConfig can be used to startup Turbine in a
  * non servlet environment properly.
- * 
+ *
  * @author <a href="mailto:epugh@opensourceconnections.com">Eric Pugh </a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux </a>
  * @version $Id$
@@ -51,8 +47,6 @@ public class TurbineTest extends BaseTestCase
                 "/conf/test/CompleteTurbineResources.properties");
         tc.initialize();
 
-        ServletConfig config = (ServletConfig) tc;
-        ServletContext context = config.getServletContext();
         assertNotNull(Turbine.getDefaultServerData());
         assertEquals("", Turbine.getServerName());
         assertEquals("80", Turbine.getServerPort());
@@ -78,8 +72,8 @@ public class TurbineTest extends BaseTestCase
         assertEquals(TurbineConstants.PARAMETER_ENCODING_DEFAULT, t.getDefaultInputEncoding());
         t.destroy();
     }
-    
-    public void testNonDefaultEncoding() throws ServletException 
+
+    public void testNonDefaultEncoding()
     {
         TurbineConfig tc = new TurbineConfig(".",
                 "/conf/test/CompleteTurbineResourcesWithEncoding.properties");
@@ -88,5 +82,4 @@ public class TurbineTest extends BaseTestCase
         assertNotNull(t.getDefaultInputEncoding());
         assertEquals("UTF-8", t.getDefaultInputEncoding());
     }
-
 }

@@ -23,13 +23,11 @@ package org.apache.turbine.pipeline;
 
 import java.util.Vector;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.turbine.modules.actions.VelocityActionDoesNothing;
 import org.apache.turbine.om.security.TurbineUser;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.test.EnhancedMockHttpServletResponse;
@@ -50,12 +48,11 @@ import com.mockobjects.servlet.MockServletConfig;
 public class ExecutePageValveTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    private static TemplateService ts = null;
     private MockServletConfig config = null;
     private EnhancedMockHttpServletRequest request = null;
     private EnhancedMockHttpSession session = null;
     private HttpServletResponse response = null;
-    private static ServletConfig sc = null;
+
     /**
      * Constructor
      */
@@ -85,7 +82,6 @@ public class ExecutePageValveTest extends BaseTestCase
 
         request.setSession(session);
 
-        sc = config;
         tc =
             new TurbineConfig(
                 ".",
@@ -95,23 +91,15 @@ public class ExecutePageValveTest extends BaseTestCase
 
     public void testValve() throws Exception
     {
-
-
-
-        Vector v = new Vector();
+        Vector<String> v = new Vector<String>();
         v.add(URIConstants.CGI_TEMPLATE_PARAM);
         request.setupGetParameterNames(v.elements());
         String nulls[] = new String[1];
         nulls[0]="Index.vm";
         request.setupAddParameter(URIConstants.CGI_TEMPLATE_PARAM, nulls);
 
-        RunData runData =
-            getRunData(request, response, config);
-
-
-
+        RunData runData = getRunData(request, response, config);
         runData.setScreenTemplate("ExistPageWithLayout.vm");
-
 
         TurbineUser tu = new TurbineUser();
         tu.setName("username");
@@ -135,8 +123,5 @@ public class ExecutePageValveTest extends BaseTestCase
         assertNotNull(user);
         assertEquals("username", user.getName());
         assertTrue(user.hasLoggedIn());
-
-
     }
-
 }

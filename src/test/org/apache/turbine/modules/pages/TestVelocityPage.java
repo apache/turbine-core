@@ -36,7 +36,7 @@ public class TestVelocityPage extends VelocityPage{
     {
         numberOfCalls++;
         super.doBuild(pipelineData);
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         Assert.assertNotNull("RunData object is null.", data);
     }
 
@@ -50,14 +50,14 @@ public class TestVelocityPage extends VelocityPage{
     public void doBuildBeforeAction(PipelineData pipelineData) throws Exception
     {
         numberOfCalls++;
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         Assert.assertNotNull("RunData object is null.", data);
     }
 
     public void doPostBuild(PipelineData pipelineData) throws Exception
     {
         numberOfCalls++;
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         Assert.assertNotNull("RunData object is null.", data);
     }
 
@@ -82,9 +82,7 @@ public class TestVelocityPage extends VelocityPage{
     public void doBuildAfterAction(PipelineData pipelineData) throws Exception
     {
         numberOfCalls++;
-        RunData data = (RunData) getRunData(pipelineData);
+        RunData data = getRunData(pipelineData);
         Assert.assertNotNull("RunData object is null.", data);
     }
-
-
 }
