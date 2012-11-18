@@ -27,7 +27,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
@@ -775,10 +777,10 @@ public class Turbine
             // Get general RunData here...
             // Perform turbine specific initialization below.
             pipelineData = getRunDataService().getRunData(req, res, getServletConfig());
-           // Map runDataMap = new HashMap();
-            //runDataMap.put(RunData.class, data);
+            Map<Class<?>, Object> runDataMap = new HashMap<Class<?>, Object>();
+            runDataMap.put(RunData.class, pipelineData);
             // put the data into the pipeline
-           // pipelineData.put(RunData.class, runDataMap);
+            pipelineData.put(RunData.class, runDataMap);
 
             // If this is the first invocation, perform some
             // initialization.  Certain services need RunData to initialize
