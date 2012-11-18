@@ -30,11 +30,17 @@
       <directory>${project.basedir}</directory>
       <includes>
         <include>README*</include>
-        <include>LICENSE*</include>
-        <include>NOTICE*</include>
         <include>pom.xml</include>
       </includes>
       <useDefaultExcludes>true</useDefaultExcludes>
+    </fileSet>
+    <fileSet>
+      <directory>${project.build.directory}/maven-shared-archive-resources/META-INF</directory>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <include>LICENSE*</include>
+        <include>NOTICE*</include>
+      </includes>
     </fileSet>
     <fileSet>
       <directory>${project.basedir}/src</directory>
