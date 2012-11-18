@@ -18,8 +18,7 @@
  under the License.
 -->
 
-<project name="Apache Turbine"
-        href="http://turbine.apache.org/">
+<project name="Apache Turbine">
 
   <bannerLeft>
     <name>Apache Turbine</name>
