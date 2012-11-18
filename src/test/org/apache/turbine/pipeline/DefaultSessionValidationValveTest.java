@@ -23,14 +23,12 @@ package org.apache.turbine.pipeline;
 
 import java.util.Vector;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.actions.LoginUser;
 import org.apache.turbine.om.security.TurbineUser;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.test.EnhancedMockHttpSession;
@@ -50,12 +48,11 @@ import com.mockobjects.servlet.MockServletConfig;
 public class DefaultSessionValidationValveTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    private static TemplateService ts = null;
     private MockServletConfig config = null;
     private EnhancedMockHttpServletRequest request = null;
     private EnhancedMockHttpSession session = null;
     private HttpServletResponse response = null;
-    private static ServletConfig sc = null;
+
     /**
      * Constructor
      */
@@ -79,21 +76,11 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
         request.setupAddHeader("Content-type", "html/text");
         request.setupAddHeader("Accept-Language", "en-US");
 
-
-
-
-
-
         session = new EnhancedMockHttpSession();
         response = new MockHttpServletResponse();
 
-
-
         request.setSession(session);
 
-
-
-        sc = config;
         tc =
             new TurbineConfig(
                     ".",
@@ -106,8 +93,7 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
      */
     public void testAnonymousUser() throws Exception
     {
-
-        Vector v = new Vector();
+        Vector<String> v = new Vector<String>();
         v.add(LoginUser.CGI_USERNAME);
         v.add(LoginUser.CGI_PASSWORD);
         request.setupGetParameterNames(v.elements());
@@ -130,12 +116,11 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
         assertNotNull(user);
         assertEquals("",user.getName());
         assertFalse(user.hasLoggedIn());
-
     }
+
     public void testLoggedInUser() throws Exception
     {
-
-        Vector v = new Vector();
+        Vector<String> v = new Vector<String>();
         v.add(LoginUser.CGI_USERNAME);
         v.add(LoginUser.CGI_PASSWORD);
         request.setupGetParameterNames(v.elements());
@@ -163,11 +148,5 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
         assertNotNull(user);
         assertEquals("username",user.getName());
         assertTrue(user.hasLoggedIn());
-
     }
-
-
-
-
-
 }

@@ -22,12 +22,10 @@ package org.apache.turbine.pipeline;
 
 
 
-import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.turbine.om.security.TurbineUser;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.test.EnhancedMockHttpSession;
@@ -47,12 +45,11 @@ import com.mockobjects.servlet.MockServletConfig;
 public class DefaultACLCreationValveTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    private static TemplateService ts = null;
     private MockServletConfig config = null;
     private EnhancedMockHttpServletRequest request = null;
     private EnhancedMockHttpSession session = null;
     private HttpServletResponse response = null;
-    private static ServletConfig sc = null;
+
     /**
      * Constructor
      */
@@ -76,21 +73,11 @@ public class DefaultACLCreationValveTest extends BaseTestCase
         request.setupAddHeader("Content-type", "html/text");
         request.setupAddHeader("Accept-Language", "en-US");
 
-
-
-
-
-
         session = new EnhancedMockHttpSession();
         response = new MockHttpServletResponse();
 
-
-
         request.setSession(session);
 
-
-
-        sc = config;
         tc =
             new TurbineConfig(
                     ".",
@@ -101,16 +88,12 @@ public class DefaultACLCreationValveTest extends BaseTestCase
 
     public void testLoggedInUser() throws Exception
     {
-
-
-
         RunData runData = getRunData(request,response,config);
         TurbineUser tu = new TurbineUser();
         tu.setName("username");
         tu.setHasLoggedIn(Boolean.TRUE);
         runData.setAction("TestAction");
         runData.setUser(tu);
-
 
         Pipeline pipeline = new TurbinePipeline();
         PipelineData pipelineData = runData;
@@ -125,11 +108,5 @@ public class DefaultACLCreationValveTest extends BaseTestCase
         assertEquals("username",user.getName());
         assertTrue(user.hasLoggedIn());
         assertNotNull(runData.getACL());
-
     }
-
-
-
-
-
 }

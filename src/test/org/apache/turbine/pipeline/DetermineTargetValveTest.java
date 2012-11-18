@@ -23,11 +23,9 @@ package org.apache.turbine.pipeline;
 
 import java.util.Vector;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.test.EnhancedMockHttpSession;
@@ -48,12 +46,11 @@ import com.mockobjects.servlet.MockServletConfig;
 public class DetermineTargetValveTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    private static TemplateService ts = null;
     private MockServletConfig config = null;
     private EnhancedMockHttpServletRequest request = null;
     private EnhancedMockHttpSession session = null;
     private HttpServletResponse response = null;
-    private static ServletConfig sc = null;
+
     /**
      * Constructor
      */
@@ -77,20 +74,12 @@ public class DetermineTargetValveTest extends BaseTestCase
         request.setupAddHeader("Content-type", "html/text");
         request.setupAddHeader("Accept-Language", "en-US");
 
-
-
-
-
-
         session = new EnhancedMockHttpSession();
         response = new MockHttpServletResponse();
 
         session.setupGetAttribute(User.SESSION_KEY, null);
         request.setSession(session);
 
-
-
-        sc = config;
         tc =
             new TurbineConfig(
                     ".",
@@ -103,7 +92,7 @@ public class DetermineTargetValveTest extends BaseTestCase
      */
     public void testScreenSet() throws Exception
     {
-        Vector v = new Vector();
+        Vector<String> v = new Vector<String>();
         v.add(URIConstants.CGI_SCREEN_PARAM);
         request.setupGetParameterNames(v.elements());
 
@@ -118,12 +107,11 @@ public class DetermineTargetValveTest extends BaseTestCase
 
         pipeline.invoke(pipelineData);
         assertEquals("TestScreen",runData.getScreen());
-
-
     }
+
     public void testScreenNotSet() throws Exception
     {
-        Vector v = new Vector();
+        Vector<String> v = new Vector<String>();
         v.add(URIConstants.CGI_SCREEN_PARAM);
         request.setupGetParameterNames(v.elements());
 
@@ -141,9 +129,5 @@ public class DetermineTargetValveTest extends BaseTestCase
 
         pipeline.invoke(pipelineData);
         assertEquals("",runData.getScreen());
-
-
     }
-
-
 }

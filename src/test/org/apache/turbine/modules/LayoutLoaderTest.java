@@ -21,7 +21,6 @@ package org.apache.turbine.modules;
 
 import java.util.Vector;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
 
 import junit.framework.Assert;
@@ -29,7 +28,6 @@ import junit.framework.Assert;
 import org.apache.turbine.modules.layouts.TestVelocityOnlyLayout;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.test.EnhancedMockHttpSession;
@@ -45,12 +43,11 @@ import com.mockobjects.servlet.MockServletConfig;
  */
 public class LayoutLoaderTest extends BaseTestCase {
 	private static TurbineConfig tc = null;
-	private static TemplateService ts = null;
 	private MockServletConfig config = null;
 	private EnhancedMockHttpServletRequest request = null;
 	private EnhancedMockHttpSession session = null;
 	private HttpServletResponse response = null;
-	private static ServletConfig sc = null;
+
 	/*
 	 * @see TestCase#setUp()
 	 */
@@ -74,13 +71,14 @@ public class LayoutLoaderTest extends BaseTestCase {
 		response = new MockHttpServletResponse();
 		session.setupGetAttribute(User.SESSION_KEY, null);
 		request.setSession(session);
-		sc = config;
+
 		tc =
 			new TurbineConfig(
 				".",
 				"/conf/test/CompleteTurbineResources.properties");
 		tc.initialize();
 	}
+
 	/*
 	 * @see TestCase#tearDown()
 	 */
@@ -90,6 +88,7 @@ public class LayoutLoaderTest extends BaseTestCase {
 			tc.dispose();
 		}
 	}
+
 	/**
 	 * Constructor for LayoutLoaderTest.
 	 * @param arg0
@@ -142,6 +141,4 @@ public class LayoutLoaderTest extends BaseTestCase {
 	        Assert.fail("Should not have thrown an exception.");
 	    }
 	}
-
-
 }

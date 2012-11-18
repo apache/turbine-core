@@ -23,13 +23,11 @@ package org.apache.turbine.pipeline;
 
 import java.util.Vector;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.test.EnhancedMockHttpSession;
@@ -50,12 +48,11 @@ import com.mockobjects.servlet.MockServletConfig;
 public class DefaultSessionTimeoutValveTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    private static TemplateService ts = null;
     private MockServletConfig config = null;
     private EnhancedMockHttpServletRequest request = null;
     private EnhancedMockHttpSession session = null;
     private HttpServletResponse response = null;
-    private static ServletConfig sc = null;
+
     /**
      * Constructor
      */
@@ -91,9 +88,6 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
 
         request.setSession(session);
 
-
-
-        sc = config;
         tc =
             new TurbineConfig(
                     ".",
@@ -106,16 +100,13 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
      */
     public void testDefaults() throws Exception
     {
-        
         // reset
         Turbine.getConfiguration().setProperty(TurbineConstants.SESSION_TIMEOUT_KEY,
-                TurbineConstants.SESSION_TIMEOUT_DEFAULT); 
-        Vector v = new Vector();
+                Integer.valueOf(TurbineConstants.SESSION_TIMEOUT_DEFAULT));
+        Vector<String> v = new Vector<String>();
         v.add(URIConstants.CGI_ACTION_PARAM);
         request.setupGetParameterNames(v.elements());
-
         request.setupAddParameter(URIConstants.CGI_ACTION_PARAM,"TestAction");
-
 
         PipelineData pipelineData = getPipelineData(request,response,config);
 

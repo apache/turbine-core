@@ -25,11 +25,10 @@ import junit.framework.TestSuite;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.turbine.modules.scheduledjob.SimpleJob;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
-//import org.apache.turbine.test.BaseTestCase;
+import org.apache.turbine.util.TurbineException;
 
 /**
  * Unit testing for the non-persistent implementation of the scheduler service.
@@ -141,7 +140,7 @@ public class TurbineNonPersistentSchedulerServiceTest extends TestCase
     {
         try
         {
-			JobEntry je = (JobEntry)TurbineScheduler.getJob(1);
+			JobEntry je = TurbineScheduler.getJob(1);
             assertEquals(je.getJobId(), 1);
             assertEquals(je.getSecond(), 10);
             assertEquals(je.getMinute(), -1);
@@ -150,7 +149,7 @@ public class TurbineNonPersistentSchedulerServiceTest extends TestCase
             assertEquals(je.getWeekDay(), -1);
             assertEquals(je.getTask(), "SimpleJob");
         }
-        catch (Exception e)
+        catch (TurbineException e)
         {
             e.printStackTrace();
             fail();
