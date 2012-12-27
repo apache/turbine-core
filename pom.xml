@@ -477,6 +477,14 @@
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/trunk</developerConnection>
     <url>http://svn.apache.org/viewcvs/turbine/core/trunk/</url>
   </scm>
+
+  <distributionManagement>
+    <site>
+      <id>apache.website</id>
+      <name>Apache Turbine Site</name>
+      <url>scpexe://people.apache.org/www/turbine.apache.org/turbine/development/turbine-4.0/</url>
+    </site>
+  </distributionManagement>
   
   <build>
     <sourceDirectory>src/java</sourceDirectory>
