@@ -29,17 +29,8 @@
   <bannerRight>
     <src>/images/logo.gif</src>
   </bannerRight>
-  <publishDate format="dd MMMM yyyy" position="left" />
-  <version position="left" />
   
   <body>
-    <links>
-      <item name="Apache"           href="http://www.apache.org"/>
-      <item name="Turbine"          href="http://turbine.apache.org/"/>
-      <item name="Fulcrum"          href="http://turbine.apache.org/fulcrum/"/>
-      <item name="META"             href="http://turbine.apache.org/meta/"/>
-    </links>
-
     <menu name="General Information">
       <item name="Overview"              href="/index.html"/>
       <item name="Features"              href="/features.html"/>
@@ -107,17 +98,6 @@
       <item name="Proposals"             href="/proposals.html"/>
       <item name="How To Help"           href="/how-to-help.html"/>
       <item name="Todo"                  href="/todo.html"/>
-    </menu>
-
-    <menu ref="reports" inherit="bottom" />
-
-    <menu name="Apache">
-        <item name="Apache Website"     href="http://www.apache.org/"/>
-        <item name="License"            href="http://www.apache.org/licenses/" />
-        <item name="How the ASF works"  href="http://www.apache.org/foundation/how-it-works.html"/>
-        <item name="Sponsorship"        href="http://www.apache.org/foundation/sponsorship.html" />
-        <item name="Thanks"             href="http://www.apache.org/foundation/thanks.html" />
-        <item name="Security"           href="http://www.apache.org/security/" />
     </menu>
   </body>
 </project>
