@@ -905,7 +905,8 @@
   </profiles>
 
   <properties>
-    <sourceReleaseAssemblyDescriptor>source</sourceReleaseAssemblyDescriptor>
+    <turbine.surefire.version>2.12.4</turbine.surefire.version>
+    <turbine.surefire-report.version>2.12.4</turbine.surefire-report.version>
   </properties>
   
 </project>
