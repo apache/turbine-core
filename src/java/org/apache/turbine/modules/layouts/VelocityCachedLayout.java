@@ -1,4 +1,4 @@
-package org.apache.jetspeed.modules.layouts;
+package org.apache.turbine.modules.layouts;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -31,8 +31,14 @@ import org.apache.turbine.util.template.TemplateScreen;
 import org.apache.velocity.context.Context;
 
 /**
- * This Layout module allows Velocity templates
- * to be used as layouts. Was pre-Turbine 2.3.3 VelocityDirectLayout, now with method added for {@link PipelineData}.
+ * This Layout module is Turbine 2.3.3 VelocityDirectLayout (same package) 
+ * with methods added for {@link PipelineData}. It is used in Jetspeed-1 portal.
+ *
+ * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:john.mcnally@clearink.com">John D. McNally</a>
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
 public class VelocityCachedLayout
     extends Layout
