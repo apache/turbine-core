@@ -1,4 +1,4 @@
-package org.apache.jetspeed.modules.screens;
+package org.apache.turbine.modules.screens;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -32,9 +32,14 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 /**
- * VelocityCachedScreen was pre-Turbine 2.3.3 VelocityDirectScreen, now with method added for {@link PipelineData}.
- * 
+ * VelocityCachedScreen is Turbine 2.3.3 VelocityDirectScreen (same package) 
+ * with methods added for {@link PipelineData}.
+ * It is is a screen class which buffers its output
+ * before flushing the output stream. It is used in Jetspeed-1 portal.
  * <p>
+ * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
+ * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
+ * @version $Id$
  */
 public class VelocityCachedScreen
     extends VelocityScreen
