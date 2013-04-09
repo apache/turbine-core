@@ -19,10 +19,16 @@ package org.apache.turbine.services.security.torque;
  * under the License.
  */
 
+import java.util.Iterator;
+import java.util.List;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.apache.torque.util.BasePeer;
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.Turbine;
+import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.test.BaseTurbineTest;
@@ -50,9 +56,35 @@ public class TestTorqueSecurity
     public void testInit()
     {
         SecurityService ss = TurbineSecurity.getService();
-
-        assertEquals("No Torque Security Service", ss.getClass(), TorqueSecurityService.class);
-        assertEquals("No Torque User Manager", ss.getUserManager().getClass(), TorqueUserManager.class);
+        assertEquals("No Torque Security Service", TorqueSecurityService.class, ss.getClass());
+        assertEquals("No Torque User Manager", TorqueUserManager.class, ss.getUserManager().getClass());
         assertTrue("Service failed to initialize", ss.getInit());
+    }
+
+    public void testAcccountExists() throws Throwable 
+    {
+        List users = null;
+        assertTrue(TurbineSecurity.accountExists("user"));
+        Criteria criteria = new Criteria();
+        criteria.add(UserPeerManager.getNameColumn(), "user");
+        String query = BasePeer.createQueryString(criteria);
+        assertTrue(query.contains("FROM TURBINE_USER WHERE TURBINE_USER.LOGIN_NAME='user'"));
+        for (Iterator keys = criteria.keySet().iterator(); keys.hasNext();) {
+            String key = (String) keys.next();
+            assertEquals("TURBINE_USER.LOGIN_NAME", key);
+            assertEquals("TURBINE_USER", UserPeerManager.getTableName());
+            Criteria.Criterion[] criterion = criteria.getCriterion(key)
+                    .getAttachedCriterion();
+            assertTrue("one single condition  exptected", criterion.length == 1);
+            users = UserPeerManager.doSelect(criteria);
+            assertTrue("should be unique result", users.size() == 1);
+            for (Iterator userx = users.iterator(); userx.hasNext();) {
+                User usr = (User) userx.next();
+                assertTrue(usr != null);
+                assertTrue(usr instanceof TorqueObject);
+                assertTrue(usr.getName().equals("user"));
+                assertTrue(usr.getPassword().equals("user"));
+            }
+        }
     }
 }

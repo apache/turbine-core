@@ -51,7 +51,7 @@
         <automaticUpload>true</automaticUpload>
     </parser>
     <upload repository="target" sizeMax="1048576" sizeThreshold="10240"/>
-    <!--torque>
+    <torque>
        <configfile>conf/test/TorqueTest.properties</configfile>
-    </torque-->
+    </torque>
 </componentConfig>
