@@ -45,7 +45,7 @@ public interface JobEntryInterface extends Comparable<JobEntry>, Persistent
 	 * @param je The first <code>JobEntry</code> object.
 	 * @return An <code>int</code> indicating the result of the comparison.
 	 */
-    public int compareTo(Object je);
+    public int compareTo(JobEntry je);
 
     /**
 	 * Sets whether the job is running.
