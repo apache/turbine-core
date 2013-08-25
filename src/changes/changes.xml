@@ -25,7 +25,10 @@
 
   <body>
     <release version="4.0-M2" date="in Subversion">
-     <action type="update" dev="gk">
+      <action type="fix" dev="tv">
+        Fix Velocity logging.
+      </action>
+      <action type="update" dev="gk">
         Reintroduce VelocityCachedLayout/Screen classes 
       </action>
       <action type="update" dev="tv">
