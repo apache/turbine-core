@@ -44,6 +44,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.app.event.EventCartridge;
 import org.apache.velocity.app.event.MethodExceptionEventHandler;
 import org.apache.velocity.context.Context;
@@ -108,6 +109,9 @@ public class TurbineVelocityService
 
     /** Shall we catch Velocity Errors and report them in the log file? */
     private boolean catchErrors = true;
+
+    /** Velocity runtime instance */
+    private VelocityEngine velocity = null;
 
     /** Internal Reference to the pull Service */
     private PullService pullService = null;
@@ -444,7 +448,8 @@ public class TurbineVelocityService
         {
           encoding = defaultOutputEncoding;
         }
-		Velocity.mergeTemplate(filename, encoding, context, writer);
+
+		velocity.mergeTemplate(filename, encoding, context, writer);
     }
 
     /**
@@ -518,11 +523,12 @@ public class TurbineVelocityService
 
         conf.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS,
                 Log4JLogChute.class.getName());
-        conf.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM
-                + ".log4j.category", "velocity");
+        conf.setProperty(Log4JLogChute.RUNTIME_LOG_LOG4J_LOGGER,
+                "velocity");
 
-        Velocity.setExtendedProperties(createVelocityProperties(conf));
-        Velocity.init();
+        velocity = new VelocityEngine();
+        velocity.setExtendedProperties(createVelocityProperties(conf));
+        velocity.init();
     }
 
 
@@ -576,8 +582,6 @@ public class TurbineVelocityService
                 // null value is unhealthy for the ExtendedProperties object...
                 continue; // for()
             }
-
-            Velocity.clearProperty(key);
 
             // Translate the supplied pathes given here.
             // the following three different kinds of
@@ -641,7 +645,7 @@ public class TurbineVelocityService
     @Override
     public boolean templateExists(String template)
     {
-        return Velocity.resourceExists(template);
+        return velocity.resourceExists(template);
     }
 
     /**
