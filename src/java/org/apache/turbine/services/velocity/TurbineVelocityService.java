@@ -43,12 +43,12 @@ import org.apache.turbine.services.template.BaseTemplateEngineService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.app.event.EventCartridge;
 import org.apache.velocity.app.event.MethodExceptionEventHandler;
 import org.apache.velocity.context.Context;
-import org.apache.velocity.runtime.log.Log4JLogChute;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.log.CommonsLogLogChute;
 
 /**
  * This is a Service that can process Velocity templates from within a
@@ -521,9 +521,9 @@ public class TurbineVelocityService
 
         catchErrors = conf.getBoolean(CATCH_ERRORS_KEY, CATCH_ERRORS_DEFAULT);
 
-        conf.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS,
-                Log4JLogChute.class.getName());
-        conf.setProperty(Log4JLogChute.RUNTIME_LOG_LOG4J_LOGGER,
+        conf.setProperty(RuntimeConstants.RUNTIME_LOG_LOGSYSTEM_CLASS,
+                CommonsLogLogChute.class.getName());
+        conf.setProperty(CommonsLogLogChute.LOGCHUTE_COMMONS_LOG_NAME,
                 "velocity");
 
         velocity = new VelocityEngine();
