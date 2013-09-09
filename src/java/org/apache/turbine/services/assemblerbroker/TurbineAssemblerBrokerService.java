@@ -99,11 +99,11 @@ public class TurbineAssemblerBrokerService
     private void registerFactories(String type)
         throws TurbineException
     {
-        List names = getConfiguration().getList(type);
+        List<Object> names = getConfiguration().getList(type);
 
         log.info("Registering " + names.size() + " " + type + " factories.");
 
-        for (Iterator it = names.iterator(); it.hasNext(); )
+        for (Iterator<Object> it = names.iterator(); it.hasNext(); )
         {
             String factory = (String) it.next();
             try
@@ -149,9 +149,9 @@ public class TurbineAssemblerBrokerService
         {
             Configuration conf = getConfiguration();
 
-            for (Iterator i = conf.getKeys(); i.hasNext();)
+            for (Iterator<String> i = conf.getKeys(); i.hasNext();)
             {
-                String type = (String)i.next();
+                String type = i.next();
 
                 if (!"classname".equalsIgnoreCase(type))
                 {

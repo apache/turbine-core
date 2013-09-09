@@ -25,12 +25,9 @@ import java.util.Vector;
 import javax.servlet.ServletConfig;
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.util.TurbineException;
 
@@ -106,7 +103,7 @@ public class TurbineNonPersistentSchedulerService
             scheduleQueue = new JobQueue();
             mainLoop = new MainLoop();
 
-            List<String> jobProps = conf.getList("scheduler.jobs");
+            List<Object> jobProps = conf.getList("scheduler.jobs");
             List<JobEntry> jobs = new Vector<JobEntry>();
             // If there are scheduler.jobs defined then set up a job vector
             // for the scheduleQueue
@@ -114,7 +111,7 @@ public class TurbineNonPersistentSchedulerService
             {
                 for (int i = 0; i < jobProps.size(); i++)
                 {
-                    String jobName = jobProps.get(i);
+                    String jobName = (String)jobProps.get(i);
                     String jobPrefix = "scheduler.job." + jobName;
 
                     String jobId = conf.getString(jobPrefix + ".ID", null);
