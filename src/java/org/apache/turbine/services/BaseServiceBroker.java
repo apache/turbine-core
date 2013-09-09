@@ -237,7 +237,6 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * Generic ServiceBroker provides no Services.
      * @throws InitializationException if a service class could not be found
      */
-    @SuppressWarnings("unchecked")
     protected void initMapping() throws InitializationException
     {
         // we need to temporarily store the earlyInit flags to avoid

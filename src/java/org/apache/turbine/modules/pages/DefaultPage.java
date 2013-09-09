@@ -347,7 +347,7 @@ public class DefaultPage
     {
         String errMsg =
                 "default.doctype property not set properly in TurbineResources.properties!";
-        List doctypeProperty =
+        List<Object> doctypeProperty =
             Turbine.getConfiguration().getList(TurbineConstants.DEFAULT_DOCUMENT_TYPE_KEY);
 
         if (doctypeProperty != null)
