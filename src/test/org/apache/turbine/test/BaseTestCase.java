@@ -105,7 +105,7 @@ public abstract class BaseTestCase
         request.setupGetContentType("html/text");
         request.setupAddHeader("Content-type", "html/text");
         request.setupAddHeader("Accept-Language", "en-US");
-        Vector v = new Vector();
+        Vector<String> v = new Vector<String>();
         request.setupGetParameterNames(v.elements());
         request.setSession(session);
         return request;
