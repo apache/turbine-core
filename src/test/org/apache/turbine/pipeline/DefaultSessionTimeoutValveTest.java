@@ -76,11 +76,6 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
         request.setupAddHeader("Content-type", "html/text");
         request.setupAddHeader("Accept-Language", "en-US");
 
-
-
-
-
-
         session = new EnhancedMockHttpSession();
         response = new MockHttpServletResponse();
 

@@ -50,15 +50,13 @@ public class PipelineCreationTest extends TestCase
         pipeline.addValve(new DetermineActionValve());
     }
 
-
     public void testSavingPipelineWXstream() throws Exception
     {
         XStream xstream = new XStream(new DomDriver()); // does not require XPP3 library
 
-        String xml = xstream.toXML(pipeline);
+        /* String xml = */ xstream.toXML(pipeline);
         //System.out.println(xml);
         //Pipeline pipeline = (Pipeline)xstream.fromXML(xml);
-
     }
 
     public void testReadingPipelineWXstream() throws Exception{
