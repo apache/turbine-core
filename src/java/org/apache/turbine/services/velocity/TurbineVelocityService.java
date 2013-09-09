@@ -204,7 +204,8 @@ public class TurbineVelocityService
      * @return A valid value to be used as Return value
      * @throws Exception We threw the exception further up
      */
-    public Object methodException(Class clazz, String method, Exception e)
+    @SuppressWarnings("rawtypes") // Interface not generified
+	public Object methodException(Class clazz, String method, Exception e)
             throws Exception
     {
         log.error("Class " + clazz.getName() + "." + method + " threw Exception", e);
@@ -575,7 +576,7 @@ public class TurbineVelocityService
                 continue; // for()
             }
 
-            List<String> paths = conf.getList(key, null);
+            List<Object> paths = conf.getList(key, null);
             if (paths == null)
             {
                 // We don't copy this into VeloProperties, because
@@ -590,8 +591,9 @@ public class TurbineVelocityService
             // jar:file://path-component!/entry-component
             // file://path-component
             // path/component
-            for (String path : paths)
+            for (Object p : paths)
             {
+            	String path = (String)p;
                 log.debug("Translating " + path);
 
                 if (path.startsWith(JAR_PREFIX))
