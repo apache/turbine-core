@@ -186,10 +186,10 @@ public class TurbineAvalonComponentService
         // Init ECM!!!!
         manager.initialize();
 
-        List lookupComponents = conf.getList(COMPONENT_LOOKUP_KEY,
-                new ArrayList());
+        List<Object> lookupComponents = conf.getList(COMPONENT_LOOKUP_KEY,
+                new ArrayList<Object>());
 
-        for (Iterator it = lookupComponents.iterator(); it.hasNext();)
+        for (Iterator<Object> it = lookupComponents.iterator(); it.hasNext();)
         {
             String component = (String) it.next();
             try

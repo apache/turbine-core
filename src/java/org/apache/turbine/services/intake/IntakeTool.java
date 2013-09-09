@@ -22,7 +22,6 @@ package org.apache.turbine.services.intake;
 
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +75,6 @@ public class IntakeTool
     /**
      * Constructor
      */
-    @SuppressWarnings("null")
     public IntakeTool()
     {
         String[] groupNames = IntakeServiceFacade.getGroupNames();
@@ -121,15 +119,13 @@ public class IntakeTool
         {
             try
             {
-                List foundGroups = IntakeServiceFacade.getGroup(groupNames[i])
+                List<Group> foundGroups = IntakeServiceFacade.getGroup(groupNames[i])
                     .getObjects(pp);
 
                 if (foundGroups != null)
                 {
-                    for (Iterator iter = foundGroups.iterator();
-                         iter.hasNext();)
+                    for (Group group : foundGroups)
                     {
-                        Group group = (Group) iter.next();
                         groups.put(group.getObjectKey(), group);
                     }
                 }
@@ -143,9 +139,8 @@ public class IntakeTool
 
     public void addGroupsToParameters(ValueParser vp)
     {
-        for (Iterator i = groups.values().iterator(); i.hasNext();)
+        for (Group group : groups.values())
         {
-            Group group = (Group) i.next();
             if (!declaredGroups.containsKey(group.getIntakeGroupName()))
             {
                 declaredGroups.put(group.getIntakeGroupName(), null);
@@ -168,9 +163,9 @@ public class IntakeTool
     public String declareGroups()
     {
         allGroupsSB.setLength(0);
-        for (Iterator i = groups.values().iterator(); i.hasNext();)
+        for (Group group : groups.values())
         {
-            declareGroup((Group) i.next(), allGroupsSB);
+            declareGroup(group, allGroupsSB);
         }
         return allGroupsSB.toString();
     }
@@ -207,9 +202,9 @@ public class IntakeTool
     public void newForm()
     {
         declaredGroups.clear();
-        for (Iterator i = groups.values().iterator(); i.hasNext();)
+        for (Group group : groups.values())
         {
-            ((Group) i.next()).resetDeclared();
+            group.resetDeclared();
         }
     }
 
@@ -354,9 +349,8 @@ public class IntakeTool
     public boolean isAllValid()
     {
         boolean allValid = true;
-        for (Iterator iter = groups.values().iterator(); iter.hasNext();)
+        for (Group group : groups.values())
         {
-            Group group = (Group) iter.next();
             allValid &= group.isAllValid();
         }
         return allValid;
@@ -428,7 +422,6 @@ public class IntakeTool
                 }
 		    }
 
-
             try
             {
                 IntakeServiceFacade.releaseGroup(group);
@@ -461,7 +454,7 @@ public class IntakeTool
      *
      * @return the Group Map
      */
-    public Map getGroups()
+    public Map<String, Group> getGroups()
     {
         return groups;
     }
@@ -492,18 +485,16 @@ public class IntakeTool
      */
     public void dispose()
     {
-        for (Iterator iter = groups.values().iterator(); iter.hasNext();)
+        for (Group group : groups.values())
         {
-            Group g = (Group) iter.next();
-
             try
             {
-                IntakeServiceFacade.releaseGroup(g);
+                IntakeServiceFacade.releaseGroup(group);
             }
             catch (IntakeException ie)
             {
                 log.error("Tried to release unknown group "
-                        + g.getIntakeGroupName());
+                        + group.getIntakeGroupName());
             }
         }
 
