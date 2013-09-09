@@ -19,6 +19,7 @@ package org.apache.turbine.modules;
  * under the License.
  */
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.turbine.Turbine;
@@ -140,13 +141,20 @@ public abstract class GenericLoader<T extends Assembler>
      *
      * @return A List with the package names (including the base package).
      */
-    @SuppressWarnings("unchecked")
     public static List<String> getPackages()
     {
         if (TURBINE_PACKAGES == null)
         {
-            TURBINE_PACKAGES =
-                Turbine.getConfiguration().getList(TurbineConstants.MODULE_PACKAGES);
+            List<String> turbinePackages = new ArrayList<String>();
+            List<Object> configTurbinePackages =
+                Turbine.getConfiguration()
+                	.getList(TurbineConstants.MODULE_PACKAGES);
+            for (Object o : configTurbinePackages)
+            {
+            	turbinePackages.add((String)o);
+            }
+
+            TURBINE_PACKAGES = turbinePackages;
         }
 
         List<String> packages = TURBINE_PACKAGES;
