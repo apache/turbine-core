@@ -53,7 +53,6 @@ public class InitContextsAction
      * @param data The RunData object for the current request.
      * @exception NamingException could not create InitialContext
      */
-    @SuppressWarnings("unchecked")
     @Deprecated
     @Override
     public void doPerform(RunData data)
