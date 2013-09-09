@@ -20,8 +20,10 @@ package org.apache.turbine.services.localization;
  */
 
 import java.util.Vector;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.rundata.RunDataService;
@@ -29,6 +31,7 @@ import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
+
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockHttpSession;
 import com.mockobjects.servlet.MockServletConfig;
@@ -89,7 +92,7 @@ public class LocalizationToolTest extends BaseTestCase
         request.setupGetContentType("html/text");
         request.setupAddHeader("Content-type", "html/text");
         request.setupAddHeader("Accept-Language", "en-US");
-        Vector v = new Vector();
+        Vector<String> v = new Vector<String>();
         request.setupGetParameterNames(v.elements());
         MockHttpSession session = new MockHttpSession();
         session.setupGetAttribute(User.SESSION_KEY, null);
