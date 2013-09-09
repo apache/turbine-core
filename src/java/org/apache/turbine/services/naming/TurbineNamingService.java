@@ -83,10 +83,10 @@ public class TurbineNamingService
         {
             contextPropsList = new HashMap<String, Properties>();
 
-            for (Iterator contextKeys = conf.subset("context").getKeys();
+            for (Iterator<String> contextKeys = conf.subset("context").getKeys();
                  contextKeys.hasNext();)
             {
-                String key = (String) contextKeys.next();
+                String key = contextKeys.next();
                 int end = key.indexOf(".");
 
                 if (end == -1)
@@ -112,11 +112,10 @@ public class TurbineNamingService
                 contextPropsList.put(contextName, contextProps);
             }
 
-            for (Iterator contextPropsKeys = contextPropsList.keySet().iterator();
-                 contextPropsKeys.hasNext();)
+            for (Map.Entry<String, Properties> entry : contextPropsList.entrySet())
             {
-                String key = (String) contextPropsKeys.next();
-                Properties contextProps = contextPropsList.get(key);
+                String key = entry.getKey();
+                Properties contextProps = entry.getValue();
                 InitialContext context = new InitialContext(contextProps);
                 initialContexts.put(key, context);
             }

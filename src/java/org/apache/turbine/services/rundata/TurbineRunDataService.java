@@ -96,7 +96,6 @@ public class TurbineRunDataService
      *
      * @throws InitializationException if initialization fails.
      */
-    @SuppressWarnings("unchecked")
     @Override
     public void init()
             throws InitializationException

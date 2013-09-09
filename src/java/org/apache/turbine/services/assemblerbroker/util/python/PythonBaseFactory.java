@@ -142,7 +142,9 @@ public abstract class PythonBaseFactory<T extends Assembler>
                 }
 
                 // Here we convert the python screen instance to a java instance.
-                assembler = (T) interp.get("scr", Assembler.class);
+                @SuppressWarnings("unchecked") // Cast from Object necessary
+				T t = (T) interp.get("scr", Assembler.class);
+				assembler = t;
             }
             catch (Exception e)
             {
