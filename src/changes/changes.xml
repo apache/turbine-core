@@ -25,6 +25,13 @@
 
   <body>
     <release version="4.0-M2" date="in Subversion">
+      <action type="update" dev="tv">
+        Refactor handling of annotated fields into AnnotationProcessor.
+      </action>
+      <action type="add" dev="tv">
+        Add Annotation @TurbineConfiguration to inject a configuration 
+        instance into objects.
+      </action>
       <action type="fix" dev="tv">
         Fix Velocity logging.
       </action>
@@ -38,8 +45,8 @@
         Use Apache Turbine Parent POM version 2
       </action>
       <action type="add" dev="tv">
-        Add Annotation @InjectService to inject Turbine service instance into assemblers
-        such as screens, actions, navigations etc. 
+        Add Annotation @TurbineService to inject Turbine service instance into assemblers
+        such as screens, actions, navigations etc. and pipeline valves. 
         See VelocityActionWithServiceInjection for an example.
       </action>
       <action type="add" dev="tv">
