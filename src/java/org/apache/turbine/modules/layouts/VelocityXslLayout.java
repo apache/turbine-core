@@ -26,14 +26,15 @@ import java.io.StringReader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ecs.ConcreteElement;
-import org.apache.fulcrum.xslt.XSLTServiceFacade;
+import org.apache.fulcrum.xslt.XSLTService;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
-import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateNavigation;
 import org.apache.velocity.context.Context;
@@ -67,6 +68,14 @@ public class VelocityXslLayout extends Layout
 
     private final ScreenLoader screenLoader;
 
+    /** Injected service instance */
+    @TurbineService
+    private VelocityService velocityService;
+
+    /** Injected service instance */
+    @TurbineService
+    private XSLTService xsltService;
+
     /**
      * Default constructor
      */
@@ -90,7 +99,7 @@ public class VelocityXslLayout extends Layout
         throws Exception
     {
         // Get the context needed by Velocity.
-        Context context = TurbineVelocity.getContext(data);
+        Context context = velocityService.getContext(data);
 
         data.getResponse().setContentType("text/html");
 
@@ -120,12 +129,12 @@ public class VelocityXslLayout extends Layout
         log.debug("Now trying to render layout " + templateName);
 
         // Now, generate the layout template.
-        String temp = TurbineVelocity.handleRequest(context,
+        String temp = velocityService.handleRequest(context,
                 prefix + templateName);
 
         // Finally we do a transformation and send the result
         // back to the browser
-        XSLTServiceFacade.transform(
+        xsltService.transform(
             data.getTemplateInfo().getScreenTemplate(),
                 new StringReader(temp), data.getResponse().getWriter());
     }
@@ -143,7 +152,7 @@ public class VelocityXslLayout extends Layout
     {
         RunData data = getRunData(pipelineData);
         // Get the context needed by Velocity.
-        Context context = TurbineVelocity.getContext(pipelineData);
+        Context context = velocityService.getContext(pipelineData);
 
         data.getResponse().setContentType("text/html");
 
@@ -173,12 +182,12 @@ public class VelocityXslLayout extends Layout
         log.debug("Now trying to render layout " + templateName);
 
         // Now, generate the layout template.
-        String temp = TurbineVelocity.handleRequest(context,
+        String temp = velocityService.handleRequest(context,
                 prefix + templateName);
 
         // Finally we do a transformation and send the result
         // back to the browser
-        XSLTServiceFacade.transform(
+        xsltService.transform(
             data.getTemplateInfo().getScreenTemplate(),
                 new StringReader(temp), data.getResponse().getWriter());
     }

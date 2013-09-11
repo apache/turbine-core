@@ -22,16 +22,17 @@ package org.apache.turbine.modules.layouts;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateNavigation;
 import org.apache.turbine.util.template.TemplateScreen;
 import org.apache.velocity.context.Context;
 
 /**
- * This Layout module is Turbine 2.3.3 VelocityDirectLayout (same package) 
+ * This Layout module is Turbine 2.3.3 VelocityDirectLayout (same package)
  * with methods added for {@link PipelineData}. It is used in Jetspeed-1 portal.
  *
  * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
@@ -49,6 +50,10 @@ public class VelocityCachedLayout
     /** The prefix for lookup up layout pages */
     private String prefix = getPrefix() + "/";
 
+    /** Injected service instance */
+    @TurbineService
+    private VelocityService velocityService;
+
     /**
      * Method called by LayoutLoader.
      *
@@ -59,7 +64,7 @@ public class VelocityCachedLayout
         throws Exception
     {
         // Get the context needed by Velocity.
-        Context context = TurbineVelocity.getContext(data);
+        Context context = velocityService.getContext(data);
 
         // variable for the screen in the layout template
         context.put(TurbineConstants.SCREEN_PLACEHOLDER,
@@ -81,10 +86,10 @@ public class VelocityCachedLayout
         log.debug("Now trying to render layout " + templateName);
 
         // Finally, generate the layout template and send it to the browser
-        TurbineVelocity.handleRequest(context,
+        velocityService.handleRequest(context,
                 prefix + templateName, data.getOut());
     }
-    
+
     /**
      * Method called by LayoutLoader.
      *
@@ -98,7 +103,7 @@ public class VelocityCachedLayout
     {
         RunData data = getRunData(pipelineData);
         // Get the context needed by Velocity.
-        Context context = TurbineVelocity.getContext(pipelineData);
+        Context context = velocityService.getContext(pipelineData);
 
         // variable for the screen in the layout template
         context.put(TurbineConstants.SCREEN_PLACEHOLDER,
@@ -120,7 +125,7 @@ public class VelocityCachedLayout
         log.debug("Now trying to render layout " + templateName);
 
         // Finally, generate the layout template and send it to the browser
-        TurbineVelocity.handleRequest(context,
+        velocityService.handleRequest(context,
                 prefix + templateName, data.getOut());
     }
 }

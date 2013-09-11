@@ -24,9 +24,10 @@ package org.apache.turbine.modules.layouts;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateNavigation;
 import org.apache.turbine.util.template.TemplateScreen;
@@ -55,6 +56,10 @@ public class VelocityDirectLayout
     /** The prefix for lookup up layout pages */
     private String prefix = Layout.PREFIX + "/";
 
+    /** Injected service instance */
+    @TurbineService
+    private VelocityService velocityService;
+
     /**
      * Method called by LayoutLoader.
      *
@@ -68,7 +73,7 @@ public class VelocityDirectLayout
         throws Exception
     {
         // Get the context needed by Velocity.
-        Context context = TurbineVelocity.getContext(data);
+        Context context = velocityService.getContext(data);
 
         // variable for the screen in the layout template
         context.put(TurbineConstants.SCREEN_PLACEHOLDER,
@@ -90,7 +95,7 @@ public class VelocityDirectLayout
         log.debug("Now trying to render layout " + templateName);
 
         // Finally, generate the layout template and send it to the browser
-        TurbineVelocity.handleRequest(context,
+        velocityService.handleRequest(context,
                 prefix + templateName, data.getResponse().getOutputStream());
     }
 
@@ -107,7 +112,7 @@ public class VelocityDirectLayout
     {
         RunData data = getRunData(pipelineData);
         // Get the context needed by Velocity.
-        Context context = TurbineVelocity.getContext(pipelineData);
+        Context context = velocityService.getContext(pipelineData);
 
         // variable for the screen in the layout template
         context.put(TurbineConstants.SCREEN_PLACEHOLDER,
@@ -129,7 +134,7 @@ public class VelocityDirectLayout
         log.debug("Now trying to render layout " + templateName);
 
         // Finally, generate the layout template and send it to the browser
-        TurbineVelocity.handleRequest(context,
+        velocityService.handleRequest(context,
                 prefix + templateName, data.getResponse().getOutputStream());
     }
 
