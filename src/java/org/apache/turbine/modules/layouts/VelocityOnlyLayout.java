@@ -25,12 +25,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
-import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateNavigation;
 import org.apache.velocity.context.Context;
@@ -78,6 +79,10 @@ public class VelocityOnlyLayout
 
     private final ScreenLoader screenLoader;
 
+    /** Injected service instance */
+    @TurbineService
+    private VelocityService velocityService;
+
     /**
      * Default constructor
      */
@@ -101,7 +106,7 @@ public class VelocityOnlyLayout
         throws Exception
     {
         // Get the context needed by Velocity.
-        Context context = TurbineVelocity.getContext(data);
+        Context context = velocityService.getContext(data);
 
         String screenName = data.getScreen();
 
@@ -133,7 +138,7 @@ public class VelocityOnlyLayout
         log.debug("Now trying to render layout " + templateName);
 
         // Finally, generate the layout template and send it to the browser
-        TurbineVelocity.handleRequest(context,
+        velocityService.handleRequest(context,
                 prefix + templateName, data.getResponse().getOutputStream());
     }
 
@@ -151,7 +156,7 @@ public class VelocityOnlyLayout
     {
         RunData data = getRunData(pipelineData);
         // Get the context needed by Velocity.
-        Context context = TurbineVelocity.getContext(pipelineData);
+        Context context = velocityService.getContext(pipelineData);
 
         String screenName = data.getScreen();
 
@@ -183,7 +188,7 @@ public class VelocityOnlyLayout
         log.debug("Now trying to render layout " + templateName);
 
         // Finally, generate the layout template and send it to the browser
-        TurbineVelocity.handleRequest(context,
+        velocityService.handleRequest(context,
                 prefix + templateName, data.getResponse().getOutputStream());
     }
 }
