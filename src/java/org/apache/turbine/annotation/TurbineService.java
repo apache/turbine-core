@@ -29,12 +29,22 @@ import java.lang.annotation.Target;
  */
 @Retention( RetentionPolicy.RUNTIME )
 @Target( ElementType.FIELD )
-public @interface InjectService
+public @interface TurbineService
 {
     /**
      * Get the name of the service to inject
      *
      * @return the service name or role
      */
-    String value();
+    String value() default "";
+
+    /**
+     * A constant defining the field name for the service name
+     */
+    String SERVICE_NAME = "SERVICE_NAME";
+
+    /**
+     * A constant defining the field name for the role
+     */
+    String ROLE = "ROLE";
 }
