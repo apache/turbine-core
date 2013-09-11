@@ -22,7 +22,8 @@ package org.apache.turbine.modules.actions;
 
 import junit.framework.Assert;
 
-import org.apache.turbine.annotation.InjectService;
+import org.apache.fulcrum.factory.FactoryService;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.util.RunData;
@@ -34,8 +35,17 @@ import org.apache.velocity.context.Context;
  */
 public class VelocityActionWithServiceInjection extends VelocityAction
 {
-    @InjectService( RunDataService.SERVICE_NAME )
+    // Test for explicit service name
+    @TurbineService( RunDataService.SERVICE_NAME )
     private RunDataService runDataService;
+
+    // Test for implicit SERVICE_NAME
+    @TurbineService
+    private RunDataService runDataService2;
+
+    // Test for implicit ROLE
+    @TurbineService
+    private FactoryService factory;
 
     /**
      *  Default action is nothing.
@@ -61,5 +71,9 @@ public class VelocityActionWithServiceInjection extends VelocityAction
         log.debug("Calling doPerform(PipelineData)");
 		Assert.assertNotNull("runDataService object was Null.", runDataService);
         log.debug("Injected service is " + runDataService.getName());
+        Assert.assertNotNull("runDataService2 object was Null.", runDataService2);
+        log.debug("Injected service is " + runDataService2.getName());
+        Assert.assertNotNull("factory object was Null.", factory);
+        log.debug("Injected service is " + factory.getClass());
     }
 }
