@@ -41,7 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.FactoryConfigurationError;
 
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationFactory;
+import org.apache.commons.configuration.DefaultConfigurationBuilder;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -67,7 +67,7 @@ import org.apache.turbine.util.TurbineException;
 import org.apache.turbine.util.uri.URIConstants;
 
 import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 /**
  * Turbine is the main servlet for the entire system. It is <code>final</code>
@@ -305,9 +305,9 @@ public class Turbine
         if (StringUtils.isNotEmpty(confFile))
         {
             confPath = getRealPath(confFile);
-            ConfigurationFactory configurationFactory = new ConfigurationFactory(confPath);
-            configurationFactory.setBasePath(getApplicationRoot());
-            configuration = configurationFactory.getConfiguration();
+            DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(confFile);
+            configurationBuilder.setBasePath(getApplicationRoot());
+            configuration = configurationBuilder.getConfiguration();
             confStyle = "XML";
         }
         else
@@ -377,7 +377,7 @@ public class Turbine
 
   		log.debug("Using descriptor path: " + descriptorPath);
         Reader reader = new BufferedReader(new FileReader(descriptorPath));
-        XStream pipelineMapper = new XStream(new DomDriver()); // does not require XPP3 library
+        XStream pipelineMapper = new XStream(new StaxDriver()); // does not require XPP3 library
         pipeline = (Pipeline) pipelineMapper.fromXML(reader);
 
 	  	log.debug("Initializing pipeline");
@@ -555,9 +555,9 @@ public class Turbine
                 // Initialize services with the PipelineData instance
                 TurbineServices services = (TurbineServices)TurbineServices.getInstance();
 
-                for (Iterator i = services.getServiceNames(); i.hasNext();)
+                for (Iterator<String> i = services.getServiceNames(); i.hasNext();)
                 {
-                	String serviceName = (String)i.next();
+                	String serviceName = i.next();
                 	Object service = services.getService(serviceName);
 
                 	if (service instanceof Initable)
