@@ -21,7 +21,6 @@ package org.apache.turbine.services.assemblerbroker;
  */
 
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,13 +33,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.annotation.InjectService;
+import org.apache.turbine.annotation.AnnotationProcessor;
 import org.apache.turbine.modules.Assembler;
 import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.InitializationException;
-import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineBaseService;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
 import org.apache.turbine.util.TurbineException;
 
@@ -238,35 +235,7 @@ public class TurbineAssemblerBrokerService
 
                 if (assembler != null)
                 {
-                    // Search for annotated fields and provide them with the appropriate
-                    // TurbineService
-                    ServiceManager manager = TurbineServices.getInstance();
-                    Field[] fields = assembler.getClass().getDeclaredFields();
-
-                    for (Field field : fields)
-                    {
-                        if (field.isAnnotationPresent(InjectService.class))
-                        {
-                            InjectService sa = field.getAnnotation(InjectService.class);
-                            Object service = manager.getService(sa.value()); // throws Exception on unknown service
-                            field.setAccessible(true);
-
-                            try
-                            {
-                                field.set(assembler, service);
-                            }
-                            catch (IllegalArgumentException e)
-                            {
-                                throw new TurbineException("Could not inject service "
-                                        + sa.value() + " into assembler " + assembler, e);
-                            }
-                            catch (IllegalAccessException e)
-                            {
-                                throw new TurbineException("Could not inject service "
-                                        + sa.value() + " into assembler " + assembler, e);
-                            }
-                        }
-                    }
+                    AnnotationProcessor.process(assembler);
 
                     if (isCaching)
                     {
