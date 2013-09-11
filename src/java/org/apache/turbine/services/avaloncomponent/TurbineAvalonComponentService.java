@@ -72,6 +72,7 @@ import org.apache.turbine.services.TurbineBaseService;
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @version $Id$
  */
+@SuppressWarnings("deprecation")
 public class TurbineAvalonComponentService
         extends TurbineBaseService
         implements AvalonComponentService, Initializable, Disposable
