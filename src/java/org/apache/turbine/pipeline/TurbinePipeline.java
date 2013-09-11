@@ -23,6 +23,7 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 
+import org.apache.turbine.annotation.AnnotationProcessor;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -79,6 +80,7 @@ public class TurbinePipeline
         // Initialize the valves
         for (int i = 0; i < valves.length; i++)
         {
+            AnnotationProcessor.process(valves[i]);
             valves[i].initialize();
         }
     }
