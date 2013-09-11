@@ -28,8 +28,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.turbine.Turbine;
+import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
@@ -51,6 +52,9 @@ public class DefaultLoginValve
     extends AbstractValve
 {
     private ActionLoader actionLoader;
+
+    @TurbineConfiguration
+    private Configuration config;
 
     /**
      * Here we can setup objects that are thread safe and can be
@@ -114,9 +118,9 @@ public class DefaultLoginValve
         String actionName = data.getAction();
         if (data.hasAction() &&
             actionName.equalsIgnoreCase
-            (Turbine.getConfiguration().getString(TurbineConstants.ACTION_LOGIN_KEY)) ||
+            (config.getString(TurbineConstants.ACTION_LOGIN_KEY)) ||
             actionName.equalsIgnoreCase
-            (Turbine.getConfiguration().getString(TurbineConstants.ACTION_LOGOUT_KEY)))
+            (config.getString(TurbineConstants.ACTION_LOGOUT_KEY)))
         {
             // If a User is logging in, we should refresh the
             // session here.  Invalidating session and starting a
@@ -130,7 +134,7 @@ public class DefaultLoginValve
             // only keys stored in the session are "turbine.user"
             // and "turbine.acl".
             if (actionName.equalsIgnoreCase
-                (Turbine.getConfiguration().getString(TurbineConstants.ACTION_LOGIN_KEY)))
+                (config.getString(TurbineConstants.ACTION_LOGIN_KEY)))
             {
                 @SuppressWarnings("unchecked")
                 Enumeration<String> names = data.getSession().getAttributeNames();
