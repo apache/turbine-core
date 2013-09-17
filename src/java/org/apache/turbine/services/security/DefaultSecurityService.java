@@ -564,6 +564,7 @@ public class DefaultSecurityService
             }
             catch (InterruptedException e)
             {
+                // ignore
             }
         }
     }
@@ -638,7 +639,7 @@ public class DefaultSecurityService
     public <G extends Group> G getGroupById(int id)
             throws DataBackendException, UnknownEntityException
     {
-        return groupManager.getGroupById(id);
+        return groupManager.getGroupById(Integer.valueOf(id));
     }
 
     /**
@@ -674,7 +675,7 @@ public class DefaultSecurityService
             throws DataBackendException,
                    UnknownEntityException
     {
-        R role = roleManager.getRoleById(id);
+        R role = roleManager.getRoleById(Integer.valueOf(id));
         if (role instanceof TurbineRole)
         {
             ((TurbineRole)role).setPermissions(getPermissions(role));
@@ -711,7 +712,7 @@ public class DefaultSecurityService
             throws DataBackendException,
                    UnknownEntityException
     {
-        return permissionManager.getPermissionById(id);
+        return permissionManager.getPermissionById(Integer.valueOf(id));
     }
 
     /**
