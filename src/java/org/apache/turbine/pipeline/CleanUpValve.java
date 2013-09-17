@@ -23,9 +23,9 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
-import org.apache.turbine.util.security.AccessControlList;
 
 /**
  * Implements the RunData target portion of the "Turbine classic"
@@ -86,7 +86,7 @@ public class CleanUpValve
             try
             {
                 data.getSession().removeAttribute
-                    (AccessControlList.SESSION_KEY);
+                    (TurbineConstants.ACL_SESSION_KEY);
             }
             catch (IllegalStateException invalidatedSession)
             {

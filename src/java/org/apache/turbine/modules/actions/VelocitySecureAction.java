@@ -106,9 +106,6 @@ public abstract class VelocitySecureAction extends VelocityAction
         }
     }
 
-
-
-
     /**
      * Implement this method to perform the security check needed.
      * You should set the template in this method that you want the
@@ -138,5 +135,4 @@ public abstract class VelocitySecureAction extends VelocityAction
         RunData data = getRunData(pipelineData);
         return isAuthorized(data);
     }
-
 }

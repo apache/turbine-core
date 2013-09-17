@@ -44,6 +44,7 @@ import org.apache.fulcrum.mimetype.MimeTypeService;
 import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.pool.Recyclable;
+import org.apache.fulcrum.security.acl.AccessControlList;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.om.security.User;
@@ -54,7 +55,6 @@ import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.FormMessages;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.SystemError;
-import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.template.TemplateInfo;
 
 /**
@@ -175,11 +175,13 @@ public class DefaultTurbineRunData
      * @param session An HttpSession.
      * @return A User.
      */
-    public static User getUserFromSession(HttpSession session)
+    public static <T extends User> T getUserFromSession(HttpSession session)
     {
         try
         {
-            return (User) session.getAttribute(User.SESSION_KEY);
+            @SuppressWarnings("unchecked")
+            T user = (T) session.getAttribute(User.SESSION_KEY);
+            return user;
         }
         catch (ClassCastException e)
         {
@@ -441,9 +443,11 @@ public class DefaultTurbineRunData
      *
      * @return the access control list.
      */
-    public AccessControlList getACL()
+    public <A extends AccessControlList> A getACL()
     {
-        return get(Turbine.class, AccessControlList.class);
+        @SuppressWarnings("unchecked")
+        A acl = (A)get(Turbine.class, AccessControlList.class);
+        return acl;
     }
 
     /**
@@ -843,9 +847,11 @@ public class DefaultTurbineRunData
      *
      * @return a user.
      */
-    public User getUser()
+    public <T extends User> T getUser()
     {
-        return get(Turbine.class, User.class);
+        @SuppressWarnings("unchecked")
+        T user = (T)get(Turbine.class, User.class);
+        return user;
     }
 
     /**
@@ -865,7 +871,7 @@ public class DefaultTurbineRunData
      *
      * @return a user.
      */
-    public User getUserFromSession()
+    public <T extends User> T getUserFromSession()
     {
         return getUserFromSession(getSession());
     }
@@ -1119,7 +1125,9 @@ public class DefaultTurbineRunData
     public Map<String, Context> getJNDIContexts()
     {
         if (jndiContexts == null)
+        {
             jndiContexts = new HashMap<String, Context>();
+        }
         return jndiContexts;
     }
 

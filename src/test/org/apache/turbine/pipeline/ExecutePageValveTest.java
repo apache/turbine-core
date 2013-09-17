@@ -25,8 +25,9 @@ import java.util.Vector;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl;
 import org.apache.turbine.modules.actions.VelocityActionDoesNothing;
-import org.apache.turbine.om.security.TurbineUser;
+import org.apache.turbine.om.security.DefaultUserImpl;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
@@ -100,8 +101,7 @@ public class ExecutePageValveTest extends BaseTestCase
 
         RunData runData = getRunData(request, response, config);
         runData.setScreenTemplate("ExistPageWithLayout.vm");
-
-        TurbineUser tu = new TurbineUser();
+        User tu = new DefaultUserImpl(new TurbineUserImpl());
         tu.setName("username");
         tu.setHasLoggedIn(Boolean.TRUE);
         String actionName = VelocityActionDoesNothing.class.getName();

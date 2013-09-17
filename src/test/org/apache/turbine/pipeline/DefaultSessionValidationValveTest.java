@@ -25,9 +25,10 @@ import java.util.Vector;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.actions.LoginUser;
-import org.apache.turbine.om.security.TurbineUser;
+import org.apache.turbine.om.security.DefaultUserImpl;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
@@ -129,7 +130,7 @@ public class DefaultSessionValidationValveTest extends BaseTestCase
         request.setupAddParameter(LoginUser.CGI_PASSWORD,"password");
 
         RunData runData = getRunData(request,response,config);
-        TurbineUser tu = new TurbineUser();
+        User tu = new DefaultUserImpl(new TurbineUserImpl());
         tu.setName("username");
         tu.setHasLoggedIn(Boolean.TRUE);
         runData.setAction("TestAction");

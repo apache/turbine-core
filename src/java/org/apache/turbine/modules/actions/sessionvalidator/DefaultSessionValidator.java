@@ -25,11 +25,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.TurbineException;
 
 /**
  * The SessionValidator attempts to retrieve the User object from the
@@ -62,6 +63,12 @@ public class DefaultSessionValidator
     /** Logging */
     private static Log log = LogFactory.getLog(DefaultSessionValidator.class);
 
+    @TurbineService
+    private SecurityService security;
+
+    @TurbineConfiguration
+    private Configuration conf;
+
     /**
      * Execute the action.  The default is to populate the RunData
      * object and, if the user is unknown, to force a login screen (as
@@ -70,16 +77,14 @@ public class DefaultSessionValidator
      * @deprecated Use PipelineData version instead.
      * @see org.apache.turbine.modules.screens.error.InvalidState
      * @param data Turbine RunData context information.
-     * @throws TurbineException The anonymous user could not be obtained
+     * @throws Exception The anonymous user could not be obtained
      *         from the security service
      */
     @Deprecated
     @Override
     public void doPerform(RunData data)
-            throws TurbineException
+            throws Exception
     {
-        Configuration conf = Turbine.getConfiguration();
-
         // Pull user from session.
         data.populate();
 
@@ -87,7 +92,8 @@ public class DefaultSessionValidator
         if (data.getUser() == null)
         {
             log.debug("Fixing up empty User Object!");
-            data.setUser(TurbineSecurity.getAnonymousUser());
+            User anonymousUser = security.getAnonymousUser();
+            data.setUser(anonymousUser);
             data.save();
         }
 
@@ -139,12 +145,12 @@ public class DefaultSessionValidator
      *
      * @see org.apache.turbine.modules.screens.error.InvalidState
      * @param pipelineData Turbine PipelineData context information.
-     * @throws TurbineException The anonymous user could not be obtained
+     * @throws Exception The anonymous user could not be obtained
      *         from the security service
      */
     @Override
     public void doPerform(PipelineData pipelineData)
-            throws TurbineException
+            throws Exception
     {
         RunData data = getRunData(pipelineData);
         doPerform(data);
@@ -152,5 +158,4 @@ public class DefaultSessionValidator
         // Comply with Turbine 4.0 standards
         pipelineData.get(Turbine.class).put(User.class, data.getUser());
     }
-
 }

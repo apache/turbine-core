@@ -21,28 +21,20 @@ package org.apache.turbine.services.security;
  */
 
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.turbine.om.security.Group;
-import org.apache.turbine.om.security.Permission;
-import org.apache.turbine.om.security.Role;
-import org.apache.turbine.om.security.TurbineGroup;
-import org.apache.turbine.om.security.TurbinePermission;
-import org.apache.turbine.om.security.TurbineRole;
-import org.apache.turbine.om.security.TurbineUser;
+import org.apache.fulcrum.security.acl.AccessControlList;
+import org.apache.fulcrum.security.entity.Group;
+import org.apache.fulcrum.security.entity.Permission;
+import org.apache.fulcrum.security.entity.Role;
+import org.apache.fulcrum.security.util.DataBackendException;
+import org.apache.fulcrum.security.util.EntityExistsException;
+import org.apache.fulcrum.security.util.GroupSet;
+import org.apache.fulcrum.security.util.PasswordMismatchException;
+import org.apache.fulcrum.security.util.PermissionSet;
+import org.apache.fulcrum.security.util.RoleSet;
+import org.apache.fulcrum.security.util.UnknownEntityException;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.Service;
 import org.apache.turbine.services.security.passive.PassiveUserManager;
-import org.apache.turbine.util.security.AccessControlList;
-import org.apache.turbine.util.security.DataBackendException;
-import org.apache.turbine.util.security.EntityExistsException;
-import org.apache.turbine.util.security.GroupSet;
-import org.apache.turbine.util.security.PasswordMismatchException;
-import org.apache.turbine.util.security.PermissionSet;
-import org.apache.turbine.util.security.RoleSet;
-import org.apache.turbine.util.security.TurbineAccessControlList;
-import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
  * The Security Service manages Users, Groups Roles and Permissions in the
@@ -70,71 +62,6 @@ public interface SecurityService
 
     /**
      * the key within services's properties for user implementation
-     * classname (user.class)
-     */
-    String USER_CLASS_KEY = "user.class";
-
-    /**
-     * the default implementation of User interface
-     * (org.apache.turbine.om.security.TurbineUser)
-     */
-    String USER_CLASS_DEFAULT
-            = TurbineUser.class.getName();
-
-    /**
-     * The key within services' properties for the GROUP
-     * implementation classname (group.class)
-     */
-    String GROUP_CLASS_KEY = "group.class";
-
-    /**
-     * The default implementation of the Group interface
-     * (org.apache.turbine.om.security.TurbineGroup)
-     */
-    String GROUP_CLASS_DEFAULT
-            = TurbineGroup.class.getName();
-
-    /**
-     * The key within services' properties for the PERMISSION
-     * implementation classname (permission.class)
-     */
-    String PERMISSION_CLASS_KEY = "permission.class";
-
-    /**
-     * The default implementation of the Permissions interface
-     * (org.apache.turbine.om.security.TurbinePermission)
-     */
-    String PERMISSION_CLASS_DEFAULT
-            = TurbinePermission.class.getName();
-
-    /**
-     * The key within services' properties for the ROLE
-     * implementation classname (role.class)
-     */
-    String ROLE_CLASS_KEY = "role.class";
-
-    /**
-     * The default implementation of the Role Interface
-     * (org.apache.turbine.om.security.TurbineRole)
-     */
-    String ROLE_CLASS_DEFAULT
-            = TurbineRole.class.getName();
-
-    /**
-     * The key within services' properties for the
-     * ACL implementation classname (acl.class)
-     */
-    String ACL_CLASS_KEY = "acl.class";
-
-    /**
-     * The default implementation of the Acl Interface
-     * (org.apache.turbine.util.security.TurbineAccessControlList)
-     */
-    String ACL_CLASS_DEFAULT
-            = TurbineAccessControlList.class.getName();
-
-    /**
-     * the key within services's properties for user implementation
      * classname (user.manager)
      */
     String USER_MANAGER_KEY = "user.manager";
@@ -146,201 +73,88 @@ public interface SecurityService
     String USER_MANAGER_DEFAULT
             = PassiveUserManager.class.getName();
 
-    /**
-     * the key within services's properties for secure passwords flag
-     * (secure.passwords)
-     */
-    String SECURE_PASSWORDS_KEY = "secure.passwords";
-
-    /** the value of secure passwords flag (false) */
-    String SECURE_PASSWORDS_DEFAULT = "false";
-
-    /**
-     * the key within services's properties for secure passwords algorithm
-     * (secure.passwords.algorithm)
-     */
-    String SECURE_PASSWORDS_ALGORITHM_KEY
-            = "secure.passwords.algorithm";
-
-    /** the default algorithm for password encryption (SHA) */
-    String SECURE_PASSWORDS_ALGORITHM_DEFAULT = "SHA";
-
     /*-----------------------------------------------------------------------
       Management of User objects
       -----------------------------------------------------------------------*/
 
     /**
-     * Returns the Class object for the implementation of User interface
-     * used by the system.
-     *
-     * @return the implementation of User interface used by the system.
-     * @throws UnknownEntityException if the system's implementation of User
-     *         interface could not be determined.
-     */
-    Class getUserClass()
-            throws UnknownEntityException;
-
-    /**
      * Construct a blank User object.
-     *
-     * This method calls getUserClass, and then creates a new object using
-     * the default constructor.
      *
      * @return an object implementing User interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    User getUserInstance()
+    <U extends User> U getUserInstance()
             throws UnknownEntityException;
 
     /**
      * Construct a blank User object.
-     *
-     * This method calls getUserClass, and then creates a new object using
-     * the default constructor.
      *
      * @param userName The name of the user.
      *
      * @return an object implementing User interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    User getUserInstance(String userName)
-            throws UnknownEntityException;
-
-    /**
-     * Returns the Class object for the implementation of Group interface
-     * used by the system.
-     *
-     * @return the implementation of Group interface used by the system.
-     * @throws UnknownEntityException if the system's implementation of Group
-     *         interface could not be determined.
-     */
-    Class getGroupClass()
+    <U extends User> U getUserInstance(String userName)
             throws UnknownEntityException;
 
     /**
      * Construct a blank Group object.
-     *
-     * This method calls getGroupClass, and then creates a new object using
-     * the default constructor.
      *
      * @return an object implementing Group interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    Group getGroupInstance()
+    <G extends Group> G getGroupInstance()
             throws UnknownEntityException;
 
     /**
      * Construct a blank Group object.
-     *
-     * This method calls getGroupClass, and then creates a new object using
-     * the default constructor.
      *
      * @param groupName The name of the Group
      *
      * @return an object implementing Group interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    Group getGroupInstance(String groupName)
-            throws UnknownEntityException;
-
-    /**
-     * Returns the Class object for the implementation of Permission interface
-     * used by the system.
-     *
-     * @return the implementation of Permission interface used by the system.
-     * @throws UnknownEntityException if the system's implementation of Permission
-     *         interface could not be determined.
-     */
-    Class getPermissionClass()
+    <G extends Group> G getGroupInstance(String groupName)
             throws UnknownEntityException;
 
     /**
      * Construct a blank Permission object.
-     *
-     * This method calls getPermissionClass, and then creates a new object using
-     * the default constructor.
      *
      * @return an object implementing Permission interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    Permission getPermissionInstance()
+    <P extends Permission> P getPermissionInstance()
             throws UnknownEntityException;
 
     /**
      * Construct a blank Permission object.
-     *
-     * This method calls getPermissionClass, and then creates a new object using
-     * the default constructor.
      *
      * @param permName The name of the Permission
      *
      * @return an object implementing Permission interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    Permission getPermissionInstance(String permName)
-            throws UnknownEntityException;
-
-    /**
-     * Returns the Class object for the implementation of Role interface
-     * used by the system.
-     *
-     * @return the implementation of Role interface used by the system.
-     * @throws UnknownEntityException if the system's implementation of Role
-     *         interface could not be determined.
-     */
-    Class getRoleClass()
+    <P extends Permission> P getPermissionInstance(String permName)
             throws UnknownEntityException;
 
     /**
      * Construct a blank Role object.
-     *
-     * This method calls getRoleClass, and then creates a new object using
-     * the default constructor.
      *
      * @return an object implementing Role interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    Role getRoleInstance()
+    <R extends Role> R getRoleInstance()
             throws UnknownEntityException;
 
     /**
      * Construct a blank Role object.
-     *
-     * This method calls getRoleClass, and then creates a new object using
-     * the default constructor.
      *
      * @param roleName The name of the Role
      *
      * @return an object implementing Role interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    Role getRoleInstance(String roleName)
-            throws UnknownEntityException;
-
-    /**
-     * Returns the Class object for the implementation of AccessControlList interface
-     * used by the system.
-     *
-     * @return the implementation of AccessControlList interface used by the system.
-     * @throws UnknownEntityException if the system's implementation of AccessControlList
-     *         interface could not be determined.
-     */
-    Class getAclClass()
-            throws UnknownEntityException;
-
-    /**
-     * Construct a new ACL object.
-     *
-     * This constructs a new ACL object from the configured class and
-     * initializes it with the supplied roles and permissions.
-     *
-     * @param roles The roles that this ACL should contain
-     * @param permissions The permissions for this ACL
-     *
-     * @return an object implementing ACL interface.
-     * @throws UnknownEntityException if the object could not be instantiated.
-     */
-    AccessControlList getAclInstance(Map roles, Map permissions)
+    <R extends Role> R getRoleInstance(String roleName)
             throws UnknownEntityException;
 
     /**
@@ -349,13 +163,6 @@ public interface SecurityService
      * @return An UserManager object
      */
     UserManager getUserManager();
-
-    /**
-     * Configure a new user Manager.
-     *
-     * @param userManager An UserManager object
-     */
-    void setUserManager(UserManager userManager);
 
     /**
      * Check whether a specified user's account exists.
@@ -394,7 +201,7 @@ public interface SecurityService
      * @throws UnknownEntityException if user account is not present.
      * @throws PasswordMismatchException if the supplied password was incorrect.
      */
-    User getAuthenticatedUser(String username, String password)
+    <U extends User> U getAuthenticatedUser(String username, String password)
             throws DataBackendException, UnknownEntityException,
             PasswordMismatchException;
 
@@ -408,25 +215,8 @@ public interface SecurityService
      *         backend.
      * @throws UnknownEntityException if user account is not present.
      */
-    User getUser(String username)
+    <U extends User> U getUser(String username)
             throws DataBackendException, UnknownEntityException;
-
-    /**
-     * Retrieve a set of users that meet the specified criteria.
-     *
-     * As the keys for the criteria, you should use the constants that
-     * are defined in {@link User} interface, plus the names
-     * of the custom attributes you added to your user representation
-     * in the data storage. Use verbatim names of the attributes -
-     * without table name prefix in case of Torque implementation.
-     *
-     * @param criteria The criteria of selection.
-     * @return a List of users meeting the criteria.
-     * @throws DataBackendException if there is a problem accessing the
-     *         storage.
-     */
-    List getUserList(Object criteria)
-            throws DataBackendException;
 
     /**
      * Constructs an User object to represent an anonymous user of the
@@ -436,7 +226,7 @@ public interface SecurityService
      * @throws UnknownEntityException if the anonymous User object couldn't be
      *         constructed.
      */
-    User getAnonymousUser()
+    <U extends User> U getAnonymousUser()
             throws UnknownEntityException;
 
     /**
@@ -509,47 +299,6 @@ public interface SecurityService
       -----------------------------------------------------------------------*/
 
     /**
-     * This method provides client-side encryption mechanism for passwords.
-     *
-     * This is an utility method that is used by other classes to maintain
-     * a consistent approach to encrypting password. The behavior of the
-     * method can be configured in service's properties.
-     *
-     * @param password the password to process
-     * @return processed password
-     */
-    String encryptPassword(String password);
-
-    /**
-     * This method provides client-side encryption mechanism for passwords.
-     *
-     * This is an utility method that is used by other classes to maintain
-     * a consistent approach to encrypting password. The behavior of the
-     * method can be configured in service's properties.
-     *
-     * Algorithms that must supply a salt for encryption
-     * can use this method to provide it.
-     *
-     * @param password the password to process
-     * @param salt Salt parameter for some crypto algorithms
-     *
-     * @return processed password
-     */
-    String encryptPassword(String password, String salt);
-
-    /**
-     * Checks if a supplied password matches the encrypted password
-     * when using the current encryption algorithm
-     *
-     * @param checkpw      The clear text password supplied by the user
-     * @param encpw        The current, encrypted password
-     *
-     * @return true if the password matches, else false
-     *
-     */
-    boolean checkPassword(String checkpw, String encpw);
-
-    /**
      * Change the password for an User.
      *
      * @param user an User to change password for.
@@ -597,7 +346,7 @@ public interface SecurityService
      * @throws DataBackendException if there was an error accessing the data backend.
      * @throws UnknownEntityException if user account is not present.
      */
-    AccessControlList getACL(User user)
+    <A extends AccessControlList> A getACL(User user)
             throws DataBackendException, UnknownEntityException;
 
     /**
@@ -704,7 +453,7 @@ public interface SecurityService
      *
      * @return A Group object that represents the global group.
      */
-    Group getGlobalGroup();
+    <G extends Group> G getGlobalGroup();
 
     /**
      * Retrieve a Group object with specified name.
@@ -715,7 +464,7 @@ public interface SecurityService
      *         backend.
      * @throws UnknownEntityException if the group does not exist.
      */
-    Group getGroupByName(String name)
+    <G extends Group> G getGroupByName(String name)
             throws DataBackendException, UnknownEntityException;
 
     /**
@@ -730,7 +479,7 @@ public interface SecurityService
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    Group getGroupById(int id)
+    <G extends Group> G getGroupById(int id)
             throws DataBackendException,
                    UnknownEntityException;
 
@@ -743,7 +492,7 @@ public interface SecurityService
      *         backend.
      * @throws UnknownEntityException if the role does not exist.
      */
-    Role getRoleByName(String name)
+    <R extends Role> R getRoleByName(String name)
             throws DataBackendException, UnknownEntityException;
 
     /**
@@ -758,7 +507,7 @@ public interface SecurityService
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    Role getRoleById(int id)
+    <R extends Role> R getRoleById(int id)
             throws DataBackendException,
                    UnknownEntityException;
 
@@ -771,7 +520,7 @@ public interface SecurityService
      *         backend.
      * @throws UnknownEntityException if the permission does not exist.
      */
-    Permission getPermissionByName(String name)
+    <P extends Permission> P getPermissionByName(String name)
             throws DataBackendException, UnknownEntityException;
 
     /**
@@ -786,42 +535,9 @@ public interface SecurityService
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    Permission getPermissionById(int id)
+    <P extends Permission> P getPermissionById(int id)
             throws DataBackendException,
                    UnknownEntityException;
-
-    /**
-     * Retrieve a set of Groups that meet the specified Criteria.
-     *
-     * @param criteria a Criteria of Group selection.
-     * @return a set of Groups that meet the specified Criteria.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     */
-    GroupSet getGroups(Object criteria)
-            throws DataBackendException;
-
-    /**
-     * Retrieve a set of Roles that meet the specified Criteria.
-     *
-     * @param criteria a Criteria of Roles selection.
-     * @return a set of Roles that meet the specified Criteria.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     */
-    RoleSet getRoles(Object criteria)
-            throws DataBackendException;
-
-    /**
-     * Retrieve a set of Permissions that meet the specified Criteria.
-     *
-     * @param criteria a Criteria of Permissions selection.
-     * @return a set of Permissions that meet the specified Criteria.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     */
-    PermissionSet getPermissions(Object criteria)
-            throws DataBackendException;
 
     /**
      * Retrieves all groups defined in the system.
@@ -853,40 +569,6 @@ public interface SecurityService
     PermissionSet getAllPermissions()
             throws DataBackendException;
 
-    /**
-     * Stores Group's attributes. The Groups is required to exist in the system.
-     *
-     * @param group The Group to be stored.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if the group does not exist.
-     */
-    void saveGroup(Group group)
-            throws DataBackendException, UnknownEntityException;
-
-    /**
-     * Stores Role's attributes. The Roles is required to exist in the system.
-     *
-     * @param role The Role to be stored.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if the role does not exist.
-     */
-    void saveRole(Role role)
-            throws DataBackendException, UnknownEntityException;
-
-    /**
-     * Stores Permission's attributes. The Permission is required to exist in
-     * the system.
-     *
-     * @param permission The Permission to be stored.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if the permission does not exist.
-     */
-    void savePermission(Permission permission)
-            throws DataBackendException, UnknownEntityException;
-
     /*-----------------------------------------------------------------------
       Group/Role/Permission management
       -----------------------------------------------------------------------*/
@@ -900,7 +582,7 @@ public interface SecurityService
      *         backend.
      * @throws EntityExistsException if the group already exists.
      */
-    Group addGroup(Group group)
+    <G extends Group> G addGroup(G group)
             throws DataBackendException, EntityExistsException;
 
     /**
@@ -912,7 +594,7 @@ public interface SecurityService
      *         backend.
      * @throws EntityExistsException if the role already exists.
      */
-    Role addRole(Role role)
+    <R extends Role> R addRole(R role)
             throws DataBackendException, EntityExistsException;
 
     /**
@@ -924,7 +606,7 @@ public interface SecurityService
      *         backend.
      * @throws EntityExistsException if the permission already exists.
      */
-    Permission addPermission(Permission permission)
+    <P extends Permission> P addPermission(P permission)
             throws DataBackendException, EntityExistsException;
 
     /**

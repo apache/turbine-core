@@ -29,13 +29,13 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.pool.PoolService;
+import org.apache.fulcrum.security.model.turbine.TurbineUserManager;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
@@ -399,7 +399,12 @@ public class TurbinePullService
         // new user object.
         populateWithSessionTools(sessionTools, context, data, user);
 
-        if (!TurbineSecurity.isAnonymousUser(user))
+        TurbineUserManager userManager =
+        	(TurbineUserManager)TurbineServices
+        		.getInstance()
+        		.getService(TurbineUserManager.ROLE);
+
+        if (!userManager.isAnonymousUser(user))
         {
             if (user.hasLoggedIn())
             {
@@ -444,7 +449,12 @@ public class TurbinePullService
         // new user object.
         populateWithSessionTools(sessionTools, context, pipelineData, user);
 
-        if (!TurbineSecurity.isAnonymousUser(user))
+        TurbineUserManager userManager =
+        	(TurbineUserManager)TurbineServices
+        		.getInstance()
+        		.getService(TurbineUserManager.ROLE);
+
+        if (!userManager.isAnonymousUser(user))
         {
             if (user.hasLoggedIn())
             {

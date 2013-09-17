@@ -20,20 +20,20 @@ package org.apache.turbine.services.security;
  */
 
 
-import org.apache.turbine.om.security.Group;
-import org.apache.turbine.om.security.Permission;
-import org.apache.turbine.om.security.Role;
+import org.apache.fulcrum.security.acl.AccessControlList;
+import org.apache.fulcrum.security.entity.Group;
+import org.apache.fulcrum.security.entity.Permission;
+import org.apache.fulcrum.security.entity.Role;
+import org.apache.fulcrum.security.util.DataBackendException;
+import org.apache.fulcrum.security.util.EntityExistsException;
+import org.apache.fulcrum.security.util.FulcrumSecurityException;
+import org.apache.fulcrum.security.util.GroupSet;
+import org.apache.fulcrum.security.util.PasswordMismatchException;
+import org.apache.fulcrum.security.util.PermissionSet;
+import org.apache.fulcrum.security.util.RoleSet;
+import org.apache.fulcrum.security.util.UnknownEntityException;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.util.security.AccessControlList;
-import org.apache.turbine.util.security.DataBackendException;
-import org.apache.turbine.util.security.EntityExistsException;
-import org.apache.turbine.util.security.GroupSet;
-import org.apache.turbine.util.security.PasswordMismatchException;
-import org.apache.turbine.util.security.PermissionSet;
-import org.apache.turbine.util.security.RoleSet;
-import org.apache.turbine.util.security.TurbineSecurityException;
-import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
  * This is a Facade class for SecurityService.
@@ -72,112 +72,6 @@ public abstract class TurbineSecurity
       -----------------------------------------------------------------------*/
 
     /**
-     * This method provides client-side encryption of passwords.
-     *
-     * This is an utility method that is used by other classes to maintain
-     * a consistent approach to encrypting password. The behavior of the
-     * method can be configured in service's properties.
-     *
-     * @param password the password to process
-     * @return processed password
-     */
-    public static String encryptPassword(String password)
-    {
-        return getService().encryptPassword(password);
-    }
-
-    /**
-     * This method provides client-side encryption of passwords.
-     *
-     * This is an utility method that is used by other classes to maintain
-     * a consistent approach to encrypting password. The behavior of the
-     * method can be configured in service's properties.
-     *
-     * @param password the password to process
-     * @param salt the supplied salt to encrypt the password
-     * @return processed password
-     */
-    public static String encryptPassword(String password, String salt)
-    {
-        return getService().encryptPassword(password, salt);
-    }
-
-    /**
-     * Checks if a supplied password matches the encrypted password
-     *
-     * @param checkpw      The clear text password supplied by the user
-     * @param encpw        The current, encrypted password
-     *
-     * @return true if the password matches, else false
-     *
-     */
-
-    public static boolean checkPassword(String checkpw, String encpw)
-    {
-        return getService().checkPassword(checkpw, encpw);
-    }
-
-    /*-----------------------------------------------------------------------
-      Getting Object Classes
-      -----------------------------------------------------------------------*/
-
-    /**
-     * Returns the Class object for the implementation of User interface
-     * used by the system.
-     *
-     * @return the implementation of User interface used by the system.
-     * @throws UnknownEntityException if the system's implementation of User
-     *         interface could not be determined.
-     */
-    public static Class getUserClass()
-            throws UnknownEntityException
-    {
-        return getService().getUserClass();
-    }
-
-    /**
-     * Returns the Class object for the implementation of Group interface
-     * used by the system.
-     *
-     * @return the implementation of Group interface used by the system.
-     * @throws UnknownEntityException if the system's implementation of Group
-     *         interface could not be determined.
-     */
-    public static Class getGroupClass()
-        throws UnknownEntityException
-    {
-        return getService().getGroupClass();
-    }
-
-    /**
-     * Returns the Class object for the implementation of Permission interface
-     * used by the system.
-     *
-     * @return the implementation of Permission interface used by the system.
-     * @throws UnknownEntityException if the system's implementation of Permission
-     *         interface could not be determined.
-     */
-    public static Class getPermissionClass()
-        throws UnknownEntityException
-    {
-        return getService().getPermissionClass();
-    }
-
-    /**
-     * Returns the Class object for the implementation of Role interface
-     * used by the system.
-     *
-     * @return the implementation of Role interface used by the system.
-     * @throws UnknownEntityException if the system's implementation of Role
-     *         interface could not be determined.
-     */
-    public static Class getRoleClass()
-        throws UnknownEntityException
-    {
-        return getService().getRoleClass();
-    }
-
-    /**
      * Construct a blank User object.
      *
      * This method calls getUserClass, and then creates a new object using
@@ -200,16 +94,6 @@ public abstract class TurbineSecurity
     public static UserManager getUserManager()
     {
         return getService().getUserManager();
-    }
-
-    /**
-     * Configure a new user Manager.
-     *
-     * @param userManager An UserManager object
-     */
-    public void setUserManager(UserManager userManager)
-    {
-        getService().setUserManager(userManager);
     }
 
     /**
@@ -364,7 +248,7 @@ public abstract class TurbineSecurity
      * Forcibly sets new password for an User.
      *
      * This is supposed by the administrator to change the forgotten or
-     * compromised passwords. Certain implementatations of this feature
+     * compromised passwords. Certain implementations of this feature
      * would require administrative level access to the authenticating
      * server / program.
      *
@@ -557,10 +441,10 @@ public abstract class TurbineSecurity
      *
      * @param name The name of the new Group.
      * @return An object representing the new Group.
-     * @throws TurbineSecurityException if the Group could not be created.
+     * @throws FulcrumSecurityException if the Group could not be created.
      */
     public static Group createGroup(String name)
-            throws TurbineSecurityException
+            throws FulcrumSecurityException
     {
         return getService().addGroup(getGroupInstance(name));
     }
@@ -571,10 +455,10 @@ public abstract class TurbineSecurity
      *
      * @param name The name of the new Permission.
      * @return An object representing the new Permission.
-     * @throws TurbineSecurityException if the Permission could not be created.
+     * @throws FulcrumSecurityException if the Permission could not be created.
      */
     public static Permission createPermission(String name)
-            throws TurbineSecurityException
+            throws FulcrumSecurityException
     {
         return getService().addPermission(getPermissionInstance(name));
     }
@@ -587,10 +471,10 @@ public abstract class TurbineSecurity
      *
      * @return An object representing the new Role.
      *
-     * @throws TurbineSecurityException if the Role could not be created.
+     * @throws FulcrumSecurityException if the Role could not be created.
      */
     public static Role createRole(String name)
-        throws TurbineSecurityException
+        throws FulcrumSecurityException
     {
         return getService().addRole(getRoleInstance(name));
     }
@@ -751,48 +635,6 @@ public abstract class TurbineSecurity
     }
 
     /**
-     * Retrieve a set of Groups that meet the specified Criteria.
-     *
-     * @param criteria A Criteria of Group selection.
-     * @return a set of Groups that meet the specified Criteria.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     */
-    public static GroupSet getGroups(Object criteria)
-            throws DataBackendException
-    {
-        return getService().getGroups(criteria);
-    }
-
-    /**
-     * Retrieve a set of Roles that meet the specified Criteria.
-     *
-     * @param criteria a Criteria of Roles selection.
-     * @return a set of Roles that meet the specified Criteria.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     */
-    public static RoleSet getRoles(Object criteria)
-            throws DataBackendException
-    {
-        return getService().getRoles(criteria);
-    }
-
-    /**
-     * Retrieve a set of Permissions that meet the specified Criteria.
-     *
-     * @param criteria a Criteria of Permissions selection.
-     * @return a set of Permissions that meet the specified Criteria.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     */
-    public static PermissionSet getPermissions(Object criteria)
-            throws DataBackendException
-    {
-        return getService().getPermissions(criteria);
-    }
-
-    /**
      * Retrieves all groups defined in the system.
      *
      * @return the names of all groups defined in the system.
@@ -844,49 +686,6 @@ public abstract class TurbineSecurity
             throws DataBackendException, UnknownEntityException
     {
         return getService().getPermissions(role);
-    }
-
-    /**
-     * Stores Group's attributes. The Groups is required to exist in the system.
-     *
-     * @param group The Group to be stored.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if the group does not exist.
-     */
-    public static void saveGroup(Group group)
-            throws DataBackendException, UnknownEntityException
-    {
-        getService().saveGroup(group);
-    }
-
-    /**
-     * Stores Role's attributes. The Roles is required to exist in the system.
-     *
-     * @param role The Role to be stored.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if the role does not exist.
-     */
-    public static void saveRole(Role role)
-            throws DataBackendException, UnknownEntityException
-    {
-        getService().saveRole(role);
-    }
-
-    /**
-     * Stores Permission's attributes. The Permissions is required to exist in
-     * the system.
-     *
-     * @param permission The Permission to be stored.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if the permission does not exist.
-     */
-    public static void savePermission(Permission permission)
-            throws DataBackendException, UnknownEntityException
-    {
-        getService().savePermission(permission);
     }
 
     /**

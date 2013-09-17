@@ -21,33 +21,30 @@ package org.apache.turbine.services.security;
  */
 
 
-import java.util.Map;
-
-import javax.servlet.ServletConfig;
-
 import org.apache.commons.configuration.Configuration;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.fulcrum.crypto.CryptoAlgorithm;
-import org.apache.fulcrum.crypto.CryptoService;
-import org.apache.fulcrum.factory.FactoryService;
-import org.apache.turbine.om.security.Group;
-import org.apache.turbine.om.security.Permission;
-import org.apache.turbine.om.security.Role;
+import org.apache.fulcrum.security.GroupManager;
+import org.apache.fulcrum.security.PermissionManager;
+import org.apache.fulcrum.security.RoleManager;
+import org.apache.fulcrum.security.acl.AccessControlList;
+import org.apache.fulcrum.security.entity.Group;
+import org.apache.fulcrum.security.entity.Permission;
+import org.apache.fulcrum.security.entity.Role;
+import org.apache.fulcrum.security.model.turbine.TurbineModelManager;
+import org.apache.fulcrum.security.model.turbine.entity.TurbineRole;
+import org.apache.fulcrum.security.util.DataBackendException;
+import org.apache.fulcrum.security.util.EntityExistsException;
+import org.apache.fulcrum.security.util.GroupSet;
+import org.apache.fulcrum.security.util.PasswordMismatchException;
+import org.apache.fulcrum.security.util.PermissionSet;
+import org.apache.fulcrum.security.util.RoleSet;
+import org.apache.fulcrum.security.util.UnknownEntityException;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.util.security.AccessControlList;
-import org.apache.turbine.util.security.DataBackendException;
-import org.apache.turbine.util.security.EntityExistsException;
-import org.apache.turbine.util.security.GroupSet;
-import org.apache.turbine.util.security.PasswordMismatchException;
-import org.apache.turbine.util.security.PermissionSet;
-import org.apache.turbine.util.security.RoleSet;
-import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
  * This is a common subset of SecurityService implementation.
@@ -70,7 +67,7 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id$
  */
-public abstract class BaseSecurityService
+public class DefaultSecurityService
         extends TurbineBaseService
         implements SecurityService
 {
@@ -80,23 +77,17 @@ public abstract class BaseSecurityService
     /** The instance of UserManager the SecurityService uses */
     private UserManager userManager = null;
 
-    /** The class of User the SecurityService uses */
-    private Class userClass = null;
+    /** The instance of GroupManager the SecurityService uses */
+    private GroupManager groupManager;
 
-    /** The class of Group the SecurityService uses */
-    private Class groupClass = null;
+    /** The instance of RoleManager the SecurityService uses */
+    private RoleManager roleManager;
 
-    /** The class of Permission the SecurityService uses */
-    private Class permissionClass = null;
+    /** The instance of PermissionManager the SecurityService uses */
+    private PermissionManager permissionManager;
 
-    /** The class of Role the SecurityService uses */
-    private Class roleClass = null;
-
-    /** The class of ACL the SecurityService uses */
-    private Class aclClass = null;
-
-    /** A factory to construct ACL Objects */
-    private FactoryService aclFactoryService = null;
+    /** The instance of ModelManager the SecurityService uses */
+    private TurbineModelManager modelManager;
 
     /**
      * The Group object that represents the <a href="#global">global group</a>.
@@ -104,110 +95,10 @@ public abstract class BaseSecurityService
     private static Group globalGroup = null;
 
     /** Logging */
-    private static Log log = LogFactory.getLog(BaseSecurityService.class);
+    private static Log log = LogFactory.getLog(DefaultSecurityService.class);
 
     /**
-     * This method provides client-side encryption of passwords.
-     *
-     * If <code>secure.passwords</code> are enabled in TurbineResources,
-     * the password will be encrypted, if not, it will be returned unchanged.
-     * The <code>secure.passwords.algorithm</code> property can be used
-     * to chose which digest algorithm should be used for performing the
-     * encryption. <code>SHA</code> is used by default.
-     *
-     * @param password the password to process
-     * @return processed password
-     */
-    public String encryptPassword(String password)
-    {
-        return encryptPassword(password, null);
-    }
-
-    /**
-     * This method provides client-side encryption of passwords.
-     *
-     * If <code>secure.passwords</code> are enabled in TurbineResources,
-     * the password will be encrypted, if not, it will be returned unchanged.
-     * The <code>secure.passwords.algorithm</code> property can be used
-     * to chose which digest algorithm should be used for performing the
-     * encryption. <code>SHA</code> is used by default.
-     *
-     * The used algorithms must be prepared to accept null as a
-     * valid parameter for salt. All algorithms in the Fulcrum Cryptoservice
-     * accept this.
-     *
-     * @param password the password to process
-     * @param salt     algorithms that needs a salt can provide one here
-     * @return processed password
-     */
-
-    public String encryptPassword(String password, String salt)
-    {
-        if (password == null)
-        {
-            return null;
-        }
-        String secure = getConfiguration().getString(
-                SecurityService.SECURE_PASSWORDS_KEY,
-                SecurityService.SECURE_PASSWORDS_DEFAULT).toLowerCase();
-
-        String algorithm = getConfiguration().getString(
-                SecurityService.SECURE_PASSWORDS_ALGORITHM_KEY,
-                SecurityService.SECURE_PASSWORDS_ALGORITHM_DEFAULT);
-
-        CryptoService cs = null;
-        try {
-            ServiceManager serviceManager = TurbineServices.getInstance();
-            cs = (CryptoService)serviceManager.getService(CryptoService.ROLE);
-        }
-        catch (Exception e){
-            throw new RuntimeException("Could not access Crypto Service",e);
-        }
-
-        if (cs != null && (secure.equals("true") || secure.equals("yes")))
-        {
-            try
-            {
-                CryptoAlgorithm ca = cs.getCryptoAlgorithm(algorithm);
-
-                ca.setSeed(salt);
-
-                String result = ca.encrypt(password);
-
-                return result;
-            }
-            catch (Exception e)
-            {
-                log.error("Unable to encrypt password: ", e);
-
-                return null;
-            }
-        }
-        else
-        {
-            return password;
-        }
-    }
-
-    /**
-     * Checks if a supplied password matches the encrypted password
-     *
-     * @param checkpw      The clear text password supplied by the user
-     * @param encpw        The current, encrypted password
-     *
-     * @return true if the password matches, else false
-     *
-     */
-
-    public boolean checkPassword(String checkpw, String encpw)
-    {
-        String result = encryptPassword(checkpw, encpw);
-
-        return (result == null) ? false : result.equals(encpw);
-    }
-
-    /**
-     * Initializes the SecurityService, locating the apropriate UserManager
+     * Initializes the SecurityService, locating the appropriate UserManager
      * This is a zero parameter variant which queries the Turbine Servlet
      * for its config.
      *
@@ -216,133 +107,49 @@ public abstract class BaseSecurityService
     public void init()
             throws InitializationException
     {
+        ServiceManager manager = TurbineServices.getInstance();
+
+        this.groupManager = (GroupManager)manager.getService(GroupManager.ROLE);
+        this.roleManager = (RoleManager)manager.getService(RoleManager.ROLE);
+        this.permissionManager = (PermissionManager)manager.getService(PermissionManager.ROLE);
+        this.modelManager = (TurbineModelManager)manager.getService(TurbineModelManager.ROLE);
+
         Configuration conf = getConfiguration();
 
         String userManagerClassName = conf.getString(
                 SecurityService.USER_MANAGER_KEY,
                 SecurityService.USER_MANAGER_DEFAULT);
 
-        String userClassName = conf.getString(
-                SecurityService.USER_CLASS_KEY,
-                SecurityService.USER_CLASS_DEFAULT);
-
-        String groupClassName = conf.getString(
-                SecurityService.GROUP_CLASS_KEY,
-                SecurityService.GROUP_CLASS_DEFAULT);
-
-        String permissionClassName = conf.getString(
-                SecurityService.PERMISSION_CLASS_KEY,
-                SecurityService.PERMISSION_CLASS_DEFAULT);
-
-        String roleClassName = conf.getString(
-                SecurityService.ROLE_CLASS_KEY,
-                SecurityService.ROLE_CLASS_DEFAULT);
-
-        String aclClassName = conf.getString(
-                SecurityService.ACL_CLASS_KEY,
-                SecurityService.ACL_CLASS_DEFAULT);
-
         try
         {
-            userClass = Class.forName(userClassName);
-            groupClass = Class.forName(groupClassName);
-            permissionClass = Class.forName(permissionClassName);
-            roleClass = Class.forName(roleClassName);
-            aclClass = Class.forName(aclClassName);
-        }
-        catch (Exception e)
-        {
-            if (userClass == null)
-            {
-                throw new InitializationException(
-                        "Failed to create a Class object for User implementation", e);
-            }
-            if (groupClass == null)
-            {
-                throw new InitializationException(
-                        "Failed to create a Class object for Group implementation", e);
-            }
-            if (permissionClass == null)
-            {
-                throw new InitializationException(
-                        "Failed to create a Class object for Permission implementation", e);
-            }
-            if (roleClass == null)
-            {
-                throw new InitializationException(
-                        "Failed to create a Class object for Role implementation", e);
-            }
-            if (aclClass == null)
-            {
-                throw new InitializationException(
-                        "Failed to create a Class object for ACL implementation", e);
-            }
-        }
-
-        try
-        {
-            UserManager userManager =
+            this.userManager =
                     (UserManager) Class.forName(userManagerClassName).newInstance();
 
             userManager.init(conf);
-
-            setUserManager(userManager);
         }
         catch (Exception e)
         {
             throw new InitializationException("Failed to instantiate UserManager", e);
         }
 
-        try
-        {
-            aclFactoryService = (FactoryService)TurbineServices.getInstance().getService(FactoryService.ROLE);
-        }
-        catch (Exception e)
-        {
-            throw new InitializationException(
-                    "BaseSecurityService.init: Failed to get the Factory Service object", e);
-        }
-
         setInit(true);
-    }
-
-    /**
-     * Return a Class object representing the system's chosen implementation of
-     * of User interface.
-     *
-     * @return systems's chosen implementation of User interface.
-     * @throws UnknownEntityException if the implementation of User interface
-     *         could not be determined, or does not exist.
-     */
-    public Class getUserClass()
-            throws UnknownEntityException
-    {
-        if (userClass == null)
-        {
-            throw new UnknownEntityException(
-                    "Failed to create a Class object for User implementation");
-        }
-        return userClass;
     }
 
     /**
      * Construct a blank User object.
      *
-     * This method calls getUserClass, and then creates a new object using
-     * the default constructor.
-     *
      * @return an object implementing User interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    public User getUserInstance()
+    public <U extends User> U getUserInstance()
             throws UnknownEntityException
     {
-        User user;
+        U user;
         try
         {
-            user = (User) getUserClass().newInstance();
+            user = getUserManager().getUserInstance();
         }
-        catch (Exception e)
+        catch (DataBackendException e)
         {
             throw new UnknownEntityException(
                     "Failed instantiate an User implementation object", e);
@@ -353,58 +160,41 @@ public abstract class BaseSecurityService
     /**
      * Construct a blank User object.
      *
-     * This method calls getUserClass, and then creates a new object using
-     * the default constructor.
-     *
      * @param userName The name of the user.
      *
      * @return an object implementing User interface.
      *
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    public User getUserInstance(String userName)
+    public <U extends User> U getUserInstance(String userName)
             throws UnknownEntityException
     {
-        User user = getUserInstance();
-        user.setName(userName);
-        return user;
-    }
-
-    /**
-     * Return a Class object representing the system's chosen implementation of
-     * of Group interface.
-     *
-     * @return systems's chosen implementation of Group interface.
-     * @throws UnknownEntityException if the implementation of Group interface
-     *         could not be determined, or does not exist.
-     */
-    public Class getGroupClass()
-            throws UnknownEntityException
-    {
-        if (groupClass == null)
+        U user;
+        try
+        {
+            user = getUserManager().getUserInstance(userName);
+        }
+        catch (DataBackendException e)
         {
             throw new UnknownEntityException(
-                    "Failed to create a Class object for Group implementation");
+                    "Failed instantiate an User implementation object", e);
         }
-        return groupClass;
+        return user;
     }
 
     /**
      * Construct a blank Group object.
      *
-     * This method calls getGroupClass, and then creates a new object using
-     * the default constructor.
-     *
      * @return an object implementing Group interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    public Group getGroupInstance()
+    public <G extends Group> G getGroupInstance()
             throws UnknownEntityException
     {
-        Group group;
+        G group;
         try
         {
-            group = (Group) getGroupClass().newInstance();
+            group = groupManager.getGroupInstance();
         }
         catch (Exception e)
         {
@@ -416,58 +206,40 @@ public abstract class BaseSecurityService
     /**
      * Construct a blank Group object.
      *
-     * This method calls getGroupClass, and then creates a new object using
-     * the default constructor.
-     *
      * @param groupName The name of the Group
      *
      * @return an object implementing Group interface.
      *
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    public Group getGroupInstance(String groupName)
+    public <G extends Group> G getGroupInstance(String groupName)
             throws UnknownEntityException
     {
-        Group group = getGroupInstance();
-        group.setName(groupName);
-        return group;
-    }
-
-    /**
-     * Return a Class object representing the system's chosen implementation of
-     * of Permission interface.
-     *
-     * @return systems's chosen implementation of Permission interface.
-     * @throws UnknownEntityException if the implementation of Permission interface
-     *         could not be determined, or does not exist.
-     */
-    public Class getPermissionClass()
-            throws UnknownEntityException
-    {
-        if (permissionClass == null)
+        G group;
+        try
         {
-            throw new UnknownEntityException(
-                    "Failed to create a Class object for Permission implementation");
+            group = groupManager.getGroupInstance(groupName);
         }
-        return permissionClass;
+        catch (Exception e)
+        {
+            throw new UnknownEntityException("Failed to instantiate a Group implementation object", e);
+        }
+        return group;
     }
 
     /**
      * Construct a blank Permission object.
      *
-     * This method calls getPermissionClass, and then creates a new object using
-     * the default constructor.
-     *
      * @return an object implementing Permission interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    public Permission getPermissionInstance()
+    public <P extends Permission> P getPermissionInstance()
             throws UnknownEntityException
     {
-        Permission permission;
+        P permission;
         try
         {
-            permission = (Permission) getPermissionClass().newInstance();
+            permission = permissionManager.getPermissionInstance();
         }
         catch (Exception e)
         {
@@ -479,58 +251,39 @@ public abstract class BaseSecurityService
     /**
      * Construct a blank Permission object.
      *
-     * This method calls getPermissionClass, and then creates a new object using
-     * the default constructor.
-     *
      * @param permName The name of the permission.
      *
      * @return an object implementing Permission interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    public Permission getPermissionInstance(String permName)
+    public <P extends Permission> P getPermissionInstance(String permName)
             throws UnknownEntityException
     {
-        Permission perm = getPermissionInstance();
-        perm.setName(permName);
-        return perm;
-    }
-
-    /**
-     * Return a Class object representing the system's chosen implementation of
-     * of Role interface.
-     *
-     * @return systems's chosen implementation of Role interface.
-     * @throws UnknownEntityException if the implementation of Role interface
-     *         could not be determined, or does not exist.
-     */
-    public Class getRoleClass()
-            throws UnknownEntityException
-    {
-        if (roleClass == null)
+        P permission;
+        try
         {
-            throw new UnknownEntityException(
-                    "Failed to create a Class object for Role implementation");
+            permission = permissionManager.getPermissionInstance(permName);
         }
-        return roleClass;
+        catch (Exception e)
+        {
+            throw new UnknownEntityException("Failed to instantiate a Permission implementation object", e);
+        }
+        return permission;
     }
 
     /**
      * Construct a blank Role object.
      *
-     * This method calls getRoleClass, and then creates a new object using
-     * the default constructor.
-     *
      * @return an object implementing Role interface.
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    public Role getRoleInstance()
+    public <R extends Role> R getRoleInstance()
             throws UnknownEntityException
     {
-        Role role;
-
+        R role;
         try
         {
-            role = (Role) getRoleClass().newInstance();
+            role = roleManager.getRoleInstance();
         }
         catch (Exception e)
         {
@@ -542,75 +295,25 @@ public abstract class BaseSecurityService
     /**
      * Construct a blank Role object.
      *
-     * This method calls getRoleClass, and then creates a new object using
-     * the default constructor.
-     *
      * @param roleName The name of the role.
      *
      * @return an object implementing Role interface.
      *
      * @throws UnknownEntityException if the object could not be instantiated.
      */
-    public Role getRoleInstance(String roleName)
+    public <R extends Role> R getRoleInstance(String roleName)
             throws UnknownEntityException
     {
-        Role role = getRoleInstance();
-        role.setName(roleName);
-        return role;
-    }
-
-    /**
-     * Return a Class object representing the system's chosen implementation of
-     * of ACL interface.
-     *
-     * @return systems's chosen implementation of ACL interface.
-     * @throws UnknownEntityException if the implementation of ACL interface
-     *         could not be determined, or does not exist.
-     */
-    public Class getAclClass()
-            throws UnknownEntityException
-    {
-        if (aclClass == null)
-        {
-            throw new UnknownEntityException(
-                    "Failed to create a Class object for ACL implementation");
-        }
-        return aclClass;
-    }
-
-    /**
-     * Construct a new ACL object.
-     *
-     * This constructs a new ACL object from the configured class and
-     * initializes it with the supplied roles and permissions.
-     *
-     * @param roles The roles that this ACL should contain
-     * @param permissions The permissions for this ACL
-     *
-     * @return an object implementing ACL interface.
-     * @throws UnknownEntityException if the object could not be instantiated.
-     */
-    public AccessControlList getAclInstance(Map roles, Map permissions)
-            throws UnknownEntityException
-    {
-        Object[] objects = {roles, permissions};
-        String[] signatures = {Map.class.getName(), Map.class.getName()};
-        AccessControlList accessControlList;
-
+        R role;
         try
         {
-            accessControlList =
-                    (AccessControlList) aclFactoryService.getInstance(aclClass.getName(),
-                            objects,
-                            signatures);
+            role = roleManager.getRoleInstance();
         }
         catch (Exception e)
         {
-            throw new UnknownEntityException(
-                    "Failed to instantiate an ACL implementation object", e);
+            throw new UnknownEntityException("Failed to instantiate a Role implementation object", e);
         }
-
-        return accessControlList;
+        return role;
     }
 
     /**
@@ -621,16 +324,6 @@ public abstract class BaseSecurityService
     public UserManager getUserManager()
     {
         return userManager;
-    }
-
-    /**
-     * Configure a new user Manager.
-     *
-     * @param userManager An UserManager object
-     */
-    public void setUserManager(UserManager userManager)
-    {
-        this.userManager = userManager;
     }
 
     /**
@@ -677,7 +370,7 @@ public abstract class BaseSecurityService
      *            exist in the database.
      * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public User getAuthenticatedUser(String username, String password)
+    public <U extends User> U getAuthenticatedUser(String username, String password)
             throws DataBackendException, UnknownEntityException,
                    PasswordMismatchException
     {
@@ -693,12 +386,11 @@ public abstract class BaseSecurityService
      * @throws UnknownEntityException if the user's account does not exist
      * @throws DataBackendException if there is a problem accessing the storage.
      */
-    public User getUser(String username)
+    public <U extends User> U getUser(String username)
             throws DataBackendException, UnknownEntityException
     {
         return getUserManager().retrieve(username);
     }
-
 
     /**
      * Constructs an User object to represent an anonymous user of the
@@ -708,12 +400,10 @@ public abstract class BaseSecurityService
      * @throws UnknownEntityException if the implementation of User interface
      *         could not be determined, or does not exist.
      */
-    public User getAnonymousUser()
+    public <U extends User> U getAnonymousUser()
             throws UnknownEntityException
     {
-        User user = getUserInstance();
-        user.setName("");
-        return user;
+        return getUserManager().getAnonymousUser();
     }
 
     /**
@@ -727,8 +417,7 @@ public abstract class BaseSecurityService
      */
     public boolean isAnonymousUser(User user)
     {
-        // Either just null, the name is null or the name is the empty string
-        return (user == null) || StringUtils.isEmpty(user.getName());
+        return getUserManager().isAnonymousUser(user);
     }
 
     /**
@@ -761,7 +450,7 @@ public abstract class BaseSecurityService
     public void saveOnSessionUnbind(User user)
             throws UnknownEntityException, DataBackendException
     {
-        userManager.saveOnSessionUnbind(user);
+        getUserManager().saveOnSessionUnbind(user);
     }
 
     /**
@@ -792,8 +481,7 @@ public abstract class BaseSecurityService
             throws DataBackendException, UnknownEntityException
     {
         // revoke all roles form the user
-        revokeAll(user);
-
+        modelManager.revokeAll(user);
         getUserManager().removeAccount(user);
     }
 
@@ -898,18 +586,17 @@ public abstract class BaseSecurityService
      *
      * @return a Group object that represents the global group.
      */
-    public Group getGlobalGroup()
+    public <G extends Group> G getGlobalGroup()
     {
         if (globalGroup == null)
         {
-            synchronized (BaseSecurityService.class)
+            synchronized (DefaultSecurityService.class)
             {
                 if (globalGroup == null)
                 {
                     try
                     {
-                        globalGroup = getAllGroups()
-                                .getGroupByName(Group.GLOBAL_GROUP_NAME);
+                        globalGroup = modelManager.getGlobalGroup();
                     }
                     catch (DataBackendException e)
                     {
@@ -918,7 +605,9 @@ public abstract class BaseSecurityService
                 }
             }
         }
-        return globalGroup;
+        @SuppressWarnings("unchecked")
+        G g = (G)globalGroup;
+        return g;
     }
 
     /**
@@ -930,16 +619,10 @@ public abstract class BaseSecurityService
      *         data backend.
      * @throws UnknownEntityException if the group does not exist.
      */
-    public Group getGroupByName(String name)
+    public <G extends Group> G getGroupByName(String name)
             throws DataBackendException, UnknownEntityException
     {
-        Group group = getAllGroups().getGroupByName(name);
-        if (group == null)
-        {
-            throw new UnknownEntityException(
-                    "The specified group does not exist");
-        }
-        return group;
+        return groupManager.getGroupByName(name);
     }
 
     /**
@@ -952,16 +635,10 @@ public abstract class BaseSecurityService
      * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public Group getGroupById(int id)
+    public <G extends Group> G getGroupById(int id)
             throws DataBackendException, UnknownEntityException
     {
-        Group group = getAllGroups().getGroupById(id);
-        if (group == null)
-        {
-            throw new UnknownEntityException(
-                    "The specified group does not exist");
-        }
-        return group;
+        return groupManager.getGroupById(id);
     }
 
     /**
@@ -973,16 +650,14 @@ public abstract class BaseSecurityService
      *         data backend.
      * @throws UnknownEntityException if the role does not exist.
      */
-    public Role getRoleByName(String name)
+    public <R extends Role> R getRoleByName(String name)
             throws DataBackendException, UnknownEntityException
     {
-        Role role = getAllRoles().getRoleByName(name);
-        if (role == null)
+        R role = roleManager.getRoleByName(name);
+        if (role instanceof TurbineRole)
         {
-            throw new UnknownEntityException(
-                    "The specified role does not exist");
+            ((TurbineRole)role).setPermissions(getPermissions(role));
         }
-        role.setPermissions(getPermissions(role));
         return role;
     }
 
@@ -995,17 +670,15 @@ public abstract class BaseSecurityService
      * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public Role getRoleById(int id)
+    public <R extends Role> R getRoleById(int id)
             throws DataBackendException,
                    UnknownEntityException
     {
-        Role role = getAllRoles().getRoleById(id);
-        if (role == null)
+        R role = roleManager.getRoleById(id);
+        if (role instanceof TurbineRole)
         {
-            throw new UnknownEntityException(
-                    "The specified role does not exist");
+            ((TurbineRole)role).setPermissions(getPermissions(role));
         }
-        role.setPermissions(getPermissions(role));
         return role;
     }
 
@@ -1018,16 +691,10 @@ public abstract class BaseSecurityService
      *         data backend.
      * @throws UnknownEntityException if the permission does not exist.
      */
-    public Permission getPermissionByName(String name)
+    public <P extends Permission> P getPermissionByName(String name)
             throws DataBackendException, UnknownEntityException
     {
-        Permission permission = getAllPermissions().getPermissionByName(name);
-        if (permission == null)
-        {
-            throw new UnknownEntityException(
-                    "The specified permission does not exist");
-        }
-        return permission;
+        return permissionManager.getPermissionByName(name);
     }
 
     /**
@@ -1040,17 +707,11 @@ public abstract class BaseSecurityService
      * @throws DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public Permission getPermissionById(int id)
+    public <P extends Permission> P getPermissionById(int id)
             throws DataBackendException,
                    UnknownEntityException
     {
-        Permission permission = getAllPermissions().getPermissionById(id);
-        if (permission == null)
-        {
-            throw new UnknownEntityException(
-                    "The specified permission does not exist");
-        }
-        return permission;
+        return permissionManager.getPermissionById(id);
     }
 
     /**
@@ -1060,8 +721,10 @@ public abstract class BaseSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      */
-    public abstract GroupSet getAllGroups()
-            throws DataBackendException;
+    public GroupSet getAllGroups() throws DataBackendException
+    {
+        return groupManager.getAllGroups();
+    }
 
     /**
      * Retrieves all roles defined in the system.
@@ -1070,8 +733,10 @@ public abstract class BaseSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      */
-    public abstract RoleSet getAllRoles()
-            throws DataBackendException;
+    public RoleSet getAllRoles() throws DataBackendException
+    {
+        return roleManager.getAllRoles();
+    }
 
     /**
      * Retrieves all permissions defined in the system.
@@ -1080,6 +745,270 @@ public abstract class BaseSecurityService
      * @throws DataBackendException if there was an error accessing the
      *         data backend.
      */
-    public abstract PermissionSet getAllPermissions()
-            throws DataBackendException;
+    public PermissionSet getAllPermissions() throws DataBackendException
+    {
+        return permissionManager.getAllPermissions();
+    }
+
+    /*-----------------------------------------------------------------------
+    Creation of AccessControlLists
+    -----------------------------------------------------------------------*/
+
+    /**
+     * Constructs an AccessControlList for a specific user.
+     *
+     * @param user the user for whom the AccessControlList are to be retrieved
+     * @return The AccessControList object constructed from the user object.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if user account is not present.
+     */
+    public <A extends AccessControlList> A getACL(User user)
+        throws DataBackendException, UnknownEntityException
+    {
+        return getUserManager().getACL(user);
+    }
+
+    /*-----------------------------------------------------------------------
+    Security management
+    -----------------------------------------------------------------------*/
+
+    /**
+     * Grant an User a Role in a Group.
+     *
+     * @param user the user.
+     * @param group the group.
+     * @param role the role.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if user account, group or role is not
+     *         present.
+     */
+    public void grant(User user, Group group, Role role)
+    throws DataBackendException, UnknownEntityException
+    {
+        modelManager.grant(user, group, role);
+    }
+
+    /**
+     * Revoke a Role in a Group from an User.
+     *
+     * @param user the user.
+     * @param group the group.
+     * @param role the role.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if user account, group or role is not
+     *         present.
+     */
+    public void revoke(User user, Group group, Role role)
+        throws DataBackendException, UnknownEntityException
+    {
+        modelManager.revoke(user, group, role);
+    }
+
+    /**
+     * Revokes all roles from an User.
+     *
+     * This method is used when deleting an account.
+     *
+     * @param user the User.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if the account is not present.
+     */
+    public void revokeAll(User user)
+        throws DataBackendException, UnknownEntityException
+    {
+        modelManager.revokeAll(user);
+    }
+
+    /**
+     * Grants a Role a Permission
+     *
+     * @param role the Role.
+     * @param permission the Permission.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if role or permission is not present.
+     */
+    public void grant(Role role, Permission permission)
+        throws DataBackendException, UnknownEntityException
+    {
+        modelManager.grant(role, permission);
+    }
+
+    /**
+     * Revokes a Permission from a Role.
+     *
+     * @param role the Role.
+     * @param permission the Permission.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if role or permission is not present.
+     */
+    public void revoke(Role role, Permission permission)
+        throws DataBackendException, UnknownEntityException
+    {
+        modelManager.revoke(role, permission);
+    }
+
+    /**
+     * Revokes all permissions from a Role.
+     *
+     * This method is user when deleting a Role.
+     *
+     * @param role the Role
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws  UnknownEntityException if the Role is not present.
+     */
+    public void revokeAll(Role role)
+        throws DataBackendException, UnknownEntityException
+    {
+        modelManager.revokeAll(role);
+    }
+
+    /**
+     * Retrieves all permissions associated with a role.
+     *
+     * @param role the role name, for which the permissions are to be retrieved.
+     * @return the Permissions for the specified role
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if the role is not present.
+     */
+    public PermissionSet getPermissions(Role role)
+            throws DataBackendException, UnknownEntityException
+    {
+        return ((TurbineRole)role).getPermissions();
+    }
+
+    /**
+     * Creates a new group with specified attributes.
+     *
+     * @param group the object describing the group to be created.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws EntityExistsException if the group already exists.
+     */
+    public <G extends Group> G addGroup(G group)
+            throws DataBackendException, EntityExistsException
+    {
+        return groupManager.addGroup(group);
+    }
+
+    /**
+     * Creates a new role with specified attributes.
+     *
+     * @param role the objects describing the role to be created.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws EntityExistsException if the role already exists.
+     */
+    public <R extends Role> R addRole(R role)
+            throws DataBackendException, EntityExistsException
+    {
+        return roleManager.addRole(role);
+    }
+
+    /**
+     * Creates a new permission with specified attributes.
+     *
+     * @param permission the objects describing the permission to be created.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws EntityExistsException if the permission already exists.
+     */
+    public <P extends Permission> P addPermission(P permission)
+            throws DataBackendException, EntityExistsException
+    {
+        return permissionManager.addPermission(permission);
+    }
+
+    /**
+     * Removes a Group from the system.
+     *
+     * @param group the object describing group to be removed.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if the group does not exist.
+     */
+    public void removeGroup(Group group)
+            throws DataBackendException, UnknownEntityException
+    {
+        groupManager.removeGroup(group);
+    }
+
+    /**
+     * Removes a Role from the system.
+     *
+     * @param role The object describing the role to be removed.
+     * @throws DataBackendException if there was an error accessing the data backend.
+     * @throws UnknownEntityException if the role does not exist.
+     */
+    public void removeRole(Role role)
+            throws DataBackendException, UnknownEntityException
+    {
+        roleManager.removeRole(role);
+    }
+
+    /**
+     * Removes a Permission from the system.
+     *
+     * @param permission The object describing the permission to be removed.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if the permission does not exist.
+     */
+    public void removePermission(Permission permission)
+            throws DataBackendException, UnknownEntityException
+    {
+        permissionManager.removePermission(permission);
+    }
+
+    /**
+     * Renames an existing Group.
+     *
+     * @param group The object describing the group to be renamed.
+     * @param name the new name for the group.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if the group does not exist.
+     */
+    public void renameGroup(Group group, String name)
+            throws DataBackendException, UnknownEntityException
+    {
+        groupManager.renameGroup(group, name);
+    }
+
+    /**
+     * Renames an existing Role.
+     *
+     * @param role The object describing the role to be renamed.
+     * @param name the new name for the role.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if the role does not exist.
+     */
+    public void renameRole(Role role, String name)
+            throws DataBackendException, UnknownEntityException
+    {
+        roleManager.renameRole(role, name);
+    }
+
+    /**
+     * Renames an existing Permission.
+     *
+     * @param permission The object describing the permission to be renamed.
+     * @param name the new name for the permission.
+     * @throws DataBackendException if there was an error accessing the data
+     *         backend.
+     * @throws UnknownEntityException if the permission does not exist.
+     */
+    public void renamePermission(Permission permission, String name)
+            throws DataBackendException, UnknownEntityException
+    {
+        permissionManager.renamePermission(permission, name);
+    }
 }

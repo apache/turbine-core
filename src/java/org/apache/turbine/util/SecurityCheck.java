@@ -21,11 +21,14 @@ package org.apache.turbine.util;
  */
 
 
-import org.apache.turbine.om.security.Permission;
-import org.apache.turbine.om.security.Role;
-import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.util.security.RoleSet;
-import org.apache.turbine.util.security.UnknownEntityException;
+import org.apache.fulcrum.security.SecurityService;
+import org.apache.fulcrum.security.entity.Permission;
+import org.apache.fulcrum.security.entity.Role;
+import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
+import org.apache.fulcrum.security.model.turbine.TurbineModelManager;
+import org.apache.fulcrum.security.util.RoleSet;
+import org.apache.fulcrum.security.util.UnknownEntityException;
+import org.apache.turbine.services.TurbineServices;
 
 /**
  * Utility for doing security checks in Screens and Actions.
@@ -50,6 +53,8 @@ public class SecurityCheck
     private String failScreen;
 
     private RunData data = null;
+
+    private SecurityService securityService = null;
 
     /**
      * Holds information if a missing Permission or Role should be created and granted on-the-fly.
@@ -89,6 +94,9 @@ public class SecurityCheck
         this.message = message;
         this.failScreen = failedScreen;
         this.initialize = initialize;
+        this.securityService = (SecurityService)TurbineServices
+    		.getInstance()
+    		.getService(SecurityService.ROLE);
     }
 
     /**
@@ -102,8 +110,9 @@ public class SecurityCheck
             throws Exception
     {
         boolean value = false;
-        if (data.getACL() == null ||
-                !data.getACL().hasRole(role))
+        TurbineAccessControlList acl = data.getACL();
+        if (acl == null ||
+            !acl.hasRole(role))
         {
             data.setScreen(failScreen);
             data.setMessage(message);
@@ -127,23 +136,27 @@ public class SecurityCheck
     public boolean hasRole(String role) throws Exception
     {
         Role roleObject = null;
+
         try
         {
-            roleObject = TurbineSecurity.getRoleByName(role);
+            roleObject = securityService.getRoleManager().getRoleByName(role);
         }
         catch (UnknownEntityException e)
         {
             if(initialize)
             {
-                roleObject = TurbineSecurity.createRole(role);
-                TurbineSecurity.grant(data.getUser(), TurbineSecurity.getGlobalGroup(), roleObject);
+                roleObject = securityService.getRoleManager().getRoleInstance(role);
+                securityService.getRoleManager().addRole(roleObject);
+                TurbineModelManager modelManager = (TurbineModelManager)securityService.getModelManager();
+                modelManager.grant(data.getUser(), modelManager.getGlobalGroup(), roleObject);
             }
             else
             {
                 throw(e);
             }
         }
-        return hasRole(TurbineSecurity.getRoleByName(role));
+
+        return hasRole(roleObject);
     }
 
     /**
@@ -157,8 +170,9 @@ public class SecurityCheck
             throws Exception
     {
         boolean value = false;
-        if (data.getACL() == null ||
-                !data.getACL().hasPermission(permission))
+        TurbineAccessControlList acl = data.getACL();
+        if (acl == null ||
+            !acl.hasPermission(permission))
         {
             data.setScreen(failScreen);
             data.setMessage(message);
@@ -171,7 +185,7 @@ public class SecurityCheck
     }
 
     /**
-     * Does the user have this permission? If initialze is set to <code>true</code>
+     * Does the user have this permission? If initialize is set to <code>true</code>
      * The permission will be created and granted to the first available Role of
      * the user, that the SecurityCheck is running against.
      *
@@ -190,17 +204,22 @@ public class SecurityCheck
         Permission permissionObject = null;
         try
         {
-            permissionObject = TurbineSecurity.getPermissionByName(permission);
+            permissionObject = securityService.getPermissionManager().getPermissionByName(permission);
         }
         catch (UnknownEntityException e)
         {
             if(initialize)
             {
-                permissionObject = TurbineSecurity.createPermission(permission);
+                permissionObject = securityService.getPermissionManager().getPermissionInstance(permission);
+                securityService.getPermissionManager().addPermission(permissionObject);
 
                 Role role = null;
-                RoleSet roles = data.getACL().getRoles();
-                if(roles.size() > 0) role = roles.getRolesArray()[0];
+                TurbineAccessControlList acl = data.getACL();
+                RoleSet roles = acl.getRoles();
+                if(roles.size() > 0)
+                {
+					role = roles.toArray(new Role[0])[0];
+				}
 
                 if(role == null)
                 {
@@ -208,8 +227,11 @@ public class SecurityCheck
                      * The User within data has no roles yet, let us grant the permission
                      * to the first role available through TurbineSecurity.
                      */
-                    roles = TurbineSecurity.getAllRoles();
-                    if(roles.size() > 0) role = roles.getRolesArray()[0];
+                    roles = securityService.getRoleManager().getAllRoles();
+                    if(roles.size() > 0)
+                    {
+						role = roles.toArray(new Role[0])[0];
+					}
                 }
 
                 if(role != null)
@@ -218,7 +240,8 @@ public class SecurityCheck
                      * If we have no role, there is nothing we can do about it. So only grant it,
                      * if we have a role to grant it to.
                      */
-                    TurbineSecurity.grant(data.getACL().getRoles().getRolesArray()[0], permissionObject);
+                    TurbineModelManager modelManager = (TurbineModelManager)securityService.getModelManager();
+                    modelManager.grant(role, permissionObject);
                 }
             }
             else
@@ -226,6 +249,7 @@ public class SecurityCheck
                 throw(e);
             }
         }
+
         return hasPermission(permissionObject);
     }
 

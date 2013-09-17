@@ -21,21 +21,17 @@ package org.apache.turbine.test;
  */
 
 
-import java.util.HashMap;
-import java.util.List;
-
-import org.apache.turbine.om.security.Group;
-import org.apache.turbine.om.security.Permission;
-import org.apache.turbine.om.security.Role;
+import org.apache.fulcrum.security.entity.Group;
+import org.apache.fulcrum.security.entity.Permission;
+import org.apache.fulcrum.security.entity.Role;
+import org.apache.fulcrum.security.util.DataBackendException;
+import org.apache.fulcrum.security.util.EntityExistsException;
+import org.apache.fulcrum.security.util.GroupSet;
+import org.apache.fulcrum.security.util.PermissionSet;
+import org.apache.fulcrum.security.util.RoleSet;
+import org.apache.fulcrum.security.util.UnknownEntityException;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.services.security.BaseSecurityService;
-import org.apache.turbine.util.security.AccessControlList;
-import org.apache.turbine.util.security.DataBackendException;
-import org.apache.turbine.util.security.EntityExistsException;
-import org.apache.turbine.util.security.GroupSet;
-import org.apache.turbine.util.security.PermissionSet;
-import org.apache.turbine.util.security.RoleSet;
-import org.apache.turbine.util.security.UnknownEntityException;
+import org.apache.turbine.services.security.DefaultSecurityService;
 
 /**
  * An Mock implementation of SecurityService.  Basically replacing existing
@@ -44,45 +40,8 @@ import org.apache.turbine.util.security.UnknownEntityException;
  * @author <a href="mailto:epugh@opensourceconnections.com">Eric Pugh</a>
  * @version $Id$
  */
-public class MockSecurityService extends BaseSecurityService
+public class MockSecurityService extends DefaultSecurityService
 {
-
-    /**
-     * The key within services's properties for user implementation
-     * classname (user.class)  - Leandro
-     */
-    public static final String USER_PEER_CLASS_KEY = "userPeer.class";
-
-    /**
-     * The default implementation of User interface
-     * (org.apache.turbine.om.security.DBUser)
-     */
-    public static final String USER_PEER_CLASS_DEFAULT =
-        "org.apache.turbine.om.security.peer.TurbineUserPeer";
-
-    /*-----------------------------------------------------------------------
-      Creation of AccessControlLists
-      -----------------------------------------------------------------------*/
-
-    /**
-     * Constructs an AccessControlList for a specific user.
-     *
-     * This method creates a snapshot of the state of security information
-     * concerning this user, at the moment of invocation and stores it
-     * into an AccessControlList object.
-     *
-     * @param user the user for whom the AccessControlList are to be retrieved
-     * @return A new AccessControlList object.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if user account is not present.
-     */
-    public AccessControlList getACL(User user)
-        throws DataBackendException, UnknownEntityException
-    {
-        return getAclInstance(new HashMap(), new HashMap());
-    }
-
     /*-----------------------------------------------------------------------
       Security management
       -----------------------------------------------------------------------*/
@@ -246,49 +205,6 @@ public class MockSecurityService extends BaseSecurityService
     }
 
     /**
-     * Stores Group's attributes. The Groups is required to exist in the system.
-     *
-     * @param group The Group to be stored.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if the group does not exist.
-     */
-    public void saveGroup(Group group)
-        throws DataBackendException, UnknownEntityException
-    {
-
-    }
-
-    /**
-     * Stores Role's attributes. The Roles is required to exist in the system.
-     *
-     * @param role The Role to be stored.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if the role does not exist.
-     */
-    public void saveRole(Role role)
-        throws DataBackendException, UnknownEntityException
-    {
-
-    }
-
-    /**
-     * Stores Permission's attributes. The Permissions is required to exist in
-     * the system.
-     *
-     * @param permission The Permission to be stored.
-     * @throws DataBackendException if there was an error accessing the data
-     *         backend.
-     * @throws UnknownEntityException if the permission does not exist.
-     */
-    public void savePermission(Permission permission)
-        throws DataBackendException, UnknownEntityException
-    {
-
-    }
-
-    /**
      * Creates a new group with specified attributes.
      *
      * @param group the object describing the group to be created.
@@ -297,10 +213,10 @@ public class MockSecurityService extends BaseSecurityService
      *         backend.
      * @throws EntityExistsException if the group already exists.
      */
-    public synchronized Group addGroup(Group group)
+    public synchronized <G extends Group> G addGroup(G group)
         throws DataBackendException, EntityExistsException
     {
-        return null;
+        return group;
     }
 
     /**
@@ -312,10 +228,10 @@ public class MockSecurityService extends BaseSecurityService
      *         backend.
      * @throws EntityExistsException if the role already exists.
      */
-    public synchronized Role addRole(Role role)
+    public synchronized <R extends Role> R addRole(R role)
         throws DataBackendException, EntityExistsException
     {
-        return null;
+        return role;
     }
 
     /**
@@ -327,7 +243,7 @@ public class MockSecurityService extends BaseSecurityService
      *         backend.
      * @throws EntityExistsException if the permission already exists.
      */
-    public synchronized Permission addPermission(Permission permission)
+    public synchronized <P extends Permission> P addPermission(P permission)
         throws DataBackendException, EntityExistsException
     {
         return null;
@@ -428,9 +344,6 @@ public class MockSecurityService extends BaseSecurityService
         return null;
     }
     public RoleSet getAllRoles() throws DataBackendException {
-        return null;
-    }
-    public List getUserList(Object criteria) throws DataBackendException {
         return null;
     }
 }

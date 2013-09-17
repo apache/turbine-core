@@ -20,35 +20,31 @@ package org.apache.turbine.modules.actions;
  */
 
 import org.apache.commons.configuration.Configuration;
-
 import org.apache.commons.lang.StringUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.turbine.Turbine;
+import org.apache.fulcrum.security.util.DataBackendException;
+import org.apache.fulcrum.security.util.FulcrumSecurityException;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.security.DataBackendException;
-import org.apache.turbine.util.security.TurbineSecurityException;
 
 /**
  * This is where we authenticate the user logging into the system
  * against a user in the database. If the user exists in the database
  * that users last login time will be updated.
  *
- * @deprecated Use PipelineData version instead.
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  * @version $Id$
  */
-@Deprecated
 public class LoginUser
         extends Action
 {
@@ -61,6 +57,14 @@ public class LoginUser
     /** Logging */
     private static Log log = LogFactory.getLog(LoginUser.class);
 
+    /** Injected service instance */
+    @TurbineService
+    private SecurityService security;
+
+    /** Injected configuration instance */
+    @TurbineConfiguration
+    private Configuration conf;
+
     /**
      * Updates the user's LastLogin timestamp, sets their state to
      * "logged in" and calls RunData.setUser() .  If the user cannot
@@ -70,12 +74,12 @@ public class LoginUser
      * to SCREEN_LOGIN
      *
      * @param     data Turbine information.
-     * @exception TurbineSecurityException could not get instance of the
+     * @exception FulcrumSecurityException could not get instance of the
      *            anonymous user
      */
     @Override
     public void doPerform(RunData data)
-            throws TurbineSecurityException
+            throws FulcrumSecurityException
     {
         String username = data.getParameters().getString(CGI_USERNAME, "");
         String password = data.getParameters().getString(CGI_PASSWORD, "");
@@ -88,8 +92,7 @@ public class LoginUser
         try
         {
             // Authenticate the user and get the object.
-            User user = TurbineSecurity.getAuthenticatedUser(
-                    username, password);
+            User user = security.getAuthenticatedUser(username, password);
 
             // Store the user object.
             data.setUser(user);
@@ -118,8 +121,6 @@ public class LoginUser
         }
         catch (Exception e)
         {
-            Configuration conf = Turbine.getConfiguration();
-
             if (e instanceof DataBackendException)
             {
                 log.error(e);
@@ -127,7 +128,8 @@ public class LoginUser
 
             // Set Error Message and clean out the user.
             data.setMessage(conf.getString(TurbineConstants.LOGIN_ERROR, ""));
-            data.setUser (TurbineSecurity.getAnonymousUser());
+            User anonymousUser = security.getAnonymousUser();
+            data.setUser(anonymousUser);
 
             String loginTemplate = conf.getString(
                     TurbineConstants.TEMPLATE_LOGIN);
@@ -154,12 +156,12 @@ public class LoginUser
      * to SCREEN_LOGIN
      *
      * @param     pipelineData Turbine information.
-     * @exception TurbineSecurityException could not get instance of the
+     * @exception FulcrumSecurityException could not get instance of the
      *            anonymous user
      */
     @Override
     public void doPerform(PipelineData pipelineData)
-            throws TurbineSecurityException
+            throws FulcrumSecurityException
     {
         RunData data = getRunData(pipelineData);
         doPerform(data);

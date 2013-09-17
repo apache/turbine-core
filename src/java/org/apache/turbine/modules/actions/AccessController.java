@@ -21,14 +21,16 @@ package org.apache.turbine.modules.actions;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.fulcrum.security.acl.AccessControlList;
+import org.apache.fulcrum.security.model.turbine.TurbineUserManager;
+import org.apache.fulcrum.security.util.FulcrumSecurityException;
 import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.security.AccessControlList;
-import org.apache.turbine.util.security.TurbineSecurityException;
 
 /**
  * This action doPerforms an Access Control List and places it into
@@ -71,6 +73,9 @@ public class AccessController
     /** Logging */
     private static Log log = LogFactory.getLog(AccessController.class);
 
+    @TurbineService
+    private TurbineUserManager userManager;
+
     /**
      * If there is a user and the user is logged in, doPerform will
      * set the RunData ACL.  The list is first sought from the current
@@ -78,30 +83,29 @@ public class AccessController
      * <code>TurbineSecurity.getACL()</code> and added to the current
      * session.
      * @deprecated Use PipelineData version instead.
-     * @see org.apache.turbine.services.security.TurbineSecurity
      * @param data Turbine information.
-     * @exception TurbineSecurityException problem with the security service.
+     * @exception FulcrumSecurityException problem with the security service.
      */
     @Deprecated
     @Override
     public void doPerform(RunData data)
-            throws TurbineSecurityException
+            throws FulcrumSecurityException
     {
         User user = data.getUser();
 
-        if (!TurbineSecurity.isAnonymousUser(user)
+        if (!userManager.isAnonymousUser(user)
             && user.hasLoggedIn())
         {
             log.debug("Fetching ACL for " + user.getName());
             AccessControlList acl = (AccessControlList)
                     data.getSession().getAttribute(
-                            AccessControlList.SESSION_KEY);
+                            TurbineConstants.ACL_SESSION_KEY);
             if (acl == null)
             {
                 log.debug("No ACL found in Session, building fresh ACL");
-                acl = TurbineSecurity.getACL(user);
+                acl = userManager.getACL(user);
                 data.getSession().setAttribute(
-                        AccessControlList.SESSION_KEY, acl);
+                        TurbineConstants.ACL_SESSION_KEY, acl);
 
                 log.debug("ACL is " + acl);
             }
@@ -116,13 +120,12 @@ public class AccessController
      * <code>TurbineSecurity.getACL()</code> and added to the current
      * session.
      *
-     * @see org.apache.turbine.services.security.TurbineSecurity
      * @param data Turbine information.
-     * @exception TurbineSecurityException problem with the security service.
+     * @exception FulcrumSecurityException problem with the security service.
      */
     @Override
     public void doPerform(PipelineData pipelineData)
-    	throws TurbineSecurityException
+    	throws FulcrumSecurityException
     {
         RunData data = getRunData(pipelineData);
         doPerform(data);

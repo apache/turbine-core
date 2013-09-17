@@ -21,11 +21,13 @@ package org.apache.turbine.util.template;
  */
 
 
+import org.apache.fulcrum.security.entity.Permission;
+import org.apache.fulcrum.security.entity.Role;
+import org.apache.fulcrum.security.model.turbine.TurbineAccessControlList;
+import org.apache.fulcrum.security.model.turbine.TurbineUserManager;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.om.security.Permission;
-import org.apache.turbine.om.security.Role;
-import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
 
@@ -92,7 +94,8 @@ public class TemplateSecurityCheck
             return false;
         }
 
-        if (data.getACL() == null || !data.getACL().hasRole(role))
+        TurbineAccessControlList acl = data.getACL();
+        if (acl == null || !acl.hasRole(role))
         {
             data.setScreen(getFailScreen());
             data.getTemplateInfo().setScreenTemplate(getFailTemplate());
@@ -114,7 +117,8 @@ public class TemplateSecurityCheck
         throws Exception
     {
         boolean value = true;
-        if (data.getACL() == null || !data.getACL().hasPermission(permission))
+        TurbineAccessControlList acl = data.getACL();
+        if (acl == null || !acl.hasPermission(permission))
         {
             data.setScreen(getFailScreen());
             data.getTemplateInfo().setScreenTemplate(getFailTemplate());
@@ -137,7 +141,12 @@ public class TemplateSecurityCheck
         boolean value = true;
 
         // Do it like the AccessController
-        if (!TurbineSecurity.isAnonymousUser(data.getUser())
+        TurbineUserManager userManager =
+        	(TurbineUserManager)TurbineServices
+        		.getInstance()
+        		.getService(TurbineUserManager.ROLE);
+
+        if (!userManager.isAnonymousUser(data.getUser())
             && !data.getUser().hasLoggedIn())
         {
             data.setMessage(Turbine.getConfiguration()

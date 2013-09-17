@@ -20,16 +20,15 @@ package org.apache.turbine.modules.actions;
  */
 
 import org.apache.commons.configuration.Configuration;
-
-import org.apache.turbine.Turbine;
+import org.apache.fulcrum.security.util.FulcrumSecurityException;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.security.AccessControlList;
-import org.apache.turbine.util.security.TurbineSecurityException;
 
 /**
  * This action removes a user from the session. It makes sure to save
@@ -43,33 +42,42 @@ import org.apache.turbine.util.security.TurbineSecurityException;
 public class LogoutUser
         extends Action
 {
+    /** Injected service instance */
+    @TurbineService
+    private SecurityService security;
+
+    /** Injected configuration instance */
+    @TurbineConfiguration
+    private Configuration conf;
+
+
     /**
      * Clears the RunData user object back to an anonymous status not
      * logged in, and with a null ACL.  If the tr.props ACTION_LOGIN
-     * is anthing except "LogoutUser", flow is transfered to the
+     * is anything except "LogoutUser", flow is transfered to the
      * SCREEN_HOMEPAGE
      *
      * If this action name is the value of action.logout then we are
      * being run before the session validator, so we don't need to
      * set the screen (we assume that the session validator will handle
-     * that). This is basically still here simply to preserve old behaviour
+     * that). This is basically still here simply to preserve old behavior
      * - it is recommended that action.logout is set to "LogoutUser" and
      * that the session validator does handle setting the screen/template
      * for a logged out (read not-logged-in) user.
      *
      * @deprecated Use PipelineData version instead
      * @param data Turbine information.
-     * @exception TurbineSecurityException a problem occured in the security
+     * @exception FulcrumSecurityException a problem occurred in the security
      *            service.
      */
     @Deprecated
     @Override
     public void doPerform(RunData data)
-            throws TurbineSecurityException
+            throws FulcrumSecurityException
     {
         User user = data.getUser();
 
-        if (!TurbineSecurity.isAnonymousUser(user))
+        if (!security.isAnonymousUser(user))
         {
             // Make sure that the user has really logged in...
             if (!user.hasLoggedIn())
@@ -78,10 +86,8 @@ public class LogoutUser
             }
 
             user.setHasLoggedIn(Boolean.FALSE);
-            TurbineSecurity.saveUser(user);
+            security.saveUser(user);
         }
-
-        Configuration conf = Turbine.getConfiguration();
 
         data.setMessage(conf.getString(TurbineConstants.LOGOUT_MESSAGE));
 
@@ -90,13 +96,14 @@ public class LogoutUser
         data.setACL(null);
 
         // Retrieve an anonymous user.
-        data.setUser(TurbineSecurity.getAnonymousUser());
+        User anonymousUser = security.getAnonymousUser();
+        data.setUser(anonymousUser);
         data.save();
 
         // In the event that the current screen or related navigations
         // require acl info, we cannot wait for Turbine to handle
         // regenerating acl.
-        data.getSession().removeAttribute(AccessControlList.SESSION_KEY);
+        data.getSession().removeAttribute(TurbineConstants.ACL_SESSION_KEY);
 
         // If this action name is the value of action.logout then we are
         // being run before the session validator, so we don't need to
@@ -128,12 +135,12 @@ public class LogoutUser
      * for a logged out (read not-logged-in) user.
      *
      * @param data Turbine information.
-     * @exception TurbineSecurityException a problem occured in the security
+     * @exception FulcrumSecurityException a problem occured in the security
      *            service.
      */
     @Override
     public void doPerform(PipelineData pipelineData)
-            throws TurbineSecurityException
+            throws FulcrumSecurityException
     {
         RunData data = getRunData(pipelineData);
         doPerform(data);
