@@ -24,7 +24,8 @@ package org.apache.turbine.pipeline;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.turbine.om.security.TurbineUser;
+import org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl;
+import org.apache.turbine.om.security.DefaultUserImpl;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
@@ -72,12 +73,9 @@ public class DefaultACLCreationValveTest extends BaseTestCase
         request.setupGetContentType("html/text");
         request.setupAddHeader("Content-type", "html/text");
         request.setupAddHeader("Accept-Language", "en-US");
-
         session = new EnhancedMockHttpSession();
         response = new MockHttpServletResponse();
-
         request.setSession(session);
-
         tc =
             new TurbineConfig(
                     ".",
@@ -89,7 +87,7 @@ public class DefaultACLCreationValveTest extends BaseTestCase
     public void testLoggedInUser() throws Exception
     {
         RunData runData = getRunData(request,response,config);
-        TurbineUser tu = new TurbineUser();
+        User tu = new DefaultUserImpl(new TurbineUserImpl());
         tu.setName("username");
         tu.setHasLoggedIn(Boolean.TRUE);
         runData.setAction("TestAction");

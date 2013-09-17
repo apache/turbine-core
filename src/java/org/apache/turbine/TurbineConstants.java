@@ -311,7 +311,10 @@ public interface TurbineConstants
     String DEFAULT_CONTEXT_PATH_KEY
             = "serverdata.default.contextPath";
 
-	/**
+    /** The default Session key for the Access Control List */
+    String ACL_SESSION_KEY = "turbine.AccessControlList";
+
+    /**
 	 * The fully qualified class name of the default {@link
 	 * org.apache.turbine.pipeline.Pipeline} implementation to use in the
 	 * {@link org.apache.turbine.Turbine} servlet.

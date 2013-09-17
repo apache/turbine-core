@@ -26,6 +26,9 @@
   <body>
     <release version="4.0-M2" date="in Subversion">
       <action type="update" dev="tv">
+        Switch to Fulcrum Security API
+      </action>
+      <action type="update" dev="tv">
         Refactor handling of annotated fields into AnnotationProcessor.
       </action>
       <action type="add" dev="tv">

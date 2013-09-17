@@ -23,6 +23,10 @@
 -->
 
 <componentConfig>
+    <!-- Torque Component -->
+    <torque>
+       <configfile>conf/test/TorqueTest.properties</configfile>
+    </torque>
     <cache cacheInitialSize="20" cacheCheckFrequency="5"/>
     <mimetype/>
     <crypto>
@@ -38,6 +42,7 @@
         <bundle>org.apache.turbine.services.localization.BarBundle</bundle>
       </bundles>
     </localization>
+    <upload repository="target" sizeMax="1048576" sizeThreshold="10240"/>
     <intake>
       <serialDataPath>target/appData.ser</serialDataPath>
       <xmlPaths>
@@ -50,8 +55,23 @@
         <parameterEncoding>utf-8</parameterEncoding>
         <automaticUpload>true</automaticUpload>
     </parser>
-    <upload repository="target" sizeMax="1048576" sizeThreshold="10240"/>
-    <torque>
-       <configfile>conf/test/TorqueTest.properties</configfile>
-    </torque>
+
+    <!-- These components belong to the Fulcrum-Security services -->        
+    <securityService/>
+    <authenticator/>
+    <modelManager/>
+    <aclFactory/>
+    <userManager>
+        <className>org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl</className>
+    </userManager>
+    <groupManager>
+        <className>org.apache.fulcrum.security.model.turbine.entity.impl.TurbineGroupImpl</className>
+    </groupManager>
+    <roleManager>
+        <className>org.apache.fulcrum.security.model.turbine.entity.impl.TurbineRoleImpl</className>
+    </roleManager>
+    <permissionManager>
+        <className>org.apache.fulcrum.security.model.turbine.entity.impl.TurbinePermissionImpl</className>
+    </permissionManager>
+
 </componentConfig>

@@ -24,14 +24,16 @@ package org.apache.turbine.test;
 import java.util.List;
 
 import org.apache.commons.configuration.Configuration;
-
-import org.apache.turbine.om.security.TurbineUser;
+import org.apache.fulcrum.security.acl.AccessControlList;
+import org.apache.fulcrum.security.model.turbine.entity.TurbineUser;
+import org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl;
+import org.apache.fulcrum.security.util.DataBackendException;
+import org.apache.fulcrum.security.util.EntityExistsException;
+import org.apache.fulcrum.security.util.PasswordMismatchException;
+import org.apache.fulcrum.security.util.UnknownEntityException;
+import org.apache.turbine.om.security.DefaultUserImpl;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.UserManager;
-import org.apache.turbine.util.security.DataBackendException;
-import org.apache.turbine.util.security.EntityExistsException;
-import org.apache.turbine.util.security.PasswordMismatchException;
-import org.apache.turbine.util.security.UnknownEntityException;
 
 /**
  * This Mock object is used in testing.
@@ -92,7 +94,7 @@ public class MockUserManager implements UserManager
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public User retrieve(String username)
+    public <U extends User> U retrieve(String username)
             throws UnknownEntityException, DataBackendException
     {
         throw new DataBackendException("PassiveUserManager knows no users");
@@ -111,29 +113,8 @@ public class MockUserManager implements UserManager
      * @return a List of users meeting the criteria.
      * @throws DataBackendException if there is a problem accessing the
      *         storage.
-     * @deprecated Use <a href="#retrieveList">retrieveList</a> instead.
      */
-    public User[] retrieve(Object criteria)
-            throws DataBackendException
-    {
-        throw new DataBackendException("PassiveUserManager knows no users");
-    }
-
-    /**
-     * Retrieve a set of users that meet the specified criteria.
-     *
-     * As the keys for the criteria, you should use the constants that
-     * are defined in {@link User} interface, plus the names
-     * of the custom attributes you added to your user representation
-     * in the data storage. Use verbatim names of the attributes -
-     * without table name prefix in case of DB implementation.
-     *
-     * @param criteria The criteria of selection.
-     * @return a List of users meeting the criteria.
-     * @throws DataBackendException if there is a problem accessing the
-     *         storage.
-     */
-    public List retrieveList(Object criteria)
+    public List<? extends User> retrieveList(Object criteria)
             throws DataBackendException
     {
         throw new DataBackendException("PassiveUserManager knows no users");
@@ -155,13 +136,14 @@ public class MockUserManager implements UserManager
      * @exception DataBackendException if there is a problem accessing the
      *            storage.
      */
-    public User retrieve(String username, String password)
+    @SuppressWarnings("unchecked")
+    public <U extends User> U retrieve(String username, String password)
             throws PasswordMismatchException, UnknownEntityException,
             DataBackendException
     {
-        TurbineUser tu = new TurbineUser();
+        TurbineUser tu = new TurbineUserImpl();
         tu.setName(username);
-        return tu;
+        return (U)new DefaultUserImpl(tu);
     }
 
     /**
@@ -288,5 +270,84 @@ public class MockUserManager implements UserManager
             throws UnknownEntityException, DataBackendException
     {
         throw new DataBackendException("PassiveUserManager does not support setting passwords");
+    }
+
+
+    /**
+     * Constructs an User object to represent an anonymous user of the
+     * application.
+     *
+     * @return An anonymous Turbine User.
+     * @throws UnknownEntityException
+     *             if the anonymous User object couldn't be constructed.
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends User> T getAnonymousUser() throws UnknownEntityException
+    {
+        TurbineUser tu = new TurbineUserImpl();
+        tu.setName("");
+        return (T)new DefaultUserImpl(tu);
+    }
+
+    /**
+     * Checks whether a passed user object matches the anonymous user pattern
+     * according to the configured user manager
+     *
+     * @param An
+     *            user object
+     *
+     * @return True if this is an anonymous user
+     *
+     */
+    public boolean isAnonymousUser(User u)
+    {
+        return true;
+    }
+
+    /**
+     * Construct a blank User object.
+     *
+     * This method calls getUserClass, and then creates a new object using the
+     * default constructor.
+     *
+     * @return an object implementing User interface.
+     * @throws DataBackendException
+     *             if the object could not be instantiated.
+     */
+    public <T extends User> T getUserInstance() throws DataBackendException
+    {
+        throw new DataBackendException("PassiveUserManager knows no users");
+    }
+
+    /**
+     * Construct a blank User object.
+     *
+     * This method calls getUserClass, and then creates a new object using the
+     * default constructor.
+     *
+     * @param userName
+     *            The name of the user.
+     *
+     * @return an object implementing User interface.
+     * @throws DataBackendException
+     *             if the object could not be instantiated.
+     */
+    public <T extends User> T getUserInstance(String userName) throws DataBackendException
+    {
+        throw new DataBackendException("PassiveUserManager knows no users");
+    }
+
+    /**
+     * Return a Class object representing the system's chosen implementation of
+     * of ACL interface.
+     *
+     * @return systems's chosen implementation of ACL interface.
+     * @throws UnknownEntityException
+     *             if the implementation of ACL interface could not be
+     *             determined, or does not exist.
+     */
+    public <T extends AccessControlList> T getACL(User user) throws UnknownEntityException
+    {
+        throw new UnknownEntityException("PassiveUserManager knows no users");
     }
 }

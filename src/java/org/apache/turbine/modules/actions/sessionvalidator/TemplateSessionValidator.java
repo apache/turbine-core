@@ -25,11 +25,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.TurbineException;
 
 /**
  * SessionValidator for use with the Template Service, the
@@ -56,21 +57,25 @@ public class TemplateSessionValidator
     /** Logging */
     private static Log log = LogFactory.getLog(TemplateSessionValidator.class);
 
+    @TurbineService
+    private SecurityService security;
+
+    @TurbineConfiguration
+    private Configuration conf;
+
     /**
      * Execute the action.
      *
      * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
-     * @exception TurbineException The anonymous user could not be obtained
+     * @exception Exception The anonymous user could not be obtained
      *         from the security service
      */
     @Deprecated
     @Override
     public void doPerform(RunData data)
-            throws TurbineException
+            throws Exception
     {
-        Configuration conf = Turbine.getConfiguration();
-
         // Pull user from session.
         data.populate();
 
@@ -78,7 +83,8 @@ public class TemplateSessionValidator
         if (data.getUser() == null)
         {
             log.debug("Fixing up empty User Object!");
-            data.setUser(TurbineSecurity.getAnonymousUser());
+            User anonymousUser = security.getAnonymousUser();
+            data.setUser(anonymousUser);
             data.save();
         }
 
@@ -103,7 +109,7 @@ public class TemplateSessionValidator
         // forms.  This can be used to prevent a user from using the
         // browsers back button and submitting stale data.
         else if (data.getParameters().containsKey("_session_access_counter")
-                && !TurbineSecurity.isAnonymousUser(data.getUser()))
+                && !security.isAnonymousUser(data.getUser()))
         {
             // See comments in screens.error.InvalidState.
             if (data.getParameters().getInt("_session_access_counter")
@@ -142,12 +148,12 @@ public class TemplateSessionValidator
      * Execute the action.
      *
      * @param pipelineData Turbine information.
-     * @exception TurbineException The anonymous user could not be obtained
+     * @exception Exception The anonymous user could not be obtained
      *         from the security service
      */
     @Override
     public void doPerform(PipelineData pipelineData)
-    throws TurbineException
+    throws Exception
     {
         RunData data = getRunData(pipelineData);
         doPerform(data);

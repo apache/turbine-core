@@ -25,11 +25,11 @@ import java.io.IOException;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Page;
 import org.apache.turbine.modules.PageLoader;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -44,7 +44,9 @@ import org.apache.turbine.util.TurbineException;
 public class ExecutePageValve
     extends AbstractValve
 {
+    @TurbineService
     private TemplateService templateService;
+
     private PageLoader pageLoader;
 
     /**
@@ -63,8 +65,6 @@ public class ExecutePageValve
     public void initialize() throws Exception
     {
         super.initialize();
-
-        this.templateService = TurbineTemplate.getService();
         this.pageLoader = (PageLoader)TurbineAssemblerBroker.getLoader(Page.class);
     }
 
@@ -120,7 +120,7 @@ public class ExecutePageValve
              * decendent of RawScreen is trying to produce output.
              * If there is a 'page.default' property in the TR.props
              * then use that, otherwise return DefaultPage which will
-             * handle ECS view scenerios and RawScreen scenerios. The
+             * handle ECS view scenarios and RawScreen scenarios. The
              * app developer can still specify the 'page.default'
              * if they wish but the DefaultPage should work in
              * most cases.

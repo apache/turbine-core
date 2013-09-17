@@ -55,113 +55,120 @@ public class AnnotationProcessor
     public static void process(Object object) throws TurbineException
     {
         ServiceManager manager = TurbineServices.getInstance();
-        Field[] fields = object.getClass().getDeclaredFields();
+        Class<?> clazz = object.getClass();
 
-        for (Field field : fields)
+        while (clazz != null)
         {
-            if (field.isAnnotationPresent(TurbineService.class))
+            Field[] fields = clazz.getDeclaredFields();
+
+            for (Field field : fields)
             {
-                TurbineService sa = field.getAnnotation(TurbineService.class);
-                String serviceName = null;
-                // Check for annotation value
-                if (StringUtils.isNotEmpty(sa.value()))
+                if (field.isAnnotationPresent(TurbineService.class))
                 {
-                    serviceName = sa.value();
-                }
-                // Check for fields SERVICE_NAME and ROLE
-                else
-                {
-                    Field[] typeFields = field.getType().getFields();
-                    for (Field f : typeFields)
+                    TurbineService sa = field.getAnnotation(TurbineService.class);
+                    String serviceName = null;
+                    // Check for annotation value
+                    if (StringUtils.isNotEmpty(sa.value()))
                     {
-                        if (TurbineService.SERVICE_NAME.equals(f.getName()))
+                        serviceName = sa.value();
+                    }
+                    // Check for fields SERVICE_NAME and ROLE
+                    else
+                    {
+                        Field[] typeFields = field.getType().getFields();
+                        for (Field f : typeFields)
                         {
-                            try
+                            if (TurbineService.SERVICE_NAME.equals(f.getName()))
                             {
-                                serviceName = (String)f.get(null);
+                                try
+                                {
+                                    serviceName = (String)f.get(null);
+                                }
+                                catch (Exception e)
+                                {
+                                    continue;
+                                }
+                                break;
                             }
-                            catch (Exception e)
+                            else if (TurbineService.ROLE.equals(f.getName()))
                             {
-                                continue;
+                                try
+                                {
+                                    serviceName = (String)f.get(null);
+                                }
+                                catch (Exception e)
+                                {
+                                    continue;
+                                }
+                                break;
                             }
-                            break;
-                        }
-                        else if (TurbineService.ROLE.equals(f.getName()))
-                        {
-                            try
-                            {
-                                serviceName = (String)f.get(null);
-                            }
-                            catch (Exception e)
-                            {
-                                continue;
-                            }
-                            break;
                         }
                     }
-                }
 
-                if (StringUtils.isEmpty(serviceName))
-                {
-                    // Try interface class name
-                    serviceName = field.getType().getName();
-                }
+                    if (StringUtils.isEmpty(serviceName))
+                    {
+                        // Try interface class name
+                        serviceName = field.getType().getName();
+                    }
 
-                if (log.isDebugEnabled())
-                {
-                    log.debug("Looking up service for injection: " + serviceName + " for object " + object);
-                }
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("Looking up service for injection: " + serviceName + " for object " + object);
+                    }
 
-                Object service = manager.getService(serviceName); // throws Exception on unknown service
-                field.setAccessible(true);
+                    Object service = manager.getService(serviceName); // throws Exception on unknown service
+                    field.setAccessible(true);
 
-                try
-                {
-                    field.set(object, service);
+                    try
+                    {
+                        field.set(object, service);
+                    }
+                    catch (IllegalArgumentException e)
+                    {
+                        throw new TurbineException("Could not inject service "
+                                + serviceName + " into object " + object, e);
+                    }
+                    catch (IllegalAccessException e)
+                    {
+                        throw new TurbineException("Could not inject service "
+                                + serviceName + " into object " + object, e);
+                    }
                 }
-                catch (IllegalArgumentException e)
+                else if (field.isAnnotationPresent(TurbineConfiguration.class))
                 {
-                    throw new TurbineException("Could not inject service "
-                            + serviceName + " into object " + object, e);
-                }
-                catch (IllegalAccessException e)
-                {
-                    throw new TurbineException("Could not inject service "
-                            + serviceName + " into object " + object, e);
+                    TurbineConfiguration ca = field.getAnnotation(TurbineConfiguration.class);
+                    Configuration conf = null;
+
+                    // Check for annotation value
+                    if (StringUtils.isNotEmpty(ca.value()))
+                    {
+                        conf = Turbine.getConfiguration().subset(ca.value());
+                    }
+                    else
+                    {
+                        conf = Turbine.getConfiguration();
+                    }
+
+                    field.setAccessible(true);
+
+                    try
+                    {
+                        field.set(object, conf);
+                    }
+                    catch (IllegalArgumentException e)
+                    {
+                        throw new TurbineException("Could not inject configuration "
+                                + conf + " into object " + object, e);
+                    }
+                    catch (IllegalAccessException e)
+                    {
+                        throw new TurbineException("Could not inject configuration "
+                                + conf + " into object " + object, e);
+                    }
                 }
             }
-            else if (field.isAnnotationPresent(TurbineConfiguration.class))
-            {
-                TurbineConfiguration ca = field.getAnnotation(TurbineConfiguration.class);
-                Configuration conf = null;
 
-                // Check for annotation value
-                if (StringUtils.isNotEmpty(ca.value()))
-                {
-                    conf = Turbine.getConfiguration().subset(ca.value());
-                }
-                else
-                {
-                    conf = Turbine.getConfiguration();
-                }
-
-                field.setAccessible(true);
-
-                try
-                {
-                    field.set(object, conf);
-                }
-                catch (IllegalArgumentException e)
-                {
-                    throw new TurbineException("Could not inject configuration "
-                            + conf + " into object " + object, e);
-                }
-                catch (IllegalAccessException e)
-                {
-                    throw new TurbineException("Could not inject configuration "
-                            + conf + " into object " + object, e);
-                }
-            }
+            clazz = clazz.getSuperclass();
         }
     }
 }

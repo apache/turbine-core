@@ -23,6 +23,11 @@
 -->
 
 <role-list>
+    <!-- Torque Component Role Configuration -->
+    <role name="org.apache.torque.avalon.Torque"
+          shorthand="torque"
+          default-class="org.apache.torque.avalon.TorqueComponent" />
+
     <role
         name="org.apache.fulcrum.cache.GlobalCacheService"
         shorthand="cache"
@@ -44,6 +49,11 @@
         default-class="org.apache.fulcrum.localization.DefaultLocalizationService"/>
 
     <role
+        name="org.apache.fulcrum.upload.UploadService"
+        shorthand="upload"
+        default-class="org.apache.fulcrum.upload.DefaultUploadService"/>
+
+    <role
         name="org.apache.fulcrum.intake.IntakeService"
         shorthand="intake"
         default-class="org.apache.fulcrum.intake.IntakeServiceImpl"/>
@@ -59,11 +69,6 @@
         default-class="org.apache.fulcrum.pool.DefaultPoolService"/>
 
     <role
-        name="org.apache.fulcrum.upload.UploadService"
-        shorthand="upload"
-        default-class="org.apache.fulcrum.upload.DefaultUploadService"/>
-
-    <role
         name="org.apache.fulcrum.parser.ParserService"
         shorthand="parser"
         default-class="org.apache.fulcrum.parser.DefaultParserService"/>
@@ -72,9 +77,47 @@
         name="org.apache.fulcrum.xslt.XSLTService"
         shorthand="xslt"
         default-class="org.apache.fulcrum.xslt.DefaultXSLTService"/>
-        
-    <role name="org.apache.torque.avalon.Torque"
-          shorthand="torque"
-          default-class="org.apache.torque.avalon.TorqueComponent" />
+
+    <!-- These components belong to the Fulcrum-Security services -->        
+    <role
+        name="org.apache.fulcrum.security.SecurityService"
+        shorthand="securityService"
+        default-class="org.apache.fulcrum.security.BaseSecurityService"/>
+
+    <role
+        name="org.apache.fulcrum.security.UserManager"
+        shorthand="userManager"
+        early-init="true"
+        default-class="org.apache.fulcrum.security.memory.turbine.MemoryTurbineUserManagerImpl"/>
+
+    <role
+        name="org.apache.fulcrum.security.GroupManager"
+        shorthand="groupManager"
+        default-class="org.apache.fulcrum.security.memory.MemoryGroupManagerImpl"/>
+
+    <role
+        name="org.apache.fulcrum.security.RoleManager"
+        shorthand="roleManager"
+        default-class="org.apache.fulcrum.security.memory.MemoryRoleManagerImpl"/>
+
+    <role
+        name="org.apache.fulcrum.security.PermissionManager"
+        shorthand="permissionManager"
+        default-class="org.apache.fulcrum.security.memory.MemoryPermissionManagerImpl"/>
+
+    <role
+        name="org.apache.fulcrum.security.ModelManager"
+        shorthand="modelManager"
+        default-class="org.apache.fulcrum.security.memory.turbine.MemoryTurbineModelManagerImpl"/>
+
+    <role
+        name="org.apache.fulcrum.security.authenticator.Authenticator"
+        shorthand="authenticator"
+        default-class="org.apache.fulcrum.security.authenticator.TextMatchAuthenticator"/>
+
+    <role
+        name="org.apache.fulcrum.security.model.ACLFactory"
+        shorthand="aclFactory"
+        default-class="org.apache.fulcrum.security.model.turbine.TurbineACLFactory"/>
 </role-list>
 

@@ -20,9 +20,11 @@ package org.apache.turbine.om.security;
  */
 
 import java.io.Serializable;
-import java.util.Hashtable;
+import java.util.Map;
 
 import javax.servlet.http.HttpSessionBindingListener;
+
+import org.apache.fulcrum.security.model.turbine.entity.TurbineUser;
 
 /**
  * This interface represents functionality that all users of the
@@ -36,28 +38,16 @@ import javax.servlet.http.HttpSessionBindingListener;
  * @version $Id$
  */
 public interface User
-    extends HttpSessionBindingListener, Serializable, SecurityEntity
+    extends HttpSessionBindingListener, Serializable, TurbineUser
 {
-    /** The 'perm storage' key name for the first name. */
-    String FIRST_NAME = "FIRST_NAME";
-
-    /** The 'perm storage' key name for the last name. */
-    String LAST_NAME = "LAST_NAME";
+    /** The 'perm storage' key name for the create_date field. */
+    String CREATE_DATE = "CREATE_DATE";
 
     /** The 'perm storage' key name for the last_login field. */
     String LAST_LOGIN = "LAST_LOGIN";
 
-    /** The 'perm storage' key name for the password field. */
-    String PASSWORD = "PASSWORD_VALUE";
-
-    /** The 'perm storage' key name for the username field. */
-    String USERNAME = "LOGIN_NAME";
-
     /** The 'perm storage' key for the confirm_value field. */
     String CONFIRM_VALUE = "CONFIRM_VALUE";
-
-    /** The 'perm storage' key for the email field. */
-    String EMAIL = "EMAIL";
 
     /** This is the value that is stored in the database for confirmed users */
     String CONFIRM_DATA = "CONFIRMED";
@@ -112,20 +102,6 @@ public interface User
     java.util.Date getLastLogin();
 
     /**
-     * Returns the user's password. This method should not be used by
-     * the application directly, because it's meaning depends upon
-     * the implementation of UserManager that manages this particular
-     * user object. Some implementations will use this attribute for
-     * storing a password encrypted in some way, other will not use
-     * it at all, when user entered password is presented to some external
-     * authority (like NT domain controller) to validate it.
-     * See also {@link org.apache.turbine.services.security.UserManager#authenticate(User,String)}.
-     *
-     * @return A String with the password for the user.
-     */
-    String getPassword();
-
-    /**
      * Get an object from permanent storage.
      *
      * @param name The object's name.
@@ -147,17 +123,17 @@ public interface User
      * This should only be used in the case where we want to save the
      * data to the database.
      *
-     * @return A Hashtable.
+     * @return A Map.
      */
-    Hashtable<String, Object> getPermStorage();
+    Map<String, Object> getPermStorage();
 
     /**
      * This should only be used in the case where we want to save the
      * data to the database.
      *
-     * @return A Hashtable.
+     * @return A Map.
      */
-    Hashtable<String, Object> getTempStorage();
+    Map<String, Object> getTempStorage();
 
     /**
      * Get an object from temporary storage.
@@ -176,28 +152,6 @@ public interface User
      * @return An Object with the given name.
      */
     Object getTemp(String name, Object def);
-
-    /**
-     * Returns the first name for this user.
-     *
-     * @return A String with the user's first name.
-     */
-
-    String getFirstName();
-
-    /**
-     * Returns the last name for this user.
-     *
-     * @return A String with the user's last name.
-     */
-    String getLastName();
-
-    /**
-     * Returns the email address for this user.
-     *
-     * @return A String with the user's email address.
-     */
-    String getEmail();
 
     /**
      * This sets whether or not someone has logged in.  hasLoggedIn()
@@ -261,16 +215,6 @@ public interface User
     void setLastLogin(java.util.Date lastLogin);
 
     /**
-     * Set password. Application should not use this method
-     * directly, see {@link #getPassword()}.
-     * See also {@link org.apache.turbine.services.security.UserManager#changePassword(User,String,String)}.
-     *
-     * @param password The new password.
-     */
-
-    void setPassword(String password);
-
-    /**
      * Put an object into permanent storage.
      *
      * @param name The object's name.
@@ -283,17 +227,17 @@ public interface User
      * This should only be used in the case where we want to save the
      * data to the database.
      *
-     * @param storage A Hashtable.
+     * @param storage A Map.
      */
-    void setPermStorage(Hashtable<String, Object> storage);
+    void setPermStorage(Map<String, Object> storage);
 
     /**
      * This should only be used in the case where we want to save the
      * data to the database.
      *
-     * @param storage A Hashtable.
+     * @param storage A Map.
      */
-    void setTempStorage(Hashtable<String, Object> storage);
+    void setTempStorage(Map<String, Object> storage);
 
     /**
      * Put an object into temporary storage.
@@ -304,32 +248,11 @@ public interface User
     void setTemp(String name, Object value);
 
     /**
-     * Sets the first name for this user.
-     *
-     * @param firstName User's first name.
-     */
-    void setFirstName(String firstName);
-
-    /**
-     * Sets the last name for this user.
-     *
-     * @param lastName User's last name.
-     */
-    void setLastName(String lastName);
-
-    /**
      * Sets the creation date for this user.
      *
      * @param date Creation date
      */
     void setCreateDate(java.util.Date date);
-
-    /**
-     * Sets the email address.
-     *
-     * @param address The email address.
-     */
-    void setEmail(String address);
 
     /**
      * This method reports whether or not the user has been confirmed

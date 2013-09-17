@@ -42,24 +42,24 @@ import java.util.Map;
 public abstract class ObjectUtils
 {
     /**
-     * Converts a hashtable to a byte array for storage/serialization.
+     * Converts a map to a byte array for storage/serialization.
      *
-     * @param hash The Hashtable to convert.
+     * @param map The Map to convert.
      *
-     * @return A byte[] with the converted Hashtable.
+     * @return A byte[] with the converted Map.
      *
      * @exception Exception A generic exception.
      */
-    public static byte[] serializeHashtable(Hashtable<String, Object> hash)
+    public static byte[] serializeMap(Map<String, Object> map)
         throws Exception
     {
-        Hashtable<String, Serializable> saveData =
-            new Hashtable<String, Serializable>(hash.size());
+        Map<String, Serializable> saveData =
+            new Hashtable<String, Serializable>(map.size());
         String key = null;
         Object value = null;
         byte[] byteArray = null;
 
-        for (Map.Entry<String, Object> entry : hash.entrySet())
+        for (Map.Entry<String, Object> entry : map.entrySet())
         {
             key = entry.getKey();
             value = entry.getValue();
@@ -110,9 +110,10 @@ public abstract class ObjectUtils
      *
      * @return The deserialized object, or <code>null</code> on failure.
      */
-    public static Object deserialize(byte[] objectData)
+    @SuppressWarnings("unchecked")
+    public static <T> T deserialize(byte[] objectData)
     {
-        Object object = null;
+        T object = null;
 
         if (objectData != null)
         {
@@ -127,7 +128,7 @@ public abstract class ObjectUtils
 
                 // If objectData has not been initialized, an
                 // exception will occur.
-                object = in.readObject();
+                object = (T)in.readObject();
             }
             catch (Exception e)
             {

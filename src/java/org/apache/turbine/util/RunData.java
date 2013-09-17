@@ -38,9 +38,9 @@ import org.apache.ecs.Element;
 import org.apache.ecs.StringElement;
 import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.fulcrum.security.acl.AccessControlList;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.util.template.TemplateInfo;
 
 /**
@@ -113,7 +113,7 @@ public interface RunData extends PipelineData
      *
      * @return the access control list.
      */
-    AccessControlList getACL();
+    <A extends AccessControlList> A getACL();
 
     /**
      * Sets the access control list.
@@ -170,7 +170,7 @@ public interface RunData extends PipelineData
      * the Layout to execute.  You can also define that logic here as
      * well if you want it to apply on a global scale.  For example,
      * if you wanted to allow someone to define layout "preferences"
-     * where they could dynamicially change the layout for the entire
+     * where they could dynamically change the layout for the entire
      * site.
      *
      * @return a string.
@@ -362,14 +362,14 @@ public interface RunData extends PipelineData
      *
      * @return a user.
      */
-    User getUser();
+    <T extends User> T getUser();
 
     /**
      * Sets the user.
      *
      * @param user a user.
      */
-    void setUser(User user);
+    <T extends User> void setUser(T user);
 
     /**
      * Attempts to get the user from the session. If it does
@@ -377,7 +377,7 @@ public interface RunData extends PipelineData
      *
      * @return a user.
      */
-    User getUserFromSession();
+    <T extends User> T getUserFromSession();
 
     /**
      * Allows one to invalidate the user in the default session.

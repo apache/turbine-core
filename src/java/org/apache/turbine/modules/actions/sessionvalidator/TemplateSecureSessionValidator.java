@@ -25,11 +25,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.TurbineException;
 
 /**
  * SessionValidator that requires login for use with Template Services
@@ -62,6 +63,12 @@ public class TemplateSecureSessionValidator
     private static Log log = LogFactory.getLog(
             TemplateSecureSessionValidator.class);
 
+    @TurbineService
+    private SecurityService security;
+
+    @TurbineConfiguration
+    private Configuration conf;
+
     /**
      * doPerform is virtually identical to DefaultSessionValidator
      * except that it calls template methods instead of bare screen
@@ -71,16 +78,14 @@ public class TemplateSecureSessionValidator
      * @deprecated Use PipelineData version instead.
      * @see DefaultSessionValidator
      * @param data Turbine information.
-     * @throws TurbineException The anonymous user could not be obtained
+     * @throws Exception The anonymous user could not be obtained
      *         from the security service
      */
     @Deprecated
     @Override
     public void doPerform(RunData data)
-            throws TurbineException
+            throws Exception
     {
-        Configuration conf = Turbine.getConfiguration();
-
         // Pull user from session.
         data.populate();
 
@@ -88,7 +93,8 @@ public class TemplateSecureSessionValidator
         if (data.getUser() == null)
         {
             log.debug("Fixing up empty User Object!");
-            data.setUser(TurbineSecurity.getAnonymousUser());
+            User anonymousUser = security.getAnonymousUser();
+            data.setUser(anonymousUser);
             data.save();
         }
 
@@ -143,7 +149,7 @@ public class TemplateSecureSessionValidator
         // FIXME!! a template needs to be written to use this with templates.
 
         if (data.getParameters().containsKey("_session_access_counter")
-                && !TurbineSecurity.isAnonymousUser(data.getUser()))
+                && !security.isAnonymousUser(data.getUser()))
         {
             // See comments in screens.error.InvalidState.
             if (data.getParameters().getInt("_session_access_counter")
@@ -187,12 +193,12 @@ public class TemplateSecureSessionValidator
      *
      * @see DefaultSessionValidator
      * @param pipelineData Turbine information.
-     * @throws TurbineException The anonymous user could not be obtained
+     * @throws Exception The anonymous user could not be obtained
      *         from the security service
      */
     @Override
     public void doPerform(PipelineData pipelineData)
-    throws TurbineException
+    throws Exception
     {
         RunData data = getRunData(pipelineData);
         doPerform(data);
