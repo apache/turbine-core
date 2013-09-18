@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.actions.LoginUser;
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.test.EnhancedMockHttpSession;
@@ -87,6 +88,11 @@ public class DefaultLoginValveTest extends BaseTestCase
                     ".",
             "/conf/test/CompleteTurbineResources.properties");
         tc.initialize();
+
+        // User must exist
+        User user = TurbineSecurity.getUserInstance();
+        user.setName("username");
+        TurbineSecurity.addUser(user, "password");
     }
 
     /**
