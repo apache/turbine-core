@@ -53,7 +53,7 @@ public class ConfigurationTest extends BaseTestCase
 
     public void testCreateTurbineWithConfigurationXML() throws Exception
     {
-        txc = new TurbineXmlConfig(".", "/conf/test/TurbineConfiguration.xml");
+        txc = new TurbineXmlConfig(".", "conf/test/TurbineConfiguration.xml");
 
         try
         {

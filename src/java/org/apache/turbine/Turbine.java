@@ -306,7 +306,7 @@ public class Turbine
         {
             confPath = getRealPath(confFile);
             DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(confFile);
-            configurationBuilder.setBasePath(getApplicationRoot());
+            configurationBuilder.setBasePath(getRealPath(getApplicationRoot()));
             configuration = configurationBuilder.getConfiguration();
             confStyle = "XML";
         }
