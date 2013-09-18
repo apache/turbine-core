@@ -22,9 +22,10 @@ package org.apache.turbine.modules.navigations;
 
 
 import org.apache.ecs.ConcreteElement;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Navigation;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.jsp.TurbineJsp;
+import org.apache.turbine.services.jsp.JspService;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -42,8 +43,12 @@ public class BaseJspNavigation
     /** The prefix for lookup up navigation pages */
     private final String prefix = Navigation.PREFIX + "/";
 
+    /** Injected service instance */
+    @TurbineService
+    private JspService jspService;
+
     /**
-     * Method to be overidden by subclasses to include data in beans, etc.
+     * Method to be overridden by subclasses to include data in beans, etc.
      * @deprecated Use PipelineData version instead.
      * @param data the Rundata object
      * @throws Exception a generic exception.
@@ -88,7 +93,7 @@ public class BaseJspNavigation
         String templateName = data.getTemplateInfo().getNavigationTemplate();
 
         // navigations are used by a layout
-        TurbineJsp.handleRequest(data, prefix + templateName);
+        jspService.handleRequest(data, prefix + templateName);
         return null;
     }
 
@@ -108,7 +113,7 @@ public class BaseJspNavigation
         String templateName = data.getTemplateInfo().getNavigationTemplate();
 
         // navigations are used by a layout
-        TurbineJsp.handleRequest(pipelineData, prefix + templateName);
+        jspService.handleRequest(pipelineData, prefix + templateName);
         return null;
     }
 

@@ -19,15 +19,18 @@ package org.apache.turbine.modules.screens;
  * under the License.
  */
 
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
-import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.template.TurbineTemplate;
+import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -52,8 +55,20 @@ public class VelocityScreen
     /** The prefix for lookup up screen pages */
     private final String prefix = getPrefix() + "/";
 
+    /** Injected service instance */
+    @TurbineService
+    protected VelocityService velocity;
+
+    /** Injected service instance */
+    @TurbineService
+    protected TemplateService templateService;
+
+    /** Injected configuration instance */
+    @TurbineConfiguration
+    protected Configuration conf;
+
     /**
-     * Velocity Screens extending this class should overide this
+     * Velocity Screens extending this class should override this
      * method to perform any particular business logic and add
      * information to the context.
      *
@@ -101,7 +116,7 @@ public class VelocityScreen
     protected void doBuildTemplate(RunData data)
             throws Exception
     {
-        doBuildTemplate(data, TurbineVelocity.getContext(data));
+        doBuildTemplate(data, velocity.getContext(data));
     }
 
     /**
@@ -116,10 +131,8 @@ public class VelocityScreen
     protected void doBuildTemplate(PipelineData pipelineData)
             throws Exception
     {
-        doBuildTemplate(pipelineData, TurbineVelocity.getContext(pipelineData));
+        doBuildTemplate(pipelineData, velocity.getContext(pipelineData));
     }
-
-
 
     /**
      * This builds the Velocity template.
@@ -136,11 +149,11 @@ public class VelocityScreen
     {
         String screenData = null;
 
-        Context context = TurbineVelocity.getContext(data);
+        Context context = velocity.getContext(data);
 
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
         String templateName
-            = TurbineTemplate.getScreenTemplateName(screenTemplate);
+            = templateService.getScreenTemplateName(screenTemplate);
 
         // The Template Service could not find the Screen
         if (StringUtils.isEmpty(templateName))
@@ -155,14 +168,14 @@ public class VelocityScreen
             // send the results directly to the output stream.
             if (getLayout(data) == null)
             {
-                TurbineVelocity.handleRequest(context,
+                velocity.handleRequest(context,
                         prefix + templateName,
                         data.getResponse().getOutputStream());
             }
             else
             {
-                screenData = TurbineVelocity
-                        .handleRequest(context, prefix + templateName);
+                screenData =
+                    velocity.handleRequest(context, prefix + templateName);
             }
         }
         catch (Exception e)
@@ -173,12 +186,10 @@ public class VelocityScreen
             context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
             context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
 
-            templateName = Turbine.getConfiguration()
-                .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
+            templateName = conf.getString(TurbineConstants.TEMPLATE_ERROR_KEY,
                            TurbineConstants.TEMPLATE_ERROR_VM);
 
-            screenData = TurbineVelocity.handleRequest(
-                context, prefix + templateName);
+            screenData = velocity.handleRequest(context, prefix + templateName);
         }
 
         // package the response in an ECS element
@@ -206,11 +217,11 @@ public class VelocityScreen
         RunData data = getRunData(pipelineData);
         String screenData = null;
 
-        Context context = TurbineVelocity.getContext(pipelineData);
+        Context context = velocity.getContext(pipelineData);
 
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
         String templateName
-            = TurbineTemplate.getScreenTemplateName(screenTemplate);
+            = templateService.getScreenTemplateName(screenTemplate);
 
         // The Template Service could not find the Screen
         if (StringUtils.isEmpty(templateName))
@@ -225,14 +236,14 @@ public class VelocityScreen
             // send the results directly to the output stream.
             if (getLayout(pipelineData) == null)
             {
-                TurbineVelocity.handleRequest(context,
+                velocity.handleRequest(context,
                         prefix + templateName,
                         data.getResponse().getOutputStream());
             }
             else
             {
-                screenData = TurbineVelocity
-                        .handleRequest(context, prefix + templateName);
+                screenData =
+                    velocity.handleRequest(context, prefix + templateName);
             }
         }
         catch (Exception e)
@@ -243,12 +254,10 @@ public class VelocityScreen
             context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
             context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
 
-            templateName = Turbine.getConfiguration()
-                .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
+            templateName = conf.getString(TurbineConstants.TEMPLATE_ERROR_KEY,
                            TurbineConstants.TEMPLATE_ERROR_VM);
 
-            screenData = TurbineVelocity.handleRequest(
-                context, prefix + templateName);
+            screenData = velocity.handleRequest(context, prefix + templateName);
         }
 
         // package the response in an ECS element
@@ -261,7 +270,6 @@ public class VelocityScreen
         }
         return output;
     }
-
 
     /**
      * Return the Context needed by Velocity.

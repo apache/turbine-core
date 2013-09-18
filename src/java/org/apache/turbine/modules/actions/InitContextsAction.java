@@ -28,7 +28,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.apache.commons.configuration.Configuration;
-import org.apache.turbine.Turbine;
+import org.apache.turbine.annotation.TurbineConfiguration;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
@@ -44,6 +44,10 @@ import org.apache.turbine.util.RunData;
 public class InitContextsAction
         extends Action
 {
+    /** Injected configuration instance */
+    @TurbineConfiguration
+    private Configuration conf;
+
     /**
      * This action will place the contexts defined in the
      * TurbineResources instance (if any) into the data.contexts
@@ -58,8 +62,6 @@ public class InitContextsAction
     public void doPerform(RunData data)
             throws NamingException
     {
-        Configuration conf = Turbine.getConfiguration();
-
         // Context properties are specified in lines in the properties
         // file that begin with "context.contextname.", allowing
         // multiple named contexts to be used.  Everything after the

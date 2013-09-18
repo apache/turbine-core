@@ -22,10 +22,12 @@ package org.apache.turbine.modules.screens;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ecs.ConcreteElement;
+import org.apache.turbine.annotation.TurbineLoader;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
+import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
 
@@ -52,20 +54,16 @@ public abstract class TemplateScreen
     /** Logging */
     protected Log log = LogFactory.getLog(this.getClass());
 
-    private final ScreenLoader screenLoader;
+    /** Injected service instance */
+    @TurbineService
+    private TemplateService templateService;
+
+    /** Injected loader instance */
+    @TurbineLoader( Screen.class )
+    private ScreenLoader screenLoader;
 
     /**
-     * Default constructor
-     */
-    public TemplateScreen()
-    {
-        super();
-
-        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.class);
-    }
-
-    /**
-     * This method should be overidden by subclasses that wish to add
+     * This method should be overridden by subclasses that wish to add
      * specific business logic.
      *
      * @deprecated Use PipelineData version instead.
@@ -88,7 +86,6 @@ public abstract class TemplateScreen
         RunData data = getRunData(pipelineData);
         doBuildTemplate(data);
     }
-
 
     /**
      * This method should be implemented by Base template classes.  It
@@ -325,7 +322,7 @@ public abstract class TemplateScreen
     public void doRedirect(RunData data, String template)
             throws Exception
     {
-        doRedirect(data, TurbineTemplate.getScreenName(template), template);
+        doRedirect(data, templateService.getScreenName(template), template);
     }
 
     /**
@@ -349,7 +346,7 @@ public abstract class TemplateScreen
     public void doRedirect(PipelineData pipelineData, String template)
             throws Exception
     {
-        doRedirect(pipelineData, TurbineTemplate.getScreenName(template), template);
+        doRedirect(pipelineData, templateService.getScreenName(template), template);
     }
 
 

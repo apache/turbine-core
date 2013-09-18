@@ -25,12 +25,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineLoader;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateNavigation;
@@ -77,21 +77,13 @@ public class VelocityOnlyLayout
     /** The prefix for lookup up layout pages */
     private final String prefix = Layout.PREFIX + "/";
 
-    private final ScreenLoader screenLoader;
-
     /** Injected service instance */
     @TurbineService
     private VelocityService velocityService;
 
-    /**
-     * Default constructor
-     */
-    public VelocityOnlyLayout()
-    {
-        super();
-
-        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.class);
-    }
+    /** Injected loader instance */
+    @TurbineLoader( Screen.class )
+    private ScreenLoader screenLoader;
 
     /**
      * Build the layout.  Also sets the ContentType and Locale headers

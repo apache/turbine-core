@@ -19,9 +19,10 @@ package org.apache.turbine.modules.actions;
  * under the License.
  */
 
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.screens.TemplateScreen;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.velocity.VelocityActionEvent;
 import org.apache.velocity.context.Context;
@@ -37,6 +38,10 @@ import org.apache.velocity.context.Context;
  */
 public abstract class VelocityAction extends VelocityActionEvent
 {
+    /** Injected service instance */
+    @TurbineService
+    private VelocityService velocity;
+
     /**
      * You SHOULD NOT override this method and implement it in your action.
      *
@@ -194,7 +199,7 @@ public abstract class VelocityAction extends VelocityActionEvent
     @Deprecated
     protected Context getContext(RunData data)
     {
-        return TurbineVelocity.getContext(data);
+        return velocity.getContext(data);
     }
 
     /**
@@ -205,7 +210,7 @@ public abstract class VelocityAction extends VelocityActionEvent
      */
     protected Context getContext(PipelineData pipelineData)
     {
-        return TurbineVelocity.getContext(pipelineData);
+        return velocity.getContext(pipelineData);
     }
 
 }

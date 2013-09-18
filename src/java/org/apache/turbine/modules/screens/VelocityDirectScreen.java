@@ -22,11 +22,8 @@ package org.apache.turbine.modules.screens;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.ecs.ConcreteElement;
-import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.template.TurbineTemplate;
-import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -58,11 +55,11 @@ public class VelocityDirectScreen
     public ConcreteElement buildTemplate(RunData data)
         throws Exception
     {
-        Context context = TurbineVelocity.getContext(data);
+        Context context = velocity.getContext(data);
 
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
         String templateName
-            = TurbineTemplate.getScreenTemplateName(screenTemplate);
+            = templateService.getScreenTemplateName(screenTemplate);
 
         // The Template Service could not find the Screen
         if (StringUtils.isEmpty(templateName))
@@ -73,7 +70,7 @@ public class VelocityDirectScreen
 
         try
         {
-            TurbineVelocity.handleRequest(context,
+            velocity.handleRequest(context,
                                           prefix + templateName,
                                           data.getResponse().getOutputStream());
 
@@ -86,11 +83,10 @@ public class VelocityDirectScreen
             context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
             context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
 
-            templateName = Turbine.getConfiguration()
-                .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
+            templateName = conf.getString(TurbineConstants.TEMPLATE_ERROR_KEY,
                            TurbineConstants.TEMPLATE_ERROR_VM);
 
-            TurbineVelocity.handleRequest(context,
+            velocity.handleRequest(context,
                     prefix + templateName,
                     data.getResponse().getOutputStream());
         }
@@ -109,11 +105,11 @@ public class VelocityDirectScreen
         throws Exception
     {
         RunData data = getRunData(pipelineData);
-        Context context = TurbineVelocity.getContext(pipelineData);
+        Context context = velocity.getContext(pipelineData);
 
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
         String templateName
-            = TurbineTemplate.getScreenTemplateName(screenTemplate);
+            = templateService.getScreenTemplateName(screenTemplate);
 
         // The Template Service could not find the Screen
         if (StringUtils.isEmpty(templateName))
@@ -124,7 +120,7 @@ public class VelocityDirectScreen
 
         try
         {
-            TurbineVelocity.handleRequest(context,
+            velocity.handleRequest(context,
                                           prefix + templateName,
                                           data.getResponse().getOutputStream());
 
@@ -137,11 +133,10 @@ public class VelocityDirectScreen
             context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
             context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
 
-            templateName = Turbine.getConfiguration()
-                .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
+            templateName = conf.getString(TurbineConstants.TEMPLATE_ERROR_KEY,
                            TurbineConstants.TEMPLATE_ERROR_VM);
 
-            TurbineVelocity.handleRequest(context,
+            velocity.handleRequest(context,
                     prefix + templateName,
                     data.getResponse().getOutputStream());
         }

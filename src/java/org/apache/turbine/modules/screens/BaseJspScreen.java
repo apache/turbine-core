@@ -21,9 +21,10 @@ package org.apache.turbine.modules.screens;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ecs.ConcreteElement;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.jsp.TurbineJsp;
-import org.apache.turbine.services.template.TurbineTemplate;
+import org.apache.turbine.services.jsp.JspService;
+import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -42,6 +43,14 @@ public class BaseJspScreen
     /** The prefix for lookup up screen pages */
     private String prefix = getPrefix() + "/";
 
+    /** Injected service instance */
+    @TurbineService
+    private JspService jspService;
+
+    /** Injected service instance */
+    @TurbineService
+    private TemplateService templateService;
+
     /**
      * Method that sets up beans and forward the request to the JSP.
      *
@@ -56,7 +65,7 @@ public class BaseJspScreen
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
         // get the name of the JSP we want to use
         String templateName
-            = TurbineTemplate.getScreenTemplateName(screenTemplate);
+            = templateService.getScreenTemplateName(screenTemplate);
 
         // The Template Service could not find the Screen
         if (StringUtils.isEmpty(templateName))
@@ -66,7 +75,7 @@ public class BaseJspScreen
         }
 
         // let service know whether we are using a layout
-        TurbineJsp.handleRequest(data, prefix + templateName,
+        jspService.handleRequest(data, prefix + templateName,
                                  getLayout(data) == null);
 
         return null;
@@ -86,7 +95,7 @@ public class BaseJspScreen
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
         // get the name of the JSP we want to use
         String templateName
-            = TurbineTemplate.getScreenTemplateName(screenTemplate);
+            = templateService.getScreenTemplateName(screenTemplate);
 
         // The Template Service could not find the Screen
         if (StringUtils.isEmpty(templateName))
@@ -96,14 +105,14 @@ public class BaseJspScreen
         }
 
         // let service know whether we are using a layout
-        TurbineJsp.handleRequest(pipelineData, prefix + templateName,
+        jspService.handleRequest(pipelineData, prefix + templateName,
                                  getLayout(pipelineData) == null);
 
         return null;
     }
 
     /**
-     * Method to be overidden by subclasses to include data in beans, etc.
+     * Method to be overridden by subclasses to include data in beans, etc.
      *
      * @deprecated Use PipelineData version instead.
      * @param data, the Rundata object

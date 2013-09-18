@@ -27,8 +27,9 @@ import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.jsonrpc.TurbineJsonRpc;
+import org.apache.turbine.services.jsonrpc.JsonRpcService;
 import org.apache.turbine.util.RunData;
 
 import com.metaparadigm.jsonrpc.JSONRPCBridge;
@@ -57,7 +58,7 @@ import com.metaparadigm.jsonrpc.JSONRPCBridge;
  *     super.doOutput(data);
  * }
  * </code>
- * 
+ *
  * <p>The class MyFunctions would be something like:
  * <code>
  * public class MyJsonFunctions
@@ -81,6 +82,10 @@ public class JSONScreen extends RawScreen
 
     protected final static int BUFFER_SIZE = 4096;
 
+    /** Injected service instance */
+    @TurbineService
+    private JsonRpcService jsonRpcService;
+
     /**
      * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
      * @deprecated Use PipelineData version instead.
@@ -97,11 +102,11 @@ public class JSONScreen extends RawScreen
     {
         return JSONRPC_CONTENT_TYPE;
     }
-    
+
     /**
      * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
      */
-    
+
     /**
      * Output the dynamic content.
      *
@@ -112,7 +117,7 @@ public class JSONScreen extends RawScreen
     {
         data.declareDirectResponse();
         HttpServletRequest request = data.getRequest();
-        
+
         //String charset = request.getCharacterEncoding();
         //if(charset == null)
         //{
@@ -132,10 +137,10 @@ public class JSONScreen extends RawScreen
 
         // Find the JSONRPCBridge for this session or create one
         // if it doesn't exist
-        JSONRPCBridge json_bridge = TurbineJsonRpc.getBridge(data.getSession());
+        JSONRPCBridge json_bridge = jsonRpcService.getBridge(data.getSession());
 
         // Process the request
-        Object json_res = TurbineJsonRpc.processCall(cdata, json_bridge, request);
+        Object json_res = jsonRpcService.processCall(cdata, json_bridge, request);
 
         PrintWriter out = new PrintWriter(
                 new OutputStreamWriter(data.getResponse().getOutputStream()));
