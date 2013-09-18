@@ -22,7 +22,6 @@ package org.apache.turbine.modules.actions;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.security.acl.AccessControlList;
-import org.apache.fulcrum.security.model.turbine.TurbineUserManager;
 import org.apache.fulcrum.security.util.FulcrumSecurityException;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
@@ -30,6 +29,7 @@ import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.security.SecurityService;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -73,8 +73,9 @@ public class AccessController
     /** Logging */
     private static Log log = LogFactory.getLog(AccessController.class);
 
+    /** Injected service instance */
     @TurbineService
-    private TurbineUserManager userManager;
+    private SecurityService security;
 
     /**
      * If there is a user and the user is logged in, doPerform will
@@ -93,7 +94,7 @@ public class AccessController
     {
         User user = data.getUser();
 
-        if (!userManager.isAnonymousUser(user)
+        if (!security.isAnonymousUser(user)
             && user.hasLoggedIn())
         {
             log.debug("Fetching ACL for " + user.getName());
@@ -103,7 +104,7 @@ public class AccessController
             if (acl == null)
             {
                 log.debug("No ACL found in Session, building fresh ACL");
-                acl = userManager.getACL(user);
+                acl = security.getACL(user);
                 data.getSession().setAttribute(
                         TurbineConstants.ACL_SESSION_KEY, acl);
 

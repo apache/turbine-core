@@ -29,6 +29,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.ecs.Doctype;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineLoader;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
 import org.apache.turbine.modules.Layout;
@@ -37,7 +38,6 @@ import org.apache.turbine.modules.Page;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -101,21 +101,17 @@ public class DefaultPage
     /** Logging */
     protected Log log = LogFactory.getLog(this.getClass());
 
+    /** Injected loader instance */
+    @TurbineLoader( Action.class )
     protected ActionLoader actionLoader;
+
+    /** Injected loader instance */
+    @TurbineLoader( Screen.class )
     protected ScreenLoader screenLoader;
+
+    /** Injected loader instance */
+    @TurbineLoader( Layout.class )
     protected LayoutLoader layoutLoader;
-
-    /**
-     * Default constructor
-     */
-    public DefaultPage()
-    {
-        super();
-
-        this.actionLoader = (ActionLoader)TurbineAssemblerBroker.getLoader(Action.class);
-        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.class);
-        this.layoutLoader = (LayoutLoader)TurbineAssemblerBroker.getLoader(Layout.class);
-    }
 
     /**
      * Builds the Page.

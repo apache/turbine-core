@@ -28,12 +28,12 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.ecs.ConcreteElement;
 import org.apache.fulcrum.xslt.XSLTService;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineLoader;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.template.TemplateNavigation;
@@ -66,8 +66,6 @@ public class VelocityXslLayout extends Layout
     /** The prefix for lookup up layout pages */
     private final String prefix = Layout.PREFIX + "/";
 
-    private final ScreenLoader screenLoader;
-
     /** Injected service instance */
     @TurbineService
     private VelocityService velocityService;
@@ -76,15 +74,9 @@ public class VelocityXslLayout extends Layout
     @TurbineService
     private XSLTService xsltService;
 
-    /**
-     * Default constructor
-     */
-    public VelocityXslLayout()
-    {
-        super();
-
-        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.class);
-    }
+    /** Injected loader instance */
+    @TurbineLoader( Screen.class )
+    private ScreenLoader screenLoader;
 
     /**
      * Build the layout.  Also sets the ContentType and Locale headers

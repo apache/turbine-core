@@ -31,9 +31,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.annotation.TurbineLoader;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
-import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
@@ -51,34 +51,13 @@ import org.apache.turbine.util.template.TemplateInfo;
 public class DefaultLoginValve
     extends AbstractValve
 {
+    /** Injected loader instance */
+    @TurbineLoader( Action.class )
     private ActionLoader actionLoader;
 
+    /** Injected configuration instance */
     @TurbineConfiguration
     private Configuration config;
-
-    /**
-     * Here we can setup objects that are thread safe and can be
-     * reused. We setup the session validator and the access
-     * controller.
-     */
-    public DefaultLoginValve()
-        throws Exception
-    {
-        // empty constructor
-    }
-
-    /**
-     * Initialize this valve for use in a pipeline.
-     *
-     * @see org.apache.turbine.pipeline.AbstractValve#initialize()
-     */
-    @Override
-    public void initialize() throws Exception
-    {
-        super.initialize();
-
-        this.actionLoader = (ActionLoader)TurbineAssemblerBroker.getLoader(Action.class);
-    }
 
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)

@@ -21,8 +21,9 @@ package org.apache.turbine.modules.pages;
  */
 
 
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.template.TurbineTemplate;
+import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -81,6 +82,10 @@ import org.apache.turbine.util.TurbineException;
 public class TemplatePage
     extends DefaultPage
 {
+    /** Injected service instance */
+    @TurbineService
+    private TemplateService templateService;
+
     /**
      * Works with TemplateService to set up default templates and
      * corresponding class modules.
@@ -105,10 +110,10 @@ public class TemplatePage
 
             // Get the layout template and the correct Screen.
             String layoutTemplate =
-                    TurbineTemplate.getLayoutTemplateName(template);
+                    templateService.getLayoutTemplateName(template);
             data.getTemplateInfo().setLayoutTemplate(layoutTemplate);
 
-            String screen = TurbineTemplate.getScreenName(template);
+            String screen = templateService.getScreenName(template);
 
             if (screen == null)
             {
@@ -135,7 +140,4 @@ public class TemplatePage
         RunData data = getRunData(pipelineData);
         doBuildAfterAction(data);
     }
-
-
-
 }

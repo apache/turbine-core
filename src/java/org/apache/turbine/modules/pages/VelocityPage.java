@@ -21,8 +21,8 @@ package org.apache.turbine.modules.pages;
  */
 
 
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -39,6 +39,10 @@ import org.apache.velocity.context.Context;
 public class VelocityPage
     extends TemplatePage
 {
+    /** Injected service instance */
+    @TurbineService
+    private VelocityService velocity;
+
     /**
      * Stuffs the Context into the RunData so that it is available to
      * the Action module and the Screen module via getContext().
@@ -51,13 +55,13 @@ public class VelocityPage
     protected void doBuildBeforeAction(RunData data)
         throws Exception
     {
-        Context context = TurbineVelocity.getContext(data);
+        Context context = velocity.getContext(data);
         data.getTemplateInfo()
             .setTemplateContext(VelocityService.CONTEXT, context);
     }
 
     /**
-     * Allows the VelocityService to peform post-request actions.
+     * Allows the VelocityService to perform post-request actions.
      * (releases the (non-global) tools in the context for reuse later)
      * @deprecated. Use PipelineData version instead.
      *
@@ -66,8 +70,8 @@ public class VelocityPage
     protected void doPostBuild(RunData data)
         throws Exception
     {
-        Context context = TurbineVelocity.getContext(data);
-        TurbineVelocity.requestFinished(context);
+        Context context = velocity.getContext(data);
+        velocity.requestFinished(context);
     }
 
 
@@ -83,21 +87,21 @@ public class VelocityPage
         throws Exception
     {
         RunData data = getRunData(pipelineData);
-        Context context = TurbineVelocity.getContext(pipelineData);
+        Context context = velocity.getContext(pipelineData);
         data.getTemplateInfo()
             .setTemplateContext(VelocityService.CONTEXT, context);
     }
 
     /**
-     * Allows the VelocityService to peform post-request actions.
+     * Allows the VelocityService to perform post-request actions.
      * (releases the (non-global) tools in the context for reuse later)
      */
     @Override
     protected void doPostBuild(PipelineData pipelineData)
         throws Exception
     {
-        Context context = TurbineVelocity.getContext(pipelineData);
-        TurbineVelocity.requestFinished(context);
+        Context context = velocity.getContext(pipelineData);
+        velocity.requestFinished(context);
     }
 
 }

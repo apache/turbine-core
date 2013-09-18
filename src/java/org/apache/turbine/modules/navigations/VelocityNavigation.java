@@ -23,10 +23,11 @@ package org.apache.turbine.modules.navigations;
 
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Navigation;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.template.TurbineTemplate;
-import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.template.TemplateService;
+import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -48,6 +49,14 @@ public class VelocityNavigation
 {
     /** The prefix for lookup up navigation pages */
     private final String prefix = Navigation.PREFIX + "/";
+
+    /** Injected service instance */
+    @TurbineService
+    private VelocityService velocity;
+
+    /** Injected service instance */
+    @TurbineService
+    private TemplateService templateService;
 
     /**
      * Velocity Navigations extending this class should overide this
@@ -97,7 +106,7 @@ public class VelocityNavigation
     protected void doBuildTemplate(RunData data)
             throws Exception
     {
-        doBuildTemplate(data, TurbineVelocity.getContext(data));
+        doBuildTemplate(data, velocity.getContext(data));
     }
 
 
@@ -113,7 +122,7 @@ public class VelocityNavigation
     protected void doBuildTemplate(PipelineData pipelineData)
             throws Exception
     {
-        doBuildTemplate(pipelineData, TurbineVelocity.getContext(pipelineData));
+        doBuildTemplate(pipelineData, velocity.getContext(pipelineData));
     }
 
     /**
@@ -129,16 +138,16 @@ public class VelocityNavigation
     public ConcreteElement buildTemplate(RunData data)
             throws Exception
     {
-        Context context = TurbineVelocity.getContext(data);
+        Context context = velocity.getContext(data);
 
         String navigationTemplate = data.getTemplateInfo().getNavigationTemplate();
         String templateName
-                = TurbineTemplate.getNavigationTemplateName(navigationTemplate);
+                = templateService.getNavigationTemplateName(navigationTemplate);
 
         StringElement output = new StringElement();
         output.setFilterState(false);
-        output.addElement(TurbineVelocity
-                .handleRequest(context, prefix + templateName));
+        output.addElement(
+                velocity.handleRequest(context, prefix + templateName));
         return output;
     }
 
@@ -154,16 +163,16 @@ public class VelocityNavigation
             throws Exception
     {
         RunData data = getRunData(pipelineData);
-        Context context = TurbineVelocity.getContext(pipelineData);
+        Context context = velocity.getContext(pipelineData);
 
         String navigationTemplate = data.getTemplateInfo().getNavigationTemplate();
         String templateName
-                = TurbineTemplate.getNavigationTemplateName(navigationTemplate);
+                = templateService.getNavigationTemplateName(navigationTemplate);
 
         StringElement output = new StringElement();
         output.setFilterState(false);
-        output.addElement(TurbineVelocity
-                .handleRequest(context, prefix + templateName));
+        output.addElement(
+                velocity.handleRequest(context, prefix + templateName));
         return output;
     }
 

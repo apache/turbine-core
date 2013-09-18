@@ -23,11 +23,12 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 
-import org.apache.turbine.Turbine;
+import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.annotation.TurbineLoader;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
-import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -42,30 +43,13 @@ import org.apache.turbine.util.TurbineException;
 public class DefaultACLCreationValve
     extends AbstractValve
 {
+    /** Injected loader instance */
+    @TurbineLoader( Action.class )
     private ActionLoader actionLoader;
 
-    /**
-     * Here we can setup objects that are thread safe and can be
-     * reused. We setup the session validator and the access
-     * controller.
-     */
-    public DefaultACLCreationValve()
-        throws Exception
-    {
-        // empty constructor
-    }
-
-    /**
-     * Initialize this valve for use in a pipeline.
-     *
-     * @see org.apache.turbine.pipeline.AbstractValve#initialize()
-     */
-    public void initialize() throws Exception
-    {
-        super.initialize();
-
-        this.actionLoader = (ActionLoader)TurbineAssemblerBroker.getLoader(Action.class);
-    }
+    /** Injected configuration instance */
+    @TurbineConfiguration
+    private Configuration config;
 
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
@@ -81,7 +65,7 @@ public class DefaultACLCreationValve
             // out the ACL to force it to be rebuilt based on more
             // information.
             actionLoader.exec(
-                    pipelineData, Turbine.getConfiguration().getString(
+                    pipelineData, config.getString(
                             TurbineConstants.ACTION_ACCESS_CONTROLLER_KEY,
                             TurbineConstants.ACTION_ACCESS_CONTROLLER_DEFAULT));
         }

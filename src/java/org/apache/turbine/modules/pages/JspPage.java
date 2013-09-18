@@ -21,8 +21,9 @@ package org.apache.turbine.modules.pages;
  */
 
 
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.jsp.TurbineJsp;
+import org.apache.turbine.services.jsp.JspService;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -36,6 +37,10 @@ import org.apache.turbine.util.RunData;
 public class JspPage
     extends TemplatePage
 {
+    /** Injected service instance */
+    @TurbineService
+    private JspService jspService;
+
     /**
      * Stuffs some useful objects into the request so that
      * it is available to the Action module and the Screen module
@@ -44,16 +49,16 @@ public class JspPage
     protected void doBuildBeforeAction(RunData data)
         throws Exception
     {
-        TurbineJsp.addDefaultObjects(data);
+        jspService.addDefaultObjects(data);
 
         try
         {
             //We try to set the buffer size from defaults
-            data.getResponse().setBufferSize(TurbineJsp.getDefaultBufferSize());
+            data.getResponse().setBufferSize(jspService.getDefaultBufferSize());
         }
         catch (IllegalStateException ise)
         {
-            // If the response was already commited, we die silently
+            // If the response was already committed, we die silently
             // No logger here?
         }
     }
@@ -66,17 +71,17 @@ public class JspPage
     protected void doBuildBeforeAction(PipelineData pipelineData)
         throws Exception
     {
-        TurbineJsp.addDefaultObjects(pipelineData);
+        jspService.addDefaultObjects(pipelineData);
 
         try
         {
             RunData data = getRunData(pipelineData);
             //We try to set the buffer size from defaults
-            data.getResponse().setBufferSize(TurbineJsp.getDefaultBufferSize());
+            data.getResponse().setBufferSize(jspService.getDefaultBufferSize());
         }
         catch (IllegalStateException ise)
         {
-            // If the response was already commited, we die silently
+            // If the response was already committed, we die silently
             // No logger here?
         }
     }

@@ -22,9 +22,10 @@ package org.apache.turbine.modules.layouts;
 
 
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Layout;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.jsp.TurbineJsp;
+import org.apache.turbine.services.jsp.JspService;
 import org.apache.turbine.services.jsp.util.JspNavigation;
 import org.apache.turbine.services.jsp.util.JspScreenPlaceholder;
 import org.apache.turbine.util.RunData;
@@ -43,6 +44,10 @@ public class JspLayout
 {
     /** The prefix for lookup up layout pages */
     private String prefix = Layout.PREFIX + "/";
+
+    /** Injected service instance */
+    @TurbineService
+    private JspService jspService;
 
     /**
      * Method called by LayoutLoader.
@@ -72,7 +77,7 @@ public class JspLayout
         // Grab the layout template set in the TemplatePage.
         String templateName = data.getTemplateInfo().getLayoutTemplate();
 
-        TurbineJsp.handleRequest(data, prefix + templateName, true);
+        jspService.handleRequest(data, prefix + templateName, true);
     }
 
     /**
@@ -102,7 +107,7 @@ public class JspLayout
         // Grab the layout template set in the TemplatePage.
         String templateName = data.getTemplateInfo().getLayoutTemplate();
 
-        TurbineJsp.handleRequest(pipelineData, prefix + templateName, true);
+        jspService.handleRequest(pipelineData, prefix + templateName, true);
     }
 
 }

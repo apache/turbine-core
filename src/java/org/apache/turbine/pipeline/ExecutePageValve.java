@@ -23,12 +23,13 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 
-import org.apache.turbine.Turbine;
+import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.annotation.TurbineLoader;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Page;
 import org.apache.turbine.modules.PageLoader;
-import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
@@ -44,29 +45,17 @@ import org.apache.turbine.util.TurbineException;
 public class ExecutePageValve
     extends AbstractValve
 {
+    /** Injected service instance */
     @TurbineService
     private TemplateService templateService;
 
+    /** Injected loader instance */
+    @TurbineLoader( Page.class )
     private PageLoader pageLoader;
 
-    /**
-     * Creates a new instance.
-     */
-    public ExecutePageValve()
-    {
-        // empty constructor
-    }
-
-    /**
-     * Initialize this valve for use in a pipeline.
-     *
-     * @see org.apache.turbine.pipeline.AbstractValve#initialize()
-     */
-    public void initialize() throws Exception
-    {
-        super.initialize();
-        this.pageLoader = (PageLoader)TurbineAssemblerBroker.getLoader(Page.class);
-    }
+    /** Injected configuration instance */
+    @TurbineConfiguration
+    private Configuration config;
 
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
@@ -110,7 +99,7 @@ public class ExecutePageValve
         // DefaultPage to do what you want.
 
         String defaultPage = (templateService == null)
-        ? null :templateService.getDefaultPageName(data);
+        ? null : templateService.getDefaultPageName(data);
 
         if (defaultPage == null)
         {
@@ -125,7 +114,7 @@ public class ExecutePageValve
              * if they wish but the DefaultPage should work in
              * most cases.
              */
-            defaultPage = Turbine.getConfiguration().getString(TurbineConstants.PAGE_DEFAULT_KEY,
+            defaultPage = config.getString(TurbineConstants.PAGE_DEFAULT_KEY,
                     TurbineConstants.PAGE_DEFAULT_DEFAULT);
         }
 

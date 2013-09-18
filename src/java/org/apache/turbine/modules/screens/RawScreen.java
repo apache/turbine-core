@@ -80,7 +80,7 @@ public abstract class RawScreen extends Screen
 
 
     /**
-     * Set the content type.  This method should be overidden to
+     * Set the content type.  This method should be overridden to
      * actually set the real content-type header of the output.
      *
      * @deprecated Use PipelineData version instead.
@@ -90,7 +90,7 @@ public abstract class RawScreen extends Screen
     protected abstract String getContentType(RunData data);
 
     /**
-     * Set the content type.  This method should be overidden to
+     * Set the content type.  This method should be overridden to
      * actually set the real content-type header of the output.
      *
      * @param data Turbine information.
@@ -153,7 +153,4 @@ public abstract class RawScreen extends Screen
     {
         return null;
     }
-
-
-
 }

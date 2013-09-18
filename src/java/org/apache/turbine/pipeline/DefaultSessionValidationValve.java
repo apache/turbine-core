@@ -23,11 +23,12 @@ package org.apache.turbine.pipeline;
 
 import java.io.IOException;
 
-import org.apache.turbine.Turbine;
+import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineConfiguration;
+import org.apache.turbine.annotation.TurbineLoader;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
-import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -42,25 +43,13 @@ import org.apache.turbine.util.TurbineException;
 public class DefaultSessionValidationValve
     extends AbstractValve
 {
+    /** Injected loader instance */
+    @TurbineLoader( Action.class )
     private ActionLoader actionLoader;
 
-    public DefaultSessionValidationValve()
-        throws Exception
-    {
-        // empty constructor
-    }
-
-    /**
-     * Initialize this valve for use in a pipeline.
-     *
-     * @see org.apache.turbine.pipeline.AbstractValve#initialize()
-     */
-    public void initialize() throws Exception
-    {
-        super.initialize();
-
-        this.actionLoader = (ActionLoader)TurbineAssemblerBroker.getLoader(Action.class);
-    }
+    /** Injected configuration instance */
+    @TurbineConfiguration
+    private Configuration config;
 
     /**
      * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
@@ -78,8 +67,7 @@ public class DefaultSessionValidationValve
             // screen other than Login, you need to change that within
             // TurbineResources.properties...screen.homepage; or, you
             // can specify your own SessionValidator action.
-            actionLoader.exec(pipelineData,
-                    Turbine.getConfiguration().getString(
+            actionLoader.exec(pipelineData, config.getString(
                             TurbineConstants.ACTION_SESSION_VALIDATOR_KEY,
                             TurbineConstants.ACTION_SESSION_VALIDATOR_DEFAULT));
         }

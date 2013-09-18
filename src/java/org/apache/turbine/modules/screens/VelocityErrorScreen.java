@@ -19,12 +19,9 @@ package org.apache.turbine.modules.screens;
  * under the License.
  */
 
-import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -55,8 +52,7 @@ public class VelocityErrorScreen
         context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER,
                      data.getStackTrace());
 
-        String errorTemplate = Turbine.getConfiguration()
-            .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
+        String errorTemplate = conf.getString(TurbineConstants.TEMPLATE_ERROR_KEY,
                        TurbineConstants.TEMPLATE_ERROR_VM);
 
         setTemplate(data, errorTemplate);
