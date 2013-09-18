@@ -21,8 +21,8 @@ package org.apache.turbine.services.jsp;
  */
 
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.Service;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -40,6 +40,9 @@ public interface JspService
 
     /** The key used to store an instance of RunData in the request */
     String RUNDATA = "rundata";
+
+    /** The key used to store an instance of PipelineData in the request */
+    String PIPELINE_DATA = "pdata";
 
     /** The key used to store an instance of JspLink in the request */
     String LINK = "link";
@@ -60,9 +63,18 @@ public interface JspService
      * Adds some convenience objects to the request.  For example an instance
      * of JspLink which can be used to generate links to other templates.
      *
+     * @deprecated Use the PipelineData version.
      * @param data the turbine rundata object
      */
     void addDefaultObjects(RunData data);
+
+    /**
+     * Adds some convenience objects to the request.  For example an instance
+     * of JspLink which can be used to generate links to other templates.
+     *
+     * @param data the turbine pipelinedData object
+     */
+    void addDefaultObjects(PipelineData pipelineData);
 
     /**
      * executes the JSP given by templateName.
@@ -71,7 +83,9 @@ public interface JspService
      * @param templateName The template to execute
      * @param isForward whether to perform a forward or include.
      *
-     * @throws TurbineException If a problem occured while executing the JSP
+     * @throws TurbineException If a problem occurred while executing the JSP
+     *
+     * @deprecated Use the PipelineData version.
      */
     void handleRequest(RunData data, String templateName, boolean isForward)
         throws TurbineException;
@@ -82,9 +96,34 @@ public interface JspService
      * @param data A RunData Object
      * @param templateName The template to execute
      *
-     * @throws TurbineException If a problem occured while executing the JSP
+     * @throws TurbineException If a problem occurred while executing the JSP
+     *
+     * @deprecated Use the PipelineData version.
      */
     void handleRequest(RunData data, String templateName)
+        throws TurbineException;
+
+    /**
+     * executes the JSP given by templateName.
+     *
+     * @param data A RunData Object
+     * @param templateName The template to execute
+     * @param isForward whether to perform a forward or include.
+     *
+     * @throws TurbineException If a problem occurred while executing the JSP
+     */
+    void handleRequest(PipelineData pipelineData, String templateName, boolean isForward)
+        throws TurbineException;
+
+    /**
+     * executes the JSP given by templateName.
+     *
+     * @param data A RunData Object
+     * @param templateName The template to execute
+     *
+     * @throws TurbineException If a problem occurred while executing the JSP
+     */
+    void handleRequest(PipelineData pipelineData, String templateName)
         throws TurbineException;
 
     /**
@@ -104,5 +143,4 @@ public interface JspService
      * @return the template with a relative path
      */
     String getRelativeTemplateName(String template);
-
 }
