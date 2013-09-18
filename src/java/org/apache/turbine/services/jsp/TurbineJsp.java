@@ -23,7 +23,6 @@ package org.apache.turbine.services.jsp;
 
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
-
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
@@ -59,7 +58,6 @@ public abstract class TurbineJsp
         getService().addDefaultObjects(data);
     }
 
-
     /**
      * Adds some convenience objects to the request.  For example an instance
      * of JspLink which can be used to generate links to other templates.
@@ -68,10 +66,7 @@ public abstract class TurbineJsp
      */
     public static void addDefaultObjects(PipelineData pipelineData)
     {
-        //Map runDataMap = (Map) pipelineData.get(RunData.class);
-        //RunData data = (RunData)runDataMap.get(RunData.class);
-        RunData runData = (RunData)pipelineData;
-        addDefaultObjects(runData);
+        getService().addDefaultObjects(pipelineData);
     }
 
     /**
@@ -82,7 +77,7 @@ public abstract class TurbineJsp
      * @param templateName The template to execute
      * @param isForward whether to perform a forward or include.
      *
-     * @throws TurbineException If a problem occured while executing the JSP
+     * @throws TurbineException If a problem occurred while executing the JSP
      */
     public static void handleRequest(RunData data, String templateName, boolean isForward)
         throws TurbineException
@@ -97,7 +92,7 @@ public abstract class TurbineJsp
      * @param data A RunData Object
      * @param templateName The template to execute
      *
-     * @throws TurbineException If a problem occured while executing the JSP
+     * @throws TurbineException If a problem occurred while executing the JSP
      */
     public static void handleRequest(RunData data, String templateName)
         throws TurbineException
@@ -112,15 +107,12 @@ public abstract class TurbineJsp
      * @param templateName The template to execute
      * @param isForward whether to perform a forward or include.
      *
-     * @throws TurbineException If a problem occured while executing the JSP
+     * @throws TurbineException If a problem occurred while executing the JSP
      */
     public static void handleRequest(PipelineData pipelineData, String templateName, boolean isForward)
         throws TurbineException
     {
-        //Map runDataMap = (Map) pipelineData.get(RunData.class);
-        //RunData data = (RunData)runDataMap.get(RunData.class);
-        RunData runData = (RunData)pipelineData;
-        handleRequest(runData, templateName, isForward);
+        getService().handleRequest(pipelineData, templateName, isForward);
     }
 
     /**
@@ -129,17 +121,13 @@ public abstract class TurbineJsp
      * @param data A RunData Object
      * @param templateName The template to execute
      *
-     * @throws TurbineException If a problem occured while executing the JSP
+     * @throws TurbineException If a problem occurred while executing the JSP
      */
     public static void handleRequest(PipelineData pipelineData, String templateName)
         throws TurbineException
     {
-        if(!(pipelineData instanceof RunData)){
-            throw new RuntimeException("Can't cast to rundata from pipeline data.");
-        }
-        handleRequest((RunData)pipelineData, templateName);
+        getService().handleRequest(pipelineData, templateName);
     }
-
 
     /**
      * Returns the default buffer size of the JspService
@@ -152,7 +140,7 @@ public abstract class TurbineJsp
     }
 
     /**
-     * Searchs for a template in the default.template path[s] and
+     * Searches for a template in the default.template path[s] and
      * returns the template name with a relative path which is required
      * by <a href="http://java.sun.com/products/servlet/2.3/javadoc/javax/servlet/ServletContext.html#getRequestDispatcher(java.lang.String)">javax.servlet.RequestDispatcher</a>
      *

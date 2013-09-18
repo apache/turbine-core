@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.configuration.Configuration;
@@ -33,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.pull.ApplicationTool;
 import org.apache.turbine.services.pull.tools.TemplateLink;
@@ -91,25 +91,12 @@ public class TurbineJspService
     }
 
     /**
-     * Performs early initialization of this Turbine service.
-     *
-     * @param config The ServletConfiguration from Turbine
-     *
-     * @throws InitializationException Something went wrong when starting up.
-     * @deprecated use init() instead.
-     */
-    @Deprecated
-    public void init(ServletConfig config)
-        throws InitializationException
-    {
-        init();
-    }
-
-    /**
      * Adds some convenience objects to the request.  For example an instance
      * of TemplateLink which can be used to generate links to other templates.
      *
      * @param data the turbine rundata object
+     *
+     * @deprecated Use the PipelineData version.
      */
     public void addDefaultObjects(RunData data)
     {
@@ -125,6 +112,28 @@ public class TurbineJspService
 
         req.setAttribute(LINK, templateLink);
         req.setAttribute(RUNDATA, data);
+    }
+
+    /**
+     * Adds some convenience objects to the request.  For example an instance
+     * of TemplateLink which can be used to generate links to other templates.
+     *
+     * @param data the turbine pipelinedData object
+     */
+    public void addDefaultObjects(PipelineData pipelineData)
+    {
+        HttpServletRequest req = pipelineData.get(Turbine.class, HttpServletRequest.class);
+
+        //
+        // This is a place where an Application Pull Tool is used
+        // in a regular Java Context. We have no Pull Service with the
+        // Jsp Paging stuff, but we can run our Application Tool by Hand:
+        //
+        ApplicationTool templateLink = new TemplateLink();
+        templateLink.init(pipelineData);
+
+        req.setAttribute(LINK, templateLink);
+        req.setAttribute(PIPELINE_DATA, pipelineData);
     }
 
     /**
@@ -144,6 +153,8 @@ public class TurbineJspService
      * @param templateName the filename of the template.
      * @throws TurbineException Any exception thrown while processing will be
      *         wrapped into a TurbineException and rethrown.
+     *
+     * @deprecated Use the PipelineData version.
      */
     public void handleRequest(RunData data, String templateName)
         throws TurbineException
@@ -157,8 +168,10 @@ public class TurbineJspService
      * @param data A RunData Object
      * @param templateName the filename of the template.
      * @param isForward whether to perform a forward or include.
-     * @throws TurbineException Any exception trown while processing will be
+     * @throws TurbineException Any exception thrown while processing will be
      *         wrapped into a TurbineException and rethrown.
+     *
+     * @deprecated Use the PipelineData version.
      */
     public void handleRequest(RunData data, String templateName, boolean isForward)
         throws TurbineException
@@ -206,10 +219,44 @@ public class TurbineJspService
             }
 
             // pass the exception to the caller according to the general
-            // contract for tamplating services in Turbine
+            // contract for templating services in Turbine
             throw new TurbineException(
                 "Error encountered processing a template: " + templateName, e);
         }
+    }
+
+    /**
+     * executes the JSP given by templateName.
+     *
+     * @param data A RunData Object
+     * @param templateName The template to execute
+     * @param isForward whether to perform a forward or include.
+     *
+     * @throws TurbineException If a problem occurred while executing the JSP
+     */
+    public void handleRequest(PipelineData pipelineData, String templateName, boolean isForward)
+        throws TurbineException
+    {
+        if(!(pipelineData instanceof RunData))
+        {
+            throw new RuntimeException("Can't cast to rundata from pipeline data.");
+        }
+
+        handleRequest((RunData)pipelineData, templateName, isForward);
+    }
+
+    /**
+     * executes the JSP given by templateName.
+     *
+     * @param data A RunData Object
+     * @param templateName The template to execute
+     *
+     * @throws TurbineException If a problem occurred while executing the JSP
+     */
+    public void handleRequest(PipelineData pipelineData, String templateName)
+        throws TurbineException
+    {
+        handleRequest(pipelineData, templateName, false);
     }
 
     /**
