@@ -28,8 +28,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.Turbine;
+import org.apache.turbine.modules.Loader;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -121,6 +123,11 @@ public class AnnotationProcessor
 
                     try
                     {
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug("Injection of " + serviceName + " into object " + object);
+                        }
+
                         field.set(object, service);
                     }
                     catch (IllegalArgumentException e)
@@ -153,6 +160,11 @@ public class AnnotationProcessor
 
                     try
                     {
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug("Injection of " + conf + " into object " + object);
+                        }
+
                         field.set(object, conf);
                     }
                     catch (IllegalArgumentException e)
@@ -164,6 +176,32 @@ public class AnnotationProcessor
                     {
                         throw new TurbineException("Could not inject configuration "
                                 + conf + " into object " + object, e);
+                    }
+                }
+                else if (field.isAnnotationPresent(TurbineLoader.class))
+                {
+                    TurbineLoader la = field.getAnnotation(TurbineLoader.class);
+                    Loader<?> loader = TurbineAssemblerBroker.getLoader(la.value());
+                    field.setAccessible(true);
+
+                    try
+                    {
+                        if (log.isDebugEnabled())
+                        {
+                            log.debug("Injection of " + loader + " into object " + object);
+                        }
+
+                        field.set(object, loader);
+                    }
+                    catch (IllegalArgumentException e)
+                    {
+                        throw new TurbineException("Could not inject loader "
+                                + loader + " into object " + object, e);
+                    }
+                    catch (IllegalAccessException e)
+                    {
+                        throw new TurbineException("Could not inject loader "
+                                + loader + " into object " + object, e);
                     }
                 }
             }
