@@ -40,7 +40,7 @@ multiple sources.
 <p>
 In the classic development environment, the developer has one environment, there is
 a QA environment, and then production.  While all of these environments strive to be
-as similar as possible, there are often difference betweent them.  For instance, in
+as similar as possible, there are often difference between them.  For instance, in
 the development environment, you might want to not have Turbine cache templates, that
 way, as you change them, they are just reloaded.  But in test and production you might
 need them to be non reloading for performance.  There are many other situations like this.
@@ -86,8 +86,9 @@ control it's behavior, then you need to provide a TurbineConfiguration.xml file!
 <p>
 The TurbineConfiguration.xml file doesn't contain any configuration data itself, instead
 it points at other files that may have configuration data.  Turbine leverages Commons-Configuration's
-ConfigurationFactory to access the data.  For more information, look at
-<a href="http://turbine.apache.org/sandbox/configuration/">Configuration</a> homepage.
+<code>DefaultConfigurationBuilder</code> to access the data.  For more information, look at
+the <a href="http://commons.apache.org/proper/commons-configuration/">Configuration</a> 
+homepage.
 </p>
 
 <p>
@@ -124,7 +125,7 @@ This file will contain lines like this:
 
 <p>
 The configurations specified first override the values of configurations specified
-afterwords.  So, if the configuration value "mail.server" is specified as mymailserver.mycompany.com in
+afterwards.  So, if the configuration value "mail.server" is specified as mymailserver.mycompany.com in
 your JNDI settings, and localhost in the TurbineResources.properties, then when you issue:
 </p>
 <source>
@@ -132,7 +133,7 @@ your JNDI settings, and localhost in the TurbineResources.properties, then when 
 </source>
 <p>
 Then the mailServer value returned will be "mymailserver.mycompany.com".  However, if you
-don't have a setting specifed in your JNDI settings, then this would return "localhost".
+don't have a setting specified in your JNDI settings, then this would return "localhost".
 </p>
 
 </section>

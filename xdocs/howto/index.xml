@@ -30,6 +30,7 @@
     <p>
       <ul>
         <li><a href="action-event-howto.html">Action Events Howto</a></li>
+        <li><a href="annotations.html">Annotations Howto</a></li>
         <li><a href="configuration-howto.html">Configuration Howto</a></li>
         <li><a href="extend-user-howto.html">Extend User Howto</a></li>
         <li><a href="/fulcrum/fulcrum-intake/howto.html">Intake Howto</a></li>

@@ -33,14 +33,13 @@ The Security Service is for authenticating users and assigning them roles
 and permissions in groups.
 </p>
 <p>
-In Turbine 2.3 a replacement for the default DBSecurityService is
-provided that makes it possible to map the security service onto an
-pre existing user structure and much easier to extend the TurbineUser
-table to include additional columns - see <a
-href="torque-Security-service.html"> Torque Security Service</a> for
-configuration details.
+Turbine uses the <a href="/fulcrum//fulcrum-security-api/index.html">Fulcrum Security API</a>
+to provide security features to applications. In the Fulcrum repository, 
+implementations exist for 
+<a href="/fulcrum/fulcrum-security-hibernate/index.html">Hibernate</a>, 
+<a href="/fulcrum/fulcrum-security-torque/index.html">Torque</a>
+and <a href="/fulcrum/fulcrum-security-nt/index.html">NTLM</a>.
 </p>
-
 </section>
 
 <section name="Configuration">
@@ -59,9 +58,9 @@ configuration details.
 
 #
 # Here you specify, which Security Service is used. This example
-# uses the Database (DB) Security Service. There is no default.
+# uses the Fulcrum Security Service. There is no default.
 
-services.SecurityService.classname=org.apache.turbine.services.security.db.DBSecurityService
+services.SecurityService.classname=org.apache.turbine.services.security.DefaultSecurityService
 .
 .
 .
@@ -74,201 +73,15 @@ services.SecurityService.classname=org.apache.turbine.services.security.db.DBSec
 
 #
 # This is the class that implements the UserManager interface to
-# manage User objects. Default is the UserManager from the
-# DBSecurityService.
+# manage User objects. Default is the PassiveUserManager.
+#
 # Override this setting if you want your User information stored
 # on a different medium (LDAP directory is a good example).
 #
 # Adjust this setting if you change the Setting of the SecurityService class (see above).
 
-# Default: org.apache.turbine.services.security.db.DBUserManager
-services.SecurityService.user.manager = org.apache.turbine.services.security.db.DBUserManager
-
-#
-# These are the default classes used by the Security Service to
-# provide User, Group, Role and Permission objects.
-# You want to override this setting only if you want your
-# implementation to provide application specific addtional
-# functionality.
-#
-# For LDAP use:
-# services.SecurityService.user.class=org.apache.turbine.services.security.ldap.LDAPUser
-# LDAP does not yet provide custom Group, User and Role objects so you
-# must use it with the default TurbineGroup, TurbineRole and
-# TurbinePermission objects.
-#
-# Class for User. Default: org.apache.turbine.om.security.TurbineUser
-services.SecurityService.user.class=org.apache.turbine.om.security.TurbineUser
-# Class for Group. Default: org.apache.turbine.om.security.TurbineGroup
-services.SecurityService.group.class=org.apache.turbine.om.security.TurbineGroup
-# Class for Role. Default: org.apache.turbine.om.security.TurbineRole
-services.SecurityService.role.class=org.apache.turbine.om.security.TurbineRole
-# Class for Permission. Default: org.apache.turbine.om.security.TurbinePermission
-services.SecurityService.permission.class=org.apache.turbine.om.security.TurbinePermission
-
-#
-# This is the class that implements the ACL interface.
-# You want to override this setting only if you want your ACL
-# implementation to provide application specific addtional
-# functionality.
-#
-
-# Default: org.apache.turbine.util.security.TurbineAccessControlList
-services.SecurityService.acl.class = org.apache.turbine.util.security.TurbineAccessControlList
-
-#
-# This setting is DBSecurityService specific - this class is consulted for the names
-# of the columns in the users' tables for the purpose of creating join queries.
-# If you use your own User implementation in conjunction with DBSecurityService,
-# it's peer class must implement org.apache.turbine.om.security.peer.UserPeer interface,
-# and you need to specify the name of the peer class here.
-#
-# Default: org.apache.turbine.om.security.peer.TurbineUserPeer
-#
-services.SecurityService.userPeer.class=org.apache.turbine.om.security.peer.TurbineUserPeer
-
-#
-# This is used by the SecurityService to make the password checking
-# secure. When enabled, passwords are transformed by a one-way
-# function into a sequence of bytes that is base64 encoded.
-# It is impossible to guess the plain-text form of the password
-# from the representation. When user logs in, the entered password
-# is transformed the same way and then compared with stored value.
-#
-# Default: false
-#
-
-services.SecurityService.secure.passwords=false
-
-#
-# This property lets you choose what digest algorithm will be used
-# for encrypting passwords. Check documentation of your JRE for
-# available algorithms.
-#
-# Default: SHA
-#
-
-services.SecurityService.secure.passwords.algorithm=SHA
-
-# Configuration for the LDAP Security Service implementation
-
-#services.SecurityService.ldap.security.athentication=simple
-#services.SecurityService.ldap.port=<LDAP PORT>
-#services.SecurityService.ldap.host=<LDAP HOST>
-#services.SecurityService.ldap.admin.username=<ADMIN USERNAME>
-#services.SecurityService.ldap.admin.password=<ADMIN PASSWORD>
-#services.SecurityService.ldap.user.basesearch=<SEARCH PATTERN>
-#services.SecurityService.ldap.user.search.filter=<SEARCH FILTER>
-#services.SecurityService.ldap.dn.attribute=userPrincipalName
-#services.SecurityService.ldap.provider=com.sun.jndi.ldap.LdapCtxFactory
-
-#
-# This property specifies the type of security authentication
-#
-# Default: simple
-#
-
-# services.SecurityService.ldap.security.authentication=simple
-
-#
-# The host name where the LDAP server is listenting.
-#
-# Default: localhost
-#
-
-# services.SecurityService.ldap.host=localhost
-
-#
-# The port number where the LDAP server is listenting.
-#
-# Default: 389
-#
-
-# services.SecurityService.ldap.port=389
-
-#
-# The user name of the admin user. The admin user should be able to
-# read from the LDAP repository.
-# Characteres '/' are replaced by '=' and '%' are replaced by ','.
-#
-# Default: none
-#
-
-# services.SecurityService.ldap.admin.username=turbineUserUniqueId/turbine%dc/example%dc/com
-
-#
-# The password of the admin user.
-#
-# Default: none
-#
-
-# services.SecurityService.ldap.admin.password=turbine
-
-#
-# The class name of the ldap provider.
-#
-# Default: com.sun.jndi.ldap.LdapCtxFactory
-#
-
-# services.SecurityService.ldap.provider=com.sun.jndi.ldap.LdapCtxFactory
-
-#
-# The directory base to search.
-# '/' are replaced by '=' and '%' are replaced by ','.
-#
-# Default: none
-#
-
-# services.SecurityService.ldap.basesearch=dc/example%dc/com
-
-#
-# The unique id. It must be an integer field and it is required only when
-# the users are in LDAP but the groups, roles and permissions are in the
-# Database.
-#
-# services.SecurityService.ldap.user.userid=
-
-#
-# This property maps the username with an attribute in LDAP.
-#
-# Default: turbineUserUniqueId
-#
-
-# services.SecurityService.ldap.user.username=turbineUserUniqueId
-
-#
-# This property maps the firstname with an attribute in LDAP.
-#
-# Default: turbineUserFirstName
-#
-
-# services.SecurityService.ldap.user.firstname=turbineUserFirstName
-
-#
-# This property maps the lastname with an attribute in LDAP.
-#
-# Default: turbineUserLastName
-#
-
-# services.SecurityService.ldap.user.lastname=turbineUserLastName
-
-#
-# This property maps the email with an attribute in LDAP.
-#
-# Default: turbineUserMailAddress
-#
-
-# services.SecurityService.ldap.user.email=turbineUserMailAddress
-
-#
-# This property maps the userPassword with an attribute in LDAP.
-#
-# Default: none
-#
-
-# services.SecurityService.ldap.user.password=userPassword
-
-
+# Default: org.apache.turbine.services.security.passive.PassiveUserManager
+services.SecurityService.user.manager = org.apache.turbine.services.security.DefaultUserManager
 ]]></source>
 
 </section>
@@ -287,67 +100,98 @@ manages the Turbine user objects.
 
 </section>
 
-<section name="Security Objects">
+<section name="Using Fulcrum Security">
 <p>
-The Security Service allows you to configure the various
-objects used to implement the User, Group, Role and Permission
-interfaces. These objects are typically service specific, so you
-should consult the documentation to the Security Service
-implementation, which objects should be used. The default are the
-object classes from the DB Security Service:
+The actual implementations for the different Fulcrum services that
+define the behavior of the security service are configured in the
+files <code>roleConfiguration.xml</code> and 
+<code>componentConfiguration.xml</code>. All of them can be extended
+and/or modified to meet your requirements. The following example shows
+the sections for the 
+<a href="/fulcrum/fulcrum-security-torque/index.html">Torque</a>
+implementation, using the Turbine security model.
 
-<table>
-<tr>
-<th>Object type</th>
-<th>Property</th>
-<th>Class</th>
-</tr>
-<tr>
-<td>User</td>
-<td>service.SecurityService.user.class</td>
-<td>org.apache.turbine.om.security.TurbineUser</td>
-</tr>
-<tr>
-<td>Group</td>
-<td>service.SecurityService.group.class</td>
-<td>org.apache.turbine.om.security.TurbineGroup</td>
-</tr>
-<tr>
-<td>Role</td>
-<td>service.SecurityService.role.class</td>
-<td>org.apache.turbine.om.security.TurbineRole</td>
-</tr>
-<tr>
-<td>Permission</td>
-<td>service.SecurityService.permission.class</td>
-<td>org.apache.turbine.om.security.TurbinePermission</td>
-</tr>
-</table>
+<subsection name="Dependencies">
+Turbine 4.0 does not depend on a particular Fulcrum Security 
+implementation. To use the Torque-flavor, you need to specify
+the dependency explicitly in your POM: 
+<source><![CDATA[
+<dependency>
+  <groupId>org.apache.fulcrum</groupId>
+  <artifactId>fulcrum-security-torque</artifactId>
+  <version>1.1.0</version>
+</dependency>
+]]></source>
+</subsection>
+<subsection name="roleConfiguration.xml">
+<source><![CDATA[
+<role
+    name="org.apache.torque.avalon.Torque"
+    shorthand="torqueService"
+    default-class="org.apache.torque.avalon.TorqueComponent"
+    early-init="true" />
+<role
+    name="org.apache.fulcrum.security.SecurityService"
+    shorthand="securityService"
+    default-class="org.apache.fulcrum.security.BaseSecurityService"/>
+<role
+    name="org.apache.fulcrum.security.UserManager"
+    shorthand="userManager"
+    early-init="true"
+    default-class="org.apache.fulcrum.security.torque.turbine.TorqueTurbineUserManagerImpl"/>
+<role
+    name="org.apache.fulcrum.security.GroupManager"
+    shorthand="groupManager"
+    default-class="org.apache.fulcrum.security.torque.turbine.TorqueTurbineGroupManagerImpl"/>
+<role
+    name="org.apache.fulcrum.security.RoleManager"
+    shorthand="roleManager"
+    default-class="org.apache.fulcrum.security.torque.turbine.TorqueTurbineRoleManagerImpl"/>
+<role
+    name="org.apache.fulcrum.security.PermissionManager"
+    shorthand="permissionManager"
+    default-class="org.apache.fulcrum.security.torque.turbine.TorqueTurbinePermissionManagerImpl"/>
+<role
+    name="org.apache.fulcrum.security.ModelManager"
+    shorthand="modelManager"
+    default-class="org.apache.fulcrum.security.torque.turbine.TorqueTurbineModelManagerImpl"/>
+<role
+    name="org.apache.fulcrum.security.authenticator.Authenticator"
+    shorthand="authenticator"
+    default-class="org.apache.fulcrum.security.authenticator.TextMatchAuthenticator"/>
+<role
+    name="org.apache.fulcrum.security.model.ACLFactory"
+    shorthand="aclFactory"
+    default-class="org.apache.fulcrum.security.model.turbine.TurbineACLFactory"/>
+]]></source>
+</subsection>
+
+<subsection name="componentConfiguration.xml">
+<source><![CDATA[
+<securityService/>
+<authenticator/>
+<modelManager/>
+<aclFactory/>
+
+<userManager>
+    <className>org.apache.fulcrum.security.torque.om.TorqueTurbineUser</className>
+</userManager>
+<groupManager>
+    <className>org.apache.fulcrum.security.torque.om.TorqueTurbineGroup</className>
+</groupManager>
+<roleManager>
+    <className>org.apache.fulcrum.security.torque.om.TorqueTurbineRole</className>
+</roleManager>
+<permissionManager>
+    <className>org.apache.fulcrum.security.torque.om.TorqueTurbinePermission</className>
+</permissionManager>
+
+<torqueService>
+    <configfile>WEB-INF/conf/Torque.properties</configfile>
+</torqueService>
+]]></source>
+</subsection>
 </p>
-</section>
-
-<section name="Access Control List">
-<p>
-The Fulcrum security system is built on Access Control Lists
-(ACL). There is a default implementation included with the security
-service. If, for any reason, you need a different ACL implementation,
-you can change it with the <i>services.SecurityService.acl.class</i>
-property in Fulcrum.properties. If you provide a different class here,
-it must implement the
-<i>org.apache.fulcrum.security.util.AccessControlList</i> interface.
-</p>
-
-<p>
-Warning! In earlier versions of the Security Service,
-<i>org.apache.fulcrum.security.util.AccessControlList</i> was not an
-interface but a class and the implementation wasn't configurable. If
-you upgrade to this version of Fulcrum from an earlier version and get
-"IncompatibleClassChange" exceptions regarding to the
-AccessControlList class, then you need to recompile your application
-(there is no need to <b>rewrite</b> it, but you must <b>recompile</b>
-it).
-</p>
-
 </section>
 </body>
 </document>
