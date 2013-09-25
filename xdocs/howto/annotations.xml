@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one
+ or more contributor license agreements.  See the NOTICE file
+ distributed with this work for additional information
+ regarding copyright ownership.  The ASF licenses this file
+ to you under the Apache License, Version 2.0 (the
+ "License"); you may not use this file except in compliance
+ with the License.  You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing,
+ software distributed under the License is distributed on an
+ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ KIND, either express or implied.  See the License for the
+ specific language governing permissions and limitations
+ under the License.
+-->
+
+<document>
+
+ <properties>
+  <title>Annotations Howto</title>
+ </properties>
+
+<body>
+
+<section name="Annotations">
+
+<p>
+Turbine provides a number of annotations to inject dependencies into your actions,
+screens and layouts. All <code>Assemblers</code> that is, all modules of type 
+<code>Action</code>, <code>Screen</code>, <code>Layout</code>, <code>Page</code>,
+<code>Navigation</code> and <code>ScheduledJob</code> as well as all 
+<code>Valves</code> in the pipeline support the injection of services, 
+configurations and loaders. This relieves you from the burden of looking
+them up at runtime and thus simplifies and accelerates the code. 
+</p>
+
+<subsection name="@TurbineService">
+The annotation can only be used with a field. 
+A declared field in a class annotated with <code>@TurbineService</code>
+gets injected an instance of this service at the time the instance
+of the class is created. The field should have the type of the service
+interface like in the following two examples:
+<source><![CDATA[
+// Explicit service name
+@TurbineService( "RunDataService" )
+private RunDataService runDataService;
+
+// Implicit SERVICE_NAME or ROLE
+@TurbineService
+private FactoryService factory;
+]]></source>
+This is the equivalent of
+<source><![CDATA[
+runDataService = (RunDataService) TurbineServices
+    .getInstance.getService("RunDataService");
+
+factory = (FactoryService) TurbineServices
+    .getInstance.getService(FactoryService.ROLE);
+]]></source>
+As you an see, the annotation supports an optional parameter, the 
+name of the service in the Turbine service repository. If this 
+parameter is not present, the annotation processor will look
+for the field <code>SERVICE_NAME</code> and then <code>ROLE</code>
+in the type class of the field to retrieve the service name. If none
+of them can be found, the fully qualified class name of the
+service interface is used to look up the service.
+<br />
+If the service instance cannot be found, the annotation processor 
+will throw an exception.
+</subsection>
+
+<subsection name="@TurbineConfiguration">
+The annotation can only be used with a field. 
+A declared field in a class annotated with <code>@TurbineConfiguration</code>
+gets injected an instance of the Turbine configuration object at
+the time the instance of the class is created. The field should have 
+the type <code>Configuration</code>
+<source><![CDATA[
+// Injected configuration instance
+@TurbineConfiguration
+private Configuration config;
+
+// Injected configuration subset instance
+@TurbineConfiguration( "action" )
+private Configuration actionConfig;
+]]></source>
+This is the equivalent of
+<source><![CDATA[
+config = Turbine.getConfiguration();
+
+actionConfig = Turbine.getConfiguration().subset("action");
+]]></source>
+The annotation supports an optional parameter, the 
+prefix of the configuration subset to retrieve.
+</subsection>
+
+<subsection name="@TurbineLoader">
+The annotation can only be used with a field. 
+A declared field in a class annotated with <code>@TurbineLoader</code>
+gets injected an instance of the specified <code>Loader</code> at
+the time the instance of the class is created. The field should have 
+the type of the loader.
+<source><![CDATA[
+// Injected loader instance
+@TurbineLoader( Action.class )
+private ActionLoader actionLoader;
+]]></source>
+This is the equivalent of
+<source><![CDATA[
+actionLoader = TurbineAssemblerBroker.getLoader(Action.class);
+]]></source>
+The annotation parameter is required and defines the type of module 
+that is to be loaded.
+</subsection>
+
+<subsection name="Performance Considerations">
+It is important to note that the processing of the annotations at
+the time the module class is instantiated takes some time. It is
+therefore strongly recommended to re-use the module instances in
+a production environment by setting the configuration parameter
+<code>module.cache</code> to <code>true</code> in 
+<code>TurbineResources.properties</code>.
+</subsection>
+
+</section>
+
+</body>
+</document>

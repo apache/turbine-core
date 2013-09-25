@@ -62,8 +62,6 @@
         <item name="Servlet Service"     href="/services/servlet-service.html"/>
         <item name="Session Service"     href="/services/session-service.html"/>
         <item name="Template Service"    href="/services/template-service.html"/>
-        <item name="Torque Security Service" href="/services/torque-security-service.html"/>
-        <item name="Torque Security Service Schema" href="/services/torque-security-schema.html"/>
         <item name="UI Service"          href="/services/ui-service.html"/>
         <item name="Unique ID Service"   href="/services/uniqueid-service.html"/>
         <item name="Upload Service"      href="http://turbine.apache.org/fulcrum/fulcrum-upload/"/>
@@ -73,6 +71,7 @@
       </item>
       <item name="Howtos"                href="/howto/index.html" collapse="true">
         <item name="Action Events Howto" href="/howto/action-event-howto.html"/>
+        <item name="Annotations Howto"   href="/howto/annotations.html"/>
         <item name="Configuration Howto"   href="/howto/configuration-howto.html"/>
         <item name="Extend User Howto"   href="/howto/extend-user-howto.html"/>
         <item name="Hibernate OM Howto"  href="/howto/hibernate-howto.html"/>

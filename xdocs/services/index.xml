@@ -146,13 +146,6 @@ The Service for the mapping of templates to their screens and actions.
 </li>
 
 <li>
-<a href="torque-security-service.html">Torque Security Service</a>
-<br/>
-This is an implementation of a Security Service which uses Torque
-generated peers to access the required security information.
-</li>
-
-<li>
 <a href="ui-service.html">UI Service</a>
 <br/>
 The UI (User Interface) Service provides for application skinning.
@@ -167,6 +160,8 @@ Allows for the creation of Context unique and pseudo random identifiers.
 <li>
 <a href="velocity-service.html">Velocity Service</a>
 <br/>
+The Velocity Service supports the rendering of 
+<a href="http://velocity.apache.org">Velocity</a> templates.
 </li>
 
 </ul>
