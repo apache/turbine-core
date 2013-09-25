@@ -25,6 +25,9 @@
 
   <body>
     <release version="4.0-M2" date="in Subversion">
+      <action type="update" dev="tv">
+        Update Turbine Parent POM to version 3
+      </action>
       <action type="add" dev="tv">
         Add Annotation @TurbineLoader to inject a loader 
         instance into objects.
