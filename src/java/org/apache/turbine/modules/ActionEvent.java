@@ -23,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
+import org.apache.commons.collections.map.MultiKeyMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -83,36 +84,12 @@ public abstract class ActionEvent extends Action
 	/** Logging */
 	protected Log log = LogFactory.getLog(this.getClass());
 
-	/**
-	 * You need to implement this in your classes that extend this class.
-	 * @deprecated use PipelineData version instead.
-	 * @param data Turbine information.
-	 * @exception Exception a generic exception.
-	 */
-	@Deprecated
-    @Override
-    public abstract void doPerform(RunData data)
-			throws Exception;
-
-	/**
-	 * You need to implement this in your classes that extend this class.
-	 * This should revert to being abstract when RunData has gone.
-	 * @param data Turbine information.
-	 * @exception Exception a generic exception.
-	 */
-	@Override
-    public void doPerform(PipelineData pipelineData)
-			throws Exception
-	{
-	      RunData data = getRunData(pipelineData);
-	      doPerform(data);
-	}
-
-
 	/** The name of the button to look for. */
 	protected static final String BUTTON = "eventSubmit_";
 	/** The length of the button to look for. */
 	protected static final int BUTTON_LENGTH = BUTTON.length();
+    /** The default method. */
+    protected static final String DEFAULT_METHOD = "doPerform";
 	/** The prefix of the method name. */
 	protected static final String METHOD_NAME_PREFIX = "do";
 	/** The length of the method name. */
@@ -132,6 +109,12 @@ public abstract class ActionEvent extends Action
 	 * servlet's handleException method.
 	 */
 	protected boolean bubbleUpException = true;
+
+	/**
+	 * Cache for the methods to invoke
+	 */
+	private MultiKeyMap/* <String, Method> */ methodCache = new MultiKeyMap/* <String, Method> */();
+
 	/**
 	 * C'tor
 	 */
@@ -146,14 +129,37 @@ public abstract class ActionEvent extends Action
 				.getBoolean(TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP,
 						TurbineConstants.ACTION_EVENT_BUBBLE_EXCEPTION_UP_DEFAULT);
 
-		if (log.isDebugEnabled()){
-		log.debug(submitValueKey
-				? "ActionEvent accepts only eventSubmit_do Keys with a value != 0"
-				: "ActionEvent accepts all eventSubmit_do Keys");
-		log.debug(bubbleUpException
-				  ? "ActionEvent will bubble exceptions up to Turbine.handleException() method"
-				  : "ActionEvent will not bubble exceptions up.");
+		if (log.isDebugEnabled())
+		{
+    		log.debug(submitValueKey
+    				? "ActionEvent accepts only eventSubmit_do Keys with a value != 0"
+    				: "ActionEvent accepts all eventSubmit_do Keys");
+    		log.debug(bubbleUpException
+    				  ? "ActionEvent will bubble exceptions up to Turbine.handleException() method"
+    				  : "ActionEvent will not bubble exceptions up.");
 		}
+	}
+
+	/**
+	 * Retrieve a method of the given name and signature. The value is cached.
+	 *
+	 * @param name the name of the method
+	 * @param signature an array of classes forming the signature of the method
+	 *
+	 * @return the method object
+	 * @throws NoSuchMethodException if the method does not exist
+	 */
+	protected Method getMethod(String name, Class<?>[] signature) throws NoSuchMethodException
+	{
+	    Method method = (Method) this.methodCache.get(name, signature);
+
+	    if (method == null)
+	    {
+	        method = getClass().getMethod(name, signature);
+	        this.methodCache.put(name, signature, method);
+	    }
+
+	    return method;
 	}
 
 	/**
@@ -169,14 +175,8 @@ public abstract class ActionEvent extends Action
     protected void perform(RunData data)
 			throws Exception
 	{
-		try
-		{
-			executeEvents(data);
-		}
-		catch (NoSuchMethodException e)
-		{
-			doPerform(data);
-		}
+	    ParameterParser pp = data.getParameters();
+        executeEvents(pp, new Class<?>[]{ RunData.class }, new Object[]{ data });
 	}
 
 	/**
@@ -191,32 +191,24 @@ public abstract class ActionEvent extends Action
     protected void perform(PipelineData pipelineData)
 			throws Exception
 	{
-		try
-		{
-			executeEvents(pipelineData);
-		}
-		catch (NoSuchMethodException e)
-		{
-			doPerform(pipelineData);
-		}
+	    ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);
+		executeEvents(pp, new Class<?>[]{ PipelineData.class }, new Object[]{ pipelineData });
 	}
-
 
 	/**
 	 * This method should be called to execute the event based system.
 	 *
-	 * @deprecated Use PipelineData version instead.
-	 * @param data Turbine information.
+	 * @param pp the parameter parser
+	 * @param signature the signature of the method to call
+	 * @param parameters the parameters for the method to call
+	 *
 	 * @exception Exception a generic exception.
 	 */
-	@Deprecated
-    public void executeEvents(RunData data)
+	public void executeEvents(ParameterParser pp, Class<?>[] signature, Object[] parameters)
 			throws Exception
 	{
 		// Name of the button.
 		String theButton = null;
-		// Parameter parser.
-		ParameterParser pp = data.getParameters();
 
 		String button = pp.convert(BUTTON);
 		String key = null;
@@ -237,97 +229,57 @@ public abstract class ActionEvent extends Action
 
 		if (theButton == null)
 		{
-			throw new NoSuchMethodException("ActionEvent: The button was null");
+		    theButton = DEFAULT_METHOD;
+		    key = null;
 		}
 
 		Method method = null;
 
+        try
+        {
+            method = getMethod(theButton, signature);
+        }
+        catch (NoSuchMethodException e)
+        {
+            method = getMethod(DEFAULT_METHOD, signature);
+        }
+        finally
+        {
+            if (key != null)
+            {
+                pp.remove(key);
+            }
+        }
+
 		try
 		{
-			method = getClass().getMethod(theButton, RunData.class);
-
 			if (log.isDebugEnabled())
 			{
 				log.debug("Invoking " + method);
 			}
 
-			method.invoke(this, data);
+			method.invoke(this, parameters);
 		}
 		catch (InvocationTargetException ite)
 		{
 			Throwable t = ite.getTargetException();
-			log.error("Invokation of " + method , t);
-		}
-		finally
-		{
-			pp.remove(key);
-		}
-	}
-
-	/**
-	 * This method should be called to execute the event based system.
-	 *
-	 * @param data Turbine information.
-	 * @exception Exception a generic exception.
-	 */
-	public void executeEvents(PipelineData pipelineData)
-			throws Exception
-	{
-
-	    RunData data = getRunData(pipelineData);
-
-		// Name of the button.
-		String theButton = null;
-		// Parameter parser.
-		ParameterParser pp = data.getParameters();
-
-		String button = pp.convert(BUTTON);
-		String key = null;
-
-		// Loop through and find the button.
-		for (Iterator<String> it = pp.keySet().iterator(); it.hasNext();)
-		{
-			key = it.next();
-			if (key.startsWith(button))
+			if (bubbleUpException)
 			{
-				if (considerKey(key, pp))
-				{
-					theButton = formatString(key, pp);
-					break;
-				}
+                if (t instanceof Exception)
+                {
+                    throw (Exception) t;
+                }
+                else
+                {
+                    throw ite;
+                }
+			}
+			else
+			{
+			    log.error("Invokation of " + method , t);
 			}
 		}
-
-		if (theButton == null)
-		{
-			throw new NoSuchMethodException("ActionEvent: The button was null");
-		}
-
-		Method method = null;
-
-		try
-		{
-			method = getClass().getMethod(theButton, PipelineData.class);
-
-			if (log.isDebugEnabled())
-			{
-				log.debug("Invoking " + method);
-			}
-
-			method.invoke(this, pipelineData);
-		}
-		catch (InvocationTargetException ite)
-		{
-			Throwable t = ite.getTargetException();
-			log.error("Invokation of " + method , t);
-		}
-		finally
-		{
-			pp.remove(key);
-		}
 	}
-
-
 
 	/**
 	 * This method does the conversion of the lowercase method name
@@ -350,8 +302,7 @@ public abstract class ActionEvent extends Action
 					? input.substring(0, input.length() - 2)
 					: input;
 
-			if (pp.getUrlFolding()
-					!= ParserService.URL_CASE_FOLDING_NONE)
+			if (pp.getUrlFolding() != ParserService.URL_CASE_FOLDING_NONE)
 			{
 				tmp = input.toLowerCase().substring(BUTTON_LENGTH + METHOD_NAME_LENGTH);
 				tmp = METHOD_NAME_PREFIX + StringUtils.capitalize(tmp);
@@ -361,6 +312,7 @@ public abstract class ActionEvent extends Action
 				tmp = input.substring(BUTTON_LENGTH);
 			}
 		}
+
 		return tmp;
 	}
 
@@ -388,7 +340,7 @@ public abstract class ActionEvent extends Action
 			// e.g. JavaScript.
 			//
 			// If this key is unset or missing, nothing changes for the
-			// current behaviour.
+			// current behavior.
 			//
 			String keyValue = pp.getString(key);
 			log.debug("Key Value is " + keyValue);
