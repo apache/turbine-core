@@ -21,11 +21,8 @@ package org.apache.turbine.util.velocity;
  */
 
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Iterator;
-
 import org.apache.fulcrum.parser.ParameterParser;
+import org.apache.turbine.Turbine;
 import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.velocity.TurbineVelocity;
@@ -57,32 +54,6 @@ public abstract class VelocityActionEvent extends ActionEvent
     protected boolean initialized = false;
 
     /**
-     * You need to implement this in your classes that extend this
-     * class.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data A Turbine RunData object.
-     * @exception Exception a generic exception.
-     */
-    @Deprecated
-    @Override
-    public abstract void doPerform(RunData data)
-            throws Exception;
-
-	/**
-	 * You need to implement this in your classes that extend this class.
-	 * Should revert to abstract once RunData is gone.
-	 * @param data Turbine information.
-	 * @exception Exception a generic exception.
-	 */
-	@Override
-    public void doPerform(PipelineData pipelineData)
-			throws Exception
-	{
-	      RunData data = getRunData(pipelineData);
-	      doPerform(data);
-	}
-    /**
      * Provides a means of initializing the module.
      *
      * @throws Exception a generic exception.
@@ -104,18 +75,14 @@ public abstract class VelocityActionEvent extends ActionEvent
     protected void perform(RunData data)
             throws Exception
     {
-        try
+        if (!initialized)
         {
-            if (!initialized)
-            {
-                initialize();
-            }
-            executeEvents(data, TurbineVelocity.getContext(data));
+            initialize();
         }
-        catch (NoSuchMethodException e)
-        {
-            doPerform(data);
-        }
+        ParameterParser pp = data.getParameters();
+        Context context = TurbineVelocity.getContext(data);
+        executeEvents(pp, new Class<?>[]{ RunData.class, Context.class },
+                new Object[]{ data, context });
     }
 
     /**
@@ -130,170 +97,14 @@ public abstract class VelocityActionEvent extends ActionEvent
     protected void perform(PipelineData pipelineData)
             throws Exception
     {
-        try
+        if (!initialized)
         {
-            if (!initialized)
-            {
-                initialize();
-            }
+            initialize();
+        }
 
-            executeEvents(pipelineData, TurbineVelocity.getContext(pipelineData));
-        }
-        catch (NoSuchMethodException e)
-        {
-            doPerform(pipelineData);
-        }
+        ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);
+        Context context = TurbineVelocity.getContext(pipelineData);
+        executeEvents(pp, new Class<?>[]{ PipelineData.class, Context.class },
+                new Object[]{ pipelineData, context });
     }
-    /**
-     * This method should be called to execute the event based system.
-     * @deprecated Use PipelineData version instead.
-     * @param data A Turbine RunData object.
-     * @param context Velocity context information.
-     * @exception Exception a generic exception.
-     */
-    @Deprecated
-    public void executeEvents(RunData data, Context context)
-            throws Exception
-    {
-        // Name of the button.
-        String theButton = null;
-
-        // ParameterParser.
-        ParameterParser pp = data.getParameters();
-
-        String button = pp.convert(BUTTON);
-        String key = null;
-
-        // Loop through and find the button.
-        for (Iterator<String> it = pp.keySet().iterator(); it.hasNext();)
-        {
-            key = it.next();
-            if (key.startsWith(button))
-            {
-                if (considerKey(key, pp))
-                {
-                    theButton = formatString(key, pp);
-                    break;
-                }
-            }
-        }
-
-        if (theButton == null)
-        {
-            throw new NoSuchMethodException(
-                    "ActionEvent: The button was null");
-        }
-
-        Method method = null;
-        try
-        {
-            method = getClass().getMethod(theButton, RunData.class, Context.class);
-
-            if (log.isDebugEnabled())
-            {
-                log.debug("Invoking " + method);
-            }
-
-            method.invoke(this, data, context);
-        }
-        catch (NoSuchMethodException nsme)
-        {
-            // Attempt to execute things the old way..
-            if (log.isDebugEnabled())
-            {
-                log.debug("Couldn't locate the Event ( " + theButton
-                        + "), running executeEvents() in "
-                        + super.getClass().getName());
-            }
-
-            super.executeEvents(data);
-        }
-        catch (InvocationTargetException ite)
-        {
-            Throwable t = ite.getTargetException();
-            log.error("Invokation of " + method , t);
-            throw ite;
-        }
-        finally
-        {
-            pp.remove(key);
-        }
-    }
-
-    /**
-     * This method should be called to execute the event based system.
-     *
-     * @param data A Turbine RunData object.
-     * @param context Velocity context information.
-     * @exception Exception a generic exception.
-     */
-    public void executeEvents(PipelineData pipelineData, Context context)
-            throws Exception
-    {
-	    RunData data = getRunData(pipelineData);
-        // Name of the button.
-        String theButton = null;
-
-        // ParameterParser.
-        ParameterParser pp = data.getParameters();
-
-        String button = pp.convert(BUTTON);
-        String key = null;
-
-        // Loop through and find the button.
-        for (Iterator<String> it = pp.keySet().iterator(); it.hasNext();)
-        {
-            key = it.next();
-            if (key.startsWith(button))
-            {
-                if (considerKey(key, pp))
-                {
-                    theButton = formatString(key, pp);
-                    break;
-                }
-            }
-        }
-
-        if (theButton == null)
-        {
-            throw new NoSuchMethodException(
-                    "ActionEvent: The button was null");
-        }
-
-        Method method = null;
-        try
-        {
-            method = getClass().getMethod(theButton, PipelineData.class, Context.class);
-
-            if (log.isDebugEnabled())
-            {
-                log.debug("Invoking " + method);
-            }
-
-            method.invoke(this, pipelineData, context);
-        }
-        catch (NoSuchMethodException nsme)
-        {
-            // Attempt to execute things the old way..
-            if (log.isDebugEnabled())
-            {
-                log.debug("Couldn't locate the Event ( " + theButton
-                        + "), running executeEvents() in "
-                        + super.getClass().getName());
-            }
-
-            super.executeEvents(pipelineData);
-        }
-        catch (InvocationTargetException ite)
-        {
-            Throwable t = ite.getTargetException();
-            log.error("Invokation of " + method , t);
-            throw ite;
-        }
-        finally
-        {
-            pp.remove(key);
-        }
-    }
-
 }
