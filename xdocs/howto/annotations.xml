@@ -56,10 +56,10 @@ private FactoryService factory;
 This is the equivalent of
 <source><![CDATA[
 runDataService = (RunDataService) TurbineServices
-    .getInstance.getService("RunDataService");
+    .getInstance().getService("RunDataService");
 
 factory = (FactoryService) TurbineServices
-    .getInstance.getService(FactoryService.ROLE);
+    .getInstance().getService(FactoryService.ROLE);
 ]]></source>
 As you an see, the annotation supports an optional parameter, the 
 name of the service in the Turbine service repository. If this 
