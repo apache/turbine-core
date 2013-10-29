@@ -904,9 +904,7 @@ public class DefaultTurbineRunData
      *
      * @return a print writer.
      * @throws IOException
-     * @deprecated no replacement planned, response writer will not be cached
      */
-    @Deprecated
     public PrintWriter getOut()
             throws IOException
     {
@@ -1448,7 +1446,6 @@ public class DefaultTurbineRunData
      * @param out a print writer.
      * @deprecated no replacement planned, response writer will not be cached
      */
-    @Deprecated
     protected void setOut(PrintWriter out)
     {
         this.out = out;

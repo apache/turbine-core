@@ -401,9 +401,7 @@ public interface RunData extends PipelineData
      *
      * @return a print writer.
      * @throws IOException
-     * @deprecated no replacement planned, response writer will not be cached
      */
-    @Deprecated
     PrintWriter getOut()
             throws IOException;
 
