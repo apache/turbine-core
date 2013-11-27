@@ -117,14 +117,13 @@ public class JSONScreen extends RawScreen
     {
         data.declareDirectResponse();
         HttpServletRequest request = data.getRequest();
-
-        //String charset = request.getCharacterEncoding();
-        //if(charset == null)
-        //{
-        //    charset = "UTF-8";
-        //}
-        //BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), charset));
-        BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream()));
+        
+        String charset = request.getCharacterEncoding();
+        if(charset == null)
+        {
+            charset = "UTF-8";
+        }
+        BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), charset));
 
         // Read the request
         CharArrayWriter cdata = new CharArrayWriter();
@@ -143,7 +142,7 @@ public class JSONScreen extends RawScreen
         Object json_res = jsonRpcService.processCall(cdata, json_bridge, request);
 
         PrintWriter out = new PrintWriter(
-                new OutputStreamWriter(data.getResponse().getOutputStream()));
+                new OutputStreamWriter(data.getResponse().getOutputStream(),charset));
         out.print(json_res.toString());
         out.flush();
         out.close();
