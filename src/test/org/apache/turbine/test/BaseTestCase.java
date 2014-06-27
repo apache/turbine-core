@@ -31,8 +31,6 @@ import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import junit.framework.TestCase;
-
 import org.apache.log4j.PropertyConfigurator;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.om.security.User;
@@ -40,6 +38,7 @@ import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.util.RunData;
+import org.junit.BeforeClass;
 
 import com.mockobjects.servlet.MockHttpServletRequest;
 
@@ -53,14 +52,13 @@ import com.mockobjects.servlet.MockHttpServletRequest;
  * @version $Id$
  */
 public abstract class BaseTestCase
-        extends TestCase
 {
-    File log4jFile = new File("conf/test/Log4j.properties");
+    static File log4jFile = new File("conf/test/Log4j.properties");
 
-    public BaseTestCase(String name)
+    @BeforeClass
+    public static void baseInit()
             throws Exception
     {
-        super(name);
 
         Properties p = new Properties();
         try
@@ -75,8 +73,6 @@ public abstract class BaseTestCase
             System.err.println("Could not open Log4J configuration file "
                     + log4jFile);
         }
-
-
     }
 
     protected RunData getRunData(HttpServletRequest request,HttpServletResponse response,ServletConfig config) throws Exception {
@@ -109,7 +105,6 @@ public abstract class BaseTestCase
         request.setupGetParameterNames(v.elements());
         request.setSession(session);
         return request;
-
     }
 }
 

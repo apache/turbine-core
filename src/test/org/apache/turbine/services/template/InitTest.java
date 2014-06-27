@@ -21,10 +21,16 @@ package org.apache.turbine.services.template;
  */
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * Tests startup of the Template Service and registration of the
@@ -40,18 +46,26 @@ public class InitTest
     private static TurbineConfig tc = null;
     private static TemplateService ts = null;
 
-    public InitTest(String name)
-            throws Exception
+
+    @BeforeClass
+    public static void setUp() throws Exception
     {
-        super(name);
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
         tc.initialize();
 
         ts = (TemplateService) TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
     }
 
+    @AfterClass
+    public static void tearDown() throws Exception
+    {
+        if (tc != null)
+        {
+            tc.dispose();
+        }
+    }
 
-    public void testService()
+    @Test public void testService()
         throws Exception
     {
 

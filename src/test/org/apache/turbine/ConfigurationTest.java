@@ -21,10 +21,15 @@ package org.apache.turbine;
  */
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
 import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineXmlConfig;
+import org.junit.Test;
 
 /**
  * Tests that the ConfigurationFactory and regular old properties methods both work.
@@ -43,14 +48,10 @@ public class ConfigurationTest extends BaseTestCase
      */
     public static final String CLASSNAME_SUFFIX = ".classname";
 
-    private static TurbineConfig tc = null;
-    private static TurbineXmlConfig txc = null;
+    private TurbineConfig tc = null;
+    private TurbineXmlConfig txc = null;
 
-    public ConfigurationTest(String name) throws Exception
-    {
-        super(name);
-    }
-
+    @Test
     public void testCreateTurbineWithConfigurationXML() throws Exception
     {
         txc = new TurbineXmlConfig(".", "conf/test/TurbineConfiguration.xml");
@@ -81,6 +82,7 @@ public class ConfigurationTest extends BaseTestCase
         }
     }
 
+    @Test
     public void testCreateTurbineWithConfiguration() throws Exception
     {
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");

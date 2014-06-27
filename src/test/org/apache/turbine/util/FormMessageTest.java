@@ -21,18 +21,17 @@ package org.apache.turbine.util;
  */
 
 
+import static org.junit.Assert.assertTrue;
+
 import org.apache.turbine.test.BaseTestCase;
+import org.junit.Test;
 
 public class FormMessageTest
     extends BaseTestCase
 {
-    public FormMessageTest(String name)
-            throws Exception
-    {
-        super(name);
-    }
 
-    public void testCreateFormMessage()
+
+    @Test public void testCreateFormMessage()
     {
         FormMessage fm = new FormMessage("mainForm","someField","A message!");
         String fmString = fm.toString();
@@ -41,7 +40,7 @@ public class FormMessageTest
         assertTrue("Make sure toString works",fmString.indexOf("mainForm")>-1);
     }
 
-    public void testCreateFormMessageMultipleFields()
+    @Test public void testCreateFormMessageMultipleFields()
     {
         FormMessage fm = new FormMessage("mainForm","someField","A message!");
         fm.setFieldName("someOtherField");

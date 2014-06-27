@@ -1,5 +1,9 @@
 package org.apache.turbine.services.schedule;
 
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,9 +23,6 @@ package org.apache.turbine.services.schedule;
  * under the License.
  */
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 //import org.apache.turbine.test.BaseTestCase;
 
@@ -32,16 +33,15 @@ import junit.framework.TestSuite;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id: JobEntryTest.java 615328 2008-01-25 20:25:05Z tv $
  */
-public class JobEntryTest extends TestCase
+public class JobEntryTest 
 {
 
     private JobEntry je1;
     private JobEntry je2;
 
-    public JobEntryTest(String name)
-            throws Exception
+    @Before
+    public void setUpBefore() throws Exception
     {
-        super(name);
 
         // Add a new job entry
         je1 = new JobEntry();
@@ -63,15 +63,11 @@ public class JobEntryTest extends TestCase
         je2.setTask("SimpleJob");
     }
 
-    public static Test suite()
-    {
-        return new TestSuite(JobEntryTest.class);
-    }
 
     /**
      * Tests the ability to enable and disable the service.
      */
-    public void testCompareTo()
+    @Test public void testCompareTo()
     {
         assertFalse(je1.equals(je2));
         je2.setJobId(je1.getJobId());

@@ -19,29 +19,49 @@ package org.apache.turbine.services.jsonrpc;
  * under the License.
  */
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import static org.junit.Assert.assertNotNull;
 
-import org.apache.turbine.test.BaseTurbineTest;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.services.pull.tools.UIToolTest;
+import org.apache.turbine.test.BaseTestCase;
+import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 import com.metaparadigm.jsonrpc.JSONRPCBridge;
 
-
 public class JsonrpcServicelTest
-        extends BaseTurbineTest
+        extends BaseTestCase
 {
-    public JsonrpcServicelTest(String name)
-            throws Exception
-    {
-        super(name, "conf/test/CompleteTurbineResources.properties");
+    private static TurbineConfig turbineConfig = null;
+
+    
+    @BeforeClass
+    public static void setUp() throws Exception {
+//        serviceManager = TurbineServices.getInstance();
+//        serviceManager.setApplicationRoot(".");
+
+        Map<String, String> initParams = new HashMap<String, String>();
+        initParams.put(TurbineConfig.PROPERTIES_PATH_KEY, "conf/test/CompleteTurbineResources.properties"); // "conf/test/TurbineResources.properties"
+        initParams.put(TurbineConstants.LOGGING_ROOT_KEY, "target/test-logs");
+
+        turbineConfig = new TurbineConfig(".", initParams);
+        turbineConfig.initialize();
+    }
+    
+    @AfterClass
+    public static void destroy() throws Exception {
+        turbineConfig.dispose();
     }
 
-    public static Test suite()
-    {
-        return new TestSuite(JsonrpcServicelTest.class);
-    }
 
-    public void testBridgeAccess()
+    @Test public void testBridgeAccess()
     {
         JSONRPCBridge bridge = new JSONRPCBridge();
         assertNotNull(bridge);

@@ -23,6 +23,9 @@ package org.apache.turbine;
 
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * Can we call "destroy" unconditionally on our Turbine Servlet, even if
@@ -36,24 +39,31 @@ public class DestroyTest
 {
     private static TurbineConfig tc = null;
 
-    public DestroyTest(String name)
-            throws Exception
-    {
-        super(name);
+    
+    @BeforeClass
+    public static void init() throws Exception {
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
     }
-
+    @Test
     public void testDestroy()
         throws Exception
     {
         Turbine t = new Turbine();
         t.destroy();
     }
-
+    @Test
     public void testInitAndDestroy()
         throws Exception
     {
         tc.initialize();
         tc.dispose();
+    }
+
+    @AfterClass
+    public static void destroy()
+        throws Exception
+    {
+        // should be already dispoesd
+        //tc.dispose();
     }
 }

@@ -19,59 +19,86 @@ package org.apache.turbine.services.pull.tools;
  * under the License.
  */
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.services.jsonrpc.JsonrpcServicelTest;
 import org.apache.turbine.services.pull.PullService;
 import org.apache.turbine.services.pull.TurbinePull;
-import org.apache.turbine.test.BaseTurbineTest;
+import org.apache.turbine.test.BaseTestCase;
+import org.apache.turbine.util.TurbineConfig;
 import org.apache.velocity.context.Context;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+    JsonrpcServicelTest.class
+    })
 public class UIToolTest
-        extends BaseTurbineTest
+        extends BaseTestCase
 {
-    public UIToolTest(String name)
-            throws Exception
-    {
-        super(name, "conf/test/CompleteTurbineResources.properties");
-    }
+    
+    private static TurbineConfig turbineConfig = null;
+    private static PullService pullService = null;
+    private static UITool ui = null;
 
-    public static Test suite()
-    {
-        return new TestSuite(UIToolTest.class);
-    }
+    
+    @BeforeClass
+    public static void setUp() throws Exception {
 
-    private UITool getTool()
-    {
-        PullService pullService = TurbinePull.getService();
+
+        Map<String, String> initParams = new HashMap<String, String>();
+        initParams.put(TurbineConfig.PROPERTIES_PATH_KEY, "/conf/test/CompleteTurbineResources.properties"); // "conf/test/TurbineResources.properties"
+        initParams.put(TurbineConstants.LOGGING_ROOT_KEY, "target/test-logs");
+
+        turbineConfig = new TurbineConfig(".", initParams);
+        turbineConfig.initialize();
+        
+        //pullService = (PullService)TurbineServices.getInstance().getService(PullService.SERVICE_NAME);
+        pullService = TurbinePull.getService();
         assertNotNull(pullService);
-
         Context globalContext = pullService.getGlobalContext();
         assertNotNull(globalContext);
 
-        return (UITool) globalContext.get("ui");
+        ui = (UITool) globalContext.get("ui");
+    }
+    
+    @AfterClass
+    public static void destroy() throws Exception {
+        turbineConfig.dispose();
+        ui=null;
     }
 
+    @Test
     public void testTool()
     {
-        UITool ui = getTool();
         assertNotNull(ui);
     }
-
+    
+    @Test
     public void testCssSlashes()
     {
-        UITool ui = getTool();
+
         ui.setSkin("myskin");
 
         String cssUrl = ui.getStylecss();
         assertEquals("CSS URL does not match", "http:///conf/test/turbine-resources/turbine-skins/myskin/skins.css", cssUrl);
     }
-
+    
+    @Test
     public void testImageSlashes()
     {
-        UITool ui = getTool();
         ui.setSkin("myskin");
 
         String img = "myimage.gif";
@@ -89,13 +116,12 @@ public class UIToolTest
         String imgUrl3 = ui.image(img3);
         assertEquals("CSS URL does not match", "http:///conf/test/turbine-resources/turbine-skins/myskin/turbine-images" + img3, imgUrl3);
     }
-
+    @Test
     public void testPathologicalCases()
     {
-    	UITool ui = getTool();
-		ui.setSkin("myskin");
+        ui.setSkin("myskin");
 
-    	String img = "";
+        String img = "";
         String imgUrl = ui.image(img);
         assertEquals("Could not strip empty String", "http:///conf/test/turbine-resources/turbine-skins/myskin/turbine-images/", imgUrl);
 
@@ -107,10 +133,9 @@ public class UIToolTest
         imgUrl = ui.image(img);
         assertEquals("Could not strip double Slash", "http:///conf/test/turbine-resources/turbine-skins/myskin/turbine-images/", imgUrl);
     }
-
+    @Test
     public void testGetSkinNames()
     {
-        UITool ui = getTool();
 
         String[] skinNames = ui.getSkinNames();
         // Remove the ".svn" dir that may be present.
@@ -120,10 +145,9 @@ public class UIToolTest
         assertTrue(ArrayUtils.contains(skinNames, "myotherskin"));
         assertTrue(ArrayUtils.contains(skinNames, "myskin"));
     }
-
+    @Test
     public void testSkinValues()
     {
-        UITool ui = getTool();
 
         // Default skin
         //skin_property_1 = skin_property_1_my_skin

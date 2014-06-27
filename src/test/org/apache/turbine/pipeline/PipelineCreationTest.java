@@ -22,7 +22,10 @@ package org.apache.turbine.pipeline;
 
 
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -33,16 +36,9 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
-public class PipelineCreationTest extends TestCase
+public class PipelineCreationTest
 {
     private Pipeline pipeline;
-    /**
-     * Constructor
-     */
-    public PipelineCreationTest(String testName)
-    {
-        super(testName);
-    }
 
     public void setUp(){
         pipeline = new TurbinePipeline();
@@ -50,7 +46,7 @@ public class PipelineCreationTest extends TestCase
         pipeline.addValve(new DetermineActionValve());
     }
 
-    public void testSavingPipelineWXstream() throws Exception
+    @Test public void testSavingPipelineWXstream() throws Exception
     {
         XStream xstream = new XStream(new DomDriver()); // does not require XPP3 library
 
@@ -59,7 +55,7 @@ public class PipelineCreationTest extends TestCase
         //Pipeline pipeline = (Pipeline)xstream.fromXML(xml);
     }
 
-    public void testReadingPipelineWXstream() throws Exception{
+    @Test public void testReadingPipelineWXstream() throws Exception{
         String xml="<org.apache.turbine.pipeline.TurbinePipeline>  <valves>    <org.apache.turbine.pipeline.SimpleValve/>    <org.apache.turbine.pipeline.DetermineActionValve/>  </valves></org.apache.turbine.pipeline.TurbinePipeline>";
         XStream xstream = new XStream(new DomDriver()); // does not require XPP3 library
         Object o = xstream.fromXML(xml);

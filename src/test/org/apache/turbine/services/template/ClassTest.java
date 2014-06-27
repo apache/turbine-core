@@ -21,9 +21,14 @@ package org.apache.turbine.services.template;
  */
 
 
+import static org.junit.Assert.assertEquals;
+
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * Tests the class mapping of the Template Service for screen,
@@ -39,17 +44,26 @@ public class ClassTest
     private static TurbineConfig tc = null;
     private static TemplateService ts = null;
 
-    public ClassTest(String name)
-            throws Exception
+    
+    @BeforeClass
+    public static void setUp() throws Exception
     {
-        super(name);
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
         tc.initialize();
 
         ts = (TemplateService) TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
     }
 
-    public void testTemplateDefaults()
+    @AfterClass
+    public static void tearDown() throws Exception
+    {
+        if (tc != null)
+        {
+            tc.dispose();
+        }
+    }
+
+    @Test public void testTemplateDefaults()
     {
         // Test if the Default-Values for the Screen, Layout and Navigation classes
         assertEquals("Default Page failed",           TemplateService.DEFAULT_TEMPLATE_VALUE, ts.getDefaultPage());
@@ -58,7 +72,7 @@ public class ClassTest
         assertEquals("Default Navigation failed",     TemplateService.DEFAULT_TEMPLATE_VALUE, ts.getDefaultNavigation());
     }
 
-    public void testVelocityDefaults()
+    @Test public void testVelocityDefaults()
     {
         // Test if all the Velocity based Defaults for Page, Screen, Layout, Navigation
         assertEquals("Default Page failed",           "VelocityPage",       ts.getDefaultPageName("foo.vm"));
@@ -69,7 +83,7 @@ public class ClassTest
 
     // Here comes the fun
 
-    public void testNonExistingTemplate()
+    @Test public void testNonExistingTemplate()
         throws Exception
     {
         //
@@ -82,7 +96,7 @@ public class ClassTest
         assertEquals("Navigation translation failed",     "VelocityNavigation", ts.getNavigationName(templateName));
     }
 
-    public void testNonExistingSublevelTemplate()
+    @Test  public void testNonExistingSublevelTemplate()
         throws Exception
     {
         //
@@ -94,7 +108,7 @@ public class ClassTest
         assertEquals("Navigation translation failed",     "VelocityNavigation", ts.getNavigationName(templateName));
     }
 
-    public void testExistingTemplate()
+    @Test public void testExistingTemplate()
         throws Exception
     {
         //
@@ -105,7 +119,7 @@ public class ClassTest
         assertEquals("Navigation translation failed",     "VelocityNavigation", ts.getNavigationName(templateName));
     }
 
-    public void testExistingSublevelTemplate()
+    @Test public void testExistingSublevelTemplate()
         throws Exception
     {
         //
@@ -118,7 +132,7 @@ public class ClassTest
 
     // Now we start checking existing classes.
 
-    public void testExistingClass()
+    @Test public void testExistingClass()
         throws Exception
     {
         //
@@ -131,7 +145,7 @@ public class ClassTest
         assertEquals("Navigation translation failed",     "ExistPageWithClass", ts.getNavigationName(templateName));
     }
 
-    public void testExistingSublevelClass()
+    @Test public void testExistingSublevelClass()
         throws Exception
     {
         //
@@ -157,7 +171,7 @@ public class ClassTest
         assertEquals("Navigation translation failed",     "existing.dflt.Default", ts.getNavigationName(templateName));
     }
 
-    public void testDefaultSublevelClass()
+    @Test public void testDefaultSublevelClass()
         throws Exception
     {
         //
@@ -169,7 +183,7 @@ public class ClassTest
         assertEquals("Navigation translation failed",     "existing.dflt.Default", ts.getNavigationName(templateName));
     }
 
-    public void testIgnoreExistingClass()
+    @Test public void testIgnoreExistingClass()
         throws Exception
     {
         //

@@ -19,6 +19,8 @@
 
 package org.apache.turbine.modules;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +35,10 @@ import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.test.EnhancedMockHttpSession;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockServletConfig;
@@ -47,12 +53,17 @@ public class LayoutLoaderTest extends BaseTestCase {
 	private EnhancedMockHttpServletRequest request = null;
 	private EnhancedMockHttpSession session = null;
 	private HttpServletResponse response = null;
+	
+    @BeforeClass
+    public static void init() {
+        tc = new TurbineConfig(
+                            ".",
+                            "/conf/test/CompleteTurbineResources.properties");
+        tc.initialize();
+    }
 
-	/*
-	 * @see TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setUpBefore() throws Exception {
 		config = new MockServletConfig();
 		config.setupNoParameters();
 		request = new EnhancedMockHttpServletRequest();
@@ -72,31 +83,19 @@ public class LayoutLoaderTest extends BaseTestCase {
 		session.setupGetAttribute(User.SESSION_KEY, null);
 		request.setSession(session);
 
-		tc =
-			new TurbineConfig(
-				".",
-				"/conf/test/CompleteTurbineResources.properties");
-		tc.initialize();
 	}
 
 	/*
 	 * @see TestCase#tearDown()
 	 */
-	protected void tearDown() throws Exception {
-		super.tearDown();
+	@AfterClass
+	public static void tearDown() throws Exception {
 		if (tc != null) {
 			tc.dispose();
 		}
 	}
 
-	/**
-	 * Constructor for LayoutLoaderTest.
-	 * @param arg0
-	 */
-	public LayoutLoaderTest(String arg0) throws Exception {
-		super(arg0);
-	}
-
+	@Test
 	public void testPipelineDataContainsRunData()
 	{
 	    try
@@ -119,7 +118,7 @@ public class LayoutLoaderTest extends BaseTestCase {
 	        Assert.fail("Should not have thrown an exception.");
 	    }
 	}
-
+	@Test
 	public void testDoBuildWithRunData()
 	{
 	    try

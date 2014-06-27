@@ -32,9 +32,15 @@ import org.apache.turbine.test.EnhancedMockHttpSession;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.uri.URIConstants;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockServletConfig;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests TurbinePipeline.
@@ -51,16 +57,17 @@ public class DetermineTargetValveTest extends BaseTestCase
     private EnhancedMockHttpSession session = null;
     private HttpServletResponse response = null;
 
-    /**
-     * Constructor
-     */
-    public DetermineTargetValveTest(String testName) throws Exception
-    {
-        super(testName);
+    
+    @BeforeClass
+    public static void init() {
+        tc = new TurbineConfig(
+                            ".",
+                            "/conf/test/CompleteTurbineResources.properties");
+        tc.initialize();
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUpBefore() throws Exception {
         config = new MockServletConfig();
         config.setupNoParameters();
         request = new EnhancedMockHttpServletRequest();
@@ -79,18 +86,12 @@ public class DetermineTargetValveTest extends BaseTestCase
 
         session.setupGetAttribute(User.SESSION_KEY, null);
         request.setSession(session);
-
-        tc =
-            new TurbineConfig(
-                    ".",
-            "/conf/test/CompleteTurbineResources.properties");
-        tc.initialize();
     }
 
     /**
      * Tests the Valve.
      */
-    public void testScreenSet() throws Exception
+    @Test public void testScreenSet() throws Exception
     {
         Vector<String> v = new Vector<String>();
         v.add(URIConstants.CGI_SCREEN_PARAM);
@@ -109,7 +110,7 @@ public class DetermineTargetValveTest extends BaseTestCase
         assertEquals("TestScreen",runData.getScreen());
     }
 
-    public void testScreenNotSet() throws Exception
+    @Test public void testScreenNotSet() throws Exception
     {
         Vector<String> v = new Vector<String>();
         v.add(URIConstants.CGI_SCREEN_PARAM);
@@ -129,5 +130,10 @@ public class DetermineTargetValveTest extends BaseTestCase
 
         pipeline.invoke(pipelineData);
         assertEquals("",runData.getScreen());
+    }
+    
+    @AfterClass
+    public static void destroy() {
+        tc.dispose();
     }
 }

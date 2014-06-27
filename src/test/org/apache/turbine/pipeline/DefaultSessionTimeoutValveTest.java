@@ -34,9 +34,15 @@ import org.apache.turbine.test.EnhancedMockHttpSession;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.uri.URIConstants;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockServletConfig;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests TurbinePipeline.
@@ -53,16 +59,17 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
     private EnhancedMockHttpSession session = null;
     private HttpServletResponse response = null;
 
-    /**
-     * Constructor
-     */
-    public DefaultSessionTimeoutValveTest(String testName) throws Exception
-    {
-        super(testName);
+    
+    @BeforeClass
+    public static void init() {
+        tc = new TurbineConfig(
+                            ".",
+                            "/conf/test/CompleteTurbineResources.properties");
+        tc.initialize();
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUpBefore() throws Exception {
         config = new MockServletConfig();
         config.setupNoParameters();
         request = new EnhancedMockHttpServletRequest();
@@ -83,17 +90,12 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
 
         request.setSession(session);
 
-        tc =
-            new TurbineConfig(
-                    ".",
-            "/conf/test/CompleteTurbineResources.properties");
-        tc.initialize();
     }
 
     /**
      * Tests the Valve.
      */
-    public void testDefaults() throws Exception
+    @Test public void testDefaults() throws Exception
     {
         // reset
         Turbine.getConfiguration().setProperty(TurbineConstants.SESSION_TIMEOUT_KEY,
@@ -121,7 +123,7 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
     /**
      * Tests the Valve.
      */
-    public void testTimeoutSet() throws Exception
+    @Test public void testTimeoutSet() throws Exception
     {
 
         Turbine.getConfiguration().setProperty(TurbineConstants.SESSION_TIMEOUT_KEY,"3600");
@@ -138,6 +140,11 @@ public class DefaultSessionTimeoutValveTest extends BaseTestCase
         assertEquals(3600,runData.getSession().getMaxInactiveInterval());
 
 
+    }
+    
+    @AfterClass
+    public static void destroy() {
+        tc.dispose();
     }
 
 

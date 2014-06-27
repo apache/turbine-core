@@ -20,18 +20,17 @@ package org.apache.turbine.modules;
  * under the License.
  */
 
+import static org.junit.Assert.assertEquals;
 
 import org.apache.turbine.test.BaseTestCase;
+import org.junit.Test;
 
 public class GenericLoaderTest
     extends BaseTestCase
 {
-    public GenericLoaderTest(String name)
-            throws Exception
-    {
-        super(name);
-    }
+    
 
+    @Test
     public void testPackage()
     {
         assertEquals("GenericLoader returned wrong Package!",

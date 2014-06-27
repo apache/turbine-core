@@ -19,6 +19,8 @@ package org.apache.turbine.util.uri;
  * under the License.
  */
 
+import static org.junit.Assert.assertEquals;
+
 import org.apache.fulcrum.parser.DefaultParameterParser;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.parser.ParserService;
@@ -26,6 +28,10 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * Testing of the TurbineURI class
@@ -42,29 +48,23 @@ public class TurbineURITest extends BaseTestCase
 
     private static TurbineConfig tc = null;
 
-    /**
-     * Constructor for test.
-     * 
-     * @param testName
-     *            name of the test being executed
-     */
-    public TurbineURITest(String testName) throws Exception
-    {
-        super(testName);
 
-        // Setup configuration
-        tc =
-            new TurbineConfig(
-                ".",
-                "/conf/test/CompleteTurbineResources.properties");
+    @BeforeClass
+    public static void init() {
+        tc =  new TurbineConfig(
+                            ".",
+                            "/conf/test/CompleteTurbineResources.properties");
         tc.initialize();
     }
-
     /**
      * Performs any initialization that must happen before each test is run.
      */
-    protected void setUp()
+    
+    @Before 
+    public void setup()
     {
+        // Setup configuration
+        
         ServerData sd = new ServerData("www.testserver.com",
                 URIConstants.HTTP_PORT, URIConstants.HTTP, "/servlet/turbine",
                 "/context");
@@ -76,17 +76,17 @@ public class TurbineURITest extends BaseTestCase
     /**
      * Clean up after each test is run.
      */
-    protected void tearDown()
+    @AfterClass
+    public static void tearDown()
     {
         if (tc != null) 
         {
             tc.dispose();
         }
         
-        turi = null;
     }
 
-    public void testAddRemove()
+    @Test public void testAddRemove()
     {
         assertEquals("TurbineURI should not have a pathInfo", false, turi
                 .hasPathInfo());
@@ -119,7 +119,7 @@ public class TurbineURITest extends BaseTestCase
                 .hasPathInfo());
     }
 
-    public void testEmptyAndNullQueryData()
+    @Test public void testEmptyAndNullQueryData()
     {
         // Check empty String
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
@@ -136,7 +136,7 @@ public class TurbineURITest extends BaseTestCase
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
     }
 
-    public void testEmptyAndNullPathInfo()
+    @Test public void testEmptyAndNullPathInfo()
     {
         // Check empty String
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
@@ -154,14 +154,14 @@ public class TurbineURITest extends BaseTestCase
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
     }
 
-    public void testAddEmptyParameterParser()
+    @Test public void testAddEmptyParameterParser()
     {
         ParameterParser pp = new DefaultParameterParser();
         turi.add(1, pp); // 1 = query data
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
     }
 
-    public void testAddParameterParser() throws InstantiationException
+    @Test public void testAddParameterParser() throws InstantiationException
     {
         ParameterParser pp = (ParameterParser) parserService.getParser(DefaultParameterParser.class);
         pp.add("test", "");

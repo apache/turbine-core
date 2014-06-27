@@ -21,12 +21,17 @@ package org.apache.turbine.services.avaloncomponent;
  */
 
 
+import static org.junit.Assert.*;
+
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.TestComponent;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 
 /**
@@ -43,22 +48,22 @@ public class TurbineAvalonComponentServiceTest
 
     /**
      * Initialize the unit test.  The AvalonComponentService will be configured
-     * and initialized.
+     * and initialized.*/
 
-     *
-     * @param name
+
+    /**
+     * Use the service to get an instance of the TestComponent.  The test() method will be called to
+     * simply write a log message.  The component will then be released.
      */
-    public TurbineAvalonComponentServiceTest(String name)
-            throws Exception
+    @Test public void testGetAndUseTestComponent()
     {
-        super(name);
         ServiceManager serviceManager = TurbineServices.getInstance();
         serviceManager.setApplicationRoot(".");
 
         Configuration cfg = new BaseConfiguration();
 
         // decide here whether to start ECM or YAAFI
-        // cfg.setProperty(PREFIX + "classname", TurbineAvalonComponentService.class.getName());
+        //cfg.setProperty(PREFIX + "classname", TurbineAvalonComponentService.class.getName());
         cfg.setProperty(PREFIX + "classname", TurbineYaafiComponentService.class.getName());
 
         // we want to configure the service to load test TEST configuration files
@@ -77,17 +82,10 @@ public class TurbineAvalonComponentServiceTest
             e.printStackTrace();
             fail();
         }
-    }
-
-    /**
-     * Use the service to get an instance of the TestComponent.  The test() method will be called to
-     * simply write a log message.  The component will then be released.
-     */
-    public void testGetAndUseTestComponent()
-    {
         try
         {
             TestComponent tc = (TestComponent)TurbineServices.getInstance().getService(TestComponent.ROLE);
+            assertTrue( tc != null );
             tc.test();
         }
         catch(Exception e)

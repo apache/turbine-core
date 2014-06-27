@@ -21,9 +21,14 @@ package org.apache.turbine.services.template;
  */
 
 
+import static org.junit.Assert.assertEquals;
+
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * Tests all the various defaults for the Template Service.
@@ -37,26 +42,33 @@ public class DefaultsTest
     private static TurbineConfig tc = null;
     private static TemplateService ts = null;
 
-    public DefaultsTest(String name)
-            throws Exception
-    {
-        super(name);
+    
+    @BeforeClass
+    public static void setUp() throws Exception {
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
         tc.initialize();
 
         ts = (TemplateService) TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
     }
 
+    @AfterClass
+    public static void destroy() throws Exception {
+        ts.shutdown();
+        tc.dispose();
+    }
+
+    @Test
     public void testDefaults()
     {
-        // Test if the caching property was loaded correctly.
-        assertEquals("isCaching failed!",             ts.isCaching(), false);
+        // Test if the caching property was loaded correctly. (key:module.cache)
+        assertEquals("isCaching failed!",false,             ts.isCaching());
 
         // Test if the default values for Template and Extension were loaded correctly
         assertEquals("Default Extension failed",      ts.getDefaultExtension(), "");
         assertEquals("Default Template failed",       ts.getDefaultTemplate(), TemplateService.DEFAULT_TEMPLATE_VALUE);
     }
-
+    
+    @Test
     public void testTemplateDefaults()
     {
         // Test if the Default-Values for the Screen, Layout and Navigation classes and the Layout Template are correct.
@@ -66,7 +78,8 @@ public class DefaultsTest
         assertEquals("Default Navigation failed",     TemplateService.DEFAULT_TEMPLATE_VALUE, ts.getDefaultNavigation());
         assertEquals("Default LayoutTemplate failed", TemplateService.DEFAULT_TEMPLATE_VALUE, ts.getDefaultLayoutTemplate());
     }
-
+    
+    @Test
     public void testVelocityDefaults()
     {
         // Test if all the Velocity based Defaults for Page, Screen, Layout, Navigation and Layout Template

@@ -21,6 +21,10 @@ package org.apache.turbine.util.parser;
  */
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
 import java.math.BigDecimal;
 
 import org.apache.fulcrum.parser.BaseValueParser;
@@ -28,6 +32,11 @@ import org.apache.fulcrum.parser.ParserService;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
 /**
  * Testing of the Fulcrum BaseValueParser class
@@ -43,28 +52,20 @@ public class BaseValueParserTest extends BaseTestCase
 
     private static TurbineConfig tc = null;
 
-    /**
-     * Constructor for test.
-     *
-     * @param testName name of the test being executed
-     */
-    public BaseValueParserTest(String testName)
-            throws Exception
-    {
-        super(testName);
-
-        // Setup configuration
-        tc =
-            new TurbineConfig(
-                ".",
-                "/conf/test/CompleteTurbineResources.properties");
-        tc.initialize();
-    }
 
     /**
      * Performs any initialization that must happen before each test is run.
      */
-    protected void setUp()
+    @BeforeClass
+    public static void init() {
+            tc =
+                new TurbineConfig(
+                    ".",
+                    "/conf/test/CompleteTurbineResources.properties");
+            tc.initialize();
+    }
+    @Before
+    public void setUp()
     {
         try
         {
@@ -80,17 +81,16 @@ public class BaseValueParserTest extends BaseTestCase
     /**
      * Clean up after each test is run.
      */
-    protected void tearDown()
+    @AfterClass
+    public static void tearDown()
     {
         if (tc != null) 
         {
             tc.dispose();
         }
-        
-        parser = null;
     }
 
-    public void testGetByte()
+    @Test public void testGetByte()
     {
         // no param
         byte result = parser.getByte("invalid");
@@ -111,7 +111,7 @@ public class BaseValueParserTest extends BaseTestCase
         assertEquals(result, 0);
     }
 
-    public void testGetByteObject()
+    @Test public void testGetByteObject()
     {
         // no param
         Byte result = parser.getByteObject("invalid");
@@ -132,7 +132,7 @@ public class BaseValueParserTest extends BaseTestCase
         assertNull(result);
     }
 
-    public void testGetInt()
+    @Test public void testGetInt()
     {
         // no param
         int result = parser.getInt("invalid");
@@ -177,7 +177,7 @@ public class BaseValueParserTest extends BaseTestCase
         }
     }
 
-    public void testGetIntObject()
+    @Test public void testGetIntObject()
     {
         // no param
         Integer result = parser.getIntObject("invalid");
@@ -222,7 +222,7 @@ public class BaseValueParserTest extends BaseTestCase
         }
     }
 
-    public void testGetFloat()
+    @Test public void testGetFloat()
     {
         // no param
         float result = parser.getFloat("invalid");
@@ -267,7 +267,7 @@ public class BaseValueParserTest extends BaseTestCase
         }
     }
 
-    public void testGetFloatObject()
+    @Test public void testGetFloatObject()
     {
         // no param
         Float result = parser.getFloatObject("invalid");
@@ -312,7 +312,7 @@ public class BaseValueParserTest extends BaseTestCase
         }
     }
 
-    public void testGetDouble()
+    @Test public void testGetDouble()
     {
         // no param
         double result = parser.getDouble("invalid");
@@ -357,7 +357,7 @@ public class BaseValueParserTest extends BaseTestCase
         }
     }
 
-    public void testGetDoubleObject()
+    @Test public void testGetDoubleObject()
     {
         // no param
         Double result = parser.getDoubleObject("invalid");
@@ -402,7 +402,7 @@ public class BaseValueParserTest extends BaseTestCase
         }
     }
 
-    public void testGetLong()
+    @Test public void testGetLong()
     {
         // no param
         long result = parser.getLong("invalid");
@@ -447,7 +447,7 @@ public class BaseValueParserTest extends BaseTestCase
         }
     }
 
-    public void testGetLongObject()
+    @Test public void testGetLongObject()
     {
         // no param
         Long result = parser.getLongObject("invalid");
@@ -492,7 +492,7 @@ public class BaseValueParserTest extends BaseTestCase
         }
     }
 
-    public void testGetBoolean()
+    @Test public void testGetBoolean()
     {
         // no param
         boolean result = parser.getBoolean("invalid");
@@ -523,7 +523,7 @@ public class BaseValueParserTest extends BaseTestCase
 
     }
 
-    public void testGetBooleanObject()
+    @Test public void testGetBooleanObject()
     {
         // no param
         Boolean result = parser.getBooleanObject("invalid");
@@ -573,7 +573,7 @@ public class BaseValueParserTest extends BaseTestCase
      * on Java 1.4.2_09 on OSX.
      *
      */
-    public void OFFtestGetBigDecimal()
+    @Ignore public void testGetBigDecimal()
     {
         // no param
         BigDecimal result = parser.getBigDecimal("invalid");
@@ -653,7 +653,7 @@ public class BaseValueParserTest extends BaseTestCase
 
     }
 
-    public void testRecycling() throws Exception {
+    @Test public void testRecycling() throws Exception {
     		parser.setCharacterEncoding("fake");
     		parser.recycle();
     		assertEquals("US-ASCII",parser.getCharacterEncoding());

@@ -20,21 +20,22 @@ package org.apache.turbine.services.rundata;
  * under the License.
  */
 
+import static org.junit.Assert.assertEquals;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class DefaultTurbineRunDataTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    public DefaultTurbineRunDataTest(String name) throws Exception
-    {
-        super(name);
-    }
 
-    public void testGetDefaultCharSetWithMimeType()
+
+    @Test public void testGetDefaultCharSetWithMimeType()
     {
         Turbine.getConfiguration().setProperty(
             TurbineConstants.LOCALE_DEFAULT_CHARSET_KEY,
@@ -48,7 +49,8 @@ public class DefaultTurbineRunDataTest extends BaseTestCase
 
     }
 
-    public void setUp() throws Exception
+    @BeforeClass
+    public static void setUp() throws Exception
     {
         tc =
             new TurbineConfig(
@@ -56,7 +58,8 @@ public class DefaultTurbineRunDataTest extends BaseTestCase
                 "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
     }
-    public void tearDown() throws Exception
+    @AfterClass 
+    public static void tearDown() throws Exception
     {
         if (tc != null)
         {

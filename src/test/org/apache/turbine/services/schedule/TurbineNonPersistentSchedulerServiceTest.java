@@ -19,9 +19,7 @@ package org.apache.turbine.services.schedule;
  * under the License.
  */
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
@@ -29,6 +27,10 @@ import org.apache.turbine.modules.scheduledjob.SimpleJob;
 import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.TurbineException;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Unit testing for the non-persistent implementation of the scheduler service.
@@ -36,14 +38,14 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id: TurbineNonPersistentSchedulerServiceTest.java 615328 2008-01-25 20:25:05Z tv $
  */
-public class TurbineNonPersistentSchedulerServiceTest extends TestCase
+public class TurbineNonPersistentSchedulerServiceTest
 {
     private static final String PREFIX = "services." + ScheduleService.SERVICE_NAME + '.';
 
-    public TurbineNonPersistentSchedulerServiceTest(String name)
+    @BeforeClass
+    public static void init()
             throws Exception
     {
-        super(name);
 
         ServiceManager serviceManager = TurbineServices.getInstance();
         serviceManager.setApplicationRoot(".");
@@ -73,15 +75,10 @@ public class TurbineNonPersistentSchedulerServiceTest extends TestCase
         }
     }
 
-    public static Test suite()
-    {
-        return new TestSuite(TurbineNonPersistentSchedulerServiceTest.class);
-    }
-
     /**
      * Tests the ability to enable and disable the service.
      */
-    public void testEnableDisable()
+    @Test public void testEnableDisable()
     {
         try
         {
@@ -102,7 +99,7 @@ public class TurbineNonPersistentSchedulerServiceTest extends TestCase
      * Tests the ability to add and remove a job.  A list of jobs will be obtained from
      * the service to determine if the operation were successful.
      */
-    public void testAddRemoveJob()
+    @Test public void testAddRemoveJob()
     {
         try
         {
@@ -136,7 +133,7 @@ public class TurbineNonPersistentSchedulerServiceTest extends TestCase
     /**
      * Tests the ability to retrieve the job added during initialization.
      */
-    public void testGetJob()
+    @Test public void testGetJob()
     {
         try
         {
@@ -160,7 +157,7 @@ public class TurbineNonPersistentSchedulerServiceTest extends TestCase
      * @TODO Must get testRunningJob to work.
      *
      */
-    public void OFFtestRunningJob()
+    @Ignore public void OFFtestRunningJob()
     {
         try
         {

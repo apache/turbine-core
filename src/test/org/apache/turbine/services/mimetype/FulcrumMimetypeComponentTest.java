@@ -26,6 +26,11 @@ import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * Unit test for Accessing the Fulcrum Mimetype component within Turbine.
@@ -37,11 +42,8 @@ import org.apache.turbine.util.TurbineConfig;
 public class FulcrumMimetypeComponentTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    public FulcrumMimetypeComponentTest(String name) throws Exception
-    {
-        super(name);
-    }
-    public void testComponent() throws Exception
+
+    @Test public void testComponent() throws Exception
     {
         ServiceManager serviceManager = TurbineServices.getInstance();
         MimeTypeService mimeTypeService = (MimeTypeService) serviceManager.getService(MimeTypeService.class.getName());
@@ -51,7 +53,8 @@ public class FulcrumMimetypeComponentTest extends BaseTestCase
         assertEquals("ISO-8859-1", s);
     }
 
-    public void setUp() throws Exception
+    @BeforeClass
+    public static void setUp() throws Exception
     {
         tc =
             new TurbineConfig(
@@ -59,7 +62,8 @@ public class FulcrumMimetypeComponentTest extends BaseTestCase
                 "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
     }
-    public void tearDown() throws Exception
+    @AfterClass
+    public static void tearDown() throws Exception
     {
         if (tc != null)
         {

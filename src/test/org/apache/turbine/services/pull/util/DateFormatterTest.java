@@ -23,7 +23,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * Test class for DateFormatter.
@@ -31,7 +33,7 @@ import junit.framework.TestCase;
  * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
  */
-public class DateFormatterTest extends TestCase
+public class DateFormatterTest 
 {
 
 //    /*
@@ -45,7 +47,7 @@ public class DateFormatterTest extends TestCase
     /*
      * Class under test for String format(Date, String)
      */
-    public void testFormatDateString()
+    @Test public void testFormatDateString()
     {
         Calendar cal = new GregorianCalendar();
         DateFormatter df = new DateFormatter();
@@ -64,7 +66,7 @@ public class DateFormatterTest extends TestCase
     /*
      * Class under test for String format(null, String)
      */
-    public void testFormatDateStringNullString()
+    @Test public void testFormatDateStringNullString()
     {
         DateFormatter df = new DateFormatter();
         assertEquals("null argument should produce an empty String",
@@ -74,7 +76,7 @@ public class DateFormatterTest extends TestCase
     /*
      * Class under test for String format(Date, "")
      */
-    public void testFormatDateStringEmptyString()
+    @Test public void testFormatDateStringEmptyString()
     {
         Date today = new Date();
         DateFormatter df = new DateFormatter();
@@ -85,7 +87,7 @@ public class DateFormatterTest extends TestCase
     /*
      * Class under test for String format(Date, "")
      */
-    public void testFormatDateStringNullFormat()
+    @Test public void testFormatDateStringNullFormat()
     {
         Date today = new Date();
         DateFormatter df = new DateFormatter();

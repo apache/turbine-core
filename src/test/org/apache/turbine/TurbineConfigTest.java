@@ -20,6 +20,7 @@ package org.apache.turbine;
  * under the License.
  */
 
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 
@@ -29,6 +30,7 @@ import javax.servlet.ServletContext;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineXmlConfig;
+import org.junit.Test;
 
 /**
  * This testcase verifies that TurbineConfig can be used to startup Turbine in a non
@@ -43,12 +45,7 @@ public class TurbineConfigTest
     private static TurbineConfig tc = null;
     private static TurbineXmlConfig txc = null;
 
-    public TurbineConfigTest(String name)
-            throws Exception
-    {
-        super(name);
-    }
-
+    @Test
     public void testTurbineConfigWithPropertiesFile() throws Exception
     {
         String value = new File("/conf/test/TemplateService.properties").getPath();
@@ -63,7 +60,7 @@ public class TurbineConfigTest
                 null);
         assertEquals(value, confFile);
     }
-
+    @Test
     public void testTurbineXmlConfigWithConfigurationFile() throws Exception
     {
         String value = new File("/conf/test/TurbineConfiguration.xml").getPath();
