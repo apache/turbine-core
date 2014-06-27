@@ -19,7 +19,10 @@ package org.apache.turbine.util;
  * under the License.
  */
 
+import static org.junit.Assert.assertEquals;
+
 import org.apache.turbine.test.BaseTestCase;
+import org.junit.Test;
 
 /**
  * Testing of the BrowserDetector class.
@@ -29,12 +32,9 @@ import org.apache.turbine.test.BaseTestCase;
  */
 public class BrowserDetectorTest extends BaseTestCase
 {
-    public BrowserDetectorTest(String name) throws Exception
-    {
-        super(name);
-    }
 
-    public void testFirefox()
+
+    @Test public void testFirefox()
     {
         String userAgent = "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8) Gecko/20051111 Firefox/1.5";
         BrowserDetector bd = new BrowserDetector(userAgent);
@@ -44,7 +44,7 @@ public class BrowserDetectorTest extends BaseTestCase
         assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
     }
 
-    public void testOpera()
+    @Test public void testOpera()
     {
         String userAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; en) Opera 8.02";
         BrowserDetector bd = new BrowserDetector(userAgent);
@@ -59,7 +59,7 @@ public class BrowserDetectorTest extends BaseTestCase
         assertEquals(BrowserDetector.WINDOWS, bd.getBrowserPlatform());
     }
 
-    public void testIE()
+    @Test public void testIE()
     {
         String userAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
         BrowserDetector bd = new BrowserDetector(userAgent);

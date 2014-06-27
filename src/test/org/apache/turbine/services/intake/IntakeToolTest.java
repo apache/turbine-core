@@ -19,6 +19,10 @@ package org.apache.turbine.services.intake;
  * under the License.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.util.Vector;
 
@@ -35,6 +39,9 @@ import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockHttpSession;
@@ -49,11 +56,8 @@ import com.mockobjects.servlet.MockServletConfig;
 public class IntakeToolTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    public IntakeToolTest(String name) throws Exception
-    {
-        super(name);
-    }
-    public void testGet() throws Exception
+
+    @Test public void testGet() throws Exception
     {
         IntakeTool intakeTool = new IntakeTool();
         intakeTool.init(getRunData());
@@ -72,7 +76,7 @@ public class IntakeToolTest extends BaseTestCase
      * Make sure refresh DOESN'T do anything
      * @throws Exception
      */
-    public void testRefresh() throws Exception
+    @Test public void testRefresh() throws Exception
     {
         IntakeTool intakeTool = new IntakeTool();
         intakeTool.init(getRunData());
@@ -108,14 +112,16 @@ public class IntakeToolTest extends BaseTestCase
         return runData;
     }
 
-    public void setUp() throws Exception
+    @BeforeClass
+    public static void setUp() throws Exception
     {
         tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
         TurbineServices.getInstance().getService(IntakeService.class.getName());
     }
 
-    public void tearDown() throws Exception
+    @AfterClass
+    public static void tearDown() throws Exception
     {
         if (tc != null)
         {

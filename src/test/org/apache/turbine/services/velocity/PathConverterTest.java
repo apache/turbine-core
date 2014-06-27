@@ -21,12 +21,18 @@ package org.apache.turbine.services.velocity;
  */
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.apache.commons.collections.ExtendedProperties;
 import org.apache.commons.configuration.Configuration;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * Tests startup of the Velocity Service and translation of various
@@ -43,18 +49,22 @@ public class PathConverterTest
     private static VelocityService vs = null;
     private static String fileSeperator = System.getProperty("file.separator");
 
-    public PathConverterTest(String name)
-            throws Exception
-    {
-        super(name);
+    
+    @BeforeClass
+    public static void setUp() throws Exception {
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
         tc.initialize();
 
         vs = (VelocityService) TurbineServices.getInstance().getService(VelocityService.SERVICE_NAME);
     }
 
+    @AfterClass
+    public static void destroy() throws Exception {
+        vs.shutdown();
+        tc.dispose();
+    }
 
-    public void testService()
+    @Test public void testService()
         throws Exception
     {
 
@@ -62,6 +72,7 @@ public class PathConverterTest
         assertNotNull("Could not load Service!", vs);
     }
 
+    @Test
     public void testPathTranslation()
         throws Exception
     {

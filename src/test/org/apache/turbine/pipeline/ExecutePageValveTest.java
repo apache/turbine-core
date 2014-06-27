@@ -36,8 +36,14 @@ import org.apache.turbine.test.EnhancedMockHttpSession;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.uri.URIConstants;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.mockobjects.servlet.MockServletConfig;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests ExecutePageValve.
@@ -54,17 +60,18 @@ public class ExecutePageValveTest extends BaseTestCase
     private EnhancedMockHttpSession session = null;
     private HttpServletResponse response = null;
 
-    /**
-     * Constructor
-     */
-    public ExecutePageValveTest(String testName) throws Exception
-    {
-        super(testName);
-    }
 
-    protected void setUp() throws Exception
+    @BeforeClass
+    public static void init() {
+        tc = new TurbineConfig(
+                            ".",
+                            "/conf/test/CompleteTurbineResources.properties");
+        tc.initialize();
+    }
+    
+    @Before
+    public void setUpBefore() throws Exception
     {
-        super.setUp();
         config = new MockServletConfig();
         config.setupNoParameters();
         request = new EnhancedMockHttpServletRequest();
@@ -83,14 +90,9 @@ public class ExecutePageValveTest extends BaseTestCase
 
         request.setSession(session);
 
-        tc =
-            new TurbineConfig(
-                ".",
-                "/conf/test/CompleteTurbineResources.properties");
-        tc.initialize();
     }
 
-    public void testValve() throws Exception
+    @Test public void testValve() throws Exception
     {
         Vector<String> v = new Vector<String>();
         v.add(URIConstants.CGI_TEMPLATE_PARAM);
@@ -123,5 +125,10 @@ public class ExecutePageValveTest extends BaseTestCase
         assertNotNull(user);
         assertEquals("username", user.getName());
         assertTrue(user.hasLoggedIn());
+    }
+    
+    @AfterClass
+    public static void destroy() {
+        tc.dispose();
     }
 }

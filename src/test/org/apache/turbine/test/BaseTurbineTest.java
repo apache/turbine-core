@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.BeforeClass;
 
 /**
  * A base class to implement tests that need a running
@@ -38,10 +39,9 @@ public abstract class BaseTurbineTest
 {
     private static TurbineConfig turbineConfig = null;
 
-    public BaseTurbineTest(String name, String config)
-            throws Exception
+    @BeforeClass
+    public static void turbineInit(String config) throws Exception
     {
-        super(name);
 
         if (turbineConfig == null)
         {

@@ -21,9 +21,14 @@ package org.apache.turbine.services.template;
  */
 
 
+import static org.junit.Assert.assertEquals;
+
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * Tests all the various template mappings for Screen and Layout
@@ -39,28 +44,38 @@ public class TemplateTest
     private static TurbineConfig tc = null;
     private static TemplateService ts = null;
 
-    public TemplateTest(String name)
-            throws Exception
+
+    
+    @BeforeClass
+    public static void setUp() throws Exception
     {
-        super(name);
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
         tc.initialize();
 
         ts = (TemplateService) TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
     }
 
+    @AfterClass
+    public static void tearDown() throws Exception
+    {
+        if (tc != null)
+        {
+            tc.dispose();
+        }
+    }
 
-    public void testTemplateDefaults()
+
+    @Test public void testTemplateDefaults()
     {
         assertEquals("Default LayoutTemplate failed", TemplateService.DEFAULT_TEMPLATE_VALUE, ts.getDefaultLayoutTemplate());
     }
 
-    public void testVelocityDefaults()
+    @Test public void testVelocityDefaults()
     {
         assertEquals("Default LayoutTemplate failed", "Default.vm",         ts.getDefaultLayoutTemplateName("foo.vm"));
     }
 
-    public void testTemplateExtension()
+    @Test public void testTemplateExtension()
     {
         assertEquals("Extension extraction failed", "vm", ts.getExtension("Default.vm"));
         assertEquals("Extension extraction failed", "txt", ts.getExtension("Default.txt"));
@@ -68,7 +83,7 @@ public class TemplateTest
         assertEquals("Extension extraction failed", "vm", ts.getExtension("Default.txt.vm"));
     }
 
-    public void testNonExistingTemplate()
+    @Test public void testNonExistingTemplate()
         throws Exception
     {
         //
@@ -80,7 +95,7 @@ public class TemplateTest
         assertEquals("ScreenTemplate translation failed", null,                 ts.getScreenTemplateName(templateName));
     }
 
-    public void testNonExistingSublevelTemplate()
+    @Test public void testNonExistingSublevelTemplate()
         throws Exception
     {
         //
@@ -92,7 +107,7 @@ public class TemplateTest
         assertEquals("ScreenTemplate translation failed", null,                 ts.getScreenTemplateName(templateName));
     }
 
-    public void testExistingTemplate()
+    @Test public void testExistingTemplate()
         throws Exception
     {
         //
@@ -117,7 +132,7 @@ public class TemplateTest
         assertEquals("ScreenTemplate translation failed", "existing/Page.vm",   ts.getScreenTemplateName(templateName));
     }
 
-    public void testExistingLayoutTemplate()
+    @Test public void testExistingLayoutTemplate()
         throws Exception
     {
         //
@@ -129,7 +144,7 @@ public class TemplateTest
         assertEquals("ScreenTemplate translation failed", "ExistPageWithLayout.vm", ts.getScreenTemplateName(templateName));
     }
 
-    public void testExistingSublevelLayoutTemplate()
+    @Test public void testExistingSublevelLayoutTemplate()
         throws Exception
     {
         //

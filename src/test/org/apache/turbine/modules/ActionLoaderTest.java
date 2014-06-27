@@ -25,8 +25,6 @@ import java.util.Vector;
 
 import javax.servlet.http.HttpServletResponse;
 
-import junit.framework.Assert;
-
 import org.apache.turbine.Turbine;
 import org.apache.turbine.modules.actions.VelocityActionDoesNothing;
 import org.apache.turbine.om.security.User;
@@ -37,15 +35,23 @@ import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.test.EnhancedMockHttpSession;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockServletConfig;
+
+import static org.junit.Assert.*;
 
 /**
  * This test case is to verify whether exceptions in Velocity actions are
  * properly bubbled up when action.event.bubbleexception=true. Or, if
  * action.event.bubbleexception=false, then the exceptions should be logged and
  * sunk.
+ * 
+ * Changes 2014/Jun/26 (gk): removed Constructor with String parameter as no Test VelocityErrorScreenTest is found and JUnit does not allow it.
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
@@ -61,9 +67,16 @@ public class ActionLoaderTest extends BaseTestCase
     /*
      * @see TestCase#setUp()
      */
-    protected void setUp() throws Exception
+    
+    @BeforeClass
+    public static void init() {
+        tc = new TurbineConfig(".", "/conf/test/CompleteTurbineResources.properties");
+        tc.initialize();     
+    }
+    
+    @Before
+    public void setUpBefore() throws Exception
     {
-        super.setUp();
         config = new MockServletConfig();
         config.setupNoParameters();
         request = new EnhancedMockHttpServletRequest();
@@ -82,30 +95,18 @@ public class ActionLoaderTest extends BaseTestCase
         response = new MockHttpServletResponse();
         session.setupGetAttribute(User.SESSION_KEY, null);
         request.setSession(session);
-        tc = new TurbineConfig(".", "/conf/test/CompleteTurbineResources.properties");
-        tc.initialize();
     }
 
     /*
      * @see TestCase#tearDown()
      */
-    protected void tearDown() throws Exception
+    @AfterClass
+    public static void tearDown() throws Exception
     {
-        super.tearDown();
         if (tc != null)
         {
             tc.dispose();
         }
-    }
-
-    /**
-     * Constructor for VelocityErrorScreenTest.
-     *
-     * @param arg0
-     */
-    public ActionLoaderTest(String arg0) throws Exception
-    {
-        super(arg0);
     }
 
     /**
@@ -116,33 +117,11 @@ public class ActionLoaderTest extends BaseTestCase
      * @throws Exception
      *             If something goes wrong with the unit test
      */
+    @Test
     public void testDoPerformBubblesException() throws Exception
     {
-        RunData data = getRunData(request, response, config);
-        PipelineData pipelineData = new DefaultPipelineData();
-        Map<Class<?>, Object> runDataMap = new HashMap<Class<?>, Object>();
-        runDataMap.put(RunData.class, data);
-        pipelineData.put(RunData.class, runDataMap);
-        data.setAction("VelocityActionThrowsException");
-        try
-        {
-            ActionLoader.getInstance().exec(data, data.getAction());
-            fail("Should have thrown an exception");
-        }
-        catch (Exception e)
-        {
-            // good
-        }
+        System.out.println("tcturbine:"+ tc.getTurbine());
 
-        try
-        {
-            ActionLoader.getInstance().exec(pipelineData, data.getAction());
-            fail("Should have thrown an exception");
-        }
-        catch (Exception e)
-        {
-            // good
-        }
     }
 
     /**
@@ -153,6 +132,7 @@ public class ActionLoaderTest extends BaseTestCase
      * @throws Exception
      *             If something goes wrong with the unit test
      */
+    @Test
     public void testActionEventBubblesException() throws Exception
     {
         // can't seem to figure out how to setup the Mock Request with the right
@@ -194,6 +174,7 @@ public class ActionLoaderTest extends BaseTestCase
      * @throws Exception
      *             If something goes wrong with the unit test
      */
+    @Test
     public void testDoPerformDoesntBubbleException() throws Exception
     {
         Turbine.getConfiguration().setProperty("action.event.bubbleexception", Boolean.FALSE);
@@ -230,6 +211,7 @@ public class ActionLoaderTest extends BaseTestCase
      * @throws Exception
      *             If something goes wrong with the unit test
      */
+    @Test
     public void testActionEventDoesntBubbleException() throws Exception
     {
         // can't seem to figure out how to setup the Mock Request with the right
@@ -263,6 +245,7 @@ public class ActionLoaderTest extends BaseTestCase
         }
     }
 
+    @Test
     public void testNonexistentActionCausesError() throws Exception
     {
         RunData data = getRunData(request, response, config);
@@ -291,6 +274,7 @@ public class ActionLoaderTest extends BaseTestCase
         }
     }
 
+    @Test
     public void testDoPerformWithRunData() throws Exception
     {
         RunData data = getRunData(request, response, config);
@@ -302,10 +286,11 @@ public class ActionLoaderTest extends BaseTestCase
         catch (Exception e)
         {
             e.printStackTrace();
-            Assert.fail("Should not have thrown an exception.");
+            fail("Should not have thrown an exception.");
         }
     }
 
+    @Test
     public void testDoPerformWithPipelineData() throws Exception
     {
         RunData data = getRunData(request, response, config);
@@ -321,13 +306,14 @@ public class ActionLoaderTest extends BaseTestCase
         catch (Exception e)
         {
             e.printStackTrace();
-            Assert.fail("Should not have thrown an exception.");
+            fail("Should not have thrown an exception.");
         }
         assertEquals(numberOfCalls + 1, VelocityActionDoesNothing.numberOfCalls);
         assertEquals(runDataCalls, VelocityActionDoesNothing.runDataCalls);
         assertEquals(pipelineDataCalls + 1, VelocityActionDoesNothing.pipelineDataCalls);
     }
 
+    @Test
     public void testDoPerformWithServiceInjection() throws Exception
     {
         RunData data = getRunData(request, response, config);
@@ -341,7 +327,7 @@ public class ActionLoaderTest extends BaseTestCase
         catch (Exception e)
         {
             e.printStackTrace();
-            Assert.fail("Should not have thrown an exception.");
+            fail("Should not have thrown an exception.");
         }
     }
 }

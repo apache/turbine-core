@@ -19,9 +19,13 @@ package org.apache.turbine;
  * under the License.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletResponse;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.Test;
 
 import com.mockobjects.servlet.MockHttpServletRequest;
 
@@ -36,11 +40,7 @@ import com.mockobjects.servlet.MockHttpServletRequest;
 public class TurbineTest extends BaseTestCase
 {
 
-    public TurbineTest(String name) throws Exception
-    {
-        super(name);
-    }
-
+    @Test
     public void testTurbineAndFirstGet() throws Exception
     {
         TurbineConfig tc = new TurbineConfig(".",
@@ -60,8 +60,9 @@ public class TurbineTest extends BaseTestCase
 
         assertEquals("8080", Turbine.getServerPort());
         t.destroy();
+        tc.dispose();
     }
-
+    @Test
     public void testDefaultInputEncoding() throws Exception
     {
         TurbineConfig tc = new TurbineConfig(".",
@@ -71,8 +72,9 @@ public class TurbineTest extends BaseTestCase
         assertNotNull(t.getDefaultInputEncoding());
         assertEquals(TurbineConstants.PARAMETER_ENCODING_DEFAULT, t.getDefaultInputEncoding());
         t.destroy();
+        tc.dispose();
     }
-
+    @Test
     public void testNonDefaultEncoding()
     {
         TurbineConfig tc = new TurbineConfig(".",
@@ -81,5 +83,6 @@ public class TurbineTest extends BaseTestCase
         Turbine t = tc.getTurbine();
         assertNotNull(t.getDefaultInputEncoding());
         assertEquals("UTF-8", t.getDefaultInputEncoding());
+        tc.dispose();
     }
 }

@@ -19,6 +19,10 @@ package org.apache.turbine.services;
  * under the License.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import java.util.Locale;
 
 import org.apache.fulcrum.cache.GlobalCacheService;
@@ -30,6 +34,9 @@ import org.apache.fulcrum.mimetype.MimeTypeService;
 import org.apache.turbine.services.avaloncomponent.AvalonComponentService;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * Unit test for verifing that we can load all the appropriate components from the
@@ -43,10 +50,7 @@ import org.apache.turbine.util.TurbineConfig;
 public class LoadingComponentsTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    public LoadingComponentsTest(String name) throws Exception
-    {
-        super(name);
-    }
+
 
     /**
      * Test to load a couple of Avalon services directly by the
@@ -54,7 +58,7 @@ public class LoadingComponentsTest extends BaseTestCase
      *
      * @throws Exception loading failed
      */
-    public void testLoadingByAvalonComponentService() throws Exception
+    @Test public void testLoadingByAvalonComponentService() throws Exception
     {
         AvalonComponentService avalonComponentService =
             (AvalonComponentService) TurbineServices.getInstance().getService(
@@ -74,6 +78,7 @@ public class LoadingComponentsTest extends BaseTestCase
         assertNotNull(fs);
         MimeTypeService mimetype = (MimeTypeService)avalonComponentService.lookup(MimeTypeService.ROLE);
         assertNotNull(mimetype);
+        //avalonComponentService.shutdown();
     }
 
     /**
@@ -83,7 +88,7 @@ public class LoadingComponentsTest extends BaseTestCase
      *
      * @throws Exception loading failed
      */
-    public void testLoadingByTurbineServices() throws Exception
+    @Test public void testLoadingByTurbineServices() throws Exception
     {
         ServiceManager serviceManager = TurbineServices.getInstance();
 
@@ -105,7 +110,7 @@ public class LoadingComponentsTest extends BaseTestCase
      * Lookup up an unknown servie
      * @throws Exception
      */
-    public void testLookupUnknownService() throws Exception
+    @Test public void testLookupUnknownService() throws Exception
     {
         ServiceManager serviceManager = TurbineServices.getInstance();
 
@@ -131,7 +136,7 @@ public class LoadingComponentsTest extends BaseTestCase
      * a late initialization of AvalonComponentService and returns
      * a fully functional MimeTypeService.
      */
-    public void testAvalonComponentServiceShutdown() throws Exception
+    @Test public void testAvalonComponentServiceShutdown() throws Exception
     {
         ServiceManager serviceManager = TurbineServices.getInstance();
         serviceManager.shutdownService(AvalonComponentService.SERVICE_NAME);
@@ -144,16 +149,19 @@ public class LoadingComponentsTest extends BaseTestCase
         assertEquals("ISO-8859-1", s);
     }
 
-    public void setUp() throws Exception
+    @BeforeClass
+    public static void setUp() throws Exception
     {
         tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
     }
-    public void tearDown() throws Exception
+    @AfterClass
+    public static void tearDown() throws Exception
     {
         if (tc != null)
         {
             tc.dispose();
         }
     }
+    
 }

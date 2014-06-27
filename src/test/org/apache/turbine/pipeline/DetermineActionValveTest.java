@@ -21,6 +21,8 @@ package org.apache.turbine.pipeline;
  */
 
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +34,10 @@ import org.apache.turbine.test.EnhancedMockHttpSession;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.uri.URIConstants;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockServletConfig;
@@ -51,16 +57,18 @@ public class DetermineActionValveTest extends BaseTestCase
     private EnhancedMockHttpSession session = null;
     private HttpServletResponse response = null;
 
-    /**
-     * Constructor
-     */
-    public DetermineActionValveTest(String testName) throws Exception
-    {
-        super(testName);
+
+    
+    @BeforeClass
+    public static void init() {
+        tc = new TurbineConfig(
+                            ".",
+                            "/conf/test/CompleteTurbineResources.properties");
+        tc.initialize();
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUpBefore() throws Exception {
         config = new MockServletConfig();
         config.setupNoParameters();
         request = new EnhancedMockHttpServletRequest();
@@ -85,18 +93,12 @@ public class DetermineActionValveTest extends BaseTestCase
 
         session.setupGetAttribute(User.SESSION_KEY, null);
         request.setSession(session);
-
-        tc =
-            new TurbineConfig(
-                    ".",
-            "/conf/test/CompleteTurbineResources.properties");
-        tc.initialize();
     }
 
     /**
      * Tests the Valve.
      */
-    public void testValve() throws Exception
+    @Test public void testValve() throws Exception
     {
         RunData runData = getRunData(request,response,config);
 
@@ -108,5 +110,10 @@ public class DetermineActionValveTest extends BaseTestCase
 
         pipeline.invoke(pipelineData);
         assertEquals("TestAction",runData.getAction());
+    }
+    
+    @AfterClass
+    public static void destroy() {
+        tc.dispose();
     }
 }

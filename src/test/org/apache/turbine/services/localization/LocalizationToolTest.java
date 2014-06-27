@@ -31,10 +31,15 @@ import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockHttpSession;
 import com.mockobjects.servlet.MockServletConfig;
+
+import static org.junit.Assert.*;
 /**
  * Unit test for Localization Tool.  Verifies that localization works the same using the
  * deprecated Turbine localization service as well as the new Fulcrum Localization
@@ -46,18 +51,15 @@ import com.mockobjects.servlet.MockServletConfig;
 public class LocalizationToolTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    public LocalizationToolTest(String name) throws Exception
-    {
-        super(name);
-    }
-    public void testGet() throws Exception
+
+    @Test public void testGet() throws Exception
     {
         LocalizationTool lt = new LocalizationTool();
         lt.init(getRunData());
         assertEquals("value1", lt.get("key1"));
         assertEquals("value3", lt.get("key3"));
     }
-    public void testGetLocale() throws Exception
+    @Test public void testGetLocale() throws Exception
     {
         LocalizationTool lt = new LocalizationTool();
         lt.init(getRunData());
@@ -65,13 +67,13 @@ public class LocalizationToolTest extends BaseTestCase
         assertEquals("US", lt.getLocale().getCountry());
         assertEquals("en", lt.getLocale().getLanguage());
     }
-    public void testInit() throws Exception
+    @Test public void testInit() throws Exception
     {
         LocalizationTool lt = new LocalizationTool();
         lt.init(getRunData());
         assertNotNull(lt.getLocale());
     }
-    public void testRefresh() throws Exception
+    @Test public void testRefresh() throws Exception
     {
         LocalizationTool lt = new LocalizationTool();
         lt.init(getRunData());
@@ -102,16 +104,18 @@ public class LocalizationToolTest extends BaseTestCase
         RunData runData = rds.getRunData(request, response, config);
         return runData;
     }
-    public void setUp() throws Exception
+    @BeforeClass
+    public static void setUp() throws Exception
     {
         tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
     }
-    public void tearDown() throws Exception
+    @AfterClass
+    public static void tearDown() throws Exception
     {
         if (tc != null)
         {
             tc.dispose();
-        }
+        } 
     }
 }

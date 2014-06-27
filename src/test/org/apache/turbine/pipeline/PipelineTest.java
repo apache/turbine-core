@@ -23,7 +23,8 @@ package org.apache.turbine.pipeline;
 
 import java.io.StringWriter;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests TurbinePipeline.
@@ -31,20 +32,14 @@ import junit.framework.TestCase;
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  * @version $Id$
  */
-public class PipelineTest extends TestCase
+public class PipelineTest 
 {
-    /**
-     * Constructor
-     */
-    public PipelineTest(String testName)
-    {
-        super(testName);
-    }
+
 
     /**
      * Tests the Pipeline.
      */
-    public void testPipeline() throws Exception
+    @Test public void testPipeline() throws Exception
     {
 
         // Make sure Valves are getting added properly to the

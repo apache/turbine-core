@@ -25,6 +25,9 @@ import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 /**
  * Unit test for Accessing the Fulcrum Cache component via the
  * CacheServiceFacade and the Component within Turbine.
@@ -35,11 +38,8 @@ import org.apache.turbine.util.TurbineConfig;
 public class FulcrumCacheComponentTest extends BaseTestCase
 {
     private static TurbineConfig tc = null;
-    public FulcrumCacheComponentTest(String name) throws Exception
-    {
-        super(name);
-    }
-    public void testComponentAndFacaded() throws Exception
+
+    @Test public void testComponentAndFacaded() throws Exception
     {
         ServiceManager serviceManager = TurbineServices.getInstance();
 		GlobalCacheService cache = (GlobalCacheService)serviceManager.getService(GlobalCacheService.ROLE);
@@ -47,12 +47,14 @@ public class FulcrumCacheComponentTest extends BaseTestCase
 		cache.addObject("testObj",inputObject);
     }
 
-    public void setUp() throws Exception
+    @BeforeClass
+    public static void setUp() throws Exception
     {
         tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
     }
-    public void tearDown() throws Exception
+    @AfterClass
+    public static void tearDown() throws Exception
     {
         if (tc != null)
         {

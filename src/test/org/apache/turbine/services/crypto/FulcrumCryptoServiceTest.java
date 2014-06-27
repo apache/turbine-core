@@ -25,6 +25,12 @@ import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 /**
  * Verifies the Fulcrum Crypto Service works properly in Turbine.
@@ -40,12 +46,9 @@ public class FulcrumCryptoServiceTest extends BaseTestCase
     private static TurbineConfig tc = null;
     private CryptoService cryptoService;
 
-    public FulcrumCryptoServiceTest(String name) throws Exception
-    {
-        super(name);
-    }
 
-    public void testMd5()
+
+    @Test public void testMd5()
     {
         String preDefinedResult = "XSop0mncK19Ii2r2CUe29w==";
 
@@ -63,7 +66,7 @@ public class FulcrumCryptoServiceTest extends BaseTestCase
         }
     }
 
-    public void testSha1()
+    @Test public void testSha1()
     {
         String preDefinedResult = "uVDiJHaavRYX8oWt5ctkaa7j1cw=";
 
@@ -81,15 +84,23 @@ public class FulcrumCryptoServiceTest extends BaseTestCase
         }
     }
 
-    public void setUp() throws Exception
+    @BeforeClass
+    public static void init() throws Exception
     {
         tc = new TurbineConfig(".", "/conf/test/TestFulcrumComponents.properties");
         tc.initialize();
+
+    }
+    
+    @Before
+    public void setUpBefore() throws Exception
+    {
         ServiceManager serviceManager = TurbineServices.getInstance();
         cryptoService = (CryptoService) serviceManager.getService(CryptoService.ROLE);
     }
 
-    public void tearDown() throws Exception
+    @AfterClass
+    public static void tearDown() throws Exception
     {
         if (tc != null)
         {

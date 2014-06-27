@@ -32,9 +32,15 @@ import org.apache.turbine.test.EnhancedMockHttpServletRequest;
 import org.apache.turbine.test.EnhancedMockHttpSession;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineConfig;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockServletConfig;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests TurbinePipeline.
@@ -51,16 +57,17 @@ public class DefaultACLCreationValveTest extends BaseTestCase
     private EnhancedMockHttpSession session = null;
     private HttpServletResponse response = null;
 
-    /**
-     * Constructor
-     */
-    public DefaultACLCreationValveTest(String testName) throws Exception
-    {
-        super(testName);
+
+    @BeforeClass
+    public static void init() {
+        tc = new TurbineConfig(
+                            ".",
+                            "/conf/test/CompleteTurbineResources.properties");
+        tc.initialize();
     }
 
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUpBefore() throws Exception {
         config = new MockServletConfig();
         config.setupNoParameters();
         request = new EnhancedMockHttpServletRequest();
@@ -76,15 +83,10 @@ public class DefaultACLCreationValveTest extends BaseTestCase
         session = new EnhancedMockHttpSession();
         response = new MockHttpServletResponse();
         request.setSession(session);
-        tc =
-            new TurbineConfig(
-                    ".",
-            "/conf/test/CompleteTurbineResources.properties");
-        tc.initialize();
     }
 
 
-    public void testLoggedInUser() throws Exception
+    @Test public void testLoggedInUser() throws Exception
     {
         RunData runData = getRunData(request,response,config);
         User tu = new DefaultUserImpl(new TurbineUserImpl());
@@ -106,5 +108,10 @@ public class DefaultACLCreationValveTest extends BaseTestCase
         assertEquals("username",user.getName());
         assertTrue(user.hasLoggedIn());
         assertNotNull(runData.getACL());
+    }
+    
+    @AfterClass
+    public static void destroy() {
+        tc.dispose();
     }
 }
