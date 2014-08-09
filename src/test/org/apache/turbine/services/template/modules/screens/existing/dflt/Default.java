@@ -33,5 +33,6 @@ import org.apache.turbine.modules.screens.VelocityScreen;
 public class Default
     extends VelocityScreen
 {
+    // empty
 }
 

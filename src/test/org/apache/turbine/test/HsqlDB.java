@@ -61,6 +61,7 @@ public class HsqlDB
         }
         catch (Exception e)
         {
+            // ignore
         }
     }
 
@@ -72,11 +73,11 @@ public class HsqlDB
         {
             statement = connection.createStatement();
             String commands = getFileContents(fileName);
-            
+
             for (int targetPos = commands.indexOf(';'); targetPos > -1; targetPos = commands.indexOf(';'))
             {
                 String cmd = commands.substring(0, targetPos + 1).trim();
-                
+
                 if (cmd.startsWith("--"))
                 {
                     // comment

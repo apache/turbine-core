@@ -19,13 +19,11 @@
 
 package org.apache.turbine.modules;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletResponse;
 
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 
 import org.apache.turbine.modules.layouts.TestVelocityOnlyLayout;
 import org.apache.turbine.om.security.User;
@@ -53,7 +51,7 @@ public class LayoutLoaderTest extends BaseTestCase {
 	private EnhancedMockHttpServletRequest request = null;
 	private EnhancedMockHttpSession session = null;
 	private HttpServletResponse response = null;
-	
+
     @BeforeClass
     public static void init() {
         tc = new TurbineConfig(
@@ -108,14 +106,14 @@ public class LayoutLoaderTest extends BaseTestCase {
 				LayoutLoader.getInstance().exec(pipelineData, data.getLayout());
 			} catch (Exception e) {
 			    e.printStackTrace();
-			    Assert.fail("Should not have thrown an exception.");
+			    fail("Should not have thrown an exception.");
 			}
 			assertEquals(numberOfCalls+1,TestVelocityOnlyLayout.numberOfCalls);
 	    }
 	    catch (Exception e)
 	    {
 	        e.printStackTrace();
-	        Assert.fail("Should not have thrown an exception.");
+	        fail("Should not have thrown an exception.");
 	    }
 	}
 	@Test
@@ -130,14 +128,14 @@ public class LayoutLoaderTest extends BaseTestCase {
 				LayoutLoader.getInstance().exec(data, data.getLayout());
 			} catch (Exception e) {
 			    e.printStackTrace();
-			    Assert.fail("Should not have thrown an exception.");
+			    fail("Should not have thrown an exception.");
 			}
 			assertEquals(numberOfCalls+1,TestVelocityOnlyLayout.numberOfCalls);
 	    }
 	    catch (Exception e)
 	    {
 	        e.printStackTrace();
-	        Assert.fail("Should not have thrown an exception.");
+	        fail("Should not have thrown an exception.");
 	    }
 	}
 }

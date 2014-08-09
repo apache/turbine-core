@@ -20,6 +20,8 @@ package org.apache.turbine.util.uri;
  */
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import org.apache.fulcrum.parser.DefaultParameterParser;
 import org.apache.fulcrum.parser.ParameterParser;
@@ -35,7 +37,7 @@ import org.junit.Test;
 
 /**
  * Testing of the TurbineURI class
- * 
+ *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
  * @version $Id$
@@ -59,12 +61,12 @@ public class TurbineURITest extends BaseTestCase
     /**
      * Performs any initialization that must happen before each test is run.
      */
-    
-    @Before 
+
+    @Before
     public void setup()
     {
         // Setup configuration
-        
+
         ServerData sd = new ServerData("www.testserver.com",
                 URIConstants.HTTP_PORT, URIConstants.HTTP, "/servlet/turbine",
                 "/context");
@@ -79,44 +81,33 @@ public class TurbineURITest extends BaseTestCase
     @AfterClass
     public static void tearDown()
     {
-        if (tc != null) 
+        if (tc != null)
         {
             tc.dispose();
         }
-        
+
     }
 
     @Test public void testAddRemove()
     {
-        assertEquals("TurbineURI should not have a pathInfo", false, turi
-                .hasPathInfo());
-        assertEquals("TurbineURI must not have a queryData", false, turi
-                .hasQueryData());
-        turi.addPathInfo("test", "x");
-        assertEquals("TurbineURI must have a pathInfo", true, turi
-                .hasPathInfo());
-        assertEquals("TurbineURI must not have a queryData", false, turi
-                .hasQueryData());
-        turi.removePathInfo("test");
-        assertEquals("TurbineURI must not have a pathInfo", false, turi
-                .hasPathInfo());
-        assertEquals("TurbineURI must not have a queryData", false, turi
-                .hasQueryData());
 
-        assertEquals("TurbineURI should not have a queryData", false, turi
-                .hasQueryData());
-        assertEquals("TurbineURI must not have a pathInfo", false, turi
-                .hasPathInfo());
+        assertFalse("TurbineURI should not have a pathInfo", turi.hasPathInfo());
+        assertFalse("TurbineURI must not have a queryData", turi.hasQueryData());
+        turi.addPathInfo("test", "x");
+        assertTrue("TurbineURI must have a pathInfo", turi.hasPathInfo());
+        assertFalse("TurbineURI must not have a queryData", turi.hasQueryData());
+        turi.removePathInfo("test");
+        assertFalse("TurbineURI must not have a pathInfo", turi.hasPathInfo());
+        assertFalse("TurbineURI must not have a queryData", turi.hasQueryData());
+
+        assertFalse("TurbineURI should not have a queryData", turi.hasQueryData());
+        assertFalse("TurbineURI must not have a pathInfo", turi.hasPathInfo());
         turi.addQueryData("test", "x");
-        assertEquals("TurbineURI must have a queryData", true, turi
-                .hasQueryData());
-        assertEquals("TurbineURI must not have a pathInfo", false, turi
-                .hasPathInfo());
+        assertTrue("TurbineURI must have a queryData", turi.hasQueryData());
+        assertFalse("TurbineURI must not have a pathInfo", turi.hasPathInfo());
         turi.removeQueryData("test");
-        assertEquals("TurbineURI must not have a queryData", false, turi
-                .hasQueryData());
-        assertEquals("TurbineURI must not have a pathInfo", false, turi
-                .hasPathInfo());
+        assertFalse("TurbineURI must not have a queryData", turi.hasQueryData());
+        assertFalse("TurbineURI must not have a pathInfo", turi.hasPathInfo());
     }
 
     @Test public void testEmptyAndNullQueryData()
@@ -163,15 +154,15 @@ public class TurbineURITest extends BaseTestCase
 
     @Test public void testAddParameterParser() throws InstantiationException
     {
-        ParameterParser pp = (ParameterParser) parserService.getParser(DefaultParameterParser.class);
+        ParameterParser pp = parserService.getParser(DefaultParameterParser.class);
         pp.add("test", "");
         turi.add(1, pp); // 1 = query data
         assertEquals("/context/servlet/turbine?test=", turi.getRelativeLink());
         turi.removeQueryData("test");
         assertEquals("/context/servlet/turbine", turi.getRelativeLink());
-        
+
         parserService.putParser(pp);
-        pp = (ParameterParser) parserService.getParser(DefaultParameterParser.class);
+        pp = parserService.getParser(DefaultParameterParser.class);
         pp.add("test", (String) null);
         turi.add(1, pp); // 1 = query data
         // Should make the following work so as to be consistent with directly

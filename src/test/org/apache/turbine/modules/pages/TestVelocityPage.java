@@ -19,7 +19,7 @@ package org.apache.turbine.modules.pages;
  * under the License.
  */
 
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
@@ -32,57 +32,65 @@ public class TestVelocityPage extends VelocityPage{
 
     public static int numberOfCalls = 0;
 
+    @Override
     public void doBuild(PipelineData pipelineData) throws Exception
     {
         numberOfCalls++;
         super.doBuild(pipelineData);
         RunData data = getRunData(pipelineData);
-        Assert.assertNotNull("RunData object is null.", data);
+        assertNotNull("RunData object is null.", data);
     }
 
+    @Override
     public void doBuild(RunData runData) throws Exception
     {
         numberOfCalls++;
         super.doBuild(runData);
-        Assert.assertNotNull("RunData object is null.", runData);
+        assertNotNull("RunData object is null.", runData);
     }
 
+    @Override
     public void doBuildBeforeAction(PipelineData pipelineData) throws Exception
     {
         numberOfCalls++;
         RunData data = getRunData(pipelineData);
-        Assert.assertNotNull("RunData object is null.", data);
+        assertNotNull("RunData object is null.", data);
     }
 
+    @Override
     public void doPostBuild(PipelineData pipelineData) throws Exception
     {
         numberOfCalls++;
         RunData data = getRunData(pipelineData);
-        Assert.assertNotNull("RunData object is null.", data);
+        assertNotNull("RunData object is null.", data);
     }
 
+    @Override
     public void doBuildBeforeAction(RunData data) throws Exception
     {
         numberOfCalls++;
-        Assert.assertNotNull("RunData object is null.", data);
+        assertNotNull("RunData object is null.", data);
     }
 
+    @Override
     public void doPostBuild(RunData data) throws Exception
     {
         numberOfCalls++;
-        Assert.assertNotNull("RunData object is null.", data);
+        assertNotNull("RunData object is null.", data);
     }
 
+    @Override
     public void doBuildAfterAction(RunData data) throws Exception
     {
         numberOfCalls++;
-        Assert.assertNotNull("RunData object is null.", data);
+        assertNotNull("RunData object is null.", data);
     }
 
+    @Override
     public void doBuildAfterAction(PipelineData pipelineData) throws Exception
     {
         numberOfCalls++;
         RunData data = getRunData(pipelineData);
-        Assert.assertNotNull("RunData object is null.", data);
+        assertNotNull("RunData object is null.", data);
     }
 }

@@ -20,7 +20,7 @@ package org.apache.turbine.modules.actions;
  */
 
 
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 
 import org.apache.fulcrum.factory.FactoryService;
 import org.apache.turbine.annotation.TurbineService;
@@ -54,6 +54,7 @@ public class VelocityActionWithServiceInjection extends VelocityAction
      * @param  context        Context to populate
      * @exception  Exception  Thrown on error
      */
+    @Override
     public void doPerform(RunData data, Context context) throws Exception
     {
         log.debug("Calling doPerform");
@@ -66,14 +67,15 @@ public class VelocityActionWithServiceInjection extends VelocityAction
      * @param  context        Context to populate
      * @exception  Exception  Thrown on error
      */
+    @Override
     public void doPerform(PipelineData pipelineData, Context context) throws Exception
     {
         log.debug("Calling doPerform(PipelineData)");
-		Assert.assertNotNull("runDataService object was Null.", runDataService);
+		assertNotNull("runDataService object was Null.", runDataService);
         log.debug("Injected service is " + runDataService.getName());
-        Assert.assertNotNull("runDataService2 object was Null.", runDataService2);
+        assertNotNull("runDataService2 object was Null.", runDataService2);
         log.debug("Injected service is " + runDataService2.getName());
-        Assert.assertNotNull("factory object was Null.", factory);
+        assertNotNull("factory object was Null.", factory);
         log.debug("Injected service is " + factory.getClass());
     }
 }

@@ -25,14 +25,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.services.pull.tools.UIToolTest;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 
 import com.metaparadigm.jsonrpc.JSONRPCBridge;
 
@@ -41,7 +38,7 @@ public class JsonrpcServicelTest
 {
     private static TurbineConfig turbineConfig = null;
 
-    
+
     @BeforeClass
     public static void setUp() throws Exception {
 //        serviceManager = TurbineServices.getInstance();
@@ -54,7 +51,7 @@ public class JsonrpcServicelTest
         turbineConfig = new TurbineConfig(".", initParams);
         turbineConfig.initialize();
     }
-    
+
     @AfterClass
     public static void destroy() throws Exception {
         turbineConfig.dispose();

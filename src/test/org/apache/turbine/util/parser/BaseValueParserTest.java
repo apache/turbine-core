@@ -23,6 +23,8 @@ package org.apache.turbine.util.parser;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
@@ -70,7 +72,7 @@ public class BaseValueParserTest extends BaseTestCase
         try
         {
             parserService = (ParserService)TurbineServices.getInstance().getService(ParserService.ROLE);
-            parser = (BaseValueParser) parserService.getParser(BaseValueParser.class);
+            parser = parserService.getParser(BaseValueParser.class);
         }
         catch (InstantiationException e)
         {
@@ -84,7 +86,7 @@ public class BaseValueParserTest extends BaseTestCase
     @AfterClass
     public static void tearDown()
     {
-        if (tc != null) 
+        if (tc != null)
         {
             tc.dispose();
         }
@@ -496,30 +498,30 @@ public class BaseValueParserTest extends BaseTestCase
     {
         // no param
         boolean result = parser.getBoolean("invalid");
-        assertEquals(result, false);
+        assertFalse(result);
 
         // default
         result = parser.getBoolean("default", true);
-        assertEquals(result, true);
+        assertTrue(result);
 
         // true values - Case is intentional
         parser.add("true1", "trUe");
         result = parser.getBoolean("true1");
-        assertEquals(result, true);
+        assertTrue(result);
         parser.add("true2", "yEs");
         result = parser.getBoolean("true2");
-        assertEquals(result, true);
+        assertTrue(result);
         parser.add("true3", "1");
         result = parser.getBoolean("true3");
-        assertEquals(result, true);
+        assertTrue(result);
         parser.add("true4", "oN");
         result = parser.getBoolean("true4");
-        assertEquals(result, true);
+        assertTrue(result);
 
         // unparsable value
         parser.add("unparsable", "a");
         result = parser.getBoolean("unparsable");
-        assertEquals(result, false);
+        assertFalse(result);
 
     }
 
