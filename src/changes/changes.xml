@@ -26,6 +26,14 @@
   <body>
     <release version="4.0-M2" date="in Subversion">
       <action type="update" dev="tv">
+        Update dependencies
+        - servlet-api to 2.5 (Tomcat 6.0)
+        - commons-codec to 1.8
+        - commons-configuration to 1.9
+        - commons-email to 1.3
+        - fulcrum-parser to 1.0.3
+      </action>
+      <action type="update" dev="tv">
         Update Turbine Parent POM to version 3
       </action>
       <action type="add" dev="tv">

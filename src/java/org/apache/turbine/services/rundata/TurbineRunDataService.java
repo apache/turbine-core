@@ -257,9 +257,11 @@ public class TurbineRunDataService
             }
 
             data = (TurbineRunData) pool.getInstance(runDataClazz);
-            ParameterParser pp = (ParameterParser) parserService.getParser(parameterParserClazz);
+            @SuppressWarnings("unchecked") // ok
+            ParameterParser pp = parserService.getParser((Class<ParameterParser>)parameterParserClazz);
             data.setParameterParser(pp);
-            CookieParser cp = (CookieParser) parserService.getParser(cookieParserClazz);
+            @SuppressWarnings("unchecked") // ok
+            CookieParser cp = parserService.getParser((Class<CookieParser>)cookieParserClazz);
             data.setCookieParser(cp);
 
             Locale locale = req.getLocale();
