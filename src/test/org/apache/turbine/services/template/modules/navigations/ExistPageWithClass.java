@@ -33,5 +33,6 @@ import org.apache.turbine.modules.navigations.VelocityNavigation;
 public class ExistPageWithClass
     extends VelocityNavigation
 {
+        // empty
 }
 

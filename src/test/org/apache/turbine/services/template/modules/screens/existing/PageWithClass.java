@@ -33,5 +33,6 @@ import org.apache.turbine.modules.screens.VelocityScreen;
 public class PageWithClass
     extends VelocityScreen
 {
+        // empty
 }
 

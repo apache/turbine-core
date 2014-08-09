@@ -40,14 +40,19 @@ public class TestComponentImpl
 {
     private String appRoot;
 
+    @Override
     public void initialize() throws Exception
     {
+        // empty
     }
 
+    @Override
     public void dispose()
     {
+        // empty
     }
 
+    @Override
     public void test()
     {
         setupLogger(this, "TestComponent");
@@ -55,6 +60,7 @@ public class TestComponentImpl
         getLogger().debug("componentAppRoot = "+appRoot);
     }
 
+    @Override
     public void contextualize(Context context) throws ContextException
     {
         appRoot = (String) context.get("componentAppRoot");

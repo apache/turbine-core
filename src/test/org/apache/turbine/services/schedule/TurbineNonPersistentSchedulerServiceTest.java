@@ -83,10 +83,10 @@ public class TurbineNonPersistentSchedulerServiceTest
         try
         {
             TurbineScheduler.startScheduler();
-            assertEquals(true, TurbineScheduler.isEnabled());
+            assertTrue(TurbineScheduler.isEnabled());
 
             TurbineScheduler.stopScheduler();
-            assertEquals(false, TurbineScheduler.isEnabled());
+            assertFalse(TurbineScheduler.isEnabled());
         }
         catch (Exception e)
         {

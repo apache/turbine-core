@@ -22,6 +22,8 @@ package org.apache.turbine.services.template;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
@@ -42,7 +44,7 @@ public class DefaultsTest
     private static TurbineConfig tc = null;
     private static TemplateService ts = null;
 
-    
+
     @BeforeClass
     public static void setUp() throws Exception {
         tc = new TurbineConfig(".", "/conf/test/TemplateService.properties");
@@ -61,13 +63,13 @@ public class DefaultsTest
     public void testDefaults()
     {
         // Test if the caching property was loaded correctly. (key:module.cache)
-        assertEquals("isCaching failed!",false,             ts.isCaching());
+        assertFalse("isCaching failed!", ts.isCaching());
 
         // Test if the default values for Template and Extension were loaded correctly
         assertEquals("Default Extension failed",      ts.getDefaultExtension(), "");
         assertEquals("Default Template failed",       ts.getDefaultTemplate(), TemplateService.DEFAULT_TEMPLATE_VALUE);
     }
-    
+
     @Test
     public void testTemplateDefaults()
     {
@@ -78,7 +80,7 @@ public class DefaultsTest
         assertEquals("Default Navigation failed",     TemplateService.DEFAULT_TEMPLATE_VALUE, ts.getDefaultNavigation());
         assertEquals("Default LayoutTemplate failed", TemplateService.DEFAULT_TEMPLATE_VALUE, ts.getDefaultLayoutTemplate());
     }
-    
+
     @Test
     public void testVelocityDefaults()
     {

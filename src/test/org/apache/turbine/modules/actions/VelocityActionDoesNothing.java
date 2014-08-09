@@ -20,7 +20,7 @@ package org.apache.turbine.modules.actions;
  */
 
 
-import junit.framework.Assert;
+import static org.junit.Assert.*;
 
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
@@ -46,6 +46,7 @@ public class VelocityActionDoesNothing extends VelocityAction
      * @param  context        Context to populate
      * @exception  Exception  Thrown on error
      */
+    @Override
     public void doPerform(RunData data, Context context) throws Exception
     {
         log.debug("Calling doPerform");
@@ -60,12 +61,13 @@ public class VelocityActionDoesNothing extends VelocityAction
      * @param  context        Context to populate
      * @exception  Exception  Thrown on error
      */
+    @Override
     public void doPerform(PipelineData pipelineData, Context context) throws Exception
     {
         log.debug("Calling doPerform(PipelineData)");
 		VelocityActionDoesNothing.numberOfCalls++;
         RunData rd = (RunData)pipelineData;
-		Assert.assertNotNull("RunData object was Null.", rd);
+		assertNotNull("RunData object was Null.", rd);
 		VelocityActionDoesNothing.pipelineDataCalls++;
     }
 

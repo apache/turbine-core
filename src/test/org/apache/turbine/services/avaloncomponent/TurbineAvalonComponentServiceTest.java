@@ -21,7 +21,8 @@ package org.apache.turbine.services.avaloncomponent;
  */
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import org.apache.commons.configuration.BaseConfiguration;
 import org.apache.commons.configuration.Configuration;
@@ -29,8 +30,6 @@ import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.test.TestComponent;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 

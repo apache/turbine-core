@@ -33,5 +33,6 @@ import org.apache.turbine.modules.navigations.VelocityNavigation;
 public class Default
     extends VelocityNavigation
 {
+    // empty
 }
 

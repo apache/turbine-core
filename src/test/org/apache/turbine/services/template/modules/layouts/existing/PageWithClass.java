@@ -33,5 +33,6 @@ import org.apache.turbine.modules.layouts.VelocityOnlyLayout;
 public class PageWithClass
     extends VelocityOnlyLayout
 {
+        // empty
 }
 
