@@ -75,7 +75,9 @@ public class ScheduledJobLoader
      * @param data Turbine information.
      * @param name Name of object that will execute the job.
      * @exception Exception a generic exception.
+     * @deprecated
      */
+    @Deprecated
     @Override
     public void exec(RunData data, String name)
             throws Exception
