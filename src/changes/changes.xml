@@ -25,6 +25,10 @@
 
   <body>
     <release version="4.0-M2" date="in Subversion">
+      <action type="add" dev="tv">
+        Add Annotation @TurbineActionEvent to annotate action methods 
+        with arbitrary event names.
+      </action>
       <action type="update" dev="tv">
         Update dependencies
         - servlet-api to 2.5 (Tomcat 6.0)

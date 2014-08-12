@@ -50,7 +50,7 @@ import static org.junit.Assert.*;
  * properly bubbled up when action.event.bubbleexception=true. Or, if
  * action.event.bubbleexception=false, then the exceptions should be logged and
  * sunk.
- * 
+ *
  * Changes 2014/Jun/26 (gk): removed Constructor with String parameter as no Test VelocityErrorScreenTest is found and JUnit does not allow it.
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
@@ -67,13 +67,13 @@ public class ActionLoaderTest extends BaseTestCase
     /*
      * @see TestCase#setUp()
      */
-    
+
     @BeforeClass
     public static void init() {
         tc = new TurbineConfig(".", "/conf/test/CompleteTurbineResources.properties");
-        tc.initialize();     
+        tc.initialize();
     }
-    
+
     @Before
     public void setUpBefore() throws Exception
     {
@@ -243,6 +243,41 @@ public class ActionLoaderTest extends BaseTestCase
         {
             fail("Should NOT have thrown an exception:" + e.getMessage());
         }
+    }
+
+    /**
+     * This unit test verifies that if an Action Event doEventSubmit_ is called,
+     * a properly annotated method is being called
+     *
+     * @throws Exception
+     *             If something goes wrong with the unit test
+     */
+    @Test
+    public void testActionEventAnnotation() throws Exception
+    {
+        // can't seem to figure out how to setup the Mock Request with the right
+        // parameters...
+        request.setupAddParameter("eventSubmit_annotatedEvent", "foo");
+        RunData data = getRunData(request, response, config);
+        PipelineData pipelineData = data;
+        data.setAction("VelocityActionDoesNothing");
+        data.getParameters().add("eventSubmit_annotatedEvent", "foo");
+
+        int numberOfCalls = VelocityActionDoesNothing.numberOfCalls;
+        int pipelineDataCalls = VelocityActionDoesNothing.pipelineDataCalls;
+        int actionEventCalls = VelocityActionDoesNothing.actionEventCalls;
+        try
+        {
+            ActionLoader.getInstance().exec(pipelineData, data.getAction());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            fail("Should not have thrown an exception.");
+        }
+        assertEquals(numberOfCalls + 1, VelocityActionDoesNothing.numberOfCalls);
+        assertEquals(pipelineDataCalls, VelocityActionDoesNothing.pipelineDataCalls);
+        assertEquals(actionEventCalls + 1, VelocityActionDoesNothing.actionEventCalls);
     }
 
     @Test

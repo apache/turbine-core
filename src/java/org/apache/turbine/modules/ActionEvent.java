@@ -21,16 +21,17 @@ package org.apache.turbine.modules;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Iterator;
+import java.util.Arrays;
 
 import org.apache.commons.collections.map.MultiKeyMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.parser.ParameterParser;
-import org.apache.fulcrum.parser.ParserService;
+import org.apache.fulcrum.parser.ValueParser.URLCaseFolding;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
+import org.apache.turbine.annotation.TurbineActionEvent;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 
@@ -43,7 +44,7 @@ import org.apache.turbine.util.RunData;
  * For example, "eventSubmit_doDelete". Then any class that subclasses
  * this class will get its "doDelete(RunData data)" method executed.
  * If for any reason, it was not able to execute the method, it will
- * fall back to executing the doPeform() method which is required to
+ * fall back to executing the doPerform() method which is required to
  * be implemented.
  *
  * <p>
@@ -145,17 +146,40 @@ public abstract class ActionEvent extends Action
 	 *
 	 * @param name the name of the method
 	 * @param signature an array of classes forming the signature of the method
+	 * @param pp ParameterParser for correct folding
 	 *
 	 * @return the method object
 	 * @throws NoSuchMethodException if the method does not exist
 	 */
-	protected Method getMethod(String name, Class<?>[] signature) throws NoSuchMethodException
+	protected Method getMethod(String name, Class<?>[] signature, ParameterParser pp) throws NoSuchMethodException
 	{
 	    Method method = (Method) this.methodCache.get(name, signature);
 
 	    if (method == null)
 	    {
-	        method = getClass().getMethod(name, signature);
+	        // Try annotations of public methods
+	        Method[] methods = getClass().getMethods();
+	        for (Method m : methods)
+	        {
+	            if (m.isAnnotationPresent(TurbineActionEvent.class))
+	            {
+	                TurbineActionEvent tae = m.getAnnotation(TurbineActionEvent.class);
+	                if (name.equals(pp.convert(tae.value()))
+                        && Arrays.equals(signature, m.getParameterTypes()))
+	                {
+	                    method = m;
+	                    break;
+	                }
+	            }
+	        }
+
+	        // Try legacy mode
+	        if (method == null)
+	        {
+                String tmp = name.toLowerCase().substring(METHOD_NAME_LENGTH);
+	            method = getClass().getMethod(METHOD_NAME_PREFIX + StringUtils.capitalize(tmp), signature);
+	        }
+
 	        this.methodCache.put(name, signature, method);
 	    }
 
@@ -214,14 +238,14 @@ public abstract class ActionEvent extends Action
 		String key = null;
 
 		// Loop through and find the button.
-		for (Iterator<String> it = pp.keySet().iterator(); it.hasNext();)
+		for (String k : pp)
 		{
-			key = it.next();
+			key = k;
 			if (key.startsWith(button))
 			{
 				if (considerKey(key, pp))
 				{
-					theButton = formatString(key, pp);
+					theButton = key;
 					break;
 				}
 			}
@@ -229,19 +253,20 @@ public abstract class ActionEvent extends Action
 
 		if (theButton == null)
 		{
-		    theButton = DEFAULT_METHOD;
+		    theButton = BUTTON + DEFAULT_METHOD;
 		    key = null;
 		}
 
+		theButton = formatString(theButton, pp);
 		Method method = null;
 
         try
         {
-            method = getMethod(theButton, signature);
+            method = getMethod(theButton, signature, pp);
         }
         catch (NoSuchMethodException e)
         {
-            method = getMethod(DEFAULT_METHOD, signature);
+            method = getMethod(DEFAULT_METHOD, signature, pp);
         }
         finally
         {
@@ -289,7 +314,7 @@ public abstract class ActionEvent extends Action
 	 * @param pp The parameter parser (for correct folding)
 	 * @return A string with the method name in the proper case.
 	 */
-	protected final String formatString(String input, ParameterParser pp)
+	protected String formatString(String input, ParameterParser pp)
 	{
 		String tmp = input;
 
@@ -298,18 +323,17 @@ public abstract class ActionEvent extends Action
 			tmp = input.toLowerCase();
 
 			// Chop off suffixes (for image type)
-			input = (tmp.endsWith(".x") || tmp.endsWith(".y"))
+			String methodName = (tmp.endsWith(".x") || tmp.endsWith(".y"))
 					? input.substring(0, input.length() - 2)
 					: input;
 
-			if (pp.getUrlFolding() != ParserService.URL_CASE_FOLDING_NONE)
+			if (pp.getUrlFolding() == URLCaseFolding.NONE)
 			{
-				tmp = input.toLowerCase().substring(BUTTON_LENGTH + METHOD_NAME_LENGTH);
-				tmp = METHOD_NAME_PREFIX + StringUtils.capitalize(tmp);
+                tmp = methodName.substring(BUTTON_LENGTH);
 			}
 			else
 			{
-				tmp = input.substring(BUTTON_LENGTH);
+                tmp = methodName.toLowerCase().substring(BUTTON_LENGTH);
 			}
 		}
 

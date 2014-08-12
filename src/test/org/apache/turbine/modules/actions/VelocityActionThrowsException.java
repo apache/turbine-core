@@ -42,7 +42,10 @@ public class VelocityActionThrowsException extends VelocityAction
      * @param  data           Current RunData information
      * @param  context        Context to populate
      * @exception  Exception  Thrown on error
+     * @deprecated
      */
+    @Override
+    @Deprecated
     public void doPerform(RunData data, Context context) throws Exception
     {
         log.debug("Calling doPerform(RunData)");
@@ -56,6 +59,7 @@ public class VelocityActionThrowsException extends VelocityAction
      * @param  context        Context to populate
      * @exception  Exception  Thrown on error
      */
+    @Override
     public void doPerform(PipelineData data, Context context) throws Exception
     {
         log.debug("Calling doPerform(PipelineData)");

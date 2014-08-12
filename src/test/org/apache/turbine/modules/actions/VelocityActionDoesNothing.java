@@ -22,6 +22,7 @@ package org.apache.turbine.modules.actions;
 
 import static org.junit.Assert.*;
 
+import org.apache.turbine.annotation.TurbineActionEvent;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -39,13 +40,16 @@ public class VelocityActionDoesNothing extends VelocityAction
     public static int numberOfCalls;
     public static int runDataCalls;
     public static int pipelineDataCalls;
+    public static int actionEventCalls;
     /**
      *  Default action is throw an exception.
      *
      * @param  data           Current RunData information
      * @param  context        Context to populate
      * @exception  Exception  Thrown on error
+     * @deprecated
      */
+    @Deprecated
     @Override
     public void doPerform(RunData data, Context context) throws Exception
     {
@@ -71,4 +75,20 @@ public class VelocityActionDoesNothing extends VelocityAction
 		VelocityActionDoesNothing.pipelineDataCalls++;
     }
 
+    /**
+     *  Annotated action method.
+     *
+     * @param  data           Current RunData information
+     * @param  context        Context to populate
+     * @exception  Exception  Thrown on error
+     */
+    @TurbineActionEvent("annotatedEvent") // subject to URL folding
+    public void arbitraryMethodName(PipelineData pipelineData, Context context) throws Exception
+    {
+        log.debug("Calling arbitraryMethodName(PipelineData)");
+        VelocityActionDoesNothing.numberOfCalls++;
+        RunData rd = (RunData)pipelineData;
+        assertNotNull("RunData object was Null.", rd);
+        VelocityActionDoesNothing.actionEventCalls++;
+    }
 }
