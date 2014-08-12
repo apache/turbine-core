@@ -53,7 +53,9 @@ public class VelocityActionWithServiceInjection extends VelocityAction
      * @param  data           Current RunData information
      * @param  context        Context to populate
      * @exception  Exception  Thrown on error
+     * @deprecated
      */
+    @Deprecated
     @Override
     public void doPerform(RunData data, Context context) throws Exception
     {
