@@ -117,6 +117,15 @@ The annotation parameter is required and defines the type of module
 that is to be loaded.
 </subsection>
 
+<subsection name="@TurbineActionEvent">
+The annotation can only be used with a method. 
+A method in a class annotated with <code>@TurbineActionEvent</code>
+is associated to a named action event. The annotation parameter 
+is required and defines the name of the event. See the 
+<a href="action-event-howto.html">Action Events Howto</a>
+for usage and examples.
+</subsection>
+
 <subsection name="Performance Considerations">
 It is important to note that the processing of the annotations at
 the time the module class is instantiated takes some time. It is
