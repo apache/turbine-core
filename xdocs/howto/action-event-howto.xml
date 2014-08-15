@@ -34,13 +34,12 @@ much more painless for the developer. In order to understand this, you
 need to be familiar with the way that Turbine handles Actions. What happens
 is that when a URI has the action= variable defined, a class is executed
 before all of your other Screen classes by your Page class. So, consider
-the following URI (I'm using the <a href="velocity-site-howto.html">
-VelocitySite Howto
-</a> example):
+the following URI (I'm using the
+<a href="velocity-site-howto.html">VelocitySite Howto</a> example):
 </p>
 
 <p>
-http://www.server.com/servlet/Turbine/template/AddUser/action/NewUser
+<code>http://www.server.com/servlet/Turbine/template/AddUser/action/NewUser</code>
 What happens is that Turbine will first execute the Java class file Action
 named NewUser. Then, any class that extends the ActionEvent class instead
 of the Action class will be able to take advantage of what happens next...
@@ -49,16 +48,23 @@ of the Action class will be able to take advantage of what happens next...
 <source><![CDATA[
 public class NewUser extends VelocityAction
 {
-    public void doAdd (RunData data, Context context) throws Exception
+    public void doAdd (PipelineData data, Context context) throws Exception
     {
         // put code here to add the user to the system
         context.put ("username", username );
-        data.setMessage("User Added!");
+        getRunData(data).setMessage("User Added!");
     }
 
-    public void doPerform(RunData data, Context context) throws Exception
+    @TurbineActionEvent("save")
+    public void saveUser (PipelineData data, Context context) throws Exception
     {
-        data.setMessage("Button not found!");
+        // put code here to save the modified user to persistent storage 
+        getRunData(data).setMessage("User Saved!");
+    }
+
+    public void doPerform(PipelineData data, Context context) throws Exception
+    {
+        getRunData(data).setMessage("Button not found!");
     }
 }
 ]]></source>
@@ -69,13 +75,17 @@ Then, write your HTML tags specially like this:
 
 <source><![CDATA[
 <input type="submit" name="eventSubmit_doAdd" value="Add User">
+<input type="submit" name="eventSubmit_save" value="Save User">
 ]]></source>
 
 <p>
 When your Action is executed, an "event" is sent to it by attempting
-to execute a "doAdd()" method in your Action. The cool thing about this
+to execute a "doAdd()" method in your Action or a method annotated with the
+event name "save", respectively. The cool thing about this
 is that each of your "actions" that are performed within your Action class
 now are componentized into a single method that can be javadoc'ed individually.
+The annotation adds the possibility to name your events and methods any way you
+like.
 </p>
 
 <p>
@@ -93,7 +103,8 @@ method or button could be found.
 </p>
 
 <p>
-Because ParameterParser makes all the key values lowercase, we have
+Because all keys processed by ParameterParser are subject to URL 
+case folding, (in default mode lowercase), we have
 to do some work to format the string into a method name. For example, a
 button name eventSubmit_doDelete gets converted into eventsubmit_dodelete.
 Thus, we need to form some sort of naming convention so that dodelete can
@@ -103,21 +114,21 @@ be turned into doDelete.
 <p>
 Thus, the convention is this:
 <ul>
-    <li>
-        The variable name MUST have the prefix "eventSubmit_".</li>
-
-    <li>
-        The variable name after the prefix MUST begin with the letters "do".</li>
-
-    <li>
-        The first letter after the "do" will be capitalized and the rest will be
+    <li>The variable name MUST have the prefix "eventSubmit_".</li>
+    <li>The variable name after the prefix MUST begin with the letters "do".</li>
+    <li>The first letter after the "do" will be capitalized and the rest will be
         lowercase</li>
 </ul>
 </p>
 
 <p>
 If you follow these conventions, then you should be ok with your method
-naming in your Action class.
+naming in your Action class. If you make use of the <code>@TurbineActionEvent</code>
+annotation, you can get rid of the latter two limitations and name your events
+methods as you like. Note that the event names are still subject to URL
+case folding, so that by default, <code>@TurbineActionEvent("save")</code>
+and <code>@TurbineActionEvent("Save")</code> are identical - unless you
+run the ParameterParser with URL case folding set to NONE.
 </p>
 
 <p>
