@@ -30,7 +30,7 @@ import java.util.Map;
  * the <code>invoke()</code> method below.</p>
  *
  * <b>HISTORICAL NOTE</b>:  The "PipelineData" name was assigned to this
- * holder as it functions similarily to the RunData object, but without
+ * holder as it functions similarly to the RunData object, but without
  * the additional methods
  *
  * @author <a href="mailto:epugh@opensourceconnections.com">Eric Pugh</a>
