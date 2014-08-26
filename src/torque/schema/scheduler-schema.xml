@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
-<!DOCTYPE database SYSTEM "http://db.apache.org/torque/dtd/database_3_3.dtd">
 <!--
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
@@ -34,10 +33,14 @@
 <!-- ==================================================================== -->
 
 <database name="default"
-  package="org.apache.turbine.services.schedule"
-  >
+    defaultIdMethod="none"
+    xmlns="http://db.apache.org/torque/4.0/templates/database"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://db.apache.org/torque/4.0/templates/database 
+        http://db.apache.org/torque/4.0/templates/database.xsd">
 
-  <table name="TURBINE_SCHEDULED_JOB" idMethod="idbroker" javaName="JobEntry" >
+
+  <table name="TURBINE_SCHEDULED_JOB" idMethod="idbroker" javaName="JobEntry">
     <column name="JOB_ID" required="true" primaryKey="true" type="INTEGER"/>
     <column name="SECOND" javaName="Second" default="-1"
             required="true" type="INTEGER"/>

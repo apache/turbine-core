@@ -522,94 +522,255 @@
       <plugin>
         <groupId>org.apache.torque</groupId>
         <artifactId>torque-maven-plugin</artifactId>
-        <version>3.3</version>
-        <configuration>
-          <targetDatabase>mysql</targetDatabase>
-          <schemaDir>src/torque/schema</schemaDir> 
-        </configuration>
+         <version>4.0</version>
         <executions>
-          <execution>
-            <id>torque-om</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>om</goal>
-            </goals>
-            <configuration>
-              <targetPackage>org.apache.turbine.services.security.torque.om</targetPackage>
-              <correctGetters>true</correctGetters>
-              <baseOutputDir>${project.build.directory}/generated-sources/torque</baseOutputDir>
-              <outputDir>${project.build.sourceDirectory}</outputDir> 
-              <reportFile>../../target/torque/report.${project.artifact.artifactId}.om.generation</reportFile>
-              <runOnlyOnSchemaChange>true</runOnlyOnSchemaChange>
-              <enableJava5Features>true</enableJava5Features>
-            </configuration>
-          </execution>
-          <execution>
-            <id>torque-sql-mysql</id>
-            <phase>package</phase>
-            <goals>
-              <goal>sql</goal>
-              <goal>id-table-init-sql</goal>
-            </goals>
-            <configuration>
-                <runOnlyOnSchemaChange>false</runOnlyOnSchemaChange>
-                <outputDir>${project.build.directory}/generated-sql/torque/mysql</outputDir> 
-                <targetDatabase>mysql</targetDatabase>
-            </configuration>
-          </execution>
-          <execution>
-            <id>torque-sql-derby</id>
-            <phase>package</phase>
-            <goals>
-              <goal>sql</goal>
-              <goal>id-table-init-sql</goal>
-            </goals>
-            <configuration>
-                <runOnlyOnSchemaChange>false</runOnlyOnSchemaChange>
-                <outputDir>${project.build.directory}/generated-sql/torque/derby</outputDir> 
-                <targetDatabase>derby</targetDatabase>
-            </configuration>
-          </execution>
-          <execution>
-            <id>torque-sql-oracle</id>
-            <phase>package</phase>
-            <goals>
-              <goal>sql</goal>
-              <goal>id-table-init-sql</goal>
-            </goals>
-            <configuration>
-                <runOnlyOnSchemaChange>false</runOnlyOnSchemaChange>
-                <outputDir>${project.build.directory}/generated-sql/torque/oracle</outputDir> 
-                <targetDatabase>oracle</targetDatabase>
-            </configuration>
-          </execution>
-          <execution>
-            <id>torque-sql-postgresql</id>
-            <phase>package</phase>
-            <goals>
-              <goal>sql</goal>
-              <goal>id-table-init-sql</goal>
-            </goals>
-            <configuration>
-                <runOnlyOnSchemaChange>false</runOnlyOnSchemaChange>
-                <outputDir>${project.build.directory}/generated-sql/torque/postgresql</outputDir> 
-                <targetDatabase>postgresql</targetDatabase>
-            </configuration>
-          </execution>
-          <execution>
-            <id>torque-sql-mssql</id>
-            <phase>package</phase>
-            <goals>
-              <goal>sql</goal>
-              <goal>id-table-init-sql</goal>
-            </goals>
-            <configuration>
-                <runOnlyOnSchemaChange>false</runOnlyOnSchemaChange>
-                <outputDir>${project.build.directory}/generated-sql/torque/mssql</outputDir> 
-                <targetDatabase>mssql</targetDatabase>
-            </configuration>
-          </execution>
+            <execution>
+                <id>torque-om</id>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <packaging>classpath</packaging>
+                  <configPackage>org.apache.torque.templates.om</configPackage>
+                  <sourceDir>${project.basedir}/src/torque/schema</sourceDir>
+                  <loglevel>error</loglevel>
+                  <options>
+                    <torque.om.package>org.apache.turbine.services.schedule</torque.om.package>
+                    <torque.om.addGetByNameMethods>false</torque.om.addGetByNameMethods>
+                    <torque.om.save.saveException>TorqueException</torque.om.save.saveException>
+                    <torque.om.useIsForBooleanGetters>true</torque.om.useIsForBooleanGetters>
+                  </options>
+                  <outputDirMap>
+                    <modifiable>${project.build.sourceDirectory}</modifiable>
+                  </outputDirMap>
+                </configuration>
+              </execution>
+              <!-- database specific loaders -->
+              <execution>
+                <id>torque-sql-mysql</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <packaging>classpath</packaging>
+                  <configPackage>org.apache.torque.templates.sql</configPackage>
+                  <sourceDir>${project.basedir}/src/torque/schema</sourceDir>
+                  <defaultOutputDir>${project.build.directory}/generated-sql/torque/mysql</defaultOutputDir>
+                  <defaultOutputDirUsage>none</defaultOutputDirUsage>
+                  <loglevel>error</loglevel>
+                  <options>
+                    <torque.database>mysql</torque.database>
+                  </options>
+                </configuration>
+              </execution>
+              <execution>
+                <id>generate-idtable-sql-mysql</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <packaging>classpath</packaging>
+                  <configPackage>org.apache.torque.templates.idtable</configPackage>
+                  <sourceDir>${project.basedir}/src/torque/schema</sourceDir>
+                  <defaultOutputDir>${project.build.directory}/generated-sql/torque/mysql</defaultOutputDir>
+                  <defaultOutputDirUsage>none</defaultOutputDirUsage>
+                  <loglevel>info</loglevel>
+                  <options>
+                    <torque.database>mysql</torque.database>
+                  </options>
+                </configuration>
+              </execution> 
+              <execution>
+                <id>torque-sql-hsqldb</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <packaging>classpath</packaging>
+                  <configPackage>org.apache.torque.templates.sql</configPackage>
+                  <sourceDir>${project.basedir}/src/torque/schema</sourceDir>
+                  <defaultOutputDir>${project.build.directory}/generated-sql/torque/hsqldb</defaultOutputDir>
+                  <defaultOutputDirUsage>none</defaultOutputDirUsage>
+                  <loglevel>error</loglevel>
+                  <options>
+                    <torque.database>hsqldb</torque.database>
+                  </options>
+                </configuration>
+              </execution>
+              <execution>
+                <id>generate-idtable-sql-hsqldb</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <packaging>classpath</packaging>
+                  <configPackage>org.apache.torque.templates.idtable</configPackage>
+                  <sourceDir>${project.basedir}/src/torque/schema</sourceDir>
+                  <defaultOutputDir>${project.build.directory}/generated-sql/torque/hsqldb</defaultOutputDir>
+                  <defaultOutputDirUsage>none</defaultOutputDirUsage>
+                  <loglevel>info</loglevel>
+                  <options>
+                    <torque.database>hsqldb</torque.database>
+                  </options>
+                </configuration>
+              </execution>
+              <execution>
+                <id>torque-sql-derby</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <packaging>classpath</packaging>
+                  <configPackage>org.apache.torque.templates.sql</configPackage>
+                  <sourceDir>${project.basedir}/src/torque/schema</sourceDir>
+                  <defaultOutputDir>${project.build.directory}/generated-sql/torque/derby</defaultOutputDir>
+                  <defaultOutputDirUsage>none</defaultOutputDirUsage>
+                  <loglevel>error</loglevel>
+                  <options>
+                    <torque.database>derby</torque.database>
+                  </options>
+                </configuration>
+              </execution>
+               <execution>
+                <id>generate-idtable-sql-derby</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <packaging>classpath</packaging>
+                  <configPackage>org.apache.torque.templates.idtable</configPackage>
+                  <sourceDir>${project.basedir}/src/torque/schema</sourceDir>
+                  <defaultOutputDir>${project.build.directory}/generated-sql/torque/derby</defaultOutputDir>
+                  <defaultOutputDirUsage>none</defaultOutputDirUsage>
+                  <loglevel>info</loglevel>
+                  <options>
+                    <torque.database>derby</torque.database>
+                  </options>
+                </configuration>
+              </execution>
+              <execution>
+                <id>torque-sql-oracle</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <packaging>classpath</packaging>
+                  <configPackage>org.apache.torque.templates.sql</configPackage>
+                  <sourceDir>${project.basedir}/src/torque/schema</sourceDir>
+                  <defaultOutputDir>${project.build.directory}/generated-sql/torque/oracle</defaultOutputDir>
+                  <defaultOutputDirUsage>none</defaultOutputDirUsage>
+                  <loglevel>error</loglevel>
+                  <options>
+                    <torque.database>oracle</torque.database>
+                  </options>
+                </configuration>
+              </execution>
+              <execution>
+                <id>generate-idtable-sql-oracle</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <packaging>classpath</packaging>
+                  <configPackage>org.apache.torque.templates.idtable</configPackage>
+                  <sourceDir>${project.basedir}/src/torque/schema</sourceDir>
+                  <defaultOutputDir>${project.build.directory}/generated-sql/torque/oracle</defaultOutputDir>
+                  <defaultOutputDirUsage>none</defaultOutputDirUsage>
+                  <loglevel>info</loglevel>
+                  <options>
+                    <torque.database>oracle</torque.database>
+                  </options>
+                </configuration>
+              </execution>
+              <execution>
+                <id>torque-sql-postgresql</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <packaging>classpath</packaging>
+                  <configPackage>org.apache.torque.templates.sql</configPackage>
+                  <sourceDir>${project.basedir}/src/torque/schema</sourceDir>
+                  <defaultOutputDir>${project.build.directory}/generated-sql/torque/postgresql</defaultOutputDir>
+                  <defaultOutputDirUsage>none</defaultOutputDirUsage>
+                  <loglevel>error</loglevel>
+                  <options>
+                    <torque.database>postgresql</torque.database>
+                  </options>
+                </configuration>
+              </execution>
+              <execution>
+                <id>generate-idtable-sql-postgresql</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <packaging>classpath</packaging>
+                  <configPackage>org.apache.torque.templates.idtable</configPackage>
+                  <sourceDir>${project.basedir}/src/torque/schema</sourceDir>
+                  <defaultOutputDir>${project.build.directory}/generated-sql/torque/postgresql</defaultOutputDir>
+                  <defaultOutputDirUsage>none</defaultOutputDirUsage>
+                  <loglevel>info</loglevel>
+                  <options>
+                    <torque.database>postgresql</torque.database>
+                  </options>
+                </configuration>
+              </execution>
+              <execution>
+                <id>torque-sql-mssql</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <packaging>classpath</packaging>
+                  <configPackage>org.apache.torque.templates.sql</configPackage>
+                  <sourceDir>${project.basedir}/src/torque/schema</sourceDir>
+                  <defaultOutputDir>${project.build.directory}/generated-sql/torque/mssql</defaultOutputDir>
+                  <defaultOutputDirUsage>none</defaultOutputDirUsage>
+                  <loglevel>error</loglevel>
+                  <options>
+                    <torque.database>mssql</torque.database>
+                  </options>
+                </configuration>
+              </execution>
+              <execution>
+                <id>generate-idtable-sql-mssql</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <configuration>
+                  <packaging>classpath</packaging>
+                  <configPackage>org.apache.torque.templates.idtable</configPackage>
+                  <sourceDir>${project.basedir}/src/torque/schema</sourceDir>
+                  <defaultOutputDir>${project.build.directory}/generated-sql/torque/mssql</defaultOutputDir>
+                  <defaultOutputDirUsage>none</defaultOutputDirUsage>
+                  <loglevel>info</loglevel>
+                  <options>
+                    <torque.database>mssql</torque.database>
+                  </options>
+                </configuration>
+              </execution>
         </executions>
+        <dependencies>
+              <dependency>
+                <groupId>org.apache.torque</groupId>
+                <artifactId>torque-templates</artifactId>
+                <version>4.0</version>
+              </dependency>
+            </dependencies>
       </plugin>
     </plugins>
   </build>
@@ -683,6 +844,12 @@
       <type>jar</type>
     </dependency>
     <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.8.3</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
       <groupId>ecs</groupId>
       <artifactId>ecs</artifactId>
       <version>1.4.2</version>
@@ -750,7 +917,7 @@
     <dependency>
       <groupId>org.apache.torque</groupId>
       <artifactId>torque-runtime</artifactId>
-      <version>3.3</version>
+      <version>4.0</version>
       <type>jar</type>
       <exclusions>
         <exclusion>
@@ -761,6 +928,14 @@
             <groupId>avalon-logkit</groupId>
             <artifactId>avalon-logkit</artifactId>
         </exclusion>
+         <exclusion>
+           <groupId>commons-configuration</groupId>
+           <artifactId>commons-configuration</artifactId>
+         </exclusion>
+         <exclusion>
+           <groupId>commons-logging</groupId>
+           <artifactId>commons-logging</artifactId>
+         </exclusion>
       </exclusions>
     </dependency>
     <dependency>
@@ -785,6 +960,12 @@
       <version>2.2.1</version>
       <type>jar</type>
       <optional>true</optional>
+       <exclusions>
+        <exclusion>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.apache.excalibur.containerkit</groupId>
@@ -832,6 +1013,12 @@
       <artifactId>velocity</artifactId>
       <version>1.7</version>
       <type>jar</type>
+      <exclusions>
+        <exclusion>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.thoughtworks.xstream</groupId>

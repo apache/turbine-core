@@ -27,7 +27,7 @@ import javax.servlet.ServletConfig;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.torque.TorqueException;
-import org.apache.torque.util.Criteria;
+import org.apache.torque.criteria.Criteria;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.util.TurbineException;
@@ -185,7 +185,7 @@ public class TurbineSchedulerService
         try
         {
             // First remove from DB.
-            Criteria c = new Criteria().add(JobEntryPeer.JOB_ID, je.getPrimaryKey());
+            Criteria c = new Criteria().where(JobEntryPeer.JOB_ID, je.getPrimaryKey());
             JobEntryPeer.doDelete(c);
 
             // Remove from the queue.
