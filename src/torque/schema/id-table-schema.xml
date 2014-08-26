@@ -17,8 +17,6 @@
  specific language governing permissions and limitations
  under the License.
 -->
-<!DOCTYPE database SYSTEM "http://db.apache.org/torque/dtd/database_3_3.dtd">
-
 <!-- ==================================================================== -->
 <!--                                                                      -->
 <!-- I D  B R O K E R  S C H E M A                                        -->
@@ -28,10 +26,16 @@
 <!-- ID_TABLE table used by the id broker mechanism in Torque.            -->
 <!-- ==================================================================== -->
 <!-- @author: <a href="mailto:jvanzyl@apache.org">Jason van Zyl</a>       -->
-<!-- @version $Id: id-table-schema.xml 571796 2007-09-01 13:11:26Z tv $ -->
+<!-- @version $Id: id-table-schema.xml,v 1.2 2005/09/23 12:19:52 tvan Exp $ -->
 <!-- ==================================================================== -->
 
-<database name="default">
+<database name="default"
+    defaultIdMethod="none"
+    xmlns="http://db.apache.org/torque/4.0/templates/database"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://db.apache.org/torque/4.0/templates/database 
+        http://db.apache.org/torque/4.0/templates/database.xsd">
+
   <table name="ID_TABLE" idMethod="idbroker">
     <column name="ID_TABLE_ID" required="true" primaryKey="true" type="INTEGER"/>
     <column name="TABLE_NAME" required="true" size="255" type="VARCHAR"/>
