@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<configuration>
+   <header>
+    <!-- Meta data about the resulting combined configuration -->
+  </header>
+  <override><!-- only allowed configurations are user and turbine, realtive paths   -->
+    <properties config-name="user" fileName="conf/test/usersettings.properties" config-optional="true" config-forceCreate="true"/> 
+    <xml fileName="conf/test/TurbineResources.xml"/>
+    <properties config-name="turbine" fileName="conf/test/TemplateService.properties" throwExceptionOnMissing="true"/>
+   </override>
+  <additional>
+    <!-- Configuration declarations that form a union configuration, always provide a unique config-name attribute  -->
+  </additional>
+</configuration>
