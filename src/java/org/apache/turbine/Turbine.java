@@ -128,10 +128,10 @@ public class Turbine
      */
     private static boolean firstInit = true;
 
-	/**
-	 * The pipeline to use when processing requests.
-	 */
-	private static Pipeline pipeline = null;
+    /**
+     * The pipeline to use when processing requests.
+     */
+    private static Pipeline pipeline = null;
 
     /** Whether init succeeded or not. */
     private static Throwable initFailure = null;
@@ -295,44 +295,59 @@ public class Turbine
         // /WEB-INF/conf/TurbineResources.properties relative to the
         // web application root.
 
+        String confStyle = "unset";
+        String confPath= null;
+        // first test
         String confFile= findInitParameter(context, config,
                 TurbineConfig.CONFIGURATION_PATH_KEY,
                 null);
-
-        String confPath;
-        String confStyle = "unset";
-
         if (StringUtils.isNotEmpty(confFile))
         {
-            confPath = getRealPath(confFile);
-            DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(confFile);
-            configurationBuilder.setBasePath(getRealPath(getApplicationRoot()));
-            configuration = configurationBuilder.getConfiguration();
-            confStyle = "XML";
-        }
-        else
+            confStyle = "XML"; 
+        } else // // second test
         {
             confFile = findInitParameter(context, config,
                     TurbineConfig.PROPERTIES_PATH_KEY,
-                    TurbineConfig.PROPERTIES_PATH_DEFAULT);
-
-            confPath = getRealPath(confFile);
-
-            // This should eventually be a Configuration
-            // interface so that service and app configuration
-            // can be stored anywhere.
-            configuration = new PropertiesConfiguration(confPath);
-            confStyle = "Properties";
+                                         null); 
+            if (StringUtils.isNotEmpty((confFile)) ) 
+            {
+                confStyle = "Properties";
+            }
         }
-
-
+        // more tests ..
+        // last test
+        if (confStyle.equals( "unset" )) 
+        {  // last resort
+             confFile = findInitParameter(context, config,
+                    TurbineConfig.PROPERTIES_PATH_KEY,
+                    TurbineConfig.PROPERTIES_PATH_DEFAULT);
+             confStyle = "Properties";
+        }
+        // now begin loading
+        if (!confStyle.equals( "unset" )) 
+        {
+             if (confStyle.equals( "XML" )) {
+                 if (confFile.startsWith( "/" )) 
+                 {
+                     confFile = confFile.substring( 1 ); // cft. RFC2396 should not start with a slash, if not absolute path
+                 }
+                 DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(confFile);
+                 confPath = new File(applicationRoot).toURI().toString();// relative base path used for this and child configuration files 
+                 configurationBuilder.setBasePath(confPath);
+                 configuration = configurationBuilder.getConfiguration();
+             } else {
+                 confPath = getRealPath(confFile);
+                 //configurationBuilder.setBasePath(getRealPath(getApplicationRoot()));
+                 configuration = new PropertiesConfiguration(confPath);
+             }
+        }
         //
         // Set up logging as soon as possible
         //
         configureLogging();
 
         // Now report our successful configuration to the world
-        log.info("Loaded configuration  (" + confStyle + ") from " + confFile + " (" + confPath + ")");
+        log.info("Loaded configuration  (" + confStyle + ") from " + confFile + " (" + confPath + ") style: "+ configuration.toString());
 
         setTurbineServletConfig(config);
         setTurbineServletContext(context);

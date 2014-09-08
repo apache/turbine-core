@@ -24,8 +24,13 @@ package org.apache.turbine;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.net.URL;
 
 import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.FileSystem;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineXmlConfig;
@@ -97,6 +102,56 @@ public class ConfigurationTest extends BaseTestCase
 
             String key = "scheduledjob.cache.size";
             assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "10", configuration.getString(key));
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+        finally
+        {
+            tc.dispose();
+        }
+    }
+    
+    @Test
+    public void testCreateTurbineWithXMLBuilderConfiguration() throws Exception
+    {
+        String configurationRessourcePath ="conf/test/ConfigurationBuilder.xml"; 
+        tc = new TurbineXmlConfig(".",configurationRessourcePath );
+
+        try
+        {
+            tc.initialize();
+
+            Configuration configuration = Turbine.getConfiguration();
+            assertNotNull("No Configuration Object found!", configuration);
+            assertFalse("Make sure we have values", configuration.isEmpty());
+            
+            //assertTrue("Test  combined configuration is"+ configuration, configuration instanceof CombinedConfiguration);
+
+            // overridden value
+            String key = "scheduledjob.cache.size";
+            assertEquals("Read a config value " + key + ", received:" + configuration.getInt(key), 100, configuration.getInt(key));
+            
+            // double overridden value
+            key = "module.cache";
+            assertEquals("Read a config value " + key + ", received:" + configuration.getBoolean(key), false, configuration.getBoolean(key));
+            // new property
+            key = "tests.test";
+            configuration.addProperty( key, 123 );
+            assertEquals("Read a config value " + key + ", received:" + configuration.getInt(key), 123, configuration.getInt(key));
+            // not set
+            key="test.nulltest3";
+            assertEquals("Read a included config value " + key + ", received:" + configuration.getString(key), null, configuration.getString(key));
+            // overridden value
+            key="services.PullService.earlyInit";
+            assertEquals("Read a config value " + key + ", received:" + configuration.getBoolean(key), true, configuration.getBoolean(key));
+            configuration.setProperty( key, false );
+            assertEquals("Read a config value " + key + ", received:" + configuration.getBoolean(key), false, configuration.getBoolean(key));
+            
+            // converts to URL, cft. RFC2396
+            URL testURL = FileSystem.getDefaultFileSystem().locateFromURL(new File( Turbine.getApplicationRoot()).toURI().toString() , configurationRessourcePath);
+            assertNotNull( "Should be a valid URL",testURL);
         }
         catch (Exception e)
         {
