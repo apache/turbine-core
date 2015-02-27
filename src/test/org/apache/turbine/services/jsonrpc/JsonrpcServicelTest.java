@@ -27,11 +27,10 @@ import java.util.Map;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
+import org.jabsorb.JSONRPCBridge;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.metaparadigm.jsonrpc.JSONRPCBridge;
 
 public class JsonrpcServicelTest
         extends BaseTestCase

@@ -7,11 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jabsorb.JSONRPCBridge;
+import org.jabsorb.JSONRPCResult;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.metaparadigm.jsonrpc.JSONRPCBridge;
-import com.metaparadigm.jsonrpc.JSONRPCResult;
 
 public class JSONProcessor
 {
@@ -44,7 +45,7 @@ public class JSONProcessor
             //json_res = json_bridge.call(new Object[] {request}, object_id, methodName, arguments);
             json_res = json_bridge.call(new Object[] {request}, json_req);
         }
-        catch (ParseException e)
+        catch (JSONException e)
         {
             log.error(".processCall(): can't parse call: " + cdata, e);
             json_res = JSONRPCResult.MSG_ERR_PARSE;

@@ -32,7 +32,7 @@
 
 <p>
 The JSON-RPC Service supports JavaScript to Java AJAX communications using
-<a href="http://oss.metaparadigm.com/jsonrpc/">JSON-RPC-Java</a>.
+<a href="https://code.google.com/p/jabsorb/">JSON-RPC-Java</a> (Jabsorb replaces project  oss.metaparadigm.com/jsonrpc/).
 </p>
 
 </section>
@@ -95,7 +95,9 @@ public class MyJsonScreen extends JSONScreen
 }
 ]]></source>
 
+<subsection name="Client Side: Synchronous AJAX Calls"> 
 <p>
+
 Now we shift focus to your template classes.  Firstly, there are a few useful
 utility functions that you need to make sure are available to the pages that
 will include AJAX functionality:
@@ -104,47 +106,49 @@ will include AJAX functionality:
 <source><![CDATA[
 // Body onload utility (supports multiple onload functions)
 function SafeAddOnload(func) {
-	var oldonload = window.onload;
-	if (typeof window.onload != 'function') {
-		window.onload = func;
-	} else {
-		window.onload = function() {
-			oldonload();
-			func();
-		};
-	}
+  var oldonload = window.onload;
+  if (typeof window.onload != 'function') {
+    window.onload = func;
+  } else {
+    window.onload = function() {
+      oldonload();
+      func();
+    };
+  }
 }
 
 // Prepare for possible JSON-RPC requests.
 // jsonurl must be set before calling this function.
-function jsonOnLoad() {
-	try {
-		jsonrpc = new JSONRpcClient(jsonurl);
-	}
-	catch(e) {
-		if(e.message) {
-			alert(e.message);
-		}
-		else {
-			alert(e);
-		}
-	}
+// First example synchronous call
+function jsonOnLoadSync() {
+  try {
+    jsonrpc = new JSONRpcClient(jsonurl);
+  }
+  catch(e) {
+    if(e.message) {
+      alert(e.message);
+    }
+    else {
+      alert(e);
+    }
+  }
 }
+
 
 // Process a JSON-RPC request.
 function jsonEval(evalStr) {
-	try	{
-		return eval(evalStr);
-	}
-	catch(e) {
-		if(e.javaStack) {
-			alert("Exception: \n\n" + e.javaStack);
-		}
-		else {
-			alert("Exception: \n\n" + e);
-		}
-	}
-	return null;
+  try	{
+    return eval(evalStr);
+  }
+  catch(e) {
+    if(e.javaStack) {
+      alert("Exception: \n\n" + e.javaStack);
+    }
+    else {
+      alert("Exception: \n\n" + e);
+    }
+  }
+  return null;
 }
 ]]></source>
 
@@ -159,7 +163,7 @@ $page.addScript($content.getURI('scripts/jsonrpc.js'))
 ]]></source>
 
 <p>
-Then you need to set up the specific handler for the page:
+Then you need to set up the specific handler for the page (synchronous example):
 </p>
 
 <source><![CDATA[
@@ -185,6 +189,106 @@ Then you need to set up the specific handler for the page:
 </script>
 ]]></source>
 
+</subsection>
+<subsection name="Client Side: Asynchronous AJAX Call">
+
+<p>
+Alternatively, asynchronous calls require handling of the deferred objects, which could be done by using some kind of <a href="https://www.promisejs.org/">Promise</a>) library.
+As an example a <a href="http://api.jquery.com/category/deferred-object/">JQuery Promise Object model</a> (supported since version 1.5) is shown.
+Usage of asynchronous calls conforms more to <a href="ttps://xhr.spec.whatwg.org/#synchronous-flag">XMLHttpRequest specification</a>.
+</p>
+
+<source><![CDATA[
+
+// Prepare for possible JSON-RPC requests.
+// jsonurl must be set before calling this function.
+// Second example asynchronous call
+var deferred;
+function jsonOnLoad() {
+  try { 
+      // This feature is available since jabsorb 1.1 release, cft. webapps/jaxrpc/CHANGES.txt.
+      // JQuery Promises are available since jQuery 1.5/1.8 (with major changes).
+      // This is just an example, any other Promise handling will do it.
+       if (deferred != undefined) {
+            return deferred;
+        } else {
+            deferred =  jQuery.Deferred(function(defer) {
+      // Add a default function as first parameter to enable asynchronous call.
+                  jsonrpc = new JSONRpcClient(function(result, e) {
+                        defer.resolve(result,e);
+                    }, jsonurl);
+            }).promise();
+            return deferred;
+        }
+  }
+  catch(e) {
+    if(e.message) {
+      alert(e.message);
+    }
+    else {
+      alert(e);
+    }
+  }
+}
+
+]]></source>
+
+<p>
+In these pages you also need to include the JavaScript necessary to process the
+JSON calls - this file is available as part of the JSON-RPC-Java distribution
+(it is included in the <code>webapps\jsonrpc</code> directory):
+</p>
+
+<source><![CDATA[
+$page.addScript($content.getURI('scripts/jsonrpc.js'))
+]]></source>
+
+<p>
+Then you need to set up the specific handler for the page (in this case a asynchronous handler):
+</p>
+
+<source><![CDATA[
+<script type="text/javascript">
+<!--
+  ## Set up the JSON-RPC handler.
+  var jsonurl = '$link.setScreen("MyJsonScreen")';
+
+  ## myArg below would be provided when you call this function from your
+  ## web page (usually you would retrieve something via the DOM or your
+  ## favorite JavaScript DOM wrapper library).
+  function retrieveHello(myArg) {
+    ## This is a an ansynchronous call as you provide as first parameter a callback function to getHello
+    ## (Jabsorb JSON-RPC library expects it this way).
+    var promiseA = jsonOnLoad();
+    var promiseB = jQuery.Deferred();
+    promiseA.done(
+       function() {
+         jQuery.Deferred(function(deferred) {
+           jsonrpc.myFunctions.getHello( function(res,e) {
+                    deferred.resolve(); // not used
+                    promiseB.resolve(res);
+                  }, " + myArg + ")" );
+            }).promise();
+        }
+    );
+    return jQuery.when(promiseA, promiseB);
+    }
+    
+  # call function 
+  var helloResult;
+  var promise = retrieveHello(myArg);
+  promise.done( 
+      function(resultA,resultB) {
+        helloResult = resultB;
+        ## Here or in another dependent Promise you would again use the DOM to include the result somewhere on your
+        ## page.
+    }
+  ); 
+//-->
+</script>
+]]></source>
+
+</subsection>
 <p>
 The above code is executable by users that are not logged into your application.
 Your Screen class can extend JSONSecureScreen to require that users be logged in
