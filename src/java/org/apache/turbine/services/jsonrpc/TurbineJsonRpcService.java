@@ -27,8 +27,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.TurbineBaseService;
+import org.jabsorb.JSONRPCBridge;
 
-import com.metaparadigm.jsonrpc.JSONRPCBridge;
 
 /**
  * This is a service that will respond to JSON-RPC calls.
@@ -59,14 +59,12 @@ public class TurbineJsonRpcService
 
     public void registerObjectGlobal(String key, Object value)
     {
-        JSONRPCBridge.getGlobalBridge().setDebug(DEBUG);
         JSONRPCBridge.getGlobalBridge().registerObject(key, value);
     }
 
     public void registerObject(HttpSession session, String key, Object value)
     {
         JSONRPCBridge json_bridge = getBridge(session);
-        json_bridge.setDebug(DEBUG);
         json_bridge.registerObject(key, value);
     }
 

@@ -31,8 +31,8 @@ import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.jsonrpc.JsonRpcService;
 import org.apache.turbine.util.RunData;
+import org.jabsorb.JSONRPCBridge;
 
-import com.metaparadigm.jsonrpc.JSONRPCBridge;
 
 /**
  * A Screen class for dealing with JSON-RPC requests.  Typically you would
