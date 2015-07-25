@@ -22,12 +22,8 @@ package org.apache.turbine.services.schedule;
 import java.util.List;
 import java.util.Vector;
 
-import javax.servlet.ServletConfig;
-
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.util.TurbineException;
 
@@ -68,11 +64,8 @@ import org.apache.turbine.util.TurbineException;
  * @version $Id: TurbineNonPersistentSchedulerService.java 534527 2007-05-02 16:10:59Z tv $
  */
 public class TurbineNonPersistentSchedulerService
-        extends TurbineSchedulerService
+        extends TorqueSchedulerService
 {
-    /** Logging */
-    private static Log log = LogFactory.getLog(ScheduleService.LOGGER_NAME);
-
     /**
      * Constructor.
      *
@@ -128,7 +121,7 @@ public class TurbineNonPersistentSchedulerService
                     int wkday = conf.getInt(jobPrefix + ".WEEKDAY", -1);
                     int dayOfMonth = conf.getInt(jobPrefix + ".DAY_OF_MONTH", -1);
 
-                    JobEntry je = new JobEntry(
+                    JobEntry je = new JobEntryNonPersistent(
                             sec,
                             min,
                             hr,
@@ -141,7 +134,7 @@ public class TurbineNonPersistentSchedulerService
                 }
             }
 
-            if (jobs != null && jobs.size() > 0)
+            if (jobs.size() > 0)
             {
                 scheduleQueue.batchLoad(jobs);
             }
@@ -153,28 +146,8 @@ public class TurbineNonPersistentSchedulerService
         }
         catch (Exception e)
         {
-            String errorMessage = "Could not initialize the scheduler service";
-            log.error(errorMessage, e);
-            throw new InitializationException(errorMessage, e);
+            throw new InitializationException("Could not initialize the scheduler service", e);
         }
-    }
-
-    /**
-     * Called the first time the Service is used.<br>
-     *
-     * Load all the jobs from cold storage.  Add jobs to the queue
-     * (sorted in ascending order by runtime) and start the scheduler
-     * thread.
-     *
-     * @param config A ServletConfig.
-     * @deprecated use init() instead.
-     */
-    @Deprecated
-    @Override
-    public void init(ServletConfig config)
-            throws InitializationException
-    {
-        init();
     }
 
     /**
@@ -188,7 +161,7 @@ public class TurbineNonPersistentSchedulerService
     public JobEntry getJob(int oid)
             throws TurbineException
     {
-        JobEntry je = new JobEntry();
+        JobEntry je = new JobEntryNonPersistent();
         je.setJobId(oid);
         return scheduleQueue.getJob(je);
     }
@@ -239,9 +212,7 @@ public class TurbineNonPersistentSchedulerService
         }
         catch (Exception e)
         {
-            String errorMessage = "Problem updating Scheduled Job: " + je.getTask();
-            log.error(errorMessage, e);
-            throw new TurbineException(errorMessage, e);
+            throw new TurbineException("Problem updating Scheduled Job: " + je.getTask(), e);
         }
     }
 }

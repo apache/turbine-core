@@ -66,8 +66,8 @@ public class IntakeTool
     protected ValueParser pp;
 
     private final HashMap<String, Group> declaredGroups = new HashMap<String, Group>();
-    private final StringBuffer allGroupsSB = new StringBuffer(256);
-    private final StringBuffer groupSB = new StringBuffer(128);
+    private final StringBuilder allGroupsSB = new StringBuilder(256);
+    private final StringBuilder groupSB = new StringBuilder(128);
 
     /** The cache of PullHelpers. **/
     private final Map<String, IntakeTool.PullHelper> pullMap;
@@ -95,6 +95,7 @@ public class IntakeTool
     /**
      * Prepares intake for a single request
      */
+    @Override
     public void init(Object runData)
     {
         this.pp = ((RunData) runData).getParameters();
@@ -185,7 +186,7 @@ public class IntakeTool
      * xhtml valid hidden input field(s) that notifies intake of the
      * group's presence.
      */
-    public void declareGroup(Group group, StringBuffer sb)
+    public void declareGroup(Group group, StringBuilder sb)
     {
         if (!declaredGroups.containsKey(group.getIntakeGroupName()))
         {
@@ -212,6 +213,7 @@ public class IntakeTool
      * Implementation of ApplicationTool interface is not needed for this
      * tool as it is request scoped
      */
+    @Override
     public void refresh()
     {
         // empty
@@ -333,7 +335,7 @@ public class IntakeTool
     /**
      * Get a specific group
      *
-     * @param throwExceptions if false, exceptions will be supressed.
+     * @param throwExceptions if false, exceptions will be suppressed.
      * @throws IntakeException could not retrieve group
      */
     public PullHelper get(String groupName, boolean throwExceptions)
@@ -473,6 +475,7 @@ public class IntakeTool
      * methods whenever applicable.
      * The recycle methods must call their super.
      */
+    @Override
     public void recycle()
     {
         disposed = false;
@@ -483,6 +486,7 @@ public class IntakeTool
      * when the object is returned to its pool.
      * The dispose method must call its super.
      */
+    @Override
     public void dispose()
     {
         for (Group group : groups.values())
@@ -510,6 +514,7 @@ public class IntakeTool
      *
      * @return true, if the recyclable is disposed.
      */
+    @Override
     public boolean isDisposed()
     {
         return disposed;

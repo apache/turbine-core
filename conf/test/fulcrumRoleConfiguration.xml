@@ -119,5 +119,12 @@
         name="org.apache.fulcrum.security.model.ACLFactory"
         shorthand="aclFactory"
         default-class="org.apache.fulcrum.security.model.turbine.TurbineACLFactory"/>
+
+    <!-- Service required for the QuartzSchedulerService -->        
+    <role
+        name="org.apache.fulcrum.quartz.QuartzScheduler"
+        shorthand="quartz"
+        default-class="org.apache.fulcrum.quartz.impl.QuartzSchedulerImpl" />
+
 </role-list>
 

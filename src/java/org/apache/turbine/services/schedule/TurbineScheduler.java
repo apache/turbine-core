@@ -91,7 +91,7 @@ public abstract class TurbineScheduler
      *
      * @return A Vector of jobs.
      */
-    public static List<JobEntry> listJobs()
+    public static List<? extends JobEntry> listJobs()
     {
         return getService().listJobs();
     }
