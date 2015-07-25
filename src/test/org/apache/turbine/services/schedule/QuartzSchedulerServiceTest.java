@@ -35,12 +35,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.quartz.CronScheduleBuilder;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
 import org.quartz.JobKey;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
 
 /**
  * Unit testing for the quartz implementation of the scheduler service.
@@ -102,15 +97,7 @@ public class QuartzSchedulerServiceTest extends BaseTestCase
             int jobCount = TurbineScheduler.listJobs().size();
 
             // Add a new job entry
-            JobDetail jd = JobBuilder.newJob(JobEntryQuartz.class)
-                    .withIdentity("SimpleJob1", JobEntryQuartz.DEFAULT_JOB_GROUP_NAME)
-                    .build();
-            Trigger t = TriggerBuilder.newTrigger()
-                    .withIdentity("SimpleJob1", JobEntryQuartz.DEFAULT_JOB_GROUP_NAME)
-                    .withSchedule(CronScheduleBuilder.cronSchedule("10 * * * * ?"))
-                    .forJob(jd)
-                    .build();
-			JobEntryQuartz je = new JobEntryQuartz(t, jd);
+			JobEntry je = TurbineScheduler.newJob(10, -1, -1, -1, -1, "SimpleJob1");
             je.setJobId(jobCount + 1);
 
             TurbineScheduler.addJob(je);

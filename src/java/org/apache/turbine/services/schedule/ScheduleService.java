@@ -39,11 +39,51 @@ public interface ScheduleService
     /** Name of service */
     String SERVICE_NAME = "SchedulerService";
 
-    /** TR.props key for intially activating the scheduler thread */
+    /** TR.props key for initially activating the scheduler thread */
     String INTIALLY_ACTIVE = "enabled";
 
     /** TR.props key for the logger */
     String LOGGER_NAME = "scheduler";
+
+    /**
+     * Factory method for a new Job
+     *
+     * Schedule a job to run on a certain point of time.<br>
+     *
+     * Example 1: Run the DefaultScheduledJob at 8:00am every 15th of
+     * the month - <br>
+     *
+     * JobEntry je = newJob(0,0,8,-1,15,"DefaultScheduledJob");<br>
+     *
+     * Example 2: Run the DefaultScheduledJob at 8:00am every day -
+     * <br>
+     *
+     * JobEntry je = newJob(0,0,8,-1,-1,"DefaultScheduledJob");<br>
+     *
+     * Example 3: Run the DefaultScheduledJob every 2 hours. - <br>
+     *
+     * JobEntry je = newJob(0,120,-1,-1,-1,"DefaultScheduledJob");<br>
+     *
+     * Example 4: Run the DefaultScheduledJob every 30 seconds. - <br>
+     *
+     * JobEntry je = newJob(30,-1,-1,-1,-1,"DefaultScheduledJob");<br>
+     *
+     * @param sec Value for entry "seconds".
+     * @param min Value for entry "minutes".
+     * @param hour Value for entry "hours".
+     * @param wd Value for entry "week days".
+     * @param day_mo Value for entry "month days".
+     * @param task Task to execute.
+     *
+     * @return A JobEntry.
+     * @exception TurbineException could not create job
+     */
+    JobEntry newJob(int sec,
+            int min,
+            int hour,
+            int wd,
+            int day_mo,
+            String task) throws TurbineException;
 
     /**
      * Get a specific Job from Storage.

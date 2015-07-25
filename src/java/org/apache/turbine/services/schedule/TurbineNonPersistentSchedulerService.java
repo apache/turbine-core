@@ -151,6 +151,15 @@ public class TurbineNonPersistentSchedulerService
     }
 
     /**
+     * @see org.apache.turbine.services.schedule.ScheduleService#newJob(int, int, int, int, int, java.lang.String)
+     */
+    @Override
+    public JobEntry newJob(int sec, int min, int hour, int wd, int day_mo, String task) throws TurbineException
+    {
+        return new JobEntryNonPersistent(sec, min, hour, wd, day_mo, task);
+    }
+
+    /**
      * This method returns the job element from the internal queue.
      *
      * @param oid The int id for the job.

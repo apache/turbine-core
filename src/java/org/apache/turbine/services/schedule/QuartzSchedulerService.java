@@ -19,6 +19,7 @@ package org.apache.turbine.services.schedule;
  * under the License.
  */
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -30,11 +31,14 @@ import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.TurbineException;
+import org.quartz.CronScheduleBuilder;
+import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
+import org.quartz.TriggerBuilder;
 import org.quartz.impl.matchers.GroupMatcher;
 
 /**
@@ -90,6 +94,74 @@ public class QuartzSchedulerService
         {
             log.error("Could not shut down the scheduler service", e);
         }
+    }
+
+    /**
+     * @see org.apache.turbine.services.schedule.ScheduleService#newJob(int, int, int, int, int, java.lang.String)
+     */
+    @Override
+    public JobEntry newJob(int sec, int min, int hour, int wd, int day_mo, String task) throws TurbineException
+    {
+        try
+        {
+            JobDetail jd = JobBuilder.newJob(JobEntryQuartz.class)
+                    .withIdentity(task, JobEntryQuartz.DEFAULT_JOB_GROUP_NAME)
+                    .build();
+
+            CronScheduleBuilder csb = createCronExpression(sec, min, hour, wd, day_mo);
+
+            Trigger t = TriggerBuilder.newTrigger()
+                    .withIdentity(task, JobEntryQuartz.DEFAULT_JOB_GROUP_NAME)
+                    .withSchedule(csb)
+                    .forJob(jd)
+                    .build();
+
+            JobEntryQuartz jeq = new JobEntryQuartz(t, jd);
+
+            return jeq;
+        }
+        catch (ParseException e)
+        {
+            throw new TurbineException("Could not create scheduled job " + task, e);
+        }
+    }
+
+    /**
+     * Create a Cron expression from separate elements
+     *
+     * @param sec Value for entry "seconds".
+     * @param min Value for entry "minutes".
+     * @param hour Value for entry "hours".
+     * @param wd Value for entry "week days".
+     * @param day_mo Value for entry "month days".
+     * @return a CronScheduleBuilder
+     * @throws ParseException if the expression is invalid
+     */
+    private CronScheduleBuilder createCronExpression(int sec, int min, int hour, int wd, int day_mo) throws ParseException
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(sec == -1 ? "*" : String.valueOf(sec)).append(' ');
+        sb.append(min == -1 ? "*" : String.valueOf(min)).append(' ');
+        sb.append(hour == -1 ? "*" : String.valueOf(hour)).append(' ');
+        if (day_mo == -1)
+        {
+            sb.append(wd == -1 ? "*" : "?").append(' ');
+        }
+        else
+        {
+            sb.append(day_mo).append(' ');
+        }
+        sb.append("* "); // Month not supported
+        if (day_mo == -1)
+        {
+            sb.append(wd == -1 ? "?" : String.valueOf(wd));
+        }
+        else
+        {
+            sb.append("*");
+        }
+
+        return CronScheduleBuilder.cronSchedule(sb.toString());
     }
 
     /**
