@@ -1,8 +1,10 @@
 package org.apache.turbine.services.schedule;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -23,9 +25,6 @@ import static org.junit.Assert.*;
  * under the License.
  */
 
-
-//import org.apache.turbine.test.BaseTestCase;
-
 /**
  * Unit testing for Job Entries.  Ensure that removing NumberKey from TurbineNonPersistentScheduler
  * still works.
@@ -33,7 +32,7 @@ import static org.junit.Assert.*;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id: JobEntryTest.java 615328 2008-01-25 20:25:05Z tv $
  */
-public class JobEntryTest 
+public class JobEntryTest
 {
 
     private JobEntry je1;
@@ -44,34 +43,22 @@ public class JobEntryTest
     {
 
         // Add a new job entry
-        je1 = new JobEntry();
+        je1 = new JobEntryNonPersistent();
         je1.setJobId(1);
-        je1.setSecond(0);
-        je1.setMinute(1);
-        je1.setHour(-1);
-        je1.setDayOfMonth(-1);
-        je1.setWeekDay(-1);
-        je1.setTask("SimpleJob");
 
-        je2 = new JobEntry();
+        je2 = new JobEntryNonPersistent();
         je2.setJobId(2);
-        je2.setSecond(0);
-        je2.setMinute(1);
-        je2.setHour(-1);
-        je2.setDayOfMonth(-1);
-        je2.setWeekDay(-1);
-        je2.setTask("SimpleJob");
     }
 
 
     /**
-     * Tests the ability to enable and disable the service.
+     * Tests if the job entries are comparable
      */
     @Test public void testCompareTo()
     {
-        assertFalse(je1.equals(je2));
+        assertNotEquals(je1.compareTo(je2), 0);
         je2.setJobId(je1.getJobId());
-        assertTrue(je1.equals(je2));
+        assertEquals(je1.compareTo(je2), 0);
 
     }
 
