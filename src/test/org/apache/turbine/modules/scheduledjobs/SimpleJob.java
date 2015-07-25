@@ -1,4 +1,4 @@
-package org.apache.turbine.modules.scheduledjob;
+package org.apache.turbine.modules.scheduledjobs;
 
 
 /*
