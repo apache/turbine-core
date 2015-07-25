@@ -38,6 +38,49 @@ import org.apache.turbine.util.TurbineException;
 public abstract class TurbineScheduler
 {
     /**
+     * Factory method for a new Job
+     *
+     * Schedule a job to run on a certain point of time.<br>
+     *
+     * Example 1: Run the DefaultScheduledJob at 8:00am every 15th of
+     * the month - <br>
+     *
+     * JobEntry je = newJob(0,0,8,-1,15,"DefaultScheduledJob");<br>
+     *
+     * Example 2: Run the DefaultScheduledJob at 8:00am every day -
+     * <br>
+     *
+     * JobEntry je = newJob(0,0,8,-1,-1,"DefaultScheduledJob");<br>
+     *
+     * Example 3: Run the DefaultScheduledJob every 2 hours. - <br>
+     *
+     * JobEntry je = newJob(0,120,-1,-1,-1,"DefaultScheduledJob");<br>
+     *
+     * Example 4: Run the DefaultScheduledJob every 30 seconds. - <br>
+     *
+     * JobEntry je = newJob(30,-1,-1,-1,-1,"DefaultScheduledJob");<br>
+     *
+     * @param sec Value for entry "seconds".
+     * @param min Value for entry "minutes".
+     * @param hour Value for entry "hours".
+     * @param wd Value for entry "week days".
+     * @param day_mo Value for entry "month days".
+     * @param task Task to execute.
+     *
+     * @return A JobEntry.
+     * @exception TurbineException could not create job
+     */
+    public static JobEntry newJob(int sec,
+            int min,
+            int hour,
+            int wd,
+            int day_mo,
+            String task) throws TurbineException
+    {
+        return getService().newJob(sec, min, hour, wd, day_mo, task);
+    }
+
+    /**
      * Get a specific Job from Storage.
      *
      * @param oid The int id for the job.

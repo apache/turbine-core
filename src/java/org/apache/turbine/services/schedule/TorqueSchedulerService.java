@@ -119,6 +119,23 @@ public class TorqueSchedulerService extends TurbineBaseService implements Schedu
     }
 
     /**
+     * @see org.apache.turbine.services.schedule.ScheduleService#newJob(int, int, int, int, int, java.lang.String)
+     */
+    @Override
+    public JobEntry newJob(int sec, int min, int hour, int wd, int day_mo, String task) throws TurbineException
+    {
+        JobEntryTorque jet = new JobEntryTorque();
+        jet.setSecond(sec);
+        jet.setMinute(min);
+        jet.setHour(hour);
+        jet.setWeekDay(wd);
+        jet.setDayOfMonth(day_mo);
+        jet.setTask(task);
+
+        return jet;
+    }
+
+    /**
      * Get a specific Job from Storage.
      *
      * @param oid

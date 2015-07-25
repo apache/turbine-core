@@ -63,20 +63,20 @@ public abstract class AbstractJobEntry implements JobEntry
      * Example 1: Run the DefaultScheduledJob at 8:00am every 15th of
      * the month - <br>
      *
-     * JobEntry je = new JobEntry(0,0,8,15,"DefaultScheduledJob");<br>
+     * JobEntry je = new JobEntry(0,0,8,-1,15,"DefaultScheduledJob");<br>
      *
      * Example 2: Run the DefaultScheduledJob at 8:00am every day -
      * <br>
      *
-     * JobEntry je = new JobEntry(0,0,8,-1,"DefaultScheduledJob");<br>
+     * JobEntry je = new JobEntry(0,0,8,-1,-1,"DefaultScheduledJob");<br>
      *
      * Example 3: Run the DefaultScheduledJob every 2 hours. - <br>
      *
-     * JobEntry je = new JobEntry(0,120,-1,-1,"DefaultScheduledJob");<br>
+     * JobEntry je = new JobEntry(0,120,-1,-1,-1,"DefaultScheduledJob");<br>
      *
      * Example 4: Run the DefaultScheduledJob every 30 seconds. - <br>
      *
-     * JobEntry je = new JobEntry(30,-1,-1,-1,"DefaultScheduledJob");<br>
+     * JobEntry je = new JobEntry(30,-1,-1,-1,-1,"DefaultScheduledJob");<br>
      *
      * @param sec Value for entry "seconds".
      * @param min Value for entry "minutes".
@@ -140,8 +140,8 @@ public abstract class AbstractJobEntry implements JobEntry
     /**
      * Check to see if job is currently active/running
      *
-     * @return true if job is currently geing run by the
-     *  workerthread, otherwise false
+     * @return true if job is currently queuing run by the
+     *  worker thread, otherwise false
      */
     @Override
     public boolean isActive()
@@ -198,6 +198,7 @@ public abstract class AbstractJobEntry implements JobEntry
      *
      * @exception TurbineException a generic exception.
      */
+    @Override
     public void calcRunTime()
             throws TurbineException
     {
