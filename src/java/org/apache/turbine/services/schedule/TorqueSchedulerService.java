@@ -19,10 +19,8 @@ package org.apache.turbine.services.schedule;
  * under the License.
  */
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.ServletConfig;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,17 +35,15 @@ import org.apache.turbine.util.TurbineException;
  *
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
- * @version $Id: TurbineSchedulerService.java 534527 2007-05-02 16:10:59Z tv $
+ * @version $Id: TorqueSchedulerService.java 534527 2007-05-02 16:10:59Z tv $
  */
-public class TurbineSchedulerService
-        extends TurbineBaseService
-        implements ScheduleService
+public class TorqueSchedulerService extends TurbineBaseService implements ScheduleService
 {
     /** Logging */
     protected static Log log = LogFactory.getLog(ScheduleService.LOGGER_NAME);
 
     /** The queue */
-    protected JobQueue scheduleQueue = null;
+    protected JobQueue<JobEntry> scheduleQueue = null;
 
     /** Current status of the scheduler */
     protected boolean enabled = false;
@@ -55,13 +51,13 @@ public class TurbineSchedulerService
     /** The main loop for starting jobs. */
     protected MainLoop mainLoop;
 
-    /** The thread used to process commands.  */
+    /** The thread used to process commands. */
     protected Thread thread;
 
     /**
      * Creates a new instance.
      */
-    public TurbineSchedulerService()
+    public TorqueSchedulerService()
     {
         mainLoop = null;
         thread = null;
@@ -70,29 +66,31 @@ public class TurbineSchedulerService
     /**
      * Initializes the SchedulerService.
      *
-     * @throws InitializationException Something went wrong in the init
-     *         stage
+     * @throws InitializationException
+     *             Something went wrong in the init stage
      */
     @Override
-    public void init()
-            throws InitializationException
+    public void init() throws InitializationException
     {
         try
         {
             setEnabled(getConfiguration().getBoolean("enabled", true));
-            scheduleQueue = new JobQueue();
+            scheduleQueue = new JobQueue<JobEntry>();
             mainLoop = new MainLoop();
 
             // Load all from cold storage.
-            List<JobEntry> jobs = JobEntryPeer.doSelect(new Criteria());
+            List<JobEntryTorque> jobsTorque = JobEntryTorquePeer.doSelect(new Criteria());
 
-            if (jobs != null && jobs.size() > 0)
+            if (jobsTorque != null)
             {
-                Iterator<JobEntry> it = jobs.iterator();
-                while (it.hasNext())
+                List<JobEntry> jobs = new ArrayList<JobEntry>(jobsTorque.size());
+
+                for (JobEntryTorque job : jobsTorque)
                 {
-                    it.next().calcRunTime();
+                    job.calcRunTime();
+                    jobs.add(job);
                 }
+
                 scheduleQueue.batchLoad(jobs);
 
                 restart();
@@ -102,26 +100,8 @@ public class TurbineSchedulerService
         }
         catch (Exception e)
         {
-            String errorMessage = "Could not initialize the scheduler service";
-            log.error(errorMessage, e);
-            throw new InitializationException(errorMessage, e);
+            throw new InitializationException("Could not initialize the scheduler service", e);
         }
-    }
-
-    /**
-     * Called the first time the Service is used.<br>
-     *
-     * Load all the jobs from cold storage.  Add jobs to the queue
-     * (sorted in ascending order by runtime) and start the scheduler
-     * thread.
-     *
-     * @param config A ServletConfig.
-     * @deprecated use init() instead.
-     */
-    @Deprecated
-    public void init(ServletConfig config) throws InitializationException
-    {
-        init();
     }
 
     /**
@@ -141,34 +121,36 @@ public class TurbineSchedulerService
     /**
      * Get a specific Job from Storage.
      *
-     * @param oid The int id for the job.
+     * @param oid
+     *            The int id for the job.
      * @return A JobEntry.
-     * @exception TurbineException job could not be retreived.
+     * @exception TurbineException
+     *                job could not be retrieved.
      */
-    public JobEntry getJob(int oid)
-            throws TurbineException
+    @Override
+    public JobEntry getJob(int oid) throws TurbineException
     {
         try
         {
-            JobEntry je = JobEntryPeer.retrieveByPK(oid);
+            JobEntryTorque je = JobEntryTorquePeer.retrieveByPK(oid);
             return scheduleQueue.getJob(je);
         }
         catch (TorqueException e)
         {
-            String errorMessage = "Error retrieving job from persistent storage.";
-            log.error(errorMessage, e);
-            throw new TurbineException(errorMessage, e);
+            throw new TurbineException("Error retrieving job from persistent storage.", e);
         }
     }
 
     /**
      * Add a new job to the queue.
      *
-     * @param je A JobEntry with the job to add.
-     * @throws TurbineException job could not be added
+     * @param je
+     *            A JobEntry with the job to add.
+     * @throws TurbineException
+     *             job could not be added
      */
-    public void addJob(JobEntry je)
-            throws TurbineException
+    @Override
+    public void addJob(JobEntry je) throws TurbineException
     {
         updateJob(je);
     }
@@ -176,17 +158,19 @@ public class TurbineSchedulerService
     /**
      * Remove a job from the queue.
      *
-     * @param je A JobEntry with the job to remove.
-     * @exception TurbineException job could not be removed
+     * @param je
+     *            A JobEntry with the job to remove.
+     * @exception TurbineException
+     *                job could not be removed
      */
-    public void removeJob(JobEntry je)
-            throws TurbineException
+    @Override
+    public void removeJob(JobEntry je) throws TurbineException
     {
         try
         {
             // First remove from DB.
-            Criteria c = new Criteria().where(JobEntryPeer.JOB_ID, je.getPrimaryKey());
-            JobEntryPeer.doDelete(c);
+            Criteria c = new Criteria().where(JobEntryTorquePeer.JOB_ID, Integer.valueOf(je.getJobId()));
+            JobEntryTorquePeer.doDelete(c);
 
             // Remove from the queue.
             scheduleQueue.remove(je);
@@ -194,22 +178,22 @@ public class TurbineSchedulerService
             // restart the scheduler
             restart();
         }
-        catch (Exception e)
+        catch (TorqueException e)
         {
-            String errorMessage = "Problem removing Scheduled Job: " + je.getTask();
-            log.error(errorMessage, e);
-            throw new TurbineException(errorMessage, e);
+            throw new TurbineException("Problem removing Scheduled Job: " + je.getTask(), e);
         }
     }
 
     /**
      * Add or update a job.
      *
-     * @param je A JobEntry with the job to modify
-     * @throws TurbineException job could not be updated
+     * @param je
+     *            A JobEntry with the job to modify
+     * @throws TurbineException
+     *             job could not be updated
      */
-    public void updateJob(JobEntry je)
-            throws TurbineException
+    @Override
+    public void updateJob(JobEntry je) throws TurbineException
     {
         try
         {
@@ -225,23 +209,29 @@ public class TurbineSchedulerService
                 scheduleQueue.modify(je);
             }
 
-            je.save();
+            if (je instanceof JobEntryTorque)
+            {
+                ((JobEntryTorque)je).save();
+            }
 
             restart();
         }
-        catch (Exception e)
+        catch (TorqueException e)
         {
-            String errorMessage = "Problem updating Scheduled Job: " + je.getTask();
-            log.error(errorMessage, e);
-            throw new TurbineException(errorMessage, e);
+            throw new TurbineException("Problem persisting Scheduled Job: " + je.getTask(), e);
+        }
+        catch (TurbineException e)
+        {
+            throw new TurbineException("Problem updating Scheduled Job: " + je.getTask(), e);
         }
     }
 
     /**
-     * List jobs in the queue.  This is used by the scheduler UI.
+     * List jobs in the queue. This is used by the scheduler UI.
      *
      * @return A List of jobs.
      */
+    @Override
     public List<JobEntry> listJobs()
     {
         return scheduleQueue.list();
@@ -263,6 +253,7 @@ public class TurbineSchedulerService
      *
      * @return Status of the scheduler service.
      */
+    @Override
     public boolean isEnabled()
     {
         return enabled;
@@ -271,6 +262,7 @@ public class TurbineSchedulerService
     /**
      * Starts or restarts the scheduler if not already running.
      */
+    @Override
     public synchronized void startScheduler()
     {
         setEnabled(true);
@@ -280,6 +272,7 @@ public class TurbineSchedulerService
     /**
      * Stops the scheduler if it is currently running.
      */
+    @Override
     public synchronized void stopScheduler()
     {
         log.info("Stopping job scheduler");
@@ -292,9 +285,9 @@ public class TurbineSchedulerService
     }
 
     /**
-     * Return the thread being used to process commands, or null if
-     * there is no such thread.  You can use this to invoke any
-     * special methods on the thread, for example, to interrupt it.
+     * Return the thread being used to process commands, or null if there is no
+     * such thread. You can use this to invoke any special methods on the
+     * thread, for example, to interrupt it.
      *
      * @return A Thread.
      */
@@ -312,10 +305,10 @@ public class TurbineSchedulerService
     }
 
     /**
-     * Start (or restart) a thread to process commands, or wake up an
-     * existing thread if one is already running.  This method can be
-     * invoked if the background thread crashed due to an
-     * unrecoverable exception in an executed command.
+     * Start (or restart) a thread to process commands, or wake up an existing
+     * thread if one is already running. This method can be invoked if the
+     * background thread crashed due to an unrecoverable exception in an
+     * executed command.
      */
     public synchronized void restart()
     {
@@ -324,14 +317,14 @@ public class TurbineSchedulerService
             log.info("Starting job scheduler");
             if (thread == null)
             {
-                // Create the the housekeeping thread of the scheduler. It will wait
-                // for the time when the next task needs to be started, and then
-                // launch a worker thread to execute the task.
+                // Create the the housekeeping thread of the scheduler. It will
+                // wait for the time when the next task needs to be started,
+                // and then launch a worker thread to execute the task.
                 thread = new Thread(mainLoop, ScheduleService.SERVICE_NAME);
-                // Indicate that this is a system thread. JVM will quit only when there
-                // are no more enabled user threads. Settings threads spawned internally
-                // by Turbine as daemons allows commandline applications using Turbine
-                // to terminate in an orderly manner.
+                // Indicate that this is a system thread. JVM will quit only
+                // when there are no more enabled user threads. Settings threads
+                // spawned internally by Turbine as daemons allows commandline
+                // applications using Turbine to terminate in an orderly manner.
                 thread.setDaemon(true);
                 thread.start();
             }
@@ -343,14 +336,13 @@ public class TurbineSchedulerService
     }
 
     /**
-     *  Return the next Job to execute, or null if thread is
-     *  interrupted.
+     * Return the next Job to execute, or null if thread is interrupted.
      *
      * @return A JobEntry.
-     * @exception TurbineException a generic exception.
+     * @exception TurbineException
+     *                a generic exception.
      */
-    protected synchronized JobEntry nextJob()
-            throws TurbineException
+    protected synchronized JobEntry nextJob() throws TurbineException
     {
         try
         {
@@ -394,16 +386,16 @@ public class TurbineSchedulerService
     }
 
     /**
-     * Inner class.  This is isolated in its own Runnable class just
-     * so that the main class need not implement Runnable, which would
-     * allow others to directly invoke run, which is not supported.
+     * Inner class. This is isolated in its own Runnable class just so that the
+     * main class need not implement Runnable, which would allow others to
+     * directly invoke run, which is not supported.
      */
-    protected class MainLoop
-            implements Runnable
+    protected class MainLoop implements Runnable
     {
         /**
          * Method to run the class.
          */
+        @Override
         public void run()
         {
             String taskName = null;

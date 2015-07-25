@@ -74,4 +74,35 @@
         <className>org.apache.fulcrum.security.model.turbine.entity.impl.TurbinePermissionImpl</className>
     </permissionManager>
 
+    <!--
+        Quartz Scheduler Service
+
+        configuration := contains either a property file or properties (optional)
+        configuration/propertyFile := a property file to configure Quartz
+        configuration/properties := a set of properties to configure Quartz
+        configuration/properties/parameter := a  single configuration
+        configuration/properties/parameter@name := the name of the property
+        configuration/properties/parameter@value := the value of the property                    
+    -->
+
+    <quartz>
+        <configuration>
+            <properties>
+                <parameter name="org.quartz.scheduler.instanceName" value="TestScheduler"/>
+                <parameter name="org.quartz.scheduler.instanceId " value="AUTO"/>
+                <parameter name="org.quartz.scheduler.skipUpdateCheck" value="true"/>
+                <parameter name="org.quartz.threadPool.class" value="org.quartz.simpl.SimpleThreadPool"/>
+                <parameter name="org.quartz.threadPool.threadCount" value="3"/>
+                <parameter name="org.quartz.threadPool.threadPriority" value="5"/>
+                <parameter name="org.quartz.jobStore.misfireThreshold" value="60000"/>
+                <parameter name="org.quartz.jobStore.class" value="org.quartz.simpl.RAMJobStore"/>
+                <parameter name="org.quartz.plugin.jobInitializer.class" value="org.quartz.plugins.xml.XMLSchedulingDataProcessorPlugin"/>
+                <parameter name="org.quartz.plugin.jobInitializer.fileNames" value="./conf/test/quartz.xml"/>
+                <parameter name="org.quartz.plugin.jobInitializer.failOnFileNotFound" value="true"/>
+                <parameter name="org.quartz.plugin.jobInitializer.scanInterval" value="120"/>
+                <parameter name="org.quartz.plugin.jobInitializer.wrapInUserTransaction" value="false"/>
+            </properties>
+        </configuration>
+    </quartz>
+
 </componentConfig>

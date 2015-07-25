@@ -43,6 +43,7 @@ public class SchedulerTool implements ApplicationTool
     /**
      * Initialize the pull tool
      */
+    @Override
     public void init(Object data)
     {
         if (!TurbineServices.getInstance().isRegistered(
@@ -56,6 +57,7 @@ public class SchedulerTool implements ApplicationTool
     /**
      * Does nothing
      */
+    @Override
     public void refresh()
     {
         // empty
@@ -66,7 +68,7 @@ public class SchedulerTool implements ApplicationTool
      *
      * @return List of JobEntry objects.
      */
-    public List<JobEntry> getScheduledJobs()
+    public List<? extends JobEntry> getScheduledJobs()
     {
         return TurbineScheduler.listJobs();
     }

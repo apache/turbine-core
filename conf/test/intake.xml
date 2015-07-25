@@ -17,16 +17,12 @@
  specific language governing permissions and limitations
  under the License.
 -->
-<!DOCTYPE input-data SYSTEM
-           "http://turbine.apache.org/dtd/intake_2_4.dtd">
-<input-data basePackage="org.apache.turbine.services.intake.">
-<group name="LoginGroup" key="loginGroupKey" mapToObject="LoginForm">
-<field name="Username" key="loginUsernameKey" type="String"
+<input-data xmlns="http://turbine.apache.org/schema/intake/4.0"
+    basePackage="org.apache.turbine.services.intake.">
+  <group name="LoginGroup" key="loginGroupKey" mapToObject="LoginForm">
+    <field name="Username" key="loginUsernameKey" type="String"
         mapToProperty="Username">
-
-</field>
-</group>
-
-
+    </field>
+  </group>
 </input-data>
 

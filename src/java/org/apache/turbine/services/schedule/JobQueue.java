@@ -33,19 +33,19 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id: JobQueue.java 615328 2008-01-25 20:25:05Z tv $
  */
-public class JobQueue
+public class JobQueue<J extends JobEntry>
 {
     /**
      * The queue of <code>JobEntry</code> objects.
      */
-    private Vector<JobEntry> queue = null;
+    private Vector<J> queue = null;
 
     /**
      * Creates a new instance.
      */
     public JobQueue()
     {
-        queue = new Vector<JobEntry>(10);
+        queue = new Vector<J>(10);
     }
 
     /**
@@ -54,7 +54,7 @@ public class JobQueue
      *
      * @return The next job in the queue.
      */
-    public JobEntry getNext()
+    public J getNext()
     {
         if (queue.size() > 0)
         {
@@ -72,7 +72,7 @@ public class JobQueue
      * @param je The JobEntry we are looking for.
      * @return A JobEntry.
      */
-    public JobEntry getJob(JobEntry je)
+    public J getJob(J je)
     {
         int index = -1;
 
@@ -97,11 +97,11 @@ public class JobQueue
      * @return A Vector of <code>JobEntry</code> objects.
      */
     @SuppressWarnings("unchecked")
-    public Vector<JobEntry> list()
+    public Vector<J> list()
     {
         if (queue != null && queue.size() > 0)
         {
-            return (Vector<JobEntry>) queue.clone();
+            return (Vector<J>) queue.clone();
         }
         else
         {
@@ -114,7 +114,7 @@ public class JobQueue
      *
      * @param je A JobEntry job.
      */
-    public synchronized void add(JobEntry je)
+    public synchronized void add(J je)
     {
         queue.addElement(je);
         sortQueue();
@@ -126,7 +126,7 @@ public class JobQueue
      *
      * @param jobEntries A list of the <code>JobEntry</code> objects to load.
      */
-    public synchronized void batchLoad(List<JobEntry> jobEntries)
+    public synchronized void batchLoad(List<J> jobEntries)
     {
         if (jobEntries != null)
         {
@@ -141,7 +141,7 @@ public class JobQueue
      *
      * @param je A JobEntry with the job to remove.
      */
-    public synchronized void remove(JobEntry je)
+    public synchronized void remove(J je)
     {
         queue.removeElement(je);
         sortQueue();
@@ -152,7 +152,7 @@ public class JobQueue
      *
      * @param je A JobEntry with the job to modify
      */
-    public synchronized void modify(JobEntry je)
+    public synchronized void modify(J je)
             throws TurbineException
     {
         remove(je);
@@ -167,7 +167,7 @@ public class JobQueue
      * @param je A JobEntry to be updated.
      * @exception TurbineException a generic exception.
      */
-    public synchronized void updateQueue(JobEntry je)
+    public synchronized void updateQueue(J je)
             throws TurbineException
     {
         je.calcRunTime();
@@ -180,9 +180,10 @@ public class JobQueue
      */
     private void sortQueue()
     {
-        Comparator<JobEntry> aComparator = new Comparator<JobEntry>()
+        Comparator<J> aComparator = new Comparator<J>()
         {
-            public int compare(JobEntry o1, JobEntry o2)
+            @Override
+            public int compare(J o1, J o2)
             {
                 Long time1 = Long.valueOf(o1.getNextRuntime());
                 Long time2 = Long.valueOf(o2.getNextRuntime());

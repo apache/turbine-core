@@ -25,7 +25,15 @@
 
   <body>
     <release version="4.0-M2" date="in Subversion">
-       <action type="update" dev="gk">
+      <action type="add" dev="tv">
+        Add QuartzSchedulerService
+      </action>
+      <action type="update" dev="tv">
+        Update dependencies
+        - fulcrum-security to 1.1.0
+        - fulcrum-intake to 1.2.0
+      </action>
+      <action type="update" dev="gk">
         Update to Torque 4.0.0
       </action>
       <action type="add" dev="tv">

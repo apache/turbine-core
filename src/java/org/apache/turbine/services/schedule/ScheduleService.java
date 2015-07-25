@@ -50,7 +50,7 @@ public interface ScheduleService
      *
      * @param oid The int id for the job.
      * @return A JobEntry.
-     * @exception TurbineException could not retreive job
+     * @exception TurbineException could not retrieve job
      */
     JobEntry getJob(int oid)
             throws TurbineException;
@@ -87,7 +87,7 @@ public interface ScheduleService
      *
      * @return A List of jobs.
      */
-    List<JobEntry> listJobs();
+    List<? extends JobEntry> listJobs();
 
     /**
      * Determines if the scheduler service is currently active.

@@ -56,6 +56,7 @@ public class WorkerThread
     /**
      * Run the job.
      */
+    @Override
     public void run()
     {
         if (je == null || je.isActive())
@@ -75,7 +76,7 @@ public class WorkerThread
         catch (Exception e)
         {
             log.error("Error in WorkerThread for scheduled job #" +
-                    je.getPrimaryKey() + ", task: " + je.getTask(), e);
+                    je.getJobId() + ", task: " + je.getTask(), e);
         }
         finally
         {
@@ -94,7 +95,7 @@ public class WorkerThread
      */
     private final void logStateChange(String state)
     {
-        log.debug("Scheduled job #" + je.getPrimaryKey() + ' ' + state +
+        log.debug("Scheduled job #" + je.getJobId() + ' ' + state +
                 ", task: " + je.getTask());
     }
 }
