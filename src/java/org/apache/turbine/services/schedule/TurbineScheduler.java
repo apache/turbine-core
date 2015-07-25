@@ -27,7 +27,7 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.TurbineException;
 
 /**
- * This is a fascade class to provide easy access to the Scheduler
+ * This is a facade class to provide easy access to the Scheduler
  * service.  All access methods are static and act upon the current
  * instance of the scheduler service.
  *
