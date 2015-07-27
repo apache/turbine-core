@@ -184,7 +184,7 @@ public class TurbinePipeline
     }
 
     /**
-     * @see org.apache.turbine.ValveContext#invokeNext(RunData)
+     * @see org.apache.turbine.pipeline.ValveContext#invokeNext(RunData)
      */
     public void invokeNext(PipelineData pipelineData)
         throws TurbineException, IOException

@@ -45,7 +45,6 @@
         <item name="Avalon Component Service" href="/services/avalon-component-service.html"/>
         <item name="Crypto Service"      href="http://turbine.apache.org/fulcrum/fulcrum-crypto/"/>
         <item name="Cache Service"       href="http://turbine.apache.org/fulcrum/fulcrum-cache/"/>
-        <item name="Component Service"   href="/services/component-service.html"/>
         <item name="Factory Service"     href="http://turbine.apache.org/fulcrum/fulcrum-factory/"/>
         <item name="Intake Service"      href="http://turbine.apache.org/fulcrum/fulcrum-intake/"/>
         <item name="JSON-RPC Service"    href="/services/jsonrpc-service.html"/>
