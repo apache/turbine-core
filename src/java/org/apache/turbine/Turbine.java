@@ -347,7 +347,7 @@ public class Turbine
         configureLogging();
 
         // Now report our successful configuration to the world
-        log.info("Loaded configuration  (" + confStyle + ") from " + confFile + " (" + confPath + ") style: "+ configuration.toString());
+        log.info("Loaded configuration (" + confStyle + ") from " + confFile + " (" + confPath + ") style: "+ configuration.toString());
 
         setTurbineServletConfig(config);
         setTurbineServletContext(context);

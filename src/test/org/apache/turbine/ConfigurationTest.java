@@ -31,6 +31,7 @@ import java.net.URL;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.FileSystem;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.turbine.test.BaseTestCase;
 import org.apache.turbine.util.TurbineConfig;
 import org.apache.turbine.util.TurbineXmlConfig;
@@ -110,6 +111,27 @@ public class ConfigurationTest extends BaseTestCase
         finally
         {
             tc.dispose();
+        }
+    }
+    
+    @Test
+    public void testCreateTurbineWithIncludedConfiguration() throws Exception
+    {
+        String confPath = Turbine.getRealPath( "/conf/test/usersettings.properties" );
+        try
+        {
+            Configuration configuration = new PropertiesConfiguration(confPath);;
+            assertNotNull("No Configuration Object found!", configuration);
+            assertFalse("Make sure we have values", configuration.isEmpty());
+
+            String key = "scheduledjob.cache.size";
+            assertEquals("Read a config value " + key + ", received:" + configuration.getString(key), "100", configuration.getString(key));
+            String key2 ="module.cache";
+            assertEquals("Read a config value " + key2 + ", received:" + configuration.getString(key2), "false", configuration.getString(key2));
+        }
+        catch (Exception e)
+        {
+            throw e;
         }
     }
     
