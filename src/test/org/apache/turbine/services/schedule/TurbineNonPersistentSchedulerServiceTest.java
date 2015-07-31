@@ -96,12 +96,14 @@ public class TurbineNonPersistentSchedulerServiceTest
             int jobCount = TurbineScheduler.listJobs().size();
 
             // Add a new job entry
-			JobEntry je = TurbineScheduler.newJob(0, 1, -1, -1, -1, "SimpleJob");
+            JobEntry je = TurbineScheduler.newJob(0, 1, -1, -1, -1, "SimpleJob");
 
             TurbineScheduler.addJob(je);
             assertEquals(jobCount + 1, TurbineScheduler.listJobs().size());
-
+            
+            assertTrue(TurbineScheduler.listJobs().contains( je ));
             TurbineScheduler.removeJob(je);
+            assertTrue(!TurbineScheduler.listJobs().contains( je ));
             assertEquals(jobCount, TurbineScheduler.listJobs().size());
 
         }

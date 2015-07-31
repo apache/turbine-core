@@ -78,7 +78,8 @@ web.xml file:
 
 <p>
 This works well, but if you want to customize the various settings that Turbine uses to
-control it's behavior, then you need to provide a TurbineConfiguration.xml file!
+control it's behavior, then you need to provide a TurbineConfiguration.xml file! 
+Reading from /WEB-INF/conf/TurbineResources.properties is actually the default fall back - if no init parameter is provided. 
 </p>
 </section>
 
@@ -118,8 +119,9 @@ This file will contain lines like this:
 <source test=""><![CDATA[
 <configuration>
   <jndi className="org.apache.commons.configuration.JNDIConfiguration" prefix="java:comp/env"/>
-  <dom4j className="org.apache.commons.configuration.DOM4JConfiguration" fileName="/WEB-INF/conf/OtherProperties.xml"/>
-  <properties className="org.apache.commons.configuration.PropertiesConfiguration" fileName="/WEB-INF/conf/TurbineResources.properties"/>
+  <!-- CHANGE! As fileName is converted to URL internally now and applicationpath is prefixed fileName has to be a relative path, cft. RFC2396.  -->
+  <dom4j className="org.apache.commons.configuration.DOM4JConfiguration" fileName="WEB-INF/conf/OtherProperties.xml"/>
+  <properties className="org.apache.commons.configuration.PropertiesConfiguration" fileName="WEB-INF/conf/TurbineResources.properties"/>
 </configuration>
 ]]></source>
 
