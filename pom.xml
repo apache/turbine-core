@@ -33,7 +33,9 @@
     can also be used independently of the web portion of Turbine as
     well. In other words, we strive to make portions of Turbine easily
     available for use in other applications.</description>
-  <url>http://turbine.apache.org/</url>
+    
+  <!-- TODO: Change for release -->  
+  <url>http://turbine.apache.org/development/turbine-4.0</url>
   
   <inceptionYear>2000</inceptionYear>
 
@@ -478,14 +480,6 @@
     <url>http://svn.apache.org/viewcvs/turbine/core/trunk/</url>
   </scm>
 
-  <distributionManagement>
-    <site>
-      <id>apache.website</id>
-      <name>Apache Turbine Site</name>
-      <url>scpexe://people.apache.org/www/turbine.apache.org/turbine/development/turbine-4.0/</url>
-    </site>
-  </distributionManagement>
-  
   <build>
     <sourceDirectory>src/java</sourceDirectory>
     <testSourceDirectory>src/test</testSourceDirectory>
