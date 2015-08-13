@@ -37,7 +37,7 @@
 	biggest purposes with Turbine 4 was to decouple the different services
 	and move them to <a href="http://turbine.apache.org/fulcrum/">Fulcrum</a>.
 	Many of the released components of Fulcrum correspond to 
-	a previous Turbine service that is no longer bundeled with the
+	a previous Turbine service that is no longer bundled with the
 	Turbine core. 
 </p>
 <p>
