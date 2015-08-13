@@ -75,17 +75,17 @@ public class TemplateSecureSessionValidator
      * methods. For example, it uses <code>setScreenTemplate</code> to
      * load the tr.props TEMPLATE_LOGIN instead of the default's
      * setScreen to TurbineConstants.SCREEN_LOGIN.
-     * @deprecated Use PipelineData version instead.
+     *
      * @see DefaultSessionValidator
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @throws Exception The anonymous user could not be obtained
      *         from the security service
      */
-    @Deprecated
     @Override
-    public void doPerform(RunData data)
-            throws Exception
+    public void doPerform(PipelineData pipelineData)
+    throws Exception
     {
+        RunData data = getRunData(pipelineData);
         // Pull user from session.
         data.populate();
 
@@ -98,7 +98,7 @@ public class TemplateSecureSessionValidator
             data.save();
         }
 
-        // This is the secure sessionvalidator, so user must be logged in.
+        // This is the secure session validator, so user must be logged in.
         if (!data.getUser().hasLoggedIn())
         {
             log.debug("User is not logged in!");
@@ -182,26 +182,6 @@ public class TemplateSecureSessionValidator
         {
             data.setScreen(null);
         }
-    }
-
-    /**
-     * doPerform is virtually identical to DefaultSessionValidator
-     * except that it calls template methods instead of bare screen
-     * methods. For example, it uses <code>setScreenTemplate</code> to
-     * load the tr.props TEMPLATE_LOGIN instead of the default's
-     * setScreen to TurbineConstants.SCREEN_LOGIN.
-     *
-     * @see DefaultSessionValidator
-     * @param pipelineData Turbine information.
-     * @throws Exception The anonymous user could not be obtained
-     *         from the security service
-     */
-    @Override
-    public void doPerform(PipelineData pipelineData)
-    throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        doPerform(data);
 
         // Comply with Turbine 4.0 standards
         pipelineData.get(Turbine.class).put(User.class, data.getUser());

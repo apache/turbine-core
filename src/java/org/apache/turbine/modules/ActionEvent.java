@@ -33,7 +33,6 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineActionEvent;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.RunData;
 
 /**
  * <p>
@@ -42,7 +41,7 @@ import org.apache.turbine.util.RunData;
  * event based actions. Essentially, you label all your submit buttons
  * with the prefix of "eventSubmit_" and the suffix of "methodName".
  * For example, "eventSubmit_doDelete". Then any class that subclasses
- * this class will get its "doDelete(RunData data)" method executed.
+ * this class will get its "doDelete(PipelineData data)" method executed.
  * If for any reason, it was not able to execute the method, it will
  * fall back to executing the doPerform() method which is required to
  * be implemented.
@@ -184,23 +183,6 @@ public abstract class ActionEvent extends Action
 	    }
 
 	    return method;
-	}
-
-	/**
-	 * This overrides the default Action.perform() to execute the
-	 * doEvent() method. If that fails, then it will execute the
-	 * doPerform() method instead.
-	 * @deprecated Use PipelineData version instead.
-	 * @param data Turbine information.
-	 * @exception Exception a generic exception.
-	 */
-	@Deprecated
-    @Override
-    protected void perform(RunData data)
-			throws Exception
-	{
-	    ParameterParser pp = data.getParameters();
-        executeEvents(pp, new Class<?>[]{ RunData.class }, new Object[]{ data });
 	}
 
 	/**

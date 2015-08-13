@@ -57,42 +57,6 @@ public class VelocityCachedLayout
     /**
      * Method called by LayoutLoader.
      *
-     * @param data Turbine information.
-     * @exception Exception a generic exception.
-     */
-    public void doBuild(RunData data)
-        throws Exception
-    {
-        // Get the context needed by Velocity.
-        Context context = velocityService.getContext(data);
-
-        // variable for the screen in the layout template
-        context.put(TurbineConstants.SCREEN_PLACEHOLDER,
-                    new TemplateScreen(data));
-
-        // variable to reference the navigation screen in the layout template
-        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER,
-                    new TemplateNavigation(data));
-
-        // Grab the layout template set in the VelocityPage.
-        // If null, then use the default layout template
-        // (done by the TemplateInfo object)
-        String templateName = data.getTemplateInfo().getLayoutTemplate();
-
-        // Set the locale and content type
-        data.getResponse().setLocale(data.getLocale());
-        data.getResponse().setContentType(data.getContentType());
-
-        log.debug("Now trying to render layout " + templateName);
-
-        // Finally, generate the layout template and send it to the browser
-        velocityService.handleRequest(context,
-                prefix + templateName, data.getOut());
-    }
-
-    /**
-     * Method called by LayoutLoader.
-     *
      *
      * @param data PipelineData
      * @throws Exception generic exception

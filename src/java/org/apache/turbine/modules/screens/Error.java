@@ -46,13 +46,14 @@ public class Error extends Screen
     /**
      * Build screen.
      *
-     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @return ConcreteElement the page with all the error information.
      * @throws Exception a generic exception.
      */
-    public ConcreteElement doBuild(RunData data) throws Exception
+    @Override
+    public ConcreteElement doBuild(PipelineData pipelineData) throws Exception
     {
+        RunData data = getRunData(pipelineData);
         data.setTitle("There has been an error!");
 
         Table table = new Table().setBorder(0);
@@ -117,19 +118,5 @@ public class Error extends Screen
                 .addElement(new PRE(data.getStackTraceException().toString()));
         }
         return null;
-    }
-
-
-    /**
-     * Build screen.
-     *
-     * @param data Turbine information.
-     * @return ConcreteElement the page with all the error information.
-     * @throws Exception a generic exception.
-     */
-    public ConcreteElement doBuild(PipelineData pipelineData) throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        return doBuild(data);
     }
 }

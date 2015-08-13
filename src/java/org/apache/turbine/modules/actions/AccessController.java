@@ -83,15 +83,15 @@ public class AccessController
      * session, otherwise it is loaded through
      * <code>TurbineSecurity.getACL()</code> and added to the current
      * session.
-     * @deprecated Use PipelineData version instead.
+     *
      * @param data Turbine information.
      * @exception FulcrumSecurityException problem with the security service.
      */
-    @Deprecated
     @Override
-    public void doPerform(RunData data)
-            throws FulcrumSecurityException
+    public void doPerform(PipelineData pipelineData)
+    	throws FulcrumSecurityException
     {
+        RunData data = getRunData(pipelineData);
         User user = data.getUser();
 
         if (!security.isAnonymousUser(user)
@@ -112,24 +112,6 @@ public class AccessController
             }
             data.setACL(acl);
         }
-    }
-
-    /**
-     * If there is a user and the user is logged in, doPerform will
-     * set the RunData ACL.  The list is first sought from the current
-     * session, otherwise it is loaded through
-     * <code>TurbineSecurity.getACL()</code> and added to the current
-     * session.
-     *
-     * @param data Turbine information.
-     * @exception FulcrumSecurityException problem with the security service.
-     */
-    @Override
-    public void doPerform(PipelineData pipelineData)
-    	throws FulcrumSecurityException
-    {
-        RunData data = getRunData(pipelineData);
-        doPerform(data);
 
         // Comply with Turbine 4.0 standards
         pipelineData.get(Turbine.class).put(AccessControlList.class, data.getACL());

@@ -38,21 +38,6 @@ public class DefaultAction extends Action
     /**
      * Execute the action.
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @throws Exception a generic exception.
-     */
-    @Deprecated
-    @Override
-    public void doPerform(RunData data)
-            throws Exception
-    {
-        data.setMessage(data.getScreen() + " has been executed!");
-    }
-
-    /**
-     * Execute the action.
-     *
      * @param data Turbine information.
      * @throws Exception a generic exception.
      */
@@ -61,7 +46,7 @@ public class DefaultAction extends Action
             throws Exception
     {
         RunData data = getRunData(pipelineData);
-        doPerform(data);
+        data.setMessage(data.getScreen() + " has been executed!");
     }
 
 }

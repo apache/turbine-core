@@ -44,39 +44,7 @@ public class VelocityPage
     private VelocityService velocity;
 
     /**
-     * Stuffs the Context into the RunData so that it is available to
-     * the Action module and the Screen module via getContext().
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @exception Exception, a generic exception.
-     */
-    @Deprecated
-    @Override
-    protected void doBuildBeforeAction(RunData data)
-        throws Exception
-    {
-        Context context = velocity.getContext(data);
-        data.getTemplateInfo()
-            .setTemplateContext(VelocityService.CONTEXT, context);
-    }
-
-    /**
-     * Allows the VelocityService to perform post-request actions.
-     * (releases the (non-global) tools in the context for reuse later)
-     * @deprecated. Use PipelineData version instead.
-     *
-     */
-    @Override
-    protected void doPostBuild(RunData data)
-        throws Exception
-    {
-        Context context = velocity.getContext(data);
-        velocity.requestFinished(context);
-    }
-
-
-    /**
-     * Stuffs the Context into the RunData so that it is available to
+     * Stuffs the Context into the PipelineData so that it is available to
      * the Action module and the Screen module via getContext().
      *
      * @param data Turbine information.
@@ -103,5 +71,4 @@ public class VelocityPage
         Context context = velocity.getContext(pipelineData);
         velocity.requestFinished(context);
     }
-
 }

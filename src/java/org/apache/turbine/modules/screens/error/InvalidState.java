@@ -23,10 +23,8 @@ package org.apache.turbine.modules.screens.error;
 
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.ElementContainer;
-
 import org.apache.ecs.html.A;
 import org.apache.fulcrum.parser.ParameterParser;
-
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
@@ -54,12 +52,14 @@ public class InvalidState
     /**
      * Build the Screen.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception, a generic exception.
      */
-    public ConcreteElement doBuild(RunData data)
+    @Override
+    public ConcreteElement doBuild(PipelineData pipelineData)
             throws Exception
     {
+        RunData data = getRunData(pipelineData);
         ElementContainer body = new ElementContainer();
         ElementContainer message = new ElementContainer();
 
@@ -86,18 +86,4 @@ public class InvalidState
         body.addElement(message);
         return body;
     }
-
-    /**
-     * Build the Screen.
-     *
-     * @param pipelineData Turbine information.
-     * @exception Exception, a generic exception.
-     */
-    public ConcreteElement doBuild(PipelineData pipelineData)
-            throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        return doBuild(data);
-    }
-
 }

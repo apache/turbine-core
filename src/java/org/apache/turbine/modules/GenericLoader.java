@@ -27,7 +27,6 @@ import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
-import org.apache.turbine.util.RunData;
 
 /**
  * This is the base class for the loaders. It contains code that is
@@ -64,37 +63,10 @@ public abstract class GenericLoader<T extends Assembler>
     /**
      * Attempts to load and execute the external action that has been
      * set.
-     * Should revert to abstract when RunData has gone.
      * @exception Exception a generic exception.
      */
-    public void exec(PipelineData pipelineData, String name)
-            throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        exec(data, name);
-    }
-
-
-    /**
-     * Attempts to load and execute the external action that has been
-     * set.
-     * @deprecated Use of this method should be avoided. Use
-     * <code>exec(PipelineData data, String name)</code> instead.
-     * @exception Exception a generic exception.
-     */
-    @Deprecated
-    public abstract void exec(RunData data, String name)
-    	throws Exception;
-
-    /**
-     * Commented out.
-     * This method should return the complete classpath + name.
-     *
-     * @param name
-     * @return
-     *
-     public abstract String getClassName(String name);
-     */
+    public abstract void exec(PipelineData pipelineData, String name)
+            throws Exception;
 
     /**
      * Returns whether or not this external action is reload itself.
@@ -212,22 +184,5 @@ public abstract class GenericLoader<T extends Assembler>
         }
 
         return asm;
-    }
-
-    /**
-     * Helper method to cast from PipelineData to RunData. This will go when
-     * the pipeline is fully implemented and the RunData-methods are removed
-     *
-     * @param pipelineData a PipelineData object
-     *
-     * @return the input object casted to RunData
-     */
-    private RunData getRunData(PipelineData pipelineData)
-    {
-        if(!(pipelineData instanceof RunData))
-        {
-            throw new RuntimeException("Can't cast to rundata from pipeline data.");
-        }
-        return (RunData)pipelineData;
     }
 }

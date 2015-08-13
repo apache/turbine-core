@@ -20,14 +20,14 @@ package org.apache.turbine.modules.actions;
  */
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.annotation.TurbineActionEvent;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 /**
  * This action is used in testing the ExecutePageValve by the ExecutePageValveTest.
  *
@@ -38,25 +38,8 @@ public class VelocityActionDoesNothing extends VelocityAction
 {
     private static Log log = LogFactory.getLog(VelocityActionDoesNothing.class);
     public static int numberOfCalls;
-    public static int runDataCalls;
     public static int pipelineDataCalls;
     public static int actionEventCalls;
-    /**
-     *  Default action is throw an exception.
-     *
-     * @param  data           Current RunData information
-     * @param  context        Context to populate
-     * @exception  Exception  Thrown on error
-     * @deprecated
-     */
-    @Deprecated
-    @Override
-    public void doPerform(RunData data, Context context) throws Exception
-    {
-        log.debug("Calling doPerform");
-		VelocityActionDoesNothing.numberOfCalls++;
-		VelocityActionDoesNothing.runDataCalls++;
-    }
 
     /**
      *  Default action is throw an exception.
@@ -71,7 +54,7 @@ public class VelocityActionDoesNothing extends VelocityAction
         log.debug("Calling doPerform(PipelineData)");
 		VelocityActionDoesNothing.numberOfCalls++;
         RunData rd = (RunData)pipelineData;
-		assertNotNull("RunData object was Null.", rd);
+		assertNotNull("PipelineData object was Null.", rd);
 		VelocityActionDoesNothing.pipelineDataCalls++;
     }
 

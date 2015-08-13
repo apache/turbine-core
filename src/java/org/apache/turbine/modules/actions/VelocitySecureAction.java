@@ -45,19 +45,6 @@ public abstract class VelocitySecureAction extends VelocityAction
 {
     /**
      * Implement this to add information to the context.
-     *
-     * @deprecated Use the PipelineData version instead.
-     * @param data Turbine information.
-     * @param context Context for web pages.
-     * @throws Exception a generic exception.
-     */
-    @Deprecated
-    @Override
-    public abstract void doPerform(RunData data, Context context)
-            throws Exception;
-
-    /**
-     * Implement this to add information to the context.
      * Should revert to abstract when RunData has gone.
      * @param data Turbine information.
      * @param context Context for web pages.
@@ -69,25 +56,6 @@ public abstract class VelocitySecureAction extends VelocityAction
     {
         RunData data = getRunData(pipelineData);
         doPerform(data, context);
-    }
-
-
-    /**
-     * This method overrides the method in WebMacroSiteAction to
-     * perform a security check first.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @throws Exception a generic exception.
-     */
-    @Deprecated
-    @Override
-    protected void perform(RunData data) throws Exception
-    {
-        if (isAuthorized(data))
-        {
-            super.perform(data);
-        }
     }
 
     /**
@@ -111,28 +79,9 @@ public abstract class VelocitySecureAction extends VelocityAction
      * You should set the template in this method that you want the
      * user to be sent to if they're unauthorized.
      *
-     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @return True if the user is authorized to access the screen.
      * @throws Exception a generic exception.
      */
-    @Deprecated
-    protected abstract boolean isAuthorized(RunData data)
-            throws Exception;
-
-    /**
-     * Implement this method to perform the security check needed.
-     * You should set the template in this method that you want the
-     * user to be sent to if they're unauthorized.
-     * Should revert to abstract when RunData has gone.
-     * @param data Turbine information.
-     * @return True if the user is authorized to access the screen.
-     * @throws Exception a generic exception.
-     */
-    protected boolean isAuthorized(PipelineData pipelineData)
-            throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        return isAuthorized(data);
-    }
+    protected abstract boolean isAuthorized(PipelineData pipelineData) throws Exception;
 }

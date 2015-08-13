@@ -47,60 +47,11 @@ public class VelocityDirectScreen
     /**
      * This builds the Velocity template.
      *
-     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
-    public ConcreteElement buildTemplate(RunData data)
-        throws Exception
-    {
-        Context context = velocity.getContext(data);
-
-        String screenTemplate = data.getTemplateInfo().getScreenTemplate();
-        String templateName
-            = templateService.getScreenTemplateName(screenTemplate);
-
-        // The Template Service could not find the Screen
-        if (StringUtils.isEmpty(templateName))
-        {
-            log.error("Screen " + screenTemplate + " not found!");
-            throw new Exception("Could not find screen for " + screenTemplate);
-        }
-
-        try
-        {
-            velocity.handleRequest(context,
-                                          prefix + templateName,
-                                          data.getResponse().getOutputStream());
-
-        }
-        catch (Exception e)
-        {
-            // If there is an error, build a $processingException and
-            // attempt to call the error.vm template in the screens
-            // directory.
-            context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER, e.toString());
-            context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER, ExceptionUtils.getStackTrace(e));
-
-            templateName = conf.getString(TurbineConstants.TEMPLATE_ERROR_KEY,
-                           TurbineConstants.TEMPLATE_ERROR_VM);
-
-            velocity.handleRequest(context,
-                    prefix + templateName,
-                    data.getResponse().getOutputStream());
-        }
-
-        return null;
-    }
-
-    /**
-     * This builds the Velocity template.
-     *
-     * @param data Turbine information.
-     * @return A ConcreteElement.
-     * @exception Exception, a generic exception.
-     */
+    @Override
     public ConcreteElement buildTemplate(PipelineData pipelineData)
         throws Exception
     {

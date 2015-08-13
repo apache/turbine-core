@@ -54,46 +54,17 @@ public class BaseJspScreen
     /**
      * Method that sets up beans and forward the request to the JSP.
      *
-     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @return null - the JSP sends the information.
      * @exception Exception, a generic exception.
      */
-    public ConcreteElement buildTemplate(RunData data)
-            throws Exception
-    {
-        String screenTemplate = data.getTemplateInfo().getScreenTemplate();
-        // get the name of the JSP we want to use
-        String templateName
-            = templateService.getScreenTemplateName(screenTemplate);
-
-        // The Template Service could not find the Screen
-        if (StringUtils.isEmpty(templateName))
-        {
-            log.error("Screen " + screenTemplate + " not found!");
-            throw new Exception("Could not find screen for " + screenTemplate);
-        }
-
-        // let service know whether we are using a layout
-        jspService.handleRequest(data, prefix + templateName,
-                                 getLayout(data) == null);
-
-        return null;
-    }
-
-    /**
-     * Method that sets up beans and forward the request to the JSP.
-     *
-     * @param data Turbine information.
-     * @return null - the JSP sends the information.
-     * @exception Exception, a generic exception.
-     */
+    @Override
     public ConcreteElement buildTemplate(PipelineData pipelineData)
             throws Exception
     {
         RunData data = getRunData(pipelineData);
         String screenTemplate = data.getTemplateInfo().getScreenTemplate();
-        // get the name of the JSP we want to use
+        // get the name of the template we want to use
         String templateName
             = templateService.getScreenTemplateName(screenTemplate);
 
@@ -114,26 +85,13 @@ public class BaseJspScreen
     /**
      * Method to be overridden by subclasses to include data in beans, etc.
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data, the Rundata object
+     * @param data, the PipelineData object
      * @exception Exception, a generic exception.
      */
-    protected void doBuildTemplate(RunData data)
-        throws Exception
-    {
-        // abstract method
-    }
-
-    /**
-     * Method to be overidden by subclasses to include data in beans, etc.
-     *
-     * @param data, the Rundata object
-     * @exception Exception, a generic exception.
-     */
+    @Override
     protected void doBuildTemplate(PipelineData pipelineData)
         throws Exception
     {
         // abstract method
     }
-
 }

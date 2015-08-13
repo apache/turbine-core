@@ -165,6 +165,7 @@ public class TurbineVelocityService
      *
      * @return A Context object.
      */
+    @Override
     public Context getContext()
     {
         Context globalContext =
@@ -179,6 +180,7 @@ public class TurbineVelocityService
      *
      * @return A Context Object.
      */
+    @Override
     public Context getNewContext()
     {
         Context ctx = new VelocityContext();
@@ -204,6 +206,7 @@ public class TurbineVelocityService
      * @return A valid value to be used as Return value
      * @throws Exception We threw the exception further up
      */
+    @Override
     @SuppressWarnings("rawtypes") // Interface not generified
 	public Object methodException(Class clazz, String method, Exception e)
             throws Exception
@@ -219,48 +222,14 @@ public class TurbineVelocityService
     }
 
     /**
-     * Create a Context from the RunData object.  Adds a pointer to
-     * the RunData object to the VelocityContext so that RunData
-     * is available in the templates.
-     * @deprecated. Use PipelineData version.
-     * @param data The Turbine RunData object.
-     * @return A clone of the WebContext needed by Velocity.
-     */
-    public Context getContext(RunData data)
-    {
-        // Attempt to get it from the data first.  If it doesn't
-        // exist, create it and then stuff it into the data.
-        Context context = (Context)
-            data.getTemplateInfo().getTemplateContext(VelocityService.CONTEXT);
-
-        if (context == null)
-        {
-            context = getContext();
-            context.put(VelocityService.RUNDATA_KEY, data);
-
-            if (pullModelActive)
-            {
-                // Populate the toolbox with request scope, session scope
-                // and persistent scope tools (global tools are already in
-                // the toolBoxContent which has been wrapped to construct
-                // this request-specific context).
-                pullService.populateContext(context, data);
-            }
-
-            data.getTemplateInfo().setTemplateContext(
-                VelocityService.CONTEXT, context);
-        }
-        return context;
-    }
-
-    /**
      * Create a Context from the PipelineData object.  Adds a pointer to
-     * the RunData object to the VelocityContext so that RunData
+     * the PipelineData object to the VelocityContext so that PipelineData
      * is available in the templates.
      *
-     * @param data The Turbine RunData object.
+     * @param pipelineData The Turbine PipelineData object.
      * @return A clone of the WebContext needed by Velocity.
      */
+    @Override
     public Context getContext(PipelineData pipelineData)
     {
         //Map runDataMap = (Map)pipelineData.get(RunData.class);
@@ -303,6 +272,7 @@ public class TurbineVelocityService
      * @throws TurbineException Any exception thrown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
+    @Override
     public String handleRequest(Context context, String filename)
         throws TurbineException
     {
@@ -354,6 +324,7 @@ public class TurbineVelocityService
      * @throws TurbineException Any exception thrown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
+    @Override
     public void handleRequest(Context context, String filename,
                               OutputStream output)
             throws TurbineException
@@ -399,6 +370,7 @@ public class TurbineVelocityService
      * @throws TurbineException Any exception thrown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
+    @Override
     public void handleRequest(Context context, String filename, Writer writer)
             throws TurbineException
     {
@@ -656,6 +628,7 @@ public class TurbineVelocityService
      *
      * @param context a Velocity Context
      */
+    @Override
     public void requestFinished(Context context)
     {
         if (pullModelActive)

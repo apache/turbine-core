@@ -25,6 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,6 +37,7 @@ import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.parser.ParserService;
 import org.apache.fulcrum.pool.PoolException;
 import org.apache.fulcrum.pool.PoolService;
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
@@ -184,6 +186,7 @@ public class TurbineRunDataService
      * @return a new or recycled RunData object.
      * @throws TurbineException if the operation fails.
      */
+    @Override
     public RunData getRunData(HttpServletRequest req,
                               HttpServletResponse res,
                               ServletConfig config)
@@ -204,6 +207,7 @@ public class TurbineRunDataService
      * @throws IllegalArgumentException if any of the parameters are null.
      * @todo The "key" parameter should be removed in favor of just looking up what class via the roleConfig avalon file.
      */
+    @Override
     public RunData getRunData(String key,
                               HttpServletRequest req,
                               HttpServletResponse res,
@@ -259,10 +263,11 @@ public class TurbineRunDataService
             data = (TurbineRunData) pool.getInstance(runDataClazz);
             @SuppressWarnings("unchecked") // ok
             ParameterParser pp = parserService.getParser((Class<ParameterParser>)parameterParserClazz);
-            data.setParameterParser(pp);
+            data.get(Turbine.class).put(ParameterParser.class, pp);
+
             @SuppressWarnings("unchecked") // ok
             CookieParser cp = parserService.getParser((Class<CookieParser>)cookieParserClazz);
-            data.setCookieParser(cp);
+            data.get(Turbine.class).put(CookieParser.class, cp);
 
             Locale locale = req.getLocale();
 
@@ -293,15 +298,15 @@ public class TurbineRunDataService
         }
 
         // Set the request and response.
-        data.setRequest(req);
-        data.setResponse(res);
+        data.get(Turbine.class).put(HttpServletRequest.class, req);
+        data.get(Turbine.class).put(HttpServletResponse.class, res);
 
         // Set the servlet configuration.
-        data.setServletConfig(config);
+        data.get(Turbine.class).put(ServletConfig.class, config);
+        data.get(Turbine.class).put(ServletContext.class, config.getServletContext());
 
         // Set the ServerData.
-        ServerData sd = new ServerData(req);
-        data.setServerData(sd);
+        data.get(Turbine.class).put(ServerData.class, new ServerData(req));
 
         return data;
     }
@@ -312,6 +317,7 @@ public class TurbineRunDataService
      * @param data the used RunData object.
      * @return true, if pooling is supported and the object was accepted.
      */
+    @Override
     public boolean putRunData(RunData data)
     {
         if (data instanceof TurbineRunData)

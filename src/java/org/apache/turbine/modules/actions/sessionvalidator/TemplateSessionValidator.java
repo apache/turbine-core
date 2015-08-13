@@ -66,16 +66,14 @@ public class TemplateSessionValidator
     /**
      * Execute the action.
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception The anonymous user could not be obtained
      *         from the security service
      */
-    @Deprecated
     @Override
-    public void doPerform(RunData data)
-            throws Exception
+    public void doPerform(PipelineData pipelineData) throws Exception
     {
+        RunData data = getRunData(pipelineData);
         // Pull user from session.
         data.populate();
 
@@ -142,21 +140,6 @@ public class TemplateSessionValidator
         {
             data.setScreen(null);
         }
-    }
-
-    /**
-     * Execute the action.
-     *
-     * @param pipelineData Turbine information.
-     * @exception Exception The anonymous user could not be obtained
-     *         from the security service
-     */
-    @Override
-    public void doPerform(PipelineData pipelineData)
-    throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        doPerform(data);
 
         // Comply with Turbine 4.0 standards
         pipelineData.get(Turbine.class).put(User.class, data.getUser());

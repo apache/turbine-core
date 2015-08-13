@@ -20,7 +20,6 @@ package org.apache.turbine.modules;
  */
 
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.RunData;
 
 /**
  * Generic Action class.
@@ -46,6 +45,7 @@ public abstract class Action extends Assembler
     /**
      * @see org.apache.turbine.modules.Assembler#getPrefix()
      */
+    @Override
     public String getPrefix()
     {
         return PREFIX;
@@ -55,37 +55,10 @@ public abstract class Action extends Assembler
      * A subclass must override this method to perform itself.  The
      * Action can also set the screen that is associated with RunData.
      *
-     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    public abstract void doPerform(RunData data) throws Exception;
-
-    /**
-     * Subclasses can override this method to add additional
-     * functionality.  This method is protected to force clients to
-     * use ActionLoader to perform an Action.
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @exception Exception a generic exception.
-     */
-    protected void perform(RunData data) throws Exception
-    {
-        doPerform(data);
-    }
-
-    /**
-     * A subclass must override this method to perform itself.  The
-     * Action can also set the screen that is associated with RunData.
-     *
-     * @param data Turbine information.
-     * @exception Exception a generic exception.
-     */
-    public void doPerform(PipelineData pipelineData) throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        doPerform(data);
-    }
+    public abstract void doPerform(PipelineData pipelineData) throws Exception;
 
     /**
      * Subclasses can override this method to add additional

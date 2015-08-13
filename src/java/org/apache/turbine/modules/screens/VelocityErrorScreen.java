@@ -39,38 +39,23 @@ public class VelocityErrorScreen
     /**
      * Implement this to add information to the context.
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @param context Context for web pages.
-     * @exception Exception a generic exception.
-     */
-    protected void doBuildTemplate(RunData data, Context context)
-            throws Exception
-    {
-        context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER,
-                     data.getStackTraceException().toString());
-        context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER,
-                     data.getStackTrace());
-
-        String errorTemplate = conf.getString(TurbineConstants.TEMPLATE_ERROR_KEY,
-                       TurbineConstants.TEMPLATE_ERROR_VM);
-
-        setTemplate(data, errorTemplate);
-    }
-
-    /**
-     * Implement this to add information to the context.
-     *
      * @param pipelineData Turbine information.
      * @param context Context for web pages.
      * @exception Exception a generic exception.
      */
+    @Override
     protected void doBuildTemplate(PipelineData pipelineData, Context context)
             throws Exception
     {
         RunData data = getRunData(pipelineData);
-        doBuildTemplate(data);
+        context.put (TurbineConstants.PROCESSING_EXCEPTION_PLACEHOLDER,
+                data.getStackTraceException().toString());
+        context.put (TurbineConstants.STACK_TRACE_PLACEHOLDER,
+                data.getStackTrace());
+
+        String errorTemplate = conf.getString(TurbineConstants.TEMPLATE_ERROR_KEY,
+                TurbineConstants.TEMPLATE_ERROR_VM);
+
+        setTemplate(pipelineData, errorTemplate);
     }
-
-
 }

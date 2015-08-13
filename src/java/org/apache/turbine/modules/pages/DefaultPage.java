@@ -116,70 +116,6 @@ public class DefaultPage
     /**
      * Builds the Page.
      *
-     * @deprecated Use PipelineData version instead
-     * @param data Turbine information.
-     * @exception Exception, a generic exception.
-     */
-    @Deprecated
-    @Override
-    public void doBuild(RunData data)
-            throws Exception
-    {
-        // Template pages can use this to set up the context, so it is
-        // available to the Action and Screen.  It does nothing here.
-        doBuildBeforeAction(data);
-
-        // If an action has been defined, execute it here.  Actions
-        // can re-define the template definition.
-        if (data.hasAction())
-        {
-            actionLoader.exec(data, data.getAction());
-        }
-
-        // if a redirect was setup in data, don't do anything else
-        if (StringUtils.isNotEmpty(data.getRedirectURI()))
-        {
-            return;
-        }
-
-        // Set the default doctype from the value given in
-        // TurbineResources.properties.
-        setDefaultDoctype(data);
-
-        // Template pages can use this to set up default templates and
-        // associated class modules.  It does nothing here.
-        doBuildAfterAction(data);
-
-        String screenName = data.getScreen();
-
-        log.debug("Building " + screenName);
-
-        // Ask the Screen for its Layout and then execute the Layout.
-        // The Screen can override the getLayout() method to re-define
-        // the Layout depending on data passed in via the
-        // data.parameters object.
-        Screen aScreen = screenLoader.getAssembler(screenName);
-        String layout = aScreen.getLayout(data);
-
-        // If the Layout has been set to be null, attempt to execute
-        // the Screen that has been defined.
-        if (layout != null)
-        {
-            layoutLoader.exec(data, layout);
-        }
-        else
-        {
-            screenLoader.exec(data, screenName);
-        }
-
-        // Do any post build actions (overridable by subclasses -
-        // does nothing here).
-        doPostBuild(data);
-    }
-
-    /**
-     * Builds the Page.
-     *
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
@@ -240,57 +176,9 @@ public class DefaultPage
         doPostBuild(pipelineData);
     }
 
-
-
     /**
      * Can be used by template Pages to stuff the Context into the
-     * RunData so that it is available to the Action module and the
-     * Screen module via getContext().  It does nothing here.
-     *
-     * @deprecated Use PipelineData version instead
-     * @param data Turbine information.
-     * @exception Exception, a generic exception.
-     */
-    @Deprecated
-    protected void doBuildBeforeAction(RunData data)
-            throws Exception
-    {
-        // do nothing by default
-    }
-
-    /**
-     * Can be overridden by template Pages to set up data needed to
-     * process a template.  It does nothing here.
-     *
-     * @deprecated Use PipelineData version instead
-     * @param data Turbine information.
-     * @exception Exception, a generic exception.
-     */
-    @Deprecated
-    protected void doBuildAfterAction(RunData data)
-            throws Exception
-    {
-        // do nothing by default
-    }
-
-    /**
-     * Can be overridden to perform actions when the request is
-     * fully processed. It does nothing here.
-     * @deprecated Use PipelineData version instead
-     * @param data Turbine information.
-     * @exception Exception, a generic exception.
-     */
-    @Deprecated
-    protected void doPostBuild(RunData data)
-            throws Exception
-    {
-        // do nothing by default
-    }
-
-
-    /**
-     * Can be used by template Pages to stuff the Context into the
-     * RunData so that it is available to the Action module and the
+     * PipelineData so that it is available to the Action module and the
      * Screen module via getContext().  It does nothing here.
      *
      * @param data Turbine information.

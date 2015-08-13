@@ -19,21 +19,16 @@ package org.apache.turbine.services.rundata;
  * under the License.
  */
 
-import javax.servlet.ServletConfig;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.fulcrum.parser.CookieParser;
 import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.fulcrum.pool.Recyclable;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.ServerData;
 
 /**
  * TurbineRunData is an extension to the RunData interface to be
  * implemented by RunData implementations to be distributed by
  * the Turbine RunData Service. The extensions define methods
- * that are used by the service for initilizing the implementation,
+ * that are used by the service for initializing the implementation,
  * but which are not meant to be called by the actual client objects.
  *
  * <p>TurbineRunData extends also the Recyclable interface making
@@ -58,51 +53,9 @@ public interface TurbineRunData
     ParameterParser getParameterParser();
 
     /**
-     * Sets the parameter parser.
-     *
-     * @param parser a parameter parser.
-     */
-    void setParameterParser(ParameterParser parser);
-
-    /**
      * Gets the cookie parser without parsing the cookies.
      *
      * @return the cookie parser.
      */
     CookieParser getCookieParser();
-
-    /**
-     * Sets the cookie parser.
-     *
-     * @param parser a cookie parser.
-     */
-    void setCookieParser(CookieParser parser);
-
-    /**
-     * Sets the servlet request.
-     *
-     * @param req a request.
-     */
-    void setRequest(HttpServletRequest req);
-
-    /**
-     * Sets the servlet response.
-     *
-     * @param res a response.
-     */
-    void setResponse(HttpServletResponse res);
-
-    /**
-     * Sets the servlet configuration used during servlet init.
-     *
-     * @param config a configuration.
-     */
-    void setServletConfig(ServletConfig config);
-
-    /**
-     * Sets the server data of the request.
-     *
-     * @param serverData server data.
-     */
-    void setServerData(ServerData serverData);
 }

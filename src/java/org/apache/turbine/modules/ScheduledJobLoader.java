@@ -22,8 +22,8 @@ package org.apache.turbine.modules;
 
 
 import org.apache.turbine.Turbine;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.schedule.JobEntry;
-import org.apache.turbine.util.RunData;
 
 /**
  * ScheduledJobs loader class.
@@ -68,7 +68,7 @@ public class ScheduledJobLoader
      * HELP! - THIS IS UGLY!
      *
      * I want the cache stuff from GenericLoader, BUT, I don't think
-     * the scheduler needs the Rundata object.  The scheduler runs
+     * the scheduler needs the PipelineData object.  The scheduler runs
      * independently of an HTTP request.  This should not extend
      * GenericLoader!  Thoughts??
      *
@@ -79,10 +79,10 @@ public class ScheduledJobLoader
      */
     @Deprecated
     @Override
-    public void exec(RunData data, String name)
+    public void exec(PipelineData data, String name)
             throws Exception
     {
-        throw new Exception("RunData objects not accepted for Scheduled jobs");
+        throw new Exception("PipelineData objects not accepted for Scheduled jobs");
     }
 
     /**
@@ -93,6 +93,7 @@ public class ScheduledJobLoader
      * @return A ScheduledJob with the specified name, or null.
      * @exception Exception a generic exception.
      */
+    @Override
     public ScheduledJob getAssembler(String name)
         throws Exception
     {
@@ -102,6 +103,7 @@ public class ScheduledJobLoader
     /**
      * @see org.apache.turbine.modules.Loader#getCacheSize()
      */
+    @Override
     public int getCacheSize()
     {
         return ScheduledJobLoader.getConfiguredCacheSize();

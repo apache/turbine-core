@@ -20,13 +20,12 @@ package org.apache.turbine.modules.actions;
  */
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import org.apache.fulcrum.factory.FactoryService;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.rundata.RunDataService;
-import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 /**
  * This action is used in testing the injection of services.
@@ -46,21 +45,6 @@ public class VelocityActionWithServiceInjection extends VelocityAction
     // Test for implicit ROLE
     @TurbineService
     private FactoryService factory;
-
-    /**
-     *  Default action is nothing.
-     *
-     * @param  data           Current RunData information
-     * @param  context        Context to populate
-     * @exception  Exception  Thrown on error
-     * @deprecated
-     */
-    @Deprecated
-    @Override
-    public void doPerform(RunData data, Context context) throws Exception
-    {
-        log.debug("Calling doPerform");
-    }
 
     /**
      *  Default action is nothing.

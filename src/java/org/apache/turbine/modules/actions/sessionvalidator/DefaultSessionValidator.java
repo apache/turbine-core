@@ -70,21 +70,20 @@ public class DefaultSessionValidator
     private Configuration conf;
 
     /**
-     * Execute the action.  The default is to populate the RunData
+     * Execute the action.  The default is to populate the PipelineData
      * object and, if the user is unknown, to force a login screen (as
      * set in the tr.props).
      *
-     * @deprecated Use PipelineData version instead.
      * @see org.apache.turbine.modules.screens.error.InvalidState
-     * @param data Turbine RunData context information.
+     * @param pipelineData Turbine PipelineData context information.
      * @throws Exception The anonymous user could not be obtained
      *         from the security service
      */
-    @Deprecated
     @Override
-    public void doPerform(RunData data)
+    public void doPerform(PipelineData pipelineData)
             throws Exception
     {
+        RunData data = getRunData(pipelineData);
         // Pull user from session.
         data.populate();
 
@@ -136,24 +135,6 @@ public class DefaultSessionValidator
                 data.setAction("");
             }
         }
-    }
-
-    /**
-     * Execute the action.  The default is to populate the RunData
-     * object and, if the user is unknown, to force a login screen (as
-     * set in the tr.props).
-     *
-     * @see org.apache.turbine.modules.screens.error.InvalidState
-     * @param pipelineData Turbine PipelineData context information.
-     * @throws Exception The anonymous user could not be obtained
-     *         from the security service
-     */
-    @Override
-    public void doPerform(PipelineData pipelineData)
-            throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        doPerform(data);
 
         // Comply with Turbine 4.0 standards
         pipelineData.get(Turbine.class).put(User.class, data.getUser());

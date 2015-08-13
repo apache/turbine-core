@@ -50,9 +50,8 @@ public class LogoutUser
     @TurbineConfiguration
     private Configuration conf;
 
-
     /**
-     * Clears the RunData user object back to an anonymous status not
+     * Clears the PipelineData user object back to an anonymous status not
      * logged in, and with a null ACL.  If the tr.props ACTION_LOGIN
      * is anything except "LogoutUser", flow is transfered to the
      * SCREEN_HOMEPAGE
@@ -60,21 +59,20 @@ public class LogoutUser
      * If this action name is the value of action.logout then we are
      * being run before the session validator, so we don't need to
      * set the screen (we assume that the session validator will handle
-     * that). This is basically still here simply to preserve old behavior
+     * that). This is basically still here simply to preserve old behaviour
      * - it is recommended that action.logout is set to "LogoutUser" and
      * that the session validator does handle setting the screen/template
      * for a logged out (read not-logged-in) user.
      *
-     * @deprecated Use PipelineData version instead
      * @param data Turbine information.
      * @exception FulcrumSecurityException a problem occurred in the security
      *            service.
      */
-    @Deprecated
     @Override
-    public void doPerform(RunData data)
+    public void doPerform(PipelineData pipelineData)
             throws FulcrumSecurityException
     {
+        RunData data = getRunData(pipelineData);
         User user = data.getUser();
 
         if (!security.isAnonymousUser(user))
@@ -108,7 +106,7 @@ public class LogoutUser
         // If this action name is the value of action.logout then we are
         // being run before the session validator, so we don't need to
         // set the screen (we assume that the session validator will handle
-        // that). This is basically still here simply to preserve old behaviour
+        // that). This is basically still here simply to preserve old behavior
         // - it is recommended that action.logout is set to "LogoutUser" and
         // that the session validator does handle setting the screen/template
         // for a logged out (read not-logged-in) user.
@@ -118,31 +116,5 @@ public class LogoutUser
         {
             data.setScreen(conf.getString(TurbineConstants.SCREEN_HOMEPAGE));
         }
-    }
-
-    /**
-     * Clears the RunData user object back to an anonymous status not
-     * logged in, and with a null ACL.  If the tr.props ACTION_LOGIN
-     * is anthing except "LogoutUser", flow is transfered to the
-     * SCREEN_HOMEPAGE
-     *
-     * If this action name is the value of action.logout then we are
-     * being run before the session validator, so we don't need to
-     * set the screen (we assume that the session validator will handle
-     * that). This is basically still here simply to preserve old behaviour
-     * - it is recommended that action.logout is set to "LogoutUser" and
-     * that the session validator does handle setting the screen/template
-     * for a logged out (read not-logged-in) user.
-     *
-     * @param data Turbine information.
-     * @exception FulcrumSecurityException a problem occured in the security
-     *            service.
-     */
-    @Override
-    public void doPerform(PipelineData pipelineData)
-            throws FulcrumSecurityException
-    {
-        RunData data = getRunData(pipelineData);
-        doPerform(data);
     }
 }

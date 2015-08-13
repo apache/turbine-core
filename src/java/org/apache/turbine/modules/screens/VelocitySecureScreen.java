@@ -22,8 +22,6 @@ package org.apache.turbine.modules.screens;
 
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.velocity.TurbineVelocity;
-import org.apache.turbine.util.RunData;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -47,55 +45,23 @@ public abstract class VelocitySecureScreen
     /**
      * Implement this to add information to the context.
      *
-     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @param context Context for web pages.
      * @exception Exception, a generic exception.
      */
-    protected abstract void doBuildTemplate(RunData data,
+    @Override
+    protected abstract void doBuildTemplate(PipelineData pipelineData,
                                             Context context)
             throws Exception;
 
     /**
-     * Implement this to add information to the context.
-     *
-     * @param data Turbine information.
-     * @param context Context for web pages.
-     * @exception Exception, a generic exception.
-     */
-    protected void doBuildTemplate(PipelineData pipelineData,
-                                            Context context)
-            throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        doBuildTemplate(data);
-    }
-
-
-    /**
-     * This method overrides the method in VelocityScreen to
-     * perform a security check first.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @exception Exception, a generic exception.
-     */
-    protected void doBuildTemplate(RunData data)
-        throws Exception
-    {
-        if (isAuthorized(data))
-        {
-            doBuildTemplate(data, TurbineVelocity.getContext(data));
-        }
-    }
-
-    /**
      * This method overrides the method in VelocityScreen to
      * perform a security check first.
      *
      * @param data Turbine information.
      * @exception Exception, a generic exception.
      */
+    @Override
     protected void doBuildTemplate(PipelineData pipelineData)
         throws Exception
     {
@@ -104,21 +70,6 @@ public abstract class VelocitySecureScreen
             doBuildTemplate(pipelineData, TurbineVelocity.getContext(pipelineData));
         }
     }
-
-
-
-    /**
-     * Implement this method to perform the security check needed.
-     * You should set the template in this method that you want the
-     * user to be sent to if they're unauthorized.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @return True if the user is authorized to access the screen.
-     * @exception Exception, a generic exception.
-     */
-    protected abstract boolean isAuthorized(RunData data)
-            throws Exception;
 
     /**
      * Implement this method to perform the security check needed.
@@ -130,13 +81,6 @@ public abstract class VelocitySecureScreen
      * @return True if the user is authorized to access the screen.
      * @exception Exception, a generic exception.
      */
-    protected boolean isAuthorized(PipelineData pipelineData)
-    throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        return isAuthorized(data);
-    }
-
-
-
+    protected abstract boolean isAuthorized(PipelineData pipelineData)
+            throws Exception;
 }

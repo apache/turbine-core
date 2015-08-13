@@ -46,28 +46,6 @@ public class JspPage
      * it is available to the Action module and the Screen module
      */
     @Override
-    protected void doBuildBeforeAction(RunData data)
-        throws Exception
-    {
-        jspService.addDefaultObjects(data);
-
-        try
-        {
-            //We try to set the buffer size from defaults
-            data.getResponse().setBufferSize(jspService.getDefaultBufferSize());
-        }
-        catch (IllegalStateException ise)
-        {
-            // If the response was already committed, we die silently
-            // No logger here?
-        }
-    }
-
-    /**
-     * Stuffs some useful objects into the request so that
-     * it is available to the Action module and the Screen module
-     */
-    @Override
     protected void doBuildBeforeAction(PipelineData pipelineData)
         throws Exception
     {

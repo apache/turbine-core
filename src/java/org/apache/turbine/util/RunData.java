@@ -47,7 +47,7 @@ import org.apache.turbine.util.template.TemplateInfo;
  * RunData is an interface to run-time information that is passed
  * within Turbine. This provides the threading mechanism for the
  * entire system because multiple requests can potentially come in
- * at the same time.  Thus, there is only one RunData implementation
+ * at the same time.  Thus, there is only one RunData instance
  * for each request that is being serviced.
  *
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
@@ -159,7 +159,7 @@ public interface RunData extends PipelineData
     /**
      * Sets the action for the request.
      *
-     * @param action a atring.
+     * @param action a string.
      */
     void setAction(String action);
 
@@ -623,15 +623,6 @@ public interface RunData extends PipelineData
      */
     void setStackTrace(String trace,
                        Throwable exp);
-
-    /**
-     * Gets a table of debug variables.
-     *
-     * @return a Map of debug variables.
-     * @deprecated use {@link #getDebugVariables} instead
-     */
-    @Deprecated
-    Map<String, Object> getVarDebug();
 
     /**
      * Sets a name/value pair in an internal Map that is accessible from the

@@ -43,7 +43,7 @@ import org.jabsorb.JSONRPCBridge;
  *
  * <p>Here is an example from a superclass:
  * <code>
- * public void doOutput(RunData data) throws Exception
+ * public void doOutput(PipelineData data) throws Exception
  * {
  *     User user = data.getUser();
  *
@@ -87,37 +87,26 @@ public class JSONScreen extends RawScreen
     private JsonRpcService jsonRpcService;
 
     /**
-     * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.util.RunData)
-     * @deprecated Use PipelineData version instead.
-     */
-    protected String getContentType(RunData data)
-    {
-        return JSONRPC_CONTENT_TYPE;
-    }
-
-    /**
      * @see org.apache.turbine.modules.screens.RawScreen#getContentType(org.apache.turbine.pipeline.PipelineData)
      */
+    @Override
     protected String getContentType(PipelineData pipelineData)
     {
         return JSONRPC_CONTENT_TYPE;
     }
 
     /**
-     * @see org.apache.turbine.modules.screens.RawScreen#doOutput(org.apache.turbine.util.RunData)
-     */
-
-    /**
      * Output the dynamic content.
      *
-     * @param data The RunData object.
-     * @deprecated Use PipelineData version instead.
+     * @param pipelineData The PipelineData object.
      */
-    protected void doOutput(RunData data) throws Exception
+    @Override
+    protected void doOutput(PipelineData pipelineData) throws Exception
     {
+        RunData data = getRunData(pipelineData);
         data.declareDirectResponse();
         HttpServletRequest request = data.getRequest();
-        
+
         String charset = request.getCharacterEncoding();
         if(charset == null)
         {

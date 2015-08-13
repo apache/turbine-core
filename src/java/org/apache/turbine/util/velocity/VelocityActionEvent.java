@@ -26,7 +26,6 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.velocity.TurbineVelocity;
-import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 /**
@@ -60,30 +59,6 @@ public abstract class VelocityActionEvent extends ActionEvent
      */
     protected abstract void initialize()
         throws Exception;
-
-    /**
-     * This overrides the default Action.perform() to execute the
-     * doEvent() method.  If that fails, then it will execute the
-     * doPerform() method instead.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data A Turbine RunData object.
-     * @exception Exception a generic exception.
-     */
-    @Deprecated
-    @Override
-    protected void perform(RunData data)
-            throws Exception
-    {
-        if (!initialized)
-        {
-            initialize();
-        }
-        ParameterParser pp = data.getParameters();
-        Context context = TurbineVelocity.getContext(data);
-        executeEvents(pp, new Class<?>[]{ RunData.class, Context.class },
-                new Object[]{ data, context });
-    }
 
     /**
      * This overrides the default Action.perform() to execute the

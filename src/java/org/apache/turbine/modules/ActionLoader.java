@@ -21,7 +21,6 @@ package org.apache.turbine.modules;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.RunData;
 
 /**
  * The purpose of this class is to allow one to load and execute
@@ -50,22 +49,6 @@ public class ActionLoader
 
     /**
      * Attempts to load and execute the external action.
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @param name Name of object that will execute the action.
-     * @exception Exception a generic exception.
-     */
-    @Deprecated
-    @Override
-    public void exec(RunData data, String name)
-            throws Exception
-    {
-        // Execute action
-        getAssembler(name).perform(data);
-    }
-
-    /**
-     * Attempts to load and execute the external action.
      *
      * @param pipelineData Turbine information.
      * @param name Name of object that will execute the action.
@@ -86,6 +69,7 @@ public class ActionLoader
      * @return An Action with the specified name, or null.
      * @exception Exception a generic exception.
      */
+    @Override
     public Action getAssembler(String name)
         throws Exception
     {
@@ -95,6 +79,7 @@ public class ActionLoader
     /**
      * @see org.apache.turbine.modules.Loader#getCacheSize()
      */
+    @Override
     public int getCacheSize()
     {
         return ActionLoader.getConfiguredCacheSize();

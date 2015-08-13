@@ -20,10 +20,7 @@ package org.apache.turbine.modules;
  */
 
 import org.apache.ecs.ConcreteElement;
-
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.InputFilterUtils;
-import org.apache.turbine.util.RunData;
 
 /**
  * This is the base class that defines what a Navigation module is.
@@ -38,10 +35,10 @@ public abstract class Navigation
 {
     /** Prefix for navigation related classes and templates */
     public static final String PREFIX = "navigations";
-    
+
     /** Property for the size of the navigation cache if caching is on */
     public static final String CACHE_SIZE_KEY = "navigation.cache.size";
-    
+
     /** The default size for the navigation cache */
     public static final int CACHE_SIZE_DEFAULT = 10;
 
@@ -51,6 +48,7 @@ public abstract class Navigation
     /**
      * @see org.apache.turbine.modules.Assembler#getPrefix()
      */
+    @Override
     public String getPrefix()
     {
         return PREFIX;
@@ -61,43 +59,11 @@ public abstract class Navigation
      * Subclasses override this method to store the navigation in
      * RunData or to write the navigation to the output stream
      * referenced in RunData.
-     * @deprecated Use PipelineData version instead
      *
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    protected abstract ConcreteElement doBuild(RunData data)
-        throws Exception;
-
-    /**
-     * Subclasses can override this method to add additional
-     * functionality.  This method is protected to force clients to
-     * use NavigationLoader to build a Navigation.
-     * @deprecated Use PipelineData version instead
-     * @param data Turbine information.
-     * @exception Exception a generic exception.
-     */
-    protected ConcreteElement build(RunData data)
-        throws Exception
-    {
-        return doBuild(data);
-    }
-
-    /**
-     * A subclass must override this method to build itself.
-     * Subclasses override this method to store the navigation in
-     * RunData or to write the navigation to the output stream
-     * referenced in RunData.
-     *
-     * @param data Turbine information.
-     * @exception Exception a generic exception.
-     */
-    protected ConcreteElement doBuild(PipelineData pipelineData)
-        throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        return doBuild(data);
-    }
+    protected abstract ConcreteElement doBuild(PipelineData pipelineData) throws Exception;
 
     /**
      * Subclasses can override this method to add additional
@@ -111,20 +77,5 @@ public abstract class Navigation
         throws Exception
     {
         return doBuild(pipelineData);
-    }
-
-
-    /**
-     * This function can/should be used in any screen that will output
-     * User entered text.  This will help prevent users from entering
-     * html (<SCRIPT>) tags that will get executed by the browser.
-     *
-     * @param s The string to prepare.
-     * @return A string with the input already prepared.
-     * @deprecated Use InputFilterUtils.prepareText(String s)
-     */
-    public static String prepareText(String s)
-    {
-        return InputFilterUtils.prepareText(s);
     }
 }
