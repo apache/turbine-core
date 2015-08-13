@@ -113,14 +113,13 @@ public class ConfigurationTest extends BaseTestCase
         }
     }
 
-    @SuppressWarnings("boxing")
     @Test
     public void testCreateTurbineWithIncludedConfiguration() throws Exception
     {
         String confPath = Turbine.getRealPath( "/conf/test/usersettings.properties" );
         try
         {
-            Configuration configuration = new PropertiesConfiguration(confPath);;
+            Configuration configuration = new PropertiesConfiguration(confPath);
             assertNotNull("No Configuration Object found!", configuration);
             assertFalse("Make sure we have values", configuration.isEmpty());
 
@@ -134,7 +133,8 @@ public class ConfigurationTest extends BaseTestCase
             throw e;
         }
     }
-    
+
+    @SuppressWarnings("boxing")
     @Test
     public void testCreateTurbineWithXMLBuilderConfiguration() throws Exception
     {
@@ -174,10 +174,6 @@ public class ConfigurationTest extends BaseTestCase
             // converts to URL, cft. RFC2396
             URL testURL = FileSystem.getDefaultFileSystem().locateFromURL(new File( Turbine.getApplicationRoot()).toURI().toString() , configurationRessourcePath);
             assertNotNull( "Should be a valid URL",testURL);
-        }
-        catch (Exception e)
-        {
-            throw e;
         }
         finally
         {
