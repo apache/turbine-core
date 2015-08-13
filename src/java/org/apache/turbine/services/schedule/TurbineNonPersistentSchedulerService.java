@@ -19,12 +19,11 @@ package org.apache.turbine.services.schedule;
  * under the License.
  */
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
-import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -32,7 +31,7 @@ import org.apache.turbine.util.TurbineException;
  * TurbineResources.properties file instead of the database.
  * The methods that operate on jobs ( get,add,update,remove )
  * only operate on the queue in memory and changes are not reflected
- * to the properties file which was used to initilize the jobs.
+ * to the properties file which was used to initialize the jobs.
  * An example is given below.  The job names are the class names that
  * extend ScheduledJob.
  *
@@ -62,92 +61,58 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:john@zenplex.com">John Thorhauer</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id: TurbineNonPersistentSchedulerService.java 534527 2007-05-02 16:10:59Z tv $
+ *
+ * @deprecated Use QuartzSchedulerService instead
  */
-public class TurbineNonPersistentSchedulerService
-        extends TorqueSchedulerService
+@Deprecated
+public class TurbineNonPersistentSchedulerService extends AbstractSchedulerService
 {
     /**
-     * Constructor.
-     *
-     * @exception TurbineException a generic exception.
+     * @see org.apache.turbine.services.schedule.AbstractSchedulerService#loadJobs()
      */
-    public TurbineNonPersistentSchedulerService()
-            throws TurbineException
-    {
-        super();
-    }
-
-    /**
-     * Called the first time the Service is used.<br>
-     *
-     * Load all the jobs from cold storage.  Add jobs to the queue
-     * (sorted in ascending order by runtime) and start the scheduler
-     * thread.
-     */
-    @SuppressWarnings("unchecked")
     @Override
-    public void init()
-            throws InitializationException
+    protected List<? extends JobEntry> loadJobs() throws TurbineException
     {
         Configuration conf = getConfiguration();
+        List<Object> jobProps = conf.getList("scheduler.jobs");
+        List<JobEntry> jobs = new ArrayList<JobEntry>();
 
-        try
+        // If there are scheduler.jobs defined then set up a job vector
+        // for the scheduleQueue
+        if (!jobProps.isEmpty())
         {
-            scheduleQueue = new JobQueue();
-            mainLoop = new MainLoop();
-
-            List<Object> jobProps = conf.getList("scheduler.jobs");
-            List<JobEntry> jobs = new Vector<JobEntry>();
-            // If there are scheduler.jobs defined then set up a job vector
-            // for the scheduleQueue
-            if (!jobProps.isEmpty())
+            for (int i = 0; i < jobProps.size(); i++)
             {
-                for (int i = 0; i < jobProps.size(); i++)
+                String jobName = (String)jobProps.get(i);
+                String jobPrefix = "scheduler.job." + jobName;
+
+                String jobId = conf.getString(jobPrefix + ".ID", null);
+                if (StringUtils.isEmpty(jobId))
                 {
-                    String jobName = (String)jobProps.get(i);
-                    String jobPrefix = "scheduler.job." + jobName;
-
-                    String jobId = conf.getString(jobPrefix + ".ID", null);
-                    if (StringUtils.isEmpty(jobId))
-                    {
-                        throw new Exception(
-                                "There is an error in the TurbineResources.properties file. \n"
-                                + jobPrefix + ".ID is not found.\n");
-                    }
-
-                    int sec = conf.getInt(jobPrefix + ".SECOND", -1);
-                    int min = conf.getInt(jobPrefix + ".MINUTE", -1);
-                    int hr = conf.getInt(jobPrefix + ".HOUR", -1);
-                    int wkday = conf.getInt(jobPrefix + ".WEEKDAY", -1);
-                    int dayOfMonth = conf.getInt(jobPrefix + ".DAY_OF_MONTH", -1);
-
-                    JobEntry je = new JobEntryNonPersistent(
-                            sec,
-                            min,
-                            hr,
-                            wkday,
-                            dayOfMonth,
-                            jobName);
-                    je.setJobId(Integer.parseInt(jobId));
-                    jobs.add(je);
-
+                    throw new TurbineException(
+                            "There is an error in the TurbineResources.properties file. \n"
+                            + jobPrefix + ".ID is not found.\n");
                 }
+
+                int sec = conf.getInt(jobPrefix + ".SECOND", -1);
+                int min = conf.getInt(jobPrefix + ".MINUTE", -1);
+                int hr = conf.getInt(jobPrefix + ".HOUR", -1);
+                int wkday = conf.getInt(jobPrefix + ".WEEKDAY", -1);
+                int dayOfMonth = conf.getInt(jobPrefix + ".DAY_OF_MONTH", -1);
+
+                JobEntry je = newJob(
+                        sec,
+                        min,
+                        hr,
+                        wkday,
+                        dayOfMonth,
+                        jobName);
+                je.setJobId(Integer.parseInt(jobId));
+                jobs.add(je);
             }
-
-            if (jobs.size() > 0)
-            {
-                scheduleQueue.batchLoad(jobs);
-            }
-
-            setEnabled(getConfiguration().getBoolean("enabled", true));
-            restart();
-
-            setInit(true);
         }
-        catch (Exception e)
-        {
-            throw new InitializationException("Could not initialize the scheduler service", e);
-        }
+
+        return jobs;
     }
 
     /**
@@ -173,19 +138,6 @@ public class TurbineNonPersistentSchedulerService
         JobEntry je = new JobEntryNonPersistent();
         je.setJobId(oid);
         return scheduleQueue.getJob(je);
-    }
-
-    /**
-     * Add a new job to the queue.
-     *
-     * @param je A JobEntry with the job to add.
-     * @throws TurbineException job could not be added
-     */
-    @Override
-    public void addJob(JobEntry je)
-            throws TurbineException
-    {
-        updateJob(je);
     }
 
     /**
