@@ -22,11 +22,8 @@ package org.apache.turbine.modules.navigations;
 
 
 import org.apache.ecs.ConcreteElement;
-
 import org.apache.turbine.modules.Navigation;
 import org.apache.turbine.pipeline.PipelineData;
-
-import org.apache.turbine.util.RunData;
 
 /**
  * Base Template Navigation.
@@ -43,69 +40,18 @@ public abstract class TemplateNavigation
      * method to perform any particular business logic and add
      * information to the context.
      *
-     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @throws Exception a generic exception.
      */
-    @Deprecated
-    protected abstract void doBuildTemplate(RunData data)
-            throws Exception;
-
-    /**
-     * WebMacro Navigations extending this class should overide this
-     * method to perform any particular business logic and add
-     * information to the context.
-     *
-     * @param data Turbine information.
-     * @throws Exception a generic exception.
-     */
-    protected void doBuildTemplate(PipelineData pipelineData)
-            throws Exception
-    {
-	    RunData data = getRunData(pipelineData);
-	    doBuildTemplate(data);
-    }
-
+    protected abstract void doBuildTemplate(PipelineData pipelineData) throws Exception;
 
     /**
      * This Builds the WebMacro/FreeMarker/etc template.
-     * @deprecated Use PipelineData version
-     * @param data Turbine information.
-     * @return A ConcreteElement.
-     * @throws Exception a generic exception.
-     */
-    @Deprecated
-    public abstract ConcreteElement buildTemplate(RunData data)
-            throws Exception;
-
-    /**
-     * This Builds the WebMacro/FreeMarker/etc template.
-     * Should revert to abstract when RunData goes.
      * @param pipelineData Turbine information.
      * @return A ConcreteElement.
      * @throws Exception a generic exception.
      */
-    public ConcreteElement buildTemplate(PipelineData pipelineData)
-    throws Exception
-	{
-	    RunData data = getRunData(pipelineData);
-	    return buildTemplate(data);
-	}
-
-    /**
-     * Calls doBuildTemplate() and then buildTemplate().
-     *
-     * @param data Turbine information.
-     * @return A ConcreteElement.
-     * @throws Exception a generic exception.
-     */
-    @Override
-    protected ConcreteElement doBuild(RunData data)
-            throws Exception
-    {
-        doBuildTemplate(data);
-        return buildTemplate(data);
-    }
+    public abstract ConcreteElement buildTemplate(PipelineData pipelineData) throws Exception;
 
     /**
      * Calls doBuildTemplate() and then buildTemplate().
@@ -118,8 +64,7 @@ public abstract class TemplateNavigation
     protected ConcreteElement doBuild(PipelineData pipelineData)
             throws Exception
     {
-	    RunData data = getRunData(pipelineData);
-        return doBuild(data);
+        doBuildTemplate(pipelineData);
+        return buildTemplate(pipelineData);
     }
-
 }

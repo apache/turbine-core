@@ -20,7 +20,6 @@ package org.apache.turbine.modules;
  */
 
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.RunData;
 
 /**
  * This is the base class that defines what a Page module is.
@@ -35,10 +34,10 @@ public abstract class Page
 {
     /** Prefix for page related classes and templates */
     public static final String PREFIX = "pages";
-    
+
     /** Property for the size of the page cache if caching is on */
     public static final String CACHE_SIZE_KEY = "page.cache.size";
-    
+
     /** The default size for the page cache */
     public static final int CACHE_SIZE_DEFAULT = 5;
 
@@ -48,6 +47,7 @@ public abstract class Page
     /**
      * @see org.apache.turbine.modules.Assembler#getPrefix()
      */
+    @Override
     public String getPrefix()
     {
         return PREFIX;
@@ -55,46 +55,12 @@ public abstract class Page
 
     /**
      * A subclass must override this method to build itself.
-     * Subclasses override this method to store the page in RunData or
-     * to write the page to the output stream referenced in RunData.
-     * @deprecated Use <code>doBuild(PipelineData pipelineData)</code> instead
+     * Subclasses override this method to store the page in PipelineData or
+     * to write the page to the output stream referenced in PipelineData.
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    protected abstract void doBuild(RunData data)
-        throws Exception;
-
-
-    /**
-     * A subclass must override this method to build itself.
-     * Subclasses override this method to store the page in RunData or
-     * to write the page to the output stream referenced in RunData.
-     * Should revert to abstract when RunData goes.
-     * @param data Turbine information.
-     * @exception Exception a generic exception.
-     */
-    protected void doBuild(PipelineData pipelineData)
-    	throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        doBuild(data);
-    }
-
-    /**
-     * Subclasses can override this method to add additional
-     * functionality.  This method is protected to force clients to
-     * use PageLoader to build a Page.
-     * @deprecated Use <code>build(PipelineData)</code> instead.
-     * @param data Turbine information.
-     * @exception Exception a generic exception.
-     */
-    protected void build(RunData data)
-        throws Exception
-    {
-        doBuild(data);
-    }
-
-
+    protected abstract void doBuild(PipelineData pipelineData) throws Exception;
 
     /**
      * Subclasses can override this method to add additional
@@ -109,5 +75,4 @@ public abstract class Page
     {
         doBuild(pipelineData);
     }
-
 }

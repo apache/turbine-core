@@ -73,14 +73,15 @@ public class LoginUser
      * the screenTemplate is set to this, otherwise the screen is set
      * to SCREEN_LOGIN
      *
-     * @param     data Turbine information.
+     * @param     pipelineData Turbine information.
      * @exception FulcrumSecurityException could not get instance of the
      *            anonymous user
      */
     @Override
-    public void doPerform(RunData data)
+    public void doPerform(PipelineData pipelineData)
             throws FulcrumSecurityException
     {
+        RunData data = getRunData(pipelineData);
         String username = data.getParameters().getString(CGI_USERNAME, "");
         String password = data.getParameters().getString(CGI_PASSWORD, "");
 
@@ -144,27 +145,6 @@ public class LoginUser
                 data.setScreen(conf.getString(TurbineConstants.SCREEN_LOGIN));
             }
         }
-    }
-
-
-    /**
-     * Updates the user's LastLogin timestamp, sets their state to
-     * "logged in" and calls RunData.setUser() .  If the user cannot
-     * be authenticated (database error?) the user is assigned
-     * anonymous status and, if tr.props contains a TEMPLATE_LOGIN,
-     * the screenTemplate is set to this, otherwise the screen is set
-     * to SCREEN_LOGIN
-     *
-     * @param     pipelineData Turbine information.
-     * @exception FulcrumSecurityException could not get instance of the
-     *            anonymous user
-     */
-    @Override
-    public void doPerform(PipelineData pipelineData)
-            throws FulcrumSecurityException
-    {
-        RunData data = getRunData(pipelineData);
-        doPerform(data);
     }
 
 }

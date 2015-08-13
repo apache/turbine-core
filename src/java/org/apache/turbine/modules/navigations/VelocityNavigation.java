@@ -59,25 +59,7 @@ public class VelocityNavigation
     private TemplateService templateService;
 
     /**
-     * Velocity Navigations extending this class should overide this
-     * method to perform any particular business logic and add
-     * information to the context.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @param context Context for web pages.
-     * @exception Exception, a generic exception.
-     */
-    @Deprecated
-    protected void doBuildTemplate(RunData data,
-                                   Context context)
-            throws Exception
-    {
-        // empty
-    }
-
-    /**
-     * Velocity Navigations extending this class should overide this
+     * Velocity Navigations extending this class should override this
      * method to perform any particular business logic and add
      * information to the context.
      *
@@ -97,24 +79,6 @@ public class VelocityNavigation
      * The actual method that you should override is the one with the
      * context in the parameter list.
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @exception Exception, a generic exception.
-     */
-    @Deprecated
-    @Override
-    protected void doBuildTemplate(RunData data)
-            throws Exception
-    {
-        doBuildTemplate(data, velocity.getContext(data));
-    }
-
-
-    /**
-     * Needs to be implemented to make TemplateNavigation like us.
-     * The actual method that you should override is the one with the
-     * context in the parameter list.
-     *
      * @param pipelineData Turbine information.
      * @exception Exception, a generic exception.
      */
@@ -126,33 +90,7 @@ public class VelocityNavigation
     }
 
     /**
-     * This Builds the Velocity template.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @return A ConcreteElement.
-     * @exception Exception, a generic exception.
-     */
-    @Deprecated
-    @Override
-    public ConcreteElement buildTemplate(RunData data)
-            throws Exception
-    {
-        Context context = velocity.getContext(data);
-
-        String navigationTemplate = data.getTemplateInfo().getNavigationTemplate();
-        String templateName
-                = templateService.getNavigationTemplateName(navigationTemplate);
-
-        StringElement output = new StringElement();
-        output.setFilterState(false);
-        output.addElement(
-                velocity.handleRequest(context, prefix + templateName));
-        return output;
-    }
-
-    /**
-     * This Builds the Velocity template.
+     * This builds the Velocity template.
      *
      * @param data Turbine information.
      * @return A ConcreteElement.
@@ -175,6 +113,4 @@ public class VelocityNavigation
                 velocity.handleRequest(context, prefix + templateName));
         return output;
     }
-
-
 }

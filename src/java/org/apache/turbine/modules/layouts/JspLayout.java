@@ -52,37 +52,6 @@ public class JspLayout
     /**
      * Method called by LayoutLoader.
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data RunData
-     * @throws Exception generic exception
-     */
-    @Deprecated
-    @Override
-    public void doBuild(RunData data)
-        throws Exception
-    {
-        data.getResponse().setContentType("text/html");
-        data.declareDirectResponse();
-
-        // variable to reference the screen in the layout template
-        data.getRequest()
-            .setAttribute(TurbineConstants.SCREEN_PLACEHOLDER,
-                          new JspScreenPlaceholder(data));
-
-        // variable to reference the navigations in the layout template
-        data.getRequest().setAttribute(
-            TurbineConstants.NAVIGATION_PLACEHOLDER,
-            new JspNavigation(data));
-
-        // Grab the layout template set in the TemplatePage.
-        String templateName = data.getTemplateInfo().getLayoutTemplate();
-
-        jspService.handleRequest(data, prefix + templateName, true);
-    }
-
-    /**
-     * Method called by LayoutLoader.
-     *
      * @param data PipelineData
      * @throws Exception generic exception
      */
@@ -109,5 +78,4 @@ public class JspLayout
 
         jspService.handleRequest(pipelineData, prefix + templateName, true);
     }
-
 }

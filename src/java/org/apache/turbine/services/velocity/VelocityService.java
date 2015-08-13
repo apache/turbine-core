@@ -26,9 +26,7 @@ import java.io.Writer;
 
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.Service;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
-
 import org.apache.velocity.context.Context;
 
 /**
@@ -85,7 +83,7 @@ public interface VelocityService
      * @param filename A String with the filename of the template.
      * @param out A OutputStream where we will write the process template as
      *        a String.
-     * @throws TurbineException Any exception trown while processing will be
+     * @throws TurbineException Any exception thrown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
     void handleRequest(Context context, String filename, OutputStream out)
@@ -99,7 +97,7 @@ public interface VelocityService
      * @param filename A String with the filename of the template.
      * @param writer A Writer where we will write the process template as
      *        a String.
-     * @throws TurbineException Any exception trown while processing will be
+     * @throws TurbineException Any exception thrown while processing will be
      *         wrapped into a TurbineException and rethrown.
      */
     void handleRequest(Context context, String filename, Writer writer)
@@ -120,26 +118,14 @@ public interface VelocityService
     Context getNewContext();
 
     /**
-     * Create a Context from the RunData object.  Adds a pointer to
-     * the RunData object to the Context so that RunData is available in
+     * Create a Context from the PipelineData object. Adds a pointer to
+     * the PipelineData object to the Context so that PipelineData is available in
      * the templates.
      *
-     * @param data The Turbine RunData object.
-     * @return A clone of the Context needed by Velocity.
-     */
-    Context getContext(RunData data);
-
-    /**
-     * Create a Context from the RunData object.  Adds a pointer to
-     * the RunData object to the Context so that RunData is available in
-     * the templates.
-     *
-     * @param data The Turbine RunData object.
+     * @param pipelineData The Turbine PipelineData object.
      * @return A clone of the Context needed by Velocity.
      */
     Context getContext(PipelineData pipelineData);
-
-
 
     /**
      * Performs post-request actions (releases context

@@ -20,10 +20,8 @@ package org.apache.turbine.services.assemblerbroker.util.java;
  * under the License.
  */
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -54,8 +52,7 @@ public abstract class JavaBaseFactory<T extends Assembler>
      * A cache for previously obtained Class instances, which we keep in order
      * to reduce the Class.forName() overhead (which can be sizable).
      */
-    private final Map<String, Class<T>> classCache =
-    	Collections.synchronizedMap(new HashMap<String, Class<T>>());
+    private final ConcurrentHashMap<String, Class<T>> classCache = new ConcurrentHashMap<String, Class<T>>();
 
     /**
      * Get an Assembler.
@@ -75,10 +72,9 @@ public abstract class JavaBaseFactory<T extends Assembler>
         {
             for (String p : packages)
             {
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
 
                 sb.append(p).append('.').append(packageName).append('.').append(name);
-
                 String className = sb.toString();
 
                 log.debug("Trying " + className);
@@ -86,9 +82,9 @@ public abstract class JavaBaseFactory<T extends Assembler>
                 try
                 {
                     Class<T> servClass = classCache.get(className);
-                    if(servClass == null)
+                    if (servClass == null)
                     {
-                        servClass = (Class<T>) Class.forName(className.toString());
+                        servClass = (Class<T>) Class.forName(className);
                         classCache.put(className, servClass);
                     }
                     assembler = servClass.newInstance();
@@ -141,6 +137,7 @@ public abstract class JavaBaseFactory<T extends Assembler>
      *
      * @return a Loader
      */
+    @Override
     public abstract Loader<T> getLoader();
 
     /**
@@ -148,6 +145,7 @@ public abstract class JavaBaseFactory<T extends Assembler>
      *
      * @return the size of the cache in bytes
      */
+    @Override
     public int getCacheSize()
     {
         return getLoader().getCacheSize();

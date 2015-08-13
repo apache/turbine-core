@@ -1,7 +1,6 @@
 package org.apache.turbine.services.jsonrpc;
 
 import java.io.CharArrayWriter;
-import java.text.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
 

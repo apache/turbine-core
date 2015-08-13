@@ -19,10 +19,9 @@ package org.apache.turbine.modules.layouts;
  * under the License.
  */
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.RunData;
 
 
 /**
@@ -36,14 +35,6 @@ public class TestVelocityOnlyLayout extends VelocityOnlyLayout
     public void doBuild(PipelineData pipelineData)
     {
         numberOfCalls++;
-        RunData data = getRunData(pipelineData);
-        assertNotNull("RunData object is null.", data);
-    }
-
-    @Override
-    public void doBuild(RunData runData)
-    {
-        numberOfCalls++;
-        assertNotNull("RunData object is null.", runData);
+        assertNotNull("PipelineData object is null.", pipelineData);
     }
 }

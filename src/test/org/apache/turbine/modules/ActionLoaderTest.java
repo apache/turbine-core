@@ -19,6 +19,11 @@ package org.apache.turbine.modules;
  * under the License.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -42,8 +47,6 @@ import org.junit.Test;
 
 import com.mockobjects.servlet.MockHttpServletResponse;
 import com.mockobjects.servlet.MockServletConfig;
-
-import static org.junit.Assert.*;
 
 /**
  * This test case is to verify whether exceptions in Velocity actions are
@@ -333,7 +336,6 @@ public class ActionLoaderTest extends BaseTestCase
         data.setAction("VelocityActionDoesNothing");
         int numberOfCalls = VelocityActionDoesNothing.numberOfCalls;
         int pipelineDataCalls = VelocityActionDoesNothing.pipelineDataCalls;
-        int runDataCalls = VelocityActionDoesNothing.runDataCalls;
         try
         {
             ActionLoader.getInstance().exec(pipelineData, data.getAction());
@@ -344,7 +346,6 @@ public class ActionLoaderTest extends BaseTestCase
             fail("Should not have thrown an exception.");
         }
         assertEquals(numberOfCalls + 1, VelocityActionDoesNothing.numberOfCalls);
-        assertEquals(runDataCalls, VelocityActionDoesNothing.runDataCalls);
         assertEquals(pipelineDataCalls + 1, VelocityActionDoesNothing.pipelineDataCalls);
     }
 

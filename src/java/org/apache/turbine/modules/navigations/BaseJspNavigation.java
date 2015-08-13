@@ -49,20 +49,6 @@ public class BaseJspNavigation
 
     /**
      * Method to be overridden by subclasses to include data in beans, etc.
-     * @deprecated Use PipelineData version instead.
-     * @param data the Rundata object
-     * @throws Exception a generic exception.
-     */
-    @Deprecated
-    @Override
-    protected void doBuildTemplate(RunData data)
-        throws Exception
-    {
-        // empty
-    }
-
-    /**
-     * Method to be overidden by subclasses to include data in beans, etc.
      *
      * @param data the PipelineData object
      * @throws Exception a generic exception.
@@ -72,29 +58,6 @@ public class BaseJspNavigation
         throws Exception
     {
         // empty
-    }
-
-
-
-    /**
-     * Method that sets up beans and forward the request to the JSP.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data the Rundata object
-     * @return null - the JSP sends the information
-     * @throws Exception a generic exception.
-     */
-    @Deprecated
-    @Override
-    public ConcreteElement buildTemplate(RunData data)
-        throws Exception
-    {
-        // get the name of the JSP we want to use
-        String templateName = data.getTemplateInfo().getNavigationTemplate();
-
-        // navigations are used by a layout
-        jspService.handleRequest(data, prefix + templateName);
-        return null;
     }
 
     /**
@@ -116,6 +79,4 @@ public class BaseJspNavigation
         jspService.handleRequest(pipelineData, prefix + templateName);
         return null;
     }
-
-
 }

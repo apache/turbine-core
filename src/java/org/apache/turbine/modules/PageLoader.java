@@ -21,7 +21,6 @@ package org.apache.turbine.modules;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.RunData;
 
 /**
  * The purpose of this class is to allow one to load and execute Page
@@ -50,22 +49,6 @@ public class PageLoader
 
     /**
      * Attempts to load and execute the external page.
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @param name Name of object that will execute the page.
-     * @exception Exception a generic exception.
-     */
-    @Deprecated
-    @Override
-    public void exec(RunData data, String name)
-            throws Exception
-    {
-        // Execute page
-        getAssembler(name).build(data);
-    }
-
-    /**
-     * Attempts to load and execute the external page.
      *
      * @param data Turbine information.
      * @param name Name of object that will execute the page.
@@ -87,6 +70,7 @@ public class PageLoader
      * @return A Screen with the specified name, or null.
      * @exception Exception a generic exception.
      */
+    @Override
     public Page getAssembler(String name)
         throws Exception
     {
@@ -96,6 +80,7 @@ public class PageLoader
     /**
      * @see org.apache.turbine.modules.Loader#getCacheSize()
      */
+    @Override
     public int getCacheSize()
     {
         return PageLoader.getConfiguredCacheSize();

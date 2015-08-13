@@ -22,7 +22,6 @@ package org.apache.turbine.modules;
 import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.RunData;
 
 /**
  * The purpose of this class is to allow one to load and execute
@@ -56,26 +55,6 @@ public class NavigationLoader
      * value.  This allows you to easily chain the execution of
      * Navigation modules together.
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @param name Name of object that will execute the navigation.
-     * @exception Exception a generic exception.
-     */
-    @Deprecated
-    public ConcreteElement eval(RunData data, String name)
-            throws Exception
-    {
-        // Execute Navigation
-        return getAssembler(name).build(data);
-    }
-
-    /**
-     * Attempts to load and execute the external Navigation. This is
-     * used when you want to execute a Navigation which returns its
-     * output via a MultiPartElement instead of out the data.getPage()
-     * value.  This allows you to easily chain the execution of
-     * Navigation modules together.
-     *
      * @param data Turbine information.
      * @param name Name of object that will execute the navigation.
      * @exception Exception a generic exception.
@@ -85,22 +64,6 @@ public class NavigationLoader
     {
         // Execute Navigation
         return getAssembler(name).build(pipelineData);
-    }
-
-
-    /**
-     * Attempts to load and execute the external Navigation.
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @param name Name of object instance.
-     * @exception Exception a generic exception.
-     */
-    @Deprecated
-    @Override
-    public void exec(RunData data, String name)
-            throws Exception
-    {
-        this.eval(data, name);
     }
 
     /**
@@ -117,7 +80,6 @@ public class NavigationLoader
         this.eval(pipelineData, name);
     }
 
-
     /**
      * Pulls out an instance of the object by name.  Name is just the
      * single name of the object.
@@ -126,6 +88,7 @@ public class NavigationLoader
      * @return A Layout with the specified name, or null.
      * @exception Exception a generic exception.
      */
+    @Override
     public Navigation getAssembler(String name)
         throws Exception
     {
@@ -135,6 +98,7 @@ public class NavigationLoader
     /**
      * @see org.apache.turbine.modules.Loader#getCacheSize()
      */
+    @Override
     public int getCacheSize()
     {
         return NavigationLoader.getConfiguredCacheSize();

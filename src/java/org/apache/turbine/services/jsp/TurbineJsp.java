@@ -23,7 +23,6 @@ package org.apache.turbine.services.jsp;
 
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -50,19 +49,7 @@ public abstract class TurbineJsp
      * Adds some convenience objects to the request.  For example an instance
      * of JspLink which can be used to generate links to other templates.
      *
-     * @deprecated Use the PipelineData version.
-     * @param data the turbine rundata object
-     */
-    public static void addDefaultObjects(RunData data)
-    {
-        getService().addDefaultObjects(data);
-    }
-
-    /**
-     * Adds some convenience objects to the request.  For example an instance
-     * of JspLink which can be used to generate links to other templates.
-     *
-     * @param data the turbine pipelinedData object
+     * @param pipelineData the Turbine PipelineData object
      */
     public static void addDefaultObjects(PipelineData pipelineData)
     {
@@ -72,38 +59,7 @@ public abstract class TurbineJsp
     /**
      * executes the JSP given by templateName.
      *
-     * @deprecated Use the PipelineData version.
-     * @param data A RunData Object
-     * @param templateName The template to execute
-     * @param isForward whether to perform a forward or include.
-     *
-     * @throws TurbineException If a problem occurred while executing the JSP
-     */
-    public static void handleRequest(RunData data, String templateName, boolean isForward)
-        throws TurbineException
-    {
-        getService().handleRequest(data, templateName, isForward);
-    }
-
-    /**
-     * executes the JSP given by templateName.
-     *
-     * @deprecated Use the PipelineData version.
-     * @param data A RunData Object
-     * @param templateName The template to execute
-     *
-     * @throws TurbineException If a problem occurred while executing the JSP
-     */
-    public static void handleRequest(RunData data, String templateName)
-        throws TurbineException
-    {
-        getService().handleRequest(data, templateName);
-    }
-
-    /**
-     * executes the JSP given by templateName.
-     *
-     * @param data A RunData Object
+     * @param pipelineData A PipelineData Object
      * @param templateName The template to execute
      * @param isForward whether to perform a forward or include.
      *
@@ -118,7 +74,7 @@ public abstract class TurbineJsp
     /**
      * executes the JSP given by templateName.
      *
-     * @param data A RunData Object
+     * @param pipelineData A PipelineData Object
      * @param templateName The template to execute
      *
      * @throws TurbineException If a problem occurred while executing the JSP

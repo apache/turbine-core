@@ -20,11 +20,10 @@ package org.apache.turbine.modules.actions;
  */
 
 
-import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.RunData;
-import org.apache.velocity.context.Context;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.pipeline.PipelineData;
+import org.apache.velocity.context.Context;
 /**
  * This action is used in testing the ActionLoader for Velocity templates.  Verifies
  * that exceptions are properly bubbled out.
@@ -36,21 +35,6 @@ import org.apache.commons.logging.LogFactory;
 public class VelocityActionThrowsException extends VelocityAction
 {
     private static Log log = LogFactory.getLog(VelocityActionThrowsException.class);
-    /**
-     *  Default action is throw an exception.
-     *
-     * @param  data           Current RunData information
-     * @param  context        Context to populate
-     * @exception  Exception  Thrown on error
-     * @deprecated
-     */
-    @Override
-    @Deprecated
-    public void doPerform(RunData data, Context context) throws Exception
-    {
-        log.debug("Calling doPerform(RunData)");
-        throw new Exception("From VelocityActionThrowsException.doPerform an Exception is always thrown!");
-    }
 
     /**
      *  Default action is throw an exception.
@@ -66,20 +50,6 @@ public class VelocityActionThrowsException extends VelocityAction
         throw new Exception("From VelocityActionThrowsException.doPerform an Exception is always thrown!");
     }
 
-
-
-    /**
-     * This action event also throws an exception.
-     * @param data
-     * @param context
-     * @throws Exception
-     */
-    public void doCauseexception(RunData data, Context context) throws Exception
-    {
-        log.debug("Calling doCauseexception(RunData)");
-        throw new Exception("From Action Event VelocityActionThrowsException.doCauseexception an Exception is always thrown!");
-    }
-
     /**
      * This action event also throws an exception.
      * @param data
@@ -91,6 +61,4 @@ public class VelocityActionThrowsException extends VelocityAction
         log.debug("Calling doCauseexception(PipelineData)");
         throw new Exception("From Action Event VelocityActionThrowsException.doCauseexception an Exception is always thrown!");
     }
-
-
 }

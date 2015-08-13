@@ -21,9 +21,7 @@ package org.apache.turbine.modules.screens;
 
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.RunData;
 
 /**
  * Directs errors at the Jsp error template defined in template.error.
@@ -37,29 +35,17 @@ public class JspErrorScreen
     extends BaseJspScreen
 {
     /**
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception a generic exception.
      */
-    protected void doBuildTemplate(RunData data)
-        throws Exception
-    {
-        String errorTemplate = Turbine.getConfiguration()
-            .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
-                       TurbineConstants.TEMPLATE_ERROR_JSP);
-
-        setTemplate(data, errorTemplate);
-    }
-
-    /**
-     * @param data Turbine information.
-     * @exception Exception a generic exception.
-     */
+    @Override
     protected void doBuildTemplate(PipelineData pipelineData)
         throws Exception
     {
-            RunData data = getRunData(pipelineData);
-            doBuildTemplate(data);
-    }
+        String errorTemplate = Turbine.getConfiguration()
+                .getString(TurbineConstants.TEMPLATE_ERROR_KEY,
+                           TurbineConstants.TEMPLATE_ERROR_JSP);
 
+        setTemplate(pipelineData, errorTemplate);
+    }
 }

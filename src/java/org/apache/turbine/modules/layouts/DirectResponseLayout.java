@@ -39,25 +39,6 @@ public class DirectResponseLayout extends Layout
     /**
      * Ensures that a direct response has been declared.
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @exception TurbineException if a direct response has not been declared.
-     */
-    @Deprecated
-    @Override
-    public void doBuild(RunData data)
-        throws Exception
-    {
-        if (!data.isOutSet())
-        {
-            throw new TurbineException(
-                "data.declareDirectResponse() has not been called");
-        }
-    }
-
-    /**
-     * Ensures that a direct response has been declared.
-     *
      * @param data Turbine information.
      * @exception TurbineException if a direct response has not been declared.
      */
@@ -66,8 +47,10 @@ public class DirectResponseLayout extends Layout
     throws Exception
     {
         RunData data = getRunData(pipelineData);
-        doBuild(data);
+        if (!data.isOutSet())
+        {
+            throw new TurbineException(
+                "data.declareDirectResponse() has not been called");
+        }
     }
-
-
 }

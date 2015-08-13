@@ -81,59 +81,6 @@ public class VelocityXslLayout extends Layout
     /**
      * Build the layout.  Also sets the ContentType and Locale headers
      * of the HttpServletResponse object.
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @exception Exception a generic exception.
-     */
-    @Deprecated
-    @Override
-    public void doBuild(RunData data)
-        throws Exception
-    {
-        // Get the context needed by Velocity.
-        Context context = velocityService.getContext(data);
-
-        data.getResponse().setContentType("text/html");
-
-        String screenName = data.getScreen();
-
-        log.debug("Loading Screen " + screenName);
-
-        // First, generate the screen and put it in the context so
-        // we can grab it the layout template.
-        ConcreteElement results =
-            screenLoader.eval(data, screenName);
-
-        String returnValue = (results == null) ? "" : results.toString();
-
-        // variable for the screen in the layout template
-        context.put(TurbineConstants.SCREEN_PLACEHOLDER, returnValue);
-
-        // variable to reference the navigation screen in the layout template
-        context.put(TurbineConstants.NAVIGATION_PLACEHOLDER,
-                    new TemplateNavigation(data));
-
-        // Grab the layout template set in the VelocityPage.
-        // If null, then use the default layout template
-        // (done by the TemplateInfo object)
-        String templateName = data.getTemplateInfo().getLayoutTemplate();
-
-        log.debug("Now trying to render layout " + templateName);
-
-        // Now, generate the layout template.
-        String temp = velocityService.handleRequest(context,
-                prefix + templateName);
-
-        // Finally we do a transformation and send the result
-        // back to the browser
-        xsltService.transform(
-            data.getTemplateInfo().getScreenTemplate(),
-                new StringReader(temp), data.getResponse().getWriter());
-    }
-
-    /**
-     * Build the layout.  Also sets the ContentType and Locale headers
-     * of the HttpServletResponse object.
      *
      * @param data Turbine information.
      * @exception Exception a generic exception.

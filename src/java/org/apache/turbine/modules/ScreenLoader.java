@@ -24,7 +24,6 @@ package org.apache.turbine.modules;
 import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.RunData;
 
 /**
  * The purpose of this class is to allow one to load and execute
@@ -58,26 +57,6 @@ public class ScreenLoader
      * This allows you to easily chain the execution of Screen modules
      * together.
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @param name Name of object that will execute the screen.
-     * @exception Exception a generic exception.
-     */
-    @Deprecated
-    public ConcreteElement eval(RunData data, String name)
-            throws Exception
-    {
-        // Execute screen
-        return getAssembler(name).build(data);
-    }
-
-    /**
-     * Attempts to load and execute the external Screen. This is used
-     * when you want to execute a Screen which returns its output via
-     * a MultiPartElement instead of out the data.getPage() value.
-     * This allows you to easily chain the execution of Screen modules
-     * together.
-     *
      * @param data Turbine information.
      * @param name Name of object that will execute the screen.
      * @exception Exception a generic exception.
@@ -87,23 +66,6 @@ public class ScreenLoader
     {
         // Execute screen
         return getAssembler(name).build(pipelineData);
-    }
-
-    /**
-     * Attempts to load and execute the Screen. This is used when you
-     * want to execute a Screen which returns its output via the
-     * data.getPage() object.
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @param name Name of object that will execute the screen.
-     * @exception Exception a generic exception.
-     */
-    @Deprecated
-    @Override
-    public void exec(RunData data, String name)
-            throws Exception
-    {
-        this.eval(data, name);
     }
 
     /**
@@ -130,6 +92,7 @@ public class ScreenLoader
      * @return A Screen with the specified name, or null.
      * @exception Exception a generic exception.
      */
+    @Override
     public Screen getAssembler(String name)
         throws Exception
     {
@@ -139,6 +102,7 @@ public class ScreenLoader
     /**
      * @see org.apache.turbine.modules.Loader#getCacheSize()
      */
+    @Override
     public int getCacheSize()
     {
         return ScreenLoader.getConfiguredCacheSize();

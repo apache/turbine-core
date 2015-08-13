@@ -155,7 +155,7 @@ public class DefaultTurbineRunData
     /** A holder for stack trace. */
     private String stackTrace;
 
-    /** A holder ofr stack trace exception. */
+    /** A holder for stack trace exception. */
     private Throwable stackTraceException;
 
     /**
@@ -308,6 +308,7 @@ public class DefaultTurbineRunData
     /**
      * Recycles the object by removing its disposed flag.
      */
+    @Override
     public void recycle()
     {
         disposed = false;
@@ -316,6 +317,7 @@ public class DefaultTurbineRunData
     /**
      * Disposes a run data object.
      */
+    @Override
     public void dispose()
     {
         // empty pipelinedata map
@@ -353,11 +355,12 @@ public class DefaultTurbineRunData
      *
      * @return a parameter parser.
      */
+    @Override
     public ParameterParser getParameters()
     {
         // Parse the parameters first, if not yet done.
-        ParameterParser parameters = get(Turbine.class, ParameterParser.class);
-        HttpServletRequest request = get(Turbine.class, HttpServletRequest.class);
+        ParameterParser parameters = getParameterParser();
+        HttpServletRequest request = getRequest();
 
         if ((parameters != null) &&
                 (parameters.getRequest() != request))
@@ -373,11 +376,12 @@ public class DefaultTurbineRunData
      *
      * @return a cookie parser.
      */
+    @Override
     public CookieParser getCookies()
     {
         // Parse the cookies first, if not yet done.
-        CookieParser cookies = get(Turbine.class, CookieParser.class);
-        HttpServletRequest request = get(Turbine.class, HttpServletRequest.class);
+        CookieParser cookies = getCookieParser();
+        HttpServletRequest request = getRequest();
 
         if ((cookies != null) &&
                 (cookies.getRequest() != request))
@@ -393,6 +397,7 @@ public class DefaultTurbineRunData
      *
      * @return the request.
      */
+    @Override
     public HttpServletRequest getRequest()
     {
         return get(Turbine.class, HttpServletRequest.class);
@@ -403,6 +408,7 @@ public class DefaultTurbineRunData
      *
      * @return the response.
      */
+    @Override
     public HttpServletResponse getResponse()
     {
         return get(Turbine.class, HttpServletResponse.class);
@@ -413,6 +419,7 @@ public class DefaultTurbineRunData
      *
      * @return the session.
      */
+    @Override
     public HttpSession getSession()
     {
         return getRequest().getSession();
@@ -423,6 +430,7 @@ public class DefaultTurbineRunData
      *
      * @return the configuration.
      */
+    @Override
     public ServletConfig getServletConfig()
     {
         return get(Turbine.class, ServletConfig.class);
@@ -433,6 +441,7 @@ public class DefaultTurbineRunData
      *
      * @return the context.
      */
+    @Override
     public ServletContext getServletContext()
     {
         return get(Turbine.class, ServletContext.class);
@@ -443,6 +452,7 @@ public class DefaultTurbineRunData
      *
      * @return the access control list.
      */
+    @Override
     public <A extends AccessControlList> A getACL()
     {
         @SuppressWarnings("unchecked")
@@ -455,6 +465,7 @@ public class DefaultTurbineRunData
      *
      * @param acl an access control list.
      */
+    @Override
     public void setACL(AccessControlList acl)
     {
         get(Turbine.class).put(AccessControlList.class, acl);
@@ -466,6 +477,7 @@ public class DefaultTurbineRunData
      * @return true if the page is set.
      * @deprecated no replacement planned, ECS is no longer a requirement
      */
+    @Override
     @Deprecated
     public boolean isPageSet()
     {
@@ -478,6 +490,7 @@ public class DefaultTurbineRunData
      * @return a document.
      * @deprecated no replacement planned, ECS is no longer a requirement
      */
+    @Override
     @Deprecated
     public Document getPage()
     {
@@ -494,6 +507,7 @@ public class DefaultTurbineRunData
      *
      * @return true if an action has been defined.
      */
+    @Override
     public boolean hasAction()
     {
         return (StringUtils.isNotEmpty(this.action)
@@ -507,6 +521,7 @@ public class DefaultTurbineRunData
      *
      * @return a string, "" if null.
      */
+    @Override
     public String getAction()
     {
         return (hasAction() ? this.action : "");
@@ -517,6 +532,7 @@ public class DefaultTurbineRunData
      *
      * @param action a atring.
      */
+    @Override
     public void setAction(String action)
     {
         this.action = action;
@@ -535,6 +551,7 @@ public class DefaultTurbineRunData
      * @return a string.
      */
 
+    @Override
     public String getLayout()
     {
         if (this.layout == null)
@@ -560,6 +577,7 @@ public class DefaultTurbineRunData
      *
      * @param layout a string.
      */
+    @Override
     public void setLayout(String layout)
     {
         this.layout = layout;
@@ -571,6 +589,7 @@ public class DefaultTurbineRunData
      *
      * @return a string.
      */
+    @Override
     public String getLayoutTemplate()
     {
         return getTemplateInfo().getLayoutTemplate();
@@ -585,6 +604,7 @@ public class DefaultTurbineRunData
      *
      * @param layout a layout template.
      */
+    @Override
     public void setLayoutTemplate(String layout)
     {
         getTemplateInfo().setLayoutTemplate(layout);
@@ -595,6 +615,7 @@ public class DefaultTurbineRunData
      *
      * @return true if a screen has been defined.
      */
+    @Override
     public boolean hasScreen()
     {
         return StringUtils.isNotEmpty(this.screen);
@@ -605,6 +626,7 @@ public class DefaultTurbineRunData
      *
      * @return a string.
      */
+    @Override
     public String getScreen()
     {
         return (hasScreen() ? this.screen : "");
@@ -615,6 +637,7 @@ public class DefaultTurbineRunData
      *
      * @param screen a string.
      */
+    @Override
     public void setScreen(String screen)
     {
         this.screen = screen;
@@ -626,6 +649,7 @@ public class DefaultTurbineRunData
      *
      * @return a string.
      */
+    @Override
     public String getScreenTemplate()
     {
         return getTemplateInfo().getScreenTemplate();
@@ -639,6 +663,7 @@ public class DefaultTurbineRunData
      *
      * @param screen a screen template.
      */
+    @Override
     public void setScreenTemplate(String screen)
     {
         getTemplateInfo().setScreenTemplate(screen);
@@ -649,6 +674,7 @@ public class DefaultTurbineRunData
      *
      * @return the template encoding or null if not specified.
      */
+    @Override
     public String getTemplateEncoding()
     {
         return templateEncoding;
@@ -659,6 +685,7 @@ public class DefaultTurbineRunData
      *
      * @param encoding the template encoding.
      */
+    @Override
     public void setTemplateEncoding(String encoding)
     {
         templateEncoding = encoding;
@@ -669,6 +696,7 @@ public class DefaultTurbineRunData
      *
      * @return a template info.
      */
+    @Override
     public TemplateInfo getTemplateInfo()
     {
         TemplateInfo templateInfo = get(Turbine.class, TemplateInfo.class);
@@ -687,6 +715,7 @@ public class DefaultTurbineRunData
      *
      * @return true if a message has been defined.
      */
+    @Override
     public boolean hasMessage()
     {
         StringElement message = get(Turbine.class, StringElement.class);
@@ -700,6 +729,7 @@ public class DefaultTurbineRunData
      *
      * @return a string.
      */
+    @Override
     public String getMessage()
     {
         StringElement message = get(Turbine.class, StringElement.class);
@@ -711,6 +741,7 @@ public class DefaultTurbineRunData
      *
      * @param msg a string.
      */
+    @Override
     public void setMessage(String msg)
     {
         get(Turbine.class).put(StringElement.class, new StringElement(msg));
@@ -722,6 +753,7 @@ public class DefaultTurbineRunData
      *
      * @param msg a string.
      */
+    @Override
     public void addMessage(String msg)
     {
         addMessage(new StringElement(msg));
@@ -733,6 +765,7 @@ public class DefaultTurbineRunData
      *
      * @return a string element.
      */
+    @Override
     public StringElement getMessageAsHTML()
     {
         return get(Turbine.class, StringElement.class);
@@ -743,6 +776,7 @@ public class DefaultTurbineRunData
      *
      * @param msg an element.
      */
+    @Override
     public void setMessage(Element msg)
     {
         get(Turbine.class).put(StringElement.class, new StringElement(msg));
@@ -754,6 +788,7 @@ public class DefaultTurbineRunData
      *
      * @param msg an element.
      */
+    @Override
     public void addMessage(Element msg)
     {
         if (msg != null)
@@ -774,6 +809,7 @@ public class DefaultTurbineRunData
     /**
      * Unsets the message for the request.
      */
+    @Override
     public void unsetMessage()
     {
         get(Turbine.class).remove(StringElement.class);
@@ -785,6 +821,7 @@ public class DefaultTurbineRunData
      *
      * @return a FormMessages.
      */
+    @Override
     public FormMessages getMessages()
     {
         FormMessages messages = get(Turbine.class, FormMessages.class);
@@ -802,6 +839,7 @@ public class DefaultTurbineRunData
      *
      * @param msgs A FormMessages.
      */
+    @Override
     public void setMessages(FormMessages msgs)
     {
         get(Turbine.class).put(FormMessages.class, msgs);
@@ -812,6 +850,7 @@ public class DefaultTurbineRunData
      *
      * @return a string.
      */
+    @Override
     public String getTitle()
     {
         return (this.title == null ? "" : this.title);
@@ -822,6 +861,7 @@ public class DefaultTurbineRunData
      *
      * @param title a string.
      */
+    @Override
     public void setTitle(String title)
     {
         this.title = title;
@@ -832,6 +872,7 @@ public class DefaultTurbineRunData
      *
      * @return true if a user exists in this session.
      */
+    @Override
     public boolean userExists()
     {
         User user = getUserFromSession();
@@ -847,6 +888,7 @@ public class DefaultTurbineRunData
      *
      * @return a user.
      */
+    @Override
     public <T extends User> T getUser()
     {
         @SuppressWarnings("unchecked")
@@ -859,6 +901,7 @@ public class DefaultTurbineRunData
      *
      * @param user a user.
      */
+    @Override
     public void setUser(User user)
     {
         log.debug("user set: " + user.getName());
@@ -871,6 +914,7 @@ public class DefaultTurbineRunData
      *
      * @return a user.
      */
+    @Override
     public <T extends User> T getUserFromSession()
     {
         return getUserFromSession(getSession());
@@ -881,6 +925,7 @@ public class DefaultTurbineRunData
      *
      * @return true if user was invalidated.
      */
+    @Override
     public boolean removeUserFromSession()
     {
         return removeUserFromSession(getSession());
@@ -892,6 +937,7 @@ public class DefaultTurbineRunData
      * @return true if out is set.
      * @deprecated no replacement planned, response writer will not be cached
      */
+    @Override
     @Deprecated
     public boolean isOutSet()
     {
@@ -905,6 +951,7 @@ public class DefaultTurbineRunData
      * @return a print writer.
      * @throws IOException
      */
+    @Override
     public PrintWriter getOut()
             throws IOException
     {
@@ -924,6 +971,7 @@ public class DefaultTurbineRunData
      * mechanisms that may call res.getWriter() themselves
      * (such as JSP.)
      */
+    @Override
     public void declareDirectResponse()
     {
         outSet = true;
@@ -939,6 +987,7 @@ public class DefaultTurbineRunData
      *
      * @return the locale.
      */
+    @Override
     public Locale getLocale()
     {
         Locale locale = get(Turbine.class, Locale.class);
@@ -954,6 +1003,7 @@ public class DefaultTurbineRunData
      *
      * @param locale the new locale.
      */
+    @Override
     public void setLocale(Locale locale)
     {
         get(Turbine.class).put(Locale.class, locale);
@@ -982,6 +1032,7 @@ public class DefaultTurbineRunData
      *
      * @return the name of the charset or null.
      */
+    @Override
     public String getCharSet()
     {
         log.debug("getCharSet()");
@@ -1002,6 +1053,7 @@ public class DefaultTurbineRunData
      *
      * @param charSet the name of the new charset.
      */
+    @Override
     public void setCharSet(String charSet)
     {
         log.debug("setCharSet(" + charSet + ")");
@@ -1019,6 +1071,7 @@ public class DefaultTurbineRunData
      *
      * @return the content type or an empty string.
      */
+    @Override
     public String getContentType()
     {
         if (StringUtils.isNotEmpty(contentType))
@@ -1046,6 +1099,7 @@ public class DefaultTurbineRunData
      *
      * @param contentType a string.
      */
+    @Override
     public void setContentType(String contentType)
     {
         this.contentType = contentType;
@@ -1057,6 +1111,7 @@ public class DefaultTurbineRunData
      *
      * @return a string, "" if null.
      */
+    @Override
     public String getRedirectURI()
     {
         return (this.redirectURI == null ? "" : redirectURI);
@@ -1068,6 +1123,7 @@ public class DefaultTurbineRunData
      *
      * @param ruri a string.
      */
+    @Override
     public void setRedirectURI(String ruri)
     {
         this.redirectURI = ruri;
@@ -1078,6 +1134,7 @@ public class DefaultTurbineRunData
      *
      * @return the status.
      */
+    @Override
     public int getStatusCode()
     {
         return statusCode;
@@ -1088,6 +1145,7 @@ public class DefaultTurbineRunData
      *
      * @param statusCode the status.
      */
+    @Override
     public void setStatusCode(int statusCode)
     {
         this.statusCode = statusCode;
@@ -1098,6 +1156,7 @@ public class DefaultTurbineRunData
      *
      * @return a SystemError[].
      */
+    @Override
     public SystemError[] getSystemErrors()
     {
         SystemError[] result = new SystemError[errors.size()];
@@ -1110,6 +1169,7 @@ public class DefaultTurbineRunData
      *
      * @param err a system error.
      */
+    @Override
     public void setSystemError(SystemError err)
     {
         this.errors.add(err);
@@ -1120,6 +1180,7 @@ public class DefaultTurbineRunData
      *
      * @return a hashtable.
      */
+    @Override
     public Map<String, Context> getJNDIContexts()
     {
         if (jndiContexts == null)
@@ -1134,6 +1195,7 @@ public class DefaultTurbineRunData
      *
      * @param contexts a hashtable.
      */
+    @Override
     public void setJNDIContexts(Map<String, Context> contexts)
     {
         this.jndiContexts = contexts;
@@ -1144,6 +1206,7 @@ public class DefaultTurbineRunData
      *
      * @return a string.
      */
+    @Override
     public String getServerScheme()
     {
         return getServerData().getServerScheme();
@@ -1154,6 +1217,7 @@ public class DefaultTurbineRunData
      *
      * @return a string.
      */
+    @Override
     public String getServerName()
     {
         return getServerData().getServerName();
@@ -1164,6 +1228,7 @@ public class DefaultTurbineRunData
      *
      * @return an int.
      */
+    @Override
     public int getServerPort()
     {
         return getServerData().getServerPort();
@@ -1174,6 +1239,7 @@ public class DefaultTurbineRunData
      *
      * @return a string.
      */
+    @Override
     public String getContextPath()
     {
         return getServerData().getContextPath();
@@ -1184,6 +1250,7 @@ public class DefaultTurbineRunData
      *
      * @return a string.
      */
+    @Override
     public String getScriptName()
     {
         return getServerData().getScriptName();
@@ -1194,6 +1261,7 @@ public class DefaultTurbineRunData
      *
      * @return server data.
      */
+    @Override
     public ServerData getServerData()
     {
         return get(Turbine.class, ServerData.class);
@@ -1204,6 +1272,7 @@ public class DefaultTurbineRunData
      *
      * @return a string.
      */
+    @Override
     public String getRemoteAddr()
     {
         if (this.remoteAddr == null)
@@ -1219,6 +1288,7 @@ public class DefaultTurbineRunData
      *
      * @return a string.
      */
+    @Override
     public String getRemoteHost()
     {
         if (this.remoteHost == null)
@@ -1236,6 +1306,7 @@ public class DefaultTurbineRunData
      *
      * @return a string.
      */
+    @Override
     public String getUserAgent()
     {
         if (StringUtils.isEmpty(userAgent))
@@ -1250,6 +1321,7 @@ public class DefaultTurbineRunData
      * Pulls a user object from the session and increments the access
      * counter and sets the last access date for the object.
      */
+    @Override
     public void populate()
     {
         User user = getUserFromSession();
@@ -1266,6 +1338,7 @@ public class DefaultTurbineRunData
     /**
      * Saves a user object into the session.
      */
+    @Override
     public void save()
     {
         getSession().setAttribute(User.SESSION_KEY, getUser());
@@ -1276,6 +1349,7 @@ public class DefaultTurbineRunData
      *
      * @return the stack trace.
      */
+    @Override
     public String getStackTrace()
     {
         return stackTrace;
@@ -1286,6 +1360,7 @@ public class DefaultTurbineRunData
      *
      * @return the stack exception.
      */
+    @Override
     public Throwable getStackTraceException()
     {
         return stackTraceException;
@@ -1297,22 +1372,11 @@ public class DefaultTurbineRunData
      * @param trace the stack trace.
      * @param exp the exception.
      */
+    @Override
     public void setStackTrace(String trace, Throwable exp)
     {
         stackTrace = trace;
         stackTraceException = exp;
-    }
-
-    /**
-     * Gets a Map of debug variables.
-     *
-     * @return a Map of debug variables.
-     * @deprecated use {@link #getDebugVariables} instead
-     */
-    @Deprecated
-    public Map<String, Object> getVarDebug()
-    {
-        return debugVariables;
     }
 
     /**
@@ -1323,6 +1387,7 @@ public class DefaultTurbineRunData
      * @param name name of the variable
      * @param value value of the variable.
      */
+    @Override
     public void setDebugVariable(String name, Object value)
     {
         this.debugVariables.put(name, value);
@@ -1333,6 +1398,7 @@ public class DefaultTurbineRunData
      *
      * @return a Map of debug variables.
      */
+    @Override
     public Map<String, Object> getDebugVariables()
     {
         return this.debugVariables;
@@ -1352,19 +1418,10 @@ public class DefaultTurbineRunData
      *       no object and thus the default or even an undefined encoding
      *       instead of the actual request character encoding).
      */
+    @Override
     public ParameterParser getParameterParser()
     {
         return get(Turbine.class, ParameterParser.class);
-    }
-
-    /**
-     * Sets the parameter parser.
-     *
-     * @param parser a parameter parser.
-     */
-    public void setParameterParser(ParameterParser parser)
-    {
-        get(Turbine.class).put(ParameterParser.class, parser);
     }
 
     /**
@@ -1372,68 +1429,10 @@ public class DefaultTurbineRunData
      *
      * @return the cookie parser.
      */
+    @Override
     public CookieParser getCookieParser()
     {
         return get(Turbine.class, CookieParser.class);
-    }
-
-    /**
-     * Sets the cookie parser.
-     *
-     * @param parser a cookie parser.
-     */
-    public void setCookieParser(CookieParser parser)
-    {
-        get(Turbine.class).put(CookieParser.class, parser);
-    }
-
-    /**
-     * Sets the servlet request.
-     *
-     * @param req a request.
-     */
-    public void setRequest(HttpServletRequest req)
-    {
-        get(Turbine.class).put(HttpServletRequest.class, req);
-    }
-
-    /**
-     * Sets the servlet response.
-     *
-     * @param res a response.
-     */
-    public void setResponse(HttpServletResponse res)
-    {
-        get(Turbine.class).put(HttpServletResponse.class, res);
-    }
-
-    /**
-     * Sets the servlet configuration used during servlet init.
-     *
-     * @param config a configuration.
-     */
-    public void setServletConfig(ServletConfig config)
-    {
-        get(Turbine.class).put(ServletConfig.class, config);
-
-        if (config == null)
-        {
-            get(Turbine.class).put(ServletContext.class, null);
-        }
-        else
-        {
-            get(Turbine.class).put(ServletContext.class, config.getServletContext());
-        }
-    }
-
-    /**
-     * Sets the server data of the request.
-     *
-     * @param serverData server data.
-     */
-    public void setServerData(ServerData serverData)
-    {
-        get(Turbine.class).put(ServerData.class, serverData);
     }
 
     // ********************
@@ -1446,6 +1445,7 @@ public class DefaultTurbineRunData
      * @param out a print writer.
      * @deprecated no replacement planned, response writer will not be cached
      */
+    @Deprecated
     protected void setOut(PrintWriter out)
     {
         this.out = out;
@@ -1506,6 +1506,7 @@ public class DefaultTurbineRunData
      *
      * @return true, if the object is disposed.
      */
+    @Override
     public boolean isDisposed()
     {
         return disposed;

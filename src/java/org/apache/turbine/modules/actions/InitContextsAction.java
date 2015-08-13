@@ -53,15 +53,14 @@ public class InitContextsAction
      * TurbineResources instance (if any) into the data.contexts
      * Hashtable.
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data The RunData object for the current request.
+     * @param pipelineData The PipelineRunData object for the current request.
      * @exception NamingException could not create InitialContext
      */
-    @Deprecated
     @Override
-    public void doPerform(RunData data)
-            throws NamingException
+    public void doPerform(PipelineData pipelineData)
+    throws NamingException
     {
+        RunData data = getRunData(pipelineData);
         // Context properties are specified in lines in the properties
         // file that begin with "context.contextname.", allowing
         // multiple named contexts to be used.  Everything after the
@@ -87,7 +86,7 @@ public class InitContextsAction
                 contextProps = new Properties();
             }
             contextProps.put(key.substring(end + 1),
-                             conf.getString(key));
+                    conf.getString(key));
             contextPropsList.put(contextName, contextProps);
         }
 
@@ -97,22 +96,4 @@ public class InitContextsAction
             data.getJNDIContexts().put(contextProps.getKey(), context);
         }
     }
-
-    /**
-     * This action will place the contexts defined in the
-     * TurbineResources instance (if any) into the data.contexts
-     * Hashtable.
-     *
-     * @param pipelineData The PipelineRunData object for the current request.
-     * @exception NamingException could not create InitialContext
-     */
-    @Override
-    public void doPerform(PipelineData pipelineData)
-    throws NamingException
-    {
-        RunData data = getRunData(pipelineData);
-        doPerform(data);
-    }
-
-
 }

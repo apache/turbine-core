@@ -25,6 +25,10 @@
 
   <body>
     <release version="4.0-M2" date="in Subversion">
+      <action type="remove" dev="tv">
+        Remove all deprecated methods using RunData as a parameter to clean up the API
+        Further cleanup is needed.
+      </action>
       <action type="add" dev="tv">
         Add QuartzSchedulerService
       </action>

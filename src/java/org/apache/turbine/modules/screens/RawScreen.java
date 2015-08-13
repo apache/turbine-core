@@ -33,10 +33,10 @@ import org.apache.turbine.util.RunData;
  * that output raw binary data.  For example, it may be extended into
  * a Screen that outputs a SVG file or a SWF (Flash Player format)
  * movie.  The only thing one has to do is to implement the two
- * methods <code>getContentType(RunData data)</code> and
- * <code>doOutput(RunData data)</code> (see below).
+ * methods <code>getContentType(PipelineData data)</code> and
+ * <code>doOutput(PipelineData data)</code> (see below).
  *
- * <p> You migth want to take a look at the ImageServer screen class
+ * <p> You might want to take a look at the ImageServer screen class
  * contained in the TDK.<br>
  *
  * @author <a href="mailto:rkoenig@chez.com">Regis Koenig</a>
@@ -49,106 +49,47 @@ public abstract class RawScreen extends Screen
      * Build the Screen.  This method actually makes a call to the
      * doOutput() method in order to generate the Screen content.
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */
-    protected final ConcreteElement doBuild(RunData data)
-            throws Exception
-    {
-        data.getResponse().setContentType(getContentType(data));
-        data.declareDirectResponse();
-        doOutput(data);
-        return null;
-    }
-
-    /**
-     * Build the Screen.  This method actually makes a call to the
-     * doOutput() method in order to generate the Screen content.
-     *
-     * @param data Turbine information.
-     * @return A ConcreteElement.
-     * @exception Exception, a generic exception.
-     */
+    @Override
     protected final ConcreteElement doBuild(PipelineData pipelineData)
             throws Exception
     {
         RunData data = getRunData(pipelineData);
-        return doBuild(data);
-    }
-
-
-    /**
-     * Set the content type.  This method should be overridden to
-     * actually set the real content-type header of the output.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @return A String with the content type.
-     */
-    protected abstract String getContentType(RunData data);
-
-    /**
-     * Set the content type.  This method should be overridden to
-     * actually set the real content-type header of the output.
-     *
-     * @param data Turbine information.
-     * @return A String with the content type.
-     */
-    protected String getContentType(PipelineData pipelineData)
-    {
-        RunData data = getRunData(pipelineData);
-        return getContentType(data);
-    }
-
-
-    /**
-     * Actually output the dynamic content.  The OutputStream can be
-     * accessed like this: <pre>OutputStream out =
-     * data.getResponse().getOutputStream();</pre>.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @exception Exception, a generic exception.
-     */
-    protected abstract void doOutput(RunData data)
-            throws Exception;
-
-    /**
-     * Actually output the dynamic content.  The OutputStream can be
-     * accessed like this: <pre>OutputStream out =
-     * data.getResponse().getOutputStream();</pre>.
-     *
-     * @param data Turbine information.
-     * @exception Exception, a generic exception.
-     */
-    protected void doOutput(PipelineData pipelineData)
-            throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        doOutput(data);
-    }
-
-
-    /**
-     * The layout must be set to null.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @return A null String.
-     */
-    public final String getLayout(RunData data)
-    {
+        data.getResponse().setContentType(getContentType(pipelineData));
+        data.declareDirectResponse();
+        doOutput(pipelineData);
         return null;
     }
 
     /**
+     * Set the content type.  This method should be overridden to
+     * actually set the real content-type header of the output.
+     *
+     * @param pipelineData Turbine information.
+     * @return A String with the content type.
+     */
+    protected abstract String getContentType(PipelineData pipelineData);
+
+    /**
+     * Actually output the dynamic content.  The OutputStream can be
+     * accessed like this: <pre>OutputStream out =
+     * data.getResponse().getOutputStream();</pre>.
+     *
+     * @param pipelineData Turbine information.
+     * @exception Exception, a generic exception.
+     */
+    protected abstract void doOutput(PipelineData pipelineData) throws Exception;
+
+    /**
      * The layout must be set to null.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @return A null String.
      */
+    @Override
     public final String getLayout(PipelineData pipelineData)
     {
         return null;

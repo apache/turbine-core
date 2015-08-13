@@ -90,13 +90,14 @@ public class TemplatePage
      * Works with TemplateService to set up default templates and
      * corresponding class modules.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception, a generic exception.
      */
     @Override
-    protected void doBuildAfterAction(RunData data)
+    protected void doBuildAfterAction(PipelineData pipelineData)
         throws Exception
     {
+        RunData data = getRunData(pipelineData);
         // The Template Service at this point must fetch the Screen class
         // to match a given template. If the Screen class has already been
         // set by an action, skip this, because the user has the already
@@ -124,20 +125,5 @@ public class TemplatePage
             }
             data.setScreen(screen);
         }
-    }
-
-    /**
-     * Works with TemplateService to set up default templates and
-     * corresponding class modules.
-     *
-     * @param pipelineData Turbine information.
-     * @exception Exception, a generic exception.
-     */
-    @Override
-    protected void doBuildAfterAction(PipelineData pipelineData)
-        throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        doBuildAfterAction(data);
     }
 }

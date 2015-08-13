@@ -23,7 +23,6 @@ import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.screens.TemplateScreen;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.velocity.VelocityService;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.velocity.VelocityActionEvent;
 import org.apache.velocity.context.Context;
 
@@ -41,20 +40,6 @@ public abstract class VelocityAction extends VelocityActionEvent
     /** Injected service instance */
     @TurbineService
     private VelocityService velocity;
-
-    /**
-     * You SHOULD NOT override this method and implement it in your action.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @throws Exception a generic exception.
-     */
-    @Override
-    @Deprecated
-    public void doPerform(RunData data) throws Exception
-    {
-        doPerform(data, getContext(data));
-    }
 
     /**
      * You SHOULD NOT override this method and implement it in your action.
@@ -82,60 +67,12 @@ public abstract class VelocityAction extends VelocityActionEvent
     /**
      * You SHOULD override this method and implement it in your action.
      *
-     * @deprecated Use PipelineData version instead.
      * @param data Turbine information.
      * @param context Context for web pages.
      * @throws Exception a generic exception.
      */
-    @Deprecated
-    public abstract void doPerform(RunData data, Context context)
+    public abstract void doPerform(PipelineData pipelineData, Context context)
             throws Exception;
-
-    /**
-     * You SHOULD override this method and implement it in your action.
-     *
-     * This should become abstract when the RunData version is removed. For
-     * compatibility reasons this method will default to using the RunData
-     * method unless it is overridden, which it should be.
-     *
-     * @param data Turbine information.
-     * @param context Context for web pages.
-     * @throws Exception a generic exception.
-     */
-    public void doPerform(PipelineData pipelineData, Context context)
-            throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        doPerform(data, context);
-    }
-
-    /**
-     * Sets up the context and then calls super.perform(); thus, subclasses
-     * don't have to worry about getting a context themselves! If a subclass
-     * throws an exception then depending on whether
-     * action.event.bubbleexception is true, then it bubbles it farther up, or
-     * traps it there.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @throws Exception a generic exception.
-     */
-    @Deprecated
-    @Override
-    protected void perform(RunData data) throws Exception
-    {
-        try
-        {
-            super.perform(data);
-        } catch (Exception e)
-        {
-            if (bubbleUpException)
-            {
-                throw e;
-            }
-
-        }
-    }
 
     /**
      * Sets up the context and then calls super.perform(); thus, subclasses
@@ -167,39 +104,12 @@ public abstract class VelocityAction extends VelocityActionEvent
      * This method is used when you want to short circuit an Action and change
      * the template that will be executed next.
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @param template The template that will be executed next.
-     */
-    @Deprecated
-    public void setTemplate(RunData data, String template)
-    {
-        TemplateScreen.setTemplate(data, template);
-    }
-
-    /**
-     * This method is used when you want to short circuit an Action and change
-     * the template that will be executed next.
-     *
      * @param data Turbine information.
      * @param template The template that will be executed next.
      */
     public void setTemplate(PipelineData pipelineData, String template)
     {
         TemplateScreen.setTemplate(pipelineData, template);
-    }
-
-    /**
-     * Return the Context needed by Velocity.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @return Context, a context for web pages.
-     */
-    @Deprecated
-    protected Context getContext(RunData data)
-    {
-        return velocity.getContext(data);
     }
 
     /**
@@ -212,5 +122,4 @@ public abstract class VelocityAction extends VelocityActionEvent
     {
         return velocity.getContext(pipelineData);
     }
-
 }

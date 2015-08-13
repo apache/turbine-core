@@ -20,7 +20,6 @@ package org.apache.turbine.modules;
  */
 
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.RunData;
 
 /**
  * This is the base class that defines what a Layout module is.
@@ -34,10 +33,10 @@ public abstract class Layout
 {
     /** Prefix for layout related classes and templates */
     public static final String PREFIX = "layouts";
-    
+
     /** Property for the size of the layout cache if caching is on */
     public static final String CACHE_SIZE_KEY = "layout.cache.size";
-    
+
     /** The default size for the layout cache */
     public static final int CACHE_SIZE_DEFAULT = 10;
 
@@ -47,51 +46,19 @@ public abstract class Layout
     /**
      * @see org.apache.turbine.modules.Assembler#getPrefix()
      */
+    @Override
     public String getPrefix()
     {
         return PREFIX;
     }
 
     /**
-     * A subclass must override this method to build itself.
-     * Subclasses override this method to store the layout in RunData
-     * or to write the layout to the output stream referenced in
-     * RunData.
-     * @deprecated Use PipelineData version instead
-     *
-     * @param data Turbine information.
-     * @exception Exception a generic exception.
-     */
-    protected abstract void doBuild(RunData data)
-        throws Exception;
-
-    /**
-     * Subclasses can override this method to add additional
-     * functionality.  This method is protected to force clients to
-     * use LayoutLoader to build a Layout.
-     * @deprecated Use PipelineData version instead
-     * @param data Turbine information.
-     * @exception Exception a generic exception.
-     */
-    protected void build(RunData data)
-        throws Exception
-    {
-        doBuild(data);
-    }
-
-
-    /**
      * A subclass must override this method to perform itself.  The
-     * Action can also set the screen that is associated with RunData.
-     * Should revert to abstract when RunData is gone.
+     * Action can also set the screen that is associated with PipelineData.
      * @param data Turbine information.
      * @exception Exception a generic exception.
      */
-    protected void doBuild(PipelineData pipelineData) throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        doBuild(data);
-    }
+    protected abstract void doBuild(PipelineData pipelineData) throws Exception;
 
     /**
      * Subclasses can override this method to add additional
@@ -105,6 +72,4 @@ public abstract class Layout
     {
         doBuild(pipelineData);
     }
-
-
 }

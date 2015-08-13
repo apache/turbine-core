@@ -20,7 +20,6 @@ package org.apache.turbine.modules.screens;
  */
 
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.util.RunData;
 
 /**
  * An extension to JSONScreen that performs a Security Check before invoking
@@ -29,7 +28,7 @@ import org.apache.turbine.util.RunData;
  * the same check, you could make a base screen by extending this class and
  * implementing the isAuthorized().  Then each screen that needs to perform the
  * same check could extend your base screen.
- * 
+ *
  * <p>Typically you would extend this class and override the doOutput() method
  * to use TurbineJsonRpc to register the POJOs that will provide the functions
  * you are making available via JSON-RPC.  Use JSONScreen if you <p>do not</b>
@@ -37,7 +36,7 @@ import org.apache.turbine.util.RunData;
  *
  * <p>Here is an example from a superclass:
  * <code>
- * public void doOutput(RunData data) throws Exception
+ * public void doOutput(PipelineData data) throws Exception
  * {
  *     User user = data.getUser();
  *
@@ -53,7 +52,7 @@ import org.apache.turbine.util.RunData;
  *     super.doOutput(data);
  * }
  * </code>
- * 
+ *
  * <p>The class MyFunctions would be something like:
  * <code>
  * public class MySecureJsonFunctions
@@ -81,36 +80,10 @@ public abstract class JSONSecureScreen extends JSONScreen
      * This method overrides the method in JSONScreen to perform a security
      * check prior to producing the output.
      *
-     * @param data Turbine information.
-     * @exception Exception, a generic exception.
-     * @deprecated Use PipelineData version instead.
-     */
-    protected void doOutput(RunData data) throws Exception
-    {
-        if (isAuthorized(data))
-        {
-            super.doOutput(data);
-        }
-    }
-
-    /**
-     * Override this method to perform the necessary security checks.
-     *
-     * @param data Turbine information.
-     * @return <code>true</code> if the user is authorized to access the screen.
-     * @exception Exception A generic exception.
-     * @deprecated Use PipelineData version instead.
-     */
-    protected abstract boolean isAuthorized(RunData data)
-            throws Exception;
-
-    /**
-     * This method overrides the method in JSONScreen to perform a security
-     * check prior to producing the output.
-     *
      * @param pipelineData Turbine information.
      * @exception Exception, a generic exception.
      */
+    @Override
     protected void doOutput(PipelineData pipelineData) throws Exception
     {
         if (isAuthorized(pipelineData))

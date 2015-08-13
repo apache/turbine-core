@@ -65,69 +65,22 @@ public abstract class TemplateScreen
     /**
      * This method should be overridden by subclasses that wish to add
      * specific business logic.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception A generic exception.
      */
-    protected abstract void doBuildTemplate(RunData data)
-            throws Exception;
-
-    /**
-     * This method should be overridden by subclasses that wish to add
-     * specific business logic.
-     * Should revert to abstract when RunData has gone.
-     * @param data Turbine information.
-     * @exception Exception A generic exception.
-     */
-    protected void doBuildTemplate(PipelineData pipelineData)
-    throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        doBuildTemplate(data);
-    }
-
-    /**
-     * This method should be implemented by Base template classes.  It
-     * should contain the specific template service code to generate
-     * the template.
-     *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @return A ConcreteElement.
-     * @exception Exception A generic exception.
-     */
-    public abstract ConcreteElement buildTemplate(RunData data)
+    protected abstract void doBuildTemplate(PipelineData pipelineData)
             throws Exception;
 
     /**
      * This method should be implemented by Base template classes.  It
      * should contain the specific template service code to generate
      * the template.
-     * Should revert to abstract when RunData goes.
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @return A ConcreteElement.
      * @exception Exception A generic exception.
      */
-    public ConcreteElement buildTemplate(PipelineData pipelineData)
-    throws Exception
-    {
-        RunData data = getRunData(pipelineData);
-        return buildTemplate(data);
-    }
-
-
-    /**
-     * This method can be overridden to write code that executes when
-     * the template has been built (called from a finally clause, so
-     * executes regardless of whether an exception is thrown or not)
-     *
-     * @deprecated Use PipelineData version instead.
-     */
-    protected void doPostBuildTemplate(RunData data)
-    {
-        // empty
-    }
+    public abstract ConcreteElement buildTemplate(PipelineData pipelineData)
+            throws Exception;
 
     /**
      * This method can be overridden to write code that executes when
@@ -139,42 +92,15 @@ public abstract class TemplateScreen
         // empty
     }
 
-
     /**
      * This method is called by the Screenloader to construct the
      * Screen.
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @return A ConcreteElement.
      * @exception Exception A generic exception.
      */
-    protected ConcreteElement doBuild(RunData data)
-            throws Exception
-    {
-        ConcreteElement out = null;
-
-        try
-        {
-            doBuildTemplate(data);
-            out = buildTemplate(data);
-        }
-        finally
-        {
-            doPostBuildTemplate(data);
-        }
-
-        return out;
-    }
-
-    /**
-     * This method is called by the Screenloader to construct the
-     * Screen.
-     *
-     * @param data Turbine information.
-     * @return A ConcreteElement.
-     * @exception Exception A generic exception.
-     */
+    @Override
     protected ConcreteElement doBuild(PipelineData pipelineData)
             throws Exception
     {
@@ -193,8 +119,6 @@ public abstract class TemplateScreen
         return out;
     }
 
-
-
     /**
      * This method is used when you want to short circuit a Screen and
      * change the template that will be executed next. <b>Note that the current
@@ -203,12 +127,12 @@ public abstract class TemplateScreen
      * to be the same one as the next screen, then you should use the
      * TemplateScreen.doRedirect() method.</b>
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @param template The name of the next template.
      */
-    public static void setTemplate(RunData data, String template)
+    public static void setTemplate(PipelineData pipelineData, String template)
     {
+        RunData data = (RunData)pipelineData;
         data.getTemplateInfo().setScreenTemplate(template);
         try
         {
@@ -225,25 +149,6 @@ public abstract class TemplateScreen
     }
 
     /**
-     * This method is used when you want to short circuit a Screen and
-     * change the template that will be executed next. <b>Note that the current
-     * context will be applied to the next template that is executed.
-     * If you want to have the context executed for the next screen,
-     * to be the same one as the next screen, then you should use the
-     * TemplateScreen.doRedirect() method.</b>
-     *
-     * @param data Turbine information.
-     * @param template The name of the next template.
-     */
-    public static void setTemplate(PipelineData pipelineData, String template)
-    {
-        //Map runDataMap = (Map) pipelineData.get(RunData.class);
-        //RunData data = (RunData)runDataMap.get(RunData.class);
-        RunData data = (RunData)pipelineData;
-        setTemplate(data, template);
-    }
-
-    /**
      * You can call this within a Screen to cause an internal redirect
      * to happen.  It essentially allows you to stop execution in one
      * Screen and instantly execute another Screen.  Don't worry, this
@@ -257,35 +162,7 @@ public abstract class TemplateScreen
      * executing the other Screen.  If there is an error, you can
      * doRedirect() back to the original Screen.
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @param screen Name of screen to redirect to.
-     * @param template Name of template.
-     * @exception Exception A generic exception.
-     */
-    public void doRedirect(RunData data, String screen, String template)
-            throws Exception
-    {
-        log.debug("doRedirect(data, " + screen + ", " + template + ")");
-        setTemplate(data, template);
-        screenLoader.exec(data, screen);
-    }
-
-    /**
-     * You can call this within a Screen to cause an internal redirect
-     * to happen.  It essentially allows you to stop execution in one
-     * Screen and instantly execute another Screen.  Don't worry, this
-     * does not do a HTTP redirect and also if you have anything added
-     * in the Context, it will get carried over.
-     *
-     * <p>
-     *
-     * This class is useful if you have a Screen that submits to
-     * another Screen and you want it to do error validation before
-     * executing the other Screen.  If there is an error, you can
-     * doRedirect() back to the original Screen.
-     *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @param screen Name of screen to redirect to.
      * @param template Name of template.
      * @exception Exception A generic exception.
@@ -293,13 +170,11 @@ public abstract class TemplateScreen
     public void doRedirect(PipelineData pipelineData, String screen, String template)
             throws Exception
     {
-        RunData data = getRunData(pipelineData);
         log.debug("doRedirect(data, " + screen + ", " + template + ")");
-        setTemplate(data, template);
+        setTemplate(pipelineData, template);
         screenLoader.exec(pipelineData, screen);
     }
 
-
     /**
      * You can call this within a Screen to cause an internal redirect
      * to happen.  It essentially allows you to stop execution in one
@@ -314,32 +189,7 @@ public abstract class TemplateScreen
      * executing the other Screen.  If there is an error, you can
      * doRedirect() back to the original Screen.
      *
-     * @deprecated Use PipelineData version instead.
-     * @param data Turbine information.
-     * @param template Name of template.
-     * @exception Exception A generic exception.
-     */
-    public void doRedirect(RunData data, String template)
-            throws Exception
-    {
-        doRedirect(data, templateService.getScreenName(template), template);
-    }
-
-    /**
-     * You can call this within a Screen to cause an internal redirect
-     * to happen.  It essentially allows you to stop execution in one
-     * Screen and instantly execute another Screen.  Don't worry, this
-     * does not do a HTTP redirect and also if you have anything added
-     * in the Context, it will get carried over.
-     *
-     * <p>
-     *
-     * This class is useful if you have a Screen that submits to
-     * another Screen and you want it to do error validation before
-     * executing the other Screen.  If there is an error, you can
-     * doRedirect() back to the original Screen.
-     *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @param template Name of template.
      * @exception Exception A generic exception.
      */
@@ -348,6 +198,4 @@ public abstract class TemplateScreen
     {
         doRedirect(pipelineData, templateService.getScreenName(template), template);
     }
-
-
 }
