@@ -32,7 +32,8 @@
 
 <p>
 The JSON-RPC Service supports JavaScript to Java AJAX communications using
-<a href="https://code.google.com/p/jabsorb/">JSON-RPC-Java</a> (Jabsorb replaces project  oss.metaparadigm.com/jsonrpc/).
+<a href="https://code.google.com/p/jabsorb/">JSON-RPC-Java</a> 
+(Jabsorb replaced project oss.metaparadigm.com/jsonrpc/. As of March 2015 Google Code projects are only read-only and this project is <a href="https://code.google.com/archive/p/jabsorb/">archived</a> too, though GIT exports are allowed probably until Jan 2016, e.g. https://github.com/gmkll/jabsorb).
 </p>
 
 </section>
@@ -154,7 +155,7 @@ function jsonEval(evalStr) {
 
 <p>
 In these pages you also need to include the JavaScript necessary to process the
-JSON calls - this file is available as part of the JSON-RPC-Java distribution
+JSON calls - this file is available as part of the JSON-RPC Java distribution
 (it is included in the <code>webapps\jsonrpc</code> directory):
 </p>
 
