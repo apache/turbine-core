@@ -24,6 +24,7 @@ import org.apache.fulcrum.security.acl.AccessControlList;
 import org.apache.fulcrum.security.entity.Group;
 import org.apache.fulcrum.security.entity.Permission;
 import org.apache.fulcrum.security.entity.Role;
+import org.apache.fulcrum.security.model.turbine.TurbineModelManager;
 import org.apache.fulcrum.security.util.DataBackendException;
 import org.apache.fulcrum.security.util.EntityExistsException;
 import org.apache.fulcrum.security.util.FulcrumSecurityException;
@@ -47,7 +48,7 @@ import org.apache.turbine.services.TurbineServices;
  * <p> Certain Roles that the Users may have in the system may are not related
  * to any specific resource nor entity. They are assigned within a special group
  * named 'global' that can be referenced in the code as
- * {@link org.apache.turbine.om.security.Group#GLOBAL_GROUP_NAME}.
+ * {@link TurbineModelManager#GLOBAL_GROUP_NAME}.
  *
  * @author <a href="mailto:Rafal.Krzewski@e-point.pl">Rafal Krzewski</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
@@ -211,6 +212,8 @@ public abstract class TurbineSecurity
      *
      * LastLogin, AccessCounter, persistent pull tools, and any data stored
      * in the permData hashtable that is not mapped to a column will be saved.
+     *
+     * @param user the user in the session
      *
      * @exception UnknownEntityException if the user's account does not
      *            exist in the database.
@@ -497,7 +500,7 @@ public abstract class TurbineSecurity
     /**
      * Retrieve a Group object with specified Id.
      *
-     * @param name the name of the Group.
+     * @param groupId the id of the Group.
      *
      * @return an object representing the Group with specified name.
      *
@@ -584,7 +587,7 @@ public abstract class TurbineSecurity
     /**
      * Retrieve a Role object with specified Id.
      *
-     * @param name the name of the Role.
+     * @param roleId the id of the Role.
      *
      * @return an object representing the Role with specified name.
      *
@@ -618,7 +621,7 @@ public abstract class TurbineSecurity
     /**
      * Retrieve a Permission object with specified Id.
      *
-     * @param name the name of the Permission.
+     * @param permissionId the id of the Permission.
      *
      * @return an object representing the Permission with specified name.
      *

@@ -24,8 +24,6 @@ import java.io.CharArrayWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.services.TurbineBaseService;
 import org.jabsorb.JSONRPCBridge;
 
@@ -40,34 +38,30 @@ public class TurbineJsonRpcService
         extends TurbineBaseService
         implements JsonRpcService
 {
-    /** Log. */
-    private static Log log = LogFactory.getLog(TurbineJsonRpcService.class);
-
     /** The key used to store the bridge in the session. */
     public static final String JSON_BRIDGE_KEY = "JSONRPCBridge";
-    /**
-     * The debug option for the bridge can be enabled by enabling debug level
-     * logging for this class.
-     */
-    private static final boolean DEBUG = log.isDebugEnabled();
 
+    @Override
     public Object processCall(CharArrayWriter cdata,
             JSONRPCBridge json_bridge, HttpServletRequest request)
     {
         return JSONProcessor.processCall(cdata, json_bridge, request);
     }
 
+    @Override
     public void registerObjectGlobal(String key, Object value)
     {
         JSONRPCBridge.getGlobalBridge().registerObject(key, value);
     }
 
+    @Override
     public void registerObject(HttpSession session, String key, Object value)
     {
         JSONRPCBridge json_bridge = getBridge(session);
         json_bridge.registerObject(key, value);
     }
 
+    @Override
     public JSONRPCBridge getBridge(HttpSession session)
     {
         JSONRPCBridge json_bridge = (JSONRPCBridge) session.getAttribute(JSON_BRIDGE_KEY);
@@ -79,12 +73,13 @@ public class TurbineJsonRpcService
         return json_bridge;
     }
 
+    @Override
     public void clearBridge(HttpSession session)
     {
         session.removeAttribute(JSON_BRIDGE_KEY);
     }
 
-// The following is modeled on XmlRpcSercice. 
+// The following is modeled on XmlRpcSercice.
 //    /**
 //     * Initialize the JsonRpcService.
 //     *

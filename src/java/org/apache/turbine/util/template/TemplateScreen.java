@@ -90,6 +90,7 @@ public class TemplateScreen
      *
      * @return A String.
      */
+    @Override
     public String toString()
     {
         String returnValue = "";

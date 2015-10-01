@@ -21,9 +21,9 @@ package org.apache.turbine.services.pull.util;
  */
 
 
-import java.util.Map;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.turbine.services.pull.ApplicationTool;
 
@@ -46,6 +46,7 @@ public class SessionData implements ApplicationTool
      *
      * @param data initialization data
      */
+    @Override
     public void init(Object data)
     {
         dataStorage = new HashMap<String, Object>();
@@ -54,6 +55,7 @@ public class SessionData implements ApplicationTool
     /**
      * Refresh the application tool.
      */
+    @Override
     public void refresh()
     {
         // do nothing

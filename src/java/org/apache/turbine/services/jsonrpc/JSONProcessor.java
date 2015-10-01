@@ -12,12 +12,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
+/**
+ * Process a JSON RPC call
+ *
+ * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
+ */
 public class JSONProcessor
 {
     /** Log. */
     private static Log log = LogFactory.getLog(JSONProcessor.class);
 
+    /**
+     * Process a JSON RPC call
+     * @param cdata the JSON data
+     * @param json_bridge the {@link JSONRPCBridge} object
+     * @param request the request
+     * @return the return object of the JSON RPC call
+     */
     public static Object processCall(CharArrayWriter cdata, JSONRPCBridge json_bridge, HttpServletRequest request)
     {
         // Process the request
@@ -33,7 +44,7 @@ public class JSONProcessor
 
                 // If this a CallableReference it will have a non-zero objectID
                 int object_id = json_req.optInt("objectID");
-                StringBuffer sb = new StringBuffer(".doprocessCall(): call ");
+                StringBuilder sb = new StringBuilder(".doprocessCall(): call ");
                 if (object_id != 0)
                 {
                     sb.append("objectID=").append(object_id).append(" ");

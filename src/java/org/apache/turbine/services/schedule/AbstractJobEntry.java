@@ -27,6 +27,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.util.TurbineException;
 
+/**
+ * This class provides the basic implementation of common features for a scheduled job entry.
+ *
+ * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
+ */
 public abstract class AbstractJobEntry implements JobEntry
 {
     /** Logging */
@@ -39,7 +44,7 @@ public abstract class AbstractJobEntry implements JobEntry
     private long runtime = 0;
 
     /** schedule types **/
-    public enum ScheduleType {
+    protected enum ScheduleType {
         SECOND,
         MINUTE,
         WEEK_DAY,

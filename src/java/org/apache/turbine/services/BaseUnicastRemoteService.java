@@ -25,8 +25,6 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Properties;
 
-import javax.servlet.ServletConfig;
-
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationConverter;
 
@@ -50,6 +48,10 @@ public class BaseUnicastRemoteService extends UnicastRemoteObject
     private String name;
     private ServiceBroker serviceBroker;
 
+    /**
+     * Default constructor
+     * @throws RemoteException if the remote object cannot be created
+     */
     public BaseUnicastRemoteService()
             throws RemoteException
     {
@@ -64,6 +66,7 @@ public class BaseUnicastRemoteService extends UnicastRemoteObject
      *
      * @return The configuration of this service.
      */
+    @Override
     public Configuration getConfiguration()
     {
         if (name == null)
@@ -80,27 +83,29 @@ public class BaseUnicastRemoteService extends UnicastRemoteObject
         }
     }
 
-    public void init(ServletConfig config)
-    {
-        setInit(true);
-    }
-
+    @Override
     public void setInitableBroker(InitableBroker broker)
     {
         this.initableBroker = broker;
     }
 
+    /**
+     * Get the {@link InitableBroker} instance
+     * @return the broker instance
+     */
     public InitableBroker getInitableBroker()
     {
         return initableBroker;
     }
 
+    @Override
     public void init(Object data)
             throws InitializationException
     {
-        init((ServletConfig) data);
+        init();
     }
 
+    @Override
     public void init() throws InitializationException
     {
         setInit(true);
@@ -111,6 +116,7 @@ public class BaseUnicastRemoteService extends UnicastRemoteObject
         isInitialized = value;
     }
 
+    @Override
     public boolean getInit()
     {
         return isInitialized;
@@ -119,31 +125,40 @@ public class BaseUnicastRemoteService extends UnicastRemoteObject
     /**
      * Shuts down this service.
      */
+    @Override
     public void shutdown()
     {
         setInit(false);
     }
 
+    @Override
     public Properties getProperties()
     {
         return ConfigurationConverter.getProperties(getConfiguration());
     }
 
+    @Override
     public void setName(String name)
     {
         this.name = name;
     }
 
+    @Override
     public String getName()
     {
         return name;
     }
 
+    /**
+     * Get the {@link ServiceBroker} instance
+     * @return the broker instance
+     */
     public ServiceBroker getServiceBroker()
     {
         return serviceBroker;
     }
 
+    @Override
     public void setServiceBroker(ServiceBroker broker)
     {
         this.serviceBroker = broker;

@@ -87,7 +87,7 @@ public class VelocityScreen
      * actual method that you should override is the one with the
      * context in the parameter list.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception, a generic exception.
      */
     @Override

@@ -28,7 +28,7 @@ import org.apache.turbine.modules.Loader;
  * Interface for AssemblerFactory's
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
- * @version $Id$
+ * @param <T> the specialized assembler type
  */
 public interface AssemblerFactory<T extends Assembler> extends Loader<T>
 {

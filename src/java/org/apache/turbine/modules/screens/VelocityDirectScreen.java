@@ -47,7 +47,7 @@ public class VelocityDirectScreen
     /**
      * This builds the Velocity template.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */

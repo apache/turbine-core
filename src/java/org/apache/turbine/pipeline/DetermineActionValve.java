@@ -44,7 +44,7 @@ public class DetermineActionValve
         = LogFactory.getLog(DetermineActionValve.class);
 
     /**
-     * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
+     * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
      */
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException

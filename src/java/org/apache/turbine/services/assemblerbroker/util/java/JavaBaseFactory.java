@@ -37,7 +37,7 @@ import org.apache.turbine.services.assemblerbroker.util.AssemblerFactory;
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
- * @version $Id$
+ * @param <T> the specialized assembler type
  */
 public abstract class JavaBaseFactory<T extends Assembler>
     implements AssemblerFactory<T>

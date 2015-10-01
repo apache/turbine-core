@@ -92,6 +92,7 @@ public abstract class BaseInitableBroker
      * @param data An Object to be used for initialization activities.
      * @exception InitializationException Initialization was not successful.
      */
+    @Override
     public void initClass(String className, Object data)
             throws InitializationException
     {
@@ -101,8 +102,8 @@ public abstract class BaseInitableBroker
             int pos = stack.search(className);
             if (pos != -1)
             {
-                StringBuffer msg = new StringBuffer().append(className)
-                        .append(" couldn't be initialized because of circular depency chain:\n");
+                StringBuilder msg = new StringBuilder().append(className)
+                        .append(" couldn't be initialized because of circular dependency chain:\n");
                 for (int i = pos; i > 0; i--)
                 {
                     msg.append(stack.elementAt(stack.size() - i - 1) + "->");
@@ -133,11 +134,12 @@ public abstract class BaseInitableBroker
      * Shuts down an <code>Initable</code>.
      *
      * This method is used to release resources allocated by an
-     * <code>Initable</code>, and return it to its initial (uninitailized)
+     * <code>Initable</code>, and return it to its initial (uninitialized)
      * state.
      *
      * @param className The name of the class to be uninitialized.
      */
+    @Override
     public void shutdownClass(String className)
     {
         try
@@ -161,16 +163,17 @@ public abstract class BaseInitableBroker
     /**
      * Provides an instance of Initable class ready to work.
      *
-     * If the requested class couldn't be instatiated or initialized,
+     * If the requested class couldn't be instantiated or initialized,
      * an InstantiationException will be thrown. You needn't handle
      * this exception in your code, since it indicates fatal
-     * misconfigurtion of the system.
+     * misconfiguration of the system.
      *
      * @param className The name of the Initable requested.
      * @return An instance of the requested Initable.
      * @exception InstantiationException if there was a problem
      * during instantiation or initialization of the Initable.
      */
+    @Override
     public Initable getInitable(String className)
             throws InstantiationException
     {

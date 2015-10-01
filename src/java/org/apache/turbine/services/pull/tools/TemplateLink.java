@@ -101,12 +101,13 @@ public class TemplateLink
      */
 
     /**
-     * This will initialise a TemplateLink object that was
+     * This will initialize a TemplateLink object that was
      * constructed with the default constructor (ApplicationTool
      * method).
      *
-     * @param data assumed to be a RunData object
+     * @param data assumed to be a PipelineData object
      */
+    @Override
     public void init(Object data)
     {
         // we just blithely cast to RunData as if another object
@@ -137,6 +138,7 @@ public class TemplateLink
     /**
      * Refresh method - does nothing
      */
+    @Override
     public void refresh()
     {
         // empty

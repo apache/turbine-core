@@ -36,7 +36,7 @@ import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
- * @version $Id$
+ * @param <T> the specialized assembler type
  */
 public abstract class GenericLoader<T extends Assembler>
 {
@@ -63,6 +63,8 @@ public abstract class GenericLoader<T extends Assembler>
     /**
      * Attempts to load and execute the external action that has been
      * set.
+     * @param pipelineData the Turbine request
+     * @param name the name of the assembler module
      * @exception Exception a generic exception.
      */
     public abstract void exec(PipelineData pipelineData, String name)

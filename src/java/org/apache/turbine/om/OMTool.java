@@ -1,6 +1,5 @@
 package org.apache.turbine.om;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,11 +19,11 @@ package org.apache.turbine.om;
  * under the License.
  */
 
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.apache.fulcrum.pool.Recyclable;
+import org.apache.turbine.Turbine;
 import org.apache.turbine.services.pull.ApplicationTool;
 
 /**
@@ -36,8 +35,7 @@ import org.apache.turbine.services.pull.ApplicationTool;
  */
 public class OMTool implements ApplicationTool, Recyclable
 {
-    // private RunData data;
-    protected HashMap<String, Object> omMap;
+    protected ConcurrentHashMap<String, Object> omMap;
 
     // note the following could be a static attribute to reduce memory
     // footprint. Might require a service to front load the
@@ -45,7 +43,8 @@ public class OMTool implements ApplicationTool, Recyclable
     // though
 
     /** The cache of PullHelpers. **/
-    private static Map<String, OMTool.PullHelper> pullMap = new HashMap<String, OMTool.PullHelper>();
+    private ConcurrentMap<String, OMTool.PullHelper> pullMap =
+            new ConcurrentHashMap<String, OMTool.PullHelper>();
 
     /**
      *  The Factory responsible for retrieving the
@@ -53,27 +52,33 @@ public class OMTool implements ApplicationTool, Recyclable
      */
     protected RetrieverFactory omFactory;
 
-    public OMTool()throws Exception
+    /**
+     * Default constructor
+     * @throws Exception if creating the factory fails
+     */
+    public OMTool() throws Exception
     {
-        omMap = new HashMap<String, Object>();
-        //String className = Turbine.getConfiguration()
-        //       .getString("tool.om.factory");
-        //        RetrieverFactory omFactory =
-        //            (RetrieverFactory)Class.forName(className).newInstance();
+        omMap = new ConcurrentHashMap<String, Object>();
+        String className = Turbine.getConfiguration().getString("tool.om.factory");
+        this.omFactory = (RetrieverFactory)Class.forName(className).newInstance();
     }
 
     /**
      * Prepares tool for a single request
+     *
+     * @param data the initialization data
      */
-    public void init(Object runData)
+    @Override
+    public void init(Object data)
     {
-        // data = (RunData)runData;
+        // data = (RunData)data;
     }
 
     /**
      * Implementation of ApplicationTool interface is not needed for this
      * method as the tool is request scoped
      */
+    @Override
     public void refresh()
     {
         // empty
@@ -95,8 +100,8 @@ public class OMTool implements ApplicationTool, Recyclable
             throws Exception
         {
             Object om = null;
-
             String inputKey = omName + key;
+
             if (omMap.containsKey(inputKey))
             {
                 om = omMap.get(inputKey);
@@ -111,33 +116,28 @@ public class OMTool implements ApplicationTool, Recyclable
         }
     }
 
-    public Object get(String omName) throws Exception
+    /**
+     * Get the {@link PullHelper} object with the given name
+     * @param omName the object name
+     * @return the PullHelper
+     * @throws Exception if retrieving the object fails
+     */
+    public PullHelper get(String omName) throws Exception
     {
-        if (!pullMap.containsKey(omName))
-        {
-            // MT could overwrite a PullHelper, but that is not a problem
-            // should still synchronize to avoid two threads adding at
-            // same time
-            synchronized (this.getClass())
-            {
-                pullMap.put(omName, new OMTool.PullHelper(omName));
-            }
-        }
-
-        return pullMap.get(omName);
+        return pullMap.putIfAbsent(omName, new OMTool.PullHelper(omName));
     }
 
+    /**
+     * Get the object with the given name and key
+     * @param omName the object name
+     * @param key the object key
+     * @return the object
+     * @throws Exception if retrieving the object fails
+     */
     public Object get(String omName, String key) throws Exception
     {
-        return ((OMTool.PullHelper) get(omName)).setKey(key);
+        return get(omName).setKey(key);
     }
-
-
-    public String getName()
-    {
-        return "om";
-    }
-
 
     // ****************** Recyclable implementation ************************
 
@@ -153,6 +153,7 @@ public class OMTool implements ApplicationTool, Recyclable
      * methods whenever applicable.
      * The recycle methods must call their super.
      */
+    @Override
     public void recycle()
     {
         disposed = false;
@@ -163,10 +164,10 @@ public class OMTool implements ApplicationTool, Recyclable
      * when the object is returned to its pool.
      * The dispose method must call its super.
      */
+    @Override
     public void dispose()
     {
         omMap.clear();
-        // data = null;
         disposed = true;
     }
 
@@ -174,16 +175,9 @@ public class OMTool implements ApplicationTool, Recyclable
      * Checks whether the recyclable has been disposed.
      * @return true, if the recyclable is disposed.
      */
+    @Override
     public boolean isDisposed()
     {
         return disposed;
     }
 }
-
-
-
-
-
-
-
-

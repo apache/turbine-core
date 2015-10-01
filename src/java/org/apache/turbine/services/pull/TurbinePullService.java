@@ -358,6 +358,7 @@ public class TurbinePullService
      * Pull Model. The tools are refreshed every time the
      * global Context is pulled.
      */
+    @Override
     public Context getGlobalContext()
     {
         if (refreshToolsPerRequest)
@@ -376,6 +377,7 @@ public class TurbinePullService
      * @param context a Velocity Context to populate
      * @param data a RunData object for request specific data
      */
+    @Override
     public void populateContext(Context context, RunData data)
     {
         populateWithRequestTools(context, data);
@@ -421,8 +423,9 @@ public class TurbinePullService
      * the global tools).
      *
      * @param context a Velocity Context to populate
-     * @param data a PipelineData object for request specific data
+     * @param pipelineData a PipelineData object for request specific data
      */
+    @Override
     public void populateContext(Context context, PipelineData pipelineData)
     {
        // Map runDataMap = (Map) pipelineData.get(RunData.class);
@@ -497,7 +500,7 @@ public class TurbinePullService
      * Populate the given context with the request-scope tools
      *
      * @param context a Velocity Context to populate
-     * @param data a RunData instance
+     * @param pipelineData a RunData instance
      */
     private void populateWithRequestTools(Context context, RunData data)
     {
@@ -530,7 +533,7 @@ public class TurbinePullService
      * Populate the given context with the request-scope tools
      *
      * @param context a Velocity Context to populate
-     * @param data a RunData instance
+     * @param pipelineData a RunData instance
      */
     private void populateWithRequestTools(Context context, PipelineData pipelineData)
     {
@@ -563,7 +566,7 @@ public class TurbinePullService
      * @param tools The list of tools with which to populate the
      * session.
      * @param context The context to populate.
-     * @param data The current RunData object
+     * @param pipelineData The current RunData object
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
      */
@@ -652,7 +655,7 @@ public class TurbinePullService
      * @param tools The list of tools with which to populate the
      * session.
      * @param context The context to populate.
-     * @param data The current RunData object
+     * @param pipelineData The current RunData object
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
      */
@@ -740,7 +743,7 @@ public class TurbinePullService
      * @param tools The list of tools with which to populate the
      * session.
      * @param context The context to populate.
-     * @param data The current RunData object
+     * @param pipelineData The current RunData object
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
      */
@@ -823,7 +826,7 @@ public class TurbinePullService
      * @param tools The list of tools with which to populate the
      * session.
      * @param context The context to populate.
-     * @param data The current RunData object
+     * @param pipelineData The current RunData object
      * @param user The <code>User</code> object whose storage to
      * retrieve the tool from.
      */
@@ -908,6 +911,7 @@ public class TurbinePullService
      *
      * @return the absolute path of the resources directory
      */
+    @Override
     public String getAbsolutePathToResourcesDirectory()
     {
         return Turbine.getRealPath(resourcesDirectory);
@@ -919,6 +923,7 @@ public class TurbinePullService
      *
      * @return the relative path of the resources directory
      */
+    @Override
     public String getResourcesDirectory()
     {
         return resourcesDirectory;
@@ -947,6 +952,7 @@ public class TurbinePullService
      *
      * @param context the Velocity Context to release tools from
      */
+    @Override
     public void releaseTools(Context context)
     {
         // only the request tools can be released - other scoped
@@ -1024,7 +1030,7 @@ public class TurbinePullService
      * Refresh a given Tool.
      *
      * @param tool A Tool Object
-     * @param data The current RunData Object
+     * @param pipelineData The current RunData Object
      */
     private void refreshTool(Object tool, Object dataObject)
     {

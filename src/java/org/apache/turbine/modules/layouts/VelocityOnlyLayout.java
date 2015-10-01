@@ -90,7 +90,7 @@ public class VelocityOnlyLayout
      * of the HttpServletResponse object.
      *
      *
-     * @param data PipelineData
+     * @param pipelineData PipelineData
      * @throws Exception generic exception
      */
     @Override

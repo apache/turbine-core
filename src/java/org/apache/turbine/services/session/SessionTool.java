@@ -37,11 +37,13 @@ import org.apache.turbine.services.pull.ApplicationTool;
 public class SessionTool
         implements ApplicationTool
 {
+    @Override
     public void init(Object o)
     {
         // empty
     }
 
+    @Override
     public void refresh()
     {
         // empty
@@ -111,7 +113,7 @@ public class SessionTool
      * Gets the User object of the the specified HttpSession.
      *
      * @param session
-     * @return
+     * @return the user from the session
      */
     public User getUserFromSession(HttpSession session)
     {

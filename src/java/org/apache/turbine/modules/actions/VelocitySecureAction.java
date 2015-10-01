@@ -46,7 +46,7 @@ public abstract class VelocitySecureAction extends VelocityAction
     /**
      * Implement this to add information to the context.
      * Should revert to abstract when RunData has gone.
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @param context Context for web pages.
      * @throws Exception a generic exception.
      */
@@ -62,7 +62,7 @@ public abstract class VelocitySecureAction extends VelocityAction
      * This method overrides the method in WebMacroSiteAction to
      * perform a security check first.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @throws Exception a generic exception.
      */
     @Override
@@ -79,7 +79,7 @@ public abstract class VelocitySecureAction extends VelocityAction
      * You should set the template in this method that you want the
      * user to be sent to if they're unauthorized.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @return True if the user is authorized to access the screen.
      * @throws Exception a generic exception.
      */

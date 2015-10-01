@@ -31,7 +31,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.services.pull.ApplicationTool;
-import org.apache.turbine.util.RunData;
 
 /**
  * Template context tool that can be used to set various attributes of a
@@ -123,29 +122,20 @@ public class HtmlPageAttributes
     private String doctype = null;
 
     /**
-     * Default constructor. The init method must be called before use
+     * Construct a new instance
      */
     public HtmlPageAttributes()
     {
-        // empty
+        init(null);
     }
 
     /**
-     * Construct a new instance with the given RunData object.
-     *
-     * @param data a RunData instance
-     */
-    public HtmlPageAttributes(RunData data)
-    {
-        init(data);
-    }
-
-    /**
-     * Initialise this instance with the given RunData object.
+     * Initialize this instance.
      * (ApplicationTool method)
      *
-     * @param data Assumed to be a RunData instance
+     * @param data not used
      */
+    @Override
     public void init(Object data)
     {
         this.title = null;
@@ -160,6 +150,7 @@ public class HtmlPageAttributes
     /**
      * Refresh method - does nothing
      */
+    @Override
     public void refresh()
     {
         // empty

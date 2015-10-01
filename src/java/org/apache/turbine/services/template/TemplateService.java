@@ -22,7 +22,6 @@ package org.apache.turbine.services.template;
 
 
 import org.apache.turbine.services.Service;
-
 import org.apache.turbine.util.RunData;
 
 /**
@@ -237,7 +236,7 @@ public interface TemplateService
      * @return The found navigation module name.
      * @exception Exception, a generic exception.
      */
-    String getNavigationName(String name)
+    String getNavigationName(String template)
             throws Exception;
 
     /**
@@ -282,17 +281,20 @@ public interface TemplateService
      * @deprecated Each template engine service should know how to translate
      *             a request onto a file.
      */
+    @Deprecated
     String[] translateTemplatePaths(String[] templatePaths);
 
     /**
      * Delegates to the appropriate {@link
      * org.apache.turbine.services.template.TemplateEngineService} to
-     * check the existance of the specified template.
+     * check the existence of the specified template.
      *
-     * @param template      The template to check for the existance of.
+     * @param template      The template to check for the existence of.
      * @param templatePaths The paths to check for the template.
+     * @return true if the given template exists
      * @deprecated Use templateExists from the various Templating Engines
      */
+    @Deprecated
     boolean templateExists(String template,
                            String[] templatePaths);
 

@@ -38,7 +38,7 @@ public class DefaultAction extends Action
     /**
      * Execute the action.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @throws Exception a generic exception.
      */
     @Override

@@ -53,14 +53,14 @@ public class GenerateUniqueId
 
     // MAX_RADIX is 36
 
-    /*
+    /**
      * We want to have a random string with a length of 6 characters.
      * Since we encode it BASE 36, we've to modulo it with the
      * following value:
      */
     public final static long maxRandomLen = 2176782336L; // 36 ** 6
 
-    /*
+    /**
      * The session identifier must be unique within the typical
      * lifespan of a Session; the value can roll over after that.  3
      * characters: (this means a roll over after over a day, which is
@@ -68,7 +68,7 @@ public class GenerateUniqueId
      */
     public final static long maxSessionLifespanTics = 46656; // 36 ** 3
 
-    /*
+    /**
      * Millisecons between different tics.  So this means that the
      * 3-character time string has a new value every 2 seconds:
      */
@@ -88,7 +88,10 @@ public class GenerateUniqueId
 
         // Random value.
         long n = randomSource.nextLong();
-        if (n < 0) n = -n;
+        if (n < 0)
+        {
+            n = -n;
+        }
         n %= maxRandomLen;
 
         // Add maxLen to pad the leading characters with '0'; remove

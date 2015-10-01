@@ -45,7 +45,7 @@ public interface Initable
     void setInitableBroker(InitableBroker broker);
 
     /**
-     * Performs early initailization of an Initable
+     * Performs early initialization of an Initable
      *
      * During the startup of the system, different objects may be
      * passed to your class using this method.  It should ignore any
@@ -60,7 +60,7 @@ public interface Initable
      * throw an exception and complain.
      *
      * @param data An Object to use for initialization activities.
-     * @exception InitializationException if initilaization of this
+     * @exception InitializationException if initialization of this
      * class was not successful.
      */
     void init(Object data) throws InitializationException;

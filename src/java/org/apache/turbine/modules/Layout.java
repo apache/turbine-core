@@ -55,7 +55,7 @@ public abstract class Layout
     /**
      * A subclass must override this method to perform itself.  The
      * Action can also set the screen that is associated with PipelineData.
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception a generic exception.
      */
     protected abstract void doBuild(PipelineData pipelineData) throws Exception;
@@ -65,7 +65,7 @@ public abstract class Layout
      * functionality.  This method is protected to force clients to
      * use ActionLoader to perform an Action.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception a generic exception.
      */
     protected void build(PipelineData pipelineData) throws Exception

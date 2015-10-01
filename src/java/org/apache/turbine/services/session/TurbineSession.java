@@ -22,6 +22,7 @@ package org.apache.turbine.services.session;
 
 
 import java.util.Collection;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.turbine.om.security.User;
@@ -114,7 +115,7 @@ public abstract class TurbineSession
      * Gets the User object of the the specified HttpSession.
      *
      * @param session
-     * @return
+     * @return the user from the session
      */
     public static User getUserFromSession(HttpSession session)
     {
@@ -124,8 +125,8 @@ public abstract class TurbineSession
     /**
      * Gets the HttpSession by the session identifier
      *
-     * @param sessionId
-     * @return
+     * @param sessionId the id of the session
+     * @return the session for the given id
      */
     public static HttpSession getSession(String sessionId)
     {

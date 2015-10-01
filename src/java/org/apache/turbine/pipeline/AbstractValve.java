@@ -41,6 +41,7 @@ public abstract class AbstractValve
      *
      * @throws Exception
      */
+    @Override
     public void initialize()
         throws Exception
     {
@@ -48,20 +49,22 @@ public abstract class AbstractValve
     }
 
     /**
-     * @see org.apache.turbine.Valve#invoke(PipelineData, ValveContext)
+     * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
      */
+    @Override
     public abstract void invoke(PipelineData data, ValveContext context)
         throws IOException, TurbineException;
 
 
     /**
-     * utility for getting RunData out of the pielineData object.
+     * utility for getting RunData out of the pipelineData object.
      * @param pipelineData
-     * @return
+     * @return the RunData object extracted from pipelineData
      */
     public final RunData getRunData(PipelineData pipelineData)
     {
-        if(!(pipelineData instanceof RunData)){
+        if(!(pipelineData instanceof RunData))
+        {
             throw new RuntimeException("Can't cast pipelineData to rundata");
         }
         return (RunData)pipelineData;

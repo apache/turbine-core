@@ -38,11 +38,11 @@ public abstract class ScheduledJob extends Assembler
 {
     /** Prefix for scheduler job related classes */
     public static final String PREFIX = "scheduledjobs";
-    
-    /** The key for the schedulder job cache size if module caching is on. */
+
+    /** The key for the scheduler job cache size if module caching is on. */
     public static final String CACHE_SIZE_KEY = "scheduledjob.cache.size";
-    
-    /** The default size of the schedulder job cache if module caching is on. */
+
+    /** The default size of the scheduler job cache if module caching is on. */
     public static final int CACHE_SIZE_DEFAULT = 10;
 
     /** Represents Scheduled Job Objects */
@@ -51,6 +51,7 @@ public abstract class ScheduledJob extends Assembler
     /**
      * @see org.apache.turbine.modules.Assembler#getPrefix()
      */
+    @Override
     public String getPrefix()
     {
         return PREFIX;
@@ -60,6 +61,7 @@ public abstract class ScheduledJob extends Assembler
      * Run the Jobentry from the scheduler queue.
      *
      * @param job The job to run.
+     * @throws Exception if something goes wrong
      */
     public abstract void run(JobEntry job)
             throws Exception;

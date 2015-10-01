@@ -33,7 +33,9 @@ public interface Retriever
      * Gets an object of the same type as the object implementing
      * this method according to the key.
      *
+     * @param key the key for the object
      * @return the object that matches the key
+     * @throws Exception if something goes wrong
      */
     Object retrieve(String key)
         throws Exception;

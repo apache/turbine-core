@@ -57,6 +57,7 @@ public class BaseInitable
      *
      * @param broker The InitableBroker that instantiated this object.
      */
+    @Override
     public void setInitableBroker(InitableBroker broker)
     {
         this.initableBroker = broker;
@@ -83,21 +84,23 @@ public class BaseInitable
      * @exception InitializationException Initialization of this
      * class was not successful.
      */
+    @Override
     public void init(Object data) throws InitializationException
     {
         // empty
     }
 
     /**
-     * Performs late initializtion.  Called when the Service is requested
+     * Performs late initialization.  Called when the Service is requested
      * for the first time (if not already completely initialized by the
      * early initializer).
      *
-     * Late intialization of a BaseInitable is alwas successful.
+     * Late initialization of a BaseInitable is always successful.
      *
      * @exception InitializationException Initialization of this
      * class was not successful.
      */
+    @Override
     public void init() throws InitializationException
     {
         // empty
@@ -109,6 +112,7 @@ public class BaseInitable
      * Calls setInit(false) to mark that we are no longer in initialized
      * state.
      */
+    @Override
     public void shutdown()
     {
         setInit(false);
@@ -119,13 +123,14 @@ public class BaseInitable
      *
      * @return True if the initable is initialized.
      */
+    @Override
     public boolean getInit()
     {
         return isInitialized;
     }
 
     /**
-     * Sets initailization status.
+     * Sets initialization status.
      *
      * @param value The new initialization status.
      */

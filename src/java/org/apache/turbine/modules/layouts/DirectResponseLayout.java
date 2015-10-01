@@ -39,7 +39,7 @@ public class DirectResponseLayout extends Layout
     /**
      * Ensures that a direct response has been declared.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception TurbineException if a direct response has not been declared.
      */
     @Override

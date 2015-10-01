@@ -55,8 +55,9 @@ public class NavigationLoader
      * value.  This allows you to easily chain the execution of
      * Navigation modules together.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @param name Name of object that will execute the navigation.
+     * @return the navigation module output
      * @exception Exception a generic exception.
      */
     public ConcreteElement eval(PipelineData pipelineData, String name)

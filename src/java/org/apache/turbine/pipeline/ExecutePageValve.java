@@ -58,7 +58,7 @@ public class ExecutePageValve
     private Configuration config;
 
     /**
-     * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
+     * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
      */
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
@@ -79,7 +79,7 @@ public class ExecutePageValve
     /**
      * execute the page generation.
      *
-     * @param data The run-time data.
+     * @param pipelineData The run-time data.
      */
     protected void executePage(PipelineData pipelineData)
         throws Exception

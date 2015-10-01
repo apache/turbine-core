@@ -19,10 +19,15 @@ package org.apache.turbine.util;
  * under the License.
  */
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.time.FastDateFormat;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.pipeline.PipelineData;
 
 /**
  * This class provides utilities for handling some semi-trivial HTTP stuff that
@@ -36,14 +41,10 @@ public class HttpUtils
     /**
      * The date format to use for HTTP Dates.
      */
-    private static SimpleDateFormat httpDateFormat;
-
-    static
-    {
-        httpDateFormat = new SimpleDateFormat(
-                "EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
-        httpDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-    }
+    private static FastDateFormat httpDateFormat = FastDateFormat.getInstance(
+                "EEE, dd MMM yyyy HH:mm:ss z",
+                TimeZone.getTimeZone("GMT"),
+                Locale.US);
 
     /**
      * Formats a java Date according to rfc 1123, the rfc standard for dates in
@@ -54,32 +55,31 @@ public class HttpUtils
      */
     public static String formatHttpDate(Date date)
     {
-        synchronized (httpDateFormat)
-        {
-            return httpDateFormat.format(date);
-        }
+        return httpDateFormat.format(date);
     }
 
     /**
      * This method sets the required expiration headers in the response for a
-     * given RunData object.  This method attempts to set all relevant headers,
+     * given {@link PipelineData} object.  This method attempts to set all relevant headers,
      * both for HTTP 1.0 and HTTP 1.1.
      *
-     * @param data The RunData object we are setting cache information for.
+     * @param pipelineData The {@link PipelineData} object we are setting cache information for.
      * @param expiry The number of milliseconds until the document should expire,
      * <code>0</code> indicating immediate expiration (i.e. no caching).
      */
-    public static void setCacheHeaders(RunData data, int expiry)
+    public static void setCacheHeaders(PipelineData pipelineData, int expiry)
     {
+        HttpServletResponse response = pipelineData.get(Turbine.class, HttpServletResponse.class);
+
         if (0 == expiry)
         {
-            data.getResponse().setHeader("Pragma", "no-cache");
-            data.getResponse().setHeader("Cache-Control", "no-cache");
-            data.getResponse().setDateHeader("Expires", System.currentTimeMillis());
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", System.currentTimeMillis());
         }
         else
         {
-            data.getResponse().setDateHeader("Expires", System.currentTimeMillis() + expiry);
+            response.setDateHeader("Expires", System.currentTimeMillis() + expiry);
         }
     }
 }

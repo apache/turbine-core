@@ -82,7 +82,7 @@ public class VelocityXslLayout extends Layout
      * Build the layout.  Also sets the ContentType and Locale headers
      * of the HttpServletResponse object.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception a generic exception.
      */
     @Override

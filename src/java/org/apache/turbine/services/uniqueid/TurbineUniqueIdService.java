@@ -70,7 +70,7 @@ public class TurbineUniqueIdService
             // getDefaultServerData will return just a dummy value
             // which is the same for all instances of Turbine.
             //
-            // @todo This needs definitely further working.
+            // TODO This needs definitely further working.
             String url = Turbine.getDefaultServerData().toString();
 
             MessageDigest md = MessageDigest.getInstance("MD5");

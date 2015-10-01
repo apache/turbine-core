@@ -23,13 +23,9 @@ package org.apache.turbine.util.template;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.ecs.ConcreteElement;
-
 import org.apache.turbine.modules.NavigationLoader;
-
 import org.apache.turbine.services.template.TurbineTemplate;
-
 import org.apache.turbine.util.RunData;
 
 /**
@@ -86,6 +82,7 @@ public class TemplateNavigation
      *
      * @return A String.
      */
+    @Override
     public String toString()
     {
         String module = null;

@@ -39,7 +39,7 @@ public class VelocityActionThrowsException extends VelocityAction
     /**
      *  Default action is throw an exception.
      *
-     * @param  data           Current PipelineData information
+     * @param  pipelineData           Current PipelineData information
      * @param  context        Context to populate
      * @exception  Exception  Thrown on error
      */
@@ -52,7 +52,7 @@ public class VelocityActionThrowsException extends VelocityAction
 
     /**
      * This action event also throws an exception.
-     * @param data
+     * @param pipelineData
      * @param context
      * @throws Exception
      */

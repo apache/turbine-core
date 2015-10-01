@@ -53,7 +53,7 @@ public class JspNavigation
     /**
      * Constructor
      *
-     * @param data
+     * @param data Turbine request data
      */
     public JspNavigation(RunData data)
     {

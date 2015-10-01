@@ -24,9 +24,8 @@ package org.apache.turbine.modules;
  * A common interface for Screen, Layout and Navigation Loader
  *
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
- * @version $Id$
+ * @param <T> the specialized assembler type
  */
-
 public interface Loader<T extends Assembler>
 {
     /**

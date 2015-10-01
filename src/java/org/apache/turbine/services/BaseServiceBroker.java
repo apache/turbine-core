@@ -149,6 +149,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
 
     /**
      * Initialize this service manager.
+     * @throws InitializationException if the initialization fails
      */
     public void init() throws InitializationException
     {
@@ -311,6 +312,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * @param serviceName The name of the service whose existence to check.
      * @return Registration predicate for the desired services.
      */
+    @Override
     public boolean isRegistered(String serviceName)
     {
         return (services.get(serviceName) != null);
@@ -356,6 +358,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * @exception InitializationException Initialization of this
      * service was not successful.
      */
+    @Override
     public synchronized void initService(String name)
             throws InitializationException
     {
@@ -400,6 +403,8 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * to initialize.
      *
      * @param report <code>true</code> if you want exceptions thrown.
+     * @throws InstantiationException if the service could not be instantiated
+     * @throws InitializationException if the service could not be initialized
      */
     public void initServices(boolean report)
             throws InstantiationException, InitializationException
@@ -460,6 +465,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * @param name The name of the <code>Service</code> to be
      * uninitialized.
      */
+    @Override
     public synchronized void shutdownService(String name)
     {
         try
@@ -489,6 +495,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * Shuts down all Turbine services, releasing allocated resources and
      * returning them to their initial (uninitialized) state.
      */
+    @Override
     public void shutdownServices()
     {
         log.info("Shutting down all services!");
@@ -526,6 +533,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * @exception InstantiationException if the service is unknown or
      * can't be initialized.
      */
+    @Override
     public Object getService(String name) throws InstantiationException
     {
         Service service;
@@ -660,6 +668,7 @@ public abstract class BaseServiceBroker implements ServiceBroker
      * @param name The name of the service.
      * @return Configuration of requested Service.
      */
+    @Override
     public Configuration getConfiguration(String name)
     {
         return configuration.subset(SERVICE_PREFIX + name);

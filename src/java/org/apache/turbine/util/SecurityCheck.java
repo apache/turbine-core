@@ -58,7 +58,7 @@ public class SecurityCheck
 
     /**
      * Holds information if a missing Permission or Role should be created and granted on-the-fly.
-     * This is good behaviour, if these change a lot.
+     * This is good behavior, if these change a lot.
      */
     private boolean initialize;
 

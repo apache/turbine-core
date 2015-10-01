@@ -22,7 +22,7 @@ package org.apache.turbine.om;
 
 
 /**
- *
+ * A factory that can provide retrievers
  *
  * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
  * @version $Id$
@@ -32,7 +32,9 @@ public interface RetrieverFactory
     /**
      * Gets an object capable of retrieving objects of type "className"
      *
-     * @return the object that matches the key
+     * @param className the class name of the {@link Retriever} implementation
+     * @return the {@link Retriever} instance
+     * @throws Exception if the instance could not be provided
      */
     Retriever getInstance(String className)
         throws Exception;

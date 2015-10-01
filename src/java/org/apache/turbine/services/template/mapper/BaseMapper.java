@@ -96,7 +96,7 @@ public abstract class BaseMapper
 
     /**
      * Set the UseCache value.
-     * @param newUseCache The new UseCache value.
+     * @param useCache The new UseCache value.
      */
     public void setUseCache(boolean useCache)
     {

@@ -57,8 +57,9 @@ public class ScreenLoader
      * This allows you to easily chain the execution of Screen modules
      * together.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @param name Name of object that will execute the screen.
+     * @return the output of the screen module
      * @exception Exception a generic exception.
      */
     public ConcreteElement eval(PipelineData pipelineData, String name)
@@ -73,7 +74,7 @@ public class ScreenLoader
      * want to execute a Screen which returns its output via the
      * data.getPage() object.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @param name Name of object that will execute the screen.
      * @exception Exception a generic exception.
      */

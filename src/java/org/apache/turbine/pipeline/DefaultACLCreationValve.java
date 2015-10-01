@@ -29,7 +29,6 @@ import org.apache.turbine.annotation.TurbineConfiguration;
 import org.apache.turbine.annotation.TurbineLoader;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -52,8 +51,9 @@ public class DefaultACLCreationValve
     private Configuration config;
 
     /**
-     * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
+     * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
      */
+    @Override
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {

@@ -256,7 +256,7 @@ public class TimeSelector
      * Set the selector name prefix.  Individual getHour, getMinute,
      * getSeconds, getAMPM static methods will not use this setting.
      *
-     * @param selname A String with the select name prefix.
+     * @param selName A String with the select name prefix.
      */
     public void setSelName(String selName)
     {
@@ -342,6 +342,7 @@ public class TimeSelector
      * Return a minute selector.
      *
      * @param name The name to use for the selected minute.
+     * @param now Calendar to start with.
      * @return A select object with minute options.
      */
     public static Select getMinuteSelector(String name, Calendar now)
@@ -411,7 +412,6 @@ public class TimeSelector
      * @param format Time format.
      * @return A select object with all the hours.
      */
-    @SuppressWarnings("cast")
     public static Select getHourSelector(String name, Calendar now, int format)
     {
         Select hourSelect = new Select().setName(name);
@@ -436,7 +436,7 @@ public class TimeSelector
             {
                 Option o = new Option();
 
-                o.addElement(nbrFmt.format((long) curHour));
+                o.addElement(nbrFmt.format(curHour));
                 o.setValue(curHour);
                 if (now.get(Calendar.AM_PM) == Calendar.AM)
                 {
@@ -607,7 +607,9 @@ public class TimeSelector
             Select tmp = getSecondSelector(selName + SECOND_SUFFIX, useDate,
                     this.secondInterval);
             if (onChangeSet)
+            {
                 tmp.setOnChange(onChange);
+            }
             secondSelect = tmp;
         }
         else
@@ -631,7 +633,9 @@ public class TimeSelector
         ec.addElement(":");
         ec.addElement(minuteSelect);
         if (this.showSeconds == true)
+        {
             ec.addElement(":");
+        }
         ec.addElement(secondSelect);
         if (this.timeFormat == TimeSelector.TWELVE_HOUR)
         {

@@ -294,6 +294,7 @@ public class TurbineTemplateService
      *
      * @return true if Caching is active.
      */
+    @Override
     public boolean isCaching()
     {
         return useCache;
@@ -306,6 +307,7 @@ public class TurbineTemplateService
      *
      * @return The default extension.
      */
+    @Override
     public String getDefaultExtension()
     {
         return StringUtils.isNotEmpty(defaultExtension) ? defaultExtension : "";
@@ -318,6 +320,7 @@ public class TurbineTemplateService
      *
      * @return extension The extension for the supplied template
      */
+    @Override
     public String getExtension(String template)
     {
         if (StringUtils.isEmpty(template))
@@ -337,6 +340,7 @@ public class TurbineTemplateService
      *
      * @return The default template Name
      */
+    @Override
     public String getDefaultTemplate()
     {
         StringBuffer sb = new StringBuffer();
@@ -355,6 +359,7 @@ public class TurbineTemplateService
      *
      * @return The default page module name.
      */
+    @Override
     public String getDefaultPage()
     {
         return getDefaultPageName(getDefaultTemplate());
@@ -366,6 +371,7 @@ public class TurbineTemplateService
      *
      * @return The default screen module name.
      */
+    @Override
     public String getDefaultScreen()
     {
         return getDefaultScreenName(getDefaultTemplate());
@@ -377,6 +383,7 @@ public class TurbineTemplateService
      *
      * @return The default layout module name.
      */
+    @Override
     public String getDefaultLayout()
     {
         return getDefaultLayoutName(getDefaultTemplate());
@@ -388,6 +395,7 @@ public class TurbineTemplateService
      *
      * @return The default navigation module name.
      */
+    @Override
     public String getDefaultNavigation()
     {
         return getDefaultNavigationName(getDefaultTemplate());
@@ -399,6 +407,7 @@ public class TurbineTemplateService
      *
      * @return The default layout template name.
      */
+    @Override
     public String getDefaultLayoutTemplate()
     {
         return getDefaultLayoutTemplateName(getDefaultTemplate());
@@ -412,6 +421,7 @@ public class TurbineTemplateService
      * @param template The template name.
      * @return The default page module name.
      */
+    @Override
     public String getDefaultPageName(String template)
     {
         return (mapperRegistry[PAGE_KEY]).getDefaultName(template);
@@ -425,6 +435,7 @@ public class TurbineTemplateService
      * @param template The template name.
      * @return The default screen module name.
      */
+    @Override
     public String getDefaultScreenName(String template)
     {
         return (mapperRegistry[SCREEN_KEY]).getDefaultName(template);
@@ -438,6 +449,7 @@ public class TurbineTemplateService
      * @param template The template name.
      * @return The default layout module name.
      */
+    @Override
     public String getDefaultLayoutName(String template)
     {
         return (mapperRegistry[LAYOUT_KEY]).getDefaultName(template);
@@ -451,6 +463,7 @@ public class TurbineTemplateService
      * @param template The template name.
      * @return The default navigation module name.
      */
+    @Override
     public String getDefaultNavigationName(String template)
     {
         return (mapperRegistry[NAVIGATION_KEY]).getDefaultName(template);
@@ -464,6 +477,7 @@ public class TurbineTemplateService
      * @param template The template name.
      * @return The default layout template name.
      */
+    @Override
     public String getDefaultLayoutTemplateName(String template)
     {
         return (mapperRegistry[LAYOUT_TEMPLATE_KEY]).getDefaultName(template);
@@ -476,6 +490,7 @@ public class TurbineTemplateService
      *             default page for.
      * @return The default page module name.
      */
+    @Override
     public String getDefaultPageName(RunData data)
     {
         String template = data.getParameters().get(URIConstants.CGI_TEMPLATE_PARAM);
@@ -490,6 +505,7 @@ public class TurbineTemplateService
      *             default layout for.
      * @return The default layout module name.
      */
+    @Override
     public String getDefaultLayoutName(RunData data)
     {
         String template = data.getParameters().get(URIConstants.CGI_TEMPLATE_PARAM);
@@ -505,6 +521,7 @@ public class TurbineTemplateService
      * @return The found screen module name.
      * @exception Exception, a generic exception.
      */
+    @Override
     public String getScreenName(String template)
         throws Exception
     {
@@ -519,6 +536,7 @@ public class TurbineTemplateService
      * @return The found layout module name.
      * @exception Exception, a generic exception.
      */
+    @Override
     public String getLayoutName(String template)
         throws Exception
     {
@@ -533,6 +551,7 @@ public class TurbineTemplateService
      * @return The found navigation module name.
      * @exception Exception, a generic exception.
      */
+    @Override
     public String getNavigationName(String template)
         throws Exception
     {
@@ -548,6 +567,7 @@ public class TurbineTemplateService
      * @return The found screen template name.
      * @exception Exception, a generic exception.
      */
+    @Override
     public String getScreenTemplateName(String template)
         throws Exception
     {
@@ -562,6 +582,7 @@ public class TurbineTemplateService
      * @return The found screen template name.
      * @exception Exception, a generic exception.
      */
+    @Override
     public String getLayoutTemplateName(String template)
         throws Exception
     {
@@ -577,6 +598,7 @@ public class TurbineTemplateService
      * @return The found navigation template name.
      * @exception Exception, a generic exception.
      */
+    @Override
     public String getNavigationTemplateName(String template)
         throws Exception
     {
@@ -594,6 +616,7 @@ public class TurbineTemplateService
      * @deprecated Each template engine service should know how to translate
      *             a request onto a file.
      */
+    @Override
     @Deprecated
     public String[] translateTemplatePaths(String[] templatePaths)
     {
@@ -613,6 +636,7 @@ public class TurbineTemplateService
      * @param templatePaths The paths to check for the template.
      * @deprecated Use templateExists from the various Templating Engines
      */
+    @Override
     @Deprecated
     public boolean templateExists(String template,
         String[] templatePaths)
@@ -633,6 +657,7 @@ public class TurbineTemplateService
      *
      * @param service The <code>TemplateEngineService</code> to register.
      */
+    @Override
     public synchronized void registerTemplateEngineService(TemplateEngineService service)
     {
         String[] exts = service.getAssociatedFileExtensions();
@@ -650,6 +675,7 @@ public class TurbineTemplateService
      * @param template The template name.
      * @return The template engine service.
      */
+    @Override
     public TemplateEngineService getTemplateEngineService(String template)
     {
         return templateEngineRegistry.get(getExtension(template));

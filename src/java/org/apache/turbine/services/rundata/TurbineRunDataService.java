@@ -205,7 +205,7 @@ public class TurbineRunDataService
      * @return a new or recycled RunData object.
      * @throws TurbineException if the operation fails.
      * @throws IllegalArgumentException if any of the parameters are null.
-     * @todo The "key" parameter should be removed in favor of just looking up what class via the roleConfig avalon file.
+     * TODO The "key" parameter should be removed in favor of just looking up what class via the roleConfig avalon file.
      */
     @Override
     public RunData getRunData(String key,

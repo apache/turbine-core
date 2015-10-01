@@ -33,7 +33,6 @@ import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.velocity.TurbineVelocity;
-import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 /**
@@ -108,19 +107,9 @@ public class VelocityHtmlEmail extends HtmlEmail
     private String mailServer;
 
     /**
-     * Constructor, sets the context object from the passed RunData object
-     * @deprecated use PipelineData version instead
-     * @param data A Turbine RunData object.
-     */
-    public VelocityHtmlEmail(RunData data)
-    {
-        this(TurbineVelocity.getContext(data));
-    }
-
-    /**
-     * Constructor, sets the context object from the passed RunData object
+     * Constructor, sets the context object from the passed {@link PipelineData} object
      *
-     * @param data A Turbine RunData object.
+     * @param pipelineData A Turbine {@link PipelineData} object.
      */
     public VelocityHtmlEmail(PipelineData pipelineData)
     {
@@ -199,6 +188,7 @@ public class VelocityHtmlEmail extends HtmlEmail
      *
      * @exception EmailException thrown if mail cannot be sent.
      */
+    @Override
     public String send() throws EmailException
     {
         context.put("mail", this);
@@ -248,6 +238,7 @@ public class VelocityHtmlEmail extends HtmlEmail
      *
      * @see HtmlEmail#embed(URL surl, String name) embed.
      */
+    @Override
     public String embed(String surl, String name)
     {
         String cid = "";

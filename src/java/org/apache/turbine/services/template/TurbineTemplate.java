@@ -22,7 +22,6 @@ package org.apache.turbine.services.template;
 
 
 import org.apache.turbine.services.TurbineServices;
-
 import org.apache.turbine.util.RunData;
 
 /**
@@ -322,6 +321,7 @@ public abstract class TurbineTemplate
      * @deprecated Each template engine service should know how to translate
      *             a request onto a file.
      */
+    @Deprecated
     public static final String[] translateTemplatePaths(String[] templatePaths)
     {
         return getService().translateTemplatePaths(templatePaths);
@@ -330,12 +330,14 @@ public abstract class TurbineTemplate
     /**
      * Delegates to the appropriate {@link
      * org.apache.turbine.services.template.TemplateEngineService} to
-     * check the existance of the specified template.
+     * check the existence of the specified template.
      *
-     * @param template The template to check for the existance of.
+     * @param template The template to check for the existence of.
      * @param templatePaths The paths to check for the template.
+     * @return true if the template exists
      * @deprecated Use templateExists from the various Templating Engines
      */
+    @Deprecated
     public static final boolean templateExists(String template, String[] templatePaths)
     {
         return getService().templateExists(template, templatePaths);

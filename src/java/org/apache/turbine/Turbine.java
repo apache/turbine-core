@@ -180,6 +180,7 @@ public class Turbine
      *
      * @exception ServletException a servlet exception.
      */
+    @Override
     public void init() throws ServletException
     {
         synchronized (Turbine.class)
@@ -303,20 +304,20 @@ public class Turbine
                 null);
         if (StringUtils.isNotEmpty(confFile))
         {
-            confStyle = "XML"; 
+            confStyle = "XML";
         } else // // second test
         {
             confFile = findInitParameter(context, config,
                     TurbineConfig.PROPERTIES_PATH_KEY,
-                                         null); 
-            if (StringUtils.isNotEmpty((confFile)) ) 
+                                         null);
+            if (StringUtils.isNotEmpty((confFile)) )
             {
                 confStyle = "Properties";
             }
         }
         // more tests ..
         // last test
-        if (confStyle.equals( "unset" )) 
+        if (confStyle.equals( "unset" ))
         {  // last resort
              confFile = findInitParameter(context, config,
                     TurbineConfig.PROPERTIES_PATH_KEY,
@@ -324,15 +325,15 @@ public class Turbine
              confStyle = "Properties";
         }
         // now begin loading
-        if (!confStyle.equals( "unset" )) 
+        if (!confStyle.equals( "unset" ))
         {
              if (confStyle.equals( "XML" )) {
-                 if (confFile.startsWith( "/" )) 
+                 if (confFile.startsWith( "/" ))
                  {
                      confFile = confFile.substring( 1 ); // cft. RFC2396 should not start with a slash, if not absolute path
                  }
                  DefaultConfigurationBuilder configurationBuilder = new DefaultConfigurationBuilder(confFile);
-                 confPath = new File(applicationRoot).toURI().toString();// relative base path used for this and child configuration files 
+                 confPath = new File(applicationRoot).toURI().toString();// relative base path used for this and child configuration files
                  configurationBuilder.setBasePath(confPath);
                  configuration = configurationBuilder.getConfiguration();
              } else {
@@ -481,7 +482,7 @@ public class Turbine
      * <li>The directory to write the log files to (relative to the
      * web application root), or <code>null</code> for the default of
      * <code>/logs</code>.  The directory is specified via the {@link
-     * TurbineConstants#LOGGING_ROOT} parameter.</li>
+     * TurbineConstants#LOGGING_ROOT_KEY} parameter.</li>
      *
      * </ul>
      *
@@ -738,6 +739,7 @@ public class Turbine
      * The <code>Servlet</code> destroy method.  Invokes
      * <code>ServiceBroker</code> tear down method.
      */
+    @Override
     public void destroy()
     {
         // Shut down all Turbine Services.
@@ -756,6 +758,7 @@ public class Turbine
      * @exception IOException a servlet exception.
      * @exception ServletException a servlet exception.
      */
+    @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws IOException, ServletException
     {
@@ -834,6 +837,7 @@ public class Turbine
      * @exception IOException a servlet exception.
      * @exception ServletException a servlet exception.
      */
+    @Override
     public void doPost(HttpServletRequest req, HttpServletResponse res)
             throws IOException, ServletException
     {
@@ -845,6 +849,7 @@ public class Turbine
      *
      * @return a string with the servlet information.
      */
+    @Override
     public String getServletInfo()
     {
         return "Turbine Servlet";
@@ -859,7 +864,7 @@ public class Turbine
      * including the servlet engine log file, the Turbine log file and
      * on the screen.
      *
-     * @param data A Turbine PipelineData object.
+     * @param pipelineData A Turbine PipelineData object.
      * @param res Servlet response.
      * @param t The exception to report.
      */
@@ -958,7 +963,7 @@ public class Turbine
     /**
      * Save some information about this servlet so that
      * it can be utilized by object instances that do not
-     * have direct access to RunData.
+     * have direct access to PipelineData.
      *
      * @param data Turbine request data
      */

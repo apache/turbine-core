@@ -42,9 +42,11 @@ import org.apache.turbine.util.uri.URIConstants;
 public class TemplateInfo
 {
 
-    /* Constants for tempStorage hash map. */
+    /** Constants for tempStorage hash map. */
     public static final String NAVIGATION_TEMPLATE = "00navigation_template00";
+    /** Constants for tempStorage hash map. */
     public static final String LAYOUT_TEMPLATE = "00layout_template00";
+    /** Constants for tempStorage hash map. */
     public static final String SERVICE_NAME = "template_service";
 
     /* Handle to the RunData object. */
@@ -56,7 +58,7 @@ public class TemplateInfo
     /**
      * Constructor
      *
-     * @param RunData A Turbine Rundata object.
+     * @param data A Turbine RunData object.
      */
     public TemplateInfo(RunData data)
     {
@@ -273,7 +275,7 @@ public class TemplateInfo
         return tempStorage.remove(name);
     }
 
-    /*
+    /**
      * Returns all the available names in the temporary storage.
      *
      * @return A object array with the keys.

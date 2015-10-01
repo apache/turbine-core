@@ -150,6 +150,8 @@ public interface UserManager
      * LastLogin, AccessCounter, persistent pull tools, and any data stored
      * in the permData hashtable that is not mapped to a column will be saved.
      *
+     * @param user the user in the session
+     *
      * @exception UnknownEntityException if the user's account does not
      *            exist in the database.
      * @exception DataBackendException if there is a problem accessing the
@@ -244,8 +246,7 @@ public interface UserManager
      * Checks whether a passed user object matches the anonymous user pattern
      * according to the configured user manager
      *
-     * @param An
-     *            user object
+     * @param u a user object
      *
      * @return True if this is an anonymous user
      *
@@ -281,8 +282,9 @@ public interface UserManager
 
     /**
      * Return a Class object representing the system's chosen implementation of
-     * of ACL interface.
+     * of ACL interface for the given user
      *
+     * @param user the user
      * @return systems's chosen implementation of ACL interface.
      * @throws UnknownEntityException
      *             if the implementation of ACL interface could not be

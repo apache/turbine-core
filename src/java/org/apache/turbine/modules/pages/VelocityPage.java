@@ -47,7 +47,7 @@ public class VelocityPage
      * Stuffs the Context into the PipelineData so that it is available to
      * the Action module and the Screen module via getContext().
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception, a generic exception.
      */
     @Override

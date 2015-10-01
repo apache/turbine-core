@@ -47,27 +47,58 @@ public abstract class TurbineJsonRpc
                 .getService(JsonRpcService.SERVICE_NAME);
     }
 
-    public static Object processCall(CharArrayWriter cdata, 
+    /**
+     * Process a JSON RPC call
+     * @param cdata the JSON data
+     * @param json_bridge the {@link JSONRPCBridge} object
+     * @param request the request
+     * @return the return object of the JSON RPC call
+     */
+    public static Object processCall(CharArrayWriter cdata,
             JSONRPCBridge json_bridge, HttpServletRequest request)
     {
         return getService().processCall(cdata, json_bridge, request);
     }
 
+    /**
+     * Register an object with the {@link JSONRPCBridge} in a given session
+     *
+     * @param session the session
+     * @param key the name of the object in the session
+     * @param value the object to register
+     */
     public static void registerObject(HttpSession session, String key, Object value)
     {
         getService().registerObject(session, key, value);
     }
 
+    /**
+     * Register an object with the {@link JSONRPCBridge} globally
+     *
+     * @param key the name of the object in the session
+     * @param value the object to register
+     */
     public static void registerObjectGlobal(String key, Object value)
     {
         getService().registerObjectGlobal(key, value);
     }
 
+    /**
+     * Get the {@link JSONRPCBridge} from the session
+     *
+     * @param session the session
+     * @return the {@link JSONRPCBridge} instance
+     */
     public static JSONRPCBridge getBridge(HttpSession session)
     {
         return getService().getBridge(session);
     }
 
+    /**
+     * Remove the {@link JSONRPCBridge} from the session
+     *
+     * @param session the session
+     */
     public static void clearBridge(HttpSession session)
     {
         getService().clearBridge(session);

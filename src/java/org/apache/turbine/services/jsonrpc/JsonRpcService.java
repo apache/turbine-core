@@ -40,14 +40,45 @@ public interface JsonRpcService
     /** TurbineJsonRpcService. */
     public static final String SERVICE_NAME = "JsonRpcService";
 
+    /**
+     * Process a JSON RPC call
+     * @param cdata the JSON data
+     * @param json_bridge the {@link JSONRPCBridge} object
+     * @param request the request
+     * @return the return object of the JSON RPC call
+     */
     public Object processCall(CharArrayWriter cdata,
             JSONRPCBridge json_bridge, HttpServletRequest request);
 
+    /**
+     * Register an object with the {@link JSONRPCBridge} in a given session
+     *
+     * @param session the session
+     * @param key the name of the object in the session
+     * @param value the object to register
+     */
     public void registerObject(HttpSession session, String key, Object value);
 
+    /**
+     * Register an object with the {@link JSONRPCBridge} globally
+     *
+     * @param key the name of the object in the session
+     * @param value the object to register
+     */
     public void registerObjectGlobal(String key, Object value);
 
+    /**
+     * Get the {@link JSONRPCBridge} from the session
+     *
+     * @param session the session
+     * @return the {@link JSONRPCBridge} instance
+     */
     public JSONRPCBridge getBridge(HttpSession session);
 
+    /**
+     * Remove the {@link JSONRPCBridge} from the session
+     *
+     * @param session the session
+     */
     public void clearBridge(HttpSession session);
 }

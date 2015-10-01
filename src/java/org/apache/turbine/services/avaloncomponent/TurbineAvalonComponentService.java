@@ -96,6 +96,7 @@ public class TurbineAvalonComponentService
      * @throws InitializationException Something went wrong in the init
      *         stage
      */
+    @Override
     public void init()
             throws InitializationException
     {
@@ -116,6 +117,7 @@ public class TurbineAvalonComponentService
      * implement this interface
      *
      */
+    @Override
     public void shutdown()
     {
         dispose();
@@ -131,6 +133,7 @@ public class TurbineAvalonComponentService
      *
      * @throws Exception generic exception
      */
+    @Override
     public void initialize() throws Exception
     {
         org.apache.commons.configuration.Configuration conf
@@ -209,6 +212,7 @@ public class TurbineAvalonComponentService
     /**
      * Disposes of the container and releases resources
      */
+    @Override
     public void dispose()
     {
         manager.dispose();
@@ -219,8 +223,8 @@ public class TurbineAvalonComponentService
      *
      * @param roleName Name of the role the component fills.
      * @return an instance of the named component
-     * @throws ComponentException generic exception
      */
+    @Override
     public Object lookup(String roleName)
             throws ServiceException
     {
@@ -239,6 +243,7 @@ public class TurbineAvalonComponentService
      *
      * @param component the component to release
      */
+    @Override
     public void release(Object component)
     {
         if( component instanceof Component )
@@ -250,6 +255,7 @@ public class TurbineAvalonComponentService
     /**
      * @see org.apache.avalon.framework.service.ServiceManager#hasService(java.lang.String)
      */
+    @Override
     public boolean hasService(String roleName)
     {
         return manager.hasComponent(roleName);
@@ -262,6 +268,7 @@ public class TurbineAvalonComponentService
     /**
      * @see org.apache.turbine.services.TurbineServiceProvider#exists(java.lang.String)
      */
+    @Override
     public boolean exists(String roleName)
     {
         return this.hasService(roleName);
@@ -270,6 +277,7 @@ public class TurbineAvalonComponentService
     /**
      * @see org.apache.turbine.services.TurbineServiceProvider#get(java.lang.String)
      */
+    @Override
     public Object get(String roleName) throws InstantiationException
     {
         try

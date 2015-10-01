@@ -57,7 +57,7 @@ public interface Mapper
 
     /**
      * Set the UseCache value.
-     * @param newUseCache The new UseCache value.
+     * @param useCache The new UseCache value.
      */
     void setUseCache(boolean useCache);
 

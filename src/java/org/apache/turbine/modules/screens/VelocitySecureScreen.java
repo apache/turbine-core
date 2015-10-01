@@ -45,7 +45,7 @@ public abstract class VelocitySecureScreen
     /**
      * Implement this to add information to the context.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @param context Context for web pages.
      * @exception Exception, a generic exception.
      */
@@ -58,7 +58,7 @@ public abstract class VelocitySecureScreen
      * This method overrides the method in VelocityScreen to
      * perform a security check first.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception, a generic exception.
      */
     @Override
@@ -77,7 +77,7 @@ public abstract class VelocitySecureScreen
      * user to be sent to if they're unauthorized.  See the
      * VelocitySecurityCheck utility.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @return True if the user is authorized to access the screen.
      * @exception Exception, a generic exception.
      */

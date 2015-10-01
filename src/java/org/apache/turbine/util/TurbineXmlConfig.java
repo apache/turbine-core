@@ -45,7 +45,7 @@ import java.util.Map;
  * initialize the Resource and Logging Services and any other services you
  * have defined in your TurbineResources.properties file.
  *
- * @todo Make this class enforce the lifecycle contracts
+ * TODO Make this class enforce the lifecycle contracts
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$
@@ -74,7 +74,17 @@ public class TurbineXmlConfig
     }
 
     /**
-     * @see #TurbineXmlConfig(String path, Map attributes, Map initParams)
+     * Constructs a new TurbineXmlConfig.
+     *
+     * This is the general form of the constructor. You can provide
+     * a path to search for files, and a name-value map of init
+     * parameters.
+     *
+     * <p> For the list of recognized init parameters, see
+     * {@link org.apache.turbine.Turbine} class.
+     *
+     * @param path The web application root (i.e. the path for file lookup).
+     * @param initParams initialization parameters.
      */
     public TurbineXmlConfig(String path, Map<String, String> initParams)
     {
@@ -85,10 +95,10 @@ public class TurbineXmlConfig
      * Constructs a TurbineXmlConfig.
      *
      * This is a specialized constructor that allows to configure
-     * Turbine easiliy in the common setups.
+     * Turbine easily in the common setups.
      *
      * @param path The web application root (i.e. the path for file lookup).
-     * @param configuration the relative path to TurbineResources.xml file
+     * @param config the relative path to TurbineResources.xml file
      */
     public TurbineXmlConfig(String path, String config)
     {

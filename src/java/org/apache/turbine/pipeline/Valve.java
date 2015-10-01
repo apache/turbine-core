@@ -40,7 +40,7 @@ import org.apache.turbine.util.TurbineException;
  * @author Peter Donald
  * @author <a href="mailto:dlr@finemaltcoding.com">Daniel Rall</a>
  *
- * @see #invoke(RunData, ValveContext)
+ * @see #invoke(PipelineData, ValveContext)
  */
 public interface Valve
 {
@@ -81,7 +81,7 @@ public interface Valve
      *     returned.
      * </ul>
      *
-     * @param data The run-time information, including the servlet
+     * @param pipelineData The run-time information, including the servlet
      * request and response we are processing.
      * @param context The valve context used to invoke the next valve
      *  in the current processing pipeline
@@ -89,11 +89,12 @@ public interface Valve
      * @exception IOException Thrown by a subsequent Valve.
      * @exception TurbineException Thrown by a subsequent Valve.
      */
-    public void invoke(PipelineData data, ValveContext context)
+    public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException;
 
     /**
      * Initialize the valve before using in a pipeline.
+     * @throws Exception if initialization fails
      */
     public void initialize()
         throws Exception;

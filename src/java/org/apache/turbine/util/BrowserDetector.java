@@ -47,12 +47,18 @@ package org.apache.turbine.util;
  */
 public class BrowserDetector
 {
+    /** Internet Explorer */
     public static final String MSIE = "MSIE";
+    /** Opera */
     public static final String OPERA = "Opera";
+    /** Mozilla, Firefox and friends */
     public static final String MOZILLA = "Mozilla";
 
+    /** Running on Windows */
     public static final String WINDOWS = "Windows";
+    /** Running on Unix */
     public static final String UNIX = "Unix";
+    /** Running on Mac OS X */
     public static final String MACINTOSH = "Macintosh";
 
     /** The user agent string. */
