@@ -129,35 +129,6 @@ public class LocalizationTool implements ApplicationTool
     }
 
     /**
-     * Formats a localized value using the provided object.
-     *
-     * @param key The identifier for the localized text to retrieve,
-     * @param arg1 The object to use as {0} when formatting the localized text.
-     * @return Formatted localized text.
-     * @see #format(String, Locale, String, Object[])
-     */
-    public String format(String key, Object arg1)
-    {
-        return getLocalizationService()
-                .format(getBundleName(null), getLocale(), key, arg1);
-    }
-
-    /**
-     * Formats a localized value using the provided objects.
-     *
-     * @param key The identifier for the localized text to retrieve,
-     * @param arg1 The object to use as {0} when formatting the localized text.
-     * @param arg2 The object to use as {1} when formatting the localized text.
-     * @return Formatted localized text.
-     * @see #format(String, Locale, String, Object[])
-     */
-    public String format(String key, Object arg1, Object arg2)
-    {
-        return getLocalizationService()
-                .format(getBundleName(null), getLocale(), key, arg1, arg2);
-    }
-
-    /**
      * Formats a localized value using the provided objects.
      *
      * @param key The identifier for the localized text to retrieve,
@@ -165,7 +136,7 @@ public class LocalizationTool implements ApplicationTool
      *             formatting the localized text.
      * @return Formatted localized text.
      */
-    public String format(String key, Object[] args)
+    public String format(String key, Object... args)
     {
         return getLocalizationService()
                 .format(getBundleName(null), getLocale(), key, args);
@@ -177,6 +148,7 @@ public class LocalizationTool implements ApplicationTool
      * Sets the request to get the <code>Accept-Language</code> header
      * from (reset on each request).
      */
+    @Override
     public void init(Object data)
     {
         if (data instanceof RunData)
@@ -190,6 +162,7 @@ public class LocalizationTool implements ApplicationTool
     /**
      * No-op.
      */
+    @Override
     public void refresh()
     {
         locale = null;

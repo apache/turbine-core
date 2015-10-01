@@ -48,20 +48,18 @@ public class DefaultSessionTimeoutValve
      * reused, so we get the timeout from the configuration..
      */
     public DefaultSessionTimeoutValve()
-        throws Exception
     {
         Configuration cfg = Turbine.getConfiguration();
 
         // Get the session timeout.
-
     	timeout = cfg.getInt(TurbineConstants.SESSION_TIMEOUT_KEY,
                 TurbineConstants.SESSION_TIMEOUT_DEFAULT);
-
     }
 
     /**
-     * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
+     * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
      */
+    @Override
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {

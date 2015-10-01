@@ -32,7 +32,7 @@ public interface TurbineServiceProvider
 {
     /**
      * Returns an instance of the requested service. If the
-     * given servise is not available/found we throw a RuntimeException
+     * given service is not available/found we throw a RuntimeException
      * since this is less intrusive.
      *
      * @param roleName the name of the requested service
@@ -51,6 +51,8 @@ public interface TurbineServiceProvider
 
     /**
      * Is the service known to the service container?
+     * @param roleName the name of the requested service
+     * @return true if the service is known to the provider
      */
     public boolean exists(String roleName);
 }

@@ -64,7 +64,7 @@ public class LogoutUser
      * that the session validator does handle setting the screen/template
      * for a logged out (read not-logged-in) user.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception FulcrumSecurityException a problem occurred in the security
      *            service.
      */

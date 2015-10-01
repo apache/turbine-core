@@ -63,7 +63,7 @@ public class VelocityNavigation
      * method to perform any particular business logic and add
      * information to the context.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @param context Context for web pages.
      * @exception Exception, a generic exception.
      */
@@ -92,7 +92,7 @@ public class VelocityNavigation
     /**
      * This builds the Velocity template.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @return A ConcreteElement.
      * @exception Exception, a generic exception.
      */

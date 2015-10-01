@@ -54,8 +54,9 @@ public interface Pipeline
 {
     /**
      * Initializes this instance.  Called once by the Turbine servlet.
+     * @throws Exception if the initialization fails
      */
-    public void initialize()
+    void initialize()
         throws Exception;
 
     /**
@@ -66,7 +67,7 @@ public interface Pipeline
      * @exception IllegalStateException If the pipeline has not been
      * initialized.
      */
-    public void addValve(Valve valve);
+    void addValve(Valve valve);
 
     /**
      * Return the set of all Valves in the pipeline.  If there are no
@@ -74,7 +75,7 @@ public interface Pipeline
      *
      * @return An array of valves.
      */
-    public Valve[] getValves();
+    Valve[] getValves();
 
     /**
      * <p>Cause the specified request and response to be processed by
@@ -86,12 +87,12 @@ public interface Pipeline
      * same Pipeline without interfering with each other's control
      * flow.</p>
      *
-     * @param data The run-time information, including the servlet
+     * @param pipelineData The run-time information, including the servlet
      * request and response we are processing.
-     *
-     * @exception IOException an input/output error occurred.
+     * @throws TurbineException if the invocation fails
+     * @throws IOException an input/output error occurred.
      */
-    public void invoke(PipelineData data)
+    void invoke(PipelineData pipelineData)
         throws TurbineException, IOException;
 
     /**
@@ -100,5 +101,5 @@ public interface Pipeline
      *
      * @param valve Valve to be removed.
      */
-    public void removeValve(Valve valve);
+    void removeValve(Valve valve);
 }

@@ -76,7 +76,7 @@ public class DefaultUserImpl implements User
      * Implement this method if you wish to be notified when the User
      * has been Bound to the session.
      *
-     * @param event Indication of value/session binding.
+     * @param hsbe Indication of value/session binding.
      */
     @Override
     public void valueBound(HttpSessionBindingEvent hsbe)
@@ -88,7 +88,7 @@ public class DefaultUserImpl implements User
      * Implement this method if you wish to be notified when the User
      * has been Unbound from the session.
      *
-     * @param event Indication of value/session unbinding.
+     * @param hsbe Indication of value/session unbinding.
      */
     @Override
     public void valueUnbound(HttpSessionBindingEvent hsbe)
@@ -119,6 +119,7 @@ public class DefaultUserImpl implements User
      *
      * @return The Name of the SecurityEntity.
      */
+    @Override
     public String getName()
     {
         return userDelegate.getName();
@@ -130,6 +131,7 @@ public class DefaultUserImpl implements User
      * @param name
      *            Name of the SecurityEntity.
      */
+    @Override
     public void setName(String name)
     {
         userDelegate.setName(name);
@@ -140,6 +142,7 @@ public class DefaultUserImpl implements User
      *
      * @return The Id of the SecurityEntity.
      */
+    @Override
     public Object getId()
     {
         return userDelegate.getId();
@@ -151,6 +154,7 @@ public class DefaultUserImpl implements User
      * @param id
      *            The new Id of the SecurityEntity
      */
+    @Override
     public void setId(Object id)
     {
         userDelegate.setId(id);
@@ -168,6 +172,7 @@ public class DefaultUserImpl implements User
      *
      * @return A String with the password for the user.
      */
+    @Override
     public String getPassword()
     {
         return userDelegate.getPassword();
@@ -180,6 +185,7 @@ public class DefaultUserImpl implements User
      *
      * @param password The new password.
      */
+    @Override
     public void setPassword(String password)
     {
         userDelegate.setPassword(password);
@@ -191,6 +197,7 @@ public class DefaultUserImpl implements User
      * @return A String with the user's first name.
      */
 
+    @Override
     public String getFirstName()
     {
         return userDelegate.getFirstName();
@@ -201,6 +208,7 @@ public class DefaultUserImpl implements User
      *
      * @param firstName User's first name.
      */
+    @Override
     public void setFirstName(String firstName)
     {
         userDelegate.setFirstName(firstName);
@@ -211,6 +219,7 @@ public class DefaultUserImpl implements User
      *
      * @return A String with the user's last name.
      */
+    @Override
     public String getLastName()
     {
         return userDelegate.getLastName();
@@ -221,6 +230,7 @@ public class DefaultUserImpl implements User
      *
      * @param lastName User's last name.
      */
+    @Override
     public void setLastName(String lastName)
     {
         userDelegate.setLastName(lastName);
@@ -231,6 +241,7 @@ public class DefaultUserImpl implements User
      *
      * @return A String with the user's email address.
      */
+    @Override
     public String getEmail()
     {
         return userDelegate.getEmail();
@@ -241,6 +252,7 @@ public class DefaultUserImpl implements User
      *
      * @param address The email address.
      */
+    @Override
     public void setEmail(String address)
     {
         userDelegate.setEmail(address);
@@ -254,6 +266,7 @@ public class DefaultUserImpl implements User
      *
      * @return The bytes in the objectdata for this user
      */
+    @Override
     public byte[] getObjectdata()
     {
         return userDelegate.getObjectdata();
@@ -264,6 +277,7 @@ public class DefaultUserImpl implements User
      *
      * @param objectdata The new permanent storage for the user
      */
+    @Override
     public void setObjectdata(byte[] objectdata)
     {
         userDelegate.setObjectdata(objectdata);
@@ -274,6 +288,7 @@ public class DefaultUserImpl implements User
      *
      * @return a set of User/Group/Role relations
      */
+    @Override
     public <T extends TurbineUserGroupRole> Set<T> getUserGroupRoleSet()
     {
         return userDelegate.getUserGroupRoleSet();
@@ -285,6 +300,7 @@ public class DefaultUserImpl implements User
      * @param userGroupRoleSet
      *            a set of User/Group/Role relations
      */
+    @Override
     public <T extends TurbineUserGroupRole> void setUserGroupRoleSet(Set<T> userGroupRoleSet)
     {
         userDelegate.setUserGroupRoleSet(userGroupRoleSet);
@@ -296,6 +312,7 @@ public class DefaultUserImpl implements User
      * @param userGroupRole
      *            a User/Group/Role relation to add
      */
+    @Override
     public void addUserGroupRole(TurbineUserGroupRole userGroupRole)
     {
         userDelegate.addUserGroupRole(userGroupRole);
@@ -307,6 +324,7 @@ public class DefaultUserImpl implements User
      * @param userGroupRole
      *            a User/Group/Role relation to remove
      */
+    @Override
     public void removeUserGroupRole(TurbineUserGroupRole userGroupRole)
     {
         userDelegate.removeUserGroupRole(userGroupRole);
@@ -447,7 +465,7 @@ public class DefaultUserImpl implements User
      * This should only be used in the case where we want to make the
      * data persistent.
      *
-     * @param storage A Map.
+     * @param permStorage A Map.
      */
     @Override
     public void setPermStorage(Map<String, Object> permStorage)
@@ -478,7 +496,7 @@ public class DefaultUserImpl implements User
      * This should only be used in the case where we want to save the
      * data to the database.
      *
-     * @param storage A Map.
+     * @param tempStorage A Map.
      */
     @Override
     public void setTempStorage(Map<String, Object> tempStorage)

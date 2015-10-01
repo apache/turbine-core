@@ -33,10 +33,11 @@ import org.apache.turbine.services.Service;
 public interface UniqueIdService
         extends Service
 {
+    /** The service name */
     String SERVICE_NAME = "UniqueIdService";
 
     /**
-     * <p> Returs an identifer of this Turbine instance that is unique
+     * <p> Returns an identifier of this Turbine instance that is unique
      * both on the server and worldwide.
      *
      * @return A String with the instance identifier.
@@ -44,8 +45,8 @@ public interface UniqueIdService
     String getInstanceId();
 
     /**
-     * <p> Returns an identifier that is unique within this turbine
-     * instance, but does not have random-like apearance.
+     * <p> Returns an identifier that is unique within this Turbine
+     * instance, but does not have random-like appearance.
      *
      * <p> This method is intended to work fast; it can be used for
      * creating names of temporary files.
@@ -58,11 +59,11 @@ public interface UniqueIdService
     /**
      * <p> Returns a unique identifier that looks like random data.
      *
-     * <p> This method provides indentifiers in a way that makes it
+     * <p> This method provides identifiers in a way that makes it
      * hard to guess or count, but still ensures their uniqueness
      * within this instance of Turbine.  It can be used for generating
      * cookies or other data that travels back and forth between
-     * server and browser, and is potentialy security sensitive.
+     * server and browser, and is potentially security sensitive.
      *
      * @return A String with the random looking instance identifier.
      */

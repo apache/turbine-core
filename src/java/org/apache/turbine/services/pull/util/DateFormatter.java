@@ -62,6 +62,7 @@ public class DateFormatter
      *
      * @param data initialization data
      */
+    @Override
     public void init(Object data)
     {
         dateFormat = Turbine.getConfiguration()
@@ -75,6 +76,7 @@ public class DateFormatter
      * if it is using configuration information
      * that is typically cached after initialization
      */
+    @Override
     public void refresh()
     {
         // empty

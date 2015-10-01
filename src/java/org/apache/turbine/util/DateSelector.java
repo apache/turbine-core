@@ -124,7 +124,7 @@ public class DateSelector
      * output() methods are used.  Individual getMonth, getDay,
      * getYear static methods will not use this setting.
      *
-     * @param string A String to use for onChange attribute.  If null,
+     * @param onChange A String to use for onChange attribute.  If null,
      * then nothing will be set.
      * @return A DateSelector (self).
      */
@@ -177,7 +177,7 @@ public class DateSelector
      * Set the selector name prefix.  Individual getMonth, getDay,
      * getYear static methods will not use this setting.
      *
-     * @param selname A String with the select name prefix.
+     * @param selName A String with the select name prefix.
      */
     public void setSelName(String selName)
     {
@@ -330,12 +330,11 @@ public class DateSelector
     }
 
     /**
-     * Select the day to be selected if the showDays(false) behavior
-     * is used.  Individual getMonth, getDay, getYear static methods
-     * will not use this setting.
-     *
-     * @param day The day.
-     * @return A DateSelector (self).
+     * Set a year range to be displayed
+     * @param firstYear start of year range
+     * @param lastYear end of year range
+     * @param selectedYear entry to select
+     * @return true if the range settings are valid
      */
     public boolean setYear(int firstYear, int lastYear, int selectedYear)
     {
@@ -394,12 +393,13 @@ public class DateSelector
      *
      * @return A String with the correct HTML for the date selector.
      */
+    @Override
     public String toString()
     {
         return (ecsOutput().toString());
     }
 
-    /*
+    /**
      * Return an ECS container with the month, day, and year select
      * objects inside.
      *

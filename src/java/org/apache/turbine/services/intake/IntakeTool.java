@@ -138,6 +138,11 @@ public class IntakeTool
         }
     }
 
+    /**
+     * Add all registered group ids to the value parser
+     *
+     * @param vp the value parser
+     */
     public void addGroupsToParameters(ValueParser vp)
     {
         for (Group group : groups.values())
@@ -160,6 +165,8 @@ public class IntakeTool
      * $intake.newForm() and $intake.declareGroup($group) for the relevant
      * groups in the form.
      *
+     * @return the HTML that declares all groups to Intake in hidden input fields
+     *
      */
     public String declareGroups()
     {
@@ -174,6 +181,9 @@ public class IntakeTool
     /**
      * A convenience method to write out the hidden form fields
      * that notify intake of the group.
+     *
+     * @param group the group to declare
+     * @return the HTML that declares the group to Intake in a hidden input field
      */
     public String declareGroup(Group group)
     {
@@ -185,6 +195,8 @@ public class IntakeTool
     /**
      * xhtml valid hidden input field(s) that notifies intake of the
      * group's presence.
+     * @param group the group to declare
+     * @param sb a String Builder where the hidden field HTML will be appended
      */
     public void declareGroup(Group group, StringBuilder sb)
     {
@@ -200,6 +212,9 @@ public class IntakeTool
         group.appendHtmlFormInput(sb);
     }
 
+    /**
+     * Declare that a new form starts
+     */
     public void newForm()
     {
         declaredGroups.clear();
@@ -326,6 +341,8 @@ public class IntakeTool
 
     /**
      * get a specific group
+     * @param groupName the name of the group
+     * @return a {@link PullHelper} wrapper around the group
      */
     public PullHelper get(String groupName)
     {
@@ -335,7 +352,9 @@ public class IntakeTool
     /**
      * Get a specific group
      *
+     * @param groupName the name of the group
      * @param throwExceptions if false, exceptions will be suppressed.
+     * @return a {@link PullHelper} wrapper around the group
      * @throws IntakeException could not retrieve group
      */
     public PullHelper get(String groupName, boolean throwExceptions)
@@ -347,6 +366,7 @@ public class IntakeTool
     /**
      * Loops through all of the Groups and checks to see if
      * the data within the Group is valid.
+     * @return true if all groups are valid
      */
     public boolean isAllValid()
     {
@@ -360,26 +380,25 @@ public class IntakeTool
 
     /**
      * Get a specific group by name and key.
+     * @param groupName the name of the group
+     * @param key the key for the group
+     * @return the {@link Group}
+     * @throws IntakeException if the group could not be retrieved
      */
     public Group get(String groupName, String key)
             throws IntakeException
     {
-        if (groupName == null)
-        {
-            throw new IntakeException("IntakeServiceFacade.get: groupName == null");
-        }
-        if (key == null)
-        {
-            throw new IntakeException("IntakeServiceFacade.get: key == null");
-        }
-
-        PullHelper ph = get(groupName);
-        return (ph == null) ? null : ph.setKey(key);
+        return get(groupName, key, true);
     }
 
     /**
      * Get a specific group by name and key. Also specify
      * whether or not you want to create a new group.
+     * @param groupName the name of the group
+     * @param key the key for the group
+     * @param create true if a new group should be created
+     * @return the {@link Group}
+     * @throws IntakeException if the group could not be retrieved
      */
     public Group get(String groupName, String key, boolean create)
             throws IntakeException
@@ -401,6 +420,7 @@ public class IntakeTool
      * Removes group.  Primary use is to remove a group that has
      * been processed by an action and is no longer appropriate
      * in the view (screen).
+     * @param group the group instance to remove
      */
     public void remove(Group group)
     {

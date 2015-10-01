@@ -75,6 +75,7 @@ public class SchedulerTool implements ApplicationTool
 
     /**
      * Determines if the scheduler service is currently enabled.
+     * @return true if the scheduler is enabled
      */
     public boolean isEnabled()
     {
@@ -84,7 +85,7 @@ public class SchedulerTool implements ApplicationTool
     /**
      * Gets the job identified by the jobId.
      *
-     * @param jobId Id of the job to retreive.
+     * @param jobId Id of the job to retrieve.
      * @return The job.  Null if the jobId is not found.
      */
     public JobEntry getJob(String jobId)

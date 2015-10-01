@@ -1,6 +1,5 @@
 package org.apache.turbine.services.template;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,7 +19,6 @@ package org.apache.turbine.services.template;
  * under the License.
  */
 
-
 import java.util.Hashtable;
 
 /**
@@ -33,20 +31,31 @@ import java.util.Hashtable;
  * @version $Id$ */
 public interface TemplateEngineService
 {
-    static final String TEMPLATE_EXTENSIONS = "template.extension";
-    static final String DEFAULT_TEMPLATE_EXTENSION = "template.default.extension";
-    static final String DEFAULT_PAGE = "default.page";
-    static final String DEFAULT_SCREEN = "default.screen";
-    static final String DEFAULT_LAYOUT = "default.layout";
-    static final String DEFAULT_NAVIGATION = "default.navigation";
-    static final String DEFAULT_ERROR_SCREEN = "default.error.screen";
-    static final String DEFAULT_LAYOUT_TEMPLATE = "default.layout.template";
-    static final String DEFAULT_SCREEN_TEMPLATE = "default.screen.template";
-    static final String DEFAULT_NAVIGATION_TEMPLATE = "default.navigation.template";
+    /** Configuration key */
+    String TEMPLATE_EXTENSIONS = "template.extension";
+    /** Configuration key */
+    String DEFAULT_TEMPLATE_EXTENSION = "template.default.extension";
+    /** Configuration key */
+    String DEFAULT_PAGE = "default.page";
+    /** Configuration key */
+    String DEFAULT_SCREEN = "default.screen";
+    /** Configuration key */
+    String DEFAULT_LAYOUT = "default.layout";
+    /** Configuration key */
+    String DEFAULT_NAVIGATION = "default.navigation";
+    /** Configuration key */
+    String DEFAULT_ERROR_SCREEN = "default.error.screen";
+    /** Configuration key */
+    String DEFAULT_LAYOUT_TEMPLATE = "default.layout.template";
+    /** Configuration key */
+    String DEFAULT_SCREEN_TEMPLATE = "default.screen.template";
+    /** Configuration key */
+    String DEFAULT_NAVIGATION_TEMPLATE = "default.navigation.template";
 
     /**
      * Return the configuration of the template engine in
      * the form of a Hashtable.
+     * @return the template engine service configuration map
      */
     Hashtable<String, Object> getTemplateEngineServiceConfiguration();
 
@@ -63,6 +72,7 @@ public interface TemplateEngineService
      * Supplies the file extension to key this engine in {@link
      * org.apache.turbine.services.template.TemplateService}'s
      * registry with.
+     * @return the list of extensions this engine supports
      */
     String[] getAssociatedFileExtensions();
 
@@ -75,7 +85,7 @@ public interface TemplateEngineService
      * template engine with respect to retrieving templates
      * from arbitrary sources.
      *
-     * @param template The name of the template to check the existance of.
+     * @param template The name of the template to check the existence of.
      * @return         Whether the specified template exists.
      */
     boolean templateExists(String template);

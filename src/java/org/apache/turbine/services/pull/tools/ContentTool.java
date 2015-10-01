@@ -97,12 +97,13 @@ public class ContentTool
      */
 
     /**
-     * This will initialise a ContentTool object that was
+     * This will initialize a ContentTool object that was
      * constructed with the default constructor (ApplicationTool
      * method).
      *
-     * @param data assumed to be a RunData object
+     * @param data assumed to be a PipelineData object
      */
+    @Override
     public void init(Object data)
     {
         // we just blithely cast to RunData as if another object
@@ -141,6 +142,7 @@ public class ContentTool
     /**
      * Refresh method - does nothing
      */
+    @Override
     public void refresh()
     {
         // empty

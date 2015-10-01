@@ -84,7 +84,7 @@ public class AccessController
      * <code>TurbineSecurity.getACL()</code> and added to the current
      * session.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception FulcrumSecurityException problem with the security service.
      */
     @Override

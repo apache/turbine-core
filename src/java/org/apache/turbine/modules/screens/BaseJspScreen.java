@@ -54,7 +54,7 @@ public class BaseJspScreen
     /**
      * Method that sets up beans and forward the request to the JSP.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @return null - the JSP sends the information.
      * @exception Exception, a generic exception.
      */
@@ -85,7 +85,7 @@ public class BaseJspScreen
     /**
      * Method to be overridden by subclasses to include data in beans, etc.
      *
-     * @param data, the PipelineData object
+     * @param pipelineData the PipelineData object
      * @exception Exception, a generic exception.
      */
     @Override

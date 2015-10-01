@@ -60,7 +60,7 @@ public abstract class Navigation
      * RunData or to write the navigation to the output stream
      * referenced in RunData.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception a generic exception.
      */
     protected abstract ConcreteElement doBuild(PipelineData pipelineData) throws Exception;
@@ -70,7 +70,7 @@ public abstract class Navigation
      * functionality.  This method is protected to force clients to
      * use NavigationLoader to build a Navigation.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception a generic exception.
      */
     protected ConcreteElement build(PipelineData pipelineData)

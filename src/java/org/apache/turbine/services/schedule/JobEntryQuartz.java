@@ -31,7 +31,13 @@ import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.Trigger;
+import org.quartz.core.QuartzScheduler;
 
+/**
+ * This implements a Turbine scheduled job model for the {@link QuartzScheduler}.
+ *
+ * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
+ */
 public class JobEntryQuartz implements JobEntry, Job
 {
     private int jobId;
@@ -41,6 +47,9 @@ public class JobEntryQuartz implements JobEntry, Job
     private boolean isnew = true;
     private AtomicBoolean active = new AtomicBoolean(false);
 
+    /**
+     * the default Quartz schedule group name for Turbine jobs
+     */
     public static final String DEFAULT_JOB_GROUP_NAME = "TURBINE";
 
     /**

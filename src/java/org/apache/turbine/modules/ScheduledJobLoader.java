@@ -72,14 +72,14 @@ public class ScheduledJobLoader
      * independently of an HTTP request.  This should not extend
      * GenericLoader!  Thoughts??
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @param name Name of object that will execute the job.
      * @exception Exception a generic exception.
      * @deprecated
      */
     @Deprecated
     @Override
-    public void exec(PipelineData data, String name)
+    public void exec(PipelineData pipelineData, String name)
             throws Exception
     {
         throw new Exception("PipelineData objects not accepted for Scheduled jobs");

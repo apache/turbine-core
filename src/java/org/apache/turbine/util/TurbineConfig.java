@@ -67,7 +67,7 @@ import org.apache.turbine.Turbine;
  * initialize the Resource and Logging Services and any other services you
  * have defined in your TurbineResources.properties file.
  *
- * @todo Make this class enforce the lifecycle contracts
+ * TODO Make this class enforce the lifecycle contracts
  *
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @author <a href="mailto:krzewski@e-point.pl">Rafal Krzewski</a>
@@ -137,7 +137,17 @@ public class TurbineConfig
     }
 
     /**
-     * @see #TurbineConfig(String path, Map attributes, Map initParams)
+     * Constructs a new TurbineConfig.
+     *
+     * This is the general form of the constructor. You can provide
+     * a path to search for files, and a name-value map of init
+     * parameters.
+     *
+     * <p> For the list of recognized init parameters, see
+     * {@link org.apache.turbine.Turbine} class.
+     *
+     * @param path The web application root (i.e. the path for file lookup).
+     * @param initParams initialization parameters.
      */
     public TurbineConfig(String path, Map<String, String> initParams)
     {
@@ -163,6 +173,7 @@ public class TurbineConfig
      * Causes this class to initialize itself which in turn initializes
      * all of the Turbine Services that need to be initialized.
      */
+    @Override
     public void initialize()
     {
         try
@@ -178,6 +189,7 @@ public class TurbineConfig
 
     /**
      * Initialization requiring a HTTP <code>GET</code> request.
+     * @param data the Turbine request
      */
     public void init(RunData data)
     {
@@ -191,6 +203,7 @@ public class TurbineConfig
      * Shutdown the Turbine System, lifecycle style
      *
      */
+    @Override
     public void dispose()
     {
         if (turbine != null)
@@ -214,6 +227,7 @@ public class TurbineConfig
      *
      * @return a ServletContext reference
      */
+    @Override
     public ServletContext getServletContext()
     {
         return this;
@@ -227,6 +241,7 @@ public class TurbineConfig
      * @return An absolute version of the supplied path, or <code>null</code>
      * if the translated path doesn't map to a file or directory.
      */
+    @Override
     public String getRealPath(String path)
     {
         String result = null;
@@ -264,6 +279,7 @@ public class TurbineConfig
      * @param name the name of the parameter.
      * @return the value of the parameter.
      */
+    @Override
     public String getInitParameter(String name)
     {
         return initParams.get(name);
@@ -274,6 +290,7 @@ public class TurbineConfig
      *
      * @return an Enumeration of initialization parameter names.
      */
+    @Override
     public Enumeration<String> getInitParameterNames()
     {
         return new Vector<String>(initParams.keySet()).elements();
@@ -286,6 +303,7 @@ public class TurbineConfig
      *
      * @return the servlet name.
      */
+    @Override
     public String getServletName()
     {
         return "Turbine";
@@ -298,6 +316,7 @@ public class TurbineConfig
      *
      * @return the context name
      */
+    @Override
     public String getServletContextName()
     {
         return "Turbine";
@@ -310,6 +329,7 @@ public class TurbineConfig
      *
      * @return the context path
      */
+    @Override
     public String getContextPath()
     {
         return "/turbine";
@@ -324,6 +344,7 @@ public class TurbineConfig
      * @return a URL pointing to the resource
      * @exception MalformedURLException
      */
+    @Override
     public URL getResource(String s)
             throws MalformedURLException
     {
@@ -337,6 +358,7 @@ public class TurbineConfig
      * @param s the path to the resource
      * @return an InputStream object from which the resource can be read
      */
+    @Override
     public InputStream getResourceAsStream(String s)
     {
         try
@@ -357,6 +379,7 @@ public class TurbineConfig
      * @param m a message.
      * @deprecated use log(String,Throwable) instead
      */
+    @Override
     @Deprecated
     public void log(Exception e, String m)
     {
@@ -368,6 +391,7 @@ public class TurbineConfig
      *
      * @param m a message.
      */
+    @Override
     public void log(String m)
     {
         log.info(m);
@@ -379,6 +403,7 @@ public class TurbineConfig
      * @param t a Throwable object.
      * @param m a message.
      */
+    @Override
     public void log(String m, Throwable t)
     {
         log.info(m, t);
@@ -388,6 +413,7 @@ public class TurbineConfig
      * Returns the servlet container attribute with the given name, or
      * null if there is no attribute by that name.
      */
+    @Override
     public Object getAttribute(String s)
     {
         return attributes.get(s);
@@ -397,6 +423,7 @@ public class TurbineConfig
      * Returns an Enumeration containing the attribute names available
      * within this servlet context.
      */
+    @Override
     public Enumeration<String> getAttributeNames()
     {
         return new Vector<String>(attributes.keySet()).elements();
@@ -411,6 +438,7 @@ public class TurbineConfig
      * implemented and will throw <code>UnsuportedOperationException</code>
      * upon invocation
      */
+    @Override
     public ServletContext getContext(String s)
     {
         throw new UnsupportedOperationException();
@@ -423,6 +451,7 @@ public class TurbineConfig
      * implemented and will throw <code>UnsuportedOperationException</code>
      * upon invocation
      */
+    @Override
     public int getMajorVersion()
     {
         throw new UnsupportedOperationException();
@@ -435,6 +464,7 @@ public class TurbineConfig
      * implemented and will throw <code>UnsuportedOperationException</code>
      * upon invocation
      */
+    @Override
     public String getMimeType(String s)
     {
         throw new UnsupportedOperationException();
@@ -447,6 +477,7 @@ public class TurbineConfig
      * implemented and will throw <code>UnsuportedOperationException</code>
      * upon invocation
      */
+    @Override
     public int getMinorVersion()
     {
         throw new UnsupportedOperationException();
@@ -459,6 +490,7 @@ public class TurbineConfig
      * implemented and will throw <code>UnsuportedOperationException</code>
      * upon invocation
      */
+    @Override
     public RequestDispatcher getNamedDispatcher(String s)
     {
         throw new UnsupportedOperationException();
@@ -471,6 +503,7 @@ public class TurbineConfig
      * implemented and will throw <code>UnsuportedOperationException</code>
      * upon invocation
      */
+    @Override
     public RequestDispatcher getRequestDispatcher(String s)
     {
         throw new UnsupportedOperationException();
@@ -482,6 +515,7 @@ public class TurbineConfig
      * A method in ServletContext (2.3) interface that is not implemented and
      * will throw <code>UnsuportedOperationException</code> upon invocation
      */
+    @Override
     public Set<String> getResourcePaths(String s)
     {
         throw new UnsupportedOperationException();
@@ -493,6 +527,7 @@ public class TurbineConfig
      * A method in ServletContext (2.3) interface that is not implemented and
      * will throw <code>UnsuportedOperationException</code> upon invocation
      */
+    @Override
     public String getServerInfo()
     {
         throw new UnsupportedOperationException();
@@ -505,6 +540,7 @@ public class TurbineConfig
      * throw <code>UnsuportedOperationException</code> upon invocation
      * @deprecated As of Java Servlet API 2.1, with no direct replacement.
      */
+    @Override
     @Deprecated
     public Servlet getServlet(String s)
     {
@@ -518,6 +554,7 @@ public class TurbineConfig
      * throw <code>UnsuportedOperationException</code> upon invocation
      * @deprecated As of Java Servlet API 2.1, with no replacement.
      */
+    @Override
     @Deprecated
     public Enumeration<String> getServletNames()
     {
@@ -531,6 +568,7 @@ public class TurbineConfig
      * throw <code>UnsuportedOperationException</code> upon invocation
      * @deprecated As of Java Servlet API 2.0, with no replacement.
      */
+    @Override
     @Deprecated
     public Enumeration<Servlet> getServlets()
     {
@@ -543,6 +581,7 @@ public class TurbineConfig
      * A method in ServletContext interface that is not implemented and will
      * throw <code>UnsuportedOperationException</code> upon invocation
      */
+    @Override
     public void removeAttribute(String s)
     {
         throw new UnsupportedOperationException();
@@ -554,6 +593,7 @@ public class TurbineConfig
      * A method in ServletContext interface that is not implemented and will
      * throw <code>UnsuportedOperationException</code> upon invocation
      */
+    @Override
     public void setAttribute(String s, Object o)
     {
         throw new UnsupportedOperationException();

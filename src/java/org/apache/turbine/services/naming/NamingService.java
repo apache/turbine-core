@@ -35,6 +35,9 @@ import org.apache.turbine.services.Service;
 public interface NamingService
         extends Service
 {
+    /**
+     * The service name
+     */
     String SERVICE_NAME = "NamingService";
 
     /**

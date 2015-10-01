@@ -233,7 +233,7 @@ public interface SecurityService
      * Checks whether a passed user object matches the anonymous user pattern
      * according to the configured user manager
      *
-     * @param An user object
+     * @param u a user object
      *
      * @return True if this is an anonymous user
      *
@@ -258,6 +258,8 @@ public interface SecurityService
      *
      * LastLogin, AccessCounter, persistent pull tools, and any data stored
      * in the permData hashtable that is not mapped to a column will be saved.
+     *
+     * @param user the user object
      *
      * @exception UnknownEntityException if the user's account does not
      *            exist in the database.
@@ -470,7 +472,7 @@ public interface SecurityService
     /**
      * Retrieve a Group object with specified Id.
      *
-     * @param name the name of the Group.
+     * @param id the id of the Group.
      *
      * @return an object representing the Group with specified name.
      *
@@ -498,7 +500,7 @@ public interface SecurityService
     /**
      * Retrieve a Role object with specified Id.
      *
-     * @param name the name of the Role.
+     * @param id the id of the Role.
      *
      * @return an object representing the Role with specified name.
      *
@@ -526,7 +528,7 @@ public interface SecurityService
     /**
      * Retrieve a Permission object with specified Id.
      *
-     * @param name the name of the Permission.
+     * @param id the id of the Permission.
      *
      * @return an object representing the Permission with specified name.
      *

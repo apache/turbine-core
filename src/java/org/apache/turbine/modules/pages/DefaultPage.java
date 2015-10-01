@@ -116,7 +116,7 @@ public class DefaultPage
     /**
      * Builds the Page.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception, a generic exception.
      */
     @Override
@@ -181,7 +181,7 @@ public class DefaultPage
      * PipelineData so that it is available to the Action module and the
      * Screen module via getContext().  It does nothing here.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception, a generic exception.
      */
     protected void doBuildBeforeAction(PipelineData pipelineData)
@@ -194,7 +194,7 @@ public class DefaultPage
      * Can be overridden by template Pages to set up data needed to
      * process a template.  It does nothing here.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception, a generic exception.
      */
     protected void doBuildAfterAction(PipelineData pipelineData)
@@ -207,7 +207,7 @@ public class DefaultPage
      * Can be overridden to perform actions when the request is
      * fully processed. It does nothing here.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception, a generic exception.
      */
     protected void doPostBuild(PipelineData pipelineData)
@@ -223,7 +223,7 @@ public class DefaultPage
      * Html40Transitional, or Html40Frameset.  Additionally the
      * default can be supplied as two strings giving the dtd and uri.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception, a generic exception.
      */
     private void setDefaultDoctype(RunData data)

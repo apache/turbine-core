@@ -52,7 +52,7 @@ public class JspLayout
     /**
      * Method called by LayoutLoader.
      *
-     * @param data PipelineData
+     * @param pipelineData PipelineData
      * @throws Exception generic exception
      */
     @Override

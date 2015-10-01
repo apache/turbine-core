@@ -32,6 +32,7 @@ import org.apache.turbine.util.TurbineException;
  * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
  * @author <a href="mailto:quintonm@bellsouth.net">Quinton McCombs</a>
  * @version $Id: JobQueue.java 615328 2008-01-25 20:25:05Z tv $
+ * @param <J> a specialized job entry type
  */
 public class JobQueue<J extends JobEntry>
 {
@@ -151,9 +152,9 @@ public class JobQueue<J extends JobEntry>
      * Modify a job on the queue.
      *
      * @param je A JobEntry with the job to modify
+     * @throws TurbineException if the runtime calculation fails
      */
-    public synchronized void modify(J je)
-            throws TurbineException
+    public synchronized void modify(J je) throws TurbineException
     {
         remove(je);
         je.calcRunTime();

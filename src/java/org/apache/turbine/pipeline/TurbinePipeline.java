@@ -24,7 +24,6 @@ package org.apache.turbine.pipeline;
 import java.io.IOException;
 
 import org.apache.turbine.annotation.AnnotationProcessor;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -66,6 +65,7 @@ public class TurbinePipeline
     /**
      * @see org.apache.turbine.pipeline.Pipeline#initialize()
      */
+    @Override
     public void initialize()
         throws Exception
     {
@@ -108,6 +108,7 @@ public class TurbinePipeline
     /**
      * @see org.apache.turbine.pipeline.Pipeline#addValve(Valve)
      */
+    @Override
     public void addValve(Valve valve)
     {
         // Add this Valve to the set associated with this Pipeline
@@ -123,6 +124,7 @@ public class TurbinePipeline
     /**
      * @see org.apache.turbine.pipeline.Pipeline#getValves()
      */
+    @Override
     public Valve[] getValves()
     {
         synchronized (valves)
@@ -136,6 +138,7 @@ public class TurbinePipeline
     /**
      * @see org.apache.turbine.pipeline.Pipeline#removeValve(Valve)
      */
+    @Override
     public void removeValve(Valve valve)
     {
         synchronized (valves)
@@ -171,8 +174,9 @@ public class TurbinePipeline
     }
 
     /**
-     * @see org.apache.turbine.pipeline.Pipeline#invoke(RunData)
+     * @see org.apache.turbine.pipeline.Pipeline#invoke(PipelineData)
      */
+    @Override
     public void invoke(PipelineData pipelineData)
         throws TurbineException, IOException
     {
@@ -184,8 +188,9 @@ public class TurbinePipeline
     }
 
     /**
-     * @see org.apache.turbine.pipeline.ValveContext#invokeNext(RunData)
+     * @see org.apache.turbine.pipeline.ValveContext#invokeNext(PipelineData)
      */
+    @Override
     public void invokeNext(PipelineData pipelineData)
         throws TurbineException, IOException
     {

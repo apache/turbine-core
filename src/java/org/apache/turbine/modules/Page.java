@@ -57,7 +57,7 @@ public abstract class Page
      * A subclass must override this method to build itself.
      * Subclasses override this method to store the page in PipelineData or
      * to write the page to the output stream referenced in PipelineData.
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception a generic exception.
      */
     protected abstract void doBuild(PipelineData pipelineData) throws Exception;
@@ -67,7 +67,7 @@ public abstract class Page
      * functionality.  This method is protected to force clients to
      * use PageLoader to build a Page.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @exception Exception a generic exception.
      */
     protected void build(PipelineData pipelineData)

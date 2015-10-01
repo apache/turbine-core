@@ -40,7 +40,7 @@ public abstract class TemplateNavigation
      * method to perform any particular business logic and add
      * information to the context.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @throws Exception a generic exception.
      */
     protected abstract void doBuildTemplate(PipelineData pipelineData) throws Exception;
@@ -56,7 +56,7 @@ public abstract class TemplateNavigation
     /**
      * Calls doBuildTemplate() and then buildTemplate().
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @return A ConcreteElement.
      * @throws Exception a generic exception.
      */

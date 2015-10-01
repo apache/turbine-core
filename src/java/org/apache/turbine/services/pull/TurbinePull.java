@@ -75,6 +75,7 @@ public abstract class TurbinePull
      * <code>TurbineResources.props</code>, or no tools are specified
      * the TurbineVelocityService will behave in its traditional
      * manner.
+     * @return true if the service is registered within Turbine
      */
     public static final boolean isRegistered()
     {
@@ -111,7 +112,7 @@ public abstract class TurbinePull
      * the global tools).
      *
      * @param context a Velocity Context to populate
-     * @param data a RunData object for request specific data
+     * @param pipelineData a RunData object for request specific data
      */
     public static void populateContext(Context context, PipelineData pipelineData)
     {

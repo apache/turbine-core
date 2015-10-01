@@ -40,6 +40,7 @@ public interface ServiceManager extends ServiceBroker
 {
     /**
      * Initialize this service manager.
+     * @throws InitializationException if the service manager could not be initialized
      */
     void init() throws InitializationException;
 

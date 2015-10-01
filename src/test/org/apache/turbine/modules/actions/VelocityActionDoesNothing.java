@@ -44,7 +44,7 @@ public class VelocityActionDoesNothing extends VelocityAction
     /**
      *  Default action is throw an exception.
      *
-     * @param  data           Current RunData information
+     * @param  pipelineData           Current RunData information
      * @param  context        Context to populate
      * @exception  Exception  Thrown on error
      */
@@ -61,7 +61,7 @@ public class VelocityActionDoesNothing extends VelocityAction
     /**
      *  Annotated action method.
      *
-     * @param  data           Current RunData information
+     * @param  pipelineData           Current RunData information
      * @param  context        Context to populate
      * @exception  Exception  Thrown on error
      */

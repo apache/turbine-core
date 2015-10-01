@@ -190,7 +190,7 @@ public abstract class ActionEvent extends Action
 	 * doEvent() method. If that fails, then it will execute the
 	 * doPerform() method instead.
 	 *
-	 * @param data Turbine information.
+	 * @param pipelineData Turbine information.
 	 * @exception Exception a generic exception.
 	 */
 	@Override

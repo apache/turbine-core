@@ -46,7 +46,7 @@ public class Error extends Screen
     /**
      * Build screen.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @return ConcreteElement the page with all the error information.
      * @throws Exception a generic exception.
      */

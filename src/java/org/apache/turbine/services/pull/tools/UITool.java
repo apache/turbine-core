@@ -79,6 +79,7 @@ public class UITool implements ApplicationTool
     /**
      * Refresh the tool.
      */
+    @Override
     public void refresh()
     {
         TurbineUI.refresh(getSkin());
@@ -128,6 +129,7 @@ public class UITool implements ApplicationTool
 
     /**
      * Retrieve the skin name.
+     * @return the selected skin name
      */
     public String getSkin()
     {
@@ -209,8 +211,9 @@ public class UITool implements ApplicationTool
      * method would probably be enough, but I'm not absolutely positive.
      *
      * @param imageId the id of the image whose URL will be generated.
-     * @param data the RunDate to use as the source of the ServerData to use as
+     * @param data the RunData to use as the source of the ServerData to use as
      * the basis for the URL.
+     * @return the image URL
      */
     public String image(String imageId, RunData data)
     {
@@ -228,6 +231,7 @@ public class UITool implements ApplicationTool
      *
      * @param imageId the id of the image whose URL will be generated.
      * @param serverData the serverData to use as the basis for the URL.
+     * @return the image URL
      */
     public String image(String imageId, ServerData serverData)
     {
@@ -239,6 +243,7 @@ public class UITool implements ApplicationTool
      * stored in the WEBAPP/resources/ui/skins/[SKIN]/images directory.
      *
      * @param imageId the id of the image whose URL will be generated.
+     * @return the image URL
      */
     public String image(String imageId)
     {
@@ -255,8 +260,9 @@ public class UITool implements ApplicationTool
      * a load balanced situation. I think in most cases the style() method would
      * probably be enough, but I'm not absolutely positive.
      *
-     * @param data the RunDate to use as the source of the ServerData to use as
+     * @param data the RunData to use as the source of the ServerData to use as
      * the basis for the URL.
+     * @return the CSS URL
      */
     public String getStylecss(RunData data)
     {
@@ -274,6 +280,7 @@ public class UITool implements ApplicationTool
      * probably be enough, but I'm not absolutely positive.
      *
      * @param serverData the serverData to use as the basis for the URL.
+     * @return the CSS URL
      */
     public String getStylecss(ServerData serverData)
     {
@@ -284,6 +291,7 @@ public class UITool implements ApplicationTool
      * Retrieve the URL for the style sheet that is part of the skin. The style
      * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory with the
      * filename skin.css
+     * @return the CSS URL
      */
     public String getStylecss()
     {
@@ -302,6 +310,7 @@ public class UITool implements ApplicationTool
      * @param filename the name of the script file whose URL will be generated.
      * @param data the RunDate to use as the source of the ServerData to use as
      * the basis for the URL.
+     * @return the script URL
      */
     public String getScript(String filename, RunData data)
     {
@@ -319,6 +328,7 @@ public class UITool implements ApplicationTool
      *
      * @param filename the name of the script file whose URL will be generated.
      * @param serverData the serverData to use as the basis for the URL.
+     * @return the script URL
      */
     public String getScript(String filename, ServerData serverData)
     {
@@ -330,6 +340,7 @@ public class UITool implements ApplicationTool
      * is stored in the WEBAPP/resources/ui/skins/[SKIN] directory.
      *
      * @param filename the name of the script file whose URL will be generated.
+     * @return the script URL
      */
     public String getScript(String filename)
     {
@@ -342,6 +353,7 @@ public class UITool implements ApplicationTool
      * @param data This is null, RunData or User depending upon specified tool
      * scope.
      */
+    @Override
     public void init(Object data)
     {
         if (data == null)

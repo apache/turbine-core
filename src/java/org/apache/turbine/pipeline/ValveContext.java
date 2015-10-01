@@ -56,7 +56,7 @@ public interface ValveContext
      * <p>If there are no more Valves to be executed, execution of
      * this method will result in a no op.</p>
      *
-     * @param data The run-time information, including the servlet
+     * @param pipelineData The run-time information, including the servlet
      * request and response we are processing.
      *
      * @exception IOException Thrown by a subsequent Valve.
@@ -64,6 +64,6 @@ public interface ValveContext
      * @exception TurbineException No further Valves configured in the
      * Pipeline currently being processed.
      */
-    public void invokeNext(PipelineData data)
+    public void invokeNext(PipelineData pipelineData)
         throws IOException, TurbineException;
 }

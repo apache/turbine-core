@@ -49,7 +49,7 @@ public class DetermineRedirectRequestedValve
     }
 
     /**
-     * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
+     * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
      */
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
@@ -70,7 +70,7 @@ public class DetermineRedirectRequestedValve
     /**
      * Perform clean up after processing the request.
      *
-     * @param data The run-time data.
+     * @param pipelineData The run-time data.
      */
     protected void redirectRequested(PipelineData pipelineData)
         throws Exception

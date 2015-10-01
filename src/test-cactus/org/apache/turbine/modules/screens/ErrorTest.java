@@ -66,7 +66,7 @@ public class ErrorTest extends ServletTestCase
 	/**
 	   * Tests if we can call the doBuild method
 	   *
-	   *@todo Move the turbine setup stuff into the setUp() method.
+	   *TODO Move the turbine setup stuff into the setUp() method.
 	   */
 	public void testDobuild() throws Exception
 	{

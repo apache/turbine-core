@@ -41,8 +41,8 @@ package org.apache.turbine.services;
  * <li>Providing instances of <code>Initables</code> to requesting
  * parties.</li>
  *
- * <li>Maintainging dependencies between <code>Initables</code> during
- * early initalization phases, including circular dependencies
+ * <li>Maintaining dependencies between <code>Initables</code> during
+ * early initialization phases, including circular dependencies
  * detection.</li>
  *
  * </ul>
@@ -62,7 +62,7 @@ public interface InitableBroker
      * to you, before you try to retrieve that Initable's instance with
      * getInitable().
      *
-     * @param className The name of the class to be initailized.
+     * @param className The name of the class to be initialized.
      * @param data An object to be used for initialization activities.
      * @exception InitializationException if initialization of this
      * class was not successful.
@@ -74,7 +74,7 @@ public interface InitableBroker
      * Shutdowns an Initable class.
      *
      * This method is used to release resources allocated by an
-     * Initable class, and return it to initial (uninitailized)
+     * Initable class, and return it to initial (uninitialized)
      * state.
      *
      * @param className The name of the class to be uninitialized.

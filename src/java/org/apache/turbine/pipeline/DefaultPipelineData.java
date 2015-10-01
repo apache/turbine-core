@@ -45,9 +45,10 @@ public class DefaultPipelineData implements PipelineData
     /**
      * Put a configured map of objects into the pipeline data object
      *
-     * @param name the key class
+     * @param key the key class
      * @param value the value map
      */
+    @Override
     public void put(Class<?> key, Map<Class<?>, ? super Object> value)
     {
         map.put(key, value);
@@ -56,9 +57,10 @@ public class DefaultPipelineData implements PipelineData
     /**
      * Get the configured map of objects for the given key
      *
-     * @param name the key class
+     * @param key the key class
      * @return the value map or null if no such key exists
      */
+    @Override
     public Map<Class<?>, ? super Object> get(Class<?> key)
     {
         return map.get(key);
@@ -71,6 +73,7 @@ public class DefaultPipelineData implements PipelineData
      * @param innerKey the key into the value map
      * @return the inner value or null if no such keys exist
      */
+    @Override
     @SuppressWarnings("unchecked")
     public <T> T get(Class<?> key, Class<T> innerKey)
     {

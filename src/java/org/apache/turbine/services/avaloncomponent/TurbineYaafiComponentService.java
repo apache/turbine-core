@@ -41,7 +41,7 @@ import org.apache.turbine.services.TurbineBaseService;
 /**
  * An implementation of Turbine service initializing the YAAFI container
  *
- * @author <a href="mailto:siegfried.goescfl@it20one.at">Siegfried Goeschl</a>
+ * @author <a href="mailto:siegfried.goeschl@it20one.at">Siegfried Goeschl</a>
  */
 public class TurbineYaafiComponentService
         extends TurbineBaseService
@@ -65,21 +65,13 @@ public class TurbineYaafiComponentService
     /** YAFFI container */
     private ServiceContainer container;
 
-    // -------------------------------------------------------------
-    // Service initialization
-    // -------------------------------------------------------------
-
-    public TurbineYaafiComponentService()
-    {
-        // nothing to do
-    }
-
     /**
      * Load all configured components and initialize them. This is a zero parameter variant which
      * queries the Turbine Servlet for its config.
      *
      * @throws InitializationException Something went wrong in the init stage
      */
+    @Override
     public void init() throws InitializationException
     {
         try
@@ -100,6 +92,7 @@ public class TurbineYaafiComponentService
      * interface
      *
      */
+    @Override
     public void shutdown()
     {
         log.info( "Disposing TurbineYaafiComponentService ..." );
@@ -116,6 +109,7 @@ public class TurbineYaafiComponentService
      *
      * @throws Exception generic exception
      */
+    @Override
     public void initialize() throws Exception
     {
         // get the configuration from the baseclass
@@ -153,6 +147,7 @@ public class TurbineYaafiComponentService
     /**
      * Disposes of the container and releases resources
      */
+    @Override
     public void dispose()
     {
         if (this.container != null)
@@ -167,8 +162,8 @@ public class TurbineYaafiComponentService
      *
      * @param roleName Name of the role the component fills.
      * @return an instance of the named component
-     * @throws Exception generic exception
      */
+    @Override
     public Object lookup(String roleName) throws ServiceException
     {
         return this.container.lookup(roleName);
@@ -179,6 +174,7 @@ public class TurbineYaafiComponentService
      *
      * @param component the component to release
      */
+    @Override
     public void release(Object component)
     {
         this.container.release( component );
@@ -187,6 +183,7 @@ public class TurbineYaafiComponentService
     /**
      * @see org.apache.avalon.framework.service.ServiceManager#hasService(java.lang.String)
      */
+    @Override
     public boolean hasService(String roleName)
     {
         return this.container.hasService(roleName);
@@ -280,6 +277,7 @@ public class TurbineYaafiComponentService
     /**
      * @see org.apache.turbine.services.TurbineServiceProvider#exists(java.lang.String)
      */
+    @Override
     public boolean exists(String roleName)
     {
         return this.hasService(roleName);
@@ -288,6 +286,7 @@ public class TurbineYaafiComponentService
     /**
      * @see org.apache.turbine.services.TurbineServiceProvider#get(java.lang.String)
      */
+    @Override
     public Object get(String roleName) throws InstantiationException
     {
         try

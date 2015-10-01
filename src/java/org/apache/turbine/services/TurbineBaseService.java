@@ -62,7 +62,7 @@ public abstract class TurbineBaseService
     /**
      * Performs early initialization.  Overrides init() method in
      * BaseService to detect objects used in Turbine's Service
-     * initialization and pass them to apropriate init() methods.
+     * initialization and pass them to appropriate init() methods.
      *
      * @param data An Object to use for initialization activities.
      * @exception InitializationException if initialization of this
@@ -85,29 +85,14 @@ public abstract class TurbineBaseService
     /**
      * Performs early initialization.
      *
-     * @deprecated Use the PipelineData version instead.
-     * @param data An RunData to use for initialization activities.
+     * @param pipelineData A PipelineData to use for initialization activities.
      * @exception InitializationException if initialization of this
      * class was not successful.
      */
-    @Deprecated
-    public void init(RunData data) throws InitializationException
+    public void init(PipelineData pipelineData) throws InitializationException
     {
         // empty
     }
-
-    /**
-     * Performs early initialization.
-     *
-     * @param data A PipelineData to use for initialization activities.
-     * @exception InitializationException if initialization of this
-     * class was not successful.
-     */
-    public void init(PipelineData data) throws InitializationException
-    {
-        // empty
-    }
-
 
     /**
      * Performs late initialization.
@@ -128,7 +113,7 @@ public abstract class TurbineBaseService
     /**
      * Returns to uninitialized state.
      *
-     * You can use this method to release resources thet your Service
+     * You can use this method to release resources that your Service
      * allocated when Turbine shuts down.
      */
     @Override

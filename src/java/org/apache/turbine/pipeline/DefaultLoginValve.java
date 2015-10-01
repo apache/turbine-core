@@ -60,7 +60,7 @@ public class DefaultLoginValve
     private Configuration config;
 
     /**
-     * @see org.apache.turbine.Valve#invoke(RunData, ValveContext)
+     * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
      */
     @Override
     public void invoke(PipelineData pipelineData, ValveContext context)
@@ -83,7 +83,7 @@ public class DefaultLoginValve
      * Handles user sessions, parsing of the action from the query
      * string, and access control.
      *
-     * @param data The run-time data.
+     * @param pipelineData The run-time data.
      */
     protected void process(PipelineData pipelineData)
         throws Exception
@@ -150,7 +150,7 @@ public class DefaultLoginValve
     /**
      * cleans the Velocity Context if available.
      *
-     * @param data A RunData Object
+     * @param pipelineData A RunData Object
      *
      * @throws Exception A problem while cleaning out the Template Context occured.
      */

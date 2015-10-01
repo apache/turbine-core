@@ -115,7 +115,7 @@ public interface PullService
      * the global tools).
      *
      * @param context a Velocity Context to populate
-     * @param data a RunData object for request specific data
+     * @param pipelineData a RunData object for request specific data
      */
      void populateContext(Context context, PipelineData pipelineData);
 

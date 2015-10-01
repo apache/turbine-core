@@ -81,7 +81,7 @@ public class TurbineServlet
      * given URI
      *
      * @see javax.servlet.ServletContext#getRealPath
-     * @param uri the URI to resolve
+     * @param path the URI to resolve
      * @return the full system path of this URI
      */
     public static String getRealPath(String path)

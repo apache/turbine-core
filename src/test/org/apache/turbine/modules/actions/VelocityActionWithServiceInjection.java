@@ -49,7 +49,7 @@ public class VelocityActionWithServiceInjection extends VelocityAction
     /**
      *  Default action is nothing.
      *
-     * @param  data           Current RunData information
+     * @param  pipelineData           Current RunData information
      * @param  context        Context to populate
      * @exception  Exception  Thrown on error
      */

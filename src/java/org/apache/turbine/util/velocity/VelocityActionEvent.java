@@ -65,7 +65,7 @@ public abstract class VelocityActionEvent extends ActionEvent
      * doEvent() method.  If that fails, then it will execute the
      * doPerform() method instead.
      *
-     * @param data A Turbine RunData object.
+     * @param pipelineData A Turbine RunData object.
      * @exception Exception a generic exception.
      */
     @Override

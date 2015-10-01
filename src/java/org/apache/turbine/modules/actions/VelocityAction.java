@@ -44,7 +44,7 @@ public abstract class VelocityAction extends VelocityActionEvent
     /**
      * You SHOULD NOT override this method and implement it in your action.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @throws Exception a generic exception.
      */
     @Override
@@ -67,7 +67,7 @@ public abstract class VelocityAction extends VelocityActionEvent
     /**
      * You SHOULD override this method and implement it in your action.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @param context Context for web pages.
      * @throws Exception a generic exception.
      */
@@ -81,7 +81,7 @@ public abstract class VelocityAction extends VelocityActionEvent
      * action.event.bubbleexception is true, then it bubbles it farther up, or
      * traps it there.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @throws Exception a generic exception.
      */
     @Override
@@ -104,7 +104,7 @@ public abstract class VelocityAction extends VelocityActionEvent
      * This method is used when you want to short circuit an Action and change
      * the template that will be executed next.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @param template The template that will be executed next.
      */
     public void setTemplate(PipelineData pipelineData, String template)
@@ -115,7 +115,7 @@ public abstract class VelocityAction extends VelocityActionEvent
     /**
      * Return the Context needed by Velocity.
      *
-     * @param data Turbine information.
+     * @param pipelineData Turbine information.
      * @return Context, a context for web pages.
      */
     protected Context getContext(PipelineData pipelineData)

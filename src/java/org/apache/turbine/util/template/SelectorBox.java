@@ -223,6 +223,7 @@ public class SelectorBox
      *
      * @return A String with the HTML code.
      */
+    @Override
     public String toString()
     {
         return this.toString(size);
@@ -286,7 +287,7 @@ public class SelectorBox
     /**
      * This allows one to set the array of selected booleans.
      *
-     * @param an array of booleans
+     * @param bools an array of booleans
      * @return A SelectorBox (self).
      */
     public SelectorBox setSelected(boolean[] bools)

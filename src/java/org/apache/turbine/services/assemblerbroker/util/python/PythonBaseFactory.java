@@ -42,7 +42,7 @@ import org.python.util.PythonInterpreter;
  *
  * @author <a href="mailto:leon@opticode.co.za">Leon Messerschmidt</a>
  * @author <a href="mailto:hps@intermeta.de">Henning P. Schmiedehausen</a>
- * @version $Id$
+ * @param <T> the specialized assembler type
  */
 public abstract class PythonBaseFactory<T extends Assembler>
         implements AssemblerFactory<T>
@@ -86,7 +86,7 @@ public abstract class PythonBaseFactory<T extends Assembler>
         String confName = path + "/" + PYTHON_CONFIG_FILE;
 
         // The filename of the Python script
-        StringBuffer fName = new StringBuffer();
+        StringBuilder fName = new StringBuilder();
 
         fName.append(path);
         fName.append("/");
@@ -163,6 +163,7 @@ public abstract class PythonBaseFactory<T extends Assembler>
      *
      * @return a Loader
      */
+    @Override
     public abstract Loader<T> getLoader();
 
     /**
@@ -170,6 +171,7 @@ public abstract class PythonBaseFactory<T extends Assembler>
      *
      * @return the size of the cache in bytes
      */
+    @Override
     public int getCacheSize()
 
     {

@@ -127,6 +127,7 @@ public class VelocityEmail extends SimpleEmail
 
     /**
      * Constructor
+     * @param context the velocity context to use
      */
     public VelocityEmail(Context context)
     {
