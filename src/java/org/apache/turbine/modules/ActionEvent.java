@@ -186,7 +186,7 @@ public abstract class ActionEvent extends Action
 	}
 
 	/**
-	 * This overrides the default Action.perform() to execute the
+	 * This overrides the default Action.doPerform() to execute the
 	 * doEvent() method. If that fails, then it will execute the
 	 * doPerform() method instead.
 	 *
@@ -194,7 +194,7 @@ public abstract class ActionEvent extends Action
 	 * @exception Exception a generic exception.
 	 */
 	@Override
-    protected void perform(PipelineData pipelineData)
+    public void doPerform(PipelineData pipelineData)
 			throws Exception
 	{
 	    ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);
@@ -210,7 +210,7 @@ public abstract class ActionEvent extends Action
 	 *
 	 * @exception Exception a generic exception.
 	 */
-	public void executeEvents(ParameterParser pp, Class<?>[] signature, Object[] parameters)
+	protected void executeEvents(ParameterParser pp, Class<?>[] signature, Object[] parameters)
 			throws Exception
 	{
 		// Name of the button.

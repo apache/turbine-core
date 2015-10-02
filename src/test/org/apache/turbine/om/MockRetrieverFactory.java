@@ -1,6 +1,5 @@
 package org.apache.turbine.om;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,32 +19,28 @@ package org.apache.turbine.om;
  * under the License.
  */
 
-
 /**
- * This interface specifies methods for uniquely identifying an object.
+ * This mocks a {@link RetrieverFactory}.
  *
- * @author <a href="mailto:jmcnally@collab.net">John D. McNally</a>
- * @version $Id$
+ * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
  */
-public interface Retrievable
+public class MockRetrieverFactory implements RetrieverFactory
 {
-    /**
-     * get an id that differentiates this object from others
-     * of its class.
-     *
-     * @return The id value
-     */
-    String getQueryKey();
 
     /**
-     * set an id that differentiates this object from others
-     * of its class.
-     *
-     * @param key The new id value
-     *
-     * @throws Exception A problem occurred while setting the id.
+     * @see org.apache.turbine.om.RetrieverFactory#getInstance(java.lang.String)
      */
-    void setQueryKey(String key)
-        throws Exception;
+    @Override
+    public Retriever getInstance(String className) throws Exception
+    {
+        return new Retriever()
+        {
+            @Override
+            public Object retrieve(String key) throws Exception
+            {
+                return new String(key);
+            }
+        };
+    }
 
 }

@@ -123,7 +123,7 @@ public class Turbine
 
     /**
      * In certain situations the init() method is called more than once,
-     * somtimes even concurrently. This causes bad things to happen,
+     * sometimes even concurrently. This causes bad things to happen,
      * so we use this flag to prevent it.
      */
     private static boolean firstInit = true;
