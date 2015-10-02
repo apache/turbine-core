@@ -124,7 +124,13 @@ public class OMTool implements ApplicationTool, Recyclable
      */
     public PullHelper get(String omName) throws Exception
     {
-        return pullMap.putIfAbsent(omName, new OMTool.PullHelper(omName));
+        PullHelper ph = pullMap.putIfAbsent(omName, new OMTool.PullHelper(omName));
+        if (ph == null)
+        {
+            return pullMap.get(omName);
+        }
+
+        return ph;
     }
 
     /**

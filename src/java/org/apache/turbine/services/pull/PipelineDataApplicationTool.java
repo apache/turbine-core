@@ -29,8 +29,8 @@ import org.apache.turbine.pipeline.PipelineData;
  *
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
  */
-public interface PipelineDataApplicationTool {
-
+public interface PipelineDataApplicationTool
+{
     /**
      * Initialize the application tool. The data parameter holds a different
      * type depending on how the tool is being instantiated:
@@ -63,6 +63,4 @@ public interface PipelineDataApplicationTool {
      * @param data The current PipelineData Object
      */
     public void refresh(PipelineData data);
-
-
 }

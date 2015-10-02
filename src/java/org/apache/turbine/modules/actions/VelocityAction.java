@@ -19,10 +19,8 @@ package org.apache.turbine.modules.actions;
  * under the License.
  */
 
-import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.screens.TemplateScreen;
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.velocity.VelocityActionEvent;
 import org.apache.velocity.context.Context;
 
@@ -37,22 +35,6 @@ import org.apache.velocity.context.Context;
  */
 public abstract class VelocityAction extends VelocityActionEvent
 {
-    /** Injected service instance */
-    @TurbineService
-    private VelocityService velocity;
-
-    /**
-     * You SHOULD NOT override this method and implement it in your action.
-     *
-     * @param pipelineData Turbine information.
-     * @throws Exception a generic exception.
-     */
-    @Override
-    public void doPerform(PipelineData pipelineData) throws Exception
-    {
-        doPerform(pipelineData, getContext(pipelineData));
-    }
-
     /**
      * Initialize the module.
      *
@@ -90,13 +72,13 @@ public abstract class VelocityAction extends VelocityActionEvent
         try
         {
             super.perform(pipelineData);
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             if (bubbleUpException)
             {
                 throw e;
             }
-
         }
     }
 
@@ -110,16 +92,5 @@ public abstract class VelocityAction extends VelocityActionEvent
     public void setTemplate(PipelineData pipelineData, String template)
     {
         TemplateScreen.setTemplate(pipelineData, template);
-    }
-
-    /**
-     * Return the Context needed by Velocity.
-     *
-     * @param pipelineData Turbine information.
-     * @return Context, a context for web pages.
-     */
-    protected Context getContext(PipelineData pipelineData)
-    {
-        return velocity.getContext(pipelineData);
     }
 }

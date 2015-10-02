@@ -21,12 +21,17 @@ package org.apache.turbine.pipeline;
  */
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Vector;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.fulcrum.security.model.turbine.entity.impl.TurbineUserImpl;
 import org.apache.turbine.modules.actions.VelocityActionDoesNothing;
+import org.apache.turbine.modules.actions.VelocitySecureActionDoesNothing;
 import org.apache.turbine.om.security.DefaultUserImpl;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.test.BaseTestCase;
@@ -42,8 +47,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.mockobjects.servlet.MockServletConfig;
-
-import static org.junit.Assert.*;
 
 /**
  * Tests ExecutePageValve.
@@ -68,7 +71,7 @@ public class ExecutePageValveTest extends BaseTestCase
                             "/conf/test/CompleteTurbineResources.properties");
         tc.initialize();
     }
-    
+
     @Before
     public void setUpBefore() throws Exception
     {
@@ -126,9 +129,47 @@ public class ExecutePageValveTest extends BaseTestCase
         assertEquals("username", user.getName());
         assertTrue(user.hasLoggedIn());
     }
-    
+
+    @Test public void testValveWithSecureAction() throws Exception
+    {
+        Vector<String> v = new Vector<String>();
+        v.add(URIConstants.CGI_TEMPLATE_PARAM);
+        request.setupGetParameterNames(v.elements());
+        String nulls[] = new String[1];
+        nulls[0]="Index.vm";
+        request.setupAddParameter(URIConstants.CGI_TEMPLATE_PARAM, nulls);
+
+        RunData runData = getRunData(request, response, config);
+        runData.setScreenTemplate("ExistPageWithLayout.vm");
+        User tu = new DefaultUserImpl(new TurbineUserImpl());
+        tu.setName("username");
+        tu.setHasLoggedIn(Boolean.TRUE);
+        String actionName = VelocitySecureActionDoesNothing.class.getName();
+        actionName = actionName.substring(actionName.lastIndexOf(".")+1);
+        runData.setAction(actionName);
+        runData.setUser(tu);
+
+        Pipeline pipeline = new TurbinePipeline();
+
+        PipelineData pipelineData = runData;
+        ExecutePageValve valve = new ExecutePageValve();
+        pipeline.addValve(valve);
+        pipeline.initialize();
+
+        int numberOfCalls = VelocitySecureActionDoesNothing.numberOfCalls;
+        int isAuthorizedCalls = VelocitySecureActionDoesNothing.isAuthorizedCalls;
+        pipeline.invoke(pipelineData);
+        assertEquals("Assert action was called",numberOfCalls +1,VelocitySecureActionDoesNothing.numberOfCalls);
+        assertEquals("Assert authorization was called",isAuthorizedCalls +1,VelocitySecureActionDoesNothing.isAuthorizedCalls);
+        User user = runData.getUser();
+        assertNotNull(user);
+        assertEquals("username", user.getName());
+        assertTrue(user.hasLoggedIn());
+    }
+
     @AfterClass
-    public static void destroy() {
+    public static void destroy()
+    {
         tc.dispose();
     }
 }

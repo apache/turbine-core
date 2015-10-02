@@ -46,7 +46,7 @@ public class DefaultAction extends Action
             throws Exception
     {
         RunData data = getRunData(pipelineData);
-        data.setMessage(data.getScreen() + " has been executed!");
+        data.setMessage(data.getAction() + " has been executed!");
     }
 
 }
