@@ -78,7 +78,7 @@ public class ServerData
     {
         if (log.isDebugEnabled())
         {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("Constructor(");
             sb.append(serverName);
             sb.append(", ");
@@ -248,11 +248,11 @@ public class ServerData
     }
 
     /**
-     * Appends the Host URL to the supplied StringBuffer.
+     * Appends the Host URL to the supplied StringBuilder.
      *
-     * @param url A StringBuffer object
+     * @param url A StringBuilder object
      */
-    public void getHostUrl(StringBuffer url)
+    public void getHostUrl(StringBuilder url)
     {
         url.append(getServerScheme());
         url.append("://");
@@ -276,7 +276,7 @@ public class ServerData
      */
     public String toString()
     {
-        StringBuffer url = new StringBuffer();
+        StringBuilder url = new StringBuilder();
 
         getHostUrl(url);
 

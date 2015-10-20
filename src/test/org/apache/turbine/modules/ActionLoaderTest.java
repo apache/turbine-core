@@ -313,22 +313,6 @@ public class ActionLoaderTest extends BaseTestCase
     }
 
     @Test
-    public void testDoPerformWithRunData() throws Exception
-    {
-        RunData data = getRunData(request, response, config);
-        data.setAction("VelocityActionDoesNothing");
-        try
-        {
-            ActionLoader.getInstance().exec(data, data.getAction());
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            fail("Should not have thrown an exception.");
-        }
-    }
-
-    @Test
     public void testDoPerformWithPipelineData() throws Exception
     {
         RunData data = getRunData(request, response, config);

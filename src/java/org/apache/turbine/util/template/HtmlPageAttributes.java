@@ -623,9 +623,9 @@ public class HtmlPageAttributes
      */
     public String getDefaultDoctype()
     {
-	Configuration conf = Turbine.getConfiguration();
         if (doctype == null)
         {
+            Configuration conf = Turbine.getConfiguration();
             String tag = conf.getString(
                     TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY,
                     TurbineConstants.DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_DEFAULT);
@@ -647,6 +647,7 @@ public class HtmlPageAttributes
                 doctype = buildDoctype(tag, identifier, uri);
             }
         }
+
         return doctype;
     }
 
@@ -660,7 +661,7 @@ public class HtmlPageAttributes
      */
     private String buildDoctype(String tag, String identifier, String uri)
     {
-        StringBuffer doctypeBuf = new StringBuffer("<!DOCTYPE ");
+        StringBuilder doctypeBuf = new StringBuilder("<!DOCTYPE ");
         doctypeBuf.append(tag);
 
         if (StringUtils.isNotEmpty(identifier))

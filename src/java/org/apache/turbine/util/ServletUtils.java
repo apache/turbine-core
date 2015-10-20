@@ -65,7 +65,7 @@ public class ServletUtils
         if (!text.startsWith("/") && !text.startsWith("./")
                 && !text.startsWith("\\") && !text.startsWith(".\\"))
         {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             sb.append("./");
             sb.append(text);
             text = sb.toString();
@@ -87,7 +87,7 @@ public class ServletUtils
 
         StringTokenizer tokenizer = new StringTokenizer(text,
                 separator);
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         while (tokenizer.hasMoreTokens())
         {
             buffer.append(base).append(tokenizer.nextToken());

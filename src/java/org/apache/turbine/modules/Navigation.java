@@ -19,7 +19,6 @@ package org.apache.turbine.modules;
  * under the License.
  */
 
-import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.pipeline.PipelineData;
 
 /**
@@ -61,9 +60,10 @@ public abstract class Navigation
      * referenced in RunData.
      *
      * @param pipelineData Turbine information.
+     * @return the content of the navigation module
      * @exception Exception a generic exception.
      */
-    protected abstract ConcreteElement doBuild(PipelineData pipelineData) throws Exception;
+    protected abstract String doBuild(PipelineData pipelineData) throws Exception;
 
     /**
      * Subclasses can override this method to add additional
@@ -71,9 +71,10 @@ public abstract class Navigation
      * use NavigationLoader to build a Navigation.
      *
      * @param pipelineData Turbine information.
+     * @return the content of the navigation module
      * @exception Exception a generic exception.
      */
-    protected ConcreteElement build(PipelineData pipelineData)
+    protected String build(PipelineData pipelineData)
         throws Exception
     {
         return doBuild(pipelineData);

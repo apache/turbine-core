@@ -20,7 +20,6 @@ package org.apache.turbine.modules.screens;
  */
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.jsp.JspService;
@@ -59,7 +58,7 @@ public class BaseJspScreen
      * @exception Exception, a generic exception.
      */
     @Override
-    public ConcreteElement buildTemplate(PipelineData pipelineData)
+    public String buildTemplate(PipelineData pipelineData)
             throws Exception
     {
         RunData data = getRunData(pipelineData);

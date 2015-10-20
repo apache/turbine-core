@@ -411,9 +411,9 @@ public abstract class BaseURI
      * used in the Link output routines of derived classes to
      * easily append the correct path.
      *
-     * @param sb The StringBuffer to store context path and script name.
+     * @param sb The StringBuilder to store context path and script name.
      */
-    protected void getContextAndScript(StringBuffer sb)
+    protected void getContextAndScript(StringBuilder sb)
     {
         String context = getContextPath();
 
@@ -448,9 +448,9 @@ public abstract class BaseURI
      * used in the Link output routines of derived classes to
      * easily append the correct server scheme.
      *
-     * @param sb The StringBuffer to store the scheme and port information.
+     * @param sb The StringBuilder to store the scheme and port information.
      */
-    protected void getSchemeAndPort(StringBuffer sb)
+    protected void getSchemeAndPort(StringBuilder sb)
     {
         // http(s)://<servername>
         sb.append(getServerScheme());

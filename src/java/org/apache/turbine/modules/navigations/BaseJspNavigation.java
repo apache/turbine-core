@@ -21,7 +21,6 @@ package org.apache.turbine.modules.navigations;
  */
 
 
-import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Navigation;
 import org.apache.turbine.pipeline.PipelineData;
@@ -68,7 +67,7 @@ public class BaseJspNavigation
      * @throws Exception a generic exception.
      */
     @Override
-    public ConcreteElement buildTemplate(PipelineData pipelineData)
+    public String buildTemplate(PipelineData pipelineData)
         throws Exception
     {
         RunData data = getRunData(pipelineData);

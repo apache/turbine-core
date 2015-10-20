@@ -21,7 +21,6 @@ package org.apache.turbine.modules;
  */
 
 
-import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
 
@@ -53,7 +52,7 @@ public class ScreenLoader
     /**
      * Attempts to load and execute the external Screen. This is used
      * when you want to execute a Screen which returns its output via
-     * a MultiPartElement instead of out the data.getPage() value.
+     * a String instead of out the data.getResponse() value.
      * This allows you to easily chain the execution of Screen modules
      * together.
      *
@@ -62,7 +61,7 @@ public class ScreenLoader
      * @return the output of the screen module
      * @exception Exception a generic exception.
      */
-    public ConcreteElement eval(PipelineData pipelineData, String name)
+    public String eval(PipelineData pipelineData, String name)
             throws Exception
     {
         // Execute screen
@@ -72,7 +71,7 @@ public class ScreenLoader
     /**
      * Attempts to load and execute the Screen. This is used when you
      * want to execute a Screen which returns its output via the
-     * data.getPage() object.
+     * data.getResponse() object.
      *
      * @param pipelineData Turbine information.
      * @param name Name of object that will execute the screen.

@@ -22,7 +22,6 @@ package org.apache.turbine.modules.screens;
 
 // Turbine stuff.
 
-import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
@@ -54,7 +53,7 @@ public abstract class RawScreen extends Screen
      * @exception Exception, a generic exception.
      */
     @Override
-    protected final ConcreteElement doBuild(PipelineData pipelineData)
+    protected final String doBuild(PipelineData pipelineData)
             throws Exception
     {
         RunData data = getRunData(pipelineData);

@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.fulcrum.factory.FactoryException;
 import org.apache.fulcrum.factory.FactoryService;
+import org.apache.fulcrum.parser.ParameterParser;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.modules.Assembler;
@@ -40,6 +41,7 @@ import org.apache.turbine.modules.Loader;
 import org.apache.turbine.modules.Navigation;
 import org.apache.turbine.modules.Page;
 import org.apache.turbine.modules.Screen;
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.InitializationException;
 import org.apache.turbine.services.TurbineBaseService;
 import org.apache.turbine.services.TurbineServices;
@@ -52,7 +54,6 @@ import org.apache.turbine.services.template.mapper.DirectTemplateMapper;
 import org.apache.turbine.services.template.mapper.LayoutTemplateMapper;
 import org.apache.turbine.services.template.mapper.Mapper;
 import org.apache.turbine.services.template.mapper.ScreenTemplateMapper;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.uri.URIConstants;
 
 /**
@@ -343,7 +344,7 @@ public class TurbineTemplateService
     @Override
     public String getDefaultTemplate()
     {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(defaultTemplate);
         if (StringUtils.isNotEmpty(defaultExtension))
         {
@@ -486,14 +487,15 @@ public class TurbineTemplateService
     /**
      * Find the default page module name for the given request.
      *
-     * @param data The encapsulation of the request to retrieve the
+     * @param pipelineData The encapsulation of the request to retrieve the
      *             default page for.
      * @return The default page module name.
      */
     @Override
-    public String getDefaultPageName(RunData data)
+    public String getDefaultPageName(PipelineData pipelineData)
     {
-        String template = data.getParameters().get(URIConstants.CGI_TEMPLATE_PARAM);
+        ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);
+        String template = pp.get(URIConstants.CGI_TEMPLATE_PARAM);
         return (template != null) ?
             getDefaultPageName(template) : getDefaultPage();
     }
@@ -501,14 +503,15 @@ public class TurbineTemplateService
     /**
      * Find the default layout module name for the given request.
      *
-     * @param data The encapsulation of the request to retrieve the
+     * @param pipelineData The encapsulation of the request to retrieve the
      *             default layout for.
      * @return The default layout module name.
      */
     @Override
-    public String getDefaultLayoutName(RunData data)
+    public String getDefaultLayoutName(PipelineData pipelineData)
     {
-        String template = data.getParameters().get(URIConstants.CGI_TEMPLATE_PARAM);
+        ParameterParser pp = pipelineData.get(Turbine.class, ParameterParser.class);
+        String template = pp.get(URIConstants.CGI_TEMPLATE_PARAM);
         return (template != null) ?
             getDefaultLayoutName(template) : getDefaultLayout();
     }
@@ -769,7 +772,7 @@ public class TurbineTemplateService
 
         for (int i = 0; i < TEMPLATE_TYPES; i++)
         {
-            StringBuffer mapperProperty = new StringBuffer();
+            StringBuilder mapperProperty = new StringBuilder();
             mapperProperty.append("mapper.");
             mapperProperty.append(mapperNames[i]);
             mapperProperty.append(".class");

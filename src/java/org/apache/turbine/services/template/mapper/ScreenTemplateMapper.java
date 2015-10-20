@@ -68,7 +68,7 @@ public class ScreenTemplateMapper
         String templatePackage = StringUtils.join(components, String.valueOf(separator));
 
         // But the Templating service must look for the name with prefix
-        StringBuffer testPath = new StringBuffer();
+        StringBuilder testPath = new StringBuilder();
         if (StringUtils.isNotEmpty(prefix))
         {
             testPath.append(prefix);

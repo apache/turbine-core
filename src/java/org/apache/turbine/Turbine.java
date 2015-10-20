@@ -935,7 +935,7 @@ public class Turbine
         // Attempt to do *something* at this point...
         catch (Throwable reallyScrewedNow)
         {
-            StringBuffer msg = new StringBuffer();
+            StringBuilder msg = new StringBuilder();
             msg.append("Horrible Exception: ");
             if (data != null)
             {

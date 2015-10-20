@@ -21,8 +21,8 @@ package org.apache.turbine.services.template;
  */
 
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.Service;
-import org.apache.turbine.util.RunData;
 
 /**
  * This service provides a method for mapping templates to their
@@ -191,20 +191,20 @@ public interface TemplateService
     /**
      * Find the default page module name for the given request.
      *
-     * @param data The encapsulation of the request to retrieve the
+     * @param pipelineData The encapsulation of the request to retrieve the
      *             default page for.
      * @return The default page module name.
      */
-    String getDefaultPageName(RunData data);
+    String getDefaultPageName(PipelineData pipelineData);
 
     /**
      * Find the default layout module name for the given request.
      *
-     * @param data The encapsulation of the request to retrieve the
+     * @param pipelineData The encapsulation of the request to retrieve the
      *             default layout for.
      * @return The default layout module name.
      */
-    String getDefaultLayoutName(RunData data);
+    String getDefaultLayoutName(PipelineData pipelineData);
 
     /**
      * Locate and return the name of the screen module to be used

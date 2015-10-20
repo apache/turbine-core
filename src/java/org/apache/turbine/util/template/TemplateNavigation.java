@@ -23,7 +23,6 @@ package org.apache.turbine.util.template;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.modules.NavigationLoader;
 import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
@@ -105,9 +104,7 @@ public class TemplateNavigation
                 throw new Exception(returnValue);
             }
 
-            ConcreteElement results =
-                    NavigationLoader.getInstance().eval(data, module);
-            returnValue = results.toString();
+            returnValue = NavigationLoader.getInstance().eval(data, module);
         }
         catch (Exception e)
         {

@@ -21,7 +21,6 @@ package org.apache.turbine.modules.navigations;
  */
 
 
-import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.modules.Navigation;
 import org.apache.turbine.pipeline.PipelineData;
 
@@ -36,7 +35,7 @@ public abstract class TemplateNavigation
         extends Navigation
 {
     /**
-     * WebMacro Navigations extending this class should overide this
+     * WebMacro Navigations extending this class should override this
      * method to perform any particular business logic and add
      * information to the context.
      *
@@ -48,20 +47,20 @@ public abstract class TemplateNavigation
     /**
      * This Builds the WebMacro/FreeMarker/etc template.
      * @param pipelineData Turbine information.
-     * @return A ConcreteElement.
+     * @return the content of the navigation module
      * @throws Exception a generic exception.
      */
-    public abstract ConcreteElement buildTemplate(PipelineData pipelineData) throws Exception;
+    public abstract String buildTemplate(PipelineData pipelineData) throws Exception;
 
     /**
      * Calls doBuildTemplate() and then buildTemplate().
      *
      * @param pipelineData Turbine information.
-     * @return A ConcreteElement.
+     * @return the content of the navigation module
      * @throws Exception a generic exception.
      */
     @Override
-    protected ConcreteElement doBuild(PipelineData pipelineData)
+    protected String doBuild(PipelineData pipelineData)
             throws Exception
     {
         doBuildTemplate(pipelineData);

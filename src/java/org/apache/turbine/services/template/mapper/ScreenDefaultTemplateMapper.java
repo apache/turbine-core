@@ -105,7 +105,7 @@ public class ScreenDefaultTemplateMapper
 
             log.debug("templatePackage is now: " + templatePackage);
 
-            StringBuffer testName = new StringBuffer();
+            StringBuilder testName = new StringBuilder();
 
             if (!components.isEmpty())
             {
@@ -118,7 +118,7 @@ public class ScreenDefaultTemplateMapper
                 : defaultName);
 
             // But the Templating service must look for the name with prefix
-            StringBuffer templatePath = new StringBuffer();
+            StringBuilder templatePath = new StringBuilder();
             if (StringUtils.isNotEmpty(prefix))
             {
                 templatePath.append(prefix);

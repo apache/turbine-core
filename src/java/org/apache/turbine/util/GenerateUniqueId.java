@@ -84,7 +84,7 @@ public class GenerateUniqueId
      */
     static synchronized public String getIdentifier()
     {
-        StringBuffer sessionId = new StringBuffer();
+        StringBuilder sessionId = new StringBuilder();
 
         // Random value.
         long n = randomSource.nextLong();

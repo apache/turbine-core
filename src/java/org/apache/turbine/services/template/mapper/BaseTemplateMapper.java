@@ -90,7 +90,7 @@ public abstract class BaseTemplateMapper
 
         if (components[components.length -1 ].indexOf(TemplateService.EXTENSION_SEPARATOR) < 0)
         {
-            StringBuffer resBuf = new StringBuffer();
+            StringBuilder resBuf = new StringBuilder();
             resBuf.append(res);
             String [] templateComponents = StringUtils.split(template, String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR));
 

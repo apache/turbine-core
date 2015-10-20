@@ -23,7 +23,6 @@ package org.apache.turbine.util.template;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
@@ -97,11 +96,11 @@ public class TemplateScreen
 
         try
         {
-            ConcreteElement results = screenLoader.eval(data, this.screen);
+            String results = screenLoader.eval(data, this.screen);
 
             if (results != null)
             {
-                returnValue = results.toString();
+                returnValue = results;
             }
         }
         catch (Exception e)
