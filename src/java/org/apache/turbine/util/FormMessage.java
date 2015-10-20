@@ -153,7 +153,7 @@ public class FormMessage
     @Override
     public String toString()
     {
-        StringBuffer sb = new StringBuffer("formName:" + getFormName() + ", fieldNames:");
+        StringBuilder sb = new StringBuilder("formName:" + getFormName() + ", fieldNames:");
         for (int i = 0; i< getFieldNames().length; i++){
             sb.append(getFieldNames()[i] + " ");
         }

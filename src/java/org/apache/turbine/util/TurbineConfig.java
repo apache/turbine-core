@@ -249,7 +249,7 @@ public class TurbineConfig
 
         if (log.isDebugEnabled())
         {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
 
             sb.append("TurbineConfig.getRealPath: path '");
             sb.append(path);

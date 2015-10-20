@@ -197,13 +197,6 @@ public interface TurbineConstants
 	/** Default document type. */
 	String DEFAULT_DOCUMENT_TYPE_KEY = "default.doctype";
 
-	/** Html 4.0 Transitional */
-	String DOCUMENT_TYPE_HTML40TRANSITIONAL = "Html40Transitional";
-	/** Html 4.0 Strict */
-	String DOCUMENT_TYPE_HTML40STRICT = "Html40Strict";
-	/** Html 4.0 Frameset */
-	String DOCUMENT_TYPE_HTML40FRAMESET = "Html40Frameset";
-
 	/** Default doctype root element. */
 	String DEFAULT_HTML_DOCTYPE_ROOT_ELEMENT_KEY
 			= "default.html.doctype.root.element";

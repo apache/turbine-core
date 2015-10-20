@@ -19,7 +19,6 @@ package org.apache.turbine.modules;
  * under the License.
  */
 
-import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.pipeline.PipelineData;
 
@@ -60,7 +59,7 @@ public class NavigationLoader
      * @return the navigation module output
      * @exception Exception a generic exception.
      */
-    public ConcreteElement eval(PipelineData pipelineData, String name)
+    public String eval(PipelineData pipelineData, String name)
             throws Exception
     {
         // Execute Navigation

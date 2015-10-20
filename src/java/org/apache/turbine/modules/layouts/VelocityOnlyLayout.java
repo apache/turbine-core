@@ -21,9 +21,9 @@ package org.apache.turbine.modules.layouts;
  */
 
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineLoader;
 import org.apache.turbine.annotation.TurbineService;
@@ -107,10 +107,8 @@ public class VelocityOnlyLayout
 
         // First, generate the screen and put it in the context so
         // we can grab it the layout template.
-        ConcreteElement results =
-            screenLoader.eval(pipelineData, screenName);
-
-        String returnValue = (results == null) ? "" : results.toString();
+        String results = screenLoader.eval(pipelineData, screenName);
+        String returnValue = StringUtils.defaultIfEmpty(results, StringUtils.EMPTY);
 
         // variable for the screen in the layout template
         context.put(TurbineConstants.SCREEN_PLACEHOLDER, returnValue);

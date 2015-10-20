@@ -603,7 +603,7 @@ public class TurbineURI
      */
     public String getAbsoluteLink()
     {
-        StringBuffer output = new StringBuffer();
+        StringBuilder output = new StringBuilder();
 
         getSchemeAndPort(output);
 
@@ -636,7 +636,7 @@ public class TurbineURI
      */
     public String getRelativeLink()
     {
-        StringBuffer output = new StringBuffer();
+        StringBuilder output = new StringBuilder();
 
         buildRelativeLink(output);
 
@@ -647,11 +647,11 @@ public class TurbineURI
     }
 
     /**
-     * Add everything needed for a relative link to the passed StringBuffer.
+     * Add everything needed for a relative link to the passed StringBuilder.
      *
      * @param output A Stringbuffer
      */
-    private void buildRelativeLink(StringBuffer output)
+    private void buildRelativeLink(StringBuilder output)
     {
         getContextAndScript(output);
 
@@ -747,9 +747,9 @@ public class TurbineURI
     /**
      * Returns the Path Info data as a String.
      *
-     * @param output The StringBuffer that should hold the path info.
+     * @param output The StringBuilder that should hold the path info.
      */
-    private void getPathInfoAsString(StringBuffer output)
+    private void getPathInfoAsString(StringBuilder output)
     {
         doEncode(output, dataVectors[PATH_INFO], '/', '/');
     }
@@ -757,9 +757,9 @@ public class TurbineURI
     /**
      * Returns the Query data as a String.
      *
-     * @param output The StringBuffer that should hold the query data.
+     * @param output The StringBuilder that should hold the query data.
      */
-    private void getQueryDataAsString(StringBuffer output)
+    private void getQueryDataAsString(StringBuilder output)
     {
         doEncode(output, dataVectors[QUERY_DATA], '&', '=');
     }
@@ -772,7 +772,7 @@ public class TurbineURI
      * @param fieldDelim A char which is used to separate key/value pairs
      * @param valueDelim A char which is used to separate key and value
      */
-    private void doEncode(StringBuffer output, Collection<URIParam> list, char fieldDelim, char valueDelim)
+    private void doEncode(StringBuilder output, Collection<URIParam> list, char fieldDelim, char valueDelim)
     {
         if(!list.isEmpty())
         {

@@ -31,7 +31,6 @@ import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Page;
 import org.apache.turbine.modules.PageLoader;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.TurbineException;
 
 /**
@@ -60,6 +59,7 @@ public class ExecutePageValve
     /**
      * @see org.apache.turbine.pipeline.Valve#invoke(PipelineData, ValveContext)
      */
+    @Override
     public void invoke(PipelineData pipelineData, ValveContext context)
         throws IOException, TurbineException
     {
@@ -84,8 +84,6 @@ public class ExecutePageValve
     protected void executePage(PipelineData pipelineData)
         throws Exception
     {
-        RunData data = getRunData(pipelineData);
-
         // Start the execution phase. DefaultPage will execute the
         // appropriate action as well as get the Layout from the
         // Screen and then execute that. The Layout is then
@@ -99,7 +97,7 @@ public class ExecutePageValve
         // DefaultPage to do what you want.
 
         String defaultPage = (templateService == null)
-        ? null : templateService.getDefaultPageName(data);
+        ? null : templateService.getDefaultPageName(pipelineData);
 
         if (defaultPage == null)
         {

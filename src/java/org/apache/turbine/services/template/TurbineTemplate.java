@@ -21,8 +21,8 @@ package org.apache.turbine.services.template;
  */
 
 
+import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.TurbineServices;
-import org.apache.turbine.util.RunData;
 
 /**
  * This is a simple static accessor to common TemplateService tasks such as
@@ -211,25 +211,25 @@ public abstract class TurbineTemplate
     /**
      * Find the default page module name for the given request.
      *
-     * @param data The encapsulation of the request to retrieve the
+     * @param pipelineData The encapsulation of the request to retrieve the
      *             default page for.
      * @return The default page module name.
      */
-    public static final String getDefaultPageName(RunData data)
+    public static final String getDefaultPageName(PipelineData pipelineData)
     {
-        return getService().getDefaultPageName(data);
+        return getService().getDefaultPageName(pipelineData);
     }
 
     /**
      * Find the default layout module name for the given request.
      *
-     * @param data The encapsulation of the request to retrieve the
+     * @param pipelineData The encapsulation of the request to retrieve the
      *             default layout for.
      * @return The default layout module name.
      */
-    public static final String getDefaultLayoutName(RunData data)
+    public static final String getDefaultLayoutName(PipelineData pipelineData)
     {
-        return getService().getDefaultLayoutName(data);
+        return getService().getDefaultLayoutName(pipelineData);
     }
 
     /**

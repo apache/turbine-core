@@ -21,7 +21,6 @@ package org.apache.turbine.modules;
  */
 
 
-import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
 
@@ -63,9 +62,10 @@ public abstract class Screen
      * or to write the screen to the output stream referenced in
      * RunData.
      * @param pipelineData Turbine information.
+     * @return the content of the screen
      * @exception Exception a generic exception.
      */
-    protected abstract ConcreteElement doBuild(PipelineData pipelineData) throws Exception;
+    protected abstract String doBuild(PipelineData pipelineData) throws Exception;
 
     /**
      * Subclasses can override this method to add additional
@@ -73,9 +73,10 @@ public abstract class Screen
      * use ScreenLoader to build a Screen.
      *
      * @param pipelineData Turbine information.
+     * @return the content of the screen
      * @exception Exception a generic exception.
      */
-    protected ConcreteElement build(PipelineData pipelineData)
+    protected String build(PipelineData pipelineData)
         throws Exception
     {
         return doBuild(pipelineData);

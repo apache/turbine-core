@@ -123,7 +123,7 @@ public class DataURI
      */
     public String getAbsoluteLink()
     {
-        StringBuffer output = new StringBuffer();
+        StringBuilder output = new StringBuilder();
 
         getSchemeAndPort(output);
         getContextAndScript(output);
@@ -161,7 +161,7 @@ public class DataURI
      */
     public String getRelativeLink()
     {
-        StringBuffer output = new StringBuffer();
+        StringBuilder output = new StringBuilder();
 
         getContextAndScript(output);
 

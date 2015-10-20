@@ -22,8 +22,6 @@ package org.apache.turbine.modules.screens;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.ecs.ConcreteElement;
-import org.apache.ecs.StringElement;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineConfiguration;
 import org.apache.turbine.annotation.TurbineService;
@@ -101,11 +99,11 @@ public class VelocityScreen
      * This builds the Velocity template.
      *
      * @param pipelineData Turbine information.
-     * @return A ConcreteElement.
+     * @return the content of the screen
      * @exception Exception, a generic exception.
      */
     @Override
-    public ConcreteElement buildTemplate(PipelineData pipelineData)
+    public String buildTemplate(PipelineData pipelineData)
         throws Exception
     {
         RunData data = getRunData(pipelineData);
@@ -154,14 +152,6 @@ public class VelocityScreen
             screenData = velocity.handleRequest(context, prefix + templateName);
         }
 
-        // package the response in an ECS element
-        StringElement output = new StringElement();
-        output.setFilterState(false);
-
-        if (screenData != null)
-        {
-            output.addElement(screenData);
-        }
-        return output;
+        return screenData;
     }
 }

@@ -21,7 +21,6 @@ package org.apache.turbine.modules.screens.error;
  */
 
 
-import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.ElementContainer;
 import org.apache.ecs.html.A;
 import org.apache.fulcrum.parser.ParameterParser;
@@ -56,14 +55,14 @@ public class InvalidState
      * @exception Exception, a generic exception.
      */
     @Override
-    public ConcreteElement doBuild(PipelineData pipelineData)
+    public String doBuild(PipelineData pipelineData)
             throws Exception
     {
         RunData data = getRunData(pipelineData);
         ElementContainer body = new ElementContainer();
         ElementContainer message = new ElementContainer();
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("<b>There has been an error.</b>")
                 .append("<p>")
                 .append("- If you used the browser \"Back\" or \"Reload\"")
@@ -84,6 +83,6 @@ public class InvalidState
         message.addElement(" to return the the screen you were working on.");
 
         body.addElement(message);
-        return body;
+        return body.toString();
     }
 }

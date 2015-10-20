@@ -283,7 +283,7 @@ public class TurbineUIService
         // The following line is okay even for default.
         Properties skinProperties = new Properties(defaultSkinProperties);
         
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append('/').append(skinsDirectory);
         sb.append('/').append(skinName);
         sb.append('/').append(SKIN_PROPS_FILE);
@@ -474,7 +474,7 @@ public class TurbineUIService
     private String getSkinResource(ServerData serverData, String skinName,
             String subDir, String resourceName)
     {
-        StringBuffer sb = new StringBuffer(skinsDirectory);
+        StringBuilder sb = new StringBuilder(skinsDirectory);
         sb.append("/").append(skinName);
         if (subDir != null)
         {
@@ -499,7 +499,7 @@ public class TurbineUIService
 
         // Get the resources directory that is specified in the TR.props or 
         // default to "resources", relative to the webapp.
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(stripSlashes(TurbinePull.getResourcesDirectory()));
         sb.append("/");
         sb.append(stripSlashes(

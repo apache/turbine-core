@@ -127,7 +127,7 @@ public class ClassMapper
         for(;;)
         {
             String pkg = StringUtils.join(components.iterator(), String.valueOf(separator));
-            StringBuffer testName = new StringBuffer();
+            StringBuilder testName = new StringBuilder();
 
             log.debug("classPackage is now: " + pkg);
 

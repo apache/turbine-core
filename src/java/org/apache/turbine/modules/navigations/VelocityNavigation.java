@@ -21,8 +21,6 @@ package org.apache.turbine.modules.navigations;
  */
 
 
-import org.apache.ecs.ConcreteElement;
-import org.apache.ecs.StringElement;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Navigation;
 import org.apache.turbine.pipeline.PipelineData;
@@ -93,11 +91,11 @@ public class VelocityNavigation
      * This builds the Velocity template.
      *
      * @param pipelineData Turbine information.
-     * @return A ConcreteElement.
+     * @return the content of the navigation module
      * @exception Exception, a generic exception.
      */
     @Override
-    public ConcreteElement buildTemplate(PipelineData pipelineData)
+    public String buildTemplate(PipelineData pipelineData)
             throws Exception
     {
         RunData data = getRunData(pipelineData);
@@ -107,10 +105,6 @@ public class VelocityNavigation
         String templateName
                 = templateService.getNavigationTemplateName(navigationTemplate);
 
-        StringElement output = new StringElement();
-        output.setFilterState(false);
-        output.addElement(
-                velocity.handleRequest(context, prefix + templateName));
-        return output;
+        return velocity.handleRequest(context, prefix + templateName);
     }
 }

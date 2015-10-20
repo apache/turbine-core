@@ -21,10 +21,12 @@ package org.apache.turbine.modules.pages;
  */
 
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.turbine.Turbine;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.services.jsp.JspService;
-import org.apache.turbine.util.RunData;
 
 /**
  * Extends TemplatePage to add some convenience objects to the request.
@@ -53,9 +55,9 @@ public class JspPage
 
         try
         {
-            RunData data = getRunData(pipelineData);
+            HttpServletResponse response = pipelineData.get(Turbine.class, HttpServletResponse.class);
             //We try to set the buffer size from defaults
-            data.getResponse().setBufferSize(jspService.getDefaultBufferSize());
+            response.setBufferSize(jspService.getDefaultBufferSize());
         }
         catch (IllegalStateException ise)
         {

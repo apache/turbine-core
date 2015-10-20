@@ -21,7 +21,6 @@ package org.apache.turbine.modules.screens;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ecs.ConcreteElement;
 import org.apache.turbine.annotation.TurbineLoader;
 import org.apache.turbine.annotation.TurbineService;
 import org.apache.turbine.modules.Screen;
@@ -76,10 +75,10 @@ public abstract class TemplateScreen
      * should contain the specific template service code to generate
      * the template.
      * @param pipelineData Turbine information.
-     * @return A ConcreteElement.
+     * @return the content of the screen
      * @exception Exception A generic exception.
      */
-    public abstract ConcreteElement buildTemplate(PipelineData pipelineData)
+    public abstract String buildTemplate(PipelineData pipelineData)
             throws Exception;
 
     /**
@@ -97,14 +96,14 @@ public abstract class TemplateScreen
      * Screen.
      *
      * @param pipelineData Turbine information.
-     * @return A ConcreteElement.
+     * @return the content of the screen
      * @exception Exception A generic exception.
      */
     @Override
-    protected ConcreteElement doBuild(PipelineData pipelineData)
+    protected String doBuild(PipelineData pipelineData)
             throws Exception
     {
-        ConcreteElement out = null;
+        String out = null;
 
         try
         {

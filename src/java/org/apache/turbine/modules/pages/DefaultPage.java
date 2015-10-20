@@ -21,14 +21,9 @@ package org.apache.turbine.modules.pages;
  */
 
 
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.ecs.Doctype;
-import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.annotation.TurbineLoader;
 import org.apache.turbine.modules.Action;
 import org.apache.turbine.modules.ActionLoader;
@@ -39,7 +34,6 @@ import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
 import org.apache.turbine.pipeline.PipelineData;
 import org.apache.turbine.util.RunData;
-import org.apache.turbine.util.TurbineException;
 
 /**
  * When building sites using templates, Screens need only be defined
@@ -141,10 +135,6 @@ public class DefaultPage
             return;
         }
 
-        // Set the default doctype from the value given in
-        // TurbineResources.properties.
-        setDefaultDoctype(data);
-
         // Template pages can use this to set up default templates and
         // associated class modules.  It does nothing here.
         doBuildAfterAction(pipelineData);
@@ -214,69 +204,5 @@ public class DefaultPage
             throws Exception
     {
         // do nothing by default
-    }
-
-    /**
-     * Set the default Doctype.  If Doctype is set to null, it will
-     * not be added.  The default Doctype can be set in
-     * TurbineResources by using the single strings: Html40Strict,
-     * Html40Transitional, or Html40Frameset.  Additionally the
-     * default can be supplied as two strings giving the dtd and uri.
-     *
-     * @param pipelineData Turbine information.
-     * @exception Exception, a generic exception.
-     */
-    private void setDefaultDoctype(RunData data)
-            throws Exception
-    {
-        String errMsg =
-                "default.doctype property not set properly in TurbineResources.properties!";
-        List<Object> doctypeProperty =
-            Turbine.getConfiguration().getList(TurbineConstants.DEFAULT_DOCUMENT_TYPE_KEY);
-
-        if (doctypeProperty != null)
-        {
-            switch(doctypeProperty.size())
-            {
-            case 0:
-                {
-                    // Don't add a doctype.
-                    break;
-                }
-            case 1:
-                {
-                    String doc = (String) doctypeProperty.get(0);
-                    if (doc.equalsIgnoreCase(TurbineConstants.DOCUMENT_TYPE_HTML40TRANSITIONAL))
-                    {
-                        data.getPage().setDoctype(new Doctype.Html40Transitional());
-                    }
-                    else if (doc.equalsIgnoreCase(TurbineConstants.DOCUMENT_TYPE_HTML40STRICT))
-                    {
-                        data.getPage().setDoctype(new Doctype.Html40Strict());
-                    }
-                    else if (doc.equalsIgnoreCase(TurbineConstants.DOCUMENT_TYPE_HTML40FRAMESET))
-                    {
-                        data.getPage().setDoctype(new Doctype.Html40Frameset());
-                    }
-                    else
-                    {
-                        throw new TurbineException(errMsg);
-                    }
-                    break;
-                }
-            case 2:
-                {
-                    data.getPage()
-                        .setDoctype(new Doctype()
-                                    .setIdentifier((String) doctypeProperty.get(0))
-                                    .setUri((String) doctypeProperty.get(1)));
-                    break;
-                }
-            default:
-                {
-                    throw new TurbineException(errMsg);
-                }
-            }
-        }
     }
 }
