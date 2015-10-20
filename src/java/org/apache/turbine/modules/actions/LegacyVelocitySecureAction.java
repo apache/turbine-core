@@ -21,6 +21,7 @@ package org.apache.turbine.modules.actions;
 
 
 import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.util.RunData;
 
 /**
  * VelocitySecure action.
@@ -33,13 +34,11 @@ import org.apache.turbine.pipeline.PipelineData;
  * Then each action that needs to perform the same check could extend
  * your base action.
  *
- * @author <a href="mailto:mbryson@mont.mindspring.com">Dave Bryson</a>
- * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
- * @author <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>
- * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
- * @version $Id$
+ * @author <a href="mailto:tv@apache.org">Thomas Vandahl</a>
+ * @deprecated Use VelocitySecureAction directly
  */
-public abstract class VelocitySecureAction extends VelocityAction
+@Deprecated
+public abstract class LegacyVelocitySecureAction extends LegacyVelocityAction
 {
     /**
      * This method overrides the method in VelocityAction to
@@ -51,7 +50,7 @@ public abstract class VelocitySecureAction extends VelocityAction
     @Override
     protected void perform(PipelineData pipelineData) throws Exception
     {
-        if (isAuthorized(pipelineData))
+        if (isAuthorized(getRunData(pipelineData)))
         {
             super.perform(pipelineData);
         }
@@ -62,9 +61,9 @@ public abstract class VelocitySecureAction extends VelocityAction
      * You should set the template in this method that you want the
      * user to be sent to if they're unauthorized.
      *
-     * @param pipelineData Turbine information.
+     * @param data Turbine information.
      * @return True if the user is authorized to access the screen.
      * @throws Exception a generic exception.
      */
-    protected abstract boolean isAuthorized(PipelineData pipelineData) throws Exception;
+    protected abstract boolean isAuthorized(RunData data) throws Exception;
 }
