@@ -27,10 +27,10 @@ package org.apache.turbine.services.intake;
  */
 public class LoginForm
 {
-
     private String username;
+
     /**
-     * @return
+     * @return the user name
      */
     public String getUsername()
     {
@@ -38,7 +38,7 @@ public class LoginForm
     }
 
     /**
-     * @param username
+     * @param username the user name to set
      */
     public void setUsername(String username)
     {
