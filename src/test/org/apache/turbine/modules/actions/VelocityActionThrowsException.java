@@ -30,7 +30,7 @@ import org.apache.velocity.context.Context;
  *
  * @author     <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:peter@courcoux.biz">Peter Courcoux</a>
- * @created    October 11, 2002
+ * @since    October 11, 2002
  */
 public class VelocityActionThrowsException extends VelocityAction
 {
@@ -39,7 +39,7 @@ public class VelocityActionThrowsException extends VelocityAction
     /**
      *  Default action is throw an exception.
      *
-     * @param  pipelineData           Current PipelineData information
+     * @param  data           Current PipelineData information
      * @param  context        Context to populate
      * @exception  Exception  Thrown on error
      */
@@ -52,7 +52,7 @@ public class VelocityActionThrowsException extends VelocityAction
 
     /**
      * This action event also throws an exception.
-     * @param pipelineData
+     * @param data
      * @param context
      * @throws Exception
      */
