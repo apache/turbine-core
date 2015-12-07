@@ -70,7 +70,8 @@ import org.jabsorb.JSONRPCBridge;
  * }
  * </code>
  *
- * <p>This code is derived from the com.metaparadigm.jsonrpc.JSONRPCServlet
+ * <p>This code is derived from the com.metaparadigm.jsonrpc.JSONRPCServlet and (after upgrade) checked against 
+ * org.jabsorb.JSONRPCServlet.
  *
  * @author brad@folkens.com
  * @author <a href="mailto:seade@backstagetech.com.au">Scott Eade</a>
@@ -78,7 +79,7 @@ import org.jabsorb.JSONRPCBridge;
  */
 public class JSONScreen extends RawScreen
 {
-    protected static final String JSONRPC_CONTENT_TYPE = "text/plain";
+    protected static final String JSONRPC_CONTENT_TYPE = "application/json;charset=utf-8";
 
     protected final static int BUFFER_SIZE = 4096;
 
@@ -97,6 +98,8 @@ public class JSONScreen extends RawScreen
 
     /**
      * Output the dynamic content.
+     * 
+     * Encodign is UTF-8. @{@link #JSONRPC_CONTENT_TYPE}: {@value #JSONRPC_CONTENT_TYPE}.
      *
      * @param pipelineData The PipelineData object.
      */
@@ -107,11 +110,8 @@ public class JSONScreen extends RawScreen
         data.declareDirectResponse();
         HttpServletRequest request = data.getRequest();
 
-        String charset = request.getCharacterEncoding();
-        if(charset == null)
-        {
-            charset = "UTF-8";
-        }
+        // we require utf-8, cft
+        String charset =  "UTF-8"; //request.getCharacterEncoding();
         BufferedReader in = new BufferedReader(new InputStreamReader(request.getInputStream(), charset));
 
         // Read the request
