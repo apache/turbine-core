@@ -34,8 +34,7 @@
     well. In other words, we strive to make portions of Turbine easily
     available for use in other applications.</description>
     
-  <!-- TODO: Change for release -->  
-  <url>http://turbine.apache.org/turbine/turbine-4.0-M2</url>
+  <url>http://turbine.apache.org/${turbine.site.path}</url>
   
   <inceptionYear>2000</inceptionYear>
 
@@ -1113,7 +1112,8 @@
   </profiles>
 
   <properties>
-    <turbine.site.path>turbine/development/turbine-4.0</turbine.site.path>
+    <!-- TODO: Change for release -->  
+    <turbine.site.path>turbine/turbine-4.0-M2</turbine.site.path>
   </properties>
   
 </project>
