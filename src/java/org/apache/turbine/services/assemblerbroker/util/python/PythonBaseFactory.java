@@ -99,10 +99,12 @@ public abstract class PythonBaseFactory<T extends Assembler>
 
         if (f.exists())
         {
+            PythonInterpreter interp = null;
+
             try
             {
                 // We try to open the Py Interpreter
-                PythonInterpreter interp = new PythonInterpreter();
+                interp = new PythonInterpreter();
 
                 // Make sure the Py Interpreter use the right classloader
                 // This is necessary for servlet engines generally has
@@ -111,8 +113,7 @@ public abstract class PythonBaseFactory<T extends Assembler>
                 // load java package
                 // org.apache.turbine.services.assemblerbroker.util.python;
                 // the new classes to it as well.
-                Py.getSystemState().setClassLoader(
-                        this.getClass().getClassLoader());
+                Py.getSystemState().setClassLoader(this.getClass().getClassLoader());
 
                 // We import the Python SYS module. Now we don't need to do this
                 // explicitly in the script.  We always use the sys module to
@@ -153,6 +154,13 @@ public abstract class PythonBaseFactory<T extends Assembler>
                 // won't be useful anymore.
                 log.error("PYTHON SCRIPT SCREEN LOADER ERROR:", e);
                 throw e;
+            }
+            finally
+            {
+                if (interp != null)
+                {
+                    interp.close();
+                }
             }
         }
         return assembler;
