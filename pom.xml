@@ -35,7 +35,7 @@
     available for use in other applications.</description>
     
   <!-- TODO: Change for release -->  
-  <url>http://turbine.apache.org/development/turbine-4.0</url>
+  <url>http://turbine.apache.org/turbine/turbine-4.0-M2</url>
   
   <inceptionYear>2000</inceptionYear>
 
@@ -1078,7 +1078,7 @@
             <executions>
               <execution>
                 <id>turbine-release-site</id>
-                <phase>package</phase>
+                <phase>prepare-package</phase>
                 <goals>
                   <goal>site</goal>
                 </goals>
