@@ -27,7 +27,7 @@
   <groupId>org.apache.turbine</groupId>
   <artifactId>turbine</artifactId>
   <name>Apache Turbine</name>
-  <version>4.0-M2-SNAPSHOT</version>
+  <version>4.0-M2</version>
   <description>Turbine is a servlet based framework that allows experienced Java
     developers to quickly build secure web applications. Parts of Turbine
     can also be used independently of the web portion of Turbine as
@@ -475,9 +475,9 @@
   </contributors>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/core/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/trunk</developerConnection>
-    <url>http://svn.apache.org/viewcvs/turbine/core/trunk/</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/core/tags/turbine-4.0-M2</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/core/tags/turbine-4.0-M2</developerConnection>
+    <url>http://svn.apache.org/viewcvs/turbine/core/tags/turbine-4.0-M2</url>
   </scm>
 
   <build>
@@ -1072,6 +1072,19 @@
       <id>apache-release</id>
       <build>
         <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-site-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>turbine-release-site</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>site</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
           <plugin>
             <!-- build the source and binary distribution packages -->
             <groupId>org.apache.maven.plugins</groupId>
