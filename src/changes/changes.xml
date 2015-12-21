@@ -24,7 +24,18 @@
   </properties>
 
   <body>
-    <release version="4.0-M2" date="in Subversion">
+    <release version="4.0" date="in Subversion">
+    </release>
+    <release version="4.0-M2" date="2015-12-21">
+      <action type="update" dev="tv">
+        Update dependencies
+        - commons-codec to 1.10
+        - commons-collections to 3.2.2
+        - commons-logging to 1.2
+        - commons-beanutils to 1.9.2
+        - jython to 2.7.0
+        - log4j to 1.2.17
+      </action>
       <action type="remove" dev="tv">
         Remove all deprecated methods using RunData as a parameter to clean up the API
         Further cleanup is needed.
