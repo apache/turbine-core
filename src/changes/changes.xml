@@ -25,6 +25,15 @@
 
   <body>
     <release version="4.0" date="in Subversion">
+      <action type="update" dev="tv">
+        Replace several synchronized maps with ConcurrentMaps
+      </action>
+      <action type="add" dev="tv">
+        Add annotation processing to pull tools
+      </action>
+      <action type="remove" dev="tv">
+        Eventually remove all static service accessors and replace them by lookups or annotations 
+      </action>
     </release>
     <release version="4.0-M2" date="2015-12-21">
       <action type="update" dev="tv">
