@@ -21,7 +21,6 @@ package org.apache.turbine.modules.screens;
 
 
 import org.apache.turbine.pipeline.PipelineData;
-import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.velocity.context.Context;
 
 /**
@@ -67,7 +66,7 @@ public abstract class VelocitySecureScreen
     {
         if (isAuthorized(pipelineData))
         {
-            doBuildTemplate(pipelineData, TurbineVelocity.getContext(pipelineData));
+            doBuildTemplate(pipelineData, velocity.getContext(pipelineData));
         }
     }
 

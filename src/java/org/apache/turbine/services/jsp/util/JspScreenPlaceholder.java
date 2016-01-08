@@ -25,8 +25,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.modules.Screen;
 import org.apache.turbine.modules.ScreenLoader;
-import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
-import org.apache.turbine.services.template.TurbineTemplate;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
+import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -62,7 +63,9 @@ public class JspScreenPlaceholder
     public JspScreenPlaceholder(RunData data)
     {
         this.data = data;
-        this.screenLoader = (ScreenLoader)TurbineAssemblerBroker.getLoader(Screen.class);
+        AssemblerBrokerService abs = (AssemblerBrokerService)TurbineServices.getInstance()
+            .getService(AssemblerBrokerService.SERVICE_NAME);
+        this.screenLoader = (ScreenLoader)abs.getLoader(Screen.class);
     }
 
     /**
@@ -75,7 +78,8 @@ public class JspScreenPlaceholder
         try
         {
             template = data.getTemplateInfo().getScreenTemplate();
-            module = TurbineTemplate.getScreenName(template);
+            TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+            module = templateService.getScreenName(template);
             screenLoader.exec(data, module);
         }
         catch (Exception e)

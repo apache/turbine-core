@@ -22,9 +22,8 @@ package org.apache.turbine.services.template.mapper;
 
 
 import org.apache.commons.lang.StringUtils;
-
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.services.template.TurbineTemplate;
 
 /**
  * This is a mapper like the BaseMapper but it returns its
@@ -80,6 +79,7 @@ public abstract class BaseTemplateMapper
      *
      * @return the mapped default name for the template.
      */
+    @Override
     public String getDefaultName(String template)
     {
         String res = super.getDefaultName(template);
@@ -98,10 +98,12 @@ public abstract class BaseTemplateMapper
             int dotIndex = templateComponents[templateComponents.length -1].lastIndexOf(TemplateService.EXTENSION_SEPARATOR);
             if (dotIndex < 0)
             {
-                if (StringUtils.isNotEmpty(TurbineTemplate.getDefaultExtension()))
+                TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+
+                if (StringUtils.isNotEmpty(templateService.getDefaultExtension()))
                 {
                     resBuf.append(TemplateService.EXTENSION_SEPARATOR);
-                    resBuf.append(TurbineTemplate.getDefaultExtension());
+                    resBuf.append(templateService.getDefaultExtension());
                 }
             }
             else

@@ -24,7 +24,8 @@ package org.apache.turbine.util.template;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.turbine.services.template.TurbineTemplate;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.uri.URIConstants;
 
@@ -113,7 +114,8 @@ public class TemplateInfo
         // to help us out.
         try
         {
-            setLayoutTemplate(TurbineTemplate.getLayoutTemplateName(v));
+            TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+            setLayoutTemplate(templateService.getLayoutTemplateName(v));
         }
         catch (Exception e)
         {

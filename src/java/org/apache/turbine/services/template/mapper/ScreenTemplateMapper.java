@@ -22,9 +22,9 @@ package org.apache.turbine.services.template.mapper;
 
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateEngineService;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.services.template.TurbineTemplate;
 
 /**
  * This is a pretty simple mapper which returns template pathes for
@@ -62,8 +62,8 @@ public class ScreenTemplateMapper
         String [] components = StringUtils.split(template, String.valueOf(TemplateService.TEMPLATE_PARTS_SEPARATOR));
 
         // Last element decides, which template Service to use...
-        TemplateEngineService tes =
-            TurbineTemplate.getTemplateEngineService(components[components.length - 1]);
+        TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+        TemplateEngineService tes = templateService.getTemplateEngineService(components[components.length - 1]);
 
         String templatePackage = StringUtils.join(components, String.valueOf(separator));
 

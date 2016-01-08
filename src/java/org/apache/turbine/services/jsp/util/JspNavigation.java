@@ -24,7 +24,8 @@ package org.apache.turbine.services.jsp.util;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.modules.NavigationLoader;
-import org.apache.turbine.services.template.TurbineTemplate;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -70,7 +71,8 @@ public class JspNavigation
         String module = null;
         try
         {
-            module = TurbineTemplate.getNavigationName(template);
+            TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+            module = templateService.getNavigationName(template);
             NavigationLoader.getInstance().exec(data, module);
         }
         catch (Exception e)

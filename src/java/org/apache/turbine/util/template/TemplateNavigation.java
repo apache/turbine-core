@@ -24,7 +24,8 @@ package org.apache.turbine.util.template;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.modules.NavigationLoader;
-import org.apache.turbine.services.template.TurbineTemplate;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.template.TemplateService;
 import org.apache.turbine.util.RunData;
 
 /**
@@ -96,7 +97,8 @@ public class TemplateNavigation
             }
 
             data.getTemplateInfo().setNavigationTemplate(template);
-            module = TurbineTemplate.getNavigationName(template);
+            TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+            module = templateService.getNavigationName(template);
 
             if (module == null)
             {

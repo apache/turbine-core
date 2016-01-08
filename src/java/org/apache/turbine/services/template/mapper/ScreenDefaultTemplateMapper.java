@@ -28,9 +28,9 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateEngineService;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.services.template.TurbineTemplate;
 
 /**
  * This is a pretty simple mapper which returns template pathes for
@@ -67,6 +67,7 @@ public class ScreenDefaultTemplateMapper
      * @param template The template name.
      * @return The parsed module name.
      */
+    @Override
     public String doMapping(String template)
     {
         log.debug("doMapping(" + template + ")");
@@ -85,7 +86,8 @@ public class ScreenDefaultTemplateMapper
         log.debug("templateName is " + templateName);
 
         // Last element decides, which template Service to use...
-        TemplateEngineService tes = TurbineTemplate.getTemplateEngineService(templateName);
+        TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+        TemplateEngineService tes = templateService.getTemplateEngineService(templateName);
 
         if (tes == null)
         {

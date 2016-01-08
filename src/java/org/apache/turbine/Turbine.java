@@ -59,7 +59,6 @@ import org.apache.turbine.services.ServiceManager;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.services.template.TemplateService;
-import org.apache.turbine.services.template.TurbineTemplate;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.ServerData;
 import org.apache.turbine.util.TurbineConfig;
@@ -203,19 +202,17 @@ public class Turbine
 
                 configure(config, context);
 
-                TemplateService templateService = TurbineTemplate.getService();
+                TemplateService templateService =
+                    (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
                 if (templateService == null)
                 {
-                    throw new TurbineException(
-                            "No Template Service configured!");
+                    throw new TurbineException("No Template Service configured!");
                 }
 
                 if (getRunDataService() == null)
                 {
-                    throw new TurbineException(
-                            "No RunData Service configured!");
+                    throw new TurbineException("No RunData Service configured!");
                 }
-
             }
             catch (Exception e)
             {

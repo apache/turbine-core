@@ -25,8 +25,8 @@ import java.util.List;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.pipeline.PipelineData;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.assemblerbroker.AssemblerBrokerService;
-import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 
 /**
  * This is the base class for the loaders. It contains code that is
@@ -41,7 +41,7 @@ import org.apache.turbine.services.assemblerbroker.TurbineAssemblerBroker;
 public abstract class GenericLoader<T extends Assembler>
 {
     /** The Assembler Broker Service */
-    protected AssemblerBrokerService ab = TurbineAssemblerBroker.getService();
+    protected AssemblerBrokerService ab;
 
     /** @serial This can be serialized */
     private boolean reload = false;
@@ -58,6 +58,7 @@ public abstract class GenericLoader<T extends Assembler>
     public GenericLoader()
     {
         super();
+        ab = (AssemblerBrokerService)TurbineServices.getInstance().getService(AssemblerBrokerService.SERVICE_NAME);
     }
 
     /**

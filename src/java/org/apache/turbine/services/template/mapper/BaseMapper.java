@@ -25,8 +25,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.template.TemplateEngineService;
-import org.apache.turbine.services.template.TurbineTemplate;
+import org.apache.turbine.services.template.TemplateService;
 
 /**
  * A base class for the various mappers which contains common
@@ -166,20 +167,19 @@ public abstract class BaseMapper
     {
         // We might get a Name without an extension passed. If yes, then we use
         // the Default extension
-
-        TemplateEngineService tes
-            = TurbineTemplate.getTemplateEngineService(template);
+        TemplateService templateService = (TemplateService)TurbineServices.getInstance().getService(TemplateService.SERVICE_NAME);
+        TemplateEngineService tes = templateService.getTemplateEngineService(template);
 
         if (StringUtils.isEmpty(template) || (tes == null))
         {
-            return TurbineTemplate.getDefaultTemplate();
+            return templateService.getDefaultTemplate();
         }
 
         String defaultName = (String) tes.getTemplateEngineServiceConfiguration()
             .get(defaultProperty);
 
         return StringUtils.isEmpty(defaultName)
-            ? TurbineTemplate.getDefaultTemplate()
+            ? templateService.getDefaultTemplate()
             : defaultName;
     }
 

@@ -28,7 +28,8 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.services.velocity.TurbineVelocity;
+import org.apache.turbine.services.TurbineServices;
+import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.velocity.context.Context;
 
 /**
@@ -251,12 +252,13 @@ public class VelocityEmail extends SimpleEmail
         try
         {
             // Process the template.
-            body = TurbineVelocity.handleRequest(context, template);
+            VelocityService velocityService = (VelocityService)TurbineServices.getInstance().getService(VelocityService.SERVICE_NAME);
+            body = velocityService.handleRequest(context, template);
         }
         catch (Exception e)
         {
             throw new EmailException(
-                    "Could not render velocitty template", e);
+                    "Could not render velocity template", e);
         }
 
         // If the caller desires word-wrapping, do it here
