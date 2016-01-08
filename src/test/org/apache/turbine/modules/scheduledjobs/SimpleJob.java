@@ -21,6 +21,8 @@ package org.apache.turbine.modules.scheduledjobs;
  */
 
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.modules.ScheduledJob;
 import org.apache.turbine.services.schedule.JobEntry;
 
@@ -36,6 +38,9 @@ import org.apache.turbine.services.schedule.JobEntry;
 public class SimpleJob
         extends ScheduledJob
 {
+    /** Logging */
+    private static Log log = LogFactory.getLog(SimpleJob.class);
+
     /** The test counter */
     private static int counter = 0;
 
@@ -45,13 +50,14 @@ public class SimpleJob
      * @param job The job to run.
      * @throws java.lang.Exception generic exception
      */
+    @Override
     public void run(JobEntry job)
             throws Exception
     {
         counter++;
-        System.out.println("\n\nI AM RUNNING!\n\n");
-
+        log.info("I AM RUNNING!");
     }
+
     /**
      * Returns the counter value.
      *
